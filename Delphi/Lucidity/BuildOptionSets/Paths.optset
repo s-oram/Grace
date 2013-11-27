@@ -1,5 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-		<PropertyGroup/>
+		<PropertyGroup>
+			<DCC_UnitSearchPath>$(LucidityProjectDir)\Delphi\Third Party\OmniThreadLibrary 3.03\src;$(LucidityProjectDir)\Delphi\Third Party\OmniThreadLibrary 3.03;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+		</PropertyGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
 			<Borland.ProjectType>OptionSet</Borland.ProjectType>
