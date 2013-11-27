@@ -1,0 +1,5 @@
+The eeFilters should contain basic filter implementations.
+
+They should implment the filter block diagram. 
+
+I'm not sure about co-efficient calculations??? 

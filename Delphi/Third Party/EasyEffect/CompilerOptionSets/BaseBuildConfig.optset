@@ -1,0 +1,17 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<DCC_Alignment>8</DCC_Alignment>
+			<DCC_UnitSearchPath>$(DelphiSource)\Components\SmartInspect\source;$(DelphiSource)\EasyEffect\SynthFX;$(DelphiSource)\EasyEffect\Licensing;$(DelphiSource)\EasyEffect\eeGen;$(DelphiSource)\EasyEffect\EasyEffectTemplate;$(DelphiSource)\EasyEffect\EasyEffectFilters;$(DelphiSource)\EasyEffect\EasyEffectExtra;$(DelphiSource)\EasyEffect\EasyEffectDjFX;$(DelphiSource)\EasyEffect\ThirdParty;$(DelphiSource)\EasyEffect\eeBlocks;$(DelphiSource)\EasyEffect\eeBlocks2;$(DelphiSource)\EasyEffect\Gui;$(DelphiSource)\EasyEffect\ThirdParty\NativeXml_401\nativexml;$(DelphiSource)\Units - Other;$(DelphiSource)\Units - audio;$(DelphiSource)\Units - Data Structures;$(DelphiSource)\Units - Class Helpers;$(DelphiSource)\Units - audio\HIIR Up Down Filter;$(DelphiSource)\Thrid Party\VGScene;$(DelphiSource)\Thrid Party\VGScene VAM Controls;$(DelphiSource)\Components\VstComponentsXE2\Source;$(DelphiSource)\Components\RedFox\AggPasMod\Source;$(DelphiSource)\Components\RedFox\AggPasMod\Source\Controls;$(DelphiSource)\Components\RedFox\AggPasMod\Source\Design Time;$(DelphiSource)\Components\RedFox\AggPasMod\Source\FireMonkey;$(DelphiSource)\Components\RedFox\AggPasMod\Source\Svg;$(DelphiSource)\Components\RedFox\AggPasMod\Source\Platform\win;$(DelphiSource)\Components\RedFox\RedFox Base Components\source;$(DelphiSource)\Components\RedFox\VamBasic\source;$(DelphiSource)\Components\jcl-2.3.1.4197\source;$(DelphiSource)\Components\jcl-2.3.1.4197\source\common;$(DelphiSource)\Components\jcl-2.3.1.4197\source\include;$(DelphiSource)\Components\jcl-2.3.1.4197\source\prototypes;$(DelphiSource)\Components\jcl-2.3.1.4197\source\unix;$(DelphiSource)\Components\jcl-2.3.1.4197\source\vcl;$(DelphiSource)\Components\jcl-2.3.1.4197\source\windows;$(DelphiSource)\repos\Melanders Drag and Drop v5;$(DelphiSource)\repos\Melanders Drag and Drop v5\Source;$(DelphiSource)\repos\AudioIO\source;$(DelphiSource)\repos\AudioIO\source\thirdparty;C:\Program Files (x86)\CodeGear\RAD Studio\5.0\source\Win32\soap\wsdlimporter;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_BplOutput>.\$(PLATFORM)\$(CONFIG)</DCC_BplOutput>
+			<DCC_DcpOutput>.\$(PLATFORM)\$(CONFIG)</DCC_DcpOutput>
+			<DCC_DcuOutput>.\$(PLATFORM)\$(CONFIG)</DCC_DcuOutput>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>OptionSet</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality/>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,36 @@
+=====================================
+   Easy Effect Vst Build Plugins
+=====================================
+
+Keeping project build options up to
+date is a bit painful.
+
+
+
+
+Use the BaseBuildConfig.optset to store
+all search paths, so they only need to be set
+once if this delphi environment is ever 
+migrated to another machine/host. 
+
+
+
+==Output Directory Constants==
+
+ReleaseAsDemo 
+$(VstForRelease)\$(MainSource)\$(PLATFORM)_Demo
+
+ReleaseAsFull
+$(VstForRelease)\$(MainSource)\$(PLATFORM)_Full
+
+ReleaseLocal
+$(VstLocal)\$(PLATFORM)
+
+ReleaseWinHost
+$(VstWinHost)\$(PLATFORM)
+
+DebugLocal
+$(VstLocal)\$(PLATFORM)
+
+DebugWinHost
+$(VstWinHost)\$(PLATFORM)
