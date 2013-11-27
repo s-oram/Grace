@@ -1,0 +1,115 @@
+======================
+Check state of other two plugins. Are 64 bit builds out? Are they available. do they work. 
+- contact existing owners.. let them know they will be given copies of 
+
+
+
+
+
+
+======================
+
+Annoucing Lucidity
+
+Lucidity is a VST sampler for Windows. It will be available from in both 32 and 64 bit VST formats. 
+
+It features:
+- 2 filters with multiple filter types. 
+- 2 ADSR envelopes
+- 4 LFOs
+- 2 step sequencers (for modulation duties).
+- 4 XY modulation pads.
+
+
+Lucidity will be released when ready. Pricing is yet to be decided. 
+
+The pre-launch schedule is:
+
+== Alpha Stage 1 (starting soon) ==
+Testing for serious and obivous show stopping bugs. 
+- Does it run in all major VST hosts? 
+- Does it run on Windows 7/8?
+- Does the GUI show etc?
+- Does it generate sound? 
+
+== Alpha Stage 2 ==
+Testing the sound engine and tweaking sound engine parameters. 
+- Does it sound good? 
+- What can be changed to improve musical usefulness? 
+
+== Beta Stage 1 ==
+Testing for bugs. All bugs will be fixed before moving onto the next stage.
+
+== Beta Stage 2 ==
+Make final tweaks to ensure Lucidity is pixel perfect and all functionality 
+works as expected. Feature set is now frozen. Nothing new will be added until 
+version 1.1. 
+
+== Release Candiate 1 ==
+Final testing and initial release! At this stage Lucidity should be pixel perfect. 
+
+== Version 1.0 ==
+Celebrate! Go to the pub! Go surfing! Make some music! :)
+
+
+
+
+
+
+
+======================
+
+Contact sample developers, offer a place on launch page.
+
+Label as "Friendly Links to Quality Sample Creators"
+
+- Goldbaby
+- WaveShaper
+- TeamDNR
+- new guy? (who is he)   
+--- Carlo Del Prato <pluggotic@gmail.com>
+--- thunderlink://messageid=CAFc7cDkMfRBXrN+ZFs7U8DV01yA4G6rHn_vFn+MVHOfGQdh9fw@mail.gmail.com
+- bass music drum producer, what's his name.
+
+Each link can have logo, short blurb and sound cloud player. 
+
+
+
+
+
+
+===== 
+
+Pre-Lauch Special
+- Offer $10 licenses to existing customers. 
+
+Launch Special
+
+Launch special will be limited to 250 licenses. 
+- Pay what you want.
+- $10
+- $1
+Goal of launch special is to generate exposure and seed forums with lots of lucidity users to help 
+kickstart word of mouth. 
+
+
+
+
+
+
+======  Marketing =======
+
+Send pre-release copies to 
+- Sounds and Gear
+- Create Digital Music
+- other music blog that I can remeber.
+
+Check out for website layout.
+http://www.sublimetext.com/
+
+
+
+
+======  Other Stuff =======
+Offer copy of lucidity to this guy when it is ready for the Poise skin. Sent in this email.
+thunderlink://messageid=CALtz9GJZW0msFWdrQU+dyT7_D6XVjav_qbN83fWASaDm75EiVg@mail.gmail.com

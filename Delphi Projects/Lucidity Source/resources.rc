@@ -1,0 +1,17 @@
+KNOB_UNIPOLAR        RCDATA Resources\Knob.png
+KNOB_BIPOLAR         RCDATA Resources\KnobBiPolar.png
+KNOB_PLACEHOLDER     RCDATA Resources\KnobPlaceHolder.png
+MODMATRIX_KNOB       RCDATA Resources\ModMatrixKnob.png
+BACKGROUND           RCDATA Resources\Background.png
+BUTTONOFF            RCDATA Resources\ButtonOff.png
+BUTTONON             RCDATA Resources\ButtonOn.png
+BROWSER_FOLDERICON   RCDATA Resources\Browser_FolderIcon.png
+BROWSER_AUDIOICON    RCDATA Resources\Browser_AudioIcon.png
+BROWSER_PROGRAMICON  RCDATA Resources\Browser_ProgramIcon.png
+MENU_PROGRAMICON     RCDATA Resources\Menu_ProgramIcon.png
+MENU_SAMPLEEDITICON  RCDATA Resources\Menu_SampleEditIcon.png
+MODMATRIX_KNOB9      RCDATA Resources\ModMatrixKnob.png
+LOCKED_ICON          RCDATA Resources\LockedIcon.png
+UNLOCKED_ICON        RCDATA Resources\UnlockedIcon.png
+PREVIEW_ICON         RCDATA Resources\PreviewIcon.png
+

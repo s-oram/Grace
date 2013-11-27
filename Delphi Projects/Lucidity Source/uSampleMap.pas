@@ -1,0 +1,844 @@
+unit uSampleMap;
+
+interface
+
+{$INCLUDE Defines.inc}
+
+uses
+  MoreTypes, Generics.Collections, VamSampleDisplay,
+  uConstants, uLucidityKeyGroupInterface,
+  Classes, eeSampleFloat, eePatchObject,
+  uSampleZeroCrossings;
+
+type
+  //=== Forward Declarations ==========
+  IRegion = interface;
+  TRegion = class;
+
+  TSampleMapInfo = class;
+  ISampleMapInfo = interface;
+  //===================================
+
+
+  PRegionProperties = ^TRegionProperties;
+  TRegionProperties = record
+    UniqueID         : TGuid;
+    SampleFileName   : string;
+    SampleDataLoaded : boolean;
+    IsSampleError    : boolean;
+    ErrorMessage     : string;
+
+    IsSelected     : boolean; //Multiple regions can be selected.
+    IsFocused      : boolean; //only a single region should be 'focused' at once.
+
+    //== Sample Map ==
+    LowNote        : integer;
+    HighNote       : integer;
+    LowVelocity    : integer;
+    HighVelocity   : integer;
+    RootNote       : integer;
+
+    //== Markers ==
+    SampleStart : integer;
+    SampleEnd   : integer;
+    LoopStart   : integer;
+    LoopEnd     : integer;
+
+    //== Sample ==
+    SampleVolume  : single;  // In db. Range -96..+12
+    SamplePan     : single;  // range -100..+100 (%)
+    SamplePitch   : double;  // In Semitones. -24..+24
+    SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
+  end;
+
+  TRegionInterfaceList = class(TList<IRegion>);
+
+  IRegion = interface
+    ['{2A1E25FA-DF90-46CE-BA90-EB69EDAE57F4}']
+    function GetObject:TObject;
+    function GetProperties    : PRegionProperties;
+    function GetSample        : PSampleFloat;
+    function GetKeyGroup      : IKeyGroup;
+    function GetZeroCrossings : TSampleZeroCrossings;
+    function GetSampleImage   : ISampleImageBuffer;
+
+    function GetDbLevelAt(SamplePoint:integer):single;
+
+    procedure UpdateSampleImage;
+  end;
+
+  TRegion = class(TInterfacedObject, IRegion)
+  strict private
+    fSampleFloat   : TSampleFloat;
+    fProperties    : PRegionProperties;
+    fKeyGroup      : IKeyGroup;
+    fZeroCrossings : TSampleZeroCrossings;
+    fSampleImage   : ISampleImageBuffer;
+    function GetObject        : TObject;
+    function GetProperties    : PRegionProperties;
+    function GetSample        : PSampleFloat;
+    function GetKeyGroup      : IKeyGroup;
+    function GetZeroCrossings : TSampleZeroCrossings;
+    function GetSampleImage   : ISampleImageBuffer;
+  private
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    function GetDbLevelAt(SamplePoint:integer):single;
+
+    procedure UpdateSampleImage;
+
+    property Sample        : TSampleFloat         read fSampleFloat    write fSampleFloat;
+    property KeyGroup      : IKeyGroup            read fKeyGroup       write fKeyGroup;
+    property Properties    : PRegionProperties    read fProperties;
+    property ZeroCrossings : TSampleZeroCrossings read fZeroCrossings;
+    property SampleImage   : ISampleImageBuffer   read fSampleImage;
+  end;
+
+  TRegionCreateInfo = record
+    //Required
+    KeyGroup      : IKeyGroup;
+    AudioFileName : string;
+    LowNote       : integer;
+    HighNote      : integer;
+    LowVelocity   : integer;
+    HighVelocity  : integer;
+    RootNote      : integer;
+  end;
+
+  TSampleMap = class
+  private
+    function GetRegionCount: integer;
+    function GetRegion(Index: integer): IRegion;
+  protected
+    RegionList : TInterfaceList;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure Clear;
+
+    function GetInfo:ISampleMapInfo;
+
+    procedure SetPatchData(var Data:TPatchNode);
+    procedure GetPatchData(var Data:TPatchNode);
+
+    //====== GUI Interaction Methods ===================
+    function FindRegionByKeyGroup(const KeyGroupName : string):IRegion;
+    procedure FindRegionsByKeyGroup(const KeyGroupName : string; const aList : TRegionInterfaceList);
+    function FindRegionByUniqueID(UniqueID : TGUID):IRegion;
+    function FindFocusedRegion : IRegion;
+
+    function FocusRegion(UniqueID : TGUID):IRegion;
+    procedure ClearFocus;
+
+    procedure SelectRegion(UniqueID : TGUID);
+    procedure DeselectRegion(UniqueID : TGUID);
+    procedure DeselectOtherRegions(UniqueID : TGUID);
+    procedure DeselectAllRegions;
+
+    procedure MoveSelectedRegionsToKeyGoup(aKeyGroup : IKeyGroup);
+    procedure DeleteSelectedRegions;
+
+    procedure AddRegion(aRegion : IRegion);
+    function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
+
+    procedure DeleteRegion(Index : integer); overload;
+    procedure DeleteRegion(const aRegion : IRegion); overload;
+    procedure DeleteRegionsInKeyGroup(aKeyGroupName : string);
+
+    function LoadSample(const AudioFileName : string; OwningSampleGroup : IKeyGroup): IRegion;
+    function ReplaceSample(const AudioFileName : string; const TargetRegion : IRegion): IRegion;
+
+    // TODO: It might make sense to add a lock (TCriticalSection)
+    // so that only one of these methods will make changes to
+    // the sample map at once.
+    //===================================================
+
+    function IsSampleFormatSupported(FileName:string):boolean;
+
+    property RegionCount : integer read GetRegionCount;
+    property Regions[Index : integer] : IRegion read GetRegion;
+
+    function SelectedRegionCount : integer;
+  end;
+
+
+
+
+
+
+  ISampleMapInfo = interface
+    ['{599130BB-8141-4959-AB00-E2C8DCBFD4E0}']
+    function GetRegion(Index: integer): IRegion;
+    function GetRegionCount: integer;
+  end;
+
+  TSampleMapInfo = class(TInterfacedObject, ISampleMapInfo)
+  strict private
+    RegionList : TInterfaceList;
+  private
+    function GetRegion(Index: integer): IRegion;
+    function GetRegionCount: integer;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure AssignFrom(Source : TSampleMap);
+
+    property RegionCount : integer read GetRegionCount;
+    property Regions[Index : integer] : IRegion read GetRegion;
+  end;
+
+
+
+
+
+function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
+
+
+
+implementation
+
+uses
+  Math,
+  eeFunctions, eeDsp,
+  SysUtils, AudioIO;
+
+var
+  EmptySampleFrames : integer;
+  EmptySampleData : array of single;
+
+
+function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
+var
+  props : PRegionProperties;
+begin
+  props := aSampleRegion.GetProperties;
+  if (MidiNoteData1 >= props^.LowNote)
+    and (MidiNoteData1 <= props^.HighNote)
+    and (MidiNoteData2 >= props^.LowVelocity)
+    and (MidiNoteData2 <= props^.HighVelocity)
+    then result := true
+    else result := false;
+end;
+
+
+{ TSampleMapItem }
+
+constructor TRegion.Create;
+begin
+  New(fProperties);
+  Sample := TSampleFloat.Create;
+  fZeroCrossings := TSampleZeroCrossings.Create;
+  fSampleImage := TSampleImageBuffer.Create;
+end;
+
+destructor TRegion.Destroy;
+begin
+  Sample.Free;
+  Dispose(fProperties);
+  fProperties := nil;
+  fZeroCrossings.Free;
+  fSampleImage := nil;
+  inherited;
+end;
+
+function TRegion.GetObject: TObject;
+begin
+  result := self;
+end;
+
+function TRegion.GetProperties: PRegionProperties;
+begin
+  result := fProperties;
+end;
+
+function TRegion.GetSample: PSampleFloat;
+begin
+  result := @fSampleFloat;
+end;
+
+function TRegion.GetSampleImage: ISampleImageBuffer;
+begin
+  result := fSampleImage;
+end;
+
+function TRegion.GetDbLevelAt(SamplePoint: integer): single;
+var
+  smp : PSampleFloat;
+  x : single;
+begin
+  smp := self.GetSample;
+
+  if assigned(smp) and (smp^.Properties.IsValid) and (smp^.Properties.SampleFrames > SamplePoint) then
+  begin
+    if smp^.Properties.ChannelCount = 1 then
+    begin
+      x := abs(smp^.Ch1[SamplePoint]);
+      result := LinearToDecibels(x);
+    end else
+    begin
+      x := Max(abs(smp^.Ch1[SamplePoint]), abs(smp^.Ch2[SamplePoint]));
+      result := LinearToDecibels(x);
+    end;
+  end else
+  begin
+    result := -120;
+  end;
+end;
+
+function TRegion.GetKeyGroup: IKeyGroup;
+begin
+  result := fKeyGroup;
+end;
+
+function TRegion.GetZeroCrossings: TSampleZeroCrossings;
+begin
+  result := fZeroCrossings;
+end;
+
+procedure TRegion.UpdateSampleImage;
+var
+  SDI : TSampleDisplayInfo;
+begin
+  SampleImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
+  SampleImage.GetObject.LineColor := kColor_SampleDisplayLine;
+  SampleImage.GetObject.Zoom      := 0;
+  SampleImage.GetObject.Offset    := 0;
+
+  if Sample.Properties.IsValid then
+  begin
+    SDI.IsValid      := true;
+    SDI.ChannelCount := Sample.Properties.ChannelCount;
+    SDI.SampleFrames := Sample.Properties.SampleFrames;
+    SDI.Ch1          := Sample.Properties.Ch1;
+    SDI.Ch2          := Sample.Properties.Ch2;
+
+    SampleImage.GetObject.DrawSample(SDI);
+  end else
+  begin
+    SDI.IsValid      := true;
+    SDI.ChannelCount := 1;
+    SDI.SampleFrames := EmptySampleFrames;
+    SDI.Ch1          := @EmptySampleData[0];
+    SDI.Ch2          := @EmptySampleData[0];
+
+    SampleImage.GetObject.DrawSample(SDI);
+  end;
+end;
+
+{ TSampleMap }
+
+constructor TSampleMap.Create;
+begin
+  RegionList := TInterfaceList.Create;
+end;
+
+destructor TSampleMap.Destroy;
+begin
+  RegionList.Free;
+  inherited;
+end;
+
+function TSampleMap.FindFocusedRegion: IRegion;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to RegionList.Count-1 do
+  begin
+    if (RegionList[c1] as IRegion).GetProperties^.IsFocused then
+    begin
+      result := (RegionList[c1] as IRegion);
+      exit; //====================================>> exit >>=====>>
+    end;
+  end;
+  // If we've made it this far, no focused region has been found.
+  result := nil;
+end;
+
+function TSampleMap.FindRegionByKeyGroup(const KeyGroupName: string): IRegion;
+var
+  c1: Integer;
+begin
+  assert(KeyGroupName <> '');
+
+  result := nil;
+  for c1 := 0 to RegionList.Count-1 do
+  begin
+    if (RegionList[c1] as IRegion).GetKeyGroup.GetName = KeyGroupName then
+    begin
+      result := (RegionList[c1] as IRegion);
+      exit; //====================================>> exit >>=====>>
+    end;
+  end;
+end;
+
+function TSampleMap.FindRegionByUniqueID(UniqueID: TGUID): IRegion;
+var
+  c1: Integer;
+begin
+  result := nil;
+  for c1 := 0 to RegionList.Count-1 do
+  begin
+    if (RegionList[c1] as IRegion).GetProperties^.UniqueID = UniqueID then
+    begin
+      result := (RegionList[c1] as IRegion);
+      exit; //====================================>> exit >>=====>>
+    end;
+  end;
+end;
+
+procedure TSampleMap.FindRegionsByKeyGroup(const KeyGroupName: string; const aList: TRegionInterfaceList);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to RegionCount-1 do
+  begin
+    if (Regions[c1].GetKeyGroup.GetName = KeyGroupName) then
+    begin
+      aList.Add(Regions[c1]);
+    end;
+  end;
+end;
+
+function TSampleMap.GetRegion(Index: integer): IRegion;
+begin
+  result := RegionList[Index] as IRegion;
+end;
+
+function TSampleMap.GetRegionCount: integer;
+begin
+  result := RegionList.Count;
+end;
+
+function TSampleMap.IsSampleFormatSupported(FileName: string): boolean;
+var
+  Info : TAudioFileInfo;
+begin
+  GetAudioFileInfoEx(FileName, Info);
+  result := Info.IsSupported;
+end;
+
+function TSampleMap.LoadSample(const AudioFileName: string; OwningSampleGroup: IKeyGroup): IRegion;
+var
+  CreateInfo: TRegionCreateInfo;
+begin
+  if not assigned(OwningSampleGroup) then raise Exception.Create('OwningSampleGroup is not assigned.');
+
+  CreateInfo.KeyGroup := OwningSampleGroup;
+  CreateInfo.AudioFileName := AudioFileName;
+  CreateInfo.LowNote       := 0;
+  CreateInfo.HighNote      := 127;
+  CreateInfo.LowVelocity   := 0;
+  CreateInfo.HighVelocity  := 127;
+  CreateInfo.RootNote      := 60; //MIDI c4.
+
+  result := NewRegion(CreateInfo);
+end;
+
+procedure TSampleMap.AddRegion(aRegion: IRegion);
+begin
+  aRegion.GetProperties^.UniqueID := CreateGuidEx;
+
+  aRegion.UpdateSampleImage;
+
+  RegionList.Add(aRegion);
+end;
+
+function TSampleMap.ReplaceSample(const AudioFileName: string; const TargetRegion: IRegion): IRegion;
+var
+  CreateInfo: TRegionCreateInfo;
+  ar : IRegion;
+begin
+  // NOTE: ReplaceSample() replaces a sample by duplicating an existing region
+  // with a new sample and deleting the 'replaced' region. For a brief period
+  // both regions will 'alive' and on the sample map.
+  if not assigned(TargetRegion) then raise Exception.Create('TargetRegion is not assigned.');
+
+  CreateInfo.AudioFileName := AudioFileName;
+  CreateInfo.KeyGroup   := TargetRegion.GetKeyGroup;
+  CreateInfo.LowNote       := TargetRegion.GetProperties^.LowNote;
+  CreateInfo.HighNote      := TargetRegion.GetProperties^.HighNote;
+  CreateInfo.LowVelocity   := TargetRegion.GetProperties^.LowVelocity;
+  CreateInfo.HighVelocity  := TargetRegion.GetProperties^.HighVelocity;
+  CreateInfo.RootNote      := TargetRegion.GetProperties^.RootNote;
+
+  ar := NewRegion(CreateInfo);
+
+  if assigned(ar) then
+  begin
+    DeleteRegion(TargetRegion);
+    result := ar;
+  end else
+  begin
+    result := nil;
+  end;
+
+end;
+
+function TSampleMap.NewRegion(CreateInfo: TRegionCreateInfo): IRegion;
+var
+  rx : TRegion;
+  aRegion : IRegion;
+  Info : TAudioFileInfo;
+begin
+  result := nil;
+  rx := TRegion.Create;
+  aRegion := rx;
+
+  assert(assigned(CreateInfo.KeyGroup));
+
+  //====================
+  rx.Properties^.SampleDataLoaded := false;
+  rx.Properties^.IsSampleError    := false;
+  rx.Properties^.ErrorMessage     := '';
+  rx.Properties^.UniqueID         := CreateGuidEx;
+  rx.Properties^.SampleFileName   := CreateInfo.AudioFileName;
+  rx.Properties^.LowNote          := CreateInfo.LowNote;
+  rx.Properties^.HighNote         := CreateInfo.HighNote;
+  rx.Properties^.LowVelocity      := CreateInfo.LowVelocity;
+  rx.Properties^.HighVelocity     := CreateInfo.HighVelocity;
+  rx.Properties^.RootNote         := CreateInfo.RootNote;
+  rx.KeyGroup := CreateInfo.KeyGroup;
+  //====================
+
+  GetAudioFileInfoEx(CreateInfo.AudioFileName, Info);
+
+  if (Info.IsValid) and (Info.IsSupported) then
+  begin
+    if rx.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
+    begin
+      rx.Properties^.SampleStart := 0;
+      rx.Properties^.SampleEnd   := Info.SampleFrames-1;
+      rx.Properties^.LoopStart   := -1;
+      rx.Properties^.LoopEnd     := -1;
+
+      rx.Properties^.SampleVolume := 0;
+      rx.Properties^.SamplePan    := 0;
+      rx.Properties^.SamplePitch  := 0;
+      rx.Properties^.SampleBeats  := 4;
+
+      if rx.Sample.LoadFromFile(CreateInfo.AudioFileName) = true then
+      begin
+        //Update additional region properties..
+        rx.Properties^.LoopStart := 0;
+        rx.Properties^.LoopEnd   := Info.SampleFrames-1;
+
+        rx.ZeroCrossings.CalcZeroCrossingData(rx.Sample);
+        rx.UpdateSampleImage;
+
+        rx.Properties^.SampleDataLoaded := true;
+      end;
+    end;
+  end else
+  if (Info.IsSupported) = false then
+  begin
+    rx.Properties^.IsSampleError    := true;
+    rx.Properties^.ErrorMessage     := 'Unsupported File Format.';
+  end else
+  begin
+    rx.Properties^.IsSampleError    := true;
+    rx.Properties^.ErrorMessage     := Info.ErrorMessage;
+  end;
+
+  // Only add the region if it's supported.
+  if (Info.IsSupported) then
+  begin
+    //Add the region...
+    RegionList.Add(aRegion);
+    result := aRegion;
+  end;
+
+end;
+
+procedure TSampleMap.DeselectAllRegions;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to RegionCount-1 do
+  begin
+    Regions[c1].GetProperties^.IsSelected := false;
+    Regions[c1].GetProperties^.IsFocused  := false;
+  end;
+end;
+
+procedure TSampleMap.DeselectOtherRegions(UniqueID: TGUID);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to RegionCount-1 do
+  begin
+    if Regions[c1].GetProperties^.UniqueID <> UniqueID then
+    begin
+      Regions[c1].GetProperties^.IsSelected := false;
+      Regions[c1].GetProperties^.IsFocused  := false;
+    end;
+  end;
+end;
+
+procedure TSampleMap.DeselectRegion(UniqueID: TGUID);
+begin
+  FindRegionByUniqueID(UniqueID).GetProperties^.IsSelected := false;
+  FindRegionByUniqueID(UniqueID).GetProperties^.IsFocused  := false;
+end;
+
+function TSampleMap.SelectedRegionCount: integer;
+var
+  c1 : integer;
+  Count : integer;
+begin
+  Count := 0;
+
+  for c1 := 0 to RegionCount-1 do
+  begin
+    if Regions[c1].GetProperties^.IsSelected then
+    begin
+      inc(count);
+    end;
+  end;
+
+  result := Count;
+end;
+
+procedure TSampleMap.SelectRegion(UniqueID: TGUID);
+begin
+  FindRegionByUniqueID(UniqueID).GetProperties^.IsSelected := true;
+end;
+
+function TSampleMap.FocusRegion(UniqueID: TGUID):IRegion;
+var
+  c1: Integer;
+  DelselectOthers : boolean;
+begin
+  result := nil;
+  DelselectOthers := false;
+
+  for c1 := 0 to RegionCount-1 do
+  begin
+    if (Regions[c1].GetProperties^.UniqueID = UniqueID) then
+    begin
+      if (Regions[c1].GetProperties^.IsFocused) then
+      begin
+        // Region is already focused, nothing else needs to be done,
+        exit; //=====================>> exit >>========================>>
+      end;
+
+      // If the region is selected, but not focused, we need to deselect the other regions.
+      if (Regions[c1].GetProperties^.IsSelected = false)
+        then DelselectOthers := true
+        else DelselectOthers := false;
+
+      Regions[c1].GetProperties^.IsFocused  := true;
+      Regions[c1].GetProperties^.IsSelected := true;
+      result := Regions[c1];
+    end;
+  end;
+
+  // un-focus and un-select other regions.
+  for c1 := 0 to RegionCount-1 do
+  begin
+    if (Regions[c1].GetProperties^.UniqueID <> UniqueID) then
+    begin
+      Regions[c1].GetProperties^.IsFocused := false;
+      if DelselectOthers then Regions[c1].GetProperties^.IsSelected := false;
+    end;
+  end;
+end;
+
+procedure TSampleMap.Clear;
+begin
+  RegionList.Clear;
+end;
+
+procedure TSampleMap.ClearFocus;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to RegionCount-1 do
+  begin
+    Regions[c1].GetProperties^.IsFocused := false;
+  end;
+end;
+
+procedure TSampleMap.DeleteRegion(Index: integer);
+begin
+  RegionList.Delete(Index);
+end;
+
+procedure TSampleMap.DeleteRegion(const aRegion: IRegion);
+var
+  c1: Integer;
+begin
+  if assigned(aRegion) then
+  begin
+    for c1 := RegionCount-1 downto 0 do
+    begin
+      if Regions[c1] = aRegion then DeleteRegion(c1);
+    end;
+  end;
+end;
+
+procedure TSampleMap.DeleteRegionsInKeyGroup(aKeyGroupName: string);
+var
+  c1: Integer;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    if Regions[c1].GetKeyGroup.GetName = aKeyGroupName then
+    begin
+      DeleteRegion(c1);
+    end;
+  end;
+end;
+
+procedure TSampleMap.DeleteSelectedRegions;
+var
+  c1: Integer;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    if Regions[c1].GetProperties^.IsSelected then
+    begin
+      DeleteRegion(c1);
+    end;
+  end;
+end;
+
+procedure TSampleMap.MoveSelectedRegionsToKeyGoup(aKeyGroup: IKeyGroup);
+var
+  c1: Integer;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    if Regions[c1].GetProperties^.IsSelected then
+    begin
+      (Regions[c1].GetObject as TRegion).KeyGroup := aKeyGroup;
+    end;
+  end;
+end;
+
+
+
+
+
+function TSampleMap.GetInfo: ISampleMapInfo;
+var
+  aInfo : TSampleMapInfo;
+begin
+  aInfo := TSampleMapInfo.Create;
+  aInfo.AssignFrom(self);
+  result := aInfo;
+end;
+
+procedure TSampleMap.GetPatchData(var Data: TPatchNode);
+var
+  c1: Integer;
+  ChildNode : TPatchNode;
+  Props : PRegionProperties;
+begin
+  assert(false, 'Need to save SampleGroup field for each region.');
+
+  for c1 := 0 to RegionCount-1 do
+  begin
+    ChildNode := Data.NewChildNode('Region');
+
+    Props := Regions[c1].GetProperties;
+
+    ChildNode.AddValue('SampleFileName', Props^.SampleFileName);
+    ChildNode.AddValue('LowNote', Props^.LowNote);
+    ChildNode.AddValue('HighNote', Props^.HighNote);
+    ChildNode.AddValue('LowVelocity', Props^.LowVelocity);
+    ChildNode.AddValue('HighVelocity', Props^.HighVelocity);
+    ChildNode.AddValue('RootNote', Props^.RootNote);
+    ChildNode.AddValue('SampleStart', Props^.SampleStart);
+    ChildNode.AddValue('SampleEnd', Props^.SampleEnd);
+    ChildNode.AddValue('LoopStart', Props^.LoopStart);
+    ChildNode.AddValue('LoopEnd', Props^.LoopEnd);
+  end;
+end;
+
+procedure TSampleMap.SetPatchData(var Data: TPatchNode);
+var
+  c1: Integer;
+  ChildNode : TPatchNode;
+  //Props : PRegionProperties;
+  CreateInfo : TRegionCreateInfo;
+  aSampleRegion : IRegion;
+begin
+  assert(false, 'Need to save SampleGroup field for each region.');
+
+  for c1 := 0 to Data.ChildNodeCount-1 do
+  begin
+    ChildNode := Data.ChildNode[c1];
+    if ChildNode.NodeName = 'Region' then
+    begin
+      CreateInfo.AudioFileName := ChildNode.GetValue('SampleFileName', '');
+      CreateInfo.LowNote       := ChildNode.GetValue('LowNote', 0);
+      CreateInfo.HighNote      := ChildNode.GetValue('HighNote', 127);
+      CreateInfo.LowVelocity  := ChildNode.GetValue('LowVelocity', 0);
+      CreateInfo.HighVelocity := ChildNode.GetValue('HighVelocity', 127);
+      CreateInfo.RootNote     := ChildNode.GetValue('RootNote', 64);
+
+      aSampleRegion := NewRegion(CreateInfo);
+
+      if assigned(aSampleRegion) then
+      begin
+        aSampleRegion.GetProperties^.SampleStart := ChildNode.GetValue('LoopStart', -1);
+        aSampleRegion.GetProperties^.SampleEnd   := ChildNode.GetValue('LoopStart', -1);
+        aSampleRegion.GetProperties^.LoopStart   := ChildNode.GetValue('LoopStart', -1);
+        aSampleRegion.GetProperties^.LoopEnd     := ChildNode.GetValue('LoopStart', -1);
+      end;
+    end;
+  end;
+end;
+
+
+
+
+
+{ TSampleMapInfo }
+
+constructor TSampleMapInfo.Create;
+begin
+  RegionList := TInterfaceList.Create;
+end;
+
+destructor TSampleMapInfo.Destroy;
+begin
+  RegionList.Free;
+  inherited;
+end;
+
+procedure TSampleMapInfo.AssignFrom(Source: TSampleMap);
+var
+  c1 : integer;
+begin
+  self.RegionList.Clear;
+
+  for c1  := 0 to source.RegionCount-1 do
+  begin
+    self.RegionList.Add(Source.RegionList[c1]);
+  end;
+end;
+
+function TSampleMapInfo.GetRegion(Index: integer): IRegion;
+begin
+  result := self.RegionList[Index] as IRegion;
+end;
+
+function TSampleMapInfo.GetRegionCount: integer;
+begin
+  result := self.RegionList.Count;
+end;
+
+
+
+initialization
+  EmptySampleFrames := 200;
+  SetLength(EmptySampleData, EmptySampleFrames);
+finalization
+  SetLength(EmptySampleData, 0);
+
+end.

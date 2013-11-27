@@ -1,0 +1,238 @@
+* bug: GUI doesn't update when loading a patch with no found samples.
+
+
+sample display
+- change pitch to Tune & Fine.
+
+Sample map
+- add scrollable Root Key, LowKey, High Key, Low Vel, High Vel fields.
+
+* « open sample in_audio editor _»
+- requested by yann
+- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+
+
+* Check samples are saved using relative paths when saving programs.
+* check that programs can be moved.
+* try adding a draft playback mode using linear resampling.
+** would use best sampling when rendering down.
+
+* The key zone needs to put it's resize handles on the outside when the key zone
+  is really small.
+
+* Check output latency of resampler and how much quality adjustments
+  change it.
+* Look for all locks using in audio thread.
+* knob menu should have a 'reset to default' command
+* SFZ support example - http://www.linuxsampler.org/sfz/
+* lofi filter needs to have it's sample rate reduction knob polarity reversed.
+  -- I wonder if it's possible to scale the samplerate reduction to match the
+     1 volt/octave to match pitch signals.
+* add midi velocity as a mod source.
+* about box needs to be completed.
+
+* LOFI - Bit Depth knob needs to be reversed.
+
+
+==Bug report==
+GUI disappears in Samplitude Music Studio 16
+thunderlink://messageid=CANuKor_nDaqXRv_dOR5O+Sb2Q1Ksn-bVXehEC9pcgQyaKGE6qA@mail.gmail.com
+christianscheggia@gmail.com
+
+
+==TODO==
+Key Group Trigger Modes
+- Note On
+- Trigger
+- Trigger on Release
+- Latch
+
+Latch requested by Scott
+thunderlink://messageid=1384437336.34548.YahooMailNeo@web171506.mail.ir2.yahoo.com
+
+
+
+==TODO==
+Add new sample start offset destination. controls where the sample starts playing
+  from. not the sample lenght.
+
+
+==Performance tuning==
+Eigen
+http://eigen.tuxfamily.org/dox/GettingStarted.html
+
+==TODO==
+* Browser needs to be updated after saving a patch.
+
+==TODO==
+  Code Smell:
+  IRegion has a GetKeyGroup() function which returns an IKeyGroup.
+  I think this has the potential to blow up at some point in the future.
+  I think a "Region" object should belong to a "KeyGroup". If so, the "Region"
+  probably shouldn't maintain a reference to IKeyGroup. There is a potential
+  for circular interface references and might be resulting in memory leaks.
+
+
+
+==TODO==
+Write a generic list that will be fast to use in the audio thread. It should minimise memory get/free operations.
+Stepping through the list sequentially should be fast.
+Should be able to nil items.
+
+
+==TODO==
+  loop edit dialog could use a drag and drop operation to zoom in.
+  double click to zoom out to full view. (this would work in the main sample display
+  area instead of only the zoom scroll bar area.
+
+
+==TODO==
+- create regions for samples that don't load. mark the region as bad. show an
+  error message when selected or moused over.
+- context menu can give options to rectify the error.
+
+==TODO==
+  Need an about page.
+
+==TODO==
+  Need dialog and code to find missing samples. Do it really minimal for the time being.
+  IE. Show something. "Sample is missing. Locate? Ignore?"
+
+==TODO==
+  Need copy protection.
+
+==TODO==
+  Pan can be a modulation destination but not have any onscreen
+  controls (for the time being at least).
+
+==TODO==
+  It would be great to have a sample store that would hold sample data.
+  The sample data would be saved into the project file when a project file is saved.
+  For this to work, sample data would need some type of finger print.
+  (Sample name, sample length, hash of sample data content).
+  The sample store would need to be limited to some size to prevent
+  the project file filling with gigs of sample content.
+  - 3mb?
+  Audio file compression could be used as well to make best use of the space.
+
+
+==TODO==
+- MIDI learn should apply to the knobs. If there are multiple groups being used, the
+  knob change should be applied to all groups.
+  -- if the user wants a knob to only affect a parameter in one group, the user
+     can use the XY pads to route the MIDI CC input to a particular parameter.
+
+==TODO==
+CPU usage is too high.
+- Create a group of Voice objects that are independent of the groups and group manager. (details below)
+- Audio Rate process needs to move to a buffered scheme.
+- look at vector operations. It might be necessary to re-write the audio engine
+  so that multiple voices are processed at once with SSE vector operations.
+- when trigging multiple regions at once, regions can all share the same filter and LFO path.
+  IE. a voice would contain multiple sample oscillator layers.
+- dynaimically adjust quality settings as active voice count goes up and down.
+
+CPU USAGE
+- No AudioRate processing or control rate processing. CPU = 2%
+- Current Usage is 6-7% with no voices running.
+
+Update
+- Cpu Usage with no Audio/Control rate processing at all = 2%
+- Cpu Usage with no active voices = 2%
+- Cpu Usage with one active voice = 6-7%
+-- Improved results are from moving the voices from the Sample Group classes
+   to the TVoiceController classes. I think having the Sample Groups as
+   interfaces added another layer of indirection and slowed down processing
+   dramatically.
+
+
+
+==TODO==
+- When adjusting a modulation Depth and Offset knobs, show the target knob, or
+  a stand-in knob with the modulation depth and offset drawn onto the knob
+  so the user can quickly see the full range of the modulation that will
+  be applied.
+
+
+==TODO==
+- need to load loop points from audio file.
+- double clicking on an item in the browser should do something.
+-- double clicking on a folder opens/closes it. Useless!!
+
+==TODO==
+Step sequencer needs a mutate option.
+
+- Mutate off: duh. No mutation
+- Mutate : each triggered step has a 10% chance of mutating.
+- Mutate-Reset : each triggered step has a 10% chance of mutating. Steps are reset to
+    their original postion each time a note is triggered.
+
+-- Mutate has been (partially) implemented but the mutated steps aren't
+   reported by the GUI. Maybe as an option there needs to be some sort of group
+   Step data object that all voices share. It feels a bit hacky... but
+   it would allow for all voices to mutate steps and share the same mutated
+   sequence. If voices mutate their own internal step values only, the sequencers
+   could potentially be completely different for each voice.
+
+
+
+==TODO==
+LFO's have tempo sync.
+LFO's sync to other LFO's.
+- Free (uses hertz)
+- Tempo (sync to tempo)
+- Sync (sync to the left LFO)
+
+
+==TODO==
+Feature Request: In place preview. Current sample is replaced by preview sample.
+
+
+
+==TODO==
+The options should have a "Search Folders" section. Lucidity will
+automatically search these directories in case of missing samples.
+
+
+
+
+==TODO==
+  ### Serial Numbers And Copy Protection ####
+
+There is no freely available asymmetric encryption library for
+delphi that is easily used. :(
+
+consider trying to implement RSA key encryption myself...
+
+- need to update the eeGlobals so that sample rate changed events and all
+the other notify events are sent as constants.
+All classes will register a listener and can listen out for all constants.
+This will mean the same code will be used for samplerate change events
+push other stuff through the channel so the CP stuff becomes obscured.
+
+
+
+==TODO==
+
+I am using TCriticallyDampedLowpass in a few places. One place is smoothing
+the mod wheel, pitch bend and MIDI note values for monophonic signals.
+
+behind the scenes TCriticallyDampedLowpass is using a biquad filter. Using
+Direct Form 2 and Direct Form 2 Transposed topologies the filter will explode
+with sudden changes in coefficients.
+
+The filter doesn't explode using Direct Form 1. The downside is DF1 uses four
+intermediate variables to store the filter state.
+
+
+
+==TODO==
+> Could we imagine that the bottom part of the browesr could display
+> a_thumbnail_ attached to a sample ?
+thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+
+==TODO==
+- Can we _hide the browser _(like in Poise) ?
+thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
