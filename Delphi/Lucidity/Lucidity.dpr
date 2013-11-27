@@ -23,7 +23,6 @@ uses
   uVoiceControlFrame in 'frames\uVoiceControlFrame.pas' {VoiceControlFrame: TFrame},
   uModControlFrame in 'frames\uModControlFrame.pas' {ModControlFrame: TFrame},
   uScrollPanelFrame in 'frames\uScrollPanelFrame.pas' {ScrollPanelFrame: TFrame},
-  uSampleMap in 'uSampleMap.pas',
   uLucidityKeyGroup in 'SoundObjects\uLucidityKeyGroup.pas',
   soLucidityVoice in 'SoundObjects\soLucidityVoice.pas',
   soADSR in 'SoundObjects\soADSR.pas',

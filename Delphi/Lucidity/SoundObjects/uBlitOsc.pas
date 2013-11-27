@@ -3,7 +3,7 @@ unit uBlitOsc;
 interface
 
 uses
-  MoreTypes, uDspFunctions, eeFilters.DcBlocker, Pitch, Math, eeFastDsp;
+  MoreTypes, uDspFunctions, eeFilters.DcBlocker, eePitch, Math, eeFastDsp;
 
 type
   TBlitOsc = class
