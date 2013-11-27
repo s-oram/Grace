@@ -1,0 +1,77 @@
+package VamBasicRunXE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  RedFoxRunXE2,
+  RedFoxDesignXE2;
+
+contains
+  VamLabel in '..\source\VamLabel.pas',
+  VamScrollBar in '..\source\VamScrollBar.pas',
+  VamPanel in '..\source\VamPanel.pas',
+  VamGraphicControl in '..\source\VamGraphicControl.pas',
+  VamWinControl in '..\source\VamWinControl.pas',
+  VamVisibleControl in '..\source\VamVisibleControl.pas',
+  VamScrollBox in '..\source\VamScrollBox.pas',
+  VamTreeView in '..\source\VamTreeView.pas',
+  VamTreeViewNode in '..\source\VamTreeViewNode.pas',
+  VamCustomTreeView in '..\source\VamCustomTreeView.pas',
+  VamSamplerKeys in '..\source\VamSamplerKeys.pas',
+  VamSampleMap in '..\source\VamSampleMap.pas',
+  VamDiv in '..\source\VamDiv.pas',
+  VamScrollPanel in '..\source\VamScrollPanel.pas',
+  VamSampleDisplayBackBuffer in '..\source\VamSampleDisplayBackBuffer.pas',
+  VamSampleDisplay in '..\source\VamSampleDisplay.pas',
+  VamKnob in '..\source\VamKnob.pas',
+  VamModularJack in '..\source\VamModularJack.pas',
+  VamButton in '..\source\VamButton.pas',
+  VamSampleZoomControl in '..\source\VamSampleZoomControl.pas',
+  VamTextBox in '..\source\VamTextBox.pas',
+  VamVectorSequence in '..\source\VamVectorSequence.pas',
+  VamXYPad in '..\source\VamXYPad.pas',
+  VamTabs in '..\source\VamTabs.pas',
+  VamNumericKnob in '..\source\VamNumericKnob.pas',
+  VamKeyStateTracker in '..\source\VamKeyStateTracker.pas',
+  VamSyncObjects in '..\source\VamSyncObjects.pas',
+  VamArrows in '..\source\VamArrows.pas',
+  VamCompoundNumericKnob in '..\source\VamCompoundNumericKnob.pas',
+  VamCompoundLabel in '..\source\VamCompoundLabel.pas',
+  VamCompoundModMatrixSection in '..\source\VamCompoundModMatrixSection.pas',
+  VamLayoutWizard in '..\source\VamLayoutWizard.pas',
+  VamTabPanel in '..\source\VamTabPanel.pas',
+  VamQuery in '..\source\VamQuery.pas',
+  VamMultiLineTextBox in '..\source\VamMultiLineTextBox.pas',
+  VamStatusLed in '..\source\VamStatusLed.pas',
+  VamSampleMap.Sorting in '..\source\VamSampleMap.Sorting.pas',
+  VamMemo in '..\source\VamMemo.pas',
+  VamImage in '..\source\VamImage.pas',
+  VamSlider in '..\source\VamSlider.pas';
+
+end.

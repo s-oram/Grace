@@ -1,0 +1,2063 @@
+unit GPC;
+
+(*
+  ===========================================================================
+
+  Project:   Generic Polygon Clipper
+
+  A new algorithm for calculating the difference, intersection,
+  exclusive-or or union of arbitrary polygon sets.
+
+  File:      gpc.pas
+  Author:    Alan Murta (gpc@cs.man.ac.uk)
+  Version:   2.30
+  Date:      17th October 1998
+
+  Pascal port by: Stefan Schedel (Stefan.Schedel@loewe.de)
+
+  Copyright: (C) 1997, Advanced Interfaces Group, University of Manchester.
+  All rights reserved.
+
+  This software may be freely copied, modified, and redistributed
+  provided that this copyright notice is preserved on all copies.
+  The intellectual property rights of the algorithms used reside
+  with the University of Manchester Advanced Interfaces Group.
+
+  You may not distribute this software, in whole or in part, as
+  part of any commercial product without the express consent of
+  the author.
+
+  There is no warranty or other guarantee of fitness of this
+  software for any purpose. It is provided solely "as is".
+
+  ===========================================================================
+*)
+
+interface
+
+uses
+  Windows;
+// ===========================================================================
+// Constants
+// ===========================================================================
+
+const
+  Version = 'GPC_VERSION "2.30"';
+  GPC_EPSILON: Double = 2.2204460492503131E-16; { from float.h }
+
+  // ===========================================================================
+  // Public Data Types
+  // ===========================================================================
+
+type
+
+  Tgpc_op = { Set operation type }
+    (GPC_DIFF, { Difference }
+    GPC_INT, { Intersection }
+    GPC_XOR, { Exclusive or }
+    GPC_UNION { Union }
+    );
+
+  Tgpc_vertex = record { Polygon vertex structure }
+    X: Double; { Vertex x component }
+    Y: Double; { vertex y component }
+  end;
+
+  Pgpc_vertex_array = ^Tgpc_vertex_array; { Helper Type for indexing }
+  Tgpc_vertex_array = array [0..MaxInt div SizeOf(Tgpc_vertex) - 1]
+    of Tgpc_vertex;
+
+  Pgpc_vertex_list = ^Tgpc_vertex_list; { Vertex list structure }
+
+  Tgpc_vertex_list = record
+    NumVertices: Integer; { Number of vertices in list }
+    Vertex: Pgpc_vertex_array; { Vertex array pointer }
+  end;
+
+  PIntegerArray = ^TIntegerArray;
+  TIntegerArray = array [0..MaxInt div SizeOf(Integer) - 1] of Integer;
+
+  Pgpc_vertex_list_array = ^Tgpc_vertex_list_array; { Helper Type for indexing }
+  Tgpc_vertex_list_array = array [0..MaxInt div SizeOf(Tgpc_vertex) - 1]
+    of Tgpc_vertex_list;
+
+  Pgpc_polygon = ^Tgpc_polygon;
+
+  Tgpc_polygon = record { Polygon set structure }
+    Num_contours: Integer; { Number of contours in polygon }
+    Hole: PIntegerArray; { Hole / external contour flags }
+    Contour: Pgpc_vertex_list_array; { Contour array pointer }
+  end;
+
+  Pgpc_tristrip = ^Tgpc_tristrip; { Tristrip set structure }
+
+  Tgpc_tristrip = record
+    Num_strips: Integer; { Number of tristrips }
+    Strip: Pgpc_vertex_list_array; { Tristrip array pointer }
+  end;
+
+
+
+  // ===========================================================================
+  // Public Function Prototypes
+  // ===========================================================================
+
+procedure Gpc_read_polygon(var F: Text; P: Pgpc_polygon);
+
+procedure Gpc_write_polygon(var F: Text; P: Pgpc_polygon);
+
+procedure Gpc_add_contour(Polygon: Pgpc_polygon; Contour: Pgpc_vertex_list;
+  Hole: Integer);
+
+procedure Gpc_polygon_clip(Set_operation: Tgpc_op;
+  Subject_polygon: Pgpc_polygon; Clip_polygon: Pgpc_polygon;
+  Result_polygon: Pgpc_polygon);
+
+procedure Gpc_free_polygon(Polygon: Pgpc_polygon);
+
+procedure Gpc_free_tristrip(Tristrip: Pgpc_tristrip);
+
+implementation
+
+uses
+  SysUtils,
+  Math;
+
+
+
+// ===========================================================================
+// Constants
+// ===========================================================================
+
+const
+  DBL_MAX: Double = MaxDouble;
+
+  DBL_DIG = 15;
+
+  FFALSE = 0;
+  FTRUE = 1;
+
+  LEFT = 0;
+  RIGHT = 1;
+
+  ABOVE = 0;
+  BELow = 1;
+
+  CLIP = 0;
+  SUBJ = 1;
+
+  INVERT_TRISTRIPS = FALSE;
+
+
+
+// ===========================================================================
+// Private Data Types
+// ===========================================================================
+
+type
+  Tvertex_type = ( { Edge intersection classes }
+    NUL, { Empty non-intersection }
+    EMX, { External maximum }
+    ELI, { External left intermediate }
+    TED, { Top edge }
+    ERI, { External right intermediate }
+    RED, { Right edge }
+    IMM, { Internal maximum and minimum }
+    IMN, { Internal minimum }
+    EMN, { External minimum }
+    EMM, { External maximum and minimum }
+    LED, { Left edge }
+    ILI, { Internal left intermediate }
+    BED, { Bottom edge }
+    IRI, { Internal right intermediate }
+    IMX, { Internal maximum }
+    FUL { Full non-intersection }
+    );
+
+  Th_state = { Horizontal edge states }
+    (NH, { No horizontal edge }
+    BH, { Bottom horizontal edge }
+    TH { Top horizontal edge }
+    );
+
+  Tbundle_state = (UNBUNDLED, BUNDLE_HEAD, BUNDLE_TAIL);
+
+  PPvertex_node = ^Pvertex_node;
+  Pvertex_node = ^Tvertex_node; { Internal vertex list datatype }
+
+  Tvertex_node = record
+    X: Double; { X coordinate component }
+    Y: Double; { Y coordinate component }
+    Next: Pvertex_node; { Pointer to next vertex in list }
+  end;
+
+  Pvertex_node_array = ^Tvertex_node_array; { Helper type for indexing }
+  Tvertex_node_array = array [0..1] of Pvertex_node;
+
+  PPpolygon_node = ^Ppolygon_node;
+  Ppolygon_node = ^Tpolygon_node;
+
+  Tpolygon_node = record
+    Active: Integer;
+    Hole: Integer;
+    V: array [0..1] of Pvertex_node;
+    Next: Ppolygon_node;
+    Proxy: Ppolygon_node;
+  end;
+
+  PPedge_node = ^Pedge_node;
+  Pedge_node = ^Tedge_node;
+
+  Tedge_node = record
+    Vertex: Tgpc_vertex; { Piggy-backed contour vertex data }
+    Bot: Tgpc_vertex; { Edge Lower (x, y) coordinate }
+    Top: Tgpc_vertex; { Edge upper (x, y) coordinate }
+    Xb: Double; { Scanbeam bottom x coordinate }
+    Xt: Double; { Scanbeam top x coordinate }
+    Dx: Double; { Change in x for a unit y increase }
+    Typ: Integer; { Clip / subject edge flag }
+    Bundle: array [0..1, 0..1] of Integer; { Bundle edge flags }
+    Bside: array [0..1] of Integer; { Bundle left / right indicators }
+    Bstate: array [0..1] of Tbundle_state; { Edge bundle state }
+    Outp: array [0..1] of Ppolygon_node; { Output polygon / tristrip pointer }
+    Prev: Pedge_node; { Previous edge in the AET }
+    Next: Pedge_node; { Next edge in the AET }
+    Pred: Pedge_node; { Edge connected at the Lower end }
+    Succ: Pedge_node; { Edge connected at the upper end }
+    Next_bound: Pedge_node; { Pointer to next bound in LMT }
+  end;
+
+  PPedge_node_array = ^Pedge_node_array;
+  Pedge_node_array = ^Tedge_node_array;
+  Tedge_node_array = array [0..MaxInt div SizeOf(Tedge_node) - 1]
+    of Tedge_node;
+
+  PPlmt_node = ^Plmt_node;
+  Plmt_node = ^Tlmt_node;
+
+  Tlmt_node = record { Local minima table }
+    Y: Double; { Y coordinate at local minimum }
+    First_bound: Pedge_node; { Pointer to bound list }
+    Next: Plmt_node; { Pointer to next local minimum }
+  end;
+
+  PPsb_tree = ^Psb_tree;
+  Psb_tree = ^Tsb_tree;
+
+  Tsb_tree = record { Scanbeam tree }
+    Y: Double; { Scanbeam node y value }
+    Less: Psb_tree; { Pointer to nodes with Lower y }
+    More: Psb_tree; { Pointer to nodes with Higher y }
+  end;
+
+  PPit_node = ^Pit_node;
+  Pit_node = ^Tit_node; { Intersection table }
+
+  Tit_node = record
+    Ie: array [0..1] of Pedge_node; { Intersecting edge (bundle) pair }
+    Point: Tgpc_vertex; { Point of intersection }
+    Next: Pit_node; { The next intersection table node }
+  end;
+
+  PPst_node = ^Pst_node;
+  Pst_node = ^Tst_node; { Sorted edge table }
+
+  Tst_node = record
+    Edge: Pedge_node; { Pointer to AET edge }
+    Xb: Double; { Scanbeam bottom x coordinate }
+    Xt: Double; { Scanbeam top x coordinate }
+    Dx: Double; { Change in x for a unit y increase }
+    Prev: Pst_node; { Previous edge in sorted list }
+  end;
+
+  Pbbox = ^Tbbox;
+
+  Tbbox = record { Contour axis-aligned bounding box }
+    Xmin: Double; { Minimum x coordinate }
+    Ymin: Double; { Minimum y coordinate }
+    Xmax: Double; { Maximum x coordinate }
+    Ymax: Double; { Maximum y coordinate }
+  end;
+
+  PbboxArray = ^TbboxArray;
+  TbboxArray = array [0..MaxInt div SizeOf(Tbbox) - 1] of Tbbox;
+
+  PDoubleArray = ^TDoubleArray;
+  TDoubleArray = array [0..MaxInt div SizeOf(Double) - 1] of Double;
+
+
+
+  // ===========================================================================
+  // C Macros, defined as function for PASCAL
+  // ===========================================================================
+
+function EQ(A, B: Double): Boolean;
+begin
+  EQ := Abs(A - B) <= Gpc_epsilon
+end;
+
+function NE(A, B: Double): Boolean;
+begin
+  NE := Abs(A - B) > Gpc_epsilon
+end;
+
+function GT(A, B: Double): Boolean;
+begin
+  GT := (A - B) > Gpc_epsilon
+end;
+
+function LT(A, B: Double): Boolean;
+begin
+  LT := (B - A) > Gpc_epsilon
+end;
+
+function GE(A, B: Double): Boolean;
+begin
+  GE := not LT(A, B)
+end;
+
+function LE(A, B: Double): Boolean;
+begin
+  LE := not GT(A, B)
+end;
+
+function PREV_INDEX(I, N: Integer): Integer;
+begin
+  PREV_INDEX := ((I - 1 + N) mod N);
+end;
+
+function NEXT_INDEX(I, N: Integer): Integer;
+begin
+  NEXT_INDEX := ((I + 1) mod N);
+end;
+
+function OPTIMAL(V: Pgpc_vertex_array; I, N: Integer): Boolean;
+begin
+  OPTIMAL := NE(V[PREV_INDEX(I, N)].Y, V[I].Y) or
+    NE(V[NEXT_INDEX(I, N)].Y, V[I].Y);
+end;
+
+function FWD_MIN(V: Pedge_node_array; I, N: Integer): Boolean;
+begin
+  FWD_MIN := GE(V[PREV_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y) and
+    GT(V[NEXT_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y);
+end;
+
+function NOT_FMAX(V: Pedge_node_array; I, N: Integer): Boolean;
+begin
+  NOT_FMAX := GT(V[NEXT_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y);
+end;
+
+function REV_MIN(V: Pedge_node_array; I, N: Integer): Boolean;
+begin
+  REV_MIN := GT(V[PREV_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y) and
+    GE(V[NEXT_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y);
+end;
+
+function NOT_RMAX(V: Pedge_node_array; I, N: Integer): Boolean;
+begin
+  NOT_RMAX := GT(V[PREV_INDEX(I, N)].Vertex.Y, V[I].Vertex.Y);
+end;
+
+procedure MALLOC(var P: Pointer; B: Integer; S: string);
+begin
+  GetMem(P, B);
+  if (P = nil) and (B <> 0) then
+    raise Exception.Create(S);
+end;
+
+procedure AddVertex(var P: Pvertex_node; X, Y: Double);
+begin
+  if P = nil then
+  begin
+    MALLOC(Pointer(P), SizeOf(Tvertex_node), 'tristrip vertex creation');
+    P.X := X;
+    P.Y := Y;
+    P.Next := nil;
+  end
+  else
+    { Head further down the list }
+    AddVertex(P.Next, X, Y);
+end;
+
+procedure VERTEX(var E: Pedge_node; P, S: Integer; var X, Y: Double);
+begin
+  AddVertex(E.Outp[P].V[S], X, Y);
+  Inc(E.Outp[P].Active);
+end;
+
+procedure P_EDGE(var D, E: Pedge_node; P: Integer; var I, J: Double);
+begin
+  D := E;
+  repeat
+    D := D.Prev
+  until D.Outp[P] = nil;
+  I := D.Bot.X + D.Dx * (J - D.Bot.Y);
+end;
+
+procedure N_EDGE(var D, E: Pedge_node; P: Integer; var I, J: Double);
+begin
+  D := E;
+  repeat
+    D := D.Next;
+  until D.Outp[P] = nil;
+  I := D.Bot.X + D.Dx * (J - D.Bot.Y);
+end;
+
+procedure Free(var P: Pointer);
+begin
+  FreeMem(P);
+  P := nil;
+end;
+
+procedure CFree(var P: Pointer);
+begin
+  if P <> nil then
+    Free(P);
+end;
+
+
+
+// ===========================================================================
+// Global Data
+// ===========================================================================
+
+{ Horizontal edge state transitions within scanbeam boundary }
+const
+  Next_h_state: array [0..2, 0..5] of Th_state =
+  { ABOVE     BELow     CROSS }
+  { L   R     L   R     L   R }
+  { NH } ((BH, TH, TH, BH, NH, NH),
+    { BH } (NH, NH, NH, NH, TH, TH),
+    { TH } (NH, NH, NH, NH, BH, BH));
+
+
+
+
+  // ===========================================================================
+  // Private Functions
+  // ===========================================================================
+
+procedure Reset_it(var It: Pit_node);
+var
+  Itn: Pit_node;
+begin
+  while (It <> nil) do
+  begin
+    Itn := It.Next;
+    Free(Pointer(It));
+    It := Itn;
+  end;
+end;
+
+procedure Reset_lmt(var Lmt: Plmt_node);
+var
+  Lmtn: Plmt_node;
+begin
+  while Lmt <> nil do
+  begin
+    Lmtn := Lmt^.Next;
+    Free(Pointer(Lmt));
+    Lmt := Lmtn;
+  end;
+end;
+
+procedure Insert_bound(B: PPedge_node_array; E: Pedge_node_array);
+var
+  Existing_bound: Pointer;
+begin
+  if B^ = nil then
+  begin
+    { Link node e to the tail of the list }
+    B^ := E;
+  end
+  else
+  begin
+    { Do primary sort on the x field }
+    if (LT(E[0].Bot.X, B^[0].Bot.X)) then
+    begin
+      { Insert a new node mid-list }
+      Existing_bound := B^;
+      B^ := E;
+      B^[0].Next_bound := Existing_bound;
+    end
+    else
+    begin
+      if (EQ(E[0].Bot.X, B^[0].Bot.X)) then
+      begin
+        { Do secondary sort on the dx field }
+        if (LT(E[0].Dx, B^[0].Dx)) then
+        begin
+          { Insert a new node mid-list }
+          Existing_bound := B^;
+          B^ := E;
+          B^[0].Next_bound := Existing_bound;
+        end
+        else
+        begin
+          { Head further down the list }
+          Insert_bound(@(B^[0].Next_bound), E);
+        end;
+      end
+      else
+      begin
+        { Head further down the list }
+        Insert_bound(@(B^[0].Next_bound), E);
+      end;
+    end;
+  end;
+end;
+
+function Bound_list(var Lmt: Plmt_node; Y: Double): PPedge_node_array;
+var
+  Existing_node: Plmt_node;
+begin
+  if Lmt = nil then
+  begin
+    { Add node onto the tail end of the LMT }
+    MALLOC(Pointer(Lmt), SizeOf(Tlmt_node), 'LMT insertion');
+    Lmt.Y := Y;
+    Lmt.First_bound := nil;
+    Lmt.Next := nil;
+    Result := @Lmt.First_bound;
+  end
+  else if LT(Y, Lmt.Y) then
+  begin
+    { Insert a new LMT node before the current node }
+    Existing_node := Lmt;
+    MALLOC(Pointer(Lmt), SizeOf(Tlmt_node), 'LMT insertion');
+    Lmt.Y := Y;
+    Lmt.First_bound := nil;
+    Lmt.Next := Existing_node;
+    Result := @Lmt.First_bound;
+  end
+  else if EQ(Y, Lmt.Y) then
+    { Use this existing LMT node }
+    Result := @Lmt.First_bound
+  else
+    { Head further up the LMT }
+    Result := Bound_list(Lmt.Next, Y);
+end;
+
+procedure AddTo_sbtree(var Entries: Integer; var Sbtree: Psb_tree;
+  var Y: Double);
+begin
+  if Sbtree = nil then
+  begin
+    { Add a new tree node here }
+    MALLOC(Pointer(Sbtree), SizeOf(Tsb_tree), 'scanbeam tree insertion');
+    Sbtree.Y := Y;
+    Sbtree.Less := nil;
+    Sbtree.More := nil;
+    Inc(Entries);
+  end
+  else
+  begin
+    if GT(Sbtree.Y, Y) then
+    begin
+      { Head into the 'less' sub-tree }
+      AddTo_sbtree(Entries, Sbtree.Less, Y);
+    end
+    else
+    begin
+      if LT(Sbtree.Y, Y) then
+      begin
+        { Head into the 'more' sub-tree }
+        AddTo_sbtree(Entries, Sbtree.More, Y);
+      end;
+    end;
+  end;
+end;
+
+procedure Build_sbt(var Entries: Integer; var Sbt: TDoubleArray;
+  Sbtree: Psb_tree);
+begin
+  if Sbtree.Less <> nil then
+    Build_sbt(Entries, Sbt, Sbtree.Less);
+  Sbt[Entries] := Sbtree.Y;
+  Inc(Entries);
+  if Sbtree.More <> nil then
+    Build_sbt(Entries, Sbt, Sbtree.More);
+end;
+
+procedure Free_sbtree(var Sbtree: Psb_tree);
+begin
+  if Sbtree <> nil then
+  begin
+    Free_sbtree(Sbtree.Less);
+    Free_sbtree(Sbtree.More);
+    Free(Pointer(Sbtree));
+  end;
+end;
+
+function Count_optimal_vertices(C: Tgpc_vertex_list): Integer;
+var
+  I: Integer;
+begin
+  Result := 0;
+
+  { Ignore non-contributing contours }
+  if C.NumVertices > 0 then
+  begin
+    for I := 0 to C.NumVertices - 1 do
+      { Ignore superfluous vertices embedded in horizontal edges }
+      if OPTIMAL(C.Vertex, I, C.NumVertices) then
+        Inc(Result);
+  end;
+end;
+
+function Build_lmt(var Lmt: Plmt_node; var Sbtree: Psb_tree;
+  var Sbt_entries: Integer; P: Pgpc_polygon; Typ: Integer; Op: Tgpc_op)
+  : Pedge_node_array;
+
+var
+  C, I, Min, Max, Num_edges, V, NumVertices: Integer;
+  TotalVertices, EIndex                   : Integer;
+  E, Edge_table                             : Pedge_node_array;
+begin
+  TotalVertices := 0;
+  EIndex := 0;
+
+  for C := 0 to P.Num_contours - 1 do
+    Inc(TotalVertices, Count_optimal_vertices(P.Contour[C]));
+
+  { Create the entire input polygon edge table in one go }
+  MALLOC(Pointer(Edge_table), TotalVertices * SizeOf(Tedge_node),
+    'edge table creation');
+
+  for C := 0 to P.Num_contours - 1 do
+  begin
+    if P.Contour[C].NumVertices < 0 then
+    begin
+      { Ignore the non-contributing contour and repair the vertex count }
+      P.Contour[C].NumVertices := -P.Contour[C].NumVertices;
+    end
+    else
+    begin
+      { Perform contour optimisation }
+      NumVertices := 0;
+      for I := 0 to P.Contour[C].NumVertices - 1 do
+        if (OPTIMAL(P.Contour[C].Vertex, I, P.Contour[C].NumVertices)) then
+        begin
+          Edge_table[NumVertices].Vertex.X := P.Contour[C].Vertex[I].X;
+          Edge_table[NumVertices].Vertex.Y := P.Contour[C].Vertex[I].Y;
+
+          { Record vertex in the scanbeam table }
+          AddTo_sbtree(Sbt_entries, Sbtree, Edge_table[NumVertices].Vertex.Y);
+
+          Inc(NumVertices);
+        end;
+
+      { Do the contour forward pass }
+      for Min := 0 to NumVertices - 1 do
+      begin
+        { If a forward local minimum... }
+        if FWD_MIN(Edge_table, Min, NumVertices) then
+        begin
+          { Search for the next local maximum... }
+          Num_edges := 1;
+          Max := NEXT_INDEX(Min, NumVertices);
+          while (NOT_FMAX(Edge_table, Max, NumVertices)) do
+          begin
+            Inc(Num_edges);
+            Max := NEXT_INDEX(Max, NumVertices);
+          end;
+
+          { Build the next edge list }
+          E := @Edge_table[EIndex];
+          Inc(EIndex, Num_edges);
+          V := Min;
+          E[0].Bstate[BELow] := UNBUNDLED;
+          E[0].Bundle[BELow][CLIP] := FFALSE;
+          E[0].Bundle[BELow][SUBJ] := FFALSE;
+          for I := 0 to Num_edges - 1 do
+          begin
+            E[I].Xb := Edge_table[V].Vertex.X;
+            E[I].Bot.X := Edge_table[V].Vertex.X;
+            E[I].Bot.Y := Edge_table[V].Vertex.Y;
+
+            V := NEXT_INDEX(V, NumVertices);
+
+            E[I].Top.X := Edge_table[V].Vertex.X;
+            E[I].Top.Y := Edge_table[V].Vertex.Y;
+            E[I].Dx := (Edge_table[V].Vertex.X - E[I].Bot.X) /
+              (E[I].Top.Y - E[I].Bot.Y);
+            E[I].Typ := Typ;
+            E[I].Outp[ABOVE] := nil;
+            E[I].Outp[BELow] := nil;
+            E[I].Next := nil;
+            E[I].Prev := nil;
+            if (Num_edges > 1) and (I < (Num_edges - 1)) then
+              E[I].Succ := @E[I + 1]
+            else
+              E[I].Succ := nil;
+            if (Num_edges > 1) and (I > 0) then
+              E[I].Pred := @E[I - 1]
+            else
+              E[I].Pred := nil;
+            E[I].Next_bound := nil;
+            if Op = GPC_DIFF then
+              E[I].Bside[CLIP] := RIGHT
+            else
+              E[I].Bside[CLIP] := LEFT;
+            E[I].Bside[SUBJ] := LEFT;
+          end;
+          Insert_bound(Bound_list(Lmt, Edge_table[Min].Vertex.Y), E);
+        end;
+      end;
+
+      { Do the contour reverse pass }
+      for Min := 0 to NumVertices - 1 do
+      begin
+        { If a reverse local minimum... }
+        if REV_MIN(Edge_table, Min, NumVertices) then
+        begin
+          { Search for the previous local maximum... }
+          Num_edges := 1;
+          Max := PREV_INDEX(Min, NumVertices);
+          while NOT_RMAX(Edge_table, Max, NumVertices) do
+          begin
+            Inc(Num_edges);
+            Max := PREV_INDEX(Max, NumVertices);
+          end;
+
+          { Build the previous edge list }
+          E := @Edge_table[EIndex];
+          Inc(EIndex, Num_edges);
+          V := Min;
+          E[0].Bstate[BELow] := UNBUNDLED;
+          E[0].Bundle[BELow][CLIP] := FFALSE;
+          E[0].Bundle[BELow][SUBJ] := FFALSE;
+          for I := 0 to Num_edges - 1 do
+          begin
+            E[I].Xb := Edge_table[V].Vertex.X;
+            E[I].Bot.X := Edge_table[V].Vertex.X;
+            E[I].Bot.Y := Edge_table[V].Vertex.Y;
+
+            V := PREV_INDEX(V, NumVertices);
+
+            E[I].Top.X := Edge_table[V].Vertex.X;
+            E[I].Top.Y := Edge_table[V].Vertex.Y;
+            E[I].Dx := (Edge_table[V].Vertex.X - E[I].Bot.X) /
+              (E[I].Top.Y - E[I].Bot.Y);
+            E[I].Typ := Typ;
+            E[I].Outp[ABOVE] := nil;
+            E[I].Outp[BELow] := nil;
+            E[I].Next := nil;
+            E[I].Prev := nil;
+            if (Num_edges > 1) and (I < (Num_edges - 1)) then
+              E[I].Succ := @E[I + 1]
+            else
+              E[I].Succ := nil;
+            if (Num_edges > 1) and (I > 0) then
+              E[I].Pred := @E[I - 1]
+            else
+              E[I].Pred := nil;
+            E[I].Next_bound := nil;
+            if Op = GPC_DIFF then
+              E[I].Bside[CLIP] := RIGHT
+            else
+              E[I].Bside[CLIP] := LEFT;
+            E[I].Bside[SUBJ] := LEFT;
+          end;
+          Insert_bound(Bound_list(Lmt, Edge_table[Min].Vertex.Y), E);
+        end;
+      end;
+    end;
+  end;
+  Result := Edge_table;
+end;
+
+procedure Add_edgeTo_aet(var Aet: Pedge_node; Edge: Pedge_node;
+  Prev: Pedge_node);
+begin
+  if Aet = nil then
+  begin
+    { Append edge onto the tail end of the AET }
+    Aet := Edge;
+    Edge.Prev := Prev;
+    Edge.Next := nil;
+  end
+  else
+  begin
+    { Do primary sort on the xb field }
+    if LT(Edge.Xb, Aet.Xb) then
+    begin
+      { Insert edge here (before the AET edge) }
+      Edge.Prev := Prev;
+      Edge.Next := Aet;
+      Aet.Prev := Edge;
+      Aet := Edge;
+    end
+    else
+    begin
+      if EQ(Edge.Xb, Aet.Xb) then
+      begin
+        { Do secondary sort on the dx field }
+        if LT(Edge.Dx, Aet.Dx) then
+        begin
+          { Insert edge here (before the AET edge) }
+          Edge.Prev := Prev;
+          Edge.Next := Aet;
+          Aet.Prev := Edge;
+          Aet := Edge;
+        end
+        else
+        begin
+          { Head further into the AET }
+          Add_edgeTo_aet(Aet.Next, Edge, Aet);
+        end;
+      end
+      else
+      begin
+        { Head further into the AET }
+        Add_edgeTo_aet(Aet.Next, Edge, Aet);
+      end;
+    end;
+  end;
+end;
+
+procedure AddIntersection(var It: Pit_node; Edge0, Edge1: Pedge_node;
+  X, Y: Double);
+var
+  Existing_node: Pit_node;
+begin
+
+  if It = nil then
+  begin
+    { Append a new node to the tail of the list }
+    MALLOC(Pointer(It), SizeOf(Tit_node), 'IT insertion');
+    It.Ie[0] := Edge0;
+    It.Ie[1] := Edge1;
+    It.Point.X := X;
+    It.Point.Y := Y;
+    It.Next := nil;
+  end
+  else
+  begin
+    if GT(It.Point.Y, Y) then
+    begin
+      { Insert a new node mid-list }
+      Existing_node := It;
+      MALLOC(Pointer(It), SizeOf(Tit_node), 'IT insertion');
+      It.Ie[0] := Edge0;
+      It.Ie[1] := Edge1;
+      It.Point.X := X;
+      It.Point.Y := Y;
+      It.Next := Existing_node;
+    end
+    else
+      { Head further down the list }
+      AddIntersection(It.Next, Edge0, Edge1, X, Y);
+  end;
+end;
+
+procedure Add_st_edge(var St: Pst_node; var It: Pit_node; Edge: Pedge_node;
+  Dy: Double);
+var
+  Existing_node: Pst_node;
+  Den, X, Y, R : Double;
+begin
+  if St = nil then
+  begin
+    { Append edge onto the tail end of the ST }
+    MALLOC(Pointer(St), SizeOf(Tst_node), 'ST insertion');
+    St.Edge := Edge;
+    St.Xb := Edge.Xb;
+    St.Xt := Edge.Xt;
+    St.Dx := Edge.Dx;
+    St.Prev := nil;
+  end
+  else
+  begin
+    Den := (St.Xt - St.Xb) - (Edge.Xt - Edge.Xb);
+
+    { If new edge and ST edge don't cross }
+    if (GE(Edge.Xt, St.Xt) or EQ(Edge.Dx, St.Dx) or EQ(Den, 0.0)) then
+    begin
+      { No intersection - insert edge here (before the ST edge) }
+      Existing_node := St;
+      MALLOC(Pointer(St), SizeOf(Tst_node), 'ST insertion');
+      St.Edge := Edge;
+      St.Xb := Edge.Xb;
+      St.Xt := Edge.Xt;
+      St.Dx := Edge.Dx;
+      St.Prev := Existing_node;
+    end
+    else
+    begin
+      { Compute intersection between new edge and ST edge }
+      R := (Edge.Xb - St.Xb) / Den;
+      X := St.Xb + R * (St.Xt - St.Xb);
+      Y := R * Dy;
+
+      { Insert the edge pointers and the intersection point in the IT }
+      AddIntersection(It, St.Edge, Edge, X, Y);
+
+      { Head further into the ST }
+      Add_st_edge(St.Prev, It, Edge, Dy);
+
+    end;
+  end;
+end;
+
+procedure BuildIntersection_table(var It: Pit_node; Aet: Pedge_node;
+  Dy: Double);
+var
+  St, Stp: Pst_node;
+  Edge   : Pedge_node;
+begin
+
+  { Build intersection table for the current scanbeam }
+  Reset_it(It);
+  St := nil;
+
+  { Process each AET edge }
+  Edge := Aet;
+  while Edge <> nil do
+  begin
+    if (Edge.Bstate[ABOVE] = BUNDLE_HEAD) or (Edge.Bundle[ABOVE][CLIP] <> 0) or
+      (Edge.Bundle[ABOVE][SUBJ] <> 0) then
+      Add_st_edge(St, It, Edge, Dy);
+    Edge := Edge.Next;
+  end;
+
+  { Free the sorted edge table }
+  while St <> nil do
+  begin
+    Stp := St.Prev;
+    Free(Pointer(St));
+    St := Stp;
+  end;
+end;
+
+function Count_contours(Polygon: Ppolygon_node): Integer;
+var
+  Nv      : Integer;
+  V, Nextv: Pvertex_node;
+begin
+
+  Result := 0;
+  while Polygon <> nil do
+  begin
+    if Polygon.Active <> 0 then
+    begin
+      { Count the vertices in the current contour }
+      Nv := 0;
+      V := Polygon.Proxy.V[LEFT];
+      while V <> nil do
+      begin
+        Inc(Nv);
+        V := V.Next;
+      end;
+
+      { Record valid vertex counts in the active field }
+      if (Nv > 2) then
+      begin
+        Polygon.Active := Nv;
+        Inc(Result);
+      end
+      else
+      begin
+        { Invalid contour: just free the heap }
+        V := Polygon.Proxy.V[LEFT];
+        while V <> nil do
+        begin
+          Nextv := V.Next;
+          FREE(Pointer(V));
+          V := Nextv;
+        end;
+        Polygon.Active := 0;
+      end;
+    end;
+
+    Polygon := Polygon.Next;
+  end;
+end;
+
+procedure Add_left(P: Ppolygon_node; X, Y: Double);
+var
+  Nv: Pvertex_node;
+begin
+  { Create a new vertex node and set its fields }
+  MALLOC(Pointer(Nv), SizeOf(Tvertex_node), 'vertex node creation');
+  Nv.X := X;
+  Nv.Y := Y;
+
+  { Add vertex nv to the left end of the polygon's vertex list }
+  Nv.Next := P.Proxy.V[LEFT];
+
+  { Update proxy[LEFT] to point to nv }
+  P.Proxy.V[LEFT] := Nv;
+end;
+
+procedure Merge_left(P: Ppolygon_node; Q: Ppolygon_node; List: Ppolygon_node);
+var
+  Target: Ppolygon_node;
+begin
+  { Label contour as a hole }
+  Q.Proxy.Hole := FTRUE;
+
+  if P.Proxy <> Q.Proxy then
+  begin
+    { Assign P's vertex list to the left end of Q's list }
+    P.Proxy.V[RIGHT].Next := Q.Proxy.V[LEFT];
+    Q.Proxy.V[LEFT] := P.Proxy.V[LEFT];
+
+    { Redirect any P->proxy references to Q->proxy }
+    Target := P.Proxy;
+    while List <> nil do
+    begin
+      if List.Proxy = Target then
+      begin
+        List.Active := FFALSE;
+        List.Proxy := Q.Proxy;
+      end;
+      List := List.Next;
+    end;
+  end;
+end;
+
+procedure Add_right(P: Ppolygon_node; X, Y: Double);
+var
+  Nv: Pvertex_node;
+begin
+
+  { Create a new vertex node and set its fields }
+  MALLOC(Pointer(Nv), SizeOf(Tvertex_node), 'vertex node creation');
+  Nv.X := X;
+  Nv.Y := Y;
+  Nv.Next := nil;
+
+  { Add vertex nv to the right end of the polygon's vertex list }
+  P.Proxy.V[RIGHT].Next := Nv;
+
+  { Update proxy.v[RIGHT] to point to nv }
+  P.Proxy.V[RIGHT] := Nv;
+end;
+
+procedure Merge_right(P: Ppolygon_node; Q: Ppolygon_node; List: Ppolygon_node);
+var
+  Target: PPolygon_node;
+begin
+  { Label contour as external }
+  Q.Proxy.Hole := FFALSE;
+
+  if P.Proxy <> Q.Proxy then
+  begin
+    { Assign P's vertex list to the right end of Q's list }
+    Q.Proxy.V[RIGHT].Next := P.Proxy.V[LEFT];
+    Q.Proxy.V[RIGHT] := P.Proxy.V[RIGHT];
+
+    { Redirect any P->proxy references to Q->proxy }
+    Target := P.Proxy;
+    while List <> nil do
+    begin
+      if List.Proxy = Target then
+      begin
+        List.Active := FFALSE;
+        List.Proxy := Q.Proxy;
+      end;
+      List := List.Next;
+    end;
+  end;
+end;
+
+procedure Add_local_min(P: PPpolygon_node; Edge: Pedge_node; X, Y: Double);
+var
+  Nv          : Pvertex_node;
+  Existing_min: Ppolygon_node;
+begin
+  Existing_min := P^;
+
+  MALLOC(Pointer(P^), SizeOf(Tpolygon_node), 'polygon node creation');
+
+  { Create a new vertex node and set its fields }
+  MALLOC(Pointer(Nv), SizeOf(Tvertex_node), 'vertex node creation');
+  Nv.X := X;
+  Nv.Y := Y;
+  Nv.Next := nil;
+
+  { Initialise proxy to point to p itself }
+  P^.Proxy := P^;
+  P^.Active := FTRUE;
+  P^.Next := Existing_min;
+
+  { Make v[LEFT] and v[RIGHT] point to new vertex nv }
+  P^.V[LEFT] := Nv;
+  P^.V[RIGHT] := Nv;
+
+  { Assign polygon p to the edge }
+  Edge.Outp[ABOVE] := P^;
+end;
+
+function Count_tristrips(Tn: Ppolygon_node): Integer;
+begin
+  Result := 0;
+
+  while Tn <> nil do
+  begin
+    if Tn.Active > 2 then
+      Inc(Result);
+    Tn := Tn.Next;
+  end;
+end;
+
+(*
+  procedure AddVertex(t : PPvertex_node; x, y : double)
+  begin
+  if t^ <> nil then
+  begin
+  MALLOC(t^, SizeOf(Tvertex_node), ttristrip vertex creationt');
+  t^.x := x;
+  t^.y := y;
+  t^.next := nil;
+  end
+  else
+  { Head further down the list }
+  AddVertex(@t^.next, x, y);
+  end;
+*)
+
+procedure New_tristrip(var Tn: Ppolygon_node; Edge: Pedge_node; X, Y: Double);
+begin
+  if Tn = nil then
+  begin
+    MALLOC(Pointer(Tn), SizeOf(Tpolygon_node), 'tristrip node creation');
+    Tn.Next := nil;
+    Tn.V[LEFT] := nil;
+    Tn.V[RIGHT] := nil;
+    Tn.Active := 1;
+    AddVertex(Tn.V[LEFT], X, Y);
+    Edge.Outp[ABOVE] := Tn;
+  end
+  else
+    { Head further down the list }
+    New_tristrip(Tn.Next, Edge, X, Y);
+end;
+
+function Create_contour_bboxes(P: Pgpc_polygon): PbboxArray;
+var
+  C, V: Integer;
+begin
+  MALLOC(Pointer(Result), P.Num_contours * SizeOf(Tbbox),
+    'Bounding box creation');
+
+  { Construct contour bounding boxes }
+  for C := 0 to P.Num_contours - 1 do
+  begin
+    { Initialise bounding box extent }
+    Result[C].Xmin := DBL_MAX;
+    Result[C].Ymin := DBL_MAX;
+    Result[C].Xmax := -DBL_MAX;
+    Result[C].Ymax := -DBL_MAX;
+
+    for V := 0 to P.Contour[C].NumVertices - 1 do
+    begin
+      { Adjust bounding Result }
+      if (P.Contour[C].Vertex[V].X < Result[C].Xmin) then
+        Result[C].Xmin := P.Contour[C].Vertex[V].X;
+      if (P.Contour[C].Vertex[V].Y < Result[C].Ymin) then
+        Result[C].Ymin := P.Contour[C].Vertex[V].Y;
+      if (P.Contour[C].Vertex[V].X > Result[C].Xmax) then
+        Result[C].Xmax := P.Contour[C].Vertex[V].X;
+      if (P.Contour[C].Vertex[V].Y > Result[C].Ymax) then
+        Result[C].Ymax := P.Contour[C].Vertex[V].Y;
+    end;
+  end;
+end;
+
+procedure Minimax_test(Subj: Pgpc_polygon; Clip: Pgpc_polygon; Op: Tgpc_op);
+var
+  S_bbox, C_bbox: PbboxArray;
+  S, C          : Integer;
+  O_table       : PIntegerArray;
+  Overlap       : Integer;
+begin
+  S_bbox := Create_contour_bboxes(Subj);
+  C_bbox := Create_contour_bboxes(Clip);
+
+  MALLOC(Pointer(O_table), Subj.Num_contours * Clip.Num_contours *
+    SizeOf(Integer), 'overlap table creation');
+
+  { Check all subject contour bounding boxes against clip boxes }
+  for S := 0 to Subj.Num_contours - 1 do
+    for C := 0 to Clip.Num_contours - 1 do
+      O_table[C * Subj.Num_contours + S] :=
+        Integer((not(LT(S_bbox[S].Xmax, C_bbox[C].Xmin) or GT(S_bbox[S].Xmin,
+        C_bbox[C].Xmax))) and (not(LT(S_bbox[S].Ymax, C_bbox[C].Ymin) or
+        GT(S_bbox[S].Ymin, C_bbox[C].Ymax))));
+
+  { For each clip contour, search for any subject contour overlaps }
+  for C := 0 to Clip.Num_contours - 1 do
+  begin
+    Overlap := 0;
+    S := 0;
+    while (Overlap = 0) and (S < Subj.Num_contours) do
+    begin
+      Overlap := O_table[C * Subj.Num_contours + S];
+      Inc(S);
+    end;
+
+    if Overlap = 0 then
+      { Flag non contributing status by negating vertex count }
+      Clip.Contour[C].NumVertices := -Clip.Contour[C].NumVertices;
+  end;
+
+  if (Op = GPC_INT) then
+  begin
+    { For each subject contour, search for any clip contour overlaps }
+    for S := 0 to Subj.Num_contours - 1 do
+    begin
+      Overlap := 0;
+      C := 0;
+      while (Overlap = 0) and (C < Clip.Num_contours) do
+      begin
+        Overlap := O_table[C * Subj.Num_contours + S];
+        Inc(C);
+      end;
+
+      if Overlap = 0 then
+        { Flag non contributing status by negating vertex count }
+        Subj.Contour[S].NumVertices := -Subj.Contour[S].NumVertices;
+    end;
+  end;
+
+  FREE(Pointer(S_bbox));
+  FREE(Pointer(C_bbox));
+  FREE(Pointer(O_table));
+end;
+
+
+// ===========================================================================
+// Public Functions
+// ===========================================================================
+
+procedure Gpc_free_polygon(Polygon: Pgpc_polygon);
+var
+  C: Integer;
+begin
+  for C := 0 to Polygon.Num_contours - 1 do
+    CFree(Pointer(Polygon.Contour[C].Vertex));
+
+  CFree(Pointer(Polygon.Hole));
+  CFree(Pointer(Polygon.Contour));
+  Polygon.Num_contours := 0;
+end;
+
+procedure Gpc_read_polygon(var F: Text; P: Pgpc_polygon);
+var
+  C, V: Integer;
+begin
+  Readln(F, P.Num_contours);
+  MALLOC(Pointer(P.Contour), P.Num_contours * SizeOf(Tgpc_vertex_list),
+    'contour creation');
+  for C := 0 to P.Num_contours - 1 do
+  begin
+    Readln(F, P.Contour[C].NumVertices);
+    MALLOC(Pointer(P.Contour[C].Vertex), P.Contour[C].NumVertices *
+      SizeOf(Tgpc_vertex), 'vertex creation');
+    for V := 0 to P.Contour[C].NumVertices - 1 do
+    begin
+      read(F, P.Contour[C].Vertex[V].X);
+      Readln(F, P.Contour[C].Vertex[V].Y);
+    end;
+  end;
+end;
+
+procedure Gpc_write_polygon(var F: Text; P: Pgpc_polygon);
+var
+  C, V: Integer;
+begin
+  Writeln(F, P.Num_contours);
+  for C := 0 to P.Num_contours - 1 do
+  begin
+    Writeln(F, P.Contour[C].NumVertices);
+    for V := 0 to P.Contour[C].NumVertices - 1 do
+      Writeln(F, P.Contour[C].Vertex[V].X:20:DBL_DIG, ' ',
+        P.Contour[C].Vertex[V].Y:20:DBL_DIG);
+  end;
+end;
+
+procedure Gpc_add_contour(Polygon: Pgpc_polygon; Contour: Pgpc_vertex_list;
+  Hole: Integer);
+var
+  C, V            : Integer;
+  Extended_hole   : PIntegerArray;
+  Extended_contour: Pgpc_vertex_list_array;
+begin
+
+  { Create an extended hole array }
+  MALLOC(Pointer(Extended_hole), (Polygon.Num_contours + 1) * SizeOf(Integer),
+    'contour hole addition');
+
+  { Create an extended contour array }
+  MALLOC(Pointer(Extended_contour), (Polygon.Num_contours + 1) *
+    SizeOf(Tgpc_vertex_list), 'contour addition');
+
+  { Copy the old contour into the extended contour array }
+  for C := 0 to Polygon.Num_contours - 1 do
+  begin
+    Extended_hole[C] := Polygon.Hole[C];
+    Extended_contour[C] := Polygon.Contour[C];
+  end;
+
+  { Copy the new contour onto the end of the extended contour array }
+  C := Polygon.Num_contours;
+  Extended_hole[C] := Hole;
+  Extended_contour[C].NumVertices := Contour.NumVertices;
+  MALLOC(Pointer(Extended_contour[C].Vertex), Contour.NumVertices *
+    SizeOf(Tgpc_vertex), 'contour addition');
+  for V := 0 to Contour.NumVertices - 1 do
+    Extended_contour[C].Vertex[V] := Contour.Vertex[V];
+
+  { Dispose of the old contour }
+  CFREE(Pointer(Polygon.Contour));
+  CFREE(Pointer(Polygon.Hole));
+
+  { Update the polygon information }
+  Inc(Polygon.Num_contours);
+  Polygon.Hole := Extended_hole;
+  Polygon.Contour := Extended_contour;
+end;
+
+procedure Gpc_polygon_clip(Set_operation: Tgpc_op;
+  Subject_polygon: Pgpc_polygon; Clip_polygon: Pgpc_polygon;
+  Result_polygon: Pgpc_polygon);
+
+var
+  Sbtree                               : Psb_tree;
+  It, Intersect                        : Pit_node;
+  Edge, Prev_edge, Next_edge, Succ_edge: Pedge_node;
+  E0, E1                               : Pedge_node;
+  Aet                                  : Pedge_node;
+  C_heap, S_heap                       : Pedge_node_array;
+  Lmt, Local_min                       : Plmt_node;
+  Out_poly, P, Q, Poly, Npoly, Cf      : Ppolygon_node;
+  Vtx, Nv                              : Pvertex_node;
+  Horiz                                : array [0..1] of Th_state;
+  Inn, Exists, Parity                  : array [0..1] of Integer;
+  C, V, Contributing, Search, Scanbeam : Integer;
+  Sbt_entries, _class, Bl, Br, Tl, Tr  : Integer;
+  Sbt                                  : PDoubleArray;
+  Xb, Px, Yb, Yt, Dy, Ix, Iy           : Double;
+begin
+  Edge := nil;
+  Sbtree := nil;
+  It := nil;
+  Aet := nil;
+  Lmt := nil;
+  Out_poly := nil;
+  Cf := nil;
+  Inn[0] := LEFT;
+  Inn[1] := LEFT;
+  Exists[0] := LEFT;
+  Exists[1] := LEFT;
+  Parity[0] := LEFT;
+  Parity[1] := LEFT;
+  Scanbeam := 0;
+  Sbt_entries := 0;
+  Sbt := nil;
+
+  { Test for trivial NULL result cases }
+  if ((Subject_polygon.Num_contours = 0) and (Clip_polygon.Num_contours = 0)) or
+    ((Subject_polygon.Num_contours = 0) and ((Set_operation = GPC_INT) or
+    (Set_operation = GPC_DIFF))) or ((Clip_polygon.Num_contours = 0) and
+    (Set_operation = GPC_INT)) then
+  begin
+    Result_polygon.Num_contours := 0;
+    Result_polygon.Hole := nil;
+    Result_polygon.Contour := nil;
+    Exit;
+  end;
+
+  { Identify potentialy contributing contours }
+  if (((Set_operation = GPC_INT) or (Set_operation = GPC_DIFF)) and
+    (Subject_polygon.Num_contours > 0) and (Clip_polygon.Num_contours > 0)) then
+    Minimax_test(Subject_polygon, Clip_polygon, Set_operation);
+
+  { Build LMT }
+  if Subject_polygon.Num_contours > 0 then
+    S_heap := Build_lmt(Lmt, Sbtree, Sbt_entries, Subject_polygon, SUBJ,
+      Set_operation);
+  if Clip_polygon.Num_contours > 0 then
+    C_heap := Build_lmt(Lmt, Sbtree, Sbt_entries, Clip_polygon, CLIP,
+      Set_operation);
+
+  { Return a NULL result if no contours contribute }
+  if Lmt = nil then
+  begin
+    Result_polygon.Num_contours := 0;
+    Result_polygon.Hole := nil;
+    Result_polygon.Contour := nil;
+    Reset_lmt(Lmt);
+    FREE(Pointer(S_heap));
+    FREE(Pointer(C_heap));
+    Exit;
+  end;
+
+  { Build scanbeam table from scanbeam tree }
+  MALLOC(Pointer(Sbt), Sbt_entries * SizeOf(Double), 'sbt creation');
+  Build_sbt(Scanbeam, Sbt^, Sbtree);
+  Scanbeam := 0;
+  Free_sbtree(Sbtree);
+
+  { AlLow pointer re-use without causing memory leak }
+  if Subject_polygon = Result_polygon then
+    Gpc_free_polygon(Subject_polygon);
+  if Clip_polygon = Result_polygon then
+    Gpc_free_polygon(Clip_polygon);
+
+  { Invert clip polygon for difference operation }
+  if Set_operation = GPC_DIFF then
+    Parity[CLIP] := RIGHT;
+
+  Local_min := Lmt;
+
+  { Process each scanbeam }
+  while (Scanbeam < Sbt_entries) do
+  begin
+    { Set yb and yt to the bottom and top of the scanbeam }
+    Yb := Sbt[Scanbeam];
+    Inc(Scanbeam);
+    if Scanbeam < Sbt_entries then
+    begin
+      Yt := Sbt[Scanbeam];
+      Dy := Yt - Yb;
+    end;
+
+    { === SCANBEAM BOUNDARY PROCESSING ================================ }
+
+    { If LMT node corresponding to yb exists }
+    if Local_min <> nil then
+    begin
+      if EQ(Local_min.Y, Yb) then
+      begin
+        { Add edges starting at this local minimum to the AET }
+        Edge := Local_min.First_bound;
+        while Edge <> nil do
+        begin
+          Add_edgeTo_aet(Aet, Edge, nil);
+          Edge := Edge.Next_bound;
+        end;
+        Local_min := Local_min.Next;
+      end;
+    end;
+
+    { Set dummy previous x value }
+    Px := -DBL_MAX;
+
+    { Create bundles within AET }
+    E0 := Aet;
+    E1 := Aet;
+
+    { Set up bundle fields of first edge }
+    Aet.Bundle[ABOVE][Integer(Aet.Typ <> 0)] := Integer(NE(Aet.Top.Y, Yb));
+    Aet.Bundle[ABOVE][Integer(Aet.Typ = 0)] := FFALSE;
+    Aet.Bstate[ABOVE] := UNBUNDLED;
+
+    Next_edge := Aet.Next;
+
+    while Next_edge <> nil do
+    begin
+      { Set up bundle fields of next edge }
+      Next_edge.Bundle[ABOVE][Next_edge.Typ] :=
+        Integer(NE(Next_edge.Top.Y, Yb));
+      Next_edge.Bundle[ABOVE][Integer(Next_edge.Typ = 0)] := FFALSE;
+      Next_edge.Bstate[ABOVE] := UNBUNDLED;
+
+      { Bundle edges above the scanbeam boundary if they coincide }
+      if Next_edge.Bundle[ABOVE][Next_edge.Typ] <> 0 then
+      begin
+        if (EQ(E0.Xb, Next_edge.Xb) and EQ(E0.Dx, Next_edge.Dx) and
+          NE(E0.Top.Y, Yb)) then
+        begin
+          Next_edge.Bundle[ABOVE][Next_edge.Typ] := Next_edge.Bundle[ABOVE]
+            [Next_edge.Typ] xor E0.Bundle[ABOVE][Next_edge.Typ];
+          Next_edge.Bundle[ABOVE][Integer(Next_edge.Typ = 0)] :=
+            E0.Bundle[ABOVE][Integer(Next_edge.Typ = 0)];
+          Next_edge.Bstate[ABOVE] := BUNDLE_HEAD;
+          E0.Bundle[ABOVE][CLIP] := FFALSE;
+          E0.Bundle[ABOVE][SUBJ] := FFALSE;
+          E0.Bstate[ABOVE] := BUNDLE_TAIL;
+        end;
+        E0 := Next_edge;
+      end;
+      Next_edge := Next_edge.Next;
+    end;
+
+    Horiz[CLIP] := NH;
+    Horiz[SUBJ] := NH;
+
+    { Process each edge at this scanbeam boundary }
+    Edge := Aet;
+    while Edge <> nil do
+    begin
+      Exists[CLIP] := Edge.Bundle[ABOVE][CLIP] +
+        (Edge.Bundle[BELow][CLIP] shl 1);
+      Exists[SUBJ] := Edge.Bundle[ABOVE][SUBJ] +
+        (Edge.Bundle[BELow][SUBJ] shl 1);
+
+      if (Exists[CLIP] <> 0) or (Exists[SUBJ] <> 0) then
+      begin
+        { Set bundle side }
+        Edge.Bside[CLIP] := Parity[CLIP];
+        Edge.Bside[SUBJ] := Parity[SUBJ];
+
+        { Determine contributing status and quadrant occupancies }
+        case Set_operation of
+          GPC_DIFF, GPC_INT:
+            begin
+              Contributing :=
+                Integer(((Exists[CLIP] <> 0) and ((Parity[SUBJ] <> 0) or
+                (Horiz[SUBJ] <> NH))) or ((Exists[SUBJ] <> 0) and
+                ((Parity[CLIP] <> 0) or (Horiz[CLIP] <> NH))) or
+                ((Exists[CLIP] <> 0) and (Exists[SUBJ] <> 0) and
+                (Parity[CLIP] = Parity[SUBJ])));
+              Br := Integer((Parity[CLIP] <> 0) and (Parity[SUBJ] <> 0));
+              Bl := Integer(((Parity[CLIP] xor Edge.Bundle[ABOVE][CLIP]) <> 0)
+                and ((Parity[SUBJ] xor Edge.Bundle[ABOVE][SUBJ]) <> 0));
+              Tr := Integer(((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH)) <> 0)
+                and ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH)) <> 0));
+              Tl := Integer
+                (((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH) xor Edge.Bundle
+                [BELow][CLIP]) <> 0) and
+                ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH) xor Edge.Bundle
+                [BELow][SUBJ]) <> 0));
+            end;
+
+          GPC_XOR:
+            begin
+              Contributing := Integer((Exists[CLIP] <> 0) or
+                (Exists[SUBJ] <> 0));
+              Br := Integer(Parity[CLIP] xor Parity[SUBJ]);
+              Bl := Integer(((Parity[CLIP] xor Edge.Bundle[ABOVE][CLIP]) <> 0)
+                xor ((Parity[SUBJ] xor Edge.Bundle[ABOVE][SUBJ]) <> 0));
+              Tr := Integer(((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH)) <> 0)
+                xor ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH)) <> 0));
+              Tl := Integer
+                (((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH) xor Edge.Bundle
+                [BELow][CLIP]) <> 0)
+                xor ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH)
+                xor Edge.Bundle[BELow][SUBJ]) <> 0));
+            end;
+
+          GPC_UNION:
+            begin
+              Contributing :=
+                Integer(((Exists[CLIP] <> 0) and ((Parity[SUBJ] = 0) or
+                (Horiz[SUBJ] <> NH))) or ((Exists[SUBJ] <> 0) and
+                ((Parity[CLIP] = 0) or (Horiz[CLIP] <> NH))) or
+                ((Exists[CLIP] <> 0) and (Exists[SUBJ] <> 0) and
+                (Parity[CLIP] = Parity[SUBJ])));
+
+              Br := Integer((Parity[CLIP] <> 0) or (Parity[SUBJ] <> 0));
+              Bl := Integer(((Parity[CLIP] xor Edge.Bundle[ABOVE][CLIP]) <> 0)
+                or ((Parity[SUBJ] xor Edge.Bundle[ABOVE][SUBJ]) <> 0));
+              Tr := Integer(((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH)) <> 0)
+                or ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH)) <> 0));
+              Tl := Integer
+                (((Parity[CLIP] xor Integer(Horiz[CLIP] <> NH) xor Edge.Bundle
+                [BELow][CLIP]) <> 0) or
+                ((Parity[SUBJ] xor Integer(Horiz[SUBJ] <> NH) xor Edge.Bundle
+                [BELow][SUBJ]) <> 0));
+            end;
+        end; { case }
+
+        { Update parity }
+        (* parity[CLIP] := integer((parity[CLIP] <> 0) xor (edge.bundle[ABOVE][CLIP] <> 0));
+          parity[SUBJ] := integer((parity[SUBJ] <> 0) xor (edge.bundle[ABOVE][SUBJ] <> 0));
+        *)
+        Parity[CLIP] := Parity[CLIP] xor Edge.Bundle[ABOVE][CLIP];
+        Parity[SUBJ] := Parity[SUBJ] xor Edge.Bundle[ABOVE][SUBJ];
+
+        { Update horizontal state }
+        if Exists[CLIP] <> 0 then
+          Horiz[CLIP] := Next_h_state[Integer(Horiz[CLIP])
+            ][((Exists[CLIP] - 1) shl 1) + Parity[CLIP]];
+        if Exists[SUBJ] <> 0 then
+          Horiz[SUBJ] := Next_h_state[Integer(Horiz[SUBJ])
+            ][((Exists[SUBJ] - 1) shl 1) + Parity[SUBJ]];
+
+        _class := Tr + (Tl shl 1) + (Br shl 2) + (Bl shl 3);
+
+        if Contributing <> 0 then
+        begin
+          Xb := Edge.Xb;
+
+          case Tvertex_type(_class) of
+            EMN, IMN:
+              begin
+                Add_local_min(@Out_poly, Edge, Xb, Yb);
+                Px := Xb;
+                Cf := Edge.Outp[ABOVE];
+              end;
+            ERI:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_right(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Edge.Outp[ABOVE] := Cf;
+                Cf := nil;
+              end;
+            ELI:
+              begin
+                Add_left(Edge.Outp[BELow], Xb, Yb);
+                Px := Xb;
+                Cf := Edge.Outp[BELow];
+              end;
+            EMX:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_left(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Merge_right(Cf, Edge.Outp[BELow], Out_poly);
+                Cf := nil;
+              end;
+            ILI:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_left(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Edge.Outp[ABOVE] := Cf;
+                Cf := nil;
+              end;
+            IRI:
+              begin
+                Add_right(Edge.Outp[BELow], Xb, Yb);
+                Px := Xb;
+                Cf := Edge.Outp[BELow];
+                Edge.Outp[BELow] := nil;
+              end;
+            IMX:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_right(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Merge_left(Cf, Edge.Outp[BELow], Out_poly);
+                Cf := nil;
+                Edge.Outp[BELow] := nil;
+              end;
+            IMM:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_right(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Merge_left(Cf, Edge.Outp[BELow], Out_poly);
+                Edge.Outp[BELow] := nil;
+                Add_local_min(@Out_poly, Edge, Xb, Yb);
+                Cf := Edge.Outp[ABOVE];
+              end;
+            EMM:
+              begin
+                if NE(Xb, Px) then
+                begin
+                  Add_left(Cf, Xb, Yb);
+                  Px := Xb;
+                end;
+                Merge_right(Cf, Edge.Outp[BELow], Out_poly);
+                Edge.Outp[BELow] := nil;
+                Add_local_min(@Out_poly, Edge, Xb, Yb);
+                Cf := Edge.Outp[ABOVE];
+              end;
+            LED:
+              begin
+                if EQ(Edge.Bot.Y, Yb) then
+                  Add_left(Edge.Outp[BELow], Xb, Yb);
+                Edge.Outp[ABOVE] := Edge.Outp[BELow];
+                Px := Xb;
+              end;
+            RED:
+              begin
+                if EQ(Edge.Bot.Y, Yb) then
+                  Add_right(Edge.Outp[BELow], Xb, Yb);
+                Edge.Outp[ABOVE] := Edge.Outp[BELow];
+                Px := Xb;
+              end;
+          else
+          end; { End of case }
+        end; { End of contributing conditional }
+      end; { End of edge exists conditional }
+      Edge := Edge.Next;
+    end; { End of AET loop }
+
+    { Delete terminating edges from the AET, otherwise compute xt }
+    Edge := Aet;
+    while Edge <> nil do
+    begin
+      if EQ(Edge.Top.Y, Yb) then
+      begin
+        Prev_edge := Edge.Prev;
+        Next_edge := Edge.Next;
+        if Prev_edge <> nil then
+          Prev_edge.Next := Next_edge
+        else
+          Aet := Next_edge;
+        if Next_edge <> nil then
+          Next_edge.Prev := Prev_edge;
+
+        { Copy bundle head state to the adjacent tail edge if required }
+        if (Edge.Bstate[BELow] = BUNDLE_HEAD) and (Prev_edge <> nil) then
+        begin
+          if Prev_edge.Bstate[BELow] = BUNDLE_TAIL then
+          begin
+            Prev_edge.Outp[BELow] := Edge.Outp[BELow];
+            Prev_edge.Bstate[BELow] := UNBUNDLED;
+            if Prev_edge.Prev <> nil then
+              if Prev_edge.Prev.Bstate[BELow] = BUNDLE_TAIL then
+                Prev_edge.Bstate[BELow] := BUNDLE_HEAD;
+          end;
+        end;
+      end
+      else
+      begin
+        if EQ(Edge.Top.Y, Yt) then
+          Edge.Xt := Edge.Top.X
+        else
+          Edge.Xt := Edge.Bot.X + Edge.Dx * (Yt - Edge.Bot.Y);
+      end;
+
+      Edge := Edge.Next;
+    end;
+
+    if Scanbeam < Sbt_entries then
+    begin
+      { === SCANBEAM INTERIOR PROCESSING ============================== }
+
+      BuildIntersection_table(It, Aet, Dy);
+
+      { Process each node in the intersection table }
+      Intersect := It;
+      while Intersect <> nil do
+      begin
+        E0 := Intersect.Ie[0];
+        E1 := Intersect.Ie[1];
+
+        { Only generate output for contributing intersections }
+        if ((E0.Bundle[ABOVE][CLIP] <> 0) or (E0.Bundle[ABOVE][SUBJ] <> 0)) and
+          ((E1.Bundle[ABOVE][CLIP] <> 0) or (E1.Bundle[ABOVE][SUBJ] <> 0)) then
+        begin
+          P := E0.Outp[ABOVE];
+          Q := E1.Outp[ABOVE];
+          Ix := Intersect.Point.X;
+          Iy := Intersect.Point.Y + Yb;
+
+          Inn[CLIP] :=
+            Integer(((E0.Bundle[ABOVE][CLIP] <> 0) and (E0.Bside[CLIP] = 0)) or
+            ((E1.Bundle[ABOVE][CLIP] <> 0) and (E1.Bside[CLIP] <> 0)) or
+            ((E0.Bundle[ABOVE][CLIP] = 0) and (E1.Bundle[ABOVE][CLIP] = 0) and
+            (E0.Bside[CLIP] <> 0) and (E1.Bside[CLIP] <> 0)));
+
+          Inn[SUBJ] :=
+            Integer(((E0.Bundle[ABOVE][SUBJ] <> 0) and (E0.Bside[SUBJ] = 0)) or
+            ((E1.Bundle[ABOVE][SUBJ] <> 0) and (E1.Bside[SUBJ] <> 0)) or
+            ((E0.Bundle[ABOVE][SUBJ] = 0) and (E1.Bundle[ABOVE][SUBJ] = 0) and
+            (E0.Bside[SUBJ] <> 0) and (E1.Bside[SUBJ] <> 0)));
+
+          { Determine quadrant occupancies }
+          case Set_operation of
+
+            GPC_DIFF, GPC_INT:
+              begin
+                Tr := Integer((Inn[CLIP] <> 0) and (Inn[SUBJ] <> 0));
+                Tl := Integer(((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP]) <> 0) and
+                  ((Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ]) <> 0));
+                Br := Integer(((Inn[CLIP] xor E0.Bundle[ABOVE][CLIP]) <> 0) and
+                  ((Inn[SUBJ] xor E0.Bundle[ABOVE][SUBJ]) <> 0));
+                Bl := Integer
+                  (((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP] xor E0.Bundle[ABOVE]
+                  [CLIP]) <> 0) and
+                  ((Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ] xor E0.Bundle[ABOVE]
+                  [SUBJ]) <> 0));
+              end;
+
+            GPC_XOR:
+              begin
+                Tr := Integer((Inn[CLIP] <> 0) xor (Inn[SUBJ] <> 0));
+                Tl := Integer((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP])
+                  xor (Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ]));
+                Br := Integer((Inn[CLIP] xor E0.Bundle[ABOVE][CLIP])
+                  xor (Inn[SUBJ] xor E0.Bundle[ABOVE][SUBJ]));
+                Bl := Integer
+                  ((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP] xor E0.Bundle[ABOVE]
+                  [CLIP]) xor (Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ]
+                  xor E0.Bundle[ABOVE][SUBJ]));
+              end;
+
+            GPC_UNION:
+              begin
+                Tr := Integer((Inn[CLIP] <> 0) or (Inn[SUBJ] <> 0));
+                Tl := Integer(((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP]) <> 0) or
+                  ((Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ]) <> 0));
+                Br := Integer(((Inn[CLIP] xor E0.Bundle[ABOVE][CLIP]) <> 0) or
+                  ((Inn[SUBJ] xor E0.Bundle[ABOVE][SUBJ]) <> 0));
+                Bl := Integer
+                  (((Inn[CLIP] xor E1.Bundle[ABOVE][CLIP] xor E0.Bundle[ABOVE]
+                  [CLIP]) <> 0) or
+                  ((Inn[SUBJ] xor E1.Bundle[ABOVE][SUBJ] xor E0.Bundle[ABOVE]
+                  [SUBJ]) <> 0));
+              end;
+          end; { case }
+
+          _class := Tr + (Tl shl 1) + (Br shl 2) + (Bl shl 3);
+
+          case Tvertex_type(_class) of
+            EMN:
+              begin
+                Add_local_min(@Out_poly, E0, Ix, Iy);
+                E1.Outp[ABOVE] := E0.Outp[ABOVE];
+              end;
+            ERI:
+              begin
+                if P <> nil then
+                begin
+                  Add_right(P, Ix, Iy);
+                  E1.Outp[ABOVE] := P;
+                  E0.Outp[ABOVE] := nil;
+                end;
+              end;
+            ELI:
+              begin
+                if Q <> nil then
+                begin
+                  Add_left(Q, Ix, Iy);
+                  E0.Outp[ABOVE] := Q;
+                  E1.Outp[ABOVE] := nil;
+                end;
+              end;
+            EMX:
+              begin
+                if (P <> nil) and (Q <> nil) then
+                begin
+                  Add_left(P, Ix, Iy);
+                  Merge_right(P, Q, Out_poly);
+                  E0.Outp[ABOVE] := nil;
+                  E1.Outp[ABOVE] := nil;
+                end;
+              end;
+            IMN:
+              begin
+                Add_local_min(@Out_poly, E0, Ix, Iy);
+                E1.Outp[ABOVE] := E0.Outp[ABOVE];
+              end;
+            ILI:
+              begin
+                if P <> nil then
+                begin
+                  Add_left(P, Ix, Iy);
+                  E1.Outp[ABOVE] := P;
+                  E0.Outp[ABOVE] := nil;
+                end;
+              end;
+            IRI:
+              begin
+                if Q <> nil then
+                begin
+                  Add_right(Q, Ix, Iy);
+                  E0.Outp[ABOVE] := Q;
+                  E1.Outp[ABOVE] := nil;
+                end;
+              end;
+            IMX:
+              begin
+                if (P <> nil) and (Q <> nil) then
+                begin
+                  Add_right(P, Ix, Iy);
+                  Merge_left(P, Q, Out_poly);
+                  E0.Outp[ABOVE] := nil;
+                  E1.Outp[ABOVE] := nil;
+                end;
+              end;
+            IMM:
+              begin
+                if (P <> nil) and (Q <> nil) then
+                begin
+                  Add_right(P, Ix, Iy);
+                  Merge_left(P, Q, Out_poly);
+                  Add_local_min(@Out_poly, E0, Ix, Iy);
+                  E1.Outp[ABOVE] := E0.Outp[ABOVE];
+                end;
+              end;
+            EMM:
+              begin
+                if (P <> nil) and (Q <> nil) then
+                begin
+                  Add_left(P, Ix, Iy);
+                  Merge_right(P, Q, Out_poly);
+                  Add_local_min(@Out_poly, E0, Ix, Iy);
+                  E1.Outp[ABOVE] := E0.Outp[ABOVE];
+                end;
+              end;
+          else
+          end; { End of case }
+        end; { End of contributing intersection conditional }
+
+        { Swap bundle sides in response to edge crossing }
+        if (E0.Bundle[ABOVE][CLIP] <> 0) then
+          E1.Bside[CLIP] := Integer(E1.Bside[CLIP] = 0);
+        if (E1.Bundle[ABOVE][CLIP] <> 0) then
+          E0.Bside[CLIP] := Integer(E0.Bside[CLIP] = 0);
+        if (E0.Bundle[ABOVE][SUBJ] <> 0) then
+          E1.Bside[SUBJ] := Integer(E1.Bside[SUBJ] = 0);
+        if (E1.Bundle[ABOVE][SUBJ] <> 0) then
+          E0.Bside[SUBJ] := Integer(E0.Bside[SUBJ] = 0);
+
+        { Swap e0 and e1 bundles in the AET }
+        Prev_edge := E0.Prev;
+        Next_edge := E1.Next;
+        if Next_edge <> nil then
+          Next_edge.Prev := E0;
+
+        if E0.Bstate[ABOVE] = BUNDLE_HEAD then
+        begin
+          Search := FTRUE;
+          while Search <> 0 do
+          begin
+            Prev_edge := Prev_edge.Prev;
+            if Prev_edge <> nil then
+            begin
+              if Prev_edge.Bstate[ABOVE] <> BUNDLE_TAIL then
+                Search := FFALSE;
+            end
+            else
+              Search := FFALSE;
+          end;
+        end;
+        if Prev_edge = nil then
+        begin
+          Aet.Prev := E1;
+          E1.Next := Aet;
+          Aet := E0.Next;
+        end
+        else
+        begin
+          Prev_edge.Next.Prev := E1;
+          E1.Next := Prev_edge.Next;
+          Prev_edge.Next := E0.Next;
+        end;
+        E0.Next.Prev := Prev_edge;
+        E1.Next.Prev := E1;
+        E0.Next := Next_edge;
+
+        Intersect := Intersect.Next;
+      end; { End of IT loop }
+
+      { Prepare for next scanbeam }
+      Edge := Aet;
+      while Edge <> nil do
+      begin
+        Next_edge := Edge.Next;
+        Succ_edge := Edge.Succ;
+
+        if EQ(Edge.Top.Y, Yt) and (Succ_edge <> nil) then
+        begin
+          { Replace AET edge by its successor }
+          Succ_edge.Outp[BELow] := Edge.Outp[ABOVE];
+          Succ_edge.Bstate[BELow] := Edge.Bstate[ABOVE];
+          Succ_edge.Bundle[BELow][CLIP] := Edge.Bundle[ABOVE][CLIP];
+          Succ_edge.Bundle[BELow][SUBJ] := Edge.Bundle[ABOVE][SUBJ];
+          Prev_edge := Edge.Prev;
+          if Prev_edge <> nil then
+            Prev_edge.Next := Succ_edge
+          else
+            Aet := Succ_edge;
+          if Next_edge <> nil then
+            Next_edge.Prev := Succ_edge;
+          Succ_edge.Prev := Prev_edge;
+          Succ_edge.Next := Next_edge;
+        end
+        else
+        begin
+          { Update this edge }
+          Edge.Outp[BELow] := Edge.Outp[ABOVE];
+          Edge.Bstate[BELow] := Edge.Bstate[ABOVE];
+          Edge.Bundle[BELow][CLIP] := Edge.Bundle[ABOVE][CLIP];
+          Edge.Bundle[BELow][SUBJ] := Edge.Bundle[ABOVE][SUBJ];
+          Edge.Xb := Edge.Xt;
+        end;
+        Edge.Outp[ABOVE] := nil;
+        Edge := Next_edge;
+      end;
+    end;
+  end; { === END OF SCANBEAM PROCESSING ================================== }
+
+  { Generate result polygon from out_poly }
+  Result_polygon.Contour := nil;
+  Result_polygon.Num_contours := Count_contours(Out_poly);
+  if Result_polygon.Num_contours > 0 then
+  begin
+    MALLOC(Pointer(Result_polygon.Hole), Result_polygon.Num_contours *
+      SizeOf(Integer), 'hole flag table creation');
+    MALLOC(Pointer(Result_polygon.Contour), Result_polygon.Num_contours *
+      SizeOf(Tgpc_vertex_list), 'contour creation');
+    Poly := Out_poly;
+    C := 0;
+
+    while Poly <> nil do
+    begin
+      Npoly := Poly.Next;
+      if Poly.Active <> 0 then
+      begin
+        Result_polygon.Hole[C] := Poly.Proxy.Hole;
+        Result_polygon.Contour[C].NumVertices := Poly.Active;
+        MALLOC(Pointer(Result_polygon.Contour[C].Vertex),
+          Result_polygon.Contour[C].NumVertices * SizeOf(Tgpc_vertex),
+          'vertex creation');
+
+        V := Result_polygon.Contour[C].NumVertices - 1;
+        Vtx := Poly.Proxy.V[LEFT];
+        while Vtx <> nil do
+        begin
+          Nv := Vtx.Next;
+          Result_polygon.Contour[C].Vertex[V].X := Vtx.X;
+          Result_polygon.Contour[C].Vertex[V].Y := Vtx.Y;
+          FREE(Pointer(Vtx));
+          Dec(V);
+          Vtx := Nv;
+        end;
+        Inc(C);
+      end;
+      FREE(Pointer(Poly));
+      Poly := Npoly;
+    end;
+  end;
+
+  { Tidy up }
+  Reset_it(It);
+  Reset_lmt(Lmt);
+  FREE(Pointer(C_heap));
+  FREE(Pointer(S_heap));
+  FREE(Pointer(Sbt));
+end;
+
+procedure Gpc_free_tristrip(Tristrip: Pgpc_tristrip);
+var
+  S: Integer;
+begin
+  for S := 0 to Tristrip.Num_strips - 1 do
+    CFREE(Pointer(Tristrip.Strip[S].Vertex));
+  CFREE(Pointer(Tristrip.Strip));
+  Tristrip.Num_strips := 0;
+end;
+
+
+
+
+
+
+
+// ===========================================================================
+// End of file: gpc.pas
+// ===========================================================================
+
+end.

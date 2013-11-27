@@ -1,0 +1,66 @@
+=========================================
+    Drawing Text is Problematic
+=========================================
+
+Windows DrawText() method is the cleanest method for
+generating text. 
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd162498%28v=vs.85%29.aspx
+
+DrawText() uses ClearType. I'm not sure if there is a way to turn off that feature.
+
+When using ClearType, DrawText() needs to draw onto a 100% opaque buffer as it 
+blends with the background colors. 
+
+DrawText() needs a device context, a TBitmap object is a pretty easy option here. 
+
+
+SetBkMode() might be useful.
+http://msdn.microsoft.com/en-us/library/dd162965%28VS.85%29.aspx
+
+=========================================
+    Compositing Options
+=========================================
+
+
+Option 1: 
+Individual controls maintain a backbuffer image of theirselves. 
+
+The TopContainer blits controls backbuffers onto the TopContainer backbuffer.
+
+Pros:
+- A control in only redrawn when something in it changes. 
+
+Cons
+- Semi-transparent colors are tricker for controls to use. They must ensure
+  the semi-transparent regions are set correctly.
+- Difficult/Impossible to render ClearType text on transparent controls.
+
+
+Option 2:
+The TopContainer copies the backbuffer into the backbuffer of a child control. The 
+child control then draws onto it's internal backbuffer. The TopContainer control
+then blits the child's modified buffer back onto the master backbuffer. 
+
+Pros
+- Semi-transparent colors are easier to draw. 
+
+Cons
+- A control is redrawn each time the master backbuffer is invalidated. 
+
+
+
+
+Option 3:
+Child controls are passed a 'Drawing Object' that is used to draw the 
+the child control to the TopContainers back buffer.
+
+Pros
+- Avoid blitting to and from temporary backbuffers.
+- semi-transparent regions are drawn correctly with minimum fuss.
+
+Cons
+- Maybe difficult to ensure teh 'drawing object' works. The view port
+  would need to be updated for each control and all drawing operations
+   will need to take the view port size and location into account.
+- Controls will be redrawn each time the master backbuffer is 
+  invalidated.

@@ -1,0 +1,17 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<DCC_Define>_DesignTimeLogging;$(DCC_Define)</DCC_Define>
+			<DCC_ExeOutput>D:\Delphi Source\Library\Components\RedFox\bin\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_Namespace>Vcl;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_UnitSearchPath>D:\Delphi Source\Library\Components\RedFox\bin\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_DcuOutput>D:\Delphi Source\Library\Components\RedFox\bin\$(Platform)\$(Config)</DCC_DcuOutput>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>OptionSet</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality/>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,354 @@
+unit VamNumericKnob;
+
+interface
+
+uses
+  Types,
+  Classes, Controls, RedFox, RedFoxWinControl, VamWinControl;
+
+type
+  TNumericStyle = (nsInteger, nsFloat);
+
+  TVamNumericKnob = class(TVamWinControl)
+  private
+    fText: string;
+    fTextVAlign: TRedFoxAlign;
+    fTextAlign: TRedFoxAlign;
+    fNumericStyle: TNumericStyle;
+    fKnobMin: integer;
+    fKnobMax: integer;
+    fDecimalPlaces: integer;
+    fOnChanged: TNotifyEvent;
+    procedure SetTextAlign(const Value: TRedFoxAlign);
+    procedure SetTextVAlign(const Value: TRedFoxAlign);
+    procedure SetNumericStyle(const Value: TNumericStyle);
+    procedure SetKnobMin(const Value: integer);
+    procedure SetKnobMax(const Value: integer);
+    procedure SetDecimalPlaces(const Value: integer);
+    procedure SetKnobValue(const Value: double);
+  protected
+    ReferenceKnobValue : double;
+    fKnobValue : double;
+    GraphicSplitPoint : single;
+    IntAdjust : boolean;
+
+    IsGrabbed : boolean;
+    ReferencePoint   : TPoint;
+    ReferencePos     : single;
+    IsFineAdjustment : boolean;
+
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+
+
+    procedure Changed;
+    procedure Paint; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+
+
+  published
+    property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
+    property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
+
+    property Font;
+
+
+    property KnobValue : double read fKnobValue write SetKnobValue;
+    property KnobMin : integer read fKnobMin write SetKnobMin;
+    property KnobMax : integer read fKnobMax write SetKnobMax;
+
+    property NumericStyle : TNumericStyle read fNumericStyle write SetNumericStyle;
+
+    property DecimalPlaces : integer read fDecimalPlaces write SetDecimalPlaces;
+
+    property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
+
+    {$INCLUDE TControlProperties.inc}
+  end;
+
+implementation
+
+uses
+  Math,
+  SysUtils,
+  RedFoxColor,
+  Graphics;
+
+
+{ TVamNumericKnob }
+
+procedure TVamNumericKnob.Changed;
+begin
+  if assigned(OnChanged) then OnChanged(Self);
+
+end;
+
+constructor TVamNumericKnob.Create(AOwner: TComponent);
+begin
+  inherited;
+
+  fKnobValue := 0;
+
+  fTextAlign := TRedFoxAlign.AlignCenter;
+  fTextVAlign := TRedFoxAlign.AlignCenter;
+
+  fKnobMin := 0;
+  fKnobMax := 100;
+
+  fDecimalPlaces := 2;
+
+  //fNumericStyle := nsInteger;
+  fNumericStyle := nsFloat;
+
+  GraphicSplitPoint := 0;
+end;
+
+destructor TVamNumericKnob.Destroy;
+begin
+
+  inherited;
+end;
+
+
+procedure TVamNumericKnob.SetDecimalPlaces(const Value: integer);
+begin
+  if (Value >= 1) and (Value <= 10) then
+  begin
+    fDecimalPlaces := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.SetKnobValue(const Value: double);
+begin
+  if (Value <> fKnobValue) and (Value >= KnobMin) and (Value <= KnobMax) then
+  begin
+    fKnobValue := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.SetKnobMax(const Value: integer);
+begin
+  fKnobMax := Value;
+end;
+
+procedure TVamNumericKnob.SetKnobMin(const Value: integer);
+begin
+  fKnobMin := Value;
+end;
+
+procedure TVamNumericKnob.SetNumericStyle(const Value: TNumericStyle);
+begin
+  fNumericStyle := Value;
+end;
+
+procedure TVamNumericKnob.SetTextAlign(const Value: TRedFoxAlign);
+begin
+  if fTextAlign <> Value then
+  begin
+    fTextAlign := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.SetTextVAlign(const Value: TRedFoxAlign);
+begin
+    if Value <> fTextVAlign then
+  begin
+    fTextVAlign := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+
+  if (Button = mbLeft) and ((ssCtrl in Shift)) then
+  begin
+    // TODO: Reset event should be fired here!
+    //fPos := 0.5;
+    Invalidate;
+    Changed;
+  end;
+
+  if (Button = mbLeft) and ((ssCtrl in Shift) = false) then
+  begin
+    IsGrabbed := true;
+
+    if (ssShift in Shift)
+      then IsFineAdjustment := true
+      else IsFineAdjustment := false;
+
+    if X <= GraphicSplitPoint
+      then IntAdjust := true
+      else IntAdjust := false;
+
+    //== Reset reference points =====
+    ReferencePoint := Point(X, Y);
+    ReferenceKnobValue := fKnobValue;
+    //===============================
+  end;
+
+end;
+
+procedure TVamNumericKnob.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  Dist : double;
+  ScaleFactor : double;
+  NewKnobValue : double;
+begin
+  inherited;
+
+
+  // Check to see if the Shift key has been pressed or released..
+  // If so, we need to re-anchor our reference points to the current knob value
+  // and mouse cursor position.
+  if (IsGrabbed) and ((ssShift in Shift) <> IsFineAdjustment) then
+  begin
+    if (ssShift in Shift)
+      then IsFineAdjustment := true
+      else IsFineAdjustment := false;
+
+    //== Reset reference points =====
+    ReferencePoint := Point(X, Y);
+    ReferenceKnobValue := fKnobValue;
+    //===============================
+  end;
+
+
+  if (IsGrabbed) then
+  begin
+
+    if (NumericStyle = nsInteger) then
+    begin
+      if IsFineAdjustment = false
+        then ScaleFactor := 0.005
+        else ScaleFactor := 0.00175;
+
+      ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+
+      Dist := (ReferencePoint.Y - Y) * ScaleFactor;
+      Dist := Round(Dist);
+    end;
+
+
+    if (NumericStyle = nsFloat) and (IntAdjust = true) then
+    begin
+      if IsFineAdjustment = false
+        then ScaleFactor := 0.005
+        else ScaleFactor := 0.00175;
+
+      ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+
+      Dist := (ReferencePoint.Y - Y) * ScaleFactor;
+      Dist := Round(Dist);
+    end;
+
+    if (NumericStyle = nsFloat) and (IntAdjust = false) then
+    begin
+      if IsFineAdjustment = false
+        then ScaleFactor := 0.005
+        else ScaleFactor := 0.075 / Power(10, DecimalPlaces);
+
+      Dist := (ReferencePoint.Y - Y) * ScaleFactor;
+    end;
+
+
+
+
+    NewKnobValue := ReferenceKnobValue + Dist;
+    if NewKnobValue > KnobMax then
+    begin
+      NewKnobValue := KnobMax;
+      //== Reset reference points =====
+      ReferencePoint := Point(X, Y);
+      ReferenceKnobValue := fKnobValue;
+      //===============================
+    end;
+
+    if NewKnobValue < KnobMin then
+    begin
+      NewKnobValue := KnobMin;
+      //== Reset reference points =====
+      ReferencePoint := Point(X, Y);
+      ReferenceKnobValue := fKnobValue;
+      //===============================
+    end;
+
+    if NewKnobValue <> fKnobValue then
+    begin
+      fKnobValue := NewKnobValue;
+      Invalidate;
+      Changed;
+    end;
+  end;
+
+
+end;
+
+procedure TVamNumericKnob.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+
+  if (Button = mbLeft) and (IsGrabbed = true) then
+  begin
+    IsGrabbed := false;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.Paint;
+var
+  TextBounds : TRect;
+  Text : string;
+  TextA, TextB : string;
+
+  breakPoint : integer;
+
+  ActualTextBounds : TRect;
+begin
+  inherited;
+
+  BackBuffer.BufferInterface.ClearAll(255,255,255,0);
+
+  TextBounds := Rect(0,0, Width, Height);
+
+  if NumericStyle = nsInteger then
+  begin
+    Text := IntToStr(Round(fKnobValue));
+    BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  end else
+  begin
+    Text := FloatToStrF(fKnobValue, TFloatFormat.ffFixed, 18, DecimalPlaces);
+
+    BreakPoint := Pos('.', Text);
+
+    TextA := Copy(Text, 1, BreakPoint-1);
+    TextB := Copy(Text, BreakPoint+1, Length(Text) - BreakPoint);
+
+
+    ActualTextBounds := BackBuffer.CalcActualTextBounds(Text, Font, TextAlign, TextVAlign, TextBounds);
+
+    GraphicSplitPoint := ActualTextBounds.Left + BackBuffer.TextWidth(TextA);
+
+
+    //BackBuffer.BufferInterface.FillColor :=  GetAggColor(clRed);
+    //BackBuffer.BufferInterface.Rectangle(ActualTextBounds.Left, ActualTextBounds.Top, ActualTextBounds.Right, ActualTextBounds.Bottom);
+
+
+
+
+    BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  end;
+
+
+
+end;
+
+end.

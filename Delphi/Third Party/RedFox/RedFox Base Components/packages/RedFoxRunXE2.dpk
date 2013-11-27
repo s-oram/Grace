@@ -1,0 +1,53 @@
+package RedFoxRunXE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE _DesignTimeLogging}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  AggPasRunXE2,
+  AggPasDesXE2,
+  vcl,
+  vclimg,
+  dbrtl;
+
+contains
+  RedFoxColor in '..\source\RedFoxColor.pas',
+  RedFoxContainer in '..\source\RedFoxContainer.pas',
+  RedFoxGraphicControl in '..\source\RedFoxGraphicControl.pas',
+  RedFoxImageBuffer in '..\source\RedFoxImageBuffer.pas',
+  RedFoxWinControl in '..\source\RedFoxWinControl.pas',
+  RedFox in '..\source\RedFox.pas',
+  RedFox2D in '..\source\RedFox2D.pas',
+  RedFoxBlend in '..\source\RedFoxBlend.pas',
+  RedFoxInvalidator in '..\source\RedFoxInvalidator.pas',
+  RedFoxLogging in '..\source\RedFoxLogging.pas',
+  RedFoxAccessible in '..\source\RedFoxAccessible.pas',
+  RedFoxTextBuffer in '..\source\RedFoxTextBuffer.pas';
+
+end.

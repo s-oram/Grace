@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="AggPasDesLaz"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\Source"/>
+        <OtherUnitFiles Value="..\Source;..\Source\Controls;..\Source\Platform\Win;..\Source\Design Time"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerMessages>
+          <MsgFileName Value=""/>
+        </CompilerMessages>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="2">
+      <Item1>
+        <Filename Value="..\Source\Design Time\AggDesignTimeColor.pas"/>
+        <UnitName Value="AggDesignTimeColor"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\Source\Design Time\AggDesignTimeRegistration.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="AggDesignTimeRegistration"/>
+      </Item2>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="IDEIntf"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>
