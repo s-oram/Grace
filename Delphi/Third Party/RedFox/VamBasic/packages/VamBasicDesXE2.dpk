@@ -1,4 +1,4 @@
-package VamBasicDesignXE2;
+package VamBasicDesXE2;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -32,7 +32,7 @@ requires
   DesignIde,
   VamBasicRunXE2,
   RedFoxRunXE2,
-  RedFoxDesignXE2,
+  RedFoxDesXE2,
   AggPasRunXE2;
 
 contains

@@ -30,7 +30,7 @@ package VamBasicRunXE2;
 requires
   rtl,
   RedFoxRunXE2,
-  RedFoxDesignXE2;
+  RedFoxDesXE2;
 
 contains
   VamLabel in '..\source\VamLabel.pas',
