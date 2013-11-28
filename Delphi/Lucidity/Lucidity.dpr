@@ -121,7 +121,12 @@ uses
   LucidityModConnections in 'LucidityModConnections.pas',
   Lucidity.Options in 'Lucidity.Options.pas',
   eePluginParameterWizard in 'eePluginParameterWizard.pas',
-  Lucidity.Sfz in 'Third Party File Support\Lucidity.Sfz.pas';
+  Lucidity.Sfz in 'Third Party File Support\Lucidity.Sfz.pas',
+  eeVstAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstAdapter.pas',
+  DAEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas',
+  DAudioEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffect.pas',
+  DAudioEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffectX.pas',
+  DAEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas';
 
 {$R *.res}
 
