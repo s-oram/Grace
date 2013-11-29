@@ -1,0 +1,9 @@
+#define MyAppPublisher "One Small Clue"
+#define MyAppName "Lucidity"
+#define MyAppVersion "0.1"
+#define MyAppVersionAlt "0-1"
+#define MyAppURL ""
+#define MyAppPlatform "Win32"
+
+
+OutputBaseFilename=Setup_{#MyAppName}_{#MyAppVersionAlt}_{#MyAppPlatform}

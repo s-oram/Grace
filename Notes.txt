@@ -1,0 +1,25 @@
+- Bin 
+ Contains binary files output by the compilers. Not in version control.
+
+- Delphi   
+contains all the delphi source code.
+
+- Installer
+contains all the code to create the installer.
+
+- Project Setup.bat
+a batch script to prepare working on the project. 
+- It updates the registery with project source paths. 
+- It creates a virtual S: drive pointing to the project directory root. 
+- It launches Delphi using a new registery root value.
+
+
+- LucidityStandard.reg
+Baseline registery entries. Has been copied from the default delphi install. This
+ensures all components and delphi helpers etc are installed and available in the
+"custom" setup of delphi. 
+
+- LucidityCustom.reg
+Contains machine specific environment settings. Primarily used to update 
+environment variables with correct paths.
+

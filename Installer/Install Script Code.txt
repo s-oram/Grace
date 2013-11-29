@@ -1,0 +1,97 @@
+var  
+  VstDirPage  : TInputDirWizardPage; 
+  Text1 : string;
+  Text2 : string;
+  Text3 : string;  
+  Dir   : string;
+procedure InitializeWizard;
+var
+  SubKeyName : string; 
+  ValueName  : string;
+begin
+  //========================================================
+  //  Custom Page: VST Directory
+  //========================================================
+  Text1 := 'Select VST Plugin Directory'; 
+  Text2 := 'This should be the VST plugin directory of your sequencer';
+  Text3 := 'The plugin will be installed in the directory selected below. To install in a different directory, click Browse and select another directory.';
+  
+  //Get the VST plugin directory as specified in the Windows registery.
+  if '{#MyAppPlatform}' = 'Win32' then
+  begin
+    Dir := ''; 
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', Dir);;
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', Dir);
+  end;
+  
+  if '{#MyAppPlatform}' = 'Win64' then
+  begin
+    Dir := ''; 
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', Dir);;
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir', Dir);
+  end;
+  
+  VstDirPage := CreateInputDirPage(wpWelcome, Text1, Text2,  Text3, False, '{#MyAppName}');
+  VstDirPage.Add('');  
+  VstDirPage.Values[0] := Dir;
+end;
+
+
+
+function GetDataDir(Param: String): String;
+begin
+  if (Param = 'DataDir') and ('{#MyAppPlatform}' = 'Win32')
+    then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x32') 
+  else if (Param = 'DataDir') and ('{#MyAppPlatform}' = 'Win64')
+    then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x64')
+  else if Param = 'VstDir' 
+    then Result := VstDirPage.Values[0];
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  DataDir    : string;
+  s          : string;
+  ReplacementString  : string;
+  SourceFileFullPath : string;
+  SourceFileName     : string;
+  DestFileFullPath   : string;     
+begin
+  if (CurStep = ssDone)  and (IsUninstaller = false) then
+  begin
+    //Copy the log file.   
+    SourceFileFullPath := ExpandConstant('{log}');
+    SourceFileName     := ExtractFileName(SourceFileFullPath);
+    DestFileFullPath := GetDataDir('VstDir') + ExpandConstant('{\}{#MyAppName} ') + 'Setup Log.txt';    
+    FileCopy(SourceFileFullPath, DestFileFullPath, false);
+    
+    if '{#MyAppPlatform}' = 'Win32' then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', GetDataDir('VstDir'));
+    end;
+    
+    if '{#MyAppPlatform}' = 'Win64' then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir', GetDataDir('VstDir'));
+    end;   
+
+  end;
+       
+end;
+
+function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
+var
+  s : string;
+begin
+  s := 'VST Plugin Directory' + ExpandConstant(#13#10); 
+  s := s + '   ' + GetDataDir('VstDir') + ExpandConstant(#13#10);
+  s := s + ExpandConstant(#13#10);
+  s := s + 'Plugin Data Directory'  + ExpandConstant(#13#10);
+  s := s + '   ' + GetDataDir('DataDir') + ExpandConstant(#13#10);
+  s := s + ExpandConstant(#13#10);  
+
+  result := s;
+end;
+
