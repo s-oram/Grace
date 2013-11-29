@@ -1,0 +1,30 @@
+*__history*
+*Project Resources*
+resources/*
+*.dproj
+*.res
+*.dcu
+*.cbk
+*.~pas
+*.identcache
+*.local
+*.*.local
+*.exe
+*.tvsconfig
+Thumbs.db
+
+
+# the top most binary directory.
+bin/*
+
+# MadExcept settings 
+*.mes
+
+
+# Machine specific environment settings.
+Config/*
+Lucidity Project Setup.bat
+Lucidity Project Teardown.bat
+Lucidity Create Installers.bat
+
+
