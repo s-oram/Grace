@@ -174,77 +174,135 @@ object SampleMapFrame: TSampleMapFrame
             Align = alLeft
             Visible = True
           end
-          object RegionVelocityInfo: TVamCompoundLabel
-            AlignWithMargins = True
-            Left = 448
+          object VamCompoundNumericKnob1: TVamCompoundNumericKnob
+            Left = 557
             Top = 0
-            Width = 80
+            Width = 61
             Height = 30
-            Margins.Left = 10
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 0
+            Text = 'Label'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
+            Font.Color = clWindowText
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
-            Color1 = clSilver
-            Color2 = clWhite
-            Text1 = 'Vel'
-            Text2 = 'Text'
-            Text2Align = AlignCenter
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 100
+            KnobNumericStyle = nsFloat
+            KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
+            ExplicitLeft = 252
+            ExplicitTop = 8
+            ExplicitHeight = 21
           end
-          object RegionKeyInfo: TVamCompoundLabel
-            AlignWithMargins = True
-            Left = 358
+          object VamCompoundNumericKnob2: TVamCompoundNumericKnob
+            Left = 313
             Top = 0
-            Width = 80
+            Width = 61
             Height = 30
-            Margins.Left = 10
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 0
+            Text = 'Label'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
+            Font.Color = clWindowText
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
-            Color1 = clSilver
-            Color2 = clWhite
-            Text1 = 'Key'
-            Text2 = 'Text'
-            Text2Align = AlignCenter
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 100
+            KnobNumericStyle = nsFloat
+            KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
+            ExplicitLeft = 252
+            ExplicitTop = 8
+            ExplicitHeight = 21
           end
-          object RegionRootInfo: TVamCompoundLabel
-            AlignWithMargins = True
-            Left = 538
+          object VamCompoundNumericKnob3: TVamCompoundNumericKnob
+            Left = 374
             Top = 0
-            Width = 80
+            Width = 61
             Height = 30
-            Margins.Left = 10
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 0
+            Text = 'Label'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
+            Font.Color = clWindowText
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
-            Color1 = clSilver
-            Color2 = clWhite
-            Text1 = 'Root'
-            Text2 = 'Text'
-            Text2Align = AlignCenter
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 100
+            KnobNumericStyle = nsFloat
+            KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
+            ExplicitLeft = 252
+            ExplicitTop = 8
+            ExplicitHeight = 21
+          end
+          object VamCompoundNumericKnob4: TVamCompoundNumericKnob
+            Left = 435
+            Top = 0
+            Width = 61
+            Height = 30
+            Text = 'Label'
+            HitTest = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 100
+            KnobNumericStyle = nsFloat
+            KnobDecimalPlaces = 2
+            Align = alRight
+            Visible = True
+            ExplicitLeft = 252
+            ExplicitTop = 8
+            ExplicitHeight = 21
+          end
+          object VamCompoundNumericKnob5: TVamCompoundNumericKnob
+            Left = 496
+            Top = 0
+            Width = 61
+            Height = 30
+            Text = 'Label'
+            HitTest = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 100
+            KnobNumericStyle = nsFloat
+            KnobDecimalPlaces = 2
+            Align = alRight
+            Visible = True
+            ExplicitLeft = 252
+            ExplicitTop = 8
+            ExplicitHeight = 21
           end
         end
       end

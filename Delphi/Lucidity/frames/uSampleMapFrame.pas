@@ -9,7 +9,8 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer, VamSampleMap,
   VamSamplerKeys, VamScrollBox, Vcl.Menus, RedFoxGraphicControl,
-  VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel, VamVisibleControl;
+  VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel, VamVisibleControl,
+  VamCompoundNumericKnob;
 
 type
   TSampleMapFrame = class(TFrame)
@@ -20,11 +21,13 @@ type
     SampleMap: TVamSampleMap;
     RegionInfoBox: TVamDiv;
     SampleNameLabel: TVamLabel;
-    RegionVelocityInfo: TVamCompoundLabel;
-    RegionKeyInfo: TVamCompoundLabel;
-    RegionRootInfo: TVamCompoundLabel;
     InsidePanel: TVamPanel;
     UpperPanelArea: TVamPanel;
+    VamCompoundNumericKnob1: TVamCompoundNumericKnob;
+    VamCompoundNumericKnob2: TVamCompoundNumericKnob;
+    VamCompoundNumericKnob3: TVamCompoundNumericKnob;
+    VamCompoundNumericKnob4: TVamCompoundNumericKnob;
+    VamCompoundNumericKnob5: TVamCompoundNumericKnob;
     procedure ScrollBoxScroll(Sender: TObject; Kind: TScrollEventKind; ScrollPos: Single);
     procedure SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
     procedure SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -125,14 +128,14 @@ begin
 
   SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
-  RegionKeyInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
-  RegionKeyInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
+  //RegionKeyInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
+  //RegionKeyInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
 
-  RegionVelocityInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
-  RegionVelocityInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
+  //RegionVelocityInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
+  //RegionVelocityInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
 
-  RegionRootInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
-  RegionRootInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
+  //RegionRootInfo.Color1 := GetRedFoxColor(kColor_LcdDark4);
+  //RegionRootInfo.Color2 := GetRedFoxColor(kColor_LcdDark5);
 
   UpperPanelArea.Color := kColor_LcdDark1;
 
@@ -441,9 +444,9 @@ begin
       then SampleNameLabel.Text := ExtractFilename(Info.FileName)
       else SampleNameLabel.Text := ExtractFilename(Info.FileName) + '  (' + IntToStr(SelectedCount) + ' regions selected)';
 
-    RegionKeyInfo.Text2      := MidiToName(Info.LowKey) + ' - ' + MidiToName(Info.HighKey);
-    RegionVelocityInfo.Text2 := IntToStr(Info.LowVelocity) + ' - ' + IntToStr(Info.HighVelocity);
-    RegionRootInfo.Text2     := MidiToName(Info.RootNote);
+    //RegionKeyInfo.Text2      := MidiToName(Info.LowKey) + ' - ' + MidiToName(Info.HighKey);
+    //RegionVelocityInfo.Text2 := IntToStr(Info.LowVelocity) + ' - ' + IntToStr(Info.HighVelocity);
+    //RegionRootInfo.Text2     := MidiToName(Info.RootNote);
   end;
 
 
@@ -452,9 +455,9 @@ begin
     RegionInfoBox.Visible := false;
 
     SampleNameLabel.Text     := '';
-    RegionKeyInfo.Text2      := '';
-    RegionVelocityInfo.Text2 := '';
-    RegionRootInfo.Text2     := '';
+    //RegionKeyInfo.Text2      := '';
+    //RegionVelocityInfo.Text2 := '';
+    //RegionRootInfo.Text2     := '';
   end;
 
   if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
@@ -466,9 +469,10 @@ begin
       RegionInfoBox.Visible := true;
 
       SampleNameLabel.Text     := ExtractFilename(Info.FileName);
-      RegionKeyInfo.Text2      := MidiToName(Info.LowKey) + ' - ' + MidiToName(Info.HighKey);
-      RegionVelocityInfo.Text2 := IntToStr(Info.LowVelocity) + ' - ' + IntToStr(Info.HighVelocity);
-      RegionRootInfo.Text2     := MidiToName(Info.RootNote);
+
+      //RegionKeyInfo.Text2      := MidiToName(Info.LowKey) + ' - ' + MidiToName(Info.HighKey);
+      //RegionVelocityInfo.Text2 := IntToStr(Info.LowVelocity) + ' - ' + IntToStr(Info.HighVelocity);
+      //RegionRootInfo.Text2     := MidiToName(Info.RootNote);
     end;
   end;
 
@@ -478,9 +482,9 @@ begin
 
     SampleNameLabel.Text := '(' + IntToStr(SelectedCount) + ' regions selected)';
 
-    RegionKeyInfo.Text2      := '-';
-    RegionVelocityInfo.Text2 := '-';
-    RegionRootInfo.Text2     := '-';
+    //RegionKeyInfo.Text2      := '-';
+    //RegionVelocityInfo.Text2 := '-';
+    //RegionRootInfo.Text2     := '-';
   end;
 
   if (DragSelectedCount > 0) and (MouseOverRegionInfo.IsValid = false) then
@@ -491,9 +495,9 @@ begin
       then SampleNameLabel.Text := '(' + IntToStr(DragSelectedCount) + ' region selected)'
       else SampleNameLabel.Text := '(' + IntToStr(DragSelectedCount) + ' regions selected)';
 
-    RegionKeyInfo.Text2      := '-';
-    RegionVelocityInfo.Text2 := '-';
-    RegionRootInfo.Text2     := '-';
+    //RegionKeyInfo.Text2      := '-';
+    //RegionVelocityInfo.Text2 := '-';
+    //RegionRootInfo.Text2     := '-';
   end;
 
 
@@ -552,9 +556,11 @@ end;
 
 procedure TSampleMapFrame.SampleMapKeysRootKeyChanging(Sender: TObject; const NewRootKey: Integer);
 begin
+  {
   if NewRootKey <> -1
     then RegionRootInfo.Text2 := MidiToName(NewRootKey)
     else RegionRootInfo.Text2 := '-';
+  }
 end;
 
 procedure TSampleMapFrame.SampleMapGetDragRegionCount(Sender: TObject; const Data: IVamDragData; var DragRegionCount: Integer);
