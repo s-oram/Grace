@@ -31,7 +31,7 @@
   {$DEFINE Logging}
   {$DEFINE LogToFile}
   {$DEFINE LogToConsole}
-  {.$DEFINE LogDispatcherOpcodes}
+  {$DEFINE LogDispatcherOpcodes}
   {$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
   {$DEFINE AudioInline}
