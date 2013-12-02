@@ -72,7 +72,6 @@ begin
   RegisterComponents('Vam Compound', [TVamCompoundLabel]);
   RegisterComponents('Vam Compound', [TVamCompoundModMatrixSection]);
   RegisterComponents('Vam Compound', [TVamCompoundNumericKnob]);
-
 end;
 
 end.
