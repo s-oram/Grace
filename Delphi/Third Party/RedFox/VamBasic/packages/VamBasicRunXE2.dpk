@@ -72,6 +72,7 @@ contains
   VamSampleMap.Sorting in '..\source\VamSampleMap.Sorting.pas',
   VamMemo in '..\source\VamMemo.pas',
   VamImage in '..\source\VamImage.pas',
-  VamSlider in '..\source\VamSlider.pas';
+  VamSlider in '..\source\VamSlider.pas',
+  VamSamplePeakBuffer in '..\source\VamSamplePeakBuffer.pas';
 
 end.

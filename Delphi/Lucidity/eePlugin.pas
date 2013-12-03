@@ -81,8 +81,6 @@ type
 
     EmptyKeyGroup : IKeyGroup;
 
-
-
     procedure SetupVstParameters;
 
     procedure GetVstParameter(const Par:TVstParameter);
@@ -92,7 +90,6 @@ type
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
     procedure EventHandle_SampleRateChanged(Sender:TObject);
-
 
     procedure PreLoadProgram;
     procedure PostLoadProgram;

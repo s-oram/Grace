@@ -5,7 +5,9 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, Generics.Collections, VamSampleDisplay,
+  MoreTypes, Generics.Collections,
+  VamSamplePeakBuffer,
+  VamSampleDisplay,
   uConstants, uLucidityKeyGroupInterface,
   Classes, eeSampleFloat, eePatchObject,
   uSampleZeroCrossings;
@@ -74,13 +76,13 @@ type
     fKeyGroup      : IKeyGroup;
     fZeroCrossings : TSampleZeroCrossings;
     fSampleImage   : ISampleImageBuffer;
+    fPeakBuffer    : IPeakBuffer;
     function GetObject        : TObject;
     function GetProperties    : PRegionProperties;
     function GetSample        : PSampleFloat;
     function GetKeyGroup      : IKeyGroup;
     function GetZeroCrossings : TSampleZeroCrossings;
     function GetSampleImage   : ISampleImageBuffer;
-  private
   public
     constructor Create;
     destructor Destroy; override;
@@ -94,6 +96,7 @@ type
     property Properties    : PRegionProperties    read fProperties;
     property ZeroCrossings : TSampleZeroCrossings read fZeroCrossings;
     property SampleImage   : ISampleImageBuffer   read fSampleImage;
+    property PeakBuffer    : IPeakBuffer          read fPeakBuffer;
   end;
 
   TRegionCreateInfo = record
@@ -192,7 +195,7 @@ type
   end;
 
 
-
+  
 
 
 function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
@@ -232,7 +235,8 @@ begin
   New(fProperties);
   Sample := TSampleFloat.Create;
   fZeroCrossings := TSampleZeroCrossings.Create;
-  fSampleImage := TSampleImageBuffer.Create;
+  fSampleImage   := TSampleImageBuffer.Create;
+  fPeakBuffer    := TPeakBuffer.Create;
 end;
 
 destructor TRegion.Destroy;
@@ -242,6 +246,7 @@ begin
   fProperties := nil;
   fZeroCrossings.Free;
   fSampleImage := nil;
+  fPeakBuffer  := nil;
   inherited;
 end;
 
