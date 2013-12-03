@@ -168,6 +168,14 @@ begin
 
   SampleOverlay.Font.Color := GetTColor(kColor_LcdDark5);
   SampleOverlay.ShowMarkerTags := true;
+
+  SampleVolumeKnob.Width := 90;
+  SamplePanKnob.Width    := 75;
+  SamplePitchKnob.Width  := 85;
+  SampleBeatsKnob.Width  := 85;
+
+  SampleVolumeKnob.Margins.SetBounds(0,0,20,0);
+  SamplePanKnob.Margins.SetBounds(0,0,20,0);
 end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);

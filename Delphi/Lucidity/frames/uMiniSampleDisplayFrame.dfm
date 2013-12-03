@@ -152,6 +152,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              Units = ' st'
               Color_Label = clSilver
               Color_Numeric = clWhite
               Color_Arrows1 = '$33FFFFFF'
@@ -186,12 +187,13 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              Units = ' dB'
               Color_Label = clSilver
               Color_Numeric = clWhite
               Color_Arrows1 = '$33FFFFFF'
               Color_Arrows2 = '$ccFFFFFF'
               KnobMin = -96
-              KnobMax = 12
+              KnobMax = 36
               KnobNumericStyle = nsInteger
               KnobDecimalPlaces = 2
               OnChanged = SampleKnobChanged
@@ -220,6 +222,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              Units = '%'
               Color_Label = clSilver
               Color_Numeric = clWhite
               Color_Arrows1 = '$33FFFFFF'
