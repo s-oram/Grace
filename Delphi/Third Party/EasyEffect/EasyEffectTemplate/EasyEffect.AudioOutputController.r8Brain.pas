@@ -84,7 +84,6 @@ begin
   for c1 := 0 to Length(Resamplers)-1 do
   begin
     Resamplers[c1] := TR8BrainResampler.Create;
-    //Resamplers[c1].Setup(44100 * OverSampleFactor, 44100, OverSampleFactor * BlockSize, 5, res24bit);
     Resamplers[c1].Setup(OverSampleFactor, 1, OverSampleFactor * BlockSize, 5, res24bit);
   end;
 
@@ -119,7 +118,7 @@ end;
 
 procedure TVstAudioOutputController.PostProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
 var
-  c1: Integer;
+  c1, c2: Integer;
   Smps : integer;
   OutputBuffer : PSingle;
 begin
@@ -130,7 +129,14 @@ begin
 
     Smps := Resamplers[c1].Process_Single(@Buffers[c1,0], @Buffers[c1,0], SampleFrames * OverSampleFactor);
 
-    assert(Smps = SampleFrames);
+    // TODO log exception here:
+    //assert(Smps = SampleFrames);
+
+    for c2 := 0 to Smps-1 do
+    begin
+      OutputBuffer^ := Buffers[c1,c2];
+      inc(OutputBuffer);
+    end;
   end;
 end;
 

@@ -80,9 +80,9 @@ begin
   end;
 
   case Res of
-    res16Bit:   rsHandle := r8b_create(SrcSampleRate, DstSampleRate,MaxInLen, ReqTransBand, r8brr16);
-    res16BitIR: rsHandle := r8b_create(SrcSampleRate, DstSampleRate,MaxInLen, ReqTransBand, r8brr16IR);
-    res24bit:   rsHandle := r8b_create(SrcSampleRate, DstSampleRate,MaxInLen, ReqTransBand, r8brr24);
+    res16Bit:   rsHandle := r8b_create(SrcSampleRate, DstSampleRate, MaxInLen, ReqTransBand, r8brr16);
+    res16BitIR: rsHandle := r8b_create(SrcSampleRate, DstSampleRate, MaxInLen, ReqTransBand, r8brr16IR);
+    res24bit:   rsHandle := r8b_create(SrcSampleRate, DstSampleRate, MaxInLen, ReqTransBand, r8brr24);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -120,6 +120,7 @@ begin
     inc(InputBuffer);
   end;
 
+  PTempBuffer := @TempBuffer[0];
   OutputSampleFrames := r8b_process(rsHandle, PTempBuffer, InputSampleFrames, PTempBuffer);
 
   for c1 := 0 to OutputSampleFrames-1 do

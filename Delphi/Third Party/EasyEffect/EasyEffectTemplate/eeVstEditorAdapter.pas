@@ -10,7 +10,7 @@ uses
   {$ELSE}
   Windows,
   {$ENDIF}
-  eeGuiContainer, eePluginGui, eePlugin,
+  eePluginGui, eePlugin,
   DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX,
   Messages;
 
@@ -24,7 +24,6 @@ type
     useCount     : Longint;
     Plugin       : TeePlugin;
     PluginGUI    : TPluginGui;
-    GuiContainer : TGuiContainer;
     systemWindow : HWnd;
   public
     constructor Create(effect: AudioEffect; aPlugin:TeePlugin); reintroduce;
@@ -66,7 +65,6 @@ begin
   inherited Create(effect);
   Plugin := aPlugin;
   PluginGUI    := nil;
-  GuiContainer := nil;
   useCount := 0;
 
   // NOTE: GDI+ needs to be initialised manually if used in a DLL. VGScene and FireMonkey both use GDI+ on Windows.
@@ -125,24 +123,15 @@ procedure TVstEditor.Idle;
 begin
   inherited;
 
+
   if (UseCount > 0) then
   begin
-    if GuiContainer.Visible = false then
+    if PluginGUI.Visible = false then
     begin
-      {$IFDEF FmxGui}
-        //=== FMX GUI =======
-        GuiContainer.Visible := true;
-        PluginGUI.Visible    := true;
-        Winapi.Windows.SetParent(FmxHandleToHWND(PluginGui.Handle), GuiContainer.Handle);
-        PluginGUI.PostCreate(SystemWindow);
-        PluginGUI.UpdateGui(nil);
-      {$ELSE}
-        //=== VCL GUI =======
-        PluginGUI.PostCreate(SystemWindow);
-        PluginGUI.UpdateGui(nil);
-        GuiContainer.Visible := true;
-        PluginGUI.Visible    := true;
-      {$ENDIF}
+      //=== VCL GUI =======
+      PluginGUI.PostCreate(SystemWindow);
+      PluginGUI.UpdateGui(nil);
+      PluginGUI.Visible := true;
     end else
     begin
       PluginGUI.UpdateGui(nil);
@@ -156,33 +145,12 @@ begin
 
   if (UseCount = 0) then
   begin
-    {$IFDEF FmxGui}
-      //=== FMX GUI =======
-      GuiContainer := TGuiContainer.CreateParented(SystemWindow);
-      GuiContainer.Width  := PluginInfo.InitialGuiWidth;
-      GuiContainer.Height := PluginInfo.InitialGuiHeight;
+    PluginGUI := TPluginGui.CreateParented(SystemWindow);
 
-      PluginGUI := TPluginGui.Create(nil);
-      PluginGUI.Visible := false;
+    PluginGUI.Width  := PluginInfo.InitialGuiWidth;
+    PluginGUI.Height := PluginInfo.InitialGuiHeight;
 
-      PluginGUI.Width  := PluginInfo.InitialGuiWidth;
-      PluginGUI.Height := PluginInfo.InitialGuiHeight;
-
-      PluginGUI.Plugin := self.Plugin;
-    {$ELSE}
-      //=== VCL GUI =======
-      GuiContainer := TGuiContainer.CreateParented(SystemWindow);
-      GuiContainer.Width  := PluginInfo.InitialGuiWidth;
-      GuiContainer.Height := PluginInfo.InitialGuiHeight;
-
-      PluginGUI := TPluginGui.Create(GuiContainer);
-      PluginGUI.Parent := GuiContainer;
-      PluginGUI.Width  := PluginInfo.InitialGuiWidth;
-      PluginGUI.Height := PluginInfo.InitialGuiHeight;
-
-      PluginGUI.Plugin := self.Plugin;
-    {$ENDIF}
-
+    PluginGUI.Plugin := self.Plugin;
 
     self.Plugin.IsGuiOpen := true;
     UseCount := 1;
@@ -199,9 +167,6 @@ begin
   begin
     PluginGui.Free;
     PluginGui := nil;
-
-    GuiContainer.Free;
-    GuiContainer := nil;
 
     self.Plugin.IsGuiOpen := false;
     systemWindow := 0;

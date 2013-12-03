@@ -381,6 +381,8 @@ begin
 
   xml.LoadFromFile(FileName);
 
+  if not assigned(xml.Root) then exit;
+
   Name := 'FileType';
   Value := 'MidiMap';
 

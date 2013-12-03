@@ -113,10 +113,13 @@ begin
   Action := procedure(c:TControl)
   begin
     try
-      ControlDisplayClass := GetPropValue(c, 'DisplayClass');
-      if (ControlDisplayClass <> '') and (DisplayClass <> '') and (ControlDisplayClass.Contains(DisplayClass)) then
+      if (Parent is TRedFoxWinControl) or (Parent is TRedFoxGraphicControl) then
       begin
-        vq.List.Add(c);
+        ControlDisplayClass := GetPropValue(c, 'DisplayClass');
+        if (ControlDisplayClass <> '') and (DisplayClass <> '') and (ControlDisplayClass.Contains(DisplayClass)) then
+        begin
+          vq.List.Add(c);
+        end;
       end;
     except
       on EPropertyError do ; //will be raise if the 'DisplayClass property doens't exist.

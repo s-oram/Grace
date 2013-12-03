@@ -209,7 +209,7 @@ begin
   FreeAndNil(VoiceControl);
   for c1 := 0 to kMaxVoiceCount-1 do
   begin
-    FreeAndNil(Voices[c1]);
+    Voices[c1].Free;
   end;
   //========================
   SetLength(Voices, 0);

@@ -17,8 +17,8 @@ uses
   EasyEffect.AudioOutputController.Custom,
   //EasyEffect.AudioOutputController.Standard,
   //EasyEffect.AudioOutputController.DspMaster,
-  EasyEffect.AudioOutputController.BufferedR8Brain,
-  //EasyEffect.AudioOutputController.r8Brain,
+  //EasyEffect.AudioOutputController.BufferedR8Brain,
+  EasyEffect.AudioOutputController.r8Brain,
   {$ENDIF}
 
   {$IFDEF HasAudioIns}eeVstAudioInputController,{$ENDIF}
@@ -71,6 +71,7 @@ type
     function ProcessEvents(ev: PVstEvents): longint;
 
     procedure ProcessReplacing(Inputs, Outputs: PPSingle; Sampleframes: Integer);
+    procedure ProcessReplacing2(Inputs, Outputs: PPSingle; Sampleframes: Integer);
 
     property Plugin : TeePlugin read fPlugin;
 
@@ -209,14 +210,7 @@ procedure TProcessController.ProcessReplacing(Inputs, Outputs: PPSingle; Samplef
 var
   TimeInfo : PVstTimeInfo;
   ModSampleFrames : integer;
-
 begin
-
-
-  //OutputDebugString('SAMPLING ON');
-
-
-
   {$EXCESSPRECISION OFF}
 
   {$IFDEF CpuMonitor}
@@ -249,14 +243,10 @@ begin
   {$ENDIF}
 
 
-
   //-----------------------------------------------------
   //reset the midi output data.
   //-----------------------------------------------------
   MidiOutput.ClearEvents;
-
-
-
 
   //-----------------------------------------------------
   //  Time info
@@ -269,34 +259,20 @@ begin
 
 
 
-
-  //THIS SECTION is slow sometimes.
-  // when moving notes.
-
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
   ProcessAudioBlock(ModSampleFrames);
 
-
-
   //Ensure midi input data is deleted. (ProcessEvents isn't called each sample block in all VST hosts)
   if MidiInput.EventCount > 0 then MidiInput.ClearEvents;
   //-----------------------------------------------------
   //-----------------------------------------------------
-
-
-
-  //THIS SECTION is slow sometimes.
-  // random stutters at 55-70% cpu usage.
-  // Should check if sample frames value is changing.
+  
 
   {$IFDEF OverSampleEnabled}
   VstOutputsController.PostProcessVstOutputs(Outputs, SampleFrames);
   {$ENDIF}
-
-
-
 
   {$IFDEF ForceRawMidiOutput}
     //== force RAW midi output ================
@@ -323,10 +299,21 @@ begin
   {$ENDIF}
 
   //OutputDebugString('SAMPLING OFF');
-
 end;
 
 
+
+
+procedure TProcessController.ProcessReplacing2(Inputs, Outputs: PPSingle; Sampleframes: Integer);
+var
+  TimeInfo : PVstTimeInfo;
+  ModSampleFrames : integer;
+begin
+
+
+
+
+end;
 
 
 procedure TProcessController.Resume(const aBlockSize, aSampleRate, aOverSampleFactor, aInputCount, aOutputCount : integer);

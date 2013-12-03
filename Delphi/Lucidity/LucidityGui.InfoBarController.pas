@@ -64,6 +64,7 @@ var
 begin
   Plugin := aPlugin;
 
+
   VQ := VamQueryRequest(aGuiContainer, TVamKnob);
   for c in VQ.List do
   begin
@@ -71,7 +72,7 @@ begin
     (c as TVamKnob).OnMouseLeave := self.EventHandle_ControlMouseLeave;
   end;
 
-
+  //todo: property "DisplayClass" does not exist here.
   VQ := VamQueryRequest(aGuiContainer, 'MenuButton');
   for c in VQ.List do
   begin

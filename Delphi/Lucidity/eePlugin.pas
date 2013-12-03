@@ -372,7 +372,7 @@ begin
 
   ParameterWizard.Free;
   MidiAutomation.Free;
-  VoiceController.Free;
+  VoiceController.Free;  //here.
   fKeyGroups.Free;
   fSampleMap.Free;
   fGuiState.Free;

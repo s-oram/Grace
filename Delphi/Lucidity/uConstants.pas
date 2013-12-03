@@ -52,6 +52,7 @@ const
 const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
+  //kMaxVoiceCount = 8; //max number of voices per group.
 
 
 type

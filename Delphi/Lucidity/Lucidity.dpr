@@ -126,7 +126,8 @@ uses
   DAEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas',
   DAudioEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffect.pas',
   DAudioEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffectX.pas',
-  DAEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas';
+  DAEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas',
+  eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas';
 
 {$R *.res}
 

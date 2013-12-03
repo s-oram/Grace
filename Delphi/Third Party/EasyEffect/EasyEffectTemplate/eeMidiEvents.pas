@@ -388,7 +388,7 @@ begin
   inc(fEventCount);
 
   // IMPORTANT
-  // The caller epects the event to be free'ed, so lets do it.
+  // The caller expects the event to be free'ed, so lets do it.
   aEvent.Free;
   //-----------------------------------------------------------
 
