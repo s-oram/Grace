@@ -19,6 +19,7 @@ type
     fKnobMax: integer;
     fDecimalPlaces: integer;
     fOnChanged: TNotifyEvent;
+    fUnits: string;
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     procedure SetNumericStyle(const Value: TNumericStyle);
@@ -26,6 +27,7 @@ type
     procedure SetKnobMax(const Value: integer);
     procedure SetDecimalPlaces(const Value: integer);
     procedure SetKnobValue(const Value: double);
+    procedure SetUnits(const Value: string);
   protected
     ReferenceKnobValue : double;
     fKnobValue : double;
@@ -61,9 +63,9 @@ type
     property KnobMin : integer read fKnobMin write SetKnobMin;
     property KnobMax : integer read fKnobMax write SetKnobMax;
 
-    property NumericStyle : TNumericStyle read fNumericStyle write SetNumericStyle;
-
-    property DecimalPlaces : integer read fDecimalPlaces write SetDecimalPlaces;
+    property NumericStyle  : TNumericStyle read fNumericStyle  write SetNumericStyle;
+    property DecimalPlaces : integer       read fDecimalPlaces write SetDecimalPlaces;
+    property Units         : string        read fUnits         write SetUnits;
 
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
 
@@ -80,12 +82,6 @@ uses
 
 
 { TVamNumericKnob }
-
-procedure TVamNumericKnob.Changed;
-begin
-  if assigned(OnChanged) then OnChanged(Self);
-
-end;
 
 constructor TVamNumericKnob.Create(AOwner: TComponent);
 begin
@@ -105,6 +101,8 @@ begin
   fNumericStyle := nsFloat;
 
   GraphicSplitPoint := 0;
+
+  fUnits := '';
 end;
 
 destructor TVamNumericKnob.Destroy;
@@ -112,6 +110,14 @@ begin
 
   inherited;
 end;
+
+
+procedure TVamNumericKnob.Changed;
+begin
+  if assigned(OnChanged) then OnChanged(Self);
+
+end;
+
 
 
 procedure TVamNumericKnob.SetDecimalPlaces(const Value: integer);
@@ -161,6 +167,15 @@ begin
     if Value <> fTextVAlign then
   begin
     fTextVAlign := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamNumericKnob.SetUnits(const Value: string);
+begin
+  if fUnits <> Value then
+  begin
+    fUnits := Value;
     Invalidate;
   end;
 end;
@@ -321,11 +336,11 @@ begin
 
   if NumericStyle = nsInteger then
   begin
-    Text := IntToStr(Round(fKnobValue));
+    Text := IntToStr(Round(fKnobValue)) + fUnits;
     BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
   end else
   begin
-    Text := FloatToStrF(fKnobValue, TFloatFormat.ffFixed, 18, DecimalPlaces);
+    Text := FloatToStrF(fKnobValue, TFloatFormat.ffFixed, 18, DecimalPlaces) + fUnits;
 
     BreakPoint := Pos('.', Text);
 
@@ -337,12 +352,8 @@ begin
 
     GraphicSplitPoint := ActualTextBounds.Left + BackBuffer.TextWidth(TextA);
 
-
     //BackBuffer.BufferInterface.FillColor :=  GetAggColor(clRed);
     //BackBuffer.BufferInterface.Rectangle(ActualTextBounds.Left, ActualTextBounds.Top, ActualTextBounds.Right, ActualTextBounds.Bottom);
-
-
-
 
     BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
   end;

@@ -33,6 +33,8 @@ type
     procedure SetKnobNumericStyle(const Value: TNumericStyle);
     function GetText: string;
     procedure SetText(const Value: string);
+    function GetUnits: string;
+    procedure SetUnits(const Value: string);
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
@@ -59,7 +61,8 @@ type
   published
     property Font;
 
-    property Text : string read GetText write SetText;
+    property Text  : string read GetText  write SetText;
+    property Units : string read GetUnits write SetUnits;
 
     property Color_Label   : TColor             read fColor_Label   write SetColor_Label;
     property Color_Numeric : TColor             read fColor_Numeric write SetColor_Numeric;
@@ -168,6 +171,11 @@ begin
   result := ControlLabel.Text;
 end;
 
+function TVamCompoundNumericKnob.GetUnits: string;
+begin
+  result := Knob.Units;
+end;
+
 procedure TVamCompoundNumericKnob.Changed(Sended: TObject);
 begin
   if assigned(OnChanged) then OnChanged(self);
@@ -247,6 +255,11 @@ end;
 procedure TVamCompoundNumericKnob.SetText(const Value: string);
 begin
   ControlLabel.Text := Value;
+end;
+
+procedure TVamCompoundNumericKnob.SetUnits(const Value: string);
+begin
+  Knob.Units := Value;
 end;
 
 procedure TVamCompoundNumericKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
