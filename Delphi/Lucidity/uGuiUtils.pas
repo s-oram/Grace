@@ -42,7 +42,7 @@ function ShowLoopMarkers(const aRegion : IRegion):boolean;
 
 procedure SpreadControls_Horz(Controls:TArray<TControl>; const Parent : TWinControl);
 
-procedure UpdateFilterControls(const Knobs : array of TControl; const Labels : array of TControl; const FilterType : TFilterType);
+procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array of TControl; const FilterType : TFilterType);
 
 
 
@@ -388,50 +388,53 @@ end;
 
 
 
-procedure UpdateFilterControls(const Knobs : array of TControl; const Labels : array of TControl; const FilterType : TFilterType);
-  procedure EnableControl(const xKnobs : array of TControl; const xLabel: array of TControl; const Index:integer; const Caption:string);
+procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array of TControl; const FilterType : TFilterType);
+  procedure FastUpdateControl(aControl, aLabel : Tcontrol; const Caption : string = '');
   begin
-    (xKnobs[Index] as TVamKnob).Enabled := true;
-    (xLabel[Index] as TVamLabel).Text    := Caption;
-    (xLabel[Index] as TVamLabel).Visible := true;
-  end;
-  procedure DisableControl(const xKnobs : array of TControl; const xLabel: array of TControl; const Index:integer);
-  begin
-    (xKnobs[Index] as TVamKnob).Enabled := false;
-    (xLabel[Index] as TVamLabel).Visible := false;
+    if Caption <> '' then
+    begin
+      aControl.Visible := true;
+      (aLabel as TVamLabel).Text := Caption;
+      aLabel.Visible := true;
+    end else
+    begin
+      aControl.Visible := false;
+      (aLabel as TVamLabel).Text := '';
+      aLabel.Visible := false;
+    end;
   end;
 begin
   case FilterType of
     ftNone:
     begin
-      DisableControl(Knobs, Labels, 0);
-      DisableControl(Knobs, Labels, 1);
-      DisableControl(Knobs, Labels, 2);
-      DisableControl(Knobs, Labels, 3);
+      FastUpdateControl(Knobs[0], Labels[0], '');
+      FastUpdateControl(Knobs[1], Labels[1], '');
+      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
     ftLowPassA, ftBandPassA, ftHighPassA:
     begin
-      EnableControl(Knobs, Labels, 0, 'FREQ');
-      EnableControl(Knobs, Labels, 1, 'RES');
-      DisableControl(Knobs, Labels, 2);
-      DisableControl(Knobs, Labels, 3);
+      FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
+      FastUpdateControl(Knobs[1], Labels[1], 'RES');
+      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
     ftLofiA:
     begin
-      EnableControl(Knobs, Labels, 0, 'SR');
-      EnableControl(Knobs, Labels, 1, 'BITS');
-      DisableControl(Knobs, Labels, 2);
-      DisableControl(Knobs, Labels, 3);
+      FastUpdateControl(Knobs[0], Labels[0], 'SR');
+      FastUpdateControl(Knobs[1], Labels[1], 'BITS');
+      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
     ftRingModA:
     begin
-      EnableControl(Knobs, Labels, 0, 'FREQ');
-      EnableControl(Knobs, Labels, 1, 'AMT');
-      DisableControl(Knobs, Labels, 2);
-      DisableControl(Knobs, Labels, 3);
+      FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
+      FastUpdateControl(Knobs[1], Labels[1], 'AMT');
+      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
     //ftDistA:
@@ -440,14 +443,15 @@ begin
 
     ftCombA:
     begin
-      EnableControl(Knobs, Labels, 0, 'FREQ');
-      EnableControl(Knobs, Labels, 1, 'AMT');
-      DisableControl(Knobs, Labels, 2);
-      DisableControl(Knobs, Labels, 3);
+      FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
+      FastUpdateControl(Knobs[1], Labels[1], 'AMT');
+      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[3], Labels[3], '');
     end;
   else
     raise Exception.Create('Type not handled.');
   end;
+
 end;
 
 

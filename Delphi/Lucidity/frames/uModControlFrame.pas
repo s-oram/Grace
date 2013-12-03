@@ -587,7 +587,7 @@ end;
 procedure TModControlFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
-  if Message.Msg = UM_FILTER_CHANGED            then UpdateControlVisibility;
+  if Message.Msg = UM_FILTER_CHANGED then UpdateControlVisibility;
 end;
 
 
@@ -616,9 +616,6 @@ begin
   Labels[3] := Filter1P4Label;
 
   UpdateFilterControls(Knobs, Labels, FT);
-
-
-
 
 
 
@@ -960,6 +957,7 @@ begin
   assert(assigned(Plugin));
   Plugin.GetFilterInfo(@FilterParameterInfo);
 
+  {
   Filter1P1Label.Text := FilterParameterInfo.Filter1Par1ShortName;
   Filter1P2Label.Text := FilterParameterInfo.Filter1Par2ShortName;
   Filter1P3Label.Text := FilterParameterInfo.Filter1Par3ShortName;
@@ -967,6 +965,7 @@ begin
   Filter2P1Label.Text := FilterParameterInfo.Filter2Par1ShortName;
   Filter2P2Label.Text := FilterParameterInfo.Filter2Par2ShortName;
   Filter2P3Label.Text := FilterParameterInfo.Filter2Par3ShortName;
+  }
 end;
 
 procedure TModControlFrame.StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
