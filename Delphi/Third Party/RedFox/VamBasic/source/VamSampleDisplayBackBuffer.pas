@@ -5,7 +5,8 @@ interface
 uses
   System.Classes, System.Types, Graphics,
   RedFox, RedFoxColor,
-  RedFoxImageBuffer;
+  RedFoxImageBuffer,
+  VamSamplePeakBuffer;
 
 type
   TSampleImageBuffer = class;
@@ -66,6 +67,7 @@ type
     procedure DrawPeaks(const PeakData : TArrayOfPeak; const aFirstPeak, aPeakCount : integer; const DestBounds : TRectF);
     procedure DrawPoints(smps:PSingle; SampleFrames:integer; const DestBounds : TRectF);
 
+    procedure DrawPeakBufferData(const Peaks : TPeakBufferData; const PeakFrames : integer; const DestBounds : TRectF);
 
     procedure DrawSample_UsingPeaks;
     procedure DrawSample_UsingPoints;
@@ -73,6 +75,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
+    procedure DrawSample(PeakBuffer : IPeakBuffer); overload;
     procedure DrawSample(SDI:TSampleDisplayInfo); overload;
     procedure DrawSample; overload;
     procedure ClearSample(InvalidateDisplay : boolean = true);
@@ -350,6 +353,100 @@ begin
       else DrawSample_UsingPoints;
   end;
 end;
+
+procedure TSampleImageBuffer.DrawSample(PeakBuffer: IPeakBuffer);
+var
+  DestBounds : TRectF;
+begin
+  BackBuffer.BufferInterface.ClearAll(fLineColor.R, fLineColor.G, fLineColor.B, 0);
+  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+
+  //if PeakBuffer then
+
+  if (PeakBuffer.GetDataChannels = 1)  then
+  begin
+    DestBounds.Left := 0;
+    DestBounds.Top  := 0;
+    DestBounds.Height := BackBuffer.Height;
+    DestBounds.Width  := BackBuffer.Width;
+
+    DrawPeakBufferData(PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
+  end;
+
+  if PeakBuffer.GetDataChannels = 2 then
+  begin
+    DestBounds.Left   := 0;
+    DestBounds.Width  := BackBuffer.Width;
+    DestBounds.Top    := 0;
+    DestBounds.Height := BackBuffer.Height * 0.5;
+
+    DrawPeakBufferData(PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
+
+    DestBounds.Left   := 0;
+    DestBounds.Width  := BackBuffer.Width;
+    DestBounds.Top    := BackBuffer.Height * 0.5;
+    DestBounds.Height := BackBuffer.Height * 0.5;
+
+    DrawPeakBufferData(PeakBuffer.GetDataB^, PeakBuffer.GetDataFrames, DestBounds);
+  end;
+
+
+  //BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
+  //BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
+  //BackBuffer.BufferInterface.LineWidth := 1;
+
+  //BackBuffer.BufferInterface.Line(0,0,100,100);
+
+
+
+
+end;
+
+procedure TSampleImageBuffer.DrawPeakBufferData(const Peaks: TPeakBufferData; const PeakFrames : integer; const DestBounds: TRectF);
+var
+  xOffset : integer;
+  x1, y1, y2 : single;
+  MidPoint : single;
+  c1: Integer;
+  UnityGainPixelHeight : single;
+begin
+  if PeakFrames <> DestBounds.Width then exit;
+
+  xOffset := floor(DestBounds.Left);
+  MidPoint := DestBounds.Top + (DestBounds.Height * 0.5);
+
+  UnityGainPixelHeight := (DestBounds.Height * 0.5);
+
+  BackBuffer.BufferInterface.FillColor := fLineColor.AsAggRgba8;
+  BackBuffer.BufferInterface.LineColor := fLineColor.AsAggRgba8;
+  BackBuffer.BufferInterface.LineWidth := 1;
+
+  //BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
+  //BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
+  //BackBuffer.BufferInterface.LineWidth := 1;
+
+
+  for c1 := 0 to PeakFrames-1 do
+  begin
+    x1 := xOffset + c1 + 0.5;
+    y1 := MidPoint - (Peaks[c1].MaxValue * UnityGainPixelHeight);
+    y2 := MidPoint - (Peaks[c1].MinValue * UnityGainPixelHeight);
+
+    if IsNAN(y1) then y1 := 0;
+    if IsNAN(y2) then y2 := 0;
+
+    if y1 <= DestBounds.Top    then y1 := DestBounds.Top    + 1;
+    if y1 >= DestBounds.Bottom then y1 := DestBounds.Bottom - 1;
+
+    if y2 <= DestBounds.Top    then y2 := DestBounds.Top    + 1;
+    if y2 >= DestBounds.Bottom then y2 := DestBounds.Bottom - 1;
+
+    BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
+  end;
+end;
+
+
+
 
 
 procedure TSampleImageBuffer.DrawSample_UsingPeaks;

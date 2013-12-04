@@ -47,6 +47,8 @@ type
     SampleOverlayClickPos : TPoint;
     SampleDisplayMenu : TSampleDisplayMenu;
 
+    StoredImage : ISampleImageBuffer;
+
     procedure CombinedSampleDisplayUpdate(const Region : IRegion; const NoRegionMessage : string);
 
     procedure UpdateSampleDisplayInfo;
@@ -116,6 +118,9 @@ begin
   SampleInfo.IsValid := false;
 
   SampleDisplayMenu := TSampleDisplayMenu.Create;
+
+
+  StoredImage := TSampleImageBuffer.Create;
 end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
@@ -176,6 +181,9 @@ begin
 
   SampleVolumeKnob.Margins.SetBounds(0,0,20,0);
   SamplePanKnob.Margins.SetBounds(0,0,20,0);
+
+
+  StoredImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
 end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
@@ -237,8 +245,24 @@ begin
   begin
     if Region.GetSample^.Properties.IsValid then
     begin
-      // Draw pre-rendered sample.
-      SampleDisplay.DrawSample(Region.GetSampleImage);
+
+      if (Region.GetSample^.Properties.SampleFrames > kSampleImageWidth) then
+      begin
+        //Update the stored image.
+        StoredImage.GetObject.LineColor := SampleDisplay.LineColor;
+        StoredImage.GetObject.DrawSample(Region.GetPeakBuffer);
+
+        // draw the stored image on the control.
+        SampleDisplay.DrawSample(StoredImage);
+      end else
+      begin
+        // Draw pre-rendered sample.
+        SampleDisplay.DrawSample(Region.GetSampleImage);
+      end;
+
+
+
+
 
       {
       // Provide sample info for real-time drawing of sample.

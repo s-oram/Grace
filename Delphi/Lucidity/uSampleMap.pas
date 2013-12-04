@@ -63,6 +63,7 @@ type
     function GetKeyGroup      : IKeyGroup;
     function GetZeroCrossings : TSampleZeroCrossings;
     function GetSampleImage   : ISampleImageBuffer;
+    function GetPeakBuffer    : IPeakBuffer;
 
     function GetDbLevelAt(SamplePoint:integer):single;
 
@@ -83,6 +84,7 @@ type
     function GetKeyGroup      : IKeyGroup;
     function GetZeroCrossings : TSampleZeroCrossings;
     function GetSampleImage   : ISampleImageBuffer;
+    function GetPeakBuffer    : IPeakBuffer;
   public
     constructor Create;
     destructor Destroy; override;
@@ -255,6 +257,11 @@ begin
   result := self;
 end;
 
+function TRegion.GetPeakBuffer: IPeakBuffer;
+begin
+  result := fPeakBuffer;
+end;
+
 function TRegion.GetProperties: PRegionProperties;
 begin
   result := fProperties;
@@ -308,6 +315,9 @@ procedure TRegion.UpdateSampleImage;
 var
   SDI : TSampleDisplayInfo;
 begin
+  //============================================================================
+  //            Sample Image
+  //============================================================================
   SampleImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
   SampleImage.GetObject.LineColor := kColor_SampleDisplayLine;
   SampleImage.GetObject.Zoom      := 0;
@@ -332,6 +342,25 @@ begin
 
     SampleImage.GetObject.DrawSample(SDI);
   end;
+
+
+
+  //============================================================================
+  //            Peak Buffer
+  //============================================================================
+
+  PeakBuffer.Clear;
+
+  if (Sample.Properties.IsValid) and (Sample.Properties.SampleFrames > kSampleImageWidth) then
+  begin
+    if Sample.Properties.ChannelCount = 1
+      then PeakBuffer.GeneratePeaks(Sample.Properties.Ch1, Sample.Properties.SampleFrames, kSampleImageWidth);
+
+    if Sample.Properties.ChannelCount = 2
+      then PeakBuffer.GeneratePeaks(Sample.Properties.Ch1, Sample.Properties.Ch2, Sample.Properties.SampleFrames, kSampleImageWidth);
+  end;
+
+
 end;
 
 { TSampleMap }

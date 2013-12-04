@@ -6,16 +6,31 @@ type
   TPeakBuffer = class;
   IPeakBuffer = interface;
 
-  IPeakBuffer = interface
-    ['{E925DFD8-A07D-403A-A0FD-7D4AFE96C27F}']
-  end;
+
 
   TPeakBufferDataPoint = record
     MinValue : single;
     MaxValue : single;
   end;
 
+
   TPeakBufferData = TArray<TPeakBufferDataPoint>;
+  PPeakBufferData = ^TPeakBufferData;
+
+
+  IPeakBuffer = interface
+    ['{E925DFD8-A07D-403A-A0FD-7D4AFE96C27F}']
+
+    procedure Clear;
+
+    procedure GeneratePeaks(InputA : PSingle; const InputSampleFrames, PeakFrames : integer); overload;
+    procedure GeneratePeaks(InputA, InputB : PSingle; const InputSampleFrames, PeakFrames : integer); overload;
+
+    function GetDataFrames : integer;
+    function GetDataChannels : integer;
+    function GetDataA : PPeakBufferData;
+    function GetDataB : PPeakBufferData;
+  end;
 
   TPeakBuffer = class(TInterfacedObject, IPeakBuffer)
   private
@@ -26,9 +41,17 @@ type
 
     procedure InternalGenPeaks(Input : PSingle; const InputSampleFrames, PeakFrames : integer; var Buffer : TPeakBufferData);
     procedure InternalClearPeaks(PeakFrames : integer; var Buffer : TPeakBufferData);
+
+
+    function GetDataFrames : integer;
+    function GetDataChannels : integer;
+    function GetDataA : PPeakBufferData;
+    function GetDataB : PPeakBufferData;
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure Clear;
 
     procedure GeneratePeaks(InputA : PSingle; const InputSampleFrames, PeakFrames : integer); overload;
     procedure GeneratePeaks(InputA, InputB : PSingle; const InputSampleFrames, PeakFrames : integer); overload;
@@ -43,7 +66,7 @@ implementation
 
 { TPeakBuffer }
 
-constructor TPeakBuffer.Create;
+procedure TPeakBuffer.Clear;
 begin
   fDataFrames   := 0;
   fDataChannels := 0;
@@ -51,10 +74,14 @@ begin
   SetLength(fDataB, 0);
 end;
 
+constructor TPeakBuffer.Create;
+begin
+  Clear;
+end;
+
 destructor TPeakBuffer.Destroy;
 begin
-  SetLength(fDataA, 0);
-  SetLength(fDataB, 0);
+  Clear;
   inherited;
 end;
 
@@ -81,8 +108,6 @@ begin
   SetLength(fDataA, PeakFrames);
   SetLength(fDataB, PeakFrames);
 
-
-
   if InputSampleFrames > PeakFrames then
   begin
     InternalGenPeaks(InputA, InputSampleFrames, PeakFrames, fDataA);
@@ -92,6 +117,26 @@ begin
     InternalClearPeaks(PeakFrames, fDataA);
     InternalClearPeaks(PeakFrames, fDataB);
   end;
+end;
+
+function TPeakBuffer.GetDataA: PPeakBufferData;
+begin
+  result := @fDataA;
+end;
+
+function TPeakBuffer.GetDataB: PPeakBufferData;
+begin
+  result := @fDataB;
+end;
+
+function TPeakBuffer.GetDataChannels: integer;
+begin
+  result := fDataChannels;
+end;
+
+function TPeakBuffer.GetDataFrames: integer;
+begin
+  result := fDataFrames;
 end;
 
 procedure TPeakBuffer.InternalClearPeaks(PeakFrames: integer; var Buffer: TPeakBufferData);
