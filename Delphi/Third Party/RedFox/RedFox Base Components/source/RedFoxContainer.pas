@@ -121,8 +121,7 @@ type
     // to blit all controls in the region to it's back buffer.
     procedure InvalidateRegion(aRegion:TRect);
 
-    // Resize calls SetBounds() then fires the OnResize() event.
-    procedure Resize(aLeft, aTop, aWidth, aHeight: Integer);
+
 
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
 
@@ -649,28 +648,6 @@ end;
 procedure TRedFoxContainer.RequestAlign;
 begin
   inherited;
-end;
-
-procedure TRedFoxContainer.Resize(aLeft, aTop, aWidth, aHeight: Integer);
-begin
-  // NOTE: Resize calls SetBounds() then fires the OnResize() event.
-  // I'm not sure why the OnResize() event isn't called after SetBounds().
-  // I considered overriding the SetBounds() method so that the OnResize()
-  // event is fired, but I'm guessing there must be a reason the VCL designers
-  // didn't do this.
-  // Adding the Resize() method allows the control to be resized and the Resize()
-  // event to be triggered where appropiate.
-
-  if (aLeft <> Left) or (aTop <> Top) or (aWidth <> Width) or (aHeight <> aHeight) then
-  begin
-    //BeginUpdate;
-    try
-      SetBounds(aLeft, aTop, aWidth, aHeight);
-      if assigned(OnResize) then OnResize(self);
-    finally
-      //EndUpdate;
-    end;
-  end;
 end;
 
 procedure TRedFoxContainer.Notification(AComponent: TComponent; Operation: TOperation);
