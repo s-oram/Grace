@@ -291,7 +291,6 @@ var
   Dstx1, Dstx2, Dsty1, Dsty2 : integer;
   CopyWidth, CopyHeight : integer;
   c1, c2 : integer;
-  DstIndex : integer;
   SrcPixel : PInt8u;
   DstPixel : PInt8u;
   SrcOffsetX, SrcOffsetY : integer;
@@ -320,8 +319,8 @@ begin
 
     if Dstx1 < 0 then Dstx1 := 0;
     if Dsty1 < 0 then Dsty1 := 0;
-    if Dstx2 > Width  then Dstx2 := Width;
-    if Dsty2 > Height then Dsty2 := Height;
+    if Dstx2 > Width  then Dstx2 := CastToInteger(Width);
+    if Dsty2 > Height then Dsty2 := CastToInteger(Height);
 
     CopyWidth  := Dstx2 - Dstx1;
     CopyHeight := Dsty2 - Dsty1;
@@ -428,7 +427,6 @@ var
   PixelWidth, PixelHeight : cardinal;
   PixelStride : integer;
   CopyWidth, CopyHeight : integer;
-  PixelByteSize : integer;
 begin
   assert(assigned(aBitmap));
   assert(aBitmap.PixelFormat = TPixelFormat.pf32bit);
