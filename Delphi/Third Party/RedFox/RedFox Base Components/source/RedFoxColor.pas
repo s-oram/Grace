@@ -336,9 +336,6 @@ end;
 
 function ColorFade(const ColorA, ColorB: TRedFoxColor; const FadeAmt : byte):TRedFoxColor;
 begin
-  assert(FadeAmt >= 0);
-  assert(FadeAmt <= 255);
-
   if FadeAmt = 0 then
   begin
     result := ColorA;

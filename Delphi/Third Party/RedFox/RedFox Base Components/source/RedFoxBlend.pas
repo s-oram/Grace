@@ -224,15 +224,13 @@ begin
 end;
 
 function Copy_WinText(const BasePixel, TopPixel : T32BitPixel):T32BitPixel;
-var
-  Alpha : byte;
+//var
+//  Alpha : byte;
 begin
-
   result.R := 0;
   result.G := 0;
   result.B := 0;
   result.A := (255 - TopPixel.G);
-
 
   result := TopPixel;
   result.A := 255;
@@ -326,22 +324,6 @@ var
   CopyBoundX1, CopyBoundY1, CopyBoundX2, CopyBoundY2 : integer;
   CopyWidth, CopyHeight : integer;
 begin
-  if Src.X1 >= 0
-    then CopyBoundX1 := Src.X1
-    else CopyBoundX1 := 0;
-
-  if Src.X2 <= Src.BufferWidth
-    then CopyBoundX2 := Src.X2
-    else CopyBoundX2 := Src.BufferWidth;
-
-  if Src.Y1 >= 0
-    then CopyBoundY1 := Src.Y1
-    else CopyBoundY1 := 0;
-
-  if Src.Y2 <= Src.BufferHeight
-    then CopyBoundY2 := Src.Y2
-    else CopyBoundY2 := Src.BufferHeight;
-
   CopyBoundX1 := Src.X1;
   CopyBoundX2 := Src.X2;
   CopyBoundY1 := Src.Y1;

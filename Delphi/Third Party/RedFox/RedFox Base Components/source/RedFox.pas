@@ -56,7 +56,7 @@ function WinAlphaBlend(hdcDest: HDC; xoriginDest, yoriginDest, wDest, hDest: int
   stdcall; external 'Msimg32.dll' name 'AlphaBlend';
 
 
-function AlphaBlendBitmapToDC(DeviceContext:HDC; DcWidth, DcHeight: integer; SourceBitmap : TBitmap):boolean;
+procedure AlphaBlendBitmapToDC(DeviceContext:HDC; DcWidth, DcHeight: integer; SourceBitmap : TBitmap);
 
 
 type
@@ -196,7 +196,7 @@ begin
   result := Rect;
 end;
 
-function AlphaBlendBitmapToDC(DeviceContext:HDC; DcWidth, DcHeight: integer; SourceBitmap : TBitmap):boolean;
+procedure AlphaBlendBitmapToDC(DeviceContext:HDC; DcWidth, DcHeight: integer; SourceBitmap : TBitmap);
 var
   BlendFunction: TBlendFunction;
 begin
