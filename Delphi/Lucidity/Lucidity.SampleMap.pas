@@ -1,4 +1,4 @@
-unit uSampleMap;
+unit Lucidity.SampleMap;
 
 interface
 

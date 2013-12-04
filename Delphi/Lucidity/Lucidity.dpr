@@ -13,7 +13,6 @@ uses
   MadExcept,
   SysUtils,
   Classes,
-  eePlugin in 'eePlugin.pas',
   eePluginGui in 'eePluginGui.pas' {PluginGui},
   uConstants in 'uConstants.pas',
   uDataFolderUtils in 'uDataFolderUtils.pas',

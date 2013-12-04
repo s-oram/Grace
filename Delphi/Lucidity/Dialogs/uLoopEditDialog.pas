@@ -113,7 +113,7 @@ implementation
 
 uses
   GuidEx, uGuiUtils, RedFoxColor,
-  uSampleMap;
+  Lucidity.SampleMap;
 
 {$R *.dfm}
 

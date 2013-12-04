@@ -3,7 +3,7 @@ unit Menu.SampleMapContextMenu;
 interface
 
 uses
-  eePlugin, Vcl.Menus, uSampleMap;
+  eePlugin, Vcl.Menus, Lucidity.SampleMap;
 
 type
   TSampleMapContextMenu = class

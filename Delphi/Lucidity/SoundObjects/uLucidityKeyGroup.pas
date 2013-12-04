@@ -8,7 +8,7 @@ uses
   eeVoiceLogic, eeVstParameter,
   eeVstParameterList, eePatchObject,
   uConstants,
-  uSampleMap,
+  Lucidity.SampleMap,
   soLucidityVoice, soLucidityVoiceParameterWrapper,
   uModularConnectionManager,
   uLucidityStepSequencer,

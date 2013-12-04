@@ -5,7 +5,7 @@ interface
 uses
   uConstants,
   uLucidityEnums,
-  uSampleMap;
+  Lucidity.SampleMap;
 
 type
   TGuiFeeback_SampleBounds = record

@@ -26,7 +26,7 @@ type
 implementation
 
 uses
-  uSampleMap, SysUtils,
+  Lucidity.SampleMap, SysUtils,
   eePluginEx, uKeyGroupManager,
   uConstants, uLucidityKeyGroupInterface,
   uAutoFree;

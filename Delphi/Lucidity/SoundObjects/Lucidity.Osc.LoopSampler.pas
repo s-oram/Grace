@@ -6,7 +6,7 @@ interface
 
 uses
   Classes,
-  MoreTypes, uSampleMap, uLucidityCustomSampleOsc,
+  MoreTypes, Lucidity.SampleMap, uLucidityCustomSampleOsc,
   soGateEnvelope, soStepInFilter,
   eeCounter,
   Lucidity.Osc.FadeOutSampler,

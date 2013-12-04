@@ -4,7 +4,7 @@ interface
 
 uses
   eeGuiStandard, VamVisibleControl,
-  eePlugin, uSampleMap, uGuiFeedbackData, uConstants, uLucidityKeyGroupInterface,
+  eePlugin, Lucidity.SampleMap, uGuiFeedbackData, uConstants, uLucidityKeyGroupInterface,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamScrollBox, VamSampleDisplay,

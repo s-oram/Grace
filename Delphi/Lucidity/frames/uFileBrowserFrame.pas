@@ -73,7 +73,7 @@ implementation
 
 uses
   eeFunctions, uLucidityExtra,
-  uSampleMap, RedFoxColor;
+  Lucidity.SampleMap, RedFoxColor;
 
 {$R *.dfm}
 

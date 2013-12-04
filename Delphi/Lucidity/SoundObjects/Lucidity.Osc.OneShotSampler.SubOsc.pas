@@ -4,7 +4,7 @@ interface
 
 uses
   MoreTypes, uLucidityEnums,
-  uSampleMap, soGateEnvelope,
+  Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,
   Math, eeDsp, eeFunctions,
   eeDsp.Interpolation,

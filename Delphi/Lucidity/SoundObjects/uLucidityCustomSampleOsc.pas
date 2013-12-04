@@ -7,7 +7,7 @@ unit uLucidityCustomSampleOsc;
 interface
 
 uses
-  MoreTypes, uSampleMap, uConstants, eeSampleFloat,
+  MoreTypes, Lucidity.SampleMap, uConstants, eeSampleFloat,
   uLucidityClock;
 
 type

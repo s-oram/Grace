@@ -3,7 +3,7 @@ unit SampleOscUtils;
 interface
 
 uses
-  eeDsp.Interpolation, eePitch, uSampleMap, eeSampleFloat, Math;
+  eeDsp.Interpolation, eePitch, Lucidity.SampleMap, eeSampleFloat, Math;
 
 
 function CalcSampleStepSize(const TriggerNote, RootNote:Byte; const PitchOne, PitchTwo : single):single; overload;

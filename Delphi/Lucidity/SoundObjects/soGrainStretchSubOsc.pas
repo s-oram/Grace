@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, MoreTypes,
-  uSampleMap, soGateEnvelope,
+  Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,
   eeDsp,
   Math, SampleOscUtils;

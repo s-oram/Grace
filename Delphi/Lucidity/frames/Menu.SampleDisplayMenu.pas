@@ -31,7 +31,7 @@ implementation
 uses
   SysUtils,
   eeWinEx,
-  uSampleMap,
+  Lucidity.SampleMap,
   uConstants;
 
 { TSampleDisplayMenu }

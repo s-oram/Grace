@@ -6,7 +6,7 @@ interface
 
 uses
   MoreTypes, B2.Filter.CriticallyDampedLowpass,
-  uSampleMap, soGateEnvelope,
+  Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,
   eeDsp,
   eeCounter,

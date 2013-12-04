@@ -117,7 +117,7 @@ uses
   uConstants,
   eeSaveLoadFunctions,
   eeEnumHelper,
-  uSampleMap,
+  Lucidity.SampleMap,
   eeFunctions, uKeyGroupManager,
   Lucidity.Sfz;
 

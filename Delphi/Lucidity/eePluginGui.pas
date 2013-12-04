@@ -7,7 +7,7 @@ interface
 
 uses
   OtlComm,
-  uAboutFrame, uSampleMap, uDialogDisplayArea, uInfoBarFrame, uModSystemFrame,
+  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame, uModSystemFrame,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
   uGuiState, eePluginHotkeys,

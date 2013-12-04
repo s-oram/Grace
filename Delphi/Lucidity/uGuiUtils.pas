@@ -7,7 +7,7 @@ unit uGuiUtils;
 interface
 
 uses
-  Dialogs, uSampleMap, eePlugin, uLucidityEnums,
+  Dialogs, Lucidity.SampleMap, eePlugin, uLucidityEnums,
   eeGlobals, VamLabel, VamTextBox, eeEnumHelper, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
 

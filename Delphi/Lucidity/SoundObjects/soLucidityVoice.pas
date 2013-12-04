@@ -18,7 +18,7 @@ uses
   Lucidity.Osc.OneShotSampler.SubOsc,
   Lucidity.Osc.LoopSampler,
   Lucidity.Osc.GrainStretch,
-  uSampleMap, soLucidityWaveOsc, soLucidityFilter,
+  Lucidity.SampleMap, soLucidityWaveOsc, soLucidityFilter,
   soModMatrix, soFivePointEnvelope,
   uLucidityLfo, uLucidityStepSequencer,
   uLucidityVCA, uLucidityPanner,

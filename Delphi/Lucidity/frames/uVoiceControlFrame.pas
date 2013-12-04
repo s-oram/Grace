@@ -90,7 +90,7 @@ uses
   eeVstParameter,
   eeGuiStandard_MenuController,
   eeGuiHelpers,
-  uSampleMap,
+  Lucidity.SampleMap,
   VamLayoutWizard,
   uLucidityKeyGroupInterface,
   RedFoxColor,

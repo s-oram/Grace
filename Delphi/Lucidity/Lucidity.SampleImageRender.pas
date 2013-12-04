@@ -14,4 +14,17 @@ type
 
 implementation
 
+{ TSampleImageRenderer }
+
+constructor TSampleImageRenderer.Create;
+begin
+
+end;
+
+destructor TSampleImageRenderer.Destroy;
+begin
+
+  inherited;
+end;
+
 end.

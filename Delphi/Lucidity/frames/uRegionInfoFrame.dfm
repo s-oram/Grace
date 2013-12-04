@@ -22,7 +22,9 @@ object RegionInfoFrame: TRegionInfoFrame
       Height = 240
       HitTest = True
       Color = '$FFCCCCCC'
+      Transparent = False
       Align = alClient
+      Visible = True
       ExplicitLeft = 76
       ExplicitTop = 28
       ExplicitWidth = 145

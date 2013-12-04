@@ -3,7 +3,7 @@ unit uRegionInfoFrame;
 interface
 
 uses
-  uSampleMap,
+  Lucidity.SampleMap,
   eePlugin, uGuiFeedbackData, eeGuiStandard,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,

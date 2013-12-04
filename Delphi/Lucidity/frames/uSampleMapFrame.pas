@@ -83,7 +83,7 @@ uses
   eeVstXml,
   RedFoxColor, eePitch,
   VamKeyStateTracker, GuidEx,
-  uConstants, uSampleMap, uLucidityKeyGroup;
+  uConstants, Lucidity.SampleMap, uLucidityKeyGroup;
 
 {$R *.dfm}
 
