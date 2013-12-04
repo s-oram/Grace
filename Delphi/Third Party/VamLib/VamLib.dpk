@@ -32,6 +32,7 @@ requires
 
 contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',
-  VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas';
+  VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas',
+  VamLib.Utils in 'Source\VamLib.Utils.pas';
 
 end.
