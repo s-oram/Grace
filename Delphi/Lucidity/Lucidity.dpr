@@ -127,7 +127,8 @@ uses
   DAudioEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffect.pas',
   DAudioEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffectX.pas',
   DAEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas',
-  eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas';
+  eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas',
+  Lucidity.SampleImageRender in 'Lucidity.SampleImageRender.pas';
 
 {$R *.res}
 
