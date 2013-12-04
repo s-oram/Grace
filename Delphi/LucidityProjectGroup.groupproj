@@ -3,11 +3,14 @@
 			<ProjectGuid>{B045BC23-7472-4814-8AE6-A2BFB6A6D387}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
+			<Projects Include="Third Party\VamLib\VamLib.dproj">
+				<Dependencies/>
+			</Projects>
 			<Projects Include="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj">
-				<Dependencies>Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj</Dependencies>
+				<Dependencies>Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj;Third Party\VamLib\VamLib.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj">
 				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
@@ -38,6 +41,15 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
+		<Target Name="VamLib">
+			<MSBuild Projects="Third Party\VamLib\VamLib.dproj"/>
+		</Target>
+		<Target Name="VamLib:Clean">
+			<MSBuild Targets="Clean" Projects="Third Party\VamLib\VamLib.dproj"/>
+		</Target>
+		<Target Name="VamLib:Make">
+			<MSBuild Targets="Make" Projects="Third Party\VamLib\VamLib.dproj"/>
+		</Target>
 		<Target Name="DragDropDXE2">
 			<MSBuild Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
 		</Target>
@@ -47,13 +59,13 @@
 		<Target Name="DragDropDXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2" DependsOnTargets="DragDropDXE2">
+		<Target Name="AggPasRunXE2" DependsOnTargets="DragDropDXE2;VamLib">
 			<MSBuild Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2:Clean" DependsOnTargets="DragDropDXE2:Clean">
+		<Target Name="AggPasRunXE2:Clean" DependsOnTargets="DragDropDXE2:Clean;VamLib:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2:Make" DependsOnTargets="DragDropDXE2:Make">
+		<Target Name="AggPasRunXE2:Make" DependsOnTargets="DragDropDXE2:Make;VamLib:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
 		<Target Name="AggPasDesXE2" DependsOnTargets="AggPasRunXE2">
@@ -120,13 +132,13 @@
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="DragDropDXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;Lucidity;ComponentTester"/>
+			<CallTarget Targets="VamLib;DragDropDXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;Lucidity;ComponentTester"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="DragDropDXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;Lucidity:Clean;ComponentTester:Clean"/>
+			<CallTarget Targets="VamLib:Clean;DragDropDXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;Lucidity:Clean;ComponentTester:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="DragDropDXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;Lucidity:Make;ComponentTester:Make"/>
+			<CallTarget Targets="VamLib:Make;DragDropDXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;Lucidity:Make;ComponentTester:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
