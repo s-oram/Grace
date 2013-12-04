@@ -33,7 +33,8 @@ requires
   AggPasDesXE2,
   vcl,
   vclimg,
-  dbrtl;
+  dbrtl,
+  VamLib;
 
 contains
   RedFoxColor in '..\source\RedFoxColor.pas',

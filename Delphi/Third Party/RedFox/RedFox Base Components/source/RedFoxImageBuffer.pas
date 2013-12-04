@@ -86,6 +86,7 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   Types,
   SysUtils, AggBasics, AggPixelFormat, AggColor,
   RedFoxBlend;
@@ -300,7 +301,7 @@ begin
   assert(aBitmap.PixelFormat = TPixelFormat.pf32bit);
   if aBitmap.PixelFormat <> TPixelFormat.pf32bit then raise Exception.Create('aBitmap.PixelFormat must be 32 bits!');
 
-  if (x + aBitmap.Width >= 0) and (y + aBitmap.Height >= 0) and (x < Width) and (y < Height) then
+  if (x + aBitmap.Width >= 0) and (y + aBitmap.Height >= 0) and (x < CastToInteger(Width)) and (y < CastToInteger(Height)) then
   begin
     // Calculate copy source x-y offset positions.
     if x < 0

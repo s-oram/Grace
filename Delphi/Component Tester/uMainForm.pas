@@ -23,6 +23,9 @@ type
     Sample : TSampleFloat;
     Peakbuffer : IPeakBuffer;
     ImageBuffer : ISampleImageBuffer;
+
+    a : integer;
+    b : cardinal;
   end;
 
 var
@@ -32,11 +35,22 @@ implementation
 
 {$R *.dfm}
 
+uses
+  VamLib.Utils;
+
+
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   Sample := TSampleFloat.Create;
   PeakBuffer := TPeakbuffer.Create;
   ImageBuffer := TSampleImageBuffer.Create;
+
+
+  a := 50;
+  b := 2000000000000;
+
+  ShowMessage(IntToStr(a + Integer(b)));
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);

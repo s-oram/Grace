@@ -4,7 +4,13 @@ interface
 
 type
   PObject = ^TObject;
-  function AutoFree(const aObject: PObject): IUnknown;
+
+function AutoFree(const aObject: PObject): IUnknown;
+
+
+// a couple of methods to help with removing the 'combining signed and unsigned' types...
+function CastToInteger(Value : cardinal):integer;
+function CastToCardinal(Value : integer):cardinal;
 
 implementation
 
@@ -46,5 +52,18 @@ end;
 //==============================================================================
 //==============================================================================
 
+function CastToInteger(Value : cardinal):integer;
+const
+  kMaxInt = 2147483647;
+begin
+  if Value > kMaxInt then raise Exception.Create('Cannot convert type to integer. The result will overflow.');
+  result := Integer(Value);
+end;
+
+function CastToCardinal(Value : integer):cardinal;
+begin
+  if Value < 0 then raise Exception.Create('Cannot convert type to cardinal. The result will overflow.');
+  result := Cardinal(Value);
+end;
 
 end.
