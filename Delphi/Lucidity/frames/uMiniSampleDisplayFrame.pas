@@ -49,7 +49,8 @@ type
 
     StoredImage : ISampleImageBuffer;
 
-    procedure CombinedSampleDisplayUpdate(const Region : IRegion; const NoRegionMessage : string);
+    procedure InternalUpdateSampleDisplay(const Region : IRegion; const NoRegionMessage : string);
+    procedure InternalUpdateSampleInfo(const Region : IRegion; const NoRegionMessage : string);
 
     procedure UpdateSampleDisplayInfo;
 
@@ -222,7 +223,9 @@ var
 begin
   if not assigned(Plugin) then exit;
   rd := FindRegionToDisplay(Plugin);
-  CombinedSampleDisplayUpdate(rd.Region, rd.Message);
+
+  InternalUpdateSampleDisplay(rd.Region, rd.Message);
+  InternalUpdateSampleInfo(rd.Region, rd.Message);
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateSampleDisplayInfo;
@@ -231,21 +234,17 @@ var
 begin
   if not assigned(Plugin) then exit;
   rd := FindRegionToDisplay(Plugin);
-  CombinedSampleDisplayUpdate(rd.Region, rd.Message);
+
+  InternalUpdateSampleInfo(rd.Region, rd.Message);
 end;
 
 
-procedure TMiniSampleDisplayFrame.CombinedSampleDisplayUpdate(const Region: IRegion; const NoRegionMessage: string);
-var
-  px : PRegionProperties;
-  s : string;
-  aZoom, aOffset : single;
+procedure TMiniSampleDisplayFrame.InternalUpdateSampleDisplay(const Region: IRegion; const NoRegionMessage: string);
 begin
   if (assigned(Region)) then
   begin
     if Region.GetSample^.Properties.IsValid then
     begin
-
       if (Region.GetSample^.Properties.SampleFrames > kSampleImageWidth) then
       begin
         //Update the stored image.
@@ -292,9 +291,26 @@ begin
       SampleDisplay.DrawSample(SampleInfo);
       SampleDisplay.Invalidate;
       }
+    end else
+    begin
+      SampleDisplay.DrawSample(Region.GetSampleImage);
+    end;
+  end else
+  begin
+    SampleDisplay.ClearSample(true);
+  end;
+end;
 
-      //==============================================
-
+procedure TMiniSampleDisplayFrame.InternalUpdateSampleInfo(const Region: IRegion; const NoRegionMessage: string);
+var
+  px : PRegionProperties;
+  s : string;
+  aZoom, aOffset : single;
+begin
+  if (assigned(Region)) then
+  begin
+    if Region.GetSample^.Properties.IsValid then
+    begin
       SampleInfo.IsValid := true;
       SampleInfo.ChannelCount := Region.GetSample^.Properties.ChannelCount;
       SampleInfo.SampleFrames := Region.GetSample^.Properties.SampleFrames;
@@ -309,7 +325,6 @@ begin
       fSampleOverlay.ShowLoopPoints := ShowLoopMarkers(Region);
     end else
     begin
-      SampleDisplay.DrawSample(Region.GetSampleImage);
       //== Sample Display Overlay ==
       fSampleOverlay.SetSampleInfo(false, 0);
       fSampleOverlay.ShowLoopPoints := false;
@@ -326,12 +341,10 @@ begin
     SamplePitchKnob.KnobValue  := px^.SamplePitch;
     SampleBeatsKnob.KnobValue  := px^.SampleBeats;
 
-
     InfoDiv.Visible := true;
   end else
   begin
     SampleInfo.IsValid := false;
-    SampleDisplay.ClearSample(true);
     SampleOverlay.NoSampleMessage := NoRegionMessage;
 
     //===========================================
