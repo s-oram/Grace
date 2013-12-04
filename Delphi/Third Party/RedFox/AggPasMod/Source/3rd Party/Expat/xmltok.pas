@@ -48,6 +48,9 @@ uses
 
 {$I ExpatMode.inc}
 
+{$WARNINGS OFF}
+{$HINTS OFF}
+
 type
   PPWord = ^PWord;
 

@@ -19,6 +19,8 @@ uses
   DragDrop,
   Windows, ActiveX, Classes, Controls, CommCtrl, ExtCtrls, Forms;
 
+{$WARNINGS OFF}
+
 {$include DragDrop.inc}
 {$ifdef VER135_PLUS}
 // shldisp.h only exists in C++Builder 5 and later.

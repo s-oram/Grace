@@ -45,6 +45,9 @@ uses
 
 {$I ExpatMode.inc}
 
+{$WARNINGS OFF}
+{$HINTS OFF}
+
 type
   TXmlRole = (
     xrError = -1,

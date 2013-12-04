@@ -46,6 +46,9 @@ uses
 
 {$I ExpatMode.inc}
 
+{$WARNINGS OFF}
+{$HINTS OFF}
+
 type
   TXmlParser = ^TXmlParserStruct;
 
