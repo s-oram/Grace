@@ -219,7 +219,6 @@ end;
 procedure TPluginKeyHook.RefreshKeyHookTarget;
 var
   h:hwnd;
-  OverrideHandle : hwnd;
 begin
   if not assigned(KeyboardHook) then exit;
 

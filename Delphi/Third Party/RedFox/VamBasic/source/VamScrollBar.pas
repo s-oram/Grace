@@ -324,7 +324,6 @@ var
   x1,y1,x2,y2 : single;
   IndexPixels : integer;
   IndexPixelPos : integer;
-  aColor : TRedFoxColor;
 begin
   inherited;
 

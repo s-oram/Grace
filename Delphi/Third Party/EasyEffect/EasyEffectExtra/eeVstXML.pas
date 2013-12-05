@@ -84,6 +84,8 @@ var
   c1: Integer;
   aNode : TXmlNode;
 begin
+  VstXmlNode := nil;
+
   ss := TStringStream.Create(VstXmlText);
   AutoFree(@ss);
 
@@ -101,8 +103,7 @@ begin
     end;
   end;
 
-  if not assigned(VstXMLNode)
-    then raise Exception.Create('Vst-XML node not found.');
+  if not assigned(VstXmlNode) then raise Exception.Create('Vst-XML node not found.');
 
   RegionNodes := TSdNodeList.Create;
   AutoFree(@RegionNodes);

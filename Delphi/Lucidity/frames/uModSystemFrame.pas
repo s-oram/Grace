@@ -524,15 +524,12 @@ end;
 procedure TModSystemFrame.ModTargetButtonClick(Sender: TObject);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
   ModDest : TModDest;
   mi : TMenuItem;
 begin
   if not assigned(Plugin) then exit;
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
   ModDest := Plugin.GuiState.ModDestTarget;
-
 
   mi := ModDestMenu.FindMenuItemByName('ModOutA');
   mi.Visible := false;
@@ -541,7 +538,6 @@ begin
   mi.Visible := false;
 
   //TODO: mod destinations should be renamed to match parameter names etc.
-
   ModDestMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y, ModDest);
 end;
 
@@ -557,7 +553,6 @@ end;
 
 procedure TModSystemFrame.EventHandler_ShowModSouceMenu(Sender: TObject);
 var
-  Tag : integer;
   kg:IKeyGroup;
   ModConnections : TModConnections;
   ModLinkData : PModLink;
@@ -574,7 +569,6 @@ end;
 
 procedure TModSystemFrame.EventHandler_ShowModViaMenu(Sender: TObject);
 var
-  Tag : integer;
   kg:IKeyGroup;
   ModConnections : TModConnections;
   ModLinkData : PModLink;
@@ -591,10 +585,8 @@ end;
 
 procedure TModSystemFrame.ModSourceSelected(Sender: TObject; aSource: TModSource);
 var
-  c1 : integer;
   kg:IKeyGroup;
   ModConnections : TModConnections;
-  ModDest : TModDest;
   ModLinkData : PModLink;
 begin
   if not assigned(Plugin) then exit;
@@ -615,10 +607,8 @@ end;
 
 procedure TModSystemFrame.ModViaSelected(Sender: TObject; aSource: TModSource);
 var
-  c1 : integer;
   kg:IKeyGroup;
   ModConnections : TModConnections;
-  ModDest : TModDest;
   ModLinkData : PModLink;
 begin
   if not assigned(Plugin) then exit;
@@ -655,7 +645,6 @@ end;
 
 procedure TModSystemFrame.EventHandler_ModSliderChanged(Sender: TObject);
 var
-  c1 : integer;
   kg:IKeyGroup;
   ModConnections : TModConnections;
   ModDest : TModDest;

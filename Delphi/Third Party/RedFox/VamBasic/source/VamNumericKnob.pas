@@ -11,7 +11,6 @@ type
 
   TVamNumericKnob = class(TVamWinControl)
   private
-    fText: string;
     fTextVAlign: TRedFoxAlign;
     fTextAlign: TRedFoxAlign;
     fNumericStyle: TNumericStyle;
@@ -239,6 +238,7 @@ begin
 
   if (IsGrabbed) then
   begin
+    Dist := 0;
 
     if (NumericStyle = nsInteger) then
     begin

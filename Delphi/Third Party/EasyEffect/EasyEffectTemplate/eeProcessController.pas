@@ -185,7 +185,6 @@ end;
 
 function TProcessController.ProcessEvents(ev: PVstEvents): longint;
 var
-  tev : eeVstMidiTypes.PVstEvents;
   {$IFDEF OverSampleEnabled}
   c1          : integer;
   pxMidiEvent : PeeMidiEvent;

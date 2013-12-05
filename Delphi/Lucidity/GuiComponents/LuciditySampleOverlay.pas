@@ -175,10 +175,7 @@ var
   PixSampleEndMarker   : single;
   PixLoopStartMarker : single;
   PixLoopEndMarker   : single;
-  CurrentSamplePos : single;
 begin
-  CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(PixelPosX, SampleFrames, Width, Zoom, Offset);
-
   PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
   PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleEnd, SampleFrames, Width, Zoom, Offset);
   PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopStart, SampleFrames, Width, Zoom, Offset);
@@ -271,10 +268,6 @@ var
   CurrentSamplePos : single;
   xPos : integer;
   Marker : TSampleMarker;
-  PixSampleStartMarker : single;
-  PixSampleEndMarker   : single;
-  PixLoopStartMarker   : single;
-  PixLoopEndMarker     : single;
 begin
   inherited;
 

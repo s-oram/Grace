@@ -146,7 +146,6 @@ end;
 procedure TFileTreeViewNodeContextMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
-  NodeIndex : integer;
   NodeData  : PNodeData;
   OD : TFileOpenDialog;
   DirName, DirPath : string;

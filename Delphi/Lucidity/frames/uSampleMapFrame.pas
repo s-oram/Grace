@@ -286,9 +286,6 @@ begin
 end;
 
 procedure TSampleMapFrame.SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
-var
-  smRegion : IRegion;
-  sg : IKeyGroup;
 begin
   if not assigned(Plugin) then exit;
 
@@ -581,12 +578,9 @@ type
 var
   c1: Integer;
   RegionCreateInfo : TRegionCreateInfo;
-  SG : IKeyGroup;
   DropType : TDropType;
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;
-
-
   NewRegionCount : integer;
   NewRegions : array of IRegion;
 begin

@@ -22,7 +22,7 @@ type
     procedure CalcFilterCutoff;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     procedure AddStep(const x1, x2 : single);
     procedure Process(var x1, x2 : single);
@@ -59,6 +59,7 @@ destructor TStepFilter.Destroy;
 begin
   FilterL.Free;
   FilterR.Free;
+  Inherited;
 end;
 
 procedure TStepFilter.SetDecayTime(const Value: double);
@@ -86,8 +87,6 @@ begin
 end;
 
 procedure TStepFilter.Process(var x1, x2: single);
-var
-  tx1, tx2 : double;
 begin
   x1 := x1 + OffsetX1;
   x2 := x2 + OffsetX2;
@@ -97,9 +96,6 @@ begin
 end;
 
 procedure TStepFilter.CalcFilterCutoff;
-var
-  freq : double;
-  b0, b1, b2, a1, a2 : double;
 begin
   FilterCoefficient := CalcRcEnvelopeCoefficient(DecayTime, SampleRate);
 

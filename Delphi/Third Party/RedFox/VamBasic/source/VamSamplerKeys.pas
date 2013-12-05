@@ -366,7 +366,6 @@ end;
 procedure TVamSamplerKeys.ZoomOffsetChanged;
 var
   c1: Integer;
-  x : single;
 begin
   NumberOfKeysToShow := round((kMaximumKeys * (1 - fZoom)) + (kMinimumKeys * fZoom));
 
@@ -554,9 +553,6 @@ const
   );
 var
   c1: Integer;
-  Rect:TRectF;
-  x1 : single;
-  IsMouseOver : boolean;
   aColor : TRedFoxColor;
 begin
   inherited;
@@ -567,10 +563,6 @@ begin
 
   for c1 := 0 to kMaximumKeys-1 do
   begin
-    if MouseOverKeyIndex = c1
-      then IsMouseOver := true
-      else IsMouseOver := false;
-
     if KeyBuffer[c1].IsBlackKey = false then
     begin
       aColor := self.CalcKeyColor(c1);
@@ -580,10 +572,6 @@ begin
 
   for c1 := 0 to kMaximumKeys-1 do
   begin
-    if MouseOverKeyIndex = c1
-      then IsMouseOver := true
-      else IsMouseOver := false;
-
     if KeyBuffer[c1].IsBlackKey = true then
     begin
       aColor := self.CalcKeyColor(c1);
