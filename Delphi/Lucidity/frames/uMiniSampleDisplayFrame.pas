@@ -248,16 +248,21 @@ end;
 procedure TMiniSampleDisplayFrame.InternalUpdateSampleDisplay(const Region: IRegion; const NoRegionMessage: string);
 var
   xSampleImage : IInterfacedBitmap;
+  Par:TSampleRenderParameters;
 begin
   if (assigned(Region)) then
   begin
     if Region.GetSample^.Properties.IsValid then
     begin
-      SampleRenderer.BackgroundColor := kColor_LcdDark1;
-      SampleRenderer.LineColor   := kColor_SampleDisplayLine;
-      SampleRenderer.ImageWidth  := kSampleImageWidth;
-      SampleRenderer.ImageHeight := kSampleImageHeight;
-      xSampleImage := SampleRenderer.RenderSample(Region);
+      Par.BackgroundColor := kColor_LcdDark1;
+      Par.LineColor       := kColor_SampleDisplayLine;
+      Par.ImageWidth      := kSampleImageWidth;
+      Par.ImageHeight     := kSampleImageHeight;
+      Par.Zoom            := 0;
+      Par.Offset          := 0;
+      Par.VertGain        := 1;
+
+      xSampleImage := SampleRenderer.RenderSample(Par, Region);
       SampleDisplay.DrawSample(xSampleImage);
 
 
