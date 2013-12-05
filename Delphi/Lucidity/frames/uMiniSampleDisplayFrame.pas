@@ -253,30 +253,12 @@ begin
   begin
     if Region.GetSample^.Properties.IsValid then
     begin
-      if (Region.GetSample^.Properties.SampleFrames > kSampleImageWidth) then
-      begin
-        SampleRenderer.BackgroundColor := kColor_LcdDark1;
-        SampleRenderer.LineColor   := kColor_SampleDisplayLine;
-        SampleRenderer.ImageWidth  := kSampleImageWidth;
-        SampleRenderer.ImageHeight := kSampleImageHeight;
-        xSampleImage := SampleRenderer.RenderSample(Region);
-        SampleDisplay.DrawSample(xSampleImage);
-
-
-        {
-        //Update the stored image.
-        StoredImage.GetObject.LineColor := SampleDisplay.LineColor;
-        StoredImage.GetObject.DrawSample(Region.GetPeakBuffer);
-
-        // draw the stored image on the control.
-        SampleDisplay.DrawSample(StoredImage);
-        }
-      end else
-      begin
-        // Draw pre-rendered sample.
-        SampleDisplay.DrawSample(Region.GetSampleImage);
-      end;
-
+      SampleRenderer.BackgroundColor := kColor_LcdDark1;
+      SampleRenderer.LineColor   := kColor_SampleDisplayLine;
+      SampleRenderer.ImageWidth  := kSampleImageWidth;
+      SampleRenderer.ImageHeight := kSampleImageHeight;
+      xSampleImage := SampleRenderer.RenderSample(Region);
+      SampleDisplay.DrawSample(xSampleImage);
 
 
 
