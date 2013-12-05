@@ -5,6 +5,7 @@
   The current setup is also causing lags when interacting with the GUI while the
   sample is redrawn.
   -- Continue working on the SampleImageRenderer class.
+  --- SampleRenderer needs to be able to draw with offset and zoom.
 
 
 
