@@ -3,7 +3,7 @@ unit uMiniSampleDisplayFrame;
 interface
 
 uses
-  VamVisibleControl,
+  VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.SampleMap, uLucidityKeyGroupInterface, Menu.SampleDisplayMenu,
   eePlugin, eeGuiStandard, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -48,6 +48,7 @@ type
     SampleDisplayMenu : TSampleDisplayMenu;
 
     StoredImage : ISampleImageBuffer;
+    SampleRenderer : TSampleImageRenderer;
 
     procedure InternalUpdateSampleDisplay(const Region : IRegion; const NoRegionMessage : string);
     procedure InternalUpdateSampleInfo(const Region : IRegion; const NoRegionMessage : string);
@@ -83,6 +84,7 @@ type
 implementation
 
 uses
+  VamLib.Graphics,
   eeVstXml, eeVstParameter, uLucidityEnums,
   GuidEx, RedFoxColor, uLucidityExtra,
   uGuiUtils, VamLayoutWizard,
@@ -122,6 +124,8 @@ begin
 
 
   StoredImage := TSampleImageBuffer.Create;
+
+  SampleRenderer := TSampleImageRenderer.Create;
 end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
@@ -133,6 +137,7 @@ begin
   DeallocateHWnd(MsgHandle);
 
   SampleDisplayMenu.Free;
+  SampleRenderer.Free;
   inherited;
 end;
 
@@ -305,7 +310,6 @@ procedure TMiniSampleDisplayFrame.InternalUpdateSampleInfo(const Region: IRegion
 var
   px : PRegionProperties;
   s : string;
-  aZoom, aOffset : single;
 begin
   if (assigned(Region)) then
   begin
@@ -372,7 +376,6 @@ end;
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
 var
   RegionCreateInfo : TRegionCreateInfo;
-  kg : IKeyGroup;
   aRegion : IRegion;
   CurRegion : IRegion;
   SG : IKeyGroup;

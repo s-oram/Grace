@@ -54,13 +54,9 @@ begin
 end;
 
 procedure TXYPadsFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
-var
-  //TODO: Remove Erector usage.
-  Erector : TControlErector;
 begin
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
-
 end;
 
 procedure TXYPadsFrame.SetPlugin(const Value: TeePlugin);

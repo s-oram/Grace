@@ -319,8 +319,8 @@ begin
 
     if Dstx1 < 0 then Dstx1 := 0;
     if Dsty1 < 0 then Dsty1 := 0;
-    if Dstx2 > Width  then Dstx2 := CastToInteger(Width);
-    if Dsty2 > Height then Dsty2 := CastToInteger(Height);
+    if Dstx2 > CastToInteger(Width)  then Dstx2 := CastToInteger(Width);
+    if Dsty2 > CastToInteger(Height) then Dsty2 := CastToInteger(Height);
 
     CopyWidth  := Dstx2 - Dstx1;
     CopyHeight := Dsty2 - Dsty1;

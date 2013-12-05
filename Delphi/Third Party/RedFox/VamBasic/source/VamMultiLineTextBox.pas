@@ -177,7 +177,7 @@ begin
   Bounds.Width := 200;
   Bounds.Height := 200;
 
-  Format := DT_LEFT;
+  //Format := DT_LEFT;
 
 
   if TargetHandle <> 0 then

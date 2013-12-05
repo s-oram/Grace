@@ -65,7 +65,6 @@ type
 
     procedure ShowPlayTypeMenuCallBack(aMenu : TMenu);
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
-    procedure SampleFocusChanged(var Msg: TMessage);
   protected
     procedure UpdateControlVisibility;
   public
@@ -326,14 +325,9 @@ end;
 
 
 
-procedure TVoiceControlFrame.SampleFocusChanged(var Msg: TMessage);
-begin
-  showMessage('gnag');
-end;
 
 procedure TVoiceControlFrame.ShowPlayTypeMenuCallBack(aMenu: TMenu);
 var
-  c1: Integer;
   mi : TMenuItem;
 begin
   mi := MenuHelper(aMenu).FindItemByName('miNoteSampler');

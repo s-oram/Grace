@@ -12,6 +12,14 @@ function AutoFree(const aObject: PObject): IUnknown;
 function CastToInteger(Value : cardinal):integer;
 function CastToCardinal(Value : integer):cardinal;
 
+
+type
+  TVamInterfacedObject = class(TInterfacedObject)
+  public
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
+  end;
+
 implementation
 
 uses
@@ -64,6 +72,20 @@ function CastToCardinal(Value : integer):cardinal;
 begin
   if Value < 0 then raise Exception.Create('Cannot convert type to cardinal. The result will overflow.');
   result := Cardinal(Value);
+end;
+
+{ TVamInterfacedObject }
+
+procedure TVamInterfacedObject.AfterConstruction;
+begin
+  inherited;
+
+end;
+
+procedure TVamInterfacedObject.BeforeDestruction;
+begin
+  inherited;
+
 end;
 
 end.

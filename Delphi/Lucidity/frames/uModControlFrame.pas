@@ -696,9 +696,6 @@ var
   c1 : integer;
   x1 : single;
   a1 : integer;
-  s : string;
-  aFilterType : TFilterType;
-  ParIndex : integer;
   TargetTextBox : TVamTextBox;
   SG : IKeyGroup;
   CurEngine : TKeyGroup;

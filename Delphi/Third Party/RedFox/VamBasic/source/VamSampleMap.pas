@@ -98,7 +98,6 @@ type
     fZoom: single;
     fSampleRegions: TVamSampleRegionList;
     fProposedSampleRegions: TVamSampleRegionList;
-    fOnProposedRegions: TNotifyEvent;
     procedure SetOffset(const Value: single);
     procedure SetZoom(const Value: single);
   private
@@ -728,10 +727,6 @@ const
 var
   aRegion : TVamSampleRegion;
   SampleRegionBounds : TRectF;
-  PointA, PointB : TPointF;
-  MidPoint : TPointF;
-  aRect : TRectF;
-  Q1, Q2 : integer;
 
   Points     : array[0..7] of TPointF;
   PointDistX : array[0..7] of single;

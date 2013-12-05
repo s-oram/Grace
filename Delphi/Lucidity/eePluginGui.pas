@@ -447,7 +447,6 @@ end;
 
 procedure TPluginGui.UpdateGui(Sender: TObject);
 var
-  s : string;
   rd:TRegionDisplayResult;
 begin
   //Update the gui elements here.
@@ -590,8 +589,6 @@ begin
 end;
 
 procedure TPluginGui.FormResize(Sender: TObject);
-var
-  aW, aH, aT, aL : integer;
 begin
   if assigned(OverlayContainer) then
   begin
@@ -625,7 +622,6 @@ procedure TPluginGui.HideSampleMapEdit(var Msg: TMessage);
 var
   kg : IKeyGroup;
   aRegion : IRegion;
-  aRegionID : TGUID;
 begin
   if not assigned(Plugin) then exit;
   Plugin.GuiState.IsSampleMapVisible := false;
@@ -729,7 +725,6 @@ procedure TPluginGui.UpdateLayout;
   end;
 var
   IsSampleMapVisible : boolean;
-  VertMargin, VertOffset : integer;
   WorkAreaWidth : integer;
   Erector : TControlErector;
 begin
@@ -981,8 +976,6 @@ begin
 end;
 
 procedure TPluginGui.OverlayContainerClicked(Sender: TObject);
-var
-  msg : TMessage;
 begin
   //CloseCurrentDialog(msg);
 
@@ -990,7 +983,6 @@ begin
   begin
     DialogDisplayArea.Hide;
   end;
-
 end;
 
 procedure TPluginGui.EventHandle_ControlMouseDown(Sender: TObject; const Target: TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block: boolean);

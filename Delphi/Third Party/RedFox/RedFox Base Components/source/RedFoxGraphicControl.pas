@@ -84,7 +84,7 @@ type
 implementation
 
 uses
-  Windows,
+  Windows, VamLib.Utils,
   Agg2d, AggWin32Bmp, Graphics,
   SysUtils, RedFox, RedFoxBlend, RedFoxWinControl, RedFoxInvalidator;
 
@@ -294,11 +294,11 @@ begin
   // OffscreenUpdate() is called while the BackBuffer has the incorrect width and height. Here I've added a hack to
   // ensure the backbuffer meets the correct minimum size. It would be better if the resize was detected and
   // the control resized the back buffer then. [Shannon Oram Janurary 23rd 2013]
-  if x2-x1 > BackBuffer.Width
-    then BackBuffer.Width := x2-x1;
+  if CastToCardinal(x2-x1) > BackBuffer.Width
+    then BackBuffer.Width := CastToCardinal(x2-x1);
 
-  if y2-y1 > BackBuffer.Height
-    then BackBuffer.Height := y2-y1;
+  if CastToCardinal(y2-y1) > BackBuffer.Height
+    then BackBuffer.Height := CastToCardinal(y2-y1);
 
   if IsBackBufferDirty then
   begin
@@ -353,7 +353,6 @@ end;
 
 procedure TRedFoxGraphicControl.SetVisible(const Value: boolean);
 var
-  IsVisibleChanging : boolean;
   Container : TRedFoxContainer;
   ContainerOffset : TPoint;
   aRect : TRect;

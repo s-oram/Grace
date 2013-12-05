@@ -2,6 +2,8 @@ unit Menu.FileTreeMenu;
 
 interface
 
+{$WARN SYMBOL_PLATFORM OFF}
+
 uses
   eeWinEx,
   VamTreeView, eeFileBrowserAddon,

@@ -410,8 +410,8 @@ begin
       //TODO: Need to check for max zoom, if so do don't try to zoom in any further.
       if assigned(OnZoomChanged) then
       begin
-        NewZoom   := 0;
-        NewOffset := 0;
+        //NewZoom   := 0;
+        //NewOffset := 0;
 
         if ZoomDragX1 < ZoomDragX2 then
         begin
@@ -625,10 +625,10 @@ begin
           self.Draw_PlayBackPosition(x1);
 
           //== draw the modulated loop points ==
-          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopStart, SampleFrames, Width, Zoom, Offset);
+          //x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopStart, SampleFrames, Width, Zoom, Offset);
           //self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
 
-          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopEnd, SampleFrames, Width, Zoom, Offset);
+          //x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopEnd, SampleFrames, Width, Zoom, Offset);
           //self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
         end;
       end;

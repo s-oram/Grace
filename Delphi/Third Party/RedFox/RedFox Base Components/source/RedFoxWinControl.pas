@@ -461,7 +461,6 @@ end;
 
 procedure TRedFoxWinControl.SetVisible(const Value: boolean);
 var
-  IsVisibleChanging : boolean;
   Container : TRedFoxContainer;
   ContainerOffset : TPoint;
   aRect : TRect;

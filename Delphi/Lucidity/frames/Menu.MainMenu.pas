@@ -2,6 +2,8 @@ unit Menu.MainMenu;
 
 interface
 
+{$WARN SYMBOL_PLATFORM OFF}
+
 uses
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 

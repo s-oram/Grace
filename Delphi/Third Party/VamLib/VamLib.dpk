@@ -28,11 +28,13 @@ package VamLib;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  vcl;
 
 contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',
   VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas',
-  VamLib.Utils in 'Source\VamLib.Utils.pas';
+  VamLib.Utils in 'Source\VamLib.Utils.pas',
+  VamLib.Graphics in 'Source\VamLib.Graphics.pas';
 
 end.

@@ -151,8 +151,6 @@ begin
 end;
 
 procedure TVamMemo.Paint;
-var
-  TextRect : TRect;
 begin
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;

@@ -2,7 +2,10 @@ unit uFindFiles;
 
 interface
 
-uses SysUtils, Classes;
+{$WARN SYMBOL_PLATFORM OFF}
+
+uses
+  SysUtils, Classes;
 
 type
   TSearchPathChanged = procedure(Sender:TObject; aSearchPath:string) of object;

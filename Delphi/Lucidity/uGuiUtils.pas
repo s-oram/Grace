@@ -6,6 +6,8 @@ unit uGuiUtils;
 
 interface
 
+{$WARN SYMBOL_PLATFORM OFF}
+
 uses
   Dialogs, Lucidity.SampleMap, eePlugin, uLucidityEnums,
   eeGlobals, VamLabel, VamTextBox, eeEnumHelper, VamWinControl, RedFoxContainer, VamPanel,
