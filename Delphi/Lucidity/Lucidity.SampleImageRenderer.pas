@@ -20,6 +20,9 @@ type
     fBackgroundColor: TRedFoxColorString;
 
   protected
+    procedure DrawZeroPointLine(const ImageWrapper : TRedFoxBitmapWrapper; const DestBounds : TRectF);
+
+    procedure DrawEmptySample(const ImageWrapper : TRedFoxBitmapWrapper; ChannelCount : integer);
     procedure DrawSampleUsingPoints(const aSampleRegion : IRegion; const ImageWrapper : TRedFoxBitmapWrapper);
     procedure DrawPoints(const ImageWrapper : TRedFoxBitmapWrapper; smps:PSingle; SampleFrames:integer; const DestBounds : TRectF);
 
@@ -87,6 +90,9 @@ begin
     if (aSampleRegion.GetSample^.Properties.SampleFrames > ImageWidth)
       then DrawSampleUsingPeakBuffer(aSampleRegion, Wrapper)
       else DrawSampleUsingPoints(aSampleRegion, Wrapper);
+  end else
+  begin
+    DrawEmptySample(Wrapper, 1);
   end;
 
 
@@ -112,6 +118,7 @@ begin
     DestBounds.Height := ImageHeight;
     DestBounds.Width  := ImageWidth;
 
+    DrawZeroPointLine(ImageWrapper, DestBounds);
     DrawPeakBufferData(ImageWrapper, PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
   end;
 
@@ -122,6 +129,7 @@ begin
     DestBounds.Top    := 0;
     DestBounds.Height := ImageHeight * 0.5;
 
+    DrawZeroPointLine(ImageWrapper, DestBounds);
     DrawPeakBufferData(ImageWrapper, PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
 
     DestBounds.Left   := 0;
@@ -129,10 +137,43 @@ begin
     DestBounds.Top    := ImageHeight * 0.5;
     DestBounds.Height := ImageHeight * 0.5;
 
+    DrawZeroPointLine(ImageWrapper, DestBounds);
     DrawPeakBufferData(ImageWrapper, PeakBuffer.GetDataB^, PeakBuffer.GetDataFrames, DestBounds);
   end;
 end;
 
+
+procedure TSampleImageRenderer.DrawEmptySample(const ImageWrapper: TRedFoxBitmapWrapper; ChannelCount: integer);
+var
+  DestBounds : TRectF;
+begin
+  if ChannelCount = 1 then
+  begin
+    DestBounds.Left := 0;
+    DestBounds.Top  := 0;
+    DestBounds.Height := ImageHeight;
+    DestBounds.Width  := ImageWidth;
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+  end;
+
+  if ChannelCount = 2 then
+  begin
+    DestBounds.Left   := 0;
+    DestBounds.Width  := ImageWidth;
+    DestBounds.Top    := 0;
+    DestBounds.Height := ImageHeight * 0.5;
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+
+
+    DestBounds.Left   := 0;
+    DestBounds.Width  := ImageWidth;
+    DestBounds.Top    := ImageHeight * 0.5;
+    DestBounds.Height := ImageHeight * 0.5;
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+  end;
+
+
+end;
 
 procedure TSampleImageRenderer.DrawPeakBufferData(const ImageWrapper : TRedFoxBitmapWrapper; const Peaks: TPeakBufferData; const PeakFrames: integer; const DestBounds: TRectF);
 var
@@ -189,7 +230,8 @@ begin
     DestBounds.Height := ImageHeight;
     DestBounds.Width  := ImageWidth;
 
-    self.DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch1, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+    DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch1, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
   end;
 
   if aSampleRegion.GetSample^.Properties.ChannelCount = 2 then
@@ -199,26 +241,24 @@ begin
     DestBounds.Top    := 0;
     DestBounds.Height := ImageHeight * 0.5;
 
-    self.DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch1, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+    DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch1, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
 
     DestBounds.Left   := 0;
     DestBounds.Width  := ImageWidth;
     DestBounds.Top    := ImageHeight * 0.5;
     DestBounds.Height := ImageHeight * 0.5;
 
-    self.DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch2, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
+    DrawZeroPointLine(ImageWrapper, DestBounds);
+    DrawPoints(ImageWrapper, aSampleRegion.GetSample^.Properties.Ch2, aSampleRegion.GetSample^.Properties.SampleFrames, DestBounds);
   end;
 end;
 
-procedure TSampleImageRenderer.DrawPoints(const ImageWrapper : TRedFoxBitmapWrapper; smps: PSingle; SampleFrames: integer; const DestBounds: TRectF);
+procedure TSampleImageRenderer.DrawZeroPointLine(const ImageWrapper: TRedFoxBitmapWrapper; const DestBounds: TRectF);
 var
-  c1: Integer;
-  x1,y1,x2,y2:single;
-  OffsetX, OffsetY : integer;
-  dw, dh : integer;
   ab : integer;
-
   aColor : TRedFoxColor;
+  x1,y1,x2,y2:single;
 begin
   //===== Draw the zero point reference line ======
   aColor := fLineColor;
@@ -232,9 +272,18 @@ begin
   y1 := round(DestBounds.Top + (DestBounds.Height * 0.5)) + 0.5;
   y2 := y1;
   ImageWrapper.BufferInterface.Line(x1, y1, x2,y2);
+end;
 
-
-
+procedure TSampleImageRenderer.DrawPoints(const ImageWrapper : TRedFoxBitmapWrapper; smps: PSingle; SampleFrames: integer; const DestBounds: TRectF);
+var
+  c1: Integer;
+  x1,y1,x2,y2:single;
+  OffsetX, OffsetY : integer;
+  dw, dh : integer;
+  ab : integer;
+  aColor : TRedFoxColor;
+begin
+  aColor := fLineColor;
 
   //=== draw the sample data line ===
   ImageWrapper.BufferInterface.LineColor := aColor;
