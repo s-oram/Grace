@@ -3,6 +3,7 @@ unit VamSampleDisplay;
 interface
 
 uses
+  VamLib.Graphics,
   Graphics,  System.Types, System.Classes,
   RedFox, RedFoxColor,
   VamSampleDisplayBackBuffer, VamWinControl;
@@ -25,6 +26,7 @@ type
     IsBufferInvalid      : boolean;
     BackBufferController : TSampleImageBuffer;
     StoredSampleImage    : ISampleImageBuffer;
+    StoredBitmap         : IInterfacedBitmap;
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -32,6 +34,7 @@ type
 
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
 
+    procedure DrawSample(aSampleImage:IInterfacedBitmap); overload;
     procedure DrawSample(aSampleImage:ISampleImageBuffer); overload;
     procedure DrawSample(SDI:TSampleDisplayInfo); overload;
     procedure ClearSample(InvalidateDisplay : boolean = true);
@@ -67,6 +70,7 @@ destructor TVamSampleDisplay.Destroy;
 begin
   BackBufferController.Free;
   StoredSampleImage := nil;
+  StoredBitmap := nil;
   inherited;
 end;
 
@@ -93,6 +97,14 @@ begin
   StoredSampleImage := nil;
   BackBufferController.DrawSample(SDI);
   IsBufferInvalid := true;
+  Invalidate;
+  if assigned(OnDisplayChange) then OnDisplayChange(self);
+end;
+
+procedure TVamSampleDisplay.DrawSample(aSampleImage: IInterfacedBitmap);
+begin
+  StoredSampleImage := nil;
+  StoredBitmap := aSampleImage;
   Invalidate;
   if assigned(OnDisplayChange) then OnDisplayChange(self);
 end;
@@ -148,6 +160,10 @@ end;
 
 procedure TVamSampleDisplay.Paint;
 begin
+  if assigned(StoredBitmap) then
+  begin
+    BackBuffer.RedFoxInterface.DrawImage(StoredBitmap.Bitmap);
+  end else
   if assigned(StoredSampleImage) then
   begin
     BackBuffer.BufferInterface.CopyImage(StoredSampleImage.GetObject.BackBuffer.AsImage, 0, 0);

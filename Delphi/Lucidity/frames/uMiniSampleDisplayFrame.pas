@@ -105,7 +105,7 @@ begin
 
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
   fSampleOverlay.Parent  := SampleDisplay;
-  fSampleOverlay.Align := alClient;
+  //fSampleOverlay.Align := alClient;
   fSampleOverlay.Visible := true;
 
   fSampleOverlay.OnMouseDown := SampleOverlayMouseDown;
@@ -190,6 +190,7 @@ begin
 
 
   StoredImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
+  SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
 end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
@@ -245,6 +246,8 @@ end;
 
 
 procedure TMiniSampleDisplayFrame.InternalUpdateSampleDisplay(const Region: IRegion; const NoRegionMessage: string);
+var
+  xSampleImage : IInterfacedBitmap;
 begin
   if (assigned(Region)) then
   begin
@@ -252,12 +255,20 @@ begin
     begin
       if (Region.GetSample^.Properties.SampleFrames > kSampleImageWidth) then
       begin
+        SampleRenderer.Width  := kSampleImageWidth;
+        SampleRenderer.Height := kSampleImageHeight;
+        xSampleImage := SampleRenderer.RenderSample(Region);
+        SampleDisplay.DrawSample(xSampleImage);
+
+
+        {
         //Update the stored image.
         StoredImage.GetObject.LineColor := SampleDisplay.LineColor;
         StoredImage.GetObject.DrawSample(Region.GetPeakBuffer);
 
         // draw the stored image on the control.
         SampleDisplay.DrawSample(StoredImage);
+        }
       end else
       begin
         // Draw pre-rendered sample.
