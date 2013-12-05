@@ -4,6 +4,7 @@
   -- Peak buffers are now in, but the implementation is a bit messy.
   The current setup is also causing lags when interacting with the GUI while the
   sample is redrawn.
+  -- Continue working on the SampleImageRenderer class.
 
 
 

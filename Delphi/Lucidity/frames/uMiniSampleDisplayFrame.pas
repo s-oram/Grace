@@ -255,8 +255,10 @@ begin
     begin
       if (Region.GetSample^.Properties.SampleFrames > kSampleImageWidth) then
       begin
-        SampleRenderer.Width  := kSampleImageWidth;
-        SampleRenderer.Height := kSampleImageHeight;
+        SampleRenderer.BackgroundColor := kColor_LcdDark1;
+        SampleRenderer.LineColor   := kColor_SampleDisplayLine;
+        SampleRenderer.ImageWidth  := kSampleImageWidth;
+        SampleRenderer.ImageHeight := kSampleImageHeight;
         xSampleImage := SampleRenderer.RenderSample(Region);
         SampleDisplay.DrawSample(xSampleImage);
 
