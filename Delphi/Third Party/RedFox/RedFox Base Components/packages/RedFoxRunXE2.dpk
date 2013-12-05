@@ -48,6 +48,7 @@ contains
   RedFoxInvalidator in '..\source\RedFoxInvalidator.pas',
   RedFoxLogging in '..\source\RedFoxLogging.pas',
   RedFoxAccessible in '..\source\RedFoxAccessible.pas',
-  RedFoxTextBuffer in '..\source\RedFoxTextBuffer.pas';
+  RedFoxTextBuffer in '..\source\RedFoxTextBuffer.pas',
+  RedFoxBitmapWrapper in '..\source\RedFoxBitmapWrapper.pas';
 
 end.

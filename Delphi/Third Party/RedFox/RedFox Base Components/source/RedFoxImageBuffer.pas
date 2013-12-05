@@ -22,7 +22,6 @@ type
     fBitmap : TBitmap;
     fHandle: HDC;
 
-
     procedure SetHeight(const aHeight: Cardinal);
     procedure SetWidth(const aWidth: Cardinal);
   protected
@@ -51,7 +50,6 @@ type
 
     function TextWidth(Text:string):double; inline;
     function TextHeight:double; inline;
-
 
 
     //======== Bitmap Drawing Methods =======================

@@ -105,7 +105,7 @@ begin
 
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
   fSampleOverlay.Parent  := SampleDisplay;
-  //fSampleOverlay.Align := alClient;
+  fSampleOverlay.Align := alClient;
   fSampleOverlay.Visible := true;
 
   fSampleOverlay.OnMouseDown := SampleOverlayMouseDown;
@@ -190,7 +190,7 @@ begin
 
 
   StoredImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
-  SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
+  //SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
 end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);

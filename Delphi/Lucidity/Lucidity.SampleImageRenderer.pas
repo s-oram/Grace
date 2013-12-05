@@ -29,6 +29,8 @@ type
 implementation
 
 uses
+  VamLib.Utils,
+  RedFoxBitmapWrapper,
   Graphics;
 
 { TSampleImageRenderer }
@@ -49,21 +51,30 @@ end;
 function TSampleImageRenderer.RenderSample(const aSampleRegion: IRegion): IInterfacedBitmap;
 var
   Bitmap : IInterfacedBitmap;
+  Wrapper : TRedfoxBitmapWrapper;
 begin
   Bitmap := TInterfacedBitmap.Create;
 
   Bitmap.Bitmap.PixelFormat := pf32Bit;
   Bitmap.Bitmap.SetSize(Width, Height);
 
-  Bitmap.Bitmap.Canvas.Pen.Color := clRed;
-  Bitmap.Bitmap.Canvas.Pen.Style := TPenStyle.psSolid;
-  Bitmap.Bitmap.Canvas.Pen.Width := 2;
+  Wrapper := TRedFoxBitmapWrapper.Create;
+  AutoFree(@Wrapper);
+  Wrapper.Wrap(Bitmap.Bitmap);
 
-  Bitmap.Bitmap.Canvas.MoveTo(0,0);
-  Bitmap.Bitmap.Canvas.LineTo(Width, Height);
 
-  Bitmap.Bitmap.Canvas.MoveTo(Width,0);
-  Bitmap.Bitmap.Canvas.LineTo(0, Height);
+
+  {
+
+  Wrapper.BufferInterface.FillColor := GetAggColor(clGreen);
+  Wrapper.BufferInterface.LineColor := GetAggColor(clBlue);
+
+  Wrapper.BufferInterface.ClearAll(66,66,66,255);
+  Wrapper.BufferInterface.Rectangle(0,0,60,60);
+  Wrapper.BufferInterface.Line(0,0,Width,Height);
+  Wrapper.BufferInterface.Line(Width,0,0,Height);
+  }
+
 
 
   result := Bitmap;
