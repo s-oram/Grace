@@ -6,8 +6,6 @@ type
   TPeakBuffer = class;
   IPeakBuffer = interface;
 
-
-
   TPeakBufferDataPoint = record
     MinValue : single;
     MaxValue : single;
@@ -63,6 +61,12 @@ type
   end;
 
 implementation
+
+uses
+  SysUtils;
+
+const
+  INF    =  (1.0 / 0.0);
 
 { TPeakBuffer }
 
@@ -156,8 +160,8 @@ procedure TPeakBuffer.InternalGenPeaks(Input: PSingle; const InputSampleFrames, 
     SamplePoints : array of single absolute Input;
     c2: Integer;
   begin
-    MinValue := 0;
-    MaxValue := 0;
+    MinValue := INF;
+    MaxValue := -INF;
     for c2 := MarkA to MarkB do
     begin
       if SamplePoints[c2] > MaxValue then MaxValue := SamplePoints[c2];
