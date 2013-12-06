@@ -62,22 +62,29 @@ begin
 end;
 
 function TSampleImageRenderer.CalcDestBounds(const ChannelIndex, ChannelCount: integer; const ImageWidth, ImageHeight: cardinal): TRectF;
+var
+  r : TRectF;
 begin
+
+
   if ChannelCount = 1 then
   begin
-    result := RectF(0,0,ImageWidth, ImageHeight);
+    r := RectF(0,0,ImageWidth, ImageHeight);
   end else
   if (ChannelCount = 2) and (ChannelIndex = 1) then
   begin
-    result := RectF(0,0,ImageWidth, round(ImageHeight*0.5));
+    r := RectF(0,0,ImageWidth, round(ImageHeight*0.5));
   end else
   if (ChannelCount = 2) and (ChannelIndex = 2) then
   begin
-    result := RectF(0, round(ImageHeight*0.5) ,ImageWidth, ImageHeight);
+    r := RectF(0, round(ImageHeight*0.5) ,ImageWidth, ImageHeight);
   end else
   begin
     raise Exception.Create('Unexpected ChannelIndex and ChannelCount combo.');
   end;
+
+  r.Inflate(0, -1);
+  result := r;
 end;
 
 
@@ -127,19 +134,13 @@ procedure TSampleImageRenderer.DrawSampleUsingPeakBuffer(const aSampleRegion: IR
   begin
     if PeakFrames <> DestBounds.Width then exit;
 
-    xOffset := floor(DestBounds.Left);
-    MidPoint := DestBounds.Top + (DestBounds.Height * 0.5);
-
-    UnityGainPixelHeight := (DestBounds.Height * 0.5);
-
     ImageWrapper.BufferInterface.FillColor := Par.LineColor;
     ImageWrapper.BufferInterface.LineColor := Par.LineColor;
     ImageWrapper.BufferInterface.LineWidth := 1;
 
-    //BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
-    //BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
-    //BackBuffer.BufferInterface.LineWidth := 1;
-
+    xOffset := floor(DestBounds.Left);
+    MidPoint := DestBounds.Top + (DestBounds.Height * 0.5);
+    UnityGainPixelHeight := (DestBounds.Height * 0.5) * Par.VertGain;
 
     for c1 := 0 to PeakFrames-1 do
     begin
@@ -150,17 +151,18 @@ procedure TSampleImageRenderer.DrawSampleUsingPeakBuffer(const aSampleRegion: IR
       if IsNAN(y1) then y1 := 0;
       if IsNAN(y2) then y2 := 0;
 
-      if y1 <= DestBounds.Top    then y1 := DestBounds.Top    + 1;
-      if y1 >= DestBounds.Bottom then y1 := DestBounds.Bottom - 1;
+      if abs(y1-y2) < 1 then
+      begin
+        y1 := y1 - 0.5;
+        y2 := y2 + 0.5;
+      end;
 
-      if y2 <= DestBounds.Top    then y2 := DestBounds.Top    + 1;
-      if y2 >= DestBounds.Bottom then y2 := DestBounds.Bottom - 1;
+      y1 := Clamp(y1, DestBounds.Top, DestBounds.Bottom-1);
+      y2 := Clamp(y2, DestBounds.Top+1, DestBounds.Bottom);
 
       ImageWrapper.BufferInterface.Line(x1, y1, x1, y2);
     end;
   end;
-
-
 var
   DestBounds : TRectF;
   PeakBuffer : IPeakBuffer;
@@ -218,9 +220,11 @@ procedure TSampleImageRenderer.DrawSampleUsingPoints(const aSampleRegion: IRegio
   var
     c1: Integer;
     x1,y1,x2,y2:single;
-    OffsetX, OffsetY : integer;
-    dw, dh : integer;
+    OffsetX : integer;
+    dw : integer;
     aColor : TRedFoxColor;
+    MidPoint : single;
+    UnityGainPixelHeight : single;
   begin
     aColor := Par.LineColor;
 
@@ -229,22 +233,22 @@ procedure TSampleImageRenderer.DrawSampleUsingPoints(const aSampleRegion: IRegio
 
     dw      := round(DestBounds.Width-2);
     OffsetX := round(DestBounds.Left + 1);
-    dh      := round(DestBounds.Height-2);
-    OffsetY := round(DestBounds.Top + 1);
+
+    MidPoint := DestBounds.Top + (DestBounds.Height * 0.5);
+    UnityGainPixelHeight := (DestBounds.Height * 0.5) * Par.VertGain;
 
     x1 := OffsetX;
-    y1 := (-1 * smps^) * (dh * 0.5) + OffsetY + (dh * 0.5);
-    if y1 < OffsetY then y1 := offsetY;
-    if y1 > OffsetY + dh then y1 := OffsetY + dh;
+    y1 := MidPoint - smps^ * UnityGainPixelHeight;
+    y1 := Clamp(y1, DestBounds.Top, DestBounds.Bottom);
+
     x2 := x1;
     y2 := y1;
 
     for c1 := 0 to SampleFrames-1 do
     begin
       x1 := round((c1 / (SampleFrames-1)) * dw + OffsetX);
-      y1 := (-1 * smps^) * (dh * 0.5) + OffsetY + (dh * 0.5);
-      if y1 < OffsetY then y1 := offsetY;
-      if y1 > OffsetY + dh then y1 := OffsetY + dh;
+      y1 := MidPoint - smps^ * UnityGainPixelHeight;
+      y1 := Clamp(y1, DestBounds.Top, DestBounds.Bottom);
 
       ImageWrapper.BufferInterface.Line(x1, y1, x2, y2);
 

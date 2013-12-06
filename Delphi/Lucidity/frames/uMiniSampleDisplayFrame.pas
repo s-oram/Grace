@@ -84,6 +84,7 @@ type
 implementation
 
 uses
+  eeDsp,
   VamLib.Graphics,
   eeVstXml, eeVstParameter, uLucidityEnums,
   GuidEx, RedFoxColor, uLucidityExtra,
@@ -260,7 +261,7 @@ begin
       Par.ImageHeight     := kSampleImageHeight;
       Par.Zoom            := 0;
       Par.Offset          := 0;
-      Par.VertGain        := 1;
+      Par.VertGain        := DecibelsToLinear(Region.GetProperties^.SampleVolume);
 
       xSampleImage := SampleRenderer.RenderSample(Par, Region);
       SampleDisplay.DrawSample(xSampleImage);
@@ -672,7 +673,7 @@ begin
     end;
   end;
 
-
+  UpdateSampleDisplay;
 
 end;
 

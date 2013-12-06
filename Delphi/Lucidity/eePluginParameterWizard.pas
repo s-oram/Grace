@@ -24,8 +24,6 @@ type
   public
     constructor Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
     destructor Destroy; override;
-
-
   end;
 
 implementation

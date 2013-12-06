@@ -13,6 +13,11 @@ function CastToInteger(Value : cardinal):integer;
 function CastToCardinal(Value : integer):cardinal;
 
 
+
+function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
+function Clamp(const Value, MinValue, MaxValue : single):single; overload;
+
+
 type
   TVamInterfacedObject = class(TInterfacedObject)
   public
@@ -86,6 +91,31 @@ procedure TVamInterfacedObject.BeforeDestruction;
 begin
   inherited;
 
+end;
+
+
+
+
+function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
+begin
+  assert(MinValue <= MaxValue);
+
+  if Value < MinValue then result := MinValue
+  else
+  if Value > MaxValue then result := MaxValue
+  else
+    result := Value;
+end;
+
+function Clamp(const Value, MinValue, MaxValue : single):single; overload;
+begin
+  assert(MinValue <= MaxValue);
+
+  if Value < MinValue then result := MinValue
+  else
+  if Value > MaxValue then result := MaxValue
+  else
+    result := Value;
 end;
 
 end.

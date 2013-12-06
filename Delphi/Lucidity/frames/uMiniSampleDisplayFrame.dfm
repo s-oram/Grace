@@ -193,7 +193,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Color_Arrows1 = '$33FFFFFF'
               Color_Arrows2 = '$ccFFFFFF'
               KnobMin = -96
-              KnobMax = 36
+              KnobMax = 24
               KnobNumericStyle = nsInteger
               KnobDecimalPlaces = 2
               OnChanged = SampleKnobChanged
