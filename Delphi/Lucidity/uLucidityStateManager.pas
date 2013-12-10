@@ -56,11 +56,12 @@ type
     fLowVelocity: integer;
     fSampleEnd: integer;
     fSampleFileName: string;
-    fSamplePitch: single;
     fLowNote: integer;
     fLoopStart: integer;
     fSamplePan: single;
     fHighVelocity: integer;
+    fSampleTune: integer;
+    fSampleFine: integer;
   private
   public
   published
@@ -78,7 +79,8 @@ type
     property SampleBeats    : integer read fSampleBeats    write fSampleBeats;
     property SampleVolume   : single  read fSampleVolume   write fSampleVolume;
     property SamplePan      : single  read fSamplePan      write fSamplePan;
-    property SamplePitch    : single  read fSamplePitch    write fSamplePitch;
+    property SampleTune     : integer read fSampleTune     write fSampleTune;
+    property SampleFine     : integer read fSampleFine     write fSampleFine;
     property SampleFileName : string  read fSampleFileName write fSampleFileName;
     property SampleFrames   : integer read fSampleFrames   write fSampleFrames;
   end;
@@ -282,7 +284,8 @@ begin
       RegionPropertiesNode.NodeNew('SampleBeats').ValueUnicode    := DataIO_IntToStr(RegionList[c2].GetProperties^.SampleBeats);
       RegionPropertiesNode.NodeNew('SampleVolume').ValueUnicode   := DataIO_FloatToStr(RegionList[c2].GetProperties^.SampleVolume);
       RegionPropertiesNode.NodeNew('SamplePan').ValueUnicode      := DataIO_FloatToStr(RegionList[c2].GetProperties^.SamplePan);
-      RegionPropertiesNode.NodeNew('SamplePitch').ValueUnicode    := DataIO_FloatToStr(RegionList[c2].GetProperties^.SamplePitch);
+      RegionPropertiesNode.NodeNew('SampleTune').ValueUnicode     := DataIO_FloatToStr(RegionList[c2].GetProperties^.SampleTune);
+      RegionPropertiesNode.NodeNew('SampleFine').ValueUnicode     := DataIO_FloatToStr(RegionList[c2].GetProperties^.SampleFine);
 
 
 
@@ -498,8 +501,8 @@ begin
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SampleBeats');
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SampleVolume');
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SamplePan');
-        LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SamplePitch');
-
+        LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SampleTune');
+        LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'SampleFine');
         LoadObjectPropertyFromXML(SamplePropertiesNode, RegionLoadInfo, 'SampleFileName');
         LoadObjectPropertyFromXML(SamplePropertiesNode, RegionLoadInfo, 'SampleFrames');
 
@@ -711,7 +714,8 @@ begin
   aRegion.Properties^.LoopStart      := RegionLoadInfo.LoopStart;
   aRegion.Properties^.LoopEnd        := RegionLoadInfo.LoopEnd;
   aRegion.Properties^.SampleVolume   := RegionLoadInfo.SampleVolume;
-  aRegion.Properties^.SamplePitch    := RegionLoadInfo.SamplePitch;
+  aRegion.Properties^.SampleTune     := RegionLoadInfo.SampleTune;
+  aRegion.Properties^.SampleFine     := RegionLoadInfo.SampleFine;
   aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
   aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
 

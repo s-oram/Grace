@@ -449,6 +449,7 @@ procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSamp
 var
   CV : TModularVoltage;
   PitchShift : single;
+  SamplePitch : single;
 begin
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
@@ -515,11 +516,14 @@ begin
         if VoiceMode = TVoiceMode.Poly
           then PitchShift := fTriggerNote
           else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
-        PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SampleRegion.GetProperties^.SamplePitch;
+
+        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+        PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
         OneShotSampleOsc.PitchShift := PitchShift;
       end else
       begin
-        OneShotSampleOsc.PitchShift := CalcPitchShift(aSampleRegion.GetProperties^.RootNote, aSampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, aSampleRegion.GetProperties^.SamplePitch);
+        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+        OneShotSampleOsc.PitchShift := CalcPitchShift(aSampleRegion.GetProperties^.RootNote, aSampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
       end;
 
       OneShotSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
@@ -615,6 +619,7 @@ var
   PanX, VolX : single;
   PitchShift : single;
   CV : TModularVoltage;
+  SamplePitch : single;
 begin
   //GlobalProfiler.StartTimer('Control Rate Process');
 
@@ -661,11 +666,13 @@ begin
         if VoiceMode = TVoiceMode.Poly
           then PitchShift := fTriggerNote
           else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
-        PitchShift := GlobalModPoints.Source_MidiPitchBendST + (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SampleRegion.GetProperties^.SamplePitch;
+        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+        PitchShift := GlobalModPoints.Source_MidiPitchBendST + (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
         OneShotSampleOsc.PitchShift := PitchShift;
       end else
       begin
-        OneShotSampleOsc.PitchShift := GlobalModPoints.Source_MidiPitchBendST + CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SampleRegion.GetProperties^.SamplePitch);
+        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+        OneShotSampleOsc.PitchShift := GlobalModPoints.Source_MidiPitchBendST + CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
       end;
 
       OneShotSampleOsc.FastControlProcess;

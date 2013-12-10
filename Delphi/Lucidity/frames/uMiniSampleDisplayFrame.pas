@@ -20,11 +20,12 @@ type
     SampleInfoBox: TVamDiv;
     InfoDiv: TVamDiv;
     SampleBeatsKnob: TVamCompoundNumericKnob;
-    SamplePitchKnob: TVamCompoundNumericKnob;
     SampleVolumeKnob: TVamCompoundNumericKnob;
     SamplePanKnob: TVamCompoundNumericKnob;
     InsidePanel: TVamPanel;
     SampleNameLabel: TVamLabel;
+    SampleFineKnob: TVamCompoundNumericKnob;
+    SampleTuneKnob: TVamCompoundNumericKnob;
     procedure SampleKnobChanged(Sender: TObject);
     procedure SampleDisplayResize(Sender: TObject);
     procedure InfoDivResize(Sender: TObject);
@@ -170,11 +171,14 @@ begin
   SamplePanKnob.Color_Label      := GetRedFoxColor(kColor_LcdDark4);
   SamplePanKnob.Color_Numeric    := GetRedFoxColor(kColor_LcdDark5);
 
-  SamplePitchKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
-  SamplePitchKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
-
   SampleBeatsKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
   SampleBeatsKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
+
+  SampleTuneKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
+  SampleTuneKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
+
+  SampleFineKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
+  SampleFineKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
 
   SampleDisplay.LineColor        := kColor_SampleDisplayLine;
 
@@ -183,7 +187,8 @@ begin
 
   SampleVolumeKnob.Width := 90;
   SamplePanKnob.Width    := 75;
-  SamplePitchKnob.Width  := 85;
+  SampleTuneKnob.Width   := 75;
+  SampleFineKnob.Width   := 75;
   SampleBeatsKnob.Width  := 85;
 
   SampleVolumeKnob.Margins.SetBounds(0,0,20,0);
@@ -343,7 +348,8 @@ begin
     px := Region.GetProperties;
     SampleVolumeKnob.KnobValue := px^.SampleVolume;
     SamplePanKnob.KnobValue    := px^.SamplePan;
-    SamplePitchKnob.KnobValue  := px^.SamplePitch;
+    SampleTuneKnob.KnobValue   := px^.sampleTune;
+    SampleFineKnob.KnobValue   := px^.sampleFine;
     SampleBeatsKnob.KnobValue  := px^.SampleBeats;
 
     InfoDiv.Visible := true;
@@ -365,7 +371,8 @@ begin
 
     SampleVolumeKnob.KnobValue := 0;
     SamplePanKnob.KnobValue    := 0;
-    SamplePitchKnob.KnobValue  := 0;
+    SampleTuneKnob.KnobValue   := 0;
+    SampleFineKnob.KnobValue   := 0;
     SampleBeatsKnob.KnobValue  := 4;
   end;
 
@@ -666,8 +673,9 @@ begin
     case Tag of
       1: CurRegion.GetProperties^.SampleVolume := KnobValue;
       2: CurRegion.GetProperties^.SamplePan    := KnobValue;
-      3: CurRegion.GetProperties^.SamplePitch  := KnobValue;
       4: CurRegion.GetProperties^.SampleBeats  := round(KnobValue);
+      5: CurRegion.GetProperties^.SampleTune   := round(KnobValue);
+      6: CurRegion.GetProperties^.SampleFine   := round(KnobValue);
     else
       raise Exception.Create('Unexpected tag value.');
     end;
@@ -700,48 +708,52 @@ procedure TMiniSampleDisplayFrame.UpdateControlVisibility;
 var
   Par : TVstParameter;
   Ref, Target : TControl;
+  mode : TPitchTracking;
+
+  xpos : integer;
 begin
-  Par := Plugin.Globals.VstParameters.Par('SamplePlaybackType');
-  case TSamplePlaybackTypeHelper.ToEnum(Par.ValueVST) of
-    TSamplePlaybackType.NoteSampler:
+  SampleVolumeKnob.Align := alNone;
+  SamplePanKnob.Align := alNone;
+  SampleFineKnob.Align := alNone;
+  SampleTuneKnob.Align := alNone;
+  SampleBeatsKnob.Align := alNone;
+
+
+  Par := Plugin.Globals.VstParameters.Par('PitchTracking');
+  mode := TPitchTrackingHelper.ToEnum(Par.ValueVST);
+
+  case Mode of
+    TPitchTracking.Note,
+    TPitchTracking.Off:
     begin
-      SamplePitchKnob.Visible := true;
+      SampleTuneKnob.Visible := true;
+      SampleFineKnob.Visible := true;
       SampleBeatsKnob.Visible := false;
+
+      Target := SampleFineKnob;
+      xPos := Target.Parent.Width - Target.Width;
+      SampleFineKnob.Layout.SetPos(xPos,0);
+      SampleTuneKnob.Layout.Anchor(SampleFineKnob).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
+      SamplePanKnob.Layout.Anchor(SampleTuneKnob).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
+      SampleVolumeKnob.Layout.Anchor(SamplePanKnob).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
     end;
 
-    TSamplePlaybackType.LoopSampler:
+    TPitchTracking.BPM:
     begin
-      SamplePitchKnob.Visible := false;
+      SampleTuneKnob.Visible := false;
+      SampleFineKnob.Visible := false;
       SampleBeatsKnob.Visible := true;
-    end;
 
-    TSamplePlaybackType.OneShotSampler:
-    begin
-      SamplePitchKnob.Visible := true;
-      SampleBeatsKnob.Visible := false;
+      Target := SampleBeatsKnob;
+      xPos := Target.Parent.Width - Target.Width;
+      SampleBeatsKnob.Layout.SetPos(xPos,0);
+      SamplePanKnob.Layout.Anchor(SampleBeatsKnob).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
+      SampleVolumeKnob.Layout.Anchor(SamplePanKnob).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
     end;
-    //TSamplePlaybackType.GrainStretch
-    //TSamplePlaybackType.WaveOsc;:
   else
     raise Exception.Create('Type not handled.');
   end;
 
-
-  if SampleBeatsKnob.Visible
-    then Target := SampleBeatsKnob
-    else Target := SamplePitchKnob;
-
-  Target.Align := alNone;
-  Target.Top   := 0;
-  Target.Left  := Target.Parent.Width - Target.Width;
-
-  ref := Target;
-  SamplePanKnob.Align := alNone;
-  SamplePanKnob.Layout.Anchor(ref).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
-
-  ref := SamplePanKnob;
-  SampleVolumeKnob.Align := alNone;
-  SampleVolumeKnob.Layout.Anchor(ref).SnapToEdge(TControlFeature.LeftEdge).Move(-8,0);
 end;
 
 

@@ -134,45 +134,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Align = alRight
               Visible = True
             end
-            object SamplePitchKnob: TVamCompoundNumericKnob
-              Tag = 3
-              AlignWithMargins = True
-              Left = 660
-              Top = 0
-              Width = 81
-              Height = 27
-              Margins.Left = 0
-              Margins.Top = 0
-              Margins.Right = 10
-              Margins.Bottom = 0
-              Text = 'Pitch'
-              HitTest = True
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              Units = ' st'
-              Color_Label = clSilver
-              Color_Numeric = clWhite
-              Color_Arrows1 = '$33FFFFFF'
-              Color_Arrows2 = '$ccFFFFFF'
-              KnobMin = -48
-              KnobMax = 48
-              KnobNumericStyle = nsFloat
-              KnobDecimalPlaces = 2
-              OnChanged = SampleKnobChanged
-              Padding.Left = 3
-              Padding.Top = 3
-              Padding.Right = 3
-              Padding.Bottom = 3
-              Align = alRight
-              Visible = True
-            end
             object SampleVolumeKnob: TVamCompoundNumericKnob
               Tag = 1
               AlignWithMargins = True
-              Left = 500
+              Left = 415
               Top = 0
               Width = 78
               Height = 27
@@ -203,11 +168,12 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 500
             end
             object SamplePanKnob: TVamCompoundNumericKnob
               Tag = 2
               AlignWithMargins = True
-              Left = 588
+              Left = 503
               Top = 0
               Width = 62
               Height = 27
@@ -238,6 +204,78 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 588
+            end
+            object SampleFineKnob: TVamCompoundNumericKnob
+              Tag = 6
+              AlignWithMargins = True
+              Left = 663
+              Top = 0
+              Width = 78
+              Height = 27
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 10
+              Margins.Bottom = 0
+              Text = 'Fine'
+              HitTest = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              Color_Label = clSilver
+              Color_Numeric = clWhite
+              Color_Arrows1 = '$33FFFFFF'
+              Color_Arrows2 = '$ccFFFFFF'
+              KnobMin = -100
+              KnobMax = 100
+              KnobNumericStyle = nsInteger
+              KnobDecimalPlaces = 2
+              OnChanged = SampleKnobChanged
+              Padding.Left = 3
+              Padding.Top = 3
+              Padding.Right = 3
+              Padding.Bottom = 3
+              Align = alRight
+              Visible = True
+              ExplicitLeft = 620
+            end
+            object SampleTuneKnob: TVamCompoundNumericKnob
+              Tag = 5
+              AlignWithMargins = True
+              Left = 575
+              Top = 0
+              Width = 78
+              Height = 27
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 10
+              Margins.Bottom = 0
+              Text = 'Tune'
+              HitTest = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              Units = ' st'
+              Color_Label = clSilver
+              Color_Numeric = clWhite
+              Color_Arrows1 = '$33FFFFFF'
+              Color_Arrows2 = '$ccFFFFFF'
+              KnobMin = -48
+              KnobMax = 48
+              KnobNumericStyle = nsInteger
+              KnobDecimalPlaces = 2
+              OnChanged = SampleKnobChanged
+              Padding.Left = 3
+              Padding.Top = 3
+              Padding.Right = 3
+              Padding.Bottom = 3
+              Align = alRight
+              Visible = True
+              ExplicitLeft = 620
             end
           end
         end

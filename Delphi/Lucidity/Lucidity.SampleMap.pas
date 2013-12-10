@@ -49,7 +49,9 @@ type
     //== Sample ==
     SampleVolume  : single;  // In db. Range -96..+12
     SamplePan     : single;  // range -100..+100 (%)
-    SamplePitch   : double;  // In Semitones. -24..+24
+    SampleTune    : integer; // Semitones. -24..+24
+    SampleFine    : integer; // FineTune - Cents -100..100
+    //SamplePitch   : double;  // In Semitones. -24..+24
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
   end;
 
@@ -576,7 +578,8 @@ begin
 
       rx.Properties^.SampleVolume := 0;
       rx.Properties^.SamplePan    := 0;
-      rx.Properties^.SamplePitch  := 0;
+      rx.Properties^.SampleTune   := 0;
+      rx.Properties^.SampleFine   := 0;
       rx.Properties^.SampleBeats  := 4;
 
       if rx.Sample.LoadFromFile(CreateInfo.AudioFileName) = true then
