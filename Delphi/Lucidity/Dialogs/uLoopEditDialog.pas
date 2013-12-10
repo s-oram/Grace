@@ -4,6 +4,7 @@ interface
 
 uses
   uConstants,
+  VamLib.Debouncer,
   uLucidityPopUpMenu,
   Lucidity.SampleImageRenderer,
   Lucidity.FlexSampleRenderer,
@@ -58,6 +59,7 @@ type
   protected
     SampleRenderer : TSampleImageRenderer;
     FlexSampleRender : TFlexSampleImageRenderer;
+    SampleUpdateDebouncer : TDebouncer;
 
     Zoom, Offset : single;
 
@@ -183,6 +185,9 @@ constructor TLoopEditForm.Create(AOwner: TComponent);
 begin
   inherited;
 
+  SampleUpdateDebouncer := TDebouncer.Create;
+  SampleUpdateDebouncer.DebounceTime := 35;
+
   Zoom   := 0;
   Offset := 0;
 
@@ -231,9 +236,6 @@ begin
   ZoomSampleOverlay.ShowMarkerTags := true;
 
 
-
-
-
   ZoomMarkerMenu := TZoomMarkerMenu.Create;
   ZoomMarkerMenu.OnZoomToSampleMarker := self.ZoomToSampleMarker;
 end;
@@ -243,6 +245,7 @@ begin
   FreeAndNil(ZoomMarkerMenu);
   SampleRenderer.Free;
   FlexSampleRender.Free;
+  SampleUpdateDebouncer.Free;
   inherited;
 end;
 
@@ -426,32 +429,6 @@ begin
     ZoomSampleDisplay.DrawSample(xSampleImage);
 
 
-
-
-
-    {
-    if CurRegion.GetSample^.Properties.ChannelCount = 1 then
-    begin
-      SampleInfo.Ch1 := CurRegion.GetSample^.Properties.Ch1;
-    end;
-
-    if CurRegion.GetSample^.Properties.ChannelCount = 2 then
-    begin
-      SampleInfo.Ch1 := CurRegion.GetSample^.Properties.Ch1;
-      SampleInfo.Ch2 := CurRegion.GetSample^.Properties.Ch2;
-    end;
-
-    //== Main Sample Display ==
-    SampleDisplay.DrawSample(SampleInfo);
-    SampleDisplay.Invalidate;
-
-    //== zoom sample display ==
-    ZoomSampleDisplay.DrawSample(SampleInfo);
-    ZoomSampleDisplay.Invalidate;
-    }
-
-
-
     //== Sample Overlay ==
     SampleOverlay.BeginUpdate;
     try
@@ -539,7 +516,7 @@ begin
     Zoom := xZoom;
     Offset := xOffset;
 
-    UpdateSampleDisplay;
+    SampleUpdateDebouncer.Debounce(UpdateSampleDisplay);
   end;
 end;
 
@@ -699,16 +676,14 @@ begin
 
 
   //== Set a bunch of zoom/offset values ==
-  SampleDisplay.Zoom   := ZoomPos.Zoom;
-  SampleDisplay.Offset := ZoomPos.Offset;
-  SampleOverlay.SetZoomOffset(ZoomPos.Zoom, ZoomPos.Offset);
-  ZoomSampleOverlay.SetZoomOffset(0,0);
-  SampleDisplay.Invalidate;
+  Zoom   := ZoomPos.Zoom;
+  Offset := ZoomPos.Offset;
+
+  SampleUpdateDebouncer.Debounce(UpdateSampleDisplay);
 
   SampleZoomControl.IndexA := ZoomPos.IndexA;
   SampleZoomControl.IndexB := ZoomPos.IndexB;
   SampleZoomControl.Invalidate;
-
 end;
 
 procedure TLoopEditForm.GuiEvent_SampleMakersChanged;

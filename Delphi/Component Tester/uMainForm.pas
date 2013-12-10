@@ -41,6 +41,7 @@ implementation
 {$R *.dfm}
 
 uses
+  VamLib.Threads,
   VamLib.Utils;
 
 
@@ -58,7 +59,7 @@ begin
   //ShowMessage(IntToStr(a + Integer(b)));
 
   Debouncer := TDebouncer.Create;
-  Debouncer.DebounceTime := 500;
+  Debouncer.DebounceTime := 100;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -76,8 +77,25 @@ begin
 end;
 
 procedure TForm1.UpdateLabel;
+var
+  Task : TProc;
+  CallBack : TProc;
+  x : string;
 begin
-  Label1.Text := FloatToStr(Knob1.Pos * 100);
+  x := FloatToStr(Knob1.Pos * 100);
+
+  Task := procedure
+  begin
+    Sleep(1500);
+  end;
+
+  CallBack := procedure
+  begin
+    //Label1.Text := FloatToStr(Knob1.Pos * 100);
+    Label1.Text := x;
+  end;
+
+  RunTask(Task, CallBack);
 end;
 
 end.

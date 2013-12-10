@@ -37,7 +37,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj</Dependencies>
+				<Dependencies>Third Party\VamLib\VamLib.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
 			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
@@ -146,13 +146,13 @@
 		<Target Name="Lucidity:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="ComponentTester" DependsOnTargets="VamBasicRunXE2;VamBasicDesXE2">
+		<Target Name="ComponentTester" DependsOnTargets="VamLib;VamBasicDesXE2;VamBasicRunXE2">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean" DependsOnTargets="VamBasicRunXE2:Clean;VamBasicDesXE2:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;VamBasicDesXE2:Clean;VamBasicRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make" DependsOnTargets="VamBasicRunXE2:Make;VamBasicDesXE2:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;VamBasicDesXE2:Make;VamBasicRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="Build">
