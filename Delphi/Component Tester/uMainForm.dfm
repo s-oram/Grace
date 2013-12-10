@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 300
-  ClientWidth = 635
+  ClientHeight = 501
+  ClientWidth = 1005
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,22 +22,42 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
-    OnClick = Button1Click
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 48
-    Top = 16
-    Width = 505
-    Height = 185
+    Left = 0
+    Top = 0
+    Width = 1005
+    Height = 501
     Color = '$FFEEEEEE'
-    object SampleDisplay: TVamSampleDisplay
-      Left = 48
-      Top = 32
-      Width = 417
-      Height = 129
-      Text = 'SampleDisplay'
+    Align = alClient
+    ExplicitLeft = 104
+    ExplicitTop = 72
+    object Knob1: TVamKnob
+      Left = 248
+      Top = 280
+      Width = 73
+      Height = 73
+      Text = 'Knob1'
       HitTest = True
-      LineColor = '$FF000000'
+      Enabled = True
+      VisibleSteps = 0
+      OnChanged = Knob1Changed
+      Visible = True
+    end
+    object Label1: TVamLabel
+      Left = 272
+      Top = 120
+      Width = 185
+      Height = 33
+      HitTest = True
+      AutoSize = False
+      TextAlign = AlignCenter
+      TextVAlign = AlignCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Visible = True
     end
   end

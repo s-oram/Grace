@@ -3,23 +3,28 @@ unit uMainForm;
 interface
 
 uses
+  VamLib.Debouncer,
   AudioIO,  eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
-  VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls;
+  VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob;
 
 type
   TForm1 = class(TForm)
     Button1: TButton;
     RedFoxContainer1: TRedFoxContainer;
-    SampleDisplay: TVamSampleDisplay;
     FileOpenDialog1: TFileOpenDialog;
-    procedure Button1Click(Sender: TObject);
+    Knob1: TVamKnob;
+    Label1: TVamLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Knob1Changed(Sender: TObject);
   private
     { Private declarations }
+    procedure UpdateLabel;
   public
+    Debouncer : TDebouncer;
+
     Sample : TSampleFloat;
     Peakbuffer : IPeakBuffer;
     ImageBuffer : ISampleImageBuffer;
@@ -50,41 +55,29 @@ begin
   a := 50;
   b := 2000000000000;
 
-  ShowMessage(IntToStr(a + Integer(b)));
+  //ShowMessage(IntToStr(a + Integer(b)));
+
+  Debouncer := TDebouncer.Create;
+  Debouncer.DebounceTime := 500;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  Debouncer.Free;
   Sample.Free;
   PeakBuffer := nil;
   ImageBuffer := nil;
 end;
 
 
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  sdw : integer;
-  img : TSampleImageBuffer;
+procedure TForm1.Knob1Changed(Sender: TObject);
 begin
-  sdw := SampleDisplay.Width;
-
-
-  img := (ImageBuffer.GetObject as TSampleImageBuffer);
-
-  img.Resize(SampleDisplay.Width, SampleDisplay.Height);
-
-  FileOpenDialog1.DefaultFolder := 'D:\Audio\Data\Samples (Old disorganised)\Loops\rekkerd_free_loops_05';
-  if FileOpenDialog1.Execute then
-  begin
-    if Sample.LoadFromFile(FileOpenDialog1.FileName) then
-    begin
-      PeakBuffer.GeneratePeaks(Sample.Properties.Ch1, Sample.Properties.SampleFrames, sdw);
-      Img.DrawSample(PeakBuffer);
-      SampleDisplay.DrawSample(ImageBuffer);
-    end;
-  end;
-
+  Debouncer.Debounce(UpdateLabel);
 end;
 
+procedure TForm1.UpdateLabel;
+begin
+  Label1.Text := FloatToStr(Knob1.Pos * 100);
+end;
 
 end.
