@@ -543,7 +543,7 @@ end;
 procedure TLoopEditForm.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
-  Zoom, Offset : double;
+  xZoom, xOffset : double;
   SampleFrames, DisplayPixelWidth : integer;
   IndexA, IndexB : single;
 begin
@@ -558,20 +558,19 @@ begin
     if Tag = 1 then
     begin
       //Zoom in.
-      Zoom   := SampleDisplay.Zoom + ((1 - SampleDisplay.Zoom) * 0.25);
-      Offset := SampleDisplay.Offset;
-      SampleDisplay.Zoom := Zoom;
-      SampleDisplay.Offset := Offset;
-      SampleOverlay.SetZoomOffset(Zoom, Offset);
-      ZoomSampleOverlay.SetZoomOffset(0,0);
-      SampleDisplay.Invalidate;
+      xZoom   := Zoom + ((1 - Zoom) * 0.25);
+      xOffset := Offset;
 
-      assert(Zoom >= 0);
-      assert(Zoom <= 1);
-      assert(Offset >= 0);
-      assert(Offset <= 1);
+      assert(xZoom >= 0);
+      assert(xZoom <= 1);
+      assert(xOffset >= 0);
+      assert(xOffset <= 1);
 
-      CalcZoomBounds(Zoom, Offset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
+      Zoom := xZoom;
+      Offset := xOffset;
+      UpdateSampleDisplay;
+
+      CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
 
       SampleZoomControl.IndexA := IndexA;
       SampleZoomControl.IndexB := IndexB;
@@ -581,21 +580,20 @@ begin
     if Tag = 2 then
     begin
       //Zoom out.
-      Zoom   := SampleDisplay.Zoom - ((1 - SampleDisplay.Zoom) * 0.5);
-      if Zoom <= 0.15 then Zoom := 0;
-      Offset := SampleDisplay.Offset;
-      SampleDisplay.Zoom := Zoom;
-      SampleDisplay.Offset := Offset;
-      SampleOverlay.SetZoomOffset(Zoom, Offset);
-      ZoomSampleOverlay.SetZoomOffset(0,0);
-      SampleDisplay.Invalidate;
+      xZoom   := Zoom - ((1 - Zoom) * 0.5);
+      if xZoom <= 0.15 then xZoom := 0;
+      xOffset := Offset;
 
-      assert(Zoom >= 0);
-      assert(Zoom <= 1);
-      assert(Offset >= 0);
-      assert(Offset <= 1);
+      assert(xZoom >= 0);
+      assert(xZoom <= 1);
+      assert(xOffset >= 0);
+      assert(xOffset <= 1);
 
-      CalcZoomBounds(Zoom, Offset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
+      Zoom := xZoom;
+      Offset := xOffset;
+      UpdateSampleDisplay;
+
+      CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
 
       SampleZoomControl.IndexA := IndexA;
       SampleZoomControl.IndexB := IndexB;
@@ -611,11 +609,8 @@ begin
 
     if Tag = 8 then
     begin
-      SampleDisplay.Zoom := 0;
-      SampleDisplay.Offset := 0;
-      SampleOverlay.SetZoomOffset(0, 0);
-      ZoomSampleOverlay.SetZoomOffset(0,0);
-      SampleDisplay.Invalidate;
+      Zoom := 0;
+      UpdateSampleDisplay;
 
       CalcZoomBounds(0, 0, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
 
