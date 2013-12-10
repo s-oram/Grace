@@ -7,7 +7,6 @@ uses
   RedFoxColor,
   RedFoxBitmapWrapper,
   VamSamplePeakBuffer,
-
   Lucidity.SampleMap,
   VamLib.Graphics;
 
@@ -66,8 +65,6 @@ function TSampleImageRenderer.CalcDestBounds(const ChannelIndex, ChannelCount: i
 var
   r : TRectF;
 begin
-
-
   if ChannelCount = 1 then
   begin
     r := RectF(0,0,ImageWidth, ImageHeight);
@@ -123,10 +120,6 @@ begin
       begin
         DrawSampleUsingPoints(aSampleRegion, Par, Wrapper);
       end;
-    end else
-    begin
-
-
     end;
   end else
   begin

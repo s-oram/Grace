@@ -3,115 +3,48 @@ unit Lucidity.FlexSampleRenderer;
 interface
 
 uses
+  VamLib.Graphics,
   System.Classes, System.Types, Graphics,
   RedFox, RedFoxColor,
   RedFoxImageBuffer,
+  Lucidity.SampleMap,
   VamSamplePeakBuffer;
 
 type
-  TFlexSampleImageRenderer = class;
-
-  ISampleImageBuffer = interface
-    ['{16E34EBA-9613-49CB-B324-BF910A37FFC3}']
-    function GetObject:TFlexSampleImageRenderer;
+  TFlexRenderPar = record
+    LineColor       : TRedFoxColor;
+    BackgroundColor : TRedFoxColor;
+    ImageWidth      : cardinal;
+    ImageHeight     : cardinal;
+    Zoom            : single; //Horizontal zoom - range 0..1 .. This should be changed to be 1+ with 1 being no zoom.
+    Offset          : single; //Horizontal offset. IE. sample scrolling.
+    VertGain        : single; //default = 1.
   end;
 
-  TSampleDisplayInfo = record
-    IsValid        : boolean; // set to false to clear sample.
-    ChannelCount   : integer; // 1 or 2.
-    SampleFrames   : integer;
-    Ch1            : Pointer; // Pointer to sample data.
-    Ch2            : Pointer; // Pointer to sample data.
-  end;
 
-  TPeak = record
-    MinValue : byte;
-    MaxValue : byte;
-  end;
 
-  TArrayOfPeak = array of TPeak;
 
-  TPeakData = class
+  TFlexSampleImageRenderer = class
   private
-    fPeakCount: integer;
-    fPeaksL : TArrayOfPeak;
-    fPeaksR : TArrayOfPeak;
-    procedure SetPeakCount(const Value: integer);
-  public
-    destructor Destroy; override;
-    procedure CalcPeaks(SDI:TSampleDisplayInfo);
-    property PeakCount : integer read fPeakCount write SetPeakCount;
-
-    property PeaksL : TArrayOfPeak read fPeaksL write fPeaksL;
-    property PeaksR : TArrayOfPeak read fPeaksR write fPeaksR;
-  end;
-
-  TFlexSampleImageRenderer = class(TInterfacedObject, ISampleImageBuffer)
-  private
-    fOffset: double;
-    fZoom: double;
-    fBackBuffer  : TRedFoxImageBuffer;
-    procedure SetZoom(const Value: double);
-    procedure SetOffset(const Value: double);
-    function GetLineColor: TRedFoxColorString;
-    procedure SetLineColor(const Value: TRedFoxColorString);
-    function GetObject:TFlexSampleImageRenderer;
+    function CalcDestBounds(const ChannelIndex, ChannelCount : integer; const ImageWidth, ImageHeight : cardinal):TRectF;
   protected
-    SampleData        : TSampleDisplayInfo;
-    fPeakData         : TPeakData;
-    fFirstPeak        : integer;
-    fVisiblePeaks     : integer;
-    DisplayWidth      : integer;
-    DisplayHeight     : integer;
-    fLineColor        : TRedFoxColor;
-    procedure DrawPeaks(const PeakData : TArrayOfPeak; const aFirstPeak, aPeakCount : integer; const DestBounds : TRectF);
-    procedure DrawPoints(smps:PSingle; SampleFrames:integer; const DestBounds : TRectF);
 
-    procedure DrawPeakBufferData(const Peaks : TPeakBufferData; const PeakFrames : integer; const DestBounds : TRectF);
-
-    procedure DrawSample_UsingPeaks;
-    procedure DrawSample_UsingPoints;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure DrawSample(PeakBuffer : IPeakBuffer); overload;
-    procedure DrawSample(SDI:TSampleDisplayInfo); overload;
-    procedure DrawSample; overload;
-    procedure ClearSample(InvalidateDisplay : boolean = true);
-
-    property BackBuffer : TRedFoxImageBuffer read fBackBuffer write fBackBuffer;
-    property Zoom       : double             read fZoom       write SetZoom;   //range 0..1. 0 = no zoom.
-    property Offset     : double             read fOffset     write SetOffset; //range 0..1.
-
-    //Call resize to set the size of the sample display back buffer.
-    procedure Resize(Width, Height:integer);
-
-    property PeakData : TPeakData read fPeakData;
-
-    property FirstPeak    : integer read fFirstPeak;
-    property VisiblePeaks : integer read fVisiblePeaks;
-
-    property LineColor : TRedFoxColorString read GetLineColor write SetLineColor;
+    function RenderSample(const aSampleRegion : IRegion; const Par:TFlexRenderPar):IInterfacedBitmap;
   end;
 
-
-function CalcPeakCount(const SampleFrames: integer; const ZoomFactor: double; const DisplayWidth:integer): integer;
-function CalcFirstVisiblePeak(const Offset : single; const PeakCount, DisplayWidth : integer):integer;
-
-function SamplePosToPixelPos(const x1:single; const SampleFrames, DisplayWidth:integer; const Zoom, Offset:single):single;
-function PixelPosToSamplePos(const x1:single; const SampleFrames, DisplayWidth:integer; const Zoom, Offset:single):integer;
 
 implementation
 
 uses
+  VamSampleDisplayBackBuffer,
   AggPixelFormat,
-  Math;
-
-const
-  Msg_DrawSample = 1;
-  Msg_SampleBitmapReady = 2;
-  Msg_PaintFinished     = 3;
+  VamLib.Utils,
+  SysUtils,
+  RedFoxbitmapWrapper;
 
 //============ Sample standalone methods ===================
 
@@ -229,313 +162,8 @@ end;
 
 
 
-{ TPeakData }
 
-destructor TPeakData.Destroy;
-begin
-  PeakCount := 0;
-  inherited;
-end;
-
-procedure TPeakData.SetPeakCount(const Value: integer);
-begin
-  fPeakCount := Value;
-  SetLength(fPeaksL, Value);
-  SetLength(fPeaksR, Value);
-end;
-
-procedure TPeakData.CalcPeaks(SDI: TSampleDisplayInfo);
-var
-  c1: Integer;
-  FirstSample : integer;
-  LastSample  : integer;
-  SamplesPerPeak : integer;
-  MinValue, MaxValue : single;
-begin
-  SamplesPerPeak := floor(SDI.SampleFrames / PeakCount);
-  for c1 := 0 to PeakCount-1 do
-  begin
-    FirstSample := round(c1 / PeakCount * (SDI.SampleFrames - 1));
-    LastSample  := FirstSample + SamplesPerPeak;
-    assert(LastSample < SDI.SampleFrames);
-
-    if SDI.ChannelCount = 1 then
-    begin
-      GetMinMaxValuesFloat(SDI.Ch1, FirstSample, LastSample, MinValue, MaxValue);
-      if MinValue < -1 then MinValue := -1;
-      if MaxValue > 1  then MaxValue := 1;
-      PeaksL[c1].MinValue := round((MinValue + 1) * 127.5);
-      PeaksL[c1].MaxValue := round((MaxValue + 1) * 127.5);
-    end;
-
-    if SDI.ChannelCount = 2 then
-    begin
-      GetMinMaxValuesFloat(SDI.Ch1, FirstSample, LastSample, MinValue, MaxValue);
-      if MinValue < -1 then MinValue := -1;
-      if MaxValue > 1  then MaxValue := 1;
-      PeaksL[c1].MinValue := round((MinValue + 1) * 127.5);
-      PeaksL[c1].MaxValue := round((MaxValue + 1) * 127.5);
-
-      GetMinMaxValuesFloat(SDI.Ch2, FirstSample, LastSample, MinValue, MaxValue);
-      if MinValue < -1 then MinValue := -1;
-      if MaxValue > 1  then MaxValue := 1;
-      PeaksR[c1].MinValue := round((MinValue + 1) * 127.5);
-      PeaksR[c1].MaxValue := round((MaxValue + 1) * 127.5);
-    end;
-  end;
-end;
-
-
-
-
-
-{ TSampleImageBuffer }
-
-constructor TFlexSampleImageRenderer.Create;
-begin
-  BackBuffer := TRedFoxImageBuffer.Create;
-
-  fPeakData   := TPeakData.Create;
-
-  fFirstPeak    := 0;
-  fVisiblePeaks := 0;
-end;
-
-destructor TFlexSampleImageRenderer.Destroy;
-begin
-  BackBuffer.Free;
-  fPeakData.Free;
-
-  inherited;
-end;
-
-procedure TFlexSampleImageRenderer.Resize(Width, Height:integer);
-begin
-  DisplayWidth  := Width;
-  DisplayHeight := Height;
-  BackBuffer.SetSize(Width,Height);
-end;
-
-procedure TFlexSampleImageRenderer.DrawSample(SDI: TSampleDisplayInfo);
-begin
-  SampleData := SDI;
-  DrawSample;
-end;
-
-procedure TFlexSampleImageRenderer.ClearSample(InvalidateDisplay : boolean = true);
-begin
-  SampleData.IsValid := false;
-  if InvalidateDisplay then DrawSample;
-end;
-
-procedure TFlexSampleImageRenderer.DrawSample;
-var
-  DestBounds : TRectF;
-  x : integer;
-  //CenterPeak : integer;
-begin
-  if SampleData.IsValid = false then
-  begin
-    PeakData.PeakCount := 0;
-    BackBuffer.BufferInterface.ClearAll(fLineColor.R, fLineColor.G, fLineColor.B, 0);
-    BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-  end;
-
-  if SampleData.IsValid = true then
-  begin
-    BackBuffer.BufferInterface.ClearAll(fLineColor.R, fLineColor.G, fLineColor.B, 0);
-    BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-
-    x := CalcPeakCount(SampleData.SampleFrames, Zoom, DisplayWidth);
-
-    if x >= DisplayWidth
-      then DrawSample_UsingPeaks
-      else DrawSample_UsingPoints;
-  end;
-end;
-
-procedure TFlexSampleImageRenderer.DrawSample(PeakBuffer: IPeakBuffer);
-var
-  DestBounds : TRectF;
-begin
-  BackBuffer.BufferInterface.ClearAll(fLineColor.R, fLineColor.G, fLineColor.B, 0);
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-
-  //if PeakBuffer then
-
-  if (PeakBuffer.GetDataChannels = 1)  then
-  begin
-    DestBounds.Left := 0;
-    DestBounds.Top  := 0;
-    DestBounds.Height := BackBuffer.Height;
-    DestBounds.Width  := BackBuffer.Width;
-
-    DrawPeakBufferData(PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
-  end;
-
-  if PeakBuffer.GetDataChannels = 2 then
-  begin
-    DestBounds.Left   := 0;
-    DestBounds.Width  := BackBuffer.Width;
-    DestBounds.Top    := 0;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-
-    DrawPeakBufferData(PeakBuffer.GetDataA^, PeakBuffer.GetDataFrames, DestBounds);
-
-    DestBounds.Left   := 0;
-    DestBounds.Width  := BackBuffer.Width;
-    DestBounds.Top    := BackBuffer.Height * 0.5;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-
-    DrawPeakBufferData(PeakBuffer.GetDataB^, PeakBuffer.GetDataFrames, DestBounds);
-  end;
-
-
-  //BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
-  //BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
-  //BackBuffer.BufferInterface.LineWidth := 1;
-
-  //BackBuffer.BufferInterface.Line(0,0,100,100);
-
-
-
-
-end;
-
-procedure TFlexSampleImageRenderer.DrawPeakBufferData(const Peaks: TPeakBufferData; const PeakFrames : integer; const DestBounds: TRectF);
-var
-  xOffset : integer;
-  x1, y1, y2 : single;
-  MidPoint : single;
-  c1: Integer;
-  UnityGainPixelHeight : single;
-begin
-  if PeakFrames <> DestBounds.Width then exit;
-
-  xOffset := floor(DestBounds.Left);
-  MidPoint := DestBounds.Top + (DestBounds.Height * 0.5);
-
-  UnityGainPixelHeight := (DestBounds.Height * 0.5);
-
-  BackBuffer.BufferInterface.FillColor := fLineColor.AsAggRgba8;
-  BackBuffer.BufferInterface.LineColor := fLineColor.AsAggRgba8;
-  BackBuffer.BufferInterface.LineWidth := 1;
-
-  //BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
-  //BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
-  //BackBuffer.BufferInterface.LineWidth := 1;
-
-
-  for c1 := 0 to PeakFrames-1 do
-  begin
-    x1 := xOffset + c1 + 0.5;
-    y1 := MidPoint - (Peaks[c1].MaxValue * UnityGainPixelHeight);
-    y2 := MidPoint - (Peaks[c1].MinValue * UnityGainPixelHeight);
-
-    if IsNAN(y1) then y1 := 0;
-    if IsNAN(y2) then y2 := 0;
-
-    if y1 <= DestBounds.Top    then y1 := DestBounds.Top    + 1;
-    if y1 >= DestBounds.Bottom then y1 := DestBounds.Bottom - 1;
-
-    if y2 <= DestBounds.Top    then y2 := DestBounds.Top    + 1;
-    if y2 >= DestBounds.Bottom then y2 := DestBounds.Bottom - 1;
-
-    BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
-  end;
-end;
-
-
-
-
-
-procedure TFlexSampleImageRenderer.DrawSample_UsingPeaks;
-var
-  DestBounds : TRectF;
-  x : integer;
-begin
-  x := CalcPeakCount(SampleData.SampleFrames, Zoom, DisplayWidth);
-  assert(x >= DisplayWidth);
-
-  if x <> PeakData.PeakCount then
-  begin
-    PeakData.PeakCount := x;
-  end;
-  PeakData.CalcPeaks(SampleData);
-  fVisiblePeaks := DisplayWidth;
-  fFirstPeak := CalcFirstVisiblePeak(Offset, PeakData.PeakCount, DisplayWidth);
-
-  if SampleData.ChannelCount = 1 then
-  begin
-    DestBounds.Left := 0;
-    DestBounds.Top  := 0;
-    DestBounds.Height := BackBuffer.Height;
-    DestBounds.Width  := BackBuffer.Width;
-
-    DrawPeaks(PeakData.PeaksL, fFirstPeak, fVisiblePeaks, DestBounds);
-  end;
-
-  if SampleData.ChannelCount = 2 then
-  begin
-    DestBounds.Left := 0;
-    DestBounds.Top  := 0;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-    DestBounds.Width  := BackBuffer.Width;
-    DrawPeaks(PeakData.PeaksL, fFirstPeak, fVisiblePeaks, DestBounds);
-
-    DestBounds.Left := 0;
-    DestBounds.Top  := BackBuffer.Height * 0.5;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-    DestBounds.Width  := BackBuffer.Width;
-    DrawPeaks(PeakData.PeaksR, fFirstPeak, fVisiblePeaks, DestBounds);
-  end;
-end;
-
-procedure TFlexSampleImageRenderer.DrawSample_UsingPoints;
-var
-  DestBounds : TRectF;
-  x : integer;
-begin
-  x := CalcPeakCount(SampleData.SampleFrames, Zoom, DisplayWidth);
-  assert(x < DisplayWidth);
-
-  if SampleData.ChannelCount = 1 then
-  begin
-    DestBounds.Left := 0;
-    DestBounds.Top  := 0;
-    DestBounds.Height := BackBuffer.Height;
-    DestBounds.Width  := BackBuffer.Width;
-    DrawPoints(SampleData.Ch1, SampleData.SampleFrames, DestBounds);
-  end;
-
-  if SampleData.ChannelCount = 2 then
-  begin
-    DestBounds.Left := 0;
-    DestBounds.Top  := 0;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-    DestBounds.Width  := BackBuffer.Width;
-    DrawPoints(SampleData.Ch1, SampleData.SampleFrames, DestBounds);
-
-    DestBounds.Left := 0;
-    DestBounds.Top  := BackBuffer.Height * 0.5;
-    DestBounds.Height := BackBuffer.Height * 0.5;
-    DestBounds.Width  := BackBuffer.Width;
-    DrawPoints(SampleData.Ch2, SampleData.SampleFrames, DestBounds);
-  end;
-
-end;
-
-function TFlexSampleImageRenderer.GetLineColor: TRedFoxColorString;
-begin
-  result := fLineColor.AsString;
-end;
-
-function TFlexSampleImageRenderer.GetObject: TFlexSampleImageRenderer;
-begin
-  result := self;
-end;
-
-procedure TFlexSampleImageRenderer.DrawPeaks(const PeakData: TArrayOfPeak; const aFirstPeak, aPeakCount: integer; const DestBounds: TRectF);
+procedure DrawPeaks(const BackBuffer : TRedfoxBitmapWrapper; const Par: TFlexRenderPar; const PeakData : TArrayOfPeak; const aFirstPeak, aPeakCount : integer; const DestBounds : TRectF);
 const
   OneOver255 : double = 1 / 255;
 var
@@ -553,9 +181,9 @@ begin
   AreaHeight := DestBounds.Height-1;
 
   //===== Draw the zero point reference line ======
-  ab := fLineColor.A div 4;
-  BackBuffer.BufferInterface.FillColor := fLineColor.WithAlpha(ab).AsAggRgba8;
-  BackBuffer.BufferInterface.LineColor := fLineColor.WithAlpha(ab).AsAggRgba8;
+  ab := Par.LineColor.A div 4;
+  BackBuffer.BufferInterface.FillColor := Par.LineColor.WithAlpha(ab).AsAggRgba8;
+  BackBuffer.BufferInterface.LineColor := Par.LineColor.WithAlpha(ab).AsAggRgba8;
   BackBuffer.BufferInterface.LineWidth := 1;
 
   x1 := DestBounds.Left;
@@ -589,8 +217,8 @@ begin
 
   //===== Draw the sample data =======
 
-  BackBuffer.BufferInterface.FillColor := fLineColor.AsAggRgba8;
-  BackBuffer.BufferInterface.LineColor := fLineColor.AsAggRgba8;
+  BackBuffer.BufferInterface.FillColor := Par.LineColor.AsAggRgba8;
+  BackBuffer.BufferInterface.LineColor := Par.LineColor.AsAggRgba8;
   BackBuffer.BufferInterface.LineWidth := 1;
 
   if aPeakCount > 0 then
@@ -640,77 +268,122 @@ begin
   end;
 end;
 
-procedure TFlexSampleImageRenderer.DrawPoints(smps: PSingle; SampleFrames: integer; const DestBounds: TRectF);
+
+{ TFlexSampleImageRenderer }
+
+constructor TFlexSampleImageRenderer.Create;
+begin
+
+end;
+
+destructor TFlexSampleImageRenderer.Destroy;
+begin
+
+  inherited;
+end;
+
+
+
+function TFlexSampleImageRenderer.CalcDestBounds(const ChannelIndex, ChannelCount: integer; const ImageWidth, ImageHeight: cardinal): TRectF;
 var
-  c1: Integer;
-  x1,y1,x2,y2:single;
-  OffsetX, OffsetY : integer;
-  dw, dh : integer;
-  ab : integer;
+  r : TRectF;
 begin
-  //===== Draw the zero point reference line ======
-  ab := fLineColor.A div 3;
-  BackBuffer.BufferInterface.FillColor := fLineColor.WithAlpha(ab).AsAggRgba8;
-  BackBuffer.BufferInterface.LineColor := fLineColor.WithAlpha(ab).AsAggRgba8;
-  BackBuffer.BufferInterface.LineWidth := 1;
-
-  x1 := DestBounds.Left;
-  x2 := DestBounds.Right;
-  y1 := round(DestBounds.Top + (DestBounds.Height * 0.5)) + 0.5;
-  y2 := y1;
-  BackBuffer.BufferInterface.Line(x1, y1, x2,y2);
-
-
-
-
-
-  BackBuffer.BufferInterface.LineColor := fLineColor;
-  BackBuffer.BufferInterface.LineWidth := 1;
-
-  //BackBuffer.BufferInterface.Line(DestBounds.Left, DestBounds.Top, DestBounds.Right, DestBounds.Bottom);
-
-
-  dw      := round(DestBounds.Width-2);
-  OffsetX := round(DestBounds.Left + 1);
-  dh      := round(DestBounds.Height-2);
-  OffsetY := round(DestBounds.Top + 1);
-
-  x1 := OffsetX;
-  y1 := (-1 * smps^) * (dh * 0.5) + OffsetY + (dh * 0.5);
-  if y1 < OffsetY then y1 := offsetY;
-  if y1 > OffsetY + dh then y1 := OffsetY + dh;
-  x2 := x1;
-  y2 := y1;
-
-  for c1 := 0 to SampleFrames-1 do
+  if ChannelCount = 1 then
   begin
-    x1 := round((c1 / (SampleFrames-1)) * dw + OffsetX);
-    y1 := (-1 * smps^) * (dh * 0.5) + OffsetY + (dh * 0.5);
-    if y1 < OffsetY then y1 := offsetY;
-    if y1 > OffsetY + dh then y1 := OffsetY + dh;
-
-    BackBuffer.BufferInterface.Line(x1, y1, x2, y2);
-
-    x2 := x1;
-    y2 := y1;
-
-    inc(smps);
+    r := RectF(0,0,ImageWidth, ImageHeight);
+  end else
+  if (ChannelCount = 2) and (ChannelIndex = 1) then
+  begin
+    r := RectF(0,0,ImageWidth, round(ImageHeight*0.5));
+  end else
+  if (ChannelCount = 2) and (ChannelIndex = 2) then
+  begin
+    r := RectF(0, round(ImageHeight*0.5) ,ImageWidth, ImageHeight);
+  end else
+  begin
+    raise Exception.Create('Unexpected ChannelIndex and ChannelCount combo.');
   end;
+
+  r.Inflate(0, -1);
+  result := r;
 end;
 
-procedure TFlexSampleImageRenderer.SetLineColor(const Value: TRedFoxColorString);
+function TFlexSampleImageRenderer.RenderSample(const aSampleRegion: IRegion; const Par: TFlexRenderPar): IInterfacedBitmap;
+  procedure DrawSample_UsingPeaks(SampleData : TSampleDisplayInfo; const Wrapper : TRedfoxBitmapWrapper);
+  var
+    DestBounds : TRectF;
+    x : integer;
+    PeakData : TPeakData;
+    VisiblePeaks : integer;
+    FirstPeak : integer;
+  begin
+    x := CalcPeakCount(SampleData.SampleFrames, Par.Zoom, Par.ImageWidth);
+    assert(x >= Par.ImageWidth);
+
+    PeakData := TPeakData.Create;
+    AutoFree(@PeakData);
+
+    PeakData.PeakCount := x;
+    PeakData.CalcPeaks(SampleData);
+
+    VisiblePeaks := Par.ImageWidth;
+    FirstPeak := CalcFirstVisiblePeak(Par.Offset, PeakData.PeakCount, Par.ImageWidth);
+
+    if SampleData.ChannelCount = 1 then
+    begin
+      DestBounds := CalcDestBounds(1,1,Par.ImageWidth, Par.ImageHeight);
+      DrawPeaks(Wrapper, Par, PeakData.PeaksL, FirstPeak, VisiblePeaks, DestBounds);
+    end;
+
+    if SampleData.ChannelCount = 2 then
+    begin
+      DestBounds := CalcDestBounds(1,2,Par.ImageWidth, Par.ImageHeight);
+      DrawPeaks(Wrapper, Par, PeakData.PeaksL, FirstPeak, VisiblePeaks, DestBounds);
+
+      DestBounds := CalcDestBounds(2,2,Par.ImageWidth, Par.ImageHeight);
+      DrawPeaks(Wrapper, Par, PeakData.PeaksR, FirstPeak, VisiblePeaks, DestBounds);
+    end;
+  end;
+var
+  Bitmap : IInterfacedBitmap;
+  Wrapper : TRedfoxBitmapWrapper;
+  x : integer;
+  SampleData : TSampleDisplayInfo;
 begin
-  fLineColor.SetColor(Value);
+  Bitmap := TInterfacedBitmap.Create;
+
+  Bitmap.Bitmap.PixelFormat := pf32Bit;
+  Bitmap.Bitmap.SetSize(Par.ImageWidth, Par.ImageHeight);
+
+  Wrapper := TRedFoxBitmapWrapper.Create;
+  AutoFree(@Wrapper);
+  Wrapper.Wrap(Bitmap.Bitmap);
+
+  Wrapper.BufferInterface.ClearAll(Par.BackgroundColor);
+  Wrapper.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+  Wrapper.BufferInterface.LineColor := Par.LineColor;
+
+
+  if (aSampleRegion.GetSample^.Properties.IsValid) then
+  begin
+    SampleData.IsValid := true;
+    SampleData.ChannelCount := aSampleRegion.GetSample^.Properties.ChannelCount;
+    SampleData.SampleFrames := aSampleRegion.GetSample^.Properties.SampleFrames;
+    SampleData.Ch1          := aSampleRegion.GetSample^.Properties.Ch1;
+    SampleData.Ch2          := aSampleRegion.GetSample^.Properties.Ch2;
+
+    x := CalcPeakCount(SampleData.SampleFrames, Par.Zoom, Par.ImageWidth);
+
+    if x >= Par.ImageWidth
+      then DrawSample_UsingPeaks(SampleData, Wrapper);
+      //else DrawSample_UsingPoints;
+  end;
+
+  result := Bitmap;
 end;
 
-procedure TFlexSampleImageRenderer.SetOffset(const Value: double);
-begin
-  fOffset := Value;
-end;
 
-procedure TFlexSampleImageRenderer.SetZoom(const Value: double);
-begin
-  fZoom := Value;
-end;
+
+
 
 end.

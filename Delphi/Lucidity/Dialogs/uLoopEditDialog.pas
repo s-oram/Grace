@@ -6,6 +6,7 @@ uses
   uConstants,
   uLucidityPopUpMenu,
   Lucidity.SampleImageRenderer,
+  Lucidity.FlexSampleRenderer,
   LuciditySampleOverlay,
   eePlugin, eeGuiStandard, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -56,6 +57,7 @@ type
     fPlugin: TeePlugin;
   protected
     SampleRenderer : TSampleImageRenderer;
+    FlexSampleRender : TFlexSampleImageRenderer;
 
     Zoom, Offset : single;
 
@@ -185,6 +187,7 @@ begin
   Offset := 0;
 
   SampleRenderer := TSampleImageRenderer.Create;
+  FlexSampleRender := TFlexSampleImageRenderer.Create;
 
   Panel.OnResize                    := PanelResize;
   BackgroundPanel.OnResize          := PanelResize;
@@ -239,6 +242,7 @@ destructor TLoopEditForm.Destroy;
 begin
   FreeAndNil(ZoomMarkerMenu);
   SampleRenderer.Free;
+  FlexSampleRender.Free;
   inherited;
 end;
 
@@ -367,6 +371,7 @@ var
   CurRegion : IRegion;
   xSampleImage : IInterfacedBitmap;
   Par:TSampleRenderParameters;
+  FlexPar:TFlexRenderPar;
 begin
   if not assigned(Plugin) then exit;
 
@@ -397,15 +402,15 @@ begin
     SampleInfo.SampleFrames := CurRegion.GetSample^.Properties.SampleFrames;
 
 
-    Par.BackgroundColor := kColor_LcdDark1;
-    Par.LineColor       := kColor_SampleDisplayLine;
-    Par.ImageWidth      := SampleDisplay.ClientRect.Width;
-    Par.ImageHeight     := SampleDisplay.ClientRect.Height;
-    Par.Zoom            := Zoom;
-    Par.Offset          := Offset;
-    Par.VertGain        := DecibelsToLinear(CurRegion.GetProperties^.SampleVolume);
+    FlexPar.BackgroundColor := kColor_LcdDark1;
+    FlexPar.LineColor       := kColor_SampleDisplayLine;
+    FlexPar.ImageWidth      := SampleDisplay.ClientRect.Width;
+    FlexPar.ImageHeight     := SampleDisplay.ClientRect.Height;
+    FlexPar.Zoom            := Zoom;
+    FlexPar.Offset          := Offset;
+    FlexPar.VertGain        := DecibelsToLinear(CurRegion.GetProperties^.SampleVolume);
 
-    xSampleImage := SampleRenderer.RenderSample(Par, CurRegion, nil);
+    xSampleImage := FlexSampleRender.RenderSample(CurRegion, FlexPar);
     SampleDisplay.DrawSample(xSampleImage);
 
 
