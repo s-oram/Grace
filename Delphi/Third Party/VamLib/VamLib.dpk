@@ -35,6 +35,7 @@ contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',
   VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas',
   VamLib.Utils in 'Source\VamLib.Utils.pas',
-  VamLib.Graphics in 'Source\VamLib.Graphics.pas';
+  VamLib.Graphics in 'Source\VamLib.Graphics.pas',
+  VamLib.Debouncer in 'Source\VamLib.Debouncer.pas';
 
 end.
