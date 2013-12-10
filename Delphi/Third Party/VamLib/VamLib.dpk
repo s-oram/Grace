@@ -29,13 +29,15 @@ package VamLib;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  OmniThreadLibraryRuntimeXE2;
 
 contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',
   VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas',
   VamLib.Utils in 'Source\VamLib.Utils.pas',
   VamLib.Graphics in 'Source\VamLib.Graphics.pas',
-  VamLib.Debouncer in 'Source\VamLib.Debouncer.pas';
+  VamLib.Debouncer in 'Source\VamLib.Debouncer.pas',
+  VamLib.Threads in 'Source\VamLib.Threads.pas';
 
 end.

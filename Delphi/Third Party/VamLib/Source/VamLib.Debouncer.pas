@@ -41,6 +41,8 @@ type
     property DebounceTime : cardinal read fDebounceTime write SetDebounceTime;
   end;
 
+
+
 implementation
 
 { TDebouncer }
