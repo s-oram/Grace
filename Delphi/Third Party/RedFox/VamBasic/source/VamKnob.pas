@@ -15,13 +15,13 @@ type
     fImageStrip: TBitmap;
     fImageStripGlyphCount: integer;
     fVisibleSteps: integer;
-    fEnabled: boolean;
+    fIsKnobEnabled: boolean;
     fDisabledImage: TBitmap;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
     procedure SetVisibleSteps(const Value: integer);
-    procedure SetEnabled(const Value: boolean);
+    procedure SetIsKnobEnabled(const Value: boolean);
     procedure SetDisabledImage(const Value: TBitmap);
   protected
     IsGrabbed : boolean;
@@ -48,7 +48,7 @@ type
     property DisabledImage : TBitmap read fDisabledImage write SetDisabledImage;
 
   published
-    property Enabled   : boolean read fEnabled   write SetEnabled;
+    property IsKnobEnabled   : boolean read fIsKnobEnabled   write SetIsKnobEnabled;
     property VisibleSteps : integer read fVisibleSteps write SetVisibleSteps;
 
     property Pos : single read fPos write SetPos;
@@ -87,7 +87,7 @@ constructor TVamKnob.Create(AOwner: TComponent);
 begin
   inherited;
   fVisibleSteps := 0;
-  fEnabled := true;
+  fIsKnobEnabled := true;
 end;
 
 destructor TVamKnob.Destroy;
@@ -107,7 +107,7 @@ procedure TVamKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Int
 begin
   inherited;
 
-  if (Enabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
+  if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
     IsGrabbed := true;
     ReferencePoint := Point(X, Y);
@@ -220,11 +220,11 @@ begin
   end;
 end;
 
-procedure TVamKnob.SetEnabled(const Value: boolean);
+procedure TVamKnob.SetIsKnobEnabled(const Value: boolean);
 begin
-  if Value <> fEnabled then
+  if Value <> fIsKnobEnabled then
   begin
-    fEnabled := Value;
+    fIsKnobEnabled := Value;
     Invalidate;
   end;
 end;
@@ -258,7 +258,7 @@ var
 begin
   inherited;
 
-  if (Enabled) or (not assigned(DisabledImage))then
+  if (IsKnobEnabled) or (not assigned(DisabledImage))then
   begin
     if assigned(fImageStrip)
       then DrawKnob_BitmapStyle

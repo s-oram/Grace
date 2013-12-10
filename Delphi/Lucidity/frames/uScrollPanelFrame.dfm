@@ -16,10 +16,6 @@ object ScrollPanelFrame: TScrollPanelFrame
     Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitLeft = 272
-    ExplicitTop = 160
-    ExplicitWidth = 337
-    ExplicitHeight = 209
     object ScrollPanel: TVamPanel
       AlignWithMargins = True
       Left = 2
@@ -36,26 +32,29 @@ object ScrollPanelFrame: TScrollPanelFrame
       CornerRadius2 = 4.000000000000000000
       CornerRadius3 = 4.000000000000000000
       CornerRadius4 = 4.000000000000000000
+      Transparent = False
       Align = alClient
+      Visible = True
       Padding.Left = 4
       Padding.Top = 4
       Padding.Right = 4
       Padding.Bottom = 4
-      ExplicitWidth = 676
-      ExplicitHeight = 556
       object MainPanelScrollBox: TVamScrollBox
         Left = 4
         Top = 4
         Width = 795
         Height = 701
         HitTest = True
-        Color = '$FF000000'
+        Color_Border = '$FF000000'
+        Color_Background = '$FF888888'
+        Color_Foreground = '$FFCCCCCC'
         ScrollBars = ssVertical
         ScrollBarWidth = 16
         ScrollYPos = 1.000000000000000000
         ScrollXIndexSize = 0.250000000000000000
         ScrollYIndexSize = 0.250000000000000000
         Align = alClient
+        Visible = True
         object MainPanelOuterDiv: TVamDiv
           AlignWithMargins = True
           Left = 2
@@ -68,6 +67,7 @@ object ScrollPanelFrame: TScrollPanelFrame
           Margins.Bottom = 2
           HitTest = True
           Align = alClient
+          Visible = True
           object MainPanelInnerDiv: TVamDiv
             Left = 72
             Top = 136
@@ -78,6 +78,7 @@ object ScrollPanelFrame: TScrollPanelFrame
             Margins.Right = 2
             Margins.Bottom = 2
             HitTest = True
+            Visible = True
           end
         end
       end

@@ -177,7 +177,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -188,7 +188,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'BiPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -199,7 +199,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -275,7 +275,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -286,7 +286,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -329,7 +329,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'UniPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -374,7 +374,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'UniPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -457,7 +457,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -502,7 +502,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -585,7 +585,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'UniPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end

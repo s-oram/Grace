@@ -160,7 +160,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -205,7 +205,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -216,7 +216,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -261,7 +261,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -272,7 +272,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -317,7 +317,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -328,7 +328,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end
@@ -373,7 +373,7 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
-          Enabled = True
+          IsKnobEnabled = True
           VisibleSteps = 0
           Visible = True
         end

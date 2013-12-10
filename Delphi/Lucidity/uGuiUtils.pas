@@ -396,11 +396,13 @@ procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array
     if Caption <> '' then
     begin
       aControl.Visible := true;
+      (aControl as TVamKnob).IsKnobEnabled := true;
       (aLabel as TVamLabel).Text := Caption;
       aLabel.Visible := true;
     end else
     begin
-      aControl.Visible := false;
+      aControl.Visible := true;
+      (aControl as TVamKnob).IsKnobEnabled := false;
       (aLabel as TVamLabel).Text := '';
       aLabel.Visible := false;
     end;

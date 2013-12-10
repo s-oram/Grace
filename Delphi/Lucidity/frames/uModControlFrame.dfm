@@ -145,7 +145,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Pos = 0.500000000000000000
             Visible = True
@@ -159,7 +159,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -172,7 +172,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -185,7 +185,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -331,7 +331,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -342,7 +342,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -353,7 +353,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -364,7 +364,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -375,7 +375,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -489,7 +489,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -500,7 +500,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -572,7 +572,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -602,7 +602,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1161,7 +1161,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Pos = 0.500000000000000000
             Visible = True
@@ -1175,7 +1175,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -1188,7 +1188,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -1201,7 +1201,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
             OnMouseEnter = FilterKnobMouseEnter
@@ -1347,7 +1347,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Pos = 0.500000000000000000
             Visible = True
@@ -1359,7 +1359,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1370,7 +1370,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1381,7 +1381,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1392,7 +1392,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Pos = 0.500000000000000000
             Visible = True
@@ -1483,7 +1483,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1513,7 +1513,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1584,7 +1584,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end
@@ -1614,7 +1614,7 @@ object ModControlFrame: TModControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Visible = True
           end

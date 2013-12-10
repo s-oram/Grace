@@ -138,7 +138,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Margins.Bottom = 2
             DisplayClass = 'UniPolarKnob'
             HitTest = True
-            Enabled = True
+            IsKnobEnabled = True
             VisibleSteps = 0
             Align = alTop
             Visible = True
