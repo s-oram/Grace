@@ -202,6 +202,9 @@ type
 
 function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
 
+procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const aSampleImageWidth : integer; var Peaks : IPeakBuffer); overload;
+procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA, SampleIndexB : integer; const aSampleImageWidth : integer; var Peaks : IPeakBuffer); overload;
+
 
 
 implementation
@@ -227,6 +230,35 @@ begin
     and (MidiNoteData2 <= props^.HighVelocity)
     then result := true
     else result := false;
+end;
+
+procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const aSampleImageWidth : integer; var Peaks : IPeakBuffer);
+var
+  NewPeaks : IPeakBuffer;
+  aSample : PSampleFloat;
+begin
+  NewPeaks := TPeakBuffer.Create;
+
+  aSample := aSampleRegion.GetSample;
+
+  if (aSample^.Properties.IsValid) and (aSample^.Properties.SampleFrames > aSampleImageWidth) then
+  begin
+    if aSample^.Properties.ChannelCount = 1
+      then NewPeaks.GeneratePeaks(aSample^.Properties.Ch1, aSample^.Properties.SampleFrames, aSampleImageWidth);
+
+    if aSample^.Properties.ChannelCount = 2
+      then NewPeaks.GeneratePeaks(aSample^.Properties.Ch1, aSample^.Properties.Ch2, aSample^.Properties.SampleFrames, aSampleImageWidth);
+
+    Peaks := NewPeaks;
+  end else
+  begin
+    Peaks := nil;
+  end;
+end;
+
+procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA, SampleIndexB : integer; const aSampleImageWidth : integer; var Peaks : IPeakBuffer); overload;
+begin
+
 end;
 
 
@@ -349,16 +381,9 @@ begin
   //            Peak Buffer
   //============================================================================
 
-  PeakBuffer.Clear;
+  GenerateRegionPeaks(self, kSampleImageWidth, fPeakBuffer);
 
-  if (Sample.Properties.IsValid) and (Sample.Properties.SampleFrames > kSampleImageWidth) then
-  begin
-    if Sample.Properties.ChannelCount = 1
-      then PeakBuffer.GeneratePeaks(Sample.Properties.Ch1, Sample.Properties.SampleFrames, kSampleImageWidth);
 
-    if Sample.Properties.ChannelCount = 2
-      then PeakBuffer.GeneratePeaks(Sample.Properties.Ch1, Sample.Properties.Ch2, Sample.Properties.SampleFrames, kSampleImageWidth);
-  end;
 
 
 end;

@@ -58,6 +58,9 @@ XL + Stuff bundle is more again plus a larger sample library.
 Naunce - A compact sampler from New Sonic Arts
 http://www.kvraudio.com/forum/viewtopic.php?t=375258&postdays=0&postorder=asc&start=0
 
+The Mangle - a granular sampler.
+http://sound-guru.com/software/mangle/
+
 
 
 ==NOTE==

@@ -139,7 +139,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 252
         end
         object ZoomLoopStartButton: TVamTextBox
           Tag = 5
@@ -165,7 +164,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 168
         end
         object ZoomSampleEndButton: TVamTextBox
           Tag = 4
@@ -191,7 +189,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 84
         end
         object ZoomSampleStartButton: TVamTextBox
           Tag = 3
@@ -217,7 +214,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 0
         end
         object ZoomMarkerButton: TVamTextBox
           Tag = 7
@@ -243,7 +239,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 336
         end
         object VamLabel2: TVamLabel
           AlignWithMargins = True
@@ -292,7 +287,6 @@ object LoopEditForm: TLoopEditForm
           Font.Style = []
           Align = alLeft
           Visible = True
-          ExplicitLeft = 35
         end
       end
       object SampleDisplayContainer: TVamPanel
@@ -330,8 +324,6 @@ object LoopEditForm: TLoopEditForm
         Transparent = False
         Align = alBottom
         Visible = True
-        ExplicitLeft = 0
-        ExplicitTop = 323
         object ZoomSampleDisplay: TVamSampleDisplay
           AlignWithMargins = True
           Left = 28

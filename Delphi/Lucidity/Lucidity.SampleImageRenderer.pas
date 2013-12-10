@@ -29,14 +29,14 @@ type
   protected
     procedure DrawEmptySample(const Par:TSampleRenderParameters; const ImageWrapper : TRedFoxBitmapWrapper; ChannelCount : integer);
     procedure DrawSampleUsingPoints(const aSampleRegion : IRegion; const Par:TSampleRenderParameters; const ImageWrapper : TRedFoxBitmapWrapper);
-    procedure DrawSampleUsingPeakBuffer(const aSampleRegion : IRegion; const Par:TSampleRenderParameters; const ImageWrapper : TRedFoxBitmapWrapper);
+    procedure DrawSampleUsingPeakBuffer(const aSampleRegion : IRegion; PeaksData: IPeakBuffer;  const Par:TSampleRenderParameters; const ImageWrapper : TRedFoxBitmapWrapper);
 
     procedure DrawZeroPointLine(const Par:TSampleRenderParameters; const ImageWrapper : TRedFoxBitmapWrapper; const DestBounds : TRectF);
   public
     constructor Create;
     destructor Destroy; override;
 
-    function RenderSample(const Par:TSampleRenderParameters; const aSampleRegion : IRegion):IInterfacedBitmap;
+    function RenderSample(const Par:TSampleRenderParameters; const aSampleRegion : IRegion; PeaksData: IPeakBuffer):IInterfacedBitmap;
   end;
 
 implementation
@@ -46,7 +46,8 @@ uses
   Math,
   AggPixelFormat,
   VamLib.Utils,
-  Graphics;
+  Graphics,
+  Lucidity.FlexSampleRenderer;
 
 { TSampleImageRenderer }
 
@@ -88,11 +89,10 @@ begin
 end;
 
 
-function TSampleImageRenderer.RenderSample(const Par:TSampleRenderParameters; const aSampleRegion: IRegion): IInterfacedBitmap;
+function TSampleImageRenderer.RenderSample(const Par:TSampleRenderParameters; const aSampleRegion: IRegion; PeaksData: IPeakBuffer): IInterfacedBitmap;
 var
   Bitmap : IInterfacedBitmap;
   Wrapper : TRedfoxBitmapWrapper;
-
 begin
   Bitmap := TInterfacedBitmap.Create;
 
@@ -109,21 +109,34 @@ begin
 
   if (aSampleRegion.GetSample^.Properties.IsValid) then
   begin
-    if (aSampleRegion.GetSample^.Properties.SampleFrames > CastToInteger(Par.ImageWidth))
-      then DrawSampleUsingPeakBuffer(aSampleRegion, Par, Wrapper)
-      else DrawSampleUsingPoints(aSampleRegion, Par, Wrapper);
+    if (Par.Zoom = 0) then
+    begin
+      if (PeaksData <> nil) and (PeaksData.GetDataFrames = Par.ImageWidth) then
+      begin
+        DrawSampleUsingPeakBuffer(aSampleRegion, PeaksData, Par, Wrapper)
+      end else
+      if (aSampleRegion.GetSample^.Properties.SampleFrames > CastToInteger(Par.ImageWidth)) then
+      begin
+        GenerateRegionPeaks(aSampleRegion, Par.ImageWidth, PeaksData);
+        DrawSampleUsingPeakBuffer(aSampleRegion, PeaksData, Par, Wrapper)
+      end else
+      begin
+        DrawSampleUsingPoints(aSampleRegion, Par, Wrapper);
+      end;
+    end else
+    begin
+
+
+    end;
   end else
   begin
     DrawEmptySample(Par, Wrapper, 1);
   end;
 
-
-
-
   result := Bitmap;
 end;
 
-procedure TSampleImageRenderer.DrawSampleUsingPeakBuffer(const aSampleRegion: IRegion; const Par:TSampleRenderParameters; const ImageWrapper: TRedFoxBitmapWrapper);
+procedure TSampleImageRenderer.DrawSampleUsingPeakBuffer(const aSampleRegion: IRegion; PeaksData: IPeakBuffer; const Par:TSampleRenderParameters; const ImageWrapper: TRedFoxBitmapWrapper);
   procedure DrawPeakBufferData(const ImageWrapper : TRedFoxBitmapWrapper; const Peaks: TPeakBufferData; const PeakFrames: integer; const DestBounds: TRectF);
   var
     xOffset : integer;
@@ -167,7 +180,8 @@ var
   DestBounds : TRectF;
   PeakBuffer : IPeakBuffer;
 begin
-  PeakBuffer := aSampleRegion.GetPeakBuffer;
+  //PeakBuffer := aSampleRegion.GetPeakBuffer;
+  PeakBuffer := PeaksData;
 
   assert(PeakBuffer.GetDataFrames = CastToInteger(Par.ImageWidth));
   assert(aSampleRegion.GetSample^.Properties.SampleFrames > CastToInteger(Par.ImageWidth));

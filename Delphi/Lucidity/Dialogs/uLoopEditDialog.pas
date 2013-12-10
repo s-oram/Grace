@@ -5,10 +5,11 @@ interface
 uses
   uConstants,
   uLucidityPopUpMenu,
-  LuciditySampleOverlay, Vcl.Menus,
+  Lucidity.SampleImageRenderer,
+  LuciditySampleOverlay,
   eePlugin, eeGuiStandard, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
+  Vcl.Menus, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamButton, VamSampleDisplay, VamDiv,
   VamSampleZoomControl, VamLabel, RedFoxGraphicControl, VamGraphicControl,
   VamTextBox;
@@ -53,6 +54,10 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
+  protected
+    SampleRenderer : TSampleImageRenderer;
+
+    Zoom, Offset : single;
 
   public
     SampleInfo    : TSampleDisplayInfo;
@@ -112,6 +117,7 @@ type
 implementation
 
 uses
+  VamLib.Graphics, eeDsp,
   GuidEx, uGuiUtils, RedFoxColor,
   Lucidity.SampleMap;
 
@@ -175,6 +181,11 @@ constructor TLoopEditForm.Create(AOwner: TComponent);
 begin
   inherited;
 
+  Zoom   := 0;
+  Offset := 0;
+
+  SampleRenderer := TSampleImageRenderer.Create;
+
   Panel.OnResize                    := PanelResize;
   BackgroundPanel.OnResize          := PanelResize;
 
@@ -227,6 +238,7 @@ end;
 destructor TLoopEditForm.Destroy;
 begin
   FreeAndNil(ZoomMarkerMenu);
+  SampleRenderer.Free;
   inherited;
 end;
 
@@ -353,6 +365,8 @@ end;
 procedure TLoopEditForm.UpdateSampleDisplay;
 var
   CurRegion : IRegion;
+  xSampleImage : IInterfacedBitmap;
+  Par:TSampleRenderParameters;
 begin
   if not assigned(Plugin) then exit;
 
@@ -382,6 +396,35 @@ begin
     SampleInfo.ChannelCount := CurRegion.GetSample^.Properties.ChannelCount;
     SampleInfo.SampleFrames := CurRegion.GetSample^.Properties.SampleFrames;
 
+
+    Par.BackgroundColor := kColor_LcdDark1;
+    Par.LineColor       := kColor_SampleDisplayLine;
+    Par.ImageWidth      := SampleDisplay.ClientRect.Width;
+    Par.ImageHeight     := SampleDisplay.ClientRect.Height;
+    Par.Zoom            := Zoom;
+    Par.Offset          := Offset;
+    Par.VertGain        := DecibelsToLinear(CurRegion.GetProperties^.SampleVolume);
+
+    xSampleImage := SampleRenderer.RenderSample(Par, CurRegion, nil);
+    SampleDisplay.DrawSample(xSampleImage);
+
+
+    Par.BackgroundColor := kColor_LcdDark1;
+    Par.LineColor       := kColor_SampleDisplayLine;
+    Par.ImageWidth      := ZoomSampleDisplay.ClientRect.Width;
+    Par.ImageHeight     := ZoomSampleDisplay.ClientRect.Height;
+    Par.Zoom            := 0;
+    Par.Offset          := 0;
+    Par.VertGain        := DecibelsToLinear(CurRegion.GetProperties^.SampleVolume);
+
+    xSampleImage := SampleRenderer.RenderSample(Par, CurRegion, nil);
+    ZoomSampleDisplay.DrawSample(xSampleImage);
+
+
+
+
+
+    {
     if CurRegion.GetSample^.Properties.ChannelCount = 1 then
     begin
       SampleInfo.Ch1 := CurRegion.GetSample^.Properties.Ch1;
@@ -400,6 +443,7 @@ begin
     //== zoom sample display ==
     ZoomSampleDisplay.DrawSample(SampleInfo);
     ZoomSampleDisplay.Invalidate;
+    }
 
 
 
@@ -407,12 +451,13 @@ begin
     SampleOverlay.BeginUpdate;
     try
       SampleOverlay.Visible     := true;
-      SampleOverlay.SetSampleInfo(true, SampleInfo.SampleFrames);
+      SampleOverlay.SetSampleInfo(true, CurRegion.GetSample^.Properties.SampleFrames);
       SampleOverlay.SampleStart := CurRegion.GetProperties^.SampleStart;
       SampleOverlay.SampleEnd   := CurRegion.GetProperties^.SampleEnd;
       SampleOverlay.LoopStart   := CurRegion.GetProperties^.LoopStart;
       SampleOverlay.LoopEnd     := CurRegion.GetProperties^.LoopEnd;
       SampleOverlay.ShowLoopPoints := ShowLoopMarkers(CurRegion);
+      SampleOverlay.SetZoomOffset(Zoom, Offset);
     finally
       SampleOverlay.EndUpdate;
     end;
@@ -421,12 +466,13 @@ begin
     ZoomSampleOverlay.BeginUpdate;
     try
       ZoomSampleOverlay.Visible     := true;
-      ZoomSampleOverlay.SetSampleInfo(true, SampleInfo.SampleFrames);
+      ZoomSampleOverlay.SetSampleInfo(true, CurRegion.GetSample^.Properties.SampleFrames);
       ZoomSampleOverlay.SampleStart := CurRegion.GetProperties^.SampleStart;
       ZoomSampleOverlay.SampleEnd   := CurRegion.GetProperties^.SampleEnd;
       ZoomSampleOverlay.LoopStart   := CurRegion.GetProperties^.LoopStart;
       ZoomSampleOverlay.LoopEnd     := CurRegion.GetProperties^.LoopEnd;
       ZoomSampleOverlay.ShowLoopPoints := ShowLoopMarkers(CurRegion);
+      ZoomSampleOverlay.SetZoomOffset(0, 0);
     finally
       ZoomSampleOverlay.EndUpdate;
     end;
@@ -461,7 +507,7 @@ var
   tx : single;
   IndexA, IndexB : single;
   SampleFrames, DisplayPixelWidth : integer;
-  Zoom, Offset : single;
+  xZoom, xOffset : single;
 begin
   if SampleInfo.IsValid then
   begin
@@ -483,13 +529,12 @@ begin
     SampleFrames := SampleInfo.SampleFrames;
     DisplayPixelWidth := SampleDisplay.Width;
 
-    CalcZoomOffset(IndexA, IndexB, SampleFrames, DisplayPixelWidth, Zoom, Offset);
+    CalcZoomOffset(IndexA, IndexB, SampleFrames, DisplayPixelWidth, xZoom, xOffset);
 
-    SampleDisplay.Zoom := Zoom;
-    SampleDisplay.Offset := Offset;
+    Zoom := xZoom;
+    Offset := xOffset;
 
-    SampleOverlay.SetZoomOffset(Zoom, Offset);
-    ZoomSampleOverlay.SetZoomOffset(0,0);
+    UpdateSampleDisplay;
   end;
 end;
 

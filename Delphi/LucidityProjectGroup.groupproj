@@ -10,7 +10,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj">
-				<Dependencies>Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj;Third Party\VamLib\VamLib.dproj</Dependencies>
+				<Dependencies/>
 			</Projects>
 			<Projects Include="Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj">
 				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
@@ -19,16 +19,16 @@
 				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj">
-				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
+				<Dependencies>Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj">
-				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj</Dependencies>
+				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj">
-				<Dependencies>Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
+				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Lucidity.dproj">
-				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
+				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
 				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj</Dependencies>
@@ -59,13 +59,13 @@
 		<Target Name="DragDropDXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2" DependsOnTargets="DragDropDXE2;VamLib">
+		<Target Name="AggPasRunXE2">
 			<MSBuild Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2:Clean" DependsOnTargets="DragDropDXE2:Clean;VamLib:Clean">
+		<Target Name="AggPasRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
-		<Target Name="AggPasRunXE2:Make" DependsOnTargets="DragDropDXE2:Make;VamLib:Make">
+		<Target Name="AggPasRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
 		</Target>
 		<Target Name="AggPasDesXE2" DependsOnTargets="AggPasRunXE2">
@@ -86,40 +86,40 @@
 		<Target Name="RedFoxRunXE2:Make" DependsOnTargets="AggPasRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxDesXE2" DependsOnTargets="AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2">
+		<Target Name="RedFoxDesXE2" DependsOnTargets="RedFoxRunXE2">
 			<MSBuild Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxDesXE2:Clean" DependsOnTargets="AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean">
+		<Target Name="RedFoxDesXE2:Clean" DependsOnTargets="RedFoxRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxDesXE2:Make" DependsOnTargets="AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make">
+		<Target Name="RedFoxDesXE2:Make" DependsOnTargets="RedFoxRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2" DependsOnTargets="AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2">
+		<Target Name="VamBasicRunXE2" DependsOnTargets="AggPasRunXE2;RedFoxRunXE2">
 			<MSBuild Projects="Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2:Clean" DependsOnTargets="AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean">
+		<Target Name="VamBasicRunXE2:Clean" DependsOnTargets="AggPasRunXE2:Clean;RedFoxRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2:Make" DependsOnTargets="AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make">
+		<Target Name="VamBasicRunXE2:Make" DependsOnTargets="AggPasRunXE2:Make;RedFoxRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicDesXE2" DependsOnTargets="DragDropDXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2">
+		<Target Name="VamBasicDesXE2" DependsOnTargets="VamBasicRunXE2">
 			<MSBuild Projects="Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicDesXE2:Clean" DependsOnTargets="DragDropDXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean">
+		<Target Name="VamBasicDesXE2:Clean" DependsOnTargets="VamBasicRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicDesXE2:Make" DependsOnTargets="DragDropDXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make">
+		<Target Name="VamBasicDesXE2:Make" DependsOnTargets="VamBasicRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
-		<Target Name="Lucidity" DependsOnTargets="VamBasicRunXE2">
+		<Target Name="Lucidity">
 			<MSBuild Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Clean" DependsOnTargets="VamBasicRunXE2:Clean">
+		<Target Name="Lucidity:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Make" DependsOnTargets="VamBasicRunXE2:Make">
+		<Target Name="Lucidity:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
 		<Target Name="ComponentTester" DependsOnTargets="VamBasicRunXE2;VamBasicDesXE2">

@@ -263,7 +263,7 @@ begin
       Par.Offset          := 0;
       Par.VertGain        := DecibelsToLinear(Region.GetProperties^.SampleVolume);
 
-      xSampleImage := SampleRenderer.RenderSample(Par, Region);
+      xSampleImage := SampleRenderer.RenderSample(Par, Region, Region.GetPeakBuffer);
       SampleDisplay.DrawSample(xSampleImage);
 
 
