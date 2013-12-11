@@ -50,6 +50,8 @@ type
     procedure SetSampleRate(const Value: single); override;
 
     procedure UpdateSampleBounds;
+
+    function CalcPhaseCounterStepSize:double; {$IFDEF AudioInline}inline;{$ENDIF}
   public
     constructor Create(const aVoiceModPoints : PVoiceModulationPoints; const aVoiceClockManager : TLucidityVoiceClockManager); override;
     destructor Destroy; override;
@@ -70,8 +72,8 @@ type
     //== Parameters ===
     property PitchShift : single read fPitchShift write fPitchShift; //SemiTones.
 
-    property LoopBounds : TSamplerLoopBounds read fLoopBounds write SetLoopBounds;
-    property LoopMode   : TSamplerLoopMode   read fLoopMode   write SetLoopMode;
+    property LoopBounds    : TSamplerLoopBounds  read fLoopBounds         write SetLoopBounds;
+    property LoopMode      : TSamplerLoopMode    read fLoopMode           write SetLoopMode;
 
 
     //== For GUI Feedback ==
@@ -139,6 +141,12 @@ begin
   LoopingFadeOutOsc.SampleRate := Value;
 end;
 
+function TOneShotSampleOsc.CalcPhaseCounterStepSize: double;
+begin
+  result := SemiToneShiftToStepSize(PitchShift, 1) * (CurSample.Properties.SampleRate / SampleRate);
+end;
+
+
 procedure TOneShotSampleOsc.Trigger(const MidiNote : byte; const aSampleRegion:IRegion; const aSample: TSampleFloat);
 begin
   IsFinishCalledNeeded := true;
@@ -163,7 +171,7 @@ begin
   if assigned(CurSample) then
   begin
     PhaseCounter.ResetTo(CurrentSampleBounds.SampleStart);
-    PhaseCounter.StepSize := SemiToneShiftToStepSize(PitchShift, 1) * (CurSample.Properties.SampleRate / SampleRate);
+    PhaseCounter.StepSize := CalcPhaseCounterStepSize;
   end;
 end;
 

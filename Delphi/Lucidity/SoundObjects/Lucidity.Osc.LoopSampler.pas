@@ -172,7 +172,7 @@ begin
   //SourceTempoFactor should never be zero by the time ControlRateStep() is called.
   assert(SourceTempoFactor <> 0);
 
-  TempoOfSource   := CurRegion.GetProperties.SampleBeats * SourceTempoFactor;
+  TempoOfSource         := CurRegion.GetProperties.SampleBeats * SourceTempoFactor;
   PhaseCounter.StepSize := (CurSample.Properties.SampleRate * OneOverSampleRate) * (Tempo / TempoOfSource);
 end;
 
