@@ -125,6 +125,8 @@ type
     function CalcPitchTransitionTime : single;
 
     property OscModule : TOscModule read fOscModule write fOscModule;
+
+    procedure UpdateOscPitch;
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -393,10 +395,11 @@ begin
   if IsActive then assert('ERROR: Changing Pitch Tracking type while Voice is active.');
 
 
+  {
   if (PitchTracking = TPitchTracking.Note) or (PitchTracking = TPitchTracking.Off)
     then OscModule := TOscModule.oscNoteSampler
     else OscModule := TOscModule.oscLoopSampler;
-
+  }
 end;
 
 procedure TLucidityVoice.SetSamplePlaybackType(const Value: TSamplePlaybackType);
@@ -430,12 +433,16 @@ end;
 
 procedure TLucidityVoice.SampleResetClockEvent(Sender: TObject; ClockID: cardinal);
 begin
+  OneShotSampleOsc.ResetSamplePosition;
+
+  {
   case OscModule of
     oscNoteSampler: OneShotSampleOsc.ResetSamplePosition;
     oscLoopSampler: LoopSampleOsc.ResetSamplePosition;
   else
     raise Exception.Create('type not handled.');
   end;
+  }
 end;
 
 function TLucidityVoice.CalcPitchTransitionTime: single;
@@ -451,6 +458,40 @@ end;
 procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink);
 begin
   ModMatrix.UpdateModLink(ModLinkData);
+end;
+
+procedure TLucidityVoice.UpdateOscPitch;
+var
+  PitchShift : single;
+  SamplePitch : single;
+begin
+  case PitchTracking of
+    TPitchTracking.Note:
+    begin
+      if VoiceMode = TVoiceMode.Poly
+        then PitchShift := fTriggerNote
+        else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
+
+      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+      PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
+      OneShotSampleOsc.PitchShift := PitchShift;
+
+    end;
+
+    TPitchTracking.BPM:
+    begin
+      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+      OneShotSampleOsc.PitchShift := CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
+    end;
+
+    TPitchTracking.Off:
+    begin
+      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+      OneShotSampleOsc.PitchShift := CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
+    end;
+  else
+    raise Exception.Create('type not handled.');
+  end;
 end;
 
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections);
@@ -516,6 +557,15 @@ begin
   ModEnvA.Trigger(1);
   ModEnvB.Trigger(1);
 
+
+
+  UpdateOscPitch;
+
+  OneShotSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
+
+
+
+  {
   case OscModule of
     oscNoteSampler:
     begin
@@ -544,7 +594,7 @@ begin
   else
     raise Exception.Create('type not handled.');
   end;
-
+  }
 
 
   FilterOne.Reset;
@@ -562,12 +612,7 @@ begin
     HasBeenReleased := true;
 
 
-    case OscModule of
-      oscNoteSampler: OneShotSampleOsc.Release;
-      oscLoopSampler: ;
-    else
-      raise Exception.Create('type not handled.');
-    end;
+    OneShotSampleOsc.Release;
   end;
 end;
 
@@ -664,6 +709,8 @@ begin
   OscVCA.FastControlProcess(AmpEnv.Value);
   OscPanner.FastControlProcess;
 
+  UpdateOscPitch;
+  {
   case OscModule of
     oscNoteSampler:
     begin
@@ -691,7 +738,7 @@ begin
   else
     raise Exception.Create('type not handled.');
   end;
-
+  }
 
   FilterOne.FastControlProcess;
   FilterTwo.FastControlProcess;
@@ -704,14 +751,16 @@ procedure TLucidityVoice.SlowControlProcess;
 begin
   LFO.SlowControlProcess;
   ModMatrix.SlowControlProcess;
+  OneShotSampleOsc.SlowControlProcess;
 
-
+  {
   case OscModule of
-    oscNoteSampler: OneShotSampleOsc.SlowControlProcess;
+    oscNoteSampler:
     oscLoopSampler: LoopSampleOsc.SlowControlProcess;
   else
     raise Exception.Create('type not handled.');
   end;
+  }
 end;
 
 
@@ -732,12 +781,15 @@ begin
 
   for c1 := 0 to SampleFrames-1 do
   begin
+    OneShotSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
+    {
     case OscModule of
       oscNoteSampler: OneShotSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
       oscLoopSampler: LoopSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
     else
       raise Exception.Create('type not handled.');
     end;
+    }
 
     MixX1 := SampleOscX1;
     MixX2 := SampleOscX2;
@@ -783,13 +835,16 @@ begin
   if FeedbackData.FocusedRegion = self.SampleRegion then
   begin
     FeedbackData.SampleBounds.ShowRealTimeMarkers := true;
+    OneShotSampleOsc.GetGuiFeedBack(FeedbackData);
 
+    {
     case OscModule of
-      oscNoteSampler: OneShotSampleOsc.GetGuiFeedBack(FeedbackData);
+      oscNoteSampler:
       oscLoopSampler: LoopSampleOsc.GetGuiFeedBack(FeedbackData);
     else
       raise Exception.Create('type not handled.');
     end;
+    }
   end else
   begin
     FeedbackData.SampleBounds.ShowRealTimeMarkers := false;
