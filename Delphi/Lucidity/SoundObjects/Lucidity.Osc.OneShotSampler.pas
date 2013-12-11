@@ -45,6 +45,7 @@ type
     PhaseCounter : TCounter;
     CurrentSampleBounds : TSampleOsc_SampleBounds;
 
+
     SourceTempoFactor : single;
 
     //TODO: There are two fade out oscillators here.
@@ -227,7 +228,7 @@ begin
   //============================================================================
   if assigned(CurSample) then
   begin
-    PhaseCounter.ResetTo(CurrentSampleBounds.SampleStart);
+    PhaseCounter.ResetTo(CurrentSampleBounds.PlaybackSampleStart);
     PhaseCounter.StepSize := CalcPhaseCounterStepSize;
   end;
 
@@ -246,7 +247,7 @@ begin
 
   if (LoopMode = TSamplerLoopMode.LoopRelease) then
   begin
-    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+    CurrentSampleBounds.PlaybackEnd := CurrentSampleBounds.SampleEnd;
   end;
 
 end;
@@ -260,6 +261,65 @@ begin
   Event_UpdateSampleBounds(self, CurRegion, @CurrentSampleBounds);
 
 
+
+  //==== Sample bounds post-processing ========================================
+  case PitchParameters.PitchTracking of
+    TPitchTracking.Note,
+    TPitchTracking.Off:
+    begin
+      CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.SampleStart;
+
+      if  (LoopBounds = TSamplerLoopBounds.LoopSample)
+       or (LoopMode = TSamplerLoopMode.LoopOff)
+       or (LoopMode = TSamplerLoopMode.OneShot)
+       or ((HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease))
+       then
+      begin
+        CurrentSampleBounds.PlaybackLoopStart := CurrentSampleBounds.SampleStart;
+        CurrentSampleBounds.PlaybackEnd       := CurrentSampleBounds.SampleEnd;
+      end else
+      begin
+        CurrentSampleBounds.PlaybackLoopStart := CurrentSampleBounds.LoopStart;
+        CurrentSampleBounds.PlaybackEnd       := CurrentSampleBounds.LoopEnd;
+      end;
+
+      SourceTempoFactor := 1;
+    end;
+
+    TPitchTracking.BPM:
+    begin
+      case LoopBounds of
+        TSamplerLoopBounds.LoopSample:
+        begin
+          CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.SampleStart;
+          CurrentSampleBounds.PlaybackLoopStart   := CurrentSampleBounds.SampleStart;
+          CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.SampleEnd;
+        end;
+
+        TSamplerLoopBounds.LoopPoints:
+        begin
+          CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.LoopStart;
+          CurrentSampleBounds.PlaybackLoopStart   := CurrentSampleBounds.LoopStart;
+
+
+
+          if ((HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease))
+            then CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.SampleEnd
+            else CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.LoopEnd;
+        end;
+      else
+        raise Exception.Create('Type not handled.');
+      end;
+
+      SourceTempoFactor := 1 / (CurrentSampleBounds.SampleEnd - CurrentSampleBounds.SampleStart) * CurSample.Properties.SampleRate * 60;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+
+  {
   //==== Sample bounds post-processing ========================================
   if (LoopBounds = TSamplerLoopBounds.LoopSample) then
   begin
@@ -283,8 +343,8 @@ begin
   begin
     CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
   end;
+  }
 
-  SourceTempoFactor := 1 / (CurrentSampleBounds.SampleEnd - CurrentSampleBounds.SampleStart) * CurSample.Properties.SampleRate * 60;
 end;
 
 procedure TOneShotSampleOsc.Kill;
@@ -301,7 +361,7 @@ begin
   StepInFilter.Trigger;
   LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
   UpdateSampleBounds;
-  PhaseCounter.ResetTo(CurrentSampleBounds.SampleStart);
+  PhaseCounter.ResetTo(CurrentSampleBounds.PlaybackSampleStart);
 end;
 
 procedure TOneShotSampleOsc.FastControlProcess;
@@ -358,7 +418,7 @@ begin
 
 
 
-  if (PhaseCounter >= CurrentSampleBounds.LoopEnd) then
+  if (PhaseCounter >= CurrentSampleBounds.PlaybackEnd) then
   begin
     case LoopMode of
       TSamplerLoopMode.LoopOff:
@@ -375,7 +435,7 @@ begin
         StepInFilter.Trigger;
         LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
         UpdateSampleBounds;
-        PhaseCounter.ResetTo(CurrentSampleBounds.LoopStart);
+        PhaseCounter.ResetTo(CurrentSampleBounds.PlaybackLoopStart);
         VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
       end;
 
@@ -386,7 +446,7 @@ begin
           StepInFilter.Trigger;
           LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
           UpdateSampleBounds;
-          PhaseCounter.ResetTo(CurrentSampleBounds.LoopStart);
+          PhaseCounter.ResetTo(CurrentSampleBounds.PlaybackLoopStart);
           VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
         end else
         if (IsFinishCalledNeeded) then

@@ -70,6 +70,9 @@ type
     SampleEnd           : integer;
     LoopStart           : integer;
     LoopEnd             : integer;
+    PlaybackSampleStart : integer;
+    PlaybackLoopStart   : integer;
+    PlaybackEnd         : integer; //Will loop here if loop is enabled.
   end;
 
   PGlobalModulationPoints = ^TGlobalModulationPoints;
