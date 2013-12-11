@@ -70,7 +70,6 @@ type
     SampleEnd           : integer;
     LoopStart           : integer;
     LoopEnd             : integer;
-    function LoopSampleFrames : integer; inline;
   end;
 
   PGlobalModulationPoints = ^TGlobalModulationPoints;
@@ -223,12 +222,6 @@ end;
 
 
 
-{ TSampleOsc_SampleBounds }
-
-function TSampleOsc_SampleBounds.LoopSampleFrames: integer;
-begin
-  result := self.LoopEnd - self.LoopStart;
-end;
 
 
 
