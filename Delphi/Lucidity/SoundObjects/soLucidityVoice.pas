@@ -44,13 +44,9 @@ type
   PArrayOfLucidityVoice = ^TArrayOfLucidityVoice;
   TArrayOfLucidityVoice = array of TLucidityVoice;
 
-
   TLucidityVoiceList = class(TObjectList<TLucidityVoice>);
 
-
   TOscModule = (oscNoteSampler, oscLoopSampler);
-
-
 
   // NOTE: TLucidityVoice descends from TPureInterfaced object
   // so that interfaces can be used without reference counting.
@@ -104,6 +100,7 @@ type
     ModPoints : TVoiceModulationPoints;
 
     fOneShotSampleOsc : TOneShotSampleOsc;
+    OscPitchParameters : PSampleOscPitchPar;
 
     fSampleGroup  : IKeyGroup;
     fSampleRegion : IRegion;
@@ -260,6 +257,7 @@ begin
 
   OneShotSampleOsc := TOneShotSampleOsc.Create(@ModPoints, VoiceClockManager);
   OneShotSampleOsc.OnFinished := self.SampleFinished;
+  OscPitchParameters := OneShotSampleOsc.GetPitchParameters;
 
   LoopSampleOsc := TLoopSampleOsc.Create(@ModPoints, VoiceClockManager);
   LoopSampleOsc.OnFinished := self.SampleFinished;
@@ -465,6 +463,21 @@ var
   PitchShift : single;
   SamplePitch : single;
 begin
+  OscPitchParameters^.PitchTracking  := self.PitchTracking;
+
+  OscPitchParameters^.RegionRootNote := SampleRegion.GetProperties^.RootNote;
+
+  if VoiceMode = TVoiceMode.Poly
+        then OscPitchParameters^.PlaybackNote := fTriggerNote
+        else OscPitchParameters^.PlaybackNote := GlobalModPoints.Source_MonophonicMidiNote;
+
+  OscPitchParameters^.SamplePitchAdjust := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
+  OscPitchParameters^.VoicePitchAdjust  := round(PitchOne * 12) + PitchTwo;
+  OscPitchParameters^.PitchBendAdjust   := GlobalModPoints^.Source_MidiPitchBendST;
+
+
+
+  {
   case PitchTracking of
     TPitchTracking.Note:
     begin
@@ -475,7 +488,6 @@ begin
       SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
       PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
       OneShotSampleOsc.PitchShift := PitchShift;
-
     end;
 
     TPitchTracking.BPM:
@@ -492,6 +504,7 @@ begin
   else
     raise Exception.Create('type not handled.');
   end;
+  }
 end;
 
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections);
@@ -556,8 +569,6 @@ begin
   FilterEnv.Trigger(MidiVelocity / 127);
   ModEnvA.Trigger(1);
   ModEnvB.Trigger(1);
-
-
 
   UpdateOscPitch;
 
@@ -709,7 +720,7 @@ begin
   OscVCA.FastControlProcess(AmpEnv.Value);
   OscPanner.FastControlProcess;
 
-  UpdateOscPitch;
+
   {
   case OscModule of
     oscNoteSampler:
@@ -749,6 +760,8 @@ end;
 
 procedure TLucidityVoice.SlowControlProcess;
 begin
+  UpdateOscPitch;
+
   LFO.SlowControlProcess;
   ModMatrix.SlowControlProcess;
   OneShotSampleOsc.SlowControlProcess;

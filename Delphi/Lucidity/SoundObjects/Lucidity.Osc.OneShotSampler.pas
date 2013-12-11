@@ -18,6 +18,16 @@ type
     SampleResetInput : single;
   end;
 
+  PSampleOscPitchPar = ^TSampleOscPitchPar;
+  TSampleOscPitchPar = record
+    PitchTracking  : TPitchTracking;
+    RegionRootNote : single; //0..127 corrosponding to MIDI note numbers...
+    PlaybackNote   : single; //0..127 corrosponding to MIDI note numbers...
+    SamplePitchAdjust : single; //in semitones. 0 = no shift.
+    VoicePitchAdjust  : single; //in semitones. 0 = no shift.
+    PitchBendAdjust   : single; //in semitones. 0 = no shift.
+  end;
+
   TOneShotSampleOsc = class(TCustomSampleOsc)
   private
     fLoopBounds: TSamplerLoopBounds;
@@ -27,12 +37,15 @@ type
     procedure SetLoopBounds(const Value: TSamplerLoopBounds);
     procedure SetLoopMode(const Value: TSamplerLoopMode);
   protected
+    PitchParameters : TSampleOscPitchPar;
     ModPoints : TLuciditySampleOscModulationPoints;
     CurRegion : IRegion;
     CurSample : TSampleFloat;
 
     PhaseCounter : TCounter;
     CurrentSampleBounds : TSampleOsc_SampleBounds;
+
+    SourceTempoFactor : single;
 
     //TODO: There are two fade out oscillators here.
     // Currently only one is being used most of the time. It could
@@ -55,6 +68,8 @@ type
   public
     constructor Create(const aVoiceModPoints : PVoiceModulationPoints; const aVoiceClockManager : TLucidityVoiceClockManager); override;
     destructor Destroy; override;
+
+    function GetPitchParameters : PSampleOscPitchPar;
 
     // call to reset sample playback to the beginning of the sample.
     procedure ResetSamplePosition;
@@ -124,6 +139,11 @@ begin
   result := nil;
 end;
 
+function TOneShotSampleOsc.GetPitchParameters: PSampleOscPitchPar;
+begin
+  result := @PitchParameters;
+end;
+
 procedure TOneShotSampleOsc.SetLoopBounds(const Value: TSamplerLoopBounds);
 begin
   fLoopBounds := Value;
@@ -142,8 +162,36 @@ begin
 end;
 
 function TOneShotSampleOsc.CalcPhaseCounterStepSize: double;
+var
+  x : double;
+  TempoOfSource : single;
 begin
-  result := SemiToneShiftToStepSize(PitchShift, 1) * (CurSample.Properties.SampleRate / SampleRate);
+  case PitchParameters.PitchTracking of
+    TPitchTracking.Note:
+    begin
+      x := (PitchParameters.PlaybackNote - PitchParameters.RegionRootNote) + PitchParameters.SamplePitchAdjust + PitchParameters.VoicePitchAdjust + PitchParameters.PitchBendAdjust;
+      x := SemiToneShiftToStepSize(x, 1);
+      x := x * (CurSample.Properties.SampleRate / SampleRate);
+      result := x;
+    end;
+
+    TPitchTracking.BPM:
+    begin
+      TempoOfSource   := CurRegion.GetProperties.SampleBeats * SourceTempoFactor;
+      x := (CurSample.Properties.SampleRate * OneOverSampleRate) * (Tempo / TempoOfSource);
+      result := x;
+    end;
+
+    TPitchTracking.Off:
+    begin
+      x := PitchParameters.SamplePitchAdjust + PitchParameters.VoicePitchAdjust + PitchParameters.PitchBendAdjust;
+      x := SemiToneShiftToStepSize(x, 1);
+      x := x * (CurSample.Properties.SampleRate / SampleRate);
+      result := x;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 
@@ -166,13 +214,30 @@ begin
     CurSample         := aSample;
   end;
 
+
+
+
+  //============================================================================
+  //   Important: Do first!
+  //============================================================================
   UpdateSampleBounds;
 
+  //============================================================================
+  //   Important: Do second!
+  //============================================================================
   if assigned(CurSample) then
   begin
     PhaseCounter.ResetTo(CurrentSampleBounds.SampleStart);
     PhaseCounter.StepSize := CalcPhaseCounterStepSize;
   end;
+
+  // UpdateSampleBounds() needs to be called before CalcPhaseCounterStepSize()
+  // because the StepSize depends on the sample start/end points for
+  // tempo synced playback.
+  //
+  //============================================================================
+  //============================================================================
+
 end;
 
 procedure TOneShotSampleOsc.Release;
@@ -191,8 +256,11 @@ end;
 procedure TOneShotSampleOsc.UpdateSampleBounds;
 begin
   assert(CurRegion <> nil);
+  //Important: Update the sample bounds before any of the post processing...
   Event_UpdateSampleBounds(self, CurRegion, @CurrentSampleBounds);
 
+
+  //==== Sample bounds post-processing ========================================
   if (LoopBounds = TSamplerLoopBounds.LoopSample) then
   begin
     CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
@@ -215,6 +283,8 @@ begin
   begin
     CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
   end;
+
+  SourceTempoFactor := 1 / (CurrentSampleBounds.SampleEnd - CurrentSampleBounds.SampleStart) * CurSample.Properties.SampleRate * 60;
 end;
 
 procedure TOneShotSampleOsc.Kill;
@@ -243,7 +313,7 @@ procedure TOneShotSampleOsc.SlowControlProcess;
 begin
   if assigned(CurSample) then
   begin
-    PhaseCounter.StepSize := SemiToneShiftToStepSize(PitchShift, 1) * (CurSample.Properties.SampleRate / SampleRate);
+    PhaseCounter.StepSize := CalcPhaseCounterStepSize;
   end;
 end;
 
