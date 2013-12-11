@@ -301,8 +301,6 @@ begin
           CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.LoopStart;
           CurrentSampleBounds.PlaybackLoopStart   := CurrentSampleBounds.LoopStart;
 
-
-
           if ((HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease))
             then CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.SampleEnd
             else CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.LoopEnd;
@@ -318,32 +316,10 @@ begin
   end;
 
 
-
-  {
-  //==== Sample bounds post-processing ========================================
-  if (LoopBounds = TSamplerLoopBounds.LoopSample) then
-  begin
-    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
-    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
-  end;
-
-  if (LoopMode = TSamplerLoopMode.LoopOff) then
-  begin
-    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
-    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
-  end;
-
-  if (LoopMode = TSamplerLoopMode.OneShot) then
-  begin
-    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
-    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
-  end;
-
-  if (HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease) then
-  begin
-    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
-  end;
-  }
+  // NOTE: The sample bounds post-processing above seems a bit complicated and
+  // perhaps there are unnecessary calculations being made. It might
+  // be worthwhile to take a closer look and fine tune the way the above stuff
+  // works.
 
 end;
 
