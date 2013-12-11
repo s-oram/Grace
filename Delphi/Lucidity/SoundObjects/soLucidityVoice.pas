@@ -443,7 +443,15 @@ begin
   result := 1 + VoiceGlide * 5000;
 end;
 
+procedure TLucidityVoice.UpdateAllModLinks(const aModConnections: TModConnections);
+begin
+  ModMatrix.UpdateAllModLinks(aModConnections);
+end;
 
+procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink);
+begin
+  ModMatrix.UpdateModLink(ModLinkData);
+end;
 
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections);
 var
@@ -543,16 +551,6 @@ begin
   FilterTwo.Reset;
 end;
 
-procedure TLucidityVoice.UpdateAllModLinks(const aModConnections: TModConnections);
-begin
-  ModMatrix.UpdateAllModLinks(aModConnections);
-end;
-
-procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink);
-begin
-  ModMatrix.UpdateModLink(ModLinkData);
-end;
-
 procedure TLucidityVoice.Release;
 begin
   if HasBeenReleased = false then
@@ -562,6 +560,14 @@ begin
     ModEnvA.Release;
     ModEnvB.Release;
     HasBeenReleased := true;
+
+
+    case OscModule of
+      oscNoteSampler: OneShotSampleOsc.Release;
+      oscLoopSampler: ;
+    else
+      raise Exception.Create('type not handled.');
+    end;
   end;
 end;
 

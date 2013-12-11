@@ -45,6 +45,7 @@ type
     RetriggerFadeOutOsc : TFadeOutSampler;
 
     IsFinishCalledNeeded : boolean;
+    HasBeenReleased : boolean;
 
     procedure SetSampleRate(const Value: single); override;
 
@@ -59,6 +60,7 @@ type
     function GetModPointer(const Name:string):PSingle;
 
     procedure Trigger(const MidiNote : byte; const aSampleRegion:IRegion; const aSample:TSampleFloat);
+    procedure Release;
     procedure Kill;
 
     procedure AudioRateStep(out Out1, Out2 : Single); {$IFDEF AudioInline}inline;{$ENDIF}
@@ -69,7 +71,7 @@ type
     property PitchShift : single read fPitchShift write fPitchShift; //SemiTones.
 
     property LoopBounds : TSamplerLoopBounds read fLoopBounds write SetLoopBounds;
-    property LoopMode   : TSamplerLoopMode    read fLoopMode   write SetLoopMode;
+    property LoopMode   : TSamplerLoopMode   read fLoopMode   write SetLoopMode;
 
 
     //== For GUI Feedback ==
@@ -140,6 +142,7 @@ end;
 procedure TOneShotSampleOsc.Trigger(const MidiNote : byte; const aSampleRegion:IRegion; const aSample: TSampleFloat);
 begin
   IsFinishCalledNeeded := true;
+  HasBeenReleased := false;
 
   if not assigned(CurSample) then
   begin
@@ -164,10 +167,46 @@ begin
   end;
 end;
 
+procedure TOneShotSampleOsc.Release;
+begin
+  HasBeenReleased := true;
+
+  if (LoopMode = TSamplerLoopMode.LoopRelease) then
+  begin
+    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+  end;
+
+end;
+
+
+
 procedure TOneShotSampleOsc.UpdateSampleBounds;
 begin
   assert(CurRegion <> nil);
   Event_UpdateSampleBounds(self, CurRegion, @CurrentSampleBounds);
+
+  if (LoopBounds = TSamplerLoopBounds.LoopSample) then
+  begin
+    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
+    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+  end;
+
+  if (LoopMode = TSamplerLoopMode.LoopOff) then
+  begin
+    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
+    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+  end;
+
+  if (LoopMode = TSamplerLoopMode.OneShot) then
+  begin
+    CurrentSampleBounds.LoopStart := CurrentSampleBounds.SampleStart;
+    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+  end;
+
+  if (HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease) then
+  begin
+    CurrentSampleBounds.LoopEnd   := CurrentSampleBounds.SampleEnd;
+  end;
 end;
 
 procedure TOneShotSampleOsc.Kill;
@@ -240,13 +279,11 @@ begin
   end;
 
 
-  PhaseCounter.Step;
+
   if (PhaseCounter >= CurrentSampleBounds.LoopEnd) then
   begin
-    case LoopBounds of
-      //TODO: LoopMode isn't loop mode anymore.
-      {
-      TSamplerLoopBounds.LoopOff:
+    case LoopMode of
+      TSamplerLoopMode.LoopOff:
       begin
         if (IsFinishCalledNeeded) then
         begin
@@ -254,7 +291,59 @@ begin
           OnFinished(self);
         end;
       end;
-      }
+
+      TSamplerLoopMode.LoopSustain:
+      begin
+        StepInFilter.Trigger;
+        LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
+        UpdateSampleBounds;
+        PhaseCounter.ResetTo(CurrentSampleBounds.LoopStart);
+        VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
+      end;
+
+      TSamplerLoopMode.LoopRelease:
+      begin
+        if HasBeenReleased = false then
+        begin
+          StepInFilter.Trigger;
+          LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
+          UpdateSampleBounds;
+          PhaseCounter.ResetTo(CurrentSampleBounds.LoopStart);
+          VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
+        end else
+        if (IsFinishCalledNeeded) then
+        begin
+          IsFinishCalledNeeded := false;
+          OnFinished(self);
+        end;
+      end;
+
+      TSamplerLoopMode.OneShot:
+      begin
+        if (IsFinishCalledNeeded) then
+        begin
+          IsFinishCalledNeeded := false;
+          OnFinished(self);
+        end;
+      end;
+    else
+      raise Exception.Create('type not handled.');
+    end;
+
+
+    {
+    case LoopBounds of
+      //TODO: LoopMode isn't loop mode anymore.
+
+      //TSamplerLoopBounds.LoopOff:
+      //begin
+      //  if (IsFinishCalledNeeded) then
+      //  begin
+      //    IsFinishCalledNeeded := false;
+      //    OnFinished(self);
+      //  end;
+      //end;
+
       TSamplerLoopBounds.LoopSample,
       TSamplerLoopBounds.LoopPoints:
       begin
@@ -267,6 +356,10 @@ begin
     else
       raise Exception.Create('Loop type not handled.');
     end;
+    }
+  end else
+  begin
+    PhaseCounter.Step;
   end;
 
 
