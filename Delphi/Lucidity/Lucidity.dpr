@@ -128,7 +128,8 @@ uses
   DAEffect in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas',
   eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas',
   Lucidity.SampleImageRenderer in 'Lucidity.SampleImageRenderer.pas',
-  Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas';
+  Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
+  uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame};
 
 {$R *.res}
 

@@ -106,10 +106,10 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object TabPanel: TVamTabPanel
-          Left = 36
-          Top = 544
+          Left = 48
+          Top = 592
           Width = 513
-          Height = 121
+          Height = 89
           Text = 'TabPanel'
           HitTest = True
           Color_Background = '$ff777776'
@@ -137,12 +137,13 @@ object PluginGui: TPluginGui
             Left = 0
             Top = 0
             Width = 513
-            Height = 97
+            Height = 65
             HitTest = True
             Color = '$FFCCCCCC'
             Transparent = False
             Align = alClient
             Visible = True
+            ExplicitTop = 32
           end
         end
         object InfoBarDiv: TVamDiv
@@ -161,7 +162,7 @@ object PluginGui: TPluginGui
           Left = 48
           Top = 448
           Width = 521
-          Height = 80
+          Height = 49
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -171,12 +172,24 @@ object PluginGui: TPluginGui
         end
         object SpacerPanel1: TVamPanel
           Left = 128
-          Top = 688
+          Top = 696
           Width = 253
-          Height = 29
+          Height = 21
           HitTest = True
           Color = '$FFCCCCCC'
           Transparent = False
+          Visible = True
+        end
+        object ModSystem2Div: TVamDiv
+          Left = 48
+          Top = 512
+          Width = 521
+          Height = 49
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          HitTest = True
           Visible = True
         end
       end

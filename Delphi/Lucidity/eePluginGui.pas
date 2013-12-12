@@ -6,7 +6,7 @@ interface
 
 
 uses
-  OtlComm,
+  OtlComm, uModSystem2Frame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame, uModSystemFrame,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
@@ -44,6 +44,7 @@ type
     InfoBarDiv: TVamDiv;
     ModSystemDiv: TVamDiv;
     SpacerPanel1: TVamPanel;
+    ModSystem2Div: TVamDiv;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LowerTabsChanged(Sender: TObject);
@@ -73,6 +74,7 @@ type
     InfoBarFrame           : TInfoBarFrame;
     AboutFrame             : TAboutFrame;
     ModSystemFrame         : TModSystemFrame;
+    ModSystem2Frame        : TModSystem2Frame;
 
     FeedbackData : TGuiFeedBackData;
 
@@ -251,6 +253,11 @@ begin
   ModSystemFrame.BackgroundPanel.Align := alClient;
   ModSystemFrame.BackgroundPanel.Visible := true;
   ModSystemFrame.BackgroundPanel.Parent := ModSystemDiv;
+
+  ModSystem2Frame := TModSystem2Frame.Create(self.Owner);
+  ModSystem2Frame.BackgroundPanel.Align := alClient;
+  ModSystem2Frame.BackgroundPanel.Visible := true;
+  ModSystem2Frame.BackgroundPanel.Parent := ModSystem2Div;
 
   //======= Build the GUI =======
 
@@ -746,6 +753,7 @@ begin
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
   XyPadsFrame.BackgroundPanel.Color            := kPanelLight;
   ModSystemFrame.BackgroundPanel.Color         := kPanelLight;
+  ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
   InfoBarFrame.BackgroundPanel.Color           := kPanelDark;
 
 
@@ -799,6 +807,7 @@ begin
   ClearPadding(ModControlFrame.BackgroundPanel);
   ClearPadding(XYPadsFrame.BackgroundPanel);
   ClearPadding(ModSystemFrame.BackgroundPanel);
+  ClearPadding(ModSystem2Frame.BackgroundPanel);
   ClearPadding(InfoBarFrame.BackgroundPanel);
 
 
@@ -836,6 +845,7 @@ begin
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModSystemFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
+  ModSystem2Frame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   XYPadsFrame.BackgroundPanel.Padding.SetBounds(16,4,16,12);
 
   //InfoBarDiv.Padding.SetBounds(0,2,0,0);
@@ -889,6 +899,7 @@ begin
   MainMid.Left         := MainWorkArea.Padding.Left;
   TabPanel.Left        := MainWorkArea.Padding.Left;
   ModSystemDiv.Left    := MainWorkArea.Padding.Left;
+  ModSystem2Div.Left   := MainWorkArea.Padding.Left;
   InfoBarDiv.Left      := MainWorkArea.Padding.Left;
   SpacerPanel1.Left    := MainWorkArea.Padding.Left;
 
@@ -900,6 +911,7 @@ begin
   MainMid.Width         := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
   ModSystemDiv.Width    := WorkAreaWidth;
+  ModSystem2Div.Width   := WorkAreaWidth;
   InfoBarDiv.Width      := WorkAreaWidth;
   SpacerPanel1.Width    := WorkAreaWidth;
 
@@ -911,6 +923,7 @@ begin
   MainMid.Height         := 322;
   TabPanel.Height        := 258;
   ModSystemDiv.Height    := 258; //just guessing.
+  ModSystem2Div.Height   := 80;
   InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
 
@@ -919,10 +932,11 @@ begin
 
   if IsSampleMapVisible = true then
   begin
-    SampleMapDiv.Visible := true;
-    TabPanel.Visible     := false;
-    ModSystemDiv.Visible := false;
-    SpacerPanel1.Visible := false;
+    SampleMapDiv.Visible  := true;
+    TabPanel.Visible      := false;
+    ModSystemDiv.Visible  := false;
+    ModSystem2Div.Visible := false;
+    SpacerPanel1.Visible  := false;
 
     MainMenuBar.Top := 1;
     MainMenuBar.Left := 1;
@@ -934,10 +948,11 @@ begin
 
   end else
   begin
-    SampleMapDiv.Visible := false;
-    TabPanel.Visible     := true;
-    ModSystemDiv.Visible := true;
-    SpacerPanel1.Visible := false;
+    SampleMapDiv.Visible  := false;
+    TabPanel.Visible      := true;
+    ModSystemDiv.Visible  := false;
+    ModSystem2Div.Visible := true;
+    SpacerPanel1.Visible  := false;
 
     MainMenuBar.Top := 1;
     MainMenuBar.Left := 1;
@@ -946,9 +961,9 @@ begin
     Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
     //Erector.Init(MainMid, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
     //Erector.Init(TabPanel, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(MainMid, ModSystemDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(ModSystemDiv, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(ModSystemDiv, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(MainMid, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(ModSystem2Div, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(ModSystem2Div, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
   end;
 
 
