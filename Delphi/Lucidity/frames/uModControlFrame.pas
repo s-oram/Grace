@@ -25,97 +25,6 @@ type
   TModControlFrame = class(TFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
-    Row1: TVamDiv;
-    Row3: TVamDiv;
-    Row2: TVamDiv;
-    Filter1Container: TVamDiv;
-    VamLabel11: TVamLabel;
-    Filter1P3Label: TVamLabel;
-    Filter1P2Label: TVamLabel;
-    Filter1P1Label: TVamLabel;
-    Filter1Par1Knob: TVamKnob;
-    Filter1Par2Knob: TVamKnob;
-    Filter1Par3Knob: TVamKnob;
-    AmpEnvContainer: TVamDiv;
-    VamLabel5: TVamLabel;
-    AmpEnvReleaseLabel: TVamLabel;
-    AmpEnvSustainLabel: TVamLabel;
-    AmpEnvDecayLabel: TVamLabel;
-    AmpEnvAttackLabel: TVamLabel;
-    AmpEnvHoldLabel: TVamLabel;
-    AmpEnvAttackKnob: TVamKnob;
-    AmpEnvDecayKnob: TVamKnob;
-    AmpEnvSustainKnob: TVamKnob;
-    AmpEnvReleaseKnob: TVamKnob;
-    AmpEnvHoldKnob: TVamKnob;
-    FilterTwoContainer: TVamDiv;
-    VamLabel16: TVamLabel;
-    Filter2P1Label: TVamLabel;
-    Filter2P2Label: TVamLabel;
-    Filter2P3Label: TVamLabel;
-    Filter2Par1Knob: TVamKnob;
-    Filter2Par2Knob: TVamKnob;
-    Filter2Par3Knob: TVamKnob;
-    FilterEnvContainer: TVamDiv;
-    VamLabel8: TVamLabel;
-    FilterEnvReleaseLabel: TVamLabel;
-    FilterEnvSustainLabel: TVamLabel;
-    FilterEnvDecayLabel: TVamLabel;
-    FilterEnvAttackLabel: TVamLabel;
-    FilterEnvHoldLabel: TVamLabel;
-    FilterEnvAttackKnob: TVamKnob;
-    FilterEnvDecayKnob: TVamKnob;
-    FilterEnvSustainKnob: TVamKnob;
-    FilterEnvReleaseKnob: TVamKnob;
-    FilterEnvHoldKnob: TVamKnob;
-    StepSeq2Container: TVamDiv;
-    VamLabel28: TVamLabel;
-    VamDiv6: TVamDiv;
-    StepSeq2: TVamVectorSequence;
-    VamDiv7: TVamDiv;
-    VamLabel33: TVamLabel;
-    VamLabel36: TVamLabel;
-    VamLabel39: TVamLabel;
-    VamDiv8: TVamDiv;
-    Filter1TypeTextBox: TVamTextBox;
-    Seq2ClockTextBox: TVamTextBox;
-    Seq2DirectionTextBox: TVamTextBox;
-    Seq2StepsTextBox: TVamTextBox;
-    Filter2TypeTextBox: TVamTextBox;
-    LfoAContainer: TVamDiv;
-    VamLabel26: TVamLabel;
-    LfoShapeTextBox1: TVamTextBox;
-    LfoSpeedKnob1: TVamKnob;
-    ModEnvAContainer: TVamDiv;
-    ModEnvBContainer: TVamDiv;
-    VamLabel25: TVamLabel;
-    ModEnvAAttackKnob: TVamKnob;
-    ModEnvAModeBox: TVamTextBox;
-    ModEnvADecayKnob: TVamKnob;
-    VamLabel12: TVamLabel;
-    ModEnvBAttackKnob: TVamKnob;
-    ModEnvBModeBox: TVamTextBox;
-    ModEnvBDecayKnob: TVamKnob;
-    ModEnvAAttackLabel: TVamLabel;
-    ModEnvADecayLabel: TVamLabel;
-    ModEnvBAttackLabel: TVamLabel;
-    ModEnvBDecayLabel: TVamLabel;
-    LfoBContainer: TVamDiv;
-    VamLabel13: TVamLabel;
-    LfoSpeedKnob2: TVamKnob;
-    LfoShapeTextBox2: TVamTextBox;
-    LfoDepthKnob1: TVamKnob;
-    LfoDepthKnob2: TVamKnob;
-    Lfo1DepthLabel: TVamLabel;
-    Lfo1RateLabel: TVamLabel;
-    Lfo2DepthLabel: TVamLabel;
-    Lfo2RateLabel: TVamLabel;
-    AmpVelocityButton: TVamTextBox;
-    FilterVelocityButton: TVamTextBox;
-    Filter1Par4Knob: TVamKnob;
-    Filter1P4Label: TVamLabel;
-    Filter2Par4Knob: TVamKnob;
-    Filter2P4Label: TVamLabel;
     StepSeq1Container: TVamDiv;
     VamLabel34: TVamLabel;
     VamDiv2: TVamDiv;
@@ -128,6 +37,94 @@ type
     VamLabel30: TVamLabel;
     VamLabel31: TVamLabel;
     VamLabel32: TVamLabel;
+    StepSeq2Container: TVamDiv;
+    VamLabel28: TVamLabel;
+    VamDiv6: TVamDiv;
+    StepSeq2: TVamVectorSequence;
+    VamDiv7: TVamDiv;
+    VamLabel33: TVamLabel;
+    VamLabel36: TVamLabel;
+    VamLabel39: TVamLabel;
+    VamDiv8: TVamDiv;
+    Seq2ClockTextBox: TVamTextBox;
+    Seq2DirectionTextBox: TVamTextBox;
+    Seq2StepsTextBox: TVamTextBox;
+    FilterTwoContainer: TVamDiv;
+    VamLabel16: TVamLabel;
+    Filter2P1Label: TVamLabel;
+    Filter2P2Label: TVamLabel;
+    Filter2P3Label: TVamLabel;
+    Filter2TypeTextBox: TVamTextBox;
+    Filter2Par1Knob: TVamKnob;
+    Filter2Par2Knob: TVamKnob;
+    Filter2Par3Knob: TVamKnob;
+    Filter2Par4Knob: TVamKnob;
+    Filter2P4Label: TVamLabel;
+    FilterEnvContainer: TVamDiv;
+    VamLabel8: TVamLabel;
+    FilterEnvReleaseLabel: TVamLabel;
+    FilterEnvSustainLabel: TVamLabel;
+    FilterEnvDecayLabel: TVamLabel;
+    FilterEnvAttackLabel: TVamLabel;
+    FilterEnvHoldLabel: TVamLabel;
+    FilterEnvAttackKnob: TVamKnob;
+    FilterEnvDecayKnob: TVamKnob;
+    FilterEnvSustainKnob: TVamKnob;
+    FilterEnvReleaseKnob: TVamKnob;
+    FilterEnvHoldKnob: TVamKnob;
+    FilterVelocityButton: TVamTextBox;
+    ModEnvAContainer: TVamDiv;
+    VamLabel25: TVamLabel;
+    ModEnvAAttackLabel: TVamLabel;
+    ModEnvADecayLabel: TVamLabel;
+    ModEnvAAttackKnob: TVamKnob;
+    ModEnvAModeBox: TVamTextBox;
+    ModEnvADecayKnob: TVamKnob;
+    ModEnvBContainer: TVamDiv;
+    VamLabel12: TVamLabel;
+    ModEnvBAttackLabel: TVamLabel;
+    ModEnvBDecayLabel: TVamLabel;
+    ModEnvBAttackKnob: TVamKnob;
+    ModEnvBModeBox: TVamTextBox;
+    ModEnvBDecayKnob: TVamKnob;
+    LfoAContainer: TVamDiv;
+    VamLabel26: TVamLabel;
+    Lfo1DepthLabel: TVamLabel;
+    Lfo1RateLabel: TVamLabel;
+    LfoShapeTextBox1: TVamTextBox;
+    LfoSpeedKnob1: TVamKnob;
+    LfoDepthKnob1: TVamKnob;
+    AmpEnvContainer: TVamDiv;
+    VamLabel5: TVamLabel;
+    AmpEnvReleaseLabel: TVamLabel;
+    AmpEnvSustainLabel: TVamLabel;
+    AmpEnvDecayLabel: TVamLabel;
+    AmpEnvAttackLabel: TVamLabel;
+    AmpEnvHoldLabel: TVamLabel;
+    AmpEnvAttackKnob: TVamKnob;
+    AmpEnvDecayKnob: TVamKnob;
+    AmpEnvSustainKnob: TVamKnob;
+    AmpEnvReleaseKnob: TVamKnob;
+    AmpEnvHoldKnob: TVamKnob;
+    AmpVelocityButton: TVamTextBox;
+    Filter1Container: TVamDiv;
+    VamLabel11: TVamLabel;
+    Filter1P3Label: TVamLabel;
+    Filter1P2Label: TVamLabel;
+    Filter1P1Label: TVamLabel;
+    Filter1TypeTextBox: TVamTextBox;
+    Filter1Par1Knob: TVamKnob;
+    Filter1Par2Knob: TVamKnob;
+    Filter1Par3Knob: TVamKnob;
+    Filter1Par4Knob: TVamKnob;
+    Filter1P4Label: TVamLabel;
+    LfoBContainer: TVamDiv;
+    VamLabel13: TVamLabel;
+    Lfo2DepthLabel: TVamLabel;
+    Lfo2RateLabel: TVamLabel;
+    LfoSpeedKnob2: TVamKnob;
+    LfoShapeTextBox2: TVamTextBox;
+    LfoDepthKnob2: TVamKnob;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -200,7 +197,11 @@ procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGu
 var
   ParIndex : integer;
   FilterKnobWidth : integer;
+  FilterKnobHeight : integer;
   kw, kh : integer;
+  KnobTop : integer;
+  RowHeight : integer;
+
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
@@ -349,181 +350,223 @@ begin
   //                         GUI Stylings
   //============================================================================
 
-  FilterKnobWidth := 40;
-  FilterKnobHeight := 40;
+  FilterKnobWidth  := TGuiConst.KnobWidth;
+  FilterKnobHeight := TGuiConst.KnobHeight;
+  RowHeight := TGuiConst.KnobHeight + TGuiConst.SectionLabelHeight + TGuiConst.KnobLabelHeight + TGuiConst.SelectorButtonHeight;
 
+  //======= row 1 =======
+  Filter1Container.Width  := (4 * FilterKnobWidth);
+  Filter1Container.Height := RowHeight;
+  Filter1Container.Layout.SetPos(16,8);
+      Filter1TypeTextBox.Layout.SetSize(FilterKnobWidth * 3, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+      Filter1TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
 
-  Row1.Height := 82;
-  Row1.Align := alTop;
-  Row1.Margins.Bottom := 16;
+  AmpEnvContainer.Width := (5 * FilterKnobWidth);
+  AmpEnvContainer.Height := RowHeight;
+  AmpEnvContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-    Filter1Container.Align := alLeft;
-    Filter1Container.Width := (4 * FilterKnobWidth) - 8;
-    Filter1Container.Margins.Right := 42;
+  LfoAContainer.Width := (2 * FilterKnobWidth);
+  LfoAContainer.Height := RowHeight;
+  LfoAContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-      Filter1TypeTextBox.Layout.SetPos(0,64).AdjustBounds(-4,0,-4,0);
-
-    AmpEnvContainer.Align := alLeft;
-    AmpEnvContainer.Width := 5 * 32;
-
-    LfoAContainer.Width := 2 * 40;
-    LfoAContainer.AlignWithMargins := true;
-    LfoAContainer.Margins.SetBounds(0,0,16,0);
-
-      LfoSpeedKnob1.Layout.SetPos(0,18);
-      LfoDepthKnob1.Layout.SetPos(40,18);
-
-      Lfo1RateLabel.Layout.Anchor(LfoSpeedKnob1).SnapToEdge(TControlFeature.BottomEdge);
-      Lfo1DepthLabel.Layout.Anchor(LfoDepthKnob1).SnapToEdge(TControlFeature.BottomEdge);
-
-      LfoShapeTextBox1.Layout.Anchor(Lfo1RateLabel).SnapToEdge(TControlFeature.BottomEdge).Move(5,0);
-      LfoShapeTextBox1.Width := 70;
-
-    LfoBContainer.Width := 2 * 40;
-    LfoBContainer.AlignWithMargins := true;
-    LfoBContainer.Margins.SetBounds(0,0,0,0);
-
-      LfoSpeedKnob2.Layout.SetPos(0,18);
-      LfoDepthKnob2.Layout.SetPos(40,18);
-
-      Lfo2RateLabel.Layout.Anchor(LfoSpeedKnob2).SnapToEdge(TControlFeature.BottomEdge);
-      Lfo2DepthLabel.Layout.Anchor(LfoDepthKnob2).SnapToEdge(TControlFeature.BottomEdge);
-
-      LfoShapeTextBox2.Layout.Anchor(Lfo2RateLabel).SnapToEdge(TControlFeature.BottomEdge).Move(5,0);
-      LfoShapeTextBox2.Width := 70;
-
-    LfoBContainer.Align := alRight;
-    LfoAContainer.Align := alRight;
+  LfoBContainer.Width := (2 * FilterKnobWidth);
+  LfoBContainer.Height := RowHeight;
+  LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
 
 
 
-  Row2.Height := 82;
-  Row2.Align := alTop;
-  Row2.Margins.Bottom := 16;
-
-    FilterTwoContainer.Align := alLeft;
-    FilterTwoContainer.Width :=  (4 * FilterKnobWidth) - 8;
-    FilterTwoContainer.Margins.Right := 42;
-
-      Filter2TypeTextBox.Layout.SetPos(0,64).AdjustBounds(-4,0,-4,0);
-
-    FilterEnvContainer.Align := alLeft;
-    FilterEnvContainer.Width := 5 * 32;
-
-    ModEnvAContainer.Width := 2 * 40;
-    ModEnvAContainer.AlignWithMargins := true;
-    ModEnvAContainer.Margins.SetBounds(0,0,16,0);
-
-      ModEnvAAttackKnob.Layout.SetPos(0,18);
-      ModEnvADecayKnob.Layout.SetPos(40,18);
-
-      ModEnvAAttackLabel.Layout.Anchor(ModEnvAAttackKnob).SnapToEdge(TControlFeature.BottomEdge).Move(0,-2);
-      ModEnvADecayLabel.Layout.Anchor(ModEnvADecayKnob).SnapToEdge(TControlFeature.BottomEdge).Move(0,-2);
-
-      ModEnvAModeBox.Layout.Anchor(ModEnvAAttackLabel).SnapToEdge(TControlFeature.BottomEdge).Move(5,0);
-      ModEnvAModeBox.Width := 70;
+    //LfoBContainer.Align := alRight;
+    //LfoAContainer.Align := alRight;
 
 
 
-    ModEnvBContainer.Width := 2 * 40;
-    ModEnvBContainer.AlignWithMargins := true;
-    ModEnvBContainer.Margins.SetBounds(0,0,0,0);
+  //======= row 2 =======
+  //Row2.Height := 82;
+  //Row2.Align := alTop;
+  //Row2.Margins.Bottom := 16;
+
+  FilterTwoContainer.Width  := (4 * FilterKnobWidth);
+  FilterTwoContainer.Height := RowHeight;
+  FilterTwoContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
+      Filter2TypeTextBox.Layout.SetSize(FilterKnobWidth * 3, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+      Filter2TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
+
+  FilterEnvContainer.Width := (5 * FilterKnobWidth);
+  FilterEnvContainer.Height := RowHeight;
+  FilterEnvContainer.Layout.Anchor(FilterTwoContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
 
-    ModEnvBContainer.Align := alRight;
-    ModEnvAContainer.Align := alRight;
+  ModEnvAContainer.Width := (2 * FilterKnobWidth);
+  ModEnvAContainer.Height := RowHeight;
+  ModEnvAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-      ModEnvBAttackKnob.Layout.SetPos(0,18);
-      ModEnvBDecayKnob.Layout.SetPos(40,18);
-
-      ModEnvBAttackLabel.Layout.Anchor(ModEnvBAttackKnob).SnapToEdge(TControlFeature.BottomEdge).Move(0,-2);
-      ModEnvBDecayLabel.Layout.Anchor(ModEnvBDecayKnob).SnapToEdge(TControlFeature.BottomEdge).Move(0,-2);
-
-      ModEnvBModeBox.Layout.Anchor(ModEnvBAttackLabel).SnapToEdge(TControlFeature.BottomEdge).Move(5,0);
-      ModEnvBModeBox.Width := 70;
-
-
-
-  Row3.Height := 78;
-  Row3.Align := alTop;
-  Row3.Margins.Bottom := 16;
-
-    StepSeq1Container.Align := alLeft;
-    StepSeq1Container.Margins.Right := 16;
-
-    StepSeq2Container.Align := alLeft;
-    StepSeq2Container.Margins.Right := 16;
+  ModEnvBContainer.Width := (2 * FilterKnobWidth);
+  ModEnvBContainer.Height := RowHeight;
+  ModEnvBContainer.Layout.Anchor(ModEnvAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
 
 
+
+  //======= row 3 =======
+  //Row3.Height := 78;
+  //Row3.Align := alTop;
+  //Row3.Margins.Bottom := 16;
+
+
+  StepSeq1Container.Width  := (600 - (16 * 3)) div 2;
+  StepSeq1Container.Height := RowHeight;
+  StepSeq1Container.Left   := 16;
+  StepSeq1Container.Top    := RowHeight * 2 + 32 + 8;
+
+  StepSeq2Container.Width  := (600 - (16 * 3)) div 2;
+  StepSeq2Container.Height := RowHeight;
+  StepSeq2Container.Top    := RowHeight * 2 + 40;
+  StepSeq2Container.Left   := 600 - StepSeq2Container.Width - 16;
+
+  //==================================================
+
+  // Make all containers disapper.
+  //Filter1Container.Visible := false;
+  //AmpEnvContainer.Visible := false;
+
+  //LfoBContainer.Visible := false;
+  //LfoAContainer.Visible := false;
+
+  //FilterTwoContainer.Visible := false;
+  //FilterEnvContainer.Visible := false;
+  //ModEnvBContainer.Visible := false;
+  //ModEnvAContainer.Visible := false;
+
+  //StepSeq1Container.Visible := false;
+  //StepSeq2Container.Visible := false;
 
   //==================================================
 
   //==== Filter 1 controls ====
-  Filter1Par1Knob.Layout.SetSize(FilterKnobWidth,32).SetPos(-4, 16);
-  Filter1Par2Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter1Par1Knob).SnapToEdge(TControlFeature.RightEdge);
-  Filter1Par3Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter1Par2Knob).SnapToEdge(TControlFeature.RightEdge);
-  Filter1Par4Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter1Par3Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter1Par1Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).SetPos(0, TGuiConst.SectionLabelHeight);
+  Filter1Par2Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter1Par1Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter1Par3Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter1Par2Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter1Par4Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter1Par3Knob).SnapToEdge(TControlFeature.RightEdge);
 
-  Filter1P1Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter1Par1Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter1P2Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter1Par2Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter1P3Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter1Par3Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter1P4Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter1Par4Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter1P1Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter1Par1Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter1P2Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter1Par2Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter1P3Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter1Par3Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter1P4Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter1Par4Knob).SnapToEdge(TControlFeature.BottomEdge);
 
   //==== Filter 2 controls ====
-  Filter2Par1Knob.Layout.SetSize(FilterKnobWidth,32).SetPos(-4, 16);
-  Filter2Par2Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter2Par1Knob).SnapToEdge(TControlFeature.RightEdge);
-  Filter2Par3Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter2Par2Knob).SnapToEdge(TControlFeature.RightEdge);
-  Filter2Par4Knob.Layout.SetSize(FilterKnobWidth,32).Anchor(Filter2Par3Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter2Par1Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).SetPos(0, TGuiConst.SectionLabelHeight);
+  Filter2Par2Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter2Par1Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter2Par3Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter2Par2Knob).SnapToEdge(TControlFeature.RightEdge);
+  Filter2Par4Knob.Layout.SetSize(FilterKnobWidth,FilterKnobHeight).Anchor(Filter2Par3Knob).SnapToEdge(TControlFeature.RightEdge);
 
-  Filter2P1Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter2Par1Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter2P2Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter2Par2Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter2P3Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter2Par3Knob).SnapToEdge(TControlFeature.BottomEdge);
-  Filter2P4Label.Layout.SetSize(FilterKnobWidth,16).Anchor(Filter2Par4Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter2P1Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter2Par1Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter2P2Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter2Par2Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter2P3Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter2Par3Knob).SnapToEdge(TControlFeature.BottomEdge);
+  Filter2P4Label.Layout.SetSize(FilterKnobWidth,TGuiConst.KnobLabelHeight).Anchor(Filter2Par4Knob).SnapToEdge(TControlFeature.BottomEdge);
 
 
 
   //=== ADSR 1 ====
-  kw := 32;
-  kh := 32;
-  AmpEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0,18);
-  AmpEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, 18);
-  AmpEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, 18);
-  AmpEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, 18);
-  AmpEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, 18);
+  kw := TGuiConst.KnobWidth;
+  kh := TGuiConst.KnobHeight;
+  KnobTop := TGuiConst.SectionLabelHeight;
 
-  AmpEnvAttackLabel.Layout.SetSize(kw, 16).Anchor(AmpEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
-  AmpEnvHoldLabel.Layout.SetSize(kw, 16).Anchor(AmpEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
-  AmpEnvDecayLabel.Layout.SetSize(kw, 16).Anchor(AmpEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
-  AmpEnvSustainLabel.Layout.SetSize(kw, 16).Anchor(AmpEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
-  AmpEnvReleaseLabel.Layout.SetSize(kw, 16).Anchor(AmpEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0, KnobTop);
+  AmpEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, KnobTop);
+  AmpEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, KnobTop);
+  AmpEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, KnobTop);
+  AmpEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, KnobTop);
+
+  AmpEnvAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvHoldLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
 
   AmpVelocityButton.Layout.Anchor(AmpEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  AmpVelocityButton.Layout.SetSize(60, 16);
+  AmpVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
   //==================================================
 
 
   //=== ADSR 2 ====
-  kw := 32;
-  kh := 32;
-  FilterEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0,18);
-  FilterEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, 18);
-  FilterEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, 18);
-  FilterEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, 18);
-  FilterEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, 18);
+  kw := TGuiConst.KnobWidth;
+  kh := TGuiConst.KnobHeight;
+  KnobTop := TGuiConst.SectionLabelHeight;
 
-  FilterEnvAttackLabel.Layout.SetSize(kw, 16).Anchor(FilterEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvHoldLabel.Layout.SetSize(kw, 16).Anchor(FilterEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvDecayLabel.Layout.SetSize(kw, 16).Anchor(FilterEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvSustainLabel.Layout.SetSize(kw, 16).Anchor(FilterEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvReleaseLabel.Layout.SetSize(kw, 16).Anchor(FilterEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0,KnobTop);
+  FilterEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, KnobTop);
+  FilterEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, KnobTop);
+  FilterEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, KnobTop);
+  FilterEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, KnobTop);
+
+  FilterEnvAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterEnvHoldLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterEnvDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
 
   FilterVelocityButton.Layout.Anchor(FilterEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  FilterVelocityButton.Layout.SetSize(60, 16);
+  FilterVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
   //==================================================
 
 
+
+
+
+  //==== LFO 1 ========================================
+  LfoSpeedKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  LfoDepthKnob1.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
+
+  Lfo1RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  Lfo1DepthLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  Lfo1RateLabel.Layout.Anchor(LfoSpeedKnob1).SnapToEdge(TControlFeature.BottomEdge);
+  Lfo1DepthLabel.Layout.Anchor(LfoDepthKnob1).SnapToEdge(TControlFeature.BottomEdge);
+
+  LfoShapeTextBox1.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoShapeTextBox1.Layout.AdjustBounds(-4,0,-4,0);
+  //==================================================
+
+
+  //==== LFO 2 =======================================
+  LfoSpeedKnob2.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  LfoDepthKnob2.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
+
+  Lfo2RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  Lfo2DepthLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  Lfo2RateLabel.Layout.Anchor(LfoSpeedKnob2).SnapToEdge(TControlFeature.BottomEdge);
+  Lfo2DepthLabel.Layout.Anchor(LfoDepthKnob2).SnapToEdge(TControlFeature.BottomEdge);
+
+  LfoShapeTextBox2.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoShapeTextBox2.Layout.AdjustBounds(-4,0,-4,0);
+  //===================================================
+
+
+  //==== Mod Env A =======================================
+  ModEnvAAttackKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  ModEnvADecayKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
+
+  ModEnvAAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  ModEnvADecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  ModEnvAAttackLabel.Layout.Anchor(ModEnvAAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvADecayLabel.Layout.Anchor(ModEnvADecayKnob).SnapToEdge(TControlFeature.BottomEdge);
+
+  ModEnvAModeBox.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  ModEnvAModeBox.Layout.AdjustBounds(-4,0,-4,0);
+  //===================================================
+
+  //==== Mod Env A =======================================
+  ModEnvBAttackKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  ModEnvBDecayKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
+
+  ModEnvBAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  ModEnvBDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  ModEnvBAttackLabel.Layout.Anchor(ModEnvBAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvBDecayLabel.Layout.Anchor(ModEnvBDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
+
+  ModEnvBModeBox.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  ModEnvBModeBox.Layout.AdjustBounds(-4,0,-4,0);
+  //===================================================
 
   //=== colors ===
 

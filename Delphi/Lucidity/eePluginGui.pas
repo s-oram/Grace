@@ -879,7 +879,7 @@ begin
   //===================
 
 
-  MainWorkArea.Width := 608 + MainWorkArea.Padding.Left + MainWorkArea.Padding.right;
+  MainWorkArea.Width := 600 + MainWorkArea.Padding.Left + MainWorkArea.Padding.right;
   WorkAreaWidth := MainWorkArea.Width - MainWorkArea.Padding.Left - MainWorkArea.Padding.Right;
 
   MainMenuBar.Left     := MainWorkArea.Padding.Left;
@@ -908,7 +908,7 @@ begin
   SampleMapDiv.Height    := 258;  //Same height as TabPanel
   MainTop.Height         := 118;
   VoiceControlDiv.Height := 80;
-  MainMid.Height         := 300;
+  MainMid.Height         := 322;
   TabPanel.Height        := 258;
   ModSystemDiv.Height    := 258; //just guessing.
   InfoBarDiv.Height      := 30;

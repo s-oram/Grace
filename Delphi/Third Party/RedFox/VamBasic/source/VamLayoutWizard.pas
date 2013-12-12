@@ -24,6 +24,7 @@ type
     function MatchHeight:IVamLayoutWizard;
 
     function SnapToEdge(const SnapPoint : TControlFeature):IVamLayoutWizard;
+    function SnapToParentEdge(const SnapPoint : TControlFeature):IVamLayoutWizard;
 
     function AlignEdge(const Edge : TControlFeature):IVamLayoutWizard;
 
@@ -58,6 +59,7 @@ type
 
     // Moves the target control to butt against the edge of the anchor control.
     function SnapToEdge(const SnapPoint : TControlFeature):IVamLayoutWizard;
+    function SnapToParentEdge(const SnapPoint : TControlFeature):IVamLayoutWizard;
 
     // Align's the control edge to match the anchor.
     function AlignEdge(const Edge : TControlFeature):IVamLayoutWizard;
@@ -200,6 +202,35 @@ begin
   fTarget.Top  := PosY;
 
   result := self;
+end;
+
+function TVamLayoutWizard.SnapToParentEdge(const SnapPoint: TControlFeature): IVamLayoutWizard;
+var
+  PosX, PosY : integer;
+begin
+  case SnapPoint of
+    TControlFeature.LeftEdge:
+    begin
+      fTarget.Left := 0
+    end;
+
+    TControlFeature.RightEdge:
+    begin
+      fTarget.Left := fTarget.Parent.ClientWidth - fTarget.Width;
+    end;
+
+    TControlFeature.TopEdge:
+    begin
+      fTarget.Top := 0;
+    end;
+
+    TControlFeature.BottomEdge:
+    begin
+      fTarget.Top := fTarget.Parent.ClientHeight - fTarget.Height;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 function TVamLayoutWizard.AlignEdge(const Edge: TControlFeature): IVamLayoutWizard;

@@ -158,6 +158,16 @@ const
   kSampleImageWidth  = 592; //used for the pre-rendering of sample images.
   kSampleImageHeight = 77;  //used for the pre-rendering of sample images.
 
+type
+  TGuiConst = class
+  public const
+    KnobWidth            : integer = 40;
+    KnobHeight           : integer = 40;
+    KnobLabelHeight      : integer = 18;
+    SectionLabelHeight   : integer = 18;
+    SelectorButtonHeight : integer = 18;
+  end;
+
 
 const
   dcVstMenuButton = '1'; //Menu buttons linked to VST parameters use this display class.
