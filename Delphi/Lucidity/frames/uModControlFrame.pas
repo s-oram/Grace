@@ -68,15 +68,6 @@ type
     FilterEnvSustainKnob: TVamKnob;
     FilterEnvReleaseKnob: TVamKnob;
     FilterEnvHoldKnob: TVamKnob;
-    StepSeq1Container: TVamDiv;
-    VamLabel34: TVamLabel;
-    VamDiv2: TVamDiv;
-    StepSeq1: TVamVectorSequence;
-    VamDiv3: TVamDiv;
-    VamDiv4: TVamDiv;
-    VamLabel30: TVamLabel;
-    VamLabel31: TVamLabel;
-    VamLabel32: TVamLabel;
     StepSeq2Container: TVamDiv;
     VamLabel28: TVamLabel;
     VamDiv6: TVamDiv;
@@ -87,9 +78,6 @@ type
     VamLabel39: TVamLabel;
     VamDiv8: TVamDiv;
     Filter1TypeTextBox: TVamTextBox;
-    Seq1ClockTextBox: TVamTextBox;
-    Seq1DirectionTextBox: TVamTextBox;
-    Seq1StepsTextBox: TVamTextBox;
     Seq2ClockTextBox: TVamTextBox;
     Seq2DirectionTextBox: TVamTextBox;
     Seq2StepsTextBox: TVamTextBox;
@@ -128,6 +116,18 @@ type
     Filter1P4Label: TVamLabel;
     Filter2Par4Knob: TVamKnob;
     Filter2P4Label: TVamLabel;
+    StepSeq1Container: TVamDiv;
+    VamLabel34: TVamLabel;
+    VamDiv2: TVamDiv;
+    StepSeq1: TVamVectorSequence;
+    VamDiv3: TVamDiv;
+    Seq1ClockTextBox: TVamTextBox;
+    Seq1DirectionTextBox: TVamTextBox;
+    Seq1StepsTextBox: TVamTextBox;
+    VamDiv4: TVamDiv;
+    VamLabel30: TVamLabel;
+    VamLabel31: TVamLabel;
+    VamLabel32: TVamLabel;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -350,6 +350,7 @@ begin
   //============================================================================
 
   FilterKnobWidth := 40;
+  FilterKnobHeight := 40;
 
 
   Row1.Height := 82;

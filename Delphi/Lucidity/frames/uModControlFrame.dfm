@@ -26,6 +26,7 @@ object ModControlFrame: TModControlFrame
       Transparent = False
       Align = alClient
       Visible = True
+      ExplicitTop = -3
       object Row1: TVamDiv
         AlignWithMargins = True
         Left = 46
@@ -610,226 +611,16 @@ object ModControlFrame: TModControlFrame
       end
       object Row3: TVamDiv
         AlignWithMargins = True
-        Left = 40
-        Top = 330
+        Left = 19
+        Top = 338
         Width = 737
-        Height = 335
+        Height = 223
         Margins.Left = 0
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
         HitTest = True
         Visible = True
-        object StepSeq1Container: TVamDiv
-          AlignWithMargins = True
-          Left = 24
-          Top = 9
-          Width = 280
-          Height = 123
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
-          HitTest = True
-          Visible = True
-          object VamLabel34: TVamLabel
-            Left = 0
-            Top = 0
-            Width = 280
-            Height = 18
-            Text = 'STEP SEQUENCE ONE'
-            HitTest = True
-            AutoSize = False
-            TextAlign = AlignCenter
-            TextVAlign = AlignCenter
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            Align = alTop
-            Visible = True
-          end
-          object VamDiv2: TVamDiv
-            Left = 0
-            Top = 18
-            Width = 280
-            Height = 70
-            HitTest = True
-            Align = alTop
-            Visible = True
-            object StepSeq1: TVamVectorSequence
-              Tag = 1
-              AlignWithMargins = True
-              Left = 0
-              Top = 0
-              Width = 168
-              Height = 60
-              Margins.Left = 0
-              Margins.Top = 0
-              Margins.Right = 0
-              Margins.Bottom = 10
-              HitTest = True
-              OnShowContextMenu = StepSeqShowContextMenu
-              Color_Background = '$FF000000'
-              Color_Border = '$FF000000'
-              Color_Step = '$FFD6DADF'
-              Color_StepActive = '$55FFFFFF'
-              CurrentStep = 0
-              SequenceLength = 8
-              OnChanged = StepSeq1Changed
-              Align = alLeft
-              Visible = True
-            end
-            object VamDiv3: TVamDiv
-              Left = 212
-              Top = 0
-              Width = 68
-              Height = 70
-              HitTest = True
-              Align = alClient
-              Visible = True
-              object Seq1ClockTextBox: TVamTextBox
-                AlignWithMargins = True
-                Left = 0
-                Top = 1
-                Width = 68
-                Height = 18
-                Margins.Left = 0
-                Margins.Top = 1
-                Margins.Right = 0
-                Margins.Bottom = 1
-                DisplayClass = 'MenuButton'
-                Text = '---'
-                HitTest = True
-                Color = '$FF3E3E3E'
-                ColorMouseOver = '$FF3E3E3E'
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = []
-                Align = alTop
-                Visible = True
-              end
-              object Seq1DirectionTextBox: TVamTextBox
-                AlignWithMargins = True
-                Left = 0
-                Top = 21
-                Width = 68
-                Height = 18
-                Margins.Left = 0
-                Margins.Top = 1
-                Margins.Right = 0
-                Margins.Bottom = 1
-                DisplayClass = 'MenuButton'
-                Text = '---'
-                HitTest = True
-                Color = '$FF3E3E3E'
-                ColorMouseOver = '$FF3E3E3E'
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = []
-                Align = alTop
-                Visible = True
-              end
-              object Seq1StepsTextBox: TVamTextBox
-                AlignWithMargins = True
-                Left = 0
-                Top = 41
-                Width = 68
-                Height = 18
-                Margins.Left = 0
-                Margins.Top = 1
-                Margins.Right = 0
-                Margins.Bottom = 1
-                DisplayClass = 'MenuButton'
-                Text = '---'
-                HitTest = True
-                Color = '$FF3E3E3E'
-                ColorMouseOver = '$FF3E3E3E'
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = []
-                Align = alTop
-                Visible = True
-              end
-            end
-            object VamDiv4: TVamDiv
-              Left = 168
-              Top = 0
-              Width = 44
-              Height = 70
-              HitTest = True
-              Align = alLeft
-              Visible = True
-              object VamLabel30: TVamLabel
-                Left = 0
-                Top = 0
-                Width = 44
-                Height = 20
-                Text = 'CLOCK'
-                HitTest = True
-                AutoSize = False
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = [fsBold]
-                Align = alTop
-                Visible = True
-              end
-              object VamLabel31: TVamLabel
-                Left = 0
-                Top = 20
-                Width = 44
-                Height = 20
-                Text = 'MODE'
-                HitTest = True
-                AutoSize = False
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = [fsBold]
-                Align = alTop
-                Visible = True
-              end
-              object VamLabel32: TVamLabel
-                Left = 0
-                Top = 40
-                Width = 44
-                Height = 20
-                Text = 'STEPS'
-                HitTest = True
-                AutoSize = False
-                TextAlign = AlignCenter
-                TextVAlign = AlignCenter
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'Tahoma'
-                Font.Style = [fsBold]
-                Align = alTop
-                Visible = True
-              end
-            end
-          end
-        end
         object StepSeq2Container: TVamDiv
           AlignWithMargins = True
           Left = 349
@@ -1034,6 +825,216 @@ object ModControlFrame: TModControlFrame
                 Font.Height = -11
                 Font.Name = 'Tahoma'
                 Font.Style = []
+                Align = alTop
+                Visible = True
+              end
+            end
+          end
+        end
+        object StepSeq1Container: TVamDiv
+          AlignWithMargins = True
+          Left = 24
+          Top = 9
+          Width = 280
+          Height = 123
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          HitTest = True
+          Visible = True
+          object VamLabel34: TVamLabel
+            Left = 0
+            Top = 0
+            Width = 280
+            Height = 18
+            Text = 'STEP SEQUENCE ONE'
+            HitTest = True
+            AutoSize = False
+            TextAlign = AlignCenter
+            TextVAlign = AlignCenter
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            Align = alTop
+            Visible = True
+          end
+          object VamDiv2: TVamDiv
+            Left = 0
+            Top = 18
+            Width = 280
+            Height = 70
+            HitTest = True
+            Align = alTop
+            Visible = True
+            object StepSeq1: TVamVectorSequence
+              Tag = 1
+              AlignWithMargins = True
+              Left = 0
+              Top = 0
+              Width = 168
+              Height = 60
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 10
+              HitTest = True
+              OnShowContextMenu = StepSeqShowContextMenu
+              Color_Background = '$FF000000'
+              Color_Border = '$FF000000'
+              Color_Step = '$FFD6DADF'
+              Color_StepActive = '$55FFFFFF'
+              CurrentStep = 0
+              SequenceLength = 8
+              OnChanged = StepSeq1Changed
+              Align = alLeft
+              Visible = True
+            end
+            object VamDiv3: TVamDiv
+              Left = 212
+              Top = 0
+              Width = 68
+              Height = 70
+              HitTest = True
+              Align = alClient
+              Visible = True
+              object Seq1ClockTextBox: TVamTextBox
+                AlignWithMargins = True
+                Left = 0
+                Top = 1
+                Width = 68
+                Height = 18
+                Margins.Left = 0
+                Margins.Top = 1
+                Margins.Right = 0
+                Margins.Bottom = 1
+                DisplayClass = 'MenuButton'
+                Text = '---'
+                HitTest = True
+                Color = '$FF3E3E3E'
+                ColorMouseOver = '$FF3E3E3E'
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = []
+                Align = alTop
+                Visible = True
+              end
+              object Seq1DirectionTextBox: TVamTextBox
+                AlignWithMargins = True
+                Left = 0
+                Top = 21
+                Width = 68
+                Height = 18
+                Margins.Left = 0
+                Margins.Top = 1
+                Margins.Right = 0
+                Margins.Bottom = 1
+                DisplayClass = 'MenuButton'
+                Text = '---'
+                HitTest = True
+                Color = '$FF3E3E3E'
+                ColorMouseOver = '$FF3E3E3E'
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = []
+                Align = alTop
+                Visible = True
+              end
+              object Seq1StepsTextBox: TVamTextBox
+                AlignWithMargins = True
+                Left = 0
+                Top = 41
+                Width = 68
+                Height = 18
+                Margins.Left = 0
+                Margins.Top = 1
+                Margins.Right = 0
+                Margins.Bottom = 1
+                DisplayClass = 'MenuButton'
+                Text = '---'
+                HitTest = True
+                Color = '$FF3E3E3E'
+                ColorMouseOver = '$FF3E3E3E'
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = []
+                Align = alTop
+                Visible = True
+              end
+            end
+            object VamDiv4: TVamDiv
+              Left = 168
+              Top = 0
+              Width = 44
+              Height = 70
+              HitTest = True
+              Align = alLeft
+              Visible = True
+              object VamLabel30: TVamLabel
+                Left = 0
+                Top = 0
+                Width = 44
+                Height = 20
+                Text = 'CLOCK'
+                HitTest = True
+                AutoSize = False
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                Align = alTop
+                Visible = True
+              end
+              object VamLabel31: TVamLabel
+                Left = 0
+                Top = 20
+                Width = 44
+                Height = 20
+                Text = 'MODE'
+                HitTest = True
+                AutoSize = False
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                Align = alTop
+                Visible = True
+              end
+              object VamLabel32: TVamLabel
+                Left = 0
+                Top = 40
+                Width = 44
+                Height = 20
+                Text = 'STEPS'
+                HitTest = True
+                AutoSize = False
+                TextAlign = AlignCenter
+                TextVAlign = AlignCenter
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
                 Align = alTop
                 Visible = True
               end
