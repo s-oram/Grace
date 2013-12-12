@@ -1,5 +1,4 @@
 *__history*
-*Project Resources*
 *.dproj
 *.res
 *.dcu
@@ -11,6 +10,8 @@
 *.exe
 *.tvsconfig
 Thumbs.db
+
+*Project Resources*
 
 
 # the top most binary directory.
@@ -29,3 +30,5 @@ Lucidity Create Installers.bat
 
 # ignore any generated DLLs.
 Lucidity.dll
+
+
