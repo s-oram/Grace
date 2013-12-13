@@ -29,6 +29,7 @@ uses
   VamTabPanel,
   VamTextBox,
   VamTreeView,
+  VamModSelector,
   VamVectorSequence,
   VamXYPad;
 
@@ -57,6 +58,7 @@ begin
 
   RegisterComponents('Vam VST', [TVamArrows]);
   RegisterComponents('Vam VST', [TVamKnob]);
+  RegisterComponents('Vam VST', [TVamModSelector]);
   RegisterComponents('Vam VST', [TVamModularCableOverlay]);
   RegisterComponents('Vam VST', [TVamModularJack]);
   RegisterComponents('Vam VST', [TVamNumericKnob]);
