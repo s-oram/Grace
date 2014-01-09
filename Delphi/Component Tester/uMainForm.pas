@@ -7,7 +7,8 @@ uses
   AudioIO,  eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
-  VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob;
+  VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
+  VamModSelector;
 
 type
   TForm1 = class(TForm)
@@ -16,6 +17,7 @@ type
     FileOpenDialog1: TFileOpenDialog;
     Knob1: TVamKnob;
     Label1: TVamLabel;
+    VamModSelector1: TVamModSelector;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Knob1Changed(Sender: TObject);

@@ -38,7 +38,7 @@ type
 
 
   published
-    property Color : TRedFoxColorString read GetColor write SetColor;
+    property Color          : TRedFoxColorString read GetColor          write SetColor;
     property ColorMouseOver : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
 
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;

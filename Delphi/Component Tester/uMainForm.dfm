@@ -30,8 +30,6 @@ object Form1: TForm1
     Height = 501
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitLeft = 104
-    ExplicitTop = 72
     object Knob1: TVamKnob
       Left = 248
       Top = 280
@@ -39,7 +37,7 @@ object Form1: TForm1
       Height = 73
       Text = 'Knob1'
       HitTest = True
-      Enabled = True
+      IsKnobEnabled = True
       VisibleSteps = 0
       OnChanged = Knob1Changed
       Visible = True
@@ -55,6 +53,23 @@ object Form1: TForm1
       TextVAlign = AlignCenter
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Visible = True
+    end
+    object VamModSelector1: TVamModSelector
+      Left = 536
+      Top = 240
+      Width = 105
+      Height = 89
+      HitTest = True
+      Color = '$FF3E3E3E'
+      ColorMouseOver = '$FF3E3E3E'
+      TextAlign = AlignNear
+      TextVAlign = AlignNear
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
