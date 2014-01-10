@@ -143,7 +143,6 @@ object PluginGui: TPluginGui
             Transparent = False
             Align = alClient
             Visible = True
-            ExplicitTop = 32
           end
         end
         object InfoBarDiv: TVamDiv

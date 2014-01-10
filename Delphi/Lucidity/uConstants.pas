@@ -177,6 +177,8 @@ const
 const
   kLucidityProgramFileExtension = '.lpg';
 
+  kModSlots = 8;
+
 //==============================================================================
 
 

@@ -923,7 +923,7 @@ begin
   MainMid.Height         := 322;
   TabPanel.Height        := 258;
   ModSystemDiv.Height    := 258; //just guessing.
-  ModSystem2Div.Height   := 80;
+  ModSystem2Div.Height   := 70;
   InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
 

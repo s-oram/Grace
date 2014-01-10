@@ -16,9 +16,6 @@ object ModSystem2Frame: TModSystem2Frame
     Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitTop = -308
-    ExplicitWidth = 640
-    ExplicitHeight = 548
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
@@ -29,8 +26,7 @@ object ModSystem2Frame: TModSystem2Frame
       Transparent = False
       Align = alClient
       Visible = True
-      ExplicitLeft = 48
-      ExplicitTop = -3
+      ExplicitLeft = 16
     end
   end
 end
