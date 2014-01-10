@@ -47,17 +47,16 @@ uses
   TypInfo, Contnrs,
   eeTypes, eeMidiAutomation, eeMidiMap,
   eeGuiStandard_Types, eeGuiStandard_MenuController,
-  eeGuiStandard_MenuBuilder;
+  eeGuiStandard_MenuBuilder,
+  eeGuiStandard.RedFoxKnob;
 
 
 type
   TMenuCallback = eeGuiStandard_MenuBuilder.TMenuCallback;
   TShowMenu     = eeGuiStandard_MenuController.TShowMenu;
 
-
   TControlMouseDownEvent = procedure(Sender: TObject; const Target:TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block : boolean) of object;
   TControlMouseUpEvent   = procedure(Sender: TObject; const Target:TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer) of object;
-
 
   TGuiStandard = class
   private
@@ -72,6 +71,9 @@ type
     AutoUpdateControlList : TObjectList;
     GrabbedControlsList   : TObjectList;
     ControlContextMenu    : TPopupMenu;
+
+    RedFoxKnobHandler : TRedFoxKnobHandler;
+
     function  BeginParameterEdit(Index:longint):boolean;
     function  EndParameterEdit(Index:longint):boolean;
     procedure SetParameterAutomated(Index:longint; Value:single); inline;
@@ -111,18 +113,6 @@ type
     property Globals : TGlobals read fGlobals write SetGlobals;
 
   published
-    //==  VgScene Control Event handlers ==============================
-    procedure vgKnobMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure vgKnobMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure vgKnobChange(Sender: TObject);
-    procedure vgButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-
-    //==  Vst Control Event handlers ==============================
-    procedure VstKnobMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure VstKnobMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure VstKnobChange(Sender: TObject);
-
-
     //== RedFox / Vam Control event handlers ===================
     // for knobs...
     procedure RedFoxKnobMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -134,17 +124,12 @@ type
     procedure RedFoxXYPadMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure RedFoxXYPadChanged(Sender: TObject);
 
-
-
     property OnControlMouseDown : TControlMouseDownEvent read fOnControlMouseDown write fOnControlMouseDown;
     property OnControlMouseUp   : TControlMouseUpEvent   read fOnControlMouseUp   write fOnControlMouseUp;
   end;
 
 
-
-
-
-
+  
 
 
 implementation
@@ -483,115 +468,6 @@ begin
   end;
 end;
 
-//==  VgScene Control Event handlers ==============================
-
-procedure TGuiStandard.vgButtonMouseDown(Sender: TObject; Button: TMouseButton;  Shift: TShiftState; X, Y: Single);
-var
-  Index : integer;
-  Value : single;
-  State : boolean;
-begin
-  assert(Sender.ClassName = 'TvgVamBitmapButton');
-
-  Index := GetPropValue(Sender, 'Tag');
-  State := GetPropValue(Sender, 'IsOn');
-
-  if Button = mbLeft then
-  begin
-    State := not State; //Toggle state
-    Value := BooleanToFloat(State);
-
-    BeginParameterEdit(Index);
-    SetParameterAutomated(Index, Value);
-    EndParameterEdit(Index);
-  end;
-
-  if Button = mbRight then
-  begin
-    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Index);
-  end;
-end;
-
-
-procedure TGuiStandard.vgKnobChange(Sender: TObject);
-var
-  Index : integer;
-  Value : single;
-begin
-  assert(Sender.ClassName = 'TvgVamBitmapKnob');
-
-  if IsManualGuiUpdateActive then exit;
-
-  Index := GetPropValue(Sender, 'Tag');
-  Value := GetPropValue(Sender, 'ValueVst');
-
-  SetParameterAutomated(Index, Value);
-end;
-
-
-procedure TGuiStandard.vgKnobMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-var
-  Tag : integer;
-begin
-  assert(Sender.ClassName = 'TvgVamBitmapKnob');
-
-  Tag := GetPropValue(Sender, 'Tag');
-
-  if Button = mbLeft
-    then BeginParameterEdit(Tag)
-    else ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
-end;
-
-procedure TGuiStandard.vgKnobMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-var
-  Tag : integer;
-begin
-  assert(Sender.ClassName = 'TvgVamBitmapKnob');
-
-  Tag := GetPropValue(Sender, 'Tag');
-  if Button = mbLeft then EndParameterEdit(Tag);
-end;
-
-procedure TGuiStandard.VstKnobChange(Sender: TObject);
-var
-  Index : integer;
-  Value : single;
-begin
-  if IsManualGuiUpdateActive then exit;
-
-  Index := GetPropValue(Sender, 'Tag');
-  Value := GetPropValue(Sender, 'Pos');
-
-  SetParameterAutomated(Index, Value);
-end;
-
-procedure TGuiStandard.VstKnobMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  Tag : integer;
-begin
-  Tag := GetPropValue(Sender, 'Tag');
-
-  if Button = mbLeft then
-  begin
-    BeginParameterEdit(Tag);
-    GrabbedControlsList.Add(Sender);
-  end else
-  begin
-    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
-  end;
-end;
-
-procedure TGuiStandard.VstKnobMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  Tag : integer;
-begin
-  Tag := GetPropValue(Sender, 'Tag');
-  if Button = mbLeft then
-  begin
-    EndParameterEdit(Tag);
-    GrabbedControlsList.Remove(Sender);
-  end;
-end;
 
 procedure TGuiStandard.SetParameterAutomated(Index: Integer; Value: single);
 var
@@ -835,57 +711,6 @@ var
 begin
   cType := c.ClassName;
 
-  //=================================================================
-  //================== VGScene ======================================
-  //=================================================================
-  if cType = 'TvgVamBitmapButton' then
-  begin
-    m.Data := Pointer(self);
-
-    // vgButtonMouseDown
-    m.Code := Self.MethodAddress('vgButtonMouseDown');
-    SetMethodProp(c, 'OnMouseDown', m);
-  end;
-
-  if cType = 'TvgVamBitmapKnob' then
-  begin
-    m.Data := Pointer(self);
-
-    // vgKnobMouseDown
-    m.Code := Self.MethodAddress('vgKnobMouseDown');
-    SetMethodProp(c, 'OnMouseDown', m);
-
-    // vgKnobMouseUp
-    m.Code := Self.MethodAddress('vgKnobMouseUp');
-    SetMethodProp(c, 'OnMouseUp', m);
-
-    // vgKnobChange
-    m.Code := Self.MethodAddress('vgKnobChange');
-    SetMethodProp(c, 'OnChange', m);
-  end;
-
-
-  //=================================================================
-  //================== VGScene ======================================
-  //=================================================================
-
-  if cType = 'TVstKnob' then
-  begin
-    m.Data := Pointer(self);
-
-    // vgKnobMouseDown
-    m.Code := Self.MethodAddress('VstKnobMouseDown');
-    SetMethodProp(c, 'OnMouseDown', m);
-
-    // vgKnobMouseUp
-    m.Code := Self.MethodAddress('VstKnobMouseUp');
-    SetMethodProp(c, 'OnMouseUp', m);
-
-    // vgKnobChange
-    m.Code := Self.MethodAddress('VstKnobChange');
-    SetMethodProp(c, 'OnChange', m);
-  end;
-
 
   //=================================================================
   //================== RedFox / Vam Controls ========================
@@ -925,8 +750,6 @@ begin
     SetMethodProp(c, 'OnChanged', m);
   end;
 
-
-
 end;
 
 procedure TGuiStandard.RegisterControlAsMenuControl(const aControl: TControl; const ParIndex: integer; const EnumHelper: TCustomEnumHelperClass; ShowMenu   : TShowMenu; PopupCallBack : TMenuCallback);
@@ -935,10 +758,6 @@ begin
 
   MenuController.RegisterControlAsMenuControl(aControl, ParIndex, EnumHelper, ShowMenu, PopupCallBack);
 end;
-
-
-
-
 
 
 

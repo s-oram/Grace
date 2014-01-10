@@ -131,7 +131,8 @@ uses
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
   uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
   eePlugin in 'eePlugin.pas',
-  eeGuiStandard in 'eeGuiStandard.pas';
+  eeGuiStandard in 'eeGuiStandard.pas',
+  eeGuiStandard.RedFoxKnob in 'eeGuiStandard.RedFoxKnob.pas';
 
 {$R *.res}
 

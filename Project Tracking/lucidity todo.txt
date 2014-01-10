@@ -11,7 +11,8 @@ more systematic.
 
 
 
-
+- eeGuiStandard is now part of Lucidity specific code. 
+-- Change eeGuiStandard so that it works as desired for registering control handling.
 
 
 
