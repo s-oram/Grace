@@ -130,7 +130,8 @@ uses
   Lucidity.SampleImageRenderer in 'Lucidity.SampleImageRenderer.pas',
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
   uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
-  eePlugin in 'eePlugin.pas';
+  eePlugin in 'eePlugin.pas',
+  eeGuiStandard in 'eeGuiStandard.pas';
 
 {$R *.res}
 
