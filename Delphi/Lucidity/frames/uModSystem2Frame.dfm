@@ -27,6 +27,23 @@ object ModSystem2Frame: TModSystem2Frame
       Align = alClient
       Visible = True
       ExplicitLeft = 16
+      object VamTextBox1: TVamTextBox
+        Left = 232
+        Top = 32
+        Width = 193
+        Height = 49
+        HitTest = True
+        Color = '$FF3E3E3E'
+        ColorMouseOver = '$FF3E3E3E'
+        TextAlign = AlignNear
+        TextVAlign = AlignNear
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Visible = True
+      end
     end
   end
 end

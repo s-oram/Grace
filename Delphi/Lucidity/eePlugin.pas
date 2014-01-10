@@ -65,6 +65,7 @@ type
     fSampleDirectories: TSampleDirectories;
     fFocusedKeyGroup: IKeyGroup;
     fIsPreviewEnabled: boolean;
+    fSelectedModSlot: integer;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
     function GetVoiceGlide: single;
@@ -73,6 +74,7 @@ type
     procedure SetVoiceMode(const Value: TVoiceMode);
     function GetPreviewVolume: single;
     procedure SetPreviewVolume(const Value: single);
+    procedure SetSelectedModSlot(const Value: integer);
   protected
     DeltaOffset     : integer;
     ParameterWizard : TPluginParameterWizard;
@@ -160,7 +162,6 @@ type
     function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
 
 
-
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
@@ -169,6 +170,11 @@ type
     property GuiState : TGuiState read fGuiState;
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
+
+
+
+    property SelectedModSlot : integer read fSelectedModSlot write SetSelectedModSlot;
+
 
   published
     // Global parameters. These properties are for the benefit of the statemanager.
@@ -764,6 +770,18 @@ end;
 procedure TeePlugin.SetPreviewVolume(const Value: single);
 begin
   AudioPreviewPlayer.Volume := Value;
+end;
+
+procedure TeePlugin.SetSelectedModSlot(const Value: integer);
+begin
+  assert(Value >= -1);
+  assert(Value <= kModSlots-1);
+
+  if Value <> fSelectedModSlot then
+  begin
+    fSelectedModSlot := Value;
+    Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+  end;
 end;
 
 procedure TeePlugin.SetVoiceGlide(const Value: single);

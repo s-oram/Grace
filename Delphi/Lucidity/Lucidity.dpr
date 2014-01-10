@@ -129,7 +129,8 @@ uses
   eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas',
   Lucidity.SampleImageRenderer in 'Lucidity.SampleImageRenderer.pas',
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
-  uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame};
+  uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
+  eePlugin in 'eePlugin.pas';
 
 {$R *.res}
 

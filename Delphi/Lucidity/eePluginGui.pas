@@ -364,6 +364,7 @@ begin
   SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
   ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
   ModSystemFrame.InitializeFrame(Plugin, GuiStandard);
+  ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
   XYPadsFrame.InitializeFrame(Plugin, GuiStandard);
   VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
 

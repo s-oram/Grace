@@ -48,6 +48,7 @@ const
   UM_Update_Mod_Matrix                = WM_APP + 17;
   UM_Focused_Control_Changed          = WM_APP + 18;
   UM_PROGRAM_SAVED_TO_DISK            = WM_APP + 19;
+  UM_MOD_SLOT_CHANGED                 = WM_APP + 20;
 
 const
   kMaxStepSequencerLength = 32;
