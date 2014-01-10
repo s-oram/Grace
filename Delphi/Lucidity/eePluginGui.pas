@@ -113,8 +113,6 @@ type
 
     procedure EventHandle_ControlMouseDown(Sender: TObject; const Target:TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block : boolean);
   public
-
-
     procedure PostCreate(const aVstWindow : HWnd);
     procedure BeforeClose;
     procedure UpdateGui(Sender:TObject);
@@ -311,10 +309,14 @@ var
   bm2 : TBitmap;
   aRegionID : TGUID;
 begin
+  assert(assigned(Plugin));
+
   VstWindow := aVstWindow;
 
-  GuiStandard := TGuiStandard.Create;
+  GuiStandard := TGuiStandard.Create(Plugin.Globals);
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
+
+
 
 
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
@@ -358,7 +360,7 @@ begin
   end;
 
 
-  GuiStandard.Globals := Plugin.Globals;
+
   Plugin.Globals.AddWindowsMessageListener(self.Handle);
 
 
@@ -452,7 +454,6 @@ end;
 
 procedure TPluginGui.BeforeClose;
 begin
-  GuiStandard.Globals := nil;
   if assigned(Plugin) then
   begin
     Plugin.Globals.RemoveWindowsMessageListener(self.Handle);

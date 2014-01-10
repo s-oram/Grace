@@ -64,7 +64,6 @@ type
     fGlobals: TGlobals;
     fOnControlMouseDown: TControlMouseDownEvent;
     fOnControlMouseUp: TControlMouseUpEvent;
-    procedure SetGlobals(const Value: TGlobals);
   protected
     MenuController : TMenuController;
 
@@ -86,7 +85,7 @@ type
     //Set to true when manually changing the value of GUI controls. This prevents the controls sending parameter changes to VST plugin class.
     property IsManualGuiUpdateActive : boolean                read fIsManualGuiUpdateActive write fIsManualGuiUpdateActive;
   public
-    constructor Create;
+    constructor Create(aGlobals : TGlobals);
     destructor Destroy; override;
 
     // procedure RegisterControlAsMenuControl()
@@ -110,7 +109,7 @@ type
     procedure ShowXYPadContextMenu(const X, Y, ParameterIndex1, ParameterIndex2 : integer);
 
     //The globals property must be set so that this class can get/set parameter values and MIDI parameter mappings.
-    property Globals : TGlobals read fGlobals write SetGlobals;
+    property Globals : TGlobals read fGlobals;
 
   published
     //== RedFox / Vam Control event handlers ===================
@@ -142,9 +141,12 @@ type
 
 { TGuiStandard }
 
-constructor TGuiStandard.Create;
+constructor TGuiStandard.Create(aGlobals : TGlobals);
 begin
+  fGlobals := aGlobals;
+
   MenuController := TMenuController.Create;
+  MenuController.Globals := Globals;
 
   ControlContextMenu := TPopupMenu.Create(nil);
 
@@ -163,14 +165,6 @@ begin
   MenuController.Free;
   inherited;
 end;
-
-procedure TGuiStandard.SetGlobals(const Value: TGlobals);
-begin
-  fGlobals := Value;
-  MenuController.Globals := Value;
-end;
-
-
 
 
 procedure TGuiStandard.ShowControlContextMenu(const X, Y, ParameterIndex: integer);
