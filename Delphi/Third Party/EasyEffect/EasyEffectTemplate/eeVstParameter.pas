@@ -73,10 +73,7 @@ type
     // NOTE: SetMinMax() and SetDefault() don't quite sit together. SetMinMax() sets the min/max *scaled* values.
     // SetDefault() sets the default value using the regular 0..1 VST range.
 
-    // When IsPublished is true, the parameter will be exposed to the VST Host.
-    // The host will be able to change the parameter using the
-    // GetParameter and SetParameter methods as part of the VST protocole.
-    property IsPublished : boolean read fIsPublished;
+
 
     property Name          : string   read fName;
     property ShortName     : string   read fName;
@@ -91,6 +88,10 @@ type
     property ValueVST    : single read GetValueVST    write SetValueVST;
     property ValueScaled : single read GetValueScaled write SetValueScaled;
 
+    // When IsPublished is true, the parameter will be exposed to the VST Host.
+    // The host will be able to change the parameter using the
+    // GetParameter and SetParameter methods as part of the VST protocole.
+    property IsPublished : boolean read fIsPublished;
     property PublishedVSTParameterIndex : integer read fPublishedVstParameterIndex;
 
 

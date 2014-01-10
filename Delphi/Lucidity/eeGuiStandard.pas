@@ -64,6 +64,7 @@ type
     fGlobals: TGlobals;
     fOnControlMouseDown: TControlMouseDownEvent;
     fOnControlMouseUp: TControlMouseUpEvent;
+    fRedFoxKnobHandler : TRedFoxKnobHandler;
   protected
     MenuController : TMenuController;
 
@@ -71,7 +72,7 @@ type
     GrabbedControlsList   : TObjectList;
     ControlContextMenu    : TPopupMenu;
 
-    RedFoxKnobHandler : TRedFoxKnobHandler;
+
 
     function  BeginParameterEdit(Index:longint):boolean;
     function  EndParameterEdit(Index:longint):boolean;
@@ -87,6 +88,8 @@ type
   public
     constructor Create(aGlobals : TGlobals);
     destructor Destroy; override;
+
+    property RedFoxKnobHandler : TRedFoxKnobHandler read fRedFoxKnobHandler;
 
     // procedure RegisterControlAsMenuControl()
     // WARNING: This method modifies aControl. It will assign values to:
@@ -155,10 +158,13 @@ begin
 
   GrabbedControlsList   := TObjectList.Create;
   GrabbedControlsList.OwnsObjects := false;
+
+  fRedFoxKnobHandler := TRedFoxKnobHandler.Create(aGlobals);
 end;
 
 destructor TGuiStandard.Destroy;
 begin
+  fRedFoxKnobHandler.Free;
   ControlContextMenu.Free;
   AutoUpdateControlList.Free;
   GrabbedControlsList.Free;

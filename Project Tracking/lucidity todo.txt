@@ -13,7 +13,9 @@ more systematic.
 
 - eeGuiStandard is now part of Lucidity specific code. 
 -- Change eeGuiStandard so that it works as desired for registering control handling.
-
+-- Have created TRedFoxKnobHandler but not tested it yet. Test that the functionality works.
+--- then add the context menu options. 
+--- then add the event callback options so that the gui can be updated with the relevant info.
 
 
 
