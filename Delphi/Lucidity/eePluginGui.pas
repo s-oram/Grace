@@ -113,6 +113,8 @@ type
 
     procedure EventHandle_ControlMouseDown(Sender: TObject; const Target:TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block : boolean);
   public
+
+
     procedure PostCreate(const aVstWindow : HWnd);
     procedure BeforeClose;
     procedure UpdateGui(Sender:TObject);
@@ -174,9 +176,6 @@ begin
   PluginHotkeys.OnCommandKeyDown := self.HotkeyEvent;
 
   FeedbackData := TGuiFeedBackData.Create;
-
-  GuiStandard := TGuiStandard.Create;
-  GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
   CurrentGuiState := TGuiState.Create;
 
@@ -275,9 +274,12 @@ end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);
 begin
-  GuiStandard.Free;
+  if assigned(GuiStandard)
+    then GuiStandard.Free;
+
   DialogDisplayArea.Free;
   CurrentGuiState.Free;
+
   FreeAndNil(MenuBarFrame);
   FreeAndNil(SampleMapFrame);
   FreeAndNil(SampleDisplayFrame);
@@ -289,6 +291,7 @@ begin
   FreeAndNil(InfoBarFrame);
   FreeAndNil(ModSystemFrame);
   FreeAndNil(ModSystem2Frame);
+
   DropFileTarget.Free;
   FeedBackData.Free;
   PluginHotkeys.Free;
@@ -309,6 +312,9 @@ var
   aRegionID : TGUID;
 begin
   VstWindow := aVstWindow;
+
+  GuiStandard := TGuiStandard.Create;
+  GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
 
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
