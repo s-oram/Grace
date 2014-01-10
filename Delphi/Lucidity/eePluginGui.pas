@@ -288,6 +288,7 @@ begin
   FreeAndNil(XYPadsFrame);
   FreeAndNil(InfoBarFrame);
   FreeAndNil(ModSystemFrame);
+  FreeAndNil(ModSystem2Frame);
   DropFileTarget.Free;
   FeedBackData.Free;
   PluginHotkeys.Free;

@@ -12,7 +12,6 @@ type
   TModSystem2Frame = class(TFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
-    VamTextBox1: TVamTextBox;
   private
     ModSelectors : array[0..kModSlots-1] of TVamModSelector;
     MainSelector : TVamTextBox;
@@ -21,10 +20,17 @@ type
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
 
+    MsgHandle : hwnd;
+    procedure MessageHandler(var Message : TMessage);
+
     procedure ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+
+
+    procedure UpdateModulation;
+
 
   protected
     property Plugin:TeePlugin read fPlugin;
@@ -51,9 +57,14 @@ var
   c1: Integer;
   PosX, PosY : integer;
   OffsetX : integer;
-
 begin
   inherited;
+
+  // NOTE: AFAIK TFrame should be receive a windows handle at some stage.
+  // for whatever reason this TFrame instance wasn't receiving a handle and
+  // i couldn't figure out why. This is a work-around so that the frame
+  // can receive messages posted by the EasyEffect Globals class.
+  MsgHandle := AllocateHWND(MessageHandler);
 
 
   //560 - width of mod slots
@@ -141,9 +152,20 @@ end;
 
 destructor TModSystem2Frame.Destroy;
 begin
+  if (MsgHandle <> 0) and (assigned(Plugin)) then
+  begin
+    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
+  end;
+  DeallocateHWnd(MsgHandle);
 
   inherited;
 end;
+
+procedure TModSystem2Frame.MessageHandler(var Message: TMessage);
+begin
+  if Message.Msg = UM_MOD_SLOT_CHANGED then UpdateModulation;
+end;
+
 
 procedure TModSystem2Frame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin
@@ -151,6 +173,15 @@ begin
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
+
+  if MsgHandle <> 0 then
+  begin
+    Plugin.Globals.AddWindowsMessageListener(MsgHandle);
+  end;
+
+
+  // finally
+  UpdateModulation;
 end;
 
 
@@ -160,7 +191,7 @@ var
 begin
   if Button = mbLeft then
   begin
-    Index := (Sender as TVamTextBox).Tag;
+    Index := (Sender as TVamModSelector).Tag;
     Plugin.SelectedModSlot := Index;
   end;
 end;
@@ -172,6 +203,7 @@ begin
     Plugin.SelectedModSlot := -1;
   end;
 end;
+
 
 procedure TModSystem2Frame.BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
@@ -196,6 +228,44 @@ begin
     Plugin.SelectedModSlot := Index;
   end;
 end;
+
+
+procedure TModSystem2Frame.UpdateModulation;
+var
+  c1 : integer;
+begin
+  for c1 := 0 to kModSlots-1 do
+  begin
+    ModSelectors[c1].Color := kColor_LcdDark1;
+    ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
+  end;
+
+  MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  MainSelector.Color          := kColor_LcdDark1;
+  MainSelector.ColorMouseOver := kColor_ButtonMouseOver;
+
+  case Plugin.SelectedModSlot of
+    -1 :
+    begin
+      MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark1);
+      MainSelector.Color          := kColor_LcdDark5;
+      MainSelector.ColorMouseOver := kColor_LcdDark6;
+    end;
+
+    0..7:
+    begin
+      c1 := Plugin.SelectedModSlot;
+      ModSelectors[c1].Color           := kColor_LcdDark5;
+      ModSelectors[c1].ColorMouseOver  := kColor_LcdDark6;
+    end;
+  end;
+
+
+
+
+end;
+
+
 
 
 end.

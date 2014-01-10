@@ -132,6 +132,10 @@ const
   kColor_LcdDark3 = '$ff5D7095';
   kColor_LcdDark4 = '$ff64718D';
   kColor_LcdDark5 = '$ffA1BDED';
+  kColor_LcdDark6 = '$ffD3E0F7';
+
+
+  kColor_LcdInvert1 = '$ffC1D3F3';
 
   kColor_ButtonMouseOver = '$ff404A5E';
 

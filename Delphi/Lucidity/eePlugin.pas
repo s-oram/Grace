@@ -219,6 +219,8 @@ var
 begin
   inherited;
 
+  SelectedModSlot := -1;
+
   fIsPreviewEnabled := true;
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, EventHandle_SampleRateChanged);
