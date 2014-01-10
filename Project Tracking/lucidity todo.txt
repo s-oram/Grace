@@ -1,3 +1,40 @@
+=============================================================================
+Working on VST parameters.... 
+
+Goal: update framework to allow usage of 8 mod slots
+
+
+TVstParameter is fine (I think).
+
+I think eeGuiStandard has grown too much and needs to be refactored into something
+more systematic.
+
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - currently each sample map has a bitmap rendering of its image for fast display.
   Instead try to use a "Peak Buffer" of bytes. The sample map will draw the
   peak buffer.
