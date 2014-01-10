@@ -10,6 +10,7 @@ type
   TVamModSelector = class(TVamWinControl)
   private
     IsMouseOver : boolean;
+    fColorBorder : TRedFoxColor;
     fColor : TRedFoxColor;
     fColorMouseOver : TRedFoxColor;
     fText: string;
@@ -26,6 +27,8 @@ type
     procedure SetColorMouseOver(const Value: TRedFoxColorString);
     procedure SetImageOverlay(const Value: TBitmap);
     procedure SetTextPadding(const Value: TPadding);
+    function GetColorBorder: TRedFoxColorString;
+    procedure SetColorBorder(const Value: TRedFoxColorString);
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -38,6 +41,7 @@ type
 
 
   published
+    property ColorBorder    : TRedFoxColorString read GetColorBorder    write SetColorBorder;
     property Color          : TRedFoxColorString read GetColor          write SetColor;
     property ColorMouseOver : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
 
@@ -91,6 +95,11 @@ begin
   result := fColor.AsString;
 end;
 
+function TVamModSelector.GetColorBorder: TRedFoxColorString;
+begin
+  result := fColorBorder.AsString;
+end;
+
 function TVamModSelector.GetColorMouseOver: TRedFoxColorString;
 begin
   result := fColorMouseOver.AsString;
@@ -117,6 +126,15 @@ begin
   if Value <> fColor.AsString then
   begin
     fColor.SetColor(Value);
+    Invalidate;
+  end;
+end;
+
+procedure TVamModSelector.SetColorBorder(const Value: TRedFoxColorString);
+begin
+  if Value <> fColorBorder.AsString then
+  begin
+    fColorBorder.SetColor(Value);
     Invalidate;
   end;
 end;
@@ -221,6 +239,12 @@ begin
 
     BackBuffer.TransformImage(ImageOverlay, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
   end;
+
+  //== draw the border ==
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineColor := fColorBorder;
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
 end;
 

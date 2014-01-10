@@ -28,9 +28,7 @@ type
     procedure BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
-
     procedure UpdateModulation;
-
 
   protected
     property Plugin:TeePlugin read fPlugin;
@@ -84,10 +82,9 @@ begin
     ModSelectors[c1].Layout.SetSize(62,62);
     ModSelectors[c1].Layout.SetPos(PosX, PosY);
 
-    ModSelectors[c1].Color := kColor_LcdDark1;
+    ModSelectors[c1].ColorBorder     := kColor_LcdDark1;
+    ModSelectors[c1].Color           := kColor_LcdDark1;
     ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
-
-
   end;
 
 
