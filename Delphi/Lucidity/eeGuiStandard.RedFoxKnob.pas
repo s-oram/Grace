@@ -27,10 +27,12 @@ type
     procedure EndParameterEdit(const ControlLinkIndex : integer);
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
+
+  protected
+    property Globals : TGlobals read fGlobals;
+
   public
     constructor Create(aGlobals : TGlobals);
-
-    property Globals : TGlobals read fGlobals;
 
     procedure RegisterControl(c : TControl; aLinkedParameter : TVstParameter);
     procedure DeregisterControl(c : TControl);
@@ -38,6 +40,7 @@ type
     //Update the registered controls to match parameter values.
     procedure UpdateControls;
   published
+    //These are only here for RTTI reasons. It would be better to put these in private or protected.
     procedure MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Changed(Sender: TObject);
