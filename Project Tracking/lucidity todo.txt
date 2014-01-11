@@ -15,6 +15,7 @@ more systematic.
 (DONE) -- Have created TRedFoxKnobHandler but not tested it yet. Test that the functionality works.
 (DONE) --- then add the context menu options. 
 --- then add the event callback options so that the gui can be updated with the relevant info.
+---- Continue working on the info bar receiver and info bar implementation.
 --- all controls on other frames need to use the new ee GUI standard options...
 
 

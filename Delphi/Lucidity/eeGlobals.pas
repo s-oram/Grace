@@ -4,7 +4,8 @@ interface
 
 uses
   Lucidity.Options,
-  eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
+  eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL,
+  eeGlobals.InfoBarReceiver;
 
 type
   TGlobals = class(TCustomGlobals)
@@ -14,6 +15,7 @@ type
     fUserDataDir: string;
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
+    fInfoBarReceiver: TInfoBarReceiver;
   protected
   protected
   public
@@ -30,6 +32,10 @@ type
     property SkinImageLoader : TSkinImageLoader read fSkinImageLoader;
 
     property Options : TOptions read fOptions;
+
+    // InfoBarReceiver is a central point for controls to send messages for the info bar to.
+    // The info bar can then respond to changes and display the message.
+    property InfoBarReceiver : TInfoBarReceiver read fInfoBarReceiver write fInfoBarReceiver;
   end;
 
 implementation
@@ -53,6 +59,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fInfoBarReceiver := TInfoBarReceiver.Create;
 
   fKeyData.Clear;
 
@@ -122,6 +130,7 @@ end;
 
 destructor TGlobals.Destroy;
 begin
+  fInfoBarReceiver.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
   inherited;

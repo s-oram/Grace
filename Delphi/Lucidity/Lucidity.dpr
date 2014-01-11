@@ -133,7 +133,8 @@ uses
   eePlugin in 'eePlugin.pas',
   eeGuiStandard in 'eeGuiStandard.pas',
   eeGuiStandard.RedFoxKnob in 'eeGuiStandard.RedFoxKnob.pas',
-  eeGuiStandard.RedFoxMenu in 'eeGuiStandard.RedFoxMenu.pas';
+  eeGuiStandard.RedFoxMenu in 'eeGuiStandard.RedFoxMenu.pas',
+  eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas';
 
 {$R *.res}
 
