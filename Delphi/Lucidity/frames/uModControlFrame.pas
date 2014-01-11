@@ -201,7 +201,6 @@ var
   kw, kh : integer;
   KnobTop : integer;
   RowHeight : integer;
-
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
@@ -215,86 +214,43 @@ begin
 
   //AmpEnvAttackKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpAttack');
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob, Plugin.Globals.VstParameters.FindParameter('AmpHold'));
-
-  AmpEnvHoldKnob.Tag    := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpHold');
-  AmpEnvDecayKnob.Tag   := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpDecay');
-  AmpEnvSustainKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpSustain');
-  AmpEnvReleaseKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpRelease');
-
-  FilterEnvAttackKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('FilterAttack');
-  FilterEnvHoldKnob.Tag    := fPlugin.Globals.VstParameters.FindParameterIndexByName('FilterHold');
-  FilterEnvDecayKnob.Tag   := fPlugin.Globals.VstParameters.FindParameterIndexByName('FilterDecay');
-  FilterEnvSustainKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('FilterSustain');
-  FilterEnvReleaseKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('FilterRelease');
-
-  Filter1Par1Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter1Par1');
-  Filter1Par2Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter1Par2');
-  Filter1Par3Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter1Par3');
-  Filter1Par4Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter1Par4');
-
-  Filter2Par1Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter2Par1');
-  Filter2Par2Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter2Par2');
-  Filter2Par3Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter2Par3');
-  Filter2Par4Knob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter2Par4');
-
-  ModEnvAAttackKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvAAttack');
-  ModEnvADecayKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvADecay');
-
-  ModEnvBAttackKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvBAttack');
-  ModEnvBDecayKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvBDecay');
-
-  ModEnvAModeBox.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvAMode');
-  ModEnvBModeBox.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('ModEnvBMode');
-
-  ParIndexFilter1Type := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter1Type');
-  ParIndexFilter2Type := fPlugin.Globals.VstParameters.FindParameterIndexByName('Filter2Type');
-
-  LfoShapeTextBox1.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoShape1');
-  LfoShapeTextBox2.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoShape2');
-
-  LfoSpeedKnob1.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoRate1');
-  LfoSpeedKnob2.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoRate2');
-
-  LfoDepthKnob1.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoAPar2');
-  LfoDepthKnob2.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('LfoBPar2');
 
 
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter('AmpAttack'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter('AmpHold'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter('AmpDecay'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter('AmpSustain'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter('AmpRelease'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter('FilterAttack'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvHoldKnob,               Plugin.Globals.VstParameters.FindParameter('FilterHold'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter('FilterDecay'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter('FilterSustain'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter('FilterRelease'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par1'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par2'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par3Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par3'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par4Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par4'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par1Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par1'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par2'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par3'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par4'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvAAttackKnob,               Plugin.Globals.VstParameters.FindParameter('ModEnvAAttack'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvADecayKnob,                Plugin.Globals.VstParameters.FindParameter('ModEnvADecay'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBAttackKnob,               Plugin.Globals.VstParameters.FindParameter('ModEnvBAttack'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBDecayKnob,                Plugin.Globals.VstParameters.FindParameter('ModEnvBDecay'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoRate1'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoRate2'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoAPar2'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoBPar2'));
 
-  //fGuiStandard.RegisterControlForAutoUpdate(AmpEnvAttackKnob, true);
+  //TODO:
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter1,                 Plugin.Globals.VstParameters.FindParameter('Filter1Type'));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter2,                 Plugin.Globals.VstParameters.FindParameter('Filter2Type'));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(LfoShapeTextBox1,                Plugin.Globals.VstParameters.FindParameter('LfoShape1'));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(LfoShapeTextBox2,                Plugin.Globals.VstParameters.FindParameter('LfoShape2'));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvAModeBox,                  Plugin.Globals.VstParameters.FindParameter('ModEnvAMode'));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBModeBox,                  Plugin.Globals.VstParameters.FindParameter('ModEnvBMode'));
 
-  fGuiStandard.RegisterControlForAutoUpdate(AmpEnvHoldKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(AmpEnvDecayKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(AmpEnvSustainKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(AmpEnvReleaseKnob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(FilterEnvAttackKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(FilterEnvHoldKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(FilterEnvDecayKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(FilterEnvSustainKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(FilterEnvReleaseKnob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(Filter1Par1Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter1Par2Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter1Par3Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter1Par4Knob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(Filter2Par1Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter2Par2Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter2Par3Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(Filter2Par4Knob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(LfoSpeedKnob1, true);
-  fGuiStandard.RegisterControlForAutoUpdate(LfoSpeedKnob2, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(LfoDepthKnob1, true);
-  fGuiStandard.RegisterControlForAutoUpdate(LfoDepthKnob2, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(ModEnvAAttackKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(ModEnvADecayKnob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(ModEnvBAttackKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(ModEnvBDecayKnob, true);
 
   ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('AmpVelocity');
   fGuiStandard.RegisterControlAsMenuControl(AmpVelocityButton, ParIndex, TEnvVelocityDepthHelper, TShowMenu.ContextClickOnly);
