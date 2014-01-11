@@ -618,6 +618,8 @@ var
   s : string;
   ControlName : string;
 begin
+  RedFoxKnobHandler.UpdateControls;
+
   IsManualGuiUpdateActive := true;
 
   for c1 := 0 to AutoUpdateControlList.Count - 1 do

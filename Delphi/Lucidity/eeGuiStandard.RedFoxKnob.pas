@@ -34,6 +34,9 @@ type
 
     procedure RegisterControl(c : TControl; aLinkedParameter : TVstParameter);
     procedure DeregisterControl(c : TControl);
+
+    //Update the registered controls to match parameter values.
+    procedure UpdateControls;
   published
     procedure MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -275,7 +278,22 @@ begin
   end;
 end;
 
+procedure TRedFoxKnobHandler.UpdateControls;
+var
+  c1: Integer;
+  parValue : single;
+  c : TControl;
+begin
+  IsManualGuiUpdateActive := true;
 
+  for c1 := 0 to ControlLinks.Count-1 do
+  begin
+    c := ControlLinks[c1].Control;
+    parValue := ControlLinks[c1].LinkedParameter.ValueVST;
+    SetPropValue(c, 'Pos', parValue);
+  end;
 
+  IsManualGuiUpdateActive := false;
+end;
 
 end.
