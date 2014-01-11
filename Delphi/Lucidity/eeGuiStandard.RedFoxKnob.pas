@@ -4,15 +4,16 @@ interface
 
 uses
   Menus,
-  VamLib.GuiControlInterfaces,
   VamLib.Collections.RecordArray,
+  VamGuiControlInterfaces,
   eeVstParameter,
   Classes, Controls, eeGlobals;
 
 type
   PControlInfo = ^TControlInfo;
   TControlInfo = record
-    Control : TControl;
+    Control         : TControl;
+    KnobControl     : IKnobControl;
     LinkedParameter : TVstParameter;
   end;
 
@@ -20,9 +21,7 @@ type
   private
     fGlobals: TGlobals;
     ControlLinks : TRecordArray<TControlInfo>;
-
-    ControlContextMenu    : TPopupMenu;
-
+    ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
 
     function FindIndexOfControl(c:TControl):integer;
@@ -32,12 +31,15 @@ type
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
 
+    procedure ShowControlContextMenu(const X, Y, ControlLinkIndex : integer);
+
     procedure Handle_MidiLearn(Sender:TObject);
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
 
-    procedure ShowControlContextMenu(const X, Y, ControlLinkIndex : integer);
-
+    procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_Changed(Sender: TObject);
   protected
     property Globals : TGlobals read fGlobals;
 
@@ -50,11 +52,7 @@ type
 
     //Update the registered controls to match parameter values.
     procedure UpdateControls;
-  published
-    //These are only here for RTTI reasons. It would be better to put these in private or protected.
-    procedure MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure Changed(Sender: TObject);
+
   end;
 
 implementation
@@ -85,34 +83,18 @@ var
   ci : TControlInfo;
   cType : string;
   m     : TMethod;
+  kc : IKnobControl;
 begin
-  ci.Control := c;
+  assert(Supports(c, IKnobControl));
+
+  ci.Control     := c;
+  if Supports(c, IKnobControl, ci.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
   ci.LinkedParameter := aLinkedParameter;
   ControlLinks.Append(ci);
 
-
-  // assign the controls event handlers to the common handler..
-
-  cType := c.ClassName;
-
-  if cType = 'TVamKnob' then
-  begin
-    m.Data := Pointer(self);
-
-    // Knob Mouse-Down
-    m.Code := Self.MethodAddress('MouseDown');
-    SetMethodProp(c, 'OnMouseDown', m);
-
-    // Knob Mouse-Up
-    m.Code := Self.MethodAddress('MouseUp');
-    SetMethodProp(c, 'OnMouseUp', m);
-
-    // Knob Change
-    m.Code := Self.MethodAddress('Changed');
-    SetMethodProp(c, 'OnChanged', m);
-  end;
-
-
+  ci.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
+  ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
+  ci.KnobControl.SetOnChanged(self.Handle_Changed);
 end;
 
 procedure TRedFoxKnobHandler.DeregisterControl(c: TControl);
@@ -137,14 +119,13 @@ begin
   result := -1;
 end;
 
-procedure TRedFoxKnobHandler.MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TRedFoxKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Value : single;
   Block : boolean;
   Index : integer;
 begin
-  assert(Sender.ClassName = 'TVamKnob');
-  assert(Sender is TControl);
+  assert(Supports(Sender, IKnobControl));
 
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
@@ -166,10 +147,7 @@ begin
   // I don't think this is needed.
   //if IsManualGuiUpdateActive then exit;
 
-
-
-  Value := GetPropValue(Sender, 'Pos');
-
+  Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   if (Button = mbLeft) then
   begin
@@ -186,7 +164,7 @@ begin
 end;
 
 
-procedure TRedFoxKnobHandler.MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TRedFoxKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
   Value : single;
@@ -194,7 +172,7 @@ begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
 
-  Value := GetPropValue(Sender, 'Pos');
+  Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   if (Button = mbLeft) then
   begin
@@ -205,7 +183,7 @@ begin
   end;
 end;
 
-procedure TRedFoxKnobHandler.Changed(Sender: TObject);
+procedure TRedFoxKnobHandler.Handle_Changed(Sender: TObject);
 var
   Index : integer;
   Value : single;
@@ -214,10 +192,9 @@ begin
 
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-  Value := GetPropValue(Sender, 'Pos');
+  Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   SetParameterValue(Index, Value);
-
 end;
 
 procedure TRedFoxKnobHandler.BeginParameterEdit(const ControlLinkIndex: integer);
@@ -336,7 +313,7 @@ begin
   begin
     c := ControlLinks[c1].Control;
     parValue := ControlLinks[c1].LinkedParameter.ValueVST;
-    SetPropValue(c, 'Pos', parValue);
+    ControlLinks[c1].KnobControl.SetKnobValue(ParValue);
   end;
 
   IsManualGuiUpdateActive := false;

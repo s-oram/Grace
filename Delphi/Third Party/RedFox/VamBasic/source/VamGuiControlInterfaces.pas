@@ -1,4 +1,4 @@
-unit VamLib.GuiControlInterfaces;
+unit VamGuiControlInterfaces;
 
 interface
 
