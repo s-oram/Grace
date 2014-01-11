@@ -19,14 +19,15 @@ type
     LinkedParameter : TVstParameter;
     EnumHelper      : TCustomEnumHelperClass;
     PopupCallBack   : TMenuCallback;
+    ParIndex        : integer;
   end;
 
   TRedFoxMenuHandler = class
   private
     fGlobals: TGlobals;
     ControlLinks            : TRecordArray<TControlInfo>;
-    ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
+    MenuBuilder             : TGuiMenuBuilder;
 
     function FindIndexOfControl(c:TControl):integer;
 
@@ -34,8 +35,6 @@ type
     procedure EndParameterEdit(const ControlLinkIndex : integer);
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
-
-    procedure ShowControlContextMenu(const X, Y, ControlLinkIndex : integer);
 
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -68,12 +67,13 @@ constructor TRedFoxMenuHandler.Create(aGlobals: TGlobals);
 begin
   fGlobals := aGlobals;
 
-  ControlContextMenu := TPopupMenu.Create(nil);
+  MenuBuilder := TGuiMenuBuilder.Create;
+  MenuBuilder.Globals := aGlobals;
 end;
 
 destructor TRedFoxMenuHandler.Destroy;
 begin
-  ControlContextMenu.Free;
+  MenuBuilder.Free;
   inherited;
 end;
 
@@ -91,6 +91,7 @@ begin
   ci.LinkedParameter  := aLinkedParameter;
   ci.EnumHelper       := EnumHelper;
   ci.PopupCallBack    := PopupCallback;
+  ci.ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
   ControlLinks.Append(ci);
 
   ci.MenuControl.SetOnMouseDown(self.Handle_MouseDown);
@@ -131,37 +132,10 @@ begin
   assert(Index <> -1);
 
 
-  {
-  if assigned(OnControlMouseDown) then
-  begin
-    Block := false;
-    OnControlMouseDown(self, (Sender as TControl), Button, Shift, X, Y, Block);
-    if Block = true then
-    begin
-      assert(false, 'TODO');
-      exit; //===========================================>> exit >>=====>>
-    end;
-  end;
-  }
-
-  // I don't think this is needed.
-  //if IsManualGuiUpdateActive then exit;
-
-  //TODO
-  //Value := ControlLinks[Index].KnobControl.GetKnobValue;
-
-  if (Button = mbLeft) then
-  begin
-    BeginParameterEdit(Index);
-    if (ssCtrl in Shift)
-      then SetParameterToDefaut(Index)
-      else SetParameterValue(Index, Value);
-  end else
   if (Button = mbRight) then
   begin
-    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Index);
+    MenuBuilder.IncrementEnumeratedVstParameter(ControlLinks[Index].ParIndex, ControlLinks[Index].EnumHelper);
   end;
-
 end;
 
 
@@ -173,15 +147,9 @@ begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
 
-  //TODO
-  //Value := ControlLinks[Index].KnobControl.GetKnobValue;
-
   if (Button = mbLeft) then
   begin
-    if not (ssCtrl in Shift)
-      then SetParameterValue(Index, Value);
-
-    EndParameterEdit(Index);
+    MenuBuilder.ShowMenuForVstParameter(Mouse.CursorPos.X, Mouse.CursorPos.Y, ControlLinks[Index].ParIndex, ControlLinks[Index].EnumHelper, ControlLinks[Index].PopupCallBack);
   end;
 end;
 
@@ -238,45 +206,6 @@ begin
   begin
     ControlLinks[ControlLinkIndex].LinkedParameter.ValueVST := Value;
   end;
-end;
-
-procedure TRedFoxMenuHandler.ShowControlContextMenu(const X, Y, ControlLinkIndex: integer);
-var
-  mi : TMenuItem;
-  MidiCC : integer;
-  Text   : string;
-  miMidiLearn : TMenuItem;
-
-  ParIndex : integer;
-  LinkIndex : integer absolute ControlLinkIndex;
-begin
-  // Clear the menu
-  ControlContextMenu.Items.Clear;
-
-  // Rebuild the context menu before showing it.
-  mi := TMenuItem.Create(ControlContextMenu);
-  mi.Caption := 'MIDI Learn';
-  //mi.OnClick := Handle_MidiLearn;
-  mi.Tag     := ControlLinkIndex;
-  ControlContextMenu.Items.Add(mi);
-  miMidiLearn := mi;
-
-  mi := TMenuItem.Create(ControlContextMenu);
-  mi.Caption := 'MIDI Unlearn';
-  //mi.OnClick := Handle_MidiUnlearn;
-  mi.Tag     := ControlLinkIndex;
-  ControlContextMenu.Items.Add(mi);
-
-  mi := TMenuItem.Create(ControlContextMenu);
-  mi.Caption := 'Set MIDI CC...';
-  //mi.OnClick := Handle_SetMidiCC;
-  mi.Tag     := ControlLinkIndex;
-  ControlContextMenu.Items.Add(mi);
-
-
-
-  //Show the controls context menu.
-  ControlContextMenu.Popup(X, Y);
 end;
 
 procedure TRedFoxMenuHandler.UpdateControls;

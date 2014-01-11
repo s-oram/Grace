@@ -243,7 +243,10 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoAPar2'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoBPar2'));
 
+
+
   //TODO:
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter1Type'),  TFilterTypeHelper);
   //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter1,                 Plugin.Globals.VstParameters.FindParameter('Filter1Type'));
   //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter2,                 Plugin.Globals.VstParameters.FindParameter('Filter2Type'));
   //GuiStandard.RedFoxKnobHandler.RegisterControl(LfoShapeTextBox1,                Plugin.Globals.VstParameters.FindParameter('LfoShape1'));
@@ -273,8 +276,8 @@ begin
 
 
   //=== Filter type Menu controls ==
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Filter1Type');
-  fGuiStandard.RegisterControlAsMenuControl(Filter1TypeTextBox, ParIndex, TFilterTypeHelper, TShowMenu.ContextClickOnly);
+  //ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Filter1Type');
+  //fGuiStandard.RegisterControlAsMenuControl(Filter1TypeTextBox, ParIndex, TFilterTypeHelper, TShowMenu.ContextClickOnly);
 
   ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Filter2Type');
   fGuiStandard.RegisterControlAsMenuControl(Filter2TypeTextBox, ParIndex, TFilterTypeHelper, TShowMenu.ContextClickOnly);
