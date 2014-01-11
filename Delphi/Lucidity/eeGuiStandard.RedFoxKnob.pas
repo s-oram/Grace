@@ -19,6 +19,8 @@ type
     fGlobals: TGlobals;
     ControlLinks : TRecordArray<TControlInfo>;
 
+    IsManualGuiUpdateActive : boolean;
+
     function FindIndexOfControl(c:TControl):integer;
 
     procedure BeginParameterEdit(const ControlLinkIndex : integer);
@@ -180,12 +182,42 @@ end;
 
 
 procedure TRedFoxKnobHandler.MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Index : integer;
+  Value : single;
 begin
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
 
+  Value := GetPropValue(Sender, 'Pos');
+
+  if (Button = mbLeft) then
+  begin
+    if not (ssCtrl in Shift)
+      then SetParameterValue(Index, Value);
+
+    EndParameterEdit(Index);
+
+  end else
+  if (Button = mbRight) then
+  begin
+    // TODO
+    //ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
+  end;
 end;
 
 procedure TRedFoxKnobHandler.Changed(Sender: TObject);
+var
+  Index : integer;
+  Value : single;
 begin
+  if IsManualGuiUpdateActive then exit;
+
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+  Value := GetPropValue(Sender, 'Pos');
+
+  SetParameterValue(Index, Value);
 
 end;
 

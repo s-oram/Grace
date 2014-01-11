@@ -30,11 +30,10 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    function Par(aName:string):TVstParameter;
-
     function NewParameter(Name : string):TVstParameter;
     procedure Add(aPar : TVstParameter);
 
+    function Par(aName:string):TVstParameter;
     function FindParameterIndexByName(aName : string):integer;
     property Parameter[Index:integer]:TVstParameter read GetPar; default;
 

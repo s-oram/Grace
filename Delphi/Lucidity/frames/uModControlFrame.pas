@@ -213,7 +213,10 @@ begin
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  AmpEnvAttackKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpAttack');
+  //AmpEnvAttackKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpAttack');
+
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob, Plugin.Globals.VstParameters.Par('AmpHold'));
+
   AmpEnvHoldKnob.Tag    := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpHold');
   AmpEnvDecayKnob.Tag   := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpDecay');
   AmpEnvSustainKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpSustain');
@@ -258,7 +261,8 @@ begin
 
 
 
-  fGuiStandard.RegisterControlForAutoUpdate(AmpEnvAttackKnob, true);
+  //fGuiStandard.RegisterControlForAutoUpdate(AmpEnvAttackKnob, true);
+
   fGuiStandard.RegisterControlForAutoUpdate(AmpEnvHoldKnob, true);
   fGuiStandard.RegisterControlForAutoUpdate(AmpEnvDecayKnob, true);
   fGuiStandard.RegisterControlForAutoUpdate(AmpEnvSustainKnob, true);
