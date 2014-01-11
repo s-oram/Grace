@@ -3,6 +3,7 @@ unit eeGuiStandard.RedFoxKnob;
 interface
 
 uses
+  Menus,
   VamLib.Collections.RecordArray,
   eeVstParameter,
   Classes, Controls, eeGlobals;
@@ -19,6 +20,8 @@ type
     fGlobals: TGlobals;
     ControlLinks : TRecordArray<TControlInfo>;
 
+    ControlContextMenu    : TPopupMenu;
+
     IsManualGuiUpdateActive : boolean;
 
     function FindIndexOfControl(c:TControl):integer;
@@ -28,11 +31,18 @@ type
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
 
+    procedure Handle_MidiLearn(Sender:TObject);
+    procedure Handle_MidiUnlearn(Sender:TObject);
+    procedure Handle_SetMidiCC(Sender:TObject);
+
+    procedure ShowControlContextMenu(const X, Y, ControlLinkIndex : integer);
+
   protected
     property Globals : TGlobals read fGlobals;
 
   public
     constructor Create(aGlobals : TGlobals);
+    destructor Destroy; override;
 
     procedure RegisterControl(c : TControl; aLinkedParameter : TVstParameter);
     procedure DeregisterControl(c : TControl);
@@ -56,6 +66,14 @@ uses
 constructor TRedFoxKnobHandler.Create(aGlobals: TGlobals);
 begin
   fGlobals := aGlobals;
+
+  ControlContextMenu := TPopupMenu.Create(nil);
+end;
+
+destructor TRedFoxKnobHandler.Destroy;
+begin
+  ControlContextMenu.Free;
+  inherited;
 end;
 
 procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter);
@@ -155,35 +173,12 @@ begin
     if (ssCtrl in Shift)
       then SetParameterToDefaut(Index)
       else SetParameterValue(Index, Value);
-
   end else
   if (Button = mbRight) then
   begin
-    // TODO
-    //ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
+    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Index);
   end;
 
-
-
-
-  {
-  if (Button = mbLeft) and (not(ssCtrl in Shift)) then
-  begin
-    BeginParameterEdit(Tag);
-    SetParameterAutomated(Tag, Value);
-  end;
-
-  if (Button = mbLeft) and ((ssCtrl in Shift)) then
-  begin
-    BeginParameterEdit(Tag);
-    SetParameterToDefault(Tag);
-  end;
-
-  if Button = mbRight then
-  begin
-    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
-  end;
-  }
 end;
 
 
@@ -203,12 +198,6 @@ begin
       then SetParameterValue(Index, Value);
 
     EndParameterEdit(Index);
-
-  end else
-  if (Button = mbRight) then
-  begin
-    // TODO
-    //ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, Tag);
   end;
 end;
 
@@ -281,6 +270,49 @@ begin
   end;
 end;
 
+procedure TRedFoxKnobHandler.ShowControlContextMenu(const X, Y, ControlLinkIndex: integer);
+var
+  mi : TMenuItem;
+  MidiCC : integer;
+  Text   : string;
+  miMidiLearn : TMenuItem;
+begin
+  // Clear the menu
+  ControlContextMenu.Items.Clear;
+
+  // Rebuild the context menu before showing it.
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := 'MIDI Learn';
+  mi.OnClick := Handle_MidiLearn;
+  mi.Tag     := ControlLinkIndex;
+  ControlContextMenu.Items.Add(mi);
+  miMidiLearn := mi;
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := 'MIDI Unlearn';
+  mi.OnClick := Handle_MidiUnlearn;
+  mi.Tag     := ControlLinkIndex;
+  ControlContextMenu.Items.Add(mi);
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := 'Set MIDI CC...';
+  mi.OnClick := Handle_SetMidiCC;
+  mi.Tag     := ControlLinkIndex;
+  ControlContextMenu.Items.Add(mi);
+
+  //=== Update MIDI Learn menu item with current control midi binding. =====
+  //MidiCC := Globals.VstMethods^.GetCurrentMidiBiding(ParameterIndex, ttVstParameter);
+  //
+  //if MidiCC <> -1
+  //  then Text := 'MIDI Learn  [CC: ' + IntToStr(MidiCC) + ']'
+  //  else Text := 'MIDI Learn  [CC: --]';
+  //
+  //miMidiLearn.Caption := Text;
+
+  //Show the controls context menu.
+  ControlContextMenu.Popup(X, Y);
+end;
+
 procedure TRedFoxKnobHandler.UpdateControls;
 var
   c1: Integer;
@@ -298,5 +330,22 @@ begin
 
   IsManualGuiUpdateActive := false;
 end;
+
+procedure TRedFoxKnobHandler.Handle_MidiLearn(Sender: TObject);
+begin
+
+end;
+
+procedure TRedFoxKnobHandler.Handle_MidiUnlearn(Sender: TObject);
+begin
+
+end;
+
+procedure TRedFoxKnobHandler.Handle_SetMidiCC(Sender: TObject);
+begin
+
+end;
+
+
 
 end.
