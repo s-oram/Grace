@@ -20,7 +20,7 @@ type
   TRedFoxKnobHandler = class
   private
     fGlobals: TGlobals;
-    ControlLinks : TRecordArray<TControlInfo>;
+    ControlLinks            : TRecordArray<TControlInfo>;
     ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
 
