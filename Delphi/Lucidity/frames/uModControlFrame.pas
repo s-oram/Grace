@@ -246,63 +246,20 @@ begin
 
 
   //TODO:
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter1Type'),  TFilterTypeHelper);
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter1,                 Plugin.Globals.VstParameters.FindParameter('Filter1Type'));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(ParIndexFilter2,                 Plugin.Globals.VstParameters.FindParameter('Filter2Type'));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(LfoShapeTextBox1,                Plugin.Globals.VstParameters.FindParameter('LfoShape1'));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(LfoShapeTextBox2,                Plugin.Globals.VstParameters.FindParameter('LfoShape2'));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvAModeBox,                  Plugin.Globals.VstParameters.FindParameter('ModEnvAMode'));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBModeBox,                  Plugin.Globals.VstParameters.FindParameter('ModEnvBMode'));
-
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('AmpVelocity');
-  fGuiStandard.RegisterControlAsMenuControl(AmpVelocityButton, ParIndex, TEnvVelocityDepthHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('FilterVelocity');
-  fGuiStandard.RegisterControlAsMenuControl(FilterVelocityButton, ParIndex, TEnvVelocityDepthHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('ModEnvAMode');
-  fGuiStandard.RegisterControlAsMenuControl(ModEnvAModeBox, ParIndex, TModEnvModeHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('ModEnvBMode');
-  fGuiStandard.RegisterControlAsMenuControl(ModEnvBModeBox, ParIndex, TModEnvModeHelper, TShowMenu.ContextClickOnly);
-
-  //=== LFO Shape Menu controls ==
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('LfoShape1');
-  fGuiStandard.RegisterControlAsMenuControl(LfoShapeTextBox1, ParIndex, TLfoShapeHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('LfoShape2');
-  fGuiStandard.RegisterControlAsMenuControl(LfoShapeTextBox2, ParIndex, TLfoShapeHelper, TShowMenu.ContextClickOnly);
-
-
-  //=== Filter type Menu controls ==
-  //ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Filter1Type');
-  //fGuiStandard.RegisterControlAsMenuControl(Filter1TypeTextBox, ParIndex, TFilterTypeHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Filter2Type');
-  fGuiStandard.RegisterControlAsMenuControl(Filter2TypeTextBox, ParIndex, TFilterTypeHelper, TShowMenu.ContextClickOnly);
-
-  //=== Step seq one ====
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Seq1Clock');
-  fGuiStandard.RegisterControlAsMenuControl(Seq1ClockTextBox, ParIndex, TSequencerClockHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Seq1Direction');
-  fGuiStandard.RegisterControlAsMenuControl(Seq1DirectionTextBox, ParIndex, TStepSequencerDirectionHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('StepSeq1Length');
-  fGuiStandard.RegisterControlAsMenuControl(Seq1StepsTextBox, ParIndex, TStepSequencerLengthHelper, TShowMenu.ContextClickOnly);
-
-  //=== Step seq two ====
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Seq2Clock');
-  fGuiStandard.RegisterControlAsMenuControl(Seq2ClockTextBox, ParIndex, TSequencerClockHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('Seq2Direction');
-  fGuiStandard.RegisterControlAsMenuControl(Seq2DirectionTextBox, ParIndex, TStepSequencerDirectionHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('StepSeq2Length');
-  fGuiStandard.RegisterControlAsMenuControl(Seq2StepsTextBox, ParIndex, TStepSequencerLengthHelper, TShowMenu.ContextClickOnly);
-
-
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter1Type'),     TFilterTypeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter2Type'),     TFilterTypeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter('LfoShape1'),       TLfoShapeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox2,       Plugin.Globals.VstParameters.FindParameter('LfoShape2'),       TLfoShapeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(ModEnvAModeBox,         Plugin.Globals.VstParameters.FindParameter('ModEnvAMode'),     TModEnvModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(ModEnvBModeBox,         Plugin.Globals.VstParameters.FindParameter('ModEnvBMode'),     TModEnvModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter('AmpVelocity'),     TEnvVelocityDepthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter('FilterVelocity'),  TEnvVelocityDepthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter('Seq1Clock'),       TSequencerClockHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter('Seq1Direction'),   TStepSequencerDirectionHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter('StepSeq1Length'),  TStepSequencerLengthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2ClockTextBox,       Plugin.Globals.VstParameters.FindParameter('Seq2Clock'),       TSequencerClockHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter('Seq2Direction'),   TStepSequencerDirectionHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter('StepSeq2Length'),  TStepSequencerLengthHelper);
 
 
 
@@ -716,49 +673,6 @@ begin
   // would be better to at the Focused engine check as part of the GUI FeedBack data.
   SG := Plugin.FocusedKeyGroup;
 
-  //== Filter 1 Type ==
-  if AltFilterText.ShowAltText1 then
-  begin
-    if Filter1TypeTextBox.Text <> AltFilterText.AltText1 then Filter1TypeTextBox.Text := AltFilterText.AltText1;
-  end else
-  begin
-    TargetTextBox := Filter1TypeTextBox;
-    UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TFilterTypeHelper, Plugin.Globals);
-  end;
-
-  //== Filter 2 Type ==
-  if AltFilterText.ShowAltText2 then
-  begin
-    if Filter2TypeTextBox.Text <> AltFilterText.AltText2 then Filter2TypeTextBox.Text := AltFilterText.AltText2;
-  end else
-  begin
-    TargetTextBox := Filter2TypeTextBox;
-    UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TFilterTypeHelper, Plugin.Globals);
-  end;
-
-
-  //==== LFO shape parameters ===
-  TargetTextBox := LfoShapeTextBox1;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TLfoShapeHelper, Plugin.Globals);
-
-  TargetTextBox := LfoShapeTextBox2;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TLfoShapeHelper, Plugin.Globals);
-
-
-  //==== Env Velocity Depth ===
-  TargetTextBox := AmpVelocityButton;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TEnvVelocityDepthHelper, Plugin.Globals);
-
-  TargetTextBox := FilterVelocityButton;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TEnvVelocityDepthHelper, Plugin.Globals);
-
-  //==== Mod Env parameters ===
-  TargetTextBox := ModEnvAModeBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TModEnvModeHelper, Plugin.Globals);
-
-  TargetTextBox := ModEnvBModeBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TModEnvModeHelper, Plugin.Globals);
-
 
   //== Step Seq 1 ==
   if assigned(SG) then
@@ -790,15 +704,6 @@ begin
     raise Exception.Create('unexpected step count value.');
   end;
   if StepSeq1.SequenceLength <> a1 then StepSeq1.SequenceLength := a1;
-
-  TargetTextBox := Seq1ClockTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TSequencerClockHelper, Plugin.Globals);
-
-  TargetTextBox := Seq1DirectionTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TStepSequencerDirectionHelper, Plugin.Globals);
-
-  TargetTextBox := Seq1StepsTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TStepSequencerLengthHelper, Plugin.Globals);
 
 
 
@@ -832,15 +737,6 @@ begin
     raise Exception.Create('unexpected step count value.');
   end;
   if StepSeq2.SequenceLength <> a1 then StepSeq2.SequenceLength := a1;
-
-  TargetTextBox := Seq2ClockTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TSequencerClockHelper, Plugin.Globals);
-
-  TargetTextBox := Seq2DirectionTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TStepSequencerDirectionHelper, Plugin.Globals);
-
-  TargetTextBox := Seq2StepsTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TStepSequencerLengthHelper, Plugin.Globals);
 
 
 
