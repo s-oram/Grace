@@ -719,7 +719,7 @@ begin
   SampleBeatsKnob.Align := alNone;
 
 
-  Par := Plugin.Globals.VstParameters.Par('PitchTracking');
+  Par := Plugin.Globals.VstParameters.FindParameter('PitchTracking');
   mode := TPitchTrackingHelper.ToEnum(Par.ValueVST);
 
   case Mode of

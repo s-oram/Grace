@@ -33,7 +33,7 @@ type
     function NewParameter(Name : string):TVstParameter;
     procedure Add(aPar : TVstParameter);
 
-    function Par(aName:string):TVstParameter;
+    function FindParameter(aName:string):TVstParameter;
     function FindParameterIndexByName(aName : string):integer;
     property Parameter[Index:integer]:TVstParameter read GetPar; default;
 
@@ -116,7 +116,7 @@ begin
   result := aPar;
 end;
 
-function TVstParameterManager.Par(aName: string): TVstParameter;
+function TVstParameterManager.FindParameter(aName: string): TVstParameter;
 var
   c1: Integer;
 begin

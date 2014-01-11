@@ -374,7 +374,7 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  Par := Plugin.Globals.VstParameters.Par('SamplePlaybackType');
+  Par := Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType');
   case TSamplePlaybackTypeHelper.ToEnum(Par.ValueVST) of
     TSamplePlaybackType.NoteSampler:
     begin
@@ -411,7 +411,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.Par('VoiceMode');
+  Par := Plugin.Globals.VstParameters.FindParameter('VoiceMode');
   vm := TVoiceModeHelper.ToEnum(Par.ValueVST);
   case vm of
     TVoiceMode.Poly:
@@ -476,7 +476,7 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  ParValue := Plugin.Globals.VstParameters.Par('SamplePlaybackType').ValueVST;
+  ParValue := Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType').ValueVST;
   SampleOscType := TSamplePlaybackTypeHelper.ToEnum(ParValue);
 
   OneShotSampleControls.Visible := false;

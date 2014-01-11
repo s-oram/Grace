@@ -215,7 +215,7 @@ begin
 
   //AmpEnvAttackKnob.Tag  := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpAttack');
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob, Plugin.Globals.VstParameters.Par('AmpHold'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob, Plugin.Globals.VstParameters.FindParameter('AmpHold'));
 
   AmpEnvHoldKnob.Tag    := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpHold');
   AmpEnvDecayKnob.Tag   := fPlugin.Globals.VstParameters.FindParameterIndexByName('AmpDecay');
@@ -650,7 +650,7 @@ var
   Knobs : array[0..3] of TControl;
   Labels : array[0..3] of TControl;
 begin
-  Par := Plugin.Globals.VstParameters.Par('Filter1Type');
+  Par := Plugin.Globals.VstParameters.FindParameter('Filter1Type');
   FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
 
   Knobs[0] := Filter1Par1Knob;
@@ -667,7 +667,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.Par('Filter2Type');
+  Par := Plugin.Globals.VstParameters.FindParameter('Filter2Type');
   FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
 
   Knobs[0] := Filter2Par1Knob;
@@ -685,7 +685,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.Par('LfoShape1');
+  Par := Plugin.Globals.VstParameters.FindParameter('LfoShape1');
   LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
   case LfoShape of
     TLfoShape.SawUp,
@@ -711,7 +711,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.Par('LfoShape2');
+  Par := Plugin.Globals.VstParameters.FindParameter('LfoShape2');
   LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
     case LfoShape of
     TLfoShape.SawUp,
@@ -815,7 +815,7 @@ begin
     end;
   end;
 
-  x1 := Plugin.Globals.VstParameters.Par('StepSeq1Length').ValueVST;
+  x1 := Plugin.Globals.VstParameters.FindParameter('StepSeq1Length').ValueVST;
   SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
   case SeqLength of
     TStepSequencerLength.Two:     a1 := 2;
@@ -857,7 +857,7 @@ begin
     end;
   end;
 
-  x1 := Plugin.Globals.VstParameters.Par('StepSeq2Length').ValueVST;
+  x1 := Plugin.Globals.VstParameters.FindParameter('StepSeq2Length').ValueVST;
   SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
   case SeqLength of
     TStepSequencerLength.Two:     a1 := 2;

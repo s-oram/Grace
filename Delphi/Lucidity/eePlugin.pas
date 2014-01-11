@@ -334,8 +334,8 @@ begin
     Globals.VstParameters[c1].ResetToDefault;
   end;
 
-  Globals.VstParameters.Par('StepSeq1Length').ValueVST := 1;
-  Globals.VstParameters.Par('StepSeq2Length').ValueVST := 1;
+  Globals.VstParameters.FindParameter('StepSeq1Length').ValueVST := 1;
+  Globals.VstParameters.FindParameter('StepSeq2Length').ValueVST := 1;
 
   //Important: call SampleGroups.UpdateInitReference() after reseting all properties to default.
   KeyGroups.UpdateInitReference;
@@ -466,8 +466,8 @@ begin
     Globals.VstParameters[c1].ResetToDefault;
   end;
 
-  Globals.VstParameters.Par('StepSeq1Length').ValueVST := 1;
-  Globals.VstParameters.Par('StepSeq2Length').ValueVST := 1;
+  Globals.VstParameters.FindParameter('StepSeq1Length').ValueVST := 1;
+  Globals.VstParameters.FindParameter('StepSeq2Length').ValueVST := 1;
 
 
   fFocusedKeyGroup := nil;
