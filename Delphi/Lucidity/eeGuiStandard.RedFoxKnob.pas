@@ -81,9 +81,6 @@ end;
 procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter);
 var
   ci : TControlInfo;
-  cType : string;
-  m     : TMethod;
-  kc : IKnobControl;
 begin
   assert(Supports(c, IKnobControl));
 

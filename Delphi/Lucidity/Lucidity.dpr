@@ -132,7 +132,8 @@ uses
   uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
   eePlugin in 'eePlugin.pas',
   eeGuiStandard in 'eeGuiStandard.pas',
-  eeGuiStandard.RedFoxKnob in 'eeGuiStandard.RedFoxKnob.pas';
+  eeGuiStandard.RedFoxKnob in 'eeGuiStandard.RedFoxKnob.pas',
+  eeGuiStandard.RedFoxMenu in 'eeGuiStandard.RedFoxMenu.pas';
 
 {$R *.res}
 

@@ -26,12 +26,11 @@ type
     procedure SetDisabledImage(const Value: TBitmap);
 
 
+    //== Added to satisfy IKnobControl ================
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
-
-    procedure SetOnMouseDown(Handler:TMouseEvent);
-    procedure SetOnMouseUp(Handler:TMouseEvent);
     procedure SetOnChanged(Handler:TNotifyEvent);
+    //=================================================
   protected
     IsGrabbed : boolean;
     ReferencePoint   : TPoint;
@@ -47,6 +46,9 @@ type
 
     procedure DrawKnob_VectorStyle;
     procedure DrawKnob_BitmapStyle;
+
+
+
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -248,16 +250,6 @@ end;
 procedure TVamKnob.SetOnChanged(Handler: TNotifyEvent);
 begin
   OnChanged := Handler;
-end;
-
-procedure TVamKnob.SetOnMouseDown(Handler: TMouseEvent);
-begin
-  OnMouseDown := Handler;
-end;
-
-procedure TVamKnob.SetOnMouseUp(Handler: TMouseEvent);
-begin
-  OnMouseUp := Handler;
 end;
 
 function TVamKnob.GetKnobValue: single;

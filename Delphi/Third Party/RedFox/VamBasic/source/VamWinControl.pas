@@ -3,6 +3,7 @@ unit VamWinControl;
 interface
 
 uses
+  VamGuiControlInterfaces,
   WinApi.Messages, Windows, VamLayoutWizard,
   Classes, Types, Controls, Graphics,
   RedFoxWinControl, VamVisibleControl;
@@ -26,6 +27,8 @@ type
     procedure WMHScroll(var Message: TWMHScroll); message WM_HSCROLL;
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
     procedure CMMouseWheel(var Message: TCMMouseWheel); message CM_MOUSEWHEEL;
+
+
   protected
     function GetObject : TObject;
 
@@ -59,7 +62,8 @@ type
     //==========================================================================================================================
 
 
-
+    procedure SetOnMouseDown(Handler:TMouseEvent);
+    procedure SetOnMouseUp(Handler:TMouseEvent);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -243,11 +247,19 @@ begin
   end;
 end;
 
-
-
 procedure TVamWinControl.SetFont(const Value: TFont);
 begin
   inherited Font := Value;
+end;
+
+procedure TVamWinControl.SetOnMouseDown(Handler: TMouseEvent);
+begin
+  OnMouseDown := Handler;
+end;
+
+procedure TVamWinControl.SetOnMouseUp(Handler: TMouseEvent);
+begin
+  OnMouseUp := Handler;
 end;
 
 procedure TVamWinControl.WMHScroll(var Message: TWMHScroll);

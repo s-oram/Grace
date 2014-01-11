@@ -3,11 +3,12 @@ unit VamTextBox;
 interface
 
 uses
+  VamGuicontrolInterfaces,
   Graphics, Controls,
   Classes, RedFox, RedFoxColor, RedFoxWinControl, VamWinControl;
 
 type
-  TVamTextBox = class(TVamWinControl)
+  TVamTextBox = class(TVamWinControl, IMenuControl)
   private
     IsMouseOver : boolean;
     fColor : TRedFoxColor;
@@ -35,7 +36,6 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
 
   published
     property Color : TRedFoxColorString read GetColor write SetColor;

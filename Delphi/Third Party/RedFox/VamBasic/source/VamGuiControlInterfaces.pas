@@ -10,6 +10,7 @@ uses
 // EasyEffect VST template can interact with them programmatically.
 
 type
+  // The knob control is for the standard VST synth type knob.
   IKnobControl = interface
     ['{9134916E-5ACF-4E64-AA71-61B9B65D5844}']
 
@@ -20,6 +21,18 @@ type
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
     procedure SetOnChanged(Handler:TNotifyEvent);
+  end;
+
+
+  // The IMenuControl is for mode button type menus. The button will
+  // show one value as text. (Ie. SQUARE or SAW.)
+  // Left clicking on the button will show a menu with all options.
+  // Right clicking will cause the control to automatically advance to the next value.
+  IMenuControl = interface
+    ['{24A7258B-A37B-4A88-8B81-2F5836CDBF8D}']
+
+    procedure SetOnMouseDown(Handler:TMouseEvent);
+    procedure SetOnMouseUp(Handler:TMouseEvent);
   end;
 
 implementation

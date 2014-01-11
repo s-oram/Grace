@@ -48,7 +48,8 @@ uses
   eeTypes, eeMidiAutomation, eeMidiMap,
   eeGuiStandard_Types, eeGuiStandard_MenuController,
   eeGuiStandard_MenuBuilder,
-  eeGuiStandard.RedFoxKnob;
+  eeGuiStandard.RedFoxKnob,
+  eeGuiStandard.RedFoxMenu;
 
 
 type
@@ -65,6 +66,7 @@ type
     fOnControlMouseDown: TControlMouseDownEvent;
     fOnControlMouseUp: TControlMouseUpEvent;
     fRedFoxKnobHandler : TRedFoxKnobHandler;
+    fRedFoxMenuHandler: TRedFoxMenuHandler;
   protected
     MenuController : TMenuController;
 
@@ -90,6 +92,7 @@ type
     destructor Destroy; override;
 
     property RedFoxKnobHandler : TRedFoxKnobHandler read fRedFoxKnobHandler;
+    property RedFoxMenuHandler : TRedFoxMenuHandler read fRedFoxMenuHandler;
 
     // procedure RegisterControlAsMenuControl()
     // WARNING: This method modifies aControl. It will assign values to:
@@ -160,11 +163,13 @@ begin
   GrabbedControlsList.OwnsObjects := false;
 
   fRedFoxKnobHandler := TRedFoxKnobHandler.Create(aGlobals);
+  fRedFoxMenuHandler := TRedFoxMenuHandler.Create(aGlobals);
 end;
 
 destructor TGuiStandard.Destroy;
 begin
   fRedFoxKnobHandler.Free;
+  fRedFoxMenuHandler.Free;
   ControlContextMenu.Free;
   AutoUpdateControlList.Free;
   GrabbedControlsList.Free;
@@ -619,6 +624,7 @@ var
   ControlName : string;
 begin
   RedFoxKnobHandler.UpdateControls;
+  RedFoxMenuHandler.UpdateControls;
 
   IsManualGuiUpdateActive := true;
 
