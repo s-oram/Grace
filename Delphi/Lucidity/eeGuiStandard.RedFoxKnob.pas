@@ -4,6 +4,7 @@ interface
 
 uses
   Menus,
+  VamLib.GuiControlInterfaces,
   VamLib.Collections.RecordArray,
   eeVstParameter,
   Classes, Controls, eeGlobals;

@@ -28,6 +28,10 @@ type
 
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
+
+    procedure SetOnMouseDown(Handler:TMouseEvent);
+    procedure SetOnMouseUp(Handler:TMouseEvent);
+    procedure SetOnChanged(Handler:TNotifyEvent);
   protected
     IsGrabbed : boolean;
     ReferencePoint   : TPoint;
@@ -57,6 +61,8 @@ type
     property VisibleSteps : integer read fVisibleSteps write SetVisibleSteps;
 
     property Pos : single read fPos write SetPos;
+
+    // OnChanged should only be called when the control changes through user interaction.
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
 
     {$INCLUDE TControlProperties.inc}
@@ -237,6 +243,21 @@ end;
 procedure TVamKnob.SetKnobValue(Value: single);
 begin
   SetPos(Value);
+end;
+
+procedure TVamKnob.SetOnChanged(Handler: TNotifyEvent);
+begin
+  OnChanged := Handler;
+end;
+
+procedure TVamKnob.SetOnMouseDown(Handler: TMouseEvent);
+begin
+  OnMouseDown := Handler;
+end;
+
+procedure TVamKnob.SetOnMouseUp(Handler: TMouseEvent);
+begin
+  OnMouseUp := Handler;
 end;
 
 function TVamKnob.GetKnobValue: single;
