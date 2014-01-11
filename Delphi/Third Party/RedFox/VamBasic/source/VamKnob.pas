@@ -3,12 +3,13 @@ unit VamKnob;
 interface
 
 uses
+  VamLib.GuiControlInterfaces,
   Types, Controls, Classes, Graphics, AggColor,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl;
 
 type
-  TVamKnob = class(TVamWinControl)
+  TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
     fPos: single;
@@ -23,6 +24,10 @@ type
     procedure SetVisibleSteps(const Value: integer);
     procedure SetIsKnobEnabled(const Value: boolean);
     procedure SetDisabledImage(const Value: TBitmap);
+
+
+    function GetKnobValue : single;
+    procedure SetKnobValue(Value : single);
   protected
     IsGrabbed : boolean;
     ReferencePoint   : TPoint;
@@ -229,6 +234,17 @@ begin
   end;
 end;
 
+procedure TVamKnob.SetKnobValue(Value: single);
+begin
+  SetPos(Value);
+end;
+
+function TVamKnob.GetKnobValue: single;
+begin
+  result := Pos;
+end;
+
+
 procedure TVamKnob.SetPos(Value: single);
 begin
   if Value < 0 then Value := 0
@@ -393,6 +409,7 @@ begin
   TranslateAngleRadiusToXY(MiddleX, MiddleY, Angle, Radius1, EndX, EndY);
   BackBuffer.BufferInterface.Line(MiddleX,MiddleY, EndX, EndY);
 end;
+
 
 
 end.
