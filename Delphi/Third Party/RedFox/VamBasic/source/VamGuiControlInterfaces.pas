@@ -31,6 +31,8 @@ type
   IMenuControl = interface
     ['{24A7258B-A37B-4A88-8B81-2F5836CDBF8D}']
 
+    procedure SetMenuText(Value : string);
+
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
   end;

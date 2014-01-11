@@ -212,7 +212,9 @@ procedure TRedFoxMenuHandler.UpdateControls;
 var
   c1: Integer;
   parValue : single;
+  TextValue : string;
   c : TControl;
+
 begin
   IsManualGuiUpdateActive := true;
 
@@ -220,6 +222,10 @@ begin
   begin
     c := ControlLinks[c1].Control;
     parValue := ControlLinks[c1].LinkedParameter.ValueVST;
+
+    TextValue := ControlLinks[c1].EnumHelper.ToShortGuiString(parValue);
+    ControlLinks[c1].MenuControl.SetMenuText(TextValue);
+
     //TODO
     //ControlLinks[c1].KnobControl.SetKnobValue(ParValue);
   end;

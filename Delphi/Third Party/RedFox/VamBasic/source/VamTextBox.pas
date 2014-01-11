@@ -27,6 +27,8 @@ type
     procedure SetColorMouseOver(const Value: TRedFoxColorString);
     procedure SetImageOverlay(const Value: TBitmap);
     procedure SetTextPadding(const Value: TPadding);
+
+    procedure SetMenuText(Value : string);
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -137,6 +139,11 @@ begin
     fImageOverlay := Value;
     Invalidate;
   end;
+end;
+
+procedure TVamTextBox.SetMenuText(Value: string);
+begin
+  SetText(Value);
 end;
 
 procedure TVamTextBox.SetText(const Value: string);
