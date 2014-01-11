@@ -34,6 +34,7 @@ type
     procedure Add(aPar : TVstParameter);
 
     function FindParameter(aName:string):TVstParameter;
+    function FindParameterIndex(aPar : TVstParameter):integer;
     function FindParameterIndexByName(aName : string):integer;
     property Parameter[Index:integer]:TVstParameter read GetPar; default;
 
@@ -78,6 +79,20 @@ end;
 function TVstParameterManager.Count: integer;
 begin
   result := fParList.Count;
+end;
+
+function TVstParameterManager.FindParameterIndex(aPar: TVstParameter): integer;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to fParList.Count-1 do
+  begin
+    if fParList[c1] = aPar
+      then exit(c1);
+  end;
+
+  // no matching parameter found.
+  result := -1;
 end;
 
 function TVstParameterManager.FindParameterIndexByName(aName: string): integer;
