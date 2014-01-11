@@ -3,7 +3,6 @@ Working on VST parameters....
 
 Goal: update framework to allow usage of 8 mod slots
 
-
 TVstParameter is fine (I think).
 
 I think eeGuiStandard has grown too much and needs to be refactored into something
@@ -11,11 +10,12 @@ more systematic.
 
 
 
-- eeGuiStandard is now part of Lucidity specific code. 
--- Change eeGuiStandard so that it works as desired for registering control handling.
--- Have created TRedFoxKnobHandler but not tested it yet. Test that the functionality works.
---- then add the context menu options. 
+(DONE) - eeGuiStandard is now part of Lucidity specific code. 
+(DONE) -- Change eeGuiStandard so that it works as desired for registering control handling.
+(DONE) -- Have created TRedFoxKnobHandler but not tested it yet. Test that the functionality works.
+(DONE) --- then add the context menu options. 
 --- then add the event callback options so that the gui can be updated with the relevant info.
+--- all controls on other frames need to use the new ee GUI standard options...
 
 
 
