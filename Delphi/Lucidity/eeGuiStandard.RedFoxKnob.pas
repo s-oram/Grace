@@ -37,6 +37,8 @@ type
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
 
+    procedure Handle_MouseEnter(Sender : TObject);
+    procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_Changed(Sender: TObject);
@@ -82,6 +84,8 @@ procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVst
 var
   ci : TControlInfo;
 begin
+  assert(assigned(c));
+  assert(assigned(aLinkedParameter));
   assert(Supports(c, IKnobControl));
 
   ci.Control     := c;
@@ -89,6 +93,8 @@ begin
   ci.LinkedParameter := aLinkedParameter;
   ControlLinks.Append(ci);
 
+  ci.KnobControl.SetOnMouseEnter(self.Handle_MouseEnter);
+  ci.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
   ci.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
   ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
   ci.KnobControl.SetOnChanged(self.Handle_Changed);
@@ -116,6 +122,29 @@ begin
   result := -1;
 end;
 
+procedure TRedFoxKnobHandler.Handle_MouseEnter(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+
+  Globals.InfoBarReceiver.EnterControl(Sender);
+  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
+end;
+
+procedure TRedFoxKnobHandler.Handle_MouseLeave(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+
+  Globals.InfoBarReceiver.LeaveControl(Sender);
+end;
+
+
+
 procedure TRedFoxKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Value : single;
@@ -126,20 +155,6 @@ begin
 
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-
-
-  {
-  if assigned(OnControlMouseDown) then
-  begin
-    Block := false;
-    OnControlMouseDown(self, (Sender as TControl), Button, Shift, X, Y, Block);
-    if Block = true then
-    begin
-      assert(false, 'TODO');
-      exit; //===========================================>> exit >>=====>>
-    end;
-  end;
-  }
 
   // I don't think this is needed.
   //if IsManualGuiUpdateActive then exit;
@@ -178,6 +193,8 @@ begin
 
     EndParameterEdit(Index);
   end;
+
+  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxKnobHandler.Handle_Changed(Sender: TObject);
@@ -192,6 +209,8 @@ begin
   Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   SetParameterValue(Index, Value);
+
+  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxKnobHandler.BeginParameterEdit(const ControlLinkIndex: integer);

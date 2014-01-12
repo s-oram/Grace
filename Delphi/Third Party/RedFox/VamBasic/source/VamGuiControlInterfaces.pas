@@ -18,6 +18,8 @@ type
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
 
+    procedure SetOnMouseEnter(Handler:TNotifyEvent);
+    procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
     procedure SetOnChanged(Handler:TNotifyEvent);
@@ -33,6 +35,8 @@ type
 
     procedure SetMenuText(Value : string);
 
+    procedure SetOnMouseEnter(Handler:TNotifyEvent);
+    procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
   end;

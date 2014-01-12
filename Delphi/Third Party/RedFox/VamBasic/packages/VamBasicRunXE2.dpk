@@ -78,3 +78,4 @@ contains
   VamGuiControlInterfaces in '..\source\VamGuiControlInterfaces.pas';
 
 end.
+

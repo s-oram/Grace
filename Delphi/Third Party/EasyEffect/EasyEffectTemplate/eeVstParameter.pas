@@ -46,6 +46,9 @@ type
 
     function GetDefaultScaled: single;
     function GetValueVST: single;
+
+
+    function GetParInfo:string;
   protected
     fPublishedVstParameterIndex: integer;
 
@@ -57,8 +60,7 @@ type
 
 
 
-    // ParInfo() returns a textual description of the parameter and it's value.
-    function ParInfo:string;
+
     function ParInfoMethod(aFunc:TStringFunction):TVstParameter;
     function SetParValueCallback(aCallback : TSetParValueProcedure):TVstParameter;
     function GetParValueCallback(aCallback : TGetParValueProcedure):TVstParameter;
@@ -87,6 +89,9 @@ type
 
     property ValueVST    : single read GetValueVST    write SetValueVST;
     property ValueScaled : single read GetValueScaled write SetValueScaled;
+
+    // ParInfo() returns a textual description of the parameter and it's value.
+    property ParInfo : string read GetParInfo;
 
     // When IsPublished is true, the parameter will be exposed to the VST Host.
     // The host will be able to change the parameter using the
@@ -201,7 +206,7 @@ begin
 end;
 
 
-function TVstParameter.ParInfo: string;
+function TVstParameter.GetParInfo: string;
 begin
   if assigned(fGetParInfoMethod) then
   begin

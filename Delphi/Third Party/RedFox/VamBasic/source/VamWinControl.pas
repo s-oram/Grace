@@ -62,6 +62,8 @@ type
     //==========================================================================================================================
 
 
+    procedure SetOnMouseEnter(Handler:TNotifyEvent);
+    procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
   public
@@ -250,6 +252,16 @@ end;
 procedure TVamWinControl.SetFont(const Value: TFont);
 begin
   inherited Font := Value;
+end;
+
+procedure TVamWinControl.SetOnMouseEnter(Handler: TNotifyEvent);
+begin
+  OnMouseEnter := Handler;
+end;
+
+procedure TVamWinControl.SetOnMouseLeave(Handler: TNotifyEvent);
+begin
+  OnMouseLeave := Handler;
 end;
 
 procedure TVamWinControl.SetOnMouseDown(Handler: TMouseEvent);

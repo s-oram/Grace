@@ -3,7 +3,7 @@ unit VamKnob;
 interface
 
 uses
-  VamLib.GuiControlInterfaces,
+  VamGuiControlInterfaces,
   Types, Controls, Classes, Graphics, AggColor,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl;

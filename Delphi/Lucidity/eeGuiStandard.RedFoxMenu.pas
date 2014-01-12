@@ -36,6 +36,8 @@ type
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
 
+    procedure Handle_MouseEnter(Sender : TObject);
+    procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   protected
@@ -94,6 +96,8 @@ begin
   ci.ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
   ControlLinks.Append(ci);
 
+  ci.MenuControl.SetOnMouseEnter(self.Handle_MouseEnter);
+  ci.MenuControl.SetOnMouseLeave(self.Handle_MouseLeave);
   ci.MenuControl.SetOnMouseDown(self.Handle_MouseDown);
   ci.MenuControl.SetOnMouseUp(self.Handle_MouseUp);
 end;
@@ -138,6 +142,27 @@ begin
   end;
 end;
 
+
+procedure TRedFoxMenuHandler.Handle_MouseEnter(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+
+  Globals.InfoBarReceiver.EnterControl(Sender);
+  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
+end;
+
+procedure TRedFoxMenuHandler.Handle_MouseLeave(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+
+  Globals.InfoBarReceiver.LeaveControl(Sender);
+end;
 
 procedure TRedFoxMenuHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var

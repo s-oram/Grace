@@ -60,6 +60,8 @@ begin
   if Control = FocusedControl then
   begin
     FocusedControl := nil;
+    fMessageText := '';
+    MessageChanged;
   end;
 end;
 

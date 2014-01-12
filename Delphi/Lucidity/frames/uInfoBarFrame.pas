@@ -4,7 +4,6 @@ interface
 
 uses
   eePlugin, eeGuiStandard,
-  LucidityGUI.InfoBarController,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamTextBox;
@@ -15,16 +14,15 @@ type
     BackgroundPanel: TVamPanel;
     InfoTextBox: TVamTextBox;
   private
-    fInfoBarController: TInfoBarController;
+    Plugin : TeePlugin;
 
-    procedure EventHandle_InfoBarTextChanged(Sender : TObject; Text:string);
+    procedure Handle_InfoMessageChanged(Sender : TObject);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; GuiContainer:TControl);
 
-    property InfoBarController : TInfoBarController read fInfoBarController;
   end;
 
 implementation
@@ -39,18 +37,23 @@ uses
 constructor TInfoBarFrame.Create(AOwner: TComponent);
 begin
   inherited;
-  fInfoBarController := TInfoBarController.Create;
-  fInfoBarController.OnTextChanged := EventHandle_InfoBarTextChanged;
 end;
 
 destructor TInfoBarFrame.Destroy;
 begin
-  fInfoBarController.Free;
+
   inherited;
+end;
+
+procedure TInfoBarFrame.Handle_InfoMessageChanged(Sender: TObject);
+begin
+  InfoTextBox.Text := Plugin.Globals.InfoBarReceiver.MessageText;
 end;
 
 procedure TInfoBarFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; GuiContainer: TControl);
 begin
+  Plugin := aPlugin;
+
   BackgroundPanel.Color := kPanelDark;
   BackgroundPanel.Invalidate;
 
@@ -63,13 +66,10 @@ begin
   InfoTextBox.ColorMouseOver := kColor_LcdDark1;
   InfoTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
 
-  InfoBarController.Initalize(aPlugin, GuiContainer);
+  Plugin.Globals.InfoBarReceiver.OnMessageChanged := Handle_InfoMessageChanged;
 end;
 
-procedure TInfoBarFrame.EventHandle_InfoBarTextChanged(Sender: TObject; Text: string);
-begin
-  InfoTextBox.Text := Text;
-end;
+
 
 
 

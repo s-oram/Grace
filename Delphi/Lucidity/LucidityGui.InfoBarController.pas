@@ -6,6 +6,7 @@ uses
   ExtCtrls, Classes, Controls, eePlugin;
 
 
+//TODO: I don't think this unit is required any more, delete.
 
 type
   TTextEvent = procedure(Sender : TObject; Text:string) of object;
