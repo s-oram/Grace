@@ -3,7 +3,7 @@ unit djfxOnePoleLP;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase, eeSimpleLFO, eeZeroDelayFilters;
+  eeGlobals, VamLib.MoreTypes, djfxBase, eeSimpleLFO, eeZeroDelayFilters;
 
 type
   TDJFXOnePoleLP = class(TDJFXCustomFX)

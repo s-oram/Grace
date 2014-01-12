@@ -3,7 +3,7 @@ unit djfxMoogVcf;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase, eeFilters;
+  eeGlobals, VamLib.MoreTypes, djfxBase, eeFilters;
 
 type
   TDJFXMoogLP = class(TDJFXCustomFX)

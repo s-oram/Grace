@@ -8,7 +8,7 @@ unit eeBeatLoopAnalyser;
 interface
 
 uses
-  Contnrs, MoreTypes, eeSampleFloat,
+  Contnrs, VamLib.MoreTypes, eeSampleFloat,
   eeBeatLoopAnalyser.CoreTypes,
   eeBeatLoopAnalyser.GenericChopperStrategy,
   eeBeatLoopAnalyser.EqualLengthChopperStrategy,

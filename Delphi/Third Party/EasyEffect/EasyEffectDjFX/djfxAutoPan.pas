@@ -11,7 +11,7 @@ unit djfxAutoPan;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase, eeSimpleLFO;
+  eeGlobals, VamLib.MoreTypes, djfxBase, eeSimpleLFO;
 
 type
   TDJFXAutoPan = class(TDJFXCustomFX)

@@ -3,7 +3,7 @@ unit SoundObjectTypes;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 implementation
 

@@ -3,7 +3,7 @@ unit uSFXLowPassA;
 interface
 
 uses
-  uSFXBase, MoreTypes, eeFilters;
+  uSFXBase, VamLib.MoreTypes, eeFilters;
 
 type
   TSFXLowPassA = class(TSFXBase)

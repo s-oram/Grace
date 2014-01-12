@@ -3,7 +3,7 @@ unit uLucidityVoiceAmp;
 interface
 
 uses
-  MoreTypes, eeFunctions;
+  VamLib.MoreTypes, eeFunctions;
 
 type
   TVoiceAmpModPoints = record

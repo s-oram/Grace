@@ -3,7 +3,7 @@ unit eeSampleInt;
 interface
 
 uses
-  MoreTypes, eeCustomSample, eeSampleIntF;
+  VamLib.MoreTypes, eeCustomSample, eeSampleIntF;
 
 const
   OneOver32767 = 1 / 32767; //One over size(SmallInt)

@@ -6,7 +6,7 @@ uses
   {$IFNDEF VER230}
   eeSampleLoader,
   {$ENDIF}
-  MoreTypes, eeSampleInt, eeAudioFilePreviewPlayerVoice;
+  VamLib.MoreTypes, eeSampleInt, eeAudioFilePreviewPlayerVoice;
 
 
 

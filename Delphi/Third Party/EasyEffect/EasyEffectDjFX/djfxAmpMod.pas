@@ -3,7 +3,7 @@ unit djfxAmpMod;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase, eeSimpleLFO;
+  eeGlobals, VamLib.MoreTypes, djfxBase, eeSimpleLFO;
 
 type
   TDJFXAmpMod = class(TDJFXCustomFX)

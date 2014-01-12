@@ -3,7 +3,7 @@ unit eeDspWindows;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TWindowFunction = function(const x:double):double;

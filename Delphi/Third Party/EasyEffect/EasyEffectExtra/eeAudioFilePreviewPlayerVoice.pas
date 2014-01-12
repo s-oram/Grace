@@ -3,7 +3,7 @@ unit eeAudioFilePreviewPlayerVoice;
 interface
 
 uses
-  MoreTypes, eeSampleFloat, eeSimpleGate;
+  VamLib.MoreTypes, eeSampleFloat, eeSimpleGate;
 
 type
   TAudioFilePreviewPlayerVoice = class

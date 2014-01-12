@@ -3,7 +3,7 @@ unit uLucidityXYPads;
 interface
 
 uses
-  MoreTypes,
+  VamLib.MoreTypes,
   eeGlobals,
   uConstants;
 

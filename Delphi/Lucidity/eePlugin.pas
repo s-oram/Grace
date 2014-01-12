@@ -15,7 +15,7 @@ uses
   eePluginParameterWizard,
   eeAudioBufferUtils,
   uLucidityEnums, uLucidityData,
-  Math, MoreTypes, VamKeyStateTracker,
+  Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads, uLucidityVoiceController,
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat, uGuiState,

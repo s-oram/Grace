@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes,
+  VamLib.MoreTypes,
   uConstants,
   uLucidityEnums,
   Math,

@@ -3,7 +3,7 @@ unit uSampleZeroCrossings;
 interface
 
 uses
-  MoreTypes,
+  VamLib.MoreTypes,
   eeSampleFloat;
 
 type

@@ -3,7 +3,7 @@ unit uHarmonicWaveTableGen;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   THarmonic = record

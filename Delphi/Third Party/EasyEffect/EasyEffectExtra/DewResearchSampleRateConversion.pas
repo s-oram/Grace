@@ -8,7 +8,7 @@ unit DewResearchSampleRateConversion;
 interface
 
 uses
-  MoreTypes, SignalTools, SignalProcessing;
+  VamLib.MoreTypes, SignalTools, SignalProcessing;
 
 type
   TDownsampler = class

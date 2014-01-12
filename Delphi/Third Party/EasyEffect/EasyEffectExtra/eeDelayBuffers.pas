@@ -9,7 +9,7 @@ unit eeDelayBuffers;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TFixedSizeBuffer256Mono = class

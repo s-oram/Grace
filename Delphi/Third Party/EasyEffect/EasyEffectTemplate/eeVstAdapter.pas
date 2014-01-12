@@ -17,7 +17,7 @@ uses
   Windows,
   eePluginGui, eePlugin, // <-- It is important for these file to be project specific.
   eeVstEditorAdapter, eeMidiEvents,
-  Classes, MoreTypes, uConstants,
+  Classes, VamLib.MoreTypes, uConstants,
   DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX;
 
 type

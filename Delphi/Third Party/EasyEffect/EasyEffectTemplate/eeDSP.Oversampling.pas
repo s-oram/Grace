@@ -3,7 +3,7 @@ unit eeDSP.Oversampling;
 interface
 
 uses
-  MoreTypes, eeFilters.AllPass;
+  VamLib.MoreTypes, eeFilters.AllPass;
 
 
 

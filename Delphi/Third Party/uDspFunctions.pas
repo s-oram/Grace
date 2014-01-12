@@ -3,7 +3,7 @@
 
   NOTE: Try to keep the 'Uses' clause to a bare minimum so that if this unit
   is used inside components, it doesn't force lots of dependencies.
-  [Ideally limit to 'MoreTypes']
+  [Ideally limit to 'VamLib.MoreTypes']
 }
 
 unit uDspFunctions;
@@ -11,7 +11,7 @@ unit uDspFunctions;
 interface
 
 uses
-  MoreTypes, Math;
+  VamLib.MoreTypes, Math;
 
 function Sinc(x:single):single; inline;
 function SincM(x:single; Harmonics:integer; PeriodLength:integer):single; inline;

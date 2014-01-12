@@ -6,7 +6,7 @@ interface
 
 uses
   {$IFDEF OverSampleEnabled}eeOverSamplingFilters,{$ENDIF}
-  DAEffect, MoreTypes;
+  DAEffect, VamLib.MoreTypes;
 
 type
   TVstAudioOutputController = class

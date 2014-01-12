@@ -3,7 +3,7 @@ unit eeWaveTableUtils;
 interface
 
 uses
-  MoreTypes, eeWaveTable;
+  VamLib.MoreTypes, eeWaveTable;
 
 procedure GenSine(WaveTable:TWaveTable);
 

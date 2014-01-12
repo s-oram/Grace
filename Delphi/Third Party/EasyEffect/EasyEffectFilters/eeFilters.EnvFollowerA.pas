@@ -3,7 +3,7 @@ unit eeFilters.EnvFollowerA;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TEnvFollowerA = class

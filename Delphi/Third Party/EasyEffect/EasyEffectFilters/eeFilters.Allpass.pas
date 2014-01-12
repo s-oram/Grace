@@ -3,7 +3,7 @@ unit eeFilters.Allpass;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
 

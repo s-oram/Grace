@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, uLucidityEnums, eeFunctions;
+  VamLib.MoreTypes, uLucidityEnums, eeFunctions;
 
 {$SCOPEDENUMS ON}
 

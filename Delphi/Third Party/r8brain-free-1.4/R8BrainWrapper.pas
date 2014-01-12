@@ -6,7 +6,7 @@ interface
 // https://code.google.com/p/r8brain-free-src/
 
 uses
-  MoreTypes, r8bsrc;
+  VamLib.MoreTypes, r8bsrc;
 
 type
   TResampleResolution = (res16Bit, res16BitIR, res24bit);

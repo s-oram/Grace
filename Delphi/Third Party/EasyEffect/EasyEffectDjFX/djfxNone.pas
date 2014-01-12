@@ -8,7 +8,7 @@ unit djfxNone;
 interface
 
 uses
-  djfxBase, eeGlobals, MoreTypes;
+  djfxBase, eeGlobals, VamLib.MoreTypes;
 
 type
   TDJFXNone = class(TDJFXCustomFX)

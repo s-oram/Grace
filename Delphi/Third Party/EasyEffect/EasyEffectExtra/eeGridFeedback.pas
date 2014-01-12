@@ -25,7 +25,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  Contnrs, eeGlobals, MoreTypes, eeMidiPorts;
+  Contnrs, eeGlobals, VamLib.MoreTypes, eeMidiPorts;
 
 type
   // umNativeMidi - Midi to grid via the vst->host-->midi interface.

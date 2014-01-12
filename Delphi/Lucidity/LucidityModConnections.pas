@@ -3,7 +3,7 @@ unit LucidityModConnections;
 interface
 
 uses
-  MoreTypes,
+  VamLib.MoreTypes,
   uConstants, uLucidityEnums;
 
 type

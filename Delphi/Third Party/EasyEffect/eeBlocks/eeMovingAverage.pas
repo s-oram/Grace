@@ -3,7 +3,7 @@ unit eeMovingAverage;
 interface
 
 uses
-  eeDelayBuffers, MoreTypes;
+  eeDelayBuffers, VamLib.MoreTypes;
 
 type
   TMovingAverageFilter = class

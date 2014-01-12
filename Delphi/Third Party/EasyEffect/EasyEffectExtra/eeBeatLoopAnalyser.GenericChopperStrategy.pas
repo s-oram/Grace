@@ -3,7 +3,7 @@ unit eeBeatLoopAnalyser.GenericChopperStrategy;
 interface
 
 uses
-  Contnrs, eeSampleFloat, MoreTypes,
+  Contnrs, eeSampleFloat, VamLib.MoreTypes,
   eeBeatLoopAnalyser.CoreTypes;
 
 type

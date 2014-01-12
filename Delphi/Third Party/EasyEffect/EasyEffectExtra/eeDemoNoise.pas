@@ -8,7 +8,7 @@ unit eeDemoNoise;
 interface
 
 uses
-  MoreTypes, eeGlobals;
+  VamLib.MoreTypes, eeGlobals;
 
 
 type

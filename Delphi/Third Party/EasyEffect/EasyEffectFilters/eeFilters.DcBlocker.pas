@@ -3,7 +3,7 @@ unit eeFilters.DcBlocker;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
 

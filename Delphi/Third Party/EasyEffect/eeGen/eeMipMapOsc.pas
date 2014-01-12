@@ -3,7 +3,7 @@ unit eeMipMapOsc;
 interface
 
 uses
-  MoreTypes, eeOscPhaseCounter, eeMipMapTable;
+  VamLib.MoreTypes, eeOscPhaseCounter, eeMipMapTable;
 
 
 type

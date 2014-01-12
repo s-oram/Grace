@@ -3,7 +3,7 @@ unit eeOverSamplingFilters;
 interface
 
 uses
-  MoreTypes, SignalTools, SignalProcessing;
+  VamLib.MoreTypes, SignalTools, SignalProcessing;
 
 type
   TInputFilter = class

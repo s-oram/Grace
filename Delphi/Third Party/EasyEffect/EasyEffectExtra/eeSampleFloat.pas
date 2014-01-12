@@ -4,7 +4,7 @@ unit eeSampleFloat;
 interface
 
 uses
-  MoreTypes, eeCustomSample, eeSampleIntF;
+  VamLib.MoreTypes, eeCustomSample, eeSampleIntF;
 
 type
   PSampleFloat = ^TSampleFloat;

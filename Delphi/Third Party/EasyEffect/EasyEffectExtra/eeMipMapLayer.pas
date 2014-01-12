@@ -3,7 +3,7 @@ unit eeMipMapLayer;
 interface
 
 uses
-  MoreTypes, eeSampleInt;
+  VamLib.MoreTypes, eeSampleInt;
 
 type
   // TMipMapLayer

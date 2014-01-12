@@ -7,7 +7,7 @@ interface
 uses
   EasyEffect.AudioOutputController.Custom,
   R8BrainWrapper, eeMultiChannelBuffers,
-  DAEffect, MoreTypes;
+  DAEffect, VamLib.MoreTypes;
 
 const
   kBufferSizeFactor = 4;

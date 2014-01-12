@@ -3,7 +3,7 @@ unit eeWaveTable;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TWaveTable = class

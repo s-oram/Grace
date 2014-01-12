@@ -3,7 +3,7 @@ unit Lucidity.Osc.OneShotSampler.SubOsc;
 interface
 
 uses
-  MoreTypes, uLucidityEnums,
+  VamLib.MoreTypes, uLucidityEnums,
   Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,
   Math, eeDsp, eeFunctions,

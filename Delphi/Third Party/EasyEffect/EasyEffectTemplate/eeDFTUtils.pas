@@ -3,7 +3,7 @@ unit eeDFTUtils;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 function CalcMagnitude(Bin:TComplex):single; inline; overload;
 function CalcMagnitude(const RealPart, ImagPart:single):single; inline; overload;

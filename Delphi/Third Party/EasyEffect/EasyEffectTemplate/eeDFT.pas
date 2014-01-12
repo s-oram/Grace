@@ -3,7 +3,7 @@ unit eeDFT;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 procedure CalcDFT(Input:TArrayOfSingle; Output:TArrayOfComplex; SampleFrames:integer);
 

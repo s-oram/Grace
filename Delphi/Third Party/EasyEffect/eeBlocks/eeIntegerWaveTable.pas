@@ -3,7 +3,7 @@ unit eeIntegerWaveTable;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TIntegerWaveTable = class

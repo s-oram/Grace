@@ -3,7 +3,7 @@ unit eeSaveLoadFunctions;
 interface
 
 uses
-  MoreTypes, eeMidiAutomation, NativeXml;
+  VamLib.MoreTypes, eeMidiAutomation, NativeXml;
 
 procedure SaveMidiMapToXML(const MidiAutomation:TMidiAutomation; var XML:TNativeXML);
 procedure LoadMidiMapFromXML(var MidiAutomation:TMidiAutomation; const XML:TNativeXML);

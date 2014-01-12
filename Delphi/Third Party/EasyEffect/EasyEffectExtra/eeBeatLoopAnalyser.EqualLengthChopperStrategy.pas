@@ -4,7 +4,7 @@ interface
 
 
 uses
-  Contnrs, eeSampleFloat, MoreTypes,
+  Contnrs, eeSampleFloat, VamLib.MoreTypes,
   eeBeatLoopAnalyser.GenericChopperStrategy;
 
 type

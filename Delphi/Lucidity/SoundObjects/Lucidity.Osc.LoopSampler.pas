@@ -6,7 +6,7 @@ interface
 
 uses
   Classes,
-  MoreTypes, Lucidity.SampleMap, uLucidityCustomSampleOsc,
+  VamLib.MoreTypes, Lucidity.SampleMap, uLucidityCustomSampleOsc,
   soGateEnvelope, soStepInFilter,
   eeCounter,
   Lucidity.Osc.FadeOutSampler,

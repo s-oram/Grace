@@ -3,7 +3,7 @@ unit B2.DelayLine.StereoDelayBuffer;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TStereoDelayBuffer = class

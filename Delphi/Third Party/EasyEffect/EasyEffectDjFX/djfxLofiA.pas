@@ -12,7 +12,7 @@ unit djfxLofiA;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase;
+  eeGlobals, VamLib.MoreTypes, djfxBase;
 
 type
   TDJFXLofiA = class(TDJFXCustomFX)

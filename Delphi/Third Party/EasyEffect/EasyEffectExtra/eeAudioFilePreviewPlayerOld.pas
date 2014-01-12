@@ -3,7 +3,7 @@ unit eeAudioFilePreviewPlayerOld;
 interface
 
 uses
-  MoreTypes, eeSampleInt, OTLTask, OTLTaskControl, OTLEventMonitor, SyncObjs, eeAudioFilePreviewPlayerVoice;
+  VamLib.MoreTypes, eeSampleInt, OTLTask, OTLTaskControl, OTLEventMonitor, SyncObjs, eeAudioFilePreviewPlayerVoice;
 
 type
   TAudioFilePreviewPlayer = class

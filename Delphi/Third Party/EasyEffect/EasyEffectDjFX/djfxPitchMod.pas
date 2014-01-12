@@ -10,7 +10,7 @@ unit djfxPitchMod;
 interface
 
 uses
-  eeGlobals, MoreTypes, djfxBase, eeSimpleLFO;
+  eeGlobals, VamLib.MoreTypes, djfxBase, eeSimpleLFO;
 
 type
   TDJFXPitchMod = class(TDJFXCustomFX)

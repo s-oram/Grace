@@ -3,7 +3,7 @@ unit soGateEnvelope;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TGateEnvelope = class

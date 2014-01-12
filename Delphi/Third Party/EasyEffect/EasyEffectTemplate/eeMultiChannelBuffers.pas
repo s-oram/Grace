@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, SysUtils;
+  VamLib.MoreTypes, SysUtils;
 
 type
 

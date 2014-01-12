@@ -17,7 +17,7 @@ unit eeDspSampleRateConversion;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 
 

@@ -3,7 +3,7 @@ unit SynthModule_LowPass12;
 interface
 
 uses
-  MoreTypes, SynthModule_Custom;
+  VamLib.MoreTypes, SynthModule_Custom;
 
 const
   p4 = 1.0e-24;  //a small value to prevent denormals on p4 cpu's.

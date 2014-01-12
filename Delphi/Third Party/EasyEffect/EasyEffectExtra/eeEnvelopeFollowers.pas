@@ -3,7 +3,7 @@ unit eeEnvelopeFollowers;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 
 

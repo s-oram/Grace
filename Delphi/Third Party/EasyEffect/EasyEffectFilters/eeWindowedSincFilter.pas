@@ -3,7 +3,7 @@ unit eeWindowedSincFilter;
 interface
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
   // Reference:
   // - The Scientist and Engineer's Guide to Digital Signal Processing

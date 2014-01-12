@@ -13,7 +13,7 @@ interface
 
 uses
   EasyEffect.AudioOutputController.Custom,
-  DAEffect, MoreTypes;
+  DAEffect, VamLib.MoreTypes;
 
 type
   TVstAudioOutputController = class(TCustomVstAudioOutputController)

@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, eeFunctions;
+  VamLib.MoreTypes, eeFunctions;
 
 type
   TPannerModPoints = record

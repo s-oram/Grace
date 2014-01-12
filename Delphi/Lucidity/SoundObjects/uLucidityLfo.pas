@@ -6,7 +6,7 @@ interface
 
 uses
   B2.Filter.CriticallyDampedLowpass,
-  MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
+  VamLib.MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
   uLucidityEnums, B2.MovingAverageFilter,
   eeVirtualCV, Math, eeFunctions,  uLucidityClock, eeDsp,
   uConstants;

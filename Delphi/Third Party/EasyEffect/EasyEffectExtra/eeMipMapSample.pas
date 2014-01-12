@@ -3,7 +3,7 @@ unit eeMipMapSample;
 interface
 
 uses
-  MoreTypes, eeMipMapLayer, Contnrs;
+  VamLib.MoreTypes, eeMipMapLayer, Contnrs;
 
 const
   kBundleLayerCount = 6;

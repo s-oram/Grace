@@ -4,7 +4,7 @@ interface
 
 uses
   uLucidityKeyGroupInterface, LucidityModConnections,
-  MoreTypes, eeGlobals,
+  VamLib.MoreTypes, eeGlobals,
   eeVoiceLogic, eeVstParameter,
   eeVstParameterList, eePatchObject,
   uConstants,

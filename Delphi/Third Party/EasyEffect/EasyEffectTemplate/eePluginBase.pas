@@ -8,7 +8,7 @@ uses
   eeSyncObjects,
   eeTypes, eeMidiEvents, eePluginSettings,
   eeVstMidiTypes, eeBufferedEventList,
-  Classes, MoreTypes, eeGlobals;
+  Classes, VamLib.MoreTypes, eeGlobals;
 
   {$IFDEF VER230}
   {$ELSE}

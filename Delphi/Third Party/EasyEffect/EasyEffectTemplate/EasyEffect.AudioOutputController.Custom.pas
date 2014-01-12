@@ -3,7 +3,7 @@ unit EasyEffect.AudioOutputController.Custom;
 interface
 
 uses
-  DAEffect, MoreTypes;
+  DAEffect, VamLib.MoreTypes;
 
 type
   IVstAudioOutputController = interface

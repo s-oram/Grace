@@ -7,7 +7,7 @@ interface
 uses
   EasyEffect.AudioOutputController.Custom,
   R8BrainWrapper,
-  DAEffect, MoreTypes;
+  DAEffect, VamLib.MoreTypes;
 
 type
   TVstAudioOutputController = class(TCustomVstAudioOutputController, IVstAudioOutputController)

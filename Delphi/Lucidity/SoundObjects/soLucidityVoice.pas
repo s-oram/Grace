@@ -10,7 +10,7 @@ uses
   Math, uLucidityEnums, uGuiFeedbackData,
   eeSampleFloat, eeDsp,
   eeTypes, eeVirtualCV, uLucidityKeyGroupInterface,
-  MoreTypes, eeGlobals, eeVoiceLogic,
+  VamLib.MoreTypes, eeGlobals, eeVoiceLogic,
   eeCounter,
   Lucidity.Env.ADSR,
   Lucidity.Env.ASR,

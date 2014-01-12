@@ -3,7 +3,7 @@ unit Lucidity.Env.ADSR;
 interface
 
 uses
-  MoreTypes, soADSR, eeFunctions, uLucidityEnums, eeDsp;
+  VamLib.MoreTypes, soADSR, eeFunctions, uLucidityEnums, eeDsp;
 
 type
   TEnvelopeStage = soADSR.TEnvelopeStage;

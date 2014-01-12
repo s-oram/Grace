@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, Generics.Collections,
+  VamLib.MoreTypes, Generics.Collections,
   VamSamplePeakBuffer,
   VamSampleDisplay,
   uConstants, uLucidityKeyGroupInterface,

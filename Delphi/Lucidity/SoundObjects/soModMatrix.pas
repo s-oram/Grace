@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes, LucidityModConnections,
+  VamLib.MoreTypes, LucidityModConnections,
   uConstants, uLucidityEnums, eeFunctions,
   SoundObjectTypes;
 

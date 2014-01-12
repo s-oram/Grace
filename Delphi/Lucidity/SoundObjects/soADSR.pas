@@ -14,7 +14,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  MoreTypes,
+  VamLib.MoreTypes,
   eeTypes, eeDSP;
 
 const

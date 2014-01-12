@@ -3,7 +3,7 @@ unit eeFunctions;
 interface
 
 uses
-  Windows, eeTypes, eeDetectHost, MoreTypes;
+  Windows, eeTypes, eeDetectHost, VamLib.MoreTypes;
 
 
 procedure ZeroBufferX1(In1:PSingle; SampleFrames:integer); inline;

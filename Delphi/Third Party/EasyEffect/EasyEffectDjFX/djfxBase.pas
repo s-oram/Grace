@@ -3,7 +3,7 @@ unit djfxBase;
 interface
 
 uses
-  eeGlobals, MoreTypes;
+  eeGlobals, VamLib.MoreTypes;
 
 const
   DJFXParCount = 2;

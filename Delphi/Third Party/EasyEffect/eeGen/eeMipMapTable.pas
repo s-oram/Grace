@@ -8,7 +8,7 @@ interface
 
 uses
   BlockProcess.DoubleLowPass,
-  MoreTypes;
+  VamLib.MoreTypes;
 
 type
   TMipMap = array of array of Single;

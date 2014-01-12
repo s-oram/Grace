@@ -126,7 +126,7 @@ type
 implementation
 
 uses
-  MoreTypes;
+  VamLib.MoreTypes;
 
 { TLevelMeter }
 
