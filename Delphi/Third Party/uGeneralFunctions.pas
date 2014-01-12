@@ -3,7 +3,7 @@ unit uGeneralFunctions;
 interface
 
 uses
-  ShLwApi, SysUtils, Classes, Types, MoreTypes;
+  ShLwApi, SysUtils, Classes, Types, VamLib.MoreTypes;
 
 //== String Conversion functions ==============================================
 
