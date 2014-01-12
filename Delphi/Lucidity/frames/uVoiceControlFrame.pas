@@ -145,63 +145,26 @@ begin
 
   UpdateControlVisibility;
 
+  //==== Assign standard control handling ====
 
-  VoicePitch1Knob.Tag     := fPlugin.Globals.VstParameters.FindParameterIndexByName('VoicePitchOne');
-  VoicePitch2Knob.Tag     := fPlugin.Globals.VstParameters.FindParameterIndexByName('VoicePitchTwo');
-  GlideKnob.Tag           := fPlugin.Globals.VstParameters.FindParameterIndexByName('VoiceGlide');
+  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch1Knob,        Plugin.Globals.VstParameters.FindParameter('VoicePitchOne'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch2Knob,        Plugin.Globals.VstParameters.FindParameter('VoicePitchTwo'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GlideKnob,              Plugin.Globals.VstParameters.FindParameter('VoiceGlide'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainLengthKnob,        Plugin.Globals.VstParameters.FindParameter('GrainLength'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainRateKnob,          Plugin.Globals.VstParameters.FindParameter('GrainRate'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainPosKnob,           Plugin.Globals.VstParameters.FindParameter('GrainPosition'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(OscShapeKnob,           Plugin.Globals.VstParameters.FindParameter('OscShape'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(OscPulseWidthKnob,      Plugin.Globals.VstParameters.FindParameter('OscPulseWidth'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,         Plugin.Globals.VstParameters.FindParameter('OutputGain'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,            Plugin.Globals.VstParameters.FindParameter('OutputPan'));
 
-  GrainLengthKnob.Tag     := fPlugin.Globals.VstParameters.FindParameterIndexByName('GrainLength');
-  GrainRateKnob.Tag       := fPlugin.Globals.VstParameters.FindParameterIndexByName('GrainRate');
-  GrainPosKnob.Tag        := fPlugin.Globals.VstParameters.FindParameterIndexByName('GrainPosition');
-
-  OscShapeKnob.Tag      := fPlugin.Globals.VstParameters.FindParameterIndexByName('OscShape');
-  OscPulseWidthKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('OscPulseWidth');
-
-  MainOutputKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('OutputGain');
-  MainPanKnob.Tag    := fPlugin.Globals.VstParameters.FindParameterIndexByName('OutputPan');
-
-
-  //== General Voice Controls ==
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('VoiceMode');
-  fGuiStandard.RegisterControlAsMenuControl(VoiceModeTextBox, ParIndex, TVoiceModeHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('SamplePlaybackType');
-  fGuiStandard.RegisterControlAsMenuControl(SamplePlaybackTypeTextBox, ParIndex, TSamplePlaybackTypeHelper, TShowMenu.ContextClickOnly, ShowPlayTypeMenuCallBack);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('PitchTracking');
-  fGuiStandard.RegisterControlAsMenuControl(PitchTrackTextBox, ParIndex, TPitchTrackingHelper, TShowMenu.ContextClickOnly, ShowPlayTypeMenuCallBack);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('SampleResetClockSource');
-  fGuiStandard.RegisterControlAsMenuControl(ResetTextBox, ParIndex, TClockSourceHelper, TShowMenu.ContextClickOnly, ShowSamplResetMenuCallBack);
-
-  fGuiStandard.RegisterControlForAutoUpdate(VoicePitch1Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(VoicePitch2Knob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(GlideKnob, true);
-
-  fGuiStandard.RegisterControlForAutoUpdate(MainOutputKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(MainPanKnob, true);
-
-  //== One Shot Sample Controls ==
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('SamplerLoopMode');
-  fGuiStandard.RegisterControlAsMenuControl(SamplerLoopModeTextBox, ParIndex, TSamplerLoopModeHelper, TShowMenu.ContextClickOnly);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('SamplerLoopBounds');
-  fGuiStandard.RegisterControlAsMenuControl(SamplerLoopBoundsTextBox, ParIndex, TSamplerLoopBoundsHelper, TShowMenu.ContextClickOnly);
-
-
-
-  //== Grain Stretch Osc Controls ==
-  fGuiStandard.RegisterControlForAutoUpdate(GrainLengthKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(GrainRateKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(GrainPosKnob, true);
-
-  ParIndex := Plugin.Globals.VstParameters.FindParameterIndexByName('GrainLoop');
-  fGuiStandard.RegisterControlAsMenuControl(GrainLoopTextBox, ParIndex, TGrainStretchLoopModeHelper, TShowMenu.ContextClickOnly);
-
-
-  //== Synth Osc Controls ==
-  fGuiStandard.RegisterControlForAutoUpdate(OscShapeKnob, true);
-  fGuiStandard.RegisterControlForAutoUpdate(OscPulseWidthKnob, true);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(VoiceModeTextBox,            Plugin.Globals.VstParameters.FindParameter('VoiceMode'),               TVoiceModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplePlaybackTypeTextBox,   Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType'),      TSamplePlaybackTypeHelper,   ShowPlayTypeMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(PitchTrackTextBox,           Plugin.Globals.VstParameters.FindParameter('PitchTracking'),           TPitchTrackingHelper,        ShowPlayTypeMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(ResetTextBox,                Plugin.Globals.VstParameters.FindParameter('SampleResetClockSource'),  TClockSourceHelper,          ShowSamplResetMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopModeTextBox,      Plugin.Globals.VstParameters.FindParameter('SamplerLoopMode'),         TSamplerLoopModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopBoundsTextBox,    Plugin.Globals.VstParameters.FindParameter('SamplerLoopBounds'),       TSamplerLoopBoundsHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(GrainLoopTextBox,            Plugin.Globals.VstParameters.FindParameter('GrainLoop'),               TGrainStretchLoopModeHelper);
 
 
   //============================================================================
@@ -243,7 +206,7 @@ begin
   SamplerLoopModeTextBox.Font.Color    := GetRedFoxColor(kColor_LcdDark5);
   SamplerLoopBoundsTextBox.Font.Color  := GetRedFoxColor(kColor_LcdDark5);
 
-  PitchTrackTextBox.Color      := kColor_LcdDark1;
+  PitchTrackTextBox.Color              := kColor_LcdDark1;
   SamplePlaybackTypeTextBox.Color      := kColor_LcdDark1;
   ResetTextBox.Color                   := kColor_LcdDark1;
   VoiceModeTextBox.Color               := kColor_LcdDark1;
@@ -440,33 +403,7 @@ begin
 end;
 
 procedure TVoiceControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
-var
-  TargetTextBox : TVamTextBox;
 begin
-  //== General Voice Controls ==
-  TargetTextBox := VoiceModeTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TVoiceModeHelper, Plugin.Globals);
-
-  TargetTextBox := PitchTrackTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TPitchTrackingHelper, Plugin.Globals);
-
-  TargetTextBox := SamplePlaybackTypeTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TSamplePlaybackTypeHelper, Plugin.Globals);
-
-  TargetTextBox := ResetTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TClockSourceHelper, Plugin.Globals);
-
-  //== Sample One Shot Controls ==
-  TargetTextBox := SamplerLoopModeTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TSamplerLoopModeHelper, Plugin.Globals);
-
-  TargetTextBox := SamplerLoopBoundsTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TSamplerLoopBoundsHelper, Plugin.Globals);
-
-  //== Grain Stretch Osc Controls ==
-  TargetTextBox := GrainLoopTextBox;
-  UpdateTextBoxWithParValue(TargetTextBox, TargetTextBox.Tag, TGrainStretchLoopModeHelper, Plugin.Globals);
-
 end;
 
 procedure TVoiceControlFrame.PlaybackTypeChanged;

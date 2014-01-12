@@ -364,23 +364,21 @@ begin
   Plugin.Globals.AddWindowsMessageListener(self.Handle);
 
 
-
-  // Initalize all the frame controls...
-  MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-  FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
-  MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-  SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
-  SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-  ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-  ModSystemFrame.InitializeFrame(Plugin, GuiStandard);
-  ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
-  XYPadsFrame.InitializeFrame(Plugin, GuiStandard);
-  VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
-
-
-  // Important: initalize the InfoBarController after the other frames.
-  // This allows any other frames to create components etc.
-  InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
+  try
+    // Initalize all the frame controls...
+    MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
+    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
+    MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+    SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
+    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
+    ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+    ModSystemFrame.InitializeFrame(Plugin, GuiStandard);
+    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
+    XYPadsFrame.InitializeFrame(Plugin, GuiStandard);
+    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
+    InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
+  except
+  end;
 
 
   //Update the GUI to match the previous GUI state.

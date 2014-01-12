@@ -12,13 +12,7 @@ uses
   eeEnumHelper;
 
 type
-  // NOTE: Using TMenuCallBack as an anonymous method and method reference both seem
-  // to work. I'm not sure of the pros and cons of each yet though.
-  //TMenuCallback = procedure (aMenu : TMenu) of object;  //Option #1
-  TMenuCallback = reference to procedure (aMenu : TMenu); //Option #2
-
-
-
+  TMenuCallback = procedure (aMenu : TMenu) of object;
 
   TShowMenuState = record
     ParIndex : integer;

@@ -324,15 +324,16 @@ var
   c : TControl;
 begin
   IsManualGuiUpdateActive := true;
-
-  for c1 := 0 to ControlLinks.Count-1 do
-  begin
-    c := ControlLinks[c1].Control;
-    parValue := ControlLinks[c1].LinkedParameter.ValueVST;
-    ControlLinks[c1].KnobControl.SetKnobValue(ParValue);
+  try
+    for c1 := 0 to ControlLinks.Count-1 do
+    begin
+      c := ControlLinks[c1].Control;
+      parValue := ControlLinks[c1].LinkedParameter.ValueVST;
+      ControlLinks[c1].KnobControl.SetKnobValue(ParValue);
+    end;
+  finally
+    IsManualGuiUpdateActive := false;
   end;
-
-  IsManualGuiUpdateActive := false;
 end;
 
 procedure TRedFoxKnobHandler.Handle_MidiLearn(Sender: TObject);

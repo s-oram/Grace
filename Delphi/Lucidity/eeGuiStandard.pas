@@ -623,91 +623,12 @@ var
   s : string;
   ControlName : string;
 begin
-  RedFoxKnobHandler.UpdateControls;
-  RedFoxMenuHandler.UpdateControls;
+  try
+    RedFoxKnobHandler.UpdateControls;
+    RedFoxMenuHandler.UpdateControls;  //TODO:
+  except
 
-  IsManualGuiUpdateActive := true;
-
-  for c1 := 0 to AutoUpdateControlList.Count - 1 do
-  begin
-    c := AutoUpdateControlList[c1];
-    ControlName := (c as TControl).Name;
-
-    //Only update if the control hasn't been grabbed by the user.
-    if GrabbedControlsList.IndexOf(c) = -1 then
-    begin
-      cType   := c.ClassName;
-
-      //==== VGScene ====
-      if cType = 'TvgVamBitmapButton' then
-      begin
-        assert(false, 'TODO');
-        cTag    := GetPropValue(c, 'Tag');
-        parValue := Globals.VstMethods^.GetParameter(cTag);
-        SetPropValue(c, 'IsOn', FloatToBoolean(parValue));
-      end;
-
-      if cType = 'TvgVamBitmapKnob' then
-      begin
-        assert(false, 'TODO');
-        cTag    := GetPropValue(c, 'Tag');
-        parValue := Globals.VstMethods^.GetParameter(cTag);
-        SetPropValue(c, 'Pos', parValue);
-      end;
-
-      //==== Vst Controls ====
-      if cType = 'TVstKnob' then
-      begin
-        assert(false, 'TODO');
-        cTag    := GetPropValue(c, 'Tag');
-        parValue := Globals.VstMethods^.GetParameter(cTag);
-        SetPropValue(c, 'Pos', parValue);
-      end;
-
-      if cType = 'TVstLabel' then
-      begin
-        assert(false, 'TODO');
-        cTag    := GetPropValue(c, 'Tag');
-        s := Globals.VstMethods^.GetParameterDisplay(cTag) + Globals.VstMethods^.GetParameterLabel(cTag);
-        SetPropValue(c, 'Caption', s);
-      end;
-
-      //===== RedFox / Vam Controls ========
-      if cType = 'TVamKnob' then
-      begin
-        cTag    := GetPropValue(c, 'Tag');
-        if (cTag = -1) then raise EGuiStandardException.Create('Tag for control (' + ControlName + ') is -1.');
-        parValue := Globals.VstParameters[cTag].ValueVST;
-        SetPropValue(c, 'Pos', parValue);
-      end;
-
-      if cType = 'TVamXYPad' then
-      begin
-        cTag    := GetPropValue(c, 'PadX_VstParameterIndex');
-        if (cTag = -1) then raise EGuiStandardException.Create('Tag for control (' + ControlName + ') is -1.');
-        parValue := Globals.VstParameters[cTag].ValueVST;
-        PropValue := GetPropValue(c, 'PosX');
-        if ParValue <> PropValue then
-        begin
-          SetPropValue(c, 'PosX', parValue);
-        end;
-
-
-        cTag    := GetPropValue(c, 'PadY_VstParameterIndex');
-        if (cTag = -1) then raise EGuiStandardException.Create('Tag for control (' + ControlName + ') is -1.');
-        parValue := Globals.VstParameters[cTag].ValueVST;
-        PropValue := GetPropValue(c, 'PosY');
-        if ParValue <> PropValue then
-        begin
-          SetPropValue(c, 'PosY', parValue);
-        end;
-      end;
-
-    end;
   end;
-
-
-  IsManualGuiUpdateActive := false;
 end;
 
 procedure TGuiStandard.AssignEventHandlers(c : TObject);

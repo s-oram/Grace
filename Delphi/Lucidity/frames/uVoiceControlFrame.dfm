@@ -51,7 +51,6 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Style = [fsBold]
           Align = alTop
           Visible = True
-          ExplicitWidth = 633
         end
         object GrainStretchControls: TVamDiv
           AlignWithMargins = True
@@ -379,8 +378,8 @@ object VoiceControlFrame: TVoiceControlFrame
           Visible = True
         end
         object PlaybackTypeLabel: TVamLabel
-          Left = 576
-          Top = 278
+          Left = 602
+          Top = 269
           Width = 118
           Height = 16
           Text = 'PLAYBACK'
@@ -396,8 +395,8 @@ object VoiceControlFrame: TVoiceControlFrame
           Visible = True
         end
         object SamplePlaybackTypeTextbox: TVamTextBox
-          Left = 576
-          Top = 264
+          Left = 602
+          Top = 255
           Width = 118
           Height = 16
           DisplayClass = 'MenuButton'
