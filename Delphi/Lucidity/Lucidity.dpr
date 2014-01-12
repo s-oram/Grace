@@ -134,7 +134,9 @@ uses
   eeGuiStandard in 'eeGuiStandard.pas',
   eeGuiStandard.RedFoxKnob in 'eeGuiStandard.RedFoxKnob.pas',
   eeGuiStandard.RedFoxMenu in 'eeGuiStandard.RedFoxMenu.pas',
-  eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas';
+  eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas',
+  eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
+  eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas';
 
 {$R *.res}
 

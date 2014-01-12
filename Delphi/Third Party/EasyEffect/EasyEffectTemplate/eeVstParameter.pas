@@ -41,11 +41,8 @@ type
     procedure SetValueVST(const Value: single);
     function GetValueScaled: single;
     procedure SetValueScaled(Value: single);
-
     function GetDefaultScaled: single;
     function GetValueVST: single;
-
-
     function GetParInfo:string;
   protected
     fPublishedVstParameterIndex: integer;
@@ -56,12 +53,9 @@ type
     constructor Create(const aName : string);
     destructor Destroy; override;
 
-
-    function ParInfoMethod(aFunc:TStringFunction):TVstParameter;
-    function SetParValueCallback(aCallback : TSetParValueProcedure):TVstParameter;
-    function GetParValueCallback(aCallback : TGetParValueProcedure):TVstParameter;
-
-    procedure ResetToDefault;
+    function SetCallback_SetParInfoMethod(aCallback:TStringFunction):TVstParameter;
+    function SetCallback_SetParValue(aCallback : TSetParValueProcedure):TVstParameter;
+    function SetCallback_GetParValue(aCallback : TGetParValueProcedure):TVstParameter;
 
     function SetName(aName:string):TVstParameter;
     function SetPublished(aIsPublished : boolean):TVstParameter;
@@ -71,7 +65,7 @@ type
     // NOTE: SetMinMax() and SetDefault() don't quite sit together. SetMinMax() sets the min/max *scaled* values.
     // SetDefault() sets the default value using the regular 0..1 VST range.
 
-
+    procedure ResetToDefault;
 
     property Name          : string   read fName;
     property ShortName     : string   read fName;
@@ -237,9 +231,9 @@ begin
   end;
 end;
 
-function TVstParameter.ParInfoMethod(aFunc: TStringFunction): TVstParameter;
+function TVstParameter.SetCallback_SetParInfoMethod(aCallback: TStringFunction): TVstParameter;
 begin
-  fGetParInfoMethod := aFunc;
+  fGetParInfoMethod := aCallback;
   result := self;
 end;
 
@@ -270,12 +264,12 @@ begin
   end;
 end;
 
-function TVstParameter.SetParValueCallback(aCallback: TSetParValueProcedure): TVstParameter;
+function TVstParameter.SetCallback_SetParValue(aCallback: TSetParValueProcedure): TVstParameter;
 begin
   SetParValueProcedure := aCallback;
 end;
 
-function TVstParameter.GetParValueCallback(aCallback: TGetParValueProcedure): TVstParameter;
+function TVstParameter.SetCallback_GetParValue(aCallback: TGetParValueProcedure): TVstParameter;
 begin
   GetParValueProcedure := aCallback;
 end;
