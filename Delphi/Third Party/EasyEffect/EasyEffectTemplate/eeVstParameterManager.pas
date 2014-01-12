@@ -46,9 +46,16 @@ type
     // VST Parameters are added to the manager.
     procedure BuildPublishedParameterInfo;
 
-
     property PublishedParameterCount : integer read GetPublishedParameterCount;
     function PublishedParameter(Index : integer): TVstParameter;
+
+    // NOTE: The whole published VST parameter scheme is a little bit odd I think.
+    // I think I should have another go at implementing something a bit more straight forward.
+    // It's odd because the VstParameterManager does the 'publishing' but
+    // a parameters 'published' state can be checked via the TVstParameter code.
+    // I think it would make more sense if the TVstParameter class didn't know
+    // if it was published or not (as it doesn't do the publishing). Or the VST parameter
+    // should be responsible for control whether or not it is published.
   end;
 
 implementation
