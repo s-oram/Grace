@@ -1,0 +1,45 @@
+package AudioIO_DXE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  AudioIO_AiffLowLevel in '..\source\AudioIO_AiffLowLevel.pas',
+  AudioIO_Snd in '..\source\AudioIO_Snd.pas',
+  AudioIO_SndLowLevel in '..\source\AudioIO_SndLowLevel.pas',
+  AudioIO_Wave in '..\source\AudioIO_Wave.pas',
+  AudioIO_WaveLowLevel in '..\source\AudioIO_WaveLowLevel.pas',
+  AudioIO in '..\source\AudioIO.pas',
+  AudioIO_Aiff in '..\source\AudioIO_Aiff.pas',
+  AudioIO_EndianConversion in '..\source\AudioIO_EndianConversion.pas',
+  AudioIO_ExtendedX87 in '..\source\thirdparty\AudioIO_ExtendedX87.pas',
+  AudioIO_WinFile in '..\source\AudioIO_WinFile.pas';
+
+end.
