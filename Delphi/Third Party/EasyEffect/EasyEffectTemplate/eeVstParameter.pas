@@ -22,8 +22,6 @@ type
 
 
 
-
-
   TVstParameter = class
   private
     fName       : string;
@@ -57,8 +55,6 @@ type
   public
     constructor Create(const aName : string);
     destructor Destroy; override;
-
-
 
 
     function ParInfoMethod(aFunc:TStringFunction):TVstParameter;
@@ -98,10 +94,6 @@ type
     // GetParameter and SetParameter methods as part of the VST protocole.
     property IsPublished : boolean read fIsPublished;
     property PublishedVSTParameterIndex : integer read fPublishedVstParameterIndex;
-
-
-
-
 
 
 
