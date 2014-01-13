@@ -8,6 +8,7 @@ uses
 type
   //========== forward declarations ============================================
   TVstParameter = class;
+  TVstParameterClass = class of TVstParameter;
   //============================================================================
 
   TStringFunction = reference to function:string;

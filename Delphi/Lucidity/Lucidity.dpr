@@ -136,7 +136,8 @@ uses
   eeGuiStandard.RedFoxMenu in 'eeGuiStandard.RedFoxMenu.pas',
   eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas',
   eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
-  eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas';
+  eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas',
+  eeVstParameterEx in 'eeVstParameterEx.pas';
 
 {$R *.res}
 

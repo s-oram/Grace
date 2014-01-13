@@ -31,7 +31,9 @@ implementation
 uses
   SysUtils,
   uConstants,
-  eePlugin, eeVstParameter,
+  eePlugin,
+  eeVstParameter,
+  eeVstParameterEx,
   eeFunctions, eeGlobals,
   LucidityParameterScaling,
   uLucidityEnums;
