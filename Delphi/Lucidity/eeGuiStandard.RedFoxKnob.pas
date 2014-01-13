@@ -7,6 +7,7 @@ uses
   VamLib.Collections.RecordArray,
   VamGuiControlInterfaces,
   eeVstParameter,
+  eeVstParameterEx,
   Classes, Controls, eeGlobals;
 
 type
