@@ -31,7 +31,7 @@ type
     destructor Destroy; override;
 
     function NewParameter(Name : string):TVstParameter;
-    procedure Add(aPar : TVstParameter);
+    function Add(aPar : TVstParameter):TVstParameter;
 
     function FindParameter(aName:string):TVstParameter;
     function FindParameterIndex(aPar : TVstParameter):integer;
@@ -160,9 +160,10 @@ begin
   result := fPublishedParList[Index] as TVstParameter;
 end;
 
-procedure TVstParameterManager.Add(aPar: TVstParameter);
+function TVstParameterManager.Add(aPar: TVstParameter):TVstParameter;
 begin
-  fParList.Add(aPar)
+  fParList.Add(aPar);
+  result := aPar;
 end;
 
 procedure TVstParameterManager.BuildPublishedParameterInfo;

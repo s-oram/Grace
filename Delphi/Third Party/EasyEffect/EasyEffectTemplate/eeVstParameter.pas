@@ -21,7 +21,6 @@ type
   TParInputCurve = (icLinear, icSquare, icCube);
 
 
-
   TVstParameter = class
   private
     fName       : string;
@@ -88,7 +87,6 @@ type
     // GetParameter and SetParameter methods as part of the VST protocole.
     property IsPublished : boolean read fIsPublished;
     property PublishedVSTParameterIndex : integer read fPublishedVstParameterIndex;
-
 
 
     // OnParameterChanged will be called anytime the parameter value changes.
