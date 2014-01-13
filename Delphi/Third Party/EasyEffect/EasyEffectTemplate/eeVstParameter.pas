@@ -50,7 +50,7 @@ type
     function ConvertScaledToVst(const x : single):single;
     function ConvertVstToScaled(const x : single):single;
   public
-    constructor Create(const aName : string);
+    constructor Create(const aName : string); virtual;
     destructor Destroy; override;
 
     function SetCallback_SetParInfoMethod(aCallback:TStringFunction):TVstParameter;

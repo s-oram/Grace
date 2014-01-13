@@ -20,7 +20,6 @@ uses
 type
   TPluginParameterWizard= class
   private
-    VstParameters   : TVstParameterList;
   public
     constructor Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
     destructor Destroy; override;
@@ -42,18 +41,23 @@ uses
 { TPluginParameterManger }
 
 constructor TPluginParameterWizard.Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
+  function GetModLinkIndex(var Index:integer): integer;
+  begin
+    result := Index;
+    inc(index);
+  end;
 var
   Plugin : TeePlugin;
   c1 : integer;
   InfoMethod : TStringFunction;
   aPar : TVstParameterEx;
   Globals : TGlobals;
+  aModLinkIndex : integer;
 begin
   Plugin := (aPlugin as TeePlugin);
   Globals := Plugin.Globals;
 
-  VstParameters := TVstParameterList.Create;
-  VstParameters.OwnsObjects := true;
+  aModLinkIndex := 0;
 
 
   //== Create all parameters ==
@@ -77,6 +81,7 @@ begin
 
 
   aPar := TVstParameterEx.Create('VoiceGlide');
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -219,6 +224,7 @@ begin
 
   aPar := TVstParameterEx.Create('OutputGain');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -238,6 +244,7 @@ begin
 
   aPar := TVstParameterEx.Create('OutputPan');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -257,6 +264,7 @@ begin
 
   aPar := TVstParameterEx.Create('VoicePitchOne');
   aPar.SetMinMax(-1,1).SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     var
@@ -276,6 +284,7 @@ begin
 
   aPar := TVstParameterEx.Create('VoicePitchTwo');
   aPar.SetMinMax(-1,1).SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -312,16 +321,20 @@ begin
   Plugin.Globals.VstParameters.Add(aPar);
 
   aPar := TVstParameterEx.Create('SampleStart');
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
 
   aPar := TVstParameterEx.Create('SampleEnd');
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
 
   aPar := TVstParameterEx.Create('LoopStart');
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
 
   aPar := TVstParameterEx.Create('LoopEnd');
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
 
@@ -331,6 +344,7 @@ begin
 
   aPar := TVstParameterEx.Create('AmpAttack');
   aPar.SetDefault(0);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -347,6 +361,7 @@ begin
 
   aPar := TVstParameterEx.Create('AmpHold');
   aPar.SetDefault(0);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -366,6 +381,7 @@ begin
 
   aPar := TVstParameterEx.Create('AmpDecay');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -385,6 +401,7 @@ begin
 
   aPar := TVstParameterEx.Create('AmpSustain');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -404,6 +421,7 @@ begin
 
   aPar := TVstParameterEx.Create('AmpRelease');
   Plugin.Globals.VstParameters.Add(aPar);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Release: ' + RoundFloatToStr(TParScaler.ADSR_ReleaseTimeToMS(Plugin.ActiveVoicePar.AmpRelease)) + 'ms';
@@ -440,6 +458,7 @@ begin
 
   aPar := TVstParameterEx.Create('FilterAttack');
   aPar.SetDefault(0);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -459,6 +478,7 @@ begin
 
   aPar := TVstParameterEx.Create('FilterHold');
   aPar.SetDefault(0);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -478,6 +498,7 @@ begin
 
   aPar := TVstParameterEx.Create('FilterDecay');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -497,6 +518,7 @@ begin
 
   aPar := TVstParameterEx.Create('FilterSustain');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -516,6 +538,7 @@ begin
 
   aPar := TVstParameterEx.Create('FilterRelease');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -593,6 +616,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter1Par1');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -612,6 +636,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter1Par2');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -631,6 +656,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter1Par3');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -650,6 +676,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter1Par4');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -669,6 +696,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter2Par1');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -688,6 +716,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter2Par2');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -707,6 +736,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter2Par3');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -726,6 +756,7 @@ begin
 
   aPar := TVstParameterEx.Create('Filter2Par4');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -783,6 +814,7 @@ begin
 
   aPar := TVstParameterEx.Create('LfoRate1');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -802,6 +834,7 @@ begin
 
   aPar := TVstParameterEx.Create('LfoRate2');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -820,6 +853,7 @@ begin
 
   aPar := TVstParameterEx.Create('LfoAPar2');
   aPar.SetDefault(1);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -839,6 +873,7 @@ begin
 
   aPar := TVstParameterEx.Create('LfoBPar2');
   aPar.SetDefault(1);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -858,6 +893,7 @@ begin
 
   aPar := TVstParameterEx.Create('ModEnvAAttack');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -877,6 +913,7 @@ begin
 
   aPar := TVstParameterEx.Create('ModEnvADecay');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -914,6 +951,7 @@ begin
 
   aPar := TVstParameterEx.Create('ModEnvBAttack');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -933,6 +971,7 @@ begin
 
   aPar := TVstParameterEx.Create('ModEnvBDecay');
   aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1266,15 +1305,18 @@ begin
 
 
 
+  assert(aModLinkIndex = kModulatedParameterCount);
 
   //============================================================================
   //IMPORTANT: build published parameter info after adding all parameters...
   Plugin.Globals.VstParameters.BuildPublishedParameterInfo;
 end;
 
+
+
 destructor TPluginParameterWizard.Destroy;
 begin
-  VstParameters.Free;
+
   inherited;
 end;
 
