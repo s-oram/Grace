@@ -46,7 +46,7 @@ var
   Plugin : TeePlugin;
   c1 : integer;
   InfoMethod : TStringFunction;
-  aPar : TVstParameter;
+  aPar : TVstParameterEx;
   Globals : TGlobals;
 begin
   Plugin := (aPlugin as TeePlugin);
@@ -57,7 +57,7 @@ begin
 
 
   //== Create all parameters ==
-  aPar := TVstParameter.Create('VoiceMode');
+  aPar := TVstParameterEx.Create('VoiceMode');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -76,7 +76,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('VoiceGlide');
+  aPar := TVstParameterEx.Create('VoiceGlide');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -91,7 +91,7 @@ begin
       Value := VoiceController.VoiceGlide;
     end);
 
-  aPar := TVstParameter.Create('PitchTracking');
+  aPar := TVstParameterEx.Create('PitchTracking');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -116,7 +116,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('SamplePlaybackType');
+  aPar := TVstParameterEx.Create('SamplePlaybackType');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -136,7 +136,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('SampleResetClockSource');
+  aPar := TVstParameterEx.Create('SampleResetClockSource');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -155,7 +155,7 @@ begin
 
 
   //-- one shot sampler osc ---
-  aPar := TVstParameter.Create('SamplerLoopBounds');
+  aPar := TVstParameterEx.Create('SamplerLoopBounds');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -176,7 +176,7 @@ begin
       Value := TSamplerLoopBoundsHelper.ToSingle(Plugin.ActiveVoicePar.SamplerLoopBounds);
     end);
 
-  aPar := TVstParameter.Create('SamplerLoopMode');
+  aPar := TVstParameterEx.Create('SamplerLoopMode');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -200,23 +200,25 @@ begin
     end);
 
   //-- grain stretch osc ---
-  aPar := TVstParameter.Create('GrainLoop');
+  aPar := TVstParameterEx.Create('GrainLoop');
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('GrainLength');
+  aPar := TVstParameterEx.Create('GrainLength');
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('GrainRate').SetMinMax(-1,1).SetDefault(0.5);
+  aPar := TVstParameterEx.Create('GrainRate');
+  aPar.SetMinMax(-1,1).SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('GrainPosition');
+  aPar := TVstParameterEx.Create('GrainPosition');
   Plugin.Globals.VstParameters.Add(aPar);
 
 
 
 
 
-  aPar := TVstParameter.Create('OutputGain').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('OutputGain');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -234,7 +236,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('OutputPan').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('OutputPan');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -252,7 +255,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('VoicePitchOne').SetMinMax(-1,1).SetDefault(0.5);
+  aPar := TVstParameterEx.Create('VoicePitchOne');
+  aPar.SetMinMax(-1,1).SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     var
@@ -270,7 +274,8 @@ begin
       Value := Plugin.ActiveVoicePar.VoicePitchOne;
     end);
 
-  aPar := TVstParameter.Create('VoicePitchTwo').SetMinMax(-1,1).SetDefault(0.5);
+  aPar := TVstParameterEx.Create('VoicePitchTwo');
+  aPar.SetMinMax(-1,1).SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -287,38 +292,45 @@ begin
 
 
   //TODO: Are these parameters needed?
-  aPar := TVstParameter.Create('AuxALevel').SetDefault(0);
+  aPar := TVstParameterEx.Create('AuxALevel');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('AuxBLevel').SetDefault(0);
+  aPar := TVstParameterEx.Create('AuxBLevel');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('OscShape');
+  aPar := TVstParameterEx.Create('OscShape');
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('OscPulseWidth').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('OscPulseWidth');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('NoiseLevel').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('NoiseLevel');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('SampleStart');
+  aPar := TVstParameterEx.Create('SampleStart');
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('SampleEnd').SetDefault(1);
+  aPar := TVstParameterEx.Create('SampleEnd');
+  aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('LoopStart');
+  aPar := TVstParameterEx.Create('LoopStart');
   Plugin.Globals.VstParameters.Add(aPar);
 
-  aPar := TVstParameter.Create('LoopEnd').SetDefault(1);
+  aPar := TVstParameterEx.Create('LoopEnd');
+  aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
 
 
 
 
 
-  aPar := TVstParameter.Create('AmpAttack').SetDefault(0);
+  aPar := TVstParameterEx.Create('AmpAttack');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -333,7 +345,8 @@ begin
       Value := Plugin.ActiveVoicePar.AmpAttack;
     end);
 
-  aPar := TVstParameter.Create('AmpHold').SetCallback_SetParInfoMethod(InfoMethod).SetDefault(0);
+  aPar := TVstParameterEx.Create('AmpHold');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -351,7 +364,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('AmpDecay').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('AmpDecay');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -369,7 +383,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('AmpSustain').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('AmpSustain');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -387,7 +402,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('AmpRelease');
+  aPar := TVstParameterEx.Create('AmpRelease');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -405,7 +420,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('AmpVelocity'); //Amp Env Velocity.
+  aPar := TVstParameterEx.Create('AmpVelocity'); //Amp Env Velocity.
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -423,7 +438,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterAttack').SetDefault(0);
+  aPar := TVstParameterEx.Create('FilterAttack');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -441,7 +457,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterHold').SetDefault(0);
+  aPar := TVstParameterEx.Create('FilterHold');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -459,7 +476,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterDecay').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('FilterDecay');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -477,7 +495,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterSustain').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('FilterSustain');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -495,7 +514,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterRelease').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('FilterRelease');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -513,7 +533,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('FilterVelocity');  //Filter Env Velocity.
+  aPar := TVstParameterEx.Create('FilterVelocity');  //Filter Env Velocity.
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -531,7 +551,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter1Type').SetDefault(0);
+  aPar := TVstParameterEx.Create('Filter1Type');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -550,7 +571,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter2Type').SetDefault(0);
+  aPar := TVstParameterEx.Create('Filter2Type');
+  aPar.SetDefault(0);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -569,7 +591,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter1Par1').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter1Par1');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -587,7 +610,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter1Par2').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter1Par2');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -605,7 +629,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter1Par3').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter1Par3');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -623,7 +648,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter1Par4').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter1Par4');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -641,7 +667,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter2Par1').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter2Par1');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -659,7 +686,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter2Par2').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter2Par2');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -677,7 +705,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter2Par3').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter2Par3');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -695,7 +724,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Filter2Par4').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('Filter2Par4');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -713,7 +743,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoShape1');
+  aPar := TVstParameterEx.Create('LfoShape1');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -732,7 +762,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoShape2');
+  aPar := TVstParameterEx.Create('LfoShape2');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -751,7 +781,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoRate1').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('LfoRate1');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -769,7 +800,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoRate2').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('LfoRate2');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -786,7 +818,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoAPar2').SetDefault(1);
+  aPar := TVstParameterEx.Create('LfoAPar2');
+  aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -804,7 +837,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('LfoBPar2').SetDefault(1);
+  aPar := TVstParameterEx.Create('LfoBPar2');
+  aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -822,7 +856,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvAAttack').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('ModEnvAAttack');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -840,7 +875,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvADecay').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('ModEnvADecay');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -858,7 +894,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvAMode');
+  aPar := TVstParameterEx.Create('ModEnvAMode');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -876,7 +912,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvBAttack').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('ModEnvBAttack');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -894,7 +931,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvBDecay').SetDefault(0.5);
+  aPar := TVstParameterEx.Create('ModEnvBDecay');
+  aPar.SetDefault(0.5);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -912,7 +950,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('ModEnvBMode');
+  aPar := TVstParameterEx.Create('ModEnvBMode');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -930,7 +968,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Seq1Clock');
+  aPar := TVstParameterEx.Create('Seq1Clock');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -948,7 +986,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Seq1Direction');
+  aPar := TVstParameterEx.Create('Seq1Direction');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -966,7 +1004,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('StepSeq1Length');
+  aPar := TVstParameterEx.Create('StepSeq1Length');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -984,7 +1022,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Seq2Clock');
+  aPar := TVstParameterEx.Create('Seq2Clock');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1002,7 +1040,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Seq2Direction');
+  aPar := TVstParameterEx.Create('Seq2Direction');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1020,7 +1058,7 @@ begin
 
 
 
-  aPar := TVstParameter.Create('StepSeq2Length');
+  aPar := TVstParameterEx.Create('StepSeq2Length');
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1038,7 +1076,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadX1').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadX1');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1056,7 +1095,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadY1').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadY1');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1074,7 +1114,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadX2').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadX2');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1092,7 +1133,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadY2').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadY2');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1110,7 +1152,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadX3').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadX3');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1128,7 +1171,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadY3').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadY3');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1146,7 +1190,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadX4').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadX4');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1164,7 +1209,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PadY4').SetDefault(0.5).SetPublished(true);
+  aPar := TVstParameterEx.Create('PadY4');
+  aPar.SetDefault(0.5).SetPublished(true);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1182,7 +1228,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('PreviewVolume').SetInputCurve(TParInputCurve.icSquare).SetMinMax(0,1.5).SetDefault(0.3);
+  aPar := TVstParameterEx.Create('PreviewVolume');
+  aPar.SetInputCurve(TParInputCurve.icSquare).SetMinMax(0,1.5).SetDefault(0.3);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1200,7 +1247,8 @@ begin
 
 
 
-  aPar := TVstParameter.Create('Preview').SetDefault(1);
+  aPar := TVstParameterEx.Create('Preview');
+  aPar.SetDefault(1);
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
@@ -1220,15 +1268,6 @@ begin
 
 
   //============================================================================
-
-  //== Additional parameter setup ==
-  for c1 := 0 to VstParameters.Count-1 do
-  begin
-    //VstParameters[c1].OnParameterChanged := Plugin.VstParameterChanged;
-    //VstParameters[c1].OnGetParameter     := GetVstParameter;
-    Plugin.Globals.VstParameters.Add(VstParameters[c1]);
-  end;
-
   //IMPORTANT: build published parameter info after adding all parameters...
   Plugin.Globals.VstParameters.BuildPublishedParameterInfo;
 end;

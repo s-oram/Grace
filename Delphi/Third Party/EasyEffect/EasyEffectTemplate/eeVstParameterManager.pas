@@ -70,7 +70,7 @@ uses
 constructor TVstParameterManager.Create;
 begin
   fParList := TObjectList.Create;
-  fParList.OwnsObjects := false;
+  fParList.OwnsObjects := true;
 
   fPublishedParList := TObjectList.Create;
   fPublishedParList.OwnsObjects := false;
