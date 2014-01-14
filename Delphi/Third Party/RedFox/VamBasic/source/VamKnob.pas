@@ -62,7 +62,7 @@ type
     IsFineAdjustment : boolean;
 
     ReferencePoint   : TPoint;
-    ReferencePos     : single;
+    ReferenceValue     : single;
     procedure UpdateReferencePoints(const X, Y:integer);
 
 
@@ -70,7 +70,7 @@ type
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
-    procedure Changed;
+    procedure KnobPosChanged;
     procedure ModAmountChanged;
 
     procedure Paint; override;
@@ -219,8 +219,8 @@ begin
   ReferencePoint := Point(X, Y);
 
   if KnobMode = TKnobMode.PositionEdit
-    then ReferencePos   := fPos
-    else ReferencePos   := fModAmount;
+    then ReferenceValue   := fPos
+    else ReferenceValue   := fModAmount;
 end;
 
 
@@ -269,7 +269,7 @@ begin
 
     Dist := (Y - ReferencePoint.Y) * ScaleFactor;
 
-    NewPos := ReferencePos - Dist;
+    NewPos := ReferenceValue - Dist;
 
 
     if KnobMode = TKnobMode.PositionEdit then
@@ -293,7 +293,7 @@ begin
       begin
         fPos := NewPos;
         Invalidate;
-        Changed;
+        KnobPosChanged;
       end;
 
     end else
