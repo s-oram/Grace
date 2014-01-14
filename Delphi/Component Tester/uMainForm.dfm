@@ -64,6 +64,7 @@ object Form1: TForm1
       Width = 105
       Height = 89
       HitTest = True
+      ColorBorder = '$00000000'
       Color = '$FF3E3E3E'
       ColorMouseOver = '$FF3E3E3E'
       TextAlign = AlignNear

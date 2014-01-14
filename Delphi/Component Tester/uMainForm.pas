@@ -4,7 +4,8 @@ interface
 
 uses
   VamLib.Debouncer,
-  AudioIO,  eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
+  AudioIO,
+  eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
