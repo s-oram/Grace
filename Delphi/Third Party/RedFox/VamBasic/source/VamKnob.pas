@@ -203,7 +203,7 @@ begin
   inherited;
 end;
 
-procedure TVamKnob.Changed;
+procedure TVamKnob.KnobPosChanged;
 begin
   if assigned(OnChanged) then OnChanged(self);
 end;
@@ -244,7 +244,7 @@ end;
 procedure TVamKnob.MouseMove(Shift: TShiftState; X, Y: Integer);
 var
   Dist : single;
-  NewPos : single;
+  NewValue : single;
   ScaleFactor : single;
   CurrentAdjustmentState : boolean;
 begin
@@ -269,7 +269,7 @@ begin
 
     Dist := (Y - ReferencePoint.Y) * ScaleFactor;
 
-    NewPos := ReferenceValue - Dist;
+    NewValue := ReferenceValue - Dist;
 
 
     if KnobMode = TKnobMode.PositionEdit then
@@ -277,21 +277,21 @@ begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
       // This prevents overshoot when the user reverses mouse direction at the knob
       // position limits.
-      if NewPos > 1 then
+      if NewValue > 1 then
       begin
-        NewPos := 1;
+        NewValue := 1;
         UpdateReferencePoints(X, Y);
       end;
 
-      if NewPos < 0 then
+      if NewValue < 0 then
       begin
-        NewPos := 0;
+        NewValue := 0;
         UpdateReferencePoints(X, Y);
       end;
 
-      if fPos <> NewPos then
+      if fPos <> NewValue then
       begin
-        fPos := NewPos;
+        fPos := NewValue;
         Invalidate;
         KnobPosChanged;
       end;
@@ -301,21 +301,21 @@ begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
       // This prevents overshoot when the user reverses mouse direction at the knob
       // position limits.
-      if NewPos > 1 then
+      if NewValue > 1 then
       begin
-        NewPos := 1;
+        NewValue := 1;
         UpdateReferencePoints(X, Y);
       end;
 
-      if NewPos < -1 then
+      if NewValue < -1 then
       begin
-        NewPos := -1;
+        NewValue := -1;
         UpdateReferencePoints(X, Y);
       end;
 
-      if fModAmount <> NewPos then
+      if fModAmount <> NewValue then
       begin
-        fModAmount := NewPos;
+        fModAmount := NewValue;
         Invalidate;
         ModAmountChanged;
       end;
