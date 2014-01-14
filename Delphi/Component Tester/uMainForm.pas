@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+  VamLib.Collections.Lists,
   VamLib.Debouncer,
   AudioIO,
   eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
@@ -12,20 +13,27 @@ uses
   VamModSelector;
 
 type
+  TFoo = class
+  private
+    fText: string;
+  public
+    destructor Destroy; override;
+    property Text : string read fText write fText;
+  end;
+
+  TFooList = TSimpleObjectList<TFoo>;
+
   TForm1 = class(TForm)
     Button1: TButton;
-    RedFoxContainer1: TRedFoxContainer;
-    FileOpenDialog1: TFileOpenDialog;
-    Knob1: TVamKnob;
-    Label1: TVamLabel;
-    VamModSelector1: TVamModSelector;
+    Memo1: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Knob1Changed(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateLabel;
   public
+    FooList : TFooList;
+
     Debouncer : TDebouncer;
 
     Sample : TSampleFloat;
@@ -34,6 +42,7 @@ type
 
     a : integer;
     b : cardinal;
+    procedure UpdateMemo;
   end;
 
 var
@@ -50,6 +59,8 @@ uses
 
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  c1: Integer;
 begin
   Sample := TSampleFloat.Create;
   PeakBuffer := TPeakbuffer.Create;
@@ -63,6 +74,19 @@ begin
 
   Debouncer := TDebouncer.Create;
   Debouncer.DebounceTime := 100;
+
+
+  FooList := TFooList.Create;
+  FooList.OwnsObjects := true;
+  for c1 := 0 to 10 do
+  begin
+    FooList.Add(TFoo.Create);
+    FooList[c1].Text := IntToStr(c1) + ' bottle(s) on the wall!';
+  end;
+
+  FooList.Delete(4);
+
+  UpdateMemo;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -71,34 +95,32 @@ begin
   Sample.Free;
   PeakBuffer := nil;
   ImageBuffer := nil;
+  FooList.Free;
 end;
 
-
-procedure TForm1.Knob1Changed(Sender: TObject);
-begin
-  Debouncer.Debounce(UpdateLabel);
-end;
 
 procedure TForm1.UpdateLabel;
-var
-  Task : TProc;
-  CallBack : TProc;
-  x : string;
 begin
-  x := FloatToStr(Knob1.Pos * 100);
 
-  Task := procedure
+end;
+
+procedure TForm1.UpdateMemo;
+var
+  c1: Integer;
+begin
+  Memo1.Clear;
+  for c1 := 0 to FooList.Count-1 do
   begin
-    Sleep(1500);
+    Memo1.Lines.Add(FooList[c1].Text);
   end;
+end;
 
-  CallBack := procedure
-  begin
-    //Label1.Text := FloatToStr(Knob1.Pos * 100);
-    Label1.Text := x;
-  end;
+{ TFoo }
 
-  RunTask(Task, CallBack);
+destructor TFoo.Destroy;
+begin
+  ShowMessage(Text);
+  inherited;
 end;
 
 end.

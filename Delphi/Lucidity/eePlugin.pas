@@ -65,7 +65,6 @@ type
     fSampleDirectories: TSampleDirectories;
     fFocusedKeyGroup: IKeyGroup;
     fIsPreviewEnabled: boolean;
-    fSelectedModSlot: integer;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
     function GetVoiceGlide: single;
@@ -74,7 +73,6 @@ type
     procedure SetVoiceMode(const Value: TVoiceMode);
     function GetPreviewVolume: single;
     procedure SetPreviewVolume(const Value: single);
-    procedure SetSelectedModSlot(const Value: integer);
   protected
     DeltaOffset     : integer;
     ParameterWizard : TPluginParameterWizard;
@@ -173,7 +171,7 @@ type
 
 
 
-    property SelectedModSlot : integer read fSelectedModSlot write SetSelectedModSlot;
+
 
 
   published
@@ -218,8 +216,6 @@ var
   fn : string;
 begin
   inherited;
-
-  SelectedModSlot := -1;
 
   fIsPreviewEnabled := true;
 
@@ -772,18 +768,6 @@ end;
 procedure TeePlugin.SetPreviewVolume(const Value: single);
 begin
   AudioPreviewPlayer.Volume := Value;
-end;
-
-procedure TeePlugin.SetSelectedModSlot(const Value: integer);
-begin
-  assert(Value >= -1);
-  assert(Value <= kModSlots-1);
-
-  if Value <> fSelectedModSlot then
-  begin
-    fSelectedModSlot := Value;
-    Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
-  end;
 end;
 
 procedure TeePlugin.SetVoiceGlide(const Value: single);

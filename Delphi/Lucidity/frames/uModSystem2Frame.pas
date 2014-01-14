@@ -189,7 +189,7 @@ begin
   if Button = mbLeft then
   begin
     Index := (Sender as TVamModSelector).Tag;
-    Plugin.SelectedModSlot := Index;
+    Plugin.Globals.SelectedModSlot := Index;
   end;
 end;
 
@@ -197,7 +197,7 @@ procedure TModSystem2Frame.MainSelectorMouseDown(Sender: TObject; Button: TMouse
 begin
   if Button = mbLeft then
   begin
-    Plugin.SelectedModSlot := -1;
+    Plugin.Globals.SelectedModSlot := -1;
   end;
 end;
 
@@ -208,9 +208,9 @@ var
 begin
   if Button = mbLeft then
   begin
-    Index := Plugin.SelectedModSlot - 1;
+    Index := Plugin.Globals.SelectedModSlot - 1;
     if Index < -1 then Index := 7;
-    Plugin.SelectedModSlot := Index;
+    Plugin.Globals.SelectedModSlot := Index;
   end;
 end;
 
@@ -220,9 +220,9 @@ var
 begin
   if Button = mbLeft then
   begin
-    Index := Plugin.SelectedModSlot + 1;
+    Index := Plugin.Globals.SelectedModSlot + 1;
     if Index > 7 then Index := -1;
-    Plugin.SelectedModSlot := Index;
+    Plugin.Globals.SelectedModSlot := Index;
   end;
 end;
 
@@ -241,7 +241,7 @@ begin
   MainSelector.Color          := kColor_LcdDark1;
   MainSelector.ColorMouseOver := kColor_ButtonMouseOver;
 
-  case Plugin.SelectedModSlot of
+  case Plugin.Globals.SelectedModSlot of
     -1 :
     begin
       MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark1);
@@ -251,7 +251,7 @@ begin
 
     0..7:
     begin
-      c1 := Plugin.SelectedModSlot;
+      c1 := Plugin.Globals.SelectedModSlot;
       ModSelectors[c1].Color           := kColor_LcdDark5;
       ModSelectors[c1].ColorMouseOver  := kColor_LcdDark6;
     end;

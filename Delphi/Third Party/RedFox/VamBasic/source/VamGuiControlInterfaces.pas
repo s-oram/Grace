@@ -14,6 +14,10 @@ type
   IKnobControl = interface
     ['{9134916E-5ACF-4E64-AA71-61B9B65D5844}']
 
+    // typically used to store the VST parameter index.
+    procedure SetParameterIndex(Index : integer);
+    function GetParameterIndex:integer;
+
     // Get/Set the value/position of the knob. Valid range is 0..1
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);

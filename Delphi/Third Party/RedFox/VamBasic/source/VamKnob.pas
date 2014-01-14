@@ -31,6 +31,7 @@ type
     fMinModDepth: single;
     fModLineColor : TRedFoxColor;
     fKnobMode: TKnobMode;
+    fParameterIndex: integer;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -50,6 +51,8 @@ type
     function GetModLineColor: TRedFoxColorString;
     procedure SetModLineColor(const Value: TRedFoxColorString);
     procedure SetKnobMode(const Value: TKnobMode);
+    procedure SetParameterIndex(Index : integer);
+    function GetParameterIndex:integer;
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -105,8 +108,13 @@ type
     property MinModDepth : single read fMinModDepth write SetMinModDepth;
     property MaxModDepth : single read fMaxModDepth write SetMaxModDepth;
 
+    // typically used to store the VST parameter index.
+    property ParameterIndex : integer read fParameterIndex write fParameterIndex;
+
     // OnChanged should only be called when the control changes through user interaction.
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
+
+
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -380,6 +388,16 @@ end;
 function TVamKnob.GetModLineColor: TRedFoxColorString;
 begin
   result := fModLineColor
+end;
+
+function TVamKnob.GetParameterIndex: integer;
+begin
+  result := fParameterIndex;
+end;
+
+procedure TVamKnob.SetParameterIndex(Index: integer);
+begin
+  fParameterIndex := Index;
 end;
 
 procedure TVamKnob.SetPos(Value: single);

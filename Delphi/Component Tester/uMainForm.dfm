@@ -17,71 +17,19 @@ object Form1: TForm1
   TextHeight = 13
   object Button1: TButton
     Left = 8
-    Top = 267
+    Top = 371
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
   end
-  object RedFoxContainer1: TRedFoxContainer
-    Left = 0
-    Top = 0
-    Width = 1005
-    Height = 501
-    Color = '$FFEEEEEE'
-    Align = alClient
-    object Knob1: TVamKnob
-      Left = 248
-      Top = 280
-      Width = 73
-      Height = 73
-      Text = 'Knob1'
-      HitTest = True
-      IsKnobEnabled = True
-      VisibleSteps = 0
-      OnChanged = Knob1Changed
-      Visible = True
-    end
-    object Label1: TVamLabel
-      Left = 272
-      Top = 120
-      Width = 185
-      Height = 33
-      HitTest = True
-      AutoSize = False
-      TextAlign = AlignCenter
-      TextVAlign = AlignCenter
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      Visible = True
-    end
-    object VamModSelector1: TVamModSelector
-      Left = 536
-      Top = 240
-      Width = 105
-      Height = 89
-      HitTest = True
-      ColorBorder = '$00000000'
-      Color = '$FF3E3E3E'
-      ColorMouseOver = '$FF3E3E3E'
-      TextAlign = AlignNear
-      TextVAlign = AlignNear
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      Visible = True
-    end
-  end
-  object FileOpenDialog1: TFileOpenDialog
-    FavoriteLinks = <>
-    FileTypes = <>
-    Options = []
-    Left = 184
-    Top = 224
+  object Memo1: TMemo
+    Left = 368
+    Top = 32
+    Width = 537
+    Height = 265
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 1
   end
 end

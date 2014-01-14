@@ -16,6 +16,8 @@ type
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
     fInfoBarReceiver: TInfoBarReceiver;
+    fSelectedModSlot: integer;
+    procedure SetSelectedModSlot(const Value: integer);
   protected
   protected
   public
@@ -36,6 +38,8 @@ type
     // InfoBarReceiver is a central point for controls to send messages for the info bar to.
     // The info bar can then respond to changes and display the message.
     property InfoBarReceiver : TInfoBarReceiver read fInfoBarReceiver write fInfoBarReceiver;
+
+    property SelectedModSlot : integer read fSelectedModSlot write SetSelectedModSlot;
   end;
 
 implementation
@@ -59,6 +63,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fSelectedModSlot := -1;
 
   fInfoBarReceiver := TInfoBarReceiver.Create;
 
@@ -160,6 +166,18 @@ begin
     begin
       fKeyData.Clear;
     end;
+  end;
+end;
+
+procedure TGlobals.SetSelectedModSlot(const Value: integer);
+begin
+  assert(Value >= -1);
+  assert(Value <= kModSlots-1);
+
+  if Value <> fSelectedModSlot then
+  begin
+    fSelectedModSlot := Value;
+    SendWindowsMessage(UM_MOD_SLOT_CHANGED);
   end;
 end;
 

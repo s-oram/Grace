@@ -3,6 +3,7 @@ unit uModControlFrame;
 interface
 
 uses
+  VamLib.Collections.Lists,
   uDialogDisplayArea,
   uGuiFeedbackData, uLucidityKeyGroupInterface, VamStatusLed,
   eePlugin, eeGuiStandard, eeGuiStandard_MenuBuilder,
@@ -133,9 +134,12 @@ type
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
 
+    KnobList : TObjectList;
+
     MsgHandle : hwnd;
     procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
+    procedure UpdateModulation; //called when the mod slot changes...
   protected
     AltFilterText : TAltFilterText;
     FilterParameterInfo : TFilterParameterInfo;
@@ -180,6 +184,36 @@ begin
   AltFilterText.ShowAltText2 := false;
 
   StepSequenceMenu := TStepSequenceMenu.Create;
+
+  KnobList := TObjectList.Create;
+
+
+  KnobList.Add(AmpEnvAttackKnob);
+  KnobList.Add(AmpEnvHoldKnob);
+  KnobList.Add(AmpEnvDecayKnob);
+  KnobList.Add(AmpEnvSustainKnob);
+  KnobList.Add(AmpEnvReleaseKnob);
+  KnobList.Add(FilterEnvAttackKnob);
+  KnobList.Add(FilterEnvHoldKnob);
+  KnobList.Add(FilterEnvDecayKnob);
+  KnobList.Add(FilterEnvSustainKnob);
+  KnobList.Add(FilterEnvReleaseKnob);
+  KnobList.Add(Filter1Par1Knob);
+  KnobList.Add(Filter1Par2Knob);
+  KnobList.Add(Filter1Par3Knob);
+  KnobList.Add(Filter1Par4Knob);
+  KnobList.Add(Filter2Par1Knob);
+  KnobList.Add(Filter2Par2Knob);
+  KnobList.Add(Filter2Par3Knob);
+  KnobList.Add(Filter2Par4Knob);
+  KnobList.Add(ModEnvAAttackKnob);
+  KnobList.Add(ModEnvADecayKnob);
+  KnobList.Add(ModEnvBAttackKnob);
+  KnobList.Add(ModEnvBDecayKnob);
+  KnobList.Add(LfoSpeedKnob1);
+  KnobList.Add(LfoSpeedKnob2);
+  KnobList.Add(LfoDepthKnob1);
+  KnobList.Add(LfoDepthKnob2);
 end;
 
 destructor TModControlFrame.Destroy;
@@ -191,6 +225,7 @@ begin
   DeallocateHWnd(MsgHandle);
 
   StepSequenceMenu.Free;
+  KnobList.Free;
   inherited;
 end;
 
@@ -547,6 +582,7 @@ procedure TModControlFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
   if Message.Msg = UM_FILTER_CHANGED then UpdateControlVisibility;
+  if Message.Msg = UM_MOD_SLOT_CHANGED then UpdateModulation;
 end;
 
 
@@ -745,8 +781,21 @@ begin
     if StepSeq2.CurrentStep <> -1 then StepSeq2.CurrentStep := -1;
   end;
 
+end;
 
+procedure TModControlFrame.UpdateModulation;
+var
+  c1 : integer;
+  km : TKnobMode;
+begin
+  if Plugin.Globals.SelectedModSlot = -1
+    then km := TKnobMode.PositionEdit
+    else km := TKnobMode.ModEdit;
 
+  for c1 := 0 to KnobList.Count-1 do
+  begin
+    (KnobList[c1] as TVamKnob).KnobMode := km;
+  end;
 end;
 
 procedure TModControlFrame.StepSeq1Changed(Sender: TObject);

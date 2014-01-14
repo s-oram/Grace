@@ -84,6 +84,7 @@ end;
 procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter);
 var
   ci : TControlInfo;
+  Index : integer;
 begin
   assert(assigned(c));
   assert(assigned(aLinkedParameter));
@@ -93,6 +94,9 @@ begin
   if Supports(c, IKnobControl, ci.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
   ci.LinkedParameter := aLinkedParameter;
   ControlLinks.Append(ci);
+
+  Index := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
+  ci.KnobControl.SetParameterIndex(Index);
 
   ci.KnobControl.SetOnMouseEnter(self.Handle_MouseEnter);
   ci.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
