@@ -8,7 +8,11 @@ uses
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl;
 
+
 type
+  {$SCOPEDENUMS ON}
+  TKnobMode = (PositionEdit, ModEdit);
+
   TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
@@ -25,6 +29,8 @@ type
     fModLineDist: single;
     fMaxModDepth: single;
     fMinModDepth: single;
+    fModLineColor : TRedFoxColor;
+    fKnobMode: TKnobMode;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -41,6 +47,9 @@ type
     procedure SetImage_KnobUpper(const Value: TBitmap);
     procedure SetMaxModDepth(const Value: single);
     procedure SetMinModDepth(const Value: single);
+    function GetModLineColor: TRedFoxColorString;
+    procedure SetModLineColor(const Value: TRedFoxColorString);
+    procedure SetKnobMode(const Value: TKnobMode);
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -64,6 +73,7 @@ type
     procedure DrawKnob_Lower;
     procedure DrawKnob_Upper;
     procedure DrawKnob_ModDepth;
+    procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
 
 
@@ -82,11 +92,13 @@ type
 
   published
     property ModLineDist   : single read fModLineDist   write fModLineDist;
+    property ModLineColor  : TRedFoxColorString read GetModLineColor write SetModLineColor;
     property IndicatorSize : single read fIndicatorSize write fIndicatorSize;
     property IndicatorDist : single read fIndicatorDist write fIndicatorDist;
 
-    property IsKnobEnabled   : boolean read fIsKnobEnabled   write SetIsKnobEnabled;
-    property VisibleSteps : integer read fVisibleSteps write SetVisibleSteps;
+    property KnobMode      : TKnobMode read fKnobMode       write SetKnobMode;
+    property IsKnobEnabled : boolean   read fIsKnobEnabled  write SetIsKnobEnabled;
+    property VisibleSteps  : integer   read fVisibleSteps   write SetVisibleSteps;
 
     property Pos : single read fPos write SetPos;
 
@@ -102,6 +114,7 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   SysUtils,
   Math,
   AggPixelFormat;
@@ -128,11 +141,17 @@ begin
   Y := MiddleY + Y;
 end;
 
-function Clamp(Value : single; const MinValue, MaxValue : single):single;
+//function Clamp(Value : single; const MinValue, MaxValue : single):single;
+//begin
+//  if Value < MinValue then exit(MinValue);
+//  if Value > MaxValue then exit(MaxValue);
+//  result := Value;
+//end;
+
+procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
 begin
-  if Value < MinValue then exit(MinValue);
-  if Value > MaxValue then exit(MaxValue);
-  result := Value;
+  Start := (Angle2+90) / 360 * 2 * pi;
+  Sweep := (Angle1+90) / 360 * 2 * pi;
 end;
 
 { TVamKnob }
@@ -150,6 +169,7 @@ begin
 
   fMinModDepth := -0.3;
   fMaxModDepth := 0.5;
+  fModLineColor := GetAggColor(clRed);
 end;
 
 destructor TVamKnob.Destroy;
@@ -303,6 +323,15 @@ begin
   end;
 end;
 
+procedure TVamKnob.SetKnobMode(const Value: TKnobMode);
+begin
+  if Value <> fKnobMode then
+  begin
+    fKnobMode := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TVamKnob.SetKnobValue(Value: single);
 begin
   SetPos(Value);
@@ -332,6 +361,11 @@ begin
   end;
 end;
 
+procedure TVamKnob.SetModLineColor(const Value: TRedFoxColorString);
+begin
+  fModLineColor := Value;
+end;
+
 procedure TVamKnob.SetOnChanged(Handler: TNotifyEvent);
 begin
   OnChanged := Handler;
@@ -342,6 +376,11 @@ begin
   result := Pos;
 end;
 
+
+function TVamKnob.GetModLineColor: TRedFoxColorString;
+begin
+  result := fModLineColor
+end;
 
 procedure TVamKnob.SetPos(Value: single);
 begin
@@ -384,9 +423,13 @@ begin
   DrawKnob_Upper;
   DrawKnob_Indicator;
 
-  //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha2;
+
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-  DrawKnob_ModDepth;
+  if KnobMode = TKnobMode.PositionEdit
+    then DrawKnob_ModDepth;
+
+  if KnobMode = TKnobMode.PositionEdit
+    then DrawKnob_ModAmount;
 
 
 
@@ -441,15 +484,12 @@ begin
   end;
 end;
 
-procedure TVamKnob.DrawKnob_ModDepth;
-  procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
-  begin
-    //Start := (Angle1 + 90) / 360 * 2 * pi;
-    //Sweep := (Angle2 + 90) / 360 * 2 * pi;
+procedure TVamKnob.DrawKnob_ModAmount;
+begin
 
-    Start := (Angle2+90) / 360 * 2 * pi;
-    Sweep := (Angle1+90) / 360 * 2 * pi;
-  end;
+end;
+
+procedure TVamKnob.DrawKnob_ModDepth;
 var
   MiddleX, MiddleY : single;
   Angle1, Angle2 : single;
