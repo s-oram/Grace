@@ -307,6 +307,7 @@ var
   c : TControl;
   bm1 : TBitmap;
   bm2 : TBitmap;
+  bm3 : TBitmap;
   aRegionID : TGUID;
 begin
   assert(assigned(Plugin));
@@ -398,6 +399,7 @@ begin
 
 
   //===== set up the skin graphics =======
+  {
   if Plugin.Globals.SkinImageLoader.Exists('Knob_UniPolar') then
   begin
     bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_UniPolar');
@@ -434,7 +436,32 @@ begin
       (c as TVamKnob).ImageStripGlyphCount := 65;
     end;
   end;
+  }
 
+    if Plugin.Globals.SkinImageLoader.Exists('Knob_Lower')
+      then bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Lower');
+
+    if Plugin.Globals.SkinImageLoader.Exists('Knob_Upper')
+      then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Upper');
+
+    if Plugin.Globals.SkinImageLoader.Exists('Knob_PlaceHolder')
+      then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
+
+    VQ := VamQueryRequest(RedFoxContainer, 'UniPolarKnob');
+    for c in VQ.List do
+    begin
+      (c as TVamKnob).Image_KnobLower := bm1;
+      (c as TVamKnob).Image_KnobUpper := bm2;
+      (c as TVamKnob).DisabledImage   := bm3;
+    end;
+
+    VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
+    for c in VQ.List do
+    begin
+      (c as TVamKnob).Image_KnobLower := bm1;
+      (c as TVamKnob).Image_KnobUpper := bm2;
+      (c as TVamKnob).DisabledImage   := bm3;
+    end;
 
 
 

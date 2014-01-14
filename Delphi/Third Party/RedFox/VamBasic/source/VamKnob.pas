@@ -18,6 +18,8 @@ type
     fVisibleSteps: integer;
     fIsKnobEnabled: boolean;
     fDisabledImage: TBitmap;
+    fImage_KnobUpper: TBitmap;
+    fImage_KnobLower: TBitmap;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -30,6 +32,8 @@ type
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
     procedure SetOnChanged(Handler:TNotifyEvent);
+    procedure SetImage_KnobLower(const Value: TBitmap);
+    procedure SetImage_KnobUpper(const Value: TBitmap);
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -46,12 +50,16 @@ type
 
     procedure DrawKnob_VectorStyle;
     procedure DrawKnob_BitmapStyle;
+    procedure DrawKnob;
 
 
 
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    property Image_KnobUpper : TBitmap read fImage_KnobUpper write SetImage_KnobUpper;
+    property Image_KnobLower : TBitmap read fImage_KnobLower write SetImage_KnobLower;
 
     property ImageStrip:TBitmap read fImageStrip write SetImageStrip;
     property ImageStripGlyphCount : integer read fImageStripGlyphCount write SetImageStripGlyphCount;
@@ -233,6 +241,18 @@ begin
   end;
 end;
 
+procedure TVamKnob.SetImage_KnobLower(const Value: TBitmap);
+begin
+  fImage_KnobLower := Value;
+  Invalidate;
+end;
+
+procedure TVamKnob.SetImage_KnobUpper(const Value: TBitmap);
+begin
+  fImage_KnobUpper := Value;
+  Invalidate;
+end;
+
 procedure TVamKnob.SetIsKnobEnabled(const Value: boolean);
 begin
   if Value <> fIsKnobEnabled then
@@ -287,6 +307,12 @@ var
 begin
   inherited;
 
+  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+
+  DrawKnob;
+
+  {
   if (IsKnobEnabled) or (not assigned(DisabledImage))then
   begin
     if assigned(fImageStrip)
@@ -309,8 +335,26 @@ begin
 
     BackBuffer.TransformImage(DisabledImage, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
   end;
-
+  }
 end;
+
+procedure TVamKnob.DrawKnob;
+var
+  SrcRect : TRect;
+  DstRect : TRect;
+begin
+  if assigned(Image_KnobLower) then
+  begin
+    BackBuffer.TransformImage(Image_KnobLower);
+  end;
+
+  if assigned(Image_KnobUpper) then
+  begin
+    BackBuffer.TransformImage(Image_Knobupper);
+  end;
+end;
+
+
 
 procedure TVamKnob.DrawKnob_BitmapStyle;
 var
