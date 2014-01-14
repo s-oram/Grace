@@ -103,6 +103,7 @@ type
 implementation
 
 uses
+  AggPixelFormat,
   VamLib.Utils,
   SysUtils, Graphics,
   Agg2d, AggWin32Bmp,
@@ -448,6 +449,9 @@ begin
 
   DestX      := Offset.X + x1;
   DestY      := Offset.Y + y1;
+
+  //TP.OffscreenBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceIn;
+  //TP.OffscreenBuffer.BufferInterface.TransformImage(BackBuffer.AsImage, DestX, DestY, DestX+Width, DestY+Height);
 
   if TP <> nil
     then BackBuffer.RedFoxInterface.BlendTo(TP.OffScreenBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY);
