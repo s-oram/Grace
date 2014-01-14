@@ -45,7 +45,8 @@ type
     //== Added to satisfy IKnobControl ================
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
-    procedure SetOnChanged(Handler:TNotifyEvent);
+    procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
+    procedure SetOnModAmountChanged(Handler:TNotifyEvent);
     procedure SetImage_KnobLower(const Value: TBitmap);
     procedure SetImage_KnobUpper(const Value: TBitmap);
     procedure SetMaxModDepth(const Value: single);
@@ -122,8 +123,7 @@ type
     property ParameterIndex : integer read fParameterIndex write fParameterIndex;
 
     // OnChanged should only be called when the control changes through user interaction.
-    property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
-
+    property OnKnobPosChanged   : TNotifyEvent read fOnChanged          write fOnChanged;
     property OnModAmountChanged : TNotifyEvent read fOnModAmountChanged write fOnModAmountChanged;
 
     {$INCLUDE TControlProperties.inc}
@@ -205,7 +205,7 @@ end;
 
 procedure TVamKnob.KnobPosChanged;
 begin
-  if assigned(OnChanged) then OnChanged(self);
+  if assigned(OnKnobPosChanged) then OnKnobPosChanged(self);
 end;
 
 procedure TVamKnob.ModAmountChanged;
@@ -270,7 +270,6 @@ begin
     Dist := (Y - ReferencePoint.Y) * ScaleFactor;
 
     NewValue := ReferenceValue - Dist;
-
 
     if KnobMode = TKnobMode.PositionEdit then
     begin
@@ -441,16 +440,20 @@ begin
   fModLineColor := Value;
 end;
 
-procedure TVamKnob.SetOnChanged(Handler: TNotifyEvent);
+procedure TVamKnob.SetOnKnobPosChanged(Handler: TNotifyEvent);
 begin
-  OnChanged := Handler;
+  OnKnobPosChanged := Handler;
+end;
+
+procedure TVamKnob.SetOnModAmountChanged(Handler: TNotifyEvent);
+begin
+  OnModAmountChanged := Handler;
 end;
 
 function TVamKnob.GetKnobValue: single;
 begin
   result := Pos;
 end;
-
 
 function TVamKnob.GetModLineColor: TRedFoxColorString;
 begin

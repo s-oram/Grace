@@ -183,7 +183,7 @@ begin
   fKnob1    := TVamKnob.Create(self);
   fKnob1.HitTest := false;
   fKnob1.Parent := FBackground;
-  fKnob1.OnChanged := self.EventHandler_KnobChanged;
+  fKnob1.OnKnobPosChanged := self.EventHandler_KnobChanged;
 
 
 

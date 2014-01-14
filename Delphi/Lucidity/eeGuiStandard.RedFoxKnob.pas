@@ -42,7 +42,8 @@ type
     procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure Handle_Changed(Sender: TObject);
+    procedure Handle_KnobPosChanged(Sender: TObject);
+
   protected
     property Globals : TGlobals read fGlobals;
 
@@ -102,7 +103,7 @@ begin
   ci.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
   ci.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
   ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
-  ci.KnobControl.SetOnChanged(self.Handle_Changed);
+  ci.KnobControl.SetOnKnobPosChanged(self.Handle_KnobPosChanged);
 end;
 
 procedure TRedFoxKnobHandler.DeregisterControl(c: TControl);
@@ -202,7 +203,7 @@ begin
   Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
-procedure TRedFoxKnobHandler.Handle_Changed(Sender: TObject);
+procedure TRedFoxKnobHandler.Handle_KnobPosChanged(Sender: TObject);
 var
   Index : integer;
   Value : single;

@@ -26,7 +26,8 @@ type
     procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
-    procedure SetOnChanged(Handler:TNotifyEvent);
+
+    procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
   end;
 
 
