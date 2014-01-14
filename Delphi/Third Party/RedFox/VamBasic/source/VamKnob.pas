@@ -57,6 +57,8 @@ type
     procedure SetParameterIndex(Index : integer);
     function GetParameterIndex:integer;
     procedure SetModAmount(const Value: single);
+    function GetModAmountValue : single;
+    procedure SetModAmountValue(Value : single);
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -435,6 +437,11 @@ begin
   end;
 end;
 
+procedure TVamKnob.SetModAmountValue(Value: single);
+begin
+  SetModAmount(Value);
+end;
+
 procedure TVamKnob.SetModLineColor(const Value: TRedFoxColorString);
 begin
   fModLineColor := Value;
@@ -453,6 +460,11 @@ end;
 function TVamKnob.GetKnobValue: single;
 begin
   result := Pos;
+end;
+
+function TVamKnob.GetModAmountValue: single;
+begin
+  result := fModAmount;
 end;
 
 function TVamKnob.GetModLineColor: TRedFoxColorString;

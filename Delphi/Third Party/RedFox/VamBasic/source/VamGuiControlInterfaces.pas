@@ -22,12 +22,16 @@ type
     function GetKnobValue : single;
     procedure SetKnobValue(Value : single);
 
+    function GetModAmountValue : single;
+    procedure SetModAmountValue(Value : single);
+
     procedure SetOnMouseEnter(Handler:TNotifyEvent);
     procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);
     procedure SetOnMouseUp(Handler:TMouseEvent);
 
     procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
+    procedure SetOnModAmountChanged(Handler:TNotifyEvent);
   end;
 
 

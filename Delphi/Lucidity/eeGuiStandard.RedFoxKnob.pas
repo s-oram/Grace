@@ -15,7 +15,7 @@ type
   TControlInfo = record
     Control         : TControl;
     KnobControl     : IKnobControl;
-    LinkedParameter : TVstParameter;
+    LinkedParameter : TVstParameterEx;
   end;
 
   TRedFoxKnobHandler = class
@@ -31,6 +31,7 @@ type
     procedure EndParameterEdit(const ControlLinkIndex : integer);
     procedure SetParameterToDefaut(const ControlLinkIndex : integer);
     procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
+    procedure SetModAmount(const ControlLinkIndex : integer; const Value : single);
 
     procedure ShowControlContextMenu(const X, Y, ControlLinkIndex : integer);
 
@@ -43,7 +44,7 @@ type
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_KnobPosChanged(Sender: TObject);
-
+    procedure Handle_ModAmountChanged(Sender: TObject);
   protected
     property Globals : TGlobals read fGlobals;
 
@@ -93,7 +94,7 @@ begin
 
   ci.Control     := c;
   if Supports(c, IKnobControl, ci.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
-  ci.LinkedParameter := aLinkedParameter;
+  ci.LinkedParameter := aLinkedParameter as TVstParameterEx;
   ControlLinks.Append(ci);
 
   Index := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
@@ -104,6 +105,7 @@ begin
   ci.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
   ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
   ci.KnobControl.SetOnKnobPosChanged(self.Handle_KnobPosChanged);
+  ci.KnobControl.SetOnModAmountChanged(self.Handle_ModAmountChanged);
 end;
 
 procedure TRedFoxKnobHandler.DeregisterControl(c: TControl);
@@ -219,6 +221,24 @@ begin
   Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
+procedure TRedFoxKnobHandler.Handle_ModAmountChanged(Sender: TObject);
+var
+  Index : integer;
+  Value : single;
+begin
+  if IsManualGuiUpdateActive then exit;
+
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+  Value := ControlLinks[Index].KnobControl.GetModAmountValue;
+
+  SetModAmount(Index, Value);
+
+  Globals.InfoBarReceiver.SendControlMessage(Sender, 'Mod Amount Changed');
+end;
+
+
+
 procedure TRedFoxKnobHandler.BeginParameterEdit(const ControlLinkIndex: integer);
 var
   Tag : integer;
@@ -239,6 +259,21 @@ begin
     Tag := ControlLinks[ControlLinkIndex].LinkedParameter.PublishedVSTParameterIndex;
     Globals.VstMethods^.EndParameterEdit(Tag);
   end;
+end;
+
+procedure TRedFoxKnobHandler.SetModAmount(const ControlLinkIndex: integer; const Value: single);
+var
+  ModSlot : integer;
+  ModLinkIndex : integer;
+begin
+  ModSlot := Globals.SelectedModSlot;
+
+  if (ControlLinks[ControlLinkIndex].LinkedParameter.HasModLink) and (ModSlot >= 0) then
+  begin
+    ModLinkIndex := ControlLinks[ControlLinkIndex].LinkedParameter.ModLinkIndex;
+
+  end;
+
 end;
 
 procedure TRedFoxKnobHandler.SetParameterToDefaut(const ControlLinkIndex: integer);
