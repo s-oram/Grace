@@ -160,8 +160,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object x1Label: TVamLabel
@@ -205,8 +213,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object x3Knob: TVamKnob
@@ -216,8 +232,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object x3Label: TVamLabel
@@ -261,8 +285,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object y4Knob: TVamKnob
@@ -272,8 +304,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object y4Label: TVamLabel
@@ -317,8 +357,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object y2Knob: TVamKnob
@@ -328,8 +376,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object y2Label: TVamLabel
@@ -373,8 +429,16 @@ object ModSystemFrame: TModSystemFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object ModTargetAutoSelectButton: TVamButton

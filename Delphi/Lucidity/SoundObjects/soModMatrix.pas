@@ -26,7 +26,7 @@ type
     PSource  : PSingle;
     PVia     : PSingle;
     PDest    : PSingle;
-    procedure AssignFrom(const aSource:TModLink);
+    procedure AssignFrom(const aSource:TModLink_OLD);
   end;
 
 
@@ -54,7 +54,7 @@ type
     FastModulationCount : integer;
     SlowModulationCount : integer;
 
-    function GetModLinkState(aModLink : PModLink):TModLinkState;
+    function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
     function CalcModOffset(aModLink : PPrivateModLink): single;
     function AreModSourceValuesInRange:boolean;
@@ -62,8 +62,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure UpdateAllModLinks(const aModConnections : TModConnections);
-    procedure UpdateModLink(const ModLinkData : PModLink);
+    procedure UpdateAllModLinks(const aModConnections : TModConnections_OLD);
+    procedure UpdateModLink(const ModLinkData : PModLink_OLD);
 
     //==========================================================================
     // NOTE: These methods are here for debugging purposes.
@@ -99,7 +99,7 @@ type
 
 { TPrivateModLink }
 
-procedure TPrivateModLink.AssignFrom(const aSource: TModLink);
+procedure TPrivateModLink.AssignFrom(const aSource: TModLink_OLD);
 begin
   self.UniqueID := aSource.UniqueID;
   self.Source   := aSource.Source;
@@ -245,10 +245,10 @@ begin
   end;
 end;
 
-procedure TModMatrix.UpdateAllModLinks(const aModConnections: TModConnections);
+procedure TModMatrix.UpdateAllModLinks(const aModConnections: TModConnections_OLD);
 var
   c1: Integer;
-  Link : PModLink;
+  Link : PModLink_OLD;
   PrivateLink : PPrivateModLink;
 begin
   //TODO: this is an excessive use of memory. It's unlikely that
@@ -318,7 +318,7 @@ begin
 
 end;
 
-procedure TModMatrix.UpdateModLink(const ModLinkData: PModLink);
+procedure TModMatrix.UpdateModLink(const ModLinkData: PModLink_OLD);
 var
   c1 : integer;
 begin
@@ -348,7 +348,7 @@ begin
   end;
 end;
 
-function TModMatrix.GetModLinkState(aModLink: PModLink): TModLinkState;
+function TModMatrix.GetModLinkState(aModLink: PModLink_OLD): TModLinkState;
 begin
   if (aModLink^.Source = TModSource.None) or (aModLink^.Dest = TModDest.None) then
   begin

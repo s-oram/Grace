@@ -110,7 +110,7 @@ procedure ClearModSection(ModSection:TModSection);
 begin
 end;
 
-procedure UpdateModSection(ModSection : TModSection; ModLink:PModLink);
+procedure UpdateModSection(ModSection : TModSection; ModLink:PModLink_OLD);
 begin
   ModSection.TextboxA.Text := TModSourceHelper.ToShortGuiString(ModLink^.Source);
   ModSection.TextboxC.Text := TModSourceHelper.ToShortGuiString(ModLink^.Via);
@@ -474,9 +474,9 @@ procedure TModSystemFrame.UpdateModMatrix;
 var
   c1 : integer;
   kg:IKeyGroup;
-  ModConnections : TModConnections;
+  ModConnections : TModConnections_OLD;
   ModDest : TModDest;
-  ModLinkData : PModLink;
+  ModLinkData : PModLink_OLD;
 begin
   if not assigned(Plugin) then exit;
 
@@ -554,8 +554,8 @@ end;
 procedure TModSystemFrame.EventHandler_ShowModSouceMenu(Sender: TObject);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
-  ModLinkData : PModLink;
+  ModConnections : TModConnections_OLD;
+  ModLinkData : PModLink_OLD;
 begin
   RefModDest := Plugin.GuiState.ModDestTarget;
   RefOffset  := (Sender as TModSection).Tag;
@@ -570,8 +570,8 @@ end;
 procedure TModSystemFrame.EventHandler_ShowModViaMenu(Sender: TObject);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
-  ModLinkData : PModLink;
+  ModConnections : TModConnections_OLD;
+  ModLinkData : PModLink_OLD;
 begin
   RefModDest := Plugin.GuiState.ModDestTarget;
   RefOffset  := (Sender as TModSection).Tag;
@@ -586,8 +586,8 @@ end;
 procedure TModSystemFrame.ModSourceSelected(Sender: TObject; aSource: TModSource);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
-  ModLinkData : PModLink;
+  ModConnections : TModConnections_OLD;
+  ModLinkData : PModLink_OLD;
 begin
   if not assigned(Plugin) then exit;
 
@@ -608,8 +608,8 @@ end;
 procedure TModSystemFrame.ModViaSelected(Sender: TObject; aSource: TModSource);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
-  ModLinkData : PModLink;
+  ModConnections : TModConnections_OLD;
+  ModLinkData : PModLink_OLD;
 begin
   if not assigned(Plugin) then exit;
 
@@ -646,10 +646,10 @@ end;
 procedure TModSystemFrame.EventHandler_ModSliderChanged(Sender: TObject);
 var
   kg:IKeyGroup;
-  ModConnections : TModConnections;
+  ModConnections : TModConnections_OLD;
   ModDest : TModDest;
   ModOffset : integer;
-  ModLinkData : PModLink;
+  ModLinkData : PModLink_OLD;
 
   SliderValue : single;
   Tag : integer;

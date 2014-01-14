@@ -9,39 +9,39 @@ uses
 type
   // NOTE: TModConnections stores all mod connections for the sampler.
 
-  PModLink = ^TModLink;
-  TModLink = record
+  PModLink_OLD = ^TModLink_OLD;
+  TModLink_OLD = record
     UniqueID : string; //NOTE: I'm not entirely sure this UniqueID is a good idea.
     Source   : TModSource;
     Dest     : TModDest;
     Via      : TModSource;
     Amount   : single; //range -1..1
     Offset   : single; //range -0.5..0.5
-    procedure AssignFrom(const aSource:TModLink);
+    procedure AssignFrom(const aSource:TModLink_OLD);
   end;
 
-  TModConnections = class
+  TModConnections_OLD = class
   private
     function GetModLinkCount: integer;
-    function GetModLink(Index: integer): PModLink;
-    procedure SetModLink(Index: integer; const Value: PModLink);
+    function GetModLink(Index: integer): PModLink_OLD;
+    procedure SetModLink(Index: integer; const Value: PModLink_OLD);
   protected
     fModLinkCount : integer;
-    fModLinks : array of TModLink;
+    fModLinks : array of TModLink_OLD;
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure Clear;
 
-    function FindModLinkByID(const UniqueID : string):PModLink;
-    function FindModLink(const ModDest : TModDest; const Offset : integer):PModLink;
+    function FindModLinkByID(const UniqueID : string):PModLink_OLD;
+    function FindModLink(const ModDest : TModDest; const Offset : integer):PModLink_OLD;
 
-    procedure UpdateModLink(const ModDest : TModDest; const Offset : integer; const NewLinkData:PModLink);
-    procedure UpdateModLinkByID(const UniqueID : string; const NewLinkData : PModLink);
+    procedure UpdateModLink(const ModDest : TModDest; const Offset : integer; const NewLinkData:PModLink_OLD);
+    procedure UpdateModLinkByID(const UniqueID : string; const NewLinkData : PModLink_OLD);
 
     property ModLinkCount : integer read GetModLinkCount;
-    property ModLinks[Index:integer]:PModLink read GetModLink write SetModLink;
+    property ModLinks[Index:integer]:PModLink_OLD read GetModLink write SetModLink;
   end;
 
 
@@ -53,7 +53,7 @@ uses
 
 { TModLink }
 
-procedure TModLink.AssignFrom(const aSource: TModLink);
+procedure TModLink_OLD.AssignFrom(const aSource: TModLink_OLD);
 begin
   self.Source   := aSource.Source;
   self.Dest     := aSource.Dest;
@@ -67,7 +67,7 @@ end;
 
 { TModConnections }
 
-constructor TModConnections.Create;
+constructor TModConnections_OLD.Create;
 begin
   fModLinkCount := TModDestHelper.GetEnumTypeCount * 4;
 
@@ -76,13 +76,13 @@ begin
   Clear;
 end;
 
-destructor TModConnections.Destroy;
+destructor TModConnections_OLD.Destroy;
 begin
   SetLength(fModLinks, 0);
   inherited;
 end;
 
-procedure TModConnections.Clear;
+procedure TModConnections_OLD.Clear;
 var
   c1: Integer;
 begin
@@ -99,17 +99,17 @@ end;
 
 
 
-function TModConnections.GetModLink(Index: integer): PModLink;
+function TModConnections_OLD.GetModLink(Index: integer): PModLink_OLD;
 begin
   result := @fModLinks[Index];
 end;
 
-function TModConnections.GetModLinkCount: integer;
+function TModConnections_OLD.GetModLinkCount: integer;
 begin
   result := fModLinkCount;
 end;
 
-procedure TModConnections.SetModLink(Index: integer; const Value: PModLink);
+procedure TModConnections_OLD.SetModLink(Index: integer; const Value: PModLink_OLD);
 begin
   if fModLinks[Index].UniqueID <> Value^.UniqueID
     then raise Exception.Create('ModLink unique IDs don''t match.');
@@ -117,7 +117,7 @@ begin
   fModLinks[Index].AssignFrom(Value^);
 end;
 
-function TModConnections.FindModLink(const ModDest: TModDest; const Offset: integer): PModLink;
+function TModConnections_OLD.FindModLink(const ModDest: TModDest; const Offset: integer): PModLink_OLD;
 var
   Index : integer;
 begin
@@ -130,7 +130,7 @@ begin
   result := @fModLinks[Index];
 end;
 
-function TModConnections.FindModLinkByID(const UniqueID: string): PModLink;
+function TModConnections_OLD.FindModLinkByID(const UniqueID: string): PModLink_OLD;
 var
   c1: Integer;
 begin
@@ -144,7 +144,7 @@ begin
   result := nil;
 end;
 
-procedure TModConnections.UpdateModLink(const ModDest: TModDest; const Offset: integer; const NewLinkData: PModLink);
+procedure TModConnections_OLD.UpdateModLink(const ModDest: TModDest; const Offset: integer; const NewLinkData: PModLink_OLD);
 var
   Index : integer;
 begin
@@ -160,7 +160,7 @@ begin
   fModLinks[Index].AssignFrom(NewLinkData^);
 end;
 
-procedure TModConnections.UpdateModLinkByID(const UniqueID: string; const NewLinkData: PModLink);
+procedure TModConnections_OLD.UpdateModLinkByID(const UniqueID: string; const NewLinkData: PModLink_OLD);
 var
   c1: Integer;
   Dest : TModDest;

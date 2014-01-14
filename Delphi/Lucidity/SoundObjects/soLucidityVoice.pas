@@ -128,12 +128,12 @@ type
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
 
-    procedure UpdateAllModLinks(const aModConnections : TModConnections);
-    procedure UpdateModLink(const ModLinkData : PModLink);
+    procedure UpdateAllModLinks(const aModConnections : TModConnections_OLD);
+    procedure UpdateModLink(const ModLinkData : PModLink_OLD);
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
 
-    procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections);
+    procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections_OLD);
     //procedure Trigger_Poly(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
     //procedure Trigger_Mono(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion); //used by Mono and legato modes.
     //procedure Trigger_Legato(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const WithGlide : boolean); //used by Mono and legato modes.
@@ -448,12 +448,12 @@ begin
   result := 1 + VoiceGlide * 5000;
 end;
 
-procedure TLucidityVoice.UpdateAllModLinks(const aModConnections: TModConnections);
+procedure TLucidityVoice.UpdateAllModLinks(const aModConnections: TModConnections_OLD);
 begin
   ModMatrix.UpdateAllModLinks(aModConnections);
 end;
 
-procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink);
+procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink_OLD);
 begin
   ModMatrix.UpdateModLink(ModLinkData);
 end;
@@ -507,7 +507,7 @@ begin
   }
 end;
 
-procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections);
+procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections_OLD);
 var
   CV : TModularVoltage;
   PitchShift : single;

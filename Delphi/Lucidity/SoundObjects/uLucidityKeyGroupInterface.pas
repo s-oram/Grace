@@ -16,7 +16,7 @@ type
     function GetTriggeredNoteCount:cardinal;
     procedure IncTriggeredNoteCount;
 
-    function GetModConnections:TModConnections;
+    function GetModConnections:TModConnections_OLD;
   end;
 
 implementation

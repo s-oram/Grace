@@ -97,8 +97,8 @@ type
     fUniqueID: string;
   public
     procedure Clear;
-    procedure AssignFrom(const aSource:TModLink);
-    procedure AssignTo(var aDest: TModLink);
+    procedure AssignFrom(const aSource:TModLink_OLD);
+    procedure AssignTo(var aDest: TModLink_OLD);
   published
     procedure SanitiseData; // call after reading data from a save file.
 
@@ -353,9 +353,9 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq2Direction');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq2Length');
 
-    for c3 := 0 to sg.ModConnections.ModLinkCount-1 do
+    for c3 := 0 to sg.ModConnections_OLD.ModLinkCount-1 do
     begin
-      ModLinkState.AssignFrom(sg.ModConnections.ModLinks[c3]^);
+      ModLinkState.AssignFrom(sg.ModConnections_OLD.ModLinks[c3]^);
 
       if (ModLinkState.Source <> TModSource.None) or (ModLinkState.Via <> TModSource.None) then
       begin
@@ -413,8 +413,8 @@ var
   c3: Integer;
 
   Index : integer;
-  TempModLink : TModLink;
-  TargetModLink : PModLink;
+  TempModLink : TModLink_OLD;
+  TargetModLink : PModLink_OLD;
 
   StepValue : single;
 begin
@@ -591,13 +591,13 @@ begin
 
       ModLinkState.SanitiseData; //Call sanitiseData() to ensure all parameters are within valid ranges.
 
-      TargetModLink := sg.ModConnections.FindModLinkByID(ModLinkState.UniqueID);
+      TargetModLink := sg.ModConnections_OLD.FindModLinkByID(ModLinkState.UniqueID);
 
       if (assigned(TargetModLink)) then
       begin
         ModLinkState.AssignTo(TempModLink);
         TempModLink.Dest := TargetModLink.Dest;
-        sg.ModConnections.UpdateModLinkByID(TempModLink.UniqueID, @TempModLink);
+        sg.ModConnections_OLD.UpdateModLinkByID(TempModLink.UniqueID, @TempModLink);
       end;
 
     end;
@@ -729,7 +729,7 @@ end;
 
 { TModLinkLoadInfo }
 
-procedure TModLinkLoadInfo.AssignFrom(const aSource: TModLink);
+procedure TModLinkLoadInfo.AssignFrom(const aSource: TModLink_OLD);
 begin
   self.UniqueID := aSource.UniqueID;
   self.Source   := aSource.Source;
@@ -739,7 +739,7 @@ begin
   self.Offset   := aSource.Offset;
 end;
 
-procedure TModLinkLoadInfo.AssignTo(var aDest: TModLink);
+procedure TModLinkLoadInfo.AssignTo(var aDest: TModLink_OLD);
 begin
   aDest.UniqueID := self.UniqueID;
   aDest.Source   := self.Source;
