@@ -47,7 +47,7 @@ type
     bmDestinationOut, bmSourceATop, bmDestinationATop, bmXor, bmPlus, bmMinus,
     bmMultiply, bmScreen, bmOverlay, bmDarken, bmLighten, bmColorDodge,
     bmColorBurn, bmHardLight, bmSoftLight, bmDifference, bmExclusion,
-    bmContrast, bmInvert, bmInvertRgb, bmAlpha);
+    bmContrast, bmInvert, bmInvertRgb, bmAlpha, bmAlpha2);
 
   TAggFuncBlender = procedure(This: TAggPixelFormatProcessor;
     Op: TAggBlendMode; P: PInt8u; Cr, Cg, Cb, Ca, Cover: Cardinal);

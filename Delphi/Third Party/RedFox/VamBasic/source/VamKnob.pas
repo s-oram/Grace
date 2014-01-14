@@ -372,7 +372,7 @@ var
 begin
   inherited;
 
-  BackBuffer.BufferInterface.ClearAll(0,255,0,0);
+  BackBuffer.BufferInterface.ClearAll(255,255,255,0);
   //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
   //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha;
@@ -380,12 +380,17 @@ begin
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSource;
   //DrawKnob_Lower;
 
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha;
+  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+  DrawKnob_Upper;
+  DrawKnob_Indicator;
+
+  //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha2;
+  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   DrawKnob_ModDepth;
 
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSource;
-  //DrawKnob_Upper;
-  //DrawKnob_Indicator;
+
+
+
 
   {
   if (IsKnobEnabled) or (not assigned(DisabledImage))then
