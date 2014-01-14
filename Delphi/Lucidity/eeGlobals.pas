@@ -107,6 +107,8 @@ begin
   fSkinImageLoader := TSkinImageLoader.Create;
 
   LoadSkinImage('Background');
+  LoadSkinImage('Knob_Upper');
+  LoadSkinImage('Knob_Lower');
   LoadSkinImage('Knob_UniPolar');
   LoadSkinImage('Knob_BiPolar');
   LoadSkinImage('Knob_PlaceHolder');
