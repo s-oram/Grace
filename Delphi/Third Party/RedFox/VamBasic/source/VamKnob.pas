@@ -32,6 +32,7 @@ type
     fModLineColor : TRedFoxColor;
     fKnobMode: TKnobMode;
     fParameterIndex: integer;
+    fModAmount: single;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -53,6 +54,7 @@ type
     procedure SetKnobMode(const Value: TKnobMode);
     procedure SetParameterIndex(Index : integer);
     function GetParameterIndex:integer;
+    procedure SetModAmount(const Value: single);
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -104,6 +106,8 @@ type
     property VisibleSteps  : integer   read fVisibleSteps   write SetVisibleSteps;
 
     property Pos : single read fPos write SetPos;
+
+    property ModAmount : single read fModAmount write SetModAmount;
 
     property MinModDepth : single read fMinModDepth write SetMinModDepth;
     property MaxModDepth : single read fMaxModDepth write SetMaxModDepth;
@@ -158,8 +162,15 @@ end;
 
 procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
 begin
-  Start := (Angle2+90) / 360 * 2 * pi;
-  Sweep := (Angle1+90) / 360 * 2 * pi;
+  if Angle2 > Angle1 then
+  begin
+    Start := (Angle2+90) / 360 * 2 * pi;
+    Sweep := (Angle1+90) / 360 * 2 * pi;
+  end else
+  begin
+    Start := (Angle1+90) / 360 * 2 * pi;
+    Sweep := (Angle2+90) / 360 * 2 * pi;
+  end;
 end;
 
 { TVamKnob }
@@ -345,18 +356,6 @@ begin
   SetPos(Value);
 end;
 
-procedure TVamKnob.SetMaxModDepth(const Value: single);
-begin
-  assert(Value > 0);
-  assert(Value < 1);
-
-  if Value <> fMaxModDepth then
-  begin
-    fMaxModDepth := Value;
-    Invalidate;
-  end;
-end;
-
 procedure TVamKnob.SetMinModDepth(const Value: single);
 begin
   assert(Value > -1);
@@ -365,7 +364,34 @@ begin
   if Value <> fMinModDepth then
   begin
     fMinModDepth := Value;
-    Invalidate;
+    if KnobMode = TKnobMode.PositionEdit
+      then Invalidate;
+  end;
+end;
+
+procedure TVamKnob.SetMaxModDepth(const Value: single);
+begin
+  assert(Value > 0);
+  assert(Value < 1);
+
+  if Value <> fMaxModDepth then
+  begin
+    fMaxModDepth := Value;
+    if KnobMode = TKnobMode.PositionEdit
+      then Invalidate;
+  end;
+end;
+
+procedure TVamKnob.SetModAmount(const Value: single);
+begin
+  assert(Value > -1);
+  assert(Value < 1);
+
+  if (Value <> fModAmount) then
+  begin
+    fModAmount := Value;
+    if KnobMode = TKnobMode.ModEdit
+      then Invalidate;
   end;
 end;
 
@@ -444,12 +470,8 @@ begin
 
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   if KnobMode = TKnobMode.PositionEdit
-    then DrawKnob_ModDepth;
-
-  if KnobMode = TKnobMode.PositionEdit
-    then DrawKnob_ModAmount;
-
-
+    then DrawKnob_ModDepth
+    else DrawKnob_ModAmount;
 
 
 
@@ -502,11 +524,6 @@ begin
   end;
 end;
 
-procedure TVamKnob.DrawKnob_ModAmount;
-begin
-
-end;
-
 procedure TVamKnob.DrawKnob_ModDepth;
 var
   MiddleX, MiddleY : single;
@@ -519,21 +536,35 @@ begin
   BackBuffer.BufferInterface.LineWidth := 2.5;
   BackBuffer.BufferInterface.LineColor := GetAggColor(clWhite,255);
 
-  //s1 := (fpos * 300) + 120;
-  //s2 := s1 - (fpos * 300) ;
-  //s1 := s1 / 360 * 2 * pi;
-  //s2 := s2 / 360 * 2 * pi;
-
-  //Angle1 := (kMinAngle + kArcSpan * Pos) + (MinModDepth * kArcSpan * 0.5);
-  //Angle2 := (kMinAngle + kArcSpan * Pos) + (MaxModDepth * kArcSpan * 0.5);
   Angle1 := kMinAngle + kArcSpan * Clamp((Pos + MinModDepth), 0, 1);
   Angle2 := kMinAngle + kArcSpan * Clamp((Pos + MaxModDepth), 0, 1);
 
-  //CalcStartSweep(30,330, s1, s2);
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
 end;
+
+procedure TVamKnob.DrawKnob_ModAmount;
+var
+  MiddleX, MiddleY : single;
+  Angle1, Angle2 : single;
+  s1, s2 : single;
+begin
+  MiddleX := Width * 0.5;
+  MiddleY := Height * 0.5;
+
+  BackBuffer.BufferInterface.LineWidth := 2.5;
+  BackBuffer.BufferInterface.LineColor := GetAggColor(clRed,255);
+
+  Angle1 := kMinAngle + kArcSpan * Clamp((Pos), 0, 1);
+  Angle2 := kMinAngle + kArcSpan * Clamp((Pos + ModAmount), 0, 1);
+
+  CalcStartSweep(Angle1, Angle2, s1, s2);
+
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+end;
+
+
 
 procedure TVamKnob.DrawKnob_Indicator;
 var

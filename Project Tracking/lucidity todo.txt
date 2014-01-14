@@ -17,6 +17,8 @@ more systematic.
 --- then add the event callback options so that the gui can be updated with the relevant info.
 ---- Continue working on the info bar receiver and info bar implementation.
 --- all controls on other frames need to use the new ee GUI standard options...
+--- Continue adding in the new Mod connections object. 
+
 
 
 

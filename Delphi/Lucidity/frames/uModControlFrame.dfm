@@ -564,6 +564,7 @@ object ModControlFrame: TModControlFrame
           Pos = 0.500000000000000000
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -584,6 +585,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -604,6 +606,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -624,6 +627,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -778,6 +782,7 @@ object ModControlFrame: TModControlFrame
           Pos = 0.500000000000000000
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object FilterEnvDecayKnob: TVamKnob
@@ -796,6 +801,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object FilterEnvSustainKnob: TVamKnob
@@ -814,6 +820,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object FilterEnvReleaseKnob: TVamKnob
@@ -832,6 +839,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object FilterEnvHoldKnob: TVamKnob
@@ -851,6 +859,7 @@ object ModControlFrame: TModControlFrame
           Pos = 0.500000000000000000
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object FilterVelocityButton: TVamTextBox
@@ -948,6 +957,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object ModEnvAModeBox: TVamTextBox
@@ -985,6 +995,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
       end
@@ -1063,6 +1074,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object ModEnvBModeBox: TVamTextBox
@@ -1100,6 +1112,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
       end
@@ -1202,6 +1215,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object LfoDepthKnob1: TVamKnob
@@ -1220,6 +1234,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
       end
@@ -1354,6 +1369,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object AmpEnvDecayKnob: TVamKnob
@@ -1372,6 +1388,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object AmpEnvSustainKnob: TVamKnob
@@ -1390,6 +1407,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object AmpEnvReleaseKnob: TVamKnob
@@ -1408,6 +1426,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object AmpEnvHoldKnob: TVamKnob
@@ -1426,6 +1445,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object AmpVelocityButton: TVamTextBox
@@ -1565,6 +1585,7 @@ object ModControlFrame: TModControlFrame
           Pos = 0.500000000000000000
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -1585,6 +1606,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -1605,6 +1627,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -1625,6 +1648,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
           OnMouseEnter = FilterKnobMouseEnter
           OnMouseLeave = FilterKnobMouseLeave
@@ -1723,6 +1747,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object LfoShapeTextBox2: TVamTextBox
@@ -1760,6 +1785,7 @@ object ModControlFrame: TModControlFrame
           VisibleSteps = 0
           MinModDepth = -0.300000011920929000
           MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
       end

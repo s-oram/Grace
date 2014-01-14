@@ -164,11 +164,13 @@ type
 implementation
 
 uses
+  eeVstParameterEx,
   MadExcept,
   VamLayoutWizard, eeVstParameter,
   RedFoxColor, uLucidityEnums,
   uConstants, uGuiUtils,
-  uLucidityKeyGroup;
+  uLucidityKeyGroup,
+  LucidityModConnections;
 
 {$R *.dfm}
 
@@ -786,16 +788,57 @@ end;
 procedure TModControlFrame.UpdateModulation;
 var
   c1 : integer;
+  ModSlot : integer;
+
   km : TKnobMode;
+  ModLinkIndex : integer;
+  kg : IKeyGroup;
+  aKnob : TVamKnob;
+  VstPar : TVstParameterEx;
+  ModConnections : TModConnections;
+  ModAmount : single;
 begin
-  if Plugin.Globals.SelectedModSlot = -1
+  ModSlot := Plugin.Globals.SelectedModSlot;
+  for c1 := 0 to KnobList.Count-1 do
+  begin
+    UpdateModAmount((KnobList[c1] as TVamKnob), ModSlot, Plugin);
+  end;
+
+  {
+  ModSlot := Plugin.Globals.SelectedModSlot;
+
+  if ModSlot = -1
     then km := TKnobMode.PositionEdit
     else km := TKnobMode.ModEdit;
 
-  for c1 := 0 to KnobList.Count-1 do
+
+  if km = TKnobMode.PositionEdit then
   begin
-    (KnobList[c1] as TVamKnob).KnobMode := km;
+    //==== Position Edit ====
+    for c1 := 0 to KnobList.Count-1
+      do (KnobList[c1] as TVamKnob).KnobMode := TKnobMode.PositionEdit;
+  end else
+  begin
+    //==== Mod Edit ====
+    kg := Plugin.ActiveKeyGroup;
+    ModConnections := kg.GetModConnections;
+
+    for c1 := 0 to KnobList.Count-1 do
+    begin
+      aKnob  := (KnobList[c1] as TVamKnob);
+      VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
+
+      if VstPar.HasModLink = false then
+      begin
+        aKnob.KnobMode := TKnobMode.PositionEdit;
+      end else
+      begin
+        ModAmount := ModConnections.ModLinks[VstPar.ModLinkIndex].ModAmount[ModSlot];
+        aKnob.ModAmount := ModAmount;
+      end;
+    end;
   end;
+  }
 end;
 
 procedure TModControlFrame.StepSeq1Changed(Sender: TObject);

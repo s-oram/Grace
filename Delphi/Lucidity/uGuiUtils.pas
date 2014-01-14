@@ -9,6 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  VamKnob,
   Dialogs, Lucidity.SampleMap, eePlugin, uLucidityEnums,
   eeGlobals, VamLabel, VamTextBox, eeEnumHelper, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
@@ -57,10 +58,17 @@ procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 
 
+
+
+procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
+
+
+
 implementation
 
 uses
-  VamKnob,
+  LucidityModConnections,
+  eeVstParameterEx,
   GuidEx,
   LucidityGlobals,
   uLucidityKeyGroup,
@@ -501,6 +509,47 @@ begin
     raise Exception.Create('Target type not handled.');
   end;
 end;
+
+
+procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
+var
+  km : TKnobMode;
+  ModLinkIndex : integer;
+  kg : IKeyGroup;
+  VstPar : TVstParameterEx;
+  ModConnections : TModConnections;
+  ModAmount : single;
+begin
+  if ModSlot = -1
+    then km := TKnobMode.PositionEdit
+    else km := TKnobMode.ModEdit;
+
+  if km = TKnobMode.PositionEdit then
+  begin
+    //==== Position Edit ====
+    aKnob.KnobMode := TKnobMode.PositionEdit;
+  end else
+  begin
+    //==== Mod Edit ====
+    kg := Plugin.ActiveKeyGroup;
+    ModConnections := kg.GetModConnections;
+
+    VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
+
+    if VstPar.HasModLink = false then
+    begin
+      aKnob.KnobMode := TKnobMode.PositionEdit;
+    end else
+    begin
+      ModAmount := ModConnections.ModLinks[VstPar.ModLinkIndex].ModAmount[ModSlot];
+      aKnob.ModAmount := ModAmount;
+      aKnob.KnobMode := TKnobMode.ModEdit;
+    end;
+
+  end;
+
+end;
+
 
 
 
