@@ -33,6 +33,7 @@ type
     fKnobMode: TKnobMode;
     fParameterIndex: integer;
     fModAmount: single;
+    fOnModAmountChanged: TNotifyEvent;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -58,15 +59,20 @@ type
     //=================================================
   protected
     IsGrabbed : boolean;
+    IsFineAdjustment : boolean;
+
     ReferencePoint   : TPoint;
     ReferencePos     : single;
-    IsFineAdjustment : boolean;
+    procedure UpdateReferencePoints(const X, Y:integer);
+
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
     procedure Changed;
+    procedure ModAmountChanged;
+
     procedure Paint; override;
 
     procedure DrawKnob_VectorStyle;
@@ -118,7 +124,7 @@ type
     // OnChanged should only be called when the control changes through user interaction.
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
 
-
+    property OnModAmountChanged : TNotifyEvent read fOnModAmountChanged write fOnModAmountChanged;
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -197,12 +203,27 @@ begin
   inherited;
 end;
 
-
-
 procedure TVamKnob.Changed;
 begin
   if assigned(OnChanged) then OnChanged(self);
 end;
+
+procedure TVamKnob.ModAmountChanged;
+begin
+  if assigned(OnModAmountChanged) then OnModAmountChanged(Self);
+
+end;
+
+procedure TVamKnob.UpdateReferencePoints(const X, Y:integer);
+begin
+  ReferencePoint := Point(X, Y);
+
+  if KnobMode = TKnobMode.PositionEdit
+    then ReferencePos   := fPos
+    else ReferencePos   := fModAmount;
+end;
+
+
 
 procedure TVamKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -211,8 +232,7 @@ begin
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
     IsGrabbed := true;
-    ReferencePoint := Point(X, Y);
-    ReferencePos   := fPos;
+    UpdateReferencePoints(X, Y);
 
     if (ssShift in Shift)
       then IsFineAdjustment := true
@@ -240,10 +260,8 @@ begin
     begin
       IsFineAdjustment := CurrentAdjustmentState;
       //NOTE: Reset the reference point when changing from/to 'Fine Adjustment' mode.
-      ReferencePoint := Point(X, Y);
-      ReferencePos   := fPos;
+      UpdateReferencePoints(X, Y);
     end;
-
 
     if IsFineAdjustment = false
       then ScaleFactor := 0.005
@@ -253,31 +271,54 @@ begin
 
     NewPos := ReferencePos - Dist;
 
-    if NewPos > 1 then
-    begin
-      NewPos := 1;
 
+    if KnobMode = TKnobMode.PositionEdit then
+    begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
       // This prevents overshoot when the user reverses mouse direction at the knob
       // position limits.
-      ReferencePoint := Point(X, Y);
-      ReferencePos   := fPos;
-    end;
+      if NewPos > 1 then
+      begin
+        NewPos := 1;
+        UpdateReferencePoints(X, Y);
+      end;
 
-    if NewPos < 0 then
+      if NewPos < 0 then
+      begin
+        NewPos := 0;
+        UpdateReferencePoints(X, Y);
+      end;
+
+      if fPos <> NewPos then
+      begin
+        fPos := NewPos;
+        Invalidate;
+        Changed;
+      end;
+
+    end else
     begin
-      NewPos := 0;
+      // NOTE: Reset the reference point whenever the knob position limit is exceeded.
+      // This prevents overshoot when the user reverses mouse direction at the knob
+      // position limits.
+      if NewPos > 1 then
+      begin
+        NewPos := 1;
+        UpdateReferencePoints(X, Y);
+      end;
 
-      // NOTE: Reset the reference point.
-      ReferencePoint := Point(X, Y);
-      ReferencePos   := fPos;
-    end;
+      if NewPos < -1 then
+      begin
+        NewPos := -1;
+        UpdateReferencePoints(X, Y);
+      end;
 
-    if fPos <> NewPos then
-    begin
-      fPos := NewPos;
-      Invalidate;
-      Changed;
+      if fModAmount <> NewPos then
+      begin
+        fModAmount := NewPos;
+        Invalidate;
+        ModAmountChanged;
+      end;
     end;
   end;
 end;
