@@ -481,7 +481,7 @@ begin
   if not assigned(Plugin) then exit;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
 
   ModDest := Plugin.GuiState.ModDestTarget;
 
@@ -561,7 +561,7 @@ begin
   RefOffset  := (Sender as TModSection).Tag;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
   ModLinkData := ModConnections.FindModLink(RefModDest, RefOffset);
 
   ModSourceMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y, ModLinkData^.Source);
@@ -577,7 +577,7 @@ begin
   RefOffset  := (Sender as TModSection).Tag;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
   ModLinkData := ModConnections.FindModLink(RefModDest, RefOffset);
 
   ModViaMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y, ModLinkData^.Via);
@@ -592,7 +592,7 @@ begin
   if not assigned(Plugin) then exit;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
   ModLinkData := ModConnections.FindModLink(RefModDest, RefOffset);
 
   ModLinkData^.Source := aSource;
@@ -614,7 +614,7 @@ begin
   if not assigned(Plugin) then exit;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
 
   ModLinkData := ModConnections.FindModLink(RefModDest, RefOffset);
 
@@ -663,7 +663,7 @@ begin
   ModOffset := Tag;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections;
+  ModConnections := kg.GetModConnections_OLD;
 
   ModLinkData := ModConnections.FindModLink(ModDest, ModOffset);
 

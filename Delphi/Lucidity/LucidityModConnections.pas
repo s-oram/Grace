@@ -3,12 +3,31 @@ unit LucidityModConnections;
 interface
 
 uses
+  VamLib.Collections.Lists,
   VamLib.MoreTypes,
   uConstants, uLucidityEnums;
 
 type
   // NOTE: TModConnections stores all mod connections for the sampler.
+  TModLink = record
+    ModAmount : array[0..kModSlots-1] of single;
+  end;
 
+  TModLinkArray = TArray<TModLink>;
+
+  TModConnections = class
+  private
+    fModLinks: TModLinkArray;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    property ModLinks : TModLinkArray read fModLinks write fModLinks;
+  end;
+
+
+
+  // NOTE: TModConnections stores all mod connections for the sampler.
   PModLink_OLD = ^TModLink_OLD;
   TModLink_OLD = record
     UniqueID : string; //NOTE: I'm not entirely sure this UniqueID is a good idea.
@@ -51,7 +70,24 @@ implementation
 uses
   SysUtils;
 
-{ TModLink }
+
+
+
+{ TModConnections }
+
+constructor TModConnections.Create;
+begin
+  SetLength(fModLinks, kModulatedParameterCount);
+end;
+
+destructor TModConnections.Destroy;
+begin
+  SetLength(fModLinks, 0);
+  inherited;
+end;
+
+
+{ TModLink_OLD }
 
 procedure TModLink_OLD.AssignFrom(const aSource: TModLink_OLD);
 begin
@@ -65,7 +101,7 @@ end;
 
 
 
-{ TModConnections }
+{ TModConnections_OLD }
 
 constructor TModConnections_OLD.Create;
 begin
@@ -177,5 +213,6 @@ begin
     end;
   end;
 end;
+
 
 end.

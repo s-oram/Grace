@@ -590,21 +590,21 @@ begin
           IsTriggered := true;
           (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);
           aVoice.VoiceMode  := VoiceMode;
-          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections);
+          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections_OLD);
         end else
         if (VoiceMode = TVoiceMode.Mono) then
         begin
           IsTriggered := true;
           (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);
           aVoice.VoiceMode  := VoiceMode;
-          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections);
+          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections_OLD);
         end else
         if (VoiceMode = TVoiceMode.Legato) then
         begin
           IsTriggered := true;
           (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);
           aVoice.VoiceMode  := VoiceMode;
-          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections);
+          aVoice.Trigger(Data1, Data2, aRegion.GetKeyGroup, aRegion, KG.GetModConnections_OLD);
         end else
         begin
           IsTriggered := false;

@@ -30,11 +30,13 @@ type
     fSampleMap: TSampleMap;
     fVoiceParameters: TLucidityVoiceParameterWrapper;
     fModConnections_OLD : TModConnections_OLD;
+    fModConnections: TModConnections;
     function GetVoiceParameters : TLucidityVoiceParameterWrapper;
     function GetObject : TObject;
     function GetTriggeredNoteCount:cardinal;
     procedure IncTriggeredNoteCount;
-    function GetModConnections:TModConnections_OLD;
+    function GetModConnections_OLD:TModConnections_OLD;
+    function GetModConnections:TModConnections;
   protected
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
@@ -59,6 +61,7 @@ type
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
     property VoiceParameters : TLucidityVoiceParameterWrapper read fVoiceParameters;
+    property ModConnections  : TModConnections                read fModConnections;
     property ModConnections_OLD  : TModConnections_OLD        read fModConnections_OLD;
 
     property Name : string read fName;
@@ -78,6 +81,7 @@ var
   c1: Integer;
 begin
   fModConnections_OLD := TModConnections_OLD.Create;
+  fModConnections     := TModConnections.Create;
 
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
@@ -99,6 +103,7 @@ destructor TKeyGroup.Destroy;
 begin
   fVoiceParameters.Free;
   fModConnections_OLD.Free;
+  fModConnections.Free;
   inherited;
 end;
 
@@ -278,7 +283,12 @@ procedure TKeyGroup.GetGuiFeedBack(const FeedbackData: TGuiFeedBackData);
 begin
 end;
 
-function TKeyGroup.GetModConnections: TModConnections_OLD;
+function TKeyGroup.GetModConnections: TModConnections;
+begin
+  result := fModConnections;
+end;
+
+function TKeyGroup.GetModConnections_OLD: TModConnections_OLD;
 begin
   result := fModConnections_OLD;
 end;

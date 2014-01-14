@@ -55,6 +55,7 @@ const
   kMaxVoiceCount = 64; //max number of voices per group.
   //kMaxVoiceCount = 8; //max number of voices per group.
   kModulatedParameterCount = 35;
+  kModSlots = 8;
 
 
 type
@@ -183,7 +184,7 @@ const
 const
   kLucidityProgramFileExtension = '.lpg';
 
-  kModSlots = 8;
+
 
 //==============================================================================
 
