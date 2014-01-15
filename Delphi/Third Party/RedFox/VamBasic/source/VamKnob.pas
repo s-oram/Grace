@@ -64,6 +64,8 @@ type
     IsGrabbed : boolean;
     IsFineAdjustment : boolean;
 
+    CurrentEditMode : TKnobMode;
+
     ReferencePoint   : TPoint;
     ReferenceValue     : single;
     procedure UpdateReferencePoints(const X, Y:integer);
@@ -220,7 +222,7 @@ procedure TVamKnob.UpdateReferencePoints(const X, Y:integer);
 begin
   ReferencePoint := Point(X, Y);
 
-  if KnobMode = TKnobMode.PositionEdit
+  if CurrentEditMode = TKnobMode.PositionEdit
     then ReferenceValue   := fPos
     else ReferenceValue   := fModAmount;
 end;
@@ -233,6 +235,11 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
+    if (ssAlt in Shift) and (KnobMode = TKnobMode.ModEdit)
+      then CurrentEditMode := TKnobMode.ModEdit
+      else CurrentEditMode := TKnobMode.PositionEdit;
+
+
     IsGrabbed := true;
     UpdateReferencePoints(X, Y);
 
@@ -273,7 +280,7 @@ begin
 
     NewValue := ReferenceValue - Dist;
 
-    if KnobMode = TKnobMode.PositionEdit then
+    if CurrentEditMode = TKnobMode.PositionEdit then
     begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
       // This prevents overshoot when the user reverses mouse direction at the knob
