@@ -99,6 +99,7 @@ type
 
     ModPoints : TVoiceModulationPoints;
     ModConnections : PModConnections;
+    ModulatedParameters: PModulatedPars;
 
     fOneShotSampleOsc : TOneShotSampleOsc;
     OscPitchParameters : PSampleOscPitchPar;
@@ -533,6 +534,10 @@ begin
   fSampleGroup  := aSampleGroup;
   fSampleRegion := aSampleRegion;
 
+  ModulatedParameters := aSampleGroup.GetModulatedParameters;
+
+
+
   ModMatrix.ZeroAllValues; //IMPORTANT: Do first.
 
   // set some modulation source values...
@@ -557,7 +562,10 @@ begin
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
-  ModConnections := aSampleGroup.GetModConnectionsPointer;
+
+
+
+  //ModConnections := aSampleGroup.GetModConnectionsPointer;
   //ModMatrix.UpdateAllModLinks(aModConnections);
   //ModMatrix.FastControlProcess;
   //ModMatrix.SlowControlProcess;

@@ -3,6 +3,7 @@ unit uLucidityKeyGroupInterface;
 interface
 
 uses
+  uConstants,
   LucidityModConnections;
 
 type
@@ -19,6 +20,7 @@ type
     function GetModConnections_OLD:TModConnections_OLD;
     function GetModConnections:TModConnections;
     function GetModConnectionsPointer : PModConnections;
+    function GetModulatedParameters : PModulatedPars;
   end;
 
 implementation

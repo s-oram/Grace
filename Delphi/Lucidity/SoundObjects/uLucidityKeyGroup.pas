@@ -37,6 +37,7 @@ type
     function GetModConnections_OLD:TModConnections_OLD;
     function GetModConnections:TModConnections;
     function GetModConnectionsPointer : PModConnections;
+    function GetModulatedParameters : PModulatedPars;
   protected
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
@@ -301,6 +302,11 @@ end;
 function TKeyGroup.GetModConnections_OLD: TModConnections_OLD;
 begin
   result := fModConnections_OLD;
+end;
+
+function TKeyGroup.GetModulatedParameters: PModulatedPars;
+begin
+  result := @self.ModulatedParameters;
 end;
 
 procedure TKeyGroup.SetName(Value: string);
