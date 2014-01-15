@@ -81,8 +81,6 @@ type
 
     EmptyKeyGroup : IKeyGroup;
 
-    procedure SetupVstParameters;
-
     procedure GetVstParameter(const Par:TVstParameter);
     procedure VstParameterChanged(const Par:TVstParameter);
     procedure VstParameterChangedViaMidiAutomation(Index: integer; Value: single);
@@ -413,17 +411,6 @@ end;
 function TeePlugin.ActiveVoicePar: TLucidityVoiceParameterWrapper;
 begin
   result := (ActiveKeyGroup.GetObject as TKeyGroup).VoiceParameters;
-end;
-
-
-
-procedure TeePlugin.SetupVstParameters;
-var
-  c1 : integer;
-  InfoMethod : TStringFunction;
-  Par : TVstParameter;
-begin
-  
 end;
 
 
