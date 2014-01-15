@@ -144,8 +144,9 @@ begin
 
 
   //==== Parameters ====
-  PreviewVolumeKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('PreviewVolume');
-  fGuiStandard.RegisterControlForAutoUpdate(PreviewVolumeKnob, true);
+  //TODO:
+  //PreviewVolumeKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('PreviewVolume');
+  //fGuiStandard.RegisterControlForAutoUpdate(PreviewVolumeKnob, true);
 
   PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
 

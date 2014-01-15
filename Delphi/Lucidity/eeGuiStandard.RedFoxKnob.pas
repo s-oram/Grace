@@ -3,7 +3,7 @@ unit eeGuiStandard.RedFoxKnob;
 interface
 
 uses
-  Menus,
+  Menus, eePlugin,
   VamLib.Collections.RecordArray,
   VamGuiControlInterfaces,
   eeVstParameter,
@@ -24,6 +24,7 @@ type
     ControlLinks            : TRecordArray<TControlInfo>;
     ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
+    fPlugin: TeePlugin;
 
     function FindIndexOfControl(c:TControl):integer;
 
@@ -47,9 +48,10 @@ type
     procedure Handle_ModAmountChanged(Sender: TObject);
   protected
     property Globals : TGlobals read fGlobals;
+    property Plugin  : TeePlugin read fPlugin;
 
   public
-    constructor Create(aGlobals : TGlobals);
+    constructor Create(aPlugin:TeePlugin;  aGlobals : TGlobals);
     destructor Destroy; override;
 
     procedure RegisterControl(c : TControl; aLinkedParameter : TVstParameter);
@@ -63,6 +65,8 @@ type
 implementation
 
 uses
+  LucidityModConnections,
+  uLucidityKeyGroupInterface,
   SysUtils,
   Vcl.Dialogs,
   eeMidiMap,
@@ -70,8 +74,9 @@ uses
 
 { TRedFoxKnobHandler }
 
-constructor TRedFoxKnobHandler.Create(aGlobals: TGlobals);
+constructor TRedFoxKnobHandler.Create(aPlugin:TeePlugin;  aGlobals: TGlobals);
 begin
+  fPlugin  := aPlugin;
   fGlobals := aGlobals;
 
   ControlContextMenu := TPopupMenu.Create(nil);
@@ -225,6 +230,7 @@ procedure TRedFoxKnobHandler.Handle_ModAmountChanged(Sender: TObject);
 var
   Index : integer;
   Value : single;
+  msg : string;
 begin
   if IsManualGuiUpdateActive then exit;
 
@@ -234,7 +240,9 @@ begin
 
   SetModAmount(Index, Value);
 
-  Globals.InfoBarReceiver.SendControlMessage(Sender, 'Mod Amount Changed');
+  msg := 'Mod Amount: ' + IntToStr(Round(Value * 100)) + '%';
+
+  Globals.InfoBarReceiver.SendControlMessage(Sender, Msg);
 end;
 
 
@@ -265,6 +273,8 @@ procedure TRedFoxKnobHandler.SetModAmount(const ControlLinkIndex: integer; const
 var
   ModSlot : integer;
   ModLinkIndex : integer;
+  kg : IKeyGroup;
+  ModConnections : TModConnections;
 begin
   ModSlot := Globals.SelectedModSlot;
 
@@ -272,6 +282,11 @@ begin
   begin
     ModLinkIndex := ControlLinks[ControlLinkIndex].LinkedParameter.ModLinkIndex;
 
+    kg := Plugin.ActiveKeyGroup;
+
+    ModConnections := kg.GetModConnections;
+
+    ModConnections.ModLinks[ModLinkIndex].ModAmount[ModSlot] := Value;
   end;
 
 end;

@@ -138,8 +138,16 @@ object FileBrowserFrame: TFileBrowserFrame
             Margins.Bottom = 2
             DisplayClass = 'UniPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Align = alTop
             Visible = True
           end

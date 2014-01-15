@@ -314,7 +314,7 @@ begin
 
   VstWindow := aVstWindow;
 
-  GuiStandard := TGuiStandard.Create(Plugin.Globals);
+  GuiStandard := TGuiStandard.Create(Plugin, Plugin.Globals);
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
 

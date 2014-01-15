@@ -42,6 +42,7 @@ interface
 {$SCOPEDENUMS ON}
 
 uses
+  eePlugin,
   eeGlobals, eeEnumHelper,
   Menus, Controls, Classes,
   TypInfo, Contnrs,
@@ -67,6 +68,7 @@ type
     fOnControlMouseUp: TControlMouseUpEvent;
     fRedFoxKnobHandler : TRedFoxKnobHandler;
     fRedFoxMenuHandler: TRedFoxMenuHandler;
+    fPlugin: TeePlugin;
   protected
     MenuController : TMenuController;
 
@@ -88,7 +90,7 @@ type
     //Set to true when manually changing the value of GUI controls. This prevents the controls sending parameter changes to VST plugin class.
     property IsManualGuiUpdateActive : boolean                read fIsManualGuiUpdateActive write fIsManualGuiUpdateActive;
   public
-    constructor Create(aGlobals : TGlobals);
+    constructor Create(aPlugin:TeePlugin; aGlobals : TGlobals);
     destructor Destroy; override;
 
     property RedFoxKnobHandler : TRedFoxKnobHandler read fRedFoxKnobHandler;
@@ -116,6 +118,7 @@ type
 
     //The globals property must be set so that this class can get/set parameter values and MIDI parameter mappings.
     property Globals : TGlobals read fGlobals;
+    property Plugin  : TeePlugin  read fPlugin;
 
   published
     //== RedFox / Vam Control event handlers ===================
@@ -147,9 +150,10 @@ type
 
 { TGuiStandard }
 
-constructor TGuiStandard.Create(aGlobals : TGlobals);
+constructor TGuiStandard.Create(aPlugin:TeePlugin;  aGlobals : TGlobals);
 begin
   fGlobals := aGlobals;
+  fPlugin  := aPlugin;
 
   MenuController := TMenuController.Create;
   MenuController.Globals := Globals;
@@ -162,7 +166,7 @@ begin
   GrabbedControlsList   := TObjectList.Create;
   GrabbedControlsList.OwnsObjects := false;
 
-  fRedFoxKnobHandler := TRedFoxKnobHandler.Create(aGlobals);
+  fRedFoxKnobHandler := TRedFoxKnobHandler.Create(aPlugin, aGlobals);
   fRedFoxMenuHandler := TRedFoxMenuHandler.Create(aGlobals);
 end;
 
@@ -608,8 +612,8 @@ end;
 
 procedure TGuiStandard.RegisterControlForAutoUpdate(aControl: TObject; AddEventHandling:boolean = false);
 begin
-  AutoUpdateControlList.Add(aControl);
-  if AddEventHandling then self.AssignEventHandlers(aControl);
+  //AutoUpdateControlList.Add(aControl);
+  //if AddEventHandling then self.AssignEventHandlers(aControl);
 end;
 
 procedure TGuiStandard.UpdateControls;
