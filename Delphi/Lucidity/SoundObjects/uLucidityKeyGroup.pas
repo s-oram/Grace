@@ -18,8 +18,6 @@ type
   // redeclare ISampleGroup for convenience.
   IKeyGroup = uLucidityKeyGroupInterface.IKeyGroup;
 
-
-
 type
   TKeyGroup = class;
 
@@ -37,6 +35,7 @@ type
     procedure IncTriggeredNoteCount;
     function GetModConnections_OLD:TModConnections_OLD;
     function GetModConnections:TModConnections;
+    function GetModConnectionsPointer : PModConnections;
   protected
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
@@ -286,6 +285,11 @@ end;
 function TKeyGroup.GetModConnections: TModConnections;
 begin
   result := fModConnections;
+end;
+
+function TKeyGroup.GetModConnectionsPointer: PModConnections;
+begin
+  result := @fModConnections;
 end;
 
 function TKeyGroup.GetModConnections_OLD: TModConnections_OLD;

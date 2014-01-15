@@ -98,6 +98,7 @@ type
     GlobalModPoints : PGlobalModulationPoints;
 
     ModPoints : TVoiceModulationPoints;
+    ModConnections : PModConnections;
 
     fOneShotSampleOsc : TOneShotSampleOsc;
     OscPitchParameters : PSampleOscPitchPar;
@@ -124,6 +125,8 @@ type
     property OscModule : TOscModule read fOscModule write fOscModule;
 
     procedure UpdateOscPitch;
+
+
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -133,7 +136,7 @@ type
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
 
-    procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections_OLD);
+    procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
     //procedure Trigger_Poly(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
     //procedure Trigger_Mono(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion); //used by Mono and legato modes.
     //procedure Trigger_Legato(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const WithGlide : boolean); //used by Mono and legato modes.
@@ -507,7 +510,7 @@ begin
   }
 end;
 
-procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const aModConnections: TModConnections_OLD);
+procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
 var
   CV : TModularVoltage;
   PitchShift : single;
@@ -554,9 +557,10 @@ begin
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
-  ModMatrix.UpdateAllModLinks(aModConnections);
-  ModMatrix.FastControlProcess;
-  ModMatrix.SlowControlProcess;
+  ModConnections := aSampleGroup.GetModConnectionsPointer;
+  //ModMatrix.UpdateAllModLinks(aModConnections);
+  //ModMatrix.FastControlProcess;
+  //ModMatrix.SlowControlProcess;
 
   Lfo.StepResetB;
   StepSeqOne.StepResetB;

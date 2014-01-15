@@ -16,6 +16,7 @@ type
   TModLinkArray = TArray<TModLink>;
 
 
+  PModConnections = ^TModConnections;
   TModConnections = class
   private
     fModLinks: TModLinkArray;

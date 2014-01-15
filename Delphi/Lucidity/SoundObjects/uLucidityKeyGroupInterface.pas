@@ -18,6 +18,7 @@ type
 
     function GetModConnections_OLD:TModConnections_OLD;
     function GetModConnections:TModConnections;
+    function GetModConnectionsPointer : PModConnections;
   end;
 
 implementation
