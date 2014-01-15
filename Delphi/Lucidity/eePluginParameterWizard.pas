@@ -94,7 +94,6 @@ begin
 
 
   aPar := TVstParameterEx.Create('VoiceGlide');
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Plugin.Globals.VstParameters.Add(aPar);
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
