@@ -10,25 +10,33 @@
 *.exe
 *.tvsconfig
 Thumbs.db
-
 *Project Resources*
 
 
-# the top most binary directory.
+
+### Model Maker files
+*.txvpck
+*.txapackage
+
+
+
+### the top most binary directory.
 bin/*
 
-# MadExcept settings 
+
+
+### MadExcept settings
 *.mes
 
 
-# Machine specific environment settings.
+### Machine specific environment settings.
 Config/*
 Lucidity Project Setup.bat
 Lucidity Project Teardown.bat
 Lucidity Create Installers.bat
 
 
-# ignore any generated DLLs.
+### ignore any generated DLLs.
 Lucidity.dll
 
 
