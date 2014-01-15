@@ -158,7 +158,6 @@ begin
   BackwardSelector.TextAlign := TRedFoxAlign.AlignCenter;
   BackwardSelector.TextVAlign := TRedFoxAlign.AlignCenter;
 
-
   MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   BackwardSelector.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   ForwardSelector.Font.Color  := GetRedFoxColor(kColor_LcdDark5);

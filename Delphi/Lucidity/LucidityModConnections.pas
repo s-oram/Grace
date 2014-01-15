@@ -82,6 +82,15 @@ uses
 constructor TModConnections.Create;
 begin
   SetLength(fModLinks, kModulatedParameterCount);
+
+  self.ModSource[0] := TModSource.AmpEnv;
+  self.ModSource[1] := TModSource.FilterEnv;
+  self.ModSource[2] := TModSource.Lfo1;
+  self.ModSource[3] := TModSource.Lfo2;
+  self.ModSource[4] := TModSource.StepSeq1;
+  self.ModSource[5] := TModSource.StepSeq2;
+  self.ModSource[6] := TModSource.Midi_ModWheel;
+  //self.ModSource[7] := TModSource.Midi_Velocity; //TODO Add velocity as a mod source.
 end;
 
 destructor TModConnections.Destroy;
