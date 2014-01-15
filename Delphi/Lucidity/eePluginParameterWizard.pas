@@ -7,7 +7,7 @@ uses
 
 // GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
 // the automatically generated ParNames.inc file needs to be updated.
-{_$define GENERATE_PAR_INFO}
+{$define GENERATE_PAR_INFO}
 
 
 
@@ -244,6 +244,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.VoiceGain := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -264,6 +266,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.VoicePan := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -287,6 +291,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.VoicePitchOne := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -304,6 +310,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.VoicePitchTwo := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -364,6 +372,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.AmpAttack := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -381,6 +391,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.AmpHold := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -401,6 +413,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.AmpDecay := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -421,6 +435,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.AmpSustain := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -440,6 +456,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.AmpRelease := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -478,6 +496,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.FilterAttack := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -498,6 +518,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.FilterHold := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -518,6 +540,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.FilterDecay := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -538,6 +562,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.FilterSustain := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -558,6 +584,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.FilterRelease := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -636,6 +664,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter1Par1 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -656,6 +686,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter1Par2 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -676,6 +708,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter1Par3 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -696,6 +730,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter1Par4 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -716,6 +752,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter2Par1 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -736,6 +774,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter2Par2 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -756,6 +796,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter2Par3 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -776,6 +818,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.Filter2Par4 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -834,6 +878,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.LfoRate1 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -854,7 +900,9 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
-       Plugin.ActiveVoicePar.LfoRate2 := Value;
+       assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
+      Plugin.ActiveVoicePar.LfoRate2 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -873,6 +921,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.LfoAPar2 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
@@ -893,6 +943,8 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
+      assert((Sender as TVstParameterEx).HasModLink);
+      Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
       Plugin.ActiveVoicePar.LfoBPar2 := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
