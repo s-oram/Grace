@@ -29,6 +29,7 @@ type
     fVoiceParameters: TLucidityVoiceParameterWrapper;
     fModConnections_OLD : TModConnections_OLD;
     fModConnections: TModConnections;
+
     function GetVoiceParameters : TLucidityVoiceParameterWrapper;
     function GetObject : TObject;
     function GetTriggeredNoteCount:cardinal;
@@ -48,6 +49,8 @@ type
     //TODO: Delete this.
     property SampleMap : TSampleMap read fSampleMap write fSampleMap;
   public
+    ModulatedParameters: TModulatedPars;
+
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
 
@@ -60,6 +63,7 @@ type
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
     property VoiceParameters : TLucidityVoiceParameterWrapper read fVoiceParameters;
+
     property ModConnections  : TModConnections                read fModConnections;
     property ModConnections_OLD  : TModConnections_OLD        read fModConnections_OLD;
 
@@ -81,6 +85,8 @@ var
 begin
   fModConnections_OLD := TModConnections_OLD.Create;
   fModConnections     := TModConnections.Create;
+
+
 
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;

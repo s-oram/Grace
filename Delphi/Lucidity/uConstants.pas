@@ -10,6 +10,9 @@ uses
   uLucidityEnums,
   Messages, eePluginSettings;
 
+
+{$INCLUDE ParNames.inc}
+
 const
   kCompany = 'One Small Clue';
   kProduct = 'Lucidity';
@@ -187,11 +190,21 @@ const
 
 
 //==============================================================================
-
-
-
 type
   TLucidityException = Exception;
+
+
+  // These structures are intended for storing the modulated parameter values.
+  // I'm not entirely sure of the variable naming yet. It doesn't seem quite right.
+  TModulatedPar = record
+    ParValue : single;
+    ModAmount : array[0..kModSlots-1] of single;
+  end;
+
+  TModulatedPars = array[0..kModulatedParameterCount-1] of TModulatedPar;
+
+
+
 
 //==============================================================================
 

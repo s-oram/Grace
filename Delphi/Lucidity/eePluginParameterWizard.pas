@@ -5,6 +5,12 @@ interface
 uses
   eeVstParameterList, uLucidityVoiceController;
 
+// GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
+// the automatically generated ParNames.inc file needs to be updated.
+{_$define GENERATE_PAR_INFO}
+
+
+
 
 {
   NOTE: Rather then jam all the parameter set up in then TeePlugin constructor
@@ -20,6 +26,9 @@ uses
 type
   TPluginParameterWizard= class
   private
+    {$ifdef GENERATE_PAR_INFO}
+    procedure GenerateParInfoText(aPlugin : TObject);
+    {$endif}
   public
     constructor Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
     destructor Destroy; override;
@@ -28,6 +37,9 @@ type
 implementation
 
 uses
+  Classes,
+  VamLib.Utils,
+  VamLib.Collections.Lists,
   SysUtils,
   uConstants,
   eePlugin,
@@ -55,6 +67,7 @@ var
   aModLinkIndex : integer;
 begin
   Plugin := (aPlugin as TeePlugin);
+
   Globals := Plugin.Globals;
 
   aModLinkIndex := 0;
@@ -1310,6 +1323,11 @@ begin
   //============================================================================
   //IMPORTANT: build published parameter info after adding all parameters...
   Plugin.Globals.VstParameters.BuildPublishedParameterInfo;
+
+
+  {$ifdef GENERATE_PAR_INFO}
+  GenerateParInfoText(Plugin);
+  {$endif}
 end;
 
 
@@ -1320,5 +1338,63 @@ begin
   inherited;
 end;
 
+
+
+{$ifdef GENERATE_PAR_INFO}
+procedure TPluginParameterWizard.GenerateParInfoText(aPlugin : TObject);
+// This method generates a text file of named indexes (as constants)
+// for the VST parameters. This text file is then included into
+// uConstants.pas. Ideally it should be done as part of the
+// precompilation stage.
+var
+  Text : TStringList;
+  Plugin : TeePlugin;
+  c1 : integer;
+  s : string;
+  VstPar : TVstParameterEx;
+  fn : string;
+begin
+  Text := TStringList.Create;
+  AutoFree(@Text);
+
+  Plugin := (aPlugin as TeePlugin);
+
+
+  s := 'const';
+  Text.Add(s);
+
+  //Add regular parameters...
+  for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
+  begin
+    VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
+
+    s := '  kPar' + VstPar.Name + ' = ' + IntToStr(c1) + ';';
+    Text.Add(s);
+  end;
+
+
+  s := '  ';
+  Text.Add(s);
+  Text.Add(s);
+
+
+  //Add modulated parameters...
+  for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
+  begin
+    VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
+    if VstPar.HasModLink then
+    begin
+      s := '  kModPar' + VstPar.Name + ' = ' + IntToStr(VstPar.ModLinkIndex) + ';';
+      Text.Add(s);
+    end;
+  end;
+
+  fn := 'D:\Delphi Projects\Lucidity\Delphi\Lucidity\ParNames.inc';
+
+  Text.SaveToFile(fn);
+
+end;
+
+{$endif}
 
 end.
