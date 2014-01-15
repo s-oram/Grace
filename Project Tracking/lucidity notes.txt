@@ -208,3 +208,7 @@ one_shot: sample will play from start to end, ignoring note off.
 This mode is engaged automatically if the count opcode is defined.
 loop_continuous: once the player reaches sample loop point, the loop will play until note expiration.
 loop_sustain: the player will play the loop while the note is held, by keeping it depressed or by using the sustain pedal (CC64). The rest of the sample will play after note release.
+
+
+
+Marketing Tag - WHAT DO YOU WANT TO SAMPLE?

@@ -3,7 +3,8 @@ unit uModSystem2Frame;
 interface
 
 uses
-  uConstants, eePlugin, eeGuiStandard,
+  uLucidityEnums, uLucidityKeyGroupInterface,
+  uConstants, eePlugin, eeGuiStandard, eeEnumMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamModSelector, VamTextBox;
@@ -13,6 +14,12 @@ type
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
   private
+    ModSourceMenu : TEnumMenu<TModSource>;
+    ModViaMenu    : TEnumMenu<TModSource>;
+
+    MenuModSlot : integer;
+    MenuKeyGroup : IKeyGroup;
+
     ModSelectors : array[0..kModSlots-1] of TVamModSelector;
     MainSelector : TVamTextBox;
     ForwardSelector : TVamTextBox;
@@ -30,6 +37,13 @@ type
 
     procedure UpdateModulation;
 
+
+    procedure ModSourceSelected(Sender : TObject; aSource : TModSource);
+    procedure ModViaSelected(Sender : TObject; aSource : TModSource);
+
+    procedure Handle_ShowModSourceMenu(Sender:TObject);
+    procedure Handle_ShowModViaMenu(Sender:TObject);
+
   protected
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
@@ -44,6 +58,8 @@ type
 implementation
 
 uses
+  LucidityModConnections,
+
   RedFox, RedFoxColor;
 
 {$R *.dfm}
@@ -64,11 +80,16 @@ begin
   // can receive messages posted by the EasyEffect Globals class.
   MsgHandle := AllocateHWND(MessageHandler);
 
+  ModSourceMenu := TEnumMenu<TModSource>.Create(TModSourceHelper);
+  ModSourceMenu.OnItemSelected := ModSourceSelected;
+  //ModSourceMenu.OnClose := EventHandler_ModMenuClosed;
 
-  //560 - width of mod slots
+  ModViaMenu    := TEnumMenu<TModSource>.Create(TModSourceHelper);
+  ModViaMenu.OnItemSelected := ModViaSelected;
+  //ModViaMenu.OnClose := EventHandler_ModMenuClosed;
 
-  OffsetX := 64 + 4 + 4;
-  PosY := 4;
+
+
 
 
   for c1 := 0 to kModSlots-1 do
@@ -76,23 +97,18 @@ begin
     ModSelectors[c1] := TVamModSelector.Create(AOwner);
     ModSelectors[c1].Parent := BackgroundPanel;
     ModSelectors[c1].Visible := true;
-
-    PosX := OffsetX + c1 * (62 + 4);
-
-    ModSelectors[c1].Layout.SetSize(62,62);
-    ModSelectors[c1].Layout.SetPos(PosX, PosY);
-
-    ModSelectors[c1].ColorBorder     := kColor_LcdDark1;
-    ModSelectors[c1].Color           := kColor_LcdDark1;
-    ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
+    ModSelectors[c1].Tag := c1;
+    ModSelectors[c1].OnMouseDown := ModSelectorMouseDown;
+    ModSelectors[c1].OnShowModSourceMenu := Handle_ShowModSourceMenu;
+    ModSelectors[c1].OnShowModViaMenu    := Handle_ShowModViaMenu;
   end;
-
 
   MainSelector     := TVamTextBox.Create(AOwner);
   MainSelector.Parent := BackgroundPanel;
   MainSelector.Visible := true;
   MainSelector.Layout.SetSize(64, 28);
   MainSelector.Layout.SetPos(4,4);
+  MainSelector.TextPadding.Bottom := 2;
 
   BackwardSelector := TVamTextBox.Create(AOwner);
   BackwardSelector.Parent := BackgroundPanel;
@@ -106,20 +122,29 @@ begin
   ForwardSelector.Layout.SetSize(29, 29);
   ForwardSelector.Layout.SetPos(38,36);
 
-
-
-  for c1 := 0 to kModSlots-1 do
-  begin
-    ModSelectors[c1].Tag := c1;
-    ModSelectors[c1].OnMouseDown := ModSelectorMouseDown;
-  end;
-
   MainSelector.OnMouseDown := MainSelectorMouseDown;
   BackwardSelector.OnMouseDown := BackwardSelectorMouseDown;
   ForwardSelector.OnMouseDown  := ForwardSelectorMouseDown;
 
 
-  // Apply Colours
+  //======= GUI Stylings ===============
+
+  OffsetX := 64 + 4 + 4;
+  PosY := 4;
+
+  for c1 := 0 to kModSlots-1 do
+  begin
+    PosX := OffsetX + c1 * (62 + 4);
+
+    ModSelectors[c1].Layout.SetSize(62,62);
+    ModSelectors[c1].Layout.SetPos(PosX, PosY);
+
+    ModSelectors[c1].ColorBorder     := kColor_LcdDark1;
+    ModSelectors[c1].Color           := kColor_LcdDark1;
+    ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
+    ModSelectors[c1].TextPadding.Top    := 5;
+    ModSelectors[c1].TextPadding.Bottom := 5;
+  end;
 
   MainSelector.Text := 'Main';
   MainSelector.TextAlign := TRedFoxAlign.AlignCenter;
@@ -154,6 +179,11 @@ begin
     Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
   end;
   DeallocateHWnd(MsgHandle);
+
+  ModViaMenu.Free;
+  ModSourceMenu.Free;
+
+  MenuKeyGroup := nil;
 
   inherited;
 end;
@@ -230,7 +260,29 @@ end;
 procedure TModSystem2Frame.UpdateModulation;
 var
   c1 : integer;
+  ModSource : TModSource;
+  ModSourceText : string;
+  kg : IKeyGroup;
+  ModConnections : TModConnections;
 begin
+  //=== update mod slot text ===
+  for c1 := 0 to kModSlots-1 do
+  begin
+    kg := Plugin.ActiveKeyGroup;
+    ModConnections := kg.GetModConnections;
+
+    ModSource := ModConnections.ModSource[c1];
+    ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
+    ModSelectors[c1].Text := ModSourceText;
+
+    ModSource := ModConnections.ModVia[c1];
+    ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
+    ModSelectors[c1].TextB := ModSourceText;
+  end;
+
+
+
+  //=== Update selected slot colors ====
   for c1 := 0 to kModSlots-1 do
   begin
     ModSelectors[c1].Color := kColor_LcdDark1;
@@ -257,10 +309,41 @@ begin
     end;
   end;
 
-
-
-
 end;
+
+procedure TModSystem2Frame.Handle_ShowModSourceMenu(Sender: TObject);
+begin
+  MenuModSlot := (Sender as TVamModSelector).Tag;
+  MenuKeyGroup := Plugin.ActiveKeyGroup;
+  ModSourceMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+end;
+
+procedure TModSystem2Frame.Handle_ShowModViaMenu(Sender: TObject);
+begin
+  MenuModSlot := (Sender as TVamModSelector).Tag;
+  MenuKeyGroup := Plugin.ActiveKeyGroup;
+  ModViaMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+end;
+
+procedure TModSystem2Frame.ModSourceSelected(Sender: TObject; aSource: TModSource);
+var
+  ModConnections : TModConnections;
+begin
+  ModConnections := MenuKeyGroup.GetModConnections;
+  ModConnections.ModSource[MenuModSlot] := aSource;
+  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+end;
+
+procedure TModSystem2Frame.ModViaSelected(Sender: TObject; aSource: TModSource);
+var
+  ModConnections : TModConnections;
+begin
+  ModConnections := MenuKeyGroup.GetModConnections;
+  ModConnections.ModVia[MenuModSlot] := aSource;
+  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+end;
+
+
 
 
 

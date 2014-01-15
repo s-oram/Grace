@@ -15,14 +15,18 @@ type
 
   TModLinkArray = TArray<TModLink>;
 
+
   TModConnections = class
   private
     fModLinks: TModLinkArray;
   public
+    ModSource : array[0..kModSlots-1] of TModSource;
+    ModVia    : array[0..kModSlots-1] of TModSource;
+
     constructor Create;
     destructor Destroy; override;
 
-    property ModLinks : TModLinkArray read fModLinks write fModLinks;
+    property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   end;
 
 

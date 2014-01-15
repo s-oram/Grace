@@ -18,6 +18,9 @@ type
     fTextAlign: TRedFoxAlign;
     fImageOverlay: TBitmap;
     FTextPadding: TPadding;
+    fTextB: string;
+    fOnShowModSourceMenu: TNotifyEvent;
+    fOnShowModViaMenu: TNotifyEvent;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -29,9 +32,22 @@ type
     procedure SetTextPadding(const Value: TPadding);
     function GetColorBorder: TRedFoxColorString;
     procedure SetColorBorder(const Value: TRedFoxColorString);
-  protected
+    procedure SetTextB(const Value: string);
+
+  protected type
+      TActiveControlRegion = (ModDisplay, ViaDisplay);
+
+  protected var
+    IsControlGrabbed : boolean;
+
+    function GetActiveControlRegion(const x, y : integer):TActiveControlRegion;
+
     procedure MouseEnter; override;
     procedure MouseLeave; override;
+
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+
     procedure Paint; override;
 
     procedure EventHandle_TextPaddingChange(Sender : TObject);
@@ -49,11 +65,16 @@ type
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
 
     property Text : string read fText write SetText;
+    property TextB : string read fTextB write SetTextB;
     property TextPadding : TPadding read FTextPadding write SetTextPadding;
 
     property Font;
 
     property ImageOverlay:TBitmap read fImageOverlay write SetImageOverlay;
+
+
+    property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
+    property OnShowModViaMenu    : TNotifyEvent read fOnShowModViaMenu    write fOnShowModViaMenu;
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -77,6 +98,9 @@ begin
   FTextPadding := TPadding.Create(Self);
   FTextPadding.SetBounds(0,0,0,0);
   fTextPadding.OnChange := EventHandle_TextPaddingChange;
+
+  fText := 'Bang';
+  fTextB := 'James';
 end;
 
 destructor TVamModSelector.Destroy;
@@ -88,6 +112,13 @@ end;
 procedure TVamModSelector.EventHandle_TextPaddingChange(Sender: TObject);
 begin
   Invalidate;
+end;
+
+function TVamModSelector.GetActiveControlRegion(const x, y: integer): TActiveControlRegion;
+begin
+  if Y < Height div 2
+    then result := TActiveControlRegion.ModDisplay
+    else result := TActiveControlRegion.ViaDisplay;
 end;
 
 function TVamModSelector.GetColor: TRedFoxColorString;
@@ -111,6 +142,41 @@ begin
 
   IsMouseOver := true;
   Invalidate;
+end;
+
+procedure TVamModSelector.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+
+
+
+  if (Button = mbRight) then
+  begin
+    IsControlGrabbed := true;
+  end;
+
+end;
+
+procedure TVamModSelector.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  cr : TActiveControlRegion;
+begin
+  inherited;
+
+  if (Button = mbRight) and (IsControlGrabbed) then
+  begin
+    IsControlGrabbed := false;
+
+    cr := GetActiveControlRegion(x, y);
+
+    case cr of
+      ModDisplay: if assigned(OnShowModSourceMenu) then OnShowModSourceMenu(self);
+      ViaDisplay: if assigned(OnShowModViaMenu)    then OnShowModViaMenu(self);
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+  end;
+
 end;
 
 procedure TVamModSelector.MouseLeave;
@@ -175,6 +241,15 @@ begin
   end;
 end;
 
+procedure TVamModSelector.SetTextB(const Value: string);
+begin
+  if Value <> fTextB then
+  begin
+    fTextB := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TVamModSelector.SetTextPadding(const Value: TPadding);
 begin
   FTextPadding.Assign(Value);
@@ -195,6 +270,8 @@ var
   TextBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
+  VOffset : integer;
+  VHeight : integer;
 begin
   inherited;
 
@@ -221,8 +298,26 @@ begin
   BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
   //== draw the text ==
-  TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-TextPadding.Right, Height-TextPadding.Bottom);
-  BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  //TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-TextPadding.Right, Height-TextPadding.Bottom);
+  //BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+
+  VOffset := TextPadding.Top;
+  VHeight := Height - TextPadding.Top - TextPadding.Bottom;
+  TextBounds.Left   := 0;
+  TextBounds.Right  := Width;
+
+  TextBounds.Top    := round(VHeight * 0/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 1/3) + VOffset;
+  BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+  TextBounds.Top    := round(VHeight * 1/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 2/3) + VOffset;
+  BackBuffer.DrawText('via', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+  TextBounds.Top    := round(VHeight * 2/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 3/3) + VOffset;
+  BackBuffer.DrawText(TextB, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
 
 
   if assigned(ImageOverlay) then

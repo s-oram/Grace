@@ -321,9 +321,9 @@ class function TModSourceHelper.ToShortGuiString(aEnum: TModSource): string;
 begin
   case aEnum of
     TModSource.None:           result := '-';
-    TModSource.Midi_Note:      result := 'MIDI Note';
-    TModSource.Midi_PitchBend: result := 'MIDI Pitchbend';
-    TModSource.Midi_ModWheel:  result := 'MIDI Modwheel';
+    TModSource.Midi_Note:      result := 'Note';
+    TModSource.Midi_PitchBend: result := 'P.Bend';
+    TModSource.Midi_ModWheel:  result := 'Modwheel';
     TModSource.AmpEnv:         result := 'Amp Env';
     TModSource.FilterEnv:      result := 'Filter Env';
     TModSource.Lfo1:           result := 'LFO 1';
