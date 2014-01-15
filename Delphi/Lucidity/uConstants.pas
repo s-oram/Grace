@@ -201,6 +201,7 @@ type
     ModAmount : array[0..kModSlots-1] of single;
   end;
 
+  PModulatedPars = ^TModulatedPars;
   TModulatedPars = array[0..kModulatedParameterCount-1] of TModulatedPar;
 
 
