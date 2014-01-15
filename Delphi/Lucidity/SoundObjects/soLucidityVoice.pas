@@ -99,7 +99,8 @@ type
 
     ModPoints : TVoiceModulationPoints;
     ModConnections : PModConnections;
-    ModulatedParameters: PModulatedPars;
+    ModulatedParameters: PModulatedPars; //Holds a pointer to raw parameter values. The values are identical for all voices in the voice group.
+    CalculatedPars : TCalculatedModulatedPars; //stores the parameter values after the modulations have been applied.
 
     fOneShotSampleOsc : TOneShotSampleOsc;
     OscPitchParameters : PSampleOscPitchPar;

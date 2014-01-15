@@ -204,8 +204,8 @@ type
   PModulatedPars = ^TModulatedPars;
   TModulatedPars = array[0..kModulatedParameterCount-1] of TModulatedPar;
 
-
-
+  PCalculatedModulatedPars = ^TCalculatedModulatedPars;
+  TCalculatedModulatedPars = array[0..kModulatedParameterCount-1] of single;
 
 //==============================================================================
 
