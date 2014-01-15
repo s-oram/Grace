@@ -535,8 +535,7 @@ begin
   fSampleRegion := aSampleRegion;
 
   ModulatedParameters := aSampleGroup.GetModulatedParameters;
-
-
+  ModConnections := aSampleGroup.GetModConnectionsPointer;
 
   ModMatrix.ZeroAllValues; //IMPORTANT: Do first.
 
@@ -565,7 +564,7 @@ begin
 
 
 
-  //ModConnections := aSampleGroup.GetModConnectionsPointer;
+
   //ModMatrix.UpdateAllModLinks(aModConnections);
   //ModMatrix.FastControlProcess;
   //ModMatrix.SlowControlProcess;

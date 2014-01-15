@@ -541,7 +541,8 @@ begin
       aKnob.KnobMode := TKnobMode.PositionEdit;
     end else
     begin
-      ModAmount := ModConnections.ModLinks[VstPar.ModLinkIndex].ModAmount[ModSlot];
+      ModLinkIndex := VstPar.ModLinkIndex;
+      ModAmount := kg.GetModulatedParameters^[ModLinkIndex].ModAmount[ModSlot];
       aKnob.ModAmount := ModAmount;
       aKnob.KnobMode := TKnobMode.ModEdit;
     end;

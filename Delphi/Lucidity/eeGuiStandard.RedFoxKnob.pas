@@ -284,9 +284,9 @@ begin
 
     kg := Plugin.ActiveKeyGroup;
 
-    ModConnections := kg.GetModConnections;
-
-    ModConnections.ModLinks[ModLinkIndex].ModAmount[ModSlot] := Value;
+    //ModConnections := kg.GetModConnections;
+    //ModConnections.ModLinks[ModLinkIndex].ModAmount[ModSlot] := Value;
+    kg.GetModulatedParameters^[ModLinkIndex].ModAmount[ModSlot] := Value;
   end;
 
 end;

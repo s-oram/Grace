@@ -19,15 +19,15 @@ type
   PModConnections = ^TModConnections;
   TModConnections = class
   private
+    //TODO: Delete ModLinks. - it's not being used.
     fModLinks: TModLinkArray;
+    property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   public
     ModSource : array[0..kModSlots-1] of TModSource;
     ModVia    : array[0..kModSlots-1] of TModSource;
 
     constructor Create;
     destructor Destroy; override;
-
-    property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   end;
 
 
@@ -44,6 +44,7 @@ type
     procedure AssignFrom(const aSource:TModLink_OLD);
   end;
 
+  // TODO: delete old mod connections class. It's not being used.
   TModConnections_OLD = class
   private
     function GetModLinkCount: integer;
