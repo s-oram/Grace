@@ -14,7 +14,12 @@ type
   TRegionLoadInfo = class;
 
   TLucidityStatemanager = class
+  strict private
+
+    procedure SaveModulatedParametersToNode(ParentNode : TXmlNode; sg : TKeyGroup);
+    procedure LoadModulatedParametersFromNode(ParentNode : TXmlNode; sg : TKeyGroup);
   private
+
   protected
     Plugin : TeePlugin;
 
@@ -110,6 +115,31 @@ type
     property Offset   : single     read fOffset    write fOffset;
   end;
 
+  TModParSaveObject = class
+  private
+    fParName: string;
+    fParValue: single;
+    fModAmount2: single;
+    fModAmount3: single;
+    fModAmount1: single;
+    fModAmount6: single;
+    fModAmount7: single;
+    fModAmount4: single;
+    fModAmount5: single;
+    fModAmount8: single;
+  public
+  published
+    property ParName  : string read fParName write fParName;
+    property ParValue : single read fParValue write fParValue;
+    property ModAmount1 : single read fModAmount1 write fModAmount1;
+    property ModAmount2 : single read fModAmount2 write fModAmount2;
+    property ModAmount3 : single read fModAmount3 write fModAmount3;
+    property ModAmount4 : single read fModAmount4 write fModAmount4;
+    property ModAmount5 : single read fModAmount5 write fModAmount5;
+    property ModAmount6 : single read fModAmount6 write fModAmount6;
+    property ModAmount7 : single read fModAmount7 write fModAmount7;
+    property ModAmount8 : single read fModAmount8 write fModAmount8;
+  end;
 
 implementation
 
@@ -204,6 +234,96 @@ begin
   end;
 end;
 
+procedure TLucidityStatemanager.SaveModulatedParametersToNode(ParentNode: TXmlNode; sg: TKeyGroup);
+var
+  c1 : integer;
+  ModParNode   : TXmlNode;
+  ModParSaveObject : TModParSaveObject;
+begin
+  ModParSaveObject := TModParSaveObject.Create;
+  AutoFree(@ModParSaveObject);
+
+  for c1 := 0 to kParameterCount-1 do
+  begin
+    if ParInfoEx[c1].ModLinkIndex <> -1 then
+    begin
+      ModParSaveObject.ParName  := ParInfoEx[c1].Name;
+      ModParSaveObject.ParValue := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ParValue;
+      ModParSaveObject.ModAmount1 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[0];
+      ModParSaveObject.ModAmount2 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[1];
+      ModParSaveObject.ModAmount3 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[2];
+      ModParSaveObject.ModAmount4 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[3];
+      ModParSaveObject.ModAmount5 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[4];
+      ModParSaveObject.ModAmount6 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[5];
+      ModParSaveObject.ModAmount7 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[6];
+      ModParSaveObject.ModAmount8 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[7];
+
+      ModParNode := ParentNode.NodeNew('ModulatedParameter');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParName');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParValue');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount1');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount2');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount3');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount4');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount5');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount6');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount7');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount8');
+    end;
+  end;
+end;
+
+procedure TLucidityStatemanager.LoadModulatedParametersFromNode(ParentNode: TXmlNode; sg: TKeyGroup);
+var
+  c1 : integer;
+  ModParNodeList : TsdNodeList;
+  ModParSaveObject : TModParSaveObject;
+  aNode : TXmlNode;
+
+  ModLinkIndex : integer;
+begin
+  ModParSaveObject := TModParSaveObject.Create;
+  AutoFree(@ModParSaveObject);
+
+  ModParNodeList := TsdNodeList.Create;
+  AutoFree(@ModParNodeList);
+
+  ParentNode.FindNodes('ModulatedParameter', ModParNodeList);
+
+  for c1 := 0 to ModParNodeList.Count-1 do
+  begin
+    aNode := ModParNodeList[c1];
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ParName');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ParValue');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount1');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount2');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount3');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount4');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount5');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount6');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount7');
+    LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount8');
+
+
+    ModLinkIndex := ParNameToModLinkIndex(ModParSaveObject.ParName);
+    if ModLinkIndex <> -1 then
+    begin
+      sg.ModulatedParameters[ModLinkIndex].ParValue := ModParSaveObject.ParValue;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[0] := ModParSaveObject.ModAmount1;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[1] := ModParSaveObject.ModAmount2;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[2] := ModParSaveObject.ModAmount3;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[3] := ModParSaveObject.ModAmount4;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[4] := ModParSaveObject.ModAmount5;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[5] := ModParSaveObject.ModAmount6;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[6] := ModParSaveObject.ModAmount7;
+      sg.ModulatedParameters[ModLinkIndex].ModAmount[7] := ModParSaveObject.ModAmount8;
+    end;
+
+  end;
+end;
+
+
+
 procedure TLucidityStatemanager.SavePesetToFile(const FileName: string);
 var
   XML : TNativeXML;
@@ -226,6 +346,7 @@ var
   GlobalParametersNode : TXmlNode;
   SampleGroupNode : TXmlNode;
   VoiceParNode : TXmlNode;
+
   RegionNode : TXmlNode;
   RegionPropertiesNode : TXmlNode;
   SamplePropertiesNode : TXmlNode;
@@ -354,6 +475,8 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq2Direction');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq2Length');
 
+    SaveModulatedParametersToNode(VoiceParNode, sg);
+
     for c3 := 0 to sg.ModConnections_OLD.ModLinkCount-1 do
     begin
       ModLinkState.AssignFrom(sg.ModConnections_OLD.ModLinks[c3]^);
@@ -413,7 +536,6 @@ var
   ModLinkState : TModLinkLoadInfo;
   c3: Integer;
 
-  Index : integer;
   TempModLink : TModLink_OLD;
   TargetModLink : PModLink_OLD;
 
@@ -574,6 +696,7 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'StepSeq2Length');
     end;
 
+    LoadModulatedParametersFromNode(VoiceParNode, sg);
 
     ModLinkNodeList.Clear;
     SampleGroupNode.FindNodes('ModLink', ModLinkNodeList);
