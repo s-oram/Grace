@@ -9,7 +9,7 @@ uses
 
 // GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
 // the automatically generated ParNames.inc file needs to be updated.
-{$define GENERATE_PAR_INFO}
+{_$define GENERATE_PAR_INFO}
 
 
 
@@ -39,6 +39,7 @@ type
 implementation
 
 uses
+  LucidityUtils,
   Classes,
   VamLib.Utils,
   VamLib.Collections.Lists,
@@ -1550,7 +1551,18 @@ begin
     end);
   end;
 
+  assert(ParManager.Count = kParameterCount);
   assert(aModLinkIndex = kModulatedParameterCount);
+
+
+  for c1 := 0 to ParManager.Count-1 do
+  begin
+    ParInfoEx[c1].Name := ParManager[c1].Name;
+    if (Parmanager[c1] as TVstParameterEx).HasModLink
+      then ParInfoEx[c1].ModLinkIndex := (Parmanager[c1] as TVstParameterEx).ModLinkIndex
+      else ParInfoEx[c1].ModLinkIndex := -1;
+
+  end;
 
   //============================================================================
   //IMPORTANT: build published parameter info after adding all parameters...

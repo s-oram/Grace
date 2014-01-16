@@ -137,7 +137,8 @@ uses
   eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas',
   eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
   eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas',
-  eeVstParameterEx in 'eeVstParameterEx.pas';
+  eeVstParameterEx in 'eeVstParameterEx.pas',
+  LucidityUtils in 'LucidityUtils.pas';
 
 {$R *.res}
 

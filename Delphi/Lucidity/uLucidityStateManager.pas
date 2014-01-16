@@ -114,6 +114,7 @@ type
 implementation
 
 uses
+  LucidityUtils,
   Lucidity.StateHelpers,
   uAutoFree,
   uConstants,
