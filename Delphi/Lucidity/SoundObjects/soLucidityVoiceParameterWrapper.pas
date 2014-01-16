@@ -401,49 +401,21 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetFilter1Par1(const Value: single);
 begin
   fFilter1Par1 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterOne.Par1 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1Par2(const Value: single);
 begin
   fFilter1Par2 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterOne.Par2 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1Par3(const Value: single);
 begin
   fFilter1Par3 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterOne.Par3 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1Par4(const Value: single);
 begin
   fFilter1Par4 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterOne.Par4 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1Type(const Value: TFilterType);
@@ -461,49 +433,21 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetFilter2Par1(const Value: single);
 begin
   fFilter2Par1 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterTwo.Par1 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2Par2(const Value: single);
 begin
   fFilter2Par2 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterTwo.Par2 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2Par3(const Value: single);
 begin
   fFilter2Par3 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterTwo.Par3 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2Par4(const Value: single);
 begin
   fFilter2Par4 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterTwo.Par4 := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2Type(const Value: TFilterType);
@@ -1204,12 +1148,7 @@ begin
 
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
-  aVoice.FilterOne.Par1                  := Filter1Par1;
-  aVoice.FilterOne.Par2                  := Filter1Par2;
-  aVoice.FilterOne.Par3                  := Filter1Par3;
-  aVoice.FilterTwo.Par1                  := Filter2Par1;
-  aVoice.FilterTwo.Par2                  := Filter2Par2;
-  aVoice.FilterTwo.Par3                  := Filter2Par3;
+
   aVoice.AmpEnv.AttackTime               := AmpAttack;
   aVoice.AmpEnv.HoldTime                 := AmpHold;
   aVoice.AmpEnv.DecayTime                := AmpDecay;

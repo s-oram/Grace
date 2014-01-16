@@ -541,7 +541,7 @@ begin
   //=== init all processing objects with links to voice parameters etc ===
 
   //-- IMPORTANT: Do first. --
-  ModMatrix.Init(ParValueData, @self.ParValueData, ModConnections);
+  ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
   ModMatrix.ZeroAllValues;
   //--------------------------
 
@@ -582,8 +582,8 @@ begin
 
 
   //ModMatrix.UpdateAllModLinks(aModConnections);
-  //ModMatrix.FastControlProcess;
-  //ModMatrix.SlowControlProcess;
+  ModMatrix.FastControlProcess;
+  ModMatrix.SlowControlProcess;
 
   Lfo.StepResetB;
   StepSeqOne.StepResetB;

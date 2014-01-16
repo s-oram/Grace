@@ -25,11 +25,8 @@ type
   TLucidityFilter = class
   private
     fSampleRate: single;
-    fPar1: single;
-    fPar2: single;
-    fPar3: single;
     fFilterType: TFilterType;
-    fPar4: single;
+
     procedure SetSampleRate(const Value: single);
     procedure SetFilterType(const Value: TFilterType);
   protected
@@ -44,14 +41,11 @@ type
 
     TestFilter : TTestFilter;
 
-    Par1Mod: single;
-    Par2Mod: single;
-    Par3Mod: single;
-    Par4Mod: single;
-
     FilterIndex  : integer;
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
+
+    DummyModValue : single; //TODO: Delete this.
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,10 +66,7 @@ type
     //==== Parameters ====
     property FilterType : TFilterType read fFilterType write SetFilterType;
 
-    property Par1 : single read fPar1 write fPar1; //range 0..1
-    property Par2 : single read fPar2 write fPar2; //range 0..1
-    property Par3 : single read fPar3 write fPar3; //range 0..1
-    property Par4 : single read fPar4 write fPar4; //range 0..1
+
   end;
 
 implementation
@@ -125,14 +116,9 @@ end;
 
 function TLucidityFilter.GetModPointer(const Name: string): PSingle;
 begin
-  if Name ='Par1Mod' then exit(@Par1Mod);
-  if Name ='Par2Mod' then exit(@Par2Mod);
-  if Name ='Par3Mod' then exit(@Par3Mod);
-  if Name ='Par4Mod' then exit(@Par4Mod);
-
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
-end;
+  if Name ='Par1Mod' then exit(@DummyModValue);
+  if Name ='Par2Mod' then exit(@DummyModValue);  if Name ='Par3Mod' then exit(@DummyModValue);  if Name ='Par4Mod' then exit(@DummyModValue);
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');  result := nil;end;
 
 procedure TLucidityFilter.Init(const aFilterIndex : integer; const aPars: PModulatedPars; const aModData: PParModulationData);
 begin
@@ -185,11 +171,44 @@ var
   cQ    : single;
   CV    : single;
 
+
+  Par1 : single;
+  Par2 : single;
+  Par3 : single;
+  Par4 : single;
+
+  Par1Mod: single;
+  Par2Mod: single;
+  Par3Mod: single;
+  Par4Mod: single;
+
   px1 : single;
   px2 : single;
   px3 : single;
 begin
+  if FilterIndex = 0 then
+  begin
+    Par1 := ParValueData^[kModParFilter1Par1].ParValue;
+    Par2 := ParValueData^[kModParFilter1Par2].ParValue;
+    Par3 := ParValueData^[kModParFilter1Par3].ParValue;
+    Par4 := ParValueData^[kModParFilter1Par4].ParValue;
 
+    Par1Mod := 0;
+    Par2Mod := 0;
+    Par3Mod := 0;
+    Par4Mod := 0;
+  end else
+  begin
+    Par1 := ParValueData^[kModParFilter2Par1].ParValue;
+    Par2 := ParValueData^[kModParFilter2Par2].ParValue;
+    Par3 := ParValueData^[kModParFilter2Par3].ParValue;
+    Par4 := ParValueData^[kModParFilter2Par4].ParValue;
+
+    Par1Mod := 0;
+    Par2Mod := 0;
+    Par3Mod := 0;
+    Par4Mod := 0;
+  end;
 
 
 
