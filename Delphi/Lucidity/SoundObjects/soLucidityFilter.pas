@@ -188,10 +188,10 @@ var
 begin
   if FilterIndex = 0 then
   begin
-    Par1 := ParValueData^[kModParFilter1Par1].ParValue;
-    Par2 := ParValueData^[kModParFilter1Par2].ParValue;
-    Par3 := ParValueData^[kModParFilter1Par3].ParValue;
-    Par4 := ParValueData^[kModParFilter1Par4].ParValue;
+    Par1 := ParValueData^[TModParIndex.Filter1Par1].ParValue;
+    Par2 := ParValueData^[TModParIndex.Filter1Par2].ParValue;
+    Par3 := ParValueData^[TModParIndex.Filter1Par3].ParValue;
+    Par4 := ParValueData^[TModParIndex.Filter1Par4].ParValue;
 
     Par1Mod := 0;
     Par2Mod := 0;
@@ -199,10 +199,10 @@ begin
     Par4Mod := 0;
   end else
   begin
-    Par1 := ParValueData^[kModParFilter2Par1].ParValue;
-    Par2 := ParValueData^[kModParFilter2Par2].ParValue;
-    Par3 := ParValueData^[kModParFilter2Par3].ParValue;
-    Par4 := ParValueData^[kModParFilter2Par4].ParValue;
+    Par1 := ParValueData^[TModParIndex.Filter2Par1].ParValue;
+    Par2 := ParValueData^[TModParIndex.Filter2Par2].ParValue;
+    Par3 := ParValueData^[TModParIndex.Filter2Par3].ParValue;
+    Par4 := ParValueData^[TModParIndex.Filter2Par4].ParValue;
 
     Par1Mod := 0;
     Par2Mod := 0;

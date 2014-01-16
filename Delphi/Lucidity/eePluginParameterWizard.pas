@@ -72,7 +72,6 @@ begin
 
   aModLinkIndex := 0;
 
-
   //== Create all parameters ==
   aPar := TVstParameterEx.Create('VoiceMode');
   Plugin.Globals.VstParameters.Add(aPar);
@@ -1410,24 +1409,28 @@ begin
 
   Plugin := (aPlugin as TeePlugin);
 
-
-  s := 'const';
-  Text.Add(s);
+  Text.Add('type');
+  Text.Add('  TVstParIndex = record');
+  Text.Add('  const');
 
   //Add regular parameters...
   for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
   begin
     VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
 
-    s := '  kPar' + VstPar.Name + ' = ' + IntToStr(c1) + ';';
+    s := '    ' + VstPar.Name + ' = ' + IntToStr(c1) + ';';
     Text.Add(s);
   end;
 
+  Text.Add('  end;');
 
   s := '  ';
   Text.Add(s);
   Text.Add(s);
 
+
+  Text.Add('  TVstParIndex = record');
+  Text.Add('  const');
 
   //Add modulated parameters...
   for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
@@ -1435,10 +1438,12 @@ begin
     VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
     if VstPar.HasModLink then
     begin
-      s := '  kModPar' + VstPar.Name + ' = ' + IntToStr(VstPar.ModLinkIndex) + ';';
+      s := '    ' + VstPar.Name + ' = ' + IntToStr(VstPar.ModLinkIndex) + ';';
       Text.Add(s);
     end;
   end;
+
+  Text.Add('  end;');
 
   fn := 'D:\Delphi Projects\Lucidity\Delphi\Lucidity\ParNames.inc';
 
