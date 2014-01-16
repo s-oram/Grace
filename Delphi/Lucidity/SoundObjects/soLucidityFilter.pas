@@ -193,10 +193,10 @@ begin
     Par3 := ParValueData^[TModParIndex.Filter1Par3].ParValue;
     Par4 := ParValueData^[TModParIndex.Filter1Par4].ParValue;
 
-    Par1Mod := 0;
-    Par2Mod := 0;
-    Par3Mod := 0;
-    Par4Mod := 0;
+    Par1Mod := ParModData^[TModParIndex.Filter1Par1];
+    Par2Mod := ParModData^[TModParIndex.Filter1Par2];
+    Par3Mod := ParModData^[TModParIndex.Filter1Par3];
+    Par4Mod := ParModData^[TModParIndex.Filter1Par4];
   end else
   begin
     Par1 := ParValueData^[TModParIndex.Filter2Par1].ParValue;
@@ -204,10 +204,10 @@ begin
     Par3 := ParValueData^[TModParIndex.Filter2Par3].ParValue;
     Par4 := ParValueData^[TModParIndex.Filter2Par4].ParValue;
 
-    Par1Mod := 0;
-    Par2Mod := 0;
-    Par3Mod := 0;
-    Par4Mod := 0;
+    Par1Mod := ParModData^[TModParIndex.Filter2Par1];
+    Par2Mod := ParModData^[TModParIndex.Filter2Par2];
+    Par3Mod := ParModData^[TModParIndex.Filter2Par3];
+    Par4Mod := ParModData^[TModParIndex.Filter2Par4];
   end;
 
 

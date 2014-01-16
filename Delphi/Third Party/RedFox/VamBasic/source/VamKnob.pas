@@ -407,8 +407,8 @@ end;
 
 procedure TVamKnob.SetMinModDepth(const Value: single);
 begin
-  assert(Value > -1);
-  assert(Value < 0);
+  assert(Value >= -1);
+  assert(Value <= 0);
 
   if Value <> fMinModDepth then
   begin
@@ -420,8 +420,8 @@ end;
 
 procedure TVamKnob.SetMaxModDepth(const Value: single);
 begin
-  assert(Value > 0);
-  assert(Value < 1);
+  assert(Value >= 0);
+  assert(Value <= 1);
 
   if Value <> fMaxModDepth then
   begin
@@ -433,8 +433,8 @@ end;
 
 procedure TVamKnob.SetModAmount(const Value: single);
 begin
-  assert(Value > -1);
-  assert(Value < 1);
+  assert(Value >= -1);
+  assert(Value <= 1);
 
   if (Value <> fModAmount) then
   begin

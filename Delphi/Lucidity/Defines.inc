@@ -22,7 +22,7 @@
   {.$DEFINE LogDispatcherOpcodes}
   {.$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
-  {$DEFINE AudioInline}
+  {.$DEFINE AudioInline}
 {$ENDIF}
 
 //== Debug Defines ==
@@ -34,7 +34,7 @@
   {$DEFINE LogDispatcherOpcodes}
   {$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
-  {$DEFINE AudioInline}
+  {.$DEFINE AudioInline}
 
   {.$DEFINE StrictDebugChecks}
 {$ENDIF}

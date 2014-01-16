@@ -545,8 +545,8 @@ begin
   ModMatrix.ZeroAllValues;
   //--------------------------
 
-  FilterOne.Init(0, ParValueData, @self.ParValueData);
-  FilterTwo.Init(1, ParValueData, @self.ParValueData);
+  FilterOne.Init(0, ParValueData, @self.ParModData);
+  FilterTwo.Init(1, ParValueData, @self.ParModData);
 
 
   //=============================================================
