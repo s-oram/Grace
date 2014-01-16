@@ -10,7 +10,7 @@ uses
 type
   // NOTE: TModConnections stores all mod connections for the sampler.
   TModLink = record
-    ModAmount : array[0..kModSlots-1] of single;
+    ModAmount : array[0..kModSlotCount-1] of single;
   end;
 
   TModLinkArray = TArray<TModLink>;
@@ -23,8 +23,8 @@ type
     fModLinks: TModLinkArray;
     property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   public
-    ModSource : array[0..kModSlots-1] of TModSource;
-    ModVia    : array[0..kModSlots-1] of TModSource;
+    ModSource : array[0..kModSlotCount-1] of TModSource;
+    ModVia    : array[0..kModSlotCount-1] of TModSource;
 
     constructor Create;
     destructor Destroy; override;

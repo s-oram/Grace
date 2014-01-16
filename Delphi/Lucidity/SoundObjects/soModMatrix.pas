@@ -58,6 +58,8 @@ type
     ParModData: PParModulationData;
     ModConnections: PModConnections;
 
+    ModSourceValues : array[0..kModSlotCount-1] of single;
+
     function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
     function CalcModOffset(aModLink : PPrivateModLink): single;
@@ -237,6 +239,12 @@ begin
   {$IFDEF StrictDebugChecks}
   AreModSourceValuesInRange; //Expensive!!
   {$ENDIF}
+
+
+
+
+
+
 
   for c1 := 0 to FastModulationCount-1 do
   begin

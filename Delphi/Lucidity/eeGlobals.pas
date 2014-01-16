@@ -172,7 +172,7 @@ end;
 procedure TGlobals.SetSelectedModSlot(const Value: integer);
 begin
   assert(Value >= -1);
-  assert(Value <= kModSlots-1);
+  assert(Value <= kModSlotCount-1);
 
   if Value <> fSelectedModSlot then
   begin

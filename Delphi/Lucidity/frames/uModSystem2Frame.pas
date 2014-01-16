@@ -20,7 +20,7 @@ type
     MenuModSlot : integer;
     MenuKeyGroup : IKeyGroup;
 
-    ModSelectors : array[0..kModSlots-1] of TVamModSelector;
+    ModSelectors : array[0..kModSlotCount-1] of TVamModSelector;
     MainSelector : TVamTextBox;
     ForwardSelector : TVamTextBox;
     BackwardSelector : TVamTextBox;
@@ -92,7 +92,7 @@ begin
 
 
 
-  for c1 := 0 to kModSlots-1 do
+  for c1 := 0 to kModSlotCount-1 do
   begin
     ModSelectors[c1] := TVamModSelector.Create(AOwner);
     ModSelectors[c1].Parent := BackgroundPanel;
@@ -132,7 +132,7 @@ begin
   OffsetX := 64 + 4 + 4;
   PosY := 4;
 
-  for c1 := 0 to kModSlots-1 do
+  for c1 := 0 to kModSlotCount-1 do
   begin
     PosX := OffsetX + c1 * (62 + 4);
 
@@ -265,7 +265,7 @@ var
   ModConnections : TModConnections;
 begin
   //=== update mod slot text ===
-  for c1 := 0 to kModSlots-1 do
+  for c1 := 0 to kModSlotCount-1 do
   begin
     kg := Plugin.ActiveKeyGroup;
     ModConnections := kg.GetModConnections;
@@ -282,7 +282,7 @@ begin
 
 
   //=== Update selected slot colors ====
-  for c1 := 0 to kModSlots-1 do
+  for c1 := 0 to kModSlotCount-1 do
   begin
     ModSelectors[c1].Color := kColor_LcdDark1;
     ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;

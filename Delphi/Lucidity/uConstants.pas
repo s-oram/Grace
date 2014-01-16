@@ -59,7 +59,7 @@ const
 
   kParameterCount          = 74;
   kModulatedParameterCount = 34;
-  kModSlots = 8;
+  kModSlotCount = 8;
 
 
 type
@@ -199,7 +199,7 @@ type
   // I'm not entirely sure of the variable naming yet. It doesn't seem quite right.
   TModulatedPar = record
     ParValue : single;
-    ModAmount : array[0..kModSlots-1] of single;
+    ModAmount : array[0..kModSlotCount-1] of single;
   end;
 
   PModulatedPars = ^TModulatedPars;
