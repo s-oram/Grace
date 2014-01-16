@@ -97,10 +97,10 @@ type
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
 
-    ModPoints : TVoiceModulationPoints;
-    ModConnections : PModConnections;
-    ModulatedParameters: PModulatedPars; //Holds a pointer to raw parameter values. The values are identical for all voices in the voice group.
-    CalculatedPars : TCalculatedModulatedPars; //stores the parameter values after the modulations have been applied.
+    ModPoints           : TVoiceModulationPoints;
+    ModConnections      : PModConnections;    // Info about what the modulation sources are.
+    ParValueData        : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
+    ParModData          : TParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 
     fOneShotSampleOsc : TOneShotSampleOsc;
     OscPitchParameters : PSampleOscPitchPar;
@@ -535,10 +535,25 @@ begin
   fSampleGroup  := aSampleGroup;
   fSampleRegion := aSampleRegion;
 
-  ModulatedParameters := aSampleGroup.GetModulatedParameters;
+  ParValueData   := aSampleGroup.GetModulatedParameters;
   ModConnections := aSampleGroup.GetModConnectionsPointer;
 
-  ModMatrix.ZeroAllValues; //IMPORTANT: Do first.
+  //=== init all processing objects with links to voice parameters etc ===
+
+  //-- IMPORTANT: Do first. --
+  ModMatrix.Init(ParValueData, @self.ParValueData, ModConnections);
+  ModMatrix.ZeroAllValues;
+  //--------------------------
+
+  FilterOne.Init(0, ParValueData, @self.ParValueData);
+  FilterTwo.Init(1, ParValueData, @self.ParValueData);
+
+
+  //=============================================================
+
+
+
+
 
   // set some modulation source values...
   if VoiceMode = TVoiceMode.Poly then

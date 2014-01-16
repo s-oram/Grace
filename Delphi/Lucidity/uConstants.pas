@@ -204,8 +204,10 @@ type
   PModulatedPars = ^TModulatedPars;
   TModulatedPars = array[0..kModulatedParameterCount-1] of TModulatedPar;
 
-  PCalculatedModulatedPars = ^TCalculatedModulatedPars;
-  TCalculatedModulatedPars = array[0..kModulatedParameterCount-1] of single;
+  // TParModulationData is a structure intended to hold summed modulation amounts
+  // for all parameters.
+  PParModulationData = ^TParModulationData;
+  TParModulationData = array[0..kModulatedParameterCount-1] of single;
 
 //==============================================================================
 

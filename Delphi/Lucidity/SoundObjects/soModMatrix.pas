@@ -54,6 +54,10 @@ type
     FastModulationCount : integer;
     SlowModulationCount : integer;
 
+    ParValueData: PModulatedPars;
+    ParModData: PParModulationData;
+    ModConnections: PModConnections;
+
     function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
     function CalcModOffset(aModLink : PPrivateModLink): single;
@@ -61,6 +65,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure Init(const aParValueData : PModulatedPars; const aParModData : PParModulationData; const aModConnections : PModConnections);
 
     procedure UpdateAllModLinks(const aModConnections : TModConnections_OLD);
     procedure UpdateModLink(const ModLinkData : PModLink_OLD);
@@ -155,6 +161,22 @@ end;
 function TModMatrix.GetModSourceValue(const aModSource: TModSource): single;
 begin
   result := fModSourceValues[Integer(aModSource)]^;
+end;
+
+procedure TModMatrix.Init(const aParValueData: PModulatedPars; const aParModData: PParModulationData; const aModConnections: PModConnections);
+var
+  c1 : integer;
+begin
+  ParValueData   := aParValueData;
+  ParModData     := aParModData;
+  ModConnections := aModConnections;
+
+  // Zero all modulation points.
+  for c1 := 0 to kModulatedParameterCount-1 do
+  begin
+    ParModData^[c1] := 0;
+  end;
+
 end;
 
 procedure TModMatrix.SetModDestPointer(const aModDest: TModDest; const Dest: PSingle);

@@ -48,9 +48,16 @@ type
     Par2Mod: single;
     Par3Mod: single;
     Par4Mod: single;
+
+    FilterIndex  : integer;
+    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
+    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure Init(const aFilterIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+
 
     function GetModPointer(const Name:string):PSingle;
 
@@ -127,6 +134,16 @@ begin
   result := nil;
 end;
 
+procedure TLucidityFilter.Init(const aFilterIndex : integer; const aPars: PModulatedPars; const aModData: PParModulationData);
+begin
+  assert(FilterIndex >= 0);
+  assert(FilterIndex <= 1);
+
+  self.FilterIndex   := aFilterIndex;
+  self.ParValueData  := aPars;
+  self.ParModData    := aModData;
+end;
+
 procedure TLucidityFilter.SetFilterType(const Value: TFilterType);
 begin
   fFilterType := Value;
@@ -172,6 +189,10 @@ var
   px2 : single;
   px3 : single;
 begin
+
+
+
+
   case FilterType of
     ftNone:
     begin
