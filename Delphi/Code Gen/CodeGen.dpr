@@ -4,12 +4,17 @@ program CodeGen;
 
 {$R *.res}
 
+
+
 uses
-  System.SysUtils;
+  System.SysUtils,
+  CodeGenRunner in 'Source\CodeGenRunner.pas';
 
 begin
   try
-    { TODO -oUser -cConsole Main : Insert code here }
+    DoCodeGen;
+    WriteLn('Finished');
+    ReadLn;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
