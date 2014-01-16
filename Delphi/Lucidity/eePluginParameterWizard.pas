@@ -3,6 +3,7 @@ unit eePluginParameterWizard;
 interface
 
 uses
+  eeVstParameterManager,
   eeVstParameterList, uLucidityVoiceController;
 
 // GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
@@ -27,10 +28,10 @@ type
   TPluginParameterWizard= class
   private
     {$ifdef GENERATE_PAR_INFO}
-    procedure GenerateParInfoText(aPlugin : TObject);
+    procedure GenerateParInfoText(ParManager : TVstParameterManager);
     {$endif}
   public
-    constructor Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
+    constructor Create(aPlugin : TObject; VoiceController : TLucidityVoiceController; ParManager : TVstParameterManager);
     destructor Destroy; override;
   end;
 
@@ -52,7 +53,7 @@ uses
 
 { TPluginParameterManger }
 
-constructor TPluginParameterWizard.Create(aPlugin : TObject; VoiceController : TLucidityVoiceController);
+constructor TPluginParameterWizard.Create(aPlugin : TObject; VoiceController : TLucidityVoiceController; ParManager : TVstParameterManager);
   function GetModLinkIndex(var Index:integer): integer;
   begin
     result := Index;
@@ -74,7 +75,9 @@ begin
 
   //== Create all parameters ==
   aPar := TVstParameterEx.Create('VoiceMode');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Voice Mode: ' + TVoiceModeHelper.ToShortGuiString(VoiceController.VoiceMode);
@@ -88,12 +91,14 @@ begin
     begin
       Value := TVoiceModeHelper.ToSingle(VoiceController.VoiceMode)
     end);
-
+  end;
 
 
 
   aPar := TVstParameterEx.Create('VoiceGlide');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Glide Time: ' + IntToStr(round(VoiceController.VoiceGlide * 100));
@@ -106,9 +111,12 @@ begin
     begin
       Value := VoiceController.VoiceGlide;
     end);
+  end;
 
   aPar := TVstParameterEx.Create('PitchTracking');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       case Plugin.ActiveVoicePar.PitchTracking of
@@ -128,12 +136,15 @@ begin
     begin
       value := TPitchTrackingHelper.ToSingle(Plugin.ActiveVoicePar.PitchTracking);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('SamplePlaybackType');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       //TODO:
@@ -148,12 +159,15 @@ begin
     begin
       value := TSamplePlaybackTypeHelper.ToSingle(Plugin.ActiveVoicePar.SamplePlaybackType);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('SampleResetClockSource');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sample Reset - Select Trigger';
@@ -166,13 +180,16 @@ begin
     begin
       Value := TClockSourceHelper.ToSingle(Plugin.ActiveVoicePar.SampleReset);
     end);
+  end;
 
 
 
 
   //-- one shot sampler osc ---
   aPar := TVstParameterEx.Create('SamplerLoopBounds');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       case Plugin.ActiveVoicePar.SamplerLoopBounds of
@@ -191,9 +208,12 @@ begin
     begin
       Value := TSamplerLoopBoundsHelper.ToSingle(Plugin.ActiveVoicePar.SamplerLoopBounds);
     end);
+  end;
 
   aPar := TVstParameterEx.Create('SamplerLoopMode');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       case Plugin.ActiveVoicePar.SamplerLoopMode of
@@ -214,20 +234,21 @@ begin
     begin
       Value := TSamplerLoopModeHelper.ToSingle(Plugin.ActiveVoicePar.SamplerLoopMode);
     end);
+  end;
 
   //-- grain stretch osc ---
   aPar := TVstParameterEx.Create('GrainLoop');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('GrainLength');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('GrainRate');
   aPar.SetMinMax(-1,1).SetDefault(0.5);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('GrainPosition');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
 
 
@@ -236,7 +257,9 @@ begin
   aPar := TVstParameterEx.Create('OutputGain');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Output Gain: ' + IntToStr(round(Plugin.ActiveVoicePar.VoiceGain * 100));
@@ -251,6 +274,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.VoiceGain;
     end);
+  end;
 
 
 
@@ -258,7 +282,9 @@ begin
   aPar := TVstParameterEx.Create('OutputPan');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Output Pan: ' + IntToStr(round(Plugin.ActiveVoicePar.VoicePan * 100));
@@ -273,6 +299,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.VoicePan;
     end);
+  end;
 
 
 
@@ -280,7 +307,9 @@ begin
   aPar := TVstParameterEx.Create('VoicePitchOne');
   aPar.SetMinMax(-1,1).SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     var
       x : integer;
@@ -298,11 +327,14 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.VoicePitchOne;
     end);
+  end;
 
   aPar := TVstParameterEx.Create('VoicePitchTwo');
   aPar.SetMinMax(-1,1).SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Keygroup Fine-Tune: ' + RoundFloatToStr(Plugin.ActiveVoicePar.VoicePitchTwo * 100) + ' cents';
@@ -317,45 +349,47 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.VoicePitchTwo;
     end);
+  end;
+
 
 
   //TODO: Are these parameters needed?
   aPar := TVstParameterEx.Create('AuxALevel');
   aPar.SetDefault(0);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('AuxBLevel');
   aPar.SetDefault(0);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('OscShape');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('OscPulseWidth');
   aPar.SetDefault(0.5);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('NoiseLevel');
   aPar.SetDefault(0.5);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('SampleStart');
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('SampleEnd');
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('LoopStart');
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
   aPar := TVstParameterEx.Create('LoopEnd');
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
 
 
 
@@ -364,7 +398,9 @@ begin
   aPar := TVstParameterEx.Create('AmpAttack');
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Attack: ' + RoundFloatToStr(TParScaler.ADSR_AttackTimeToMS(Plugin.ActiveVoicePar.AmpAttack)) + 'ms';
@@ -379,11 +415,14 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.AmpAttack;
     end);
+  end;
 
   aPar := TVstParameterEx.Create('AmpHold');
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Hold: ' + RoundFloatToStr(TParScaler.ADSR_HoldTimeToMS(Plugin.ActiveVoicePar.AmpHold)) + 'ms';
@@ -398,6 +437,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.AmpHold;
     end);
+  end;
 
 
 
@@ -405,7 +445,9 @@ begin
   aPar := TVstParameterEx.Create('AmpDecay');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Decay: ' + RoundFloatToStr(TParScaler.ADSR_DecayTimeToMS(Plugin.ActiveVoicePar.AmpDecay)) + 'ms';
@@ -420,6 +462,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.AmpDecay;
     end);
+  end;
 
 
 
@@ -427,7 +470,9 @@ begin
   aPar := TVstParameterEx.Create('AmpSustain');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Sustain: ' + IntToStr(round(Plugin.ActiveVoicePar.AmpSustain * 100)) + '%';
@@ -442,13 +487,16 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.AmpSustain;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('AmpRelease');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Amp Env Release: ' + RoundFloatToStr(TParScaler.ADSR_ReleaseTimeToMS(Plugin.ActiveVoicePar.AmpRelease)) + 'ms';
@@ -463,12 +511,15 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.AmpRelease;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('AmpVelocity'); //Amp Env Velocity.
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Env Velocity Depth: ' + TEnvVelocityDepthHelper.ToFullGuiString(Plugin.ActiveVoicePar.AmpVelocityDepth);
@@ -481,6 +532,7 @@ begin
     begin
       Value := TEnvVelocityDepthHelper.ToSingle(Plugin.ActiveVoicePar.AmpVelocityDepth);
     end);
+  end;
 
 
 
@@ -488,7 +540,9 @@ begin
   aPar := TVstParameterEx.Create('FilterAttack');
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Env Attack: ' + RoundFloatToStr(TParScaler.ADSR_AttackTimeToMS(Plugin.ActiveVoicePar.FilterAttack)) + 'ms';
@@ -503,6 +557,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.FilterAttack;
     end);
+  end;
 
 
 
@@ -510,7 +565,9 @@ begin
   aPar := TVstParameterEx.Create('FilterHold');
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Env Hold: ' + RoundFloatToStr(TParScaler.ADSR_HoldTimeToMS(Plugin.ActiveVoicePar.FilterHold)) + 'ms';
@@ -525,6 +582,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.FilterHold;
     end);
+  end;
 
 
 
@@ -532,7 +590,9 @@ begin
   aPar := TVstParameterEx.Create('FilterDecay');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Env Decay: ' + RoundFloatToStr(TParScaler.ADSR_DecayTimeToMS(Plugin.ActiveVoicePar.FilterDecay)) + 'ms';
@@ -547,6 +607,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.FilterDecay;
     end);
+  end;
 
 
 
@@ -554,7 +615,9 @@ begin
   aPar := TVstParameterEx.Create('FilterSustain');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Env Sustain: ' + IntToStr(round(Plugin.ActiveVoicePar.FilterSustain * 100)) + '%';
@@ -569,6 +632,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.FilterSustain;
     end);
+  end;
 
 
 
@@ -576,7 +640,9 @@ begin
   aPar := TVstParameterEx.Create('FilterRelease');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Env Release: ' + RoundFloatToStr(TParScaler.ADSR_ReleaseTimeToMS(Plugin.ActiveVoicePar.FilterRelease)) + 'ms';
@@ -591,12 +657,15 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.FilterRelease;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('FilterVelocity');  //Filter Env Velocity.
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Env Velocity Depth: ' + TEnvVelocityDepthHelper.ToFullGuiString(Plugin.ActiveVoicePar.FilterVelocityDepth);
@@ -609,13 +678,16 @@ begin
     begin
       Value := TEnvVelocityDepthHelper.ToSingle(Plugin.ActiveVoicePar.FilterVelocityDepth);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Filter1Type');
   aPar.SetDefault(0);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Type: ' + TFilterTypeHelper.ToFullGuiString(Plugin.ActiveVoicePar.Filter1Type);
@@ -629,13 +701,16 @@ begin
     begin
       Value := TFilterTypeHelper.ToSingle(Plugin.ActiveVoicePar.Filter1Type);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Filter2Type');
   aPar.SetDefault(0);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Type: ' + TFilterTypeHelper.ToFullGuiString(Plugin.ActiveVoicePar.Filter2Type);
@@ -649,6 +724,7 @@ begin
     begin
       Value := TFilterTypeHelper.ToSingle(Plugin.ActiveVoicePar.Filter2Type);
     end);
+  end;
 
 
 
@@ -656,7 +732,9 @@ begin
   aPar := TVstParameterEx.Create('Filter1Par1');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter One: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter1Par1 * 100)) + '%';
@@ -671,6 +749,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter1Par1;
     end);
+  end;
 
 
 
@@ -678,7 +757,9 @@ begin
   aPar := TVstParameterEx.Create('Filter1Par2');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Two: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter1Par2 * 100)) + '%';
@@ -693,6 +774,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter1Par2;
     end);
+  end;
 
 
 
@@ -700,7 +782,9 @@ begin
   aPar := TVstParameterEx.Create('Filter1Par3');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Three: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter1Par3 * 100)) + '%';
@@ -715,6 +799,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter1Par3;
     end);
+  end;
 
 
 
@@ -722,7 +807,9 @@ begin
   aPar := TVstParameterEx.Create('Filter1Par4');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Four: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter1Par4 * 100)) + '%';
@@ -737,6 +824,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter1Par4;
     end);
+  end;
 
 
 
@@ -744,7 +832,9 @@ begin
   aPar := TVstParameterEx.Create('Filter2Par1');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter One: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter2Par1 * 100)) + '%';
@@ -759,6 +849,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter2Par1;
     end);
+  end;
 
 
 
@@ -766,7 +857,9 @@ begin
   aPar := TVstParameterEx.Create('Filter2Par2');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Two: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter2Par2 * 100)) + '%';
@@ -781,6 +874,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter2Par2;
     end);
+  end;
 
 
 
@@ -788,7 +882,9 @@ begin
   aPar := TVstParameterEx.Create('Filter2Par3');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Three: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter2Par3 * 100)) + '%';
@@ -803,6 +899,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter2Par3;
     end);
+  end;
 
 
 
@@ -810,7 +907,9 @@ begin
   aPar := TVstParameterEx.Create('Filter2Par4');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Filter Parameter Four: ' + IntToStr(round(Plugin.ActiveVoicePar.Filter2Par4 * 100)) + '%';
@@ -825,12 +924,15 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.Filter2Par4;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('LfoShape1');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Shape';
@@ -844,12 +946,15 @@ begin
     begin
       Value := TLfoShapeHelper.ToSingle(Plugin.ActiveVoicePar.LfoShape1);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('LfoShape2');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Shape';
@@ -863,6 +968,7 @@ begin
     begin
       Value := TLfoShapeHelper.ToSingle(Plugin.ActiveVoicePar.LfoShape2);
     end);
+  end;
 
 
 
@@ -870,7 +976,9 @@ begin
   aPar := TVstParameterEx.Create('LfoRate1');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Rate: ' + RoundFloatToStr(TParScaler.LFO_SpeedToFrequency(Plugin.ActiveVoicePar.LfoRate1)) +'hz';
@@ -885,6 +993,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.LfoRate1;
     end);
+  end;
 
 
 
@@ -892,7 +1001,9 @@ begin
   aPar := TVstParameterEx.Create('LfoRate2');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Rate: ' + RoundFloatToStr(TParScaler.LFO_SpeedToFrequency(Plugin.ActiveVoicePar.LfoRate2)) +'hz';
@@ -907,13 +1018,16 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.LfoRate2;
     end);
+  end;
 
 
 
   aPar := TVstParameterEx.Create('LfoAPar2');
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
@@ -928,6 +1042,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.LfoAPar2;
     end);
+  end;
 
 
 
@@ -935,7 +1050,9 @@ begin
   aPar := TVstParameterEx.Create('LfoBPar2');
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
@@ -950,6 +1067,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.LfoBPar2;
     end);
+  end;
 
 
 
@@ -957,7 +1075,9 @@ begin
   aPar := TVstParameterEx.Create('ModEnvAAttack');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Attack Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvAAttack)) + 'ms';
@@ -970,6 +1090,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.ModEnvAAttack;
     end);
+  end;
 
 
 
@@ -977,7 +1098,9 @@ begin
   aPar := TVstParameterEx.Create('ModEnvADecay');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Decay Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvADecay)) + 'ms';
@@ -990,12 +1113,15 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.ModEnvADecay;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('ModEnvAMode');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Type';
@@ -1008,6 +1134,7 @@ begin
     begin
       Value := TModEnvModeHelper.ToSingle(Plugin.ActiveVoicePar.ModEnvAMode);
     end);
+  end;
 
 
 
@@ -1015,7 +1142,9 @@ begin
   aPar := TVstParameterEx.Create('ModEnvBAttack');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Attack Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvBAttack)) + 'ms';
@@ -1028,6 +1157,7 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.ModEnvBAttack;
     end);
+  end;
 
 
 
@@ -1035,7 +1165,9 @@ begin
   aPar := TVstParameterEx.Create('ModEnvBDecay');
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Decay Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvBDecay)) + 'ms';
@@ -1048,12 +1180,15 @@ begin
     begin
       Value := Plugin.ActiveVoicePar.ModEnvBDecay;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('ModEnvBMode');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Modulation Env Type';
@@ -1066,12 +1201,15 @@ begin
     begin
       Value := TModEnvModeHelper.ToSingle(Plugin.ActiveVoicePar.ModEnvBMode);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Seq1Clock');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Clock';
@@ -1084,12 +1222,15 @@ begin
     begin
       Value := TSequencerClockHelper.ToSingle(Plugin.ActiveVoicePar.Seq1Clock);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Seq1Direction');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Direction';
@@ -1102,12 +1243,15 @@ begin
     begin
       Value := TStepSequencerDirectionHelper.ToSingle(Plugin.ActiveVoicePar.Seq1Direction);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('StepSeq1Length');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Length';
@@ -1120,12 +1264,15 @@ begin
     begin
       Value := TStepSequencerLengthHelper.ToSingle(Plugin.ActiveVoicePar.StepSeq1Length);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Seq2Clock');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Clock';
@@ -1138,12 +1285,15 @@ begin
     begin
       Value := TSequencerClockHelper.ToSingle(Plugin.ActiveVoicePar.Seq2Clock);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Seq2Direction');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Direction';
@@ -1156,12 +1306,15 @@ begin
     begin
       Value := TStepSequencerDirectionHelper.ToSingle(Plugin.ActiveVoicePar.Seq2Direction);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('StepSeq2Length');
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Sequencer Length';
@@ -1174,13 +1327,16 @@ begin
     begin
       Value := TStepSequencerLengthHelper.ToSingle(Plugin.ActiveVoicePar.StepSeq2Length);
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadX1');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1193,13 +1349,16 @@ begin
     begin
       Value := Plugin.XYPads.PadX1;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadY1');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1212,13 +1371,16 @@ begin
     begin
       Value := Plugin.XYPads.PadY1;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadX2');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1231,13 +1393,16 @@ begin
     begin
       Value := Plugin.XYPads.PadX2;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadY2');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1250,13 +1415,16 @@ begin
     begin
       Value := Plugin.XYPads.PadY2;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadX3');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1269,13 +1437,16 @@ begin
     begin
       Value := Plugin.XYPads.PadX3;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadY3');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1288,13 +1459,16 @@ begin
     begin
       Value := Plugin.XYPads.PadY3;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadX4');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1307,13 +1481,16 @@ begin
     begin
       Value := Plugin.XYPads.PadX4;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PadY4');
   aPar.SetDefault(0.5).SetPublished(true);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'XY Modulation Source';
@@ -1326,13 +1503,16 @@ begin
     begin
       Value := Plugin.XYPads.PadY4;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('PreviewVolume');
   aPar.SetInputCurve(TParInputCurve.icSquare).SetMinMax(0,1.5).SetDefault(0.3);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Preview Volume';
@@ -1345,13 +1525,16 @@ begin
     begin
       Value := Plugin.PreviewVolume;
     end);
+  end;
 
 
 
 
   aPar := TVstParameterEx.Create('Preview');
   aPar.SetDefault(1);
-  Plugin.Globals.VstParameters.Add(aPar);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       result := 'Preview On / Off';
@@ -1364,19 +1547,17 @@ begin
     begin
       Value := BooleanToFloat(Plugin.IsPreviewEnabled);
     end);
-
-
-
+  end;
 
   assert(aModLinkIndex = kModulatedParameterCount);
 
   //============================================================================
   //IMPORTANT: build published parameter info after adding all parameters...
-  Plugin.Globals.VstParameters.BuildPublishedParameterInfo;
+  Parmanager.BuildPublishedParameterInfo;
 
 
   {$ifdef GENERATE_PAR_INFO}
-  GenerateParInfoText(Plugin);
+  GenerateParInfoText(ParManager);
   {$endif}
 end;
 
@@ -1391,14 +1572,13 @@ end;
 
 
 {$ifdef GENERATE_PAR_INFO}
-procedure TPluginParameterWizard.GenerateParInfoText(aPlugin : TObject);
+procedure TPluginParameterWizard.GenerateParInfoText(ParManager : TVstParameterManager);
 // This method generates a text file of named indexes (as constants)
 // for the VST parameters. This text file is then included into
 // uConstants.pas. Ideally it should be done as part of the
 // precompilation stage.
 var
   Text : TStringList;
-  Plugin : TeePlugin;
   c1 : integer;
   s : string;
   VstPar : TVstParameterEx;
@@ -1407,16 +1587,15 @@ begin
   Text := TStringList.Create;
   AutoFree(@Text);
 
-  Plugin := (aPlugin as TeePlugin);
 
   Text.Add('type');
   Text.Add('  TVstParIndex = record');
   Text.Add('  const');
 
   //Add regular parameters...
-  for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
+  for c1 := 0 to Parmanager.Count-1 do
   begin
-    VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
+    VstPar := Parmanager[c1] as TVstParameterEx;
 
     s := '    ' + VstPar.Name + ' = ' + IntToStr(c1) + ';';
     Text.Add(s);
@@ -1429,13 +1608,13 @@ begin
   Text.Add(s);
 
 
-  Text.Add('  TVstParIndex = record');
+  Text.Add('  TModParIndex = record');
   Text.Add('  const');
 
   //Add modulated parameters...
-  for c1 := 0 to Plugin.Globals.VstParameters.Count-1 do
+  for c1 := 0 to Parmanager.Count-1 do
   begin
-    VstPar := Plugin.Globals.VstParameters[c1] as TVstParameterEx;
+    VstPar := Parmanager[c1] as TVstParameterEx;
     if VstPar.HasModLink then
     begin
       s := '    ' + VstPar.Name + ' = ' + IntToStr(VstPar.ModLinkIndex) + ';';

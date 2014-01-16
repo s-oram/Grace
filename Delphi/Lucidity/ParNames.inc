@@ -78,7 +78,7 @@ type
   end;
   
   
-  TVstParIndex = record
+  TModParIndex = record
   const
     OutputGain = 0;
     OutputPan = 1;

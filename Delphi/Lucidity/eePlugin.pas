@@ -302,7 +302,7 @@ begin
 
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals);
 
-  ParameterWizard := TPluginParameterWizard.Create(self, VoiceController);
+  ParameterWizard := TPluginParameterWizard.Create(self, VoiceController, self.Globals.VstParameters);
 
 
   //==== Look for key file ===
