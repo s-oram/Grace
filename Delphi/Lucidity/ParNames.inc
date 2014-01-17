@@ -65,16 +65,8 @@ type
     Seq2Clock = 61;
     Seq2Direction = 62;
     StepSeq2Length = 63;
-    PadX1 = 64;
-    PadY1 = 65;
-    PadX2 = 66;
-    PadY2 = 67;
-    PadX3 = 68;
-    PadY3 = 69;
-    PadX4 = 70;
-    PadY4 = 71;
-    PreviewVolume = 72;
-    Preview = 73;
+    PreviewVolume = 64;
+    Preview = 65;
   end;
   
   
