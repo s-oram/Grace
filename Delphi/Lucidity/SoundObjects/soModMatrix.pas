@@ -502,8 +502,6 @@ begin
     // envelopes.
     TModSource.AmpEnv:    Offset := 0;
     TModSource.FilterEnv: Offset := 0;
-    TModSource.ModEnv1:   Offset := 0;
-    TModSource.ModEnv2:   Offset := 0;
     // bi-polar mod sources.
     TModSource.Midi_PitchBend:  Offset := -0.5;
     TModSource.Midi_ModWheel:   Offset := -0.5;
@@ -511,14 +509,6 @@ begin
     TModSource.Lfo2:            Offset := -0.5;
     TModSource.StepSeq1:        Offset := -0.5;
     TModSource.StepSeq2:        Offset := -0.5;
-    TModSource.PadX1:           Offset := -0.5;
-    TModSource.PadY1:           Offset := -0.5;
-    TModSource.PadX2:           Offset := -0.5;
-    TModSource.PadY2:           Offset := -0.5;
-    TModSource.PadX3:           Offset := -0.5;
-    TModSource.PadY3:           Offset := -0.5;
-    TModSource.PadX4:           Offset := -0.5;
-    TModSource.PadY4:           Offset := -0.5;
   else
     raise Exception.Create('type not handled.');
   end;

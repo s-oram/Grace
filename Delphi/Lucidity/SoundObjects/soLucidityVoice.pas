@@ -71,8 +71,6 @@ type
     fLoopSampleOsc: TLoopSampleOsc;
     fWaveOsc      : TLucidityWaveOsc;
     fSampleReset: TClockSource;
-    fModEnvB: TLucidityASR;
-    fModEnvA: TLucidityASR;
     fVoiceID: integer;
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
@@ -162,8 +160,6 @@ type
     property WaveOsc          : TLucidityWaveOsc         read fWaveOsc          write fWaveOsc;
     property AmpEnv           : TLucidityADSR            read fAmpEnv           write fAmpEnv;
     property FilterEnv        : TLucidityADSR            read fFilterEnv        write fFilterEnv;
-    property ModEnvA          : TLucidityASR             read fModEnvA          write fModEnvA;
-    property ModEnvB          : TLucidityASR             read fModEnvB          write fModEnvB;
     property OscVCA           : TLucidityVCA             read fOscVCA           write fOscVCA;
     property OscPanner        : TLucidityPanner          read fOscPanner        write fOscPanner;
     property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer;
@@ -241,15 +237,6 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend, @GlobalModPoints^.Source_MidiPitchbend);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Modwheel, @GlobalModPoints^.Source_MidiModwheel);
 
-  ModMatrix.SetModSourcePointer(TModSource.PadX1, @GlobalModPoints^.Source_PadX1);
-  ModMatrix.SetModSourcePointer(TModSource.PadY1, @GlobalModPoints^.Source_PadY1);
-  ModMatrix.SetModSourcePointer(TModSource.PadX2, @GlobalModPoints^.Source_PadX2);
-  ModMatrix.SetModSourcePointer(TModSource.PadY2, @GlobalModPoints^.Source_PadY2);
-  ModMatrix.SetModSourcePointer(TModSource.PadX3, @GlobalModPoints^.Source_PadX3);
-  ModMatrix.SetModSourcePointer(TModSource.PadY3, @GlobalModPoints^.Source_PadY3);
-  ModMatrix.SetModSourcePointer(TModSource.PadX4, @GlobalModPoints^.Source_PadX4);
-  ModMatrix.SetModSourcePointer(TModSource.PadY4, @GlobalModPoints^.Source_PadY4);
-
   ModMatrix.SetModDestPointer(TModDest.SampleStart, @ModPoints.SampleStart);
   ModMatrix.SetModDestPointer(TModDest.SampleEnd, @ModPoints.SampleEnd);
   ModMatrix.SetModDestPointer(TModDest.LoopStart, @ModPoints.LoopStart);
@@ -274,12 +261,6 @@ begin
 
   FilterEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.FilterEnv, FilterEnv.GetModPointer('EnvOut'));
-
-  ModEnvA := TLucidityASR.Create;
-  ModMatrix.SetModSourcePointer(TModSource.ModEnv1, ModEnvA.GetModPointer('EnvOut'));
-
-  ModEnvB := TLucidityASR.Create;
-  ModMatrix.SetModSourcePointer(TModSource.ModEnv2, ModEnvB.GetModPointer('EnvOut'));
 
   FilterOne := TLucidityFilter.Create;
   ModMatrix.SetModDestPointer(TModDest.Filter1_Par1, FilterOne.GetModPointer('Par1Mod'));
@@ -327,8 +308,6 @@ destructor TLucidityVoice.Destroy;
 begin
   AmpEnv.Free;
   FilterEnv.Free;
-  ModEnvA.Free;
-  ModEnvB.Free;
   OneShotSampleOsc.Free;
   LoopSampleOsc.Free;
   GrainStretchOsc.Free;
@@ -374,9 +353,7 @@ begin
   //==== Control Rate Modules ====
   AmpEnv.SampleRate     := Globals.ControlRate;
   FilterEnv.SampleRate  := Globals.ControlRate;
-  ModEnvA.SampleRate    := Globals.ControlRate;
-  ModEnvB.SampleRate    := Globals.ControlRate;
-  LFO.SampleRate     := Globals.ControlRate;
+  LFO.SampleRate        := Globals.ControlRate;
   StepSeqOne.SampleRate := Globals.ControlRate;
   StepSeqTwo.SampleRate := Globals.ControlRate;
 end;
@@ -548,7 +525,6 @@ begin
   FilterOne.Init(0, ParValueData, @self.ParModData);
   FilterTwo.Init(1, ParValueData, @self.ParModData);
 
-
   //=============================================================
 
 
@@ -572,8 +548,6 @@ begin
   LFO.StepResetA;
   AmpEnv.StepResetA;
   FilterEnv.StepResetA;
-  ModEnvA.StepResetA;
-  ModEnvB.StepResetA;
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
@@ -594,8 +568,6 @@ begin
   // Call Trigger on all components that need it....
   AmpEnv.Trigger(MidiVelocity / 127);
   FilterEnv.Trigger(MidiVelocity / 127);
-  ModEnvA.Trigger(1);
-  ModEnvB.Trigger(1);
 
   UpdateOscPitch;
 
@@ -645,8 +617,6 @@ begin
   begin
     AmpEnv.Release;
     FilterEnv.Release;
-    ModEnvA.Release;
-    ModEnvB.Release;
     HasBeenReleased := true;
 
 
@@ -668,8 +638,6 @@ procedure TLucidityVoice.Kill;
 begin
   AmpEnv.Kill;
   FilterEnv.Kill;
-  ModEnvA.Kill;
-  ModEnvB.Kill;
 
   fIsActive := false;
   HasBeenReleased := false;
@@ -735,8 +703,6 @@ begin
   LFO.FastControlProcess;
   AmpEnv.Step;
   FilterEnv.Step;
-  ModEnvA.Step;
-  ModEnvB.Step;
   StepSeqOne.Step;
   StepSeqTwo.Step;
 

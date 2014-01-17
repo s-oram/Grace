@@ -60,17 +60,7 @@ type
     Lfo1,
     Lfo2,
     StepSeq1,
-    StepSeq2,
-    ModEnv1,
-    ModEnv2,
-    PadX1,
-    PadY1,
-    PadX2,
-    PadY2,
-    PadX3,
-    PadY3,
-    PadX4,
-    PadY4
+    StepSeq2
   );
 
   TModSourceHelper = class(TEnumHelper<TModSource>)
@@ -302,16 +292,6 @@ begin
     TModSource.Lfo2:           result := 'LFO 2';
     TModSource.StepSeq1:       result := 'Step Sequencer 1';
     TModSource.StepSeq2:       result := 'Step Sequencer 2';
-    TModSource.ModEnv1:        result := 'Modulation Envelope 1';
-    TModSource.ModEnv2:        result := 'Modulation Envelope 2';
-    TModSource.PadX1:          result := 'Pad X1';
-    TModSource.PadY1:          result := 'Pad Y1';
-    TModSource.PadX2:          result := 'Pad X2';
-    TModSource.PadY2:          result := 'Pad Y2';
-    TModSource.PadX3:          result := 'Pad X3';
-    TModSource.PadY3:          result := 'Pad Y3';
-    TModSource.PadX4:          result := 'Pad X4';
-    TModSource.PadY4:          result := 'Pad Y4';
   else
     result := inherited;
   end;
@@ -330,16 +310,6 @@ begin
     TModSource.Lfo2:           result := 'LFO 2';
     TModSource.StepSeq1:       result := 'Seq 1';
     TModSource.StepSeq2:       result := 'Seq 2';
-    TModSource.ModEnv1:        result := 'Mod Env 1';
-    TModSource.ModEnv2:        result := 'Mod Env 2';
-    TModSource.PadX1:          result := 'Pad X1';
-    TModSource.PadY1:          result := 'Pad Y1';
-    TModSource.PadX2:          result := 'Pad X2';
-    TModSource.PadY2:          result := 'Pad Y2';
-    TModSource.PadX3:          result := 'Pad X3';
-    TModSource.PadY3:          result := 'Pad Y3';
-    TModSource.PadX4:          result := 'Pad X4';
-    TModSource.PadY4:          result := 'Pad Y4';
   else
     result := inherited;
   end;
