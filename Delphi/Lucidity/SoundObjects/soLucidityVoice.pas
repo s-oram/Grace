@@ -59,7 +59,7 @@ type
     fFilterEnv: TLucidityADSR;
     fFilterOne: TLucidityFilter;
     fFilterTwo: TLucidityFilter;
-    fLFO: TLucidityLfo;
+    fLFO: TLucidityLfo_OLD;
     fModMatrix: TModMatrix;
     fStepSeqOne: TLucidyStepSequencer;
     fGrainStretchOsc: TLucidityGrainStretchOsc;
@@ -165,7 +165,7 @@ type
     property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer;
     property FilterOne        : TLucidityFilter          read fFilterOne        write fFilterOne;
     property FilterTwo        : TLucidityFilter          read fFilterTwo        write fFilterTwo;
-    property LFO              : TLucidityLfo             read fLFO              write fLFO;
+    property LFO              : TLucidityLfo_OLD             read fLFO              write fLFO;
     property StepSeqOne       : TLucidyStepSequencer     read fStepSeqOne       write fStepSeqOne;
     property StepSeqTwo       : TLucidyStepSequencer     read fStepSeqTwo       write fStepSeqTwo;
     property ModMatrix        : TModMatrix               read fModMatrix        write fModMatrix;
@@ -280,7 +280,7 @@ begin
   OscPanner := TLucidityPanner.Create;
   ModMatrix.SetModDestPointer(TModDest.VoicePan, OscPanner.GetModPointer('ModInput_Pan'));
 
-  LFO := TLucidityLfo.Create(VoiceClockManager);
+  LFO := TLucidityLfo_OLD.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LFO.GetModPointer('LfoOut1'));
   ModMatrix.SetModSourcePointer(TModSource.Lfo2, LFO.GetModPointer('LfoOut2'));
   ModMatrix.SetModDestPointer(TModDest.Lfo1_Rate, LFO.GetModPointer('LfoRateMod1'));

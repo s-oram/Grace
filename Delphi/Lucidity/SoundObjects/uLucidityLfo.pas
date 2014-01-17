@@ -87,7 +87,7 @@ type
   end;
 
 
-  TLucidityLfo = class
+  TLucidityLfo_OLD = class
   private
     fSampleRate: single;
     fBpm: single;
@@ -126,7 +126,7 @@ uses
 
 { TLucidityLfo }
 
-constructor TLucidityLfo.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
+constructor TLucidityLfo_OLD.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
 begin
   VoiceClockManager := aVoiceClockManager;
 
@@ -134,14 +134,14 @@ begin
   fLfoB := TLfo.Create;
 end;
 
-destructor TLucidityLfo.Destroy;
+destructor TLucidityLfo_OLD.Destroy;
 begin
   fLfoA.Free;
   fLfoB.Free;
   inherited;
 end;
 
-function TLucidityLfo.GetModPointer(const Name: string): PSingle;
+function TLucidityLfo_OLD.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'LfoOut1' then Exit(LfoA.GetModPointer('LfoOutput'));
   if Name = 'LfoOut2' then Exit(LfoB.GetModPointer('LfoOutput'));
@@ -156,26 +156,26 @@ begin
   result := nil;
 end;
 
-procedure TLucidityLfo.ResetLfoPhase;
+procedure TLucidityLfo_OLD.ResetLfoPhase;
 begin
   assert(false, 'todo');
 end;
 
-procedure TLucidityLfo.SetBpm(const Value: single);
+procedure TLucidityLfo_OLD.SetBpm(const Value: single);
 begin
   fBpm := Value;
   LfoA.Bpm := Value;
   LfoB.Bpm := Value;
 end;
 
-procedure TLucidityLfo.SetSampleRate(const Value: single);
+procedure TLucidityLfo_OLD.SetSampleRate(const Value: single);
 begin
   fSampleRate := Value;
   LfoA.SampleRate := Value;
   LfoB.SampleRate := Value;
 end;
 
-procedure TLucidityLfo.FastControlProcess;
+procedure TLucidityLfo_OLD.FastControlProcess;
 begin
   if LfoA.FastControlProcess then
   begin
@@ -188,19 +188,19 @@ begin
   end;
 end;
 
-procedure TLucidityLfo.SlowControlProcess;
+procedure TLucidityLfo_OLD.SlowControlProcess;
 begin
   LfoA.SlowControlProcess;
   LfoB.SlowControlProcess;
 end;
 
-procedure TLucidityLfo.StepResetA;
+procedure TLucidityLfo_OLD.StepResetA;
 begin
   LfoA.StepResetA;
   LfoB.StepResetA;
 end;
 
-procedure TLucidityLfo.StepResetB;
+procedure TLucidityLfo_OLD.StepResetB;
 begin
   LfoA.StepResetB;
   LfoB.StepResetB;
