@@ -7,16 +7,16 @@ interface
 
 uses
   OtlComm, uModSystem2Frame,
-  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame, uModSystemFrame,
+  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
   uGuiState, eePluginHotkeys,
   uConstants, uGuiFeedbackData,
   uSampleMapFrame, uFileBrowserFrame, uSampleDisplayFrame, uVoiceControlFrame,
-  uXYPadsFrame, uMenuBarFrame,
+  uMenuBarFrame,
   uModControlFrame, uMiniSampleDisplayFrame,
   eeFileBrowserAddon, eeRedFoxDropFileTarget,
-   eePlugin, eeGuiStandard,
+  eePlugin, eeGuiStandard,
   Windows, Messages, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, RedFoxContainer, RedFoxWinControl, VamWinControl, VamPanel, VamDiv,
   VamScrollBox, VamCustomTreeView, VamTreeView, RedFoxGraphicControl,
@@ -42,7 +42,6 @@ type
     MainLower: TVamPanel;
     SidePanel: TVamDiv;
     InfoBarDiv: TVamDiv;
-    ModSystemDiv: TVamDiv;
     SpacerPanel1: TVamPanel;
     ModSystem2Div: TVamDiv;
     procedure FormCreate(Sender: TObject);
@@ -70,10 +69,8 @@ type
     FileBrowserFrame       : TFileBrowserFrame;
     VoiceControlFrame      : TVoiceControlFrame;
     ModControlFrame        : TModControlFrame;
-    XYPadsFrame            : TXYPadsFrame;
     InfoBarFrame           : TInfoBarFrame;
     AboutFrame             : TAboutFrame;
-    ModSystemFrame         : TModSystemFrame;
     ModSystem2Frame        : TModSystem2Frame;
 
     FeedbackData : TGuiFeedBackData;
@@ -224,11 +221,7 @@ begin
   ModControlFrame.BackgroundPanel.CornerRadius3 := 3;
   ModControlFrame.BackgroundPanel.CornerRadius4 := 3;
 
-  XYPadsFrame    := TXYPadsFrame.Create(self.Owner);
-  XYPadsFrame.BackgroundPanel.Parent  := MainLower;
-  XYPadsFrame.BackgroundPanel.Align   := alClient;
-  XYPadsFrame.BackgroundPanel.Visible := true;
-  XYPadsFrame.BackgroundPanel.AlignWithMargins := false;
+
 
   InfoBarFrame := TInfoBarFrame.Create(self.Owner);
   InfoBarFrame.BackgroundPanel.Parent := InfoBarDiv;
@@ -245,11 +238,6 @@ begin
   AboutFrame.BackgroundPanel.Parent := OverlayContainer;
   AboutFrame.BackgroundPanel.Visible := false;
 
-
-  ModSystemFrame := TModSystemFrame.Create(self.Owner);
-  ModSystemFrame.BackgroundPanel.Align := alClient;
-  ModSystemFrame.BackgroundPanel.Visible := true;
-  ModSystemFrame.BackgroundPanel.Parent := ModSystemDiv;
 
   ModSystem2Frame := TModSystem2Frame.Create(self.Owner);
   ModSystem2Frame.BackgroundPanel.Align := alClient;
@@ -285,9 +273,7 @@ begin
   FreeAndNil(FileBrowserFrame);
   FreeAndNil(VoiceControlFrame);
   FreeAndNil(ModControlFrame);
-  FreeAndNil(XYPadsFrame);
   FreeAndNil(InfoBarFrame);
-  FreeAndNil(ModSystemFrame);
   FreeAndNil(ModSystem2Frame);
 
   DropFileTarget.Free;
@@ -373,9 +359,7 @@ begin
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
     SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    ModSystemFrame.InitializeFrame(Plugin, GuiStandard);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
-    XYPadsFrame.InitializeFrame(Plugin, GuiStandard);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
   except
@@ -509,9 +493,7 @@ begin
   SampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   MiniSampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
-  XYPadsFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
-  ModSystemFrame.UpdateGui(Sender, @FeedbackData);
 
   GuiStandard.UpdateControls;
 
@@ -556,15 +538,6 @@ end;
 procedure TPluginGui.SetLowerTabState(const Value: TLowerTabOptions);
 begin
   fLowerTabState := Value;
-
-  XYPadsFrame.BackgroundPanel.Visible    := false;
-
-  case Value of
-    TLowerTabOptions.Pads:       XYPadsFrame.BackgroundPanel.Visible := true;
-  else
-    raise Exception.Create('Unexpect tab value.');
-  end;
-
 
   case Value of
     TLowerTabOptions.Pads:       TabPanel.TabIndex := 0;
@@ -785,8 +758,6 @@ begin
   MiniSampleDisplayFrame.BackgroundPanel.Color := kPanelLight;
   ModControlFrame.BackgroundPanel.Color        := kPanelLight;
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
-  XyPadsFrame.BackgroundPanel.Color            := kPanelLight;
-  ModSystemFrame.BackgroundPanel.Color         := kPanelLight;
   ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
   InfoBarFrame.BackgroundPanel.Color           := kPanelDark;
 
@@ -839,8 +810,6 @@ begin
   ClearPadding(AboutFrame.BackgroundPanel);
   ClearPadding(VoiceControlFrame.BackgroundPanel);
   ClearPadding(ModControlFrame.BackgroundPanel);
-  ClearPadding(XYPadsFrame.BackgroundPanel);
-  ClearPadding(ModSystemFrame.BackgroundPanel);
   ClearPadding(ModSystem2Frame.BackgroundPanel);
   ClearPadding(InfoBarFrame.BackgroundPanel);
 
@@ -878,9 +847,8 @@ begin
   AboutFrame.BackgroundPanel.Padding.SetBounds(16,16,16,16);
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
-  ModSystemFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModSystem2Frame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
-  XYPadsFrame.BackgroundPanel.Padding.SetBounds(16,4,16,12);
+
 
   //InfoBarDiv.Padding.SetBounds(0,2,0,0);
 
@@ -932,7 +900,6 @@ begin
   VoiceControlDiv.Left := MainWorkArea.Padding.Left;
   MainMid.Left         := MainWorkArea.Padding.Left;
   TabPanel.Left        := MainWorkArea.Padding.Left;
-  ModSystemDiv.Left    := MainWorkArea.Padding.Left;
   ModSystem2Div.Left   := MainWorkArea.Padding.Left;
   InfoBarDiv.Left      := MainWorkArea.Padding.Left;
   SpacerPanel1.Left    := MainWorkArea.Padding.Left;
@@ -944,7 +911,6 @@ begin
   VoiceControlDiv.Width := WorkAreaWidth;
   MainMid.Width         := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
-  ModSystemDiv.Width    := WorkAreaWidth;
   ModSystem2Div.Width   := WorkAreaWidth;
   InfoBarDiv.Width      := WorkAreaWidth;
   SpacerPanel1.Width    := WorkAreaWidth;
@@ -956,19 +922,14 @@ begin
   VoiceControlDiv.Height := 80;
   MainMid.Height         := 322;
   TabPanel.Height        := 258;
-  ModSystemDiv.Height    := 258; //just guessing.
   ModSystem2Div.Height   := 70;
   InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
-
-  XYPadsFrame.BackgroundPanel.Height      := MainLower.Height;
-
 
   if IsSampleMapVisible = true then
   begin
     SampleMapDiv.Visible  := true;
     TabPanel.Visible      := false;
-    ModSystemDiv.Visible  := false;
     ModSystem2Div.Visible := false;
     SpacerPanel1.Visible  := false;
 
@@ -984,7 +945,6 @@ begin
   begin
     SampleMapDiv.Visible  := false;
     TabPanel.Visible      := true;
-    ModSystemDiv.Visible  := false;
     ModSystem2Div.Visible := true;
     SpacerPanel1.Visible  := false;
 
@@ -993,8 +953,6 @@ begin
     Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(MainTop, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(MainMid, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(TabPanel, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(MainMid, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(ModSystem2Div, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(ModSystem2Div, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
