@@ -883,8 +883,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object ModEnvAContainer: TVamDiv
-        Left = 446
-        Top = 548
+        Left = 440
+        Top = 43
         Width = 92
         Height = 87
         HitTest = True
@@ -907,101 +907,10 @@ object ModControlFrame: TModControlFrame
           Align = alTop
           Visible = True
         end
-        object ModEnvAAttackLabel: TVamLabel
-          Left = 2
-          Top = 46
-          Width = 33
-          Height = 16
-          Text = 'A'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object ModEnvADecayLabel: TVamLabel
-          Left = 41
-          Top = 46
-          Width = 32
-          Height = 16
-          Text = 'D'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object ModEnvAAttackKnob: TVamKnob
-          Left = 0
-          Top = 17
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineColor = '$FFFF0000'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object ModEnvAModeBox: TVamTextBox
-          Left = 0
-          Top = 68
-          Width = 40
-          Height = 16
-          DisplayClass = 'MenuButton'
-          Text = '---'
-          HitTest = True
-          Color = '$FF3E3E3E'
-          ColorMouseOver = '$FF3E3E3E'
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Visible = True
-        end
-        object ModEnvADecayKnob: TVamKnob
-          Left = 40
-          Top = 17
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineColor = '$FFFF0000'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
       end
       object ModEnvBContainer: TVamDiv
-        Left = 604
-        Top = 548
+        Left = 596
+        Top = 43
         Width = 92
         Height = 87
         HitTest = True
@@ -1024,102 +933,11 @@ object ModControlFrame: TModControlFrame
           Align = alTop
           Visible = True
         end
-        object ModEnvBAttackLabel: TVamLabel
-          Left = 2
-          Top = 46
-          Width = 33
-          Height = 16
-          Text = 'A'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object ModEnvBDecayLabel: TVamLabel
-          Left = 41
-          Top = 46
-          Width = 32
-          Height = 16
-          Text = 'D'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object ModEnvBAttackKnob: TVamKnob
-          Left = 0
-          Top = 17
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineColor = '$FFFF0000'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object ModEnvBModeBox: TVamTextBox
-          Left = 0
-          Top = 68
-          Width = 40
-          Height = 16
-          DisplayClass = 'MenuButton'
-          Text = '---'
-          HitTest = True
-          Color = '$FF3E3E3E'
-          ColorMouseOver = '$FF3E3E3E'
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Visible = True
-        end
-        object ModEnvBDecayKnob: TVamKnob
-          Left = 40
-          Top = 17
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineColor = '$FFFF0000'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
       end
       object LfoAContainer: TVamDiv
         AlignWithMargins = True
-        Left = 439
-        Top = 56
+        Left = 448
+        Top = 194
         Width = 145
         Height = 89
         Margins.Left = 0
@@ -1672,8 +1490,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object LfoBContainer: TVamDiv
-        Left = 595
-        Top = 56
+        Left = 599
+        Top = 194
         Width = 101
         Height = 101
         Text = 'LfoBContainer'

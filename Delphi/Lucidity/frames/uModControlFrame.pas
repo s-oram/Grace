@@ -76,18 +76,8 @@ type
     FilterVelocityButton: TVamTextBox;
     ModEnvAContainer: TVamDiv;
     VamLabel25: TVamLabel;
-    ModEnvAAttackLabel: TVamLabel;
-    ModEnvADecayLabel: TVamLabel;
-    ModEnvAAttackKnob: TVamKnob;
-    ModEnvAModeBox: TVamTextBox;
-    ModEnvADecayKnob: TVamKnob;
     ModEnvBContainer: TVamDiv;
     VamLabel12: TVamLabel;
-    ModEnvBAttackLabel: TVamLabel;
-    ModEnvBDecayLabel: TVamLabel;
-    ModEnvBAttackKnob: TVamKnob;
-    ModEnvBModeBox: TVamTextBox;
-    ModEnvBDecayKnob: TVamKnob;
     LfoAContainer: TVamDiv;
     VamLabel26: TVamLabel;
     Lfo1DepthLabel: TVamLabel;
@@ -208,10 +198,6 @@ begin
   KnobList.Add(Filter2Par2Knob);
   KnobList.Add(Filter2Par3Knob);
   KnobList.Add(Filter2Par4Knob);
-  KnobList.Add(ModEnvAAttackKnob);
-  KnobList.Add(ModEnvADecayKnob);
-  KnobList.Add(ModEnvBAttackKnob);
-  KnobList.Add(ModEnvBDecayKnob);
   KnobList.Add(LfoSpeedKnob1);
   KnobList.Add(LfoSpeedKnob2);
   KnobList.Add(LfoDepthKnob1);
@@ -268,10 +254,6 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par2'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par3'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par4'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvAAttackKnob,               Plugin.Globals.VstParameters.FindParameter('ModEnvAAttack'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvADecayKnob,                Plugin.Globals.VstParameters.FindParameter('ModEnvADecay'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBAttackKnob,               Plugin.Globals.VstParameters.FindParameter('ModEnvBAttack'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(ModEnvBDecayKnob,                Plugin.Globals.VstParameters.FindParameter('ModEnvBDecay'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoRate1'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoRate2'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoAPar2'));
@@ -282,8 +264,6 @@ begin
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter2Type'),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter('LfoShape1'),       TLfoShapeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox2,       Plugin.Globals.VstParameters.FindParameter('LfoShape2'),       TLfoShapeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(ModEnvAModeBox,         Plugin.Globals.VstParameters.FindParameter('ModEnvAMode'),     TModEnvModeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(ModEnvBModeBox,         Plugin.Globals.VstParameters.FindParameter('ModEnvBMode'),     TModEnvModeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter('AmpVelocity'),     TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter('FilterVelocity'),  TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter('Seq1Clock'),       TSequencerClockHelper);
@@ -499,31 +479,6 @@ begin
   //===================================================
 
 
-  //==== Mod Env A =======================================
-  ModEnvAAttackKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  ModEnvADecayKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
-
-  ModEnvAAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  ModEnvADecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  ModEnvAAttackLabel.Layout.Anchor(ModEnvAAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
-  ModEnvADecayLabel.Layout.Anchor(ModEnvADecayKnob).SnapToEdge(TControlFeature.BottomEdge);
-
-  ModEnvAModeBox.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  ModEnvAModeBox.Layout.AdjustBounds(-4,0,-4,0);
-  //===================================================
-
-  //==== Mod Env A =======================================
-  ModEnvBAttackKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  ModEnvBDecayKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
-
-  ModEnvBAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  ModEnvBDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  ModEnvBAttackLabel.Layout.Anchor(ModEnvBAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
-  ModEnvBDecayLabel.Layout.Anchor(ModEnvBDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
-
-  ModEnvBModeBox.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  ModEnvBModeBox.Layout.AdjustBounds(-4,0,-4,0);
-  //===================================================
 
   //=== colors ===
 
@@ -550,8 +505,6 @@ begin
   Seq2ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq2DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq2StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  ModEnvAModeBox.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
-  ModEnvBModeBox.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
 
   AmpVelocityButton.Color    := kColor_LcdDark1;
   FilterVelocityButton.Color := kColor_LcdDark1;
@@ -565,8 +518,6 @@ begin
   Seq2ClockTextBox.Color     := kColor_LcdDark1;
   Seq2DirectionTextBox.Color := kColor_LcdDark1;
   Seq2StepsTextBox.Color     := kColor_LcdDark1;
-  ModEnvAModeBox.Color       := kColor_LcdDark1;
-  ModEnvBModeBox.Color       := kColor_LcdDark1;
 
   AmpVelocityButton.ColorMouseOver    := kColor_ButtonMouseOver;
   FilterVelocityButton.ColorMouseOver := kColor_ButtonMouseOver;
@@ -580,8 +531,6 @@ begin
   Seq2ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq2DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq2StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-  ModEnvAModeBox.ColorMouseOver       := kColor_ButtonMouseOver;
-  ModEnvBModeBox.ColorMouseOver       := kColor_ButtonMouseOver;
 end;
 
 procedure TModControlFrame.MessageHandler(var Message: TMessage);
