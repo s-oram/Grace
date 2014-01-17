@@ -318,13 +318,16 @@ begin
   AmpEnvContainer.Height := RowHeight;
   AmpEnvContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-  LfoAContainer.Width := (2 * FilterKnobWidth);
-  LfoAContainer.Height := RowHeight;
-  LfoAContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-  LfoBContainer.Width := (2 * FilterKnobWidth);
-  LfoBContainer.Height := RowHeight;
-  LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+
+    ModEnvAContainer.Width := (2 * FilterKnobWidth);
+    ModEnvAContainer.Height := RowHeight;
+    ModEnvAContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+
+    ModEnvBContainer.Width := (2 * FilterKnobWidth);
+    ModEnvBContainer.Height := RowHeight;
+    ModEnvBContainer.Layout.Anchor(ModEnvAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+
 
 
 
@@ -349,14 +352,15 @@ begin
   FilterEnvContainer.Height := RowHeight;
   FilterEnvContainer.Layout.Anchor(FilterTwoContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
+  LfoAContainer.Width := (2 * FilterKnobWidth);
+  LfoAContainer.Height := RowHeight;
+  LfoAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-  ModEnvAContainer.Width := (2 * FilterKnobWidth);
-  ModEnvAContainer.Height := RowHeight;
-  ModEnvAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+  LfoBContainer.Width := (2 * FilterKnobWidth);
+  LfoBContainer.Height := RowHeight;
+  LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-  ModEnvBContainer.Width := (2 * FilterKnobWidth);
-  ModEnvBContainer.Height := RowHeight;
-  ModEnvBContainer.Layout.Anchor(ModEnvAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+
 
 
 

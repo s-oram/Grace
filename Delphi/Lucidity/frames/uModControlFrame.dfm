@@ -883,8 +883,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object ModEnvAContainer: TVamDiv
-        Left = 448
-        Top = 196
+        Left = 446
+        Top = 548
         Width = 92
         Height = 87
         HitTest = True
@@ -1000,8 +1000,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object ModEnvBContainer: TVamDiv
-        Left = 546
-        Top = 196
+        Left = 604
+        Top = 548
         Width = 92
         Height = 87
         HitTest = True
