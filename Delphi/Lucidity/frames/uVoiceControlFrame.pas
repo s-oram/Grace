@@ -33,10 +33,6 @@ type
     OscPulseWidthKnob: TVamKnob;
     OneShotSampleControls: TVamDiv;
     SampleOneShotLabel: TVamLabel;
-    MainOutputKnob: TVamKnob;
-    MainOutputLabel: TVamLabel;
-    MainPanLabel: TVamLabel;
-    MainPanKnob: TVamKnob;
     PlaybackTypeLabel: TVamLabel;
     SamplePlaybackTypeTextbox: TVamTextBox;
     ResetLabel: TVamLabel;
@@ -155,8 +151,7 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(GrainPosKnob,           Plugin.Globals.VstParameters.FindParameter('GrainPosition'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(OscShapeKnob,           Plugin.Globals.VstParameters.FindParameter('OscShape'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(OscPulseWidthKnob,      Plugin.Globals.VstParameters.FindParameter('OscPulseWidth'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,         Plugin.Globals.VstParameters.FindParameter('OutputGain'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,            Plugin.Globals.VstParameters.FindParameter('OutputPan'));
+  
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(VoiceModeTextBox,            Plugin.Globals.VstParameters.FindParameter('VoiceMode'),               TVoiceModeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(SamplePlaybackTypeTextBox,   Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType'),      TSamplePlaybackTypeHelper,   ShowPlayTypeMenuCallBack);
@@ -231,19 +226,17 @@ begin
 
 
   //** Gain, Pan, Tune, Fine **
-
-  MainOutputKnob.Layout.SetSize(32,32);
-  MainPanKnob.Layout.SetSize(32,32);
   VoicePitch1Knob.Layout.SetSize(32,32);
   VoicePitch2Knob.Layout.SetSize(32,32);
 
-  MainOutputKnob.Layout.SetPos(0,18);
-  MainPanKnob.Layout.SetPos(32,18);
-  VoicePitch1Knob.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  VoicePitch2Knob.Layout.Anchor(VoicePitch1Knob).SnapToEdge(TControlFeature.RightEdge);
+  //MainOutputKnob.Layout.SetPos(0,18);
+  //MainPanKnob.Layout.SetPos(32,18);
+  //VoicePitch1Knob.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  //VoicePitch2Knob.Layout.Anchor(VoicePitch1Knob).SnapToEdge(TControlFeature.RightEdge);
 
-  MainOutputLabel.Layout.Anchor(MainOutputKnob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  MainPanLabel.Layout.Anchor(MainPanKnob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  VoicePitch1Knob.Layout.SetPos(0,18);
+  VoicePitch2Knob.Layout.SetPos(32,18);
+
   VoicePitch1Label.Layout.Anchor(VoicePitch1Knob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
   VoicePitch2Label.Layout.Anchor(VoicePitch2Knob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 

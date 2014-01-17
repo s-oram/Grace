@@ -176,8 +176,16 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Visible = True
           end
           object GrainRateKnob: TVamKnob
@@ -187,8 +195,16 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'BiPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Visible = True
           end
           object GrainPosKnob: TVamKnob
@@ -198,8 +214,16 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Visible = True
           end
         end
@@ -274,8 +298,16 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Visible = True
           end
           object OscPulseWidthKnob: TVamKnob
@@ -285,8 +317,16 @@ object VoiceControlFrame: TVoiceControlFrame
             Height = 32
             DisplayClass = 'UniPolarKnob'
             HitTest = True
+            ModLineDist = 17.000000000000000000
+            ModLineColor = '$FFFF0000'
+            IndicatorSize = 2.500000000000000000
+            IndicatorDist = 9.000000000000000000
+            KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
+            MinModDepth = -0.300000011920929000
+            MaxModDepth = 0.500000000000000000
+            ParameterIndex = 0
             Visible = True
           end
         end
@@ -320,62 +360,6 @@ object VoiceControlFrame: TVoiceControlFrame
             Align = alBottom
             Visible = True
           end
-        end
-        object MainOutputKnob: TVamKnob
-          Left = 16
-          Top = 32
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          Visible = True
-        end
-        object MainOutputLabel: TVamLabel
-          Left = 16
-          Top = 63
-          Width = 40
-          Height = 16
-          Text = 'GAIN'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MainPanLabel: TVamLabel
-          Left = 62
-          Top = 64
-          Width = 40
-          Height = 16
-          Text = 'PAN'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MainPanKnob: TVamKnob
-          Left = 62
-          Top = 32
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          Visible = True
         end
         object PlaybackTypeLabel: TVamLabel
           Left = 602
@@ -456,8 +440,16 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object VoicePitch1Label: TVamLabel
@@ -501,8 +493,16 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'BiPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object SamplerLoopBoundsTextBox: TVamTextBox
@@ -584,8 +584,16 @@ object VoiceControlFrame: TVoiceControlFrame
           Height = 32
           DisplayClass = 'UniPolarKnob'
           HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineColor = '$FFFF0000'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          KnobMode = PositionEdit
           IsKnobEnabled = True
           VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
           Visible = True
         end
         object GlideLabel: TVamLabel

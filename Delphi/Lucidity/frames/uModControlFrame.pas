@@ -116,6 +116,10 @@ type
     LfoSpeedKnob2: TVamKnob;
     LfoShapeTextBox2: TVamTextBox;
     LfoDepthKnob2: TVamKnob;
+    MainOutputKnob: TVamKnob;
+    MainOutputLabel: TVamLabel;
+    MainPanLabel: TVamLabel;
+    MainPanKnob: TVamKnob;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -258,6 +262,8 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoRate2'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoAPar2'));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoBPar2'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,                  Plugin.Globals.VstParameters.FindParameter('OutputGain'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,                     Plugin.Globals.VstParameters.FindParameter('OutputPan'));
 
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter1Type'),     TFilterTypeHelper);
@@ -448,7 +454,13 @@ begin
   //==================================================
 
 
+  MainOutputKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  MainPanKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
 
+  MainOutputLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  MainPanLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  MainOutputLabel.Layout.Anchor(MainOutputKnob).SnapToEdge(TControlFeature.BottomEdge);
+  MainPanLabel.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.BottomEdge);
 
 
   //==== LFO 1 ========================================
