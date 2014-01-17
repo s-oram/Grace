@@ -8,7 +8,7 @@ uses
   B2.Filter.CriticallyDampedLowpass,
   VamLib.MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
   uLucidityEnums, B2.MovingAverageFilter,
-  eeVirtualCV, Math, eeFunctions,  uLucidityClock, eeDsp,
+  eeVirtualCV, Math, uLucidityClock, eeDsp,
   uConstants;
 
 const
@@ -98,10 +98,9 @@ type
     VoiceClockManager : TLucidityVoiceClockManager;
     fLfo : TLfo;
 
-    LfoIndex     : integer;
+    ModuleIndex     : integer;
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
-
 
     procedure UpdateLfoParameters;
 
@@ -110,7 +109,7 @@ type
     constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
 
-    procedure Init(const aLfoIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
 
     procedure ResetLfoPhase;
 
@@ -166,9 +165,12 @@ begin
   result := nil;
 end;
 
-procedure TLucidityLfo.Init(const aLfoIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
+procedure TLucidityLfo.Init(const aModuleIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
 begin
-  LfoIndex     := aLfoIndex;
+  assert(ModuleIndex >= 0);
+  assert(ModuleIndex <= 1);
+
+  ModuleIndex  := aModuleIndex;
   ParValueData := aPars;
   ParModData   := aModData;
 end;
@@ -196,7 +198,7 @@ begin
 
   if Lfo.FastControlProcess then
   begin
-    if LfoIndex = 0
+    if ModuleIndex = 0
       then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
       else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
   end;
@@ -228,7 +230,7 @@ var
   Par1Mod: single;
   Par2Mod: single;
 begin
-  if LfoIndex = 0 then
+  if ModuleIndex = 0 then
   begin
     Par1 := ParValueData^[TModParIndex.LfoRate1].ParValue;
     Par2 := ParValueData^[TModParIndex.LfoAPar2].ParValue;

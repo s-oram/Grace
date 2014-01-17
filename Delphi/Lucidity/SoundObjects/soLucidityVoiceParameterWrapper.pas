@@ -311,61 +311,26 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetAmpAttack(const Value: single);
 begin
   fAmpAttack := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.AmpEnv.AttackTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpDecay(const Value: single);
 begin
   fAmpDecay := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.AmpEnv.DecayTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpHold(const Value: single);
 begin
   fAmpHold := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.AmpEnv.HoldTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpRelease(const Value: single);
 begin
   fAmpRelease := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.AmpEnv.ReleaseTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpSustain(const Value: single);
 begin
   fAmpSustain := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.AmpEnv.SustainLevel := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
@@ -447,61 +412,26 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetFilterAttack(const Value: single);
 begin
   fFilterAttack := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterEnv.AttackTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterDecay(const Value: single);
 begin
   fFilterDecay := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterEnv.DecayTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterHold(const Value: single);
 begin
   fFilterHold := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterEnv.HoldTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterRelease(const Value: single);
 begin
   fFilterRelease := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterEnv.ReleaseTime := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterSustain(const Value: single);
 begin
   fFilterSustain := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.FilterEnv.SustainLevel := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterVelocityDepth(const Value: TEnvVelocityDepth);
@@ -1022,21 +952,9 @@ begin
   aVoice.OscPanner.Pan                   := VoicePan;
   aVoice.PitchOne                        := VoicePitchOne;
   aVoice.PitchTwo                        := VoicePitchTwo;
-
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
-
-  aVoice.AmpEnv.AttackTime               := AmpAttack;
-  aVoice.AmpEnv.HoldTime                 := AmpHold;
-  aVoice.AmpEnv.DecayTime                := AmpDecay;
-  aVoice.AmpEnv.SustainLevel             := AmpSustain;
-  aVoice.AmpEnv.ReleaseTime              := AmpRelease;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
-  aVoice.FilterEnv.AttackTime            := FilterAttack;
-  aVoice.FilterEnv.HoldTime              := FilterHold;
-  aVoice.FilterEnv.DecayTime             := FilterDecay;
-  aVoice.FilterEnv.SustainLevel          := FilterSustain;
-  aVoice.FilterEnv.ReleaseTime           := FilterRelease;
   aVoice.FilterEnv.VelocityDepth         := FilterVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;

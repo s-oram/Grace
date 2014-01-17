@@ -41,7 +41,7 @@ type
 
     TestFilter : TTestFilter;
 
-    FilterIndex  : integer;
+    ModuleIndex  : integer;
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 
@@ -50,7 +50,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure Init(const aFilterIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
 
 
     function GetModPointer(const Name:string):PSingle;
@@ -120,12 +120,12 @@ begin
   if Name ='Par2Mod' then exit(@DummyModValue);  if Name ='Par3Mod' then exit(@DummyModValue);  if Name ='Par4Mod' then exit(@DummyModValue);
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');  result := nil;end;
 
-procedure TLucidityFilter.Init(const aFilterIndex : integer; const aPars: PModulatedPars; const aModData: PParModulationData);
+procedure TLucidityFilter.Init(const aModuleIndex : integer; const aPars: PModulatedPars; const aModData: PParModulationData);
 begin
-  assert(FilterIndex >= 0);
-  assert(FilterIndex <= 1);
+  assert(ModuleIndex >= 0);
+  assert(ModuleIndex <= 1);
 
-  self.FilterIndex   := aFilterIndex;
+  self.ModuleIndex   := aModuleIndex;
   self.ParValueData  := aPars;
   self.ParModData    := aModData;
 end;
@@ -186,7 +186,7 @@ var
   px2 : single;
   px3 : single;
 begin
-  if FilterIndex = 0 then
+  if ModuleIndex = 0 then
   begin
     Par1 := ParValueData^[TModParIndex.Filter1Par1].ParValue;
     Par2 := ParValueData^[TModParIndex.Filter1Par2].ParValue;

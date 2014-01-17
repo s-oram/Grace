@@ -2,8 +2,11 @@ unit Lucidity.Env.ADSR;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
-  VamLib.MoreTypes, soADSR, eeFunctions, uLucidityEnums, eeDsp;
+  uConstants,
+  VamLib.MoreTypes, soADSR, {eeFunctions,} uLucidityEnums, eeDsp;
 
 type
   TEnvelopeStage = soADSR.TEnvelopeStage;
@@ -27,14 +30,29 @@ type
     procedure SetSustainLevel(const Value: single);
   protected
     fADSR : TADSR;
+
+    ModuleIndex    : integer;
+    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
+    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
+
+    procedure UpdateParameters;
+
+    property AttackTime   :single read fAttackTime   write SetAttackTime;    // range is 0..1
+    property HoldTime     :single read fHoldTime     write SetHoldTime;      // range is 0..1
+    property DecayTime    :single read fDecayTime    write SetDecayTime;     // range is 0..1
+    property SustainLevel :single read fSustainLevel write SetSustainLevel;  // range is 0..1
+    property ReleaseTime  :single read fReleaseTime  write SetReleaseTime;   // range is 0..1
   public
     constructor Create;
     destructor Destroy; override;
 
+    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+
     function GetModPointer(const Name:string):PSingle;
 
-    procedure StepResetA; inline;
-    procedure Step; inline; //Process one sample frame.
+    procedure StepResetA; {$IFDEF AudioInline}inline;{$ENDIF}
+    procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
+    procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
     procedure Trigger(aVelocity:single);
     procedure Release;
@@ -46,18 +64,13 @@ type
 
     property SampleRate      :integer        read fSampleRate write SetSampleRate;
 
-    property AttackTime   :single read fAttackTime   write SetAttackTime;    // range is 0..1
-    property HoldTime     :single read fHoldTime     write SetHoldTime;      // range is 0..1
-    property DecayTime    :single read fDecayTime    write SetDecayTime;     // range is 0..1
-    property SustainLevel :single read fSustainLevel write SetSustainLevel;  // range is 0..1
-    property ReleaseTime  :single read fReleaseTime  write SetReleaseTime;   // range is 0..1
-
     property VelocityDepth : TEnvVelocityDepth read fVelocityDepth write fVelocityDepth;
   end;
 
 implementation
 
 uses
+  VamLib.Utils,
   SysUtils, LucidityParameterScaling;
 
 { TLucidityADSR }
@@ -86,6 +99,16 @@ end;
 function TLucidityADSR.GetModPointer(const Name: string): PSingle;
 begin
   result := fADSR.GetModPointer(Name);
+end;
+
+procedure TLucidityADSR.Init(const aModuleIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
+begin
+  assert(ModuleIndex >= 0);
+  assert(ModuleIndex <= 1);
+
+  ModuleIndex  := aModuleIndex;
+  ParValueData := aPars;
+  ParModData   := aModData;
 end;
 
 procedure TLucidityADSR.SetAttackTime(const Value: single);
@@ -156,6 +179,61 @@ begin
 
 end;
 
+procedure TLucidityADSR.UpdateParameters;
+var
+  Par1 : single;
+  Par2 : single;
+  Par3 : single;
+  Par4 : single;
+  Par5 : single;
+
+  Par1Mod: single;
+  Par2Mod: single;
+  Par3Mod: single;
+  Par4Mod: single;
+  Par5Mod: single;
+begin
+  if ModuleIndex = 0 then
+  begin
+    Par1 := ParValueData^[TModParIndex.AmpAttack].ParValue;
+    Par2 := ParValueData^[TModParIndex.AmpHold].ParValue;
+    Par3 := ParValueData^[TModParIndex.AmpDecay].ParValue;
+    Par4 := ParValueData^[TModParIndex.AmpSustain].ParValue;
+    Par5 := ParValueData^[TModParIndex.AmpRelease].ParValue;
+
+    Par1Mod := ParModData^[TModParIndex.AmpAttack];
+    Par2Mod := ParModData^[TModParIndex.AmpHold];
+    Par3Mod := ParModData^[TModParIndex.AmpDecay];
+    Par4Mod := ParModData^[TModParIndex.AmpSustain];
+    Par5Mod := ParModData^[TModParIndex.AmpRelease];
+  end else
+  begin
+    Par1 := ParValueData^[TModParIndex.FilterAttack].ParValue;
+    Par2 := ParValueData^[TModParIndex.FilterHold].ParValue;
+    Par3 := ParValueData^[TModParIndex.FilterDecay].ParValue;
+    Par4 := ParValueData^[TModParIndex.FilterSustain].ParValue;
+    Par5 := ParValueData^[TModParIndex.FilterRelease].ParValue;
+
+    Par1Mod := ParModData^[TModParIndex.FilterAttack];
+    Par2Mod := ParModData^[TModParIndex.FilterHold];
+    Par3Mod := ParModData^[TModParIndex.FilterDecay];
+    Par4Mod := ParModData^[TModParIndex.FilterSustain];
+    Par5Mod := ParModData^[TModParIndex.FilterRelease];
+  end;
+
+  Par1 := Clamp(Par1 + Par1Mod, 0, 1);
+  Par2 := Clamp(Par2 + Par2Mod, 0, 1);
+  Par3 := Clamp(Par3 + Par3Mod, 0, 1);
+  Par4 := Clamp(Par4 + Par4Mod, 0, 1);
+  Par5 := Clamp(Par5 + Par5Mod, 0, 1);
+
+  self.AttackTime   := Par1;
+  self.HoldTime     := Par2;
+  self.DecayTime    := Par3;
+  self.SustainLevel := Par4;
+  self.ReleaseTime  := Par5;
+end;
+
 procedure TLucidityADSR.Release;
 begin
   fADSR.Release;
@@ -173,12 +251,18 @@ end;
 
 procedure TLucidityADSR.StepResetA;
 begin
+  UpdateParameters;
   fADSR.StepReset;
 end;
 
-procedure TLucidityADSR.Step;
+procedure TLucidityADSR.FastControlProcess;
 begin
   fADSR.Step;
+end;
+
+procedure TLucidityADSR.SlowControlProcess;
+begin
+  UpdateParameters;
 end;
 
 

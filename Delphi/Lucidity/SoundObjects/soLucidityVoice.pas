@@ -528,7 +528,8 @@ begin
   FilterTwo.Init(1, ParValueData, @self.ParModData);
   LfoA.Init(0, ParValueData, @self.ParModData);
   LfoB.Init(1, ParValueData, @self.ParModData);
-
+  AmpEnv.Init(0, ParValueData, @self.ParModData);
+  FilterEnv.Init(1, ParValueData, @self.ParModData);
   //=============================================================
 
 
@@ -556,10 +557,6 @@ begin
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
-
-
-
-
   //ModMatrix.UpdateAllModLinks(aModConnections);
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
@@ -569,7 +566,7 @@ begin
   StepSeqOne.StepResetB;
   StepSeqTwo.StepResetB;
 
-  //ModMatrix.
+  //TODO: The amp and filter envelopes need a StepResetB.
 
   // Call Trigger on all components that need it....
   AmpEnv.Trigger(MidiVelocity / 127);
@@ -708,8 +705,8 @@ begin
   //=== Control rate step for all control rate modules ===
   LfoA.FastControlProcess;
   LfoB.FastControlProcess;
-  AmpEnv.Step;
-  FilterEnv.Step;
+  AmpEnv.FastControlProcess;
+  FilterEnv.FastControlProcess;
   StepSeqOne.Step;
   StepSeqTwo.Step;
 
@@ -764,6 +761,9 @@ begin
 
   LfoA.SlowControlProcess;
   LfoB.SlowControlProcess;
+  AmpEnv.SlowControlProcess;
+  FilterEnv.SlowControlProcess;
+
   ModMatrix.SlowControlProcess;
   OneShotSampleOsc.SlowControlProcess;
 
