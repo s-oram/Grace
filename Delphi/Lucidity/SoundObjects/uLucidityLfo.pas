@@ -133,6 +133,9 @@ type
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 
+
+    procedure UpdateLfoParameters;
+
     property Lfo : TLfo read fLfo;
   public
     constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
@@ -161,6 +164,7 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
@@ -219,6 +223,8 @@ end;
 
 procedure TLucidityLfo.FastControlProcess;
 begin
+  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
+
   if Lfo.FastControlProcess then
   begin
     if LfoIndex = 0
@@ -229,17 +235,52 @@ end;
 
 procedure TLucidityLfo.SlowControlProcess;
 begin
+
+
   Lfo.SlowControlProcess;
 end;
 
 procedure TLucidityLfo.StepResetA;
 begin
+  UpdateLfoParameters;
   Lfo.StepResetA;
 end;
 
 procedure TLucidityLfo.StepResetB;
 begin
+  UpdateLfoParameters;
   Lfo.StepResetB;
+end;
+
+procedure TLucidityLfo.UpdateLfoParameters;
+var
+  Par1 : single;
+  Par2 : single;
+  Par1Mod: single;
+  Par2Mod: single;
+begin
+  if LfoIndex = 0 then
+  begin
+    Par1 := ParValueData^[TModParIndex.LfoRate1].ParValue;
+    Par2 := ParValueData^[TModParIndex.LfoAPar2].ParValue;
+
+    Par1Mod := ParModData^[TModParIndex.LfoRate1];
+    Par2Mod := ParModData^[TModParIndex.LfoAPar2];
+  end else
+  begin
+    Par1 := ParValueData^[TModParIndex.LfoRate2].ParValue;
+    Par2 := ParValueData^[TModParIndex.LfoBPar2].ParValue;
+
+    Par1Mod := ParModData^[TModParIndex.LfoRate2];
+    Par2Mod := ParModData^[TModParIndex.LfoBPar2];
+  end;
+
+  Lfo.Speed := VamLib.Utils.Clamp(Par1 + Par1Mod, 0, 1);
+  Lfo.ParB  := VamLib.Utils.Clamp(Par2 + Par2Mod, 0, 1);
+
+  // TODO: Instead of summing these values together, it might be better to
+  // try to send both values to the LFO so that the modulation input
+  // can use 1v/oct scaling.
 end;
 
 { TLucidityLfo_OLD }
@@ -427,7 +468,7 @@ var
 begin
   CV := (Speed * 12) + AudioRangeToModularVoltage(ModPoint_ParAInput);
   Freq := VoltsToFreq(0.05, CV);
-  Clamp(Freq, kMinFreq, kMaxFreq);
+  Freq := VamLib.Utils.Clamp(Freq, kMinFreq, kMaxFreq);
   StepSize := round(High(cardinal) / SampleRate * Freq);
 
 end;
@@ -445,7 +486,7 @@ begin
   //Wrap(x, 0, 1);
   // The alternative is to Clamp() the value. That will however
   // cause the phase to not fold around and will not sound natural.
-  Clamp(x, 0, 1);
+  x := VamLib.Utils.Clamp(x, 0, 1);
 
   case self.Shape of
     TLfoShape.SawUp,
@@ -479,7 +520,7 @@ begin
   if (Phase + PhaseOffset + StepSize) < (Phase + PhaseOffset) then
   begin
     ParBMod := ParB + ModPoint_ParBInput;
-    Clamp(ParBMod, 0, 1);
+    ParBMod := VamLib.Utils.Clamp(ParBMod, 0, 1);
 
     RFactor1 := (Sqr(ParBMod) - Random);
     RFactor2 := (Sqr(ParBMod) - Random);

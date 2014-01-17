@@ -293,8 +293,7 @@ begin
   LfoA := TLucidityLfo.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
   LfoB := TLucidityLfo.Create(VoiceClockManager);
-  ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoB.GetModPointer('LfoOutput'));
-
+  ModMatrix.SetModSourcePointer(TModSource.Lfo2, LfoB.GetModPointer('LfoOutput'));
 
   StepSeqOne := TLucidyStepSequencer.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.StepSeq1, StepSeqOne.GetModPointer('StepSeqOutput'));
