@@ -53,20 +53,14 @@ type
     LfoRate2 = 49;
     LfoAPar2 = 50;
     LfoBPar2 = 51;
-    ModEnvAAttack = 52;
-    ModEnvADecay = 53;
-    ModEnvAMode = 54;
-    ModEnvBAttack = 55;
-    ModEnvBDecay = 56;
-    ModEnvBMode = 57;
-    Seq1Clock = 58;
-    Seq1Direction = 59;
-    StepSeq1Length = 60;
-    Seq2Clock = 61;
-    Seq2Direction = 62;
-    StepSeq2Length = 63;
-    PreviewVolume = 64;
-    Preview = 65;
+    Seq1Clock = 52;
+    Seq1Direction = 53;
+    StepSeq1Length = 54;
+    Seq2Clock = 55;
+    Seq2Direction = 56;
+    StepSeq2Length = 57;
+    PreviewVolume = 58;
+    Preview = 59;
   end;
   
   
@@ -102,8 +96,4 @@ type
     LfoRate2 = 27;
     LfoAPar2 = 28;
     LfoBPar2 = 29;
-    ModEnvAAttack = 30;
-    ModEnvADecay = 31;
-    ModEnvBAttack = 32;
-    ModEnvBDecay = 33;
   end;

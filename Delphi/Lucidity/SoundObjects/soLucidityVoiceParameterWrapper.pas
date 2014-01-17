@@ -77,12 +77,6 @@ type
     fMixAuxA: single;
     fSamplerLoopBounds: TSamplerLoopBounds;
     fSampleReset: TClockSource;
-    fModEnvBAttack: single;
-    fModEnvAAttack: single;
-    fModEnvBDecay: single;
-    fModEnvADecay: single;
-    fModEnvBMode: TModEnvMode;
-    fModEnvAMode: TModEnvMode;
     fLfoAPar2: single;
     fLfoBPar2: single;
     fAmpVelocityDepth: TEnvVelocityDepth;
@@ -140,12 +134,6 @@ type
     procedure SetMixAuxB(const Value: single);
     procedure SetSampleLoopBounds(const Value: TSamplerLoopBounds);
     procedure SetSampleReset(Value: TClockSource);
-    procedure SetModEnvAAttack(const Value: single);
-    procedure SetModEnvADecay(const Value: single);
-    procedure SetModEnvAMode(const Value: TModEnvMode);
-    procedure SetModEnvBAttack(const Value: single);
-    procedure SetModEnvBDecay(const Value: single);
-    procedure SetModEnvBMode(const Value: TModEnvMode);
     procedure SetLfoAPar2(const Value: single);
     procedure SetLfoBPar2(const Value: single);
     procedure SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
@@ -231,12 +219,6 @@ type
     property LfoRate2                 : single                             read fLfoRate2                write SetLfoRate2;
     property LfoAPar2                 : single                             read fLfoAPar2                write SetLfoAPar2;
     property LfoBPar2                 : single                             read fLfoBPar2                write SetLfoBPar2;
-    property ModEnvAAttack            : single                             read fModEnvAAttack           write SetModEnvAAttack;
-    property ModEnvADecay             : single                             read fModEnvADecay            write SetModEnvADecay;
-    property ModEnvAMode              : TModEnvMode                        read fModEnvAMode             write SetModEnvAMode;
-    property ModEnvBAttack            : single                             read fModEnvBAttack           write SetModEnvBAttack;
-    property ModEnvBDecay             : single                             read fModEnvBDecay            write SetModEnvBDecay;
-    property ModEnvBMode              : TModEnvMode                        read fModEnvBMode             write SetModEnvBMode;
     property Seq1Clock                : TSequencerClock                    read fSeq1Clock               write SetSeq1Clock;
     property Seq1Direction            : TStepSequencerDirection            read fSeq1Direction           write SetSeq1Direction;
     property StepSeq1Length           : TStepSequencerLength               read fStepSeq1Length          write SetStepSeq1Length;
@@ -953,78 +935,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetModEnvAAttack(const Value: single);
-begin
-  fModEnvAAttack := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvA.AttackTime := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModEnvADecay(const Value: single);
-begin
-  fModEnvADecay := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvA.DecayTime := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModEnvAMode(const Value: TModEnvMode);
-begin
-  fModEnvAMode := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvA.Mode := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModEnvBAttack(const Value: single);
-begin
-  fModEnvBAttack := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvB.AttackTime := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModEnvBDecay(const Value: single);
-begin
-  fModEnvBDecay := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvB.DecayTime := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModEnvBMode(const Value: TModEnvMode);
-begin
-  fModEnvBMode := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.ModEnvB.Mode := Value;
-    end
-  );
-end;
-
 procedure TLucidityVoiceParameterWrapper.AssignFrom(const Source: TLucidityVoiceParameterWrapper);
 var
   c1: Integer;
@@ -1087,12 +997,6 @@ begin
   Self.LfoRate2                 := Source.LfoRate2;
   self.LfoAPar2                 := Source.LfoAPar2;
   self.LfoBPar2                 := Source.LfoBPar2;
-  Self.ModEnvAAttack            := Source.ModEnvAAttack;
-  Self.ModEnvADecay             := Source.ModEnvADecay;
-  Self.ModEnvAMode              := Source.ModEnvAMode;
-  Self.ModEnvBAttack            := Source.ModEnvBAttack;
-  Self.ModEnvBDecay             := Source.ModEnvBDecay;
-  Self.ModEnvBMode              := Source.ModEnvBMode;
   Self.Seq1Clock                := Source.Seq1Clock;
   Self.Seq1Direction            := Source.Seq1Direction;
   Self.StepSeq1Length           := Source.StepSeq1Length;
@@ -1167,12 +1071,6 @@ begin
   aVoice.LFO.LfoB.Speed                  := LfoRate2;
   aVoice.LFO.LfoA.ParB                   := LfoAPar2;
   aVoice.LFO.LfoB.ParB                   := LfoBPar2;
-  aVoice.ModEnvA.AttackTime              := ModEnvAAttack;
-  aVoice.ModEnvA.DecayTime               := ModEnvADecay;
-  aVoice.ModEnvA.Mode                    := ModEnvAMode;
-  aVoice.ModEnvB.AttackTime              := ModEnvBAttack;
-  aVoice.ModEnvB.DecayTime               := ModEnvBDecay;
-  aVoice.ModEnvB.Mode                    := ModEnvBMode;
   aVoice.StepSeqOne.Clock                := Seq1Clock;
   aVoice.StepSeqOne.Direction            := Seq1Direction;
   aVoice.StepSeqOne.StepCount            := StepSeq1Length;

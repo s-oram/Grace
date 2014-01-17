@@ -462,12 +462,6 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoRate2');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoAPar2');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoBPar2');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvAAttack');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvADecay');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvAMode');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBAttack');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBDecay');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBMode');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');
@@ -682,12 +676,6 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoRate2');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoAPar2');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoBPar2');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvAAttack');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvADecay');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvAMode');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBAttack');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBDecay');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModEnvBMode');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');

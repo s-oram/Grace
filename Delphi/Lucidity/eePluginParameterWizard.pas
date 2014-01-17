@@ -973,6 +973,11 @@ begin
   end;
 
 
+  //TODO: Rename the lfo parameters to
+  // LfoA-Par1
+  // LfoA-Par2
+  // LfoB-Par1
+  // LfoB-Par2
 
 
   aPar := TVstParameterEx.Create('LfoRate1');
@@ -1071,139 +1076,6 @@ begin
     end);
   end;
 
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvAAttack');
-  aPar.SetDefault(0.5);
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Attack Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvAAttack)) + 'ms';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvAAttack := Value;
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := Plugin.ActiveVoicePar.ModEnvAAttack;
-    end);
-  end;
-
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvADecay');
-  aPar.SetDefault(0.5);
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Decay Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvADecay)) + 'ms';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvADecay := Value;
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := Plugin.ActiveVoicePar.ModEnvADecay;
-    end);
-  end;
-
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvAMode');
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Type';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvAMode := TModEnvModeHelper.ToEnum(Value);
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := TModEnvModeHelper.ToSingle(Plugin.ActiveVoicePar.ModEnvAMode);
-    end);
-  end;
-
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvBAttack');
-  aPar.SetDefault(0.5);
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Attack Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvBAttack)) + 'ms';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvBAttack := Value;
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := Plugin.ActiveVoicePar.ModEnvBAttack;
-    end);
-  end;
-
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvBDecay');
-  aPar.SetDefault(0.5);
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Decay Time: ' + RoundFloatToStr(TParScaler.ModEnv_StageTimeToMS(Plugin.ActiveVoicePar.ModEnvBDecay)) + 'ms';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvBDecay := Value;
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := Plugin.ActiveVoicePar.ModEnvBDecay;
-    end);
-  end;
-
-
-
-
-  aPar := TVstParameterEx.Create('ModEnvBMode');
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'Modulation Env Type';
-    end);
-    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
-    begin
-      Plugin.ActiveVoicePar.ModEnvBMode := TModEnvModeHelper.ToEnum(Value);
-    end);
-    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
-    begin
-      Value := TModEnvModeHelper.ToSingle(Plugin.ActiveVoicePar.ModEnvBMode);
-    end);
-  end;
 
 
 
@@ -1376,8 +1248,7 @@ begin
     end);
   end;
 
-  assert(ParManager.Count = kParameterCount);
-  assert(aModLinkIndex = kModulatedParameterCount);
+
 
 
   for c1 := 0 to ParManager.Count-1 do
@@ -1397,6 +1268,9 @@ begin
   {$ifdef GENERATE_PAR_INFO}
   GenerateParInfoText(ParManager);
   {$endif}
+
+  assert(ParManager.Count = kParameterCount);
+  assert(aModLinkIndex = kModulatedParameterCount);
 end;
 
 
