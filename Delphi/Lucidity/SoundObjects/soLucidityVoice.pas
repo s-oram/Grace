@@ -59,7 +59,6 @@ type
     fFilterEnv: TLucidityADSR;
     fFilterOne: TLucidityFilter;
     fFilterTwo: TLucidityFilter;
-    fLFO_OLD: TLucidityLfo_OLD;
     fModMatrix: TModMatrix;
     fStepSeqOne: TLucidyStepSequencer;
     fGrainStretchOsc: TLucidityGrainStretchOsc;
@@ -128,7 +127,7 @@ type
 
     procedure UpdateOscPitch;
 
-    property LFO_OLD          : TLucidityLfo_OLD         read fLFO_OLD          write fLFO_OLD;
+
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -284,12 +283,6 @@ begin
   OscPanner := TLucidityPanner.Create;
   ModMatrix.SetModDestPointer(TModDest.VoicePan, OscPanner.GetModPointer('ModInput_Pan'));
 
-  LFO_OLD := TLucidityLfo_OLD.Create(VoiceClockManager);
-  ModMatrix.SetModDestPointer(TModDest.Lfo1_Rate, LFO_OLD.GetModPointer('LfoRateMod1'));
-  ModMatrix.SetModDestPointer(TModDest.Lfo1_ParB, LFO_OLD.GetModPointer('LfoParBMod1'));
-  ModMatrix.SetModDestPointer(TModDest.Lfo2_Rate, LFO_OLD.GetModPointer('LfoRateMod2'));
-  ModMatrix.SetModDestPointer(TModDest.Lfo2_ParB, LFO_OLD.GetModPointer('LfoParBMod2'));
-
   LfoA := TLucidityLfo.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
   LfoB := TLucidityLfo.Create(VoiceClockManager);
@@ -325,7 +318,6 @@ begin
   FilterTwo.Free;
   OscVCA.Free;
   OscPanner.Free;
-  LFO_OLD.Free;
   LfoA.Free;
   LfoB.Free;
   StepSeqOne.Free;
@@ -362,7 +354,6 @@ begin
   //==== Control Rate Modules ====
   AmpEnv.SampleRate     := Globals.ControlRate;
   FilterEnv.SampleRate  := Globals.ControlRate;
-  LFO_OLD.SampleRate        := Globals.ControlRate;
   LfoA.SampleRate       := Globals.ControlRate;
   LfoB.SampleRate       := Globals.ControlRate;
   StepSeqOne.SampleRate := Globals.ControlRate;
@@ -558,7 +549,6 @@ begin
   end;
 
   // call StepReset on all modulation sources.
-  LFO_OLD.StepResetA;
   LfoA.StepResetA;
   LfoB.StepResetA;
   AmpEnv.StepResetA;
@@ -574,7 +564,6 @@ begin
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
 
-  LFO_OLD.StepResetB;
   LfoA.StepResetB;
   LfoB.StepResetB;
   StepSeqOne.StepResetB;
@@ -717,7 +706,6 @@ begin
   end;
 
   //=== Control rate step for all control rate modules ===
-  LFO_OLD.FastControlProcess;
   LfoA.FastControlProcess;
   LfoB.FastControlProcess;
   AmpEnv.Step;
@@ -774,7 +762,6 @@ procedure TLucidityVoice.SlowControlProcess;
 begin
   UpdateOscPitch;
 
-  LFO_OLD.SlowControlProcess;
   LfoA.SlowControlProcess;
   LfoB.SlowControlProcess;
   ModMatrix.SlowControlProcess;

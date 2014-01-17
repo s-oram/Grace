@@ -87,37 +87,6 @@ type
   end;
 
 
-  TLucidityLfo_OLD = class
-  private
-    fSampleRate: single;
-    fBpm: single;
-    procedure SetSampleRate(const Value: single);
-    procedure SetBpm(const Value: single);
-  protected
-    VoiceClockManager : TLucidityVoiceClockManager;
-    fLfoA, fLfoB : TLfo;
-  public
-    constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
-    destructor Destroy; override;
-
-    procedure ResetLfoPhase;
-
-    function GetModPointer(const Name:string):PSingle;
-
-    property LfoA : TLfo read fLfoA;
-    property LfoB : TLfo read fLfoB;
-
-    property Bpm        : single read fBpm        write SetBpm;
-    property SampleRate : single read fSampleRate write SetSampleRate;
-
-    procedure StepResetA;
-    procedure StepResetB;
-
-    procedure FastControlProcess;
-    procedure SlowControlProcess;
-  end;
-
-
   TLucidityLfo = class
   private
     fSampleRate: single;
@@ -277,97 +246,15 @@ begin
 
   Lfo.Speed := VamLib.Utils.Clamp(Par1 + Par1Mod, 0, 1);
   Lfo.ParB  := VamLib.Utils.Clamp(Par2 + Par2Mod, 0, 1);
+  Lfo.Shape := self.Shape;
 
   // TODO: Instead of summing these values together, it might be better to
   // try to send both values to the LFO so that the modulation input
   // can use 1v/oct scaling.
 end;
 
-{ TLucidityLfo_OLD }
-
-constructor TLucidityLfo_OLD.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
-begin
-  VoiceClockManager := aVoiceClockManager;
-
-  fLfoA := TLfo.Create;
-  fLfoB := TLfo.Create;
-end;
-
-destructor TLucidityLfo_OLD.Destroy;
-begin
-  fLfoA.Free;
-  fLfoB.Free;
-  inherited;
-end;
-
-function TLucidityLfo_OLD.GetModPointer(const Name: string): PSingle;
-begin
-  if Name = 'LfoOut1' then Exit(LfoA.GetModPointer('LfoOutput'));
-  if Name = 'LfoOut2' then Exit(LfoB.GetModPointer('LfoOutput'));
-
-  if Name = 'LfoRateMod1' then Exit(LfoA.GetModPointer('ParAInput'));
-  if Name = 'LfoRateMod2' then Exit(LfoB.GetModPointer('ParAInput'));
-
-  if Name = 'LfoParBMod1' then Exit(LfoA.GetModPointer('ParBInput'));
-  if Name = 'LfoParBMod2' then Exit(LfoB.GetModPointer('ParBInput'));
-
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
-end;
-
-procedure TLucidityLfo_OLD.ResetLfoPhase;
-begin
-  assert(false, 'todo');
-end;
-
-procedure TLucidityLfo_OLD.SetBpm(const Value: single);
-begin
-  fBpm := Value;
-  LfoA.Bpm := Value;
-  LfoB.Bpm := Value;
-end;
-
-procedure TLucidityLfo_OLD.SetSampleRate(const Value: single);
-begin
-  fSampleRate := Value;
-  LfoA.SampleRate := Value;
-  LfoB.SampleRate := Value;
-end;
-
-procedure TLucidityLfo_OLD.FastControlProcess;
-begin
-  if LfoA.FastControlProcess then
-  begin
-    VoiceClockManager.SendClockEvent(ClockID_Lfo1);
-  end;
-
-  if LfoB.FastControlProcess then
-  begin
-    VoiceClockManager.SendClockEvent(ClockID_Lfo2);
-  end;
-end;
-
-procedure TLucidityLfo_OLD.SlowControlProcess;
-begin
-  LfoA.SlowControlProcess;
-  LfoB.SlowControlProcess;
-end;
-
-procedure TLucidityLfo_OLD.StepResetA;
-begin
-  LfoA.StepResetA;
-  LfoB.StepResetA;
-end;
-
-procedure TLucidityLfo_OLD.StepResetB;
-begin
-  LfoA.StepResetB;
-  LfoB.StepResetB;
-end;
 
 { TLfo }
-
-
 
 constructor TLfo.Create;
 begin
