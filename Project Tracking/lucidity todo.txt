@@ -33,6 +33,19 @@ more systematic.
 
 
 
+* Lucidity Notes from Yann
+I noticed a couple of quirks, bugs & strange behaviour, so i wanted to report it :
+- If i copy an instance of Lucidity from one Reaper track into another (with samples i drag/dropped from the DAW, not 
+
+from Lucidity's own browser), the audio content will play fine, but no sample is visible in the keymapper (but i see the 
+
+red keys blinkning when a note is triggered). So, i can not edit the samples or maps, as i can't see it.
+- The "magnetism" ("grid locking" ?) of the keymapper is not perfect yet : i like gridlocking a lot (as it is a 
+
+timesaver), but here sometimes i can not smoothly change the mapping when i drag a zone border/handle : it is way too 
+
+strong : instead of jumping from note to note, it keeps jumping from half an octave.
+-- thunderlink://messageid=CAP8CW6OnfgNORXUYZf6EpWMy1+d2doB+qFUvjbk7bUiUbuhZ4g@mail.gmail.com
 
 
 

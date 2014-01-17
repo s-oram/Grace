@@ -117,6 +117,47 @@ type
     procedure SlowControlProcess;
   end;
 
+
+  TLucidityLfo = class
+  private
+    fSampleRate: single;
+    fBpm: single;
+    fShape: TLfoShape;
+    procedure SetSampleRate(const Value: single);
+    procedure SetBpm(const Value: single);
+  protected
+    VoiceClockManager : TLucidityVoiceClockManager;
+    fLfo : TLfo;
+
+    LfoIndex     : integer;
+    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
+    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
+
+    property Lfo : TLfo read fLfo;
+  public
+    constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
+    destructor Destroy; override;
+
+    procedure Init(const aLfoIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+
+    procedure ResetLfoPhase;
+
+    function GetModPointer(const Name:string):PSingle;
+
+    property Bpm        : single    read fBpm        write SetBpm;
+    property SampleRate : single    read fSampleRate write SetSampleRate;
+    property Shape      : TLfoShape read fShape      write fShape;
+
+    procedure StepResetA;
+    procedure StepResetB;
+
+    procedure FastControlProcess;
+    procedure SlowControlProcess;
+  end;
+
+
+
+
 implementation
 
 uses
@@ -124,7 +165,84 @@ uses
   LucidityParameterScaling,
   SysUtils;
 
+
 { TLucidityLfo }
+
+constructor TLucidityLfo.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
+begin
+  VoiceClockManager := aVoiceClockManager;
+
+  fLfo := TLfo.Create;
+
+end;
+
+destructor TLucidityLfo.Destroy;
+begin
+  fLfo.Free;
+
+  inherited;
+end;
+
+function TLucidityLfo.GetModPointer(const Name: string): PSingle;
+begin
+  if Name = 'LfoOutput' then Exit(Lfo.GetModPointer('LfoOutput'));
+  if Name = 'LfoRateMod1' then Exit(Lfo.GetModPointer('ParAInput'));
+  if Name = 'LfoParBMod1' then Exit(Lfo.GetModPointer('ParBInput'));
+
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
+  result := nil;
+end;
+
+procedure TLucidityLfo.Init(const aLfoIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
+begin
+  LfoIndex     := aLfoIndex;
+  ParValueData := aPars;
+  ParModData   := aModData;
+end;
+
+procedure TLucidityLfo.ResetLfoPhase;
+begin
+  assert(false, 'todo');
+end;
+
+procedure TLucidityLfo.SetBpm(const Value: single);
+begin
+  fBpm := Value;
+  Lfo.Bpm := Value;
+end;
+
+procedure TLucidityLfo.SetSampleRate(const Value: single);
+begin
+  fSampleRate := Value;
+  Lfo.SampleRate := Value;
+end;
+
+procedure TLucidityLfo.FastControlProcess;
+begin
+  if Lfo.FastControlProcess then
+  begin
+    if LfoIndex = 0
+      then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
+      else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
+  end;
+end;
+
+procedure TLucidityLfo.SlowControlProcess;
+begin
+  Lfo.SlowControlProcess;
+end;
+
+procedure TLucidityLfo.StepResetA;
+begin
+  Lfo.StepResetA;
+end;
+
+procedure TLucidityLfo.StepResetB;
+begin
+  Lfo.StepResetB;
+end;
+
+{ TLucidityLfo_OLD }
 
 constructor TLucidityLfo_OLD.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
 begin

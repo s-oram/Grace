@@ -569,48 +569,21 @@ procedure TLucidityVoiceParameterWrapper.SetLfoAPar2(const Value: single);
 begin
   fLfoAPar2 := Value;
 
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.LFO.LfoA.ParB := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoBPar2(const Value: single);
 begin
   fLfoBPar2 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.LFO.LfoB.ParB := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoRate1(const Value: single);
 begin
   fLfoRate1 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.LFO.LfoA.Speed := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoRate2(const Value: single);
 begin
   fLfoRate2 := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.LFO.LfoB.Speed := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoShape1(const Value: TLfoShape);
@@ -620,7 +593,7 @@ begin
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
     begin
-      v^.LFO.LfoA.Shape := Value;
+      v^.LfoA.Shape := Value;
     end
   );
 end;
@@ -632,7 +605,7 @@ begin
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
     begin
-      v^.LFO.LfoB.Shape := Value;
+      v^.LfoB.Shape := Value;
     end
   );
 end;
@@ -1065,12 +1038,8 @@ begin
   aVoice.FilterEnv.SustainLevel          := FilterSustain;
   aVoice.FilterEnv.ReleaseTime           := FilterRelease;
   aVoice.FilterEnv.VelocityDepth         := FilterVelocityDepth;
-  aVoice.LFO.LfoA.Shape                  := LfoShape1;
-  aVoice.LFO.LfoB.Shape                  := LfoShape2;
-  aVoice.LFO.LfoA.Speed                  := LfoRate1;
-  aVoice.LFO.LfoB.Speed                  := LfoRate2;
-  aVoice.LFO.LfoA.ParB                   := LfoAPar2;
-  aVoice.LFO.LfoB.ParB                   := LfoBPar2;
+  aVoice.LfoA.Shape                      := LfoShape1;
+  aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.StepSeqOne.Clock                := Seq1Clock;
   aVoice.StepSeqOne.Direction            := Seq1Direction;
   aVoice.StepSeqOne.StepCount            := StepSeq1Length;
