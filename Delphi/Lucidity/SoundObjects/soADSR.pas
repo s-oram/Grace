@@ -64,8 +64,8 @@ type
 
     function GetModPointer(const Name:string):PSingle;
 
-    procedure StepReset; inline;
-    procedure Step; inline; //Process one sample frame.
+    procedure StepReset; {$IFDEF AudioInline}inline;{$ENDIF}
+    procedure Step; {$IFDEF AudioInline}inline;{$ENDIF} //Process one sample frame.
 
     procedure Trigger(aVelocity:single);
     procedure Release;

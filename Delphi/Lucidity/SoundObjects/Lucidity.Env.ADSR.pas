@@ -161,6 +161,8 @@ begin
   assert(aVelocity >= 0);
   assert(aVelocity <= 1);
 
+  UpdateParameters;
+
   //aVelocity := 0.2;
 
   case VelocityDepth of
