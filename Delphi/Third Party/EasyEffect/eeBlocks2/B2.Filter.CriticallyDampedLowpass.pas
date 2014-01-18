@@ -103,8 +103,8 @@ begin
   // dynamically changed. I wonder how much of a CPU advantage the other options
   // have? It might be worth testing. If so I could use multiple step methods.
 
-  result := FilterCore.Step_DirectForm1(Input);
-  //result := FilterCore.Step_DirectForm2(Input);
+  result := FilterCore.Step_DirectForm1(Input - Offset) + Offset;
+  //result := FilterCore.Step_DirectForm2(Input - Offset) + Offset;
   //result := FilterCore.Step_DirectForm2Transposed(Input - Offset) + Offset;
 end;
 
