@@ -754,14 +754,6 @@ procedure TModControlFrame.UpdateModulation;
 var
   c1 : integer;
   ModSlot : integer;
-
-  km : TKnobMode;
-  ModLinkIndex : integer;
-  kg : IKeyGroup;
-  aKnob : TVamKnob;
-  VstPar : TVstParameterEx;
-  ModConnections : TModConnections;
-  ModAmount : single;
 begin
   if Plugin.Globals.IsMouseOverModSlot
     then ModSlot := Plugin.Globals.MouseOverModSlot

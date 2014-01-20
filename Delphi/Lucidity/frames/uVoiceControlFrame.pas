@@ -63,6 +63,7 @@ type
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
   protected
     procedure UpdateControlVisibility;
+    procedure UpdateModulation; //called when the mod slot changes...
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -123,6 +124,7 @@ procedure TVoiceControlFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
   if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED   then UpdateControlVisibility;
+  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
 end;
 
 procedure TVoiceControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
@@ -423,6 +425,22 @@ begin
   end;
 
 end;
+
+
+procedure TVoiceControlFrame.UpdateModulation;
+var
+  c1 : integer;
+  ModSlot : integer;
+begin
+  if Plugin.Globals.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.MouseOverModSlot
+    else ModSlot := Plugin.Globals.SelectedModSlot;
+
+  UpdateModAmount(VoicePitch1Knob, ModSlot, Plugin);
+  UpdateModAmount(VoicePitch2Knob, ModSlot, Plugin);
+end;
+
+
 
 
 

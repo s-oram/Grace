@@ -16,4 +16,5 @@ UNLOCKED_ICON        RCDATA Resources\UnlockedIcon.png
 PREVIEW_ICON         RCDATA Resources\PreviewIcon.png
 KNOB_UPPER           RCDATA Resources\WhiteKnob_Upper.png
 KNOB_LOWER           RCDATA Resources\WhiteKnob_Lower.png
+SMALL_KNOB           RCDATA Resources\Small_WhiteKnob.png
 

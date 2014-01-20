@@ -438,7 +438,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 41
           Width = 40
           Height = 32
-          DisplayClass = 'BiPolarKnob'
+          DisplayClass = 'SmallKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
           ModLineColor = '$FFFF0000'
@@ -491,7 +491,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 41
           Width = 40
           Height = 32
-          DisplayClass = 'BiPolarKnob'
+          DisplayClass = 'SmallKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
           ModLineColor = '$FFFF0000'
@@ -582,7 +582,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 20
           Width = 40
           Height = 32
-          DisplayClass = 'UniPolarKnob'
+          DisplayClass = 'SmallKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
           ModLineColor = '$FFFF0000'
