@@ -52,7 +52,6 @@ type
 
     procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
 
-
     function GetModPointer(const Name:string):PSingle;
 
     procedure Reset;

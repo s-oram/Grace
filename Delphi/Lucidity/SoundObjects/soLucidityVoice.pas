@@ -530,10 +530,12 @@ begin
   LfoB.Init(1, ParValueData, @self.ParModData);
   AmpEnv.Init(0, ParValueData, @self.ParModData);
   FilterEnv.Init(1, ParValueData, @self.ParModData);
+
+  OscVCA.Config^.GainPar := @ParValueData^[TModParIndex.OutputGain].ParValue;
+  OscVCA.Config^.GainMod := @ParModData[TModParIndex.OutputGain];
+  OscVCA.Config^.PanPar  := @ParValueData^[TModParIndex.OutputPan].ParValue;
+  OscVCA.Config^.PanMod  := @ParModData[TModParIndex.OutputPan];
   //=============================================================
-
-
-
 
 
   // set some modulation source values...
@@ -715,7 +717,7 @@ begin
 
   //=== Control rate step for all audio rate modules ===
   OscVCA.FastControlProcess(AmpEnv.Value);
-  OscPanner.FastControlProcess;
+  //OscPanner.FastControlProcess;
 
 
   {
@@ -812,7 +814,7 @@ begin
     FilterTwo.AudioRateStep(MixX1, MixX2);
     //TODO: OscVCA and OscPanner could be combined into one module.
     OscVCA.AudioRateStep(MixX1, MixX2);
-    OscPanner.AudioRateStep(MixX1, MixX2);
+    //OscPanner.AudioRateStep(MixX1, MixX2);
 
     pxA^ := MixX1 * SampleLevelOffsetA;
     pxB^ := MixX2 * SampleLevelOffsetB;
