@@ -780,13 +780,6 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetVoicePan(const Value: single);
 begin
   fVoicePan := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.OscPanner.Pan := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetVoicePitchOne(const Value: single);
@@ -949,7 +942,6 @@ begin
   //aVoice.StepSeq1Clock := ClockDivisionA; //I don't think this is needed.
   //aVoice.StepSeq2Clock := ClockDivisionB; //I don't think this is needed.
   aVoice.OscVCA.Gain                     := VoiceGain;
-  aVoice.OscPanner.Pan                   := VoicePan;
   aVoice.PitchOne                        := VoicePitchOne;
   aVoice.PitchTwo                        := VoicePitchTwo;
   aVoice.FilterOne.FilterType            := Filter1Type;

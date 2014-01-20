@@ -21,7 +21,7 @@ uses
   Lucidity.SampleMap, soLucidityWaveOsc, soLucidityFilter,
   soModMatrix, soFivePointEnvelope,
   uLucidityLfo, uLucidityStepSequencer,
-  uLucidityVCA, uLucidityPanner,
+  uLucidityVCA,
   uLucidityClock, uOutputMixer,
   soGateEnvelope,
   soGrainStretchSubOsc,
@@ -65,7 +65,6 @@ type
     fSamplePlaybackType: TSamplePlaybackType;
     fStepSeqTwo: TLucidyStepSequencer;
     fOscVCA: TLucidityVCA;
-    fOscPanner: TLucidityPanner;
     fOutputMixer: TOutputMixer;
     fLoopSampleOsc: TLoopSampleOsc;
     fWaveOsc      : TLucidityWaveOsc;
@@ -162,7 +161,6 @@ type
     property AmpEnv           : TLucidityADSR            read fAmpEnv           write fAmpEnv;
     property FilterEnv        : TLucidityADSR            read fFilterEnv        write fFilterEnv;
     property OscVCA           : TLucidityVCA             read fOscVCA           write fOscVCA;
-    property OscPanner        : TLucidityPanner          read fOscPanner        write fOscPanner;
     property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer;
     property FilterOne        : TLucidityFilter          read fFilterOne        write fFilterOne;
     property FilterTwo        : TLucidityFilter          read fFilterTwo        write fFilterTwo;
@@ -279,9 +277,7 @@ begin
 
   OscVCA := TLucidityVCA.Create;
   ModMatrix.SetModDestPointer(TModDest.VoiceAmplitude, OscVCA.GetModPointer('ModInput_Gain'));
-
-  OscPanner := TLucidityPanner.Create;
-  ModMatrix.SetModDestPointer(TModDest.VoicePan, OscPanner.GetModPointer('ModInput_Pan'));
+  ModMatrix.SetModDestPointer(TModDest.VoicePan, OscVCA.GetModPointer('ModInput_Gain')); //HACK: Delete asap!
 
   LfoA := TLucidityLfo.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
@@ -317,7 +313,6 @@ begin
   FilterOne.Free;
   FilterTwo.Free;
   OscVCA.Free;
-  OscPanner.Free;
   LfoA.Free;
   LfoB.Free;
   StepSeqOne.Free;
