@@ -23,7 +23,6 @@ type
 
   TLucidityVCA = class
   private
-    fGain: single;
     function GetConfig: PVcaConfigData;
   protected
     ModPoints : TVCAModPoints;
@@ -39,9 +38,6 @@ type
     procedure FastControlProcess(const VcaEnvLevel : single); {$IFDEF AudioInline}inline;{$ENDIF}
     procedure AudioRateStep(var x1, x2 : single); {$IFDEF AudioInline}inline;{$ENDIF}
     procedure AudioRateProcess(x1, x2 : PSingle; const SampleFrames:integer); {$IFDEF AudioInline}inline;{$ENDIF}
-
-    property Gain : single read fGain write fGain; //range 0..2
-
 
     property Config : PVcaConfigData read GetConfig;
   end;
