@@ -778,26 +778,11 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetVoicePitchOne(const Value: single);
 begin
   fVoicePitchOne := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.PitchOne := Value;
-    end
-  );
-
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetVoicePitchTwo(const Value: single);
 begin
   fVoicePitchTwo := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.PitchTwo := Value;
-    end
-  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetMixAuxA(const Value: single);
@@ -932,8 +917,6 @@ begin
   //aVoice.SampleOsc.AmAmount := OscAm;  //!! what's going on here. duplicated parameters again?
   //aVoice.StepSeq1Clock := ClockDivisionA; //I don't think this is needed.
   //aVoice.StepSeq2Clock := ClockDivisionB; //I don't think this is needed.
-  aVoice.PitchOne                        := VoicePitchOne;
-  aVoice.PitchTwo                        := VoicePitchTwo;
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;

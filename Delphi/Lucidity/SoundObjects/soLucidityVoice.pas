@@ -32,7 +32,7 @@ uses
   soFilter.BandPassA,
   soFilter.HighPassA,
   soFilter.LowpassB,
-  eeFunctions,
+  VamLib.Utils,
   SampleOscUtils,
   uConstants,
   B2.Filter.CriticallyDampedLowpass;
@@ -72,8 +72,6 @@ type
     fVoiceID: integer;
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
-    fPitchOne: single;
-    fPitchTwo: single;
     fOnFinish: TNotifyEvent;
     fPitchTracking: TPitchTracking;
     fOscModule: TOscModule;
@@ -178,9 +176,6 @@ type
     property VoiceGlide         : single              read fVoiceGlide         write SetVoiceGlide; //range 0..1.
     property SampleReset        : TClockSource        read fSampleReset        write SetSampleReset;
 
-    property PitchOne           : single              read fPitchOne           write fPitchOne; //range -1..1
-    property PitchTwo           : single              read fPitchTwo           write fPitchTwo; //range -1..1
-
     property LinkedSampleRegion : IRegion read fSampleRegion;
 
     property SampleGroup  : IKeyGroup read fSampleGroup;
@@ -206,9 +201,6 @@ uses
 constructor TLucidityVoice.Create(aObjectName: string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 begin
   fVoiceID := -1;
-
-  fPitchOne := 0;
-  fPitchTwo := 0;
 
   VoiceClockManager := TLucidityVoiceClockManager.Create;
 
@@ -441,7 +433,16 @@ procedure TLucidityVoice.UpdateOscPitch;
 var
   PitchShift : single;
   SamplePitch : single;
+  PitchOne: single;
+  PitchTwo: single;
 begin
+
+  PitchOne := ParValueData^[TModParIndex.VoicePitchOne].ParValue + ParModData[TModParIndex.VoicePitchOne];
+  PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1;
+
+  PitchTwo := ParValueData^[TModParIndex.VoicePitchTwo].ParValue + ParModData[TModParIndex.VoicePitchTwo];
+  PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1;
+
   OscPitchParameters^.PitchTracking  := self.PitchTracking;
 
   OscPitchParameters^.RegionRootNote := SampleRegion.GetProperties^.RootNote;
