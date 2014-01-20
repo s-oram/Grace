@@ -27,19 +27,22 @@ type
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
 
+    CurrentMouseOverControl : TControl;
+
     MsgHandle : hwnd;
     procedure MessageHandler(var Message : TMessage);
 
-    procedure ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-
     procedure UpdateModulation;
 
+    procedure Handle_ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Handle_ModSelectorMouseEnter(Sender : TObject);
+    procedure Handle_ModSelectorMouseLeave(Sender : TObject);
 
-    procedure ModSourceSelected(Sender : TObject; aSource : TModSource);
-    procedure ModViaSelected(Sender : TObject; aSource : TModSource);
+    procedure Handle_ModSourceSelected(Sender : TObject; aSource : TModSource);
+    procedure Handle_ModViaSelected(Sender : TObject; aSource : TModSource);
 
     procedure Handle_ShowModSourceMenu(Sender:TObject);
     procedure Handle_ShowModViaMenu(Sender:TObject);
@@ -59,7 +62,7 @@ implementation
 
 uses
   LucidityModConnections,
-
+  VamLib.Threads,
   RedFox, RedFoxColor;
 
 {$R *.dfm}
@@ -74,6 +77,8 @@ var
 begin
   inherited;
 
+  CurrentMouseOverControl := nil;
+
   // NOTE: AFAIK TFrame should be receive a windows handle at some stage.
   // for whatever reason this TFrame instance wasn't receiving a handle and
   // i couldn't figure out why. This is a work-around so that the frame
@@ -81,11 +86,11 @@ begin
   MsgHandle := AllocateHWND(MessageHandler);
 
   ModSourceMenu := TEnumMenu<TModSource>.Create(TModSourceHelper);
-  ModSourceMenu.OnItemSelected := ModSourceSelected;
+  ModSourceMenu.OnItemSelected := Handle_ModSourceSelected;
   //ModSourceMenu.OnClose := EventHandler_ModMenuClosed;
 
   ModViaMenu    := TEnumMenu<TModSource>.Create(TModSourceHelper);
-  ModViaMenu.OnItemSelected := ModViaSelected;
+  ModViaMenu.OnItemSelected := Handle_ModViaSelected;
   //ModViaMenu.OnClose := EventHandler_ModMenuClosed;
 
 
@@ -98,17 +103,22 @@ begin
     ModSelectors[c1].Parent := BackgroundPanel;
     ModSelectors[c1].Visible := true;
     ModSelectors[c1].Tag := c1;
-    ModSelectors[c1].OnMouseDown := ModSelectorMouseDown;
+    ModSelectors[c1].OnMouseDown := Handle_ModSelectorMouseDown;
     ModSelectors[c1].OnShowModSourceMenu := Handle_ShowModSourceMenu;
     ModSelectors[c1].OnShowModViaMenu    := Handle_ShowModViaMenu;
+    ModSelectors[c1].OnMouseEnter := self.Handle_ModSelectorMouseEnter;
+    ModSelectors[c1].OnMouseLeave := self.Handle_ModSelectorMouseLeave;
   end;
 
   MainSelector     := TVamTextBox.Create(AOwner);
+  MainSelector.OnMouseEnter := self.Handle_ModSelectorMouseEnter;
+  MainSelector.OnMouseLeave := self.Handle_ModSelectorMouseLeave;
   MainSelector.Parent := BackgroundPanel;
   MainSelector.Visible := true;
   MainSelector.Layout.SetSize(64, 28);
   MainSelector.Layout.SetPos(4,4);
   MainSelector.TextPadding.Bottom := 2;
+
 
   BackwardSelector := TVamTextBox.Create(AOwner);
   BackwardSelector.Parent := BackgroundPanel;
@@ -122,9 +132,9 @@ begin
   ForwardSelector.Layout.SetSize(29, 29);
   ForwardSelector.Layout.SetPos(38,36);
 
-  MainSelector.OnMouseDown := MainSelectorMouseDown;
-  BackwardSelector.OnMouseDown := BackwardSelectorMouseDown;
-  ForwardSelector.OnMouseDown  := ForwardSelectorMouseDown;
+  MainSelector.OnMouseDown := Handle_MainSelectorMouseDown;
+  BackwardSelector.OnMouseDown := Handle_BackwardSelectorMouseDown;
+  ForwardSelector.OnMouseDown  := Handle_ForwardSelectorMouseDown;
 
 
   //======= GUI Stylings ===============
@@ -211,7 +221,7 @@ begin
 end;
 
 
-procedure TModSystem2Frame.ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TModSystem2Frame.Handle_ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
 begin
@@ -222,7 +232,7 @@ begin
   end;
 end;
 
-procedure TModSystem2Frame.MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TModSystem2Frame.Handle_MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
   begin
@@ -231,7 +241,7 @@ begin
 end;
 
 
-procedure TModSystem2Frame.BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TModSystem2Frame.Handle_BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
 begin
@@ -243,7 +253,7 @@ begin
   end;
 end;
 
-procedure TModSystem2Frame.ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TModSystem2Frame.Handle_ForwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
 begin
@@ -324,7 +334,7 @@ begin
   ModViaMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
-procedure TModSystem2Frame.ModSourceSelected(Sender: TObject; aSource: TModSource);
+procedure TModSystem2Frame.Handle_ModSourceSelected(Sender: TObject; aSource: TModSource);
 var
   ModConnections : TModConnections;
 begin
@@ -333,13 +343,46 @@ begin
   Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
 end;
 
-procedure TModSystem2Frame.ModViaSelected(Sender: TObject; aSource: TModSource);
+procedure TModSystem2Frame.Handle_ModViaSelected(Sender: TObject; aSource: TModSource);
 var
   ModConnections : TModConnections;
 begin
   ModConnections := MenuKeyGroup.GetModConnections;
   ModConnections.ModVia[MenuModSlot] := aSource;
   Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+end;
+
+procedure TModSystem2Frame.Handle_ModSelectorMouseEnter(Sender: TObject);
+var
+  Index : integer;
+begin
+  CurrentMouseOverControl := Sender as TControl;
+
+  if CurrentMouseOverControl = MainSelector
+    then Index := -1
+    else Index := (Sender as TVamModSelector).Tag;
+
+  Plugin.Globals.MouseOverModSlot := Index;
+  Plugin.Globals.IsMouseOverModSlot := true;
+  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+end;
+
+procedure TModSystem2Frame.Handle_ModSelectorMouseLeave(Sender: TObject);
+var
+  LeaveControl : TProc;
+begin
+  LeaveControl := procedure
+  begin
+    if CurrentMouseOverControl = Sender then
+    begin
+      CurrentMouseOverControl := nil;
+
+      Plugin.Globals.IsMouseOverModSlot := false;
+      Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+    end;
+  end;
+
+  RunTask(LeaveControl, 150, nil);
 end;
 
 

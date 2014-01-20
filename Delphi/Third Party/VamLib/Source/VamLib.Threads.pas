@@ -11,6 +11,8 @@ procedure RunTask(aTask : TProc); overload;
 // it useful for updating GUI components as it will be thread safe.
 procedure RunTask(aTask, FinishedCallback : TProc); overload;
 
+procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
+
 implementation
 
 uses
@@ -24,11 +26,12 @@ begin
   begin
     aTask;
   end;
-  TOmniTaskControl.Create(Delgate, '').Run;
+  TOmniTaskControl.Create(Delgate, '').Unobserved.Run;
 end;
 
 procedure RunTask(aTask, FinishedCallback : TProc);
 var
+  TaskControl : TOmniTaskControl;
   Delgate : TOmniTaskDelegate;
   OnFinishCB : TOmniOnTerminatedFunctionSimple;
 begin
@@ -37,12 +40,48 @@ begin
     aTask;
   end;
 
-  OnFinishCB := procedure
+  TaskControl := TOmniTaskControl.Create(Delgate, '');
+
+  if assigned(FinishedCallback) then
   begin
-    FinishedCallback;
+    OnFinishCB := procedure
+    begin
+      FinishedCallback;
+    end;
+
+    TaskControl.OnTerminated(OnFinishCB);
   end;
 
-  TOmniTaskControl.Create(Delgate, '').OnTerminated(OnFinishCB).Run;
+  TaskControl.Unobserved.Run;
+end;
+
+
+procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
+var
+  TaskControl : TOmniTaskControl;
+  Delgate : TOmniTaskDelegate;
+  OnFinishCB : TOmniOnTerminatedFunctionSimple;
+begin
+  Delgate := procedure(const task: IOmniTask)
+  begin
+    if aTaskStartDelay > 0
+      then Sleep(aTaskStartDelay);
+    aTask;
+  end;
+
+  TaskControl := TOmniTaskControl.Create(Delgate, '');
+
+  if assigned(FinishedCallback) then
+  begin
+    OnFinishCB := procedure
+    begin
+      FinishedCallback;
+    end;
+
+    TaskControl.OnTerminated(OnFinishCB);
+  end;
+
+  TaskControl.Unobserved.Run;
 end;
 
 end.

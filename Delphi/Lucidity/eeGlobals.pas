@@ -17,6 +17,8 @@ type
     fOptions: TOptions;
     fInfoBarReceiver: TInfoBarReceiver;
     fSelectedModSlot: integer;
+    fIsMouseOverModSlot: boolean;
+    fMouseOverModSlot: integer;
     procedure SetSelectedModSlot(const Value: integer);
   protected
   protected
@@ -39,7 +41,13 @@ type
     // The info bar can then respond to changes and display the message.
     property InfoBarReceiver : TInfoBarReceiver read fInfoBarReceiver write fInfoBarReceiver;
 
-    property SelectedModSlot : integer read fSelectedModSlot write SetSelectedModSlot;
+    // SelectedModSlot shows which mod slot is active. valid range is -1..7.
+    //   -1 indicates that the "Main" is selected and no mod slot is being edited.
+    //   0..7 indicates that the X mod slot is being edited. It should be displayed.
+    property SelectedModSlot    : integer read fSelectedModSlot    write SetSelectedModSlot;
+    property IsMouseOverModSlot : boolean read fIsMouseOverModSlot write fIsMouseOverModSlot;
+    property MouseOverModSlot   : integer read fMouseOverModSlot   write fMouseOverModSlot; //valid range is -1..7, same as SelectedModSlot.
+
   end;
 
 implementation

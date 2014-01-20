@@ -763,47 +763,14 @@ var
   ModConnections : TModConnections;
   ModAmount : single;
 begin
-  ModSlot := Plugin.Globals.SelectedModSlot;
+  if Plugin.Globals.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.MouseOverModSlot
+    else ModSlot := Plugin.Globals.SelectedModSlot;
+
   for c1 := 0 to KnobList.Count-1 do
   begin
     UpdateModAmount((KnobList[c1] as TVamKnob), ModSlot, Plugin);
   end;
-
-  {
-  ModSlot := Plugin.Globals.SelectedModSlot;
-
-  if ModSlot = -1
-    then km := TKnobMode.PositionEdit
-    else km := TKnobMode.ModEdit;
-
-
-  if km = TKnobMode.PositionEdit then
-  begin
-    //==== Position Edit ====
-    for c1 := 0 to KnobList.Count-1
-      do (KnobList[c1] as TVamKnob).KnobMode := TKnobMode.PositionEdit;
-  end else
-  begin
-    //==== Mod Edit ====
-    kg := Plugin.ActiveKeyGroup;
-    ModConnections := kg.GetModConnections;
-
-    for c1 := 0 to KnobList.Count-1 do
-    begin
-      aKnob  := (KnobList[c1] as TVamKnob);
-      VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
-
-      if VstPar.HasModLink = false then
-      begin
-        aKnob.KnobMode := TKnobMode.PositionEdit;
-      end else
-      begin
-        ModAmount := ModConnections.ModLinks[VstPar.ModLinkIndex].ModAmount[ModSlot];
-        aKnob.ModAmount := ModAmount;
-      end;
-    end;
-  end;
-  }
 end;
 
 procedure TModControlFrame.StepSeq1Changed(Sender: TObject);
