@@ -206,6 +206,8 @@ begin
   KnobList.Add(LfoSpeedKnob2);
   KnobList.Add(LfoDepthKnob1);
   KnobList.Add(LfoDepthKnob2);
+  KnobList.Add(MainOutputKnob);
+  KnobList.Add(MainPanKnob);
 end;
 
 destructor TModControlFrame.Destroy;
