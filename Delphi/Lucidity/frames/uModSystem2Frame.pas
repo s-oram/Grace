@@ -159,6 +159,8 @@ begin
   MainSelector.Text := 'Main';
   MainSelector.TextAlign := TRedFoxAlign.AlignCenter;
   MainSelector.TextVAlign := TRedFoxAlign.AlignCenter;
+  MainSelector.ShowBorder := true;
+  MainSelector.ColorBorder := kColor_LcdDark1;
 
   ForwardSelector.Text := '>';
   ForwardSelector.TextAlign := TRedFoxAlign.AlignCenter;

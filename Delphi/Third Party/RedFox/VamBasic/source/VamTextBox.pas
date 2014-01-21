@@ -13,11 +13,13 @@ type
     IsMouseOver : boolean;
     fColor : TRedFoxColor;
     fColorMouseOver : TRedFoxColor;
+    fColorBorder : TRedFoxColor;
     fText: string;
     fTextVAlign: TRedFoxAlign;
     fTextAlign: TRedFoxAlign;
     fImageOverlay: TBitmap;
     FTextPadding: TPadding;
+    fShowBorder: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -29,6 +31,9 @@ type
     procedure SetTextPadding(const Value: TPadding);
 
     procedure SetMenuText(Value : string);
+    function GetColorBorder: TRedFoxColorString;
+    procedure SetColorBorder(const Value: TRedFoxColorString);
+    procedure SetShowBorder(const Value: boolean);
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -42,6 +47,9 @@ type
   published
     property Color : TRedFoxColorString read GetColor write SetColor;
     property ColorMouseOver : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
+
+    property ColorBorder    : TRedFoxColorString read GetColorBorder    write SetColorBorder;
+    property ShowBorder : boolean read fShowBorder write SetShowBorder;
 
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
@@ -93,6 +101,11 @@ begin
   result := fColor.AsString;
 end;
 
+function TVamTextBox.GetColorBorder: TRedFoxColorString;
+begin
+  result := fColorBorder.AsString;
+end;
+
 function TVamTextBox.GetColorMouseOver: TRedFoxColorString;
 begin
   result := fColorMouseOver.AsString;
@@ -123,6 +136,15 @@ begin
   end;
 end;
 
+procedure TVamTextBox.SetColorBorder(const Value: TRedFoxColorString);
+begin
+  if Value <> fColorBorder.AsString then
+  begin
+    fColorBorder.SetColor(Value);
+    Invalidate;
+  end;
+end;
+
 procedure TVamTextBox.SetColorMouseOver(const Value: TRedFoxColorString);
 begin
   if Value <> fColorMouseOver.AsString then
@@ -144,6 +166,15 @@ end;
 procedure TVamTextBox.SetMenuText(Value: string);
 begin
   SetText(Value);
+end;
+
+procedure TVamTextBox.SetShowBorder(const Value: boolean);
+begin
+  if Value <> fShowBorder then
+  begin
+    fShowBorder := Value;
+    Invalidate;
+  end;
 end;
 
 procedure TVamTextBox.SetText(const Value: string);
@@ -205,7 +236,14 @@ begin
     else aColor := fColorMouseOver;
 
   //== draw the background ==
-  BackBuffer.BufferInterface.NoLine;
+  if ShowBorder then
+  begin
+    BackBuffer.BufferInterface.LineColor := fColorBorder;
+    BackBuffer.BufferInterface.LineWidth := 1;
+  end else
+  begin
+    BackBuffer.BufferInterface.NoLine;
+  end;
   BackBuffer.BufferInterface.FillColor := aColor.AsAggRgba8;
   BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
