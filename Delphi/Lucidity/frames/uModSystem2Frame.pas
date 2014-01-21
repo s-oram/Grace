@@ -292,15 +292,18 @@ begin
 
 
   //=== Update selected slot colors ====
+  MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  MainSelector.Color          := kColor_LcdDark1;
+  MainSelector.ColorMouseOver := kColor_ButtonMouseOver;
+
   for c1 := 0 to kModSlotCount-1 do
   begin
+    ModSelectors[c1].Font.Color := GetRedFoxColor(kColor_LcdDark5);
     ModSelectors[c1].Color := kColor_LcdDark1;
     ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
   end;
 
-  MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  MainSelector.Color          := kColor_LcdDark1;
-  MainSelector.ColorMouseOver := kColor_ButtonMouseOver;
+
 
   case Plugin.Globals.SelectedModSlot of
     -1 :
@@ -313,6 +316,7 @@ begin
     0..7:
     begin
       c1 := Plugin.Globals.SelectedModSlot;
+      ModSelectors[c1].Font.Color     := GetRedFoxColor(kColor_LcdDark1);
       ModSelectors[c1].Color           := kColor_LcdDark5;
       ModSelectors[c1].ColorMouseOver  := kColor_LcdDark6;
     end;
