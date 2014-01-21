@@ -129,19 +129,21 @@ object FileBrowserFrame: TFileBrowserFrame
           end
           object PreviewVolumeKnob: TVamKnob
             AlignWithMargins = True
-            Left = 28
+            Left = 27
             Top = 6
-            Width = 39
+            Width = 40
             Height = 32
-            Margins.Left = 28
+            Margins.Left = 27
             Margins.Top = 6
             Margins.Bottom = 2
-            DisplayClass = 'UniPolarKnob'
+            DisplayClass = 'SmallUnipolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
+            ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
+            IsBipolarKnob = False
             KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
@@ -150,6 +152,8 @@ object FileBrowserFrame: TFileBrowserFrame
             ParameterIndex = 0
             Align = alTop
             Visible = True
+            ExplicitLeft = 28
+            ExplicitWidth = 41
           end
           object PreviewOnOffButton: TVamButton
             Left = 7

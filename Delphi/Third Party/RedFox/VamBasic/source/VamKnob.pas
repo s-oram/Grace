@@ -524,12 +524,6 @@ begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
-  //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-
-  //BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha;
-
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSource;
-  //DrawKnob_Lower;
 
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   DrawKnob_Upper;
@@ -585,10 +579,21 @@ begin
 end;
 
 procedure TVamKnob.DrawKnob_Upper;
+var
+  SrcRect : TRect;
+  DstRect : TRect;
+  x1, y1 : integer;
 begin
   if assigned(Image_KnobUpper) then
   begin
-    BackBuffer.TransformImage(Image_Knobupper);
+    SrcRect := Rect(0,0, Image_KnobUpper.Width, Image_KnobUpper.Height);
+    //DstRect.Left   := (Width  - Image_KnobUpper.Width)  div 2;
+    //DstRect.Height := (Height - Image_KnobUpper.Height) div 2;
+
+    x1 := (Width  - Image_KnobUpper.Width)  div 2;
+    y1 := (Height - Image_KnobUpper.Height) div 2;
+
+    BackBuffer.TransformImage(Image_Knobupper, x1, y1);
   end;
 end;
 
