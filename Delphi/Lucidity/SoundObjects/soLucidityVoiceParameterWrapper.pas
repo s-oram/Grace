@@ -37,11 +37,6 @@ type
     fFilter2Par1: single;
     fFilter2Par2: single;
     fFilter2Par3: single;
-    fAmpAttack: single;
-    fAmpHold: single;
-    fAmpDecay: single;
-    fAmpSustain: single;
-    fAmpRelease: single;
     fFilterAttack: single;
     fFilterHold: single;
     fFilterDecay: single;
@@ -87,11 +82,6 @@ type
     fFilter2Par4: single;
     fSamplerLoopMode: TSamplerLoopMode;
     fPitchTracking: TPitchTracking;
-    procedure SetAmpAttack(const Value: single);
-    procedure SetAmpDecay(const Value: single);
-    procedure SetAmpHold(const Value: single);
-    procedure SetAmpRelease(const Value: single);
-    procedure SetAmpSustain(const Value: single);
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -201,11 +191,6 @@ type
     property Filter2Par2              : single                             read fFilter2Par2             write SetFilter2Par2;
     property Filter2Par3              : single                             read fFilter2Par3             write SetFilter2Par3;
     property Filter2Par4              : single                             read fFilter2Par4             write SetFilter2Par4;
-    property AmpAttack                : single                             read fAmpAttack               write SetAmpAttack;
-    property AmpHold                  : single                             read fAmpHold                 write SetAmpHold;
-    property AmpDecay                 : single                             read fAmpDecay                write SetAmpDecay;
-    property AmpSustain               : single                             read fAmpSustain              write SetAmpSustain;
-    property AmpRelease               : single                             read fAmpRelease              write SetAmpRelease;
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write SetAmpVelocityDepth;
     property FilterAttack             : single                             read fFilterAttack            write SetFilterAttack;
     property FilterHold               : single                             read fFilterHold              write SetFilterHold;
@@ -306,31 +291,6 @@ end;
 function TLucidityVoiceParameterWrapper.GetSeq2StepValue(Index: integer): single;
 begin
   result := fSeq2StepValues[Index];
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetAmpAttack(const Value: single);
-begin
-  fAmpAttack := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetAmpDecay(const Value: single);
-begin
-  fAmpDecay := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetAmpHold(const Value: single);
-begin
-  fAmpHold := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetAmpRelease(const Value: single);
-begin
-  fAmpRelease := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetAmpSustain(const Value: single);
-begin
-  fAmpSustain := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
@@ -853,11 +813,6 @@ begin
   Self.Filter2Par2              := Source.Filter2Par2;
   Self.Filter2Par3              := Source.Filter2Par3;
   Self.Filter2Par4              := Source.Filter2Par4;
-  Self.AmpAttack                := Source.AmpAttack;
-  Self.AmpHold                  := Source.AmpHold;
-  Self.AmpDecay                 := Source.AmpDecay;
-  Self.AmpSustain               := Source.AmpSustain;
-  Self.AmpRelease               := Source.AmpRelease;
   Self.AmpVelocityDepth         := Source.AmpVelocityDepth;
   Self.FilterAttack             := Source.FilterAttack;
   Self.FilterHold               := Source.FilterHold;

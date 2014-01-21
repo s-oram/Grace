@@ -405,17 +405,17 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'Amp Env Attack: ' + RoundFloatToStr(TParScaler.ADSR_AttackTimeToMS(Plugin.ActiveVoicePar.AmpAttack)) + 'ms';
+      result := 'Amp Env Attack: ' + RoundFloatToStr(TParScaler.ADSR_AttackTimeToMS(Plugin.ActiveVoiceModPar^[TModParIndex.AmpAttack].ParValue)) + 'ms';
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       assert((Sender as TVstParameterEx).HasModLink);
       Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
-      Plugin.ActiveVoicePar.AmpAttack := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.AmpAttack;
+      assert((Sender as TVstParameterEx).HasModLink);
+      Value := Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue;
     end);
   end;
 
@@ -427,17 +427,16 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'Amp Env Hold: ' + RoundFloatToStr(TParScaler.ADSR_HoldTimeToMS(Plugin.ActiveVoicePar.AmpHold)) + 'ms';
+      result := 'Amp Env Hold: ' + RoundFloatToStr(TParScaler.ADSR_HoldTimeToMS(Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpHold))) + 'ms';
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       assert((Sender as TVstParameterEx).HasModLink);
       Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
-      Plugin.ActiveVoicePar.AmpHold := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.AmpHold;
+      Value := Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpHold);
     end);
   end;
 
@@ -452,17 +451,16 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'Amp Env Decay: ' + RoundFloatToStr(TParScaler.ADSR_DecayTimeToMS(Plugin.ActiveVoicePar.AmpDecay)) + 'ms';
+      result := 'Amp Env Decay: ' + RoundFloatToStr(TParScaler.ADSR_DecayTimeToMS(Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpDecay))) + 'ms';
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       assert((Sender as TVstParameterEx).HasModLink);
       Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
-      Plugin.ActiveVoicePar.AmpDecay := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.AmpDecay;
+      Value := Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpDecay);
     end);
   end;
 
@@ -477,17 +475,16 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'Amp Env Sustain: ' + IntToStr(round(Plugin.ActiveVoicePar.AmpSustain * 100)) + '%';
+      result := 'Amp Env Sustain: ' + IntToStr(round(Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpSustain) * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       assert((Sender as TVstParameterEx).HasModLink);
       Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
-      Plugin.ActiveVoicePar.AmpSustain := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.AmpSustain;
+      Value := Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue;
     end);
   end;
 
@@ -501,17 +498,16 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'Amp Env Release: ' + RoundFloatToStr(TParScaler.ADSR_ReleaseTimeToMS(Plugin.ActiveVoicePar.AmpRelease)) + 'ms';
+      result := 'Amp Env Release: ' + RoundFloatToStr(TParScaler.ADSR_ReleaseTimeToMS(Plugin.ActiveKeyGroup.GetModParValue(TModParIndex.AmpRelease))) + 'ms';
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       assert((Sender as TVstParameterEx).HasModLink);
       Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue := Value;
-      Plugin.ActiveVoicePar.AmpRelease := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.AmpRelease;
+      Value := Plugin.ActiveVoiceModPar^[(Sender as TVstParameterEx).ModLinkIndex].ParValue;
     end);
   end;
 

@@ -54,11 +54,13 @@ type
 
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
-
     procedure AssignFrom(const Source : TKeyGroup);
 
     procedure SetPatch(var Data:TPatchNode);
     procedure GetPatch(var Data:TPatchNode);
+
+    function GetModParValue(const ModParIndex : integer):single;
+    procedure SetModParValue(const ModParIndex : integer; const Value:single);
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
@@ -304,9 +306,19 @@ begin
   result := fModConnections_OLD;
 end;
 
+function TKeyGroup.GetModParValue(const ModParIndex: integer): single;
+begin
+  result := ModulatedParameters[ModParIndex].ParValue;
+end;
+
 function TKeyGroup.GetModulatedParameters: PModulatedPars;
 begin
   result := @self.ModulatedParameters;
+end;
+
+procedure TKeyGroup.SetModParValue(const ModParIndex: integer; const Value: single);
+begin
+  ModulatedParameters[ModParIndex].ParValue := Value;
 end;
 
 procedure TKeyGroup.SetName(Value: string);

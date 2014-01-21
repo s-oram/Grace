@@ -21,6 +21,9 @@ type
     function GetModConnections:TModConnections;
     function GetModConnectionsPointer : PModConnections;
     function GetModulatedParameters : PModulatedPars;
+
+    function GetModParValue(const ModParIndex : integer):single;
+    procedure SetModParValue(const ModParIndex : integer; const Value:single);
   end;
 
 implementation
