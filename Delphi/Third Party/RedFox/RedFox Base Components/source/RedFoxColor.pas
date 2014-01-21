@@ -73,6 +73,7 @@ function ColorFadeF(const ColorA, ColorB: TRedFoxColor; const FadeAmt : single):
 
 function ByteCrossFade(const x1, x2, f : byte):byte;
 
+
 implementation
 
 uses

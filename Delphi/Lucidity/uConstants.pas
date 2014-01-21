@@ -153,8 +153,16 @@ const
 
 
   //kModLineColorA = '$ffFAFAFA';
-  kModLineColorA = '$ffDEE9FD';
-  kModLineColorB = '$ffFFC7D6';
+  //kModLineColorA = '$ffDEE9FD';
+  kModLineColorA = '$ffACC7FA';
+
+  //kModLineColorB = '$ffFFC7D6';
+  //kModLineColorB = '$ffFFA989';
+  //kModLineColorB = '$ffFF7C4C';
+  kModLineColorB = '$ffFFB264';
+
+
+
 
 
   //=== grays for normal ===

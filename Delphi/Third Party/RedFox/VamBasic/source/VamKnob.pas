@@ -140,6 +140,9 @@ type
 implementation
 
 uses
+  AggArc,
+  AggPathStorage,
+  Agg2d,
   VamLib.Utils,
   SysUtils,
   Math,
@@ -622,12 +625,14 @@ var
   MiddleX, MiddleY : single;
   Angle1, Angle2 : single;
   s1, s2 : single;
+  color2 : TRedFoxColor;
 begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
   BackBuffer.BufferInterface.LineColor := fModLineColor;
+  //BackBuffer.BufferInterface.FillColor := GetAggColor(clWhite, 255);
 
   if IsBipolarKnob
     then Angle1 := kMinAngle + kArcSpan * 0.5
@@ -638,6 +643,20 @@ begin
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+
+  Color2 := fModLineColor;
+  Color2.AdjustLightness(0.2);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.7;
+  BackBuffer.BufferInterface.LineColor := Color2;
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  Color2.AdjustLightness(0.1);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.3;
+  BackBuffer.BufferInterface.LineColor := Color2;
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
 end;
 
 procedure TVamKnob.DrawKnob_ModAmount;
@@ -645,6 +664,7 @@ var
   MiddleX, MiddleY : single;
   Angle1, Angle2 : single;
   s1, s2 : single;
+  color2 : TRedFoxColor;
 begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
@@ -657,6 +677,19 @@ begin
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  Color2 := fModLineColor;
+  Color2.AdjustLightness(0.2);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.7;
+  BackBuffer.BufferInterface.LineColor := Color2;
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  Color2.AdjustLightness(0.1);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.3;
+  BackBuffer.BufferInterface.LineColor := Color2;
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
 end;
 
