@@ -607,7 +607,7 @@ begin
   MiddleY := Height * 0.5;
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clWhite,255);
+  BackBuffer.BufferInterface.LineColor := fModLineColor;
 
   Angle1 := kMinAngle + kArcSpan * Clamp((Pos + MinModDepth), 0, 1);
   Angle2 := kMinAngle + kArcSpan * Clamp((Pos + MaxModDepth), 0, 1);
@@ -627,7 +627,7 @@ begin
   MiddleY := Height * 0.5;
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clRed,255);
+  BackBuffer.BufferInterface.LineColor := fModLineColor;
 
   if IsBipolarKnob
     then Angle1 := kMinAngle + kArcSpan * 0.5
@@ -650,7 +650,7 @@ begin
   MiddleY := Height * 0.5;
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clRed,255);
+  BackBuffer.BufferInterface.LineColor := fModLineColor;
 
   Angle1 := kMinAngle + kArcSpan * Clamp((Pos), 0, 1);
   Angle2 := kMinAngle + kArcSpan * Clamp((Pos + ModAmount), 0, 1);

@@ -1,31 +1,35 @@
 object ModControlFrame: TModControlFrame
   Left = 0
   Top = 0
-  Width = 1255
-  Height = 773
+  Width = 789
+  Height = 571
   TabOrder = 0
   object Panel: TRedFoxContainer
     AlignWithMargins = True
     Left = 0
     Top = 0
-    Width = 1255
-    Height = 771
+    Width = 789
+    Height = 569
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
     Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
+    ExplicitWidth = 1255
+    ExplicitHeight = 771
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
-      Width = 1255
-      Height = 771
+      Width = 789
+      Height = 569
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Align = alClient
       Visible = True
+      ExplicitWidth = 1185
+      ExplicitHeight = 673
       object StepSeq1Container: TVamDiv
         AlignWithMargins = True
         Left = 31

@@ -67,6 +67,7 @@ procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const
 implementation
 
 uses
+  uConstants,
   LucidityModConnections,
   eeVstParameterEx,
   GuidEx,
@@ -528,6 +529,7 @@ begin
   begin
     //==== Position Edit ====
     aKnob.KnobMode := TKnobMode.PositionEdit;
+    aKnob.ModLineColor := kModLineColorA;
   end else
   begin
     //==== Mod Edit ====
@@ -539,12 +541,14 @@ begin
     if VstPar.HasModLink = false then
     begin
       aKnob.KnobMode := TKnobMode.PositionEdit;
+      aKnob.ModLineColor := kModLineColorA;
     end else
     begin
       ModLinkIndex := VstPar.ModLinkIndex;
       ModAmount := kg.GetModulatedParameters^[ModLinkIndex].ModAmount[ModSlot];
       aKnob.ModAmount := ModAmount;
       aKnob.KnobMode := TKnobMode.ModEdit;
+      aKnob.ModLineColor := kModLineColorB;
     end;
 
   end;

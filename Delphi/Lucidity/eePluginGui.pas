@@ -440,6 +440,7 @@ begin
       (c as TVamKnob).ModLineDist  := 16.25;
       (c as TVamKnob).ModLineWidth := 3;
       (c as TVamKnob).IsBipolarKnob := false;
+      (c as TVamKnob).ModLineColor := kModLineColorA;
     end;
 
     VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
@@ -451,6 +452,7 @@ begin
       (c as TVamKnob).ModLineDist   := 16.25;
       (c as TVamKnob).ModLineWidth  := 3;
       (c as TVamKnob).IsBipolarKnob := true;
+      (c as TVamKnob).ModLineColor := kModLineColorA;
     end;
 
 
@@ -470,6 +472,7 @@ begin
       (c as TVamKnob).IndicatorSize := 2;
 
       (c as TVamKnob).IsBipolarKnob := true;
+      (c as TVamKnob).ModLineColor := kModLineColorA;
     end;
 
     VQ := VamQueryRequest(RedFoxContainer, 'SmallUnipolarKnob');
@@ -485,6 +488,7 @@ begin
       (c as TVamKnob).IndicatorSize := 2;
 
       (c as TVamKnob).IsBipolarKnob := false;
+      (c as TVamKnob).ModLineColor := kModLineColorA;
     end;
 
 

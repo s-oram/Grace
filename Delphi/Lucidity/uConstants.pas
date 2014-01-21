@@ -140,7 +140,6 @@ const
   kColor_LcdDark5 = '$ffA1BDED';
   kColor_LcdDark6 = '$ffD3E0F7';
 
-
   kColor_LcdInvert1 = '$ffC1D3F3';
 
   kColor_ButtonMouseOver = '$ff404A5E';
@@ -150,6 +149,12 @@ const
   kColor_ToggleButtonOff          = '$FFF1CBB9';
   kColor_ToggleButtonOffMouseOver = '$FFFAECE6';
   kColor_ToggleButtonBorder       = '$FF242B39';
+
+
+
+  //kModLineColorA = '$ffFAFAFA';
+  kModLineColorA = '$ffDEE9FD';
+  kModLineColorB = '$ffFFC7D6';
 
 
   //=== grays for normal ===
