@@ -437,6 +437,9 @@ begin
       (c as TVamKnob).Image_KnobLower := bm1;
       (c as TVamKnob).Image_KnobUpper := bm2;
       (c as TVamKnob).DisabledImage   := bm3;
+      (c as TVamKnob).ModLineDist  := 16.25;
+      (c as TVamKnob).ModLineWidth := 3;
+      (c as TVamKnob).IsBipolarKnob := false;
     end;
 
     VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
@@ -445,21 +448,47 @@ begin
       (c as TVamKnob).Image_KnobLower := bm1;
       (c as TVamKnob).Image_KnobUpper := bm2;
       (c as TVamKnob).DisabledImage   := bm3;
+      (c as TVamKnob).ModLineDist   := 16.25;
+      (c as TVamKnob).ModLineWidth  := 3;
+      (c as TVamKnob).IsBipolarKnob := true;
     end;
 
 
     if Plugin.Globals.SkinImageLoader.Exists('Small_Knob')
       then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Small_Knob');
 
-    VQ := VamQueryRequest(RedFoxContainer, 'SmallKnob');
+    VQ := VamQueryRequest(RedFoxContainer, 'SmallBipolarKnob');
     for c in VQ.List do
     begin
       //(c as TVamKnob).Image_KnobLower := bm1;
       (c as TVamKnob).Image_KnobUpper := bm2;
       //(c as TVamKnob).DisabledImage   := bm3;
 
-      (c as TVamKnob).ModLineDist := 14;
+      (c as TVamKnob).ModLineDist  := 13;
+      (c as TVamKnob).ModLineWidth := 2;
+      (c as TVamKnob).IndicatorDist := 7;
+      (c as TVamKnob).IndicatorSize := 2;
+
+      (c as TVamKnob).IsBipolarKnob := true;
     end;
+
+    VQ := VamQueryRequest(RedFoxContainer, 'SmallUnipolarKnob');
+    for c in VQ.List do
+    begin
+      //(c as TVamKnob).Image_KnobLower := bm1;
+      (c as TVamKnob).Image_KnobUpper := bm2;
+      //(c as TVamKnob).DisabledImage   := bm3;
+
+      (c as TVamKnob).ModLineDist  := 13;
+      (c as TVamKnob).ModLineWidth := 2;
+      (c as TVamKnob).IndicatorDist := 7;
+      (c as TVamKnob).IndicatorSize := 2;
+
+      (c as TVamKnob).IsBipolarKnob := false;
+    end;
+
+
+
 
 
 

@@ -34,6 +34,8 @@ type
     fParameterIndex: integer;
     fModAmount: single;
     fOnModAmountChanged: TNotifyEvent;
+    fModLineWidth: single;
+    fIsBipolarKnob: boolean;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -88,6 +90,7 @@ type
 
     procedure DrawKnob_Lower;
     procedure DrawKnob_Upper;
+    procedure DrawKnob_PositionArc;
     procedure DrawKnob_ModDepth;
     procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
@@ -108,10 +111,11 @@ type
 
   published
     property ModLineDist   : single read fModLineDist   write fModLineDist;
+    property ModLineWidth  : single read fModLineWidth  write fModLineWidth;
     property ModLineColor  : TRedFoxColorString read GetModLineColor write SetModLineColor;
     property IndicatorSize : single read fIndicatorSize write fIndicatorSize;
     property IndicatorDist : single read fIndicatorDist write fIndicatorDist;
-
+    property IsBipolarKnob : boolean read fIsBipolarKnob write fIsBipolarKnob;
     property KnobMode      : TKnobMode read fKnobMode       write SetKnobMode;
     property IsKnobEnabled : boolean   read fIsKnobEnabled  write SetIsKnobEnabled;
     property VisibleSteps  : integer   read fVisibleSteps   write SetVisibleSteps;
@@ -195,6 +199,7 @@ begin
   fIndicatorDist := 9;
 
   fModLineDist := 17;
+  fModLineWidth := 3;
 
   fMinModDepth := -0.3;
   fMaxModDepth := 0.5;
@@ -533,7 +538,7 @@ begin
 
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   if KnobMode = TKnobMode.PositionEdit
-    then DrawKnob_ModDepth
+    then DrawKnob_PositionArc
     else DrawKnob_ModAmount;
 
 
@@ -596,11 +601,34 @@ begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
 
-  BackBuffer.BufferInterface.LineWidth := 2.5;
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth;
   BackBuffer.BufferInterface.LineColor := GetAggColor(clWhite,255);
 
   Angle1 := kMinAngle + kArcSpan * Clamp((Pos + MinModDepth), 0, 1);
   Angle2 := kMinAngle + kArcSpan * Clamp((Pos + MaxModDepth), 0, 1);
+
+  CalcStartSweep(Angle1, Angle2, s1, s2);
+
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+end;
+
+procedure TVamKnob.DrawKnob_PositionArc;
+var
+  MiddleX, MiddleY : single;
+  Angle1, Angle2 : single;
+  s1, s2 : single;
+begin
+  MiddleX := Width * 0.5;
+  MiddleY := Height * 0.5;
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth;
+  BackBuffer.BufferInterface.LineColor := GetAggColor(clRed,255);
+
+  if IsBipolarKnob
+    then Angle1 := kMinAngle + kArcSpan * 0.5
+    else Angle1 := kMinAngle;
+
+  Angle2 := kMinAngle + kArcSpan * (Pos);
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
@@ -616,7 +644,7 @@ begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
 
-  BackBuffer.BufferInterface.LineWidth := 2.5;
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth;
   BackBuffer.BufferInterface.LineColor := GetAggColor(clRed,255);
 
   Angle1 := kMinAngle + kArcSpan * Clamp((Pos), 0, 1);
