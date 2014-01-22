@@ -9,7 +9,9 @@ uses
   uGuiFeedbackData;
 
 type
-  TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker);
+  TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker,
+                   smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
+
   TSampleMarkerChangedEvent = procedure(Sender:TObject; Marker:TSampleMarker; NewPosition : integer) of object;
 
   TSampleOverlayZoomEvent = procedure(Sender : TObject; Zoom, Offset : single) of object;
@@ -32,6 +34,7 @@ type
     fSampleStartMod: single;
     fShowModPoints: boolean;
     fOnModAmountsChanged: TNotifyEvent;
+    fIsModEditActive: boolean;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -41,6 +44,7 @@ type
     procedure SetNoSampleMessage(const Value: string);
     procedure SetShowReplaceMessage(const Value: boolean);
     procedure SetShowModPoints(const Value: boolean);
+    procedure SetIsModEditActive(const Value: boolean);
   protected
     FeedbackData : PGuiFeedbackData;
     SampleIsValid : boolean;
@@ -109,6 +113,8 @@ type
     property ShowReplaceMessage : boolean read fShowReplaceMessage write SetShowReplaceMessage;
 
     property NoSampleMessage : string read fNoSampleMessage write SetNoSampleMessage;
+
+    property IsModEditActive : boolean read fIsModEditActive write SetIsModEditActive;
   published
     property ShowMarkerTags : boolean read fShowMarkerTags write SetShowMarkerTags;
 
@@ -124,6 +130,7 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   SysUtils,
   UITypes, AggColor, AggRoundedRect, AggPathStorage,
   AggPixelFormat, VamSampleDisplay, VamSampleDisplayBackBuffer,
@@ -185,39 +192,99 @@ const
   kTolarance = 6;
   kMarkerOffset = 3;
 var
+  SPos : single;
   PixSampleStartMarker : single;
   PixSampleEndMarker   : single;
   PixLoopStartMarker : single;
   PixLoopEndMarker   : single;
 begin
-  PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
-  PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleEnd, SampleFrames, Width, Zoom, Offset);
-  PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopStart, SampleFrames, Width, Zoom, Offset);
-  PixLoopEndMarker     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopEnd, SampleFrames, Width, Zoom, Offset);
+  // default result.
+  result := smNone;
 
-  if PixelPosY >= Height - kMarkerTabHeight then
+  if IsModEditActive = true then
   begin
-    // Give preference to selecting the sample start/end area if
-    // the mouse is in the lower part of the sample area....
-    if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
-    if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
-    if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
-    if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
-  end else
-  begin
-    //....else give preference to grabbing the loop start/end markers.
-    if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
-    if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
-    if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
-    if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
+    assert(InRange(SampleStartMod, -1, 1));
+    assert(InRange(SampleEndMod, -1, 1));
+    assert(InRange(LoopStartMod, -1, 1));
+    assert(InRange(LoopEndMod, -1, 1));
+
+    spos := SampleStart + SampleStartMod * SampleFrames;
+    PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+    spos := SampleEnd + SampleEndMod * SampleFrames;
+    PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+    spos := LoopStart + LoopStartMod * SampleFrames;
+    PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+    spos := LoopEnd + LoopEndMod * SampleFrames;
+    PixLoopEndMarker     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+    if PixelPosY >= Height - kMarkerTabHeight then
+    begin
+      // Give preference to selecting the sample start/end area if
+      // the mouse is in the lower part of the sample area....
+      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartModMarker);
+      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndModMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartModMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndModMarker);
+    end else
+    begin
+      //....else give preference to grabbing the loop start/end markers.
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartModMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndModMarker);
+      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartModMarker);
+      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndModMarker);
+    end;
   end;
 
 
-  // No marker nearby.
-  result := smNone;
+  if result = smNone then
+  begin
+    PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
+    PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleEnd, SampleFrames, Width, Zoom, Offset);
+    PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopStart, SampleFrames, Width, Zoom, Offset);
+    PixLoopEndMarker     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopEnd, SampleFrames, Width, Zoom, Offset);
+
+    if PixelPosY >= Height - kMarkerTabHeight then
+    begin
+      // Give preference to selecting the sample start/end area if
+      // the mouse is in the lower part of the sample area....
+      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
+      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
+    end else
+    begin
+      //....else give preference to grabbing the loop start/end markers.
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
+      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
+      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
+      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
+    end;
+  end;
 end;
 
 
+
+
+procedure TLuciditySampleOverlay.MouseEnter;
+begin
+  inherited;
+
+end;
+
+procedure TLuciditySampleOverlay.MouseLeave;
+begin
+  inherited;
+  Cursor := crDefault;
+
+  if MouseOverMarker <> TSampleMarker.smNone then
+    begin
+      MouseOverMarker := TSampleMarker.smNone;
+      Invalidate;
+    end;
+end;
 
 procedure TLuciditySampleOverlay.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
@@ -259,23 +326,6 @@ begin
   end;
 end;
 
-procedure TLuciditySampleOverlay.MouseEnter;
-begin
-  inherited;
-
-end;
-
-procedure TLuciditySampleOverlay.MouseLeave;
-begin
-  inherited;
-  Cursor := crDefault;
-
-  if MouseOverMarker <> TSampleMarker.smNone then
-    begin
-      MouseOverMarker := TSampleMarker.smNone;
-      Invalidate;
-    end;
-end;
 
 procedure TLuciditySampleOverlay.MouseMove(Shift: TShiftState; X, Y: Integer);
 var
@@ -473,6 +523,15 @@ begin
     MessageFont.Assign(Value);
     MessageFont.Height := Value.Height * 2;
     MessageFont.Style := Value.Style + [TFontStyle.fsBold];
+  end;
+end;
+
+procedure TLuciditySampleOverlay.SetIsModEditActive(const Value: boolean);
+begin
+  if Value <> fIsModEditActive then
+  begin
+    fIsModEditActive := Value;
+    Invalidate;
   end;
 end;
 
