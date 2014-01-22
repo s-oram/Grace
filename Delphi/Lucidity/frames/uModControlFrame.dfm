@@ -16,8 +16,6 @@ object ModControlFrame: TModControlFrame
     Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitWidth = 1255
-    ExplicitHeight = 771
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
@@ -28,8 +26,6 @@ object ModControlFrame: TModControlFrame
       Transparent = False
       Align = alClient
       Visible = True
-      ExplicitWidth = 1185
-      ExplicitHeight = 673
       object StepSeq1Container: TVamDiv
         AlignWithMargins = True
         Left = 31
@@ -114,6 +110,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -139,6 +137,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -164,6 +164,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -387,6 +389,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -412,6 +416,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -437,6 +443,8 @@ object ModControlFrame: TModControlFrame
               HitTest = True
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
+              ColorBorder = '$00000000'
+              ShowBorder = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
@@ -542,6 +550,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -894,6 +904,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -1105,6 +1117,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -1387,6 +1401,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -1488,6 +1504,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -1699,6 +1717,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET

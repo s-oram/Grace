@@ -37,6 +37,8 @@ type
     ReferencePos     : single;
     IsFineAdjustment : boolean;
 
+    InternalPadding : TPadding;
+
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -85,6 +87,9 @@ var
 begin
   inherited;
 
+  InternalPadding := TPadding.Create(Self);
+  InternalPadding.SetBounds(2,2,2,2);
+
   fColor_Background := '$FF000000';
   fColor_Border     := '$FF000000';
   fColor_Step       := '$FFD6DADF';
@@ -100,15 +105,21 @@ end;
 
 destructor TVamVectorSequence.Destroy;
 begin
-
+  InternalPadding.Free;
   inherited;
 end;
 
 function TVamVectorSequence.MouseToSequencePosition(const PixelX: integer): integer;
 var
   x : integer;
+  InternalBounds : TRect;
 begin
-  x := floor(PixelX / Width * fSequenceLength);
+  InternalBounds.Left   := InternalPadding.Left;
+  InternalBounds.Top    := InternalPadding.Top;
+  InternalBounds.Right  := Width - InternalPadding.Right;
+  InternalBounds.Bottom := Height - InternalPadding.Bottom;
+
+  x := floor((PixelX-InternalBounds.Left) / InternalBounds.Width * fSequenceLength);
   if x < 0 then x := 0;
   if x >= fSequenceLength then x := fSequenceLength-1;
   result := x;
@@ -324,38 +335,48 @@ const
 var
   x1, y1, x2, y2 : single;
   c1: Integer;
+  InternalBounds : TRect;
 begin
   inherited;
 
+  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+
+  InternalBounds.Left   := InternalPadding.Left;
+  InternalBounds.Top    := InternalPadding.Top;
+  InternalBounds.Right  := Width - InternalPadding.Right;
+  InternalBounds.Bottom := Height - InternalPadding.Bottom;
+
 
   //=== Paint the background ==
-  x1 := 0.5;
-  y1 := 0.5;
-  x2 := Width-0.5;
-  y2 := Height - 0.5;
+  x1 := 0;
+  y1 := 0;
+  x2 := Width;
+  y2 := Height;
 
-  BackBuffer.BufferInterface.LineWidth := 1;
-  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(Color_Background);
+  //BackBuffer.BufferInterface.LineWidth := 1;
+  //BackBuffer.BufferInterface.LineColor := GetRedFoxColor(Color_Background);
+  BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := GetRedFoxColor(Color_Background);
 
-  BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
+  //BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
+  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
 
   //==== Draw sequence value bars ====
   BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := GetRedFoxColor(Color_Step);
 
-  y1 := round(Height / 2) + 0.5;
+  y1 := round(InternalBounds.Height / 2) + InternalBounds.Top;
   for c1 := 0 to SequenceLength-1 do
   begin
     y2 := SequenceValue[c1];
     y2 := 1 - (y2 * 0.5 + 0.5);
-    y2 := y2 * Height;
+    y2 := y2 * InternalBounds.Height + InternalBounds.Top;
 
-    x1 := c1 / SequenceLength * Width;
-    x1 := round(x1) + 0.5;
+    x1 := c1 / SequenceLength * (InternalBounds.Width + 1);
+    x1 := round(x1) + InternalBounds.Left;
 
-    x2 := (c1+1) / SequenceLength * Width;
-    x2 := round(x2) + 0.5;
+    x2 := (c1+1) / SequenceLength * (InternalBounds.Width + 1);
+    x2 := round(x2) + InternalBounds.Left - 1;
 
     BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
   end;
@@ -367,14 +388,14 @@ begin
     BackBuffer.BufferInterface.NoLine;
     BackBuffer.BufferInterface.FillColor := GetRedFoxColor(Color_StepActive,60);
 
-    x1 := CurrentStep / SequenceLength * Width;
-    x1 := round(x1) + 0.5;
+    x1 := CurrentStep / SequenceLength * (InternalBounds.Width + 1);
+    x1 := round(x1) + InternalBounds.Left;
 
-    x2 := (CurrentStep+1) / SequenceLength * Width;
-    x2 := round(x2) + 0.5;
+    x2 := (CurrentStep+1) / SequenceLength * (InternalBounds.Width + 1);
+    x2 := round(x2) + InternalBounds.Left - 1;
 
-    y1 := 0.5;
-    y2 := Height - 0.5;
+    y1 := InternalBounds.Top    + 0.5;
+    y2 := InternalBounds.Bottom - 0.5;
 
     BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
   end;
@@ -385,39 +406,11 @@ begin
 
   //==== Draw horizontal midpoint line ====
   BackBuffer.BufferInterface.LineColor := GetRedFoxColor(Color_StepActive, 200);
-  x1 := 0.5;
-  x2 := Width - 0.5;
-  y1 := round(Height / 2) + 0.5;
+  x1 := InternalBounds.Left  + 0.5;
+  x2 := InternalBounds.Right - 0.5;
+  y1 := round(InternalBounds.Height / 2) + 0.5 + InternalBounds.Top;
 
   BackBuffer.BufferInterface.Line(x1, y1, x2, y1);
-
-
-  //==== Draw vertical seperator lines ===
-  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(Color_Background);
-  y1 := 0.5;
-  y2 := Height - 0.5;
-  for c1 := 1 to SequenceLength-1 do
-  begin
-    x1 := c1 / SequenceLength * Width;
-    x1 := round(x1) + 0.5;
-    BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
-  end;
-
-
-  //==== Draw outside border ===
-  x1 := 0.5;
-  y1 := 0.5;
-  x2 := Width-0.5;
-  y2 := Height - 0.5;
-
-  BackBuffer.BufferInterface.LineWidth := 1;
-  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(Color_Background);
-  BackBuffer.BufferInterface.NoFill;
-
-  BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
-
-
-
 end;
 
 
