@@ -26,6 +26,12 @@ type
     fNoSampleMessage: string;
     fOnZoomChanged: TSampleOverlayZoomEvent;
     fShowReplaceMessage: boolean;
+    fSampleEndMod: single;
+    fLoopStartMod: single;
+    fLoopEndMod: single;
+    fSampleStartMod: single;
+    fShowModPoints: boolean;
+    fOnModAmountsChanged: TNotifyEvent;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -34,6 +40,7 @@ type
     procedure SetShowMarkerTags(const Value: boolean);
     procedure SetNoSampleMessage(const Value: string);
     procedure SetShowReplaceMessage(const Value: boolean);
+    procedure SetShowModPoints(const Value: boolean);
   protected
     FeedbackData : PGuiFeedbackData;
     SampleIsValid : boolean;
@@ -92,6 +99,12 @@ type
     property LoopStart   : integer read fLoopStart   write SetLoopStart;
     property LoopEnd     : integer read fLoopEnd     write SetLoopEnd;
 
+    property SampleStartMod : single read fSampleStartMod  write fSampleStartMod;
+    property SampleEndMod   : single read fSampleEndMod    write fSampleEndMod;
+    property LoopStartMod   : single read fLoopStartMod    write fLoopStartMod;
+    property LoopEndMod     : single read fLoopEndMod      write fLoopEndMod;
+
+    property ShowModPoints  : boolean read fShowModPoints  write SetShowModPoints;
     property ShowLoopPoints : boolean read fShowLoopPoints write SetShowLoopPoints;
     property ShowReplaceMessage : boolean read fShowReplaceMessage write SetShowReplaceMessage;
 
@@ -101,6 +114,7 @@ type
 
     property OnSampleMarkerChanged : TSampleMarkerChangedEvent read fOnSampleMarkerChanged write fOnSampleMarkerChanged;
     property OnZoomChanged         : TSampleOverlayZoomEvent   read fOnZoomChanged         write fOnZoomChanged;
+    property OnModAmountsChanged   : TNotifyEvent              read fOnModAmountsChanged   write fOnModAmountsChanged;
 
     property Font;
 
@@ -521,6 +535,15 @@ begin
   if Value <> fShowMarkerTags then
   begin
     fShowMarkerTags := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TLuciditySampleOverlay.SetShowModPoints(const Value: boolean);
+begin
+  if Value <> fShowModPoints then
+  begin
+    fShowModPoints := Value;
     Invalidate;
   end;
 end;

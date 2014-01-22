@@ -37,9 +37,12 @@ type
     MsgHandle : hwnd;
     procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
+    procedure UpdateModulation;
 
     procedure SetGuiStandard(const Value: TGuiStandard);
     procedure SetPlugin(const Value: TeePlugin);
+
+    procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
   protected
     Zoom, Offset : single;
 
@@ -110,6 +113,7 @@ begin
   fSampleOverlay.Align := alClient;
   fSampleOverlay.Visible := true;
 
+  fSampleOverlay.OnModAmountsChanged := Handle_SampleOverlay_ModAmountsChanged;
   fSampleOverlay.OnMouseDown := SampleOverlayMouseDown;
   fSampleOverlay.OnSampleMarkerChanged := SampleMarkerChanged;
   fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
@@ -155,7 +159,6 @@ begin
 
   Plugin := aPlugin;
   GuiStandard := aGuiStandard;
-
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
   UpdateControlVisibility;
@@ -203,6 +206,7 @@ procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
   if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED   then UpdateControlVisibility;
+  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
 end;
 
 procedure TMiniSampleDisplayFrame.SetPlugin(const Value: TeePlugin);
@@ -761,6 +765,78 @@ procedure TMiniSampleDisplayFrame.InsidePanelResize(Sender: TObject);
 begin
   //
 end;
+
+procedure TMiniSampleDisplayFrame.UpdateModulation;
+var
+  ModSlot : integer;
+  ModAmount : single;
+  kg : IKeyGroup;
+begin
+  if Plugin.Globals.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.MouseOverModSlot
+    else ModSlot := Plugin.Globals.SelectedModSlot;
+
+  if ModSlot <> -1 then
+  begin
+    kg := Plugin.ActiveKeyGroup;
+
+    ModAmount := kg.GetModulatedParameters^[TModParIndex.SampleStart].ModAmount[ModSlot];
+    SampleOverlay.SampleStartMod := ModAmount;
+
+    ModAmount := kg.GetModulatedParameters^[TModParIndex.SampleEnd].ModAmount[ModSlot];
+    SampleOverlay.SampleEndMod := ModAmount;
+
+    ModAmount := kg.GetModulatedParameters^[TModParIndex.LoopStart].ModAmount[ModSlot];
+    SampleOverlay.LoopStartMod := ModAmount;
+
+    ModAmount := kg.GetModulatedParameters^[TModParIndex.LoopEnd].ModAmount[ModSlot];
+    SampleOverlay.LoopEndMod := ModAmount;
+
+    SampleOverlay.ShowModPoints := true;
+    SampleOverlay.Invalidate;
+
+  end else
+  begin
+    SampleOverlay.ShowModPoints := false;
+  end;
+
+end;
+
+procedure TMiniSampleDisplayFrame.Handle_SampleOverlay_ModAmountsChanged(Sender: TObject);
+var
+  ModSlot : integer;
+  ModAmount : single;
+  kg : IKeyGroup;
+  Index : integer;
+begin
+  if Plugin.Globals.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.MouseOverModSlot
+    else ModSlot := Plugin.Globals.SelectedModSlot;
+
+  if ModSlot <> -1 then
+  begin
+    kg := Plugin.ActiveKeyGroup;
+
+    Index     := TModParIndex.SampleStart;
+    ModAmount := SampleOverlay.SampleStartMod;
+    kg.SetModParModAmount(Index, ModSlot, ModAmount);
+
+    Index     := TModParIndex.SampleEnd;
+    ModAmount := SampleOverlay.SampleEndMod;
+    kg.SetModParModAmount(Index, ModSlot, ModAmount);
+
+    Index     := TModParIndex.LoopStart;
+    ModAmount := SampleOverlay.LoopStartMod;
+    kg.SetModParModAmount(Index, ModSlot, ModAmount);
+
+    Index     := TModParIndex.LoopEnd;
+    ModAmount := SampleOverlay.LoopEndMod;
+    kg.SetModParModAmount(Index, ModSlot, ModAmount);
+  end;
+
+end;
+
+
 
 
 

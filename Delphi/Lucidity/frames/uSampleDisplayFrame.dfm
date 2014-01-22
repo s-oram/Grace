@@ -114,8 +114,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel2: TVamLabel
             AlignWithMargins = True
@@ -135,7 +133,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel2: TVamPanel
@@ -165,8 +162,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel4: TVamLabel
             AlignWithMargins = True
@@ -186,7 +181,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel3: TVamPanel
@@ -235,7 +229,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel4: TVamPanel
@@ -265,8 +258,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel8: TVamLabel
             AlignWithMargins = True
@@ -286,7 +277,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel5: TVamPanel
@@ -316,8 +306,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel10: TVamLabel
             AlignWithMargins = True
@@ -337,7 +325,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel6: TVamPanel
@@ -386,7 +373,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel7: TVamPanel
@@ -416,8 +402,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel14: TVamLabel
             AlignWithMargins = True
@@ -437,7 +421,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel8: TVamPanel
@@ -467,8 +450,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 3
-            ExplicitHeight = 19
           end
           object VamLabel16: TVamLabel
             AlignWithMargins = True
@@ -488,7 +469,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel9: TVamPanel
@@ -518,7 +498,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 59
           end
           object VamLabel18: TVamLabel
             AlignWithMargins = True
@@ -538,7 +517,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamPanel10: TVamPanel
@@ -568,7 +546,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 84
           end
           object VamLabel20: TVamLabel
             AlignWithMargins = True
@@ -588,7 +565,6 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Font.Style = []
             Align = alLeft
             Visible = True
-            ExplicitHeight = 19
           end
         end
         object VamButton1: TVamButton
@@ -639,8 +615,8 @@ object SampleDisplayFrame: TSampleDisplayFrame
     end
   end
   object SampleOverlayContextMenu: TPopupMenu
-    Left = 16
-    Top = 32
+    Left = 184
+    Top = 64
     object miSetSampleStart: TMenuItem
       Tag = 1
       Caption = 'Set Sample Start'
@@ -663,8 +639,8 @@ object SampleDisplayFrame: TSampleDisplayFrame
     end
   end
   object LoopModeMenu: TPopupMenu
-    Left = 16
-    Top = 64
+    Left = 192
+    Top = 120
     object miLoopOff: TMenuItem
       Tag = 1
       Caption = 'Loop Off'

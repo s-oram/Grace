@@ -168,7 +168,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
-              ExplicitLeft = 500
             end
             object SamplePanKnob: TVamCompoundNumericKnob
               Tag = 2
@@ -204,7 +203,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
-              ExplicitLeft = 588
             end
             object SampleFineKnob: TVamCompoundNumericKnob
               Tag = 6
@@ -239,7 +237,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
-              ExplicitLeft = 620
             end
             object SampleTuneKnob: TVamCompoundNumericKnob
               Tag = 5
@@ -275,7 +272,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
-              ExplicitLeft = 620
             end
           end
         end

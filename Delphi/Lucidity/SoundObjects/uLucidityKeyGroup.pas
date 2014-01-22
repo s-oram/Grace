@@ -61,6 +61,7 @@ type
 
     function GetModParValue(const ModParIndex : integer):single;
     procedure SetModParValue(const ModParIndex : integer; const Value:single);
+    procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
@@ -320,6 +321,13 @@ procedure TKeyGroup.SetModParValue(const ModParIndex: integer; const Value: sing
 begin
   ModulatedParameters[ModParIndex].ParValue := Value;
 end;
+
+procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);
+begin
+  ModulatedParameters[ModParIndex].ModAmount[ModSlot] := Value;
+end;
+
+
 
 procedure TKeyGroup.SetName(Value: string);
 begin
