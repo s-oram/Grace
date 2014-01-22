@@ -20,6 +20,8 @@ function CastToCardinal(Value : integer):cardinal;
 function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
 function Clamp(const Value, MinValue, MaxValue : single):single; overload;
 
+function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
+
 
 type
   TVamInterfacedObject = class(TInterfacedObject)
@@ -127,6 +129,13 @@ begin
   if Value > MaxValue then result := MaxValue
   else
     result := Value;
+end;
+
+function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
+begin
+  if (Value >= MinValue) and (Value <= MaxValue)
+    then result := true
+    else result := false;
 end;
 
 end.
