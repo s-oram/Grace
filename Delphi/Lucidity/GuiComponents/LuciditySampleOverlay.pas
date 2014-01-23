@@ -54,6 +54,8 @@ type
     IsGrabbed : boolean;
     GrabbedMode : TSampleMarker; //TODO: Rename to GrabbedMarker.
     GrabbedSampleOffset : single;
+    ReferenceX : integer;
+    ReferenceModAmount : single;
 
     MouseOverMarker : TSampleMarker;
     MouseOverMarkerVertOffset : integer;
@@ -82,6 +84,7 @@ type
     procedure Draw_ModLoopPoint(const xPos : single);
     procedure Draw_ZoomSelection(const x1, x2 : integer);
     procedure Draw_ReplaceMessage;
+    procedure Draw_ModPointAreas;
 
     function IsNearMarker(const PixelPosX, PixelPosY : integer):TSampleMarker;
   public
@@ -174,6 +177,11 @@ begin
   MessageFont.Style  := [TFontStyle.fsBold];
 
   ShowReplaceMessage := false;
+
+  fSampleStartMod := 0.25;
+  fSampleEndMod := 0;
+  fLoopStartMod := 0;
+  fLoopEndMod   := 0;
 end;
 
 destructor TLuciditySampleOverlay.Destroy;
@@ -307,6 +315,31 @@ begin
       smSampleEndMarker:   GrabbedSampleOffset := CurrentSamplePos - SampleEnd;
       smLoopStartMarker:   GrabbedSampleOffset := CurrentSamplePos - LoopStart;
       smLoopEndMarker:     GrabbedSampleOffset := CurrentSamplePos - LoopEnd;
+
+      smSampleStartModMarker:
+      begin
+        ReferenceX := x;
+        ReferenceModAmount := SampleStartMod;
+      end;
+
+      smSampleEndModMarker:
+      begin
+        ReferenceX := x;
+        ReferenceModAmount := SampleEndMod;
+      end;
+
+      smLoopStartModMarker:
+      begin
+        ReferenceX := x;
+        ReferenceModAmount := LoopStartMod;
+      end;
+
+      smLoopEndModMarker:
+      begin
+        ReferenceX := x;
+        ReferenceModAmount := LoopEndMod;
+      end;
+
     else
       raise Exception.Create('Unexpected Grabbed mode.');
     end;
@@ -330,8 +363,10 @@ end;
 procedure TLuciditySampleOverlay.MouseMove(Shift: TShiftState; X, Y: Integer);
 var
   CurrentSamplePos : single;
+  xDist : integer;
   xPos : integer;
   Marker : TSampleMarker;
+  ModAmount : single;
 begin
   inherited;
 
@@ -340,11 +375,15 @@ begin
     Marker := IsNearMarker(X, Y);
 
     case Marker of
-      smNone:              Cursor := crDefault;
-      smSampleStartMarker: Cursor := crSizeWE;
-      smSampleEndMarker:   Cursor := crSizeWE;
-      smLoopStartMarker:   Cursor := crSizeWE;
-      smLoopEndMarker:     Cursor := crSizeWE;
+      smNone:                  Cursor := crDefault;
+      smSampleStartMarker:     Cursor := crSizeWE;
+      smSampleEndMarker:       Cursor := crSizeWE;
+      smLoopStartMarker:       Cursor := crSizeWE;
+      smLoopEndMarker:         Cursor := crSizeWE;
+      smSampleStartModMarker:  Cursor := crSizeWE;
+      smSampleEndModMarker:    Cursor := crSizeWE;
+      smLoopStartModMarker:    Cursor := crSizeWE;
+      smLoopEndModMarker:      Cursor := crSizeWE;
     else
       raise Exception.Create('Unexpected Marker type.');
     end;
@@ -432,6 +471,76 @@ begin
       end;
     end;
 
+
+    if (GrabbedMode = smSampleStartModMarker) then
+    begin
+      xDist := x - ReferenceX;
+      ModAmount := xDist / Width;
+
+      if ModAmount <> 0 then
+      begin
+        fSampleStartMod := Clamp(ReferenceModAmount + ModAmount, -1, 1);
+        Invalidate;
+      end;
+
+      if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
+    end;
+
+    if (GrabbedMode = smSampleEndModMarker) then
+    begin
+      xDist := x - ReferenceX;
+      ModAmount := xDist / Width;
+
+      if ModAmount <> 0 then
+      begin
+        fSampleEndMod := Clamp(ReferenceModAmount + ModAmount, -1, 1);
+        Invalidate;
+      end;
+
+      if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
+    end;
+
+    if (GrabbedMode = smLoopStartModMarker) then
+    begin
+      xDist := x - ReferenceX;
+      ModAmount := xDist / Width;
+
+      if ModAmount <> 0 then
+      begin
+        fLoopStartMod := Clamp(ReferenceModAmount + ModAmount, -1, 1);
+        Invalidate;
+      end;
+
+      if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
+    end;
+
+    if (GrabbedMode = smLoopEndModMarker) then
+    begin
+      xDist := x - ReferenceX;
+      ModAmount := xDist / Width;
+
+      if ModAmount <> 0 then
+      begin
+        fLoopEndMod := Clamp(ReferenceModAmount + ModAmount, -1, 1);
+        Invalidate;
+      end;
+
+      if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
+    end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //call the event handlers....
     if assigned(OnSampleMarkerChanged) then
     begin
@@ -440,6 +549,11 @@ begin
       if (GrabbedMode = smLoopStartMarker)   then OnSampleMarkerChanged(Self, smLoopStartMarker, LoopStart);
       if (GrabbedMode = smLoopEndMarker)     then OnSampleMarkerChanged(Self, smLoopEndMarker, LoopEnd);
     end;
+
+
+
+
+
   end;
 
 end;
@@ -662,7 +776,6 @@ begin
       begin
         BackBuffer.BufferInterface.LineWidth := 1;
 
-
         if (FeedBackData^.SampleBounds.ShowPlaybackBounds) then
         begin
           BackBuffer.BufferInterface.FillColor := GetRedFoxColor('$22FFFFFF').AsAggRgba8;
@@ -710,11 +823,18 @@ begin
     end;
 
 
+
+    if IsModEditActive
+      then Draw_ModPointAreas;
+
+
+
+
     //== some setup ==
     BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha;
 
-    BackBuffer.BufferInterface.LineColor := GetRedFoxColor('$FF1944C3').AsAggRgba8;
-    BackBuffer.BufferInterface.NoFill;
+    //BackBuffer.BufferInterface.LineColor := GetRedFoxColor('$FF1944C3').AsAggRgba8;
+    //BackBuffer.BufferInterface.NoFill;
 
     //========= Draw sample start/end markers =======
     x1 := SampleStart;
@@ -1157,6 +1277,68 @@ begin
 
 
 end;
+
+
+procedure TLuciditySampleOverlay.Draw_ModPointAreas;
+var
+  x1, x2, y1, y2 : single;
+begin
+
+
+  y1 := 0;
+  y2 := Height;
+
+  x1 := SampleStart;
+  x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+  x2 := SampleStart + SampleStartMod * SampleFrames;
+  x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kSampleStart).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+
+
+
+  x1 := SampleEnd;
+  x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+  x2 := SampleEnd + SampleEndMod * SampleFrames;
+  x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kSampleEnd).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+
+
+
+  x1 := LoopStart;
+  x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+  x2 := LoopStart + LoopStartMod * SampleFrames;
+  x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+
+
+
+  x1 := LoopEnd;
+  x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+  x2 := LoopEnd + LoopEndMod * SampleFrames;
+  x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+
+
+
+
+end;
+
 
 
 

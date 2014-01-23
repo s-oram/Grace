@@ -792,11 +792,15 @@ begin
     ModAmount := kg.GetModulatedParameters^[TModParIndex.LoopEnd].ModAmount[ModSlot];
     SampleOverlay.LoopEndMod := ModAmount;
 
+    SampleOverlay.IsModEditActive := true;
     SampleOverlay.ShowModPoints := true;
     SampleOverlay.Invalidate;
 
+
+
   end else
   begin
+    SampleOverlay.IsModEditActive := false;
     SampleOverlay.ShowModPoints := false;
   end;
 
