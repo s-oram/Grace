@@ -1,4 +1,4 @@
-unit uVoiceControlFrame;
+                                                                                             unit uVoiceControlFrame;
 
 interface
 
@@ -145,23 +145,23 @@ begin
 
   //==== Assign standard control handling ====
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch1Knob,        Plugin.Globals.VstParameters.FindParameter('VoicePitchOne'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch2Knob,        Plugin.Globals.VstParameters.FindParameter('VoicePitchTwo'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GlideKnob,              Plugin.Globals.VstParameters.FindParameter('VoiceGlide'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainLengthKnob,        Plugin.Globals.VstParameters.FindParameter('GrainLength'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainRateKnob,          Plugin.Globals.VstParameters.FindParameter('GrainRate'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainPosKnob,           Plugin.Globals.VstParameters.FindParameter('GrainPosition'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(OscShapeKnob,           Plugin.Globals.VstParameters.FindParameter('OscShape'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(OscPulseWidthKnob,      Plugin.Globals.VstParameters.FindParameter('OscPulseWidth'));
-  
+  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch1Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchOne));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch2Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchTwo));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GlideKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.VoiceGlide));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainLengthKnob,        Plugin.Globals.VstParameters.FindParameter(TParName.GrainLength));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainRateKnob,          Plugin.Globals.VstParameters.FindParameter(TParName.GrainRate));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainPosKnob,           Plugin.Globals.VstParameters.FindParameter(TParName.GrainPosition));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(OscShapeKnob,           Plugin.Globals.VstParameters.FindParameter(TParName.OscShape));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(OscPulseWidthKnob,      Plugin.Globals.VstParameters.FindParameter(TParName.OscPulseWidth));
 
-  GuiStandard.RedFoxMenuHandler.RegisterControl(VoiceModeTextBox,            Plugin.Globals.VstParameters.FindParameter('VoiceMode'),               TVoiceModeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplePlaybackTypeTextBox,   Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType'),      TSamplePlaybackTypeHelper,   ShowPlayTypeMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(PitchTrackTextBox,           Plugin.Globals.VstParameters.FindParameter('PitchTracking'),           TPitchTrackingHelper,        ShowPlayTypeMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(ResetTextBox,                Plugin.Globals.VstParameters.FindParameter('SampleResetClockSource'),  TClockSourceHelper,          ShowSamplResetMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopModeTextBox,      Plugin.Globals.VstParameters.FindParameter('SamplerLoopMode'),         TSamplerLoopModeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopBoundsTextBox,    Plugin.Globals.VstParameters.FindParameter('SamplerLoopBounds'),       TSamplerLoopBoundsHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(GrainLoopTextBox,            Plugin.Globals.VstParameters.FindParameter('GrainLoop'),               TGrainStretchLoopModeHelper);
+
+  GuiStandard.RedFoxMenuHandler.RegisterControl(VoiceModeTextBox,            Plugin.Globals.VstParameters.FindParameter(TParName.VoiceMode),               TVoiceModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplePlaybackTypeTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType),      TSamplePlaybackTypeHelper,   ShowPlayTypeMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(PitchTrackTextBox,           Plugin.Globals.VstParameters.FindParameter(TParName.PitchTracking),           TPitchTrackingHelper,        ShowPlayTypeMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(ResetTextBox,                Plugin.Globals.VstParameters.FindParameter(TParName.SampleResetClockSource),  TClockSourceHelper,          ShowSamplResetMenuCallBack);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopModeTextBox,      Plugin.Globals.VstParameters.FindParameter(TParName.SamplerLoopMode),         TSamplerLoopModeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopBoundsTextBox,    Plugin.Globals.VstParameters.FindParameter(TParName.SamplerLoopBounds),       TSamplerLoopBoundsHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(GrainLoopTextBox,            Plugin.Globals.VstParameters.FindParameter(TParName.GrainLoop),               TGrainStretchLoopModeHelper);
 
 
   //============================================================================
@@ -332,7 +332,7 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  Par := Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType);
   case TSamplePlaybackTypeHelper.ToEnum(Par.ValueVST) of
     TSamplePlaybackType.NoteSampler:
     begin
@@ -369,7 +369,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter('VoiceMode');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.VoiceMode);
   vm := TVoiceModeHelper.ToEnum(Par.ValueVST);
   case vm of
     TVoiceMode.Poly:
@@ -408,7 +408,7 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  ParValue := Plugin.Globals.VstParameters.FindParameter('SamplePlaybackType').ValueVST;
+  ParValue := Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType).ValueVST;
   SampleOscType := TSamplePlaybackTypeHelper.ToEnum(ParValue);
 
   OneShotSampleControls.Visible := false;
