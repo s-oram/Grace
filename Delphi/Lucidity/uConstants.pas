@@ -229,6 +229,74 @@ function PluginInfo:TeePluginSettings;
 
 //==============================================================================
 
+type
+  TParName = record
+  const
+    VoiceMode              = 'VoiceMode';
+    VoiceGlide             = 'VoiceGlide';
+    PitchTracking          = 'PitchTracking';
+    SamplePlaybackType     = 'SamplePlaybackType';
+    SampleResetClockSource = 'SampleResetClockSource';
+    SamplerLoopBounds      = 'SamplerLoopBounds';
+    SamplerLoopMode        = 'SamplerLoopMode';
+    GrainLoop      = 'GrainLoop';
+    GrainLength    = 'GrainLength';
+    GrainRate      = 'GrainRate';
+    GrainPosition  = 'GrainPosition';
+    OutputGain     = 'OutputGain';
+    OutputPan      = 'OutputPan';
+    VoicePitchOne  = 'VoicePitchOne';
+    VoicePitchTwo  = 'VoicePitchTwo';
+    AuxALevel      = 'AuxALevel';
+    AuxBLevel      = 'AuxBLevel';
+    OscShape       = 'OscShape';
+    OscPulseWidth  = 'OscPulseWidth';
+    NoiseLevel     = 'NoiseLevel';
+    SampleStart    = 'SampleStart';
+    SampleEnd      = 'SampleEnd';
+    LoopStart      = 'LoopStart';
+    LoopEnd        = 'LoopEnd';
+    AmpAttack      = 'AmpAttack';
+    AmpHold        = 'AmpHold';
+    AmpDecay       = 'AmpDecay';
+    AmpSustain     = 'AmpSustain';
+    AmpRelease     = 'AmpRelease';
+    AmpVelocity    = 'AmpVelocity';
+    FilterAttack   = 'FilterAttack';
+    FilterHold     = 'FilterHold';
+    FilterDecay    = 'FilterDecay';
+    FilterSustain  = 'FilterSustain';
+    FilterRelease  = 'FilterRelease';
+    FilterVelocity = 'FilterVelocity';
+    Filter1Type    = 'Filter1Type';
+    Filter2Type    = 'Filter2Type';
+    Filter1Par1    = 'Filter1Par1';
+    Filter1Par2    = 'Filter1Par2';
+    Filter1Par3    = 'Filter1Par3';
+    Filter1Par4    = 'Filter1Par4';
+    Filter2Par1    = 'Filter2Par1';
+    Filter2Par2    = 'Filter2Par2';
+    Filter2Par3    = 'Filter2Par3';
+    Filter2Par4    = 'Filter2Par4';
+    LfoShape1      = 'LfoShape1';
+    LfoShape2      = 'LfoShape2';
+    LfoRate1       = 'LfoRate1';
+    LfoRate2       = 'LfoRate2';
+    LfoAPar2       = 'LfoAPar2';
+    LfoBPar2       = 'LfoBPar2';
+    Seq1Clock      = 'Seq1Clock';
+    Seq1Direction  = 'Seq1Direction';
+    StepSeq1Length = 'StepSeq1Length';
+    Seq2Clock      = 'Seq2Clock';
+    Seq2Direction  = 'Seq2Direction';
+    StepSeq2Length = 'StepSeq2Length';
+    PreviewVolume  = 'PreviewVolume';
+    Preview        = 'Preview';
+  end;
+
+
+
+
 
 implementation
 

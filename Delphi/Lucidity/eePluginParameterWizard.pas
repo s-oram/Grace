@@ -77,8 +77,6 @@ begin
   aModLinkIndex := 0;
 
 
-
-
   SetModPar_Callback := procedure(Sender : TVstParameter; Value:single)
   begin
     assert((Sender as TVstParameterEx).HasModLink);
@@ -97,9 +95,7 @@ begin
 
 
 
-
-  //== Create all parameters ==
-  aPar := TVstParameterEx.Create('VoiceMode');
+  aPar := TVstParameterEx.Create(TParName.VoiceMode);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -120,7 +116,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('VoiceGlide');
+  aPar := TVstParameterEx.Create(TParName.VoiceGlide);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -138,7 +134,7 @@ begin
     end);
   end;
 
-  aPar := TVstParameterEx.Create('PitchTracking');
+  aPar := TVstParameterEx.Create(TParName.PitchTracking);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -166,7 +162,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('SamplePlaybackType');
+  aPar := TVstParameterEx.Create(TParName.SamplePlaybackType);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -189,7 +185,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('SampleResetClockSource');
+  aPar := TVstParameterEx.Create(TParName.SampleResetClockSource);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -211,7 +207,7 @@ begin
 
 
   //-- one shot sampler osc ---
-  aPar := TVstParameterEx.Create('SamplerLoopBounds');
+  aPar := TVstParameterEx.Create(TParName.SamplerLoopBounds);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -235,7 +231,7 @@ begin
     end);
   end;
 
-  aPar := TVstParameterEx.Create('SamplerLoopMode');
+  aPar := TVstParameterEx.Create(TParName.SamplerLoopMode);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -262,24 +258,24 @@ begin
   end;
 
   //-- grain stretch osc ---
-  aPar := TVstParameterEx.Create('GrainLoop');
+  aPar := TVstParameterEx.Create(TParName.GrainLoop);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('GrainLength');
+  aPar := TVstParameterEx.Create(TParName.GrainLength);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('GrainRate');
+  aPar := TVstParameterEx.Create(TParName.GrainRate);
   aPar.SetMinMax(-1,1).SetDefault(0.5);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('GrainPosition');
+  aPar := TVstParameterEx.Create(TParName.GrainPosition);
   Parmanager.Add(aPar);
 
 
 
 
 
-  aPar := TVstParameterEx.Create('OutputGain');
+  aPar := TVstParameterEx.Create(TParName.OutputGain);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -304,7 +300,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('OutputPan');
+  aPar := TVstParameterEx.Create(TParName.OutputPan);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -328,8 +324,7 @@ begin
 
 
 
-
-  aPar := TVstParameterEx.Create('VoicePitchOne');
+  aPar := TVstParameterEx.Create(TParName.VoicePitchOne);
   aPar.SetMinMax(-1,1).SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -354,7 +349,7 @@ begin
     end);
   end;
 
-  aPar := TVstParameterEx.Create('VoicePitchTwo');
+  aPar := TVstParameterEx.Create(TParName.VoicePitchTwo);
   aPar.SetMinMax(-1,1).SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -379,39 +374,39 @@ begin
 
 
   //TODO: Are these parameters needed?
-  aPar := TVstParameterEx.Create('AuxALevel');
+  aPar := TVstParameterEx.Create(TParName.AuxALevel);
   aPar.SetDefault(0);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('AuxBLevel');
+  aPar := TVstParameterEx.Create(TParName.AuxBLevel);
   aPar.SetDefault(0);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('OscShape');
+  aPar := TVstParameterEx.Create(TParName.OscShape);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('OscPulseWidth');
+  aPar := TVstParameterEx.Create(TParName.OscPulseWidth);
   aPar.SetDefault(0.5);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('NoiseLevel');
+  aPar := TVstParameterEx.Create(TParName.NoiseLevel);
   aPar.SetDefault(0.5);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('SampleStart');
+  aPar := TVstParameterEx.Create(TParName.SampleStart);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('SampleEnd');
+  aPar := TVstParameterEx.Create(TParName.SampleEnd);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('LoopStart');
+  aPar := TVstParameterEx.Create(TParName.LoopStart);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
 
-  aPar := TVstParameterEx.Create('LoopEnd');
+  aPar := TVstParameterEx.Create(TParName.LoopEnd);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   aPar.SetDefault(1);
   Parmanager.Add(aPar);
@@ -420,7 +415,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('AmpAttack');
+  aPar := TVstParameterEx.Create(TParName.AmpAttack);
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -434,7 +429,7 @@ begin
     aPar.SetCallback_GetParValue(GetModPar_Callback);
   end;
 
-  aPar := TVstParameterEx.Create('AmpHold');
+  aPar := TVstParameterEx.Create(TParName.AmpHold);
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -451,7 +446,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('AmpDecay');
+  aPar := TVstParameterEx.Create(TParName.AmpDecay);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -468,7 +463,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('AmpSustain');
+  aPar := TVstParameterEx.Create(TParName.AmpSustain);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -485,7 +480,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('AmpRelease');
+  aPar := TVstParameterEx.Create(TParName.AmpRelease);
   Parmanager.Add(aPar);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   if (assigned(Plugin)) and (assigned(VoiceController)) then
@@ -501,7 +496,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('AmpVelocity'); //Amp Env Velocity.
+  aPar := TVstParameterEx.Create(TParName.AmpVelocity); //Amp Env Velocity.
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -522,7 +517,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterAttack');
+  aPar := TVstParameterEx.Create(TParName.FilterAttack);
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -539,7 +534,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterHold');
+  aPar := TVstParameterEx.Create(TParName.FilterHold);
   aPar.SetDefault(0);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -556,7 +551,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterDecay');
+  aPar := TVstParameterEx.Create(TParName.FilterDecay);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -573,7 +568,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterSustain');
+  aPar := TVstParameterEx.Create(TParName.FilterSustain);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -590,7 +585,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterRelease');
+  aPar := TVstParameterEx.Create(TParName.FilterRelease);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -607,7 +602,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('FilterVelocity');  //Filter Env Velocity.
+  aPar := TVstParameterEx.Create(TParName.FilterVelocity);  //Filter Env Velocity.
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -628,7 +623,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter1Type');
+  aPar := TVstParameterEx.Create(TParName.Filter1Type);
   aPar.SetDefault(0);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
@@ -651,7 +646,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter2Type');
+  aPar := TVstParameterEx.Create(TParName.Filter2Type);
   aPar.SetDefault(0);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
@@ -674,7 +669,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter1Par1');
+  aPar := TVstParameterEx.Create(TParName.Filter1Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -691,7 +686,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter1Par2');
+  aPar := TVstParameterEx.Create(TParName.Filter1Par2);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -708,7 +703,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter1Par3');
+  aPar := TVstParameterEx.Create(TParName.Filter1Par3);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -725,7 +720,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter1Par4');
+  aPar := TVstParameterEx.Create(TParName.Filter1Par4);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -742,7 +737,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter2Par1');
+  aPar := TVstParameterEx.Create(TParName.Filter2Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -759,7 +754,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter2Par2');
+  aPar := TVstParameterEx.Create(TParName.Filter2Par2);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -776,7 +771,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter2Par3');
+  aPar := TVstParameterEx.Create(TParName.Filter2Par3);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -793,7 +788,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Filter2Par4');
+  aPar := TVstParameterEx.Create(TParName.Filter2Par4);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -810,7 +805,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('LfoShape1');
+  aPar := TVstParameterEx.Create(TParName.LfoShape1);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -832,7 +827,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('LfoShape2');
+  aPar := TVstParameterEx.Create(TParName.LfoShape2);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -859,7 +854,7 @@ begin
   // LfoB-Par2
 
 
-  aPar := TVstParameterEx.Create('LfoRate1');
+  aPar := TVstParameterEx.Create(TParName.LfoRate1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -876,7 +871,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('LfoRate2');
+  aPar := TVstParameterEx.Create(TParName.LfoRate2);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -892,7 +887,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('LfoAPar2');
+  aPar := TVstParameterEx.Create(TParName.LfoAPar2);
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -909,7 +904,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('LfoBPar2');
+  aPar := TVstParameterEx.Create(TParName.LfoBPar2);
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -927,7 +922,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Seq1Clock');
+  aPar := TVstParameterEx.Create(TParName.Seq1Clock);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -948,7 +943,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Seq1Direction');
+  aPar := TVstParameterEx.Create(TParName.Seq1Direction);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -969,7 +964,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('StepSeq1Length');
+  aPar := TVstParameterEx.Create(TParName.StepSeq1Length);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -990,7 +985,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Seq2Clock');
+  aPar := TVstParameterEx.Create(TParName.Seq2Clock);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -1011,7 +1006,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Seq2Direction');
+  aPar := TVstParameterEx.Create(TParName.Seq2Direction);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -1032,7 +1027,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('StepSeq2Length');
+  aPar := TVstParameterEx.Create(TParName.StepSeq2Length);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -1054,7 +1049,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('PreviewVolume');
+  aPar := TVstParameterEx.Create(TParName.PreviewVolume);
   aPar.SetInputCurve(TParInputCurve.icSquare).SetMinMax(0,1.5).SetDefault(0.3);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
@@ -1076,7 +1071,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create('Preview');
+  aPar := TVstParameterEx.Create(TParName.Preview);
   aPar.SetDefault(1);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
