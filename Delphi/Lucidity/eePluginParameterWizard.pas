@@ -805,7 +805,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoShape1);
+  aPar := TVstParameterEx.Create(TParName.Lfo1Shape);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -827,7 +827,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoShape2);
+  aPar := TVstParameterEx.Create(TParName.Lfo2Shape);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -854,7 +854,7 @@ begin
   // LfoB-Par2
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoRate1);
+  aPar := TVstParameterEx.Create(TParName.Lfo1Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -871,7 +871,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoRate2);
+  aPar := TVstParameterEx.Create(TParName.Lfo2Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -887,7 +887,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoAPar2);
+  aPar := TVstParameterEx.Create(TParName.Lfo1Par2);
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -904,7 +904,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.LfoBPar2);
+  aPar := TVstParameterEx.Create(TParName.Lfo2Par2);
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
   Parmanager.Add(aPar);
@@ -964,7 +964,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.StepSeq1Length);
+  aPar := TVstParameterEx.Create(TParName.Seq1Length);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
@@ -1027,7 +1027,7 @@ begin
 
 
 
-  aPar := TVstParameterEx.Create(TParName.StepSeq2Length);
+  aPar := TVstParameterEx.Create(TParName.Seq2Length);
   Parmanager.Add(aPar);
   if (assigned(Plugin)) and (assigned(VoiceController)) then
   begin
