@@ -242,44 +242,44 @@ begin
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter('AmpAttack'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter('AmpHold'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter('AmpDecay'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter('AmpSustain'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter('AmpRelease'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter('FilterAttack'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvHoldKnob,               Plugin.Globals.VstParameters.FindParameter('FilterHold'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter('FilterDecay'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter('FilterSustain'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter('FilterRelease'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par1'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par2'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par3Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par3'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par4Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter1Par4'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par1Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par1'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par2'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par3'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter('Filter2Par4'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoRate1'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoRate2'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter('LfoAPar2'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter('LfoBPar2'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,                  Plugin.Globals.VstParameters.FindParameter('OutputGain'));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,                     Plugin.Globals.VstParameters.FindParameter('OutputPan'));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter(TParName.AmpAttack));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.AmpHold));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.AmpDecay));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpSustain));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpRelease));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.FilterAttack));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvHoldKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.FilterHold));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.FilterDecay));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterSustain));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterRelease));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par1));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par3));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par4));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par1));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par3));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par4));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob1,                   Plugin.Globals.VstParameters.FindParameter(TParName.LfoRate1));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.LfoRate2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter(TParName.LfoAPar2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.LfoBPar2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.OutputGain));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,                     Plugin.Globals.VstParameters.FindParameter(TParName.OutputPan));
 
 
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter1Type'),     TFilterTypeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter('Filter2Type'),     TFilterTypeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter('LfoShape1'),       TLfoShapeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox2,       Plugin.Globals.VstParameters.FindParameter('LfoShape2'),       TLfoShapeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter('AmpVelocity'),     TEnvVelocityDepthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter('FilterVelocity'),  TEnvVelocityDepthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter('Seq1Clock'),       TSequencerClockHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter('Seq1Direction'),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter('StepSeq1Length'),  TStepSequencerLengthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2ClockTextBox,       Plugin.Globals.VstParameters.FindParameter('Seq2Clock'),       TSequencerClockHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter('Seq2Direction'),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter('StepSeq2Length'),  TStepSequencerLengthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter(TParName.LfoShape1),       TLfoShapeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox2,       Plugin.Globals.VstParameters.FindParameter(TParName.LfoShape2),       TLfoShapeHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter(TParName.FilterVelocity),  TEnvVelocityDepthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),       TSequencerClockHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),   TStepSequencerDirectionHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.StepSeq1Length),  TStepSequencerLengthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),       TSequencerClockHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),   TStepSequencerDirectionHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.StepSeq2Length),  TStepSequencerLengthHelper);
 
 
 
@@ -566,7 +566,7 @@ var
   Knobs : array[0..3] of TControl;
   Labels : array[0..3] of TControl;
 begin
-  Par := Plugin.Globals.VstParameters.FindParameter('Filter1Type');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type);
   FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
 
   Knobs[0] := Filter1Par1Knob;
@@ -583,7 +583,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter('Filter2Type');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type);
   FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
 
   Knobs[0] := Filter2Par1Knob;
@@ -601,7 +601,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter('LfoShape1');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.LfoShape1);
   LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
   case LfoShape of
     TLfoShape.SawUp,
@@ -627,7 +627,7 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter('LfoShape2');
+  Par := Plugin.Globals.VstParameters.FindParameter(TParName.LfoShape2);
   LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
     case LfoShape of
     TLfoShape.SawUp,
@@ -688,7 +688,7 @@ begin
     end;
   end;
 
-  x1 := Plugin.Globals.VstParameters.FindParameter('StepSeq1Length').ValueVST;
+  x1 := Plugin.Globals.VstParameters.FindParameter(TParName.StepSeq1Length).ValueVST;
   SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
   case SeqLength of
     TStepSequencerLength.Two:     a1 := 2;
@@ -721,7 +721,7 @@ begin
     end;
   end;
 
-  x1 := Plugin.Globals.VstParameters.FindParameter('StepSeq2Length').ValueVST;
+  x1 := Plugin.Globals.VstParameters.FindParameter(TParName.StepSeq2Length).ValueVST;
   SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
   case SeqLength of
     TStepSequencerLength.Two:     a1 := 2;
