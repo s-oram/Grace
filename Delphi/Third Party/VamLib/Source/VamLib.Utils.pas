@@ -15,12 +15,13 @@ function AutoFree(const aObject: PObject): IUnknown;
 function CastToInteger(Value : cardinal):integer;
 function CastToCardinal(Value : integer):cardinal;
 
-
-
 function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
 function Clamp(const Value, MinValue, MaxValue : single):single; overload;
 
 function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
+
+procedure SwapValues(var x1, x2:single); inline; overload;
+procedure SwapValues(var x1, x2:integer); inline; overload;
 
 
 type
@@ -137,5 +138,26 @@ begin
     then result := true
     else result := false;
 end;
+
+procedure SwapValues(var x1, x2:single); inline; overload;
+var
+  tx : single;
+begin
+  tx := x1;
+  x1 := x2;
+  x2 := tx;
+end;
+
+
+procedure SwapValues(var x1, x2:integer); inline; overload;
+var
+  tx : integer;
+begin
+  tx := x1;
+  x1 := x2;
+  x2 := tx;
+end;
+
+
 
 end.

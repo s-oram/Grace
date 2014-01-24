@@ -9,6 +9,8 @@ uses
   uGuiFeedbackData;
 
 type
+  TSampleMarkerSelect = (msMarkersOnly, msWithPreferenceToMarkers, msWithPreferenceToModAmounts);
+
   TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker,
                    smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
 
@@ -86,7 +88,7 @@ type
     procedure Draw_ReplaceMessage;
     procedure Draw_ModPointAreas;
 
-    function IsNearMarker(const PixelPosX, PixelPosY : integer):TSampleMarker;
+    function IsNearMarker(const PixelPosX, PixelPosY : integer; SelectPreference:TSampleMarkerSelect):TSampleMarker;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -195,7 +197,7 @@ begin
   FeedbackData := aFeedbackData;
 end;
 
-function TLuciditySampleOverlay.IsNearMarker(const PixelPosX, PixelPosY: integer): TSampleMarker;
+function TLuciditySampleOverlay.IsNearMarker(const PixelPosX, PixelPosY: integer; SelectPreference:TSampleMarkerSelect): TSampleMarker;
 const
   kTolarance = 6;
   kMarkerOffset = 3;
@@ -209,7 +211,7 @@ begin
   // default result.
   result := smNone;
 
-  if IsModEditActive = true then
+  if SelectPreference <> msMarkersOnly then
   begin
     assert(InRange(SampleStartMod, -1, 1));
     assert(InRange(SampleEndMod, -1, 1));
@@ -305,7 +307,13 @@ begin
   if (Button = mbLeft) and (SampleIsValid) then
   begin
     IsGrabbed := true;
-    GrabbedMode := IsNearMarker(X, Y);
+
+
+    if (IsModEditActive) and (ssAlt in Shift)
+      then GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
+      else GrabbedMode := IsNearMarker(X, Y, msMarkersOnly);
+
+
 
     CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
 
@@ -372,7 +380,9 @@ begin
 
   if (IsGrabbed = false) and (SampleIsValid) then
   begin
-    Marker := IsNearMarker(X, Y);
+    if (IsModEditActive) and (ssAlt in Shift)
+      then Marker := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
+      else Marker := IsNearMarker(X, Y, msMarkersOnly);
 
     case Marker of
       smNone:                  Cursor := crDefault;

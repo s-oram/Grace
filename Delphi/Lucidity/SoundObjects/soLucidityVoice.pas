@@ -520,6 +520,7 @@ begin
   ModMatrix.ZeroAllValues;
   //--------------------------
 
+  OneShotSampleOsc.Init(ParValueData, @self.ParModData);
   FilterOne.Init(0, ParValueData, @self.ParModData);
   FilterTwo.Init(1, ParValueData, @self.ParModData);
   LfoA.Init(0, ParValueData, @self.ParModData);

@@ -19,12 +19,18 @@ type
     OneOverSampleRate : double; //for optimisation purposes.
     VoiceModPoints : PVoiceModulationPoints;
     VoiceClockManager : TLucidityVoiceClockManager;
+
+    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
+    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
+
     procedure SetSampleRate(const Value: single); virtual;
 
     procedure Event_UpdateSampleBounds(const Sender:TObject; const aSampleRegion:IRegion; const SampleBounds:PSampleOsc_SampleBounds);
   public
     constructor Create(const aVoiceModPoints : PVoiceModulationPoints; const aVoiceClockManager : TLucidityVoiceClockManager); virtual;
     destructor Destroy; override;
+
+    procedure Init(const aPars : PModulatedPars; const aModData : PParModulationData);
 
     property SampleRate : single read fSampleRate write SetSampleRate;
     property Tempo      : single read fTempo      write fTempo; //bpm
@@ -33,7 +39,7 @@ type
 implementation
 
 uses
-  eeFunctions;
+  VamLib.Utils;
 
 { TCustomSampleOsc }
 
@@ -48,8 +54,6 @@ begin
 
   inherited;
 end;
-
-
 
 
 procedure TCustomSampleOsc.SetSampleRate(const Value: single);
@@ -67,35 +71,40 @@ var
   SampleStart, SampleEnd : integer;
   LoopStart, LoopEnd : integer;
 
-
   SampleFrames : integer;
-  LimitedSampleFrames : integer;
+
 
   PrevIndex, NextIndex, NearestIndex, FarIndex : integer;
+
+  SampleStartMod, SampleEndMod, LoopStartMod, LoopEndMod : single;
 begin
   RegionProps := aSampleRegion.GetProperties;
 
   SampleFrames        := aSampleRegion.GetSample^.Properties.SampleFrames;
-  LimitedSampleFrames := abs(RegionProps^.SampleStart - RegionProps^.SampleEnd);
+
+  SampleStartMod := ParModData^[TModParIndex.SampleStart];
+  SampleEndMod   := ParModData^[TModParIndex.SampleEnd];
+  LoopStartMod   := ParModData^[TModParIndex.LoopStart];
+  LoopEndMod     := ParModData^[TModParIndex.LoopEnd];
 
   if RegionProps^.SampleStart < RegionProps^.SampleEnd then
   begin
-    SampleX1 := RegionProps^.SampleStart + (VoiceModPoints^.SampleStart * LimitedSampleFrames);
-    SampleX2 := RegionProps^.SampleEnd   + (VoiceModPoints^.SampleEnd   * LimitedSampleFrames);
+    SampleX1 := RegionProps^.SampleStart + (SampleStartMod * SampleFrames);
+    SampleX2 := RegionProps^.SampleEnd   + (SampleEndMod   * SampleFrames);
   end else
   begin
-    SampleX1 := RegionProps^.SampleEnd   + (VoiceModPoints^.SampleStart * LimitedSampleFrames);
-    SampleX2 := RegionProps^.SampleStart + (VoiceModPoints^.SampleEnd   * LimitedSampleFrames);
+    SampleX1 := RegionProps^.SampleEnd   + (SampleEndMod   * SampleFrames);
+    SampleX2 := RegionProps^.SampleStart + (SampleStartMod * SampleFrames);
   end;
 
   if RegionProps^.LoopStart < RegionProps^.LoopEnd then
   begin
-    LoopX1   := RegionProps^.LoopStart + (VoiceModPoints^.LoopStart   * LimitedSampleFrames);
-    LoopX2   := RegionProps^.LoopEnd   + (VoiceModPoints^.LoopEnd     * LimitedSampleFrames);
+    LoopX1 := RegionProps^.LoopStart + (LoopStartMod * SampleFrames);
+    LoopX2 := RegionProps^.LoopEnd   + (LoopEndMod   * SampleFrames);
   end else
   begin
-    LoopX1   := RegionProps^.LoopEnd   + (VoiceModPoints^.LoopStart   * LimitedSampleFrames);
-    LoopX2   := RegionProps^.LoopStart + (VoiceModPoints^.LoopEnd     * LimitedSampleFrames);
+    LoopX1 := RegionProps^.LoopEnd   + (LoopEndMod   * SampleFrames);
+    LoopX2 := RegionProps^.LoopStart + (LoopStartMod * SampleFrames);
   end;
 
   SampleStart := round(SampleX1);
@@ -139,10 +148,10 @@ begin
   if LoopStart < SampleStart then LoopStart := SampleStart;
   if LoopEnd   > SampleEnd   then LoopEnd   := SampleEnd;
 
-  Clamp(SampleStart, 0, SampleFrames-1);
-  Clamp(SampleEnd,   0, SampleFrames-1);
-  Clamp(LoopStart,   0, SampleFrames-1);
-  Clamp(LoopEnd,     0, SampleFrames-1);
+  SampleStart := Clamp(SampleStart, 0, SampleFrames-1);
+  SampleEnd   := Clamp(SampleEnd,   0, SampleFrames-1);
+  LoopStart   := Clamp(LoopStart,   0, SampleFrames-1);
+  LoopEnd     := Clamp(LoopEnd,     0, SampleFrames-1);
 
   SampleBounds^.AbsoluteSampleStart := 0;
   SampleBounds^.AbsoluteSampleEnd   := SampleFrames-1;
@@ -178,6 +187,12 @@ begin
   SampleBounds^.LoopStart   := round(LoopX1);
   SampleBounds^.LoopEnd     := round(LoopX2);
   }
+end;
+
+procedure TCustomSampleOsc.Init(const aPars: PModulatedPars; const aModData: PParModulationData);
+begin
+  ParValueData := aPars;
+  ParModData   := aModData;
 end;
 
 end.
