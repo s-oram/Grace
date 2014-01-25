@@ -218,7 +218,7 @@ begin
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, EventHandle_SampleRateChanged);
 
-  OutputDebugString('SAMPLING ON');
+
 
   TProfiler.Open;
 
@@ -381,7 +381,6 @@ begin
 
   TProfiler.Close;
 
-  OutputDebugString('SAMPLING OFF');
   inherited;
 end;
 

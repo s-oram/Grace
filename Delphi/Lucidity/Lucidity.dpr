@@ -145,6 +145,8 @@ var
 
 function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
+  SendMsg_StartProfiling;
+
   try
     // get vst version
     if audioMaster(nil, audioMasterVersion, 0, 0, nil, 0) = 0 then

@@ -23,3 +23,16 @@ ensures all components and delphi helpers etc are installed and available in the
 Contains machine specific environment settings. Primarily used to update 
 environment variables with correct paths.
 
+
+
+===================================
+profiling
+===================================
+
+soModMatrix is using 20%
+- CalcSummedModulationValue 64%
+- FastControlProcess 34%
+
+
+Total Process Time is 
+5900 cycles.
