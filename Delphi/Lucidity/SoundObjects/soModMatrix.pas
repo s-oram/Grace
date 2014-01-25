@@ -75,7 +75,7 @@ type
 
     //==========================================================================
     // NOTE: These methods are here for debugging purposes.
-    function GetModSourceValue( const aModSource : TModSource):single;
+    function GetModSourceValue( const aModSource : TModSource):single; inline;
     property ModSourceValues_OLD : TModSourceValues read fModSourceValues_OLD; //TODO: Delete
     property ModDestValues_OLD   : TModDestValues   read fModDestValues_OLD;   //TODO: Delete
     //==========================================================================
@@ -233,7 +233,7 @@ end;
 
 
 procedure TModMatrix.FastControlProcess;
-  function CalcSummedModulationValue(ModSlotValues, ModAmountValues : PSingle):single;
+  function CalcSummedModulationValue(ModSlotValues, ModAmountValues : PSingle):single; inline;
   var
     x : single;
     c2: Integer;
@@ -257,6 +257,12 @@ begin
   {$ENDIF}
 
 
+  //TODO: At the moment all modulations are updated at the FastControlRate.
+  // see if some modulations can be updated at slow control rate.
+
+  // TODO: use some assembly.
+
+
 
   // Update the Mod Slot Values
   for c1 := 0 to kModSlotCount-1 do
@@ -277,7 +283,7 @@ begin
   end;
 
 
-
+  {
   //============================================================================
   // TODO: Below is code relating to the OLD mod system. It will probably need to
   // be deleted.
@@ -293,6 +299,7 @@ begin
   end;
 
   //NOTE: important: FastControlProcess should always be called before slow control rate process.
+  }
 end;
 
 
@@ -300,6 +307,7 @@ procedure TModMatrix.SlowControlProcess;
 var
   c1 : integer;
 begin
+  {
   for c1 := 0 to SlowModulationCount-1 do
   begin
     SlowModulations[c1].PDest^ := 0;
@@ -309,6 +317,7 @@ begin
   begin
     CalcModOutput(@SlowModulations[c1]);
   end;
+  }
 end;
 
 procedure TModMatrix.UpdateAllModLinks(const aModConnections: TModConnections_OLD);
