@@ -447,22 +447,6 @@ begin
 
     SaveModulatedParametersToNode(VoiceParNode, sg);
 
-    for c3 := 0 to sg.ModConnections_OLD.ModLinkCount-1 do
-    begin
-      ModLinkState.AssignFrom(sg.ModConnections_OLD.ModLinks[c3]^);
-
-      if (ModLinkState.Source <> TModSource.None) or (ModLinkState.Via <> TModSource.None) then
-      begin
-        ModLinkNode := SampleGroupNode.NodeNew('ModLink');
-
-        SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'UniqueID');
-        SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'Source');
-        SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'Via');
-        SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'Amount');
-        SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'Offset');
-      end;
-    end;
-
     StepSeqNode := SampleGroupNode.NodeNew('StepSeq1');
     for c3 := 0 to kMaxStepSequencerLength-1 do
     begin
@@ -637,66 +621,6 @@ begin
     end;
 
     LoadModulatedParametersFromNode(VoiceParNode, sg);
-
-    ModLinkNodeList.Clear;
-    SampleGroupNode.FindNodes('ModLink', ModLinkNodeList);
-
-    for c3 := 0 to ModLinkNodeList.Count-1 do
-    begin
-      ModLinkNode := ModLinkNodeList[c3];
-
-      ModLinkState.Clear;
-
-      LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'UniqueID');
-      LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Source');
-      LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Via');
-      LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Amount');
-      LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Offset');
-
-      ModLinkState.SanitiseData; //Call sanitiseData() to ensure all parameters are within valid ranges.
-
-      TargetModLink := sg.ModConnections_OLD.FindModLinkByID(ModLinkState.UniqueID);
-
-      if (assigned(TargetModLink)) then
-      begin
-        ModLinkState.AssignTo(TempModLink);
-        TempModLink.Dest := TargetModLink.Dest;
-        sg.ModConnections_OLD.UpdateModLinkByID(TempModLink.UniqueID, @TempModLink);
-      end;
-
-    end;
-
-
-    {
-    for c3 := 0 to ModLinkNodeList.Count-1 do
-    begin
-      ModLinkNode := ModLinkNodeList[c3];
-
-      if ReadNodeValue(ModLinkNode, 'LinkIndex', NodeValue)
-        then Index := DataIO_StrToInt(NodeValue, -1)
-        else Index := -1;
-
-      // NOTE: For readability, Index values begin at 1. There is no '0' index.
-
-      Index := Index-1; //Minus 1 from the index to go back to zero based array indexing.
-
-      //TODO: Load and save mod links.
-      if (Index >= 0) and (Index < kModLinkCount) then
-      begin
-        ModLinkState.Clear;
-
-        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Source');
-        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Dest');
-        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Via');
-        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Amount');
-        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'Offset');
-
-        ModLinkState.AssignTo(TempModLink);
-        sg.VoiceParameters.ModLink[Index] := TempModLink;
-      end;
-
-    end;
-    }
 
     StepSeqNode := SampleGroupNode.FindNode('StepSeq1');
     if assigned(StepSeqNode) then

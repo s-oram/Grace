@@ -150,9 +150,6 @@ type
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aOwningSampleGroup : IKeyGroup);
     destructor Destroy; override;
 
-    procedure UpdateAllModLinks(const Source : TModConnections_OLD);
-    procedure UpdateModLink(const ModLinkData : PModLink_OLD);
-
     procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
 
     procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
@@ -258,29 +255,6 @@ begin
       UpdateAction(@Voices^[c1]);
     end;
   end;
-end;
-
-
-
-
-procedure TLucidityVoiceParameterWrapper.UpdateAllModLinks(const Source: TModConnections_OLD);
-begin
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.UpdateAllModLinks(Source);
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.UpdateModLink(const ModLinkData: PModLink_OLD);
-begin
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.UpdateModLink(ModLinkData);
-    end
-  );
 end;
 
 function TLucidityVoiceParameterWrapper.GetSeq1StepValue(Index: integer): single;

@@ -129,9 +129,6 @@ type
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
 
-    procedure UpdateAllModLinks(const aModConnections : TModConnections_OLD);
-    procedure UpdateModLink(const ModLinkData : PModLink_OLD);
-
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
 
     procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
@@ -417,16 +414,6 @@ end;
 function TLucidityVoice.CalcPitchTransitionTime: single;
 begin
   result := 1 + VoiceGlide * 5000;
-end;
-
-procedure TLucidityVoice.UpdateAllModLinks(const aModConnections: TModConnections_OLD);
-begin
-  ModMatrix.UpdateAllModLinks(aModConnections);
-end;
-
-procedure TLucidityVoice.UpdateModLink(const ModLinkData: PModLink_OLD);
-begin
-  ModMatrix.UpdateModLink(ModLinkData);
 end;
 
 procedure TLucidityVoice.UpdateOscPitch;
