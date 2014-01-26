@@ -42,6 +42,9 @@
 			<Projects Include="Component Tester\ComponentTester.dproj">
 				<Dependencies>Third Party\VamLib\VamLib.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
 			</Projects>
+			<Projects Include="ASM Tester\AsmTester.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -167,14 +170,23 @@
 		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;VamBasicDesXE2:Make;VamBasicRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
+		<Target Name="AsmTester">
+			<MSBuild Projects="ASM Tester\AsmTester.dproj"/>
+		</Target>
+		<Target Name="AsmTester:Clean">
+			<MSBuild Targets="Clean" Projects="ASM Tester\AsmTester.dproj"/>
+		</Target>
+		<Target Name="AsmTester:Make">
+			<MSBuild Targets="Make" Projects="ASM Tester\AsmTester.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;VamLib;DragDropDXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;Lucidity;CodeGen;ComponentTester"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;VamLib;DragDropDXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;Lucidity;CodeGen;ComponentTester;AsmTester"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;VamLib:Clean;DragDropDXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;Lucidity:Clean;CodeGen:Clean;ComponentTester:Clean"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;VamLib:Clean;DragDropDXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;Lucidity:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;VamLib:Make;DragDropDXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;Lucidity:Make;CodeGen:Make;ComponentTester:Make"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;VamLib:Make;DragDropDXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;Lucidity:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

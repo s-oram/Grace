@@ -23,6 +23,10 @@ ensures all components and delphi helpers etc are installed and available in the
 Contains machine specific environment settings. Primarily used to update 
 environment variables with correct paths.
 
+===================================
+Graphics32 uses fixed point math for faster processing. 
+- http://graphics32.org/documentation/Docs/Units/GR32/Types/TFixed.htm
+
 
 
 ===================================
@@ -34,5 +38,4 @@ soModMatrix is using 20%
 - FastControlProcess 34%
 
 
-Total Process Time is 
-5900 cycles.
+Total Process Time is 5900 cycles. 
