@@ -267,7 +267,7 @@ begin
   // Update the Mod Slot Values
   for c1 := 0 to kModSlotCount-1 do
   begin
-    ModSlotValues[c1] := GetModSourceValue(ModConnections^.ModSource[c1]);
+    ModSlotValues[c1] := GetModSourceValue(ModConnections^.GetModSource(c1));
   end;
 
   //TODO: plenty of options for optimisation here.

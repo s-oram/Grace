@@ -282,11 +282,11 @@ begin
     kg := Plugin.ActiveKeyGroup;
     ModConnections := kg.GetModConnections;
 
-    ModSource := ModConnections.ModSource[c1];
+    ModSource := ModConnections.GetModSource(c1);
     ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
     ModSelectors[c1].Text := ModSourceText;
 
-    ModSource := ModConnections.ModVia[c1];
+    ModSource := ModConnections.GetModVia(c1);
     ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
     ModSelectors[c1].TextB := ModSourceText;
   end;
@@ -345,7 +345,10 @@ var
   ModConnections : TModConnections;
 begin
   ModConnections := MenuKeyGroup.GetModConnections;
-  ModConnections.ModSource[MenuModSlot] := aSource;
+
+  //ModConnections.ModSource[MenuModSlot] := aSource;
+  ModConnections.SetModSource(MenuModSlot, aSource);
+
   Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
 end;
 
@@ -354,7 +357,10 @@ var
   ModConnections : TModConnections;
 begin
   ModConnections := MenuKeyGroup.GetModConnections;
-  ModConnections.ModVia[MenuModSlot] := aSource;
+
+  //ModConnections.ModVia[MenuModSlot] := aSource;
+  ModConnections.SetModVia(MenuModSlot, aSource);
+
   Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
 end;
 

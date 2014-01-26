@@ -19,15 +19,24 @@ type
   PModConnections = ^TModConnections;
   TModConnections = class
   private
+    fModSource : array[0..kModSlotCount-1] of TModSource;
+    fModVia    : array[0..kModSlotCount-1] of TModSource;
+
     //TODO: Delete ModLinks. - it's not being used.
     fModLinks: TModLinkArray;
     property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   public
-    ModSource : array[0..kModSlotCount-1] of TModSource;
-    ModVia    : array[0..kModSlotCount-1] of TModSource;
+
 
     constructor Create;
     destructor Destroy; override;
+
+    function GetModSource(const ModSlotIndex : integer) : TModSource;
+    procedure SetModSource(const ModSlotIndex : integer; aSource:TModSource);
+
+    function GetModVia(const ModSlotIndex : integer) : TModSource;
+    procedure SetModVia(const ModSlotIndex : integer; aVia:TModSource);
+
   end;
 
 
@@ -85,13 +94,13 @@ constructor TModConnections.Create;
 begin
   SetLength(fModLinks, kModulatedParameterCount);
 
-  self.ModSource[0] := TModSource.AmpEnv;
-  self.ModSource[1] := TModSource.FilterEnv;
-  self.ModSource[2] := TModSource.Lfo1;
-  self.ModSource[3] := TModSource.Lfo2;
-  self.ModSource[4] := TModSource.StepSeq1;
-  self.ModSource[5] := TModSource.StepSeq2;
-  self.ModSource[6] := TModSource.Midi_ModWheel;
+  self.fModSource[0] := TModSource.AmpEnv;
+  self.fModSource[1] := TModSource.FilterEnv;
+  self.fModSource[2] := TModSource.Lfo1;
+  self.fModSource[3] := TModSource.Lfo2;
+  self.fModSource[4] := TModSource.StepSeq1;
+  self.fModSource[5] := TModSource.StepSeq2;
+  self.fModSource[6] := TModSource.Midi_ModWheel;
   //self.ModSource[7] := TModSource.Midi_Velocity; //TODO Add velocity as a mod source.
 end;
 
@@ -101,6 +110,26 @@ begin
   inherited;
 end;
 
+
+function TModConnections.GetModSource(const ModSlotIndex: integer): TModSource;
+begin
+  result := fModSource[ModSlotIndex];
+end;
+
+function TModConnections.GetModVia(const ModSlotIndex: integer): TModSource;
+begin
+  result := fModVia[ModSlotIndex]
+end;
+
+procedure TModConnections.SetModSource(const ModSlotIndex: integer; aSource: TModSource);
+begin
+  fModSource[ModSlotIndex] := aSource;
+end;
+
+procedure TModConnections.SetModVia(const ModSlotIndex: integer; aVia: TModSource);
+begin
+  fModVia[ModSlotIndex] := aVia;
+end;
 
 { TModLink_OLD }
 
