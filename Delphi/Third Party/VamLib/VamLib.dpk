@@ -39,6 +39,7 @@ contains
   VamLib.Graphics in 'Source\VamLib.Graphics.pas',
   VamLib.Debouncer in 'Source\VamLib.Debouncer.pas',
   VamLib.Threads in 'Source\VamLib.Threads.pas',
-  VamLib.Collections.Lists in 'Source\VamLib.Collections.Lists.pas';
+  VamLib.Collections.Lists in 'Source\VamLib.Collections.Lists.pas',
+  VamLib.PerformanceTuning in 'Source\VamLib.PerformanceTuning.pas';
 
 end.
