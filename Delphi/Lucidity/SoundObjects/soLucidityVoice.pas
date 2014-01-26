@@ -504,6 +504,7 @@ begin
 
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
+  ModMatrix.UpdateModConnections;
   ModMatrix.ZeroAllValues;
   //--------------------------
 

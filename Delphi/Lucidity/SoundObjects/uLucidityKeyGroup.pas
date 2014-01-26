@@ -47,6 +47,8 @@ type
 
     //TODO: Delete this.
     property SampleMap : TSampleMap read fSampleMap write fSampleMap;
+
+    procedure Handle_ModConnectionsChanged(Sender : TObject);
   public
     ModulatedParameters: TModulatedPars;
 
@@ -83,12 +85,13 @@ constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalM
 var
   c1: Integer;
 begin
-  fModConnections := TModConnections.Create;
-
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
 
   Voices := aVoices;
+
+  fModConnections := TModConnections.Create;
+  fModConnections.OnChanged := Handle_ModConnectionsChanged;
 
   fVoiceParameters := TLucidityVoiceParameterWrapper.Create(aVoices, self);
 
@@ -330,5 +333,13 @@ function TKeyGroup.GetObject: TObject;
 begin
   result := self;
 end;
+
+procedure TKeyGroup.Handle_ModConnectionsChanged(Sender: TObject);
+begin
+  if assigned(fVoiceParameters)
+    then fVoiceParameters.UpdateModConnections;
+end;
+
+
 
 end.

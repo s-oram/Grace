@@ -3,6 +3,7 @@ unit LucidityModConnections;
 interface
 
 uses
+  Classes,
   VamLib.Collections.Lists,
   VamLib.MoreTypes,
   uConstants, uLucidityEnums;
@@ -24,10 +25,9 @@ type
 
     //TODO: Delete ModLinks. - it's not being used.
     fModLinks: TModLinkArray;
+    fOnChanged: TNotifyEvent;
     property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   public
-
-
     constructor Create;
     destructor Destroy; override;
 
@@ -37,6 +37,7 @@ type
     function GetModVia(const ModSlotIndex : integer) : TModSource;
     procedure SetModVia(const ModSlotIndex : integer; aVia:TModSource);
 
+    property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
   end;
 
 
@@ -124,11 +125,13 @@ end;
 procedure TModConnections.SetModSource(const ModSlotIndex: integer; aSource: TModSource);
 begin
   fModSource[ModSlotIndex] := aSource;
+  if assigned(OnChanged) then OnChanged(self);
 end;
 
 procedure TModConnections.SetModVia(const ModSlotIndex: integer; aVia: TModSource);
 begin
   fModVia[ModSlotIndex] := aVia;
+  if assigned(OnChanged) then OnChanged(self);
 end;
 
 { TModLink_OLD }

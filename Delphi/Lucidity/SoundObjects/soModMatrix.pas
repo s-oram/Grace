@@ -36,13 +36,17 @@ type
     fStepSeq1ClockSource: TClockSource;
     fModCheck: single;
     fStepSeq2ClockSource: TClockSource;
+
+    SourceNoneValue : single;
+    ViaNoneValue    : single;
   protected
     type
       TModLinkState = (Inactive, FastMod, SlowMod);
     var
     FakeDest, FakeSource : single;
 
-    fModSourceValues_OLD : TModSourceValues;
+
+    fModSourceValues : TModSourceValues;
     fModDestValues_OLD   : TModDestValues;
 
     ModSourceCount : integer;
@@ -59,6 +63,8 @@ type
     ModConnections: PModConnections;
 
     ModSlotValues : array[0..kModSlotCount-1] of single;
+    ModSlotSourcePointers : array[0..kModSlotCount-1] of psingle;
+    ModSlotViaPointers    : array[0..kModSlotCount-1] of psingle;
 
     function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
@@ -70,13 +76,11 @@ type
 
     procedure Init(const aParValueData : PModulatedPars; const aParModData : PParModulationData; const aModConnections : PModConnections);
 
-    procedure UpdateAllModLinks(const aModConnections : TModConnections_OLD);
-    procedure UpdateModLink(const ModLinkData : PModLink_OLD);
+    procedure UpdateModConnections;
 
     //==========================================================================
     // NOTE: These methods are here for debugging purposes.
-    function GetModSourceValue( const aModSource : TModSource):single; inline;
-    property ModSourceValues_OLD : TModSourceValues read fModSourceValues_OLD; //TODO: Delete
+    property ModSourceValues : TModSourceValues read fModSourceValues;
     property ModDestValues_OLD   : TModDestValues   read fModDestValues_OLD;   //TODO: Delete
     //==========================================================================
 
@@ -124,11 +128,14 @@ constructor TModMatrix.Create;
 var
   c1: Integer;
 begin
+  SourceNoneValue := 0;
+  ViaNoneValue := 1;
+
   //==== Modulation Sources and Destinations =====
   ModSourceCount := TModSourceHelper.GetEnumTypeCount;
   ModDestCount   := TModDestHelper.GetEnumTypeCount;
 
-  SetLength(fModSourceValues_OLD, TModSourceHelper.GetEnumTypeCount);
+  SetLength(fModSourceValues, TModSourceHelper.GetEnumTypeCount);
   SetLength(fModDestValues_OLD, TModDestHelper.GetEnumTypeCount);
 
   // NOTE:
@@ -140,7 +147,7 @@ begin
 
   for c1 := 0 to ModSourceCount-1 do
   begin
-    fModSourceValues_OLD[c1] := @FakeSource;
+    fModSourceValues[c1] := @FakeSource;
   end;
 
   for c1 := 0 to ModDestCount-1 do
@@ -151,18 +158,13 @@ end;
 
 destructor TModMatrix.Destroy;
 begin
-  SetLength(fModSourceValues_OLD, 0);
+  SetLength(fModSourceValues, 0);
   SetLength(fModDestValues_OLD, 0);
 
   SetLength(FastModulations, 0);
   SetLength(SlowModulations, 0);
 
   inherited;
-end;
-
-function TModMatrix.GetModSourceValue(const aModSource: TModSource): single;
-begin
-  result := fModSourceValues_OLD[Integer(aModSource)]^;
 end;
 
 procedure TModMatrix.Init(const aParValueData: PModulatedPars; const aParModData: PParModulationData; const aModConnections: PModConnections);
@@ -188,7 +190,7 @@ end;
 
 procedure TModMatrix.SetModSourcePointer(const aModSource: TModSource; const Source: PSingle);
 begin
-  fModSourceValues_OLD[Integer(aModSource)] := Source;
+  fModSourceValues[Integer(aModSource)] := Source;
 end;
 
 procedure TModMatrix.ZeroAllValues;
@@ -197,7 +199,7 @@ var
 begin
   for c1 := 0 to ModSourceCount-1 do
   begin
-    fModSourceValues_OLD[c1]^ := 0;
+    fModSourceValues[c1]^ := 0;
   end;
 
   for c1 := 0 to ModDestCount-1 do
@@ -267,8 +269,9 @@ begin
   // Update the Mod Slot Values
   for c1 := 0 to kModSlotCount-1 do
   begin
-    ModSlotValues[c1] := GetModSourceValue(ModConnections^.GetModSource(c1));
+    ModSlotValues[c1] := ModSlotSourcePointers[c1]^ * ModSlotViaPointers[c1]^;
   end;
+
 
   //TODO: plenty of options for optimisation here.
   // - is the parameter being modulated?
@@ -318,109 +321,6 @@ begin
     CalcModOutput(@SlowModulations[c1]);
   end;
   }
-end;
-
-procedure TModMatrix.UpdateAllModLinks(const aModConnections: TModConnections_OLD);
-var
-  c1: Integer;
-  Link : PModLink_OLD;
-  PrivateLink : PPrivateModLink;
-begin
-  //TODO: this is an excessive use of memory. It's unlikely that
-  // FastModulations will ever need to be close to the same size a aModConnetions.ModLink
-  SetLength(FastModulations, aModConnections.ModLinkCount);
-  SetLength(SlowModulations, aModConnections.ModLinkCount);
-
-  //TODO: Currently UpadeModConnections operates on live data. (It is being used
-  // by an active voice. It might be necessary to buffer the data and swap buffers
-  // when the new buffer is ready.
-
-  //Zero all mod destinations before updating internal links.
-  for c1 := 0 to ModDestCount-1 do
-  begin
-    fModDestValues_OLD[c1]^ := 0;
-  end;
-
-  FastModulationCount := 0;
-  SlowModulationCount := 0;
-
-  // sort the variable modulations...
-  for c1 := 0 to aModConnections.ModLinkCount-1 do
-  begin
-    //Link := @ModLinkArray[c1];
-    Link := aModConnections.ModLinks[c1];
-    case GetModLinkState(Link) of
-      TModLinkState.Inactive:
-      begin
-        //do nothing
-      end;
-
-      TModLinkState.FastMod:
-      begin
-        FastModulations[FastModulationCount].AssignFrom(Link^);
-        inc(FastModulationCount);
-      end;
-
-      TModLinkState.SlowMod:
-      begin
-        SlowModulations[SlowModulationCount].AssignFrom(Link^);
-        inc(SlowModulationCount);
-      end;
-    else
-      raise Exception.Create('Mod link state not handled.');
-    end;
-  end;
-
-
-  //=== Now pre-compute the some modulation variables ====
-  for c1 := 0 to FastModulationCount-1 do
-  begin
-    PrivateLink := @FastModulations[c1];
-    FastModulations[c1].PSource := fModSourceValues_OLD[Integer(PrivateLink^.Source)];
-    FastModulations[c1].PDest   := fModDestValues_OLD[Integer(PrivateLink^.Dest)];
-    FastModulations[c1].PVia    := fModSourceValues_OLD[Integer(PrivateLink^.Via)];
-    FastModulations[c1].Offset  := CalcModOffset(PrivateLink);
-  end;
-
-  for c1 := 0 to SlowModulationCount-1 do
-  begin
-    PrivateLink := @SlowModulations[c1];
-    SlowModulations[c1].PSource := fModSourceValues_OLD[Integer(PrivateLink^.Source)];
-    SlowModulations[c1].PDest   := fModDestValues_OLD[Integer(PrivateLink^.Dest)];
-    SlowModulations[c1].PVia    := fModSourceValues_OLD[Integer(PrivateLink^.Via)];
-    SlowModulations[c1].Offset  := CalcModOffset(PrivateLink);
-  end;
-
-end;
-
-procedure TModMatrix.UpdateModLink(const ModLinkData: PModLink_OLD);
-var
-  c1 : integer;
-begin
-  // NOTE: Update modlink only updates the MOD depth.
-  // if the mod source, dest or via has changed, then a full update
-  // is required.
-  for c1 := 0 to FastModulationCount-1 do
-  begin
-    if (FastModulations[c1].UniqueID = ModLinkData^.UniqueID) then
-    begin
-      FastModulations[c1].Amount := ModLinkData^.Amount;
-      assert(FastModulations[c1].Dest   = ModLinkData^.Dest);
-      assert(FastModulations[c1].Via    = ModLinkData^.Via);
-      assert(FastModulations[c1].Source = ModLinkData^.Source);
-    end;
-  end;
-
-  for c1 := 0 to SlowModulationCount-1 do
-  begin
-    if (SlowModulations[c1].UniqueID = ModLinkData^.UniqueID) then
-    begin
-      SlowModulations[c1].Amount := ModLinkData^.Amount;
-      assert(SlowModulations[c1].Dest   = ModLinkData^.Dest);
-      assert(SlowModulations[c1].Via    = ModLinkData^.Via);
-      assert(SlowModulations[c1].Source = ModLinkData^.Source);
-    end;
-  end;
 end;
 
 function TModMatrix.GetModLinkState(aModLink: PModLink_OLD): TModLinkState;
@@ -480,7 +380,7 @@ begin
     // will need to be updated once the Midi_note range is updated.
     if TModSourceHelper.ToEnum(c1) <> TModsource.Midi_Note then
     begin
-      x := fModSourceValues_OLD[c1]^;
+      x := fModSourceValues[c1]^;
       if InRange(x, 0, 1) = false then
       begin
         s := TModSourceHelper.ToString(c1);
@@ -547,6 +447,26 @@ begin
 end;
 
 
+
+procedure TModMatrix.UpdateModConnections;
+var
+  c1: Integer;
+  aModSource : TModSource;
+begin
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    aModSource := self.ModConnections^.GetModSource(c1);
+    if aModSource <> TModSource.None
+      then ModSlotSourcePointers[c1] := fModSourceValues[Integer(aModSource)]
+      else ModSlotSourcePointers[c1] := @SourceNoneValue;
+
+    aModSource := self.ModConnections^.GetModSource(c1);
+    if aModSource <> TModSource.None
+      then ModSlotViaPointers[c1] := fModSourceValues[Integer(aModSource)]
+      else ModSlotViaPointers[c1] := @ViaNoneValue;
+  end;
+
+end;
 
 
 
