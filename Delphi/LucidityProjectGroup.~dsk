@@ -16,29 +16,36 @@ File_13=TSourceModule,'S:\Delphi\Lucidity\eePluginParameterWizard.pas',0,1,1,29,
 File_14=TSourceModule,'S:\Delphi\Lucidity\ParNames.inc',0,1,1,3,2,0,0,,
 
 [Modules]
-Module0=S:\Delphi\ASM Tester\uAsmTest.pas
-Module1=S:\Delphi\Lucidity\Lucidity.dproj
-Module2=S:\Delphi\ASM Tester\AsmTester.dproj
-Count=3
+Module0=S:\Delphi\Third Party\VamLib\Source\VamLib.PerformanceTuning.pas
+Module1=S:\Delphi\ASM Tester\AsmTester.dproj
+Module2=S:\Delphi\Lucidity\Lucidity.dproj
+Module3=S:\Delphi\ASM Tester\uAsmTest.pas
+Count=4
 EditWindowCount=1
+
+[S:\Delphi\Third Party\VamLib\Source\VamLib.PerformanceTuning.pas]
+ModuleType=TSourceModule
+FormState=0
+FormOnTop=0
+
+[S:\Delphi\ASM Tester\AsmTester.dproj]
+ModuleType=TBaseProject
+
+[S:\Delphi\Lucidity\Lucidity.dproj]
+ModuleType=TBaseProject
 
 [S:\Delphi\ASM Tester\uAsmTest.pas]
 ModuleType=TSourceModule
 FormState=0
 FormOnTop=0
 
-[S:\Delphi\Lucidity\Lucidity.dproj]
-ModuleType=TBaseProject
-
-[S:\Delphi\ASM Tester\AsmTester.dproj]
-ModuleType=TBaseProject
-
 [EditWindow0]
-ViewCount=3
-CurrentEditView=S:\Delphi\ASM Tester\uAsmTest.pas
+ViewCount=4
+CurrentEditView=S:\Delphi\Third Party\VamLib\Source\VamLib.PerformanceTuning.pas
 View0=0
 View1=1
 View2=2
+View3=3
 PercentageSizes=1
 Create=1
 Visible=1
@@ -46,18 +53,18 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=8849
-Height=7648
+Width=10000
+Height=9276
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=8849
-ClientHeight=7648
+ClientWidth=10000
+ClientHeight=9276
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=0
+LeftPanelSize=1896
 LeftPanelClients=PropertyInspector,DockSite3
-LeftPanelData=000008000101020000001100000050726F7065727479496E73706563746F7209000000446F636B53697465337E13000000000000016807000000000000FFFFFFFF
+LeftPanelData=000008000101010000001100000050726F7065727479496E73706563746F72D11300000000000001680700000000000001000000003B23000009000000446F636B5369746533FFFFFFFF
 RightPanelSize=0
 RightPanelClients=DockSite2,DockSite4
 RightPanelData=0000080001010200000009000000446F636B536974653209000000446F636B5369746534EB0C00000000000001D007000000000000FFFFFFFF
@@ -66,7 +73,7 @@ BottomPanelClients=DockSite1
 BottomPanelData=0000080001000100000009000000446F636B5369746531724500000000000000F805000000000000FFFFFFFF
 BottomMiddlePanelSize=1583
 BottomMiddlePanelClients=DockSite0,MessageView
-BottomMiddelPanelData=0000080001010100000009000000446F636B53697465307B0300000000000001912200000000000001000000002F0600000F0000004D65737361676556696577466F726DFFFFFFFF
+BottomMiddelPanelData=0000080001010100000009000000446F636B53697465307B0300000000000001991F00000000000001000000002F0600000F0000004D65737361676556696577466F726DFFFFFFFF
 
 [View0]
 CustomEditViewType=TEditView
@@ -92,8 +99,19 @@ EditViewName=S:\Delphi\ASM Tester\AsmTester.dpr
 
 [View2]
 CustomEditViewType=TEditView
+Module=S:\Delphi\Third Party\VamLib\Source\VamLib.PerformanceTuning.pas
+CursorX=30
+CursorY=6
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=S:\Delphi\Third Party\VamLib\Source\VamLib.PerformanceTuning.pas
+
+[View3]
+CustomEditViewType=TEditView
 Module=S:\Delphi\ASM Tester\uAsmTest.pas
-CursorX=88
+CursorX=55
 CursorY=30
 TopLine=1
 LeftCol=1
@@ -145,16 +163,18 @@ PercentageSizes=1
 Create=1
 Visible=1
 Docked=0
-State=0
+State=2
 Left=1198
 Top=1019
 Width=8932
 Height=8524
 MaxLeft=-5
 MaxTop=-10
-ClientWidth=8849
-ClientHeight=8162
-BottomPanelSize=7435
+MaxWidth=8932
+MaxHeight=8524
+ClientWidth=10000
+ClientHeight=9790
+BottomPanelSize=9019
 BottomPanelClients=EditWindow0
 BottomPanelData=0000080000000000000000000000000000000000000000000000000100000000000000000C0000004564697457696E646F775F30FFFFFFFF
 
@@ -167,11 +187,11 @@ State=0
 Left=0
 Top=0
 Width=1896
-Height=8800
+Height=8819
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
-ClientHeight=8800
+ClientHeight=8819
 TBDockHeight=5895
 LRDockWidth=2349
 Dockable=1
@@ -185,11 +205,11 @@ Docked=1
 State=0
 Left=0
 Top=23
-Width=8849
+Width=8089
 Height=1410
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=8849
+ClientWidth=8089
 ClientHeight=1410
 TBDockHeight=1410
 LRDockWidth=2771
@@ -215,7 +235,7 @@ LRDockWidth=2000
 Dockable=1
 StayOnTop=0
 
-[PropertyInspector]
+[Disassembly]
 PercentageSizes=1
 Create=1
 Visible=0
@@ -223,6 +243,25 @@ Docked=1
 State=0
 Left=0
 Top=0
+Width=2000
+Height=7057
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=2000
+ClientHeight=7057
+TBDockHeight=4010
+LRDockWidth=3333
+Dockable=1
+StayOnTop=0
+
+[PropertyInspector]
+PercentageSizes=1
+Create=1
+Visible=0
+Docked=1
+State=0
+Left=118
+Top=454
 Width=1896
 Height=5276
 MaxLeft=-1
@@ -241,8 +280,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-1937
-Top=-193
+Left=-1802
+Top=-10
 Width=2844
 Height=6210
 MaxLeft=-1
@@ -260,8 +299,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-1937
-Top=-193
+Left=-1920
+Top=296
 Width=276
 Height=362
 MaxLeft=-1
@@ -465,8 +504,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-238
-Top=-193
+Left=0
+Top=-76
 Width=1844
 Height=3143
 MaxLeft=-1
@@ -825,7 +864,7 @@ Visible=0
 Docked=1
 State=0
 Left=0
-Top=0
+Top=23
 Width=3823
 Height=1352
 MaxLeft=-1
@@ -849,7 +888,7 @@ Visible=0
 Docked=1
 State=0
 Left=0
-Top=0
+Top=23
 Width=2000
 Height=7057
 MaxLeft=-1
@@ -862,24 +901,24 @@ Dockable=1
 StayOnTop=0
 TabPosition=1
 ActiveTabID=ModelViewTool
-TabDockClients=ModelViewTool,DataExplorer,TFileExplorerForm
+TabDockClients=ModelViewTool,DataExplorer,TFileExplorerForm,Disassembly
 
 [DockSite3]
 HostDockSite=DockLeftPanel
 DockSiteType=1
 PercentageSizes=1
 Create=1
-Visible=0
+Visible=1
 Docked=1
 State=0
 Left=0
-Top=0
+Top=23
 Width=1896
-Height=9038
+Height=9057
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
-ClientHeight=9038
+ClientHeight=9057
 TBDockHeight=9038
 LRDockWidth=1896
 Dockable=1
@@ -913,5 +952,5 @@ ActiveTabID=ToolForm
 TabDockClients=ToolForm,TemplateView
 
 [ActiveProject]
-ActiveProject=14
+ActiveProject=3
 

@@ -1,6 +1,6 @@
 [TMainForm]
 FormVersion=0
-FEProcess_FileName=D:\Audio\Apps\energyXT\sa 1.4 b16\energyXT.exe
+FEProcess_FileName=D:\Audio\Apps\Vst Performance Test Host\VstPerformanceHost.exe
 RBSampleDelayed_Checked=False
 RBSampleImmediate_Checked=False
 RBSampleLimited_Checked=False
@@ -26,6 +26,6 @@ SESytemCPUUsage_Value=50
 CBMonitorEnabled_Checked=False
 SEMonitorPort_Value=880
 SEMonitorRefresh_Value=2
-SamplingProfilerAffinity=0
-ApplicationAffinity=0
+SamplingProfilerAffinity=65535
+ApplicationAffinity=65535
 Version=6
