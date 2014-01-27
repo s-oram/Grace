@@ -130,28 +130,34 @@ begin
   result := x;
 end;
 
+//TODO: need to write x64 bit asm version of this function.
 function CalcSummedModulationValue_asm2(ModSlotValues, ModAmountValues : PSingle):single;
-var
-  x : array[0..7] of single;
 asm
-  movups XMM0,[eax]
+  movups XMM0,[eax]     //Move 8 ModSlotValues to first 2 sse registers.
   movups XMM1,[eax+$10]
 
-  movups XMM2,[edx]
+  movups XMM2,[edx]     //Move 8 ModAmountValues to the next 2 sse registers.
   movups XMM3,[edx+$10]
 
-
-  mulps XMM0, XMM2
+  mulps XMM0, XMM2      // multiply the 8 ModSlotValues with their respective ModAmountValues
   mulps XMM1, XMM3
 
-  addps XMM0, XMM1
+  addps XMM0, XMM1     // sum the results so we have 4 single values.
 
-  movups [ebp-$10],XMM0
+  //TODO: there may be an oppertunity for
+  // further optisation here by using an horizontal add function.
 
-  fld dword [[ebp-$10]]
-  fadd dword [[ebp-$0C]]
-  fadd dword [[ebp-$08]]
-  fadd dword [[ebp-$04]]
+  sub esp, 16
+  movdqu dqword [esp], xmm0
+
+  //sum the 4 single values so we can finish with 1 number for the result.
+
+  fld dword [[esp]]
+  fadd dword [[esp+$04]]
+  fadd dword [[esp+$08]]
+  fadd dword [[esp+$0C]]
+
+  add esp, 16
 end;
 
 { TPrivateModLink }
@@ -328,10 +334,8 @@ begin
   // +++ make sure to bench mark +++
   for c1 := 0 to kModulatedParameterCount-1 do
   begin
-    y := CalcSummedModulationValue_asm2(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
-    if y <> 0
-      then ParModData^[c1] := y
-      else ParModData^[c1] := 0;
+    //ParModData^[c1] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
+    ParModData^[c1] := CalcSummedModulationValue_asm2(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
   end;
 end;
 

@@ -181,8 +181,6 @@ pop ebp
 end;
 
 function CalcSummedModulationValue_asm2(ModSlotValues, ModAmountValues : PSingle):single;
-var
-  x : array[0..7] of single;
 asm
   movups XMM0,[eax]
   movups XMM1,[eax+$10]
@@ -196,12 +194,18 @@ asm
 
   addps XMM0, XMM1
 
-  movups [ebp-$10],XMM0
+  //movups [ebp-$10],XMM0
 
-  fld dword [[ebp-$10]]
-  fadd dword [[ebp-$0C]]
-  fadd dword [[ebp-$08]]
-  fadd dword [[ebp-$04]]
+  sub esp, 16
+  //movups dqword [esp], xmm0
+  movdqu dqword [esp], xmm0
+
+  fld dword [[esp]]
+  fadd dword [[esp+$04]]
+  fadd dword [[esp+$08]]
+  fadd dword [[esp+$0C]]
+
+  add esp, 16
 
   //NOTE: This function doesn't work. It ends up cause access violations.
 end;
@@ -249,7 +253,7 @@ begin
   WriteLn('====');
 
   //WriteLn(CalcPerformanceDifference(WorkA, WorkB, Reset));
-  //WorkB;
+  WorkB;
 
   WriteLn('====');
 
@@ -285,15 +289,9 @@ begin
   WriteLn('====');
 
   x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
   WriteLn(FloatToStr(x1));
 
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
-  WriteLn(FloatToStr(x1));
-
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
+  x1 := CalcSummedModulationValue_asm2(@d1[0], @d2[0]);
   WriteLn(FloatToStr(x1));
 
 
