@@ -964,8 +964,6 @@ begin
 
   TitlePanel.Height      := 28;
   MainMenuBar.Height     := 28;
-  SampleMapDiv.Height    := 258;  //Same height as TabPanel
-  //MainTop.Height         := 118;
   MainTop.Height         := 208;
   VoiceControlDiv.Height := 80;
   MainMid.Height         := 322;
@@ -974,27 +972,35 @@ begin
   InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
 
+  //SampleMapDiv.Height    := 258;
+  SampleMapDiv.Height    := 476;
+
   if IsSampleMapVisible = true then
   begin
-    SampleMapDiv.Visible  := true;
-    TabPanel.Visible      := false;
-    ModSystem2Div.Visible := false;
-    SpacerPanel1.Visible  := false;
+    SampleMapDiv.Visible    := true;
+    VoiceControlDiv.Visible := false;
+    MainMid.Visible         := false;
+    TabPanel.Visible        := false;
+    ModSystem2Div.Visible   := false;
+    SpacerPanel1.Visible    := false;
+
 
     MainMenuBar.Top := 1;
     MainMenuBar.Left := 1;
     Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(MainTop, SampleMapDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(SampleMapDiv, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(MainMid, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
+    //Erector.Init(SampleMapDiv, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
+    //Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(SampleMapDiv, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
 
   end else
   begin
-    SampleMapDiv.Visible  := false;
-    TabPanel.Visible      := true;
-    ModSystem2Div.Visible := true;
-    SpacerPanel1.Visible  := false;
+    SampleMapDiv.Visible    := false;
+    VoiceControlDiv.Visible := true;
+    MainMid.Visible         := true;
+    TabPanel.Visible        := true;
+    ModSystem2Div.Visible   := true;
+    SpacerPanel1.Visible    := false;
 
     MainMenuBar.Top := 1;
     MainMenuBar.Left := 1;
