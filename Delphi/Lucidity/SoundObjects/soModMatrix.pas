@@ -55,6 +55,7 @@ type
     function AreModSourceValuesInRange:boolean;
 
     function IsParameterModulated(ModParIndex : integer):boolean;
+    function DoesParameterRequireFastModulation(ModParIndex : integer):boolean;
   protected
 
   public
@@ -268,18 +269,7 @@ begin
     ModSlotValues[c1] := ModSlotSourcePointers[c1]^ * ModSlotViaPointers[c1]^;
   end;
 
-
-  {
-  //TODO: plenty of options for optimisation here.
-  // - is the parameter being modulated?
-  // - is the parameter a fast or slow target?
-  // +++ make sure to bench mark +++
-  for c1 := 0 to kModulatedParameterCount-1 do
-  begin
-    ParModData^[c1] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
-  end;
-  }
-
+  // calc the modulation for each modulated parameter.
   for c1 := 0 to FastModulationCount-1 do
   begin
     Index := FastModulationIndexes[c1];
@@ -288,23 +278,17 @@ begin
 
 end;
 
-
-
 procedure TModMatrix.SlowControlProcess;
 var
   c1 : integer;
+  Index : integer;
 begin
-  {
+  // calc the modulation for each modulated parameter.
   for c1 := 0 to SlowModulationCount-1 do
   begin
-    SlowModulations[c1].PDest^ := 0;
+    Index := SlowModulationIndexes[c1];
+    ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
   end;
-
-  for c1 := 0 to SlowModulationCount-1 do
-  begin
-    CalcModOutput(@SlowModulations[c1]);
-  end;
-  }
 end;
 
 function TModMatrix.GetModLinkState(aModLink: PModLink_OLD): TModLinkState;
@@ -408,13 +392,19 @@ begin
   begin
     if IsParameterModulated(c1) then
     begin
-      Index := FastModulationCount;
-      FastModulationIndexes[Index] := c1;
-      inc(FastModulationCount);
+      if DoesParameterRequireFastModulation(c1) then
+      begin
+        Index := FastModulationCount;
+        FastModulationIndexes[Index] := c1;
+        inc(FastModulationCount);
+      end else
+      begin
+        Index := SlowModulationCount;
+        SlowModulationIndexes[Index] := c1;
+        inc(SlowModulationCount);
+      end;
     end;
   end;
-
-
 end;
 
 function TModMatrix.IsParameterModulated(ModParIndex: integer): boolean;
@@ -432,6 +422,26 @@ begin
     then result := false
     else result := true;
 
+end;
+
+function TModMatrix.DoesParameterRequireFastModulation(ModParIndex: integer): boolean;
+begin
+  case ModParIndex of
+    TModParIndex.OutputGain,
+    TModParIndex.OutputPan,
+    TModParIndex.VoicePitchOne,
+    TModParIndex.VoicePitchTwo,
+    TModParIndex.Filter1Par1,
+    TModParIndex.Filter1Par2,
+    TModParIndex.Filter1Par3,
+    TModParIndex.Filter1Par4,
+    TModParIndex.Filter2Par1,
+    TModParIndex.Filter2Par2,
+    TModParIndex.Filter2Par3,
+    TModParIndex.Filter2Par4: result := true
+  else
+    result := false;
+  end;
 end;
 
 
