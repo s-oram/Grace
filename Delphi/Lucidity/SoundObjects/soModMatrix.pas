@@ -37,11 +37,11 @@ type
     ModSourceCount : integer;
     ModDestCount   : integer;
 
-    FastModulations : array[0..kModulatedParameterCount-1] of integer;
-    SlowModulations : array[0..kModulatedParameterCount-1] of integer;
-
     FastModulationCount : integer;
     SlowModulationCount : integer;
+
+    FastModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
+    SlowModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
 
     ParValueData: PModulatedPars;
     ParModData: PParModulationData;
@@ -53,6 +53,8 @@ type
 
     function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     function AreModSourceValuesInRange:boolean;
+
+    function IsParameterModulated(ModParIndex : integer):boolean;
   protected
 
   public
@@ -94,24 +96,8 @@ uses
 type
   EModMatrixException = Exception;
 
-function CalcSummedModulationValue(ModSlotValues, ModAmountValues : PSingle):single;
-var
-  x : single;
-  c2: Integer;
-begin
-  //TODO: this probably can be optimised. It would be a good candiate for a SSE vector operation.
-  x := 0;
-  for c2 := 0 to kModSlotCount-1 do
-  begin
-    x := x + ModSlotValues^ * ModAmountValues^;
-    inc(ModSlotValues);
-    inc(ModAmountValues);
-  end;
-  result := x;
-end;
-
 //TODO: need to write x64 bit asm version of this function.
-function CalcSummedModulationValue_asm2(ModSlotValues, ModAmountValues : PSingle):single;
+function CalcSummedModulationValue(ModSlotValues, ModAmountValues : PSingle):single;
 {$IF Defined(UseASM) and Defined(CPUX64)}
 asm
   movups XMM0,[rcx]
@@ -270,6 +256,7 @@ procedure TModMatrix.FastControlProcess;
 var
   c1 : integer;
   y : single;
+  Index : integer;
 begin
   {$IFDEF StrictDebugChecks}
   AreModSourceValuesInRange; //Expensive!!
@@ -282,17 +269,22 @@ begin
   end;
 
 
-
+  {
   //TODO: plenty of options for optimisation here.
   // - is the parameter being modulated?
   // - is the parameter a fast or slow target?
   // +++ make sure to bench mark +++
   for c1 := 0 to kModulatedParameterCount-1 do
   begin
-    //ParModData^[c1] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
-    ParModData^[c1] := CalcSummedModulationValue_asm2(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
+    ParModData^[c1] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
   end;
+  }
 
+  for c1 := 0 to FastModulationCount-1 do
+  begin
+    Index := FastModulationIndexes[c1];
+    ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
+  end;
 
 end;
 
@@ -389,7 +381,10 @@ procedure TModMatrix.UpdateModConnections;
 var
   c1: Integer;
   aModSource : TModSource;
+  Index : integer;
 begin
+
+  // Update mod source pointers...
   for c1 := 0 to kModSlotCount-1 do
   begin
     aModSource := self.ModConnections^.GetModSource(c1);
@@ -402,6 +397,40 @@ begin
       then ModSlotViaPointers[c1] := fModSourceValues[Integer(aModSource)]
       else ModSlotViaPointers[c1] := @ViaNoneValue;
   end;
+
+
+
+  // update modulated parameters
+  FastModulationCount := 0;
+  SlowModulationCount := 0;
+
+  for c1 := 0 to kModulatedParameterCount-1 do
+  begin
+    if IsParameterModulated(c1) then
+    begin
+      Index := FastModulationCount;
+      FastModulationIndexes[Index] := c1;
+      inc(FastModulationCount);
+    end;
+  end;
+
+
+end;
+
+function TModMatrix.IsParameterModulated(ModParIndex: integer): boolean;
+var
+  TotalModDepth : single;
+  c1: Integer;
+begin
+  TotalModDepth := 0;
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    TotalModDepth := TotalModDepth + abs(ParValueData^[ModParIndex].ModAmount[c1])
+  end;
+
+  if TotalModDepth = 0
+    then result := false
+    else result := true;
 
 end;
 
