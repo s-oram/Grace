@@ -15,21 +15,6 @@ type
   TModSourceValues = array of PSingle;
   TModDestValues   = array of PSingle;
 
-  PPrivateModLink = ^TPrivateModLink;
-  TPrivateModLink = record
-    UniqueID : string;
-    Source   : TModSource;
-    Dest     : TModDest;
-    Via      : TModSource;
-    Amount   : single; //range -1..1
-    Offset   : single; //range -0.5..0.5
-    PSource  : PSingle;
-    PVia     : PSingle;
-    PDest    : PSingle;
-    procedure AssignFrom(const aSource:TModLink_OLD);
-  end;
-
-
 
   TModMatrix = class
   private
@@ -52,8 +37,8 @@ type
     ModSourceCount : integer;
     ModDestCount   : integer;
 
-    FastModulations : array of TPrivateModLink;
-    SlowModulations : array of TPrivateModLink;
+    FastModulations : array[0..kModulatedParameterCount-1] of integer;
+    SlowModulations : array[0..kModulatedParameterCount-1] of integer;
 
     FastModulationCount : integer;
     SlowModulationCount : integer;
@@ -67,8 +52,6 @@ type
     ModSlotViaPointers    : array[0..kModSlotCount-1] of psingle;
 
     function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
-    procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
-    function CalcModOffset(aModLink : PPrivateModLink): single;
     function AreModSourceValuesInRange:boolean;
   protected
 
@@ -198,18 +181,6 @@ begin
 end;
 {$IFEND}
 
-{ TPrivateModLink }
-
-procedure TPrivateModLink.AssignFrom(const aSource: TModLink_OLD);
-begin
-  self.UniqueID := aSource.UniqueID;
-  self.Source   := aSource.Source;
-  self.Dest     := aSource.Dest;
-  self.Via      := aSource.Via;
-  self.Amount   := aSource.Amount;
-  self.Offset   := aSource.Offset;
-end;
-
 
 { TModMatrix }
 
@@ -249,9 +220,6 @@ destructor TModMatrix.Destroy;
 begin
   SetLength(fModSourceValues, 0);
   SetLength(fModDestValues_OLD, 0);
-
-  SetLength(FastModulations, 0);
-  SetLength(SlowModulations, 0);
 
   inherited;
 end;
@@ -296,31 +264,6 @@ begin
     fModDestValues_OLD[c1]^ := 0;
   end;
 end;
-
-
-procedure TModMatrix.CalcModOutput(const aModLink: PPrivateModLink);
-var
-  sx : PSingle;
-  vx : PSingle;
-  dx : PSingle;
-begin
-
-  //if (aModLink.Source = TModSource.None) or (aModLink.Dest = TModDest.None) or (aModLink.Amount = 0) then exit;
-
-  if aModLink^.Via = TModSource.None then
-  begin
-    sx := aModLink^.PSource;
-    dx := aModLink^.PDest;
-    dx^ := dx^ + (sx^ + aModLink^.Offset) * aModLink^.Amount;
-  end else
-  begin
-    sx := aModLink^.PSource;
-    dx := aModLink^.PDest;
-    vx := aModLink^.PVia;
-    dx^ := dx^ + (sx^ + aModLink^.Offset) * (aModLink^.Amount * vx^);
-  end;
-end;
-
 
 
 procedure TModMatrix.FastControlProcess;
@@ -440,61 +383,6 @@ begin
 
   result := true;
 end;
-
-function TModMatrix.CalcModOffset(aModLink: PPrivateModLink): single;
-const
-  //We use a slightly different center point when using MIDI note as a bi-polar signal source.
-  kMidiNoteOffset = 0.5 + (36 / 12);
-var
-  ModSource : TModSource;
-  ModDest   : TModDest;
-  Offset : single;
-begin
-  ModSource := aModLink^.Source;
-
-  case ModSource of
-    // special sources.
-    TModSource.None:      Offset := 0;
-    //TModSource.Midi_Note: Offset := -kMidiNoteOffset;
-    TModSource.Midi_Note: Offset := 0;
-    // envelopes.
-    TModSource.AmpEnv:    Offset := 0;
-    TModSource.FilterEnv: Offset := 0;
-    // bi-polar mod sources.
-    TModSource.Midi_PitchBend:  Offset := -0.5;
-    TModSource.Midi_ModWheel:   Offset := -0.5;
-    TModSource.Lfo1:            Offset := -0.5;
-    TModSource.Lfo2:            Offset := -0.5;
-    TModSource.StepSeq1:        Offset := -0.5;
-    TModSource.StepSeq2:        Offset := -0.5;
-  else
-    raise Exception.Create('type not handled.');
-  end;
-
-
-  // TODO: I think exceptions will need to be made here
-  // for sample point modulation.
-
-
-
-  // Override the source offset when the destination is a sample point marker.
-  // Using bi-polar modulation for sample markers makes the interface confusing.
-  // I think's it's better the the sample start/end markers, and loop start/end
-  // markers always represent an 'extreme value'. Modulation moves the
-  // marker in one direction.
-  ModDest := aModLink^.Dest;
-  case ModDest of
-    TModDest.SampleStart: Offset := 0;
-    TModDest.SampleEnd:   Offset := 0;
-    TModDest.LoopStart:   Offset := 0;
-    TModDest.LoopEnd:     Offset := 0;
-  end;
-
-  result := Offset;
-
-
-end;
-
 
 
 procedure TModMatrix.UpdateModConnections;
