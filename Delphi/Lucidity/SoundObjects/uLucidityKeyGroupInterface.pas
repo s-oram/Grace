@@ -25,6 +25,7 @@ type
     procedure SetModParValue(const ModParIndex : integer; const Value:single);
     //TODO: this is a awkward procedure name.
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
+    function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
   end;
 
 implementation

@@ -248,15 +248,15 @@ begin
     if ParInfoEx[c1].ModLinkIndex <> -1 then
     begin
       ModParSaveObject.ParName  := ParInfoEx[c1].Name;
-      ModParSaveObject.ParValue := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ParValue;
-      ModParSaveObject.ModAmount1 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[0];
-      ModParSaveObject.ModAmount2 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[1];
-      ModParSaveObject.ModAmount3 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[2];
-      ModParSaveObject.ModAmount4 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[3];
-      ModParSaveObject.ModAmount5 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[4];
-      ModParSaveObject.ModAmount6 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[5];
-      ModParSaveObject.ModAmount7 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[6];
-      ModParSaveObject.ModAmount8 := sg.ModulatedParameters[ParInfoEx[c1].ModLinkIndex].ModAmount[7];
+      ModParSaveObject.ParValue   := sg.GetModParValue(ParInfoEx[c1].ModLinkIndex);
+      ModParSaveObject.ModAmount1 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 0);
+      ModParSaveObject.ModAmount2 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 1);
+      ModParSaveObject.ModAmount3 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 2);
+      ModParSaveObject.ModAmount4 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 3);
+      ModParSaveObject.ModAmount5 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 4);
+      ModParSaveObject.ModAmount6 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 5);
+      ModParSaveObject.ModAmount7 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 6);
+      ModParSaveObject.ModAmount8 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 7);
 
       ModParNode := ParentNode.NodeNew('ModulatedParameter');
       SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParName');
@@ -308,15 +308,15 @@ begin
     ModLinkIndex := ParNameToModLinkIndex(ModParSaveObject.ParName);
     if ModLinkIndex <> -1 then
     begin
-      sg.ModulatedParameters[ModLinkIndex].ParValue := ModParSaveObject.ParValue;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[0] := ModParSaveObject.ModAmount1;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[1] := ModParSaveObject.ModAmount2;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[2] := ModParSaveObject.ModAmount3;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[3] := ModParSaveObject.ModAmount4;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[4] := ModParSaveObject.ModAmount5;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[5] := ModParSaveObject.ModAmount6;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[6] := ModParSaveObject.ModAmount7;
-      sg.ModulatedParameters[ModLinkIndex].ModAmount[7] := ModParSaveObject.ModAmount8;
+      sg.SetModParValue(ModLinkIndex, ModParSaveObject.ParValue);
+      sg.SetModParModAmount(ModLinkIndex, 0, ModParSaveObject.ModAmount1);
+      sg.SetModParModAmount(ModLinkIndex, 1, ModParSaveObject.ModAmount2);
+      sg.SetModParModAmount(ModLinkIndex, 2, ModParSaveObject.ModAmount3);
+      sg.SetModParModAmount(ModLinkIndex, 3, ModParSaveObject.ModAmount4);
+      sg.SetModParModAmount(ModLinkIndex, 4, ModParSaveObject.ModAmount5);
+      sg.SetModParModAmount(ModLinkIndex, 5, ModParSaveObject.ModAmount6);
+      sg.SetModParModAmount(ModLinkIndex, 6, ModParSaveObject.ModAmount7);
+      sg.SetModParModAmount(ModLinkIndex, 7, ModParSaveObject.ModAmount8);
     end;
 
   end;

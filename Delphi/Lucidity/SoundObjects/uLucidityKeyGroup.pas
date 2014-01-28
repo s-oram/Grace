@@ -42,6 +42,8 @@ type
 
     Voices : PArrayOfLucidityVoice;
 
+    ModulatedParameters: TModulatedPars;
+
     function GetName:string;
     procedure SetName(Value : string);
 
@@ -50,8 +52,6 @@ type
 
     procedure Handle_ModConnectionsChanged(Sender : TObject);
   public
-    ModulatedParameters: TModulatedPars;
-
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
     procedure AssignFrom(const Source : TKeyGroup);
@@ -62,6 +62,7 @@ type
     function GetModParValue(const ModParIndex : integer):single;
     procedure SetModParValue(const ModParIndex : integer; const Value:single);
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
+    function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
@@ -315,6 +316,13 @@ end;
 procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);
 begin
   ModulatedParameters[ModParIndex].ModAmount[ModSlot] := Value;
+  if assigned(fVoiceParameters)
+    then fVoiceParameters.UpdateModConnections;
+end;
+
+function TKeyGroup.GetModParModAmount(const ModParIndex, ModSlot: integer): single;
+begin
+  result := ModulatedParameters[ModParIndex].ModAmount[ModSlot];
 end;
 
 

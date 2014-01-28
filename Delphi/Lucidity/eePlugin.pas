@@ -137,7 +137,6 @@ type
     property FocusedRegion   : IRegion   read GetFocusedRegion;
     function ActiveKeyGroup : IKeyGroup;
     function ActiveVoicePar : TLucidityVoiceParameterWrapper;
-    function ActiveVoiceModPar : PModulatedPars;
 
     procedure FocusFirstKeyGroup;
     procedure FocusKeyGroup(const aKeyGroupName : string);
@@ -402,17 +401,10 @@ begin
   result := FActiveKeyGroup;
 end;
 
-function TeePlugin.ActiveVoiceModPar: PModulatedPars;
-begin
-  result := @(ActiveKeyGroup.GetObject as TKeyGroup).ModulatedParameters;
-end;
-
 function TeePlugin.ActiveVoicePar: TLucidityVoiceParameterWrapper;
 begin
   result := (ActiveKeyGroup.GetObject as TKeyGroup).VoiceParameters;
 end;
-
-
 
 procedure TeePlugin.Suspend;
 begin
