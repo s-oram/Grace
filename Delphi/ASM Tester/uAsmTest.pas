@@ -181,6 +181,32 @@ pop ebp
 end;
 
 function CalcSummedModulationValue_asm2(ModSlotValues, ModAmountValues : PSingle):single;
+{$IFDEF CPUX64}
+asm
+  movups XMM0,[rcx]
+  movups XMM1,[rcx+$10]
+
+  movups XMM2,[rdx]
+  movups XMM3,[rdx+$10]
+
+
+  mulps XMM0, XMM2
+  mulps XMM1, XMM3
+
+  addps XMM0, XMM1
+
+  sub esp, 16
+  //movups dqword [esp], xmm0
+  movdqu dqword [esp], xmm0
+
+  movss xmm0, [esp]
+  addss xmm0, [[esp+$04]]
+  addss xmm0, [[esp+$08]]
+  addss xmm0, [[esp+$0c]]
+
+  add esp, 16
+end;
+{$ELSE}
 asm
   movups XMM0,[eax]
   movups XMM1,[eax+$10]
@@ -209,6 +235,7 @@ asm
 
   //NOTE: This function doesn't work. It ends up cause access violations.
 end;
+{$ENDIF}
 
 
 

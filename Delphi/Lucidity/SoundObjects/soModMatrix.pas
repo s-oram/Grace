@@ -70,10 +70,7 @@ type
     procedure CalcModOutput(const aModLink : PPrivateModLink); {$IFDEF AudioInline}inline;{$ENDIF}
     function CalcModOffset(aModLink : PPrivateModLink): single;
     function AreModSourceValuesInRange:boolean;
-
   protected
-    procedure FastControlProcess_PartA;
-    procedure FastControlProcess_PartB;
 
   public
     constructor Create;
@@ -132,6 +129,31 @@ end;
 
 //TODO: need to write x64 bit asm version of this function.
 function CalcSummedModulationValue_asm2(ModSlotValues, ModAmountValues : PSingle):single;
+{$IF Defined(UseASM) and Defined(CPUX64)}
+asm
+  movups XMM0,[rcx]
+  movups XMM1,[rcx+$10]
+
+  movups XMM2,[rdx]
+  movups XMM3,[rdx+$10]
+
+
+  mulps XMM0, XMM2
+  mulps XMM1, XMM3
+
+  addps XMM0, XMM1
+
+  sub esp, 16
+  movdqu dqword [esp], xmm0
+
+  movss xmm0, [esp]
+  addss xmm0, [[esp+$04]]
+  addss xmm0, [[esp+$08]]
+  addss xmm0, [[esp+$0c]]
+
+  add esp, 16
+end;
+{$ELSEIF Defined(UseASM) and Defined(CPUX86)}
 asm
   movups XMM0,[eax]     //Move 8 ModSlotValues to first 2 sse registers.
   movups XMM1,[eax+$10]
@@ -159,6 +181,22 @@ asm
 
   add esp, 16
 end;
+{$ELSE}
+var
+  x : single;
+  c2: Integer;
+begin
+  //TODO: this probably can be optimised. It would be a good candiate for a SSE vector operation.
+  x := 0;
+  for c2 := 0 to kModSlotCount-1 do
+  begin
+    x := x + ModSlotValues^ * ModAmountValues^;
+    inc(ModSlotValues);
+    inc(ModAmountValues);
+  end;
+  result := x;
+end;
+{$IFEND}
 
 { TPrivateModLink }
 
@@ -294,40 +332,14 @@ begin
   AreModSourceValuesInRange; //Expensive!!
   {$ENDIF}
 
-
-  //TODO: At the moment all modulations are updated at the FastControlRate.
-  // see if some modulations can be updated at slow control rate.
-  // TODO: use some assembly.
-  FastControlProcess_PartA;
-  FastControlProcess_PartB;
-
-
-
-
-
-
-
-
-end;
-
-
-procedure TModMatrix.FastControlProcess_PartA;
-var
-  c1 : integer;
-  y : single;
-begin
   // Update the Mod Slot Values
   for c1 := 0 to kModSlotCount - 1 do
   begin
     ModSlotValues[c1] := ModSlotSourcePointers[c1]^ * ModSlotViaPointers[c1]^;
   end;
-end;
 
-procedure TModMatrix.FastControlProcess_PartB;
-var
-  c1 : integer;
-  y : single;
-begin
+
+
   //TODO: plenty of options for optimisation here.
   // - is the parameter being modulated?
   // - is the parameter a fast or slow target?
@@ -337,8 +349,9 @@ begin
     //ParModData^[c1] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
     ParModData^[c1] := CalcSummedModulationValue_asm2(@ModSlotValues[0], @ParValueData^[c1].ModAmount[0]);
   end;
-end;
 
+
+end;
 
 
 

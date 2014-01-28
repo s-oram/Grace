@@ -13,6 +13,10 @@
 {$DEFINE HasMidiOut}
 
 
+// Use assembly functions?
+{$DEFINE UseASM}
+
+
 //== Release Defines ==
 {$IFNDEF Debug}
   {$DEFINE madExcept}
