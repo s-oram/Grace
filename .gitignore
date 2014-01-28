@@ -1,3 +1,7 @@
+### Misc Ignores ###
+Thumbs.db
+
+### Delphi Files ###
 *__history*
 *.dproj
 *.res
@@ -9,24 +13,20 @@
 *.*.local
 *.exe
 *.tvsconfig
-Thumbs.db
-*Project Resources*
-
-
+*.dsk
+*.~dsk
 
 ### Model Maker files
 *.txvpck
 *.txapackage
 
+### MadExcept settings
+*.mes
 
 
 ### the top most binary directory.
 bin/*
-
-
-
-### MadExcept settings
-*.mes
+*Project Resources*
 
 
 ### Machine specific environment settings.
