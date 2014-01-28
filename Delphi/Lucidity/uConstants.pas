@@ -180,7 +180,8 @@ const
 const
   kColor_SampleDisplayLine = kColor_LcdDark4;
   kSampleImageWidth  = 592; //used for the pre-rendering of sample images.
-  kSampleImageHeight = 77;  //used for the pre-rendering of sample images.
+  //kSampleImageHeight = 77;  //used for the pre-rendering of sample images.
+  kSampleImageHeight = 167;  //used for the pre-rendering of sample images.
 
 type
   TGuiConst = class
@@ -322,7 +323,9 @@ begin
     Global_Info.UseHostGui         := false;
 
     Global_Info.InitialGuiWidth    := 980;
-    Global_Info.InitialGuiHeight   := 832;
+    //Global_Info.InitialGuiHeight   := 634;
+    //Global_Info.InitialGuiHeight   := 724;
+    Global_Info.InitialGuiHeight   := 756;
 
     Global_Info.IsSynth            := true;
     Global_Info.PresetsAreChunks   := true;

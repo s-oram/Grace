@@ -152,8 +152,6 @@ object FileBrowserFrame: TFileBrowserFrame
             ParameterIndex = 0
             Align = alTop
             Visible = True
-            ExplicitLeft = 28
-            ExplicitWidth = 41
           end
           object PreviewOnOffButton: TVamButton
             Left = 7

@@ -965,7 +965,8 @@ begin
   TitlePanel.Height      := 28;
   MainMenuBar.Height     := 28;
   SampleMapDiv.Height    := 258;  //Same height as TabPanel
-  MainTop.Height         := 118;
+  //MainTop.Height         := 118;
+  MainTop.Height         := 208;
   VoiceControlDiv.Height := 80;
   MainMid.Height         := 322;
   TabPanel.Height        := 258;

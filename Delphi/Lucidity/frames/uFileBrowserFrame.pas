@@ -141,6 +141,7 @@ begin
   TextInfoContainer.Align := alClient;
 
   LowerPanel.Height := 60 + LowerPanel.Padding.Top + LowerPanel.Padding.Bottom;
+  //LowerPanel.Height := 94 + LowerPanel.Padding.Top + LowerPanel.Padding.Bottom;
 
 
   //==== Parameters ====
