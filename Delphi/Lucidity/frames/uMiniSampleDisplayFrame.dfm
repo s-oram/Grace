@@ -188,8 +188,8 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Font.Name = 'Tahoma'
               Font.Style = []
               Units = '%'
-              Color_Label = clSilver
-              Color_Numeric = clWhite
+              Color_Label = clLime
+              Color_Numeric = clYellow
               Color_Arrows1 = '$33FFFFFF'
               Color_Arrows2 = '$ccFFFFFF'
               KnobMin = -100

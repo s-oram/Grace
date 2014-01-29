@@ -7,7 +7,7 @@ uses
   Classes, Controls, RedFox, RedFoxWinControl, VamWinControl;
 
 type
-  TNumericStyle = (nsInteger, nsFloat);
+  TNumericStyle = (nsInteger, nsFloat, nsCustom);
 
   TVamNumericKnob = class(TVamWinControl)
   private
@@ -19,6 +19,9 @@ type
     fDecimalPlaces: integer;
     fOnChanged: TNotifyEvent;
     fUnits: string;
+    fCustomText: string;
+    fOnRotaryStepUp: TNotifyEvent;
+    fOnRotaryStepDown: TNotifyEvent;
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     procedure SetNumericStyle(const Value: TNumericStyle);
@@ -27,6 +30,7 @@ type
     procedure SetDecimalPlaces(const Value: integer);
     procedure SetKnobValue(const Value: double);
     procedure SetUnits(const Value: string);
+    procedure SetCustomText(const Value: string);
   protected
     ReferenceKnobValue : double;
     fKnobValue : double;
@@ -42,21 +46,17 @@ type
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
-
     procedure Changed;
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-
-
   published
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
 
     property Font;
-
 
     property KnobValue : double read fKnobValue write SetKnobValue;
     property KnobMin : integer read fKnobMin write SetKnobMin;
@@ -66,7 +66,11 @@ type
     property DecimalPlaces : integer       read fDecimalPlaces write SetDecimalPlaces;
     property Units         : string        read fUnits         write SetUnits;
 
+    property CustomText : string read fCustomText write SetCustomText;
+
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
+    property OnRotaryStepUp   : TNotifyEvent read fOnRotaryStepUp   write fOnRotaryStepUp;
+    property OnRotaryStepDown : TNotifyEvent read fOnRotaryStepDown write fOnRotaryStepDown;
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -86,6 +90,7 @@ constructor TVamNumericKnob.Create(AOwner: TComponent);
 begin
   inherited;
 
+  fCustomText := '';
   fKnobValue := 0;
 
   fTextAlign := TRedFoxAlign.AlignCenter;
@@ -114,10 +119,20 @@ end;
 procedure TVamNumericKnob.Changed;
 begin
   if assigned(OnChanged) then OnChanged(Self);
-
 end;
 
 
+
+procedure TVamNumericKnob.SetCustomText(const Value: string);
+begin
+  if (Value <> fCustomText) then
+  begin
+    fCustomText := Value;
+
+    if NumericStyle = nsCustom
+      then Invalidate;
+  end;
+end;
 
 procedure TVamNumericKnob.SetDecimalPlaces(const Value: integer);
 begin
@@ -187,8 +202,10 @@ begin
   begin
     // TODO: Reset event should be fired here!
     //fPos := 0.5;
+
     Invalidate;
     Changed;
+
   end;
 
   if (Button = mbLeft) and ((ssCtrl in Shift) = false) then
@@ -236,11 +253,11 @@ begin
   end;
 
 
-  if (IsGrabbed) then
+  if (IsGrabbed) and ((NumericStyle = nsInteger) or (NumericStyle = nsFloat)) then
   begin
     Dist := 0;
 
-    if (NumericStyle = nsInteger) then
+    if (NumericStyle = nsInteger) or (NumericStyle = nsCustom) then
     begin
       if IsFineAdjustment = false
         then ScaleFactor := 0.005
@@ -251,7 +268,6 @@ begin
       Dist := (ReferencePoint.Y - Y) * ScaleFactor;
       Dist := Round(Dist);
     end;
-
 
     if (NumericStyle = nsFloat) and (IntAdjust = true) then
     begin
@@ -273,9 +289,6 @@ begin
 
       Dist := (ReferencePoint.Y - Y) * ScaleFactor;
     end;
-
-
-
 
     NewKnobValue := ReferenceKnobValue + Dist;
     if NewKnobValue > KnobMax then
@@ -305,6 +318,36 @@ begin
   end;
 
 
+  if (IsGrabbed) and (NumericStyle = nsCustom) then
+  begin
+    Dist := 0;
+
+    if IsFineAdjustment = false
+      then ScaleFactor := 0.005
+      else ScaleFactor := 0.00175;
+
+    ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+
+    Dist := (ReferencePoint.Y - Y) * ScaleFactor;
+    Dist := Round(Dist);
+
+    NewKnobValue := ReferenceKnobValue + Dist;
+
+
+    while (NewKnobValue - fKnobValue) >= 1 do
+    begin
+      if assigned(OnRotaryStepUp) then OnRotaryStepUp(self);
+      fKnobValue := fKnobValue + 1;
+    end;
+
+    while (NewKnobValue - fKnobValue) <= -1 do
+    begin
+      if assigned(OnRotaryStepDown) then OnRotaryStepDown(self);
+      fKnobValue := fKnobValue - 1;
+    end;
+  end;
+
+
 end;
 
 procedure TVamNumericKnob.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -313,6 +356,10 @@ begin
 
   if (Button = mbLeft) and (IsGrabbed = true) then
   begin
+    if (NumericStyle = nsCustom) then
+    begin
+      fKnobValue := 0;
+    end;
     IsGrabbed := false;
     Invalidate;
   end;
@@ -334,7 +381,12 @@ begin
 
   TextBounds := Rect(0,0, Width, Height);
 
-  if NumericStyle = nsInteger then
+  if NumericStyle = nsCustom then
+  begin
+    Text := fCustomText;
+    BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  end
+  else if NumericStyle = nsInteger then
   begin
     Text := IntToStr(Round(fKnobValue)) + fUnits;
     BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
@@ -346,7 +398,6 @@ begin
 
     TextA := Copy(Text, 1, BreakPoint-1);
     TextB := Copy(Text, BreakPoint+1, Length(Text) - BreakPoint);
-
 
     ActualTextBounds := BackBuffer.CalcActualTextBounds(Text, Font, TextAlign, TextVAlign, TextBounds);
 

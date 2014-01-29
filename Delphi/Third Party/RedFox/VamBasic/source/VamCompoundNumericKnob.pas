@@ -16,6 +16,8 @@ type
     fColor_Label: TColor;
     fColor_Numeric: TColor;
     fOnChanged: TNotifyEvent;
+    fOnRotaryStepUp: TNotifyEvent;
+    fOnRotaryStepDown: TNotifyEvent;
 
     procedure SetColor_Arrows1(const Value: TRedFoxColorString);
     procedure SetColor_Arrows2(const Value: TRedFoxColorString);
@@ -35,6 +37,8 @@ type
     procedure SetText(const Value: string);
     function GetUnits: string;
     procedure SetUnits(const Value: string);
+    function GetCustomText: string;
+    procedure SetCustomText(const Value: string);
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
@@ -50,12 +54,12 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
     procedure Changed(Sended : TObject);
+    procedure StepUp(Sender : TObject);
+    procedure StepDown(Sender : TObject);
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
-
 
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
   published
@@ -70,12 +74,16 @@ type
     property Color_Arrows2 : TRedFoxColorString read fColor_Arrows2 write SetColor_Arrows2;
 
     property KnobValue         : double        read GetKnobValue         write SetKnobValue;
-    property KnobMin           : integer        read GetKnobMin           write SetKnobMin;
-    property KnobMax           : integer        read GetKnobMax           write SetKnobMax;
+    property KnobMin           : integer       read GetKnobMin           write SetKnobMin;
+    property KnobMax           : integer       read GetKnobMax           write SetKnobMax;
     property KnobNumericStyle  : TNumericStyle read GetKnobNumericStyle  write SetKnobNumericStyle;
     property KnobDecimalPlaces : integer       read GetKnobDecimalPlaces write SetKnobDecimalPlaces;
 
-    property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
+    property KnobCustomText : string read GetCustomText write SetCustomText;
+
+    property OnChanged        : TNotifyEvent read fOnChanged        write fOnChanged;
+    property OnRotaryStepUp   : TNotifyEvent read fOnRotaryStepUp   write fOnRotaryStepUp;
+    property OnRotaryStepDown : TNotifyEvent read fOnRotaryStepDown write fOnRotaryStepDown;
 
     property Padding;
 
@@ -125,6 +133,8 @@ begin
   Knob.Visible := true;
   Knob.HitTest := false;
   Knob.OnChanged := Changed;
+  Knob.OnRotaryStepUp   := StepUp;
+  Knob.OnRotaryStepDown := StepDown;
   Knob.IsSubComponent := true;
 
   Color_Label   := clGray;
@@ -139,6 +149,11 @@ begin
   Arrows.Free;
   Knob.Free;
   inherited;
+end;
+
+function TVamCompoundNumericKnob.GetCustomText: string;
+begin
+  result := Knob.CustomText;
 end;
 
 function TVamCompoundNumericKnob.GetKnobDecimalPlaces: integer;
@@ -216,6 +231,11 @@ begin
   Knob.Font.Color := fColor_Numeric;
 end;
 
+procedure TVamCompoundNumericKnob.SetCustomText(const Value: string);
+begin
+  Knob.CustomText := Value;
+end;
+
 procedure TVamCompoundNumericKnob.SetFont(const Value: TFont);
 begin
   inherited;
@@ -260,6 +280,16 @@ end;
 procedure TVamCompoundNumericKnob.SetUnits(const Value: string);
 begin
   Knob.Units := Value;
+end;
+
+procedure TVamCompoundNumericKnob.StepDown(Sender: TObject);
+begin
+  if assigned(OnRotaryStepDown) then OnRotaryStepDown(self);
+end;
+
+procedure TVamCompoundNumericKnob.StepUp(Sender: TObject);
+begin
+  if assigned(OnRotaryStepUp) then OnRotaryStepUp(self);
 end;
 
 procedure TVamCompoundNumericKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

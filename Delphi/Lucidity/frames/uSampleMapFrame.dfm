@@ -146,8 +146,8 @@ object SampleMapFrame: TSampleMapFrame
         Padding.Right = 4
         Padding.Bottom = 4
         object RegionInfoBox: TVamDiv
-          Left = 31
-          Top = 15
+          Left = 2
+          Top = 31
           Width = 618
           Height = 30
           HitTest = True
@@ -174,12 +174,13 @@ object SampleMapFrame: TSampleMapFrame
             Align = alLeft
             Visible = True
           end
-          object VamCompoundNumericKnob1: TVamCompoundNumericKnob
-            Left = 557
-            Top = 0
+          object RootNoteKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 554
+            Top = 3
             Width = 61
-            Height = 30
-            Text = 'Label'
+            Height = 24
+            Text = 'Root'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -191,21 +192,19 @@ object SampleMapFrame: TSampleMapFrame
             Color_Arrows1 = '$cc000000'
             Color_Arrows2 = '$FF000000'
             KnobMin = 0
-            KnobMax = 100
-            KnobNumericStyle = nsFloat
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
-            ExplicitLeft = 252
-            ExplicitTop = 8
-            ExplicitHeight = 21
           end
-          object VamCompoundNumericKnob2: TVamCompoundNumericKnob
-            Left = 313
-            Top = 0
+          object LowVelKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 420
+            Top = 3
             Width = 61
-            Height = 30
-            Text = 'Label'
+            Height = 24
+            Text = 'Low Vel'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -217,21 +216,19 @@ object SampleMapFrame: TSampleMapFrame
             Color_Arrows1 = '$cc000000'
             Color_Arrows2 = '$FF000000'
             KnobMin = 0
-            KnobMax = 100
-            KnobNumericStyle = nsFloat
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
-            ExplicitLeft = 252
-            ExplicitTop = 8
-            ExplicitHeight = 21
           end
-          object VamCompoundNumericKnob3: TVamCompoundNumericKnob
-            Left = 374
-            Top = 0
+          object HighVelKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 487
+            Top = 3
             Width = 61
-            Height = 30
-            Text = 'Label'
+            Height = 24
+            Text = 'High Vel'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -243,21 +240,19 @@ object SampleMapFrame: TSampleMapFrame
             Color_Arrows1 = '$cc000000'
             Color_Arrows2 = '$FF000000'
             KnobMin = 0
-            KnobMax = 100
-            KnobNumericStyle = nsFloat
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
-            ExplicitLeft = 252
-            ExplicitTop = 8
-            ExplicitHeight = 21
           end
-          object VamCompoundNumericKnob4: TVamCompoundNumericKnob
-            Left = 435
-            Top = 0
+          object LowNoteKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 286
+            Top = 3
             Width = 61
-            Height = 30
-            Text = 'Label'
+            Height = 24
+            Text = 'Low Note'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -269,21 +264,19 @@ object SampleMapFrame: TSampleMapFrame
             Color_Arrows1 = '$cc000000'
             Color_Arrows2 = '$FF000000'
             KnobMin = 0
-            KnobMax = 100
-            KnobNumericStyle = nsFloat
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
-            ExplicitLeft = 252
-            ExplicitTop = 8
-            ExplicitHeight = 21
           end
-          object VamCompoundNumericKnob5: TVamCompoundNumericKnob
-            Left = 496
-            Top = 0
+          object HighNoteKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 353
+            Top = 3
             Width = 61
-            Height = 30
-            Text = 'Label'
+            Height = 24
+            Text = 'High Note'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -295,14 +288,11 @@ object SampleMapFrame: TSampleMapFrame
             Color_Arrows1 = '$cc000000'
             Color_Arrows2 = '$FF000000'
             KnobMin = 0
-            KnobMax = 100
-            KnobNumericStyle = nsFloat
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
             Align = alRight
             Visible = True
-            ExplicitLeft = 252
-            ExplicitTop = 8
-            ExplicitHeight = 21
           end
         end
       end

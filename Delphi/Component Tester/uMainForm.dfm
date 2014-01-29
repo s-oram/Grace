@@ -32,4 +32,11 @@ object Form1: TForm1
       'Memo1')
     TabOrder = 1
   end
+  object RedFoxContainer1: TRedFoxContainer
+    Left = 72
+    Top = 72
+    Width = 377
+    Height = 289
+    Color = '$FFEEEEEE'
+  end
 end

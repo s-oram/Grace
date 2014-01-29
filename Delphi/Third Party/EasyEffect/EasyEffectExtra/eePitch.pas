@@ -24,7 +24,7 @@ function BeatsToSamples(Beats,Tempo,SampleRate:single):single; inline;
 
 function SemiToneShiftToStepSize(Shift,StepSize:double):double; inline;
 
-function MidiToName(x:integer):string;
+function MidiNoteToName(x:integer):string;
 
 
 
@@ -56,7 +56,7 @@ begin
   result := StepSize * power(2,shift/12); 
 end;
 
-function MidiToName(x:integer):string;
+function MidiNoteToName(x:integer):string;
 const notes:array[0..11] of string=
  ('C','C#','D','D#','E','F','F#','G','G#','A','A#','B');
 begin

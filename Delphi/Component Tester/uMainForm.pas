@@ -10,7 +10,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
-  VamModSelector;
+  VamModSelector, VamCompoundNumericKnob;
 
 type
   TFoo = class
@@ -26,8 +26,10 @@ type
   TForm1 = class(TForm)
     Button1: TButton;
     Memo1: TMemo;
+    RedFoxContainer1: TRedFoxContainer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Knob1Changed(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateLabel;
@@ -115,11 +117,16 @@ begin
   end;
 end;
 
+procedure TForm1.Knob1Changed(Sender: TObject);
+begin
+
+end;
+
 { TFoo }
 
 destructor TFoo.Destroy;
 begin
-  ShowMessage(Text);
+  //ShowMessage(Text);
   inherited;
 end;
 
