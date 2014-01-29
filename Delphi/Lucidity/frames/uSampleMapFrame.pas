@@ -248,9 +248,6 @@ end;
 
 
 
-
-
-
 procedure TSampleMapFrame.UpdateSampleRegions;
 var
   DisplayRegion : TVamSampleRegion;
@@ -321,8 +318,6 @@ begin
     SampleMap.EndUpdate;
     SampleMap.Invalidate;
   end;
-
-
 
 end;
 
@@ -429,8 +424,6 @@ begin
 
   KeyStateTrackerOverlay.Invalidate;
   SampleMapKeys.Invalidate;
-
-
 end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);
@@ -448,9 +441,6 @@ begin
 
   UpdateRegionInfoDisplay;
   Plugin.Globals.SendWindowsMessage(UM_MOUSE_OVER_SAMPLE_REGION_CHANGED);
-
-
-
 end;
 
 
