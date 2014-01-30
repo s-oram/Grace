@@ -181,7 +181,6 @@ type
     function GetSampleRegionAt(PixelPosX, PixelPosY:integer):TVamSampleRegion;
     function GetRegionHandleAt(PixelPosX, PixelPosY:integer):TRegionHandleID;
 
-    procedure MoveSelectedRegions(KeyOffset, VelocityOffset : integer; const Snapping : boolean);
     procedure ResizeSelectedRegions(KeyOffset, VelocityOffset : integer; Handle : TRegionHandleID; const Snapping : boolean);
     procedure Paint; override;
 
@@ -306,7 +305,7 @@ begin
 end;
 
 
-procedure MoveRegions(SampleRegions : TVamSampleRegionList; KeyOffset, VelocityOffset : integer; const Snapping : boolean);
+procedure MoveSelectedRegions(Regions : TVamSampleRegionList; KeyOffset, VelocityOffset : integer; const Snapping : boolean);
 var
   c1: Integer;
   LimitedKeyOffset : integer;
@@ -314,7 +313,7 @@ var
   rw, rh : integer;
   rwShift, rhShift : integer;
 begin
-  for c1 := 0 to SampleRegions.Count-1 do
+  for c1 := 0 to Regions.Count-1 do
   begin
 
     //==== Limit Key Shfits =====
@@ -324,12 +323,12 @@ begin
     if Snapping then
     begin
       // Region width...
-      rw := SampleRegions[c1].HighKey - SampleRegions[c1].LowKey + 1;
+      rw := Regions[c1].HighKey - Regions[c1].LowKey + 1;
 
       if rw >= 12 then
       begin
         // snap key shifts to octave boundaries.
-        rwShift := round((SampleRegions[c1].LowKey + KeyOffset) / 12) * 12 - SampleRegions[c1].LowKey;
+        rwShift := round((Regions[c1].LowKey + KeyOffset) / 12) * 12 - Regions[c1].LowKey;
         LimitedKeyOffset := rwShift;
       end else
       begin
@@ -339,8 +338,8 @@ begin
       end;
     end;
 
-    if SampleRegions[c1].LowKey  + LimitedKeyOffset < 0   then LimitedKeyOffset := -SampleRegions[c1].LowKey;
-    if SampleRegions[c1].HighKey + LimitedKeyOffset > 127 then LimitedKeyOffset := 127 - SampleRegions[c1].HighKey;
+    if Regions[c1].LowKey  + LimitedKeyOffset < 0   then LimitedKeyOffset := -Regions[c1].LowKey;
+    if Regions[c1].HighKey + LimitedKeyOffset > 127 then LimitedKeyOffset := 127 - Regions[c1].HighKey;
 
 
 
@@ -352,25 +351,25 @@ begin
     if Snapping then
     begin
       // Limit velocity shifts to quantised shifts equal to the region hight.
-      rh := SampleRegions[c1].HighVelocity - SampleRegions[c1].LowVelocity + 1;
+      rh := Regions[c1].HighVelocity - Regions[c1].LowVelocity + 1;
       if rh > 16 then rh := 16;
 
       rhShift := round(LimitedVelocityOffset / rh);
       LimitedVelocityOffset := rh * rhShift;
     end;
 
-    if SampleRegions[c1].LowVelocity  + LimitedVelocityOffset < 0   then LimitedVelocityOffset := -SampleRegions[c1].LowVelocity;
-    if SampleRegions[c1].HighVelocity + LimitedVelocityOffset > 127 then LimitedVelocityOffset := 127 - SampleRegions[c1].HighVelocity;
+    if Regions[c1].LowVelocity  + LimitedVelocityOffset < 0   then LimitedVelocityOffset := -Regions[c1].LowVelocity;
+    if Regions[c1].HighVelocity + LimitedVelocityOffset > 127 then LimitedVelocityOffset := 127 - Regions[c1].HighVelocity;
 
 
-    if SampleRegions[c1].IsSelected then
+    if Regions[c1].IsSelected then
     begin
-      SampleRegions[c1].IsMoving          := true;
-      SampleRegions[c1].MovedLowKey       := SampleRegions[c1].LowKey       + LimitedKeyOffset;
-      SampleRegions[c1].MovedHighKey      := SampleRegions[c1].HighKey      + LimitedKeyOffset;
-      SampleRegions[c1].MovedLowVelocity  := SampleRegions[c1].LowVelocity  + LimitedVelocityOffset;
-      SampleRegions[c1].MovedHighVelocity := SampleRegions[c1].HighVelocity + LimitedVelocityOffset;
-      SampleRegions[c1].MovedRootNote     := SampleRegions[c1].RootNote + LimitedKeyOffset;
+      Regions[c1].IsMoving          := true;
+      Regions[c1].MovedLowKey       := Regions[c1].LowKey       + LimitedKeyOffset;
+      Regions[c1].MovedHighKey      := Regions[c1].HighKey      + LimitedKeyOffset;
+      Regions[c1].MovedLowVelocity  := Regions[c1].LowVelocity  + LimitedVelocityOffset;
+      Regions[c1].MovedHighVelocity := Regions[c1].HighVelocity + LimitedVelocityOffset;
+      Regions[c1].MovedRootNote     := Regions[c1].RootNote     + LimitedKeyOffset;
     end;
   end;
 end;
@@ -932,7 +931,7 @@ var
   c1 : integer;
   aRegion : TVamSampleRegion;
 begin
-  CopiedRegions;
+  CopiedRegions.Clear;
 
   for c1 := 0 to SampleRegions.Count-1 do
   begin
@@ -1119,7 +1118,7 @@ begin
     begin
       LastDistKey := DistKey;
       LastDistVelocity := DistVelocity;
-      MoveSelectedRegions(DistKey, DistVelocity, IsSnapping);
+      MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
       Invalidate;
       RegionInfoChanged;
     end;
@@ -1392,74 +1391,7 @@ begin
   end;
 end;
 
-procedure TVamSampleMap.MoveSelectedRegions(KeyOffset, VelocityOffset: integer; const Snapping : boolean);
-var
-  c1: Integer;
-  LimitedKeyOffset : integer;
-  LimitedVelocityOffset : integer;
-  rw, rh : integer;
-  rwShift, rhShift : integer;
-begin
-  for c1 := 0 to SampleRegions.Count-1 do
-  begin
 
-    //==== Limit Key Shfits =====
-    LimitedKeyOffset := KeyOffset;
-
-
-    if Snapping then
-    begin
-      // Region width...
-      rw := SampleRegions[c1].HighKey - SampleRegions[c1].LowKey + 1;
-
-      if rw >= 12 then
-      begin
-        // snap key shifts to octave boundaries.
-        rwShift := round((SampleRegions[c1].LowKey + KeyOffset) / 12) * 12 - SampleRegions[c1].LowKey;
-        LimitedKeyOffset := rwShift;
-      end else
-      begin
-        // Limit key shift to quantised shifts equal to the region width.
-        rwShift := round(LimitedKeyOffset / rw);
-        LimitedKeyOffset := rw * rwShift;
-      end;
-    end;
-
-    if SampleRegions[c1].LowKey  + LimitedKeyOffset < 0   then LimitedKeyOffset := -SampleRegions[c1].LowKey;
-    if SampleRegions[c1].HighKey + LimitedKeyOffset > 127 then LimitedKeyOffset := 127 - SampleRegions[c1].HighKey;
-
-
-
-
-    //==== Limit Velocity Shifts ====
-
-    LimitedVelocityOffset := VelocityOffset;
-
-    if Snapping then
-    begin
-      // Limit velocity shifts to quantised shifts equal to the region hight.
-      rh := SampleRegions[c1].HighVelocity - SampleRegions[c1].LowVelocity + 1;
-      if rh > 16 then rh := 16;
-
-      rhShift := round(LimitedVelocityOffset / rh);
-      LimitedVelocityOffset := rh * rhShift;
-    end;
-
-    if SampleRegions[c1].LowVelocity  + LimitedVelocityOffset < 0   then LimitedVelocityOffset := -SampleRegions[c1].LowVelocity;
-    if SampleRegions[c1].HighVelocity + LimitedVelocityOffset > 127 then LimitedVelocityOffset := 127 - SampleRegions[c1].HighVelocity;
-
-
-    if SampleRegions[c1].IsSelected then
-    begin
-      SampleRegions[c1].IsMoving          := true;
-      SampleRegions[c1].MovedLowKey       := SampleRegions[c1].LowKey       + LimitedKeyOffset;
-      SampleRegions[c1].MovedHighKey      := SampleRegions[c1].HighKey      + LimitedKeyOffset;
-      SampleRegions[c1].MovedLowVelocity  := SampleRegions[c1].LowVelocity  + LimitedVelocityOffset;
-      SampleRegions[c1].MovedHighVelocity := SampleRegions[c1].HighVelocity + LimitedVelocityOffset;
-      SampleRegions[c1].MovedRootNote     := SampleRegions[c1].RootNote + LimitedKeyOffset;
-    end;
-  end;
-end;
 
 procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
 const
