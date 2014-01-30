@@ -192,6 +192,8 @@ type
     function GetDragRegionCount(const Data : IVamDragData):integer;
 
     procedure PrepareCopiedRegionsList;
+
+    procedure UpdateCursorIcon(Shift: TShiftState; X, Y: Integer);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -271,6 +273,7 @@ implementation
 
 uses
   SysUtils,
+  VamLib.WinUtils,
   VamSampleMap.Sorting,
   Math, Graphics, AggPixelFormat;
 
@@ -991,6 +994,8 @@ var
 begin
   inherited;
 
+
+
   IsGrabbedByLeft    := false;
   IsGrabbedByRight   := false;
   IsDragSelectActive := false;
@@ -1161,6 +1166,7 @@ begin
       Invalidate;
       RegionInfoChanged;
     end;
+
   end;
 
 
@@ -1268,6 +1274,8 @@ begin
       MouseOverRegionHandle := aHandle;
       Invalidate;
     end;
+
+    UpdateCursorIcon(Shift, X, Y);
   end;
 
 
@@ -1279,6 +1287,7 @@ var
   aRegion : TVamSampleRegion;
   c1: Integer;
   FocusIndex : integer;
+  aHandle : TRegionHandleID;
 begin
   inherited;
 
@@ -1395,6 +1404,12 @@ begin
     MouseDownRegion := nil;
   end;
 
+  if (IsGrabbedByLeft = false) and (IsGrabbedByRight = false) then
+  begin
+    UpdateCursorIcon(Shift, X, Y);
+  end;
+
+
 
   Invalidate;
   RegionInfoChanged;
@@ -1430,7 +1445,9 @@ begin
   end;
 
   Invalidate;
-  RegionInfoChanged
+  RegionInfoChanged;
+
+  Cursor := crDefault;
 end;
 
 
@@ -2060,6 +2077,25 @@ end;
 procedure TVamSampleMap.SortSampleRegionList;
 begin
   VamSampleMap.Sorting.SortToAvoidUnclickableElements(SampleRegions);
+end;
+
+procedure TVamSampleMap.UpdateCursorIcon(Shift: TShiftState; X, Y: Integer);
+var
+  aHandle : TRegionHandleID;
+begin
+  aHandle := GetRegionHandleAt(X, Y);
+  case aHandle of
+    rhNone:        self.Cursor := crDefault;
+    rhTopLeft:     self.Cursor := crSizeNWSE;
+    rhTopRight:    self.Cursor := crSizeNESW;
+    rhBottomRight: self.Cursor := crSizeNWSE;
+    rhBottomLeft:  self.Cursor := crSizeNESW;
+    rhTop:         self.Cursor := crSizeNS;
+    rhRight:       self.Cursor := crSizeWE;
+    rhBottom:      self.Cursor := crSizeNS;
+    rhLeft:        self.Cursor := crSizeWE;
+  end;
+
 end;
 
 
