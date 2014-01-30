@@ -207,6 +207,8 @@ begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
   if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED   then UpdateControlVisibility;
   if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
+  if Message.Msg = UM_SAMPLE_FOCUS_CHANGED      then UpdateSampleDisplay;
+
 end;
 
 procedure TMiniSampleDisplayFrame.SetPlugin(const Value: TeePlugin);

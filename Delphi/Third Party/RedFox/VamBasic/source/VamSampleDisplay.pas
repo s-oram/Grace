@@ -117,6 +117,7 @@ end;
 procedure TVamSampleDisplay.ClearSample(InvalidateDisplay : boolean = true);
 begin
   StoredSampleImage := nil;
+  StoredBitmap := nil;
   BackBufferController.ClearSample(InvalidateDisplay);
   IsBufferInvalid := true;
   Invalidate;
