@@ -52,6 +52,8 @@ type
     a : integer;
     b : cardinal;
     procedure UpdateMemo;
+
+    procedure Foo(Sender : TObject);
   end;
 
 var
@@ -71,6 +73,7 @@ type
 
 var
   GlobalDict : TProcDictionary;
+
 
 
 procedure Debounce(id : integer; TimeMS : integer; aProc : TProc);
@@ -110,6 +113,11 @@ begin
 end;
 
 
+
+procedure TForm1.Foo(Sender: TObject);
+begin
+  showMessage((Sender as TControl).Name);
+end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
@@ -179,11 +187,23 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+type
+  TExec = procedure of object;
+var
+  aMethod : TMethod;
+  Exec: TExec;
 begin
+  aMethod.Data := @Sender;
+  aMethod.Code := @TForm1.Foo;
+  Exec := TExec(aMethod);
+  Exec;
+
+  {
   Debounce(14, 150, procedure
   begin
     Knob2.KnobValue := Knob1.KnobValue;
   end);
+  }
 end;
 
 

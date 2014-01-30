@@ -15,6 +15,7 @@ type
 
   TVamDragRegionCountEvent = procedure(Sender : TObject; const Data:IVamDragData; var DragRegionCount : integer) of object;
   TVamNewRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList; const Data:IVamDragData) of object;
+  TVamNewCopiedRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList) of object;
 
   TVamSampleRegionMouseDownEvent = procedure(const Sender:TObject; const Button: TMouseButton; const Shift: TShiftState; const aRegion:TVamSampleRegion) of object;
   TVamSampleRegionMouseUpEvent   = procedure(const Sender:TObject; const Button: TMouseButton; const Shift: TShiftState; const aRegion:TVamSampleRegion) of object;
@@ -119,6 +120,7 @@ type
     fOnGetDragRegionCount: TVamDragRegionCountEvent;
     fOnNewRegions: TVamNewRegionsEvent;
     fCopiedRegions: TVamSampleRegionList;
+    fOnNewCopiedRegions: TVamNewCopiedRegionsEvent;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
@@ -244,8 +246,9 @@ type
     property OnDragSelectEnd        : TNotifyEvent read fOnDragSelectEnd        write fOnDragSelectEnd;
     property OnDragSelectionChanged : TNotifyEvent read fOnDragSelectionChanged write fOnDragSelectionChanged;
 
-    property OnGetDragRegionCount : TVamDragRegionCountEvent read fOnGetDragRegionCount write fOnGetDragRegionCount;
-    property OnNewRegions         : TVamNewRegionsEvent      read fOnNewRegions         write fOnNewRegions;
+    property OnGetDragRegionCount : TVamDragRegionCountEvent  read fOnGetDragRegionCount write fOnGetDragRegionCount;
+    property OnNewRegions         : TVamNewRegionsEvent       read fOnNewRegions         write fOnNewRegions;
+    property OnNewCopiedRegions   : TVamNewCopiedRegionsEvent read fOnNewCopiedRegions   write fOnNewCopiedRegions;
 
     // OnMouseOverRegionChanged is fired whenever the region underneath the mouse changes. It is also called when the mouse
     // cursor leaves the control.
@@ -371,6 +374,40 @@ begin
       Regions[c1].MovedHighVelocity := Regions[c1].HighVelocity + LimitedVelocityOffset;
       Regions[c1].MovedRootNote     := Regions[c1].RootNote     + LimitedKeyOffset;
     end;
+  end;
+end;
+
+procedure CommitRegionMovement(Regions : TVamSampleRegionList);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to Regions.Count-1 do
+  begin
+    if Regions[c1].IsMoving then
+    begin
+      Regions[c1].IsMoving     := false;
+      Regions[c1].LowKey       := Regions[c1].MovedLowKey;
+      Regions[c1].HighKey      := Regions[c1].MovedHighKey;
+      Regions[c1].RootNote     := Regions[c1].MovedRootNote;
+      Regions[c1].LowVelocity  := Regions[c1].MovedLowVelocity;
+      Regions[c1].HighVelocity := Regions[c1].MovedHighVelocity;
+    end;
+  end;
+end;
+
+
+procedure CopySampleRegions(Dest, Source : TVamSampleRegionList);
+var
+  aRegion : TVamSampleRegion;
+  c1: Integer;
+begin
+  Dest.Clear;
+
+  for c1 := 0 to Source.Count-1 do
+  begin
+    aRegion := TVamSampleRegion.Create;
+    aRegion.AssignFrom(Source[c1]);
+    Dest.Add(aRegion);
   end;
 end;
 
@@ -981,7 +1018,7 @@ begin
 
 
       //=== Logic for mouse down on a region with no modifier keys ===
-      if not((ssCtrl in Shift) or (ssAlt in Shift) or (ssShift in Shift)) then
+      if not((ssCtrl in Shift) {or (ssAlt in Shift)} or (ssShift in Shift)) then
       begin
         if (MouseDownRegion.IsSelected) and (MouseDownRegion.IsFocused) and (MouseDownRegionHandle <> rhNone) then
         begin
@@ -1118,7 +1155,9 @@ begin
     begin
       LastDistKey := DistKey;
       LastDistVelocity := DistVelocity;
-      MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
+      if IsCopyRegionActive
+        then MoveSelectedRegions(CopiedRegions, DistKey, DistVelocity, IsSnapping)
+        else MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
       Invalidate;
       RegionInfoChanged;
     end;
@@ -1307,6 +1346,22 @@ begin
         if assigned(OnRegionMoved) then OnRegionMoved(self, SampleRegions[c1]);
       end;
     end;
+
+    //Finalise copied regions..
+    if CopiedRegions.Count > 0 then
+    begin
+      CommitRegionMovement(CopiedRegions);
+      CopySampleRegions(ProposedSampleRegions, CopiedRegions);
+      CopiedRegions.Clear;
+
+      if assigned(OnNewCopiedRegions) then OnNewCopiedRegions(self, ProposedSampleRegions);
+      ProposedSampleRegions.Clear;
+
+      Invalidate;
+      RegionInfoChanged;
+    end;
+
+
 
     if DeselectOthersOnMouseUp then
     begin
@@ -1653,6 +1708,19 @@ begin
   begin
     DrawSampleRegion(ProposedSampleRegions.First, aColor);
   end;
+
+  //==== draw copied regions ==============
+  aColor := Color_ProposedRegions;
+  if (CopiedRegions.Count > 0) then
+  begin
+    for c1 := 0 to CopiedRegions.Count-1 do
+    begin
+      DrawSampleRegion(CopiedRegions[c1], aColor);
+    end;
+  end;
+
+
+
 
   if IsDragSelectActive then
   begin

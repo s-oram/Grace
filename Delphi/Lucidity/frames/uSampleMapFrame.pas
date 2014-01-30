@@ -49,6 +49,8 @@ type
     procedure SampleMapKeysMidiKeyDown(Sender: TObject;
       const KeyIndex: Integer);
     procedure SampleMapKeysMidiKeyUp(Sender: TObject; const KeyIndex: Integer);
+    procedure SampleMapNewCopiedRegions(Sender: TObject;
+      const aRegions: TVamSampleRegionList);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -680,15 +682,73 @@ begin
       end;
     end;
 
-
-    //====== update the gui ====================================================
-    //UpdateRegionInfoDisplay;
-    //UpdateSampleRegions;
-    //Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
   finally
     SetLength(NewRegions, 0);
   end;
 end;
+
+procedure TSampleMapFrame.SampleMapNewCopiedRegions(Sender: TObject; const aRegions: TVamSampleRegionList);
+var
+  c1: Integer;
+  RegionCreateInfo : TRegionCreateInfo;
+  XmlRegionCount : integer;
+  XmlRegionInfo : TVstXmlRegion;
+  NewRegionCount : integer;
+  NewRegions : array of IRegion;
+begin
+  if not assigned(Plugin) then exit;
+
+  NewRegionCount := aRegions.Count;
+  SetLength(NewRegions, aRegions.Count);
+  try
+    Plugin.StopPreview;
+
+    //====== Load the new regions ==============================================
+    for c1 := 0 to aRegions.Count-1 do
+    begin
+      RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
+      RegionCreateInfo.LowNote       := aRegions[c1].LowKey;
+      RegionCreateInfo.HighNote      := aRegions[c1].HighKey;
+      RegionCreateInfo.LowVelocity   := aRegions[c1].LowVelocity;
+      RegionCreateInfo.HighVelocity  := aRegions[c1].HighVelocity;
+      RegionCreateInfo.RootNote      := aRegions[c1].RootNote;
+      RegionCreateInfo.AudioFileName := aRegions[c1].FileName;
+
+      NewRegions[c1] := Plugin.NewRegion(RegionCreateInfo);
+    end;
+
+
+
+    //====== update sample region selections ====================================
+    Plugin.ClearSelected;
+
+    if NewRegionCount = 1 then
+    begin
+      if assigned(NewRegions[0]) then
+      begin
+        Plugin.FocusRegion(NewRegions[0].GetProperties^.UniqueID);
+      end;
+    end;
+
+
+    if NewRegionCount > 1 then
+    begin
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        if assigned(NewRegions[c1]) then
+        begin
+          Plugin.SelectRegion(NewRegions[c1].GetProperties^.UniqueID);
+        end;
+      end;
+    end;
+
+  finally
+    SetLength(NewRegions, 0);
+  end;
+end;
+
+
+
 
 procedure TSampleMapFrame.SampleMapKeysMidiKeyDown(Sender: TObject; const KeyIndex: Integer);
 begin

@@ -115,6 +115,7 @@ object SampleMapFrame: TSampleMapFrame
             OnDragSelectionChanged = SampleMapDragSelectionChanged
             OnGetDragRegionCount = SampleMapGetDragRegionCount
             OnNewRegions = SampleMapNewRegions
+            OnNewCopiedRegions = SampleMapNewCopiedRegions
             OnMouseOverRegionChanged = SampleMapMouseOverRegionChanged
             OnRegionInfoChanged = SampleMapRegionInfoChanged
             Align = alClient
