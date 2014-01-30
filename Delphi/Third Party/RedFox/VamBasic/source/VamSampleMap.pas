@@ -69,6 +69,9 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure AssignFrom(Source : TVamSampleRegion);
+
     property UniqueID          : TGUID   read fUniqueID          write fUniqueID;
     property FileName          : string  read fFileName          write fFileName;
     property IsSampleError     : boolean read fIsSampleError     write fIsSampleError; //Is there a problem loading the sample data?
@@ -115,6 +118,7 @@ type
     fOnDragSelectEnd: TNotifyEvent;
     fOnGetDragRegionCount: TVamDragRegionCountEvent;
     fOnNewRegions: TVamNewRegionsEvent;
+    fCopiedRegions: TVamSampleRegionList;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
@@ -185,6 +189,8 @@ type
     procedure SortSampleRegionList;
 
     function GetDragRegionCount(const Data : IVamDragData):integer;
+
+    procedure PrepareCopiedRegionsList;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -198,6 +204,7 @@ type
 
     property SampleRegions         : TVamSampleRegionList read fSampleRegions         write fSampleRegions;
     property ProposedSampleRegions : TVamSampleRegionList read fProposedSampleRegions write fProposedSampleRegions;
+    property CopiedRegions         : TVamSampleRegionList read fCopiedRegions         write fCopiedRegions;
 
     function FindRegionByUniqueID(UniqueID : TGUID):TVamSampleRegion;
 
@@ -299,7 +306,78 @@ begin
 end;
 
 
+procedure MoveRegions(SampleRegions : TVamSampleRegionList; KeyOffset, VelocityOffset : integer; const Snapping : boolean);
+var
+  c1: Integer;
+  LimitedKeyOffset : integer;
+  LimitedVelocityOffset : integer;
+  rw, rh : integer;
+  rwShift, rhShift : integer;
+begin
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+
+    //==== Limit Key Shfits =====
+    LimitedKeyOffset := KeyOffset;
+
+
+    if Snapping then
+    begin
+      // Region width...
+      rw := SampleRegions[c1].HighKey - SampleRegions[c1].LowKey + 1;
+
+      if rw >= 12 then
+      begin
+        // snap key shifts to octave boundaries.
+        rwShift := round((SampleRegions[c1].LowKey + KeyOffset) / 12) * 12 - SampleRegions[c1].LowKey;
+        LimitedKeyOffset := rwShift;
+      end else
+      begin
+        // Limit key shift to quantised shifts equal to the region width.
+        rwShift := round(LimitedKeyOffset / rw);
+        LimitedKeyOffset := rw * rwShift;
+      end;
+    end;
+
+    if SampleRegions[c1].LowKey  + LimitedKeyOffset < 0   then LimitedKeyOffset := -SampleRegions[c1].LowKey;
+    if SampleRegions[c1].HighKey + LimitedKeyOffset > 127 then LimitedKeyOffset := 127 - SampleRegions[c1].HighKey;
+
+
+
+
+    //==== Limit Velocity Shifts ====
+
+    LimitedVelocityOffset := VelocityOffset;
+
+    if Snapping then
+    begin
+      // Limit velocity shifts to quantised shifts equal to the region hight.
+      rh := SampleRegions[c1].HighVelocity - SampleRegions[c1].LowVelocity + 1;
+      if rh > 16 then rh := 16;
+
+      rhShift := round(LimitedVelocityOffset / rh);
+      LimitedVelocityOffset := rh * rhShift;
+    end;
+
+    if SampleRegions[c1].LowVelocity  + LimitedVelocityOffset < 0   then LimitedVelocityOffset := -SampleRegions[c1].LowVelocity;
+    if SampleRegions[c1].HighVelocity + LimitedVelocityOffset > 127 then LimitedVelocityOffset := 127 - SampleRegions[c1].HighVelocity;
+
+
+    if SampleRegions[c1].IsSelected then
+    begin
+      SampleRegions[c1].IsMoving          := true;
+      SampleRegions[c1].MovedLowKey       := SampleRegions[c1].LowKey       + LimitedKeyOffset;
+      SampleRegions[c1].MovedHighKey      := SampleRegions[c1].HighKey      + LimitedKeyOffset;
+      SampleRegions[c1].MovedLowVelocity  := SampleRegions[c1].LowVelocity  + LimitedVelocityOffset;
+      SampleRegions[c1].MovedHighVelocity := SampleRegions[c1].HighVelocity + LimitedVelocityOffset;
+      SampleRegions[c1].MovedRootNote     := SampleRegions[c1].RootNote + LimitedKeyOffset;
+    end;
+  end;
+end;
+
+
 { TRedFoxSampleRegion }
+
 
 constructor TVamSampleRegion.Create;
 begin
@@ -310,6 +388,29 @@ destructor TVamSampleRegion.Destroy;
 begin
 
   inherited;
+end;
+
+procedure TVamSampleRegion.AssignFrom(Source: TVamSampleRegion);
+begin
+  Self.UniqueID          := Source.UniqueID;
+  Self.FileName          := Source.FileName;
+  Self.IsSampleError     := Source.IsSampleError;
+  Self.IsInOtherKeyGroup := Source.IsInOtherKeyGroup;
+  Self.IsVisible         := Source.IsVisible;
+  Self.IsSelected        := Source.IsSelected;
+  Self.IsDragSelected    := Source.IsDragSelected;
+  Self.IsFocused         := Source.IsFocused;
+  Self.IsMoving          := Source.IsMoving;
+  Self.RootNote          := Source.RootNote;
+  Self.LowKey            := Source.LowKey;
+  Self.HighKey           := Source.HighKey;
+  Self.LowVelocity       := Source.LowVelocity;
+  Self.HighVelocity      := Source.HighVelocity;
+  Self.MovedLowKey       := Source.MovedLowKey;
+  Self.MovedHighKey      := Source.MovedHighKey;
+  Self.MovedLowVelocity  := Source.MovedLowVelocity;
+  Self.MovedHighVelocity := Source.MovedHighVelocity;
+  Self.MovedRootNote     := Source.MovedRootNote;
 end;
 
 procedure TVamSampleRegion.SetMovedHighKey(Value: integer);
@@ -361,6 +462,7 @@ begin
 
   SampleRegions := TVamSampleRegionList.Create(true);
   ProposedSampleRegions := TVamSampleRegionList.Create(true);
+  CopiedRegions := TVamSampleRegionList.Create(true);
 
 
   Color_Background            := '$FF242B39';
@@ -379,6 +481,7 @@ destructor TVamSampleMap.Destroy;
 begin
   SampleRegions.Free;
   ProposedSampleRegions.Free;
+  CopiedRegions.Free;
   inherited;
 end;
 
@@ -824,6 +927,28 @@ begin
   end;
 end;
 
+procedure TVamSampleMap.PrepareCopiedRegionsList;
+var
+  c1 : integer;
+  aRegion : TVamSampleRegion;
+begin
+  CopiedRegions;
+
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    if SampleRegions[c1].IsSelected then
+    begin
+      aRegion := TVamSampleRegion.Create;
+      aRegion.AssignFrom(SampleRegions[c1]);
+      CopiedRegions.Add(aRegion);
+    end;
+
+  end;
+
+end;
+
+
+
 procedure TVamSampleMap.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   c1 : integer;
@@ -896,8 +1021,9 @@ begin
         and (not(ssCtrl  in Shift))
         and (not(ssShift in Shift)) then
       begin
+        PrepareCopiedRegionsList;
         IsCopyRegionActive := true;
-        //TODO:
+
       end;
 
 

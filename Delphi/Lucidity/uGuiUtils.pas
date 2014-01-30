@@ -57,9 +57,6 @@ procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
 
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 
-
-
-
 procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
 
 

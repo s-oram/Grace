@@ -22,6 +22,7 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
+    OnClick = Button1Click
   end
   object Memo1: TMemo
     Left = 368
@@ -34,9 +35,68 @@ object Form1: TForm1
   end
   object RedFoxContainer1: TRedFoxContainer
     Left = 72
-    Top = 72
+    Top = 76
     Width = 377
     Height = 289
     Color = '$FFEEEEEE'
+    object Knob1: TVamNumericKnob
+      Left = 48
+      Top = 56
+      Width = 201
+      Height = 25
+      Text = 'Knob1'
+      HitTest = True
+      TextAlign = AlignCenter
+      TextVAlign = AlignCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      KnobMin = 0
+      KnobMax = 100
+      NumericStyle = nsFloat
+      DecimalPlaces = 2
+      OnChanged = VamNumericKnob1Changed
+      Visible = True
+    end
+    object Knob2: TVamNumericKnob
+      Left = 48
+      Top = 112
+      Width = 201
+      Height = 25
+      Text = 'VamNumericKnob1'
+      HitTest = True
+      TextAlign = AlignCenter
+      TextVAlign = AlignCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      KnobMin = 0
+      KnobMax = 100
+      NumericStyle = nsFloat
+      DecimalPlaces = 2
+      Visible = True
+    end
+  end
+  object Button2: TButton
+    Left = 89
+    Top = 371
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 3
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 170
+    Top = 371
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 4
+    OnClick = Button3Click
   end
 end

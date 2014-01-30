@@ -10,7 +10,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
-  VamModSelector, VamCompoundNumericKnob;
+  VamModSelector, VamCompoundNumericKnob, VamNumericKnob;
 
 type
   TFoo = class
@@ -27,9 +27,16 @@ type
     Button1: TButton;
     Memo1: TMemo;
     RedFoxContainer1: TRedFoxContainer;
+    Knob1: TVamNumericKnob;
+    Knob2: TVamNumericKnob;
+    Button2: TButton;
+    Button3: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Knob1Changed(Sender: TObject);
+    procedure VamNumericKnob1Changed(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateLabel;
@@ -55,8 +62,52 @@ implementation
 {$R *.dfm}
 
 uses
+  Generics.Collections,
   VamLib.Threads,
   VamLib.Utils;
+
+type
+  TProcDictionary = TDictionary<integer, TDateTime>;
+
+var
+  GlobalDict : TProcDictionary;
+
+
+procedure Debounce(id : integer; TimeMS : integer; aProc : TProc);
+var
+  CurrentTime : TDateTime;
+  LastTime : TDateTime;
+  foo:  TMethod;
+  procAddress : integer;
+begin
+  CurrentTime := Now;
+
+
+
+  if GlobalDict.TryGetValue(id, LastTime) then
+  begin
+    GlobalDict.AddOrSetValue(id, CurrentTime);
+  end else
+  begin
+    GlobalDict.AddOrSetValue(id, CurrentTime);
+  end;
+
+  {
+  if GlobalDict.ContainsKey(aProc) then
+  begin
+    GlobalDict.AddOrSetValue(aProc, CurrentTime);
+  end else
+  begin
+    GlobalDict.Add(aProc, CurrentTime);
+  end;
+  }
+
+  //procAddress := Integer(Addr(aProc));
+  //showMessage(IntToStr(ProcAddress));
+
+
+
+end;
 
 
 
@@ -117,9 +168,41 @@ begin
   end;
 end;
 
-procedure TForm1.Knob1Changed(Sender: TObject);
+procedure TForm1.VamNumericKnob1Changed(Sender: TObject);
 begin
+  {
+  Debounce(150, procedure
+  begin
+    Knob2.KnobValue := Knob1.KnobValue;
+  end);
+  }
+end;
 
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  Debounce(14, 150, procedure
+  begin
+    Knob2.KnobValue := Knob1.KnobValue;
+  end);
+end;
+
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  Debounce(13, 150, procedure
+  begin
+    Knob2.KnobValue := Knob1.KnobValue;
+  end);
+end;
+
+
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  Debounce(12, 150, procedure
+  begin
+    Knob2.KnobValue := Knob1.KnobValue * 2;
+  end);
 end;
 
 { TFoo }
@@ -129,5 +212,12 @@ begin
   //ShowMessage(Text);
   inherited;
 end;
+
+
+initialization
+  GlobalDict := TProcDictionary.Create(100);
+
+finalization
+  GlobalDict.Free;
 
 end.

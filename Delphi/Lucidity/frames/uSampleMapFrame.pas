@@ -87,6 +87,9 @@ type
 implementation
 
 uses
+  VamLib.Utils,
+  SampleMapFrame.Extra,
+  Lucidity.Types,
   eeVstXml,
   RedFoxColor, eePitch,
   VamKeyStateTracker, GuidEx,
@@ -718,13 +721,64 @@ begin
 end;
 
 procedure TSampleMapFrame.Handle_KnobStepDown(Sender: TObject);
+var
+  RegionList : TGuidList;
+  c1 : integer;
 begin
+  RegionList := TGuidList.Create;
+  AutoFree(@RegionList);
+
+  for c1 := 0 to SampleMap.SampleRegions.Count-1 do
+  begin
+    if SampleMap.SampleRegions[c1].IsSelected
+      then RegionList.Append(SampleMap.SampleRegions[c1].UniqueID);
+  end;
+
+  if Sender = LowNoteKnob  then TAdjustRegions.DecLowNote(Plugin, RegionList);
+  if Sender = HighNoteKnob then TAdjustRegions.DecHighNote(Plugin, RegionList);
+
+  if Sender = LowVelKnob   then TAdjustRegions.DecLowVel(Plugin, RegionList);
+  if Sender = HighVelKnob  then TAdjustRegions.DecHighVel(Plugin, RegionList);
+
+  if Sender = RootNoteKnob then TAdjustRegions.DecRootNote(Plugin, RegionList);
+
+  //TODO: throttle this call..
+  UpdateRegionInfoDisplay;
+  UpdateSampleRegions;
+
+  //TODO: throttle this call..
+  //Plugin.Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
 
 end;
 
 procedure TSampleMapFrame.Handle_KnobStepUp(Sender: TObject);
+var
+  RegionList : TGuidList;
+  c1 : integer;
 begin
+  RegionList := TGuidList.Create;
+  AutoFree(@RegionList);
 
+  for c1 := 0 to SampleMap.SampleRegions.Count-1 do
+  begin
+    if SampleMap.SampleRegions[c1].IsSelected
+      then RegionList.Append(SampleMap.SampleRegions[c1].UniqueID);
+  end;
+
+  if Sender = LowNoteKnob  then TAdjustRegions.IncLowNote(Plugin, RegionList);
+  if Sender = HighNoteKnob then TAdjustRegions.IncHighNote(Plugin, RegionList);
+
+  if Sender = LowVelKnob   then TAdjustRegions.IncLowVel(Plugin, RegionList);
+  if Sender = HighVelKnob  then TAdjustRegions.IncHighVel(Plugin, RegionList);
+
+  if Sender = RootNoteKnob then TAdjustRegions.IncRootNote(Plugin, RegionList);
+
+  //TODO: throttle this call..
+  UpdateRegionInfoDisplay;
+  UpdateSampleRegions;
+
+  //TODO: throttle this call..
+  //Plugin.Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
 end;
 
 
