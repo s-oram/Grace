@@ -1545,6 +1545,24 @@ end;
 
 
 procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
+  procedure CorrectMovingRegionBounds(aRegion : TVamSampleRegion);
+  var
+    tx : integer;
+  begin
+    if aRegion.MovedLowKey > aRegion.MovedHighKey then
+    begin
+      tx := aRegion.MovedLowKey;
+      aRegion.MovedLowKey  := aRegion.MovedHighKey;
+      aRegion.MovedHighKey := tx;
+    end;
+
+    if aRegion.MovedLowVelocity > aRegion.MovedHighVelocity then
+    begin
+      tx := aRegion.MovedLowVelocity;
+      aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
+      aRegion.MovedHighVelocity := tx;
+    end;
+  end;
 const
   KSnap = 12; //Key Snap Size
   VSnap = 16; //Velocity Snap Size;
@@ -1594,7 +1612,7 @@ begin
           if rw - LimitedKeyOffset > 6 then LimitedKeyOffset := round((LimitedKeyOffset-rw) / KSnap) * KSnap + rw;
         end;
 
-        if LimitedKeyOffset > MaxKeyOffset then LimitedKeyOffset := MaxKeyOffset;
+        //if LimitedKeyOffset > MaxKeyOffset then LimitedKeyOffset := MaxKeyOffset;
         SampleRegions[c1].MovedLowKey := SampleRegions[c1].LowKey   + LimitedKeyOffset;
         if SampleRegions[c1].RootNote < SampleRegions[c1].MovedLowKey
           then SampleRegions[c1].MovedRootNote := SampleRegions[c1].MovedLowKey;
@@ -1609,7 +1627,7 @@ begin
           if rw + LimitedKeyOffset > 6 then LimitedKeyOffset := round((LimitedKeyOffset+rw) / KSnap) * KSnap - rw;
         end;
 
-        if LimitedKeyOffset < MinKeyOffset then LimitedKeyOffset := MinKeyOffset;
+        //if LimitedKeyOffset < MinKeyOffset then LimitedKeyOffset := MinKeyOffset;
         SampleRegions[c1].MovedHighKey := SampleRegions[c1].HighKey + LimitedKeyOffset;
 
         if SampleRegions[c1].RootNote > SampleRegions[c1].MovedHighKey
@@ -1622,7 +1640,7 @@ begin
         begin
           LimitedVelocityOffset := round((LimitedVelocityOffset-rh) / VSnap) * VSnap + rh;
         end;
-        if LimitedVelocityOffset < MinVelocityOffset then LimitedVelocityOffset := MinVelocityOffset;
+        //if LimitedVelocityOffset < MinVelocityOffset then LimitedVelocityOffset := MinVelocityOffset;
         SampleRegions[c1].MovedHighVelocity := SampleRegions[c1].HighVelocity + LimitedVelocityOffset;
       end;
 
@@ -1632,9 +1650,17 @@ begin
         begin
           LimitedVelocityOffset := round((LimitedVelocityOffset+rh) / VSnap) * VSnap - rh;
         end;
-        if LimitedVelocityOffset > MaxVelocityOffset then LimitedVelocityOffset := MaxVelocityOffset;
+        //if LimitedVelocityOffset > MaxVelocityOffset then LimitedVelocityOffset := MaxVelocityOffset;
         SampleRegions[c1].MovedLowVelocity  := SampleRegions[c1].LowVelocity + LimitedVelocityOffset;
       end;
+
+
+
+
+
+      CorrectMovingRegionBounds(SampleRegions[c1])
+
+
     end;
   end;
 
