@@ -177,7 +177,13 @@ type
 
     function CalcProposedSampleRegionKeyWidth(aPoint : TPoint):integer;
 
-    procedure UpdateProposedSampleRegions(aPoint : TPoint; NewRegionCount:integer);
+    //UpdateProposedRegions is called when dragging and dropping.
+    procedure UpdateProposedRegions(DropPoint : TPoint; NewRegionCount:integer);
+    procedure UpdateProposedRegions_RegionReplace(DropPoint : TPoint);
+    procedure UpdateProposedRegions_MultiFileDrop(DropPoint : TPoint; NewRegionCount:integer);
+    procedure UpdateProposedRegions_SingleFileDrop(DropPoint : TPoint; NewRegionCount:integer);
+
+
 
     procedure DrawSampleRegion(const aRegion:TVamSampleRegion; aColor:TRedFoxColor);
     procedure DrawSampleRegionResizeHandles(const aRegion:TVamSampleRegion; const aColor:TRedFoxColor);
@@ -693,13 +699,8 @@ begin
   Invalidate;
 end;
 
-procedure TVamSampleMap.UpdateProposedSampleRegions(aPoint: TPoint; NewRegionCount:integer);
+procedure TVamSampleMap.UpdateProposedRegions(DropPoint: TPoint; NewRegionCount:integer);
 var
-  c1:integer;
-  sr : TVamSampleRegion;
-  kp : TPoint;
-  KeyWidth : integer;
-  LastHighVelocity : integer;
   RegionAtDropPoint : TVamSampleRegion;
 begin
   if NewRegionCount = 0 then
@@ -708,109 +709,220 @@ begin
     exit; //===========================>> exit >>=============>>
   end;
 
-
-  RegionAtDropPoint := GetRegionAt(aPoint.X, aPoint.Y);
+  RegionAtDropPoint := GetRegionAt(DropPoint.X, DropPoint.Y);
 
   if not assigned(RegionAtDropPoint) then
   begin
-    // Check if the number of sample regions needs to be updated.
-    if ProposedSampleRegions.Count <> NewRegionCount then
-    begin
-      ProposedSampleRegions.Clear;
-      for c1 := 0 to NewRegionCount-1 do
-      begin
-        sr := TVamSampleRegion.Create;
-        ProposedSampleRegions.Add(sr);
-      end;
-    end;
+    if NewRegionCount > 1
+      then UpdateProposedRegions_MultiFileDrop(DropPoint, NewRegionCount)
+      else UpdateProposedRegions_SingleFileDrop(DropPoint, NewRegionCount);
 
-    // Update the sample region positions.
-    kp := PixelToSampleMapPos(aPoint);
-    KeyWidth := CalcProposedSampleRegionKeyWidth(aPoint);
-
-    if KeyWidth = 128 then
-    begin
-      ProposedMapInfo.IsFullKeyboardSpread := true;
-
-      for c1 := 0 to NewRegionCount-1 do
-      begin
-        sr := ProposedSampleRegions[c1];
-
-        sr.LowVelocity := 0;
-        sr.HighVelocity := 127;
-        sr.LowKey := 0;
-        sr.HighKey := 127;
-        sr.RootNote := 60; //MIDI c4.
-      end;
-    end;
-
-    if KeyWidth = 0 then
-    begin
-      ProposedMapInfo.IsFullKeyboardSpread := false;
-
-      LastHighVelocity := 0;
-      for c1 := 0 to NewRegionCount-1 do
-      begin
-        sr := ProposedSampleRegions[c1];
-
-        sr.LowVelocity  := LastHighVelocity + 1;
-        sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
-        if sr.HighVelocity > 127 then sr.HighVelocity := 127;
-
-        sr.LowKey := kp.X;
-        sr.HighKey := kp.X;
-        sr.RootNote := kp.X;
-
-        LastHighVelocity := sr.HighVelocity;
-      end;
-    end else
-    if (KeyWidth >= 1) and (KeyWidth <= 12) then
-    begin
-      ProposedMapInfo.IsFullKeyboardSpread := false;
-
-      kp.X := floor(kp.X / KeyWidth) * KeyWidth;
-
-      for c1 := 0 to NewRegionCount-1 do
-      begin
-        sr := ProposedSampleRegions[c1];
-
-        sr.LowVelocity := 0;
-        sr.HighVelocity := 127;
-        sr.LowKey  := kp.X;
-        sr.HighKey := kp.X + (KeyWidth - 1);
-        sr.RootNote := kp.X;
-
-        kp.X := kp.X + KeyWidth;
-      end;
-    end;
-
-    MouseOverRegion := nil;
-    MouseOverRegionHandle := rhNone;
-    MouseOverRegionChanged(nil);
     ShowReplaceRegionMessage(false);
+
   end else
   begin
-    //The samples are being dropped on an existing region. Replace that region instead.
-    if ProposedSampleRegions.Count <> 1 then
+    ShowReplaceRegionMessage(true);
+    UpdateProposedRegions_RegionReplace(DropPoint);
+  end;
+end;
+
+procedure TVamSampleMap.UpdateProposedRegions_SingleFileDrop(DropPoint: TPoint; NewRegionCount: integer);
+var
+  c1:integer;
+  sr : TVamSampleRegion;
+  kp : TPoint;
+  KeyWidth : integer;
+  LastHighVelocity : integer;
+  RegionAtDropPoint : TVamSampleRegion;
+begin
+  // Check if the number of sample regions needs to be updated.
+  if ProposedSampleRegions.Count <> NewRegionCount then
+  begin
+    ProposedSampleRegions.Clear;
+    for c1 := 0 to NewRegionCount-1 do
     begin
-      ProposedSampleRegions.Clear;
       sr := TVamSampleRegion.Create;
       ProposedSampleRegions.Add(sr);
     end;
-
-    sr := ProposedSampleRegions[0];
-    sr.RootNote     := RegionAtDropPoint.RootNote;
-    sr.LowKey       := RegionAtDropPoint.LowKey;
-    sr.HighKey      := RegionAtDropPoint.HighKey;
-    sr.LowVelocity  := RegionAtDropPoint.LowVelocity;
-    sr.HighVelocity := RegionAtDropPoint.HighVelocity;
-
-
-    MouseOverRegion := RegionAtDropPoint;
-    MouseOverRegionHandle := rhNone;
-    MouseOverRegionChanged(MouseOverRegion);
-    ShowReplaceRegionMessage(true);
   end;
+
+  // Update the sample region positions.
+  kp := PixelToSampleMapPos(DropPoint);
+  KeyWidth := CalcProposedSampleRegionKeyWidth(DropPoint);
+
+  if KeyWidth = 128 then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := true;
+
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity := 0;
+      sr.HighVelocity := 127;
+      sr.LowKey := 0;
+      sr.HighKey := 127;
+      sr.RootNote := 60; //MIDI c4.
+    end;
+  end;
+
+  if KeyWidth = 0 then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := false;
+
+    LastHighVelocity := 0;
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity  := LastHighVelocity + 1;
+      sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
+      if sr.HighVelocity > 127 then sr.HighVelocity := 127;
+
+      sr.LowKey := kp.X;
+      sr.HighKey := kp.X;
+      sr.RootNote := kp.X;
+
+      LastHighVelocity := sr.HighVelocity;
+    end;
+  end else
+  if (KeyWidth >= 1) and (KeyWidth <= 12) then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := false;
+
+    kp.X := floor(kp.X / KeyWidth) * KeyWidth;
+
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity := 0;
+      sr.HighVelocity := 127;
+      sr.LowKey  := kp.X;
+      sr.HighKey := kp.X + (KeyWidth - 1);
+      sr.RootNote := kp.X;
+
+      kp.X := kp.X + KeyWidth;
+    end;
+  end;
+
+  MouseOverRegion := nil;
+  MouseOverRegionHandle := rhNone;
+  MouseOverRegionChanged(nil);
+end;
+
+procedure TVamSampleMap.UpdateProposedRegions_MultiFileDrop(DropPoint: TPoint; NewRegionCount: integer);
+var
+  c1:integer;
+  sr : TVamSampleRegion;
+  kp : TPoint;
+  KeyWidth : integer;
+  LastHighVelocity : integer;
+  RegionAtDropPoint : TVamSampleRegion;
+begin
+  // Check if the number of sample regions needs to be updated.
+  if ProposedSampleRegions.Count <> NewRegionCount then
+  begin
+    ProposedSampleRegions.Clear;
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := TVamSampleRegion.Create;
+      ProposedSampleRegions.Add(sr);
+    end;
+  end;
+
+  // Update the sample region positions.
+  kp := PixelToSampleMapPos(DropPoint);
+  KeyWidth := CalcProposedSampleRegionKeyWidth(DropPoint);
+
+  if KeyWidth = 128 then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := true;
+
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity := 0;
+      sr.HighVelocity := 127;
+      sr.LowKey := 0;
+      sr.HighKey := 127;
+      sr.RootNote := 60; //MIDI c4.
+    end;
+  end;
+
+  if KeyWidth = 0 then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := false;
+
+    LastHighVelocity := 0;
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity  := LastHighVelocity + 1;
+      sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
+      if sr.HighVelocity > 127 then sr.HighVelocity := 127;
+
+      sr.LowKey := kp.X;
+      sr.HighKey := kp.X;
+      sr.RootNote := kp.X;
+
+      LastHighVelocity := sr.HighVelocity;
+    end;
+  end else
+  if (KeyWidth >= 1) and (KeyWidth <= 12) then
+  begin
+    ProposedMapInfo.IsFullKeyboardSpread := false;
+
+    kp.X := floor(kp.X / KeyWidth) * KeyWidth;
+
+    for c1 := 0 to NewRegionCount-1 do
+    begin
+      sr := ProposedSampleRegions[c1];
+
+      sr.LowVelocity := 0;
+      sr.HighVelocity := 127;
+      sr.LowKey  := kp.X;
+      sr.HighKey := kp.X + (KeyWidth - 1);
+      sr.RootNote := kp.X;
+
+      kp.X := kp.X + KeyWidth;
+    end;
+  end;
+
+  MouseOverRegion := nil;
+  MouseOverRegionHandle := rhNone;
+  MouseOverRegionChanged(nil);
+end;
+
+procedure TVamSampleMap.UpdateProposedRegions_RegionReplace(DropPoint: TPoint);
+var
+  sr : TVamSampleRegion;
+  RegionAtDropPoint : TVamSampleRegion;
+begin
+  RegionAtDropPoint := GetRegionAt(DropPoint.X, DropPoint.Y);
+  assert(assigned(RegionAtDropPoint));
+
+  //The samples are being dropped on an existing region. Replace that region instead.
+  if ProposedSampleRegions.Count <> 1 then
+  begin
+    ProposedSampleRegions.Clear;
+    sr := TVamSampleRegion.Create;
+    ProposedSampleRegions.Add(sr);
+  end;
+
+  sr := ProposedSampleRegions[0];
+  sr.RootNote     := RegionAtDropPoint.RootNote;
+  sr.LowKey       := RegionAtDropPoint.LowKey;
+  sr.HighKey      := RegionAtDropPoint.HighKey;
+  sr.LowVelocity  := RegionAtDropPoint.LowVelocity;
+  sr.HighVelocity := RegionAtDropPoint.HighVelocity;
+
+
+  MouseOverRegion := RegionAtDropPoint;
+  MouseOverRegionHandle := rhNone;
+  MouseOverRegionChanged(MouseOverRegion);
 end;
 
 function TVamSampleMap.CalcProposedSampleRegionKeyWidth(aPoint: TPoint): integer;
@@ -886,7 +998,7 @@ var
   NewRegionCount : integer;
 begin
   NewRegionCount := GetDragRegionCount(Data);
-  UpdateProposedSampleRegions(aPoint, NewRegionCount);
+  UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
   RegionInfoChanged;
 
@@ -899,7 +1011,7 @@ var
   NewRegionCount : integer;
 begin
   NewRegionCount := GetDragRegionCount(Data);
-  UpdateProposedSampleRegions(aPoint, NewRegionCount);
+  UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
   RegionInfoChanged;
 end;
@@ -910,7 +1022,7 @@ var
   RegionAtDropPoint : TVamSampleRegion;
 begin
   NewRegionCount := GetDragRegionCount(Data);
-  UpdateProposedSampleRegions(aPoint, NewRegionCount);
+  UpdateProposedRegions(aPoint, NewRegionCount);
 
   if (ProposedSampleRegions.Count > 0) then
   begin
