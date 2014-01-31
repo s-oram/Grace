@@ -833,7 +833,7 @@ var
   sr : TVamSampleRegion;
   kp : TPoint;
   KeyWidth : integer;
-  LastHighVelocity : integer;
+  NextLowVelocity : integer;
   RegionAtDropPoint : TVamSampleRegion;
 begin
   // Check if the number of sample regions needs to be updated.
@@ -871,20 +871,20 @@ begin
   begin
     ProposedMapInfo.IsFullKeyboardSpread := false;
 
-    LastHighVelocity := 0;
+    NextLowVelocity := 0;
     for c1 := 0 to NewRegionCount-1 do
     begin
       sr := ProposedSampleRegions[c1];
 
-      sr.LowVelocity  := LastHighVelocity + 1;
-      sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
+      sr.LowVelocity  := NextLowVelocity;
+      sr.HighVelocity := round(128 / NewRegionCount * (c1 + 1));
       if sr.HighVelocity > 127 then sr.HighVelocity := 127;
 
-      sr.LowKey := kp.X;
-      sr.HighKey := kp.X;
+      sr.LowKey   := kp.X;
+      sr.HighKey  := kp.X;
       sr.RootNote := kp.X;
 
-      LastHighVelocity := sr.HighVelocity;
+      NextLowVelocity := sr.HighVelocity + 1;
     end;
   end else
   if (KeyWidth >= 1) and (KeyWidth <= 12) then
@@ -897,13 +897,18 @@ begin
     begin
       sr := ProposedSampleRegions[c1];
 
-      sr.LowVelocity := 0;
+      sr.LowVelocity  := 0;
       sr.HighVelocity := 127;
-      sr.LowKey  := kp.X;
-      sr.HighKey := kp.X + (KeyWidth - 1);
-      sr.RootNote := kp.X;
+      sr.LowKey       := kp.X;
+      sr.HighKey      := kp.X + (KeyWidth - 1);
+      sr.RootNote     := kp.X;
+
+      if sr.LowKey  > 127 then sr.LowKey  := 127;
+      if sr.HighKey > 127 then sr.HighKey := 127;
 
       kp.X := kp.X + KeyWidth;
+
+
     end;
   end;
 end;
@@ -939,17 +944,20 @@ function TVamSampleMap.CalcProposedSampleRegionKeyWidth(aPoint: TPoint): integer
 var
   Index : integer;
 begin
-  Index := floor((aPoint.Y / Height) * 6);
+  Index := floor((aPoint.Y / Height) * 9);
   if Index < 0 then Index := 0;
-  if Index > 5 then Index := 5;
+  if Index > 8 then Index := 8;
 
   case Index of
     0: result := 128;
-    1: result := 12;
-    2: result := 6;
-    3: result := 3;
-    4: result := 1;
-    5: result := 0; //special result to say 'Velocity Stack' the new key zones.
+    1: result := 128;
+    2: result := 12;
+    3: result := 12;
+    4: result := 12;
+    5: result := 6;
+    6: result := 3;
+    7: result := 1; //special result to say 'Velocity Stack' the new key zones.
+    8: result := 0; //special result to say 'Velocity Stack' the new key zones.
   else
     result := 1;
   end;
