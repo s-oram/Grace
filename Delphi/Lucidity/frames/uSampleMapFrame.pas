@@ -57,6 +57,7 @@ type
       APoint: TPoint; var Effect: Integer; Data: IVamDragData);
     procedure SampleMapShowReplaceRegionMessage(Sender: TObject;
       Value: Boolean);
+    procedure SampleMapDblClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -382,6 +383,11 @@ begin
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
   Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+end;
+
+procedure TSampleMapFrame.SampleMapDblClick(Sender: TObject);
+begin
+  Plugin.Globals.SendWindowsMessage(UM_HIDE_SAMPLE_MAP_EDIT);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
