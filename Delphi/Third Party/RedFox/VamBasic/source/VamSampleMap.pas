@@ -16,6 +16,7 @@ type
   TVamDragRegionCountEvent = procedure(Sender : TObject; const Data:IVamDragData; var DragRegionCount : integer) of object;
   TVamNewRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList; const Data:IVamDragData) of object;
   TVamNewCopiedRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList) of object;
+  TVamReplaceRegionEvent = procedure(Sender : TObject; const NewRegion, OldRegion : TVamSampleRegion; const Data:IVamDragData) of object;
 
   TVamSampleRegionMouseDownEvent = procedure(const Sender:TObject; const Button: TMouseButton; const Shift: TShiftState; const aRegion:TVamSampleRegion) of object;
   TVamSampleRegionMouseUpEvent   = procedure(const Sender:TObject; const Button: TMouseButton; const Shift: TShiftState; const aRegion:TVamSampleRegion) of object;
@@ -121,6 +122,7 @@ type
     fOnNewRegions: TVamNewRegionsEvent;
     fCopiedRegions: TVamSampleRegionList;
     fOnNewCopiedRegions: TVamNewCopiedRegionsEvent;
+    fOnReplaceRegion: TVamReplaceRegionEvent;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
@@ -180,7 +182,7 @@ type
     procedure MouseEnter; override;
     procedure MouseLeave; override;
 
-    function GetSampleRegionAt(PixelPosX, PixelPosY:integer):TVamSampleRegion;
+    function GetRegionAt(PixelPosX, PixelPosY:integer):TVamSampleRegion;
     function GetRegionHandleAt(PixelPosX, PixelPosY:integer):TRegionHandleID;
 
     procedure ResizeSelectedRegions(KeyOffset, VelocityOffset : integer; Handle : TRegionHandleID; const Snapping : boolean);
@@ -251,6 +253,7 @@ type
     property OnGetDragRegionCount : TVamDragRegionCountEvent  read fOnGetDragRegionCount write fOnGetDragRegionCount;
     property OnNewRegions         : TVamNewRegionsEvent       read fOnNewRegions         write fOnNewRegions;
     property OnNewCopiedRegions   : TVamNewCopiedRegionsEvent read fOnNewCopiedRegions   write fOnNewCopiedRegions;
+    property OnReplaceRegion      : TVamReplaceRegionEvent    read fOnReplaceRegion      write fOnReplaceRegion;
 
     // OnMouseOverRegionChanged is fired whenever the region underneath the mouse changes. It is also called when the mouse
     // cursor leaves the control.
@@ -656,76 +659,106 @@ var
   kp : TPoint;
   KeyWidth : integer;
   LastHighVelocity : integer;
+  RegionAtDropPoint : TVamSampleRegion;
 begin
-  // Check if the number of sample regions needs to be updated.
-  if ProposedSampleRegions.Count <> NewRegionCount then
+  if NewRegionCount = 0 then
   begin
     ProposedSampleRegions.Clear;
-    for c1 := 0 to NewRegionCount-1 do
+    exit; //===========================>> exit >>=============>>
+  end;
+
+
+
+  RegionAtDropPoint := GetRegionAt(aPoint.X, aPoint.Y);
+
+  if not assigned(RegionAtDropPoint) then
+  begin
+    // Check if the number of sample regions needs to be updated.
+    if ProposedSampleRegions.Count <> NewRegionCount then
     begin
+      ProposedSampleRegions.Clear;
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        sr := TVamSampleRegion.Create;
+        ProposedSampleRegions.Add(sr);
+      end;
+    end;
+
+    // Update the sample region positions.
+    kp := PixelToSampleMapPos(aPoint);
+    KeyWidth := CalcProposedSampleRegionKeyWidth(aPoint);
+
+    if KeyWidth = 128 then
+    begin
+      ProposedMapInfo.IsFullKeyboardSpread := true;
+
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        sr := ProposedSampleRegions[c1];
+
+        sr.LowVelocity := 0;
+        sr.HighVelocity := 127;
+        sr.LowKey := 0;
+        sr.HighKey := 127;
+        sr.RootNote := 60; //MIDI c4.
+      end;
+    end;
+
+    if KeyWidth = 0 then
+    begin
+      ProposedMapInfo.IsFullKeyboardSpread := false;
+
+      LastHighVelocity := 0;
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        sr := ProposedSampleRegions[c1];
+
+        sr.LowVelocity  := LastHighVelocity + 1;
+        sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
+        if sr.HighVelocity > 127 then sr.HighVelocity := 127;
+
+        sr.LowKey := kp.X;
+        sr.HighKey := kp.X;
+        sr.RootNote := kp.X;
+
+        LastHighVelocity := sr.HighVelocity;
+      end;
+    end else
+    if (KeyWidth >= 1) and (KeyWidth <= 12) then
+    begin
+      ProposedMapInfo.IsFullKeyboardSpread := false;
+
+      kp.X := floor(kp.X / KeyWidth) * KeyWidth;
+
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        sr := ProposedSampleRegions[c1];
+
+        sr.LowVelocity := 0;
+        sr.HighVelocity := 127;
+        sr.LowKey  := kp.X;
+        sr.HighKey := kp.X + (KeyWidth - 1);
+        sr.RootNote := kp.X;
+
+        kp.X := kp.X + KeyWidth;
+      end;
+    end;
+  end else
+  begin
+    //The samples are being dropped on an existing region. Replace that region instead.
+    if ProposedSampleRegions.Count <> 1 then
+    begin
+      ProposedSampleRegions.Clear;
       sr := TVamSampleRegion.Create;
       ProposedSampleRegions.Add(sr);
     end;
-  end;
 
-  // Update the sample region positions.
-  kp := PixelToSampleMapPos(aPoint);
-  KeyWidth := CalcProposedSampleRegionKeyWidth(aPoint);
-
-  if KeyWidth = 128 then
-  begin
-    ProposedMapInfo.IsFullKeyboardSpread := true;
-
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity := 0;
-      sr.HighVelocity := 127;
-      sr.LowKey := 0;
-      sr.HighKey := 127;
-      sr.RootNote := 60; //MIDI c4.
-    end;
-  end;
-
-  if KeyWidth = 0 then
-  begin
-    ProposedMapInfo.IsFullKeyboardSpread := false;
-
-    LastHighVelocity := 0;
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity  := LastHighVelocity + 1;
-      sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
-      if sr.HighVelocity > 127 then sr.HighVelocity := 127;
-
-      sr.LowKey := kp.X;
-      sr.HighKey := kp.X;
-      sr.RootNote := kp.X;
-
-      LastHighVelocity := sr.HighVelocity;
-    end;
-  end else
-  if (KeyWidth >= 1) and (KeyWidth <= 12) then
-  begin
-    ProposedMapInfo.IsFullKeyboardSpread := false;
-
-    kp.X := floor(kp.X / KeyWidth) * KeyWidth;
-
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity := 0;
-      sr.HighVelocity := 127;
-      sr.LowKey  := kp.X;
-      sr.HighKey := kp.X + (KeyWidth - 1);
-      sr.RootNote := kp.X;
-
-      kp.X := kp.X + KeyWidth;
-    end;
+    sr := ProposedSampleRegions[0];
+    sr.RootNote     := RegionAtDropPoint.RootNote;
+    sr.LowKey       := RegionAtDropPoint.LowKey;
+    sr.HighKey      := RegionAtDropPoint.HighKey;
+    sr.LowVelocity  := RegionAtDropPoint.LowVelocity;
+    sr.HighVelocity := RegionAtDropPoint.HighVelocity;
   end;
 end;
 
@@ -802,11 +835,7 @@ var
   NewRegionCount : integer;
 begin
   NewRegionCount := GetDragRegionCount(Data);
-
-  ProposedSampleRegions.Clear;
-
   UpdateProposedSampleRegions(aPoint, NewRegionCount);
-
   Invalidate;
   RegionInfoChanged;
 end;
@@ -816,7 +845,6 @@ var
   NewRegionCount : integer;
 begin
   NewRegionCount := GetDragRegionCount(Data);
-
   UpdateProposedSampleRegions(aPoint, NewRegionCount);
   Invalidate;
   RegionInfoChanged;
@@ -825,13 +853,20 @@ end;
 procedure TVamSampleMap.OleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
 var
   NewRegionCount : integer;
+  RegionAtDropPoint : TVamSampleRegion;
 begin
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedSampleRegions(aPoint, NewRegionCount);
 
-  if ProposedSampleRegions.Count > 0 then
+  if (ProposedSampleRegions.Count > 0) then
   begin
-    if assigned(OnNewRegions) then OnNewRegions(self, ProposedSampleRegions, Data);
+    RegionAtDropPoint := GetRegionAt(aPoint.X, aPoint.Y);
+
+    //TODO: The OnNewRegions and OnReplaceRegions should send a file listing here, not the Data variable.
+    if (not assigned(RegionAtDropPoint))
+      then if assigned(OnNewRegions)    then OnNewRegions(self, ProposedSampleRegions, Data)
+      else if assigned(OnReplaceRegion) then OnReplaceRegion(self, ProposedSampleRegions[0], RegionAtDropPoint, Data);
+
     ProposedSampleRegions.Clear;
   end;
 
@@ -884,7 +919,7 @@ var
 begin
   result := rhNone;
 
-  aRegion := GetSampleRegionAt(PixelPosX, PixelPosY);
+  aRegion := GetRegionAt(PixelPosX, PixelPosY);
 
 
   if assigned(aRegion) then
@@ -949,7 +984,7 @@ begin
   end;
 end;
 
-function TVamSampleMap.GetSampleRegionAt(PixelPosX, PixelPosY: integer): TVamSampleRegion;
+function TVamSampleMap.GetRegionAt(PixelPosX, PixelPosY: integer): TVamSampleRegion;
 var
   c1: Integer;
   SampleRegionBounds : TRectF;
@@ -1009,7 +1044,7 @@ begin
     WatchForDrag      := true;
     IsDragActive      := false;
     DeselectOthersOnMouseUp := false;
-    MouseDownRegion  := GetSampleRegionAt(X, Y);
+    MouseDownRegion  := GetRegionAt(X, Y);
     MouseDownRegionHandle := GetRegionHandleAt(X, Y);
     OriginKey      := PixelToSampleMapPos(Point(x, y)).X;
     OriginVelocity := PixelToSampleMapPos(Point(x, y)).Y;
@@ -1098,7 +1133,7 @@ begin
   if (Button = mbRight) then
   begin
     IsGrabbedByRight := true;
-    MouseDownRegion  := GetSampleRegionAt(X, Y);
+    MouseDownRegion  := GetRegionAt(X, Y);
     if assigned(MouseDownRegion) then
     begin
       MoveRegionToFront(MouseDownRegion);
@@ -1259,7 +1294,7 @@ begin
 
   if not(IsGrabbedByLeft or IsGrabbedByRight) then
   begin
-    aRegion := GetSampleRegionAt(X, Y);
+    aRegion := GetRegionAt(X, Y);
     if aRegion <> MouseOverRegion then
     begin
       MouseOverRegion := aRegion;
@@ -1303,7 +1338,7 @@ begin
 
     if FocusIndex = -1 then
     begin
-      MouseUpRegion  := GetSampleRegionAt(X, Y);
+      MouseUpRegion  := GetRegionAt(X, Y);
       if assigned(MouseUpRegion) then
       begin
         FocusIndex := SampleRegions.IndexOf(MouseUpRegion);
@@ -1384,7 +1419,7 @@ begin
     IsGrabbedByLeft  := false;
     IsGrabbedByRight := false;
 
-    aRegion  := GetSampleRegionAt(X, Y);
+    aRegion  := GetRegionAt(X, Y);
 
     if assigned(aRegion) then
     begin
