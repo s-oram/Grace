@@ -1610,7 +1610,6 @@ begin
           if rw - LimitedKeyOffset >= KSnap then LimitedKeyOffset := round((LimitedKeyOffset-rw) / KSnap) * KSnap + rw;
         end;
 
-        //if LimitedKeyOffset > MaxKeyOffset then LimitedKeyOffset := MaxKeyOffset;
         SampleRegions[c1].MovedLowKey := SampleRegions[c1].LowKey   + LimitedKeyOffset;
         if SampleRegions[c1].RootNote < SampleRegions[c1].MovedLowKey
           then SampleRegions[c1].MovedRootNote := SampleRegions[c1].MovedLowKey;
@@ -1624,7 +1623,6 @@ begin
           if rw + LimitedKeyOffset >= KSnap then LimitedKeyOffset := round((LimitedKeyOffset+rw) / KSnap) * KSnap - rw;
         end;
 
-        //if LimitedKeyOffset < MinKeyOffset then LimitedKeyOffset := MinKeyOffset;
         SampleRegions[c1].MovedHighKey := SampleRegions[c1].HighKey + LimitedKeyOffset;
 
         if SampleRegions[c1].RootNote > SampleRegions[c1].MovedHighKey
@@ -1637,7 +1635,7 @@ begin
         begin
           LimitedVelocityOffset := round((LimitedVelocityOffset-rh) / VSnap) * VSnap + rh;
         end;
-        //if LimitedVelocityOffset < MinVelocityOffset then LimitedVelocityOffset := MinVelocityOffset;
+
         SampleRegions[c1].MovedHighVelocity := SampleRegions[c1].HighVelocity + LimitedVelocityOffset;
       end;
 
@@ -1647,7 +1645,7 @@ begin
         begin
           LimitedVelocityOffset := round((LimitedVelocityOffset+rh) / VSnap) * VSnap - rh;
         end;
-        //if LimitedVelocityOffset > MaxVelocityOffset then LimitedVelocityOffset := MaxVelocityOffset;
+
         SampleRegions[c1].MovedLowVelocity  := SampleRegions[c1].LowVelocity + LimitedVelocityOffset;
       end;
 
