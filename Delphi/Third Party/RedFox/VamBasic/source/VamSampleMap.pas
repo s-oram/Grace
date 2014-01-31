@@ -1670,7 +1670,7 @@ end;
 
 procedure TVamSampleMap.Paint;
 const
-  kNumberOfHorizontalLines = 7;
+  kNumberOfHorizontalLines = 9;
   ShowOtherRegions = false;
 var
   c1: Integer;
