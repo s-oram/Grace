@@ -34,7 +34,7 @@
 				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Lucidity.dproj">
-				<Dependencies/>
+				<Dependencies>Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Code Gen\CodeGen.dproj">
 				<Dependencies/>
@@ -143,13 +143,13 @@
 		<Target Name="VamBasicDesXE2:Make" DependsOnTargets="VamBasicRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
-		<Target Name="Lucidity">
+		<Target Name="Lucidity" DependsOnTargets="VamBasicRunXE2;VamBasicDesXE2">
 			<MSBuild Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Clean">
+		<Target Name="Lucidity:Clean" DependsOnTargets="VamBasicRunXE2:Clean;VamBasicDesXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Make">
+		<Target Name="Lucidity:Make" DependsOnTargets="VamBasicRunXE2:Make;VamBasicDesXE2:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
 		<Target Name="CodeGen">
