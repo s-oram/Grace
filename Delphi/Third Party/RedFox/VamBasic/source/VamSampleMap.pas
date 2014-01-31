@@ -211,6 +211,11 @@ type
     procedure UpdateCursorIcon(Shift: TShiftState; X, Y: Integer);
 
     procedure ShowReplaceRegionMessage(Show : boolean);
+
+    function FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
+    function FindRegionBelow(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
+    function FindRegionLeft(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
+    function FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -295,6 +300,7 @@ implementation
 uses
   SysUtils,
   VamLib.WinUtils,
+  VamLib.Utils,
   VamSampleMap.Sorting,
   Math, Graphics, AggPixelFormat;
 
@@ -718,97 +724,107 @@ begin
       else UpdateProposedRegions_SingleFileDrop(DropPoint, NewRegionCount);
 
     ShowReplaceRegionMessage(false);
-
+    MouseOverRegion := nil;
+    MouseOverRegionHandle := rhNone;
+    MouseOverRegionChanged(nil);
   end else
   begin
-    ShowReplaceRegionMessage(true);
     UpdateProposedRegions_RegionReplace(DropPoint);
+
+    ShowReplaceRegionMessage(true);
+    MouseOverRegion := RegionAtDropPoint;
+    MouseOverRegionHandle := rhNone;
+    MouseOverRegionChanged(MouseOverRegion);
   end;
 end;
 
 procedure TVamSampleMap.UpdateProposedRegions_SingleFileDrop(DropPoint: TPoint; NewRegionCount: integer);
 var
-  c1:integer;
   sr : TVamSampleRegion;
   kp : TPoint;
   KeyWidth : integer;
   LastHighVelocity : integer;
   RegionAtDropPoint : TVamSampleRegion;
+
+  LowKey, HighKey, LowVelocity, HighVelocity : integer;
+
+  AboveRegion : TVamSampleRegion;
+  BelowRegion : TVamSampleRegion;
+  LeftRegion, RightRegion : TVamSampleRegion;
+
+  CurrentRegion : TVamSampleRegion;
 begin
-  // Check if the number of sample regions needs to be updated.
-  if ProposedSampleRegions.Count <> NewRegionCount then
+  assert(NewRegionCount = 1);
+
+  //The samples are being dropped on an existing region. Replace that region instead.
+  if ProposedSampleRegions.Count <> 1 then
   begin
     ProposedSampleRegions.Clear;
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := TVamSampleRegion.Create;
-      ProposedSampleRegions.Add(sr);
-    end;
+    sr := TVamSampleRegion.Create;
+    ProposedSampleRegions.Add(sr);
   end;
 
-  // Update the sample region positions.
+  UpdateProposedRegions_MultiFileDrop(DropPoint, NewRegionCount);
+
+  CurrentRegion := ProposedSampleRegions[0];
+
+
   kp := PixelToSampleMapPos(DropPoint);
-  KeyWidth := CalcProposedSampleRegionKeyWidth(DropPoint);
 
-  if KeyWidth = 128 then
+  LowKey       := kp.X;
+  HighKey      := kp.X;
+  LowVelocity  := kp.Y;
+  HighVelocity := kp.Y;
+
+  AboveRegion := FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity);
+  BelowRegion := FindRegionBelow(LowKey, HighKey, LowVelocity, HighVelocity);
+
+
+  if (assigned(AboveRegion)) and (not assigned(BelowRegion)) then
   begin
-    ProposedMapInfo.IsFullKeyboardSpread := true;
-
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity := 0;
-      sr.HighVelocity := 127;
-      sr.LowKey := 0;
-      sr.HighKey := 127;
-      sr.RootNote := 60; //MIDI c4.
-    end;
-  end;
-
-  if KeyWidth = 0 then
-  begin
-    ProposedMapInfo.IsFullKeyboardSpread := false;
-
-    LastHighVelocity := 0;
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity  := LastHighVelocity + 1;
-      sr.HighVelocity := round((c1 + 1) / NewRegionCount * 128);
-      if sr.HighVelocity > 127 then sr.HighVelocity := 127;
-
-      sr.LowKey := kp.X;
-      sr.HighKey := kp.X;
-      sr.RootNote := kp.X;
-
-      LastHighVelocity := sr.HighVelocity;
-    end;
+    CurrentRegion.LowKey       := AboveRegion.LowKey;
+    CurrentRegion.HighKey      := AboveRegion.HighKey;
+    CurrentRegion.LowVelocity  := 0;
+    CurrentRegion.HighVelocity := AboveRegion.LowVelocity - 1;
   end else
-  if (KeyWidth >= 1) and (KeyWidth <= 12) then
+  if (not assigned(AboveRegion)) and (assigned(BelowRegion)) then
   begin
-    ProposedMapInfo.IsFullKeyboardSpread := false;
-
-    kp.X := floor(kp.X / KeyWidth) * KeyWidth;
-
-    for c1 := 0 to NewRegionCount-1 do
-    begin
-      sr := ProposedSampleRegions[c1];
-
-      sr.LowVelocity := 0;
-      sr.HighVelocity := 127;
-      sr.LowKey  := kp.X;
-      sr.HighKey := kp.X + (KeyWidth - 1);
-      sr.RootNote := kp.X;
-
-      kp.X := kp.X + KeyWidth;
-    end;
+    CurrentRegion.LowKey       := BelowRegion.LowKey;
+    CurrentRegion.HighKey      := BelowRegion.HighKey;
+    CurrentRegion.LowVelocity  := BelowRegion.HighVelocity + 1;
+    CurrentRegion.HighVelocity := 127;
+  end else
+  if (assigned(AboveRegion)) and (assigned(BelowRegion)) then
+  begin
+    CurrentRegion.LowKey  := Max(BelowRegion.LowKey, AboveRegion.LowKey);
+    CurrentRegion.HighKey := Min(BelowRegion.HighKey, AboveRegion.HighKey);
+    CurrentRegion.LowVelocity  := BelowRegion.HighVelocity + 1;
+    CurrentRegion.HighVelocity := AboveRegion.LowVelocity  - 1;
   end;
 
-  MouseOverRegion := nil;
-  MouseOverRegionHandle := rhNone;
-  MouseOverRegionChanged(nil);
+
+  LowKey       := kp.X;
+  HighKey      := kp.X;
+  LowVelocity  := CurrentRegion.LowVelocity;
+  HighVelocity := CurrentRegion.HighVelocity;
+
+
+  LeftRegion  := FindRegionLeft(LowKey, HighKey, LowVelocity, HighVelocity);
+  RightRegion := FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity);
+
+  if assigned(LeftRegion) then
+  begin
+    if CurrentRegion.LowKey <= LeftRegion.HighKey
+      then CurrentRegion.LowKey := LeftRegion.HighKey + 1;
+  end;
+
+  if assigned(RightRegion) then
+  begin
+    if CurrentRegion.HighKey >= RightRegion.LowKey
+      then CurrentRegion.HighKey := RightRegion.LowKey - 1;
+  end;
+
+
 end;
 
 procedure TVamSampleMap.UpdateProposedRegions_MultiFileDrop(DropPoint: TPoint; NewRegionCount: integer);
@@ -890,10 +906,6 @@ begin
       kp.X := kp.X + KeyWidth;
     end;
   end;
-
-  MouseOverRegion := nil;
-  MouseOverRegionHandle := rhNone;
-  MouseOverRegionChanged(nil);
 end;
 
 procedure TVamSampleMap.UpdateProposedRegions_RegionReplace(DropPoint: TPoint);
@@ -920,9 +932,7 @@ begin
   sr.HighVelocity := RegionAtDropPoint.HighVelocity;
 
 
-  MouseOverRegion := RegionAtDropPoint;
-  MouseOverRegionHandle := rhNone;
-  MouseOverRegionChanged(MouseOverRegion);
+
 end;
 
 function TVamSampleMap.CalcProposedSampleRegionKeyWidth(aPoint: TPoint): integer;
@@ -1053,6 +1063,124 @@ begin
   Invalidate;
   RegionInfoChanged;
   ShowReplaceRegionMessage(false);
+end;
+
+function TVamSampleMap.FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;
+var
+  c1 : integer;
+  TempRegionList : TVamSampleRegionList;
+  aRegion : TVamSampleRegion;
+begin
+  TempRegionList := TVamSampleRegionList.Create(false);
+  AutoFree(@TempRegionList);
+
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    aRegion := SampleRegions[c1];
+    if (aRegion.LowKey <= HighKey) and (aRegion.HighKey >= LowKey) and (aRegion.LowVelocity > HighVelocity)
+      then TempRegionList.Add(aRegion);
+  end;
+
+  if TempRegionList.Count = 0 then exit(nil);
+  if TempRegionList.Count = 1 then exit(TempRegionList[0]);
+
+  aRegion := TempRegionList[0];
+  for c1 := 0 to TempRegionList.Count-1 do
+  begin
+    if aRegion.LowVelocity > TempRegionList[c1].LowVelocity
+      then aRegion := TempRegionList[c1];
+  end;
+
+  result := aRegion;
+end;
+
+function TVamSampleMap.FindRegionBelow(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;
+var
+  c1 : integer;
+  TempRegionList : TVamSampleRegionList;
+  aRegion : TVamSampleRegion;
+begin
+  TempRegionList := TVamSampleRegionList.Create(false);
+  AutoFree(@TempRegionList);
+
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    aRegion := SampleRegions[c1];
+    if (aRegion.LowKey <= HighKey) and (aRegion.HighKey >= LowKey) and (aRegion.HighVelocity < LowVelocity)
+      then TempRegionList.Add(aRegion);
+  end;
+
+  if TempRegionList.Count = 0 then exit(nil);
+  if TempRegionList.Count = 1 then exit(TempRegionList[0]);
+
+  aRegion := TempRegionList[0];
+  for c1 := 0 to TempRegionList.Count-1 do
+  begin
+    if aRegion.HighVelocity < TempRegionList[c1].HighVelocity
+      then aRegion := TempRegionList[c1];
+  end;
+
+  result := aRegion;
+end;
+
+
+function TVamSampleMap.FindRegionLeft(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;
+var
+  c1 : integer;
+  TempRegionList : TVamSampleRegionList;
+  aRegion : TVamSampleRegion;
+begin
+  TempRegionList := TVamSampleRegionList.Create(false);
+  AutoFree(@TempRegionList);
+
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    aRegion := SampleRegions[c1];
+    if (aRegion.LowVelocity <= HighVelocity) and (aRegion.HighVelocity >= LowVelocity) and (aRegion.HighKey < LowKey)
+      then TempRegionList.Add(aRegion);
+  end;
+
+  if TempRegionList.Count = 0 then exit(nil);
+  if TempRegionList.Count = 1 then exit(TempRegionList[0]);
+
+  aRegion := TempRegionList[0];
+  for c1 := 0 to TempRegionList.Count-1 do
+  begin
+    if aRegion.HighKey < TempRegionList[c1].HighKey
+      then aRegion := TempRegionList[c1];
+  end;
+
+  result := aRegion;
+end;
+
+
+function TVamSampleMap.FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;
+var
+  c1 : integer;
+  TempRegionList : TVamSampleRegionList;
+  aRegion : TVamSampleRegion;
+begin
+  TempRegionList := TVamSampleRegionList.Create(false);
+  AutoFree(@TempRegionList);
+
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    aRegion := SampleRegions[c1];
+    if (aRegion.LowVelocity <= HighVelocity) and (aRegion.HighVelocity >= LowVelocity) and (aRegion.LowKey > HighKey)
+      then TempRegionList.Add(aRegion);
+  end;
+
+  if TempRegionList.Count = 0 then exit(nil);
+  if TempRegionList.Count = 1 then exit(TempRegionList[0]);
+
+  aRegion := TempRegionList[0];
+  for c1 := 0 to TempRegionList.Count-1 do
+  begin
+    if aRegion.LowKey > TempRegionList[c1].LowKey
+      then aRegion := TempRegionList[c1];
+  end;
+
+  result := aRegion;
 end;
 
 
