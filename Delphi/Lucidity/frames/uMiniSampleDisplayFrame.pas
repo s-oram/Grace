@@ -204,10 +204,15 @@ end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
-  if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED   then UpdateControlVisibility;
-  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
-  if Message.Msg = UM_SAMPLE_FOCUS_CHANGED      then UpdateSampleDisplay;
+  if Message.Msg = UM_Update_Control_Visibility   then UpdateControlVisibility;
+  if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED     then UpdateControlVisibility;
+  if Message.Msg = UM_MOD_SLOT_CHANGED            then UpdateModulation;
+  if Message.Msg = UM_SAMPLE_FOCUS_CHANGED        then UpdateSampleDisplay;
+
+  if Message.Msg = UM_SHOW_REPLACE_REGION_MESSAGE then SampleOverlay.ShowReplaceMessage := true;
+  if Message.Msg = UM_HIDE_REPLACE_REGION_MESSAGE then SampleOverlay.ShowReplaceMessage := false;
+
+
 
 end;
 

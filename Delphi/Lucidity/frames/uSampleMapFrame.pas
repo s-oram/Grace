@@ -51,6 +51,12 @@ type
     procedure SampleMapKeysMidiKeyUp(Sender: TObject; const KeyIndex: Integer);
     procedure SampleMapNewCopiedRegions(Sender: TObject;
       const aRegions: TVamSampleRegionList);
+    procedure SampleMapReplaceRegion(Sender: TObject; const NewRegion,
+      OldRegion: TVamSampleRegion; const Data: IVamDragData);
+    procedure SampleMapOleDragEnter(Sender: TObject; ShiftState: TShiftState;
+      APoint: TPoint; var Effect: Integer; Data: IVamDragData);
+    procedure SampleMapShowReplaceRegionMessage(Sender: TObject;
+      Value: Boolean);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -398,6 +404,14 @@ begin
   SampleMapMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, RegionContext);
 end;
 
+procedure TSampleMapFrame.SampleMapShowReplaceRegionMessage(Sender: TObject; Value: Boolean);
+begin
+  if Value
+    then Plugin.Globals.SendWindowsMessage(UM_SHOW_REPLACE_REGION_MESSAGE)
+    else Plugin.Globals.SendWindowsMessage(UM_HIDE_REPLACE_REGION_MESSAGE);
+
+end;
+
 procedure TSampleMapFrame.SampleMapRegionMoved(const Sender: TObject; aRegion: TVamSampleRegion);
 var
   MapRegion : IRegion;
@@ -687,12 +701,73 @@ begin
   end;
 end;
 
+procedure TSampleMapFrame.SampleMapOleDragEnter(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
+begin
+  Plugin.ClearSelected;
+end;
+
+procedure TSampleMapFrame.SampleMapReplaceRegion(Sender: TObject; const NewRegion, OldRegion: TVamSampleRegion; const Data: IVamDragData);
+type
+  TDropType = (dtFiles, dtVstXml);
+var
+  RegionCreateInfo : TRegionCreateInfo;
+  DropType : TDropType;
+  XmlRegionCount : integer;
+  XmlRegionInfo : TVstXmlRegion;
+  NewSR : IRegion;
+begin
+  if not assigned(Plugin) then exit;
+
+  Plugin.StopPreview;
+
+  //====== Load the new regions ==============================================
+  XmlRegionCount := GetVstXmlRegionCount(Data.GetText);
+
+  if XmlRegionCount > 0
+    then DropType := TDropType.dtVstXml
+    else DropType := TDropType.dtFiles;
+
+  RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
+  RegionCreateInfo.LowNote       := NewRegion.LowKey;
+  RegionCreateInfo.HighNote      := NewRegion.HighKey;
+  RegionCreateInfo.LowVelocity   := NewRegion.LowVelocity;
+  RegionCreateInfo.HighVelocity  := NewRegion.HighVelocity;
+  RegionCreateInfo.RootNote      := NewRegion.RootNote;
+
+  case DropType of
+    dtFiles:
+    begin
+      RegionCreateInfo.AudioFileName := Data.GetFiles[0];
+    end;
+
+    dtVstXml:
+    begin
+      XmlRegionInfo := GetVstXmlRegionInfo(0, Data.GetText);
+      RegionCreateInfo.AudioFileName := XmlRegionInfo.FileName;
+    end
+  else
+    raise Exception.Create('Drop type not handled.');
+  end;
+
+  NewSR := Plugin.NewRegion(RegionCreateInfo);
+
+  if (assigned(NewSR)) and (NewSR.GetProperties^.IsSampleError = false) then
+  begin
+    Plugin.ClearSelected;
+    Plugin.FocusRegion(NewSR.GetProperties^.UniqueID);
+    Plugin.SampleMap.DeleteRegion(OldRegion.UniqueID);
+  end;
+
+  UpdateRegionInfoDisplay;
+  UpdateSampleRegions;
+end;
+
+
+
 procedure TSampleMapFrame.SampleMapNewCopiedRegions(Sender: TObject; const aRegions: TVamSampleRegionList);
 var
   c1: Integer;
   RegionCreateInfo : TRegionCreateInfo;
-  XmlRegionCount : integer;
-  XmlRegionInfo : TVstXmlRegion;
   NewRegionCount : integer;
   NewRegions : array of IRegion;
 begin

@@ -153,6 +153,7 @@ type
 
     procedure DeleteRegion(Index : integer); overload;
     procedure DeleteRegion(const aRegion : IRegion); overload;
+    procedure DeleteRegion(UniqueID : TGUID); overload;
     procedure DeleteRegionsInKeyGroup(aKeyGroupName : string);
 
     function LoadSample(const AudioFileName : string; OwningSampleGroup : IKeyGroup): IRegion;
@@ -739,6 +740,17 @@ begin
     begin
       if Regions[c1] = aRegion then DeleteRegion(c1);
     end;
+  end;
+end;
+
+procedure TSampleMap.DeleteRegion(UniqueID: TGUID);
+var
+  c1: Integer;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    if Regions[c1].GetProperties^.UniqueID = UniqueID
+      then DeleteRegion(c1);
   end;
 end;
 

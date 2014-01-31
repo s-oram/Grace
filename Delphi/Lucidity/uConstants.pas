@@ -53,6 +53,9 @@ const
   UM_PROGRAM_SAVED_TO_DISK            = WM_APP + 19;
   UM_MOD_SLOT_CHANGED                 = WM_APP + 20;
 
+  UM_SHOW_REPLACE_REGION_MESSAGE      = WM_APP + 21;
+  UM_HIDE_REPLACE_REGION_MESSAGE      = WM_APP + 22;
+
 const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.

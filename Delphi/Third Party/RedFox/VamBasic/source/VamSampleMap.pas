@@ -13,6 +13,7 @@ type
   TVamSampleRegionList = class;
   //================================
 
+  TBooleanEvent = procedure(Sender : TObject; Value : boolean) of  object;
   TVamDragRegionCountEvent = procedure(Sender : TObject; const Data:IVamDragData; var DragRegionCount : integer) of object;
   TVamNewRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList; const Data:IVamDragData) of object;
   TVamNewCopiedRegionsEvent = procedure(Sender : TObject; const aRegions : TVamSampleRegionList) of object;
@@ -24,6 +25,8 @@ type
   TVamSampleRegionEvent = procedure(const Sender:TObject; aRegion:TVamSampleRegion) of object;
 
   TRegionHandleID = (rhNone, rhTopLeft, rhTopRight, rhBottomRight, rhBottomLeft, rhTop, rhRight, rhBottom, rhLeft);
+
+
 
 
 
@@ -123,9 +126,13 @@ type
     fCopiedRegions: TVamSampleRegionList;
     fOnNewCopiedRegions: TVamNewCopiedRegionsEvent;
     fOnReplaceRegion: TVamReplaceRegionEvent;
+    fOnShowReplaceRegionMessage: TBooleanEvent;
+    IsReplaceRegionMessageShowing : boolean;
+
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
+
     MouseOverRegion       : TVamSampleRegion;
     MouseOverRegionHandle : TRegionHandleID;
 
@@ -196,6 +203,8 @@ type
     procedure PrepareCopiedRegionsList;
 
     procedure UpdateCursorIcon(Shift: TShiftState; X, Y: Integer);
+
+    procedure ShowReplaceRegionMessage(Show : boolean);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -220,6 +229,7 @@ type
     function GetDragSelectCount : integer;
     function GetSelectedCount   : integer;
     function GetMouseOverRegionInfo : TVamSampleMapDisplayInfo;
+
 
   published
     property Color_Background            : TRedFoxColorString index 0 read GetColors write SetColors;
@@ -254,6 +264,8 @@ type
     property OnNewRegions         : TVamNewRegionsEvent       read fOnNewRegions         write fOnNewRegions;
     property OnNewCopiedRegions   : TVamNewCopiedRegionsEvent read fOnNewCopiedRegions   write fOnNewCopiedRegions;
     property OnReplaceRegion      : TVamReplaceRegionEvent    read fOnReplaceRegion      write fOnReplaceRegion;
+
+    property OnShowReplaceRegionMessage : TBooleanEvent read fOnShowReplaceRegionMessage write fOnShowReplaceRegionMessage;
 
     // OnMouseOverRegionChanged is fired whenever the region underneath the mouse changes. It is also called when the mouse
     // cursor leaves the control.
@@ -581,6 +593,17 @@ begin
   end;
 end;
 
+procedure TVamSampleMap.ShowReplaceRegionMessage(Show: boolean);
+begin
+  if Show <> IsReplaceRegionMessageShowing then
+  begin
+    IsReplaceRegionMessageShowing := Show;
+    if assigned(OnShowReplaceRegionMessage) then OnShowReplaceRegionMessage(self, Show);
+  end;
+
+
+end;
+
 procedure TVamSampleMap.ZoomOffsetChanged;
 var
   c1 : integer;
@@ -668,7 +691,6 @@ begin
   end;
 
 
-
   RegionAtDropPoint := GetRegionAt(aPoint.X, aPoint.Y);
 
   if not assigned(RegionAtDropPoint) then
@@ -743,6 +765,11 @@ begin
         kp.X := kp.X + KeyWidth;
       end;
     end;
+
+    MouseOverRegion := nil;
+    MouseOverRegionHandle := rhNone;
+    MouseOverRegionChanged(nil);
+    ShowReplaceRegionMessage(false);
   end else
   begin
     //The samples are being dropped on an existing region. Replace that region instead.
@@ -759,6 +786,12 @@ begin
     sr.HighKey      := RegionAtDropPoint.HighKey;
     sr.LowVelocity  := RegionAtDropPoint.LowVelocity;
     sr.HighVelocity := RegionAtDropPoint.HighVelocity;
+
+
+    MouseOverRegion := RegionAtDropPoint;
+    MouseOverRegionHandle := rhNone;
+    MouseOverRegionChanged(MouseOverRegion);
+    ShowReplaceRegionMessage(true);
   end;
 end;
 
@@ -838,6 +871,9 @@ begin
   UpdateProposedSampleRegions(aPoint, NewRegionCount);
   Invalidate;
   RegionInfoChanged;
+
+  if assigned(OnOleDragEnter)
+    then OnOleDragEnter(Sender, ShiftState, aPoint, Effect, Data);
 end;
 
 procedure TVamSampleMap.OleDragOver(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
@@ -863,15 +899,22 @@ begin
     RegionAtDropPoint := GetRegionAt(aPoint.X, aPoint.Y);
 
     //TODO: The OnNewRegions and OnReplaceRegions should send a file listing here, not the Data variable.
-    if (not assigned(RegionAtDropPoint))
-      then if assigned(OnNewRegions)    then OnNewRegions(self, ProposedSampleRegions, Data)
-      else if assigned(OnReplaceRegion) then OnReplaceRegion(self, ProposedSampleRegions[0], RegionAtDropPoint, Data);
+    if (not assigned(RegionAtDropPoint)) then
+    begin
+      if assigned(OnNewRegions)
+        then OnNewRegions(self, ProposedSampleRegions, Data);
+    end else
+    begin
+      if assigned(OnReplaceRegion)
+        then OnReplaceRegion(self, ProposedSampleRegions[0], RegionAtDropPoint, Data);
+    end;
 
     ProposedSampleRegions.Clear;
   end;
 
   Invalidate;
   RegionInfoChanged;
+  ShowReplaceRegionMessage(false);
 end;
 
 procedure TVamSampleMap.OleDragLeave(Sender: TObject);
@@ -879,6 +922,7 @@ begin
   if ProposedSampleRegions.Count > 0 then ProposedSampleRegions.Clear;
   Invalidate;
   RegionInfoChanged;
+  ShowReplaceRegionMessage(false);
 end;
 
 

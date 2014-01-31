@@ -93,6 +93,7 @@ object SampleMapFrame: TSampleMapFrame
             Height = 239
             Margins.Top = 0
             HitTest = True
+            OnOleDragEnter = SampleMapOleDragEnter
             Color_Background = '$FF242B39'
             Color_BackgroundLines = '$FF64718D'
             Color_Region = '$707887A0'
@@ -116,6 +117,8 @@ object SampleMapFrame: TSampleMapFrame
             OnGetDragRegionCount = SampleMapGetDragRegionCount
             OnNewRegions = SampleMapNewRegions
             OnNewCopiedRegions = SampleMapNewCopiedRegions
+            OnReplaceRegion = SampleMapReplaceRegion
+            OnShowReplaceRegionMessage = SampleMapShowReplaceRegionMessage
             OnMouseOverRegionChanged = SampleMapMouseOverRegionChanged
             OnRegionInfoChanged = SampleMapRegionInfoChanged
             Align = alClient
