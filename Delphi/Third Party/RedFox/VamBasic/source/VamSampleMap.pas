@@ -1608,8 +1608,7 @@ begin
       begin
         if Snapping then
         begin
-          //Snapping is disabled when resizing to 6 keys wide or less.
-          if rw - LimitedKeyOffset > 6 then LimitedKeyOffset := round((LimitedKeyOffset-rw) / KSnap) * KSnap + rw;
+          if rw - LimitedKeyOffset >= KSnap then LimitedKeyOffset := round((LimitedKeyOffset-rw) / KSnap) * KSnap + rw;
         end;
 
         //if LimitedKeyOffset > MaxKeyOffset then LimitedKeyOffset := MaxKeyOffset;
@@ -1623,8 +1622,7 @@ begin
       begin
         if Snapping then
         begin
-          //Snapping is disabled when resizing to 6 keys wide or less.
-          if rw + LimitedKeyOffset > 6 then LimitedKeyOffset := round((LimitedKeyOffset+rw) / KSnap) * KSnap - rw;
+          if rw + LimitedKeyOffset >= KSnap then LimitedKeyOffset := round((LimitedKeyOffset+rw) / KSnap) * KSnap - rw;
         end;
 
         //if LimitedKeyOffset < MinKeyOffset then LimitedKeyOffset := MinKeyOffset;
