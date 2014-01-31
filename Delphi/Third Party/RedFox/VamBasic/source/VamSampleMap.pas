@@ -317,12 +317,29 @@ end;
 
 function Intersects(RectA, RectB: TRect):boolean;
 begin
-
   CorrectOrientation(RectA);
   CorrectOrientation(RectB);
 
   result := RectA.IntersectsWith(RectB);
+end;
 
+procedure CorrectMovingRegionBounds(aRegion : TVamSampleRegion);
+var
+  tx : integer;
+begin
+  if aRegion.MovedLowKey > aRegion.MovedHighKey then
+  begin
+    tx := aRegion.MovedLowKey;
+    aRegion.MovedLowKey  := aRegion.MovedHighKey;
+    aRegion.MovedHighKey := tx;
+  end;
+
+  if aRegion.MovedLowVelocity > aRegion.MovedHighVelocity then
+  begin
+    tx := aRegion.MovedLowVelocity;
+    aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
+    aRegion.MovedHighVelocity := tx;
+  end;
 end;
 
 
@@ -1545,24 +1562,6 @@ end;
 
 
 procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
-  procedure CorrectMovingRegionBounds(aRegion : TVamSampleRegion);
-  var
-    tx : integer;
-  begin
-    if aRegion.MovedLowKey > aRegion.MovedHighKey then
-    begin
-      tx := aRegion.MovedLowKey;
-      aRegion.MovedLowKey  := aRegion.MovedHighKey;
-      aRegion.MovedHighKey := tx;
-    end;
-
-    if aRegion.MovedLowVelocity > aRegion.MovedHighVelocity then
-    begin
-      tx := aRegion.MovedLowVelocity;
-      aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
-      aRegion.MovedHighVelocity := tx;
-    end;
-  end;
 const
   KSnap = 12; //Key Snap Size
   VSnap = 16; //Velocity Snap Size;
