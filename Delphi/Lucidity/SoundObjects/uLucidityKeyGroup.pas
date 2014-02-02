@@ -63,6 +63,7 @@ type
     procedure SetModParValue(const ModParIndex : integer; const Value:single);
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
     function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
+    procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, ModMax:single);
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
@@ -314,10 +315,28 @@ begin
 end;
 
 procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);
+var
+  aMin, aMax : single;
+  c1: Integer;
+  tx : single;
 begin
   ModulatedParameters[ModParIndex].ModAmount[ModSlot] := Value;
   if assigned(fVoiceParameters)
     then fVoiceParameters.UpdateModConnections;
+
+  //==== Calculate the min/max modulation amounts =======
+  aMin := 0;
+  aMax := 0;
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    tx := ModulatedParameters[ModParIndex].ModAmount[c1];
+    if aMin > tx then aMin := tx;
+    if aMax < tx then aMax := tx;
+  end;
+
+  ModulatedParameters[ModParIndex].ModMin := aMin;
+  ModulatedParameters[ModParIndex].ModMax := aMax;
+  //=====================================================
 end;
 
 function TKeyGroup.GetModParModAmount(const ModParIndex, ModSlot: integer): single;
@@ -325,7 +344,11 @@ begin
   result := ModulatedParameters[ModParIndex].ModAmount[ModSlot];
 end;
 
-
+procedure TKeyGroup.GetModParModMinMax(const ModParIndex : integer;  out ModMin, ModMax:single);
+begin
+  ModMin := ModulatedParameters[ModParIndex].ModMin;
+  ModMax := ModulatedParameters[ModParIndex].ModMax;
+end;
 
 procedure TKeyGroup.SetName(Value: string);
 begin

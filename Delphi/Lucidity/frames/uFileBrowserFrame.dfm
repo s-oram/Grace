@@ -147,8 +147,6 @@ object FileBrowserFrame: TFileBrowserFrame
             KnobMode = PositionEdit
             IsKnobEnabled = True
             VisibleSteps = 0
-            MinModDepth = -0.300000011920929000
-            MaxModDepth = 0.500000000000000000
             ParameterIndex = 0
             Align = alTop
             Visible = True

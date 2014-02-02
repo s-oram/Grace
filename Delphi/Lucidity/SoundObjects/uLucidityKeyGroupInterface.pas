@@ -23,9 +23,11 @@ type
 
     function GetModParValue(const ModParIndex : integer):single;
     procedure SetModParValue(const ModParIndex : integer; const Value:single);
+
     //TODO: this is a awkward procedure name.
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
     function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
+    procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, MoxMax:single);
   end;
 
 implementation

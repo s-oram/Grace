@@ -517,22 +517,39 @@ var
   VstPar : TVstParameterEx;
   ModConnections : TModConnections;
   ModAmount : single;
+  ModMin, ModMax : single;
 begin
   if ModSlot = -1
     then km := TKnobMode.PositionEdit
     else km := TKnobMode.ModEdit;
 
+  kg := Plugin.ActiveKeyGroup;
+  ModConnections := kg.GetModConnections; //TODO: Remove reliance on GetModConnections(). Use methods in the keygroup interface instead.
+
   if km = TKnobMode.PositionEdit then
   begin
+
+
     //==== Position Edit ====
     aKnob.KnobMode := TKnobMode.PositionEdit;
     aKnob.ModLineColor := kModLineColorA;
+
+    VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
+    if VstPar.HasModLink = false then
+    begin
+      aKnob.MinModDepth := 0;
+      aKnob.MaxModDepth := 0;
+    end else
+    begin
+      ModLinkIndex := VstPar.ModLinkIndex;
+      kg.GetModParModMinMax(ModLinkIndex, ModMin, ModMax);
+      aKnob.MinModDepth := ModMin;
+      aKnob.MaxModDepth := ModMax;
+    end;
+
   end else
   begin
     //==== Mod Edit ====
-    kg := Plugin.ActiveKeyGroup;
-    ModConnections := kg.GetModConnections;
-
     VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
 
     if VstPar.HasModLink = false then

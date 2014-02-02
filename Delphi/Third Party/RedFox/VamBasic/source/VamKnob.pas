@@ -204,8 +204,8 @@ begin
   fModLineDist := 17;
   fModLineWidth := 3;
 
-  fMinModDepth := -0.3;
-  fMaxModDepth := 0.5;
+  fMinModDepth := 0;
+  fMaxModDepth := 0;
   fModLineColor := GetAggColor(clRed);
 end;
 
@@ -535,7 +535,8 @@ begin
 
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   if KnobMode = TKnobMode.PositionEdit
-    then DrawKnob_PositionArc
+    //then DrawKnob_PositionArc
+    then DrawKnob_ModDepth
     else DrawKnob_ModAmount;
 
 

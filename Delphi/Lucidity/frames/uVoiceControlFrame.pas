@@ -106,6 +106,11 @@ begin
   // i couldn't figure out why. This is a work-around so that the frame
   // can receive messages posted by the EasyEffect Globals class.
   MsgHandle := AllocateHWND(MessageHandler);
+
+
+  //misc.
+  GlideKnob.MinModDepth := 0;
+  GlideKnob.MaxModDepth := 0;
 end;
 
 
@@ -141,7 +146,6 @@ begin
     Plugin.Globals.AddWindowsMessageListener(MsgHandle);
   end;
 
-  UpdateControlVisibility;
 
   //==== Assign standard control handling ====
 
@@ -264,7 +268,11 @@ begin
   ResetTextBox.Layout.Anchor(SamplerLoopBoundsTextBox).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge).Move(8,0);
   ResetLabel.Layout.Anchor(ResetTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
-  //================================
+
+
+  //== finally, call the message handlers to ensure everything is up to date ===
+  UpdateControlVisibility;
+  UpdateModulation;
 end;
 
 procedure TVoiceControlFrame.VoiceControlsContainerResize(Sender: TObject);

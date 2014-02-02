@@ -238,7 +238,6 @@ begin
   fGuiStandard := aGuiStandard;
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-  UpdateControlVisibility;
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
@@ -545,13 +544,20 @@ begin
   Seq2ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq2DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq2StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
+
+
+
+
+  //== finally, call the message handlers to ensure everything is up to date ===
+  UpdateControlVisibility;
+  UpdateModulation;
 end;
 
 procedure TModControlFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
-  if Message.Msg = UM_FILTER_CHANGED then UpdateControlVisibility;
-  if Message.Msg = UM_MOD_SLOT_CHANGED then UpdateModulation;
+  if Message.Msg = UM_FILTER_CHANGED            then UpdateControlVisibility;
+  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
 end;
 
 
