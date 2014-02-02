@@ -161,7 +161,6 @@ begin
   GuiStandard := aGuiStandard;
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-  UpdateControlVisibility;
 
 
   SampleDisplayMenu.Initialize(aPlugin);
@@ -200,6 +199,11 @@ begin
 
   StoredImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
   //SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
+
+
+  //== finally, call the message handlers to ensure everything is up to date ===
+  UpdateControlVisibility;
+  UpdateModulation;
 end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
