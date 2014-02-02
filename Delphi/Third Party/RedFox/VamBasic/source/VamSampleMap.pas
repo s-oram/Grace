@@ -1811,7 +1811,7 @@ end;
 
 procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
 const
-  KSnap = 12; //Key Snap Size
+  KSnap = 6; //Key Snap Size
   VSnap = 8; //Velocity Snap Size;
 var
   c1: Integer;
