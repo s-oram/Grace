@@ -145,9 +145,7 @@ begin
 
 
   //==== Parameters ====
-  //TODO:
-  //PreviewVolumeKnob.Tag := fPlugin.Globals.VstParameters.FindParameterIndexByName('PreviewVolume');
-  //fGuiStandard.RegisterControlForAutoUpdate(PreviewVolumeKnob, true);
+  GuiStandard.RedFoxKnobHandler.RegisterControl(PreviewVolumeKnob, Plugin.Globals.VstParameters.FindParameter(TParName.PreviewVolume));
 
   PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
 

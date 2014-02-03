@@ -141,6 +141,7 @@ object FileBrowserFrame: TFileBrowserFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
