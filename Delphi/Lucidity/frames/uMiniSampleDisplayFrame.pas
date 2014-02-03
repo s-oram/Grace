@@ -62,6 +62,7 @@ type
     procedure SampleOverlayDblClicked(Sender : TObject);
 
     procedure SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayZoomChanged(Sender : TObject; aZoom, aOffset : single);
 
     procedure SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
@@ -115,6 +116,7 @@ begin
 
   fSampleOverlay.OnModAmountsChanged := Handle_SampleOverlay_ModAmountsChanged;
   fSampleOverlay.OnMouseDown := SampleOverlayMouseDown;
+  fSampleOverlay.OnMouseUp   := SampleOverlayMouseUp;
   fSampleOverlay.OnSampleMarkerChanged := SampleMarkerChanged;
   fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
 
@@ -648,6 +650,14 @@ begin
   end;
 end;
 
+procedure TMiniSampleDisplayFrame.SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  // NOTE: Send a UM_MOD_SLOT_CHANGED message here to force the sample overlay to update
+  // it's modulation values. The current mod slot hasn't changed so
+  // the message isn't strictly UM_MOD_SLOT_CHANGED appropiate.
+  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+end;
+
 procedure TMiniSampleDisplayFrame.SampleMarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
 var
   CurRegion : IRegion;
@@ -781,16 +791,38 @@ procedure TMiniSampleDisplayFrame.UpdateModulation;
 var
   ModSlot : integer;
   ModAmount : single;
+  ModMin, ModMax : single;
   kg : IKeyGroup;
 begin
   if Plugin.Globals.IsMouseOverModSlot
     then ModSlot := Plugin.Globals.MouseOverModSlot
     else ModSlot := Plugin.Globals.SelectedModSlot;
 
+  kg := Plugin.ActiveKeyGroup;
+
+
+  //== Update min-max modulation amounts ==
+  kg.GetModParModMinMax(TModParIndex.SampleStart, ModMin, ModMax);
+  SampleOverlay.SampleStartModMin := ModMin;
+  SampleOverlay.SampleStartModMax := ModMax;
+
+  kg.GetModParModMinMax(TModParIndex.SampleEnd, ModMin, ModMax);
+  SampleOverlay.SampleEndModMin := ModMin;
+  SampleOverlay.SampleEndModMax := ModMax;
+
+  kg.GetModParModMinMax(TModParIndex.LoopStart, ModMin, ModMax);
+  SampleOverlay.LoopStartModMin := ModMin;
+  SampleOverlay.LoopStartModMax := ModMax;
+
+  kg.GetModParModMinMax(TModParIndex.LoopEnd, ModMin, ModMax);
+  SampleOverlay.LoopEndModMin := ModMin;
+  SampleOverlay.LoopEndModMax := ModMax;
+
+  SampleOverlay.IsModEditActive := false;
+  SampleOverlay.ShowModPoints := false;
+
   if ModSlot <> -1 then
   begin
-    kg := Plugin.ActiveKeyGroup;
-
     ModAmount := kg.GetModulatedParameters^[TModParIndex.SampleStart].ModAmount[ModSlot];
     SampleOverlay.SampleStartMod := ModAmount;
 
@@ -805,15 +837,9 @@ begin
 
     SampleOverlay.IsModEditActive := true;
     SampleOverlay.ShowModPoints := true;
-    SampleOverlay.Invalidate;
-
-
-
-  end else
-  begin
-    SampleOverlay.IsModEditActive := false;
-    SampleOverlay.ShowModPoints := false;
   end;
+
+  SampleOverlay.Invalidate;
 
 end;
 

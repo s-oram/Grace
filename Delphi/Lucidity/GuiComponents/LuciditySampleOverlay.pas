@@ -37,6 +37,14 @@ type
     fShowModPoints: boolean;
     fOnModAmountsChanged: TNotifyEvent;
     fIsModEditActive: boolean;
+    fLoopEndModMin: single;
+    fSampleStartModMin: single;
+    fSampleEndModMin: single;
+    fLoopStartModMin: single;
+    fSampleEndModMax: single;
+    fLoopStartModMax: single;
+    fLoopEndModMax: single;
+    fSampleStartModMax: single;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -87,6 +95,7 @@ type
     procedure Draw_ZoomSelection(const x1, x2 : integer);
     procedure Draw_ReplaceMessage;
     procedure Draw_ModPointAreas;
+    procedure Draw_ModPointAmounts;
 
     function IsNearMarker(const PixelPosX, PixelPosY : integer; SelectPreference:TSampleMarkerSelect):TSampleMarker;
   public
@@ -112,6 +121,16 @@ type
     property SampleEndMod   : single read fSampleEndMod    write fSampleEndMod;
     property LoopStartMod   : single read fLoopStartMod    write fLoopStartMod;
     property LoopEndMod     : single read fLoopEndMod      write fLoopEndMod;
+
+    property SampleStartModMin : single read fSampleStartModMin  write fSampleStartModMin;
+    property SampleEndModMin   : single read fSampleEndModMin    write fSampleEndModMin;
+    property LoopStartModMin   : single read fLoopStartModMin    write fLoopStartModMin;
+    property LoopEndModMin     : single read fLoopEndModMin      write fLoopEndModMin;
+
+    property SampleStartModMax : single read fSampleStartModMax  write fSampleStartModMax;
+    property SampleEndModMax   : single read fSampleEndModMax    write fSampleEndModMax;
+    property LoopStartModMax   : single read fLoopStartModMax    write fLoopStartModMax;
+    property LoopEndModMax     : single read fLoopEndModMax      write fLoopEndModMax;
 
     property ShowModPoints  : boolean read fShowModPoints  write SetShowModPoints;
     property ShowLoopPoints : boolean read fShowLoopPoints write SetShowLoopPoints;
@@ -837,6 +856,9 @@ begin
     if IsModEditActive
       then Draw_ModPointAreas;
 
+    // Show the min-max modulation amounts.
+    Draw_ModPointAmounts;
+
 
 
 
@@ -1293,8 +1315,6 @@ procedure TLuciditySampleOverlay.Draw_ModPointAreas;
 var
   x1, x2, y1, y2 : single;
 begin
-
-
   y1 := 0;
   y2 := Height;
 
@@ -1320,33 +1340,89 @@ begin
   BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kSampleEnd).WithAlpha(66).AsAggRgba8;
   BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
 
+  if (ShowLoopPoints) then
+  begin
+    x1 := LoopStart;
+    x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+    x2 := LoopStart + LoopStartMod * SampleFrames;
+    x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+    BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
 
 
-  x1 := LoopStart;
+
+    x1 := LoopEnd;
+    x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+    x2 := LoopEnd + LoopEndMod * SampleFrames;
+    x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+    BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+  end;
+
+
+end;
+
+procedure TLuciditySampleOverlay.Draw_ModPointAmounts;
+var
+  x1, x2, y1, y2 : single;
+begin
+  y1 := 0;
+  y2 := 2.5;
+
+  x1 := SampleStart + SampleStartModMin * SampleFrames;
   x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
 
-  x2 := LoopStart + LoopStartMod * SampleFrames;
+  x2 := SampleStart + SampleStartModMax * SampleFrames;
   x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
 
   BackBuffer.BufferInterface.NoLine;
-  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kSampleStart).AsAggRgba8;
   BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
 
 
 
-  x1 := LoopEnd;
+  x1 := SampleEnd + SampleEndModMin * SampleFrames;
   x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
 
-  x2 := LoopEnd + LoopEndMod * SampleFrames;
+  x2 := SampleEnd + SampleEndModMax * SampleFrames;
   x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
 
   BackBuffer.BufferInterface.NoLine;
-  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).WithAlpha(66).AsAggRgba8;
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kSampleEnd).AsAggRgba8;
   BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
 
 
 
+  if (ShowLoopPoints) then
+  begin
+    x1 := LoopStart + LoopStartModMin * SampleFrames;
+    x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
 
+    x2 := LoopStart + LoopStartModMax * SampleFrames;
+    x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).AsAggRgba8;
+    BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+
+
+
+    x1 := LoopEnd + LoopEndModMin * SampleFrames;
+    x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
+
+    x2 := LoopEnd + LoopEndModMax * SampleFrames;
+    x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x2, SampleFrames, Width, Zoom, Offset);
+
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kLoopPoint).AsAggRgba8;
+    BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
+  end;
 end;
 
 
