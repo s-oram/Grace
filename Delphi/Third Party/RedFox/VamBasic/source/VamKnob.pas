@@ -317,15 +317,17 @@ begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
       // This prevents overshoot when the user reverses mouse direction at the knob
       // position limits.
-      if NewValue > 1 then
+
+      // NOTE: Clamp the mod amount values to the end of the knob ranges.
+      if (NewValue + fPos) > 1 then
       begin
-        NewValue := 1;
+        NewValue := 1 - fPos;
         UpdateReferencePoints(X, Y);
       end;
 
-      if NewValue < -1 then
+      if NewValue + fPos < 0 then
       begin
-        NewValue := -1;
+        NewValue := 0 - fPos;
         UpdateReferencePoints(X, Y);
       end;
 
