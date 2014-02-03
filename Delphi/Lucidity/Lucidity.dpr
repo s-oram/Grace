@@ -138,7 +138,8 @@ uses
   eeVstParameterEx in 'eeVstParameterEx.pas',
   LucidityUtils in 'LucidityUtils.pas',
   Lucidity.Types in 'Lucidity.Types.pas',
-  SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas';
+  SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',
+  Lucidity.FirstRun in 'Lucidity.FirstRun.pas';
 
 {$R *.res}
 
@@ -150,6 +151,9 @@ begin
   SendMsg_StartProfiling;
 
   try
+    //check a few things are in place before creating the plugin.
+    FirstRunSetup;
+
     // get vst version
     if audioMaster(nil, audioMasterVersion, 0, 0, nil, 0) = 0 then
     begin

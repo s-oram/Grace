@@ -234,25 +234,15 @@ begin
 
   if (PluginDataDir^.Exists) then
   begin
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
-    if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
-
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
-    if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
-  end;
-
-  if (PluginDataDir^.Exists) then
-  begin
+    //==== Load the sample directories info ====
     DataFileName := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Sample Directories.xml';
     SampleDirectories.DataFileName := DataFileName;
 
     if FileExists(DataFileName)
       then SampleDirectories.ReadDirectoryInfoFromfile(DataFileName);
-  end;
 
 
-  if (PluginDataDir^.Exists) then
-  begin
+    //===== set the last used directories variable to something useful ====
     if LastProgramLoadDir = '' then
     begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
@@ -264,16 +254,15 @@ begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
+
   end;
 
 
   PreviewInfo^.Clear;
 
   AudioPreviewPlayer := TAudioFilePreviewPlayer.Create;
-
-  KeyStateTracker := TKeyStateTracker.Create;
-
-  fGuiState := TGuiState.Create;
+  KeyStateTracker    := TKeyStateTracker.Create;
+  fGuiState          := TGuiState.Create;
 
   DeltaOffset := 0;
 

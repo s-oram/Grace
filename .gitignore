@@ -28,6 +28,8 @@ Thumbs.db
 bin/*
 *Project Resources*
 
+Installer/Data Dir/*
+
 
 ### Machine specific environment settings.
 Config/*
