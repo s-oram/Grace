@@ -93,4 +93,54 @@
         <WithAlt>false</WithAlt>
         <WithCtrl>false</WithCtrl>
     </KeyCommand>
+
+
+
+    <KeyCommand>
+        <Command>PageUp</Command>
+        <Key>PageUp</Key>
+        <WithShift>false</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>
+
+    <KeyCommand>
+        <Command>PageDown</Command>
+        <Key>PageDown</Key>
+        <WithShift>false</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>
+
+
+
+
+    <KeyCommand>
+        <Command>SelectUp</Command>
+        <Key>Up</Key>
+        <WithShift>true</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>
+
+    <KeyCommand>
+        <Command>SelectDown</Command>
+        <Key>Down</Key>
+        <WithShift>true</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>
+
+
+
+    <KeyCommand>
+        <Command>ReplaceLoad</Command>
+        <Key>Enter</Key>
+        <WithShift>false</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>
+
+
+    
 </root>

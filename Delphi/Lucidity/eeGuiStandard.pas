@@ -76,8 +76,6 @@ type
     GrabbedControlsList   : TObjectList;
     ControlContextMenu    : TPopupMenu;
 
-
-
     function  BeginParameterEdit(Index:longint):boolean;
     function  EndParameterEdit(Index:longint):boolean;
     procedure SetParameterAutomated(Index:longint; Value:single); inline;

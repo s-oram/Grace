@@ -362,9 +362,9 @@ begin
   Plugin.StopPreview;
 
   NodeData := FileBrowserAddOn.GetFocusedNodeData;
-  if assigned(NodeData) then
+  if (assigned(NodeData)) and (FileExists(NodeData.FileName)) then
   begin
-    if FileExists(NodeData.FileName) then
+    if IsSupportedAudioFormat(NodeData.FileName) then
     begin
       CurRegion := Plugin.FocusedRegion;
 
@@ -381,6 +381,14 @@ begin
         Plugin.FocusRegion(NewRegion.GetProperties^.UniqueID);
       end;
     end;
+
+
+    if IsSupportedProgramFormat(NodeData.FileName) then
+    begin
+      Plugin.LoadProgramFromFile(NodeData.FileName);
+    end;
+
+
   end;
 end;
 

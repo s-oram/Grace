@@ -28,7 +28,8 @@ Thumbs.db
 bin/*
 *Project Resources*
 
-Installer/Data Dir/*
+Installer/Data Dir/Factory/Patches/*
+Installer/Data Dir/User/Patches/*
 
 
 ### Machine specific environment settings.
