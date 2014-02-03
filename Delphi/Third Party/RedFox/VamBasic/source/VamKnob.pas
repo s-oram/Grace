@@ -755,17 +755,20 @@ begin
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
 
   Color2 := fModLineColor;
-  Color2.AdjustLightness(0.2);
+  Color2.AdjustLightness(0.1);
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.7;
   BackBuffer.BufferInterface.LineColor := Color2;
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  {
 
   Color2.AdjustLightness(0.1);
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.3;
   BackBuffer.BufferInterface.LineColor := Color2;
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+  }
 end;
 
 
