@@ -312,6 +312,7 @@ begin
         KnobPosChanged;
       end;
 
+
     end else
     begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
@@ -319,13 +320,13 @@ begin
       // position limits.
 
       // NOTE: Clamp the mod amount values to the end of the knob ranges.
-      if (NewValue + fPos) > 1 then
+      if fPos + NewValue > 1 then
       begin
         NewValue := 1 - fPos;
         UpdateReferencePoints(X, Y);
       end;
 
-      if NewValue + fPos < 0 then
+      if fPos + NewValue < 0 then
       begin
         NewValue := 0 - fPos;
         UpdateReferencePoints(X, Y);
@@ -348,6 +349,21 @@ begin
   if (Button = mbLeft) and (IsGrabbed = true) then
   begin
     IsGrabbed := false;
+
+    if fPos + fModAmount > 1 then
+    begin
+      fModAmount := 1 - fPos;
+      Invalidate;
+      ModAmountChanged;
+    end;
+
+    if fPos + fModAmount < 0 then
+    begin
+      fModAmount := 0 - fPos;
+      Invalidate;
+      ModAmountChanged;
+    end;
+
   end;
 
 end;
