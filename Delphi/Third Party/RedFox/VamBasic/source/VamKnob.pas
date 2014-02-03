@@ -30,6 +30,7 @@ type
     fMaxModDepth: single;
     fMinModDepth: single;
     fModLineColor : TRedFoxColor;
+    fModLineOffColor : TRedFoxColor;
     fKnobMode: TKnobMode;
     fParameterIndex: integer;
     fModAmount: single;
@@ -61,6 +62,8 @@ type
     procedure SetModAmount(const Value: single);
     function GetModAmountValue : single;
     procedure SetModAmountValue(Value : single);
+    function GetModLineOffColor: TRedFoxColorString;
+    procedure SetModLineOffColor(const Value: TRedFoxColorString);
     //=================================================
   protected
     IsGrabbed : boolean;
@@ -91,6 +94,7 @@ type
     procedure DrawKnob_Lower;
     procedure DrawKnob_Upper;
     procedure DrawKnob_PositionArc;
+    procedure DrawKnob_Arc;
     procedure DrawKnob_ModDepth;
     procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
@@ -112,7 +116,8 @@ type
   published
     property ModLineDist   : single read fModLineDist   write fModLineDist;
     property ModLineWidth  : single read fModLineWidth  write fModLineWidth;
-    property ModLineColor  : TRedFoxColorString read GetModLineColor write SetModLineColor;
+    property ModLineColor    : TRedFoxColorString read GetModLineColor write SetModLineColor;
+    property ModLineOffColor : TRedFoxColorString read GetModLineOffColor write SetModLineOffColor;
     property IndicatorSize : single read fIndicatorSize write fIndicatorSize;
     property IndicatorDist : single read fIndicatorDist write fIndicatorDist;
     property IsBipolarKnob : boolean read fIsBipolarKnob write fIsBipolarKnob;
@@ -143,6 +148,7 @@ uses
   AggArc,
   AggPathStorage,
   Agg2d,
+  AggBasics,
   VamLib.Utils,
   SysUtils,
   Math,
@@ -206,7 +212,8 @@ begin
 
   fMinModDepth := 0;
   fMaxModDepth := 0;
-  fModLineColor := GetAggColor(clRed);
+  fModLineColor    := GetAggColor(clRed);
+  fModLineOffColor := GetAggColor(clSilver);
 end;
 
 destructor TVamKnob.Destroy;
@@ -480,6 +487,11 @@ begin
   fModLineColor := Value;
 end;
 
+procedure TVamKnob.SetModLineOffColor(const Value: TRedFoxColorString);
+begin
+  fModLineOffColor := Value;
+end;
+
 procedure TVamKnob.SetOnKnobPosChanged(Handler: TNotifyEvent);
 begin
   OnKnobPosChanged := Handler;
@@ -503,6 +515,11 @@ end;
 function TVamKnob.GetModLineColor: TRedFoxColorString;
 begin
   result := fModLineColor
+end;
+
+function TVamKnob.GetModLineOffColor: TRedFoxColorString;
+begin
+  result := fModLineOffColor;
 end;
 
 function TVamKnob.GetParameterIndex: integer;
@@ -545,15 +562,17 @@ begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+
 
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   DrawKnob_Upper;
   DrawKnob_Indicator;
 
+  DrawKnob_Arc;
 
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   if KnobMode = TKnobMode.PositionEdit
-    //then DrawKnob_PositionArc
     then DrawKnob_ModDepth
     else DrawKnob_ModAmount;
 
@@ -618,6 +637,43 @@ begin
     BackBuffer.TransformImage(Image_Knobupper, x1, y1);
   end;
 end;
+
+procedure TVamKnob.DrawKnob_Arc;
+var
+  MiddleX, MiddleY : single;
+  Angle1, Angle2 : single;
+  s1, s2 : single;
+  color2 : TRedFoxColor;
+begin
+  MiddleX := Width * 0.5;
+  MiddleY := Height * 0.5;
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth;
+  BackBuffer.BufferInterface.LineColor := fModLineOffColor;
+
+  Angle1 := kMinAngle;
+  Angle2 := kMinAngle + kArcSpan;
+
+  CalcStartSweep(Angle1, Angle2, s1, s2);
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  {
+  Color2 := fModLineColor;
+  Color2.AdjustLightness(0.2);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.7;
+  BackBuffer.BufferInterface.LineColor := Color2;
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+
+  Color2.AdjustLightness(0.1);
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.3;
+  BackBuffer.BufferInterface.LineColor := Color2;
+  BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+  }
+end;
+
+
 
 procedure TVamKnob.DrawKnob_ModDepth;
 var
@@ -729,10 +785,6 @@ begin
   BackBuffer.BufferInterface.FillColor := GetAggColor(clBlack);
   BackBuffer.BufferInterface.Circle(IndicatorX, IndicatorY, IndicatorSize);
 end;
-
-
-
-
 
 procedure TVamKnob.DrawKnob_BitmapStyle;
 var

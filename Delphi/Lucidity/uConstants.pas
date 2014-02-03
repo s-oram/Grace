@@ -155,6 +155,8 @@ const
 
 
 
+  kModLineColorOff = '$ffCCCCCA';
+
   //kModLineColorA = '$ffFAFAFA';
   //kModLineColorA = '$ffDEE9FD';
   kModLineColorA = '$ffffffff';

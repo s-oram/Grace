@@ -437,12 +437,12 @@ begin
       (c as TVamKnob).Image_KnobLower := bm1;
       (c as TVamKnob).Image_KnobUpper := bm2;
       (c as TVamKnob).DisabledImage   := bm3;
-      (c as TVamKnob).ModLineDist  := 14;
-      (c as TVamKnob).ModLineWidth := 6;
+      (c as TVamKnob).ModLineDist  := 15;
+      (c as TVamKnob).ModLineWidth := 4.5;
       (c as TVamKnob).IsBipolarKnob := false;
       (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).IndicatorSize := 2;
-      (c as TVamKnob).IndicatorDist := 5.5;
+      (c as TVamKnob).IndicatorSize := 2.4;
+      (c as TVamKnob).IndicatorDist := 6.5;
     end;
 
     VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
@@ -451,12 +451,12 @@ begin
       (c as TVamKnob).Image_KnobLower := bm1;
       (c as TVamKnob).Image_KnobUpper := bm2;
       (c as TVamKnob).DisabledImage   := bm3;
-      (c as TVamKnob).ModLineDist  := 14;
-      (c as TVamKnob).ModLineWidth := 6;
+      (c as TVamKnob).ModLineDist  := 15;
+      (c as TVamKnob).ModLineWidth := 4.5;
       (c as TVamKnob).IsBipolarKnob := true;
       (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).IndicatorSize := 2;
-      (c as TVamKnob).IndicatorDist := 5.5;
+      (c as TVamKnob).IndicatorSize := 2.4;
+      (c as TVamKnob).IndicatorDist := 6.5;
     end;
 
 
