@@ -20,7 +20,7 @@ uses
   DropTarget;
 
 type
-  TNodeType = (ntFolder, ntFile);
+  TNodeType = (ntFolder, ntFile, ntSpecial);
 
   PNodeData = ^TNodeData;
   TNodeData = record
@@ -237,6 +237,18 @@ begin
       ChildData^.NodeType    := ntFile;
       ChildData^.CanExpand   := false;
     end;
+
+    if (FileResults.Count = 0) and (FolderResults.Count = 0) then
+    begin
+      ChildNode := TreeView.CreateNode(Node);
+      ChildNode.Caption := '(empty)';
+
+      ChildData              := ChildNode.Data;
+      ChildData^.FileName    := '';
+      ChildData^.NodeType    := ntSpecial;
+      ChildData^.CanExpand   := false;
+    end;
+
 
 
 
@@ -488,7 +500,12 @@ begin
   if assigned(OnGetNodeBitmap) then
   begin
     NodeData := Node.Data;
-    OnGetNodeBitmap(self, NodeData.FileName, Bitmap);
+
+    // NOTE: HACK: At the moment we aren't getting bitmaps for ntSpecial types of nodes.
+    // Ideally the OnGetNodeBitmap() function should have more information about the node
+    // and be able to make the decision itself. This method here is just an event handler.
+    if NodeData.NodeType <> ntSpecial
+      then OnGetNodeBitmap(self, NodeData.FileName, Bitmap);
   end;
 end;
 
