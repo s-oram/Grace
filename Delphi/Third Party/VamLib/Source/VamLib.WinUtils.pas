@@ -10,7 +10,7 @@ function IsAltKeyDown   : Boolean;
 implementation
 
 uses
-  Windows;
+  WinApi.Windows;
 
 function IsCtrlKeyDown : Boolean;
 var

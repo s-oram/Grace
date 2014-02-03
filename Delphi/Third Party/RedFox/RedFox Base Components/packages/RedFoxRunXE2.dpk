@@ -30,7 +30,6 @@ package RedFoxRunXE2;
 requires
   rtl,
   AggPasRunXE2,
-  AggPasDesXE2,
   vcl,
   vclimg,
   dbrtl,

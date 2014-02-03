@@ -3,9 +3,9 @@ unit VamDiv;
 interface
 
 uses
-  Windows,
+  WinApi.Windows,
   Types, Graphics,
-  Messages, Classes, Vcl.Controls, RedFoxImageBuffer, VamWinControl;
+  WinApi.Messages, Classes, Vcl.Controls, RedFoxImageBuffer, VamWinControl;
 
 type
   TVamDiv = class(TVamWinControl)

@@ -4,7 +4,7 @@ interface
 
 uses
   VamGuiControlInterfaces,
-  WinApi.Messages, Windows, VamLayoutWizard,
+  WinApi.Messages, WinApi.Windows, VamLayoutWizard,
   Classes, Types, Controls, Graphics,
   RedFoxWinControl, VamVisibleControl;
 

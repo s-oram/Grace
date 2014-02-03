@@ -30,7 +30,7 @@ function CalcPerformanceDifference(WorkA, WorkB, ResetMethod : TProc):string;
 implementation
 
 uses
-  Windows;
+  WinApi.Windows;
 
 function RDTSC: Int64; assembler;
 asm

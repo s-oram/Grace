@@ -49,7 +49,7 @@ type
 implementation
 
 uses
-  Windows,
+  WinApi.Windows,
   Types, AggPixelFormat;
 
 { TVamMemo }

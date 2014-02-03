@@ -29,7 +29,8 @@ package RedFoxDesXE2;
 
 requires
   RedFoxRunXE2,
-  vcl;
+  vcl,
+  DesignIDE;
 
 contains
   RedFoxReg in '..\source\RedFoxReg.pas';

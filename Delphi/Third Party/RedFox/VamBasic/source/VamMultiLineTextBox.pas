@@ -4,7 +4,7 @@ interface
 
 
 uses
-  Controls, Windows, RedFoxTextBuffer,
+  Controls, WinApi.Windows, RedFoxTextBuffer,
   Classes, RedFox, RedFoxColor, RedFoxWinControl, VamWinControl;
 
 type

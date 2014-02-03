@@ -41,8 +41,8 @@ package DragDropDXE2;
 {$IMPLICITBUILD OFF}
 
 requires
-  designide,
-  rtl;
+  rtl,
+  DesignIDE;
 
 contains
   DragDrop in '..\Source\DragDrop.pas',

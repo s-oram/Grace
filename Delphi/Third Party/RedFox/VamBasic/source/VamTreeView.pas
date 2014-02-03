@@ -6,7 +6,7 @@ uses
   Types,
   Graphics,
   Contnrs,
-  Classes, Controls, Messages,
+  Classes, Controls, WinApi.Messages,
   Agg2D, AggColor,
   RedFoxImageBuffer,
   VamTreeViewNode,
