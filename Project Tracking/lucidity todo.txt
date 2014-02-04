@@ -278,3 +278,35 @@ thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail
 ==TODO==
 - Can we _hide the browser _(like in Poise) ?
 thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+
+
+=============================================================================
+Hotkeys
+
+Hotkeys should be implemented as:
+
+Two hotkey files
+- Factory/Config/Hotkeys.xml 
+- User/Config/Hotkeys.xml
+
+Should the original user hotkeys replace or be loaded in addition to the factory config. Might be ok 
+either way. It's possible the user config should only contain overrides. 
+
+
+- All key presses should be directed to a 'key press' handler in the globals unit.
+- The globals unit should then pass anything registered as a hotkey to the GUI (if it's open.)
+
+- It should be possible for controls to set themselves or other objects to 
+  be the focus of hot key presses in the globals unit. 
+- It should be possible to define a default handler if nothing has focus.
+
+- The globals unit should have no understanding of what the key presses mean, it should
+  only pass the relevent commands to the focused control. The focused control then 
+  has the option to process the key or not. 
+  Pass the key press to the default handler if it's not processed. Then pass the
+  key press to the host application if it's not processed again.
+
+- This would be a good system to have and could be incorporated into Poise.
+
+=============================================================================
