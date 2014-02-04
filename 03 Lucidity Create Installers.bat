@@ -1,1 +1,1 @@
-call "S:\Installer\Poise Create Setup.au3"
+call "S:\Installer\Lucidity Setup Create Script.au3"
