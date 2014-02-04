@@ -123,10 +123,14 @@ begin
   end else
   if CounterA.LastResult < CounterB.LastResult then
   begin
-    result := 'WorkA is ' + FloatToStr(CounterB.LastResult / CounterA.LastResult) + ' times faster.';
+    if CounterA.LastResult <> 0
+      then result := 'WorkA is ' + FloatToStr(CounterB.LastResult / CounterA.LastResult) + ' times faster.'
+      else result := 'WorkA is unmeasurably faster.';
   end else
   begin
-    result := 'WorkB is ' + FloatToStr(CounterA.LastResult / CounterB.LastResult) + ' times faster.';
+    if CounterB.LastResult <> 0
+      then result := 'WorkB is ' + FloatToStr(CounterA.LastResult / CounterB.LastResult) + ' times faster.'
+      else result := 'WorkB is unmeasurably faster.';
   end;
 end;
 

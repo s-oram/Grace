@@ -239,17 +239,431 @@ end;
 
 
 
+
+function Optimal4x3(const f, y0, y1, y2, y3:single):single;
+var
+  z ,even1, even2, odd1, odd2 : single;
+  c0,c1, c2, c3 : single;
+begin
+  z := f - 1/2.0;
+
+  even1 := y2+y1;
+  odd1  := y2-y1;
+
+  even2 := y3+y0;
+  odd2  := y3-y0;
+
+
+  c0 := even1*0.45868970870461956 + even2*0.04131401926395584;
+  c1 := odd1*0.48068024766578432 + odd2*0.17577925564495955;
+  c2 := even1*-0.246185007019907091 + even2*0.24614027139700284;
+  c3 := odd1*-0.36030925263849456 + odd2*0.10174985775982505;
+
+  result := ((c3*z+c2)*z+c1)*z+c0;
+
+  //result := odd2;
+  result := c3;
+end;
+
+function Optimal4x3_asm2(const f, y0, y1, y2, y3:single):single;
+// f  = [ebp+$18]
+// y0 = [ebp+$14]
+// y1 = [ebp+$10]
+// y2 = [ebp+$0C]
+// y3 = [ebp+$08]
+const
+  PointFive : single = 0.5;
+  k01 : single = 0.45868970870461956;
+  k02 : single = 0.04131401926395584;
+  k11 : single = 0.48068024766578432;
+  k12 : single = 0.17577925564495955;
+  k21 : single = -0.246185007019907091;
+  k22 : single = 0.24614027139700284;
+  k31 : single = -0.36030925263849456;
+  k32 : single = 0.10174985775982505;
+asm
+  // make space for local variables.
+  sub esp, 20
+
+
+
+  // z := f - 1/2.0;
+  fld dword [[ebp+$18]]
+  fsub [[PointFive]]
+  fstp dword ptr [esp]
+
+  //even1 := y2+y1;
+  fld dword ptr [ebp+$0C]
+  fadd dword ptr [ebp+$10]
+
+  //odd1  := y2-y1;
+  fld dword ptr [ebp+$0C]
+  fsub dword ptr [ebp+$10]
+
+  //even2 := y3+y0;
+  fld dword ptr [ebp+$08]
+  fadd dword ptr [ebp+$14]
+
+  //odd2  := y3-y0;
+  fld dword ptr [ebp+$08]
+  fsub dword ptr [ebp+$14]
+
+
+
+  // The floating point stack is now:
+  // st0 = odd2
+  // st1 = even2
+  // st2 = odd1
+  // st3 = even1
+
+
+  //c3 := odd1  * -0.36030925263849456  + odd2  * 0.10174985775982505;
+
+
+  fld dword [k31]
+  // The floating point stack is now:
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+  fmul st(0), st(3)
+
+
+  fld dword [k32]
+  // The floating point stack is now:
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+
+  fmul st(0), st(2)
+
+  faddp st(1), st(0)
+
+  // The floating point stack is now:
+  // st0 = c3
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+  fstp dword ptr [esp + $08]
+  fld dword ptr [esp + $08]
+
+
+  // c3 * z
+  fmul dword ptr [esp]
+
+  // The floating point stack is now:
+  // st0 = c3 * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+
+  //c2 := even1 * -0.246185007019907091 + even2 * 0.24614027139700284;
+
+  fld dword [k21]
+  // The floating point stack is now:
+  // st1 = c3 * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  fmul st(0), st(5)
+
+
+  fld dword [k22]
+  // The floating point stack is now:
+  // st2 = c3 * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  fmul st(0), st(4)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c2
+  // st1 = c3 * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = (c3 * z + c2)
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+  fmul dword ptr [esp]
+  // The floating point stack is now:
+  // st0 = (c3 * z + c2) * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+
+  //c1 := odd1  * 0.48068024766578432   + odd2  * 0.17577925564495955;
+
+  fld dword [k11]
+  // The floating point stack is now:
+  // st1 = (c3 * z + c2) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  fmul st(0), st(4)
+
+  fld dword [k12]
+  // The floating point stack is now:
+  // st2 = (c3 * z + c2) * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  fmul st(0), st(3)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c1
+  // st1 = (c3 * z + c2) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1)
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+  fmul dword ptr [esp]
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1) * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+
+
+
+  //c0 := even1 * 0.45868970870461956   + even2 * 0.04131401926395584;
+
+  fld dword [k11]
+  // The floating point stack is now:
+  // st1 = ((c3 * z + c2) * z + c1) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  fmul st(0), st(5)
+
+  fld dword [k12]
+  // The floating point stack is now:
+  // st2 = ((c3 * z + c2) * z + c1) * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  fmul st(0), st(4)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c0
+  // st1 = ((c3 * z + c2) * z + c1) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+
+
+
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1) * z + c0
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+
+
+  fstp dword ptr [esp + $04]
+
+  fstp dword ptr [esp + $04]
+  fstp dword ptr [esp + $04]
+  fstp dword ptr [esp + $04]
+  fstp dword ptr [esp + $04]
+
+  fld dword ptr [esp + $08]
+
+  //=========================================
+  // The result is now in st0
+  // result := ((c3*z+c2)*z+c1)*z+c0;
+  //=========================================
+
+
+
+
+
+  // free local variable space.
+  add esp, 20
+
+end;
+
+
+
+function Optimal4x3_asm(f:single):single;
+const
+  Foo : single = 3.14;
+asm
+  //sub esp, 4
+  //mov [esp], eax
+  //fld dword ptr [esp]
+  //add esp, 4
+
+  //uAsmTest.pas.279: begin
+  //push ebp
+  //mov ebp,esp
+  //push ecx
+  //uAsmTest.pas.280: result := f;
+  //mov eax,[ebp+$18]
+  //mov [ebp-$04],eax
+  //uAsmTest.pas.281: end;
+  //fld dword [[ebp-$04]]
+  //pop ecx
+  //pop ebp
+  //ret $0014
+
+
+  fld dword [[ebp+$08]]
+end;
+
+
+function Optimal4x3_asm3(f:single):single;
+begin
+  result := f;
+end;
+
+
+{
+begin
+  result := f;
+end;
+}
+
+
+  {
+  //uAsmTest.pas.247: begin
+  push ebp
+  mov ebp,esp
+  add esp,-$28
+  //uAsmTest.pas.248: z := f - 1/2.0;
+  fld dword ptr [ebp+$18]
+  fsub dword ptr [$005124a0]
+  fstp dword ptr [ebp-$08]
+  wait
+  //uAsmTest.pas.250: even1 := y2+y1;
+  fld dword ptr [ebp+$0c]
+  fadd dword ptr [ebp+$10]
+  fstp dword ptr [ebp-$0c]
+  wait
+  //uAsmTest.pas.251: odd1  := y2-y1;
+  fld dword ptr [ebp+$0c]
+  fsub dword ptr [ebp+$10]
+  fstp dword ptr [ebp-$14]
+  wait
+  //uAsmTest.pas.253: even2 := y3+y0;
+  fld dword ptr [ebp+$08]
+  fadd dword ptr [ebp+$14]
+  fstp dword ptr [ebp-$10]
+  wait
+  //uAsmTest.pas.254: odd2  := y3-y0;
+  fld dword ptr [ebp+$08]
+  fsub dword ptr [ebp+$14]
+  fstp dword ptr [ebp-$18]
+  wait
+  //uAsmTest.pas.257: c0 := even1*0.45868970870461956 + even2*0.04131401926395584;
+  fld tbyte ptr [$005124a4]
+  fmul dword ptr [ebp-$0c]
+  fld tbyte ptr [$005124b0]
+  fmul dword ptr [ebp-$10]
+  faddp st(1)
+  fstp dword ptr [ebp-$1c]
+  wait
+  //uAsmTest.pas.258: c1 := odd1*0.48068024766578432 + odd2*0.17577925564495955;
+  fld tbyte ptr [$005124bc]
+  fmul dword ptr [ebp-$14]
+  fld tbyte ptr [$005124c8]
+  fmul dword ptr [ebp-$18]
+  faddp st(1)
+  fstp dword ptr [ebp-$20]
+  wait
+  //uAsmTest.pas.259: c2 := even1*-0.246185007019907091 + even2*0.24614027139700284;
+  fld tbyte ptr [$005124d4]
+  fmul dword ptr [ebp-$0c]
+  fld tbyte ptr [$005124e0]
+  fmul dword ptr [ebp-$10]
+  faddp st(1)
+  fstp dword ptr [ebp-$24]
+  wait
+  //uAsmTest.pas.260: c3 := odd1*-0.36030925263849456 + odd2*0.10174985775982505;
+  fld tbyte ptr [$005124ec]
+  fmul dword ptr [ebp-$14]
+  fld tbyte ptr [$005124f8]
+  fmul dword ptr [ebp-$18]
+  faddp st(1)
+  fstp dword ptr [ebp-$28]
+  wait
+  //uAsmTest.pas.262: result := ((c3*z+c2)*z+c1)*z+c0;
+  fld dword ptr [ebp-$28]
+  fmul dword ptr [ebp-$08]
+  fadd dword ptr [ebp-$24]
+  fmul dword ptr [ebp-$08]
+  fadd dword ptr [ebp-$20]
+  fmul dword ptr [ebp-$08]
+  fadd dword ptr [ebp-$1c]
+  fstp dword ptr [ebp-$04]
+  wait
+  //uAsmTest.pas.263: end;
+  fld dword ptr [ebp-$04]
+  mov esp,ebp
+  pop ebp
+  ret
+  }
+
+
+
+
 procedure RunProgram;
 var
-  x1, x2 : single;
+  rx : single;
+  x1, x2, x3 : single;
   d1, d2, d3 : array[0..7] of single;
   da1, da2 : array[0..7] of integer;
+  y:array[0..3] of single;
   c1: Integer;
   counter : TPerformanceTimer;
 
   WorkA, WorkB : TProc;
   Reset : TProc;
 begin
+  x2 := Optimal4x3_asm2(1, 2, 3, 4, 5);
+  x2 := Optimal4x3_asm2(1, 2, 3, 4, 5);
+  x2 := Optimal4x3_asm2(1, 2, 3, 4, 5);
+
   for c1 := 0 to 7 do
   begin
     d1[c1] := random;
@@ -258,42 +672,46 @@ begin
 
   Reset := procedure
   begin
-    {
-    for c1 := 0 to 7 do
-    begin
-      d1[c1] := random;
-      d2[c1] := random;
-    end;
-    }
   end;
 
   WorkA := procedure
+  var
+    c1 : integer;
   begin
-    CalcSummedModulationValue(@d1[0], @d2[0]);
+    for c1 := 0 to 1000 do
+    begin
+      Optimal4x3(0.6,1,2,3,4);
+    end;
   end;
 
   WorkB := procedure
+  var
+    c1 : integer;
   begin
-    CalcSummedModulationValue_asm2(@d1[0], @d2[0]);
+    for c1 := 0 to 1000 do
+    begin
+      Optimal4x3_asm2(0.6,1,2,3,4);
+    end;
   end;
 
   WriteLn('====');
 
-  //WriteLn(CalcPerformanceDifference(WorkA, WorkB, Reset));
-  WorkB;
+
+  rx := random;
+  x1 := Optimal4x3(1, 2, 3, 4, 5);
+  x2 := Optimal4x3_asm2(1, 2, 3, 4, 5);
+  x3 := Optimal4x3_asm3(3);
+  WriteLn('x1 = ' + FloatToStr(x1));
+  WriteLn('x2 = ' + FloatToStr(x2));
+  WriteLn('x3 = ' + FloatToStr(x3));
+
 
   WriteLn('====');
 
+  WriteLn(CalcPerformanceDifference(WorkA, WorkB, nil));
 
-  for c1 := 0 to 7 do
-  begin
-    d1[c1] := random;
-    d2[c1] := random;
-  end;
-
-
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
-  x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
+  //WriteLn(FloatToStr(counter.Stop));
+  {
 
   counter.Start;
   x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
@@ -320,7 +738,7 @@ begin
 
   x1 := CalcSummedModulationValue_asm2(@d1[0], @d2[0]);
   WriteLn(FloatToStr(x1));
-
+  }
 
   {
   x1 := CalcSummedModulationValue(@d1[0], @d2[0]);
