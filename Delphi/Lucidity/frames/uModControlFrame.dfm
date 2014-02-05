@@ -2,14 +2,14 @@ object ModControlFrame: TModControlFrame
   Left = 0
   Top = 0
   Width = 789
-  Height = 571
+  Height = 638
   TabOrder = 0
   object Panel: TRedFoxContainer
     AlignWithMargins = True
     Left = 0
     Top = 0
     Width = 789
-    Height = 569
+    Height = 636
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -20,12 +20,13 @@ object ModControlFrame: TModControlFrame
       Left = 0
       Top = 0
       Width = 789
-      Height = 569
+      Height = 636
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Align = alClient
       Visible = True
+      OnClick = BackgroundPanelClick
       object StepSeq1Container: TVamDiv
         AlignWithMargins = True
         Left = 31
@@ -571,6 +572,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -595,6 +597,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -618,6 +621,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -641,6 +645,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -797,6 +802,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -819,6 +825,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -840,6 +847,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -861,6 +869,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -882,6 +891,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -917,8 +927,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object ModEnvAContainer: TVamDiv
-        Left = 440
-        Top = 43
+        Left = 640
+        Top = 494
         Width = 92
         Height = 87
         HitTest = True
@@ -942,8 +952,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object ModEnvBContainer: TVamDiv
-        Left = 596
-        Top = 43
+        Left = 524
+        Top = 508
         Width = 92
         Height = 87
         HitTest = True
@@ -976,6 +986,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1031,6 +1042,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1045,8 +1057,8 @@ object ModControlFrame: TModControlFrame
       end
       object LfoAContainer: TVamDiv
         AlignWithMargins = True
-        Left = 448
-        Top = 194
+        Left = 184
+        Top = 474
         Width = 145
         Height = 89
         Margins.Left = 0
@@ -1138,6 +1150,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1159,6 +1172,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1296,6 +1310,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1317,6 +1332,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1338,6 +1354,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1359,6 +1376,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1380,6 +1398,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1525,6 +1544,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1549,6 +1569,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1572,6 +1593,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1595,6 +1617,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1627,8 +1650,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object LfoBContainer: TVamDiv
-        Left = 599
-        Top = 194
+        Left = 390
+        Top = 514
         Width = 101
         Height = 101
         Text = 'LfoBContainer'
@@ -1696,6 +1719,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -1738,6 +1762,7 @@ object ModControlFrame: TModControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False

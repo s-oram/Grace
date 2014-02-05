@@ -9,6 +9,7 @@ uses
 
 type
   TControlFeature = (LeftEdge, RightEdge, TopEdge, BottomEdge);
+  TAlignPoint     = (TopLeft, TopRight, BottomLeft, BottomRight);
 
   TVamLayoutWizard = class;
 
@@ -70,7 +71,8 @@ type
     function AdjustBounds(const Left, Top, Right, Bottom:integer):IVamLayoutWizard;
 
     function SetSize(const aWidth, aHeight : integer):IVamLayoutWizard;
-    function SetPos(const aLeft, aTop : integer):IVamLayoutWizard;
+    function SetPos(const aLeft, aTop : integer):IVamLayoutWizard; overload;
+    function SetPos(const aLeft, aTop : integer; AlignPoint : TAlignPoint):IVamLayoutWizard; overload;
   end;
 
 
@@ -268,6 +270,41 @@ begin
   fTarget.Height := fTarget.Height + Top  + Bottom;
 
   result := self;
+end;
+
+function TVamLayoutWizard.SetPos(const aLeft, aTop: integer; AlignPoint: TAlignPoint): IVamLayoutWizard;
+begin
+  case AlignPoint of
+    TAlignPoint.TopLeft:
+    begin
+      fTarget.Left := aLeft;
+      fTarget.Top  := aTop;
+      result := self;
+    end;
+
+    TAlignPoint.TopRight:
+    begin
+      fTarget.Left := aLeft - fTarget.Width;
+      fTarget.Top  := aTop;
+      result := self;
+    end;
+
+    TAlignPoint.BottomLeft:
+    begin
+      fTarget.Left := aLeft;
+      fTarget.Top  := aTop - fTarget.Height;
+      result := self;
+    end;
+
+    TAlignPoint.BottomRight:
+    begin
+      fTarget.Left := aLeft - fTarget.Width;
+      fTarget.Top  := aTop  - fTarget.Height;
+      result := self;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 function TVamLayoutWizard.SetSize(const aWidth, aHeight: integer): IVamLayoutWizard;

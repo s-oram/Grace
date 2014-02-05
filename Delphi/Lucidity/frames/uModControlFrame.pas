@@ -124,6 +124,7 @@ type
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
+    procedure BackgroundPanelClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
@@ -169,6 +170,11 @@ uses
 {$R *.dfm}
 
 { TModControlFrame }
+
+procedure TModControlFrame.BackgroundPanelClick(Sender: TObject);
+begin
+
+end;
 
 constructor TModControlFrame.Create(AOwner: TComponent);
 begin
@@ -224,6 +230,9 @@ begin
 end;
 
 procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+const
+  kContainerWidth  = 600;
+  kContainerHeight = 322;
 var
   ParIndex : integer;
   FilterKnobWidth : integer;
@@ -297,16 +306,17 @@ begin
   //======= row 1 =======
   Filter1Container.Width  := (4 * FilterKnobWidth);
   Filter1Container.Height := RowHeight;
-  Filter1Container.Layout.SetPos(16,8);
+  Filter1Container.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
       Filter1TypeTextBox.Layout.SetSize(FilterKnobWidth * 3, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
       Filter1TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
 
   AmpEnvContainer.Width := (5 * FilterKnobWidth);
   AmpEnvContainer.Height := RowHeight;
-  AmpEnvContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+  AmpEnvContainer.Layout.SetPos(16, 8);
 
 
-
+    //TODO:
+    {
     ModEnvAContainer.Width := (2 * FilterKnobWidth);
     ModEnvAContainer.Height := RowHeight;
     ModEnvAContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
@@ -314,7 +324,7 @@ begin
     ModEnvBContainer.Width := (2 * FilterKnobWidth);
     ModEnvBContainer.Height := RowHeight;
     ModEnvBContainer.Layout.Anchor(ModEnvAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
-
+    }
 
 
 
@@ -337,7 +347,7 @@ begin
 
   FilterEnvContainer.Width := (5 * FilterKnobWidth);
   FilterEnvContainer.Height := RowHeight;
-  FilterEnvContainer.Layout.Anchor(FilterTwoContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+  FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
   LfoAContainer.Width := (2 * FilterKnobWidth);
   LfoAContainer.Height := RowHeight;
