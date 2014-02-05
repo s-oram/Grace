@@ -210,6 +210,7 @@ var
   DataFileName : string;
   DataDir : string;
   fn : string;
+  fnA, fnB : string;
 begin
   inherited;
 
@@ -340,9 +341,17 @@ begin
   if (PluginDataDir^.Exists) then
   begin
     DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + IncludeTrailingPathDelimiter('Patches');
-    fn := DataDir + 'Default.lpg';
+    fnA := DataDir + 'Default.lpg';
 
-    if FileExists(fn) then LoadProgramFromFile(fn);
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Factory') + IncludeTrailingPathDelimiter('Patches');
+    fnB := DataDir + 'Default.lpg';
+
+    if FileExists(fnA)
+      then LoadProgramFromFile(fnA)
+    else
+    if FileExists(fnB)
+      then LoadProgramFromFile(fnB);
+
   end;
 end;
 
