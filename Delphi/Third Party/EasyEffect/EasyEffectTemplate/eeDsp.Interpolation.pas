@@ -1,12 +1,14 @@
 unit eeDsp.Interpolation;
 
+{.$INCLUDE Defines.inc}
+
 interface
 
 function Linear(f, y0, y1:double):double; inline;
 
 function Optimal2x2Point3rdOrder(f, y0, y1:single):single; inline;
 
-function Optimal4x3(const f, y0, y1, y2, y3:single):single; inline;
+function Optimal4x3(const f, y0, y1, y2, y3:single):single; //inline;
 
 function Optimal6x5(const f, yz2, yz1, y0, y1,y2,y3:single):single; inline;
 
@@ -74,7 +76,275 @@ begin
 end;
 
 
-function Optimal4x3(const f, y0, y1, y2, y3:single):single; inline;
+function Optimal4x3(const f, y0, y1, y2, y3:single):single;
+{$IF Defined(UseASM) and Defined(CPUX64)}
+{$ELSEIF Defined(UseASM) and Defined(CPUX86)}
+// f  = [ebp+$18]
+// y0 = [ebp+$14]
+// y1 = [ebp+$10]
+// y2 = [ebp+$0C]
+// y3 = [ebp+$08]
+type
+  float = double;
+const
+  PointFive : float = 0.5;
+  k01 : float = 0.45868970870461956;
+  k02 : float = 0.04131401926395584;
+  k11 : float = 0.48068024766578432;
+  k12 : float = 0.17577925564495955;
+  k21 : float = -0.246185007019907091;
+  k22 : float = 0.24614027139700284;
+  k31 : float = -0.36030925263849456;
+  k32 : float = 0.10174985775982505;
+asm
+  // make space for local variables.
+  sub esp, 4
+
+  // z := f - 1/2.0;
+  fld dword [[ebp+$18]]
+  fsub [[PointFive]]
+
+  //even1 := y2+y1;
+  fld dword ptr [ebp+$0C]
+  fadd dword ptr [ebp+$10]
+
+  //odd1  := y2-y1;
+  fld dword ptr [ebp+$0C]
+  fsub dword ptr [ebp+$10]
+
+  //even2 := y3+y0;
+  fld dword ptr [ebp+$08]
+  fadd dword ptr [ebp+$14]
+
+  //odd2  := y3-y0;
+  fld dword ptr [ebp+$08]
+  fsub dword ptr [ebp+$14]
+
+  // The floating point stack is now:
+  // st0 = odd2
+  // st1 = even2
+  // st2 = odd1
+  // st3 = even1
+  // st4 = z
+
+
+  //c3 := odd1  * -0.36030925263849456  + odd2  * 0.10174985775982505;
+
+
+  fld qword [k31]
+  // The floating point stack is now:
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+  fmul st(0), st(3)
+
+  fld qword [k32]
+  // The floating point stack is now:
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+  fmul st(0), st(2)
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c3
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+
+  fmul st(0), st(5)
+  // The floating point stack is now:
+  // st0 = c3 * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+  //fst dword ptr [esp]
+
+
+  //c2 := even1 * -0.246185007019907091 + even2 * 0.24614027139700284;
+
+  fld qword [k21]
+  // The floating point stack is now:
+  // st1 = c3 * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+  fmul st(0), st(5)
+
+
+  fld qword [k22]
+  // The floating point stack is now:
+  // st2 = c3 * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  // st7 = z
+  fmul st(0), st(4)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c2
+  // st1 = c3 * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = (c3 * z + c2)
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+  fmul st(0), st(5)
+  // The floating point stack is now:
+  // st0 = (c3 * z + c2) * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+
+  //c1 := odd1  * 0.48068024766578432   + odd2  * 0.17577925564495955;
+
+  fld qword [k11]
+  // The floating point stack is now:
+  // st1 = (c3 * z + c2) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+  fmul st(0), st(4)
+
+  fld qword [k12]
+  // The floating point stack is now:
+  // st2 = (c3 * z + c2) * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  // st7 = z
+  fmul st(0), st(3)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c1
+  // st1 = (c3 * z + c2) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1)
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+  fmul st(0), st(5)
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1) * z
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+
+
+
+  //c0 := even1 * 0.45868970870461956   + even2 * 0.04131401926395584;
+
+  fld qword [k01]
+  // The floating point stack is now:
+  // st1 = ((c3 * z + c2) * z + c1) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+  fmul st(0), st(5)
+
+  fld qword [k02]
+  // The floating point stack is now:
+  // st2 = ((c3 * z + c2) * z + c1) * z
+  // st3 = odd2
+  // st4 = even2
+  // st5 = odd1
+  // st6 = even1
+  // st7 = z
+  fmul st(0), st(4)
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = c0
+  // st1 = ((c3 * z + c2) * z + c1) * z
+  // st2 = odd2
+  // st3 = even2
+  // st4 = odd1
+  // st5 = even1
+  // st6 = z
+
+
+  faddp st(1), st(0)
+  // The floating point stack is now:
+  // st0 = ((c3 * z + c2) * z + c1) * z + c0
+  // st1 = odd2
+  // st2 = even2
+  // st3 = odd1
+  // st4 = even1
+  // st5 = z
+
+
+  fxch st(5)
+
+  fstp dword ptr [esp]
+  fstp dword ptr [esp]
+  fstp dword ptr [esp]
+  fstp dword ptr [esp]
+  fstp dword ptr [esp]
+  //fstp dword ptr [esp + $04]
+
+  //fld dword ptr [esp]
+  //fld dword ptr [esp + $08]
+
+  //=========================================
+  // The result is now in st0
+  // result := ((c3*z+c2)*z+c1)*z+c0;
+  //=========================================
+
+
+
+
+
+  // free local variable space.
+  add esp, 4
+
+end;
+{$ELSE}
 var
   z ,even1, even2, odd1, odd2 : single;
   c0,c1, c2, c3 : single;
@@ -111,6 +381,9 @@ begin
   //return ((c3*z+c2)*z+c1)*z+c0;
   result := ((c3*z+c2)*z+c1)*z+c0;
 end;
+{$IFEND}
+
+
 
 
 function Optimal6x5(const f, yz2, yz1, y0, y1,y2,y3:single):single; inline;

@@ -45,3 +45,10 @@
 
 
 
+
+
+// if else block templates.
+{$IF Defined(UseASM) and Defined(CPUX64)}
+{$ELSEIF Defined(UseASM) and Defined(CPUX86)}
+{$ELSE}
+{$IFEND}

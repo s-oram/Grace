@@ -97,6 +97,8 @@ uses
 type
   EModMatrixException = Exception;
 
+
+
 //TODO: need to write x64 bit asm version of this function.
 function CalcSummedModulationValue(ModSlotValues, ModAmountValues : PSingle):single;
 {$IF Defined(UseASM) and Defined(CPUX64)}
