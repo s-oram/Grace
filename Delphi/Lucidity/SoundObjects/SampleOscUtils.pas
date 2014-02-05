@@ -86,6 +86,8 @@ begin
     x3 := aSample.Ch1[ReadIndex + 2];
     x4 := aSample.Ch1[ReadIndex + 3];
 
+
+    //Out1 := Linear(ReadIndexFrac, x2, x3);
     Out1 := Optimal4x3(ReadIndexFrac, x1, x2, x3, x4);
     Out2 := Out1;
   end else
@@ -95,6 +97,7 @@ begin
     x3 := aSample.Ch1[ReadIndex + 2];
     x4 := aSample.Ch1[ReadIndex + 3];
 
+    //Out1 := Linear(ReadIndexFrac, x2, x3);
     Out1 := Optimal4x3(ReadIndexFrac, x1, x2, x3, x4);
 
     x1 := aSample.Ch2[ReadIndex];
@@ -102,6 +105,7 @@ begin
     x3 := aSample.Ch2[ReadIndex + 2];
     x4 := aSample.Ch2[ReadIndex + 3];
 
+    //Out2 := Linear(ReadIndexFrac, x2, x3);
     Out2 := Optimal4x3(ReadIndexFrac, x1, x2, x3, x4);
   end;
 end;
