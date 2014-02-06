@@ -50,6 +50,7 @@ type
     property Globals : TGlobals read fGlobals;
     property Plugin  : TeePlugin read fPlugin;
 
+    procedure UpdateControl(Index : integer);
   public
     constructor Create(aPlugin:TeePlugin;  aGlobals : TGlobals);
     destructor Destroy; override;
@@ -91,7 +92,8 @@ end;
 procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter);
 var
   ci : TControlInfo;
-  Index : integer;
+  ControlLinkIndex : integer;
+  ParIndex : integer;
 begin
   assert(assigned(c));
   assert(assigned(aLinkedParameter));
@@ -100,10 +102,10 @@ begin
   ci.Control     := c;
   if Supports(c, IKnobControl, ci.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
   ci.LinkedParameter := aLinkedParameter as TVstParameterEx;
-  ControlLinks.Append(ci);
+  ControlLinkIndex := ControlLinks.Append(ci);
 
-  Index := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
-  ci.KnobControl.SetParameterIndex(Index);
+  ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
+  ci.KnobControl.SetParameterIndex(ParIndex);
 
   ci.KnobControl.SetOnMouseEnter(self.Handle_MouseEnter);
   ci.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
@@ -111,6 +113,10 @@ begin
   ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
   ci.KnobControl.SetOnKnobPosChanged(self.Handle_KnobPosChanged);
   ci.KnobControl.SetOnModAmountChanged(self.Handle_ModAmountChanged);
+
+
+  //== finally ==
+  UpdateControl(ControlLinkIndex);
 end;
 
 procedure TRedFoxKnobHandler.DeregisterControl(c: TControl);
@@ -118,8 +124,10 @@ var
   Index : integer;
 begin
   Index := FindIndexOfControl(c);
-  assert(Index <> -1);
-  ControlLinks.Delete(Index);
+  if Index <> -1 then
+  begin
+    ControlLinks.Delete(Index);
+  end;
 end;
 
 function TRedFoxKnobHandler.FindIndexOfControl(c:TControl): integer;
@@ -371,20 +379,24 @@ begin
   ControlContextMenu.Popup(X, Y);
 end;
 
-procedure TRedFoxKnobHandler.UpdateControls;
+procedure TRedFoxKnobHandler.UpdateControl(Index : integer);
 var
-  c1: Integer;
   parValue : single;
   c : TControl;
 begin
+  c := ControlLinks[Index].Control;
+  parValue := ControlLinks[Index].LinkedParameter.ValueVST;
+  ControlLinks[Index].KnobControl.SetKnobValue(ParValue);
+end;
+
+procedure TRedFoxKnobHandler.UpdateControls;
+var
+  c1: Integer;
+begin
   IsManualGuiUpdateActive := true;
   try
-    for c1 := 0 to ControlLinks.Count-1 do
-    begin
-      c := ControlLinks[c1].Control;
-      parValue := ControlLinks[c1].LinkedParameter.ValueVST;
-      ControlLinks[c1].KnobControl.SetKnobValue(ParValue);
-    end;
+    for c1 := 0 to ControlLinks.Count-1
+      do UpdateControl(c1);
   finally
     IsManualGuiUpdateActive := false;
   end;

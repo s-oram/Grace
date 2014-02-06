@@ -19,7 +19,9 @@ type
     fSelectedModSlot: integer;
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
+    fSelectedLfo: integer;
     procedure SetSelectedModSlot(const Value: integer);
+    procedure SetSelectedLfo(const Value: integer);
   protected
   protected
   public
@@ -47,6 +49,8 @@ type
     property SelectedModSlot    : integer read fSelectedModSlot    write SetSelectedModSlot;
     property IsMouseOverModSlot : boolean read fIsMouseOverModSlot write fIsMouseOverModSlot;
     property MouseOverModSlot   : integer read fMouseOverModSlot   write fMouseOverModSlot; //valid range is -1..7, same as SelectedModSlot.
+
+    property SelectedLfo        : integer read fSelectedLfo        write SetSelectedLfo;
 
   end;
 
@@ -175,6 +179,17 @@ begin
     begin
       fKeyData.Clear;
     end;
+  end;
+end;
+
+procedure TGlobals.SetSelectedLfo(const Value: integer);
+begin
+  assert((Value >= 0) and (Value <= 1));
+
+  if Value <> fSelectedLfo then
+  begin
+    fSelectedLfo := Value;
+    SendWindowsMessage(UM_LFO_CHANGED);
   end;
 end;
 

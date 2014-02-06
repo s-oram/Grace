@@ -99,7 +99,7 @@ begin
 
   Move(Value, Raw[fCount], SizeOf(T));
   inc(fCount);
-  result := fCount;
+  result := fCount-1;
 end;
 
 procedure TRecordArray<T>.Delete(const Index: integer);

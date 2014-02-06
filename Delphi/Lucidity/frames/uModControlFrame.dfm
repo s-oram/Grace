@@ -1114,9 +1114,11 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          OnChanged = LfoSelectButton1Changed
           Visible = True
         end
         object LfoSelectButton2: TVamButton
+          Tag = 1
           Left = 73
           Top = 79
           Width = 20
@@ -1137,7 +1139,9 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          OnChanged = LfoSelectButton1Changed
           Visible = True
+          OnMouseUp = LfoSelectButton2MouseUp
         end
       end
       object AmpEnvContainer: TVamDiv

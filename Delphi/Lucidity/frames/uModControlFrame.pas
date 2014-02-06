@@ -117,6 +117,9 @@ type
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
+    procedure LfoSelectButton1Changed(Sender: TObject);
+    procedure LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
@@ -127,6 +130,7 @@ type
     procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
     procedure UpdateModulation; //called when the mod slot changes...
+    procedure UpdateLfo; //called when the mod slot changes...
   protected
     AltFilterText : TAltFilterText;
     FilterParameterInfo : TFilterParameterInfo;
@@ -254,9 +258,6 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par2));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par3));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par4));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
 
 
 
@@ -547,13 +548,17 @@ begin
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
   UpdateModulation;
+  UpdateLfo;
 end;
+
+
 
 procedure TModControlFrame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
   if Message.Msg = UM_FILTER_CHANGED            then UpdateControlVisibility;
   if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
+  if Message.Msg = UM_LFO_CHANGED               then UpdateLfo;
 end;
 
 
@@ -868,8 +873,58 @@ begin
   StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, StepSeqIndex);
 end;
 
+procedure TModControlFrame.UpdateLfo;
+begin
+  GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob1);
+  GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob2);
+
+  if Plugin.Globals.SelectedLfo = 0 then
+  begin
+    LfoSelectButton1.IsOn := true;
+    LfoSelectButton2.IsOn := false;
+    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
+    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
+  end;
+
+  if Plugin.Globals.SelectedLfo = 1 then
+  begin
+    LfoSelectButton1.IsOn := false;
+    LfoSelectButton2.IsOn := true;
+    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
+    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
+  end;
+
+end;
+
+procedure TModControlFrame.LfoSelectButton1Changed(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := (Sender as TWinControl).Tag;
+  Plugin.Globals.SelectedLfo := Index;
+  UpdateLfo;
+  UpdateModulation;
 
 
+  //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
+  // by the user, when it needs to be a toggle type switch.
+end;
+
+
+
+
+procedure TModControlFrame.LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Index : integer;
+begin
+  Index := (Sender as TWinControl).Tag;
+  Plugin.Globals.SelectedLfo := Index;
+  UpdateLfo;
+  UpdateModulation;
+
+  //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
+  // by the user, when it needs to be a toggle type switch.
+end;
 
 
 end.

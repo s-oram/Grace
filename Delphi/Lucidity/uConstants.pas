@@ -56,6 +56,8 @@ const
   UM_SHOW_REPLACE_REGION_MESSAGE      = WM_APP + 21;
   UM_HIDE_REPLACE_REGION_MESSAGE      = WM_APP + 22;
 
+  UM_LFO_CHANGED                      = WM_APP + 23;
+
 const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
