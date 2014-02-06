@@ -74,8 +74,6 @@ type
     FilterEnvReleaseKnob: TVamKnob;
     FilterEnvHoldKnob: TVamKnob;
     FilterVelocityButton: TVamTextBox;
-    ModEnvAContainer: TVamDiv;
-    VamLabel25: TVamLabel;
     LfoAContainer: TVamDiv;
     LfoContainerLabel: TVamLabel;
     LfoLabel2: TVamLabel;
@@ -107,13 +105,10 @@ type
     Filter1Par3Knob: TVamKnob;
     Filter1Par4Knob: TVamKnob;
     Filter1P4Label: TVamLabel;
-    LfoBContainer: TVamDiv;
+    FilterBlendContainer: TVamDiv;
     VamLabel13: TVamLabel;
-    Lfo2DepthLabel: TVamLabel;
     Lfo2RateLabel: TVamLabel;
     LfoSpeedKnob2: TVamKnob;
-    LfoShapeTextBox2: TVamTextBox;
-    LfoDepthKnob2: TVamKnob;
     LfoKnob3: TVamKnob;
     LfoLabel3: TVamLabel;
     LfoSelectButton1: TVamButton;
@@ -204,7 +199,7 @@ begin
   KnobList.Add(LfoKnob1);
   KnobList.Add(LfoSpeedKnob2);
   KnobList.Add(LfoKnob2);
-  KnobList.Add(LfoDepthKnob2);
+
 end;
 
 destructor TModControlFrame.Destroy;
@@ -262,14 +257,13 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
-  
+
+
 
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape),       TLfoShapeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox2,       Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape),       TLfoShapeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter(TParName.FilterVelocity),  TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),       TSequencerClockHelper);
@@ -343,11 +337,11 @@ begin
   LfoAContainer.Height := RowHeight;
   LfoAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
-  {
-  LfoBContainer.Width := (2 * FilterKnobWidth);
-  LfoBContainer.Height := RowHeight;
-  LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
-  }
+
+  FilterBlendContainer.Width := (FilterKnobWidth);
+  FilterBlendContainer.Height := RowHeight;
+  FilterBlendContainer.Layout.Anchor(FilterTwoContainer).SnapToEdge(TControlFeature.LeftEdge).Move(-16,0);
+
 
 
 
@@ -486,20 +480,16 @@ begin
   //==================================================
 
 
-  {
+
   //==== LFO 2 =======================================
   LfoSpeedKnob2.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  LfoDepthKnob2.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
-
   Lfo2RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  Lfo2DepthLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
   Lfo2RateLabel.Layout.Anchor(LfoSpeedKnob2).SnapToEdge(TControlFeature.BottomEdge);
-  Lfo2DepthLabel.Layout.Anchor(LfoDepthKnob2).SnapToEdge(TControlFeature.BottomEdge);
 
-  LfoShapeTextBox2.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoShapeTextBox2.Layout.AdjustBounds(-4,0,-4,0);
+
+
   //===================================================
-  }
+
 
 
   //=== colors ===
@@ -520,7 +510,6 @@ begin
   Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   LfoShapeTextBox1.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  LfoShapeTextBox2.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq1ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq1DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq1StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
@@ -533,7 +522,6 @@ begin
   Filter1TypeTextBox.Color   := kColor_LcdDark1;
   Filter2TypeTextBox.Color   := kColor_LcdDark1;
   LfoShapeTextBox1.Color     := kColor_LcdDark1;
-  LfoShapeTextBox2.Color     := kColor_LcdDark1;
   Seq1ClockTextBox.Color     := kColor_LcdDark1;
   Seq1DirectionTextBox.Color := kColor_LcdDark1;
   Seq1StepsTextBox.Color     := kColor_LcdDark1;
@@ -546,7 +534,6 @@ begin
   Filter1TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   LfoShapeTextBox1.ColorMouseOver     := kColor_ButtonMouseOver;
-  LfoShapeTextBox2.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq1StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
@@ -642,29 +629,6 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape);
-  LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
-    case LfoShape of
-    TLfoShape.SawUp,
-    TLfoShape.SawDown,
-    TLfoShape.Square,
-    TLfoShape.Triangle,
-    TLfoShape.Sine:
-    begin
-      Lfo2DepthLabel.Text    := 'PHASE';
-      LfoDepthKnob2.Enabled := true;
-      Lfo2DepthLabel.Visible := true;
-    end;
-
-    TLfoShape.Random:
-    begin
-      Lfo2DepthLabel.Text    := 'MOD';
-      LfoDepthKnob2.Enabled  := true;
-      Lfo2DepthLabel.Visible := true;
-    end;
-  else
-    raise Exception.Create('Type not handled.');
-  end;
 
 
 
