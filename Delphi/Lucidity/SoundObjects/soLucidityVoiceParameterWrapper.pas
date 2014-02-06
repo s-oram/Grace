@@ -82,6 +82,8 @@ type
     fFilter2Par4: single;
     fSamplerLoopMode: TSamplerLoopMode;
     fPitchTracking: TPitchTracking;
+    fLfoBPar3: single;
+    fLfoAPar3: single;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -134,6 +136,8 @@ type
     procedure SetFilter2Par4(const Value: single);
     procedure SetSamplerLoopMode(const Value: TSamplerLoopMode);
     procedure SetPitchTracking(const Value: TPitchTracking);
+    procedure SetLfoAPar3(const Value: single);
+    procedure SetLfoBPar3(const Value: single);
   protected
     OwningSampleGroup : IKeyGroup;
     Voices : PArrayOfLucidityVoice;
@@ -199,10 +203,14 @@ type
     property FilterVelocityDepth      : TEnvVelocityDepth                  read fFilterVelocityDepth     write SetFilterVelocityDepth;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write SetLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
+
+    //TODO: I don't know if these parameter wrapped values are required any more.
     property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
     property LfoRate2                 : single                             read fLfoRate2                write SetLfoRate2;
     property LfoAPar2                 : single                             read fLfoAPar2                write SetLfoAPar2;
+    property LfoAPar3                 : single                             read fLfoAPar3                write SetLfoAPar3;
     property LfoBPar2                 : single                             read fLfoBPar2                write SetLfoBPar2;
+    property LfoBPar3                 : single                             read fLfoBPar3                write SetLfoBPar3;
     property Seq1Clock                : TSequencerClock                    read fSeq1Clock               write SetSeq1Clock;
     property Seq1Direction            : TStepSequencerDirection            read fSeq1Direction           write SetSeq1Direction;
     property StepSeq1Length           : TStepSequencerLength               read fStepSeq1Length          write SetStepSeq1Length;
@@ -447,9 +455,19 @@ begin
 
 end;
 
+procedure TLucidityVoiceParameterWrapper.SetLfoAPar3(const Value: single);
+begin
+  fLfoAPar3 := Value;
+end;
+
 procedure TLucidityVoiceParameterWrapper.SetLfoBPar2(const Value: single);
 begin
   fLfoBPar2 := Value;
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetLfoBPar3(const Value: single);
+begin
+  fLfoBPar3 := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoRate1(const Value: single);

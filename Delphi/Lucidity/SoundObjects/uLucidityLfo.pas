@@ -232,18 +232,18 @@ var
 begin
   if ModuleIndex = 0 then
   begin
-    Par1 := ParValueData^[TModParIndex.LfoRate1].ParValue;
-    Par2 := ParValueData^[TModParIndex.LfoAPar2].ParValue;
+    Par1 := ParValueData^[TModParIndex.Lfo1Par1].ParValue;
+    Par2 := ParValueData^[TModParIndex.Lfo1Par2].ParValue;
 
-    Par1Mod := ParModData^[TModParIndex.LfoRate1];
-    Par2Mod := ParModData^[TModParIndex.LfoAPar2];
+    Par1Mod := ParModData^[TModParIndex.Lfo1Par1];
+    Par2Mod := ParModData^[TModParIndex.Lfo1Par2];
   end else
   begin
-    Par1 := ParValueData^[TModParIndex.LfoRate2].ParValue;
-    Par2 := ParValueData^[TModParIndex.LfoBPar2].ParValue;
+    Par1 := ParValueData^[TModParIndex.Lfo2Par1].ParValue;
+    Par2 := ParValueData^[TModParIndex.Lfo2Par2].ParValue;
 
-    Par1Mod := ParModData^[TModParIndex.LfoRate2];
-    Par2Mod := ParModData^[TModParIndex.LfoBPar2];
+    Par1Mod := ParModData^[TModParIndex.Lfo2Par1];
+    Par2Mod := ParModData^[TModParIndex.Lfo2Par2];
   end;
 
   Lfo.Speed := VamLib.Utils.Clamp(Par1 + Par1Mod, 0, 1);

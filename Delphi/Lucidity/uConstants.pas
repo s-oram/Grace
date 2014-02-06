@@ -62,8 +62,8 @@ const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
 
-  kParameterCount          = 60;
-  kModulatedParameterCount = 30;
+  kParameterCount          = 62;
+  kModulatedParameterCount = 32;
   kModSlotCount = 8;
 
 
@@ -291,9 +291,11 @@ type
     Lfo1Shape              = 'Lfo1Shape';
     Lfo1Par1               = 'Lfo1Par1';
     Lfo1Par2               = 'Lfo1Par2';
+    Lfo1Par3               = 'Lfo1Par3';
     Lfo2Shape              = 'Lfo2Shape';
     Lfo2Par1               = 'Lfo2Par1';
     Lfo2Par2               = 'Lfo2Par2';
+    Lfo2Par3               = 'Lfo2Par3';
     Seq1Clock              = 'Seq1Clock';
     Seq1Direction          = 'Seq1Direction';
     Seq1Length             = 'Seq1Length';

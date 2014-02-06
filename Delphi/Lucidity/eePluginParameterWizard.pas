@@ -12,8 +12,6 @@ uses
 {_$define GENERATE_PAR_INFO}
 
 
-
-
 {
   NOTE: Rather then jam all the parameter set up in then TeePlugin constructor
   method I've pulled in out to TPluginParameterManager.
@@ -835,6 +833,35 @@ begin
     aPar.SetCallback_GetParValue(GetModPar_Callback);
   end;
 
+  aPar := TVstParameterEx.Create(TParName.Lfo1Par2);
+  aPar.SetDefault(1);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
+    end);
+    aPar.SetCallback_SetParValue(SetModPar_Callback);
+    aPar.SetCallback_GetParValue(GetModPar_Callback);
+  end;
+
+  aPar := TVstParameterEx.Create(TParName.Lfo1Par3);
+  aPar.SetDefault(1);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      //TODO:
+      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
+    end);
+    aPar.SetCallback_SetParValue(SetModPar_Callback);
+    aPar.SetCallback_GetParValue(GetModPar_Callback);
+  end;
+
 
 
 
@@ -852,25 +879,6 @@ begin
     aPar.SetCallback_GetParValue(GetModPar_Callback);
   end;
 
-
-
-  aPar := TVstParameterEx.Create(TParName.Lfo1Par2);
-  aPar.SetDefault(1);
-  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
-  Parmanager.Add(aPar);
-  if (assigned(Plugin)) and (assigned(VoiceController)) then
-  begin
-    aPar.SetCallback_SetParInfoMethod(function:string
-    begin
-      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
-    end);
-    aPar.SetCallback_SetParValue(SetModPar_Callback);
-    aPar.SetCallback_GetParValue(GetModPar_Callback);
-  end;
-
-
-
-
   aPar := TVstParameterEx.Create(TParName.Lfo2Par2);
   aPar.SetDefault(1);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
@@ -879,6 +887,22 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
+      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
+    end);
+    aPar.SetCallback_SetParValue(SetModPar_Callback);
+    aPar.SetCallback_GetParValue(GetModPar_Callback);
+  end;
+
+
+  aPar := TVstParameterEx.Create(TParName.Lfo2Par3);
+  aPar.SetDefault(1);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      //TODO:
       result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(SetModPar_Callback);
@@ -1059,6 +1083,7 @@ begin
 
 
 
+  {$ifndef GENERATE_PAR_INFO}
 
   for c1 := 0 to ParManager.Count-1 do
   begin
@@ -1072,6 +1097,9 @@ begin
   //============================================================================
   //IMPORTANT: build published parameter info after adding all parameters...
   Parmanager.BuildPublishedParameterInfo;
+
+  {$endif}
+
 
 
   {$ifdef GENERATE_PAR_INFO}
