@@ -1,5 +1,21 @@
 =============================================================================
 
+I think I need to write a multievent class 
+
+TNotifyMultiEvent
+TMouseMultiEvent
+etc
+
+Multiple control handlers need to be able to subscribe to control events.
+- the knob handler to read, set parameters
+- the info bar to respond when mousing over controls.
+- the scope to respond when mousing over controls.
+
+
+
+
+=============================================================================
+
 Sample map resize horizontal snapping should snap to octave boundaries. Not snap to
 octave multiples of the sample width.
 
