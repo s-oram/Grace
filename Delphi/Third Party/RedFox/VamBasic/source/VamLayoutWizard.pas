@@ -233,6 +233,8 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+
+  result := self;
 end;
 
 function TVamLayoutWizard.AlignEdge(const Edge: TControlFeature): IVamLayoutWizard;
@@ -256,7 +258,6 @@ begin
   fTarget.Top  := PosY;
 
   result := self;
-
 end;
 
 

@@ -11,7 +11,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
-  VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage;
+  VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton;
 
 type
   TAltFilterText = record
@@ -77,12 +77,12 @@ type
     ModEnvAContainer: TVamDiv;
     VamLabel25: TVamLabel;
     LfoAContainer: TVamDiv;
-    VamLabel26: TVamLabel;
-    Lfo1DepthLabel: TVamLabel;
-    Lfo1RateLabel: TVamLabel;
+    LfoContainerLabel: TVamLabel;
+    LfoLabel2: TVamLabel;
+    LfoLabel1: TVamLabel;
     LfoShapeTextBox1: TVamTextBox;
-    LfoSpeedKnob1: TVamKnob;
-    LfoDepthKnob1: TVamKnob;
+    LfoKnob1: TVamKnob;
+    LfoKnob2: TVamKnob;
     AmpEnvContainer: TVamDiv;
     VamLabel5: TVamLabel;
     AmpEnvReleaseLabel: TVamLabel;
@@ -114,6 +114,10 @@ type
     LfoSpeedKnob2: TVamKnob;
     LfoShapeTextBox2: TVamTextBox;
     LfoDepthKnob2: TVamKnob;
+    LfoKnob3: TVamKnob;
+    LfoLabel3: TVamLabel;
+    LfoSelectButton1: TVamButton;
+    LfoSelectButton2: TVamButton;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -152,6 +156,7 @@ type
 implementation
 
 uses
+  RedFox,
   eeVstParameterEx,
   MadExcept,
   VamLayoutWizard, eeVstParameter,
@@ -196,9 +201,9 @@ begin
   KnobList.Add(Filter2Par2Knob);
   KnobList.Add(Filter2Par3Knob);
   KnobList.Add(Filter2Par4Knob);
-  KnobList.Add(LfoSpeedKnob1);
+  KnobList.Add(LfoKnob1);
   KnobList.Add(LfoSpeedKnob2);
-  KnobList.Add(LfoDepthKnob1);
+  KnobList.Add(LfoKnob2);
   KnobList.Add(LfoDepthKnob2);
 end;
 
@@ -254,9 +259,9 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par2));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par3));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par4));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob1,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2,                        Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
   
 
@@ -334,14 +339,15 @@ begin
   FilterEnvContainer.Height := RowHeight;
   FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
-  LfoAContainer.Width := (2 * FilterKnobWidth);
+  LfoAContainer.Width := (FilterKnobWidth + 32 + 32);
   LfoAContainer.Height := RowHeight;
   LfoAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
+  {
   LfoBContainer.Width := (2 * FilterKnobWidth);
   LfoBContainer.Height := RowHeight;
   LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
-
+  }
 
 
 
@@ -450,23 +456,37 @@ begin
   //==================================================
 
 
-  
+
 
 
   //==== LFO 1 ========================================
-  LfoSpeedKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  LfoDepthKnob1.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
+  LfoContainerLabel.Align  := alNone;
+  LfoContainerLabel.Width  := kw * 2;
+  LfoContainerLabel.Height := TGuiConst.SectionLabelHeight;
+  LfoContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
+  LfoContainerLabel.Layout.SetPos(41, 0);
 
-  Lfo1RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  Lfo1DepthLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  Lfo1RateLabel.Layout.Anchor(LfoSpeedKnob1).SnapToEdge(TControlFeature.BottomEdge);
-  Lfo1DepthLabel.Layout.Anchor(LfoDepthKnob1).SnapToEdge(TControlFeature.BottomEdge);
+  LfoSelectButton2.Layout.SetSize(18,18);
+  LfoSelectButton2.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-1,0);
+  LfoSelectButton2.Top := 0;
+
+  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
+
+
+  LfoKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  LfoKnob2.Layout.SetSize(32, 32).Anchor(LfoKnob1).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
+  LfoKnob3.Layout.SetSize(32, 32).Anchor(LfoKnob2).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
+
+  LfoLabel1.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoKnob1).SnapToEdge(TControlFeature.BottomEdge);
+  LfoLabel2.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob2).SnapToEdge(TControlFeature.BottomEdge);
+  LfoLabel3.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
   LfoShapeTextBox1.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
   LfoShapeTextBox1.Layout.AdjustBounds(-4,0,-4,0);
   //==================================================
 
 
+  {
   //==== LFO 2 =======================================
   LfoSpeedKnob2.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
   LfoDepthKnob2.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
@@ -479,7 +499,7 @@ begin
   LfoShapeTextBox2.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
   LfoShapeTextBox2.Layout.AdjustBounds(-4,0,-4,0);
   //===================================================
-
+  }
 
 
   //=== colors ===
@@ -605,16 +625,16 @@ begin
     TLfoShape.Triangle,
     TLfoShape.Sine:
     begin
-      Lfo1DepthLabel.Text    := 'PHASE';
-      LfoDepthKnob1.Enabled := true;
-      Lfo1DepthLabel.Visible := true;
+      LfoLabel2.Text    := 'PH';
+      LfoKnob2.Enabled := true;
+      LfoLabel2.Visible := true;
     end;
 
     TLfoShape.Random:
     begin
-      Lfo1DepthLabel.Text    := 'MOD';
-      LfoDepthKnob1.Enabled  := true;
-      Lfo1DepthLabel.Visible := true;
+      LfoLabel2.Text    := 'MOD';
+      LfoKnob2.Enabled  := true;
+      LfoLabel2.Visible := true;
     end;
   else
     raise Exception.Create('Type not handled.');
