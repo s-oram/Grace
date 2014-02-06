@@ -34,9 +34,9 @@ object Form1: TForm1
     TabOrder = 1
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 72
-    Top = 76
-    Width = 377
+    Left = 32
+    Top = 52
+    Width = 313
     Height = 289
     Color = '$FFEEEEEE'
     object Knob1: TVamNumericKnob

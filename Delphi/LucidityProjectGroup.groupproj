@@ -49,7 +49,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies>Third Party\VamLib\VamLib.dproj;Third Party\RedFox\VamBasic\packages\VamBasicDesXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
+				<Dependencies>Third Party\VamLib\VamLib.dproj</Dependencies>
 			</Projects>
 			<Projects Include="ASM Tester\AsmTester.dproj">
 				<Dependencies/>
@@ -197,13 +197,13 @@
 		<Target Name="CodeGen:Make">
 			<MSBuild Targets="Make" Projects="Code Gen\CodeGen.dproj"/>
 		</Target>
-		<Target Name="ComponentTester" DependsOnTargets="VamLib;VamBasicDesXE2;VamBasicRunXE2">
+		<Target Name="ComponentTester" DependsOnTargets="VamLib">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;VamBasicDesXE2:Clean;VamBasicRunXE2:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;VamBasicDesXE2:Make;VamBasicRunXE2:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="AsmTester">

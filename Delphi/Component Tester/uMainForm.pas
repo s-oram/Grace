@@ -4,6 +4,7 @@ interface
 
 uses
   VamLib.Collections.Lists,
+  VamLib.MultiEvent,
   VamLib.Debouncer,
   AudioIO,
   eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
@@ -41,6 +42,7 @@ type
     { Private declarations }
     procedure UpdateLabel;
   public
+    MultiEvent : TNotifyMultiEvent;
     FooList : TFooList;
 
     Debouncer : TDebouncer;
@@ -74,6 +76,53 @@ type
 var
   GlobalDict : TProcDictionary;
 
+procedure TForm1.FormCreate(Sender: TObject);
+var
+  c1: Integer;
+begin
+  Sample := TSampleFloat.Create;
+  PeakBuffer := TPeakbuffer.Create;
+  ImageBuffer := TSampleImageBuffer.Create;
+
+
+  a := 50;
+  b := 200000000;
+
+  //ShowMessage(IntToStr(a + Integer(b)));
+
+  Debouncer := TDebouncer.Create;
+  Debouncer.DebounceTime := 100;
+
+
+  FooList := TFooList.Create;
+  FooList.OwnsObjects := true;
+  for c1 := 0 to 10 do
+  begin
+    FooList.Add(TFoo.Create);
+    FooList[c1].Text := IntToStr(c1) + ' bottle(s) on the wall!';
+  end;
+
+  FooList.Delete(4);
+
+  UpdateMemo;
+
+  MultiEvent := TNotifyMultiEvent.Create;
+  MultiEvent.Add(Button2Click);
+  MultiEvent.Add(Button3Click);
+  MultiEvent.Remove(Button2Click);
+
+
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  Debouncer.Free;
+  Sample.Free;
+  PeakBuffer := nil;
+  ImageBuffer := nil;
+  FooList.Free;
+  MultiEvent.Free;
+end;
 
 
 procedure Debounce(id : integer; TimeMS : integer; aProc : TProc);
@@ -119,45 +168,6 @@ begin
   showMessage((Sender as TControl).Name);
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
-var
-  c1: Integer;
-begin
-  Sample := TSampleFloat.Create;
-  PeakBuffer := TPeakbuffer.Create;
-  ImageBuffer := TSampleImageBuffer.Create;
-
-
-  a := 50;
-  b := 2000000000000;
-
-  //ShowMessage(IntToStr(a + Integer(b)));
-
-  Debouncer := TDebouncer.Create;
-  Debouncer.DebounceTime := 100;
-
-
-  FooList := TFooList.Create;
-  FooList.OwnsObjects := true;
-  for c1 := 0 to 10 do
-  begin
-    FooList.Add(TFoo.Create);
-    FooList[c1].Text := IntToStr(c1) + ' bottle(s) on the wall!';
-  end;
-
-  FooList.Delete(4);
-
-  UpdateMemo;
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-  Debouncer.Free;
-  Sample.Free;
-  PeakBuffer := nil;
-  ImageBuffer := nil;
-  FooList.Free;
-end;
 
 
 procedure TForm1.UpdateLabel;
@@ -166,14 +176,14 @@ begin
 end;
 
 procedure TForm1.UpdateMemo;
-var
-  c1: Integer;
 begin
+  {
   Memo1.Clear;
   for c1 := 0 to FooList.Count-1 do
   begin
     Memo1.Lines.Add(FooList[c1].Text);
   end;
+  }
 end;
 
 procedure TForm1.VamNumericKnob1Changed(Sender: TObject);
@@ -187,42 +197,25 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
-type
-  TExec = procedure of object;
 var
-  aMethod : TMethod;
-  Exec: TExec;
+  List : TSimplePointerList;
+  x : array[0..5] of integer;
+  c1: Integer;
 begin
-  aMethod.Data := @Sender;
-  aMethod.Code := @TForm1.Foo;
-  Exec := TExec(aMethod);
-  Exec;
-
-  {
-  Debounce(14, 150, procedure
-  begin
-    Knob2.KnobValue := Knob1.KnobValue;
-  end);
-  }
+  MultiEvent.TriggerAll(nil);
 end;
 
 
 procedure TForm1.Button2Click(Sender: TObject);
 begin
-  Debounce(13, 150, procedure
-  begin
-    Knob2.KnobValue := Knob1.KnobValue;
-  end);
+  ShowMessage('Button 2');
 end;
 
 
 
 procedure TForm1.Button3Click(Sender: TObject);
 begin
-  Debounce(12, 150, procedure
-  begin
-    Knob2.KnobValue := Knob1.KnobValue * 2;
-  end);
+  ShowMessage('Button 3');
 end;
 
 { TFoo }

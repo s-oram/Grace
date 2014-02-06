@@ -41,6 +41,7 @@ contains
   VamLib.Threads in 'Source\VamLib.Threads.pas',
   VamLib.Collections.Lists in 'Source\VamLib.Collections.Lists.pas',
   VamLib.PerformanceTuning in 'Source\VamLib.PerformanceTuning.pas',
-  VamLib.WinUtils in 'Source\VamLib.WinUtils.pas';
+  VamLib.WinUtils in 'Source\VamLib.WinUtils.pas',
+  VamLib.MultiEvent in 'Source\VamLib.MultiEvent.pas';
 
 end.
