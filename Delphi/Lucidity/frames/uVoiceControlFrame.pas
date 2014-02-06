@@ -51,6 +51,10 @@ type
     SamplerLoopModeTextBox: TVamTextBox;
     PitchTrackTextBox: TVamTextBox;
     PitchTrackLabel: TVamLabel;
+    MainOutputKnob: TVamKnob;
+    MainOutputLabel: TVamLabel;
+    MainPanKnob: TVamKnob;
+    MainPanLabel: TVamLabel;
     procedure VoiceControlsContainerResize(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
@@ -149,6 +153,8 @@ begin
 
   //==== Assign standard control handling ====
 
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,         Plugin.Globals.VstParameters.FindParameter(TParName.OutputGain));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.OutputPan));
   GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch1Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchOne));
   GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch2Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchTwo));
   GuiStandard.RedFoxKnobHandler.RegisterControl(GlideKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.VoiceGlide));
@@ -232,17 +238,18 @@ begin
 
 
   //** Gain, Pan, Tune, Fine **
+  MainOutputKnob.Layout.SetSize(32,32);
+  MainPanKnob.Layout.SetSize(32,32);
   VoicePitch1Knob.Layout.SetSize(32,32);
   VoicePitch2Knob.Layout.SetSize(32,32);
 
-  //MainOutputKnob.Layout.SetPos(0,18);
-  //MainPanKnob.Layout.SetPos(32,18);
-  //VoicePitch1Knob.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  //VoicePitch2Knob.Layout.Anchor(VoicePitch1Knob).SnapToEdge(TControlFeature.RightEdge);
+  MainOutputKnob.Layout.SetPos(0,18);
+  MainPanKnob.Layout.SetPos(32,18);
+  VoicePitch1Knob.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.RightEdge).Move(8, 0);
+  VoicePitch2Knob.Layout.Anchor(VoicePitch1Knob).SnapToEdge(TControlFeature.RightEdge);
 
-  VoicePitch1Knob.Layout.SetPos(0,18);
-  VoicePitch2Knob.Layout.SetPos(32,18);
-
+  MainOutputLabel.Layout.Anchor(MainOutputKnob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  MainPanLabel.Layout.Anchor(MainPanKnob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
   VoicePitch1Label.Layout.Anchor(VoicePitch1Knob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
   VoicePitch2Label.Layout.Anchor(VoicePitch2Knob).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
@@ -444,6 +451,8 @@ begin
     then ModSlot := Plugin.Globals.MouseOverModSlot
     else ModSlot := Plugin.Globals.SelectedModSlot;
 
+  UpdateModAmount(MainOutputKnob,  ModSlot, Plugin);
+  UpdateModAmount(MainPanKnob,     ModSlot, Plugin);
   UpdateModAmount(VoicePitch1Knob, ModSlot, Plugin);
   UpdateModAmount(VoicePitch2Knob, ModSlot, Plugin);
 end;

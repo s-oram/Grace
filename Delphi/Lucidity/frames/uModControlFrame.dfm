@@ -26,7 +26,6 @@ object ModControlFrame: TModControlFrame
       Transparent = False
       Align = alClient
       Visible = True
-      OnClick = BackgroundPanelClick
       object StepSeq1Container: TVamDiv
         AlignWithMargins = True
         Left = 31
@@ -948,110 +947,6 @@ object ModControlFrame: TModControlFrame
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           Align = alTop
-          Visible = True
-        end
-      end
-      object ModEnvBContainer: TVamDiv
-        Left = 524
-        Top = 508
-        Width = 92
-        Height = 87
-        HitTest = True
-        Visible = True
-        object VamLabel12: TVamLabel
-          Left = 0
-          Top = 0
-          Width = 92
-          Height = 18
-          Text = 'OUTPUT'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Align = alTop
-          Visible = True
-        end
-        object MainOutputKnob: TVamKnob
-          Left = 6
-          Top = 26
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MainOutputLabel: TVamLabel
-          Left = 6
-          Top = 57
-          Width = 40
-          Height = 16
-          Text = 'GAIN'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MainPanLabel: TVamLabel
-          Left = 49
-          Top = 56
-          Width = 40
-          Height = 16
-          Text = 'PAN'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MainPanKnob: TVamKnob
-          Left = 49
-          Top = 24
-          Width = 40
-          Height = 32
-          DisplayClass = 'UniPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
           Visible = True
         end
       end

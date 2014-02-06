@@ -76,8 +76,6 @@ type
     FilterVelocityButton: TVamTextBox;
     ModEnvAContainer: TVamDiv;
     VamLabel25: TVamLabel;
-    ModEnvBContainer: TVamDiv;
-    VamLabel12: TVamLabel;
     LfoAContainer: TVamDiv;
     VamLabel26: TVamLabel;
     Lfo1DepthLabel: TVamLabel;
@@ -116,15 +114,10 @@ type
     LfoSpeedKnob2: TVamKnob;
     LfoShapeTextBox2: TVamTextBox;
     LfoDepthKnob2: TVamKnob;
-    MainOutputKnob: TVamKnob;
-    MainOutputLabel: TVamLabel;
-    MainPanLabel: TVamLabel;
-    MainPanKnob: TVamKnob;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
-    procedure BackgroundPanelClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
@@ -171,11 +164,6 @@ uses
 
 { TModControlFrame }
 
-procedure TModControlFrame.BackgroundPanelClick(Sender: TObject);
-begin
-
-end;
-
 constructor TModControlFrame.Create(AOwner: TComponent);
 begin
   inherited;
@@ -212,8 +200,6 @@ begin
   KnobList.Add(LfoSpeedKnob2);
   KnobList.Add(LfoDepthKnob1);
   KnobList.Add(LfoDepthKnob2);
-  KnobList.Add(MainOutputKnob);
-  KnobList.Add(MainPanKnob);
 end;
 
 destructor TModControlFrame.Destroy;
@@ -272,8 +258,7 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoSpeedKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob1,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
   GuiStandard.RedFoxKnobHandler.RegisterControl(LfoDepthKnob2,                   Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.OutputGain));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,                     Plugin.Globals.VstParameters.FindParameter(TParName.OutputPan));
+  
 
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
@@ -465,13 +450,7 @@ begin
   //==================================================
 
 
-  MainOutputKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  MainPanKnob.Layout.SetSize(kw, kh).SetPos(kw,TGuiConst.SectionLabelHeight);
-
-  MainOutputLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  MainPanLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  MainOutputLabel.Layout.Anchor(MainOutputKnob).SnapToEdge(TControlFeature.BottomEdge);
-  MainPanLabel.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.BottomEdge);
+  
 
 
   //==== LFO 1 ========================================

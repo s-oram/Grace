@@ -181,6 +181,7 @@ object VoiceControlFrame: TVoiceControlFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
@@ -202,6 +203,7 @@ object VoiceControlFrame: TVoiceControlFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
@@ -223,6 +225,7 @@ object VoiceControlFrame: TVoiceControlFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
@@ -309,6 +312,7 @@ object VoiceControlFrame: TVoiceControlFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
@@ -330,6 +334,7 @@ object VoiceControlFrame: TVoiceControlFrame
             ModLineDist = 17.000000000000000000
             ModLineWidth = 3.000000000000000000
             ModLineColor = '$FFFF0000'
+            ModLineOffColor = '$FFC0C0C0'
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
@@ -459,6 +464,7 @@ object VoiceControlFrame: TVoiceControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -514,6 +520,7 @@ object VoiceControlFrame: TVoiceControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -611,6 +618,7 @@ object VoiceControlFrame: TVoiceControlFrame
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
           ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
           IndicatorSize = 2.500000000000000000
           IndicatorDist = 9.000000000000000000
           IsBipolarKnob = False
@@ -704,6 +712,84 @@ object VoiceControlFrame: TVoiceControlFrame
           Width = 70
           Height = 16
           Text = 'TRACK'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object MainOutputKnob: TVamKnob
+          Left = 22
+          Top = 55
+          Width = 40
+          Height = 32
+          DisplayClass = 'SmallUnipolarKnob'
+          HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineWidth = 3.000000000000000000
+          ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          IsBipolarKnob = False
+          KnobMode = PositionEdit
+          IsKnobEnabled = True
+          VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
+          Visible = True
+        end
+        object MainOutputLabel: TVamLabel
+          Left = 22
+          Top = 86
+          Width = 40
+          Height = 16
+          Text = 'GAIN'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object MainPanKnob: TVamKnob
+          Left = 65
+          Top = 53
+          Width = 40
+          Height = 32
+          DisplayClass = 'SmallBipolarKnob'
+          HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineWidth = 3.000000000000000000
+          ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          IsBipolarKnob = False
+          KnobMode = PositionEdit
+          IsKnobEnabled = True
+          VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
+          Visible = True
+        end
+        object MainPanLabel: TVamLabel
+          Left = 65
+          Top = 85
+          Width = 40
+          Height = 16
+          Text = 'PAN'
           HitTest = True
           AutoSize = False
           TextAlign = AlignCenter
