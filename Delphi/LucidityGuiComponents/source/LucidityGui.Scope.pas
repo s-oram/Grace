@@ -38,7 +38,8 @@ implementation
 constructor TLucidityScope.Create(AOwner: TComponent);
 begin
   inherited;
-
+  fColorBackground := '$00000000';
+  fColorBorder     := '$00000000';
 end;
 
 destructor TLucidityScope.Destroy;
@@ -77,9 +78,23 @@ end;
 
 
 procedure TLucidityScope.Paint;
+var
+  x1, y1, x2, y2 : single;
 begin
   inherited;
 
+  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+
+  //=== Paint the background ==
+  x1 := 0;
+  y1 := 0;
+  x2 := Width;
+  y2 := Height;
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := fColorBackground;
+
+  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
 end;
 
 

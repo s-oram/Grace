@@ -11,7 +11,8 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
-  VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton;
+  VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
+  LucidityGui.Scope;
 
 type
   TAltFilterText = record
@@ -113,6 +114,7 @@ type
     LfoLabel3: TVamLabel;
     LfoSelectButton1: TVamButton;
     LfoSelectButton2: TVamButton;
+    Scope: TLucidityScope;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -298,6 +300,16 @@ begin
   AmpEnvContainer.Width := (5 * FilterKnobWidth);
   AmpEnvContainer.Height := RowHeight;
   AmpEnvContainer.Layout.SetPos(16, 8);
+
+
+  //Scope.Layout.Anchor(AmpEnvContainer).MatchHeight.SnapToEdge(TControlFeature.RightEdge).Move(16, 0).AdjustBounds(0,-4,0,0);
+  //Scope.Width := 177;
+  //ShowMessage(IntToStr(Scope.Left));
+  //ShowMessage(IntToStr(Scope.Top));
+  //ShowMessage(IntToStr(Scope.Width));
+  //ShowMessage(IntToStr(Scope.Height));
+
+  Scope.Layout.SetPos(232,12).SetSize(177,90);
 
 
     //TODO:
@@ -541,6 +553,8 @@ begin
   Seq2ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq2DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq2StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
+
+  Scope.ColorBackground := kColor_LcdDark1;
 
 
 

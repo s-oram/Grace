@@ -1674,6 +1674,17 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
       end
+      object Scope: TLucidityScope
+        Left = 174
+        Top = 24
+        Width = 193
+        Height = 121
+        Text = 'Scope'
+        HitTest = True
+        ColorBackground = '$FF000000'
+        ColorBorder = '$00000000'
+        Visible = True
+      end
     end
   end
 end
