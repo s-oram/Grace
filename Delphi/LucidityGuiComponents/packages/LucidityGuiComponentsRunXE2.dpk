@@ -28,6 +28,11 @@ package LucidityGuiComponentsRunXE2;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  VamBasicRunXE2,
+  RedFoxRunXE2;
+
+contains
+  LucidityGui.Scope in '..\source\LucidityGui.Scope.pas';
 
 end.

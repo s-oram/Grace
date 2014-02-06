@@ -28,6 +28,12 @@ package LucidityGuiComponentsDesXE2;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  DesignIDE,
+  VamBasicRunXE2,
+  LucidityGuiComponentsRunXE2;
+
+contains
+  LucidityGui.Reg in '..\source\LucidityGui.Reg.pas';
 
 end.
