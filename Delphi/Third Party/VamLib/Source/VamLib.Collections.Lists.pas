@@ -16,32 +16,39 @@ type
 
   TObjectList = class;
 
+  TSimplePointerList = class;
+
 
 
   TSimpleList<T> = class
   private
     fCount : integer;
     fCapacity : integer;
+    fGrowBy: integer;
     procedure SetCount(const Value: integer);
     procedure SetCapacity(const Value: integer);
     function GetItem(Index: integer): T;  inline;
 
-    procedure Grow; inline;
+    procedure Grow;
     procedure SetItem(Index: integer; const Value: T);
+    procedure SetGrowBy(const Value: integer);
   public
     Raw : TArray<T>; //The raw, naked, array.
 
+    constructor Create; virtual;
     destructor Destroy; override;
 
     function New:Pointer;
 
-    function Append(const Value : T):integer;
+    function Add(const Value : T):integer;
+    function Append(const Value : T):integer; deprecated; //TODO: delete these append methods.
     procedure Delete(const Index : integer);
 
     procedure Clear;
 
     property Count    : integer read fCount    write SetCount;
     property Capacity : integer read fCapacity write SetCapacity;
+    property GrowBy   : integer read fGrowBy   write SetGrowBy;
 
     property Items[Index:integer]:T read GetItem write SetItem; default;
   end;
@@ -56,7 +63,7 @@ type
     procedure SetCapacity(const Value: integer);
     function GetItem(Index: integer): T;  inline;
 
-    procedure Grow; inline;
+    procedure Grow;
     procedure SetItem(Index: integer; const Value: T);
   protected
     procedure FreeObjectAt(Index : integer);
@@ -86,7 +93,7 @@ type
     procedure SetCapacity(const Value: integer);
     function GetItem(Index: integer): T;  inline;
 
-    procedure Grow; inline;
+    procedure Grow;
     procedure SetItem(Index: integer; const Value: T);
   public
     Raw : TArray<T>; //The raw, naked, array.
@@ -110,6 +117,12 @@ type
   public
   end;
 
+  TSimplePointerList = class(TSimpleList<Pointer>)
+  private
+  public
+    procedure Delete(Value : Pointer); overload;
+  end;
+
 implementation
 
 uses
@@ -130,6 +143,11 @@ begin
   SetLength(Raw, 0);
 end;
 
+constructor TSimpleList<T>.Create;
+begin
+  fGrowBy := 1;
+end;
+
 function TSimpleList<T>.GetItem(Index: integer): T;
 begin
   result := Raw[Index];
@@ -137,8 +155,8 @@ end;
 
 procedure TSimpleList<T>.Grow;
 begin
-  SetLength(Raw, fCapacity + 10);
-  inc(fCapacity, 10);
+  SetLength(Raw, fCapacity + fGrowBy);
+  inc(fCapacity, fGrowBy);
 end;
 
 function TSimpleList<T>.New: Pointer;
@@ -164,13 +182,19 @@ begin
   end;
 end;
 
+procedure TSimpleList<T>.SetGrowBy(const Value: integer);
+begin
+  assert(Value >= 1);
+  fGrowBy := Value;
+end;
+
 procedure TSimpleList<T>.SetItem(Index: integer; const Value: T);
 begin
   Finalize(Raw[Index]);
   Move(Value, Raw[Index], SizeOf(T));
 end;
 
-function TSimpleList<T>.Append(const Value: T):integer;
+function TSimpleList<T>.Add(const Value: T): integer;
 begin
   if (fCount) >= fCapacity then Grow;
 
@@ -180,7 +204,12 @@ begin
 
   Move(Value, Raw[fCount], SizeOf(T));
   inc(fCount);
-  result := fCount;
+  result := fCount-1;
+end;
+
+function TSimpleList<T>.Append(const Value: T):integer;
+begin
+  result := Add(Value);
 end;
 
 procedure TSimpleList<T>.Delete(const Index: integer);
@@ -371,7 +400,7 @@ begin
 
   Move(Value, Raw[fCount], SizeOf(T));
   inc(fCount);
-  result := fCount;
+  result := fCount-1;
 end;
 
 procedure TSimpleRecordList<T>.Delete(const Index: integer);
@@ -402,5 +431,18 @@ end;
 
 
 
+
+{ TSimplePointerList }
+
+procedure TSimplePointerList.Delete(Value: Pointer);
+var
+  c1: Integer;
+begin
+  for c1 := self.Count-1 downto 0 do
+  begin
+    if Items[c1] = Value
+      then Delete(c1);
+  end;
+end;
 
 end.
