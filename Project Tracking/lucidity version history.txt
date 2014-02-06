@@ -1,4 +1,9 @@
+== Finished for the next release ==
 
+The controls for the two LFOs have been merged into 
+one. There is a button to select with LFO is being edited. 
+
+Added a third LFO knob. 
 
 
 === Alpha Version 0.0.1.19 released 5th February ===

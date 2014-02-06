@@ -821,13 +821,6 @@ begin
   end;
 
 
-  //TODO: Rename the lfo parameters to
-  // LfoA-Par1
-  // LfoA-Par2
-  // LfoB-Par1
-  // LfoB-Par2
-
-
   aPar := TVstParameterEx.Create(TParName.Lfo1Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
