@@ -10,7 +10,7 @@ uses
   {$ELSE}
   Windows,
   {$ENDIF}
-  eePluginGui, eePlugin,
+  eePluginGui, eePlugin, eePluginGuiMeta,
   DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX,
   Messages;
 
@@ -20,10 +20,11 @@ const
 type
   TVstEditor = class(AEffEditor)
   private
-    r            : ERect;
-    useCount     : Longint;
-    Plugin       : TeePlugin;
-    PluginGUI    : TPluginGui;
+    r             : ERect;
+    useCount      : Longint;
+    Plugin        : TeePlugin;
+    PluginGUI     : TPluginGui;
+    PluginGuiMeta : TPluginGuiMeta;
     systemWindow : HWnd;
   public
     constructor Create(effect: AudioEffect; aPlugin:TeePlugin); reintroduce;
@@ -52,6 +53,7 @@ uses
   {$ENDIF}
 
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  SysUtils,
   uConstants;
 
 var
@@ -145,17 +147,21 @@ begin
 
   if (UseCount = 0) then
   begin
-    PluginGUI := TPluginGui.CreateParented(SystemWindow);
+    try
+      PluginGUI := TPluginGui.CreateParented(SystemWindow);
+      PluginGUI.Width  := PluginInfo.InitialGuiWidth;
+      PluginGUI.Height := PluginInfo.InitialGuiHeight;
+      PluginGUI.Plugin := self.Plugin;
 
-    PluginGUI.Width  := PluginInfo.InitialGuiWidth;
-    PluginGUI.Height := PluginInfo.InitialGuiHeight;
+      // IMPORTANT: Create the PluginGuiMeta class after creating and setting up the GUI window.
+      PluginGuiMeta := TPluginGuiMeta.Create(Plugin, PluginGui, SystemWindow);
 
-    PluginGUI.Plugin := self.Plugin;
-
-    self.Plugin.IsGuiOpen := true;
-    UseCount := 1;
+      // finally...
+      Plugin.IsGuiOpen := true;
+    finally
+      UseCount := 1;
+    end;
   end;
-
   result := 1;
 end;
 
@@ -165,10 +171,10 @@ begin
   // been opened/is still opened etc.
   if (UseCount > 0) then
   begin
-    PluginGui.Free;
-    PluginGui := nil;
+    if assigned(PluginGuiMeta) then FreeAndNil(PluginGuiMeta);
+    if assigned(PluginGui)     then FreeAndNil(PluginGui);
 
-    self.Plugin.IsGuiOpen := false;
+    Plugin.IsGuiOpen := false;
     systemWindow := 0;
     UseCount := 0;
   end;
