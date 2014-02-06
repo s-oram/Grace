@@ -205,7 +205,6 @@ begin
   KnobList.Add(LfoKnob1);
   KnobList.Add(LfoSpeedKnob2);
   KnobList.Add(LfoKnob2);
-
 end;
 
 destructor TModControlFrame.Destroy;

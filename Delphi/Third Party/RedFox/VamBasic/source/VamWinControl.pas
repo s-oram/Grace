@@ -3,6 +3,7 @@ unit VamWinControl;
 interface
 
 uses
+  VamLib.MultiEvent,
   VamGuiControlInterfaces,
   WinApi.Messages, WinApi.Windows, VamLayoutWizard,
   Classes, Types, Controls, Graphics,
@@ -20,6 +21,14 @@ type
     fUpdatingCount : integer;
     fLayout: TVamLayoutWizard;
     fOnShowContextMenu: TShowContextMenuEvent;
+
+    fChangedMultiEvent    : TNotifyMultiEvent;
+    fMouseEnterMultiEvent : TNotifyMultiEvent;
+    fMouseLeaveMultiEvent : TNotifyMultiEvent;
+    fMouseDownMultiEvent  : TMouseMultiEvent;
+    fMouseUpMultiEvent    : TMouseMultiEvent;
+    fMouseMoveMultiEvent  : TMouseMoveMultiEvent;
+
     function GetIsControlGrabbed: boolean;
     function GetIsUpdating: boolean;
 
@@ -34,6 +43,9 @@ type
 
     function GetFont: TFont; virtual;
     procedure SetFont(const Value: TFont); virtual;
+
+    procedure MouseEnter; override;
+    procedure MouseLeave; override;
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -83,6 +95,13 @@ type
     property IsUpdating : boolean read GetIsUpdating;
 
     property Layout : TVamLayoutWizard read fLayout implements IVamLayoutWizard;
+
+    property ChangedMultiEvent    : TNotifyMultiEvent    read fChangedMultiEvent; //Changed is used by descend controls to indicate a control value has changed.
+    property MouseEnterMultiEvent : TNotifyMultiEvent    read fMouseEnterMultiEvent;
+    property MouseLeaveMultiEvent : TNotifyMultiEvent    read fMouseLeaveMultiEvent;
+    property MouseDownMultiEvent  : TMouseMultiEvent     read fMouseDownMultiEvent;
+    property MouseUpMultiEvent    : TMouseMultiEvent     read fMouseUpMultiEvent;
+    property MouseMoveMultiEvent  : TMouseMoveMultiEvent read fMouseMoveMultiEvent;
   published
     property Accessible;
 
@@ -110,10 +129,23 @@ begin
   inherited;
   fUpdatingCount := 0;
   fLayout := TVamLayoutWizard.Create(self);
+
+  fChangedMultiEvent    := TNotifyMultiEvent.Create;
+  fMouseEnterMultiEvent := TNotifyMultiEvent.Create;
+  fMouseLeaveMultiEvent := TNotifyMultiEvent.Create;
+  fMouseDownMultiEvent  := TMouseMultiEvent.Create;
+  fMouseUpMultiEvent    := TMouseMultiEvent.Create;
+  fMouseMoveMultiEvent  := TMouseMoveMultiEvent.Create;
 end;
 
 destructor TVamWinControl.Destroy;
 begin
+  fChangedMultiEvent.Free;
+  fMouseEnterMultiEvent.Free;
+  fMouseLeaveMultiEvent.Free;
+  fMouseDownMultiEvent.Free;
+  fMouseUpMultiEvent.Free;
+  fMouseMoveMultiEvent.Free;
   inherited;
 end;
 
@@ -182,16 +214,31 @@ begin
   inherited;
   if Button = mbLeft  then fIsGrabbedByLeft  := true;
   if Button = mbRight then fIsGrabbedByRight := true;
+  MouseDownMultiEvent.TriggerAll(self, Button, Shift, X, Y);
+end;
+
+procedure TVamWinControl.MouseEnter;
+begin
+  inherited;
+  MouseEnterMultiEvent.TriggerAll(self);
+end;
+
+procedure TVamWinControl.MouseLeave;
+begin
+  inherited;
+  MouseLeaveMultiEvent.TriggerAll(self);
 end;
 
 procedure TVamWinControl.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
+  MouseMoveMultiEvent.TriggerAll(self, Shift, X, Y);
 end;
 
 procedure TVamWinControl.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
+
   if (Button = mbLeft) and (fIsGrabbedByLeft) then
   begin
     fIsGrabbedByLeft  := false;
@@ -202,6 +249,8 @@ begin
     fIsGrabbedByRight := false;
     if (assigned(OnShowContextMenu)) then OnShowContextMenu(self, X, Y);
   end;
+
+  MouseUpMultiEvent.TriggerAll(self, Button, Shift, X, Y);
 end;
 
 procedure TVamWinControl.OleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
