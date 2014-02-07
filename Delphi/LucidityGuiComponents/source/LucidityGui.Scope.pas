@@ -20,7 +20,8 @@ type
     DisplayOff,
     ADSR,
     LFO,
-    Filter
+    Filter,
+    FilterBlend
   );
 
   TScopeAdsrValues = record
@@ -32,7 +33,22 @@ type
   end;
 
   TScopeLfoValues = record
-    //Shape
+    Shape : TLfoShape;
+    Par1  : single;
+    Par2  : single;
+    Par3  : single;
+  end;
+
+  TScopeFilterValues = record
+    FilterType : TFilterType;
+    Par1 : single;
+    Par2 : single;
+    Par3 : single;
+    Par4 : single;
+  end;
+
+  TScopeFilterBlendValues = record
+    BlendAmt : single;
   end;
 
   TLucidityScope = class(TVamWinControl)
@@ -47,13 +63,25 @@ type
   protected
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
+
+    ScopeRect : TRect;
+
+    procedure Draw_ADSR;
+    procedure Draw_Lfo;
+    procedure Draw_Filter;
+    procedure Draw_FilterBlend;
   public
-    AdsrValues : TScopeAdsrValues;
+    AdsrValues        : TScopeAdsrValues;
+    LfoValues         : TScopeLfoValues;
+    FilterValues      : TScopeFilterValues;
+    FilterBlendValues : TScopeFilterBlendValues;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Paint; override;
+
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
 
 
     //== AHDSR values ==
@@ -103,6 +131,15 @@ begin
   end;
 end;
 
+procedure TLucidityScope.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+begin
+  inherited;
+
+
+
+
+end;
+
 procedure TLucidityScope.SetColors(const Index: Integer; const Value: TRedFoxColorString);
 var
   pc : PRedFoxColor;
@@ -147,6 +184,8 @@ var
 begin
   inherited;
 
+
+
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
   //=== Paint the background ==
@@ -165,7 +204,48 @@ begin
   //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
   TextBounds := Rect(0,Height-20, Width, Height);
   BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+
+
+
+  ScopeRect := Rect(3,3,Width-3,Height-23);
+
+  case ScopeMode of
+    //TScopeDisplayMode.DisplayOff: ;
+    TScopeDisplayMode.ADSR:        Draw_ADSR;
+    TScopeDisplayMode.LFO:         Draw_Lfo;
+    TScopeDisplayMode.Filter:      Draw_Filter;
+    TScopeDisplayMode.FilterBlend: Draw_FilterBlend;
+  end;
+
+
+  BackBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
+  BackBuffer.BufferInterface.NoFill;
+
+  BackBuffer.BufferInterface.RoundedRect(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
 end;
+
+procedure TLucidityScope.Draw_ADSR;
+begin
+
+end;
+
+procedure TLucidityScope.Draw_Filter;
+begin
+
+end;
+
+procedure TLucidityScope.Draw_FilterBlend;
+begin
+
+end;
+
+procedure TLucidityScope.Draw_Lfo;
+begin
+
+end;
+
+
 
 
 end.
