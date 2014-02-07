@@ -24,6 +24,10 @@ type
     FilterBlend
   );
 
+
+  // NOTE: Generally all section values below should be
+  // between 0..1 range.
+
   TScopeAdsrValues = record
     Attack  : single;
     Hold    : single;
@@ -63,6 +67,7 @@ type
   protected
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
+    fColorForeground : TRedFoxColor;
 
     ScopeRect : TRect;
 
@@ -94,6 +99,7 @@ type
   published
     property ColorBackground : TRedFoxColorString index 0 read GetColors write SetColors;
     property ColorBorder     : TRedFoxColorString index 1 read GetColors write SetColors;
+    property ColorForeground : TRedFoxColorString index 2 read GetColors write SetColors;
 
     property ScopeMode : TScopeDisplayMode read fScopeMode write SetScopeDisplayMode;
     property Font;
@@ -113,6 +119,7 @@ begin
   inherited;
   fColorBackground := '$00000000';
   fColorBorder     := '$00000000';
+  fColorForeground := '$00000000';
 end;
 
 destructor TLucidityScope.Destroy;
@@ -126,6 +133,7 @@ begin
   case Index of
   0: result := fColorBackground;
   1: result := fColorBorder;
+  2: result := fColorForeground;
   else
     result := '$00000000';
   end;
@@ -134,8 +142,6 @@ end;
 procedure TLucidityScope.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 begin
   inherited;
-
-
 
 
 end;
@@ -147,6 +153,7 @@ begin
   case Index of
   0: pc := @fColorBackground;
   1: pc := @fColorBorder;
+  2: pc := @fColorForeground;
   else
     pc := nil;
   end;
@@ -208,7 +215,7 @@ begin
 
 
 
-  ScopeRect := Rect(3,3,Width-3,Height-23);
+  ScopeRect := Rect(8,8,Width-8,Height-24);
 
   case ScopeMode of
     //TScopeDisplayMode.DisplayOff: ;
@@ -222,11 +229,67 @@ begin
   BackBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
   BackBuffer.BufferInterface.NoFill;
 
-  BackBuffer.BufferInterface.RoundedRect(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
+  //BackBuffer.BufferInterface.RoundedRect(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
 end;
 
 procedure TLucidityScope.Draw_ADSR;
+var
+  x1, y1, x2, y2 : single;
+  SectionWidth : single;
 begin
+  BackBuffer.BufferInterface.LineColor := fColorForeground;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineWidth := 1.5;
+
+  SectionWidth := ScopeRect.Width / 5;
+
+  //== Draw Attack Stage ==
+  x1 := ScopeRect.Left;
+  x2 := x1 + SectionWidth * AdsrValues.Attack;
+  y1 := ScopeRect.Bottom;
+  y2 := ScopeRect.Top;
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+  //== Draw Hold Stage ==
+  x1 := x2;
+  y1 := y2;
+  x2 := x1 + SectionWidth * AdsrValues.Hold;
+  y2 := ScopeRect.Top;
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+
+  //== Draw Decay Stage ==
+  x1 := x2;
+  y1 := y2;
+  x2 := x1 + SectionWidth * AdsrValues.Decay;
+  y2 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+  //== Draw Sustain Stage ==
+  x1 := x2;
+  y1 := y2;
+  x2 := x1 + SectionWidth;
+  y2 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+
+  //== Draw Release Stage ==
+  x1 := x2;
+  y1 := y2;
+  x2 := x1 + SectionWidth * AdsrValues.Release;
+  y2 := ScopeRect.Bottom;
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+
+  //== Draw Off Stage ==
+  x1 := x2;
+  y1 := y2;
+  x2 := ScopeRect.Right;
+  y2 := ScopeRect.Bottom;
+  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+
+
 
 end;
 

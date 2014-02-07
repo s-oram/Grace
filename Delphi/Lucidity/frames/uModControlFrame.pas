@@ -590,7 +590,7 @@ begin
   Seq2StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
 
   Scope.ColorBackground := kColor_LcdDark1;
-
+  Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
 
 
 
