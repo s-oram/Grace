@@ -31,6 +31,7 @@ uses
   VamQuery,
   Classes,
   Controls,
+  LucidityGui.Scope,
   VamKnob;
 
 { TPluginGuiMeta }
@@ -48,6 +49,11 @@ begin
 
   ScopeHandler := TScopeHandler.Create;
 
+  c := FindControlbyName(Gui, 'Scope');
+  if assigned(c) then
+  begin
+    ScopeHandler.ScopeControl := c as TLucidityScope;
+  end;
 
   Parent := Gui.FindComponent('RedFoxContainer');
   if assigned(Parent) then
@@ -58,6 +64,8 @@ begin
       ScopeHandler.RegisterControl(c);
     end;
   end;
+
+
 
 
 

@@ -48,8 +48,9 @@ type
     destructor Destroy;
 
     function List : TControlList;
-  end;
 
+
+  end;
 
   TControlProcedure = reference to procedure(c:TControl);
 
@@ -61,6 +62,10 @@ function VamQueryRequest(const Parent : TControl; DisplayClass : TDisplayClass):
 function HasDisplayClass(const aControl : TObject; const DisplayClassName : string):boolean;
 
 procedure AddDisplayClass(const aControl : TRedFoxWinControl; const DisplayClass : string);
+
+
+function FindControlByName(Parent : TControl; ChildName : string):TControl;
+
 
 implementation
 
@@ -192,4 +197,41 @@ begin
   end;
 end;
 
+
+
+function FindControlByName(Parent : TControl; ChildName : string):TControl;
+var
+  c1 : integer;
+  wc : TWinControl;
+  c : TControl;
+begin
+  assert(assigned(Parent));
+
+  if SameText(ChildName, Parent.Name) then
+  begin
+    result := Parent;
+  end else
+  if (Parent is TWinControl) and ((Parent as TWinControl).ControlCount > 0) then
+  begin
+    wc := (Parent as TWinControl);
+    for c1 := 0 to wc.ControlCount-1 do
+    begin
+      if SameText(ChildName, wc.Controls[c1].Name)
+        then exit(wc.Controls[c1]);
+    end;
+
+    for c1 := 0 to wc.ControlCount-1 do
+    begin
+      c := FindControlByName(wc.Controls[c1], ChildName); // <<<----recursion here----<<<
+      if assigned(c)
+        then exit(c);
+    end;
+  end;
+
+
+  // if we've made it this far no matching control has been found.
+  result := nil;
+end;
+
 end.
+

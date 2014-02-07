@@ -10,6 +10,7 @@ uses
 type
   TScopeHandler = class
   private
+    fScopeControl: TLucidityScope;
   protected
     procedure KnobMouseEnter(Sender : TObject);
     procedure KnobMouseLeave(Sender : TObject);
@@ -19,6 +20,8 @@ type
     destructor Destroy; override;
 
     procedure RegisterControl(c : TControl);
+
+    property ScopeControl : TLucidityScope read fScopeControl write fScopeControl;
   end;
 
 implementation
