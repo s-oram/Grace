@@ -225,12 +225,12 @@ end;
 procedure TVamKnob.KnobPosChanged;
 begin
   if assigned(OnKnobPosChanged) then OnKnobPosChanged(self);
+  ChangedMultiEvent.TriggerAll(self);
 end;
 
 procedure TVamKnob.ModAmountChanged;
 begin
   if assigned(OnModAmountChanged) then OnModAmountChanged(Self);
-
 end;
 
 procedure TVamKnob.UpdateReferencePoints(const X, Y:integer);
