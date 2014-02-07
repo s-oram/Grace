@@ -112,6 +112,9 @@ type
 
 implementation
 
+uses
+  AggBasics;
+
 { TLucidityScope }
 
 constructor TLucidityScope.Create(AOwner: TComponent);
@@ -234,59 +237,83 @@ end;
 
 procedure TLucidityScope.Draw_ADSR;
 var
-  x1, y1, x2, y2 : single;
+  x1, y1, x4, y4 : single;
+  x2, y2, x3, y3 : single;
   SectionWidth : single;
 begin
   BackBuffer.BufferInterface.LineColor := fColorForeground;
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineWidth := 1.5;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
   SectionWidth := ScopeRect.Width / 5;
 
   //== Draw Attack Stage ==
   x1 := ScopeRect.Left;
-  x2 := x1 + SectionWidth * AdsrValues.Attack;
   y1 := ScopeRect.Bottom;
-  y2 := ScopeRect.Top;
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x4 := x1 + SectionWidth * AdsrValues.Attack;
+  y4 := ScopeRect.Top;
+
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
 
   //== Draw Hold Stage ==
-  x1 := x2;
-  y1 := y2;
-  x2 := x1 + SectionWidth * AdsrValues.Hold;
-  y2 := ScopeRect.Top;
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * AdsrValues.Hold;
+  y4 := ScopeRect.Top;
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
 
 
   //== Draw Decay Stage ==
-  x1 := x2;
-  y1 := y2;
-  x2 := x1 + SectionWidth * AdsrValues.Decay;
-  y2 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * AdsrValues.Decay;
+  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
 
   //== Draw Sustain Stage ==
-  x1 := x2;
-  y1 := y2;
-  x2 := x1 + SectionWidth;
-  y2 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth;
+  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  
 
 
   //== Draw Release Stage ==
-  x1 := x2;
-  y1 := y2;
-  x2 := x1 + SectionWidth * AdsrValues.Release;
-  y2 := ScopeRect.Bottom;
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * AdsrValues.Release;
+  y4 := ScopeRect.Bottom;
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
 
 
   //== Draw Off Stage ==
-  x1 := x2;
-  y1 := y2;
-  x2 := ScopeRect.Right;
-  y2 := ScopeRect.Bottom;
-  BackBuffer.BufferInterface.Line(x1,y1,x2,y2);
+  x1 := x4;
+  y1 := y4;
+  x4 := ScopeRect.Right;
+  y4 := ScopeRect.Bottom;
+  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
 
 
 
