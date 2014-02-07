@@ -11,8 +11,10 @@ uses
 type
   TLucidityScope = class(TVamWinControl)
   private
+    fText: string;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
+    procedure SetText(const Value: string);
 
   protected
     fColorBackground : TRedFoxColor;
@@ -25,6 +27,10 @@ type
   published
     property ColorBackground : TRedFoxColorString index 0 read GetColors write SetColors;
     property ColorBorder     : TRedFoxColorString index 1 read GetColors write SetColors;
+
+
+    property Font;
+    property Text : string read fText write SetText;
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -77,8 +83,18 @@ begin
 end;
 
 
+procedure TLucidityScope.SetText(const Value: string);
+begin
+  if Value <> fText then
+  begin
+    fText := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TLucidityScope.Paint;
 var
+  TextBounds : TRect;
   x1, y1, x2, y2 : single;
 begin
   inherited;
@@ -95,6 +111,12 @@ begin
   BackBuffer.BufferInterface.FillColor := fColorBackground;
 
   BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
+
+
+  //=== draw the lower text ====
+  //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
+  TextBounds := Rect(0,Height-20, Width, Height);
+  BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
 end;
 
 

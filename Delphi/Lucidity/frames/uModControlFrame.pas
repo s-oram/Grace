@@ -505,7 +505,6 @@ begin
 
 
   //=== colors ===
-
   StepSeq1.Color_Background := kColor_LcdDark1;
   StepSeq1.Color_Border     := kColor_LcdDark1;
   StepSeq1.Color_Step       := kColor_LcdDark4;
@@ -528,6 +527,7 @@ begin
   Seq2ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq2DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq2StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  Scope.Font.Color                := GetRedFoxColor(kColor_LcdDark5);
 
   AmpVelocityButton.Color    := kColor_LcdDark1;
   FilterVelocityButton.Color := kColor_LcdDark1;

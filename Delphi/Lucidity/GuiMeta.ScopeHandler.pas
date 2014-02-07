@@ -3,6 +3,7 @@ unit GuiMeta.ScopeHandler;
 interface
 
 uses
+  eeGlobals,
   Classes,
   Controls,
   LucidityGUI.Scope;
@@ -12,11 +13,12 @@ type
   private
     fScopeControl: TLucidityScope;
   protected
+    Globals : TGlobals;
     procedure KnobMouseEnter(Sender : TObject);
     procedure KnobMouseLeave(Sender : TObject);
     procedure KnobChanged(Sender : TObject);
   public
-    constructor Create;
+    constructor Create(aGlobals : TGlobals);
     destructor Destroy; override;
 
     procedure RegisterControl(c : TControl);
@@ -27,13 +29,14 @@ type
 implementation
 
 uses
+  uConstants,
   VamKnob;
 
 { TScopeHandler }
 
-constructor TScopeHandler.Create;
+constructor TScopeHandler.Create(aGlobals : TGlobals);
 begin
-
+  Globals := aGlobals;
 end;
 
 destructor TScopeHandler.Destroy;
@@ -54,8 +57,25 @@ begin
 end;
 
 procedure TScopeHandler.KnobMouseEnter(Sender: TObject);
+var
+  c : TVamKnob;
+  ParIndex : integer;
+  Text : string;
 begin
+  if (Sender is TVamKnob) then
+  begin
+    c := (Sender as TVamKnob);
+    ParIndex := c.ParameterIndex;
 
+    if (ParIndex >= 0) and (ParIndex < kParameterCount) then
+    begin
+      Text := Globals.VstParameters[ParIndex].ParInfo;
+      ScopeControl.Text := Text;
+    end;
+
+
+
+  end;
 end;
 
 procedure TScopeHandler.KnobChanged(Sender: TObject);

@@ -47,7 +47,7 @@ begin
   Gui          := aGui;
   SystemWindow := aSystemWindow;
 
-  ScopeHandler := TScopeHandler.Create;
+  ScopeHandler := TScopeHandler.Create(Plugin.Globals);
 
   c := FindControlbyName(Gui, 'Scope');
   if assigned(c) then

@@ -230,7 +230,6 @@ begin
   BackBuffer.BufferInterface.ClearAll(aColor.WithAlpha(0));
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
-
   if IsMouseOver = false
     then aColor := fColor
     else aColor := fColorMouseOver;
@@ -248,6 +247,7 @@ begin
   BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
   //== draw the text ==
+  //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
   TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-TextPadding.Right, Height-TextPadding.Bottom);
   BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
 
