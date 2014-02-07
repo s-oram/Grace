@@ -9,6 +9,18 @@ uses
   LucidityGUI.Scope;
 
 type
+  {$SCOPEDENUMS ON}
+  TScopeFocus = (
+    None,
+    AmpEnv,
+    ModEnv,
+    Lfo1,
+    Lfo2,
+    Filter1,
+    Filter2,
+    FilterBlend
+  );
+
   TScopeHandler = class
   private
     fScopeControl: TLucidityScope;
@@ -20,6 +32,8 @@ type
     procedure KnobChanged(Sender : TObject);
 
     procedure ControlChanged(c : TControl);
+
+    function FindScopeFocus(c : TControl):TScopeFocus;
   public
     constructor Create(aGlobals : TGlobals);
     destructor Destroy; override;
@@ -32,6 +46,8 @@ type
 implementation
 
 uses
+  VamQuery,
+  VamWinControl,
   uConstants,
   VamKnob;
 
@@ -60,11 +76,17 @@ begin
 end;
 
 procedure TScopeHandler.KnobMouseEnter(Sender: TObject);
+var
+  ScopeFocus : TScopeFocus;
 begin
   assert(Sender is TControl);
   FocusedControl := Sender as TControl;
-  ControlChanged(Sender as TControl);
 
+  ScopeFocus := FindScopeFocus(FocusedControl);
+
+
+
+  ControlChanged(Sender as TControl);
 end;
 
 procedure TScopeHandler.KnobChanged(Sender: TObject);
@@ -102,6 +124,26 @@ begin
     end;
   end;
 end;
+
+function TScopeHandler.FindScopeFocus(c: TControl): TScopeFocus;
+var
+  vc : TVamWinControl;
+begin
+  if (c is TVamWinControl) then
+  begin
+    if HasDisplayClass(c, TScopeFocusID.AmpEnv)      then exit(TScopeFocus.AmpEnv);
+    if HasDisplayClass(c, TScopeFocusID.ModEnv)      then exit(TScopeFocus.ModEnv);
+    if HasDisplayClass(c, TScopeFocusID.Lfo1)        then exit(TScopeFocus.Lfo1);
+    if HasDisplayClass(c, TScopeFocusID.Lfo2)        then exit(TScopeFocus.Lfo2);
+    if HasDisplayClass(c, TScopeFocusID.Filter1)     then exit(TScopeFocus.Filter1);
+    if HasDisplayClass(c, TScopeFocusID.Filter2)     then exit(TScopeFocus.Filter2);
+    if HasDisplayClass(c, TScopeFocusID.FilterBlend) then exit(TScopeFocus.FilterBlend);
+  end;
+
+
+end;
+
+
 
 
 

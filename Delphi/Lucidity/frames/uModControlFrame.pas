@@ -157,6 +157,7 @@ type
 implementation
 
 uses
+  VamQuery,
   RedFox,
   eeVstParameterEx,
   MadExcept,
@@ -275,6 +276,42 @@ begin
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),   TStepSequencerDirectionHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),  TStepSequencerLengthHelper);
 
+
+
+
+  //============================================================================
+  AddDisplayClass(AmpEnvAttackKnob,       TScopeFocusID.AmpEnv);
+  AddDisplayClass(AmpEnvHoldKnob,         TScopeFocusID.AmpEnv);
+  AddDisplayClass(AmpEnvDecayKnob,        TScopeFocusID.AmpEnv);
+  AddDisplayClass(AmpEnvSustainKnob,      TScopeFocusID.AmpEnv);
+  AddDisplayClass(AmpEnvReleaseKnob,      TScopeFocusID.AmpEnv);
+
+  AddDisplayClass(FilterEnvAttackKnob,    TScopeFocusID.ModEnv);
+  AddDisplayClass(FilterEnvHoldKnob,      TScopeFocusID.ModEnv);
+  AddDisplayClass(FilterEnvDecayKnob,     TScopeFocusID.ModEnv);
+  AddDisplayClass(FilterEnvSustainKnob,   TScopeFocusID.ModEnv);
+  AddDisplayClass(FilterEnvReleaseKnob,   TScopeFocusID.ModEnv);
+  AddDisplayClass(Filter1Par1Knob,        TScopeFocusID.Filter1);
+  AddDisplayClass(Filter1Par2Knob,        TScopeFocusID.Filter1);
+  AddDisplayClass(Filter1Par3Knob,        TScopeFocusID.Filter1);
+  AddDisplayClass(Filter1Par4Knob,        TScopeFocusID.Filter1);
+  AddDisplayClass(Filter2Par1Knob,        TScopeFocusID.Filter2);
+  AddDisplayClass(Filter2Par2Knob,        TScopeFocusID.Filter2);
+  AddDisplayClass(Filter2Par3Knob,        TScopeFocusID.Filter2);
+  AddDisplayClass(Filter2Par4Knob,        TScopeFocusID.Filter2);
+
+  AddDisplayClass(Filter1TypeTextBox,     TScopeFocusID.Filter1);
+  AddDisplayClass(Filter2TypeTextBox,     TScopeFocusID.Filter2);
+  AddDisplayClass(AmpVelocityButton,      TScopeFocusID.AmpEnv);
+  AddDisplayClass(FilterVelocityButton,   TScopeFocusID.ModEnv);
+
+  //AddDisplayClass(LfoShapeTextBox1,       TScopeFocusID);
+  //AddDisplayClass(Seq1ClockTextBox,       TScopeFocusID);
+  //AddDisplayClass(Seq1DirectionTextBox,   TScopeFocusID);
+  //AddDisplayClass(Seq1StepsTextBox,       TScopeFocusID);
+  //AddDisplayClass(Seq2ClockTextBox,       TScopeFocusID);
+  //AddDisplayClass(Seq2DirectionTextBox,   TScopeFocusID);
+  //AddDisplayClass(Seq2StepsTextBox,       TScopeFocusID);
 
 
 
@@ -501,7 +538,6 @@ begin
 
 
   //===================================================
-
 
 
   //=== colors ===

@@ -307,6 +307,18 @@ type
   end;
 
 
+  TScopeFocusID = record
+  const
+    AmpEnv      = 'AmpEnv';
+    ModEnv      = 'ModEnv';
+    Lfo1        = 'Lfo1';
+    Lfo2        = 'Lfo2';
+    Filter1     = 'Filter1';
+    Filter2     = 'Filter2';
+    FilterBlend = 'FilterBlend';
+  end;
+
+
 
 
 
