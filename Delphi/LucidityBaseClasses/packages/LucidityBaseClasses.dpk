@@ -30,4 +30,8 @@ package LucidityBaseClasses;
 requires
   rtl;
 
+contains
+  uConstants in '..\source\uConstants.pas',
+  uLucidityEnums in '..\source\uLucidityEnums.pas';
+
 end.
