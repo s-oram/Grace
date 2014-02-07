@@ -775,6 +775,9 @@ begin
   end;
 
 
+  //TODO: Filter Blend Parameter
+
+
 
 
   aPar := TVstParameterEx.Create(TParName.Lfo1Shape);

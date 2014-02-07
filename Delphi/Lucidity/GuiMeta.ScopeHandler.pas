@@ -27,6 +27,7 @@ type
   protected
     Globals : TGlobals;
     FocusedControl : TControl;
+    ScopeFocus : TScopeFocus;
     procedure KnobMouseEnter(Sender : TObject);
     procedure KnobMouseLeave(Sender : TObject);
     procedure KnobChanged(Sender : TObject);
@@ -76,15 +77,11 @@ begin
 end;
 
 procedure TScopeHandler.KnobMouseEnter(Sender: TObject);
-var
-  ScopeFocus : TScopeFocus;
 begin
   assert(Sender is TControl);
   FocusedControl := Sender as TControl;
 
   ScopeFocus := FindScopeFocus(FocusedControl);
-
-
 
   ControlChanged(Sender as TControl);
 end;
@@ -121,6 +118,82 @@ begin
     begin
       Text := Globals.VstParameters[ParIndex].ParInfo;
       ScopeControl.Text := Text;
+    end;
+  end;
+
+
+  case ScopeFocus of
+    TScopeFocus.None:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.DisplayOff;
+    end;
+
+    TScopeFocus.AmpEnv:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
+
+      ScopeControl.AdsrValues.Attack  := Globals.VstParameters.FindParameter(TParName.AmpAttack).ValueVST;
+      ScopeControl.AdsrValues.Hold    := Globals.VstParameters.FindParameter(TParName.AmpHold).ValueVST;
+      ScopeControl.AdsrValues.Decay   := Globals.VstParameters.FindParameter(TParName.AmpDecay).ValueVST;
+      ScopeControl.AdsrValues.Sustain := Globals.VstParameters.FindParameter(TParName.AmpSustain).ValueVST;
+      ScopeControl.AdsrValues.Release := Globals.VstParameters.FindParameter(TParName.AmpRelease).ValueVST;
+    end;
+
+    TScopeFocus.ModEnv:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
+
+      ScopeControl.AdsrValues.Attack  := Globals.VstParameters.FindParameter(TParName.FilterAttack).ValueVST;
+      ScopeControl.AdsrValues.Hold    := Globals.VstParameters.FindParameter(TParName.FilterHold).ValueVST;
+      ScopeControl.AdsrValues.Decay   := Globals.VstParameters.FindParameter(TParName.FilterDecay).ValueVST;
+      ScopeControl.AdsrValues.Sustain := Globals.VstParameters.FindParameter(TParName.FilterSustain).ValueVST;
+      ScopeControl.AdsrValues.Release := Globals.VstParameters.FindParameter(TParName.FilterRelease).ValueVST;
+    end;
+
+    TScopeFocus.Lfo1:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
+
+      ScopeControl.LfoValues.Par1 := Globals.VstParameters.FindParameter(TParName.Lfo1Par1).ValueVST;
+      ScopeControl.LfoValues.Par2 := Globals.VstParameters.FindParameter(TParName.Lfo1Par2).ValueVST;
+      ScopeControl.LfoValues.Par3 := Globals.VstParameters.FindParameter(TParName.Lfo1Par3).ValueVST;
+    end;
+
+    TScopeFocus.Lfo2:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
+
+      ScopeControl.LfoValues.Par1 := Globals.VstParameters.FindParameter(TParName.Lfo2Par1).ValueVST;
+      ScopeControl.LfoValues.Par2 := Globals.VstParameters.FindParameter(TParName.Lfo2Par2).ValueVST;
+      ScopeControl.LfoValues.Par3 := Globals.VstParameters.FindParameter(TParName.Lfo2Par3).ValueVST;
+    end;
+
+    TScopeFocus.Filter1:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
+
+      ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter1Par1).ValueVST;
+      ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter1Par2).ValueVST;
+      ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter1Par3).ValueVST;
+      ScopeControl.FilterValues.Par4 := Globals.VstParameters.FindParameter(TParName.Filter1Par4).ValueVST;
+    end;
+
+    TScopeFocus.Filter2:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
+
+      ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter2Par1).ValueVST;
+      ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter2Par2).ValueVST;
+      ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter2Par3).ValueVST;
+      ScopeControl.FilterValues.Par4 := Globals.VstParameters.FindParameter(TParName.Filter2Par4).ValueVST;
+    end;
+
+    TScopeFocus.FilterBlend:
+    begin
+      ScopeControl.ScopeMode := TScopeDisplayMode.FilterBlend;
+
+      //TODO: add link to filter blend amount!
+      //ScopeControl.FilterBlendValues.BlendAmt := Globals.VstParameters.FindParameter(TParName.fiFilter1Par1).ValueVST;
     end;
   end;
 end;
