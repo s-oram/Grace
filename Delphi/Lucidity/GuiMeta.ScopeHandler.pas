@@ -196,6 +196,8 @@ begin
       //ScopeControl.FilterBlendValues.BlendAmt := Globals.VstParameters.FindParameter(TParName.fiFilter1Par1).ValueVST;
     end;
   end;
+
+  ScopeControl.Invalidate;
 end;
 
 function TScopeHandler.FindScopeFocus(c: TControl): TScopeFocus;

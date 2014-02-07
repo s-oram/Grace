@@ -927,18 +927,33 @@ begin
   GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob1);
   GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob2);
 
+  RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo1);
+  RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo2);
+
+  RemoveDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);
+  RemoveDisplayClass(LfoKnob2, TScopeFocusID.Lfo2);
+
+
   if Plugin.Globals.SelectedLfo = 0 then
   begin
+    AddDisplayClass(LfoKnob1, TScopeFocusID.Lfo1);
+    AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);
+
     LfoSelectButton1.IsOn := true;
     LfoSelectButton2.IsOn := false;
+
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
   end;
 
   if Plugin.Globals.SelectedLfo = 1 then
   begin
+    AddDisplayClass(LfoKnob1, TScopeFocusID.Lfo2);
+    AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo2);
+
     LfoSelectButton1.IsOn := false;
     LfoSelectButton2.IsOn := true;
+
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
   end;

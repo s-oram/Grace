@@ -62,6 +62,7 @@ function VamQueryRequest(const Parent : TControl; DisplayClass : TDisplayClass):
 function HasDisplayClass(const aControl : TObject; const DisplayClassName : string):boolean;
 
 procedure AddDisplayClass(const aControl : TRedFoxWinControl; const DisplayClass : string);
+procedure RemoveDisplayClass(const aControl : TRedFoxWinControl; const DisplayClass : string);
 
 
 function FindControlByName(Parent : TControl; ChildName : string):TControl;
@@ -194,6 +195,19 @@ begin
   if (Pos(DisplayClass, aControl.DisplayClass) = 0 ) then
   begin
     aControl.DisplayClass := aControl.DisplayClass + ' ' + DisplayClass;
+  end;
+end;
+
+procedure RemoveDisplayClass(const aControl : TRedFoxWinControl; const DisplayClass : string);
+var
+  Text : string;
+begin
+  if (Pos(DisplayClass, aControl.DisplayClass) <> 0 ) then
+  begin
+    Text := aControl.DisplayClass;
+    Text := StringReplace(Text, DisplayClass, '', [rfReplaceAll, rfIgnoreCase]);
+    Text := StringReplace(Text, '  ', '', [rfReplaceAll, rfIgnoreCase]);
+    aControl.DisplayClass := Text;
   end;
 end;
 
