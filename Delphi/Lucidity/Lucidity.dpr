@@ -140,7 +140,8 @@ uses
   Lucidity.Types in 'Lucidity.Types.pas',
   SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',
   Lucidity.FirstRun in 'Lucidity.FirstRun.pas',
-  eePluginGuiMeta in 'eePluginGuiMeta.pas';
+  eePluginGuiMeta in 'eePluginGuiMeta.pas',
+  GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas';
 
 {$R *.res}
 

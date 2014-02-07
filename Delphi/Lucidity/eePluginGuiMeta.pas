@@ -4,7 +4,8 @@ interface
 
 uses
   WinApi.Windows,
-  eePlugin, eePluginGui;
+  eePlugin, eePluginGui,
+  GuiMeta.ScopeHandler;
 
 type
   ///  The TPluginGuiMeta class adds some additional functionality
@@ -16,6 +17,8 @@ type
     Plugin       : TeePlugin;
     Gui          : TPluginGUI;
     SystemWindow : hwnd;
+
+    ScopeHandler : TScopeHandler;
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy;
@@ -24,19 +27,46 @@ type
 
 implementation
 
+uses
+  VamQuery,
+  Classes,
+  Controls,
+  VamKnob;
+
 { TPluginGuiMeta }
 
 
 constructor TPluginGuiMeta.Create(aPlugin: TeePlugin; aGui: TPluginGui; aSystemWindow: hwnd);
+var
+  VQ : IVamQuery;
+  Parent : TComponent;
+  c : TControl;
 begin
   Plugin       := aPlugin;
   Gui          := aGui;
   SystemWindow := aSystemWindow;
+
+  ScopeHandler := TScopeHandler.Create;
+
+
+  Parent := Gui.FindComponent('RedFoxContainer');
+  if assigned(Parent) then
+  begin
+    VQ := VamQueryRequest(Parent as TControl, TVamKnob);
+    for c in VQ.List do
+    begin
+      ScopeHandler.RegisterControl(c);
+    end;
+  end;
+
+
+
+
 end;
 
 destructor TPluginGuiMeta.Destroy;
 begin
-
+  ScopeHandler.Free;
 end;
 
 end.

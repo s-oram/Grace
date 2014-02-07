@@ -7,6 +7,11 @@ uses
   Vcl.Controls,
   VamLib.Collections.Lists;
 
+  //  TODO: It's currently possible to add the same event watcher to a MultiEvent
+  //  multiple times. The MultiEvent class should be changed so duplicate
+  //  events are ignored. Theres no point in calling an event handler
+  //  twice. It will double the workload.
+
 type
   TCustomMultiEvent = class
   private
