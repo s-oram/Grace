@@ -113,6 +113,8 @@ type
 implementation
 
 uses
+  Math,
+  VamLib.Utils,
   Agg2D,
   AggBasics;
 
@@ -126,7 +128,13 @@ var
   x1,y1,x2,y2 : single;
   Width : integer;
   Height : integer;
+
+  OldClipBox : TRectDouble;
+
 begin
+  OldClipBox := Canvas.ClipBox;
+  Canvas.ClipBox(Bounds.Left, Bounds.Top, Bounds.Right, Bounds.Bottom);
+
   Width := Bounds.Width;
   Height := Bounds.Height;
 
@@ -149,6 +157,21 @@ begin
     x1 := x2;
     y1 := y2;
   end;
+
+  //Reset the clip box.
+  Canvas.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
+end;
+
+
+
+function Quantise(const x : single; const Steps : integer):single;
+begin
+  result := round(x * Steps) / Steps;
+end;
+
+function LinearInterpolation(const f, a, b : single):single;
+begin
+  result := a * (1-f) + b * f;
 end;
 
 
@@ -289,8 +312,6 @@ begin
 
   SectionWidth := ScopeRect.Width / 5;
 
-
-
   //== Draw Attack Stage ==
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom;
@@ -361,11 +382,6 @@ end;
 
 procedure TLucidityScope.Draw_Filter;
 var
-  x1, y1 : single;
-  x2, y2 : single;
-  x3, y3 : single;
-  x4, y4 : single;
-
   aFunction : TDrawFunction;
 begin
   BackBuffer.BufferInterface.LineColor := fColorForeground;
@@ -373,11 +389,7 @@ begin
   BackBuffer.BufferInterface.LineWidth := 1.5;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
-  aFunction := function(x:single):single
-  begin
-    result := sin(2 * pi * x);
-  end;
-  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
+
 
 
   case FilterValues.FilterType of
@@ -388,18 +400,89 @@ begin
 
     ftLowPassA:
     begin
+      aFunction := function(x:single):single
+      const
+        a = 1 - (1/0.1);
+      var
+        ScaledX : single;
+        ResPeak : single;
+        ResPeak2 : single;
+        BaseValue : single;
+      begin
+        ResPeak := (0.7 - Power((FilterValues.Par1 - x),2) * 1800 * FilterValues.Par2 * FilterValues.Par2) * FilterValues.Par2;
 
+        if (x < FilterValues.Par1) then
+        begin
+          ScaledX := 1 + (X - FilterValues.Par1);
+          ResPeak2 := ScaledX / (ScaledX + a * (ScaledX - 1));
+          ResPeak2 := ResPeak2;
+          ResPeak2 := 0.3 + (ResPeak2 * 0.7) * FilterValues.Par2;
+          result := ResPeak2;
+        end else
+        begin
+          BaseValue := 0.3 - Power((FilterValues.Par1 - x),2) * 24;
+          result := BaseValue + ResPeak;
+        end;
+      end;
+
+      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
     end;
 
     ftBandPassA:
     begin
+      aFunction := function(x:single):single
+      const
+        a = 1 - (1/0.1);
+      var
+        Cutoff : single;
+        Res : single;
+        ScaledX : single;
+        ResPeak : single;
+        ResPeak2 : single;
+        BaseValue : single;
+      begin
+        CutOff := FilterValues.Par1;
+        Res    := FilterValues.Par2 * 0.7 + 0.3;
+
+        ResPeak := (0.7 - Power((Cutoff - x),2) * 1800 * Sqr(Res)) * Res;
+        result := 0.3 + ResPeak;
+      end;
+
+      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
 
     end;
 
     ftHighPassA:
     begin
+      aFunction := function(x:single):single
+      const
+        a = 1 - (1/0.1);
+      var
+        ScaledX : single;
+        ResPeak : single;
+        ResPeak2 : single;
+        BaseValue : single;
+      begin
+        ResPeak := (0.7 - Power((FilterValues.Par1 - x),2) * 1800 * FilterValues.Par2 * FilterValues.Par2) * FilterValues.Par2;
 
+        if (x > FilterValues.Par1) then
+        begin
+          ScaledX := 1 + (FilterValues.Par1 - X);
+          ResPeak2 := ScaledX / (ScaledX + a * (ScaledX - 1));
+          ResPeak2 := ResPeak2;
+          ResPeak2 := 0.3 + (ResPeak2 * 0.7) * FilterValues.Par2;
+          result := ResPeak2;
+        end else
+        begin
+          BaseValue := 0.3 - Power((FilterValues.Par1 - x),2) * 24;
+          result := BaseValue + ResPeak;
+        end;
+      end;
+
+      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
     end;
+
+
 
     ftLofiA:
     begin
@@ -408,6 +491,46 @@ begin
 
     ftRingModA:
     begin
+      aFunction := function(x:single):single
+        function TriEnvelope(const Cutoff, X:single):single;
+        begin
+          result := 1 - abs(Cutoff - x);
+        end;
+        function SmoothEnvelope(const Cutoff, X:single):single;
+        const
+          a = 1 - (1/0.23);
+        var
+          Env : single;
+        begin
+          Env := 1 - Clamp((abs((Cutoff - x) * 4)), 0, 1);
+          Env := Env / (Env + a * (Env - 1));
+          result := Env;
+        end;
+        function Peaks(const Cutoff, X:single):single;
+        var
+          Env : single;
+        begin
+          Env := ((2 * pi * (x - Cutoff)) * 12);
+          Env := abs(sin(Env));
+          result := Env;
+        end;
+      var
+        Cutoff : single;
+        Res : single;
+        Env : single;
+      begin
+        CutOff := FilterValues.Par1;
+        Res    := FilterValues.Par2;
+
+        Cutoff := Quantise(Cutoff, ScopeRect.Width-1);
+        x      := Quantise(x, ScopeRect.Width-1);
+
+        Env := Peaks(Cutoff, x) * SmoothEnvelope(Cutoff, x) * 2.3 - 1.1;
+
+        result := LinearInterpolation(Res, 0.3, Env);
+      end;
+
+      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
 
     end;
 
