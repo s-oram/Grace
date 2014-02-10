@@ -236,11 +236,15 @@ begin
 end;
 
 procedure TLucidityScope.Draw_ADSR;
+const
+  kMinStageTime : single = 0.1;
 var
   x1, y1, x4, y4 : single;
   x2, y2, x3, y3 : single;
   SectionWidth : single;
 begin
+  //TODO: use a minimum stage time.
+
   BackBuffer.BufferInterface.LineColor := fColorForeground;
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineWidth := 1.5;
@@ -251,7 +255,7 @@ begin
   //== Draw Attack Stage ==
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom;
-  x4 := x1 + SectionWidth * AdsrValues.Attack;
+  x4 := x1 + SectionWidth * (AdsrValues.Attack + kMinStageTime);
   y4 := ScopeRect.Top;
 
   //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
@@ -264,7 +268,7 @@ begin
   //== Draw Hold Stage ==
   x1 := x4;
   y1 := y4;
-  x4 := x1 + SectionWidth * AdsrValues.Hold;
+  x4 := x1 + SectionWidth * AdsrValues.Hold * 0.5;
   y4 := ScopeRect.Top;
   //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
   x2 := x1 + (x4 - x1) * 1/3;
@@ -277,7 +281,7 @@ begin
   //== Draw Decay Stage ==
   x1 := x4;
   y1 := y4;
-  x4 := x1 + SectionWidth * AdsrValues.Decay;
+  x4 := x1 + SectionWidth * (AdsrValues.Decay + kMinStageTime);
   y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
   //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
   x2 := x1 + (x4 - x1) * 1/3;
@@ -289,16 +293,16 @@ begin
   //== Draw Sustain Stage ==
   x1 := x4;
   y1 := y4;
-  x4 := x1 + SectionWidth;
+  x4 := x1 + SectionWidth * ((1 - AdsrValues.Attack) + (1 - AdsrValues.Decay) + (1 - AdsrValues.Hold * 0.5));
   y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
   BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  
+
 
 
   //== Draw Release Stage ==
   x1 := x4;
   y1 := y4;
-  x4 := x1 + SectionWidth * AdsrValues.Release;
+  x4 := x1 + SectionWidth * (AdsrValues.Release + kMinStageTime);
   y4 := ScopeRect.Bottom;
   //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
   x2 := x1 + (x4 - x1) * 1/3;

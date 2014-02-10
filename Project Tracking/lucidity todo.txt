@@ -22,6 +22,13 @@ Sample map resize horizontal snapping should snap to octave boundaries. Not snap
 octave multiples of the sample width.
 
 
+- I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
+- zones can be duplicated by holding ALT while dragging a sample zone in the key zone editor. (I'll make this a command in the context menu.)
+- thunderlink://messageid=C96432EDCAD443F880A0337122247144@YannHP
+
+key zone context menu needs a 'Move Key Zone to New Key Group'
+
+
 
 
 
