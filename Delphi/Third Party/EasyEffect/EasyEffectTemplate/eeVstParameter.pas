@@ -53,6 +53,9 @@ type
     constructor Create(const aName : string); virtual;
     destructor Destroy; override;
 
+
+
+
     function SetCallback_SetParInfoMethod(aCallback:TStringFunction):TVstParameter;
     function SetCallback_SetParValue(aCallback : TSetParValueProcedure):TVstParameter;
     function SetCallback_GetParValue(aCallback : TGetParValueProcedure):TVstParameter;
@@ -80,6 +83,8 @@ type
     property ValueVST    : single read GetValueVST    write SetValueVST;
     property ValueScaled : single read GetValueScaled write SetValueScaled;
 
+    function ValueAsEnum<TEnum>:TEnum;
+
     // ParInfo() returns a textual description of the parameter and it's value.
     property ParInfo : string read GetParInfo;
 
@@ -99,6 +104,7 @@ type
 implementation
 
 uses
+  eeEnumHelper,
   eeFunctions,
   SysUtils, eeDSP, eeHashes;
 
@@ -183,6 +189,11 @@ begin
   else
     raise Exception.Create('Unexpected InputCurve value.');
   end;
+end;
+
+function TVstParameter.ValueAsEnum<TEnum>: TEnum;
+begin
+  result := TEnumHelper<TEnum>.ToEnum(GetValueVST);
 end;
 
 function TVstParameter.GetDefaultScaled: single;
