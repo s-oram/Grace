@@ -47,6 +47,7 @@ type
 implementation
 
 uses
+  uLucidityEnums,
   VamQuery,
   VamWinControl,
   uConstants,
@@ -172,6 +173,7 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
+      ScopeControl.FilterValues.FilterType := Globals.VstParameters.FindParameter(TParName.Filter1Type).ValueAsEnum<TFilterType>;
       ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter1Par1).ValueVST;
       ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter1Par2).ValueVST;
       ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter1Par3).ValueVST;
@@ -182,6 +184,7 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
+      ScopeControl.FilterValues.FilterType := Globals.VstParameters.FindParameter(TParName.Filter2Type).ValueAsEnum<TFilterType>;
       ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter2Par1).ValueVST;
       ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter2Par2).ValueVST;
       ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter2Par3).ValueVST;

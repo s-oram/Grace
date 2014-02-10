@@ -239,12 +239,12 @@ procedure TLucidityScope.Draw_ADSR;
 const
   kMinStageTime : single = 0.1;
 var
-  x1, y1, x4, y4 : single;
-  x2, y2, x3, y3 : single;
+  x1, y1 : single;
+  x2, y2 : single;
+  x3, y3 : single;
+  x4, y4 : single;
   SectionWidth : single;
 begin
-  //TODO: use a minimum stage time.
-
   BackBuffer.BufferInterface.LineColor := fColorForeground;
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineWidth := 1.5;
@@ -318,15 +318,57 @@ begin
   x4 := ScopeRect.Right;
   y4 := ScopeRect.Bottom;
   BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-
-
-
-
 end;
 
 procedure TLucidityScope.Draw_Filter;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  x3, y3 : single;
+  x4, y4 : single;
 begin
+  BackBuffer.BufferInterface.LineColor := fColorForeground;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineWidth := 1.5;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
+
+  case FilterValues.FilterType of
+    ftNone:
+    begin
+
+    end;
+
+    ftLowPassA:
+    begin
+
+    end;
+
+    ftBandPassA:
+    begin
+
+    end;
+
+    ftHighPassA:
+    begin
+
+    end;
+
+    ftLofiA:
+    begin
+
+    end;
+
+    ftRingModA:
+    begin
+
+    end;
+
+    ftCombA:
+    begin
+
+    end;
+  end;
 end;
 
 procedure TLucidityScope.Draw_FilterBlend;
