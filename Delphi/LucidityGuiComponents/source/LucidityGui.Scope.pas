@@ -113,7 +113,44 @@ type
 implementation
 
 uses
+  Agg2D,
   AggBasics;
+
+type
+  TDrawFunction = reference to function(x:single):single;
+
+procedure DrawFunction(const Canvas:TAgg2D; const Bounds : TRect; const Steps : integer; aFunction : TDrawFunction);
+var
+  c1: Integer;
+  tx, ty : single;
+  x1,y1,x2,y2 : single;
+  Width : integer;
+  Height : integer;
+begin
+  Width := Bounds.Width;
+  Height := Bounds.Height;
+
+  tx := 0;
+  ty := aFunction(tx) * 0.5 + 0.5;
+
+  x1 := Bounds.Left;
+  y1 := Bounds.Bottom - (Height * ty);
+
+  for c1 := 1 to Steps-1 do
+  begin
+    tx := c1 / (Steps-1);
+    ty := aFunction(tx) * 0.5 + 0.5;
+
+    x2 := Bounds.Left   + (tx * Width);
+    y2 := Bounds.Bottom - (ty * Height);
+
+    Canvas.Line(x1, y1, x2, y2);
+
+    x1 := x2;
+    y1 := y2;
+  end;
+end;
+
 
 { TLucidityScope }
 
@@ -252,6 +289,8 @@ begin
 
   SectionWidth := ScopeRect.Width / 5;
 
+
+
   //== Draw Attack Stage ==
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom;
@@ -326,11 +365,19 @@ var
   x2, y2 : single;
   x3, y3 : single;
   x4, y4 : single;
+
+  aFunction : TDrawFunction;
 begin
   BackBuffer.BufferInterface.LineColor := fColorForeground;
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineWidth := 1.5;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+  aFunction := function(x:single):single
+  begin
+    result := sin(2 * pi * x);
+  end;
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
 
 
   case FilterValues.FilterType of

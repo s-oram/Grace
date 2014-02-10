@@ -53,6 +53,8 @@ uses
   uConstants,
   VamKnob;
 
+
+
 { TScopeHandler }
 
 constructor TScopeHandler.Create(aGlobals : TGlobals);
