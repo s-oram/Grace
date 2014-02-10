@@ -66,6 +66,7 @@ implementation
 {$R *.dfm}
 
 uses
+  eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
   VamLib.Utils;
