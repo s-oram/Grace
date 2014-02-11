@@ -30,7 +30,8 @@ package LucidityGuiComponentsRunXE2;
 requires
   rtl,
   VamBasicRunXE2,
-  RedFoxRunXE2;
+  RedFoxRunXE2,
+  LucidityBaseClasses;
 
 contains
   LucidityGui.Scope in '..\source\LucidityGui.Scope.pas',

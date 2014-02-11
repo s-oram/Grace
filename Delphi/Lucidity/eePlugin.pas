@@ -34,6 +34,7 @@ uses
   Lucidity.Osc.OneShotSampler,
   Lucidity.Osc.OneShotSampler.SubOsc,
   soADSR,
+  soSignalRecorder,
   soFilter.LowpassA,
   soFilter.BandPassA,
   soFilter.HighPassA,
@@ -65,6 +66,7 @@ type
     fSampleDirectories: TSampleDirectories;
     fFocusedKeyGroup: IKeyGroup;
     fIsPreviewEnabled: boolean;
+    fSignalRecorder  : TSignalRecorder;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
     function GetVoiceGlide: single;
@@ -78,6 +80,7 @@ type
     ParameterWizard : TPluginParameterWizard;
     GlobalModPoints : TGlobalModulationPoints;
     VoiceController : TLucidityVoiceController;
+
 
     EmptyKeyGroup : IKeyGroup;
 
@@ -166,7 +169,7 @@ type
     property GuiState : TGuiState read fGuiState;
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
-
+    property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
 
 
 
@@ -218,8 +221,6 @@ begin
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, EventHandle_SampleRateChanged);
 
-
-
   TProfiler.Open;
 
   {$IFDEF Logging}
@@ -227,6 +228,8 @@ begin
     then LogMain.LogText('Data Directory Found', PluginDataDir^.Path)
     else LogMain.LogText('Data Directory NOT Found!', '');
   {$ENDIF}
+
+  fSignalRecorder  := TSignalRecorder.Create(Globals);
 
   // TODO: Should do some data directory validation here.
   // - check if the data directory exists,
@@ -375,6 +378,7 @@ begin
   KeyStateTracker.Free;
   AudioPreviewPlayer.Free;
   fSampleDirectories.Free;
+  fSignalRecorder.Free;
 
   TProfiler.Close;
 
@@ -1076,6 +1080,7 @@ begin
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
+    SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
 
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do

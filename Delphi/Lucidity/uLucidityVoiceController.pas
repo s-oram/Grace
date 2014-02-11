@@ -676,8 +676,6 @@ begin
   begin
     ActiveVoices[c1].AudioProcess(Outputs, SampleFrames);
   end;
-
-
 end;
 
 

@@ -85,7 +85,7 @@ type
     property OwnsObjects : boolean read fOwnsObjects write fOwnsObjects;
   end;
 
-  TSimpleRecordList<T : record> = record
+  TSimpleRecordList<T : record> = class
   private
     fCount : integer;
     fCapacity : integer;
@@ -98,9 +98,11 @@ type
   public
     Raw : TArray<T>; //The raw, naked, array.
 
+    destructor Destroy; override;
+
     function New:Pointer;
 
-    function Append(const Value : T):integer;
+    function Add(const Value : T):integer;
     procedure Delete(const Index : integer);
 
     procedure Clear;
@@ -343,11 +345,24 @@ end;
 
 { TRecordArray<T> }
 
-procedure TSimpleRecordList<T>.Clear;
+destructor TSimpleRecordList<T>.Destroy;
 begin
+  Clear;
+  SetLength(Raw, 0);
+  inherited;
+end;
+
+procedure TSimpleRecordList<T>.Clear;
+var
+  c1 : integer;
+begin
+  for c1 := 0 to fCount-1 do
+  begin
+    Finalize(Raw[c1]);
+  end;
+
   fCapacity := 0;
   fCount    := 0;
-  SetLength(Raw, 0);
 end;
 
 function TSimpleRecordList<T>.GetItem(Index: integer): T;
@@ -390,7 +405,7 @@ begin
   Move(Value, Raw[Index], SizeOf(T));
 end;
 
-function TSimpleRecordList<T>.Append(const Value: T):integer;
+function TSimpleRecordList<T>.Add(const Value: T):integer;
 begin
   if (fCount) >= fCapacity then Grow;
 

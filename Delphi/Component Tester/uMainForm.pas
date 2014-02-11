@@ -66,6 +66,7 @@ implementation
 {$R *.dfm}
 
 uses
+  VamLib.Throttler,
   eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
@@ -113,6 +114,8 @@ begin
   MultiEvent.Remove(Button2Click);
 
 
+  InitGlobalThrottler;
+
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -123,6 +126,7 @@ begin
   ImageBuffer := nil;
   FooList.Free;
   MultiEvent.Free;
+  FreeGlobalThrottler;
 end;
 
 
@@ -189,6 +193,12 @@ end;
 
 procedure TForm1.VamNumericKnob1Changed(Sender: TObject);
 begin
+
+  Throttle(10, 400, procedure
+  begin
+    Knob2.KnobValue := Knob1.KnobValue;
+  end);
+
   {
   Debounce(150, procedure
   begin
@@ -199,11 +209,24 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
-  List : TSimplePointerList;
-  x : array[0..5] of integer;
-  c1: Integer;
+  Task : TRepeatingTask;
+  x : integer;
+
 begin
-  MultiEvent.TriggerAll(nil);
+  x := 0;
+
+  Task := function:integer
+  begin
+    Memo1.Lines.Add(IntToStr(random(100)));
+    inc(x);
+    if x > 10
+      then result := -1
+      else result := 400;
+  end;
+
+  RunRepeatingTask(Task, 600);
+
+
 end;
 
 

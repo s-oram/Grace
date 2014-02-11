@@ -139,7 +139,8 @@ uses
   SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',
   Lucidity.FirstRun in 'Lucidity.FirstRun.pas',
   eePluginGuiMeta in 'eePluginGuiMeta.pas',
-  GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas';
+  GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas',
+  soSignalRecorder in 'SoundObjects\soSignalRecorder.pas';
 
 {$R *.res}
 

@@ -28,7 +28,8 @@ package LucidityBaseClasses;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  vcl;
 
 contains
   uConstants in '..\source\uConstants.pas',
