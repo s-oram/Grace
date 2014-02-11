@@ -33,6 +33,7 @@ requires
   RedFoxRunXE2;
 
 contains
-  LucidityGui.Scope in '..\source\LucidityGui.Scope.pas';
+  LucidityGui.Scope in '..\source\LucidityGui.Scope.pas',
+  LucidityGui.Scope.SignalRecorder in '..\source\LucidityGui.Scope.SignalRecorder.pas';
 
 end.
