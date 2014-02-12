@@ -22,23 +22,24 @@ type
     WriteIndex : integer;
     BufferSize : integer;
     DrawXIndex : integer;
+    fLineColor: TRedFoxColor;
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure SetSize(w,h:integer);
 
-
-
-
     procedure ProcessSignal(Dest : TRedFoxImageBuffer; const DestRect:TRect; const Source: IScopeSignalRecorder);
     procedure DrawTo(Dest : TRedFoxImageBuffer; const DestRect:TRect);
+
+    property LineColor : TRedFoxColor read fLineColor write fLineColor;
   end;
 
 implementation
 
 uses
   AggBasics,
+  AggPixelFormat,
   VamLib.Utils,
   Graphics;
 
@@ -80,10 +81,28 @@ procedure TSignalDisplay.ProcessSignal(Dest : TRedFoxImageBuffer; const DestRect
     result := 0;
   end;
 
-  procedure FindMinMaxValues(ReadIndex, SampleFrames, BufferSize : integer; Buffer : PArrayOfSingle; out MinBuffer, MaxBuffer : single);
+  procedure FindMinMaxValues(var ReadIndex :integer; const SampleFrames, BufferSize : integer; Buffer : PArrayOfSingle; out MinBuffer, MaxBuffer : single);
+  var
+    tMin, tMax : single;
+    c1: Integer;
   begin
+    tMin := 10;
+    tMax := -10;
 
+    for c1 := 0 to SampleFrames-1 do
+    begin
+      if tMin > Buffer^[ReadIndex] then tMin := Buffer^[ReadIndex];
+      if tMax < Buffer^[ReadIndex] then tMax := Buffer^[ReadIndex];
+
+      inc(ReadIndex);
+      if ReadIndex >= BufferSize then ReadIndex := 0;
+    end;
+
+    MinBuffer := tMin;
+    MaxBuffer := tMax;
   end;
+const
+  SamplesPerPixel : integer = 256;
 var
   CurrentWriteIndex : integer;
   Buffer : PArrayOfSingle;
@@ -91,19 +110,19 @@ var
   MinBuffer, MaxBuffer : single;
 
   y1, y2 : single;
+  x1, x2 : single;
 begin
+  BackBuffer.BufferInterface.LineColor := LineColor;
+
   if ResetRequired then
   begin
     ResetRequired := false;
     BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
-
     Source.GetReadPointer(WriteIndex, BufferSize, Buffer);
     ReadIndex := WriteIndex;
     DrawXIndex := 0;
 
-
-    BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);
     BackBuffer.BufferInterface.LineWidth := 1;
     BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
   end else
@@ -113,26 +132,46 @@ begin
     SamplesAvailable := CalcSamplesAvailable(WriteIndex, CurrentWriteIndex, BufferSize);
 
 
-    while SamplesAvailable > 32 do
+    while SamplesAvailable >= SamplesPerPixel do
     begin
-      dec(SamplesAvailable, 32);
+      dec(SamplesAvailable, SamplesPerPixel);
 
-      MinBuffer := random * 2 - 1;
-      MaxBuffer := random * 2 - 1;
+      FindMinMaxValues(ReadIndex, SamplesPerPixel, BufferSize, Buffer, MinBuffer, MaxBuffer);
 
       y1 := Clamp((MinBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
-      y2 := Clamp((MinBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
+      y2 := Clamp((MaxBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
 
+      BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmClear;
+      BackBuffer.BufferInterface.Line(DrawXIndex + 0.5, 0, DrawXIndex + 0.5, BackBuffer.Height);
+
+      BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha2;
       Backbuffer.BufferInterface.Line(DrawXIndex + 0.5, y1, DrawXIndex + 0.5, y2);
 
       inc(DrawXIndex);
-
       if DrawXIndex >= BackBuffer.Width then
       begin
         DrawXIndex := 0;
-        BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+        //BackBuffer.BufferInterface.ClearAll(0,0,0,0);
       end;
+
+      inc(WriteIndex, SamplesPerPixel);
+      if WriteIndex >= BufferSize then WriteIndex := WriteIndex - BufferSize;
     end;
+
+
+    {
+    if SamplesAvailable > 0 then
+    begin
+      x1 := Random * BackBuffer.Width;
+      x2 := Random * BackBuffer.Width;
+      y1 := Random * BackBuffer.Height;
+      y2 := Random * BackBuffer.Height;
+
+      Backbuffer.BufferInterface.Line(x1,y1,x2,y2);
+
+      WriteIndex := CurrentWriteIndex;
+    end;
+    }
   end;
 end;
 

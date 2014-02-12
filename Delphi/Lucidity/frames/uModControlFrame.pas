@@ -12,7 +12,7 @@ uses
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
   VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
-  LucidityGui.Scope;
+  LucidityGui.Scope, Vcl.ExtCtrls;
 
 type
   TAltFilterText = record
@@ -115,6 +115,7 @@ type
     LfoSelectButton1: TVamButton;
     LfoSelectButton2: TVamButton;
     Scope: TLucidityScope;
+    Timer1: TTimer;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -122,6 +123,7 @@ type
     procedure LfoSelectButton1Changed(Sender: TObject);
     procedure LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure Timer1Timer(Sender: TObject);
   private
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
@@ -174,6 +176,8 @@ uses
 constructor TModControlFrame.Create(AOwner: TComponent);
 begin
   inherited;
+
+  Timer1.Enabled := false;
 
   MsgHandle := AllocateHWND(MessageHandler);
 
@@ -596,7 +600,8 @@ begin
   Scope.ColorBackground := kColor_LcdDark1;
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
 
-
+  Timer1.Enabled := true;
+  Timer1.Interval := 40;
 
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
@@ -924,6 +929,11 @@ var
 begin
   StepSeqIndex := (Sender as TVamVectorSequence).Tag-1;
   StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, StepSeqIndex);
+end;
+
+procedure TModControlFrame.Timer1Timer(Sender: TObject);
+begin
+  Scope.Invalidate;
 end;
 
 procedure TModControlFrame.UpdateLfo;

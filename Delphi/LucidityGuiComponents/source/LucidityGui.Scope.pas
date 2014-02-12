@@ -193,6 +193,7 @@ begin
   fColorForeground := '$00000000';
 
   SignalDisplay := TSignalDisplay.Create;
+  SignalDisplay.LineColor := fColorForeground;
 end;
 
 destructor TLucidityScope.Destroy;
@@ -233,6 +234,10 @@ var
   pc : PRedFoxColor;
 begin
   case Index of
+  2: SignalDisplay.LineColor := Value;
+  end;
+
+  case Index of
   0: pc := @fColorBackground;
   1: pc := @fColorBorder;
   2: pc := @fColorForeground;
@@ -245,6 +250,8 @@ begin
     pc^.SetColor(Value);
     Invalidate;
   end;
+
+
 end;
 
 
@@ -294,13 +301,14 @@ begin
 
 
 
-  if not (csDesigning in Self.ComponentState) then
+  if not (csDesigning in Self.ComponentState) and (assigned(SignalRecorder))then
   begin
     SignalDisplay.ProcessSignal(BackBuffer, ScopeRect, SignalRecorder);
+    SignalDisplay.DrawTo(BackBuffer, ScopeRect);
   end;
 
   case ScopeMode of
-    TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawTo(BackBuffer, ScopeRect);
+    //TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawTo(BackBuffer, ScopeRect);
     TScopeDisplayMode.ADSR:        Draw_ADSR;
     TScopeDisplayMode.LFO:         Draw_Lfo;
     TScopeDisplayMode.Filter:      Draw_Filter;

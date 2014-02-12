@@ -1694,4 +1694,9 @@ object ModControlFrame: TModControlFrame
       end
     end
   end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 512
+    Top = 32
+  end
 end
