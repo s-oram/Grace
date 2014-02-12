@@ -45,6 +45,7 @@ contains
   VamLib.MultiEvent in 'Source\VamLib.MultiEvent.pas',
   VamLib.Throttler in 'Source\VamLib.Throttler.pas',
   VamLib.Types in 'Source\VamLib.Types.pas',
-  VamLib.DebugString in 'Source\VamLib.DebugString.pas';
+  VamLib.DebugString in 'Source\VamLib.DebugString.pas',
+  EasyEffect.ZeroObject in 'Source\EasyEffect.ZeroObject.pas';
 
 end.

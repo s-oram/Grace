@@ -91,8 +91,6 @@
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
-			<DCCReference Include="..\source\Vst Template\EasyEffect.ZeroObject.pas"/>
-			<None Include="..\source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
