@@ -3,12 +3,13 @@ unit soSignalRecorder;
 interface
 
 uses
+  EasyEffect.ZeroObject,
   eeGlobals,
   VamLib.MoreTypes,
   LucidityGui.Scope.SignalRecorder;
 
 type
-  TSignalRecorder = class
+  TSignalRecorder = class(TZeroObject)
   private
     procedure GetReadPointer(const MaxReadSampleFrames : integer; out ActualReadSampleFrames, ReadIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
   protected
