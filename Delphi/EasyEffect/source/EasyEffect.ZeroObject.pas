@@ -20,18 +20,7 @@ type
     be registered with. The TMotherShip will provide
     methods for interacting with the collected
     ZeroObjects, notably message sending.
-
-
-
-
-
-
-
-
   }
-
-
-
 
   //Forward declarations
   IZeroObject = interface;
