@@ -44,6 +44,7 @@ contains
   VamLib.WinUtils in 'Source\VamLib.WinUtils.pas',
   VamLib.MultiEvent in 'Source\VamLib.MultiEvent.pas',
   VamLib.Throttler in 'Source\VamLib.Throttler.pas',
-  VamLib.Types in 'Source\VamLib.Types.pas';
+  VamLib.Types in 'Source\VamLib.Types.pas',
+  VamLib.DebugString in 'Source\VamLib.DebugString.pas';
 
 end.

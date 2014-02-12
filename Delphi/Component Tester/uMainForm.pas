@@ -15,13 +15,20 @@ uses
   VamModSelector, VamCompoundNumericKnob, VamNumericKnob;
 
 type
-  TFoo = class
+  IFoo = interface(IZeroObject)
+    ['{7A691176-973B-40FE-BAE6-C48AE61C1BB9}']
+  end;
+
+  TFoo = class(TZeroObject, IFoo)
   private
     fText: string;
   public
+    constructor Create;
     destructor Destroy; override;
     property Text : string read fText write fText;
   end;
+
+
 
   TFooList = TSimpleObjectList<TFoo>;
 
@@ -43,6 +50,11 @@ type
     { Private declarations }
     procedure UpdateLabel;
   public
+    Foo1, Foo2 : IFoo;
+
+    MotherShip : TMothership;
+
+
     MultiEvent : TNotifyMultiEvent;
     FooList : TFooList;
 
@@ -56,7 +68,7 @@ type
     b : cardinal;
     procedure UpdateMemo;
 
-    procedure Foo(Sender : TObject);
+
   end;
 
 var
@@ -82,96 +94,58 @@ var
 procedure TForm1.FormCreate(Sender: TObject);
 var
   c1: Integer;
+
 begin
-  Sample := TSampleFloat.Create;
-  PeakBuffer := TPeakbuffer.Create;
-  ImageBuffer := TSampleImageBuffer.Create;
+  MotherShip := TMotherShip.Create;
 
 
-  a := 50;
-  b := 200000000;
-
-  //ShowMessage(IntToStr(a + Integer(b)));
-
-  Debouncer := TDebouncer.Create;
-  Debouncer.DebounceTime := 100;
 
 
-  FooList := TFooList.Create;
-  FooList.OwnsObjects := true;
-  for c1 := 0 to 10 do
-  begin
-    FooList.Add(TFoo.Create);
-    FooList[c1].Text := IntToStr(c1) + ' bottle(s) on the wall!';
-  end;
-
-  FooList.Delete(4);
-
-  UpdateMemo;
-
-  MultiEvent := TNotifyMultiEvent.Create;
-  MultiEvent.Add(Button2Click);
-  MultiEvent.Add(Button3Click);
-  MultiEvent.Remove(Button2Click);
 
 
-  InitGlobalThrottler;
+
+
+  //Foo1.Free;
+  //Foo2.Free;
+
+  //Foo1 := nil;
+  //Foo2 := nil;
+
 
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  Debouncer.Free;
-  Sample.Free;
-  PeakBuffer := nil;
-  ImageBuffer := nil;
-  FooList.Free;
-  MultiEvent.Free;
-  FreeGlobalThrottler;
+  MotherShip.Free;
 end;
 
 
-procedure Debounce(id : integer; TimeMS : integer; aProc : TProc);
-var
-  CurrentTime : TDateTime;
-  LastTime : TDateTime;
-  foo:  TMethod;
-  procAddress : integer;
+procedure TForm1.Button1Click(Sender: TObject);
 begin
-  CurrentTime := Now;
+  Foo1 := TFoo.Create;
+  Foo1.RegisterWithMotherShip(MotherShip);
+
+  //Foo2 := TFoo.Create;
+
+  //MotherShip.RegisterZeroObject(Foo1);
+  //MotherShip.RegisterZeroObject(Foo2);
+end;
 
 
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  //Foo1.Free;
+  Foo1 := nil;
 
-  if GlobalDict.TryGetValue(id, LastTime) then
-  begin
-    GlobalDict.AddOrSetValue(id, CurrentTime);
-  end else
-  begin
-    GlobalDict.AddOrSetValue(id, CurrentTime);
-  end;
-
-  {
-  if GlobalDict.ContainsKey(aProc) then
-  begin
-    GlobalDict.AddOrSetValue(aProc, CurrentTime);
-  end else
-  begin
-    GlobalDict.Add(aProc, CurrentTime);
-  end;
-  }
-
-  //procAddress := Integer(Addr(aProc));
-  //showMessage(IntToStr(ProcAddress));
-
-
-
+  //MotherShip.DeregisterZeroObject(Foo1);
+  //MotherShip.DeregisterZeroObject(Foo2);
 end;
 
 
 
-procedure TForm1.Foo(Sender: TObject);
+procedure TForm1.Button3Click(Sender: TObject);
 begin
-  showMessage((Sender as TControl).Name);
+  ShowMessage(IntToStr(MotherShip.ZeroObjectCount));
 end;
 
 
@@ -208,46 +182,19 @@ begin
   }
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  Task : TRepeatingTask;
-  x : integer;
-
-begin
-  x := 0;
-
-  Task := function:integer
-  begin
-    Memo1.Lines.Add(IntToStr(random(100)));
-    inc(x);
-    if x > 10
-      then result := -1
-      else result := 400;
-  end;
-
-  RunRepeatingTask(Task, 600);
-
-
-end;
-
-
-procedure TForm1.Button2Click(Sender: TObject);
-begin
-  ShowMessage('Button 2');
-end;
-
-
-
-procedure TForm1.Button3Click(Sender: TObject);
-begin
-  ShowMessage('Button 3');
-end;
 
 { TFoo }
 
+constructor TFoo.Create;
+begin
+  //self.FIsReferenceCounted := false;
+  self.FIsReferenceCounted := true;
+  self.Text := IntToStr(Random(100));
+end;
+
 destructor TFoo.Destroy;
 begin
-  //ShowMessage(Text);
+  ShowMessage(Text);
   inherited;
 end;
 
