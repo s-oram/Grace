@@ -52,7 +52,7 @@
 			<CfgDependentOn>..\..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>RedFoxRunXE2;VamBasicRunXE2;LucidityBaseClasses;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>RedFoxRunXE2;VamBasicRunXE2;LucidityBaseClasses;EasyEffect;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
