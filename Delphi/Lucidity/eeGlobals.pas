@@ -57,6 +57,7 @@ type
 implementation
 
 uses
+  VamLib.Throttler,
   SysUtils,
   uConstants,
   eePluginDataDir,
@@ -75,6 +76,8 @@ var
   fn : string;
 begin
   inherited;
+
+  VamLib.Throttler.InitGlobalThrottler;
 
   fSelectedModSlot := -1;
 
@@ -154,6 +157,8 @@ begin
   fInfoBarReceiver.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
+
+  VamLib.Throttler.ReleaseGlobalThrottler;
   inherited;
 end;
 
