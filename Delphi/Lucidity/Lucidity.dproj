@@ -8,7 +8,7 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
+			<Config Condition="'$(Config)'==''">ReleaseAsDemo</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
@@ -249,6 +249,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCC_MapFile>3</DCC_MapFile>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_3_Win32)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<Debugger_IncludeSystemVars>true</Debugger_IncludeSystemVars>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=EasyEffectTemplate;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
