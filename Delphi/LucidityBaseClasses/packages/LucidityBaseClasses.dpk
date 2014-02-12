@@ -29,7 +29,8 @@ package LucidityBaseClasses;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  EasyEffect;
 
 contains
   uConstants in '..\source\uConstants.pas',
