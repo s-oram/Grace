@@ -115,6 +115,8 @@ begin
   begin
     FocusedControl := nil;
     ScopeControl.Text := '';
+    ScopeFocus := TScopeFocus.None;
+    ControlChanged(nil);
   end;
 
 end;
@@ -125,7 +127,7 @@ var
   ParIndex : integer;
   Text : string;
 begin
-  if (c is TVamKnob) then
+  if (assigned(c)) and (c is TVamKnob) then
   begin
     Knob := (c as TVamKnob);
     ParIndex := Knob.ParameterIndex;

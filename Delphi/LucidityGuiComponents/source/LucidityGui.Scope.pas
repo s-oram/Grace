@@ -9,6 +9,7 @@ uses
   // I want to avoid circural type depencies where
   uLucidityEnums,
   //=================================================
+  LucidityGui.Scope.SignalRecorder,
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl;
@@ -59,6 +60,7 @@ type
   private
     fText: string;
     fScopeMode: TScopeDisplayMode;
+    fSignalRecorder: IScopeSignalRecorder;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
     procedure SetText(const Value: string);
@@ -75,6 +77,7 @@ type
     procedure Draw_Lfo;
     procedure Draw_Filter;
     procedure Draw_FilterBlend;
+    procedure Draw_Signal(Source : IScopeSignalRecorder);
   public
     AdsrValues        : TScopeAdsrValues;
     LfoValues         : TScopeLfoValues;
@@ -95,6 +98,9 @@ type
     //== Lfo values ==
 
     //== Filter values ==
+
+
+    property SignalRecorder : IScopeSignalRecorder read fSignalRecorder write fSignalRecorder;
 
   published
     property ColorBackground : TRedFoxColorString index 0 read GetColors write SetColors;
@@ -281,7 +287,7 @@ begin
   ScopeRect := Rect(8,8,Width-8,Height-24);
 
   case ScopeMode of
-    //TScopeDisplayMode.DisplayOff: ;
+    TScopeDisplayMode.DisplayOff:  Draw_Signal(SignalRecorder);
     TScopeDisplayMode.ADSR:        Draw_ADSR;
     TScopeDisplayMode.LFO:         Draw_Lfo;
     TScopeDisplayMode.Filter:      Draw_Filter;
@@ -553,5 +559,10 @@ end;
 
 
 
+
+procedure TLucidityScope.Draw_Signal(Source: IScopeSignalRecorder);
+begin
+
+end;
 
 end.

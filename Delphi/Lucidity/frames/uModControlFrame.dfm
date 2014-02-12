@@ -1683,6 +1683,13 @@ object ModControlFrame: TModControlFrame
         HitTest = True
         ColorBackground = '$FF000000'
         ColorBorder = '$00000000'
+        ColorForeground = '$00000000'
+        ScopeMode = DisplayOff
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Visible = True
       end
     end

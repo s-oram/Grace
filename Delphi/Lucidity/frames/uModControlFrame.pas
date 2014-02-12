@@ -240,6 +240,10 @@ begin
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
 
+
+  Scope.SignalRecorder := Plugin.SignalRecorder;
+
+
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
   GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter(TParName.AmpAttack));

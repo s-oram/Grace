@@ -9,7 +9,7 @@ uses
   LucidityGui.Scope.SignalRecorder;
 
 type
-  TSignalRecorder = class(TZeroObject)
+  TSignalRecorder = class(TZeroObject, IScopeSignalRecorder)
   private
     procedure GetReadPointer(const MaxReadSampleFrames : integer; out ActualReadSampleFrames, ReadIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
   protected
