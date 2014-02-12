@@ -438,12 +438,9 @@ var
   Radius1:single;
   Radius2:single;
   xPos : single;
-
   r : TRectF;
-
   vx1, vx2 : integer;
   x1, x2, y1, y2     : integer;
-
 begin
   if VisibleSteps > 0
     then xPos := round(Pos * VisibleSteps) / VisibleSteps
