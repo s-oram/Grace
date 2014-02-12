@@ -43,6 +43,7 @@ contains
   VamLib.PerformanceTuning in 'Source\VamLib.PerformanceTuning.pas',
   VamLib.WinUtils in 'Source\VamLib.WinUtils.pas',
   VamLib.MultiEvent in 'Source\VamLib.MultiEvent.pas',
-  VamLib.Throttler in 'Source\VamLib.Throttler.pas';
+  VamLib.Throttler in 'Source\VamLib.Throttler.pas',
+  VamLib.Types in 'Source\VamLib.Types.pas';
 
 end.

@@ -2,9 +2,6 @@ unit VamLib.Utils;
 
 interface
 
-uses
-  SyncObjs;
-
 type
   PObject = ^TObject;
 
@@ -22,22 +19,6 @@ function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 
 procedure SwapValues(var x1, x2:single); inline; overload;
 procedure SwapValues(var x1, x2:integer); inline; overload;
-
-
-type
-  TVamInterfacedObject = class(TInterfacedObject)
-  public
-    procedure AfterConstruction; override;
-    procedure BeforeDestruction; override;
-  end;
-
-
-  // NOTE: On TFixedCriticalSection
-  // http://delphitools.info/2011/11/30/fixing-tcriticalsection/
-  TFixedCriticalSection = class(TCriticalSection)
-  private
-    FDummy : array [0..95] of Byte;
-  end;
 
 implementation
 
@@ -91,20 +72,6 @@ function CastToCardinal(Value : integer):cardinal;
 begin
   if Value < 0 then raise Exception.Create('Cannot convert type to cardinal. The result will overflow.');
   result := Cardinal(Value);
-end;
-
-{ TVamInterfacedObject }
-
-procedure TVamInterfacedObject.AfterConstruction;
-begin
-  inherited;
-
-end;
-
-procedure TVamInterfacedObject.BeforeDestruction;
-begin
-  inherited;
-
 end;
 
 

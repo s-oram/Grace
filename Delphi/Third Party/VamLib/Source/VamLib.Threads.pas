@@ -5,9 +5,6 @@ interface
 uses
   SysUtils;
 
-
-
-
 procedure RunTask(aTask : TProc); overload;
 
 //FinishedCallBack will always be executed in the same thread as the calling code. This makes

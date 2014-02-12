@@ -28,6 +28,10 @@ package EasyEffect;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  VamLib;
+
+contains
+  EasyEffect.ZeroObject in '..\source\EasyEffect.ZeroObject.pas';
 
 end.

@@ -3,7 +3,7 @@ unit VamLib.Graphics;
 interface
 
 uses
-  Vcl.Graphics, VamLib.Utils;
+  Vcl.Graphics, VamLib.Types, VamLib.Utils;
 
 
 type

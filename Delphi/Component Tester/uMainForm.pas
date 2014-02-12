@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+  EasyEffect.ZeroObject,
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
   VamLib.Debouncer,

@@ -3,6 +3,7 @@ unit VamLib.Debouncer;
 interface
 
 uses
+  VamLib.Types,
   VamLib.Utils,
   SysUtils,
   Vcl.ExtCtrls;
