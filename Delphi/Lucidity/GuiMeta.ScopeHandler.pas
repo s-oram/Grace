@@ -28,6 +28,8 @@ type
     Globals : TGlobals;
     FocusedControl : TControl;
     ScopeFocus : TScopeFocus;
+
+    ThrottleHandle : cardinal;
     procedure KnobMouseEnter(Sender : TObject);
     procedure KnobMouseLeave(Sender : TObject);
     procedure KnobChanged(Sender : TObject);
@@ -47,6 +49,7 @@ type
 implementation
 
 uses
+  VamLib.Throttler,
   uLucidityEnums,
   VamQuery,
   VamWinControl,
@@ -60,6 +63,8 @@ uses
 constructor TScopeHandler.Create(aGlobals : TGlobals);
 begin
   Globals := aGlobals;
+
+  ThrottleHandle := GetThrottleHandle;
 end;
 
 destructor TScopeHandler.Destroy;
@@ -92,7 +97,14 @@ end;
 procedure TScopeHandler.KnobChanged(Sender: TObject);
 begin
   //TODO: this event here needs to be throttled to slow GUI updates.
-  ControlChanged(Sender as TControl);
+
+  Throttle(ThrottleHandle, 25,
+  procedure
+  begin
+    ControlChanged(Sender as TControl);
+  end);
+
+
 end;
 
 procedure TScopeHandler.KnobMouseLeave(Sender: TObject);
