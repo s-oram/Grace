@@ -32,6 +32,6 @@ requires
   VamLib;
 
 contains
-  EasyEffect.ZeroObject in '..\source\EasyEffect.ZeroObject.pas';
+  EasyEffect.ZeroObject in '..\source\Vst Template\EasyEffect.ZeroObject.pas';
 
 end.
