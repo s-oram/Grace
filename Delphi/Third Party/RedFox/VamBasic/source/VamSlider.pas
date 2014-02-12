@@ -437,14 +437,12 @@ var
   Angle : single;
   Radius1:single;
   Radius2:single;
-  s1, s2 : single;
   xPos : single;
 
   r : TRectF;
 
   vx1, vx2 : integer;
   x1, x2, y1, y2     : integer;
-  sx1, sx2, sy1, sy2 : integer;
 
 begin
   if VisibleSteps > 0

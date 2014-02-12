@@ -16,6 +16,7 @@ unit eeCustomGlobals;
 interface
 
 uses
+  EasyEffect.ZeroObject,
   eeTypes,
   SysUtils,
   otlContainers, otlComm, otlCommon, otlTaskControl, otlTask,
@@ -79,6 +80,7 @@ type
     fOverSampleFactor: integer;
     fFastControlRate: integer;
     fSlowControlRate: integer;
+    FMotherShip: TMotherShip;
     procedure SetSampleRate(const Value: integer);
     procedure SetBlockSize(const Value: integer);
     procedure SetTempo(const Value: single);
@@ -206,6 +208,8 @@ type
     property VstMethods : PVstMethodReferences read fVstMethods;
 
     property HostProperties : PHostProperties read GetHostProperties;
+
+    property MotherShip : TMotherShip read FMotherShip;
   end;
 
 
@@ -255,8 +259,9 @@ uses
 
 constructor TCustomGlobals.Create;
 begin
-  WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
+  FMotherShip := TMotherShip.Create;
 
+  WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
 
   fVstParameters := TVstParameterManager.Create;
 
@@ -307,6 +312,7 @@ begin
   fVstParameters.Free;
   fVstProperties.Free;
   WindowsMessageGateKeeper.Free;
+  FMotherShip.Free;
   inherited;
 end;
 

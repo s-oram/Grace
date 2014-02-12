@@ -143,7 +143,6 @@ end;
 procedure TModSection.AlignControls(AControl: TControl; var Rect: TRect);
 var
   c1 : integer;
-  xLeft  : integer;
   xWidth : integer;
 
 

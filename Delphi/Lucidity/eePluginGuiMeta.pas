@@ -21,7 +21,7 @@ type
     ScopeHandler : TScopeHandler;
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
-    destructor Destroy;
+    destructor Destroy; override;
 
   end;
 

@@ -304,14 +304,7 @@ end;
 
 
 procedure TProcessController.ProcessReplacing2(Inputs, Outputs: PPSingle; Sampleframes: Integer);
-var
-  TimeInfo : PVstTimeInfo;
-  ModSampleFrames : integer;
 begin
-
-
-
-
 end;
 
 

@@ -17,7 +17,6 @@ var
   SampleDirectories: TSampleDirectories;
   DataFileName : string;
   DataDir : string;
-  fn : string;
 begin
   if (PluginDataDir^.Exists) then
   begin

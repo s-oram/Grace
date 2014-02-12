@@ -218,8 +218,6 @@ begin
 end;
 
 function TScopeHandler.FindScopeFocus(c: TControl): TScopeFocus;
-var
-  vc : TVamWinControl;
 begin
   if (c is TVamWinControl) then
   begin
@@ -232,7 +230,8 @@ begin
     if HasDisplayClass(c, TScopeFocusID.FilterBlend) then exit(TScopeFocus.FilterBlend);
   end;
 
-
+  // if we've made it this far...
+  result := TScopeFocus.None;
 end;
 
 
