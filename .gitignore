@@ -14,6 +14,7 @@ Thumbs.db
 *.tvsconfig
 *.dsk
 *.~dsk
+*.projdata
 
 ### Model Maker files
 *.txvpck
