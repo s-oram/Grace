@@ -8,7 +8,7 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
+			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
@@ -196,7 +196,6 @@
 		</PropertyGroup>
 		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\BuildCommands.optset')" Project="BuildOptionSets\BuildCommands.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\Basic Paths.optset')" Project="..\Basic Paths.optset"/>
-		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\Paths.optset')" Project="BuildOptionSets\Paths.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
@@ -209,7 +208,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<GenDll>true</GenDll>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset;BuildOptionSets\Paths.optset</CfgDependentOn>
+			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -343,6 +342,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCC_MapFile>3</DCC_MapFile>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\Paths.optset')" Project="BuildOptionSets\Paths.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset')" Project="..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset"/>
 		<ProjectExtensions>
 			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
@@ -601,7 +601,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset;BuildOptionSets\Paths.optset</DependentOn>
+				<DependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="DebugForHostSystem">
 				<Key>Cfg_9</Key>
