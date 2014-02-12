@@ -294,8 +294,13 @@ begin
 
 
 
+  if not (csDesigning in Self.ComponentState) then
+  begin
+    SignalDisplay.ProcessSignal(BackBuffer, ScopeRect, SignalRecorder);
+  end;
+
   case ScopeMode of
-    TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawSignal(BackBuffer, ScopeRect, SignalRecorder);
+    TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawTo(BackBuffer, ScopeRect);
     TScopeDisplayMode.ADSR:        Draw_ADSR;
     TScopeDisplayMode.LFO:         Draw_Lfo;
     TScopeDisplayMode.Filter:      Draw_Filter;

@@ -11,7 +11,7 @@ uses
 type
   TSignalRecorder = class(TZeroObject, IScopeSignalRecorder)
   private
-    procedure GetReadPointer(const MaxReadSampleFrames : integer; out ActualReadSampleFrames, ReadIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
+    procedure GetReadPointer(out WriteIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
   protected
     Globals : TGlobals;
 
@@ -51,19 +51,11 @@ begin
   inherited;
 end;
 
-procedure TSignalRecorder.GetReadPointer(const MaxReadSampleFrames : integer; out ActualReadSampleFrames, ReadIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
-var
-  rsf : integer;
-  rp  : PSingle;
+procedure TSignalRecorder.GetReadPointer(out WriteIndex, BufferSize : integer; out Buffer : PArrayOfSingle);
 begin
   BufferSize := Self.BufferSize;
-
-  ActualReadSampleFrames := Min(MaxReadSampleFrames, WriteCount);
-  WriteCount := 0;
-  ReadIndex := WriteIndex - ActualReadSampleFrames;
-  if ReadIndex < 0 then inc(ReadIndex, Self.BufferSize);
-
-  Buffer := @Self.Buffer;
+  WriteIndex := Self.WriteIndex;
+  Buffer     := @Self.Buffer;
 end;
 
 procedure TSignalRecorder.SampleRateChanged(Sender: TObject);
