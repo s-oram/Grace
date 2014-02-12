@@ -91,6 +91,7 @@ type
 implementation
 
 uses
+  SysUtils,
   VamLib.WinUtils;
 
 {$I InterlockedAPIs.inc}
@@ -221,10 +222,18 @@ begin
       Text := Text + ' has not been freed!';
       SendDebugMesssage(Text);
 
-      self.DeregisterZeroObject(zo);
-      zo := nil;
+      //TODO: the softly-softly approach to not freeing all the zero objects.
+      //self.DeregisterZeroObject(zo);
+      //zo := nil;
     end;
+
+    // TODO: the hard arse way to respond to unfreed zero objects. This
+    // should probably be removed in release builds!
+    raise Exception.Create('Not all ZeroObjects have been freed.');
   end;
+
+
+
 
   Objects.Free;
   inherited;
