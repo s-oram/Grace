@@ -12,7 +12,7 @@ uses
 //        high level global functions.
 //==============================================================================
 procedure InitGlobalThrottler;
-procedure FreeGlobalThrottler;
+procedure ReleaseGlobalThrottler;
 
 function GetThrottleHandle : cardinal;
 
@@ -59,6 +59,7 @@ uses
 var
   GlobalThrottleHandleCount : cardinal;
   GlobalThrottler : TThrottler;
+  GlobalUsageCount : integer;
 
 function GetThrottleHandle : cardinal;
 begin
@@ -73,11 +74,18 @@ procedure InitGlobalThrottler;
 begin
   if not assigned(GlobalThrottler)
     then GlobalThrottler := TThrottler.Create;
+
+  inc(GlobalUsageCount);
 end;
 
-procedure FreeGlobalThrottler;
+procedure ReleaseGlobalThrottler;
 begin
-  FreeAndNil(GlobalThrottler);
+  dec(GlobalUsageCount);
+  if (GlobalUsageCount = 0) and (assigned(GlobalThrottler)) then
+  begin
+    FreeAndNil(GlobalThrottler);
+  end;
+
 end;
 
 procedure Throttle(const Handle : cardinal; Time: integer; Task : TProc);
@@ -187,6 +195,7 @@ end;
 
 initialization
   GlobalThrottleHandleCount := 0;
+  GlobalUsageCount := 0;
 finalization
   if assigned(GlobalThrottler)
     then GlobalThrottler.Free;
