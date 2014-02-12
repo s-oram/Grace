@@ -1675,8 +1675,8 @@ object ModControlFrame: TModControlFrame
         end
       end
       object Scope: TLucidityScope
-        Left = 510
-        Top = 36
+        Left = 486
+        Top = 67
         Width = 193
         Height = 121
         Text = 'Scope'

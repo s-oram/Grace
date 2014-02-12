@@ -67,6 +67,8 @@ type
     procedure SetScopeDisplayMode(const Value: TScopeDisplayMode);
 
   protected
+    SignalDisplay : TSignalDisplay;
+
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
     fColorForeground : TRedFoxColor;
@@ -77,7 +79,6 @@ type
     procedure Draw_Lfo;
     procedure Draw_Filter;
     procedure Draw_FilterBlend;
-    procedure Draw_Signal(Source : IScopeSignalRecorder);
   public
     AdsrValues        : TScopeAdsrValues;
     LfoValues         : TScopeLfoValues;
@@ -119,6 +120,7 @@ type
 implementation
 
 uses
+  SysUtils,
   Math,
   VamLib.Utils,
   Agg2D,
@@ -189,11 +191,13 @@ begin
   fColorBackground := '$00000000';
   fColorBorder     := '$00000000';
   fColorForeground := '$00000000';
+
+  SignalDisplay := TSignalDisplay.Create;
 end;
 
 destructor TLucidityScope.Destroy;
 begin
-
+  FreeAndNil(SignalDisplay);
   inherited;
 end;
 
@@ -212,7 +216,16 @@ procedure TLucidityScope.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 begin
   inherited;
 
+  if (aWidth > 40) and (aHeight > 40) then
+  begin
+    ScopeRect := Rect(8,8,aWidth-8,aHeight-24);
 
+    if assigned(SignalDisplay)
+      then SignalDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
+  end else
+  begin
+    ScopeRect := Rect(0,0,aWidth,aHeight);
+  end;
 end;
 
 procedure TLucidityScope.SetColors(const Index: Integer; const Value: TRedFoxColorString);
@@ -260,8 +273,6 @@ var
 begin
   inherited;
 
-
-
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
   //=== Paint the background ==
@@ -283,11 +294,8 @@ begin
 
 
 
-
-  ScopeRect := Rect(8,8,Width-8,Height-24);
-
   case ScopeMode of
-    TScopeDisplayMode.DisplayOff:  Draw_Signal(SignalRecorder);
+    TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawSignal(BackBuffer, ScopeRect, SignalRecorder);
     TScopeDisplayMode.ADSR:        Draw_ADSR;
     TScopeDisplayMode.LFO:         Draw_Lfo;
     TScopeDisplayMode.Filter:      Draw_Filter;
@@ -560,9 +568,5 @@ end;
 
 
 
-procedure TLucidityScope.Draw_Signal(Source: IScopeSignalRecorder);
-begin
-
-end;
 
 end.
