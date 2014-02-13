@@ -99,7 +99,6 @@ end;
 function CalcPerformanceDifference(WorkA, WorkB, ResetMethod : TProc):string;
 var
   CounterA, CounterB : TPerformanceTimer;
-  c1: Integer;
 begin
   if assigned(ResetMethod) then ResetMethod;
   WorkA;

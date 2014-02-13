@@ -35,7 +35,7 @@ object Form1: TForm1
   end
   object RedFoxContainer1: TRedFoxContainer
     Left = 32
-    Top = 52
+    Top = 44
     Width = 313
     Height = 289
     Color = '$FFEEEEEE'
@@ -88,11 +88,10 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 3
-    OnClick = Button2Click
   end
   object Button3: TButton
     Left = 170
-    Top = 371
+    Top = 411
     Width = 75
     Height = 25
     Caption = 'Button1'

@@ -44,7 +44,6 @@ type
 
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
-    x : string;
     FMotherShip : IMotherShip;
     function GetZeroObject:TZeroObject;
     function GetClassName : string;

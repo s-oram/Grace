@@ -46,6 +46,7 @@ contains
   VamLib.Throttler in 'Source\VamLib.Throttler.pas',
   VamLib.Types in 'Source\VamLib.Types.pas',
   VamLib.DebugString in 'Source\VamLib.DebugString.pas',
-  VamLib.ZeroObject in 'Source\VamLib.ZeroObject.pas';
+  VamLib.ZeroObject in 'Source\VamLib.ZeroObject.pas',
+  VamLib.Animation in 'Source\VamLib.Animation.pas';
 
 end.

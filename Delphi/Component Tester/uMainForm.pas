@@ -7,6 +7,7 @@ uses
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
   VamLib.Debouncer,
+  VamLib.Animation,
   AudioIO,
   eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
@@ -44,12 +45,13 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure VamNumericKnob1Changed(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateLabel;
   public
+    AnimateController : TAnimateController;
+
     Foo1, Foo2 : IFoo;
 
     MotherShip : TMothership;
@@ -98,10 +100,7 @@ var
 begin
   MotherShip := TMotherShip.Create;
 
-
-
-
-
+  AnimateController := TAnimateController.Create;
 
 
 
@@ -116,31 +115,25 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  AnimateController.Free;
   MotherShip.Free;
 end;
 
 
 procedure TForm1.Button1Click(Sender: TObject);
+var
+  AniA : TSingleAnimation;
 begin
-  Foo1 := TFoo.Create;
-  Foo1.RegisterWithMotherShip(MotherShip);
 
-  //Foo2 := TFoo.Create;
+  AniA := TSingleAnimation.Create(1, 0,100,1500, procedure(AniObj : TCustomAnimation)
+  begin
+    //Button3.Left := round((AniObj as TSingleAnimation).CurrentValue);
+    Knob1.KnobValue := (AniObj as TSingleAnimation).CurrentValue;
+  end);
 
-  //MotherShip.RegisterZeroObject(Foo1);
-  //MotherShip.RegisterZeroObject(Foo2);
+  AnimateController.Animate(AniA);
+
 end;
-
-
-procedure TForm1.Button2Click(Sender: TObject);
-begin
-  //Foo1.Free;
-  Foo1 := nil;
-
-  //MotherShip.DeregisterZeroObject(Foo1);
-  //MotherShip.DeregisterZeroObject(Foo2);
-end;
-
 
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -190,6 +183,8 @@ begin
   //self.FIsReferenceCounted := false;
   self.FIsReferenceCounted := true;
   self.Text := IntToStr(Random(100));
+
+
 end;
 
 destructor TFoo.Destroy;

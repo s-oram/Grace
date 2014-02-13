@@ -109,6 +109,7 @@
 			<DCCReference Include="Source\VamLib.Types.pas"/>
 			<DCCReference Include="Source\VamLib.DebugString.pas"/>
 			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
+			<DCCReference Include="Source\VamLib.Animation.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
