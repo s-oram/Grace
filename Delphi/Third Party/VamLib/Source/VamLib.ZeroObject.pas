@@ -1,4 +1,4 @@
-unit EasyEffect.ZeroObject;
+unit VamLib.ZeroObject;
 
 interface
 

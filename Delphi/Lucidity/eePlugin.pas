@@ -230,6 +230,7 @@ begin
   {$ENDIF}
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
+  fSignalRecorder.RegisterWithMotherShip(Globals.MotherShip);
 
   // TODO: Should do some data directory validation here.
   // - check if the data directory exists,
@@ -387,7 +388,7 @@ end;
 
 procedure TeePlugin.EventHandle_SampleRateChanged(Sender: TObject);
 begin
-  MidiAutomation.SampleRate := globals.FastControlRate;
+  MidiAutomation.SampleRate := Globals.FastControlRate;
 end;
 
 function TeePlugin.ActiveKeyGroup: IKeyGroup;
