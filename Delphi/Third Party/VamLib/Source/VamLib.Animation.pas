@@ -22,6 +22,10 @@ uses
 
   There would be a global unit that could be used to create
   unique IDs. That way objects can generate UniqueIDs easily.
+
+
+
+  TODO: I'm wondering if TCustomAnimation should be reference by an interface...
 }
 
 

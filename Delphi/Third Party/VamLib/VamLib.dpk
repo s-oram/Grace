@@ -47,6 +47,7 @@ contains
   VamLib.Types in 'Source\VamLib.Types.pas',
   VamLib.DebugString in 'Source\VamLib.DebugString.pas',
   VamLib.ZeroObject in 'Source\VamLib.ZeroObject.pas',
-  VamLib.Animation in 'Source\VamLib.Animation.pas';
+  VamLib.Animation in 'Source\VamLib.Animation.pas',
+  VamLib.UniqueID in 'Source\VamLib.UniqueID.pas';
 
 end.
