@@ -3,6 +3,7 @@ unit VamLib.Animation;
 interface
 
 uses
+  VamLib.UniqueID,
   VamLib.ZeroObject,
   ExtCtrls,
   Contnrs, Generics.Collections;
@@ -44,30 +45,30 @@ type
 
   TCustomAnimation = class
   private
-    fID          : cardinal;
+    fID          : TUniqueID;
     fTime        : integer;
     FApplyMethod : TApplyAnimationMethod;
   protected
     function RunStep(const FramePos : single):boolean; virtual; abstract;
   public
-    property ID   : cardinal read fID   write fID;
+    property ID   : TUniqueID read fID   write fID;
     property Time : integer  read fTime write fTime; //milliseconds;
   end;
 
   TAnimateAction = class
   private
   public
-    ID : cardinal;
-    StartTime : TDateTime;
+    ID         : TUniqueID;
+    StartTime  : TDateTime;
     ActiveTime : integer; //milliseconds
-    IsActive  : boolean;
-    IsExpired : boolean;
-    Animation : TCustomAnimation;
+    IsActive   : boolean;
+    IsExpired  : boolean;
+    Animation  : TCustomAnimation;
 
     destructor Destroy; override;
   end;
 
-  TAnimateActionList = class(TDictionary<cardinal, TAnimateAction>);
+  TAnimateActionList = class(TDictionary<TUniqueID, TAnimateAction>);
 
   TAnimateController = class(TZeroObject)
   private
@@ -98,7 +99,7 @@ type
   protected
     function RunStep(const FramePos : single):boolean; override;
   public
-    constructor Create(const ID : cardinal; const StartValue, EndValue : single; Time : integer; ApplyMethod : TApplyAnimationMethod);
+    constructor Create(const ID : TUniqueID; const StartValue, EndValue : single; Time : integer; ApplyMethod : TApplyAnimationMethod);
     property CurrentValue : single read fCurrentValue;
   end;
 
@@ -235,7 +236,7 @@ end;
 
 { TSingleAnimation }
 
-constructor TSingleAnimation.Create(const ID: cardinal; const StartValue, EndValue: single; Time: integer; ApplyMethod: TApplyAnimationMethod);
+constructor TSingleAnimation.Create(const ID: TUniqueID; const StartValue, EndValue: single; Time: integer; ApplyMethod: TApplyAnimationMethod);
 begin
   self.fID           := ID;
   self.fTime         := Time; //Animation running time in milliseconds.

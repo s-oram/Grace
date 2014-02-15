@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+  VamLib.UniqueID,
   EasyEffect.ZeroObject,
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
@@ -41,6 +42,7 @@ type
     Knob2: TVamNumericKnob;
     Button2: TButton;
     Button3: TButton;
+    Button4: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure VamNumericKnob1Changed(Sender: TObject);
@@ -50,6 +52,7 @@ type
     { Private declarations }
     procedure UpdateLabel;
   public
+    id1, id2 : TUniqueID;
     AnimateController : TAnimateController;
 
     Foo1, Foo2 : IFoo;
@@ -96,13 +99,14 @@ var
 procedure TForm1.FormCreate(Sender: TObject);
 var
   c1: Integer;
-
 begin
   MotherShip := TMotherShip.Create;
 
   AnimateController := TAnimateController.Create;
 
 
+  id1.Init;
+  id2.Init;
 
   //Foo1.Free;
   //Foo2.Free;
@@ -125,10 +129,18 @@ var
   AniA : TSingleAnimation;
 begin
 
-  AniA := TSingleAnimation.Create(1, 0,100,1500, procedure(AniObj : TCustomAnimation)
+  AniA := TSingleAnimation.Create(id1, 0,100,1500, procedure(AniObj : TCustomAnimation)
   begin
-    //Button3.Left := round((AniObj as TSingleAnimation).CurrentValue);
-    Knob1.KnobValue := (AniObj as TSingleAnimation).CurrentValue;
+    Button3.Left := round((AniObj as TSingleAnimation).CurrentValue);
+    //Knob1.KnobValue := (AniObj as TSingleAnimation).CurrentValue;
+  end);
+
+  AnimateController.Animate(AniA);
+
+  AniA := TSingleAnimation.Create(id2, 100,0,1500, procedure(AniObj : TCustomAnimation)
+  begin
+    Button4.Left := round((AniObj as TSingleAnimation).CurrentValue);
+    //Knob1.KnobValue := (AniObj as TSingleAnimation).CurrentValue;
   end);
 
   AnimateController.Animate(AniA);
