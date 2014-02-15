@@ -3,6 +3,31 @@ unit VamLib.UniqueID;
 interface
 
 type
+  {
+    TUniqueID
+    I found myself wanting a type of unique identifier when
+    writing the Animation, Throttler and Debouncer code. In each
+    of these cases I've used one central object that processes
+    multiple animation, throttling and debouncing requests.
+
+    The advantage of using one central object is that only one timer
+    object is used. Using one animation controller also makes it
+    possible to easily control the global framerate and ensure
+    multiple concurrent animations happen in the correct sequence.
+
+    The disadvantage is the central controller needs some way
+    to differentiate the request targets from each other. For example
+    the animation controller needs to know if these two seperate
+    animation requests are operating on the same target. If so,
+    the first animation request should be stopped and replaced.
+
+    My first idea was to use a constant ID value that would be
+    set by the application developer. This will work if the
+    application developer is disciplined in how they assign
+    ID's to different sections of calling code.
+  }
+
+
   TUniqueID = record
     Part1 : integer;
     Part2 : TDateTime;
