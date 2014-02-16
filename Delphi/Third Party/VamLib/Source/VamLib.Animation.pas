@@ -9,28 +9,6 @@ uses
   Contnrs, Generics.Collections;
 
 
-{
-  TODO: create a unique ID class.
-  The unique ID would look something like
-
-  TUniqueID = record
-    GlobalCount   : cardinal;
-    TimeGenerated : TDateTime;
-  end;
-
-  Will need to overload methods so that unique id's can
-  be tested for equality.
-
-  There would be a global unit that could be used to create
-  unique IDs. That way objects can generate UniqueIDs easily.
-
-
-
-  TODO: I'm wondering if TCustomAnimation should be reference by an interface...
-}
-
-
-
 type
   //==============================================================================
   //               Low level details
