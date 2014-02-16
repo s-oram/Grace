@@ -5,6 +5,7 @@ interface
 uses
   Math,
   uConstants,
+  VamLib.UniqueID,
   VamLib.Debouncer,
   uLucidityPopUpMenu,
   Lucidity.SampleImageRenderer,
@@ -60,12 +61,11 @@ type
   protected
     SampleRenderer : TSampleImageRenderer;
     FlexSampleRender : TFlexSampleImageRenderer;
-    SampleUpdateDebouncer : TDebouncer;
-
     Zoom, Offset : single;
-
   public
     SampleInfo    : TSampleDisplayInfo;
+
+    SampleUpdateDebounceID : TUniqueID;
 
     //The SampleOverlay GUI components show the sample start/end markers and other
     // information that is drawn over the sample display.
@@ -186,8 +186,7 @@ constructor TLoopEditForm.Create(AOwner: TComponent);
 begin
   inherited;
 
-  SampleUpdateDebouncer := TDebouncer.Create;
-  SampleUpdateDebouncer.DebounceTime := 35;
+  SampleUpdateDebounceID.Init;
 
   Zoom   := 0;
   Offset := 0;
@@ -246,7 +245,6 @@ begin
   FreeAndNil(ZoomMarkerMenu);
   SampleRenderer.Free;
   FlexSampleRender.Free;
-  SampleUpdateDebouncer.Free;
   inherited;
 end;
 
@@ -517,7 +515,8 @@ begin
     Zoom := xZoom;
     Offset := xOffset;
 
-    SampleUpdateDebouncer.Debounce(UpdateSampleDisplay);
+    //TODO: it might be better to throttle here instead of debounce.
+    Debounce(SampleUpdateDebounceID, 25, deTrailing, UpdateSampleDisplay);
   end;
 end;
 
@@ -675,7 +674,7 @@ begin
   Zoom   := ZoomPos.Zoom;
   Offset := ZoomPos.Offset;
 
-  SampleUpdateDebouncer.Debounce(UpdateSampleDisplay);
+  Debounce(SampleUpdateDebounceID, 25, deLeading, UpdateSampleDisplay);
 
   SampleZoomControl.IndexA := ZoomPos.IndexA;
   SampleZoomControl.IndexB := ZoomPos.IndexB;

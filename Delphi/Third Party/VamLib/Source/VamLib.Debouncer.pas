@@ -10,6 +10,9 @@ uses
   SysUtils,
   Vcl.ExtCtrls;
 
+
+
+
 type
   TProcedure = procedure;
   TProcedureOfObject = procedure of object;
@@ -53,34 +56,16 @@ type
   end;
 
 
-  TDebouncer = class
-  private type
-    TLastCall = record
-      p1 : TProcedure;
-      p2 : TProcedureOfObject;
-    end;
 
-  private var
-    Timer         : TTimer;
-    fDebounceTime : cardinal;
 
-    IsActive      : boolean;
-    LastCall      : TLastCall;
-    LastCallType  : TLastCallType;
 
-    cs : TFixedCriticalSection;
+//============================================================================
 
-    procedure SetDebounceTime(const Value: cardinal);
-    procedure Reset(Sender : TObject);
-  public
-    constructor Create;
-    destructor Destroy; override;
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedure); overload;
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedureOfObject); overload;
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProc); overload;
 
-    procedure Debounce(p : TProcedure); overload;
-    procedure Debounce(p : TProcedureOfObject); overload;
-
-    property DebounceTime : cardinal read fDebounceTime write SetDebounceTime;
-  end;
+//============================================================================
 
 
 
@@ -89,122 +74,36 @@ implementation
 uses
   DateUtils;
 
-{ TDebouncer }
+var
+  GlobalDebouncer : TDebounceController;
 
-constructor TDebouncer.Create;
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedure);
 begin
-  Timer := TTimer.Create(nil);
-  Timer.Enabled := false;
-  fDebounceTime  := 100;
-  Timer.Interval := fDebounceTime;
-  Timer.OnTimer := Reset;
+  if not assigned(GlobalDebouncer) then GlobalDebouncer := TDebounceController.Create;
 
-  cs := TFixedCriticalSection.Create;
+  GlobalDebouncer.Debounce(ID, Time, Edge, p);
 end;
 
-destructor TDebouncer.Destroy;
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedureOfObject);
 begin
-  Timer.Free;
-  cs.Free;
-  inherited;
+  if not assigned(GlobalDebouncer) then GlobalDebouncer := TDebounceController.Create;
+
+  GlobalDebouncer.Debounce(ID, Time, Edge, p);
 end;
 
-procedure TDebouncer.SetDebounceTime(const Value: cardinal);
+procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProc);
 begin
-  if value <> fDebounceTime then
-  begin
-    fDebounceTime  := Value;
-    Timer.Interval := Value;
-  end;
-end;
+  if not assigned(GlobalDebouncer) then GlobalDebouncer := TDebounceController.Create;
 
-procedure TDebouncer.Debounce(p: TProcedure);
-begin
-  cs.Acquire;
-  try
-    if IsActive = false then
-    begin
-      IsActive := true;
-      p;
-      LastCallType := ctNil;
-      Timer.Enabled := true;
-    end else
-    begin
-      assert(IsActive = true);
-      LastCallType := ctProcedure;
-      LastCall.p1 := p;
-    end;
-  finally
-    cs.Release;
-  end;
-
-end;
-
-procedure TDebouncer.Debounce(p: TProcedureOfObject);
-begin
-  cs.Acquire;
-  try
-    if IsActive = false then
-    begin
-      IsActive := true;
-      p;
-      LastCallType := ctNil;
-      Timer.Enabled := true;
-    end else
-    begin
-      assert(IsActive = true);
-      LastCallType := ctProcedureOfObject;
-      LastCall.p2 := p;
-    end;
-  finally
-    cs.Release;
-  end;
-end;
-
-procedure TDebouncer.Reset(Sender: TObject);
-begin
-  cs.Acquire;
-  try
-    case LastCallType of
-      ctNil:
-      begin
-        Timer.Enabled := false;
-        IsActive := false;
-      end;
-
-      ctProcedure:
-      begin
-        Timer.Enabled := false;
-        LastCall.p1;
-        LastCall.p1 := nil;
-        LastCallType := ctNil;
-        Timer.Enabled := true;
-      end;
-
-      ctProcedureOfObject:
-      begin
-        Timer.Enabled := false;
-        LastCall.p2;
-        LastCall.p2 := nil;
-        LastCallType := ctNil;
-        Timer.Enabled := true;
-      end;
-
-      ctAnonymousMethod:
-      begin
-
-      end;
-    else
-      raise Exception.Create('Type not handled.');
-    end;
-  finally
-    cs.Release;
-  end;
+  GlobalDebouncer.Debounce(ID, Time, Edge, p);
 end;
 
 
 
-{ TDebounceInfoInfo }
+
+
+
+{ TDebounceInfoList }
 
 function TDebounceInfoList.Find(ID: TUniqueID): PDebounceInfo;
 var
@@ -388,11 +287,24 @@ begin
 
   for c1 := InfoList.Count-1 downto 0 do
   begin
-    InfoList.Delete(c1);
+    if InfoList[c1].IsExpired
+      then InfoList.Delete(c1);
   end;
+
+  if InfoList.Count = 0 then
+  begin
+    Timer.Enabled := false;
+  end;
+
 end;
 
 
+
+initialization
+
+finalization
+  if assigned(GlobalDebouncer) then GlobalDebouncer.Free;
+  
 
 
 end.
