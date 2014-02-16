@@ -13,7 +13,12 @@ uses
 
 
 
+
 type
+  //============================================================================
+  //    low level implementation details.
+  //============================================================================
+
   TProcedure = procedure;
   TProcedureOfObject = procedure of object;
 
@@ -59,6 +64,8 @@ type
 
 
 
+//============================================================================
+//    Global Highlevel functions
 //============================================================================
 
 procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedure); overload;
