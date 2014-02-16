@@ -5,6 +5,7 @@ interface
 uses
   ExtCtrls,
   SysUtils,
+  VamLib.UniqueID,
   VamLib.Collections.Lists;
 
 
@@ -14,9 +15,11 @@ uses
 procedure InitGlobalThrottler;
 procedure ReleaseGlobalThrottler;
 
-function GetThrottleHandle : cardinal;
+// TODO: Instead of creating a singleton class in the Throttler unit, it
+// might be better to create an application specific 'Singletons/Globals' unit
+// that is application specific.
 
-procedure Throttle(const Handle : cardinal; Time: integer; Task : TProc);
+procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
 
 
 //==============================================================================
@@ -25,7 +28,7 @@ procedure Throttle(const Handle : cardinal; Time: integer; Task : TProc);
 type
   PThrottleInfo = ^TThrottleInfo;
   TThrottleInfo = record
-    Handle     : cardinal;
+    Handle     : TUniqueID;
     Task       : TProc;
     HoldTime   : cardinal; //The desired throttled time delay.
     TimeCalled : TDateTime;
@@ -34,8 +37,8 @@ type
 
   TTaskList = class(TSimpleRecordList<TThrottleInfo>)
   public
-    function FindOrCreate(ID : cardinal):PThrottleInfo;
-    function Find(ID : cardinal):PThrottleInfo;
+    function FindOrCreate(ID : TUniqueID):PThrottleInfo;
+    function Find(ID : TUniqueID):PThrottleInfo;
   end;
 
   TThrottler = class
@@ -47,7 +50,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure Throttle(const Handle : cardinal; Time: integer; Task : TProc);
+    procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
   end;
 
 
@@ -57,18 +60,9 @@ uses
   DateUtils;
 
 var
-  GlobalThrottleHandleCount : cardinal;
-  GlobalThrottler : TThrottler;
+  GlobalThrottler  : TThrottler;
   GlobalUsageCount : integer;
 
-function GetThrottleHandle : cardinal;
-begin
-  //TODO: Ideally there should be some sort of mutex here to
-  // prevent multiple threads from calling
-  // GetThrottleHandle() at the same time.
-  result := GlobalThrottleHandleCount;
-  inc(GlobalThrottleHandleCount);
-end;
 
 procedure InitGlobalThrottler;
 begin
@@ -88,7 +82,7 @@ begin
 
 end;
 
-procedure Throttle(const Handle : cardinal; Time: integer; Task : TProc);
+procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
 begin
   assert(assigned(GlobalThrottler));
   GlobalThrottler.Throttle(Handle, Time, Task);
@@ -141,7 +135,7 @@ begin
 
 end;
 
-procedure TThrottler.Throttle(const Handle: cardinal; Time: integer; Task: TProc);
+procedure TThrottler.Throttle(const Handle: TUniqueID; Time: integer; Task: TProc);
 var
   TaskInfo : PThrottleInfo;
 begin
@@ -164,7 +158,7 @@ end;
 
 { TTaskList }
 
-function TTaskList.Find(ID: cardinal): PThrottleInfo;
+function TTaskList.Find(ID: TUniqueID): PThrottleInfo;
 var
   c1: Integer;
 begin
@@ -177,7 +171,7 @@ begin
   result := nil;
 end;
 
-function TTaskList.FindOrCreate(ID: cardinal): PThrottleInfo;
+function TTaskList.FindOrCreate(ID: TUniqueID): PThrottleInfo;
 var
   c1: Integer;
   ptr : PThrottleInfo;
@@ -194,7 +188,6 @@ begin
 end;
 
 initialization
-  GlobalThrottleHandleCount := 0;
   GlobalUsageCount := 0;
 finalization
   if assigned(GlobalThrottler)

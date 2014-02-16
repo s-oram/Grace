@@ -6,6 +6,7 @@ uses
   eeGlobals,
   Classes,
   Controls,
+  VamLib.UniqueID,
   LucidityGUI.Scope;
 
 type
@@ -29,7 +30,7 @@ type
     FocusedControl : TControl;
     ScopeFocus : TScopeFocus;
 
-    ThrottleHandle : cardinal;
+    ThrottleHandle : TUniqueID;
     procedure KnobMouseEnter(Sender : TObject);
     procedure KnobMouseLeave(Sender : TObject);
     procedure KnobChanged(Sender : TObject);
@@ -64,7 +65,7 @@ constructor TScopeHandler.Create(aGlobals : TGlobals);
 begin
   Globals := aGlobals;
 
-  ThrottleHandle := GetThrottleHandle;
+  ThrottleHandle.Init;
 end;
 
 destructor TScopeHandler.Destroy;
