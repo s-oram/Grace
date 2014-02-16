@@ -12,13 +12,6 @@ uses
 //==============================================================================
 //        high level global functions.
 //==============================================================================
-procedure InitGlobalThrottler;
-procedure ReleaseGlobalThrottler;
-
-// TODO: Instead of creating a singleton class in the Throttler unit, it
-// might be better to create an application specific 'Singletons/Globals' unit
-// that is application specific.
-
 procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
 
 
@@ -35,15 +28,15 @@ type
     IsExpired  : boolean;
   end;
 
-  TTaskList = class(TSimpleRecordList<TThrottleInfo>)
+  TInfoList = class(TSimpleRecordList<TThrottleInfo>)
   public
     function FindOrCreate(ID : TUniqueID):PThrottleInfo;
     function Find(ID : TUniqueID):PThrottleInfo;
   end;
 
-  TThrottler = class
+  TThrottleController = class
   private
-    TaskList : TTaskList;
+    TaskList : TInfoList;
     Timer : TTimer;
     procedure HandleTimerEvent(Sender : TObject);
   public
@@ -60,52 +53,32 @@ uses
   DateUtils;
 
 var
-  GlobalThrottler  : TThrottler;
-  GlobalUsageCount : integer;
-
-
-procedure InitGlobalThrottler;
-begin
-  if not assigned(GlobalThrottler)
-    then GlobalThrottler := TThrottler.Create;
-
-  inc(GlobalUsageCount);
-end;
-
-procedure ReleaseGlobalThrottler;
-begin
-  dec(GlobalUsageCount);
-  if (GlobalUsageCount = 0) and (assigned(GlobalThrottler)) then
-  begin
-    FreeAndNil(GlobalThrottler);
-  end;
-
-end;
+  GlobalThrottler  : TThrottleController;
 
 procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
 begin
-  assert(assigned(GlobalThrottler));
+  if not assigned(GlobalThrottler) then GlobalThrottler := TThrottleController.Create;
   GlobalThrottler.Throttle(Handle, Time, Task);
 end;
 
 { TThrottler }
 
-constructor TThrottler.Create;
+constructor TThrottleController.Create;
 begin
-  TaskList := TTaskList.Create;
+  TaskList := TInfoList.Create;
   Timer := TTimer.Create(nil);
   Timer.Interval := 1;
   Timer.OnTimer := HandleTimerEvent;
 end;
 
-destructor TThrottler.Destroy;
+destructor TThrottleController.Destroy;
 begin
   TaskList.Free;
   Timer.Free;
   inherited;
 end;
 
-procedure TThrottler.HandleTimerEvent(Sender: TObject);
+procedure TThrottleController.HandleTimerEvent(Sender: TObject);
 var
   c1: Integer;
   TaskInfo : PThrottleInfo;
@@ -135,7 +108,7 @@ begin
 
 end;
 
-procedure TThrottler.Throttle(const Handle: TUniqueID; Time: integer; Task: TProc);
+procedure TThrottleController.Throttle(const Handle: TUniqueID; Time: integer; Task: TProc);
 var
   TaskInfo : PThrottleInfo;
 begin
@@ -158,7 +131,7 @@ end;
 
 { TTaskList }
 
-function TTaskList.Find(ID: TUniqueID): PThrottleInfo;
+function TInfoList.Find(ID: TUniqueID): PThrottleInfo;
 var
   c1: Integer;
 begin
@@ -171,7 +144,7 @@ begin
   result := nil;
 end;
 
-function TTaskList.FindOrCreate(ID: TUniqueID): PThrottleInfo;
+function TInfoList.FindOrCreate(ID: TUniqueID): PThrottleInfo;
 var
   c1: Integer;
   ptr : PThrottleInfo;
@@ -188,7 +161,7 @@ begin
 end;
 
 initialization
-  GlobalUsageCount := 0;
+
 finalization
   if assigned(GlobalThrottler)
     then GlobalThrottler.Free;

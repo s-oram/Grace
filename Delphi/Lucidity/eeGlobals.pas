@@ -77,8 +77,6 @@ var
 begin
   inherited;
 
-  VamLib.Throttler.InitGlobalThrottler;
-
   fSelectedModSlot := -1;
 
   fInfoBarReceiver := TInfoBarReceiver.Create;
@@ -157,8 +155,6 @@ begin
   fInfoBarReceiver.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
-
-  VamLib.Throttler.ReleaseGlobalThrottler;
   inherited;
 end;
 
