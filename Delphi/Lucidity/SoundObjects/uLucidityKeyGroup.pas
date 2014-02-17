@@ -3,6 +3,7 @@ unit uLucidityKeyGroup;
 interface
 
 uses
+  LucidityGui.VectorSequence,
   uLucidityKeyGroupInterface, LucidityModConnections,
   VamLib.MoreTypes, eeGlobals,
   eeVoiceLogic, eeVstParameter,
@@ -36,6 +37,8 @@ type
     function GetModConnections:TModConnections;
     function GetModConnectionsPointer : PModConnections;
     function GetModulatedParameters : PModulatedPars;
+
+    function GetVectorSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
   protected
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
@@ -134,6 +137,11 @@ end;
 function TKeyGroup.GetTriggeredNoteCount: cardinal;
 begin
   result := fTriggeredNoteCount;
+end;
+
+function TKeyGroup.GetVectorSequenceData(SeqIndex: integer): IVectorSequenceDataObject;
+begin
+  //
 end;
 
 function TKeyGroup.GetVoiceParameters: TLucidityVoiceParameterWrapper;
