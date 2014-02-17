@@ -115,10 +115,9 @@ object PluginGui: TPluginGui
           Font.Style = [fsBold]
           TabIndex = -1
           Tabs.Strings = (
-            'XY PADS'
-            'MOD MATRIX A'
-            'MOD MATRIX B'
-            'MOD MATRIX C')
+            'SEQUENCER ONE'
+            'SEQUENCER TWO'
+            'MAIN')
           OnChanged = LowerTabsChanged
           Visible = True
         end
