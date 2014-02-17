@@ -6,6 +6,7 @@ interface
 
 uses
   VamLib.ZeroObject,
+  Lucidity.SequencerDataObject,
   B2.Filter.CriticallyDampedLowpass, eeBiquadFilterCore,
   VamLib.MoreTypes,
   uLucidityEnums,
@@ -13,6 +14,8 @@ uses
   uConstants;
 
 type
+  // TODO: Step Sequencer needs to use step sequence values from global Step seq data object
+  // instead of the internal step values.
   TLucidyStepSequencer = class(TZeroObject)
   private
     fStepCountAsInt: integer;
@@ -22,12 +25,14 @@ type
     fStepSeqClock: TSequencerClock;
     fSampleRate: single;
     fBpm: single;
+    FSequenceData: IVectorSequenceDataObject;
     function GetStepValue(Index: integer): single;
     procedure SetStepValue(Index: integer; const Value: single);
     procedure SetStepCount(const Value: TStepSequencerLength);
     procedure SetStepSeqClock(const Value: TSequencerClock);
     procedure SetBpm(const Value: single);
     procedure SetSampleRate(const Value: single);
+    procedure SetSequenceData(const Value: IVectorSequenceDataObject);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
     UseInternalCounter : boolean;
@@ -51,6 +56,8 @@ type
   public
     constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
+
+    property SequenceData : IVectorSequenceDataObject read FSequenceData write SetSequenceData;
 
     property SampleRate : single read fSampleRate write SetSampleRate;
     property Bpm        : single read fBpm        write SetBpm;
@@ -145,6 +152,11 @@ begin
     // updated.
     SetStepSeqClock(Clock);
   end;
+end;
+
+procedure TLucidyStepSequencer.SetSequenceData(const Value: IVectorSequenceDataObject);
+begin
+  FSequenceData := Value;
 end;
 
 procedure TLucidyStepSequencer.SetStepCount(const Value: TStepSequencerLength);
