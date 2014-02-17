@@ -4,6 +4,7 @@ interface
 
 uses
   uConstants,
+  Lucidity.SequencerDataObject,
   LucidityModConnections;
 
 type
@@ -28,6 +29,9 @@ type
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
     function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
     procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, MoxMax:single);
+
+
+    function GetVectorSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
   end;
 
 implementation

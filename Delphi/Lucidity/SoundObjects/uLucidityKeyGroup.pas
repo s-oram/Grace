@@ -155,7 +155,12 @@ end;
 
 function TKeyGroup.GetVectorSequenceData(SeqIndex: integer): IVectorSequenceDataObject;
 begin
-  //
+  case SeqIndex of
+    0: result := self.FSeq1Data;
+    1: result := self.FSeq2Data;
+  else
+    raise Exception.Create('SeqIndex not handled.');
+  end;
 end;
 
 function TKeyGroup.GetVoiceParameters: TLucidityVoiceParameterWrapper;

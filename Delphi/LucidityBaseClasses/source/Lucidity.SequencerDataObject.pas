@@ -13,7 +13,7 @@ type
     procedure SetStepValue(Index : integer; const Value:single);
   end;
 
-  TSequencerDataObject = class(TZeroObject)
+  TSequencerDataObject = class(TZeroObject, IVectorSequenceDataObject)
   private
     function GetStepValue(Index: integer): single;
     procedure SetStepValue(Index: integer; const Value: single);
