@@ -104,7 +104,6 @@
 			<DCCReference Include="..\source\VamButton.pas"/>
 			<DCCReference Include="..\source\VamSampleZoomControl.pas"/>
 			<DCCReference Include="..\source\VamTextBox.pas"/>
-			<DCCReference Include="..\source\VamVectorSequence.pas"/>
 			<DCCReference Include="..\source\VamXYPad.pas"/>
 			<DCCReference Include="..\source\VamTabs.pas"/>
 			<DCCReference Include="..\source\VamNumericKnob.pas"/>

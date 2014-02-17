@@ -4,7 +4,8 @@ interface
 
 uses
   LucidityGUI.DropBoxSelector,
-  LucidityGUI.Scope;
+  LucidityGUI.Scope,
+  VamVectorSequence;
 
 
 procedure Register;
@@ -18,6 +19,7 @@ procedure Register;
 begin
   RegisterComponents('Lucidity GUI', [TDropBoxSelector]);
   RegisterComponents('Lucidity GUI', [TLucidityScope]);
+  RegisterComponents('Lucidity GUI', [TVamVectorSequence]);
 end;
 
 end.

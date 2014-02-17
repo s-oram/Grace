@@ -30,7 +30,8 @@ package LucidityBaseClasses;
 requires
   rtl,
   vcl,
-  EasyEffect;
+  EasyEffect,
+  VamBasicRunXE2;
 
 contains
   uConstants in '..\source\uConstants.pas',

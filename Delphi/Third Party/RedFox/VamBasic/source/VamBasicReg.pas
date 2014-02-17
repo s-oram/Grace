@@ -30,7 +30,6 @@ uses
   VamTextBox,
   VamTreeView,
   VamModSelector,
-  VamVectorSequence,
   VamXYPad;
 
 procedure Register;
@@ -68,7 +67,6 @@ begin
   RegisterComponents('Vam VST', [TVamSampleZoomControl]);
   RegisterComponents('Vam VST', [TVamStatusLed]);
   RegisterComponents('Vam VST', [TVamSlider]);
-  RegisterComponents('Vam VST', [TVamVectorSequence]);
   RegisterComponents('Vam VST', [TVamXYPad]);
 
   RegisterComponents('Vam Compound', [TVamCompoundLabel]);
