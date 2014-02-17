@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   B2.Filter.CriticallyDampedLowpass, eeBiquadFilterCore,
   VamLib.MoreTypes,
   uLucidityEnums,
@@ -12,7 +13,7 @@ uses
   uConstants;
 
 type
-  TLucidyStepSequencer = class
+  TLucidyStepSequencer = class(TZeroObject)
   private
     fStepCountAsInt: integer;
     fCurrentStep: integer;
