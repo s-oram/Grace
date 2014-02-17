@@ -35,6 +35,7 @@ requires
 
 contains
   uConstants in '..\source\uConstants.pas',
-  uLucidityEnums in '..\source\uLucidityEnums.pas';
+  uLucidityEnums in '..\source\uLucidityEnums.pas',
+  Lucidity.SequencerDataObject in '..\source\Lucidity.SequencerDataObject.pas';
 
 end.

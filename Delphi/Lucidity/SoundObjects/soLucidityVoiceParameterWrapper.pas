@@ -3,6 +3,8 @@ unit soLucidityVoiceParameterWrapper;
 interface
 
 uses
+  VamLib.ZeroObject,
+  LucidityGui.VectorSequence,
   LucidityModConnections,
   uConstants, uLucidityEnums, soModMatrix,
   uLucidityKeyGroupInterface,
@@ -19,6 +21,7 @@ type
     ['{FCE3B1A1-F6C1-480F-A69F-5E4ABDAE3F78}']
     function GetObject:TLucidityVoiceParameterWrapper;
   end;
+
 
   TLucidityVoiceParameterWrapper = class
   private
@@ -144,6 +147,8 @@ type
     VoiceCount : integer;
     fSeq1StepValues : array[0..kMaxStepSequencerLength-1] of single;
     fSeq2StepValues : array[0..kMaxStepSequencerLength-1] of single;
+
+
     procedure UpdateActiveVoices(UpdateAction:TUpdateActionProcedure);
 
     // VoiceMode and VoiceGlide are unused at this point. They might be used in future. Currently using a global VoiceMode and VoiceGlide.
@@ -162,6 +167,8 @@ type
 
     property Seq1StepValue[Index : integer]:single read GetSeq1StepValue write SetSeq1StepValue;
     property Seq2StepValue[Index : integer]:single read GetSeq2StepValue write SetSeq2StepValue;
+
+    
   published
     property PitchTracking            : TPitchTracking                     read fPitchTracking           write SetPitchTracking;
     property SamplePlaybackType       : TSamplePlaybackType                read fSamplePlaybackType      write SetSamplePlaybackType;
@@ -237,6 +244,8 @@ begin
 
   self.fVoiceGain := 1;
   self.fVoicePan  := 0.5;
+
+  
 end;
 
 destructor TLucidityVoiceParameterWrapper.Destroy;
@@ -889,6 +898,9 @@ begin
   aVoice.StepSeqTwo.Direction            := Seq2Direction;
   aVoice.StepSeqTwo.StepCount            := StepSeq2Length;
 end;
+
+
+
 
 
 

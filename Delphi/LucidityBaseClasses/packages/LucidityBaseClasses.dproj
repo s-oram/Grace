@@ -94,6 +94,7 @@
 			<DCCReference Include="VamBasicRunXE2.dcp"/>
 			<DCCReference Include="..\source\uConstants.pas"/>
 			<DCCReference Include="..\source\uLucidityEnums.pas"/>
+			<DCCReference Include="..\source\Lucidity.SequencerDataObject.pas"/>
 			<None Include="..\source\ParNames.inc"/>
 			<None Include="..\source\Defines.inc"/>
 			<BuildConfiguration Include="Release">

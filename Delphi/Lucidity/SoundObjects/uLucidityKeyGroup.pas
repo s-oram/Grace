@@ -3,6 +3,7 @@ unit uLucidityKeyGroup;
 interface
 
 uses
+  Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   uLucidityKeyGroupInterface, LucidityModConnections,
   VamLib.MoreTypes, eeGlobals,
@@ -40,12 +41,16 @@ type
 
     function GetVectorSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
   protected
+    FSeq1Data : TSequencerDataObject;
+    FSeq2Data : TSequencerDataObject;
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
 
     Voices : PArrayOfLucidityVoice;
 
     ModulatedParameters: TModulatedPars;
+
+
 
     function GetName:string;
     procedure SetName(Value : string);
@@ -54,6 +59,10 @@ type
     property SampleMap : TSampleMap read fSampleMap write fSampleMap;
 
     procedure Handle_ModConnectionsChanged(Sender : TObject);
+
+
+    property Seq1Data : TSequencerDataObject read FSeq1Data;
+    property Seq2Data : TSequencerDataObject read FSeq1Data;
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -100,6 +109,9 @@ begin
 
   fVoiceParameters := TLucidityVoiceParameterWrapper.Create(aVoices, self);
 
+  FSeq1Data := TSequencerDataObject.Create;
+  FSeq2Data := TSequencerDataObject.Create;
+
   //== Init some values ==
   for c1 := 0 to kMaxStepSequencerLength-1 do
   begin
@@ -111,6 +123,8 @@ end;
 
 destructor TKeyGroup.Destroy;
 begin
+  FSeq1Data.Free;
+  FSeq2Data.Free;
   fVoiceParameters.Free;
   fModConnections.Free;
   inherited;
