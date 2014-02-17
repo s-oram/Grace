@@ -346,9 +346,7 @@ begin
     Global_Info.UseHostGui         := false;
 
     Global_Info.InitialGuiWidth    := 980;
-    //Global_Info.InitialGuiHeight   := 634;
-    //Global_Info.InitialGuiHeight   := 724;
-    Global_Info.InitialGuiHeight   := 756;
+    Global_Info.InitialGuiHeight   := 654;
 
     Global_Info.IsSynth            := true;
     Global_Info.PresetsAreChunks   := true;

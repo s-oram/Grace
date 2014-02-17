@@ -977,7 +977,7 @@ begin
   SpacerPanel1.Height    := 36;
 
   //SampleMapDiv.Height    := 258;
-  SampleMapDiv.Height    := 476;
+  SampleMapDiv.Height    := 406;
 
   if IsSampleMapVisible = true then
   begin
@@ -1016,7 +1016,9 @@ begin
 
 
 
-
+  // TODO: InfoBarDiv and SpacePanel1 should both be deleted.
+  InfoBarDiv.Visible   := false;
+  SpacerPanel1.Visible := false;
 
   MainWorkArea.Repaint;
 end;
