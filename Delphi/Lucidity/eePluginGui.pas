@@ -615,12 +615,14 @@ begin
   case Value of
     TLowerTabOptions.TabSeq1:
     begin
+      SequencerFrame.SequencerIndex := 0;
       SequencerFrame.BackgroundPanel.Visible  := true;
       ModControlFrame.BackgroundPanel.Visible := false;
     end;
 
     TLowerTabOptions.TabSeq2:
     begin
+      SequencerFrame.SequencerIndex := 1;
       SequencerFrame.BackgroundPanel.Visible  := true;
       ModControlFrame.BackgroundPanel.Visible := false;
     end;

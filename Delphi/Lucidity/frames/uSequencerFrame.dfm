@@ -2,36 +2,32 @@ object SequencerFrame: TSequencerFrame
   Left = 0
   Top = 0
   Width = 873
-  Height = 376
+  Height = 471
   TabOrder = 0
   object Panel: TRedFoxContainer
     Left = 0
     Top = 0
     Width = 873
-    Height = 376
+    Height = 471
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitWidth = 320
-    ExplicitHeight = 240
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
       Width = 873
-      Height = 376
+      Height = 471
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Align = alClient
       Visible = True
-      ExplicitWidth = 320
-      ExplicitHeight = 240
       object SeqBackPanel: TVamPanel
         AlignWithMargins = True
         Left = 4
         Top = 4
         Width = 865
-        Height = 368
+        Height = 463
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -46,8 +42,146 @@ object SequencerFrame: TSequencerFrame
         Transparent = False
         Align = alClient
         Visible = True
-        ExplicitLeft = 60
-        ExplicitTop = -28
+        OnResize = SeqBackPanelResize
+        Padding.Left = 4
+        Padding.Top = 4
+        Padding.Right = 4
+        Padding.Bottom = 4
+        object InfoDiv: TVamDiv
+          Left = 4
+          Top = 432
+          Width = 857
+          Height = 27
+          Text = 'InfoDiv'
+          HitTest = True
+          Align = alBottom
+          Visible = True
+          object SequencerLabel: TVamLabel
+            Left = 0
+            Top = 0
+            Width = 177
+            Height = 27
+            Text = 'Sequencer'
+            HitTest = True
+            AutoSize = False
+            TextAlign = AlignNear
+            TextVAlign = AlignCenter
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Align = alLeft
+            Visible = True
+          end
+          object StepCountSelector: TDropBoxSelector
+            AlignWithMargins = True
+            Left = 737
+            Top = 0
+            Width = 120
+            Height = 27
+            Margins.Left = 4
+            Margins.Top = 0
+            Margins.Right = 0
+            Margins.Bottom = 0
+            Text = 'StepCountSelector'
+            HitTest = True
+            ColorTextA = '$FFFFFFFF'
+            ColorTextB = '$FFFFFFFF'
+            Color = '$FF3E3E3E'
+            ColorMouseOver = '$FF3E3E3E'
+            ColorBorder = '$00000000'
+            ShowBorder = False
+            TextA = 'Steps'
+            TextPadding.Left = 4
+            TextPadding.Right = 4
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Align = alRight
+            Visible = True
+          end
+          object ClockSelector: TDropBoxSelector
+            AlignWithMargins = True
+            Left = 489
+            Top = 0
+            Width = 120
+            Height = 27
+            Margins.Left = 4
+            Margins.Top = 0
+            Margins.Right = 0
+            Margins.Bottom = 0
+            Text = 'DropBoxSelector1'
+            HitTest = True
+            ColorTextA = '$FFFFFFFF'
+            ColorTextB = '$FFFFFFFF'
+            Color = '$FF3E3E3E'
+            ColorMouseOver = '$FF3E3E3E'
+            ColorBorder = '$00000000'
+            ShowBorder = False
+            TextA = 'Clock'
+            TextPadding.Left = 4
+            TextPadding.Right = 4
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Align = alRight
+            Visible = True
+          end
+          object ModeSelector: TDropBoxSelector
+            AlignWithMargins = True
+            Left = 613
+            Top = 0
+            Width = 120
+            Height = 27
+            Margins.Left = 4
+            Margins.Top = 0
+            Margins.Right = 0
+            Margins.Bottom = 0
+            Text = 'DropBoxSelector1'
+            HitTest = True
+            ColorTextA = '$FFFFFFFF'
+            ColorTextB = '$FFFFFFFF'
+            Color = '$FF3E3E3E'
+            ColorMouseOver = '$FF3E3E3E'
+            ColorBorder = '$00000000'
+            ShowBorder = False
+            TextA = 'Mode'
+            TextPadding.Left = 4
+            TextPadding.Right = 4
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Align = alRight
+            Visible = True
+          end
+        end
+        object SeqStepControl: TVamVectorSequence
+          Tag = 1
+          AlignWithMargins = True
+          Left = 216
+          Top = 56
+          Width = 212
+          Height = 131
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          HitTest = True
+          Color_Background = '$FF000000'
+          Color_Border = '$FF000000'
+          Color_Step = '$FFD6DADF'
+          Color_StepActive = '$55FFFFFF'
+          CurrentStep = 0
+          SequenceLength = 8
+          Visible = True
+        end
       end
     end
   end

@@ -4,7 +4,7 @@ interface
 
 uses
   Menus,
-  VamLib.Collections.RecordArray,
+  VamLib.Collections.Lists,
   VamGuiControlInterfaces,
   eeVstParameter,
   Classes, Controls, eeGlobals,
@@ -22,10 +22,16 @@ type
     ParIndex        : integer;
   end;
 
+  TControlInfoList = class(TSimpleRecordList<TControlInfo>)
+  private
+  public
+    function FindByControl(c : TControl):PControlInfo;
+  end;
+
   TRedFoxMenuHandler = class
   private
     fGlobals: TGlobals;
-    ControlLinks            : TRecordArray<TControlInfo>;
+    ControlLinks            : TControlInfoList;
     IsManualGuiUpdateActive : boolean;
     MenuBuilder             : TGuiMenuBuilder;
 
@@ -71,35 +77,42 @@ begin
 
   MenuBuilder := TGuiMenuBuilder.Create;
   MenuBuilder.Globals := aGlobals;
+
+  ControlLinks := TControlInfoList.Create;
 end;
 
 destructor TRedFoxMenuHandler.Destroy;
 begin
+  ControlLinks.Free;
   MenuBuilder.Free;
   inherited;
 end;
 
 procedure TRedFoxMenuHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TMenuCallback = nil);
 var
-  ci : TControlInfo;
+  ci : PControlInfo;
+
   cType : string;
   m     : TMethod;
   kc : IMenuControl;
 begin
   assert(Supports(c, IMenuControl));
 
-  ci.Control := c;
-  if Supports(c, IMenuControl, ci.MenuControl) = false then raise Exception.Create('Control doesn''t support IMenuControlInterface.');
-  ci.LinkedParameter  := aLinkedParameter;
-  ci.EnumHelper       := EnumHelper;
-  ci.PopupCallBack    := PopupCallback;
-  ci.ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
-  ControlLinks.Append(ci);
+  ci := ControlLinks.FindByControl(c);
+  if not assigned(ci) then ci := ControlLinks.New;
 
-  ci.MenuControl.SetOnMouseEnter(self.Handle_MouseEnter);
-  ci.MenuControl.SetOnMouseLeave(self.Handle_MouseLeave);
-  ci.MenuControl.SetOnMouseDown(self.Handle_MouseDown);
-  ci.MenuControl.SetOnMouseUp(self.Handle_MouseUp);
+  ci^.Control := c;
+  if Supports(c, IMenuControl, ci^.MenuControl) = false then raise Exception.Create('Control doesn''t support IMenuControlInterface.');
+  ci^.LinkedParameter  := aLinkedParameter;
+  ci^.EnumHelper       := EnumHelper;
+  ci^.PopupCallBack    := PopupCallback;
+  ci^.ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
+  ControlLinks.Add(ci^);
+
+  ci^.MenuControl.SetOnMouseEnter(self.Handle_MouseEnter);
+  ci^.MenuControl.SetOnMouseLeave(self.Handle_MouseLeave);
+  ci^.MenuControl.SetOnMouseDown(self.Handle_MouseDown);
+  ci^.MenuControl.SetOnMouseUp(self.Handle_MouseUp);
 end;
 
 procedure TRedFoxMenuHandler.DeregisterControl(c: TControl);
@@ -255,5 +268,21 @@ begin
   end;
 end;
 
+
+{ TControlInfoList }
+
+function TControlInfoList.FindByControl(c: TControl): PControlInfo;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to self.Count-1 do
+  begin
+    if Raw[c1].Control = c
+      then exit(@Raw[c1]);
+  end;
+
+  //If we've made it this far, we've not found anything.
+  result := nil;
+end;
 
 end.
