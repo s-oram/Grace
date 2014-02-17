@@ -39,7 +39,6 @@ type
     VamLabel1: TVamLabel;
     VoiceControlDiv: TVamDiv;
     TabPanel: TVamTabPanel;
-    MainLower: TVamPanel;
     SidePanel: TVamDiv;
     InfoBarDiv: TVamDiv;
     SpacerPanel1: TVamPanel;
@@ -212,7 +211,9 @@ begin
   VoiceControlFrame.BackgroundPanel.CornerRadius4 := 3;
 
   ModControlFrame := TModControlFrame.Create(self.Owner);
-  ModControlFrame.BackgroundPanel.Parent := MainMid;
+
+  //ModControlFrame.BackgroundPanel.Parent := MainMid;
+  ModControlFrame.BackgroundPanel.Parent := TabPanel;
   ModControlFrame.BackgroundPanel.Align  := alClient;
   ModControlFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
   ModControlFrame.BackgroundPanel.Margins.SetBounds(0,0,0,0);
@@ -808,7 +809,6 @@ begin
   TitlePanel.Color := kPanelLight;
   MenuBarFrame.BackgroundPanel.Color := kPanelLight;
   FileBrowserFrame.BackgroundPanel.Color := kPanelLight;
-  MainLower.Color := kPanelLight;
 
 
   SampleMapFrame.BackgroundPanel.Color         := kPanelLight;
@@ -853,7 +853,6 @@ begin
         ClearPadding(self.VoiceControlDiv);
         ClearPadding(self.MainMid);
         ClearPadding(self.TabPanel);
-          ClearPadding(self.MainLower);
         ClearPadding(self.InfoBarDiv);
       ClearPadding(self.SideWorkArea);
         ClearPadding(self.SidePanel);
@@ -913,16 +912,15 @@ begin
   //   A little more tweaking...
   //===========================================================================
 
+  ModControlFrame.BackgroundPanel.CornerRadius1 := 3;
+  ModControlFrame.BackgroundPanel.CornerRadius2 := 3;
+  ModControlFrame.BackgroundPanel.CornerRadius3 := 0;
+  ModControlFrame.BackgroundPanel.CornerRadius4 := 0;
 
   TabPanel.CornerRadius1 := 0;
   TabPanel.CornerRadius2 := 0;
   TabPanel.CornerRadius3 := 3;
   TabPanel.CornerRadius4 := 3;
-
-  MainLower.CornerRadius1 := 3;
-  MainLower.CornerRadius2 := 3;
-  MainLower.CornerRadius3 := 0;
-  MainLower.CornerRadius4 := 0;
 
   SpacerPanel1.CornerRadius1 := 3;
   SpacerPanel1.CornerRadius2 := 3;
@@ -977,7 +975,7 @@ begin
   MainTop.Height         := 208;
   VoiceControlDiv.Height := 80;
   MainMid.Height         := 322;
-  TabPanel.Height        := 258;
+  TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
   InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
@@ -1007,7 +1005,7 @@ begin
   begin
     SampleMapDiv.Visible    := false;
     VoiceControlDiv.Visible := true;
-    MainMid.Visible         := true;
+    MainMid.Visible         := false;
     TabPanel.Visible        := true;
     ModSystem2Div.Visible   := true;
     SpacerPanel1.Visible    := false;
@@ -1016,14 +1014,14 @@ begin
     MainMenuBar.Left := 1;
     Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(MainTop, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(MainMid, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(VoiceControlDiv, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
+    Erector.Init(TabPanel, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(ModSystem2Div, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(ModSystem2Div, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
   end;
 
 
-  TabPanel.Visible := false;
+
 
 
   MainWorkArea.Repaint;

@@ -133,17 +133,6 @@ object PluginGui: TPluginGui
             'MOD MATRIX C')
           OnChanged = LowerTabsChanged
           Visible = True
-          object MainLower: TVamPanel
-            Left = 0
-            Top = 0
-            Width = 513
-            Height = 65
-            HitTest = True
-            Color = '$FFCCCCCC'
-            Transparent = False
-            Align = alClient
-            Visible = True
-          end
         end
         object InfoBarDiv: TVamDiv
           Left = 48
