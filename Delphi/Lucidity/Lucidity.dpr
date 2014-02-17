@@ -140,7 +140,8 @@ uses
   Lucidity.FirstRun in 'Lucidity.FirstRun.pas',
   eePluginGuiMeta in 'eePluginGuiMeta.pas',
   GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas',
-  soSignalRecorder in 'SoundObjects\soSignalRecorder.pas';
+  soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
+  uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame};
 
 {$R *.res}
 

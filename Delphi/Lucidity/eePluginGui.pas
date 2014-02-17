@@ -6,6 +6,7 @@ interface
 
 
 uses
+  uSequencerFrame,
   OtlComm, uModSystem2Frame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame,
   eeEnumHelper, uLucidityEnums,
@@ -70,6 +71,7 @@ type
     InfoBarFrame           : TInfoBarFrame;
     AboutFrame             : TAboutFrame;
     ModSystem2Frame        : TModSystem2Frame;
+    SequencerFrame         : TSequencerFrame;
 
     FeedbackData : TGuiFeedBackData;
 
@@ -210,8 +212,6 @@ begin
   VoiceControlFrame.BackgroundPanel.CornerRadius4 := 3;
 
   ModControlFrame := TModControlFrame.Create(self.Owner);
-
-  //ModControlFrame.BackgroundPanel.Parent := MainMid;
   ModControlFrame.BackgroundPanel.Parent := TabPanel;
   ModControlFrame.BackgroundPanel.Align  := alClient;
   ModControlFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
@@ -220,6 +220,7 @@ begin
   ModControlFrame.BackgroundPanel.CornerRadius2 := 3;
   ModControlFrame.BackgroundPanel.CornerRadius3 := 3;
   ModControlFrame.BackgroundPanel.CornerRadius4 := 3;
+  ModControlFrame.BackgroundPanel.Visible := false;
 
 
 
@@ -243,6 +244,10 @@ begin
   ModSystem2Frame.BackgroundPanel.Align := alClient;
   ModSystem2Frame.BackgroundPanel.Visible := true;
   ModSystem2Frame.BackgroundPanel.Parent := ModSystem2Div;
+
+  SequencerFrame := TSequencerFrame.Create(self.Owner);
+  SequencerFrame.BackgroundPanel.Visible := true;
+  SequencerFrame.BackgroundPanel.Parent := TabPanel;
 
   //======= Build the GUI =======
 
@@ -277,6 +282,7 @@ begin
   FreeAndNil(ModControlFrame);
   FreeAndNil(InfoBarFrame);
   FreeAndNil(ModSystem2Frame);
+  FreeAndNil(SequencerFrame);
 
   DropFileTarget.Free;
   FeedBackData.Free;
@@ -362,6 +368,7 @@ begin
     SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
+    SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
   except
@@ -550,6 +557,7 @@ begin
   SampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   MiniSampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
+  SequencerFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
   GuiStandard.UpdateControls;
@@ -597,10 +605,32 @@ begin
   fLowerTabState := Value;
 
   case Value of
-    TLowerTabOptions.Pads:       TabPanel.TabIndex := 0;
-    TLowerTabOptions.ModMatrixA: TabPanel.TabIndex := 1;
-    TLowerTabOptions.ModMatrixB: TabPanel.TabIndex := 2;
-    TLowerTabOptions.ModMatrixC: TabPanel.TabIndex := 3;
+    TLowerTabOptions.TabSeq1: TabPanel.TabIndex := 0;
+    TLowerTabOptions.TabSeq2: TabPanel.TabIndex := 1;
+    TLowerTabOptions.TabMain: TabPanel.TabIndex := 2;
+  else
+    raise Exception.Create('Unexpect tab value.');
+  end;
+
+  case Value of
+    TLowerTabOptions.TabSeq1:
+    begin
+      SequencerFrame.BackgroundPanel.Visible  := true;
+      ModControlFrame.BackgroundPanel.Visible := false;
+    end;
+
+    TLowerTabOptions.TabSeq2:
+    begin
+      SequencerFrame.BackgroundPanel.Visible  := true;
+      ModControlFrame.BackgroundPanel.Visible := false;
+    end;
+
+    TLowerTabOptions.TabMain:
+    begin
+      SequencerFrame.BackgroundPanel.Visible  := false;
+      ModControlFrame.BackgroundPanel.Visible := true;
+
+    end;
   else
     raise Exception.Create('Unexpect tab value.');
   end;
@@ -614,11 +644,10 @@ begin
   if not assigned(Plugin) then exit;
 
   case TabPanel.TabIndex of
-    -1: TabSelected := TLowerTabOptions.Pads;
-    0: TabSelected := TLowerTabOptions.Pads;
-    1: TabSelected := TLowerTabOptions.ModMatrixA;
-    2: TabSelected := TLowerTabOptions.ModMatrixB;
-    3: TabSelected := TLowerTabOptions.ModMatrixC;
+    -1: TabSelected := TLowerTabOptions.TabMain;
+    0: TabSelected := TLowerTabOptions.TabSeq1;
+    1: TabSelected := TLowerTabOptions.TabSeq2;
+    2: TabSelected := TLowerTabOptions.TabMain;
   else
     raise Exception.Create('Error Message');
   end;
@@ -813,6 +842,7 @@ begin
   SampleMapFrame.BackgroundPanel.Color         := kPanelLight;
   MiniSampleDisplayFrame.BackgroundPanel.Color := kPanelLight;
   ModControlFrame.BackgroundPanel.Color        := kPanelLight;
+  SequencerFrame.BackgroundPanel.Color         := kPanelLight;
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
   ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
   InfoBarFrame.BackgroundPanel.Color           := kPanelDark;
@@ -864,6 +894,7 @@ begin
   ClearPadding(AboutFrame.BackgroundPanel);
   ClearPadding(VoiceControlFrame.BackgroundPanel);
   ClearPadding(ModControlFrame.BackgroundPanel);
+  ClearPadding(SequencerFrame.BackgroundPanel);
   ClearPadding(ModSystem2Frame.BackgroundPanel);
   ClearPadding(InfoBarFrame.BackgroundPanel);
 
@@ -914,6 +945,11 @@ begin
   ModControlFrame.BackgroundPanel.CornerRadius2 := 3;
   ModControlFrame.BackgroundPanel.CornerRadius3 := 0;
   ModControlFrame.BackgroundPanel.CornerRadius4 := 0;
+
+  SequencerFrame.BackgroundPanel.CornerRadius1 := 3;
+  SequencerFrame.BackgroundPanel.CornerRadius2 := 3;
+  SequencerFrame.BackgroundPanel.CornerRadius3 := 0;
+  SequencerFrame.BackgroundPanel.CornerRadius4 := 0;
 
   TabPanel.CornerRadius1 := 0;
   TabPanel.CornerRadius2 := 0;

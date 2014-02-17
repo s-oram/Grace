@@ -206,7 +206,7 @@ type
     class function ToShortGuiString(aEnum : TEnvVelocityDepth):string; override;
   end;
 
-  TLowerTabOptions = (Pads, ModMatrixA, ModMatrixB, ModMatrixC);
+  TLowerTabOptions = (TabSeq1, TabSeq2, TabMain);
 
   TKeyCommand = (
     ContextUp,

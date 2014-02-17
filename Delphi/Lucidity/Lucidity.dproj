@@ -580,6 +580,11 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="eePluginGuiMeta.pas"/>
 			<DCCReference Include="GuiMeta.ScopeHandler.pas"/>
 			<DCCReference Include="SoundObjects\soSignalRecorder.pas"/>
+			<DCCReference Include="frames\uSequencerFrame.pas">
+				<Form>SequencerFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
