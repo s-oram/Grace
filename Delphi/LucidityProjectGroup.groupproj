@@ -52,7 +52,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies>Third Party\VamLib\VamLib.dproj</Dependencies>
+				<Dependencies>Third Party\VamLib\VamLib.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="ASM Tester\AsmTester.dproj">
 				<Dependencies/>
@@ -209,13 +209,13 @@
 		<Target Name="CodeGen:Make">
 			<MSBuild Targets="Make" Projects="Code Gen\CodeGen.dproj"/>
 		</Target>
-		<Target Name="ComponentTester" DependsOnTargets="VamLib">
+		<Target Name="ComponentTester" DependsOnTargets="VamLib;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="AsmTester">

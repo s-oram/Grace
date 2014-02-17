@@ -36,8 +36,8 @@ object Form1: TForm1
   object RedFoxContainer1: TRedFoxContainer
     Left = 32
     Top = 44
-    Width = 313
-    Height = 289
+    Width = 617
+    Height = 309
     Color = '$FFEEEEEE'
     object Knob1: TVamNumericKnob
       Left = 48
@@ -78,6 +78,32 @@ object Form1: TForm1
       KnobMax = 100
       NumericStyle = nsFloat
       DecimalPlaces = 2
+      Visible = True
+    end
+    object DropBoxSelector1: TDropBoxSelector
+      Left = 168
+      Top = 192
+      Width = 125
+      Height = 25
+      Text = 'DropBoxSelector1'
+      HitTest = True
+      ColorTextA = '$FFCCCCCC'
+      ColorTextB = '$FFFFFFFF'
+      Color = '$FF3E3E3E'
+      ColorMouseOver = '$FF3E3E3E'
+      ColorBorder = '$00000000'
+      ShowBorder = False
+      TextA = 'Text A'
+      TextB = 'Text B'
+      TextPadding.Left = 6
+      TextPadding.Top = 3
+      TextPadding.Right = 6
+      TextPadding.Bottom = 3
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Visible = True
     end
   end

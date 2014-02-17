@@ -14,7 +14,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
-  VamModSelector, VamCompoundNumericKnob, VamNumericKnob;
+  VamModSelector, VamCompoundNumericKnob, VamNumericKnob,
+  LucidityGui.DropBoxSelector;
 
 type
   IFoo = interface(IZeroObject)
@@ -43,6 +44,7 @@ type
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
+    DropBoxSelector1: TDropBoxSelector;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure VamNumericKnob1Changed(Sender: TObject);
@@ -62,8 +64,6 @@ type
 
     MultiEvent : TNotifyMultiEvent;
     FooList : TFooList;
-
-    Debouncer : TDebouncer;
 
     Sample : TSampleFloat;
     Peakbuffer : IPeakBuffer;
@@ -174,17 +174,6 @@ end;
 procedure TForm1.VamNumericKnob1Changed(Sender: TObject);
 begin
 
-  Throttle(10, 400, procedure
-  begin
-    Knob2.KnobValue := Knob1.KnobValue;
-  end);
-
-  {
-  Debounce(150, procedure
-  begin
-    Knob2.KnobValue := Knob1.KnobValue;
-  end);
-  }
 end;
 
 

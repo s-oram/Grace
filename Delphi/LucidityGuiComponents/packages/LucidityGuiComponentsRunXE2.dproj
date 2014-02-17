@@ -87,6 +87,7 @@
 			<DCCReference Include="EasyEffect.dcp"/>
 			<DCCReference Include="..\source\LucidityGui.Scope.pas"/>
 			<DCCReference Include="..\source\LucidityGui.Scope.SignalRecorder.pas"/>
+			<DCCReference Include="..\source\LucidityGui.DropBoxSelector.pas"/>
 			<None Include="..\source\TControlProperties.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

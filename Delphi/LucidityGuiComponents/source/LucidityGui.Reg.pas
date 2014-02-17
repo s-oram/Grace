@@ -3,6 +3,7 @@ unit LucidityGui.Reg;
 interface
 
 uses
+  LucidityGUI.DropBoxSelector,
   LucidityGUI.Scope;
 
 
@@ -15,6 +16,7 @@ uses
 
 procedure Register;
 begin
+  RegisterComponents('Lucidity GUI', [TDropBoxSelector]);
   RegisterComponents('Lucidity GUI', [TLucidityScope]);
 end;
 

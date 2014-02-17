@@ -1,33 +1,37 @@
 object SequencerFrame: TSequencerFrame
   Left = 0
   Top = 0
-  Width = 320
-  Height = 240
+  Width = 873
+  Height = 376
   TabOrder = 0
   object Panel: TRedFoxContainer
     Left = 0
     Top = 0
-    Width = 320
-    Height = 240
+    Width = 873
+    Height = 376
     Color = '$FFEEEEEE'
     Align = alClient
+    ExplicitWidth = 320
+    ExplicitHeight = 240
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
-      Width = 320
-      Height = 240
+      Width = 873
+      Height = 376
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Align = alClient
       Visible = True
+      ExplicitWidth = 320
+      ExplicitHeight = 240
       object SeqBackPanel: TVamPanel
         AlignWithMargins = True
         Left = 4
         Top = 4
-        Width = 312
-        Height = 232
+        Width = 865
+        Height = 368
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -42,6 +46,8 @@ object SequencerFrame: TSequencerFrame
         Transparent = False
         Align = alClient
         Visible = True
+        ExplicitLeft = 60
+        ExplicitTop = -28
       end
     end
   end
