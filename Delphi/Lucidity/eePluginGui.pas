@@ -30,7 +30,6 @@ type
     RedFoxContainer: TRedFoxContainer;
     MainWorkArea: TVamDiv;
     MainTop: TVamDiv;
-    MainMid: TVamDiv;
     MainMenuBar: TVamDiv;
     SampleMapDiv: TVamDiv;
     MainPanel: TVamDiv;
@@ -851,7 +850,6 @@ begin
         ClearPadding(self.SampleMapDiv);
         ClearPadding(self.MainTop);
         ClearPadding(self.VoiceControlDiv);
-        ClearPadding(self.MainMid);
         ClearPadding(self.TabPanel);
         ClearPadding(self.InfoBarDiv);
       ClearPadding(self.SideWorkArea);
@@ -953,7 +951,7 @@ begin
   SampleMapDiv.Left    := MainWorkArea.Padding.Left;
   MainTop.Left         := MainWorkArea.Padding.Left;
   VoiceControlDiv.Left := MainWorkArea.Padding.Left;
-  MainMid.Left         := MainWorkArea.Padding.Left;
+
   TabPanel.Left        := MainWorkArea.Padding.Left;
   ModSystem2Div.Left   := MainWorkArea.Padding.Left;
   InfoBarDiv.Left      := MainWorkArea.Padding.Left;
@@ -964,7 +962,6 @@ begin
   SampleMapDiv.Width    := WorkAreaWidth;
   MainTop.Width         := WorkAreaWidth;
   VoiceControlDiv.Width := WorkAreaWidth;
-  MainMid.Width         := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
   ModSystem2Div.Width   := WorkAreaWidth;
   InfoBarDiv.Width      := WorkAreaWidth;
@@ -974,7 +971,6 @@ begin
   MainMenuBar.Height     := 28;
   MainTop.Height         := 208;
   VoiceControlDiv.Height := 80;
-  MainMid.Height         := 322;
   TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
   InfoBarDiv.Height      := 30;
@@ -987,7 +983,6 @@ begin
   begin
     SampleMapDiv.Visible    := true;
     VoiceControlDiv.Visible := false;
-    MainMid.Visible         := false;
     TabPanel.Visible        := false;
     ModSystem2Div.Visible   := false;
     SpacerPanel1.Visible    := false;
@@ -1005,7 +1000,6 @@ begin
   begin
     SampleMapDiv.Visible    := false;
     VoiceControlDiv.Visible := true;
-    MainMid.Visible         := false;
     TabPanel.Visible        := true;
     ModSystem2Div.Visible   := true;
     SpacerPanel1.Visible    := false;

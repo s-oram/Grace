@@ -61,18 +61,6 @@ object PluginGui: TPluginGui
           HitTest = True
           Visible = True
         end
-        object MainMid: TVamDiv
-          Left = 48
-          Top = 352
-          Width = 521
-          Height = 80
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
-          HitTest = True
-          Visible = True
-        end
         object MainMenuBar: TVamDiv
           Left = 48
           Top = 7
