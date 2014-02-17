@@ -30,7 +30,6 @@ type
     StepSeq1Container: TVamDiv;
     VamLabel34: TVamLabel;
     VamDiv2: TVamDiv;
-    StepSeq1: TVamVectorSequence;
     VamDiv3: TVamDiv;
     Seq1ClockTextBox: TVamTextBox;
     Seq1DirectionTextBox: TVamTextBox;
@@ -42,7 +41,6 @@ type
     StepSeq2Container: TVamDiv;
     VamLabel28: TVamLabel;
     VamDiv6: TVamDiv;
-    StepSeq2: TVamVectorSequence;
     VamDiv7: TVamDiv;
     VamLabel33: TVamLabel;
     VamLabel36: TVamLabel;
@@ -549,17 +547,6 @@ begin
 
 
   //=== colors ===
-  StepSeq1.Color_Background := kColor_LcdDark1;
-  StepSeq1.Color_Border     := kColor_LcdDark1;
-  StepSeq1.Color_Step       := kColor_LcdDark4;
-  StepSeq1.Color_StepActive := kColor_LcdDark5;
-
-  StepSeq2.Color_Background := kColor_LcdDark1;
-  StepSeq2.Color_Border     := kColor_LcdDark1;
-  StepSeq2.Color_Step       := kColor_LcdDark4;
-  StepSeq2.Color_StepActive := kColor_LcdDark5;
-
-
   AmpVelocityButton.Font.Color    := GetRedFoxColor(kColor_LcdDark5);
   FilterVelocityButton.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
@@ -715,7 +702,7 @@ begin
   // would be better to at the Focused engine check as part of the GUI FeedBack data.
   SG := Plugin.FocusedKeyGroup;
 
-
+  {
   //== Step Seq 1 ==
   if assigned(SG) then
   begin
@@ -792,6 +779,7 @@ begin
     if StepSeq2.CurrentStep <> -1 then StepSeq2.CurrentStep := -1;
   end;
 
+  }
 end;
 
 procedure TModControlFrame.UpdateModulation;
@@ -817,6 +805,7 @@ var
   SG : IKeyGroup;
   CurEngine : TKeyGroup;
 begin
+  {
   if not assigned(Plugin) then exit;
 
   SG := Plugin.FocusedKeyGroup;
@@ -847,6 +836,7 @@ begin
       if CurEngine.VoiceParameters.Seq2StepValue[c1] <> x1 then CurEngine.VoiceParameters.Seq2StepValue[c1] := x1;
     end;
   end;
+  }
 end;
 
 

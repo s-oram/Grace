@@ -64,33 +64,10 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Align = alTop
           Visible = True
-          object StepSeq1: TVamVectorSequence
-            Tag = 1
-            AlignWithMargins = True
-            Left = 0
-            Top = 0
-            Width = 168
-            Height = 60
-            Margins.Left = 0
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 10
-            HitTest = True
-            OnShowContextMenu = StepSeqShowContextMenu
-            Color_Background = '$FF000000'
-            Color_Border = '$FF000000'
-            Color_Step = '$FFD6DADF'
-            Color_StepActive = '$55FFFFFF'
-            CurrentStep = 0
-            SequenceLength = 8
-            OnChanged = StepSeq1Changed
-            Align = alLeft
-            Visible = True
-          end
           object VamDiv3: TVamDiv
-            Left = 212
+            Left = 44
             Top = 0
-            Width = 68
+            Width = 236
             Height = 70
             HitTest = True
             Align = alClient
@@ -99,7 +76,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 1
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1
@@ -126,7 +103,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 21
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1
@@ -153,7 +130,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 41
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1
@@ -178,7 +155,7 @@ object ModControlFrame: TModControlFrame
             end
           end
           object VamDiv4: TVamDiv
-            Left = 168
+            Left = 0
             Top = 0
             Width = 44
             Height = 70
@@ -280,31 +257,8 @@ object ModControlFrame: TModControlFrame
           HitTest = True
           Align = alTop
           Visible = True
-          object StepSeq2: TVamVectorSequence
-            Tag = 2
-            AlignWithMargins = True
-            Left = 0
-            Top = 0
-            Width = 168
-            Height = 60
-            Margins.Left = 0
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 10
-            HitTest = True
-            OnShowContextMenu = StepSeqShowContextMenu
-            Color_Background = '$FF000000'
-            Color_Border = '$FF000000'
-            Color_Step = '$FFD6DADF'
-            Color_StepActive = '$55FFFFFF'
-            CurrentStep = 0
-            SequenceLength = 8
-            OnChanged = StepSeq1Changed
-            Align = alLeft
-            Visible = True
-          end
           object VamDiv7: TVamDiv
-            Left = 168
+            Left = 0
             Top = 0
             Width = 44
             Height = 70
@@ -367,9 +321,9 @@ object ModControlFrame: TModControlFrame
             end
           end
           object VamDiv8: TVamDiv
-            Left = 212
+            Left = 44
             Top = 0
-            Width = 68
+            Width = 236
             Height = 70
             HitTest = True
             Align = alClient
@@ -378,7 +332,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 1
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1
@@ -405,7 +359,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 21
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1
@@ -432,7 +386,7 @@ object ModControlFrame: TModControlFrame
               AlignWithMargins = True
               Left = 0
               Top = 41
-              Width = 68
+              Width = 236
               Height = 18
               Margins.Left = 0
               Margins.Top = 1

@@ -38,6 +38,6 @@ contains
   LucidityGui.Scope in '..\source\LucidityGui.Scope.pas',
   LucidityGui.Scope.SignalRecorder in '..\source\LucidityGui.Scope.SignalRecorder.pas',
   LucidityGui.DropBoxSelector in '..\source\LucidityGui.DropBoxSelector.pas',
-  VamVectorSequence in '..\source\VamVectorSequence.pas';
+  LucidityGui.VectorSequence in '..\source\LucidityGui.VectorSequence.pas';
 
 end.

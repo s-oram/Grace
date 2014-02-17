@@ -1,4 +1,4 @@
-unit VamVectorSequence;
+unit LucidityGui.VectorSequence;
 
 interface
 
@@ -12,7 +12,7 @@ const
   kMaxSeqLength = 64;
 
 type
-  TVamVectorSequence = class(TVamWinControl)
+  TLucidityVectorSequence = class(TVamWinControl)
   private
     fOnChanged: TNotifyEvent;
     fSequenceLength: integer;
@@ -81,7 +81,7 @@ uses
 
 { TVamVectorSequence }
 
-constructor TVamVectorSequence.Create(AOwner: TComponent);
+constructor TLucidityVectorSequence.Create(AOwner: TComponent);
 var
   c1: Integer;
 begin
@@ -103,13 +103,13 @@ begin
   end;
 end;
 
-destructor TVamVectorSequence.Destroy;
+destructor TLucidityVectorSequence.Destroy;
 begin
   InternalPadding.Free;
   inherited;
 end;
 
-function TVamVectorSequence.MouseToSequencePosition(const PixelX: integer): integer;
+function TLucidityVectorSequence.MouseToSequencePosition(const PixelX: integer): integer;
 var
   x : integer;
   InternalBounds : TRect;
@@ -125,7 +125,7 @@ begin
   result := x;
 end;
 
-function TVamVectorSequence.MouseToSequenceValue(const PixelY: integer): single;
+function TLucidityVectorSequence.MouseToSequenceValue(const PixelY: integer): single;
 var
   x : single;
 begin
@@ -136,12 +136,12 @@ begin
   result := x;
 end;
 
-function TVamVectorSequence.GetSequenceValue(Index: integer): single;
+function TLucidityVectorSequence.GetSequenceValue(Index: integer): single;
 begin
   result := fSequenceValues[Index];
 end;
 
-procedure TVamVectorSequence.SetColors(const Index: Integer; const Value: TRedFoxColorString);
+procedure TLucidityVectorSequence.SetColors(const Index: Integer; const Value: TRedFoxColorString);
 var
   pc : PRedFoxColorString;
 begin
@@ -162,7 +162,7 @@ begin
 
 end;
 
-procedure TVamVectorSequence.SetCurrentStep(const Value: integer);
+procedure TLucidityVectorSequence.SetCurrentStep(const Value: integer);
 begin
   if Value <> fCurrentStep then
   begin
@@ -171,7 +171,7 @@ begin
   end;
 end;
 
-procedure TVamVectorSequence.SetSequenceLength(const Value: integer);
+procedure TLucidityVectorSequence.SetSequenceLength(const Value: integer);
 begin
   if (Value <> fSequenceLength) and (Value > 0) and (Value <= kMaxSeqLength) then
   begin
@@ -181,7 +181,7 @@ begin
 
 end;
 
-procedure TVamVectorSequence.SetSequenceValue(Index: integer; const Value: single);
+procedure TLucidityVectorSequence.SetSequenceValue(Index: integer; const Value: single);
 begin
   assert(Value >= -1);
   assert(Value <= 1);
@@ -194,14 +194,14 @@ begin
 end;
 
 
-procedure TVamVectorSequence.Changed;
+procedure TLucidityVectorSequence.Changed;
 begin
   if assigned(OnChanged) then OnChanged(self);
 end;
 
 
 
-procedure TVamVectorSequence.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TLucidityVectorSequence.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   seqPos : integer;
 begin
@@ -240,7 +240,7 @@ begin
   }
 end;
 
-procedure TVamVectorSequence.MouseMove(Shift: TShiftState; X, Y: Integer);
+procedure TLucidityVectorSequence.MouseMove(Shift: TShiftState; X, Y: Integer);
 var
   //Dist : single;
   //NewPos : single;
@@ -315,7 +315,7 @@ begin
   }
 end;
 
-procedure TVamVectorSequence.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TLucidityVectorSequence.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
 
@@ -327,7 +327,7 @@ begin
   end;
 end;
 
-procedure TVamVectorSequence.Paint;
+procedure TLucidityVectorSequence.Paint;
 const
   kStepValueColor  = '$FFD6DADF';
   kLineColor       = '$FF000000';

@@ -8,7 +8,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, LucidityGui.DropBoxSelector,
-  VamLabel, VamDiv, VamVectorSequence;
+  VamLabel, VamDiv, LucidityGui.VectorSequence;
 
 type
   TSequencerFrame = class(TFrame)
@@ -20,7 +20,7 @@ type
     StepCountSelector: TDropBoxSelector;
     ClockSelector: TDropBoxSelector;
     ModeSelector: TDropBoxSelector;
-    SeqStepControl: TVamVectorSequence;
+    SeqStepControl: TLucidityVectorSequence;
     procedure SeqBackPanelResize(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
@@ -37,10 +37,7 @@ type
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
-
     property SequencerIndex : integer read fSequencerIndex write SetSequencerIndex;
-
-
   end;
 
 implementation
@@ -136,7 +133,17 @@ end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
-
+  {
+  if FeedBack^.IsVoiceActive then
+  begin
+    if StepSeq1.CurrentStep <> FeedBack^.StepSeq1CurStep then StepSeq1.CurrentStep := FeedBack^.StepSeq1CurStep;
+    if StepSeq2.CurrentStep <> FeedBack^.StepSeq2CurStep then StepSeq2.CurrentStep := FeedBack^.StepSeq2CurStep;
+  end else
+  begin
+    if StepSeq1.CurrentStep <> -1 then StepSeq1.CurrentStep := -1;
+    if StepSeq2.CurrentStep <> -1 then StepSeq2.CurrentStep := -1;
+  end;
+  }
 end;
 
 end.

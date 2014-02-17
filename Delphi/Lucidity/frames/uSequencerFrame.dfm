@@ -162,17 +162,12 @@ object SequencerFrame: TSequencerFrame
             Visible = True
           end
         end
-        object SeqStepControl: TVamVectorSequence
-          Tag = 1
-          AlignWithMargins = True
-          Left = 216
-          Top = 56
-          Width = 212
-          Height = 131
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
+        object SeqStepControl: TLucidityVectorSequence
+          Left = 264
+          Top = 104
+          Width = 225
+          Height = 169
+          Text = 'SeqStepControl'
           HitTest = True
           Color_Background = '$FF000000'
           Color_Border = '$FF000000'
