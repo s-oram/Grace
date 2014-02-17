@@ -28,7 +28,7 @@ object ModControlFrame: TModControlFrame
       Visible = True
       object StepSeq1Container: TVamDiv
         AlignWithMargins = True
-        Left = 31
+        Left = 35
         Top = 329
         Width = 280
         Height = 123
@@ -37,7 +37,7 @@ object ModControlFrame: TModControlFrame
         Margins.Right = 0
         Margins.Bottom = 0
         HitTest = True
-        Visible = True
+        Visible = False
         object VamLabel34: TVamLabel
           Left = 0
           Top = 0
@@ -244,8 +244,8 @@ object ModControlFrame: TModControlFrame
       end
       object StepSeq2Container: TVamDiv
         AlignWithMargins = True
-        Left = 356
-        Top = 337
+        Left = 359
+        Top = 329
         Width = 280
         Height = 132
         Margins.Left = 0
@@ -253,7 +253,7 @@ object ModControlFrame: TModControlFrame
         Margins.Right = 0
         Margins.Bottom = 0
         HitTest = True
-        Visible = True
+        Visible = False
         object VamLabel28: TVamLabel
           Left = 0
           Top = 0
