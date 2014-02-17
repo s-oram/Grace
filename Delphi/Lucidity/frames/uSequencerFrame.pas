@@ -4,6 +4,7 @@ interface
 
 uses
   uConstants,
+  Menu.StepSequenceMenu,
   eePlugin, eeGuiStandard, uDialogDisplayArea, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
@@ -22,12 +23,15 @@ type
     ModeSelector: TDropBoxSelector;
     SeqStepControl: TLucidityVectorSequence;
     procedure SeqBackPanelResize(Sender: TObject);
+    procedure SeqStepControlShowContextMenu(Sender: TObject; X, Y: Integer);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
   protected
+    StepSequenceMenu : TStepSequenceMenu;
+
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
   public
@@ -54,11 +58,13 @@ constructor TSequencerFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
+  StepSequenceMenu := TStepSequenceMenu.Create;
 end;
 
 destructor TSequencerFrame.Destroy;
 begin
 
+  StepSequenceMenu.Free;
   inherited;
 end;
 
@@ -69,6 +75,7 @@ begin
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
 
+  StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
   SeqStepControl.Align := alClient;
   SeqStepControl.Color_Background := kColor_LcdDark1;
@@ -109,9 +116,7 @@ begin
   if not assigned(Plugin)      then exit;
   if not assigned(GuiStandard) then exit;
 
-
   fSequencerIndex := Value;
-
 
   if fSequencerIndex = 0 then
   begin
@@ -130,7 +135,6 @@ begin
     GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
   end;
 
-
   SeqStepControl.SequenceData := Plugin.ActiveKeyGroup.GetVectorSequenceData(fSequencerIndex);
 end;
 
@@ -148,5 +152,12 @@ begin
   end;
   }
 end;
+
+procedure TSequencerFrame.SeqStepControlShowContextMenu(Sender: TObject; X, Y: Integer);
+begin
+  StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, fSequencerIndex);
+end;
+
+
 
 end.

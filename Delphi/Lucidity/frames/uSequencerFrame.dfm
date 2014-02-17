@@ -169,6 +169,7 @@ object SequencerFrame: TSequencerFrame
           Height = 169
           Text = 'SeqStepControl'
           HitTest = True
+          OnShowContextMenu = SeqStepControlShowContextMenu
           Color_Background = '$FF000000'
           Color_Border = '$FF000000'
           Color_Step = '$FFD6DADF'
