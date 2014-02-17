@@ -119,10 +119,6 @@ type
     procedure SetStepSeq2Length(const Value: TStepSequencerLength);
     procedure SetVoiceGain(const Value: single);
     procedure SetVoicePan(const Value: single);
-    function GetSeq1StepValue(Index: integer): single;
-    procedure SetSeq1StepValue(Index: integer; const Value: single);
-    function GetSeq2StepValue(Index: integer): single;
-    procedure SetSeq2StepValue(Index: integer; const Value: single);
     procedure SetVoicePitchOne(const Value: single);
     procedure SetVoicePitchTwo(const Value: single);
     procedure SetMixAuxA(const Value: single);
@@ -164,10 +160,6 @@ type
     procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
 
     procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
-
-    property Seq1StepValue[Index : integer]:single read GetSeq1StepValue write SetSeq1StepValue;
-    property Seq2StepValue[Index : integer]:single read GetSeq2StepValue write SetSeq2StepValue;
-
     
   published
     property PitchTracking            : TPitchTracking                     read fPitchTracking           write SetPitchTracking;
@@ -244,8 +236,6 @@ begin
 
   self.fVoiceGain := 1;
   self.fVoicePan  := 0.5;
-
-  
 end;
 
 destructor TLucidityVoiceParameterWrapper.Destroy;
@@ -284,16 +274,6 @@ begin
       v^.ModMatrix.UpdateModConnections;
     end
   );
-end;
-
-function TLucidityVoiceParameterWrapper.GetSeq1StepValue(Index: integer): single;
-begin
-  result := fSeq1StepValues[Index];
-end;
-
-function TLucidityVoiceParameterWrapper.GetSeq2StepValue(Index: integer): single;
-begin
-  result := fSeq2StepValues[Index];
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
@@ -641,18 +621,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetSeq1StepValue(Index: integer; const Value: single);
-begin
-  fSeq1StepValues[Index] := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.StepSeqOne.StepValue[Index] := Value;
-    end
-  );
-end;
-
 procedure TLucidityVoiceParameterWrapper.SetSeq2Clock(const Value: TSequencerClock);
 begin
   fSeq2Clock := Value;
@@ -673,18 +641,6 @@ begin
     procedure(v:PLucidityVoice)
     begin
       v^.StepSeqTwo.Direction := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetSeq2StepValue(Index: integer; const Value: single);
-begin
-  fSeq2StepValues[Index] := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.StepSeqTwo.StepValue[Index] := Value;
     end
   );
 end;
@@ -786,12 +742,6 @@ procedure TLucidityVoiceParameterWrapper.AssignFrom(const Source: TLucidityVoice
 var
   c1: Integer;
 begin
-  for c1 := 0 to kMaxStepSequencerLength-1 do
-  begin
-    Self.Seq1StepValue[c1] := Source.Seq1StepValue[c1];
-    Self.Seq2StepValue[c1] := Source.Seq2StepValue[c1];
-  end;
-
   //self.VoiceMode                := Source.VoiceMode;
   //self.VoiceGlide               := Source.VoiceGlide;
 
@@ -851,13 +801,6 @@ procedure TLucidityVoiceParameterWrapper.ApplyParametersToVoice(aVoice: TLucidit
 var
   c1 : integer;
 begin
-  //==== set step values...====
-  for c1 := 0 to kMaxStepSequencerLength-1 do
-  begin
-    aVoice.StepSeqOne.StepValue[c1] := Seq1StepValue[c1];
-    aVoice.StepSeqTwo.StepValue[c1] := Seq2StepValue[c1];
-  end;
-
   //=== set all one-to-one properties.====
   //aVoice.VoiceMode                       := VoiceMode;
   //aVoice.VoiceGlide                      := VoiceGlide;

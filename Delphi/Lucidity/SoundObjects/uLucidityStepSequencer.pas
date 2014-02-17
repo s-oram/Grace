@@ -26,21 +26,17 @@ type
     fSampleRate: single;
     fBpm: single;
     FSequenceData: IVectorSequenceDataObject;
-    function GetStepValue(Index: integer): single;
-    procedure SetStepValue(Index: integer; const Value: single);
     procedure SetStepCount(const Value: TStepSequencerLength);
     procedure SetStepSeqClock(const Value: TSequencerClock);
     procedure SetBpm(const Value: single);
     procedure SetSampleRate(const Value: single);
     procedure SetSequenceData(const Value: IVectorSequenceDataObject);
+    function GetCurrentStepValue(Index: integer): single;
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
     UseInternalCounter : boolean;
     Counter            : integer;
     CounterTarget      : single;
-
-    OriginalStepValues : array[0..kMaxStepSequencerLength-1] of single;
-    CurrentStepValues  : array[0..kMaxStepSequencerLength-1] of single;
 
     IsSteppingForwards : boolean;
 
@@ -53,6 +49,7 @@ type
     SmoothingFilter : TCriticallyDampedLowpass;
 
     procedure ClockEvent(Sender : TObject; ClockID : cardinal);
+    property CurrentStepValues [Index : integer] : single read GetCurrentStepValue;
   public
     constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
@@ -72,7 +69,6 @@ type
 
     property StepCountAsInt : integer read fStepCountAsInt;
     property StepCount : TStepSequencerLength read fStepCount write SetStepCount;
-    property StepValue[Index:integer]:single read GetStepValue write SetStepValue;
 
     property CurrentStep : integer read fCurrentStep;
 
@@ -93,10 +89,6 @@ var
 begin
   VoiceClockManager := aVoiceClockManager;
 
-  for c1 := 0 to kMaxStepSequencerLength-1 do
-  begin
-    StepValue[c1] := random;
-  end;
   fCurrentStep := 0;
 
   fStepSeqClock := TSequencerClock.Div_1;
@@ -113,6 +105,17 @@ begin
   inherited;
 end;
 
+function TLucidyStepSequencer.GetCurrentStepValue(Index: integer): single;
+begin
+  if assigned(SequenceData) then
+  begin
+    result := SequenceData.GetStepValue(Index);
+  end else
+  begin
+    result := 0;
+  end;
+end;
+
 function TLucidyStepSequencer.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'ClockInput'    then Exit(@ModClockInput);
@@ -120,11 +123,6 @@ begin
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
-end;
-
-function TLucidyStepSequencer.GetStepValue(Index: integer): single;
-begin
-  result := CurrentStepValues[Index];
 end;
 
 procedure TLucidyStepSequencer.SetBpm(const Value: single);
@@ -176,15 +174,6 @@ begin
   else
     raise Exception.Create('Unexpected StepCount value');
   end;
-end;
-
-procedure TLucidyStepSequencer.SetStepValue(Index: integer; const Value: single);
-begin
-  assert(Value >= 0);
-  assert(Value <= 1);
-
-  CurrentStepValues[Index]  := Value;
-  OriginalStepValues[Index] := Value;
 end;
 
 procedure TLucidyStepSequencer.StepResetA(TriggeredNote: cardinal);

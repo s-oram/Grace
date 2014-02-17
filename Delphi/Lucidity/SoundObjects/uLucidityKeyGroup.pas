@@ -61,8 +61,7 @@ type
     procedure Handle_ModConnectionsChanged(Sender : TObject);
 
 
-    property Seq1Data : TSequencerDataObject read FSeq1Data;
-    property Seq2Data : TSequencerDataObject read FSeq1Data;
+
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -85,6 +84,8 @@ type
 
     property Name : string read fName;
 
+    property Seq1Data : TSequencerDataObject read FSeq1Data;
+    property Seq2Data : TSequencerDataObject read FSeq1Data;
   end;
 
 implementation
@@ -111,12 +112,6 @@ begin
 
   FSeq1Data := TSequencerDataObject.Create;
   FSeq2Data := TSequencerDataObject.Create;
-
-  //== Init some values ==
-  for c1 := 0 to kMaxStepSequencerLength-1 do
-  begin
-    VoiceParameters.Seq1StepValue[c1] := 0;
-  end;
 
   fTriggeredNoteCount := 0;
 end;

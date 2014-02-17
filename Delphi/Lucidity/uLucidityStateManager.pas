@@ -144,6 +144,7 @@ type
 implementation
 
 uses
+  Lucidity.SequencerDataObject,
   LucidityUtils,
   Lucidity.StateHelpers,
   uAutoFree,
@@ -358,6 +359,8 @@ var
   c2: Integer;
   c3: Integer;
   ModLinkState : TModLinkLoadInfo;
+
+  SeqData : IVectorSequenceDataObject;
 begin
   ModLinkState := TModLinkLoadInfo.Create;
   AutoFree(@ModLinkState);
@@ -448,16 +451,19 @@ begin
     SaveModulatedParametersToNode(VoiceParNode, sg);
 
     StepSeqNode := SampleGroupNode.NodeNew('StepSeq1');
+    SeqData := sg.Seq1Data;
     for c3 := 0 to kMaxStepSequencerLength-1 do
     begin
-      StepSeqNode.NodeNew('StepValue').ValueUnicode := DataIO_FloatToStr(sg.VoiceParameters.Seq1StepValue[c3]);
+      StepSeqNode.NodeNew('StepValue').ValueUnicode := DataIO_FloatToStr(SeqData.GetStepValue(c3));
     end;
 
     StepSeqNode := SampleGroupNode.NodeNew('StepSeq2');
+    SeqData := sg.Seq2Data;
     for c3 := 0 to kMaxStepSequencerLength-1 do
     begin
-      StepSeqNode.NodeNew('StepValue').ValueUnicode := DataIO_FloatToStr(sg.VoiceParameters.Seq2StepValue[c3]);
+      StepSeqNode.NodeNew('StepValue').ValueUnicode := DataIO_FloatToStr(SeqData.GetStepValue(c3));
     end;
+
   end;
 end;
 
@@ -494,6 +500,8 @@ var
   TargetModLink : PModLink_OLD;
 
   StepValue : single;
+
+  SeqData : IVectorSequenceDataObject;
 begin
   SampleGroupNodeList := TsdNodeList.Create;
   AutoFree(@SampleGroupNodeList);
@@ -623,6 +631,7 @@ begin
     LoadModulatedParametersFromNode(VoiceParNode, sg);
 
     StepSeqNode := SampleGroupNode.FindNode('StepSeq1');
+    SeqData := sg.Seq1Data;
     if assigned(StepSeqNode) then
     begin
       StepSeqNode.NodesByName('StepValue', StepValuesNodeList);
@@ -633,13 +642,13 @@ begin
         begin
           StepValue := DataIO_StrToFloat(StepValuesNodeList[c3].ValueUnicode, 0.5);
           Clamp(StepValue, 0, 1);
-          sg.VoiceParameters.Seq1StepValue[c3] := StepValue;
+          SeqData.SetStepValue(c3, StepValue);
         end;
       end;
     end;
 
-
     StepSeqNode := SampleGroupNode.FindNode('StepSeq2');
+    SeqData := sg.Seq2Data;
     if assigned(StepSeqNode) then
     begin
       StepSeqNode.NodesByName('StepValue', StepValuesNodeList);
@@ -650,7 +659,7 @@ begin
         begin
           StepValue := DataIO_StrToFloat(StepValuesNodeList[c3].ValueUnicode, 0.5);
           Clamp(StepValue, 0, 1);
-          sg.VoiceParameters.Seq2StepValue[c3] := StepValue;
+          SeqData.SetStepValue(c3, StepValue);
         end;
       end;
     end;

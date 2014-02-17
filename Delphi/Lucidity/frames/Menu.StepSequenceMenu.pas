@@ -25,6 +25,7 @@ type
 implementation
 
 uses
+  Lucidity.SequencerDataObject,
   uLucidityKeyGroup,
   uAboutDialog,
   SysUtils,
@@ -81,6 +82,7 @@ var
   SG : IKeyGroup;
   CurEngine : TKeyGroup;
   x1 : single;
+  SeqData : IVectorSequenceDataObject;
 begin
   if not assigned(Plugin) then exit;
 
@@ -93,10 +95,12 @@ begin
   //== Step Seq 1 ==
   if SequenceIndex = 0 then
   begin
+    SeqData := SG.GetVectorSequenceData(0);
+
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
       x1 := Random;
-      CurEngine.VoiceParameters.Seq1StepValue[c1] := x1;
+      SeqData.SetStepValue(c1, x1);
     end;
   end;
 
@@ -104,10 +108,12 @@ begin
   //== Step Seq 2 ==
   if SequenceIndex = 1 then
   begin
+    SeqData := SG.GetVectorSequenceData(1);
+
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
       x1 := Random;
-      CurEngine.VoiceParameters.Seq2StepValue[c1] := x1;
+      SeqData.SetStepValue(c1, x1);
     end;
   end;
 end;
@@ -118,6 +124,7 @@ var
   SG : IKeyGroup;
   CurEngine : TKeyGroup;
   x1 : single;
+  SeqData : IVectorSequenceDataObject;
 begin
   if not assigned(Plugin) then exit;
 
@@ -130,10 +137,12 @@ begin
   //== Step Seq 1 ==
   if SequenceIndex = 0 then
   begin
+    SeqData := SG.GetVectorSequenceData(0);
+
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
       x1 := 0.5;
-      CurEngine.VoiceParameters.Seq1StepValue[c1] := x1;
+      SeqData.SetStepValue(c1, x1);
     end;
   end;
 
@@ -141,10 +150,12 @@ begin
   //== Step Seq 2 ==
   if SequenceIndex = 1 then
   begin
+    SeqData := SG.GetVectorSequenceData(1);
+
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
       x1 := 0.5;
-      CurEngine.VoiceParameters.Seq2StepValue[c1] := x1;
+      SeqData.SetStepValue(c1, x1);
     end;
   end;
 end;
