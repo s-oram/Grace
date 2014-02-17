@@ -106,6 +106,10 @@ end;
 
 procedure TSequencerFrame.SetSequencerIndex(const Value: integer);
 begin
+  if not assigned(Plugin)      then exit;
+  if not assigned(GuiStandard) then exit;
+
+
   fSequencerIndex := Value;
 
 
@@ -127,8 +131,7 @@ begin
   end;
 
 
-
-
+  SeqStepControl.SequenceData := Plugin.ActiveKeyGroup.GetVectorSequenceData(fSequencerIndex);
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);

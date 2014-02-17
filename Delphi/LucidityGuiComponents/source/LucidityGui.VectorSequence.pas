@@ -22,12 +22,14 @@ type
     fColor_Border: TRedFoxColorString;
     fColor_StepActive: TRedFoxColorString;
     fColor_Step: TRedFoxColorString;
+    fSequenceData: IVectorSequenceDataObject;
 
     function GetSequenceValue(Index: integer): single;
     procedure SetSequenceValue(Index: integer; const Value: single);
     procedure SetSequenceLength(const Value: integer);
     procedure SetCurrentStep(const Value: integer);
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
+    procedure SetSequenceData(const Value: IVectorSequenceDataObject);
   protected
     fSequenceValues : array[0..kMaxSeqLength] of single;
 
@@ -54,6 +56,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    property SequenceData : IVectorSequenceDataObject read fSequenceData write SetSequenceData;
 
     property SequenceValue[Index:integer]:single read GetSequenceValue write SetSequenceValue; //sequence value range -1..1
   published
@@ -98,10 +102,12 @@ begin
 
   fSequenceLength := 8;
 
+  {
   for c1 := 0 to kMaxSeqLength-1 do
   begin
     SequenceValue[c1] := random * 2 - 1;
   end;
+  }
 end;
 
 destructor TLucidityVectorSequence.Destroy;
@@ -139,7 +145,13 @@ end;
 
 function TLucidityVectorSequence.GetSequenceValue(Index: integer): single;
 begin
-  result := fSequenceValues[Index];
+  if assigned(SequenceData) then
+  begin
+    result := SequenceData.GetStepValue(Index);
+  end else
+  begin
+    result := 0;
+  end;
 end;
 
 procedure TLucidityVectorSequence.SetColors(const Index: Integer; const Value: TRedFoxColorString);
@@ -172,6 +184,12 @@ begin
   end;
 end;
 
+procedure TLucidityVectorSequence.SetSequenceData(const Value: IVectorSequenceDataObject);
+begin
+  fSequenceData := Value;
+  Invalidate;
+end;
+
 procedure TLucidityVectorSequence.SetSequenceLength(const Value: integer);
 begin
   if (Value <> fSequenceLength) and (Value > 0) and (Value <= kMaxSeqLength) then
@@ -187,10 +205,20 @@ begin
   assert(Value >= -1);
   assert(Value <= 1);
 
-  if Value <> fSequenceValues[Index] then
+  if assigned(SequenceData) then
   begin
-    fSequenceValues[Index] := Value;
-    Invalidate;
+    if Value <> SequenceData.GetStepValue(Index) then
+    begin
+      SequenceData.SetStepValue(Index, Value);
+      Invalidate;
+    end;
+  end else
+  begin
+    if Value <> fSequenceValues[Index] then
+    begin
+      fSequenceValues[Index] := Value;
+      Invalidate;
+    end;
   end;
 end;
 
@@ -339,6 +367,12 @@ var
   InternalBounds : TRect;
 begin
   inherited;
+
+  if not assigned(fSequenceData) then
+  begin
+    BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+    exit;
+  end;
 
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
