@@ -3,8 +3,12 @@ unit VamLib.ZeroObject;
 interface
 
 uses
+  SysUtils,
   Classes,
-  VamLib.Types;
+  ExtCtrls,
+  VamLib.Types,
+  OtlCommon,
+  OtlContainers;
 
 type
   {
@@ -34,6 +38,7 @@ type
     function GetClassName : string;
     function GetZeroObject:TZeroObject;
     procedure RegisterWithMotherShip(const Mothership:IMotherShip);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   end;
 
   IMotherShip = interface
@@ -42,6 +47,8 @@ type
     procedure DeregisterZeroObject(obj:IZeroObject);
   end;
 
+
+  // NOTE: TZeroObjects aren't reference counded;
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
@@ -57,11 +64,10 @@ type
 
     property IsReferenceCounted : boolean read GetIsReferenceCounted;
     property RefCount           : Integer read FRefCount;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
     destructor Destroy; override;
-
-    // ZeroObjects can register with a MotherShip. They will automatically
-    // deregister when the object is freed or released.
     procedure RegisterWithMotherShip(const Mothership:IMotherShip);
 
     procedure AfterConstruction; override;
@@ -69,6 +75,7 @@ type
     class function NewInstance: TObject; override;
   end;
 
+  // NOTE TRefCountedZeroObjects are reference counted.
   TRefCountedZeroObject = class(TZeroObject)
   protected
     function GetIsReferenceCounted: boolean; virtual;
@@ -76,15 +83,27 @@ type
 
   // TMotherShip is not reference counted.
   TMotherShip = class(TPureInterfacedObject, IMotherShip)
+  private type
+    TGuiMessage = record
+      MsgID   : cardinal;
+      Data    : pointer;
+      CleanUp : TProc;
+    end;
   private
+    GuiMessageQueue : TOmniQueue;
+    GuiMessageTimer : TTimer;
     Objects : TInterfaceList;
     function GetZeroObjectCount: integer;
-
     procedure RegisterZeroObject(obj:IZeroObject);
     procedure DeregisterZeroObject(obj:IZeroObject);
+
+    procedure Handle_GuiMessageTimer(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure SendMessage(MsgID : cardinal; Data : Pointer);
+    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
 
     property ZeroObjectCount : integer read GetZeroObjectCount;
   end;
@@ -94,7 +113,6 @@ type
 implementation
 
 uses
-  SysUtils,
   VamLib.WinUtils;
 
 {$I InterlockedAPIs.inc}
@@ -124,6 +142,9 @@ end;
 
 procedure TZeroObject.RegisterWithMotherShip(const Mothership: IMotherShip);
 begin
+  // NOTE:
+  // ZeroObjects can register with a MotherShip. They will automatically
+  // deregister when the object is freed or released.
   FMotherShip := MotherShip;
   FMotherShip.RegisterZeroObject(self);
 end;
@@ -208,10 +229,22 @@ begin
 
 end;
 
+procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+end;
+
+
 { TMotherShip }
 
 constructor TMotherShip.Create;
 begin
+  GuiMessageQueue := TOmniQueue.Create;
+  GuiMessageTimer := TTimer.Create(nil);
+  GuiMessageTimer.Interval := 1;
+  GuiMessageTimer.Enabled := false;
+  GuiMessagetimer.OnTimer := Handle_GuiMessageTimer;
+
+
   Objects := TInterfaceList.Create;
 end;
 
@@ -221,6 +254,9 @@ var
   Text : string;
   zo : IZeroObject;
 begin
+  GuiMessageTimer.Free;
+  GuiMessageQueue.Free;
+
   if Objects.Count > 0 then
   begin
     for c1 := Objects.Count-1 downto 0 do
@@ -239,9 +275,6 @@ begin
     // should probably be removed in release builds!
     raise Exception.Create('Not all ZeroObjects have been freed.');
   end;
-
-
-
 
   Objects.Free;
   inherited;
@@ -272,6 +305,55 @@ begin
   if Objects.IndexOf(obj) <> -1 then
   begin
     Objects.Remove(obj);
+  end;
+end;
+
+procedure TMotherShip.SendMessage(MsgID: cardinal; Data: Pointer);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to Objects.Count-1 do
+  begin
+    (Objects[c1] as IZeroObject).ProcessZeroObjectMessage(MsgID, Data);
+  end;
+end;
+
+
+
+procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
+var
+  GuiMessage : TGuiMessage;
+  OmniValue : TOmniValue;
+begin
+  GuiMessage.MsgID   := MsgID;
+  GuiMessage.Data    := Data;
+  GuiMessage.CleanUp := CleanUp;
+
+  OmniValue := TOmniValue.FromRecord<TGuiMessage>(GuiMessage);
+  GuiMessageQueue.Enqueue(OmniValue);
+
+  GuiMessageTimer.Enabled := true;
+end;
+
+procedure TMotherShip.Handle_GuiMessageTimer(Sender: TObject);
+var
+  GuiMessage : TGuiMessage;
+  OmniValue : TOmniValue;
+  c1: Integer;
+begin
+  GuiMessageTimer.Enabled := false;
+
+  while GuiMessageQueue.TryDequeue(OmniValue) do
+  begin
+    GuiMessage := OmniValue.ToRecord<TGuiMessage>;
+
+    for c1 := 0 to Objects.Count-1 do
+    begin
+      (Objects[c1] as IZeroObject).ProcessZeroObjectMessage(GuiMessage.MsgID, GuiMessage.Data);
+    end;
+
+    if assigned(GuiMessage.CleanUp)
+      then GuiMessage.CleanUp();
   end;
 end;
 
