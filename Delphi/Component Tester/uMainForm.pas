@@ -24,11 +24,29 @@ type
 
   TFoo = class(TZeroObject, IFoo)
   private
+  private
+
+  protected
     fText: string;
+    FIsFish: boolean;
+
+    function GetIsEgg : boolean; virtual;
+
+    property IsFish : boolean read FIsFish default false;
   public
     constructor Create;
     destructor Destroy; override;
     property Text : string read fText write fText;
+
+    function GetIsEggB : boolean;
+
+
+  end;
+
+  TBar = class(TFoo)
+  protected
+    property IsFish : boolean read FIsFish default true;
+    function GetIsEgg : boolean; override;
   end;
 
 
@@ -99,6 +117,7 @@ var
 procedure TForm1.FormCreate(Sender: TObject);
 var
   c1: Integer;
+  Test : TBar;
 begin
   MotherShip := TMotherShip.Create;
 
@@ -113,6 +132,16 @@ begin
 
   //Foo1 := nil;
   //Foo2 := nil;
+
+
+
+  Test := TBar.Create;
+
+  if Test.GetIsEggB
+    then Button1.Caption := 'Is Egg'
+    else Button1.Caption := 'Not Egg';
+
+  Test.Free;
 
 
 end;
@@ -180,10 +209,12 @@ end;
 { TFoo }
 
 constructor TFoo.Create;
+
 begin
   //self.FIsReferenceCounted := false;
   self.FIsReferenceCounted := true;
   self.Text := IntToStr(Random(100));
+
 
 
 end;
@@ -194,6 +225,25 @@ begin
   inherited;
 end;
 
+
+function TFoo.GetIsEgg: boolean;
+begin
+  //result := false;
+  result := IsFish;
+end;
+
+function TFoo.GetIsEggB: boolean;
+begin
+  //result := self.GetIsEgg;
+  result := IsFish;
+end;
+
+{ TBar }
+
+function TBar.GetIsEgg: boolean;
+begin
+  result := true;
+end;
 
 initialization
   GlobalDict := TProcDictionary.Create(100);
