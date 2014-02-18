@@ -48,14 +48,14 @@ type
     function GetZeroObject:TZeroObject;
     function GetClassName : string;
   protected
-    // FIsReferenceCounted should normally be set in the contstructor of the object.
-    FIsReferenceCounted: boolean;
     FRefCount: Integer;
+    function GetIsReferenceCounted: boolean; virtual;
 
     function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
 
+    property IsReferenceCounted : boolean read GetIsReferenceCounted;
     property RefCount           : Integer read FRefCount;
   public
     destructor Destroy; override;
@@ -69,6 +69,10 @@ type
     class function NewInstance: TObject; override;
   end;
 
+  TRefCountedZeroObject = class(TZeroObject)
+  protected
+    function GetIsReferenceCounted: boolean; virtual;
+  end;
 
   // TMotherShip is not reference counted.
   TMotherShip = class(TPureInterfacedObject, IMotherShip)
@@ -110,7 +114,7 @@ end;
 
 destructor TZeroObject.Destroy;
 begin
-  if (not FIsReferenceCounted) and (assigned(FMotherShip)) then
+  if (not IsReferenceCounted) and (assigned(FMotherShip)) then
   begin
     FMotherShip.DeregisterZeroObject(self);
   end;
@@ -128,6 +132,11 @@ end;
 function TZeroObject.GetClassName: string;
 begin
   result := self.ClassName;
+end;
+
+function TZeroObject.GetIsReferenceCounted: boolean;
+begin
+  result := false;
 end;
 
 function TZeroObject.GetZeroObject: TZeroObject;
@@ -155,7 +164,7 @@ function TZeroObject._AddRef: Integer;
 begin
   FRefCount := InterlockedIncrement(FRefCount);
 
-  if FIsReferenceCounted
+  if IsReferenceCounted
     then result := FRefCount
     else result := -1;
 end;
@@ -180,11 +189,11 @@ begin
 
   FRefCount := InterlockedDecrement(FRefCount);
 
-  if FIsReferenceCounted
+  if IsReferenceCounted
     then result := FRefCount
     else result := -1;
 
-  if (result = 1) and (assigned(FMotherShip)) and (FIsReferenceCounted) then
+  if (result = 1) and (assigned(FMotherShip)) and (IsReferenceCounted) then
   begin
     // The mothership is holding the last interface reference and
     // preventing this object from being freed. Deregister
@@ -192,7 +201,7 @@ begin
     FMotherShip.DeregisterZeroObject(self);
   end;
 
-  if (result = 0) and (FIsReferenceCounted) then
+  if (result = 0) and (IsReferenceCounted) then
   begin
     Destroy;
   end;
@@ -267,5 +276,12 @@ begin
 end;
 
 
+
+{ TRefCountedZeroObject }
+
+function TRefCountedZeroObject.GetIsReferenceCounted: boolean;
+begin
+  result := true;
+end;
 
 end.

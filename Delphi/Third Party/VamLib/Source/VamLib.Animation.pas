@@ -103,8 +103,6 @@ end;
 
 constructor TAnimateController.Create;
 begin
-  FIsReferenceCounted := false;
-
   ActionList := TAnimateActionList.Create;
   FrameTimer := TTimer.Create(nil);
   FrameTimer.Enabled  := false;
