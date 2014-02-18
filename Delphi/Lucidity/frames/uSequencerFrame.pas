@@ -3,7 +3,7 @@ unit uSequencerFrame;
 interface
 
 uses
-  VamLib.ZeroObjectForms,
+  VamLib.ZeroObject,
   uConstants,
   Menu.StepSequenceMenu,
   eePlugin, eeGuiStandard, uDialogDisplayArea, uGuiFeedbackData,
@@ -13,7 +13,7 @@ uses
   VamLabel, VamDiv, LucidityGui.VectorSequence;
 
 type
-  TSequencerFrame = class(TFrame)
+  TSequencerFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     SeqBackPanel: TVamPanel;
@@ -26,10 +26,15 @@ type
     procedure SeqBackPanelResize(Sender: TObject);
     procedure SeqStepControlShowContextMenu(Sender: TObject; X, Y: Integer);
   private
+    FMotherShip : IMotherShip;
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
+
+    procedure ClearMotherShipReference;
+    procedure RegisterWithMotherShip(const Mothership:IMotherShip);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     StepSequenceMenu : TStepSequenceMenu;
 
@@ -71,6 +76,26 @@ begin
   inherited;
 end;
 
+procedure TSequencerFrame.ClearMotherShipReference;
+begin
+  FMotherShip := nil;
+end;
+
+procedure TSequencerFrame.RegisterWithMotherShip(const Mothership: IMotherShip);
+begin
+  FMothership := MotherShip;
+  MotherShip.RegisterZeroObject(self);
+end;
+
+procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+
+end;
+
+
+
+
+
 procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea: TDialogDisplayArea);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
@@ -111,17 +136,6 @@ begin
   SequencerLabel.Font.Color := GetTColor(kColor_LcdDark5);
 end;
 
-{
-procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-begin
-  inherited;
-
-  if MsgID = 1 then
-  begin
-    ShowMessage('James Brown Is Dead');
-  end;
-end;
-}
 procedure TSequencerFrame.SeqBackPanelResize(Sender: TObject);
 begin
   //

@@ -10,7 +10,6 @@ type
   TZeroObjectFrame = class(TFrame, IZeroObject)
   protected
     FMotherShip : IMotherShip;
-    function GetClassName : string;
     procedure ClearMotherShipReference;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
@@ -31,11 +30,6 @@ begin
   end;
 
   inherited;
-end;
-
-function TZeroObjectFrame.GetClassName: string;
-begin
-  result := self.ClassName;
 end;
 
 procedure TZeroObjectFrame.ClearMotherShipReference;

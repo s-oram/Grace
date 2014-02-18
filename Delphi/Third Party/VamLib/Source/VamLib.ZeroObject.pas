@@ -46,7 +46,6 @@ type
 
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
-    function GetClassName : string;
     procedure ClearMotherShipReference;
     procedure RegisterWithMotherShip(const Mothership:IMotherShip);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
@@ -66,7 +65,6 @@ type
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
-    function GetClassName : string;
     procedure ClearMotherShipReference;
   protected
     FRefCount: Integer;
@@ -171,12 +169,6 @@ begin
   FMotherShip.RegisterZeroObject(self);
 end;
 
-
-function TZeroObject.GetClassName: string;
-begin
-  result := self.ClassName;
-end;
-
 function TZeroObject.GetIsReferenceCounted: boolean;
 begin
   result := false;
@@ -251,11 +243,8 @@ begin
   begin
     for c1 := Objects.Count-1 downto 0 do
     begin
-      if Supports(Objects[c1], IZeroObject, zo) then
-      begin
-        Text := Zo.GetClassName + ' has not been freed!';
-        SendDebugMesssage(Text);
-      end;
+      Text := Objects[c1].ClassName + ' has not been freed!';
+      SendDebugMesssage(Text);
     end;
     // TODO: the hard arse way to respond to unfreed zero objects. This
     // should probably be removed in release builds!

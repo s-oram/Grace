@@ -17,8 +17,6 @@ object SequencerFrame: TSequencerFrame
     Height = 412
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitWidth = 320
-    ExplicitHeight = 240
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
@@ -30,8 +28,6 @@ object SequencerFrame: TSequencerFrame
       Transparent = False
       Align = alClient
       Visible = True
-      ExplicitWidth = 320
-      ExplicitHeight = 240
       object SeqBackPanel: TVamPanel
         AlignWithMargins = True
         Left = 4
@@ -57,8 +53,6 @@ object SequencerFrame: TSequencerFrame
         Padding.Top = 4
         Padding.Right = 4
         Padding.Bottom = 4
-        ExplicitWidth = 312
-        ExplicitHeight = 232
         object InfoDiv: TVamDiv
           Left = 4
           Top = 373
@@ -68,8 +62,6 @@ object SequencerFrame: TSequencerFrame
           HitTest = True
           Align = alBottom
           Visible = True
-          ExplicitTop = 201
-          ExplicitWidth = 304
           object SequencerLabel: TVamLabel
             Left = 0
             Top = 0
@@ -116,7 +108,6 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 184
           end
           object ClockSelector: TDropBoxSelector
             AlignWithMargins = True
@@ -146,7 +137,6 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = -64
           end
           object ModeSelector: TDropBoxSelector
             AlignWithMargins = True
@@ -176,7 +166,6 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
-            ExplicitLeft = 60
           end
         end
         object SeqStepControl: TLucidityVectorSequence
