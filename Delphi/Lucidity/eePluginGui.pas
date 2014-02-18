@@ -329,6 +329,7 @@ begin
 
 
 
+
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
   fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
   fn := IncludeTrailingPathDelimiter(fn) + 'Config';
@@ -1118,7 +1119,7 @@ procedure TMyTestObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer)
 begin
   if MsgID = 1 then
   begin
-    ShowMessage('bang');
+    //ShowMessage('bang');
   end;
 end;
 

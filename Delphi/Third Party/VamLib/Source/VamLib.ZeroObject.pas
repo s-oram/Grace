@@ -24,6 +24,16 @@ type
     be registered with. The TMotherShip will provide
     methods for interacting with the collected
     ZeroObjects, notably message sending.
+
+
+    Putting the RegisterWithMotherShip() method as belonging to
+    the IZeroObject kind of feels wrong. I wonder if the
+    the mother ship should have the RegisterZeroObject method....
+
+    TODO:
+    It might be possible to only store ZeroObjects as TObjects
+    and cast back to IZeroObject when needing to send messages....
+
   }
 
   //Forward declarations
@@ -36,7 +46,7 @@ type
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     function GetClassName : string;
-    function GetZeroObject:TZeroObject;
+    procedure ClearMotherShipReference;
     procedure RegisterWithMotherShip(const Mothership:IMotherShip);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   end;
@@ -55,8 +65,8 @@ type
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
-    function GetZeroObject:TZeroObject;
     function GetClassName : string;
+    procedure ClearMotherShipReference;
   protected
     FRefCount: Integer;
     function GetIsReferenceCounted: boolean; virtual;
@@ -135,9 +145,14 @@ begin
 
 end;
 
+procedure TZeroObject.ClearMotherShipReference;
+begin
+  FMotherShip := nil;
+end;
+
 destructor TZeroObject.Destroy;
 begin
-  if (not IsReferenceCounted) and (assigned(FMotherShip)) then
+  if (assigned(FMotherShip)) then
   begin
     FMotherShip.DeregisterZeroObject(self);
   end;
@@ -163,11 +178,6 @@ end;
 function TZeroObject.GetIsReferenceCounted: boolean;
 begin
   result := false;
-end;
-
-function TZeroObject.GetZeroObject: TZeroObject;
-begin
-  result := self;
 end;
 
 class function TZeroObject.NewInstance: TObject;
@@ -219,7 +229,7 @@ begin
     then result := FRefCount
     else result := -1;
 
-  if (result = 1) and (assigned(FMotherShip)) and (IsReferenceCounted) then
+  if (result = 1) and (assigned(FMotherShip)) then
   begin
     // The mothership is holding the last interface reference and
     // preventing this object from being freed. Deregister
@@ -227,7 +237,7 @@ begin
     FMotherShip.DeregisterZeroObject(self);
   end;
 
-  if (result = 0) and (IsReferenceCounted) then
+  if (result = 0) then
   begin
     Destroy;
   end;
@@ -249,7 +259,6 @@ begin
   GuiMessageTimer.Enabled := false;
   GuiMessagetimer.OnTimer := Handle_GuiMessageTimer;
 
-
   Objects := TInterfaceList.Create;
 end;
 
@@ -267,8 +276,7 @@ begin
     for c1 := Objects.Count-1 downto 0 do
     begin
       zo :=  (Objects[c1] as IZeroObject);
-      Text := zo.GetClassName;
-      Text := Text + ' has not been freed!';
+      Text := Zo.GetClassName + ' has not been freed!';
       SendDebugMesssage(Text);
 
       //TODO: the softly-softly approach to not freeing all the zero objects.
@@ -304,7 +312,7 @@ begin
   // Important: clear the MotherShip reference here
   // before remove the ZeroObject from the interface list.
   // Not doing so will lead to a stackoverflow error.
-  obj.GetZeroObject.FMotherShip := nil;
+  obj.ClearMotherShipReference;
 
   //remove obj from interface list.
   if Objects.IndexOf(obj) <> -1 then

@@ -1,16 +1,26 @@
 object SequencerFrame: TSequencerFrame
   Left = 0
   Top = 0
-  Width = 873
-  Height = 471
-  TabOrder = 0
+  ClientHeight = 433
+  ClientWidth = 857
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
   object Panel: TRedFoxContainer
     Left = 0
     Top = 0
-    Width = 873
-    Height = 471
+    Width = 857
+    Height = 433
     Color = '$FFEEEEEE'
     Align = alClient
+    ExplicitWidth = 873
+    ExplicitHeight = 471
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0

@@ -111,6 +111,7 @@
 			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
 			<DCCReference Include="Source\VamLib.Animation.pas"/>
 			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
+			<DCCReference Include="Source\VamLib.ZeroObjectForms.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
