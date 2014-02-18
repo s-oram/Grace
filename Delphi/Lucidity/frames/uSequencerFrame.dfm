@@ -1,43 +1,43 @@
 object SequencerFrame: TSequencerFrame
   Left = 0
   Top = 0
-  ClientHeight = 433
-  ClientWidth = 857
-  Color = clBtnFace
+  Width = 766
+  Height = 412
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = True
-  PixelsPerInch = 96
-  TextHeight = 13
+  ParentFont = False
+  TabOrder = 0
   object Panel: TRedFoxContainer
     Left = 0
     Top = 0
-    Width = 857
-    Height = 433
+    Width = 766
+    Height = 412
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitWidth = 873
-    ExplicitHeight = 471
+    ExplicitWidth = 320
+    ExplicitHeight = 240
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
-      Width = 873
-      Height = 471
+      Width = 766
+      Height = 412
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Align = alClient
       Visible = True
+      ExplicitWidth = 320
+      ExplicitHeight = 240
       object SeqBackPanel: TVamPanel
         AlignWithMargins = True
         Left = 4
         Top = 4
-        Width = 865
-        Height = 463
+        Width = 758
+        Height = 404
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -57,15 +57,19 @@ object SequencerFrame: TSequencerFrame
         Padding.Top = 4
         Padding.Right = 4
         Padding.Bottom = 4
+        ExplicitWidth = 312
+        ExplicitHeight = 232
         object InfoDiv: TVamDiv
           Left = 4
-          Top = 432
-          Width = 857
+          Top = 373
+          Width = 750
           Height = 27
           Text = 'InfoDiv'
           HitTest = True
           Align = alBottom
           Visible = True
+          ExplicitTop = 201
+          ExplicitWidth = 304
           object SequencerLabel: TVamLabel
             Left = 0
             Top = 0
@@ -86,7 +90,7 @@ object SequencerFrame: TSequencerFrame
           end
           object StepCountSelector: TDropBoxSelector
             AlignWithMargins = True
-            Left = 737
+            Left = 630
             Top = 0
             Width = 120
             Height = 27
@@ -112,10 +116,11 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
+            ExplicitLeft = 184
           end
           object ClockSelector: TDropBoxSelector
             AlignWithMargins = True
-            Left = 489
+            Left = 382
             Top = 0
             Width = 120
             Height = 27
@@ -141,10 +146,11 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
+            ExplicitLeft = -64
           end
           object ModeSelector: TDropBoxSelector
             AlignWithMargins = True
-            Left = 613
+            Left = 506
             Top = 0
             Width = 120
             Height = 27
@@ -170,11 +176,12 @@ object SequencerFrame: TSequencerFrame
             Font.Style = []
             Align = alRight
             Visible = True
+            ExplicitLeft = 60
           end
         end
         object SeqStepControl: TLucidityVectorSequence
-          Left = 264
-          Top = 104
+          Left = 64
+          Top = 88
           Width = 225
           Height = 169
           Text = 'SeqStepControl'

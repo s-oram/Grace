@@ -13,7 +13,7 @@ uses
   VamLabel, VamDiv, LucidityGui.VectorSequence;
 
 type
-  TSequencerFrame = class(TZeroObjectFrame)
+  TSequencerFrame = class(TFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     SeqBackPanel: TVamPanel;
@@ -36,7 +36,7 @@ type
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    //procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -78,7 +78,7 @@ begin
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
 
-  self.RegisterWithMotherShip(Plugin.Globals.MotherShip);
+  //self.RegisterWithMotherShip(Plugin.Globals.MotherShip);
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
@@ -111,6 +111,7 @@ begin
   SequencerLabel.Font.Color := GetTColor(kColor_LcdDark5);
 end;
 
+{
 procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
   inherited;
@@ -120,7 +121,7 @@ begin
     ShowMessage('James Brown Is Dead');
   end;
 end;
-
+}
 procedure TSequencerFrame.SeqBackPanelResize(Sender: TObject);
 begin
   //

@@ -7,6 +7,7 @@ uses
   Classes,
   ExtCtrls,
   VamLib.Types,
+  Contnrs,
   OtlCommon,
   OtlContainers;
 
@@ -53,8 +54,8 @@ type
 
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
-    procedure RegisterZeroObject(obj:IZeroObject);
-    procedure DeregisterZeroObject(obj:IZeroObject);
+    procedure RegisterZeroObject(obj:TObject);
+    procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal; Data : Pointer);
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
@@ -105,10 +106,11 @@ type
   private
     GuiMessageQueue : TOmniQueue;
     GuiMessageTimer : TTimer;
-    Objects : TInterfaceList;
+    Objects          : TObjectList;
     function GetZeroObjectCount: integer;
-    procedure RegisterZeroObject(obj:IZeroObject);
-    procedure DeregisterZeroObject(obj:IZeroObject);
+
+    procedure RegisterZeroObject(obj:TObject);
+    procedure DeregisterZeroObject(obj:TObject);
 
     procedure Handle_GuiMessageTimer(Sender : TObject);
 
@@ -207,41 +209,14 @@ end;
 
 function TZeroObject._Release: Integer;
 begin
-  {
-    The lifetime management of ZeroObjects when they
-    are reference counted is a little complicated.
-
-    ZeroObjects are stored via an interface reference
-    in the motherShip. They need to detect when the last
-    reference is held by the mothership, when so the
-    ZeroObject will automatically deregister (from the
-    mothership) allowing itself to be freed.
-
-    This problem could be avoid by replacing the MotherShip
-    interface list with an object list. The ZeroObjects
-    would reference as object instances, not interface
-    references.
-  }
-
   FRefCount := InterlockedDecrement(FRefCount);
 
   if IsReferenceCounted
     then result := FRefCount
     else result := -1;
 
-  if (result = 1) and (assigned(FMotherShip)) then
-  begin
-    // The mothership is holding the last interface reference and
-    // preventing this object from being freed. Deregister
-    // this object so we can be free!
-    FMotherShip.DeregisterZeroObject(self);
-  end;
-
-  if (result = 0) then
-  begin
-    Destroy;
-  end;
-
+  if (result = 0)
+    then Destroy;
 end;
 
 procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -259,7 +234,8 @@ begin
   GuiMessageTimer.Enabled := false;
   GuiMessagetimer.OnTimer := Handle_GuiMessageTimer;
 
-  Objects := TInterfaceList.Create;
+  Objects := TObjectList.Create;
+  Objects.OwnsObjects := false;
 end;
 
 destructor TMotherShip.Destroy;
@@ -275,59 +251,65 @@ begin
   begin
     for c1 := Objects.Count-1 downto 0 do
     begin
-      zo :=  (Objects[c1] as IZeroObject);
-      Text := Zo.GetClassName + ' has not been freed!';
-      SendDebugMesssage(Text);
-
-      //TODO: the softly-softly approach to not freeing all the zero objects.
-      //self.DeregisterZeroObject(zo);
-      //zo := nil;
+      if Supports(Objects[c1], IZeroObject, zo) then
+      begin
+        Text := Zo.GetClassName + ' has not been freed!';
+        SendDebugMesssage(Text);
+      end;
     end;
-
     // TODO: the hard arse way to respond to unfreed zero objects. This
     // should probably be removed in release builds!
     raise Exception.Create('Not all ZeroObjects have been freed.');
   end;
 
   Objects.Free;
+
   inherited;
 end;
 
 function TMotherShip.GetZeroObjectCount: integer;
 begin
+  //result := Objects_IntfList.Count;
   result := Objects.Count;
 end;
 
-procedure TMotherShip.RegisterZeroObject(obj: IZeroObject);
+procedure TMotherShip.RegisterZeroObject(obj: TObject);
 begin
-  //Add obj to interface list.
-  if Objects.IndexOf(obj) = -1 then
+  if Supports(obj, IZeroObject) then
   begin
-    Objects.Add(obj);
+    if Objects.IndexOf(Obj) = -1
+      then Objects.Add(Obj);
+  end else
+  begin
+    raise Exception.Create('Object isn''t a ZeroObject.');
   end;
 end;
 
-procedure TMotherShip.DeregisterZeroObject(obj: IZeroObject);
+procedure TMotherShip.DeregisterZeroObject(obj: TObject);
+var
+  zo : IZeroObject;
 begin
-  // Important: clear the MotherShip reference here
-  // before remove the ZeroObject from the interface list.
-  // Not doing so will lead to a stackoverflow error.
-  obj.ClearMotherShipReference;
-
-  //remove obj from interface list.
-  if Objects.IndexOf(obj) <> -1 then
+  if Supports(obj, IZeroObject, zo) then
   begin
-    Objects.Remove(obj);
+    zo.ClearMotherShipReference;
+    Objects.Remove(Obj);
+    zo := nil;
   end;
 end;
+
+
 
 procedure TMotherShip.SendMessage(MsgID: cardinal; Data: Pointer);
 var
   c1: Integer;
+  zo : IZeroObject;
 begin
-  for c1 := 0 to Objects.Count-1 do
+  for c1 := 0 to Objects.Count - 1 do
   begin
-    (Objects[c1] as IZeroObject).ProcessZeroObjectMessage(MsgID, Data);
+    if Supports(Objects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
   end;
 end;
 
@@ -353,6 +335,7 @@ var
   GuiMessage : TGuiMessage;
   OmniValue : TOmniValue;
   c1: Integer;
+  zo : IZeroObject;
 begin
   GuiMessageTimer.Enabled := false;
 
@@ -360,15 +343,19 @@ begin
   begin
     GuiMessage := OmniValue.ToRecord<TGuiMessage>;
 
-    for c1 := 0 to Objects.Count-1 do
+    for c1 := 0 to Objects.Count - 1 do
     begin
-      (Objects[c1] as IZeroObject).ProcessZeroObjectMessage(GuiMessage.MsgID, GuiMessage.Data);
+      if Supports(Objects[c1], IZeroObject, zo) then
+      begin
+        zo.ProcessZeroObjectMessage(GuiMessage.MsgID, GuiMessage.Data);
+      end;
     end;
 
     if assigned(GuiMessage.CleanUp)
       then GuiMessage.CleanUp();
   end;
 end;
+
 
 
 
