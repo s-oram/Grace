@@ -3,7 +3,7 @@ unit soSignalRecorder;
 interface
 
 uses
-  EasyEffect.ZeroObject,
+  VamLib.ZeroObject,
   eeGlobals,
   VamLib.MoreTypes,
   LucidityGui.Scope.SignalRecorder;

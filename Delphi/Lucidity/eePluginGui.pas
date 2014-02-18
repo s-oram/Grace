@@ -6,6 +6,7 @@ interface
 
 
 uses
+  VamLib.ZeroObject,
   uSequencerFrame,
   OtlComm, uModSystem2Frame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame,
@@ -27,6 +28,12 @@ uses
 
 
 type
+  TMyTestObject = class(TZeroObject)
+  private
+  public
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+  end;
+
   TPluginGui = class(TForm)
     RedFoxContainer: TRedFoxContainer;
     MainWorkArea: TVamDiv;
@@ -60,6 +67,8 @@ type
     DialogDisplayArea : TDialogDisplayArea;
     VstWindow : Hwnd;
     DropFileTarget : TRedFoxDropFileTarget;
+
+    TestObject : TMyTestObject;
 
     MenuBarFrame           : TMenuBarFrame;
     SampleDisplayFrame     : TSampleDisplayFrame;
@@ -150,6 +159,8 @@ procedure TPluginGui.FormCreate(Sender: TObject);
 const
   kScrollPanelWidth = 635;
 begin
+  TestObject := TMyTestObject.Create;
+
   DialogDisplayArea := TDialogDisplayArea.Create;
   DialogDisplayArea.OnShowDialogArea := DoShowDialogArea;
   DialogDisplayArea.OnHideDialogArea := DoHideDialogArea;
@@ -289,6 +300,8 @@ begin
   PluginHotkeys.Free;
   if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
   OverlayContainer.Free;
+
+  TestObject.Free;
 end;
 
 
@@ -311,6 +324,8 @@ begin
   GuiStandard := TGuiStandard.Create(Plugin, Plugin.Globals);
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
+
+  TestObject.RegisterWithMotherShip(Plugin.Globals.MotherShip);
 
 
 
@@ -1096,5 +1111,15 @@ end;
 
 
 
+
+{ TMyTestObject }
+
+procedure TMyTestObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  if MsgID = 1 then
+  begin
+    ShowMessage('bang');
+  end;
+end;
 
 end.

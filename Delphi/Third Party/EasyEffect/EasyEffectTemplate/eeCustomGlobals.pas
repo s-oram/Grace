@@ -16,7 +16,7 @@ unit eeCustomGlobals;
 interface
 
 uses
-  EasyEffect.ZeroObject,
+  VamLib.ZeroObject,
   eeTypes,
   SysUtils,
   otlContainers, otlComm, otlCommon, otlTaskControl, otlTask,
@@ -91,6 +91,7 @@ type
     function GetHostProperties: PHostProperties;
     procedure SetFastControlRate(const Value: integer);
     procedure SetSlowControlRate(const Value: integer);
+    function GetMotherShip: IMotherShip;
   protected
     fHostProperties : THostProperties;
     fCpuUsage      : PCpuUsageInfo;
@@ -209,7 +210,7 @@ type
 
     property HostProperties : PHostProperties read GetHostProperties;
 
-    property MotherShip : TMotherShip read FMotherShip;
+    property MotherShip : IMotherShip read GetMotherShip;
   end;
 
 
@@ -333,6 +334,11 @@ end;
 function TCustomGlobals.GetHostProperties: PHostProperties;
 begin
   result := @fHostProperties;
+end;
+
+function TCustomGlobals.GetMotherShip: IMotherShip;
+begin
+  result := FMotherShip;
 end;
 
 procedure TCustomGlobals.SendWindowsMessage(const Msg: cardinal; const wParam:NativeUInt; const lParam:NativeInt);

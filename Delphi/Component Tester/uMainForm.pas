@@ -4,7 +4,7 @@ interface
 
 uses
   VamLib.UniqueID,
-  EasyEffect.ZeroObject,
+  VamLib.ZeroObject,
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
   VamLib.Debouncer,

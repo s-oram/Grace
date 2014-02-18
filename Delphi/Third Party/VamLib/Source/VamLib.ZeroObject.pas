@@ -45,6 +45,9 @@ type
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
     procedure RegisterZeroObject(obj:IZeroObject);
     procedure DeregisterZeroObject(obj:IZeroObject);
+
+    procedure SendMessage(MsgID : cardinal; Data : Pointer);
+    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
   end;
 
 
@@ -98,6 +101,8 @@ type
     procedure DeregisterZeroObject(obj:IZeroObject);
 
     procedure Handle_GuiMessageTimer(Sender : TObject);
+
+    property ZeroObjectCount : integer read GetZeroObjectCount;
   public
     constructor Create;
     destructor Destroy; override;
@@ -105,7 +110,7 @@ type
     procedure SendMessage(MsgID : cardinal; Data : Pointer);
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
 
-    property ZeroObjectCount : integer read GetZeroObjectCount;
+
   end;
 
 
