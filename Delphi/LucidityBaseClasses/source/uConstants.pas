@@ -320,7 +320,11 @@ type
 
 
 
+  TLucidMsgID = record
+  const
 
+    RefreshStepSeqDisplay : cardinal = 1;
+  end;
 
 implementation
 

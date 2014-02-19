@@ -168,14 +168,14 @@ object SequencerFrame: TSequencerFrame
             Visible = True
           end
         end
-        object SeqStepControl: TLucidityVectorSequence
+        object StepSeqControl: TLucidityVectorSequence
           Left = 64
           Top = 88
           Width = 225
           Height = 169
-          Text = 'SeqStepControl'
+          Text = 'StepSeqControl'
           HitTest = True
-          OnShowContextMenu = SeqStepControlShowContextMenu
+          OnShowContextMenu = StepSeqControlShowContextMenu
           Color_Background = '$FF000000'
           Color_Border = '$FF000000'
           Color_Step = '$FFD6DADF'

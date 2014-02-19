@@ -25,14 +25,14 @@ type
 implementation
 
 uses
+  uConstants,
   Lucidity.SequencerDataObject,
   uLucidityKeyGroup,
   uAboutDialog,
   SysUtils,
   uAutoFree,
   uGuiUtils,
-  Dialogs,
-  uConstants;
+  Dialogs;
 
 
 
@@ -99,7 +99,7 @@ begin
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
-      x1 := Random;
+      x1 := Random * 2 - 1;
       SeqData.SetStepValue(c1, x1);
     end;
   end;
@@ -112,10 +112,12 @@ begin
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
-      x1 := Random;
+      x1 := Random * 2 - 1;
       SeqData.SetStepValue(c1, x1);
     end;
   end;
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshStepSeqDisplay, nil, nil);
 end;
 
 procedure TStepSequenceMenu.EventHandle_ResetSteps(Sender: TObject);
@@ -141,7 +143,7 @@ begin
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
-      x1 := 0.5;
+      x1 := 0;
       SeqData.SetStepValue(c1, x1);
     end;
   end;
@@ -154,10 +156,12 @@ begin
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
-      x1 := 0.5;
+      x1 := 0;
       SeqData.SetStepValue(c1, x1);
     end;
   end;
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshStepSeqDisplay, nil, nil);
 end;
 
 

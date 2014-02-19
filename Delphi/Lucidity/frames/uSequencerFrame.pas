@@ -22,9 +22,9 @@ type
     StepCountSelector: TDropBoxSelector;
     ClockSelector: TDropBoxSelector;
     ModeSelector: TDropBoxSelector;
-    SeqStepControl: TLucidityVectorSequence;
+    StepSeqControl: TLucidityVectorSequence;
     procedure SeqBackPanelResize(Sender: TObject);
-    procedure SeqStepControlShowContextMenu(Sender: TObject; X, Y: Integer);
+    procedure StepSeqControlShowContextMenu(Sender: TObject; X, Y: Integer);
   private
     FMotherShip : IMotherShip;
     fGuiStandard: TGuiStandard;
@@ -71,6 +71,8 @@ end;
 
 destructor TSequencerFrame.Destroy;
 begin
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
 
   StepSequenceMenu.Free;
   inherited;
@@ -87,10 +89,6 @@ begin
   MotherShip.RegisterZeroObject(self);
 end;
 
-procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-begin
-
-end;
 
 
 
@@ -103,15 +101,15 @@ begin
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
 
-  //self.RegisterWithMotherShip(Plugin.Globals.MotherShip);
+  RegisterWithMotherShip(Plugin.Globals.MotherShip);
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  SeqStepControl.Align := alClient;
-  SeqStepControl.Color_Background := kColor_LcdDark1;
-  SeqStepControl.Color_Border     := kColor_LcdDark1;
-  SeqStepControl.Color_Step       := kColor_LcdDark4;
-  SeqStepControl.Color_StepActive := kColor_LcdDark5;
+  StepSeqControl.Align := alClient;
+  StepSeqControl.Color_Background := kColor_LcdDark1;
+  StepSeqControl.Color_Border     := kColor_LcdDark1;
+  StepSeqControl.Color_Step       := kColor_LcdDark4;
+  StepSeqControl.Color_StepActive := kColor_LcdDark5;
 
 
   InfoDiv.Height := 20;
@@ -165,7 +163,7 @@ begin
     GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
   end;
 
-  SeqStepControl.SequenceData := Plugin.ActiveKeyGroup.GetVectorSequenceData(fSequencerIndex);
+  StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetVectorSequenceData(fSequencerIndex);
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -183,10 +181,20 @@ begin
   }
 end;
 
-procedure TSequencerFrame.SeqStepControlShowContextMenu(Sender: TObject; X, Y: Integer);
+procedure TSequencerFrame.StepSeqControlShowContextMenu(Sender: TObject; X, Y: Integer);
 begin
   StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, fSequencerIndex);
 end;
+
+procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  if MsgID = TLucidMsgID.RefreshStepSeqDisplay then
+  begin
+    StepSeqControl.Invalidate;
+  end;
+
+end;
+
 
 
 
