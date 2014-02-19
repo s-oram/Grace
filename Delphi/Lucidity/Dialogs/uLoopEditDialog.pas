@@ -3,6 +3,7 @@ unit uLoopEditDialog;
 interface
 
 uses
+  VamLib.ZeroObject,
   Math,
   uConstants,
   VamLib.UniqueID,
@@ -36,7 +37,7 @@ type
     property OnZoomToSampleMarker : TSampleMarkerEvent read fOnZoomToSampleMarker write fOnZoomToSampleMarker;
   end;
 
-  TLoopEditForm = class(TForm)
+  TLoopEditForm = class(TForm, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     VamLabel1: TVamLabel;
@@ -58,6 +59,11 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     SampleRenderer : TSampleImageRenderer;
     FlexSampleRender : TFlexSampleImageRenderer;
@@ -84,9 +90,6 @@ type
     procedure PanelResize(Sender: TObject);
     procedure SampleZoomControlChanged(Sender: TObject);
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-
-    procedure SampleFocusChanged(var Msg: TMessage); //message UM_SAMPLE_FOCUS_CHANGED;
-    procedure SampleRegionChanged(var Msg: TMessage); //message UM_SAMPLE_REGION_CHANGED;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -242,25 +245,14 @@ end;
 
 destructor TLoopEditForm.Destroy;
 begin
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   FreeAndNil(ZoomMarkerMenu);
   SampleRenderer.Free;
   FlexSampleRender.Free;
   inherited;
 end;
-
-procedure TLoopEditForm.SampleFocusChanged(var Msg: TMessage);
-begin
-  UpdateSampleDisplay;
-end;
-
-procedure TLoopEditForm.SampleRegionChanged(var Msg: TMessage);
-begin
-  UpdateSampleDisplay;
-end;
-
-
-
-
 
 procedure TLoopEditForm.PanelResize(Sender: TObject);
 begin
@@ -520,6 +512,11 @@ begin
   end;
 end;
 
+procedure TLoopEditForm.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
+end;
+
 procedure TLoopEditForm.SampleOverlay_MarkerChanged(Sender:TObject; Marker:TSampleMarker; NewPosition : integer);
 var
   CurRegion : IRegion;
@@ -536,7 +533,7 @@ begin
   end;
 
   GuiEvent_SampleMakersChanged;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_MARKERS_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
 
 end;
 
@@ -681,6 +678,11 @@ begin
   SampleZoomControl.Invalidate;
 end;
 
+function TLoopEditForm.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
 procedure TLoopEditForm.GuiEvent_SampleMakersChanged;
 var
   CurRegion : IRegion;
@@ -748,6 +750,20 @@ begin
   end;
 end;
 
+procedure TLoopEditForm.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  if MsgId = TLucidMsgId.SampleRegionChanged then
+  begin
+    UpdateSampleDisplay;
+  end;
+
+  if MsgId = TLucidMsgId.SampleFocusChanged then
+  begin
+    UpdateSampleDisplay;
+  end;
+
+end;
+
 
 { TLoopEditDialog }
 
@@ -796,6 +812,12 @@ begin
   Form.UpdateSampleDisplay;
 
   Form.BackgroundPanel.Visible := true;
+
+  aPlugin.Globals.MotherShip.RegisterZeroObject(Form);
 end;
+
+
+
+
 
 end.

@@ -354,7 +354,8 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -381,7 +382,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -397,12 +398,12 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapDblClick(Sender: TObject);
 begin
-  Plugin.Globals.SendWindowsMessage(UM_HIDE_SAMPLE_MAP_EDIT);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
@@ -413,7 +414,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapShowRegionContextMenu(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -428,8 +429,8 @@ end;
 procedure TSampleMapFrame.SampleMapShowReplaceRegionMessage(Sender: TObject; Value: Boolean);
 begin
   if Value
-    then Plugin.Globals.SendWindowsMessage(UM_SHOW_REPLACE_REGION_MESSAGE)
-    else Plugin.Globals.SendWindowsMessage(UM_HIDE_REPLACE_REGION_MESSAGE);
+    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowReplaceRegionMessage)
+    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideReplaceRegionMessage);
 
 end;
 
@@ -450,7 +451,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
 end;
 
 procedure TSampleMapFrame.MidiKeyChanged;
@@ -486,7 +487,7 @@ begin
     else Plugin.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
 
   UpdateRegionInfoDisplay;
-  Plugin.Globals.SendWindowsMessage(UM_MOUSE_OVER_SAMPLE_REGION_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MouseOverSampleRegionChanged);
 end;
 
 
@@ -909,7 +910,7 @@ begin
   UpdateSampleRegions;
 
   //TODO: throttle this call..
-  //Plugin.Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
+  //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
 
 end;
 
@@ -940,7 +941,7 @@ begin
   UpdateSampleRegions;
 
   //TODO: throttle this call..
-  //Plugin.Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
+  //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
 end;
 
 

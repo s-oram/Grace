@@ -610,18 +610,15 @@ end;
 
 procedure TModControlFrame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
-  if Message.Msg = UM_FILTER_CHANGED            then UpdateControlVisibility;
-  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
-  if Message.Msg = UM_LFO_CHANGED               then UpdateLfo;
+  //TODO : delete
 end;
 
-
-
-
-procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
+procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
+  if MsgID = TLucidMsgID.FilterChanged                   then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;
+  if MsgID = TLucidMsgID.LfoChanged                      then UpdateLfo;
 
 end;
 

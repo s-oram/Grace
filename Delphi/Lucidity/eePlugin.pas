@@ -481,7 +481,7 @@ begin
   end;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.FocusKeyGroup(const aKeyGroupName: string);
@@ -512,7 +512,7 @@ begin
 
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.FocusRegion(aRegionID: TGUID);
@@ -534,7 +534,7 @@ begin
 
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.SelectRegion(aRegionID: TGUID);
@@ -554,7 +554,7 @@ begin
   SampleMap.ClearFocus;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.ClearSelected;
@@ -562,7 +562,7 @@ begin
   SampleMap.DeselectAllRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -581,7 +581,7 @@ begin
     then self.FocusFirstKeyGroup;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteSelectedRegions;
@@ -589,7 +589,7 @@ begin
   SampleMap.DeleteSelectedRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.MoveRootKey(const RootKeyOffset: integer);
@@ -609,7 +609,8 @@ begin
     end;
   end;
 
-  Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
+
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
 end;
 
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
@@ -623,7 +624,7 @@ begin
   SampleMap.DeselectAllRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.SendWindowsMessage(UM_SAMPLE_REGION_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
 end;
 
 function TeePlugin.NewRegion(CreateInfo: TRegionCreateInfo): IRegion;
@@ -844,12 +845,16 @@ begin
     SampleMap.FocusRegion(aRegionID);
   end;
 
-  self.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
-  self.Globals.SendWindowsMessage(UM_SAMPLE_MARKERS_CHANGED);
-  self.Globals.SendWindowsMessage(UM_SAMPLE_OSC_TYPE_CHANGED);
-  self.Globals.SendWindowsMessage(UM_Update_Control_Visibility);
-  self.Globals.SendWindowsMessage(UM_Update_Mod_Matrix);
-  self.Globals.SendWindowsMessage(UM_FILTER_CHANGED);
+
+  //TODO: These send message calls could be replaced by...
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleOscTypeChanged);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateModMatrix);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
+
+  // this one call here perhaps.
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ProgramLoaded);
 end;
 
 
@@ -873,7 +878,7 @@ begin
 
   PresetName := RemoveFileExt(FileName);
 
-  Globals.SendWindowsMessage(UM_PROGRAM_SAVED_TO_DISK);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ProgramSavedToDisk);
   {$ENDIF}
 end;
 
@@ -951,7 +956,7 @@ begin
     end;
   end;
 
-  Globals.SendWindowsMessage(UM_PREVIEW_INFO_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.PreviewInfoChanged);
 end;
 
 procedure TeePlugin.StopPreview;
@@ -962,7 +967,7 @@ end;
 procedure TeePlugin.ClearPreviewInfo;
 begin
   PreviewInfo^.Clear;
-  Globals.SendWindowsMessage(UM_PREVIEW_INFO_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.PreviewInfoChanged);
 end;
 
 procedure TeePlugin.TriggerNoteOn(const MidiNote, MidiVelocity: integer);
@@ -972,7 +977,7 @@ begin
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
   VoiceController.NoteOn(MidiNote, MidiVelocity, SampleMap);
-  Globals.SendWindowsMessage(UM_MIDI_KEY_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
 end;
 
 procedure TeePlugin.TriggerNoteOff(const MidiNote, MidiVelocity: integer);
@@ -982,7 +987,7 @@ begin
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   VoiceController.NoteOff(MidiNote, MidiVelocity, SampleMap);
-  Globals.SendWindowsMessage(UM_MIDI_KEY_CHANGED);
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
 end;
 
 
@@ -1002,7 +1007,7 @@ begin
 
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
-    Globals.SendWindowsMessage(UM_MIDI_KEY_CHANGED);
+    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsNoteOff(Event) then
@@ -1011,7 +1016,7 @@ begin
     VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
 
     // TODO: SendGuiMessage is blocking and way too slow.
-    Globals.SendWindowsMessage(UM_MIDI_KEY_CHANGED);
+    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsControlChange(Event) then

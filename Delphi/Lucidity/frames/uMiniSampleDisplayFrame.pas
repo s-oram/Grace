@@ -219,21 +219,20 @@ end;
 
 procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_Update_Control_Visibility   then UpdateControlVisibility;
-  if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED     then UpdateControlVisibility;
-  if Message.Msg = UM_MOD_SLOT_CHANGED            then UpdateModulation;
-  if Message.Msg = UM_SAMPLE_FOCUS_CHANGED        then UpdateSampleDisplay;
-
-  if Message.Msg = UM_SHOW_REPLACE_REGION_MESSAGE then SampleOverlay.ShowReplaceMessage := true;
-  if Message.Msg = UM_HIDE_REPLACE_REGION_MESSAGE then SampleOverlay.ShowReplaceMessage := false;
-
-
-
 end;
 
-procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
+procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
+  if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
+  if MsgID = TLucidMsgID.SampleFocusChanged   then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.SampleOscTypeChanged then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.LoopTypeChanged      then UpdateSampleDisplayInfo;
+
+  if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := true;
+  if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := false;
+
+
 
 end;
 
@@ -460,7 +459,7 @@ begin
   if (fn <> '') and (IsLucidityProgramFile(fn)) then
   begin
     Plugin.LoadProgramFromFile(fn);
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
     exit; //====================================================exit======>>
   end;
 
@@ -532,7 +531,7 @@ begin
       end;
     end;
 
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 
 
 
@@ -650,10 +649,9 @@ begin
   if not assigned(Plugin) then exit;
 
   if Plugin.GuiState.IsSampleMapVisible
-    then Plugin.Globals.SendWindowsMessage(UM_HIDE_SAMPLE_MAP_EDIT)
-    else Plugin.Globals.SendWindowsMessage(UM_SHOW_SAMPLE_MAP_EDIT);
+    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
+    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
 
-  //Plugin.Globals.SendGuiMessage(UM_SHOW_LOOP_EDIT_FRAME);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -672,10 +670,10 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  // NOTE: Send a UM_MOD_SLOT_CHANGED message here to force the sample overlay to update
+  // NOTE: Send a ModSlotChanged message here to force the sample overlay to update
   // it's modulation values. The current mod slot hasn't changed so
   // the message isn't strictly UM_MOD_SLOT_CHANGED appropiate.
-  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleMarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
@@ -694,8 +692,7 @@ begin
   end;
 
   UpdateSampleDisplayInfo;
-
-  Plugin.Globals.SendWindowsMessage(UM_SAMPLE_MARKERS_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
 end;
 
 

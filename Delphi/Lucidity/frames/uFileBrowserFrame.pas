@@ -121,10 +121,16 @@ end;
 
 procedure TFileBrowserFrame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_PROGRAM_SAVED_TO_DISK
-    then RefreshFileBrowser;
+end;
+
+procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
+  if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
 
 end;
+
+
 
 
 procedure TFileBrowserFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
@@ -473,12 +479,6 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.IsPreviewEnabled := (Sender as TVamButton).IsOn;
-end;
-
-procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
-begin
-
 end;
 
 procedure TFileBrowserFrame.RefreshFileBrowser;

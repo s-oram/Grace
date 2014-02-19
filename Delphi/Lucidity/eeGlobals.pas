@@ -190,7 +190,7 @@ begin
   if Value <> fSelectedLfo then
   begin
     fSelectedLfo := Value;
-    SendWindowsMessage(UM_LFO_CHANGED);
+    MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
   end;
 end;
 
@@ -202,7 +202,7 @@ begin
   if Value <> fSelectedModSlot then
   begin
     fSelectedModSlot := Value;
-    SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+    MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
   end;
 end;
 

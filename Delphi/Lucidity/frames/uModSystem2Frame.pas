@@ -214,14 +214,13 @@ end;
 
 procedure TModSystem2Frame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_MOD_SLOT_CHANGED then UpdateModulation;
+  //TODO: Delete
 end;
 
 
-procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
+procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
-
+  if MsgID = TLucidMsgID.ModSlotChanged then UpdateModulation;
 end;
 
 procedure TModSystem2Frame.SetMotherShipReference(aMotherShip: IMothership);
@@ -373,7 +372,7 @@ begin
   //ModConnections.ModSource[MenuModSlot] := aSource;
   ModConnections.SetModSource(MenuModSlot, aSource);
 
-  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TModSystem2Frame.Handle_ModViaSelected(Sender: TObject; aSource: TModSource);
@@ -385,7 +384,7 @@ begin
   //ModConnections.ModVia[MenuModSlot] := aSource;
   ModConnections.SetModVia(MenuModSlot, aSource);
 
-  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TModSystem2Frame.Handle_ModSelectorMouseEnter(Sender: TObject);
@@ -400,7 +399,7 @@ begin
 
   Plugin.Globals.MouseOverModSlot := Index;
   Plugin.Globals.IsMouseOverModSlot := true;
-  Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TModSystem2Frame.Handle_ModSelectorMouseLeave(Sender: TObject);
@@ -414,7 +413,7 @@ begin
       CurrentMouseOverControl := nil;
 
       Plugin.Globals.IsMouseOverModSlot := false;
-      Plugin.Globals.SendWindowsMessage(UM_MOD_SLOT_CHANGED);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
     end;
   end;
 

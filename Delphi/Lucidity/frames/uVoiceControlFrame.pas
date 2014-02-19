@@ -146,10 +146,16 @@ end;
 
 procedure TVoiceControlFrame.MessageHandler(var Message: TMessage);
 begin
-  if Message.Msg = UM_Update_Control_Visibility then UpdateControlVisibility;
-  if Message.Msg = UM_SAMPLE_OSC_TYPE_CHANGED   then UpdateControlVisibility;
-  if Message.Msg = UM_MOD_SLOT_CHANGED          then UpdateModulation;
 end;
+
+procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
+end;
+
+
 
 procedure TVoiceControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
 var
@@ -461,12 +467,6 @@ begin
 
 end;
 
-
-procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
-begin
-
-end;
 
 procedure TVoiceControlFrame.UpdateModulation;
 var

@@ -26,38 +26,6 @@ var
   VstPluginDir : string; //Location of the VST plugin dll.
   PresetsDir   : string; //Location of preset files...
 
-const
-  UM_SAMPLE_FOCUS_CHANGED             = WM_APP + 1; //sent when the region or sample group focus changes..
-  UM_SAMPLE_REGION_CHANGED            = WM_APP + 2; //sent when something about a region has changed. ie. the region has moved.
-  UM_MOUSE_OVER_SAMPLE_REGION_CHANGED = WM_APP + 3;
-  UM_MIDI_KEY_CHANGED                 = WM_APP + 4;
-  UM_PREVIEW_INFO_CHANGED             = WM_APP + 5;
-
-  UM_SHOW_SAMPLE_MAP_EDIT             = WM_APP + 6;
-  UM_HIDE_SAMPLE_MAP_EDIT             = WM_APP + 7;
-
-  UM_SHOW_ABOUT_DIALOG                = WM_APP + 8;
-  UM_SHOW_LOOP_EDIT_FRAME             = WM_APP + 9;
-  UM_CLOSE_CURRENT_DIALOG             = WM_APP + 10;
-
-  UM_SAMPLE_MARKERS_CHANGED           = WM_APP + 11;
-  UM_SAMPLE_OSC_TYPE_CHANGED          = WM_APP + 12;
-  UM_LOOP_TYPE_CHANGED                = WM_APP + 13;
-
-  UM_SAMPLE_DIRECTORIES_CHANGED       = WM_APP + 14;
-  UM_FILTER_CHANGED                   = WM_APP + 15;
-
-  UM_Update_Control_Visibility        = WM_APP + 16; //something has changed, check to see if any controls need to be visible/invisible.
-  UM_Update_Mod_Matrix                = WM_APP + 17;
-  UM_Focused_Control_Changed          = WM_APP + 18;
-  UM_PROGRAM_SAVED_TO_DISK            = WM_APP + 19;
-  UM_MOD_SLOT_CHANGED                 = WM_APP + 20;
-
-  UM_SHOW_REPLACE_REGION_MESSAGE      = WM_APP + 21;
-  UM_HIDE_REPLACE_REGION_MESSAGE      = WM_APP + 22;
-
-  UM_LFO_CHANGED                      = WM_APP + 23;
-
 type
   TLucidMsgID = record
   const
@@ -78,7 +46,7 @@ type
     Command_ShowSampleMapEdit        = Command + 1;
     Command_HideSampleMapEdit        = Command + 2;
     Command_ShowAboutDialog          = Command + 3;
-    Command_ShowLoopEndFrame         = Command + 4;
+    Command_ShowLoopEditFrame        = Command + 4;
     Command_CloseCurrentDialog       = Command + 5;
     Command_UpdateControlVisibility  = Command + 6; //something has changed, check to see if any controls need to be visible/invisible.
     Command_UpdateModMatrix          = Command + 7;
@@ -86,7 +54,8 @@ type
     Command_HideReplaceRegionMessage = Command + 9;
     Actions                          = Command_HideReplaceRegionMessage + 1;
     ProgramSavedToDisk               = Actions + 1;
-    RefreshRequest_StepSeqDisplay    = Actions + 2;
+    ProgramLoaded                    = Actions + 2;
+    RefreshRequest_StepSeqDisplay    = Actions + 3;
   end;
 
 const

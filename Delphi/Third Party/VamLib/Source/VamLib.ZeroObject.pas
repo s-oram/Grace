@@ -57,7 +57,8 @@ type
     procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal; Data : Pointer);
-    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
+    procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
+    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
   end;
 
 
@@ -119,7 +120,9 @@ type
     procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal; Data : Pointer);
-    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
+
+    procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
+    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
 
 
   end;
@@ -311,6 +314,11 @@ begin
 end;
 
 
+
+procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal);
+begin
+  SendMessageUsingGuiThread(MsgID, nil, nil);
+end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
 var

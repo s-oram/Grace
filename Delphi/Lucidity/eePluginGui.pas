@@ -28,13 +28,7 @@ uses
 
 
 type
-  TMyTestObject = class(TZeroObject)
-  private
-  public
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
-  end;
-
-  TPluginGui = class(TForm)
+  TPluginGui = class(TForm, IZeroObject)
     RedFoxContainer: TRedFoxContainer;
     MainWorkArea: TVamDiv;
     MainTop: TVamDiv;
@@ -61,14 +55,17 @@ type
     fPluginHotkeys: TPluginHotkeys;
     fPluginKeyHook: TPluginKeyHook;
     procedure SetLowerTabState(const Value: TLowerTabOptions);
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
     DialogDisplayArea : TDialogDisplayArea;
     VstWindow : Hwnd;
     DropFileTarget : TRedFoxDropFileTarget;
-
-    TestObject : TMyTestObject;
 
     MenuBarFrame           : TMenuBarFrame;
     SampleDisplayFrame     : TSampleDisplayFrame;
@@ -86,24 +83,11 @@ type
 
     OverlayContainer : TVamPanel;
 
-    //== window messages handlers ==
-    procedure SampleFocusChanged(var Msg: TMessage); message UM_SAMPLE_FOCUS_CHANGED;
-    procedure SampleRegionChanged(var Msg: TMessage); message UM_SAMPLE_REGION_CHANGED;
-    procedure MidiKeyChanged(var Msg: TMessage); message UM_MIDI_KEY_CHANGED;
-    procedure PreviewInfoChanged(var Msg: TMessage); message UM_PREVIEW_INFO_CHANGED;
-    procedure MouseOverSampleRegionChanged(var Msg:TMessage); message UM_MOUSE_OVER_SAMPLE_REGION_CHANGED;
-    procedure ShowSampleMapEdit(var Msg:TMessage); message UM_SHOW_SAMPLE_MAP_EDIT;
-    procedure HideSampleMapEdit(var Msg:TMessage); message UM_HIDE_SAMPLE_MAP_EDIT;
-    procedure ShowLoopEditFrame(var Msg:TMessage); message UM_SHOW_LOOP_EDIT_FRAME;
-    procedure ShowAboutDialog(var Msg:TMessage); message UM_SHOW_ABOUT_DIALOG;
-    procedure CloseCurrentDialog(var Msg:TMessage); message UM_CLOSE_CURRENT_DIALOG;
-    procedure SampleMakersChanged(var Msg:TMessage); message UM_SAMPLE_MARKERS_CHANGED;
-    procedure SampleOscTypeChanged(var Msg:TMessage); message UM_SAMPLE_OSC_TYPE_CHANGED;
-    procedure SampleDirectoriesChanged(var Msg:TMessage); message UM_SAMPLE_DIRECTORIES_CHANGED;
-    procedure FilterChanged(var Msg:TMessage); message UM_FILTER_CHANGED;
-    procedure LoopChanged(var Msg:TMessage); message UM_LOOP_TYPE_CHANGED;
-    //=============================
-
+    procedure ShowSampleMapEdit;
+    procedure HideSampleMapEdit;
+    procedure ShowAboutDialog;
+    procedure ShowLoopEditFrame;
+    procedure CloseCurrentDialog;
 
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
     property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState;
@@ -159,8 +143,6 @@ procedure TPluginGui.FormCreate(Sender: TObject);
 const
   kScrollPanelWidth = 635;
 begin
-  TestObject := TMyTestObject.Create;
-
   DialogDisplayArea := TDialogDisplayArea.Create;
   DialogDisplayArea.OnShowDialogArea := DoShowDialogArea;
   DialogDisplayArea.OnHideDialogArea := DoHideDialogArea;
@@ -278,6 +260,9 @@ end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);
 begin
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   if assigned(GuiStandard)
     then GuiStandard.Free;
 
@@ -300,8 +285,6 @@ begin
   PluginHotkeys.Free;
   if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
   OverlayContainer.Free;
-
-  TestObject.Free;
 end;
 
 
@@ -324,8 +307,7 @@ begin
   GuiStandard := TGuiStandard.Create(Plugin, Plugin.Globals);
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
-
-  TestObject.RegisterWithMotherShip(Plugin.Globals.MotherShip);
+  Plugin.Globals.MotherShip.RegisterZeroObject(self);
 
 
 
@@ -408,16 +390,6 @@ begin
   //Update the GUI to match the previous GUI state.
   LowerTabState := Plugin.GuiState.LowerTabState;
   UpdateLayout;
-
-  // call these methods to ensure everything is up to date.
-  SampleFocusChanged(msg);
-  SampleRegionChanged(msg);
-  MidiKeyChanged(msg);
-  PreviewInfoChanged(msg);
-  MouseOverSampleRegionChanged(msg);
-  SampleOscTypeChanged(msg);
-  SampleDirectoriesChanged(msg);
-  FilterChanged(msg);
 
 
 
@@ -597,38 +569,62 @@ begin
   Manually := false;
 end;
 
-procedure TPluginGui.SampleFocusChanged(var Msg: TMessage);
+procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
-  SampleMapFrame.UpdateSampleRegions;
-  SampleDisplayFrame.UpdateSampleDisplay;
-  MiniSampleDisplayFrame.UpdateSampleDisplay;
-  MenuBarFrame.SampleFocusChanged;
-end;
+  if MsgID = TLucidMsgId.SampleFocusChanged then
+  begin
+    SampleMapFrame.UpdateSampleRegions;
+    SampleDisplayFrame.UpdateSampleDisplay;
+    MiniSampleDisplayFrame.UpdateSampleDisplay;
+    MenuBarFrame.SampleFocusChanged;
+  end;
 
-procedure TPluginGui.SampleRegionChanged(var Msg: TMessage);
-begin
-  SampleMapFrame.UpdateSampleRegions;
-  SampleMapFrame.UpdateRootNoteKeys;
-  SampleMapFrame.UpdateRegionInfoDisplay;
-  SampleDisplayFrame.UpdateSampleDisplay;
-  MiniSampleDisplayFrame.UpdateSampleDisplay;
-  MenuBarFrame.SampleFocusChanged;
-end;
+  if MsgID = TLucidMsgId.SampleRegionChanged then
+  begin
+    SampleMapFrame.UpdateSampleRegions;
+    SampleMapFrame.UpdateRootNoteKeys;
+    SampleMapFrame.UpdateRegionInfoDisplay;
+    SampleDisplayFrame.UpdateSampleDisplay;
+    MiniSampleDisplayFrame.UpdateSampleDisplay;
+    MenuBarFrame.SampleFocusChanged;
+  end;
 
-procedure TPluginGui.MidiKeyChanged(var Msg: TMessage);
-begin
-  SampleMapFrame.MidiKeyChanged;
-end;
+  if MsgID = TLucidMsgId.MidiKeyChanged then
+  begin
+    SampleMapFrame.MidiKeyChanged;
+  end;
 
-procedure TPluginGui.MouseOverSampleRegionChanged(var Msg: TMessage);
-begin
-  MenuBarFrame.SampleFocusChanged;
-  MiniSampleDisplayFrame.UpdateSampleDisplay;
-end;
+  if MsgID = TLucidMsgId.MouseOverSampleRegionChanged then
+  begin
+    MenuBarFrame.SampleFocusChanged;
+    MiniSampleDisplayFrame.UpdateSampleDisplay;
+  end;
 
-procedure TPluginGui.PreviewInfoChanged(var Msg: TMessage);
-begin
-  FileBrowserFrame.PreviewInfoChanged;
+  if MsgID = TLucidMsgID.PreviewInfoChanged then
+  begin
+    FileBrowserFrame.PreviewInfoChanged;
+  end;
+
+  if MsgID = TLucidMsgID.SampleMarkersChanged then MiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;
+  if MsgID = TLucidMsgID.SampleOscTypeChanged then VoiceControlFrame.PlaybackTypeChanged;
+
+
+  if MsgID = TLucidMsgID.Command_ShowSampleMapEdit then ShowSampleMapEdit;
+  if MsgID = TLucidMsgID.Command_HideSampleMapEdit then HideSampleMapEdit;
+
+  if MsgID = TLucidMsgID.Command_ShowAboutDialog then ShowAboutDialog;
+  if MsgID = TLucidMsgID.Command_ShowLoopEditFrame then ShowLoopEditFrame;
+
+  if MsgID = TLucidMsgID.Command_CloseCurrentDialog then CloseCurrentDialog;
+
+
+
+
+
+
+
+
+
 end;
 
 
@@ -669,6 +665,11 @@ begin
     raise Exception.Create('Unexpect tab value.');
   end;
 
+end;
+
+procedure TPluginGui.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMothership := aMotherShip;
 end;
 
 procedure TPluginGui.LowerTabsChanged(Sender: TObject);
@@ -733,7 +734,12 @@ begin
   end;
 end;
 
-procedure TPluginGui.ShowSampleMapEdit(var Msg: TMessage);
+function TPluginGui.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
+procedure TPluginGui.ShowSampleMapEdit;
 begin
   if not assigned(Plugin) then exit;
 
@@ -752,7 +758,7 @@ begin
   UpdateLayout;
 end;
 
-procedure TPluginGui.HideSampleMapEdit(var Msg: TMessage);
+procedure TPluginGui.HideSampleMapEdit;
 var
   kg : IKeyGroup;
   aRegion : IRegion;
@@ -779,7 +785,7 @@ begin
   end;
 end;
 
-procedure TPluginGui.ShowLoopEditFrame(var Msg: TMessage);
+procedure TPluginGui.ShowLoopEditFrame;
 var
   LoopEditDialog : ILoopEditDialog;
   CloseCallback : TProc;
@@ -795,7 +801,7 @@ begin
   DialogDisplayArea.Show(true, CloseCallback);
 end;
 
-procedure TPluginGui.ShowAboutDialog(var Msg: TMessage);
+procedure TPluginGui.ShowAboutDialog;
 var
   aW, aH, aT, aL : integer;
 begin
@@ -814,42 +820,14 @@ end;
 
 
 
-procedure TPluginGui.CloseCurrentDialog(var Msg: TMessage);
+procedure TPluginGui.CloseCurrentDialog;
 begin
   if assigned(OverlayContainer) then
   begin
     OverlayContainer.Visible    := false;
     AboutFrame.BackgroundPanel.Visible    := false;
   end;
-
 end;
-
-procedure TPluginGui.SampleMakersChanged(var Msg: TMessage);
-begin
-  MiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;
-end;
-
-procedure TPluginGui.SampleOscTypeChanged(var Msg: TMessage);
-begin
-  VoiceControlFrame.PlaybackTypeChanged;
-end;
-
-procedure TPluginGui.SampleDirectoriesChanged(var Msg: TMessage);
-begin
-  FileBrowserFrame.SampleDirectoriesChanged;
-end;
-
-procedure TPluginGui.FilterChanged(var Msg: TMessage);
-begin
-  ModControlFrame.FilterChanged;
-end;
-
-procedure TPluginGui.LoopChanged(var Msg: TMessage);
-begin
-  MiniSampleDisplayFrame.UpdateSampleDisplay;
-end;
-
-
 
 procedure TPluginGui.UpdateLayout;
   function StackDiv(const aDiv : TVamDiv; const Offset, Margin: integer):integer;
@@ -1123,20 +1101,11 @@ end;
 procedure TPluginGui.EventHandle_ControlMouseDown(Sender: TObject; const Target: TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block: boolean);
 begin
   Plugin.GuiState.FocusedControl := Target;
-  Plugin.Globals.SendWindowsMessage(UM_Focused_Control_Changed);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FocusedControlChanged);
 end;
 
 
 
 
-{ TMyTestObject }
-
-procedure TMyTestObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-begin
-  if MsgID = 1 then
-  begin
-    //ShowMessage('bang');
-  end;
-end;
 
 end.

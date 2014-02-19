@@ -108,7 +108,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       VoiceController.VoiceMode  := TVoiceModeHelper.ToEnum(Value);
-      Globals.SendWindowsMessage(UM_Update_Control_Visibility);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -153,7 +153,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.PitchTracking   := TPitchTrackingHelper.ToEnum(Value);
-      Globals.SendWindowsMessage(UM_Update_Control_Visibility);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -176,7 +176,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.SamplePlaybackType   := TSamplePlaybackTypeHelper.ToEnum(Value);
-      Globals.SendWindowsMessage(UM_SAMPLE_OSC_TYPE_CHANGED);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleOscTypeChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -225,7 +225,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.SamplerLoopBounds := TSamplerLoopBoundsHelper.ToEnum(Value);
-      Globals.SendWindowsMessage(UM_LOOP_TYPE_CHANGED);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LoopTypeChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -251,7 +251,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.SamplerLoopMode := TSamplerLoopModeHelper.ToEnum(Value);
-      Globals.SendWindowsMessage(UM_LOOP_TYPE_CHANGED);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LoopTypeChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -607,7 +607,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.Filter1Type := TFilterTypeHelper.ToEnum(Value);
-      Plugin.Globals.SendWindowsMessage(UM_FILTER_CHANGED);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -630,7 +630,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.Filter2Type := TFilterTypeHelper.ToEnum(Value);
-      Plugin.Globals.SendWindowsMessage(UM_FILTER_CHANGED);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -791,7 +791,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.LfoShape1 := TLfoShapeHelper.ToEnum(Value);
-      Plugin.Globals.SendWindowsMessage(UM_Update_Control_Visibility);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -813,7 +813,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.LfoShape2 := TLfoShapeHelper.ToEnum(Value);
-      Plugin.Globals.SendWindowsMessage(UM_Update_Control_Visibility);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin

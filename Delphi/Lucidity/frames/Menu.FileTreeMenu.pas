@@ -104,8 +104,7 @@ begin
       DirName := ExtractFileName(OD.FileName);
 
       Plugin.SampleDirectories.AddSampleDirectory(DirName, DirPath);
-
-      Plugin.Globals.SendWindowsMessage(UM_SAMPLE_DIRECTORIES_CHANGED);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
     end;
   end;
 end;
@@ -158,7 +157,7 @@ begin
   if Tag = 1 then
   begin
     Plugin.SampleDirectories.RemoveSampleDirectory(FocusedNode.NodeIndex);
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_DIRECTORIES_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
   end;
 
   //show in windows explorer
@@ -172,14 +171,14 @@ begin
   if Tag = 3 then
   begin
     Plugin.SampleDirectories.MoveDirectoryUp(FocusedNode.NodeIndex);
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_DIRECTORIES_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
   end;
 
   //move down
   if Tag = 4 then
   begin
     Plugin.SampleDirectories.MoveDirectoryDown(FocusedNode.NodeIndex);
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_DIRECTORIES_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
   end;
 
   if Tag = 5 then
@@ -197,7 +196,7 @@ begin
 
       Plugin.SampleDirectories.AddSampleDirectory(DirName, DirPath);
 
-      Plugin.Globals.SendWindowsMessage(UM_SAMPLE_DIRECTORIES_CHANGED);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
     end;
   end;
 

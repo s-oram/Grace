@@ -83,15 +83,15 @@ begin
   if not assigned(Plugin) then exit;
 
   if Plugin.GuiState.IsSampleMapVisible
-    then Plugin.Globals.SendWindowsMessage(UM_HIDE_SAMPLE_MAP_EDIT)
-    else Plugin.Globals.SendWindowsMessage(UM_SHOW_SAMPLE_MAP_EDIT);
+    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
+    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
 
 end;
 
 procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.SendWindowsMessage(UM_SHOW_LOOP_EDIT_FRAME);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
 end;
 
 procedure TSampleDisplayMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);

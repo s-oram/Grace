@@ -469,7 +469,7 @@ begin
       Plugin.FocusRegion(aRegion.GetProperties^.UniqueID);
     end;
 
-    Plugin.Globals.SendWindowsMessage(UM_SAMPLE_FOCUS_CHANGED);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
