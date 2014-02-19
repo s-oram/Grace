@@ -46,8 +46,8 @@ type
 
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
-    procedure ClearMotherShipReference;
-    procedure RegisterWithMotherShip(const Mothership:IMotherShip);
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   end;
 
@@ -65,7 +65,8 @@ type
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
-    procedure ClearMotherShipReference;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
     FRefCount: Integer;
     function GetIsReferenceCounted: boolean; virtual;
@@ -80,7 +81,7 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
     destructor Destroy; override;
-    procedure RegisterWithMotherShip(const Mothership:IMotherShip);
+    procedure RegisterWithMotherShip(const aMothership:IMotherShip);
 
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
@@ -107,15 +108,15 @@ type
     Objects          : TObjectList;
     function GetZeroObjectCount: integer;
 
-    procedure RegisterZeroObject(obj:TObject);
-    procedure DeregisterZeroObject(obj:TObject);
-
     procedure Handle_GuiMessageTimer(Sender : TObject);
 
     property ZeroObjectCount : integer read GetZeroObjectCount;
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure RegisterZeroObject(obj:TObject);
+    procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal; Data : Pointer);
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc);
@@ -145,29 +146,34 @@ begin
 
 end;
 
-procedure TZeroObject.ClearMotherShipReference;
-begin
-  FMotherShip := nil;
-end;
-
 destructor TZeroObject.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-  end;
+  // Important: Deregister from the mother ship..
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
 
   inherited;
 end;
 
-procedure TZeroObject.RegisterWithMotherShip(const Mothership: IMotherShip);
+procedure TZeroObject.RegisterWithMotherShip(const aMothership: IMotherShip);
 begin
   // NOTE:
-  // ZeroObjects can register with a MotherShip. They will automatically
-  // deregister when the object is freed or released.
-  FMotherShip := MotherShip;
-  FMotherShip.RegisterZeroObject(self);
+  // ZeroObjects can register with a MotherShip. They must derigister themselves
+  // in the destructor.
+  aMothership.RegisterZeroObject(self);
 end;
+
+procedure TZeroObject.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
+end;
+
+function TZeroObject.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
+
 
 function TZeroObject.GetIsReferenceCounted: boolean;
 begin
@@ -263,9 +269,12 @@ begin
 end;
 
 procedure TMotherShip.RegisterZeroObject(obj: TObject);
+var
+  zo : IZeroObject;
 begin
-  if Supports(obj, IZeroObject) then
+  if Supports(obj, IZeroObject, zo) then
   begin
+    zo.SetMotherShipReference(self);
     if Objects.IndexOf(Obj) = -1
       then Objects.Add(Obj);
   end else
@@ -280,9 +289,8 @@ var
 begin
   if Supports(obj, IZeroObject, zo) then
   begin
-    zo.ClearMotherShipReference;
+    zo.SetMotherShipReference(nil);
     Objects.Remove(Obj);
-    zo := nil;
   end;
 end;
 

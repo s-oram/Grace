@@ -32,9 +32,11 @@ type
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
 
-    procedure ClearMotherShipReference;
+
     procedure RegisterWithMotherShip(const Mothership:IMotherShip);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
     StepSequenceMenu : TStepSequenceMenu;
 
@@ -78,9 +80,14 @@ begin
   inherited;
 end;
 
-procedure TSequencerFrame.ClearMotherShipReference;
+procedure TSequencerFrame.SetMotherShipReference(aMotherShip: IMothership);
 begin
-  FMotherShip := nil;
+  FMotherShip := aMotherShip;
+end;
+
+function TSequencerFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
 end;
 
 procedure TSequencerFrame.RegisterWithMotherShip(const Mothership: IMotherShip);
