@@ -51,6 +51,8 @@ object MenuBarFrame: TMenuBarFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -76,6 +78,8 @@ object MenuBarFrame: TMenuBarFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -101,6 +105,8 @@ object MenuBarFrame: TMenuBarFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -126,6 +132,8 @@ object MenuBarFrame: TMenuBarFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
@@ -151,6 +159,8 @@ object MenuBarFrame: TMenuBarFrame
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET

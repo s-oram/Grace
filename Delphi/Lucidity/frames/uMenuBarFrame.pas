@@ -3,6 +3,7 @@ unit uMenuBarFrame;
 interface
 
 uses
+  VamLib.ZeroObject,
   uDialogDisplayArea,
   eeGuiStandard, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -11,7 +12,7 @@ uses
   VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu;
 
 type
-  TMenuBarFrame = class(TFrame)
+  TMenuBarFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ContainerDiv: TVamDiv;
@@ -34,7 +35,11 @@ type
     MainMenu : TMainMenu;
     GroupsMenu : TGroupsMenu;
     SamplesMenu : TSamplesMenu;
-    { Private declarations }
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -86,6 +91,9 @@ end;
 
 destructor TMenuBarFrame.Destroy;
 begin
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   GroupsMenu.Free;
   SamplesMenu.Free;
   MainMenu.Free;
@@ -151,6 +159,16 @@ end;
 procedure TMenuBarFrame.SampleMenuButtonClick(Sender: TObject);
 begin
   SamplesMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+end;
+
+function TMenuBarFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
+procedure TMenuBarFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMothership;
 end;
 
 procedure TMenuBarFrame.GroupMenuButtonClick(Sender: TObject);
@@ -222,5 +240,11 @@ end;
 
 
 
+
+procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
+end;
 
 end.

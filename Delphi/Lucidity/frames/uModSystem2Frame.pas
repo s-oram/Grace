@@ -3,6 +3,7 @@ unit uModSystem2Frame;
 interface
 
 uses
+  VamLib.ZeroObject,
   uLucidityEnums, uLucidityKeyGroupInterface,
   uConstants, eePlugin, eeGuiStandard, eeEnumMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -10,7 +11,7 @@ uses
   VamWinControl, VamPanel, RedFoxContainer, VamModSelector, VamTextBox;
 
 type
-  TModSystem2Frame = class(TFrame)
+  TModSystem2Frame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
   private
@@ -46,7 +47,11 @@ type
 
     procedure Handle_ShowModSourceMenu(Sender:TObject);
     procedure Handle_ShowModViaMenu(Sender:TObject);
-
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
@@ -191,6 +196,9 @@ begin
   end;
   DeallocateHWnd(MsgHandle);
 
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   ModViaMenu.Free;
   ModSourceMenu.Free;
 
@@ -199,11 +207,27 @@ begin
   inherited;
 end;
 
+function TModSystem2Frame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
 procedure TModSystem2Frame.MessageHandler(var Message: TMessage);
 begin
   if Message.Msg = UM_MOD_SLOT_CHANGED then UpdateModulation;
 end;
 
+
+procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
+end;
+
+procedure TModSystem2Frame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMothership;
+end;
 
 procedure TModSystem2Frame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin

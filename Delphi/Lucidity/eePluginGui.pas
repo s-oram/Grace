@@ -377,8 +377,14 @@ begin
 
 
   //====== Register frames as zero objects =====================================
-  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame);
   Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame);
 
 
   try

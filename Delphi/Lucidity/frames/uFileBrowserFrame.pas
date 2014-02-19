@@ -3,6 +3,7 @@ unit uFileBrowserFrame;
 interface
 
 uses
+  VamLib.ZeroObject,
   Menu.FileTreeMenu,
   eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandard,
   uLucidityEnums, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -12,7 +13,7 @@ uses
   VamKnob, VamButton;
 
 type
-  TFileBrowserFrame = class(TFrame)
+  TFileBrowserFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ScrollBox: TVamScrollBox;
@@ -39,6 +40,11 @@ type
 
     MsgHandle : hwnd;
     procedure MessageHandler(var Message : TMessage);
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     IsManualScroll : boolean;
     FileBrowserAddon : TFileBrowserAddon;
@@ -104,7 +110,8 @@ begin
   end;
   DeallocateHWnd(MsgHandle);
 
-
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
 
   FileBrowserAddon.Free;
   MainContextMenu.Free;
@@ -244,6 +251,11 @@ begin
   finally
     IsManualScroll := false;
   end;
+end;
+
+procedure TFileBrowserFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMothership;
 end;
 
 procedure TFileBrowserFrame.KeyCommand(Command: TKeyCommand);
@@ -413,6 +425,11 @@ begin
   MainContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
+function TFileBrowserFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
 procedure TFileBrowserFrame.EventHandle_GetNodeBitmap(Sender: TObject; const NodeFileName: string; var Bitmap: TBitmap);
 var
   ext : string;
@@ -456,6 +473,12 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.IsPreviewEnabled := (Sender as TVamButton).IsOn;
+end;
+
+procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
 end;
 
 procedure TFileBrowserFrame.RefreshFileBrowser;

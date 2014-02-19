@@ -3,6 +3,7 @@
 interface
 
 uses
+  VamLib.ZeroObject,
   uGuiFeedbackData, eePlugin, eeGuiStandard, Menus, uConstants,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
@@ -10,7 +11,7 @@ uses
   VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage;
 
 type
-  TVoiceControlFrame = class(TFrame)
+  TVoiceControlFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     VoiceControlsContainer: TVamDiv;
@@ -65,6 +66,12 @@ type
 
     procedure ShowPlayTypeMenuCallBack(aMenu : TMenu);
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
+
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     procedure UpdateControlVisibility;
     procedure UpdateModulation; //called when the mod slot changes...
@@ -126,7 +133,15 @@ begin
   end;
   DeallocateHWnd(MsgHandle);
 
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   inherited;
+end;
+
+function TVoiceControlFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
 end;
 
 procedure TVoiceControlFrame.MessageHandler(var Message: TMessage);
@@ -299,6 +314,11 @@ end;
 
 
 
+procedure TVoiceControlFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
+end;
+
 procedure TVoiceControlFrame.ShowPlayTypeMenuCallBack(aMenu: TMenu);
 var
   mi : TMenuItem;
@@ -441,6 +461,12 @@ begin
 
 end;
 
+
+procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
+end;
 
 procedure TVoiceControlFrame.UpdateModulation;
 var

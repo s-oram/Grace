@@ -3,6 +3,7 @@ unit uMiniSampleDisplayFrame;
 interface
 
 uses
+  VamLib.ZeroObject,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.SampleMap, uLucidityKeyGroupInterface, Menu.SampleDisplayMenu,
   eePlugin, eeGuiStandard, uGuiFeedbackData, LuciditySampleOverlay,
@@ -13,7 +14,7 @@ uses
   VamCompoundNumericKnob;
 
 type
-  TMiniSampleDisplayFrame = class(TFrame)
+  TMiniSampleDisplayFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     SampleDisplay: TVamSampleDisplay;
@@ -43,6 +44,11 @@ type
     procedure SetPlugin(const Value: TeePlugin);
 
     procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     Zoom, Offset : single;
 
@@ -144,6 +150,9 @@ begin
   end;
   DeallocateHWnd(MsgHandle);
 
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   SampleDisplayMenu.Free;
   SampleRenderer.Free;
   inherited;
@@ -222,6 +231,12 @@ begin
 
 end;
 
+procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
+end;
+
 procedure TMiniSampleDisplayFrame.SetPlugin(const Value: TeePlugin);
 begin
   fPlugin := Value;
@@ -235,6 +250,11 @@ end;
 procedure TMiniSampleDisplayFrame.SetGuiStandard(const Value: TGuiStandard);
 begin
   fGuiStandard := Value;
+end;
+
+procedure TMiniSampleDisplayFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -708,6 +728,11 @@ begin
 
   UpdateSampleDisplay;
 
+end;
+
+function TMiniSampleDisplayFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
 end;
 
 procedure TMiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;

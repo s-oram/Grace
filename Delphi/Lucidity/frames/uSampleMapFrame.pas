@@ -3,6 +3,7 @@ unit uSampleMapFrame;
 interface
 
 uses
+  VamLib.ZeroObject,
   Menu.SampleMapContextMenu, eeGuiStandard,
   eePlugin, uLucidityKeyGroupInterface, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -14,7 +15,7 @@ uses
   VamCompoundNumericKnob;
 
 type
-  TSampleMapFrame = class(TFrame)
+  TSampleMapFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ScrollBox: TVamScrollBox;
@@ -64,7 +65,11 @@ type
     function GetScrollPosY: single;
     procedure SetScollPosX(const Value: single);
     procedure SetScollPosY(const Value: single);
-    { Private declarations }
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     KeyStateTrackerOverlay : TKeyStateTrackerOverlay;
     SampleMapMenu : TSampleMapContextMenu;
@@ -123,8 +128,12 @@ end;
 
 destructor TSampleMapFrame.Destroy;
 begin
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
+
   KeyStateTrackerOverlay.Free;
   SampleMapMenu.Free;
+
   inherited;
 end;
 
@@ -135,8 +144,6 @@ begin
 
   SampleMapMenu.Initialize(aPlugin);
 
-
-
   UpperPanelArea.Height := 28;
 
   RegionInfoBox.Align := alClient;
@@ -146,8 +153,6 @@ begin
   SampleMapRegionInfoChanged(self);
 
   SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
-
-
 
   LowVelKnob.Color_Label   := GetRedFoxColor(kColor_LcdDark4);
   LowVelKnob.Color_Numeric := GetRedFoxColor(kColor_LcdDark5);
@@ -208,6 +213,11 @@ begin
 
 end;
 
+function TSampleMapFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
+end;
+
 function TSampleMapFrame.GetScrollPosX: single;
 begin
   result := ScrollBox.ScrollXPos;
@@ -216,6 +226,11 @@ end;
 function TSampleMapFrame.GetScrollPosY: single;
 begin
   result := ScrollBox.ScrollYPos;
+end;
+
+procedure TSampleMapFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
 end;
 
 procedure TSampleMapFrame.SetScollPosX(const Value: single);
@@ -449,6 +464,12 @@ begin
 
   KeyStateTrackerOverlay.Invalidate;
   SampleMapKeys.Invalidate;
+end;
+
+procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
 end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);
