@@ -322,8 +322,7 @@ type
 
   TLucidMsgID = record
   const
-
-    RefreshStepSeqDisplay : cardinal = 1;
+    RefreshRequest_StepSeqDisplay : cardinal = 1;
   end;
 
 implementation

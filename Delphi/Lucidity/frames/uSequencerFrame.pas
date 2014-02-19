@@ -188,7 +188,7 @@ end;
 
 procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
-  if MsgID = TLucidMsgID.RefreshStepSeqDisplay then
+  if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
     StepSeqControl.Invalidate;
   end;

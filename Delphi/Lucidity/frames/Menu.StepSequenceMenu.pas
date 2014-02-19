@@ -117,7 +117,7 @@ begin
     end;
   end;
 
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshStepSeqDisplay, nil, nil);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshRequest_StepSeqDisplay, nil, nil);
 end;
 
 procedure TStepSequenceMenu.EventHandle_ResetSteps(Sender: TObject);
@@ -161,7 +161,7 @@ begin
     end;
   end;
 
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshStepSeqDisplay, nil, nil);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.RefreshRequest_StepSeqDisplay, nil, nil);
 end;
 
 
