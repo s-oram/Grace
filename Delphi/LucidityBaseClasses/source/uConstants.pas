@@ -58,6 +58,37 @@ const
 
   UM_LFO_CHANGED                      = WM_APP + 23;
 
+type
+  TLucidMsgID = record
+  const
+    SampleFocusChanged               = 1; //sent when the region or sample group focus changes..
+    SampleRegionChanged              = 2; //sent when something about a region has changed. ie. the region has moved.
+    MouseOverSampleRegionChanged     = 3;
+    MidiKeyChanged                   = 4;
+    PreviewInfoChanged               = 5;
+    SampleMarkersChanged             = 6;
+    SampleOscTypeChanged             = 7;
+    LoopTypeChanged                  = 8;
+    SampleDirectoriesChanged         = 9;
+    FilterChanged                    = 10;
+    FocusedControlChanged            = 11;
+    ModSlotChanged                   = 12;
+    LfoChanged                       = 13;
+    Command                          = LfoChanged + 1;
+    Command_ShowSampleMapEdit        = Command + 1;
+    Command_HideSampleMapEdit        = Command + 2;
+    Command_ShowAboutDialog          = Command + 3;
+    Command_ShowLoopEndFrame         = Command + 4;
+    Command_CloseCurrentDialog       = Command + 5;
+    Command_UpdateControlVisibility  = Command + 6; //something has changed, check to see if any controls need to be visible/invisible.
+    Command_UpdateModMatrix          = Command + 7;
+    Command_ShowReplaceRegionMessage = Command + 8;
+    Command_HideReplaceRegionMessage = Command + 9;
+    Actions                          = Command_HideReplaceRegionMessage + 1;
+    ProgramSavedToDisk               = Actions + 1;
+    RefreshRequest_StepSeqDisplay    = Actions + 2;
+  end;
+
 const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
@@ -320,10 +351,7 @@ type
 
 
 
-  TLucidMsgID = record
-  const
-    RefreshRequest_StepSeqDisplay : cardinal = 1;
-  end;
+
 
 implementation
 
