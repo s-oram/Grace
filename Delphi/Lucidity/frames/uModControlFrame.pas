@@ -3,6 +3,7 @@ unit uModControlFrame;
 interface
 
 uses
+  VamLib.ZeroObject,
   VamLib.Collections.Lists,
   uDialogDisplayArea,
   uGuiFeedbackData, uLucidityKeyGroupInterface, VamStatusLed,
@@ -24,7 +25,7 @@ type
   end;
 
 
-  TModControlFrame = class(TFrame)
+  TModControlFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     StepSeq1Container: TVamDiv;
@@ -133,6 +134,12 @@ type
     procedure UpdateControlVisibility;
     procedure UpdateModulation; //called when the mod slot changes...
     procedure UpdateLfo; //called when the mod slot changes...
+
+  private
+    FMotherShip : IMothership;
+    function GetMotherShipReference:IMotherShip;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     AltFilterText : TAltFilterText;
     FilterParameterInfo : TFilterParameterInfo;
@@ -217,6 +224,9 @@ begin
     Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
   end;
   DeallocateHWnd(MsgHandle);
+
+  if (assigned(FMotherShip))
+    then FMotherShip.DeregisterZeroObject(self);
 
   StepSequenceMenu.Free;
   KnobList.Free;
@@ -609,6 +619,12 @@ end;
 
 
 
+procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal;
+  Data: Pointer);
+begin
+
+end;
+
 procedure TModControlFrame.UpdateControlVisibility;
 var
   Par : TVstParameter;
@@ -797,6 +813,11 @@ begin
   end;
 end;
 
+procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
+end;
+
 procedure TModControlFrame.StepSeq1Changed(Sender: TObject);
 var
   Tag : integer;
@@ -894,6 +915,11 @@ begin
     AltFilterText.ShowAltText1 := false;
     AltFilterText.ShowAltText2 := false;
   end;
+end;
+
+function TModControlFrame.GetMotherShipReference: IMotherShip;
+begin
+  result := FMotherShip;
 end;
 
 procedure TModControlFrame.FilterChanged;

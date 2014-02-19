@@ -375,6 +375,12 @@ begin
   Plugin.Globals.AddWindowsMessageListener(self.Handle);
 
 
+
+  //====== Register frames as zero objects =====================================
+  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame);
+
+
   try
     // Initalize all the frame controls...
     MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
@@ -389,6 +395,8 @@ begin
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
   except
   end;
+
+
 
 
   //Update the GUI to match the previous GUI state.
@@ -528,6 +536,8 @@ begin
 
 
 
+
+  //==============
 
 
 

@@ -31,19 +31,13 @@ type
     fPlugin: TeePlugin;
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
-
-
-    procedure RegisterWithMotherShip(const Mothership:IMotherShip);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
     function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     StepSequenceMenu : TStepSequenceMenu;
-
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
-
-    //procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -90,25 +84,12 @@ begin
   result := FMotherShip;
 end;
 
-procedure TSequencerFrame.RegisterWithMotherShip(const Mothership: IMotherShip);
-begin
-  FMothership := MotherShip;
-  MotherShip.RegisterZeroObject(self);
-end;
-
-
-
-
-
-
 procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea: TDialogDisplayArea);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
-
-  RegisterWithMotherShip(Plugin.Globals.MotherShip);
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
