@@ -22,6 +22,7 @@ type
     fIAccessibleWrapper: IAccessible;
     fAccessible: TRedFoxAccessibleProperties;
     fDisplayClass: string;
+    fOpacity: byte;
 
     procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
     procedure WMEraseBkgnd(var Message: TWmEraseBkgnd);message WM_ERASEBKGND;
@@ -33,6 +34,7 @@ type
     procedure SetVisible(const Value: boolean);
     procedure SetTransparent(const Value: boolean);
     procedure SetAccessible(const Value: TRedFoxAccessibleProperties);
+    procedure SetOpacity(const Value: byte);
 
     property IsBackBufferDirty : boolean read fIsBackBufferDirty;
     function GetIsBackBufferDirty : boolean;
@@ -93,7 +95,7 @@ type
 
     property Visible : boolean read GetVisible write SetVisible;
   published
-
+    property Opacity      : byte   read fOpacity      write SetOpacity;
     property DisplayClass : string read fDisplayClass write fDisplayClass;
   end;
 
@@ -117,6 +119,7 @@ uses
 constructor TRedFoxWinControl.Create(AOwner: TComponent);
 begin
   inherited;
+  fOpacity := 255;
   fHitTest := true;
   ControlStyle := ControlStyle + [csAcceptsControls] + [csOpaque];
   BackBuffer := TRedFoxImageBuffer.Create;
@@ -229,7 +232,6 @@ begin
     end;
     aContainer.OffscreenBuffer.DrawTo(DC,-aOffset.X,-aOffset.Y);
   end;
-
 end;
 
 function TRedFoxWinControl.QueryInterface(const IID: TGUID; out Obj): HResult;
@@ -254,6 +256,15 @@ begin
   begin
     BackBuffer.Width := AWidth;
     BackBuffer.Height := AHeight;
+    Invalidate;
+  end;
+end;
+
+procedure TRedFoxWinControl.SetOpacity(const Value: byte);
+begin
+  if (Value <> fOpacity) then
+  begin
+    fOpacity := Value;
     Invalidate;
   end;
 end;
@@ -452,15 +463,9 @@ begin
   DestX      := Offset.X + x1;
   DestY      := Offset.Y + y1;
 
-  //TP.OffscreenBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceIn;
-  //TP.OffscreenBuffer.BufferInterface.TransformImage(BackBuffer.AsImage, DestX, DestY, DestX+Width, DestY+Height);
-
-  //if TP <> nil
-  //  then BackBuffer.RedFoxInterface.BlendTo(TP.OffScreenBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY);
-
   if TP <> nil then
   begin
-    AlphaBlit(TP.OffscreenBuffer.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY, 255);
+    RedFox_AlphaBlit(TP.OffscreenBuffer.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY, Opacity);
   end;
 
 end;

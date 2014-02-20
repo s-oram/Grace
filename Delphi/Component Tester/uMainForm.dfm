@@ -33,16 +33,17 @@ object Form1: TForm1
     TabOrder = 1
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 32
-    Top = 44
-    Width = 617
+    Left = 80
+    Top = 20
+    Width = 649
     Height = 309
-    Color = '$FFEEEEEE'
+    Color = '$FFFF0000'
     object Knob1: TVamNumericKnob
       Left = 48
       Top = 56
       Width = 201
       Height = 25
+      Opacity = 255
       Text = 'Knob1'
       HitTest = True
       TextAlign = AlignCenter
@@ -63,6 +64,7 @@ object Form1: TForm1
       Top = 112
       Width = 201
       Height = 25
+      Opacity = 255
       Text = 'VamNumericKnob1'
       HitTest = True
       TextAlign = AlignCenter
@@ -79,16 +81,17 @@ object Form1: TForm1
       Visible = True
     end
     object VamShortMessageOverlay1: TVamShortMessageOverlay
-      Left = 312
-      Top = 208
+      Left = 216
+      Top = 176
       Width = 137
       Height = 49
+      Opacity = 255
       Text = 'Short Message'
       HitTest = True
       AutoSizeBackground = True
-      Color = '$FFFFFFFF'
-      ColorBorder = '$FF000000'
-      ColorText = '$FF000000'
+      Color = '$FF000000'
+      ColorBorder = '$FF00FF00'
+      ColorText = '$FFFFFFFF'
       BorderWidth = 2
       ShowBorder = True
       CornerRadius1 = 6.000000000000000000

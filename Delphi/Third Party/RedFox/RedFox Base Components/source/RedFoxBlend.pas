@@ -17,6 +17,7 @@ uses
 // - The source layer is render 'on top' of the base layer.
 function AlphaBlend(const BasePixel, TopPixel : T32BitPixel):T32BitPixel; //AlphaBlend is taken from the GR32 project.
 function AlphaBlend2(const BasePixel, TopPixel : T32BitPixel):T32BitPixel;
+function AlphaBlend3(const BasePixel, TopPixel : T32BitPixel; TopAlpha:byte):T32BitPixel;
 
 function CopySource(const BasePixel, TopPixel : T32BitPixel):T32BitPixel;
 
@@ -172,8 +173,6 @@ begin
     {$R+}
     {$UNDEF ToggleRangeCheck}
   {$ENDIF}
-
-
 end;
 
 function AlphaBlend2(const BasePixel, TopPixel : T32BitPixel):T32BitPixel;
@@ -194,8 +193,30 @@ begin
   result.G := ByteCrossFade(BasePixel.G, TopPixel.G, TopPixel.A);
   result.R := ByteCrossFade(BasePixel.R, TopPixel.R, TopPixel.A);
   result.A := ByteCrossFade(BasePixel.A, TopPixel.A, TopPixel.A);
+end;
 
+function AlphaBlend3(const BasePixel, TopPixel : T32BitPixel; TopAlpha:byte):T32BitPixel;
+var
+  ModifiedAlpha : byte;
+begin
+  ModifiedAlpha := TopPixel.A * TopAlpha div 255;
 
+  if ModifiedAlpha = 0 then
+  begin
+    result := BasePixel;
+    exit; //========================>> exit >>=================>>
+  end;
+
+  if ModifiedAlpha = $FF then
+  begin
+    result := TopPixel;
+    exit; //========================>> exit >>=================>>
+  end;
+
+  result.B := ByteCrossFade(BasePixel.B, TopPixel.B, ModifiedAlpha);
+  result.G := ByteCrossFade(BasePixel.G, TopPixel.G, ModifiedAlpha);
+  result.R := ByteCrossFade(BasePixel.R, TopPixel.R, ModifiedAlpha);
+  result.A := ByteCrossFade(BasePixel.A, TopPixel.A, ModifiedAlpha);
 end;
 
 function CopySource(const BasePixel, TopPixel : T32BitPixel):T32BitPixel;

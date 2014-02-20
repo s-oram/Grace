@@ -536,7 +536,6 @@ begin
       DrawDesignTimeRect(DesignRect);
     end;
   end;
-
 end;
 
 procedure TRedFoxContainer.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);

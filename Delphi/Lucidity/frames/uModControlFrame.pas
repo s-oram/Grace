@@ -12,7 +12,8 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
-  VamVectorSequence, VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
+  VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
+  LucidityGui.VectorSequence,
   LucidityGui.Scope, Vcl.ExtCtrls;
 
 type
@@ -118,7 +119,6 @@ type
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
-    procedure StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
     procedure LfoSelectButton1Changed(Sender: TObject);
     procedure LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -936,13 +936,7 @@ begin
   }
 end;
 
-procedure TModControlFrame.StepSeqShowContextMenu(Sender: TObject; X, Y: Integer);
-var
-  StepSeqIndex : integer;
-begin
-  StepSeqIndex := (Sender as TVamVectorSequence).Tag-1;
-  StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, StepSeqIndex);
-end;
+
 
 procedure TModControlFrame.Timer1Timer(Sender: TObject);
 begin

@@ -78,7 +78,9 @@ type
   end;
 
 
-procedure AlphaBlit(const Dst, Src : TRedFox2d; x1, y1, x2, y2, DestX, DestY : integer; const SrcAlpha : byte);
+
+// This blitting function was written to blit control images to main RedFoxContainer backbuffer.
+procedure RedFox_AlphaBlit(const Dst, Src : TRedFox2d; SrcX1, SrcY1, SrcX2, SrcY2, DestX, DestY : integer; const SrcAlpha : byte);
 
 implementation
 
@@ -87,8 +89,91 @@ uses
   SysUtils, RedFoxBlend;
 
 
-procedure AlphaBlit(const Dst, Src : TRedFox2d; x1, y1, x2, y2, DestX, DestY : integer; const SrcAlpha : byte);
+procedure RedFox_AlphaBlit(const Dst, Src : TRedFox2d; SrcX1, SrcY1, SrcX2, SrcY2, DestX, DestY : integer; const SrcAlpha : byte);
+var
+  BlitSrc : TBlitSrcInfo;
+  BlitDest : TBlitDestInfo;
+
+  SrcPixel, DstPixel : P32BitPixel;
+  c2: Integer;
+  c1: Integer;
+
+  SrcLineIndex : P32BitPixel;
+  DstLineIndex : P32BitPixel;
+
+  SrcStride : Integer;
+  DstStride : Integer;
+
+  CopyBoundX1, CopyBoundY1, CopyBoundX2, CopyBoundY2 : integer;
+  CopyWidth, CopyHeight : integer;
 begin
+  BlitSrc.Buffer       := Src.Buffer;
+  BlitSrc.BufferWidth  := Src.Width;
+  BlitSrc.BufferHeight := Src.Height;
+  BlitSrc.x1     := SrcX1;
+  BlitSrc.y1     := SrcY1;
+  BlitSrc.x2     := SrcX2;
+  BlitSrc.y2     := SrcY2;
+
+  BlitDest.Buffer       := Dst.Buffer;
+  BlitDest.BufferWidth  := Dst.Width;
+  BlitDest.BufferHeight := Dst.Height;
+  BlitDest.x1           := DestX;
+  BlitDest.y1           := DestY;
+
+
+
+
+  CopyBoundX1 := BlitSrc.X1;
+  CopyBoundX2 := BlitSrc.X2;
+  CopyBoundY1 := BlitSrc.Y1;
+  CopyBoundY2 := BlitSrc.Y2;
+
+  CopyWidth  := CopyBoundX2 - CopyBoundX1;
+  CopyHeight := CopyBoundY2 - CopyBoundY1;
+
+  if CopyWidth  > BlitDest.BufferWidth - BlitDest.X1 then CopyWidth := BlitDest.BufferWidth - BlitDest.X1;
+  if CopyHeight > BlitDest.BufferHeight - BlitDest.Y1 then CopyHeight := BlitDest.BufferHeight - BlitDest.Y1;
+
+  if BlitDest.X1 < 0 then
+  begin
+    CopyWidth := CopyWidth + BlitDest.X1;
+    BlitDest.X1 := BlitDest.X1 - BlitDest.X1;
+    BlitDest.X1 := 0;
+  end;
+
+  if BlitDest.Y1 < 0 then
+  begin
+    CopyHeight := CopyHeight + BlitDest.Y1;
+    BlitDest.Y1 := BlitDest.Y1 - BlitDest.Y1;
+    BlitDest.Y1 := 0;
+  end;
+
+  SrcStride := -BlitSrc.BufferWidth;
+  DstStride := -BlitDest.BufferWidth;
+
+  SrcLineIndex := BlitSrc.Buffer;
+  inc(SrcLineIndex, BlitSrc.BufferWidth * (BlitSrc.BufferHeight-1));
+  inc(SrcLineIndex, BlitSrc.Y1 * SrcStride + BlitSrc.X1);
+
+  DstLineIndex := BlitDest.Buffer;
+  inc(DstLineIndex, BlitDest.BufferWidth * (BlitDest.BufferHeight-1));
+  inc(DstLineIndex, BlitDest.Y1 * DstStride + BlitDest.X1);
+
+  for c1 := 0 to CopyHeight-1 do
+  begin
+    SrcPixel := SrcLineIndex;
+    DstPixel := DstLineIndex;
+    inc(SrcLineIndex, SrcStride);
+    inc(DstLineIndex, DstStride);
+    for c2 := 0 to CopyWidth-1 do
+    begin
+      DstPixel^ := AlphaBlend3(DstPixel^, SrcPixel^, SrcAlpha);
+      inc(SrcPixel);
+      inc(DstPixel);
+    end;
+  end;
+
 
 end;
 
@@ -193,7 +278,6 @@ var
   BlitSrc : TBlitSrcInfo;
   BlitDest : TBlitDestInfo;
 begin
-
   BlitSrc.Buffer := Buffer;
   BlitSrc.BufferWidth  := Width;
   BlitSrc.BufferHeight := Height;

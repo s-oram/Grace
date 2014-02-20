@@ -46,7 +46,7 @@
 				<Dependencies>LucidityBaseClasses\packages\LucidityBaseClasses.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Lucidity.dproj">
-				<Dependencies>EasyEffect\packages\EasyEffect.dproj;LucidityBaseClasses\packages\LucidityBaseClasses.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
+				<Dependencies>Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;EasyEffect\packages\EasyEffect.dproj;LucidityBaseClasses\packages\LucidityBaseClasses.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Code Gen\CodeGen.dproj">
 				<Dependencies/>
@@ -191,13 +191,13 @@
 		<Target Name="LucidityGuiComponentsDesXE2:Make" DependsOnTargets="LucidityBaseClasses:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj"/>
 		</Target>
-		<Target Name="Lucidity" DependsOnTargets="EasyEffect;LucidityBaseClasses;LucidityGuiComponentsRunXE2">
+		<Target Name="Lucidity" DependsOnTargets="RedFoxRunXE2;EasyEffect;LucidityBaseClasses;LucidityGuiComponentsRunXE2">
 			<MSBuild Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Clean" DependsOnTargets="EasyEffect:Clean;LucidityBaseClasses:Clean;LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="Lucidity:Clean" DependsOnTargets="RedFoxRunXE2:Clean;EasyEffect:Clean;LucidityBaseClasses:Clean;LucidityGuiComponentsRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Make" DependsOnTargets="EasyEffect:Make;LucidityBaseClasses:Make;LucidityGuiComponentsRunXE2:Make">
+		<Target Name="Lucidity:Make" DependsOnTargets="RedFoxRunXE2:Make;EasyEffect:Make;LucidityBaseClasses:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
 		<Target Name="CodeGen">

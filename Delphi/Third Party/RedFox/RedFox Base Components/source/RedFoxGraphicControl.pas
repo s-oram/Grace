@@ -17,6 +17,7 @@ type
     fInvalidateRequired : boolean;
     fTransparent: boolean;
     fDisplayClass: string;
+    fOpacity: byte;
     procedure CMMouseEnter(var Message: TMessage); message CM_MOUSEENTER;
     procedure CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
     procedure CMHitTest(var Message: TCMHitTest); message CM_HITTEST;
@@ -25,6 +26,7 @@ type
     function GetVisible: boolean;
     procedure SetVisible(const Value: boolean);
     procedure SetTransparent(const Value: boolean);
+    procedure SetOpacity(const Value: byte);
 
     property IsBackBufferDirty : boolean read fIsBackBufferDirty;
 
@@ -74,7 +76,7 @@ type
 
     property Visible : boolean read GetVisible write SetVisible;
   published
-
+    property Opacity      : byte   read fOpacity      write SetOpacity;
     property DisplayClass : string read fDisplayClass write fDisplayClass;
   end;
 
@@ -84,6 +86,7 @@ type
 implementation
 
 uses
+  RedFox2D,
   Windows, VamLib.Utils,
   Agg2d, AggWin32Bmp, Graphics,
   SysUtils, RedFox, RedFoxBlend, RedFoxWinControl, RedFoxInvalidator;
@@ -93,6 +96,7 @@ uses
 constructor TRedFoxGraphicControl.Create(AOwner: TComponent);
 begin
   inherited;
+  fOpacity := 255;
   ControlStyle := ControlStyle + [csOpaque];
   BackBuffer := TRedFoxImageBuffer.Create;
   fHitTest := true;
@@ -122,6 +126,15 @@ begin
   begin
     BackBuffer.Width := AWidth;
     BackBuffer.Height := AHeight;
+    Invalidate;
+  end;
+end;
+
+procedure TRedFoxGraphicControl.SetOpacity(const Value: byte);
+begin
+  if (Value <> fOpacity) then
+  begin
+    fOpacity := Value;
     Invalidate;
   end;
 end;
@@ -313,8 +326,10 @@ begin
   DestX      := Offset.X + x1;
   DestY      := Offset.Y + y1;
 
-  if TP <> nil
-    then BackBuffer.RedFoxInterface.BlendTo(TP.OffScreenBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY);
+  if TP <> nil then
+  begin
+    RedFox_AlphaBlit(TP.OffscreenBuffer.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY, Opacity);
+  end;
 end;
 
 procedure TRedFoxGraphicControl.CMHitTest(var Message: TCMHitTest);

@@ -21,6 +21,7 @@ object ModControlFrame: TModControlFrame
       Top = 0
       Width = 789
       Height = 636
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -36,6 +37,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = False
         object VamLabel34: TVamLabel
@@ -43,6 +45,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 280
           Height = 18
+          Opacity = 255
           Text = 'STEP SEQUENCE ONE'
           HitTest = True
           AutoSize = False
@@ -61,6 +64,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 280
           Height = 70
+          Opacity = 255
           HitTest = True
           Align = alTop
           Visible = True
@@ -69,6 +73,7 @@ object ModControlFrame: TModControlFrame
             Top = 0
             Width = 236
             Height = 70
+            Opacity = 255
             HitTest = True
             Align = alClient
             Visible = True
@@ -82,6 +87,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -109,6 +115,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -136,6 +143,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -159,6 +167,7 @@ object ModControlFrame: TModControlFrame
             Top = 0
             Width = 44
             Height = 70
+            Opacity = 255
             HitTest = True
             Align = alLeft
             Visible = True
@@ -167,6 +176,7 @@ object ModControlFrame: TModControlFrame
               Top = 0
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'CLOCK'
               HitTest = True
               AutoSize = False
@@ -185,6 +195,7 @@ object ModControlFrame: TModControlFrame
               Top = 20
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'MODE'
               HitTest = True
               AutoSize = False
@@ -203,6 +214,7 @@ object ModControlFrame: TModControlFrame
               Top = 40
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'STEPS'
               HitTest = True
               AutoSize = False
@@ -229,6 +241,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = False
         object VamLabel28: TVamLabel
@@ -236,6 +249,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 280
           Height = 18
+          Opacity = 255
           Text = 'STEP SEQUENCE TWO'
           HitTest = True
           AutoSize = False
@@ -254,6 +268,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 280
           Height = 70
+          Opacity = 255
           HitTest = True
           Align = alTop
           Visible = True
@@ -262,6 +277,7 @@ object ModControlFrame: TModControlFrame
             Top = 0
             Width = 44
             Height = 70
+            Opacity = 255
             HitTest = True
             Align = alLeft
             Visible = True
@@ -270,6 +286,7 @@ object ModControlFrame: TModControlFrame
               Top = 0
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'CLOCK'
               HitTest = True
               AutoSize = False
@@ -288,6 +305,7 @@ object ModControlFrame: TModControlFrame
               Top = 20
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'MODE'
               HitTest = True
               AutoSize = False
@@ -306,6 +324,7 @@ object ModControlFrame: TModControlFrame
               Top = 40
               Width = 44
               Height = 20
+              Opacity = 255
               Text = 'STEPS'
               HitTest = True
               AutoSize = False
@@ -325,6 +344,7 @@ object ModControlFrame: TModControlFrame
             Top = 0
             Width = 236
             Height = 70
+            Opacity = 255
             HitTest = True
             Align = alClient
             Visible = True
@@ -338,6 +358,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -365,6 +386,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -392,6 +414,7 @@ object ModControlFrame: TModControlFrame
               Margins.Top = 1
               Margins.Right = 0
               Margins.Bottom = 1
+              Opacity = 255
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
@@ -422,6 +445,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = True
         object VamLabel16: TVamLabel
@@ -429,6 +453,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 175
           Height = 18
+          Opacity = 255
           Text = 'FILTER TWO'
           HitTest = True
           AutoSize = False
@@ -447,6 +472,7 @@ object ModControlFrame: TModControlFrame
           Top = 47
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P1'
           HitTest = True
           AutoSize = False
@@ -464,6 +490,7 @@ object ModControlFrame: TModControlFrame
           Top = 47
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P2'
           HitTest = True
           AutoSize = False
@@ -481,6 +508,7 @@ object ModControlFrame: TModControlFrame
           Top = 47
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P3'
           HitTest = True
           AutoSize = False
@@ -499,6 +527,7 @@ object ModControlFrame: TModControlFrame
           Top = 64
           Width = 94
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -520,6 +549,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -545,6 +575,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -569,6 +600,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -593,6 +625,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -617,6 +650,7 @@ object ModControlFrame: TModControlFrame
           Top = 47
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P4'
           HitTest = True
           AutoSize = False
@@ -640,6 +674,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = True
         object VamLabel8: TVamLabel
@@ -647,6 +682,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 161
           Height = 18
+          Opacity = 255
           Text = 'FILTER ENV'
           HitTest = True
           AutoSize = False
@@ -665,6 +701,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'R'
           HitTest = True
           AutoSize = False
@@ -682,6 +719,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'S'
           HitTest = True
           AutoSize = False
@@ -699,6 +737,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'D'
           HitTest = True
           AutoSize = False
@@ -716,6 +755,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'A'
           HitTest = True
           AutoSize = False
@@ -733,6 +773,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'H'
           HitTest = True
           AutoSize = False
@@ -750,6 +791,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -773,6 +815,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -795,6 +838,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -817,6 +861,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -839,6 +884,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -862,6 +908,7 @@ object ModControlFrame: TModControlFrame
           Top = 70
           Width = 40
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -889,6 +936,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = True
         object LfoContainerLabel: TVamLabel
@@ -896,6 +944,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 145
           Height = 18
+          Opacity = 255
           Text = 'LFO'
           HitTest = True
           AutoSize = False
@@ -914,6 +963,7 @@ object ModControlFrame: TModControlFrame
           Top = 57
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'DEPTH'
           HitTest = True
           AutoSize = False
@@ -931,6 +981,7 @@ object ModControlFrame: TModControlFrame
           Top = 51
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'RATE'
           HitTest = True
           AutoSize = False
@@ -948,6 +999,7 @@ object ModControlFrame: TModControlFrame
           Top = 65
           Width = 40
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -969,6 +1021,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -991,6 +1044,7 @@ object ModControlFrame: TModControlFrame
           Top = 19
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallUnipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1013,6 +1067,7 @@ object ModControlFrame: TModControlFrame
           Top = 24
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallUnipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1035,6 +1090,7 @@ object ModControlFrame: TModControlFrame
           Top = 61
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'DEPTH'
           HitTest = True
           AutoSize = False
@@ -1052,6 +1108,7 @@ object ModControlFrame: TModControlFrame
           Top = 79
           Width = 20
           Height = 20
+          Opacity = 255
           Text = 'A'
           HitTest = True
           ShowBorder = True
@@ -1077,6 +1134,7 @@ object ModControlFrame: TModControlFrame
           Top = 79
           Width = 20
           Height = 20
+          Opacity = 255
           Text = 'A'
           HitTest = True
           ShowBorder = True
@@ -1108,6 +1166,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = True
         object VamLabel5: TVamLabel
@@ -1115,6 +1174,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 161
           Height = 18
+          Opacity = 255
           Text = 'AMP ENV'
           HitTest = True
           AutoSize = False
@@ -1133,6 +1193,7 @@ object ModControlFrame: TModControlFrame
           Top = 60
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'R'
           HitTest = True
           AutoSize = False
@@ -1150,6 +1211,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'S'
           HitTest = True
           AutoSize = False
@@ -1167,6 +1229,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'D'
           HitTest = True
           AutoSize = False
@@ -1184,6 +1247,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'A'
           HitTest = True
           AutoSize = False
@@ -1201,6 +1265,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'H'
           HitTest = True
           AutoSize = False
@@ -1218,6 +1283,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1240,6 +1306,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1262,6 +1329,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1284,6 +1352,7 @@ object ModControlFrame: TModControlFrame
           Top = 30
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1306,6 +1375,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1328,6 +1398,7 @@ object ModControlFrame: TModControlFrame
           Top = 70
           Width = 40
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -1355,6 +1426,7 @@ object ModControlFrame: TModControlFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Visible = True
         object VamLabel11: TVamLabel
@@ -1362,6 +1434,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 224
           Height = 18
+          Opacity = 255
           Text = 'FILTER ONE'
           HitTest = True
           AutoSize = False
@@ -1380,6 +1453,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P3'
           HitTest = True
           AutoSize = False
@@ -1397,6 +1471,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P2'
           HitTest = True
           AutoSize = False
@@ -1414,6 +1489,7 @@ object ModControlFrame: TModControlFrame
           Top = 54
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P1'
           HitTest = True
           AutoSize = False
@@ -1431,6 +1507,7 @@ object ModControlFrame: TModControlFrame
           Top = 70
           Width = 94
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -1452,6 +1529,7 @@ object ModControlFrame: TModControlFrame
           Top = 24
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1477,6 +1555,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1501,6 +1580,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1525,6 +1605,7 @@ object ModControlFrame: TModControlFrame
           Top = 18
           Width = 32
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1549,6 +1630,7 @@ object ModControlFrame: TModControlFrame
           Top = 48
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'P4'
           HitTest = True
           AutoSize = False
@@ -1567,6 +1649,7 @@ object ModControlFrame: TModControlFrame
         Top = 498
         Width = 101
         Height = 101
+        Opacity = 255
         Text = 'FilterBlendContainer'
         HitTest = True
         Visible = True
@@ -1575,6 +1658,7 @@ object ModControlFrame: TModControlFrame
           Top = 0
           Width = 101
           Height = 18
+          Opacity = 255
           Text = 'BLEND'
           HitTest = True
           AutoSize = False
@@ -1593,6 +1677,7 @@ object ModControlFrame: TModControlFrame
           Top = 51
           Width = 32
           Height = 16
+          Opacity = 255
           Text = 'F1 - F2'
           HitTest = True
           AutoSize = False
@@ -1610,6 +1695,7 @@ object ModControlFrame: TModControlFrame
           Top = 17
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -1633,6 +1719,7 @@ object ModControlFrame: TModControlFrame
         Top = 67
         Width = 193
         Height = 121
+        Opacity = 255
         Text = 'Scope'
         HitTest = True
         ColorBackground = '$FF000000'
