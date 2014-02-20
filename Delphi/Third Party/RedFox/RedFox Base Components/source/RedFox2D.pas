@@ -66,7 +66,7 @@ type
     procedure BlendImage(const Source : TPixelMap;        SrcX1, SrcY1, SrcX2, SrcY2, DstX1, DstY1 : integer); overload;
     procedure BlendImage(const aBitmap: Graphics.TBitmap; SrcX1, SrcY1, SrcX2, SrcY2, DstX1, DstY1 : integer); overload;
 
-    procedure BlendTo(const Dest:TRedFox2D; DestX1, DestY1 : integer); overload;
+    procedure BlendTo(const Dest: TRedFox2D; DestX1, DestY1 : integer); overload;
     procedure BlendTo(const Dest: TRedFox2D; const SrcX1, SrcY1, SrcX2, SrcY2, DestX1, DestY1: integer); overload;
     procedure DrawTo(const Dest:TRedFox2D; DestX1, DestY1 : integer);
 
@@ -77,11 +77,21 @@ type
     property Height : integer read fHeight;
   end;
 
+
+procedure AlphaBlit(const Dst, Src : TRedFox2d; x1, y1, x2, y2, DestX, DestY : integer; const SrcAlpha : byte);
+
 implementation
 
 uses
   AggBasics, AggPixelFormat, AggColor,
   SysUtils, RedFoxBlend;
+
+
+procedure AlphaBlit(const Dst, Src : TRedFox2d; x1, y1, x2, y2, DestX, DestY : integer; const SrcAlpha : byte);
+begin
+
+end;
+
 
 { TRedFox2D }
 
@@ -318,6 +328,9 @@ begin
 
   BlitImage(BlitDest, BlitSrc, RedFoxBlend.CopySource);
 end;
+
+
+
 
 
 

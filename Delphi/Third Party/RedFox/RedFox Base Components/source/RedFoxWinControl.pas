@@ -107,7 +107,9 @@ uses
   VamLib.Utils,
   SysUtils, Graphics,
   Agg2d, AggWin32Bmp,
-  RedFox, RedFoxBlend, RedFoxInvalidator;
+  RedFox, RedFoxBlend,
+  RedFox2D,
+  RedFoxInvalidator;
 
 
 { TRedFoxControl }
@@ -453,8 +455,14 @@ begin
   //TP.OffscreenBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceIn;
   //TP.OffscreenBuffer.BufferInterface.TransformImage(BackBuffer.AsImage, DestX, DestY, DestX+Width, DestY+Height);
 
-  if TP <> nil
-    then BackBuffer.RedFoxInterface.BlendTo(TP.OffScreenBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY);
+  //if TP <> nil
+  //  then BackBuffer.RedFoxInterface.BlendTo(TP.OffScreenBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY);
+
+  if TP <> nil then
+  begin
+    AlphaBlit(TP.OffscreenBuffer.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY, 255);
+  end;
+
 end;
 
 
