@@ -60,8 +60,6 @@ type
     property GuiStandard : TGuiStandard read fGuiStandard;
 
     procedure Command_ReplaceLoad;
-
-
     procedure RefreshFileBrowser;
   public
     constructor Create(AOwner: TComponent); override;
@@ -127,6 +125,7 @@ procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Poin
 begin
   if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
+  if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged
 
 end;
 
@@ -182,6 +181,12 @@ begin
   PreviewOnOffButton.ColorOffB    := kColor_ToggleButtonOffMouseOver;
   PreviewOnOffButton.ImageOn      := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
   PreviewOnOffButton.ImageOff     := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
+
+
+
+  //======================================
+  RefreshFileBrowser; //Update some GUI controls...
+  PreviewInfoChanged; //Update some GUI controls...
 
 
 end;
@@ -488,6 +493,8 @@ begin
   // this is desired because it would be good if the browser refreshed after saving
   // a new program to disk. Currently it doesn't show up until the patch browser node
   // is closed and re-opended.
+
+  SampleDirectoriesChanged;
 end;
 
 end.
