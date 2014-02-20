@@ -50,8 +50,6 @@ type
 
     ModulatedParameters: TModulatedPars;
 
-
-
     function GetName:string;
     procedure SetName(Value : string);
 

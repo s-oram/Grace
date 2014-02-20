@@ -157,7 +157,20 @@ end;
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 var
   CurrentStep : integer;
+  SeqLength : TStepSequencerLength;
+  x : integer;
 begin
+
+  if fSequencerIndex = 0
+      then SeqLength := Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length).ValueAsEnum<TStepSequencerLength>
+      else SeqLength := Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length).ValueAsEnum<TStepSequencerLength>;
+
+  x := StepSequencerLengthToInteger(SeqLength);
+
+  if StepSeqControl.SequenceLength <> x
+    then StepSeqControl.SequenceLength := x;
+
+
   if Feedback^.IsVoiceActive then
   begin
     if fSequencerIndex = 0
@@ -165,9 +178,6 @@ begin
       else CurrentStep := Feedback^.StepSeq2CurStep;
 
     if StepSeqControl.CurrentStep <> CurrentStep then StepSeqControl.CurrentStep := CurrentStep;
-
-
-
   end else
   begin
     CurrentStep := -1;

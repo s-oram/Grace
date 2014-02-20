@@ -4,6 +4,7 @@ interface
 
 uses
   uConstants,
+  uLucidityEnums,
   VamLib.ZeroObject;
 
 type
