@@ -22,7 +22,6 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
-    OnClick = Button1Click
   end
   object Memo1: TMemo
     Left = 368
@@ -57,7 +56,6 @@ object Form1: TForm1
       KnobMax = 100
       NumericStyle = nsFloat
       DecimalPlaces = 2
-      OnChanged = VamNumericKnob1Changed
       Visible = True
     end
     object Knob2: TVamNumericKnob
@@ -80,27 +78,31 @@ object Form1: TForm1
       DecimalPlaces = 2
       Visible = True
     end
-    object DropBoxSelector1: TDropBoxSelector
-      Left = 168
-      Top = 192
-      Width = 125
-      Height = 25
-      Text = 'DropBoxSelector1'
+    object VamShortMessageOverlay1: TVamShortMessageOverlay
+      Left = 312
+      Top = 208
+      Width = 137
+      Height = 49
+      Text = 'Short Message'
       HitTest = True
-      ColorTextA = '$FFCCCCCC'
-      ColorTextB = '$FFFFFFFF'
-      Color = '$FF3E3E3E'
-      ColorMouseOver = '$FF3E3E3E'
-      ColorBorder = '$00000000'
-      ShowBorder = False
-      TextA = 'Text A'
-      TextB = 'Text B'
-      TextPadding.Left = 6
-      TextPadding.Top = 3
-      TextPadding.Right = 6
-      TextPadding.Bottom = 3
+      AutoSizeBackground = True
+      Color = '$FFFFFFFF'
+      ColorBorder = '$FF000000'
+      ColorText = '$FF000000'
+      BorderWidth = 2
+      ShowBorder = True
+      CornerRadius1 = 6.000000000000000000
+      CornerRadius2 = 6.000000000000000000
+      CornerRadius3 = 6.000000000000000000
+      CornerRadius4 = 6.000000000000000000
+      TextAlign = AlignCenter
+      TextVAlign = AlignCenter
+      TextPadding.Left = 10
+      TextPadding.Top = 6
+      TextPadding.Right = 10
+      TextPadding.Bottom = 6
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -122,7 +124,6 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 4
-    OnClick = Button3Click
   end
   object Button4: TButton
     Left = 250
@@ -131,6 +132,5 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 5
-    OnClick = Button3Click
   end
 end

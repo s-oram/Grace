@@ -18,6 +18,13 @@ type
     fTextVAlign: TRedFoxAlign;
     fTextAlign: TRedFoxAlign;
     fShowBorder: boolean;
+    fBorderWidth: integer;
+    fCornerRadius2: double;
+    fCornerRadius3: double;
+    fCornerRadius1: double;
+    fCornerRadius4: double;
+    FTextPadding: TPadding;
+    fAutoSizeBackground: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -31,23 +38,43 @@ type
     procedure SetShowBorder(const Value: boolean);
     function GetColorText: TRedFoxColorString;
     procedure SetColorText(const Value: TRedFoxColorString);
+    procedure SetBorderWidth(const Value: integer);
+    procedure SetCornerRadius1(const Value: double);
+    procedure SetCornerRadius2(const Value: double);
+    procedure SetCornerRadius3(const Value: double);
+    procedure SetCornerRadius4(const Value: double);
+    procedure SetTextPadding(const Value: TPadding);
+    procedure SetAutoSizeBackground(const Value: boolean);
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
     procedure Paint; override;
+
+    procedure EventHandle_TextPaddingChange(Sender : TObject);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
+
+    property AutoSizeBackground : boolean        read fAutoSizeBackground write SetAutoSizeBackground;
     property Color          : TRedFoxColorString read GetColor        write SetColor;
     property ColorBorder    : TRedFoxColorString read GetColorBorder  write SetColorBorder;
     property ColorText      : TRedFoxColorString read GetColorText    write SetColorText;
+
+    property BorderWidth    : integer            read fBorderWidth    write SetBorderWidth;
     property ShowBorder     : boolean            read fShowBorder     write SetShowBorder;
+
+    property CornerRadius1 : double read fCornerRadius1 write SetCornerRadius1;
+    property CornerRadius2 : double read fCornerRadius2 write SetCornerRadius2;
+    property CornerRadius3 : double read fCornerRadius3 write SetCornerRadius3;
+    property CornerRadius4 : double read fCornerRadius4 write SetCornerRadius4;
 
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
 
     property Text : string read fText write SetText;
+
+    property TextPadding : TPadding read FTextPadding write SetTextPadding;
 
     property Font;
 
@@ -57,6 +84,7 @@ type
 implementation
 
 uses
+  Math,
   SysUtils, Types, AggPixelFormat;
 
 { TVamTextBox }
@@ -71,11 +99,29 @@ begin
 
   fTextVAlign := TRedFoxAlign.AlignCenter;
   fTextAlign  := TRedFoxAlign.AlignCenter;
+
+  fCornerRadius1 := 3;
+  fCornerRadius2 := 3;
+  fCornerRadius3 := 3;
+  fCornerRadius4 := 3;
+
+  FTextPadding := TPadding.Create(Self);
+  FTextPadding.SetBounds(0,0,0,0);
+  fTextPadding.OnChange := EventHandle_TextPaddingChange;
+
+  FAutoSizeBackground := true;
 end;
 
 destructor TVamShortMessageOverlay.Destroy;
 begin
+  FreeAndNil(FTextPadding);
+
   inherited;
+end;
+
+procedure TVamShortMessageOverlay.EventHandle_TextPaddingChange(Sender: TObject);
+begin
+  Invalidate;
 end;
 
 function TVamShortMessageOverlay.GetColor: TRedFoxColorString;
@@ -114,6 +160,24 @@ begin
   Invalidate;
 end;
 
+procedure TVamShortMessageOverlay.SetAutoSizeBackground(const Value: boolean);
+begin
+  if Value <> fAutoSizeBackground then
+  begin
+    fAutoSizeBackground := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamShortMessageOverlay.SetBorderWidth(const Value: integer);
+begin
+  if Value <> FBorderWidth then
+  begin
+    fBorderWidth := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TVamShortMessageOverlay.SetColor(const Value: TRedFoxColorString);
 begin
   if Value <> fColor.AsString then
@@ -146,13 +210,24 @@ begin
   FColorText := Value;
 end;
 
-procedure TVamShortMessageOverlay.SetImageOverlay(const Value: TBitmap);
+procedure TVamShortMessageOverlay.SetCornerRadius1(const Value: double);
 begin
-  if fImageOverlay <> Value then
-  begin
-    fImageOverlay := Value;
-    Invalidate;
-  end;
+  fCornerRadius1 := Value;
+end;
+
+procedure TVamShortMessageOverlay.SetCornerRadius2(const Value: double);
+begin
+  fCornerRadius2 := Value;
+end;
+
+procedure TVamShortMessageOverlay.SetCornerRadius3(const Value: double);
+begin
+  fCornerRadius3 := Value;
+end;
+
+procedure TVamShortMessageOverlay.SetCornerRadius4(const Value: double);
+begin
+  fCornerRadius4 := Value;
 end;
 
 procedure TVamShortMessageOverlay.SetMenuText(Value: string);
@@ -187,6 +262,11 @@ begin
   end;
 end;
 
+procedure TVamShortMessageOverlay.SetTextPadding(const Value: TPadding);
+begin
+  FTextPadding.Assign(Value);
+end;
+
 procedure TVamShortMessageOverlay.SetTextVAlign(const Value: TRedFoxAlign);
 begin
   if Value <> fTextVAlign then
@@ -198,44 +278,64 @@ end;
 
 procedure TVamShortMessageOverlay.Paint;
 var
-  aColor : TRedFoxColor;
   TextBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
+  IntPadding : integer;
+  BackgroundRect : TRect;
+  w, h : integer;
 begin
   inherited;
 
-  // HACK: The Agg blending doesn't work that well on transparent backgrounds.
-  // Setting the color to the same as the font allows the anti-aliasing to
-  // be a bit brighter. Otherwise the AA gamma gets all messed up.
-  if aColor.A < 10 then aColor := GetRedFoxColor(Font.Color);
+  BackBuffer.UpdateFont(Font);
 
-  BackBuffer.BufferInterface.ClearAll(aColor.WithAlpha(0));
+
+  if AutoSizeBackground then
+  begin
+    w := round(BackBuffer.TextWidth(Text) + FTextPadding.Left + FTextPadding.Right  + BorderWidth);
+    h := round(BackBuffer.TextHeight      + FTextPadding.Top  + FTextPadding.Bottom + BorderWidth);
+    BackgroundRect.Left   := round((Width - w) * 0.5);
+    BackgroundRect.Right  := BackgroundRect.Left + w;
+    BackgroundRect.Top    := round((Height - h) * 0.5);
+    BackgroundRect.Bottom := BackgroundRect.Top + h;
+
+    TextBounds.Left   := BackgroundRect.Left   + TextPadding.Left;
+    TextBounds.Top    := BackgroundRect.Top    + TextPadding.Top;
+    TextBounds.Right  := BackgroundRect.Right  - TextPadding.Right;
+    TextBounds.Bottom := BackgroundRect.Bottom - TextPadding.Bottom;
+  end else
+  begin
+    IntPadding := Ceil(BorderWidth * 0.5);
+    BackgroundRect := Rect(IntPadding, IntPadding, Width-IntPadding, Height-IntPadding);
+    TextBounds := Rect(0, 0, Width, Height);
+  end;
+
+
+
+  BackBuffer.BufferInterface.ClearAll(fColor.WithAlpha(0));
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
-  if IsMouseOver = false
-    then aColor := fColor
-    else aColor := fColorMouseOver;
+
+
+
+
 
   //== draw the background ==
   if ShowBorder then
   begin
     BackBuffer.BufferInterface.LineColor := fColorBorder;
-    BackBuffer.BufferInterface.LineWidth := 1;
+    BackBuffer.BufferInterface.LineWidth := BorderWidth;
   end else
   begin
     BackBuffer.BufferInterface.NoLine;
   end;
-  BackBuffer.BufferInterface.FillColor := aColor.AsAggRgba8;
-  BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
+
+  BackBuffer.BufferInterface.FillColor := fColor.AsAggRgba8;
+  BackBuffer.BufferInterface.RoundedRect(BackgroundRect.Left, BackgroundRect.Top, BackgroundRect.Right, BackgroundRect.Bottom, fCornerRadius1, fCornerRadius2, fCornerRadius3, fCornerRadius4);
 
   //== draw the text ==
   //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
-  TextBounds := Rect(0, 0, Width, Height);
   BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds, FColorText);
-
-
-
 
 end;
 

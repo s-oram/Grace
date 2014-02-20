@@ -23,6 +23,7 @@ uses
   VamSampleZoomControl,
   VamScrollBar,
   VamScrollBox,
+  VamShortMessageOverlay,
   VamSlider,
   VamStatusLed,
   VamTabs,
@@ -50,6 +51,7 @@ begin
   RegisterComponents('Vam Basic', [TVamPanel]);
   RegisterComponents('Vam Basic', [TVamScrollBar]);
   RegisterComponents('Vam Basic', [TVamScrollBox]);
+  RegisterComponents('Vam Basic', [TVamShortMessageOverlay]);
   RegisterComponents('Vam Basic', [TVamTabs]);
   RegisterComponents('Vam Basic', [TVamTabPanel]);
   RegisterComponents('Vam Basic', [TVamTextBox]);
