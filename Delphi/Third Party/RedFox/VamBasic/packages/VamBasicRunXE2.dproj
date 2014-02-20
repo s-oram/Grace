@@ -125,6 +125,7 @@
 			<DCCReference Include="..\source\VamSamplePeakBuffer.pas"/>
 			<DCCReference Include="..\source\VamModSelector.pas"/>
 			<DCCReference Include="..\source\VamGuiControlInterfaces.pas"/>
+			<DCCReference Include="..\source\VamShortMessageOverlay.pas"/>
 			<None Include="..\source\TGaphicControlProperties.inc"/>
 			<None Include="..\source\TWinControlProperties.inc"/>
 			<None Include="..\source\TControlProperties.inc"/>
