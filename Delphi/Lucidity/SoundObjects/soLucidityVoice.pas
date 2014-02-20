@@ -502,8 +502,8 @@ begin
 
   //=== init all processing objects with links to voice parameters etc ===
 
-  StepSeqOne.SequenceData := aSampleGroup.GetVectorSequenceData(0);
-  StepSeqTwo.SequenceData := aSampleGroup.GetVectorSequenceData(1);
+  StepSeqOne.SequenceData := aSampleGroup.GetSequenceData(0);
+  StepSeqTwo.SequenceData := aSampleGroup.GetSequenceData(1);
 
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);

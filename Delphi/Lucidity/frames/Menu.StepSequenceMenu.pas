@@ -95,7 +95,7 @@ begin
   //== Step Seq 1 ==
   if SequenceIndex = 0 then
   begin
-    SeqData := SG.GetVectorSequenceData(0);
+    SeqData := SG.GetSequenceData(0);
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
@@ -108,7 +108,7 @@ begin
   //== Step Seq 2 ==
   if SequenceIndex = 1 then
   begin
-    SeqData := SG.GetVectorSequenceData(1);
+    SeqData := SG.GetSequenceData(1);
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
@@ -139,7 +139,7 @@ begin
   //== Step Seq 1 ==
   if SequenceIndex = 0 then
   begin
-    SeqData := SG.GetVectorSequenceData(0);
+    SeqData := SG.GetSequenceData(0);
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin
@@ -152,7 +152,7 @@ begin
   //== Step Seq 2 ==
   if SequenceIndex = 1 then
   begin
-    SeqData := SG.GetVectorSequenceData(1);
+    SeqData := SG.GetSequenceData(1);
 
     for c1 := 0 to kMaxStepSequencerLength-1 do
     begin

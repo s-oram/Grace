@@ -151,7 +151,7 @@ begin
     GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
   end;
 
-  StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetVectorSequenceData(fSequencerIndex);
+  StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -165,6 +165,9 @@ begin
       else CurrentStep := Feedback^.StepSeq2CurStep;
 
     if StepSeqControl.CurrentStep <> CurrentStep then StepSeqControl.CurrentStep := CurrentStep;
+
+
+
   end else
   begin
     CurrentStep := -1;
