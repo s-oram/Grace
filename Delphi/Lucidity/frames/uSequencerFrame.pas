@@ -155,18 +155,21 @@ begin
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
+var
+  CurrentStep : integer;
 begin
-  {
-  if FeedBack^.IsVoiceActive then
+  if Feedback^.IsVoiceActive then
   begin
-    if StepSeq1.CurrentStep <> FeedBack^.StepSeq1CurStep then StepSeq1.CurrentStep := FeedBack^.StepSeq1CurStep;
-    if StepSeq2.CurrentStep <> FeedBack^.StepSeq2CurStep then StepSeq2.CurrentStep := FeedBack^.StepSeq2CurStep;
+    if fSequencerIndex = 0
+      then CurrentStep := Feedback^.StepSeq1CurStep
+      else CurrentStep := Feedback^.StepSeq2CurStep;
+
+    if StepSeqControl.CurrentStep <> CurrentStep then StepSeqControl.CurrentStep := CurrentStep;
   end else
   begin
-    if StepSeq1.CurrentStep <> -1 then StepSeq1.CurrentStep := -1;
-    if StepSeq2.CurrentStep <> -1 then StepSeq2.CurrentStep := -1;
+    CurrentStep := -1;
+    if StepSeqControl.CurrentStep <> CurrentStep then StepSeqControl.CurrentStep := CurrentStep;
   end;
-  }
 end;
 
 procedure TSequencerFrame.StepSeqControlShowContextMenu(Sender: TObject; X, Y: Integer);
