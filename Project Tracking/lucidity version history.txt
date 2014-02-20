@@ -1,9 +1,24 @@
 == Finished for the next release ==
 
-The controls for the two LFOs have been merged into 
-one. There is a button to select with LFO is being edited. 
 
-Added a third LFO knob. 
+Rewrote the internal messaging system. Previously components could only send messages
+to the GUI. Now components can send messages to audio and other non-visual components. 
+
+The step sequence controls have been moved to seperate tabs. 
+
+Lfo Controls Updated
+- The LFO has been page-afied. Only one LFO can be edited at a time. 
+- Added an additional LFO parameter. 
+
+
+Add Duplicate Regions command to the sample map context menu.
+
+
+
+
+
+
+
 
 
 === Alpha Version 0.0.1.19 released 5th February ===

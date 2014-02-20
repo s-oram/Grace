@@ -149,6 +149,7 @@ type
     procedure SelectRegion(aRegionID : TGUID);
 
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
+    procedure DuplicateSelectedRegions;
     procedure DeleteSelectedRegions;
     procedure DeleteKeyGroup(const aKeyGroupName : string);
 
@@ -592,6 +593,16 @@ begin
   Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
+procedure TeePlugin.DuplicateSelectedRegions;
+begin
+  SampleMap.DuplicateSelectedRegions;
+
+  // signal to the GUI that the focus has changed.
+  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+end;
+
+
+
 procedure TeePlugin.MoveRootKey(const RootKeyOffset: integer);
 var
   c1: Integer;
@@ -644,7 +655,6 @@ begin
 
     CreateInfo.KeyGroup := FocusedKeyGroup;
   end;
-
 
   result := SampleMap.NewRegion(CreateInfo);
 end;

@@ -13,9 +13,11 @@ type
     Menu : TPopUpMenu;
     RegionContext : IRegion;
 
+
     procedure MenuItemClicked(Sender : TObject);
 
     procedure EventHandle_ShowInWindowsExplorer(Sender : TObject);
+    procedure EventHandle_DuplicateRegions(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -68,14 +70,23 @@ begin
 
   Menu.Items.Clear;
 
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Duplicate Regions...';
+  mi.OnClick := self.EventHandle_DuplicateRegions;
+  Menu.Items.Add(mi);
+
+
+  //============================================================================
+  //=== Move to Key Group =====
+  //============================================================================
+
   KeyGroupMenuItem := TMenuItem.Create(Menu);
   KeyGroupMenuItem.Tag     := 1;
   KeyGroupMenuItem.Caption := 'Move To Key Group';
   Menu.Items.Add(KeyGroupMenuItem);
 
-
   KeyGroupInfo := Plugin.KeyGroups.GetInfo;
-
   for c1 := 0 to KeyGroupInfo.GetKeyGroupCount-1 do
   begin
     KeyGroupName := KeyGroupInfo.GetKeyGroup(c1).GetName;
@@ -92,6 +103,8 @@ begin
 
     KeyGroupMenuItem.Add(mi);
   end;
+
+  //============================================================================
 
 
 
@@ -139,6 +152,25 @@ begin
 end;
 
 
+
+procedure TSampleMapContextMenu.EventHandle_DuplicateRegions(Sender: TObject);
+var
+  x : integer;
+  Text : string;
+begin
+  if not assigned(Plugin) then raise Exception.Create('Plugin not assigned!!');
+  Plugin.DuplicateSelectedRegions;
+
+  x := Plugin.SampleMap.SelectedRegionCount;
+  case x of
+  0: Text := 'No regions duplicated.';
+  1: Text := '1 region duplicated.';
+  else
+    Text := IntToStr(x) + ' regions duplicated';
+  end;
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Msg_XRegionsDuplicated, @Text);
+end;
 
 procedure TSampleMapContextMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);
 var

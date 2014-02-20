@@ -112,6 +112,10 @@ type
     LowVelocity   : integer;
     HighVelocity  : integer;
     RootNote      : integer;
+
+    procedure Init;
+    procedure AssignFrom(Source : TRegion); overload;
+    procedure AssignFrom(Source : IRegion); overload;
   end;
 
   TSampleMap = class
@@ -146,6 +150,7 @@ type
     procedure DeselectAllRegions;
 
     procedure MoveSelectedRegionsToKeyGoup(aKeyGroup : IKeyGroup);
+    procedure DuplicateSelectedRegions;
     procedure DeleteSelectedRegions;
 
     procedure AddRegion(aRegion : IRegion);
@@ -200,7 +205,7 @@ type
   end;
 
 
-  
+
 
 
 function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
@@ -213,6 +218,7 @@ procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA,
 implementation
 
 uses
+  VamLib.Utils,
   Math,
   eeFunctions, eeDsp,
   SysUtils, AudioIO;
@@ -489,7 +495,7 @@ var
 begin
   if not assigned(OwningSampleGroup) then raise Exception.Create('OwningSampleGroup is not assigned.');
 
-  CreateInfo.KeyGroup := OwningSampleGroup;
+  CreateInfo.KeyGroup      := OwningSampleGroup;
   CreateInfo.AudioFileName := AudioFileName;
   CreateInfo.LowNote       := 0;
   CreateInfo.HighNote      := 127;
@@ -503,9 +509,7 @@ end;
 procedure TSampleMap.AddRegion(aRegion: IRegion);
 begin
   aRegion.GetProperties^.UniqueID := CreateGuidEx;
-
   aRegion.UpdateSampleImage;
-
   RegionList.Add(aRegion);
 end;
 
@@ -767,6 +771,27 @@ begin
   end;
 end;
 
+procedure TSampleMap.DuplicateSelectedRegions;
+var
+  c1: Integer;
+  RegionCreateInfo : TRegionCreateInfo;
+  rg : IRegion;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    if Regions[c1].GetProperties^.IsSelected then
+    begin
+      RegionCreateInfo.AssignFrom(Regions[c1]);
+
+      rg := NewRegion(RegionCreateInfo);
+      rg.GetProperties^.IsSelected := true;
+
+      Regions[c1].GetProperties^.IsSelected := false;
+      Regions[c1].GetProperties^.IsFocused  := false;
+    end;
+  end;
+end;
+
 procedure TSampleMap.DeleteSelectedRegions;
 var
   c1: Integer;
@@ -906,6 +931,44 @@ function TSampleMapInfo.GetRegionCount: integer;
 begin
   result := self.RegionList.Count;
 end;
+
+
+
+{ TRegionCreateInfo }
+
+procedure TRegionCreateInfo.Init;
+begin
+  self.KeyGroup      := nil;
+  self.AudioFileName := '';
+  self.LowNote       := 0;
+  self.HighNote      := 127;
+  self.LowVelocity   := 0;
+  self.HighVelocity  := 127;
+  self.RootNote      := 60; //who knows what MIDI note that is?....
+end;
+
+procedure TRegionCreateInfo.AssignFrom(Source: TRegion);
+begin
+  self.KeyGroup      := source.KeyGroup;
+  self.AudioFileName := source.Properties^.SampleFileName;
+  self.LowNote       := source.Properties^.LowNote;
+  self.HighNote      := source.Properties^.HighNote;
+  self.LowVelocity   := source.Properties^.LowVelocity;
+  self.HighVelocity  := source.Properties^.HighVelocity;
+  self.RootNote      := source.Properties^.RootNote;
+end;
+
+procedure TRegionCreateInfo.AssignFrom(Source: IRegion);
+begin
+  self.KeyGroup      := source.GetKeyGroup;
+  self.AudioFileName := source.GetProperties^.SampleFileName;
+  self.LowNote       := source.GetProperties^.LowNote;
+  self.HighNote      := source.GetProperties^.HighNote;
+  self.LowVelocity   := source.GetProperties^.LowVelocity;
+  self.HighVelocity  := source.GetProperties^.HighVelocity;
+  self.RootNote      := source.GetProperties^.RootNote;
+end;
+
 
 
 

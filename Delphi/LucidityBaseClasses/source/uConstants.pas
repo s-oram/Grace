@@ -56,6 +56,7 @@ type
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
+    Msg_XRegionsDuplicated           = Actions + 4;
   end;
 
 const
