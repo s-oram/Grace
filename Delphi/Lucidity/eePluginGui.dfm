@@ -38,6 +38,7 @@ object PluginGui: TPluginGui
       Margins.Top = 0
       Margins.Right = 2
       Margins.Bottom = 2
+      Opacity = 255
       HitTest = True
       Align = alClient
       Visible = True
@@ -46,6 +47,7 @@ object PluginGui: TPluginGui
         Top = 0
         Width = 680
         Height = 796
+        Opacity = 255
         HitTest = True
         Align = alRight
         Visible = True
@@ -58,6 +60,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -70,6 +73,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -82,6 +86,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -90,6 +95,7 @@ object PluginGui: TPluginGui
           Top = 260
           Width = 521
           Height = 80
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -98,6 +104,7 @@ object PluginGui: TPluginGui
           Top = 592
           Width = 513
           Height = 89
+          Opacity = 255
           Text = 'TabPanel'
           HitTest = True
           Color_Background = '$ff777776'
@@ -130,6 +137,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -138,6 +146,7 @@ object PluginGui: TPluginGui
           Top = 696
           Width = 253
           Height = 21
+          Opacity = 255
           HitTest = True
           Color = '$FFCCCCCC'
           Transparent = False
@@ -152,6 +161,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Visible = True
         end
@@ -161,6 +171,7 @@ object PluginGui: TPluginGui
         Top = 0
         Width = 303
         Height = 796
+        Opacity = 255
         HitTest = True
         Align = alClient
         Visible = True
@@ -173,6 +184,7 @@ object PluginGui: TPluginGui
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
+          Opacity = 255
           HitTest = True
           Color = '$FFCCCCCC'
           CornerRadius1 = 4.000000000000000000
@@ -187,6 +199,7 @@ object PluginGui: TPluginGui
             Top = 0
             Width = 303
             Height = 49
+            Opacity = 255
             Text = 'LUCIDITY'
             HitTest = True
             AutoSize = False
@@ -211,6 +224,7 @@ object PluginGui: TPluginGui
           Margins.Top = 0
           Margins.Right = 2
           Margins.Bottom = 2
+          Opacity = 255
           HitTest = True
           Visible = True
           Padding.Left = 4

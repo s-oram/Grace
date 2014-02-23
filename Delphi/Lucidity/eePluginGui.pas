@@ -253,7 +253,6 @@ begin
   //===================================
 
 
-
   // Finally...
   UpdateLayout;
 end;
@@ -308,8 +307,6 @@ begin
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
   Plugin.Globals.MotherShip.RegisterZeroObject(self);
-
-
 
 
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
@@ -394,130 +391,85 @@ begin
 
 
   //===== set up the skin graphics =======
-  {
-  if Plugin.Globals.SkinImageLoader.Exists('Knob_UniPolar') then
+  if Plugin.Globals.SkinImageLoader.Exists('Knob_Lower')
+    then bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Lower');
+
+  if Plugin.Globals.SkinImageLoader.Exists('Knob_Upper')
+    then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Upper');
+
+  if Plugin.Globals.SkinImageLoader.Exists('Knob_PlaceHolder')
+    then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
+
+  VQ := VamQueryRequest(RedFoxContainer, 'UniPolarKnob');
+  for c in VQ.List do
   begin
-    bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_UniPolar');
-    bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
-    VQ := VamQueryRequest(RedFoxContainer, 'UniPolarKnob');
-    for c in VQ.List do
-    begin
-      (c as TVamKnob).ImageStrip := bm1;
-      (c as TVamKnob).ImageStripGlyphCount := 65;
-      (c as TVamKnob).DisabledImage := bm2;
-    end;
+    (c as TVamKnob).Image_KnobLower := bm1;
+    (c as TVamKnob).Image_KnobUpper := bm2;
+    (c as TVamKnob).DisabledImage   := bm3;
+    (c as TVamKnob).ModLineDist  := 15;
+    (c as TVamKnob).ModLineWidth := 4.5;
+    (c as TVamKnob).IsBipolarKnob := false;
+    (c as TVamKnob).ModLineColor := kModLineColorA;
+    (c as TVamKnob).ModLineOffColor := kModLineColorOff;
+    (c as TVamKnob).IndicatorSize := 2.4;
+    (c as TVamKnob).IndicatorDist := 6.5;
   end;
 
-  if Plugin.Globals.SkinImageLoader.Exists('Knob_BiPolar') then
+  VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
+  for c in VQ.List do
   begin
-    bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_BiPolar');
-    bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
-    VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
-    for c in VQ.List do
-    begin
-      (c as TVamKnob).ImageStrip := bm1;
-      (c as TVamKnob).ImageStripGlyphCount := 65;
-      (c as TVamKnob).DisabledImage := bm2;
-    end;
+    (c as TVamKnob).Image_KnobLower := bm1;
+    (c as TVamKnob).Image_KnobUpper := bm2;
+    (c as TVamKnob).DisabledImage   := bm3;
+    (c as TVamKnob).ModLineDist  := 15;
+    (c as TVamKnob).ModLineWidth := 4.5;
+    (c as TVamKnob).IsBipolarKnob := true;
+    (c as TVamKnob).ModLineColor := kModLineColorA;
+    (c as TVamKnob).ModLineOffColor := kModLineColorOff;
+    (c as TVamKnob).IndicatorSize := 2.4;
+    (c as TVamKnob).IndicatorDist := 6.5;
   end;
 
-  if Plugin.Globals.SkinImageLoader.Exists('ModMatrix_Knob') then
+
+  if Plugin.Globals.SkinImageLoader.Exists('Small_Knob')
+    then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Small_Knob');
+
+  VQ := VamQueryRequest(RedFoxContainer, 'SmallBipolarKnob');
+  for c in VQ.List do
   begin
-    bm1 := Plugin.Globals.SkinImageLoader.GetImage('ModMatrix_Knob');
-    VQ := VamQueryRequest(RedFoxContainer, 'ModMatrixKnob');
-    for c in VQ.List do
-    begin
-      (c as TVamKnob).ImageStrip := bm1;
-      (c as TVamKnob).ImageStripGlyphCount := 65;
-    end;
+    //(c as TVamKnob).Image_KnobLower := bm1;
+    (c as TVamKnob).Image_KnobUpper := bm2;
+    //(c as TVamKnob).DisabledImage   := bm3;
+
+    (c as TVamKnob).ModLineDist  := 12;
+    (c as TVamKnob).ModLineWidth := 3.5;
+    (c as TVamKnob).IndicatorDist := 5;
+    (c as TVamKnob).IndicatorSize := 2;
+
+    (c as TVamKnob).IsBipolarKnob := true;
+    (c as TVamKnob).ModLineColor := kModLineColorA;
+    (c as TVamKnob).ModLineOffColor := kModLineColorOff;
   end;
-  }
 
-    if Plugin.Globals.SkinImageLoader.Exists('Knob_Lower')
-      then bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Lower');
+  VQ := VamQueryRequest(RedFoxContainer, 'SmallUnipolarKnob');
+  for c in VQ.List do
+  begin
+    //(c as TVamKnob).Image_KnobLower := bm1;
+    (c as TVamKnob).Image_KnobUpper := bm2;
+    //(c as TVamKnob).DisabledImage   := bm3;
 
-    if Plugin.Globals.SkinImageLoader.Exists('Knob_Upper')
-      then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Upper');
+    (c as TVamKnob).ModLineDist  := 12;
+    (c as TVamKnob).ModLineWidth := 3.5;
+    (c as TVamKnob).IndicatorDist := 5;
+    (c as TVamKnob).IndicatorSize := 2;
 
-    if Plugin.Globals.SkinImageLoader.Exists('Knob_PlaceHolder')
-      then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
-
-    VQ := VamQueryRequest(RedFoxContainer, 'UniPolarKnob');
-    for c in VQ.List do
-    begin
-      (c as TVamKnob).Image_KnobLower := bm1;
-      (c as TVamKnob).Image_KnobUpper := bm2;
-      (c as TVamKnob).DisabledImage   := bm3;
-      (c as TVamKnob).ModLineDist  := 15;
-      (c as TVamKnob).ModLineWidth := 4.5;
-      (c as TVamKnob).IsBipolarKnob := false;
-      (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).ModLineOffColor := kModLineColorOff;
-      (c as TVamKnob).IndicatorSize := 2.4;
-      (c as TVamKnob).IndicatorDist := 6.5;
-    end;
-
-    VQ := VamQueryRequest(RedFoxContainer, 'BiPolarKnob');
-    for c in VQ.List do
-    begin
-      (c as TVamKnob).Image_KnobLower := bm1;
-      (c as TVamKnob).Image_KnobUpper := bm2;
-      (c as TVamKnob).DisabledImage   := bm3;
-      (c as TVamKnob).ModLineDist  := 15;
-      (c as TVamKnob).ModLineWidth := 4.5;
-      (c as TVamKnob).IsBipolarKnob := true;
-      (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).ModLineOffColor := kModLineColorOff;
-      (c as TVamKnob).IndicatorSize := 2.4;
-      (c as TVamKnob).IndicatorDist := 6.5;
-    end;
-
-
-    if Plugin.Globals.SkinImageLoader.Exists('Small_Knob')
-      then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Small_Knob');
-
-    VQ := VamQueryRequest(RedFoxContainer, 'SmallBipolarKnob');
-    for c in VQ.List do
-    begin
-      //(c as TVamKnob).Image_KnobLower := bm1;
-      (c as TVamKnob).Image_KnobUpper := bm2;
-      //(c as TVamKnob).DisabledImage   := bm3;
-
-      (c as TVamKnob).ModLineDist  := 12;
-      (c as TVamKnob).ModLineWidth := 3.5;
-      (c as TVamKnob).IndicatorDist := 5;
-      (c as TVamKnob).IndicatorSize := 2;
-
-      (c as TVamKnob).IsBipolarKnob := true;
-      (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).ModLineOffColor := kModLineColorOff;
-    end;
-
-    VQ := VamQueryRequest(RedFoxContainer, 'SmallUnipolarKnob');
-    for c in VQ.List do
-    begin
-      //(c as TVamKnob).Image_KnobLower := bm1;
-      (c as TVamKnob).Image_KnobUpper := bm2;
-      //(c as TVamKnob).DisabledImage   := bm3;
-
-      (c as TVamKnob).ModLineDist  := 12;
-      (c as TVamKnob).ModLineWidth := 3.5;
-      (c as TVamKnob).IndicatorDist := 5;
-      (c as TVamKnob).IndicatorSize := 2;
-
-      (c as TVamKnob).IsBipolarKnob := false;
-      (c as TVamKnob).ModLineColor := kModLineColorA;
-      (c as TVamKnob).ModLineOffColor := kModLineColorOff;
-    end;
-
-
-
-
-
-
+    (c as TVamKnob).IsBipolarKnob := false;
+    (c as TVamKnob).ModLineColor := kModLineColorA;
+    (c as TVamKnob).ModLineOffColor := kModLineColorOff;
+  end;
   //==============
 
-
+  self.LowerTabState := TLowerTabOptions.TabMain;
 
   //==============
   if (Plugin.FocusedRegion = nil) and (Plugin.SampleMap.RegionCount > 0) then
