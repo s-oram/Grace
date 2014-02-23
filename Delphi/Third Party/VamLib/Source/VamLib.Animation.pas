@@ -10,6 +10,10 @@ uses
 
 
 type
+  // TODO: It would be awesome to exten the animations with easing curves.
+  // For a list of different curves.
+  //   http://easings.net/
+
   //==============================================================================
   //               Low level details
   //==============================================================================
@@ -19,24 +23,22 @@ type
   TAnimateActionList   = class;
   TAnimateController   = class;
 
-
-
   ICustomAnimation = interface
     ['{57E7F1DA-74E3-4B8D-8ADA-42815A05F02B}']
     function RunStep(const FramePos : single):boolean;
-    function GetTime: integer;
-    procedure SetTime(const Value: integer);
+    function GetRunTime: integer;
+    procedure SetRunTime(const Value: integer);
   end;
 
   TCustomAnimation = class(TRefCountedZeroObject, ICustomAnimation)
   private
     fTime        : integer;
-    function GetTime: integer;
-    procedure SetTime(const Value: integer);
+    function GetRunTime: integer;
+    procedure SetRunTime(const Value: integer);
   protected
     function RunStep(const FramePos : single):boolean; virtual; abstract;
+    property RunTime : integer  read GetRunTime write SetRunTime; //milliseconds;
   public
-    property Time : integer  read GetTime write SetTime; //milliseconds;
   end;
 
   TAnimateAction = class
@@ -44,7 +46,7 @@ type
   public
     ID         : TUniqueID;
     StartTime  : TDateTime;
-    ActiveTime : integer; //milliseconds
+    RunTime    : integer; //milliseconds
     IsActive   : boolean;
     IsExpired  : boolean;
     Animation  : ICustomAnimation;
@@ -77,13 +79,20 @@ type
     FStartValue   : T;
     FEndValue     : T;
     FCurrentValue : T;
+    procedure SetEndValue(const Value: T);
+    procedure SetStartValue(const Value: T);
   protected type
-    TApplyAnimationMethod = reference to procedure(AniObj : TCustomAnimation; CurrentValue:T);
+    TApplyAnimationMethod = reference to procedure(CurrentValue:T);
   protected
     FApplyMethod : TApplyAnimationMethod;
-  public
-    constructor Create(const StartValue, EndValue : T; Time : integer; ApplyMethod : TApplyAnimationMethod);
     property CurrentValue : T read fCurrentValue;
+  public
+    constructor Create;
+
+    property RunTime     : integer write SetRunTime;  //Animation running time in milliseconds.
+    property StartValue  : T       write SetStartValue;
+    property EndValue    : T       write SetEndValue;
+    property ApplyMethod : TApplyAnimationMethod write FApplyMethod;
   end;
 
   TSingleAnimation = class(TGenericAnimation<Single>)
@@ -131,7 +140,7 @@ var
   ms : single;
 begin
   ms := MillisecondsBetween(Now, Action.StartTime);
-  result := ms / Action.ActiveTime;
+  result := ms / Action.RunTime;
 end;
 
 
@@ -199,11 +208,13 @@ procedure TAnimateController.Animate(const ID : TUniqueID; Animation: ICustomAni
 var
   Action : TAnimateAction;
 begin
-  Action := TAnimateAction.Create;
+  assert(Animation.GetRunTime > 0);
+
+  Action            := TAnimateAction.Create;
   Action.IsActive   := false;
   Action.IsExpired  := false;
   Action.ID         := ID;
-  Action.ActiveTime := Animation.GetTime;
+  Action.RunTime    := Animation.GetRunTime;
   Action.Animation  := Animation;
 
   AddAction(Action);
@@ -264,13 +275,20 @@ begin
 end;
 
 { TGenericAnimation<T> }
-constructor TGenericAnimation<T>.Create(const StartValue, EndValue: T; Time: integer; ApplyMethod: TApplyAnimationMethod);
+constructor TGenericAnimation<T>.Create;
 begin
-  self.fTime         := Time; //Animation running time in milliseconds.
-  self.FApplyMethod  := ApplyMethod;
-  self.FCurrentValue := StartValue;
-  self.FStartValue   := StartValue;
-  self.FEndValue     := EndValue;
+  self.fTime         := 0; //Animation running time in milliseconds.
+  self.FApplyMethod  := nil;
+end;
+
+procedure TGenericAnimation<T>.SetEndValue(const Value: T);
+begin
+  FEndValue := Value;
+end;
+
+procedure TGenericAnimation<T>.SetStartValue(const Value: T);
+begin
+  FStartValue := Value;
 end;
 
 { TSingleAnimation }
@@ -282,7 +300,7 @@ begin
 
   FCurrentValue := FStartValue * (1 - FramePos) + FEndValue * FramePos;
 
-  FApplyMethod(self, FCurrentValue);
+  FApplyMethod(FCurrentValue);
 end;
 
 { TByteAnimation }
@@ -294,7 +312,7 @@ begin
 
   FCurrentValue := round(FStartValue * (1 - FramePos) + FEndValue * FramePos);
 
-  FApplyMethod(self, FCurrentValue);
+  FApplyMethod(FCurrentValue);
 end;
 
 
@@ -302,12 +320,12 @@ end;
 
 { TCustomAnimation }
 
-function TCustomAnimation.GetTime: integer;
+function TCustomAnimation.GetRunTime: integer;
 begin
   result := FTime;
 end;
 
-procedure TCustomAnimation.SetTime(const Value: integer);
+procedure TCustomAnimation.SetRunTime(const Value: integer);
 begin
   FTime := Value;
 end;

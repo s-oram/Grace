@@ -495,6 +495,8 @@ begin
 end;
 
 procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  aniObj : TByteAnimation;
 begin
   if MsgID = TLucidMsgID.Msg_XRegionsDuplicated then
   begin
@@ -502,10 +504,16 @@ begin
     MessageOverlay.Opacity := 255;
     MessageOverlay.Visible := true;
 
-    GlobalAnimator.Animate(MessageOverlayAnimateID, TByteAnimation.Create(255,0,1400, procedure(AniObj : TCustomAnimation; CurrentValue:Byte)
+    AniObj := TByteAnimation.Create;
+    AniObj.StartValue := 255;
+    AniObj.EndValue   := 0;
+    AniObj.RunTime       := 1400;
+    AniObj.ApplyMethod := procedure(CurrentValue:Byte)
     begin
       MessageOverlay.Opacity := CurrentValue;
-    end));
+    end;
+
+    GlobalAnimator.Animate(MessageOverlayAnimateID, AniObj);
 
   end;
 end;
