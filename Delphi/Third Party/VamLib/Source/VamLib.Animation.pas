@@ -110,6 +110,12 @@ type
   public
   end;
 
+  TIntegerAnimation = class(TGenericAnimation<Integer>)
+  protected
+    procedure RunStep(const FramePos : single); override;
+  public
+  end;
+
 
   //==============================================================================
   //               Global Stuff
@@ -126,7 +132,7 @@ uses
   DateUtils;
 
 var
-  FGlobalAnimator : TAnimateController;
+  FGlobalAnimator : TAnimateController; //singleton object reference.
 
 
 function GlobalAnimator:TAnimateController;
@@ -161,15 +167,14 @@ end;
 
 destructor TAnimateController.Destroy;
 begin
-  //TODO:
-  // Check for any animations. all animations should be cleared before exiting.
+  if FGlobalAnimator = self
+    then FGlobalAnimator := nil;
 
   FrameTimer.Enabled := false;
   FrameTimer.Free;
 
   Clear;
   ActionList.Free;
-
 
   inherited;
 end;
@@ -308,6 +313,19 @@ begin
   inherited;
 end;
 
+
+{ TCustomAnimation }
+
+function TCustomAnimation.GetRunTime: integer;
+begin
+  result := FTime;
+end;
+
+procedure TCustomAnimation.SetRunTime(const Value: integer);
+begin
+  FTime := Value;
+end;
+
 { TGenericAnimation<T> }
 constructor TGenericAnimation<T>.Create;
 begin
@@ -349,19 +367,17 @@ begin
   FApplyMethod(FCurrentValue);
 end;
 
+{ TIntegerAnimation }
 
-
-
-{ TCustomAnimation }
-
-function TCustomAnimation.GetRunTime: integer;
+procedure TIntegerAnimation.RunStep(const FramePos: single);
 begin
-  result := FTime;
-end;
+  assert(FramePos >= 0);
+  assert(FramePos <= 1);
+  assert(Assigned(FApplyMethod));
 
-procedure TCustomAnimation.SetRunTime(const Value: integer);
-begin
-  FTime := Value;
+  FCurrentValue := round(FStartValue * (1 - FramePos) + FEndValue * FramePos);
+
+  FApplyMethod(FCurrentValue);
 end;
 
 initialization
