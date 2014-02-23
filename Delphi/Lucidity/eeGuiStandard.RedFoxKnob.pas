@@ -3,6 +3,7 @@ unit eeGuiStandard.RedFoxKnob;
 interface
 
 uses
+  VamLib.Collections.Lists,
   Menus, eePlugin,
   VamLib.Collections.RecordArray,
   VamGuiControlInterfaces,
@@ -18,10 +19,16 @@ type
     LinkedParameter : TVstParameterEx;
   end;
 
+  TControlInfoList = class(TSimpleRecordList<TControlInfo>)
+  public
+    function FindByControl(c : TControl):PControlInfo;
+    function FindIndex(c: TControl): integer;
+  end;
+
   TRedFoxKnobHandler = class
   private
     fGlobals: TGlobals;
-    ControlLinks            : TRecordArray<TControlInfo>;
+    ControlLinks            : TControlInfoList;
     ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
     fPlugin: TeePlugin;
@@ -73,6 +80,36 @@ uses
   eeMidiMap,
   TypInfo;
 
+{ TControlInfoList }
+
+function TControlInfoList.FindByControl(c: TControl): PControlInfo;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to self.Count-1 do
+  begin
+    if Raw[c1].Control = c
+      then exit(@Raw[c1]);
+  end;
+
+  //If we've made it this far, we've not found anything.
+  result := nil;
+end;
+
+function TControlInfoList.FindIndex(c: TControl): integer;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to self.Count-1 do
+  begin
+    if Raw[c1].Control = c
+      then exit(c1);
+  end;
+
+  //If we've made it this far, we've not found anything.
+  result := -1;
+end;
+
 { TRedFoxKnobHandler }
 
 constructor TRedFoxKnobHandler.Create(aPlugin:TeePlugin;  aGlobals: TGlobals);
@@ -81,17 +118,20 @@ begin
   fGlobals := aGlobals;
 
   ControlContextMenu := TPopupMenu.Create(nil);
+
+  ControlLinks := TControlInfoList.Create;
 end;
 
 destructor TRedFoxKnobHandler.Destroy;
 begin
   ControlContextMenu.Free;
+  ControlLinks.Free;
   inherited;
 end;
 
 procedure TRedFoxKnobHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter);
 var
-  ci : TControlInfo;
+  ci : PControlInfo;
   ControlLinkIndex : integer;
   ParIndex : integer;
 begin
@@ -99,23 +139,24 @@ begin
   assert(assigned(aLinkedParameter));
   assert(Supports(c, IKnobControl));
 
-  ci.Control     := c;
-  if Supports(c, IKnobControl, ci.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
-  ci.LinkedParameter := aLinkedParameter as TVstParameterEx;
-  ControlLinkIndex := ControlLinks.Append(ci);
+  ci := ControlLinks.FindByControl(c);
+  if not assigned(ci) then ci := ControlLinks.New;
 
+  ci^.Control     := c;
+  if Supports(c, IKnobControl, ci^.KnobControl) = false then raise Exception.Create('Control doesn''t support IKnobControlInterface.');
+  ci^.LinkedParameter := aLinkedParameter as TVstParameterEx;
   ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
-  ci.KnobControl.SetParameterIndex(ParIndex);
+  ci^.KnobControl.SetParameterIndex(ParIndex);
 
-  ci.KnobControl.SetOnMouseEnter(self.Handle_MouseEnter);
-  ci.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
-  ci.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
-  ci.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
-  ci.KnobControl.SetOnKnobPosChanged(self.Handle_KnobPosChanged);
-  ci.KnobControl.SetOnModAmountChanged(self.Handle_ModAmountChanged);
-
+  ci^.KnobControl.SetOnMouseEnter(self.Handle_MouseEnter);
+  ci^.KnobControl.SetOnMouseLeave(self.Handle_MouseLeave);
+  ci^.KnobControl.SetOnMouseDown(self.Handle_MouseDown);
+  ci^.KnobControl.SetOnMouseUp(self.Handle_MouseUp);
+  ci^.KnobControl.SetOnKnobPosChanged(self.Handle_KnobPosChanged);
+  ci^.KnobControl.SetOnModAmountChanged(self.Handle_ModAmountChanged);
 
   //== finally ==
+  ControlLinkIndex := ControlLinks.FindIndex(c);
   UpdateControl(ControlLinkIndex);
 end;
 
@@ -482,6 +523,8 @@ begin
     ShowMessage('Error: ' + ErrorMessage);
   end;
 end;
+
+
 
 
 

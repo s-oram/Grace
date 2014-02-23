@@ -26,6 +26,7 @@ type
   private
   public
     function FindByControl(c : TControl):PControlInfo;
+    function FindIndex(c : TControl):integer;
   end;
 
   TRedFoxMenuHandler = class
@@ -107,7 +108,6 @@ begin
   ci^.EnumHelper       := EnumHelper;
   ci^.PopupCallBack    := PopupCallback;
   ci^.ParIndex := Globals.VstParameters.FindParameterIndex(aLinkedParameter);
-  ControlLinks.Add(ci^);
 
   ci^.MenuControl.SetOnMouseEnter(self.Handle_MouseEnter);
   ci^.MenuControl.SetOnMouseLeave(self.Handle_MouseLeave);
@@ -283,6 +283,20 @@ begin
 
   //If we've made it this far, we've not found anything.
   result := nil;
+end;
+
+function TControlInfoList.FindIndex(c: TControl): integer;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to self.Count-1 do
+  begin
+    if Raw[c1].Control = c
+      then exit(c1);
+  end;
+
+  //If we've made it this far, we've not found anything.
+  result := -1;
 end;
 
 end.
