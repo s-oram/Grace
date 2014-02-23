@@ -22,6 +22,7 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
+    OnClick = Button1Click
   end
   object Memo1: TMemo
     Left = 368
@@ -81,8 +82,8 @@ object Form1: TForm1
       Visible = True
     end
     object VamShortMessageOverlay1: TVamShortMessageOverlay
-      Left = 216
-      Top = 176
+      Left = 170
+      Top = 168
       Width = 137
       Height = 49
       Opacity = 255
@@ -113,16 +114,16 @@ object Form1: TForm1
     end
   end
   object Button2: TButton
-    Left = 170
-    Top = 371
+    Left = 8
+    Top = 411
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 3
   end
   object Button3: TButton
-    Left = 170
-    Top = 411
+    Left = 72
+    Top = 451
     Width = 75
     Height = 25
     Caption = 'Button1'
@@ -135,5 +136,14 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 5
+  end
+  object Button5: TButton
+    Left = 153
+    Top = 371
+    Width = 139
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 6
+    OnClick = Button5Click
   end
 end

@@ -28,10 +28,13 @@ type
     Button3: TButton;
     Button4: TButton;
     VamShortMessageOverlay1: TVamShortMessageOverlay;
+    Button5: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
-    { Private declarations }
+    ID : TUniqueID;
     procedure UpdateLabel;
   public
     procedure UpdateMemo;
@@ -59,7 +62,7 @@ var
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ///
+  ID.Init;
 
 
 end;
@@ -68,6 +71,31 @@ procedure TForm1.FormDestroy(Sender: TObject);
 begin
   ////
 end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  AniObj : TSingleAnimation;
+begin
+  AniObj := TSingleAnimation.Create;
+  AniObj.StartValue := 0;
+  AniObj.EndValue   := 400;
+  AniObj.RunTime    := 5000;
+  AniObj.ApplyMethod := procedure(CurrentValue:single)
+  begin
+    Button2.Left := round(CurrentValue);
+  end;
+
+  GlobalAnimator.Animate(ID, AniObj);
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+  Button2.Free;
+end;
+
+
+
+
 
 
 procedure TForm1.UpdateLabel;
