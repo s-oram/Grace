@@ -81,14 +81,44 @@ type
     property CurrentValue : single read fCurrentValue;
   end;
 
+  TByteAnimation = class(TCustomAnimation)
+  private
+    FStartValue   : byte;
+    FEndValue     : byte;
+    FCurrentValue : byte;
+  protected
+    function RunStep(const FramePos : single):boolean; override;
+  public
+    constructor Create(const ID : TUniqueID; const StartValue, EndValue : byte; Time : integer; ApplyMethod : TApplyAnimationMethod);
+    property CurrentValue : byte read fCurrentValue;
+  end;
 
 
+  //==============================================================================
+  //               Global Stuff
+  //==============================================================================
+
+function GlobalAnimator:TAnimateController;
 
 implementation
 
 uses
   SysUtils,
   DateUtils;
+
+var
+  FGlobalAnimator : TAnimateController;
+
+
+function GlobalAnimator:TAnimateController;
+begin
+  if not assigned(FGlobalAnimator) then
+  begin
+    FGlobalAnimator := TAnimateController.Create;
+  end;
+
+  result := FGlobalAnimator;
+end;
 
 function CalcFramePos(Action : TAnimateAction):single;
 var
@@ -106,14 +136,22 @@ begin
   ActionList := TAnimateActionList.Create;
   FrameTimer := TTimer.Create(nil);
   FrameTimer.Enabled  := false;
-  FrameTimer.Interval := 3;
+  FrameTimer.Interval := 1;
   FrameTimer.OnTimer  := Handle_FrameTimerEvent;
 end;
 
 destructor TAnimateController.Destroy;
 begin
+  //TODO:
+  // Check for any animations. all animations should be cleared before exiting.
+
+  FrameTimer.Enabled := false;
+  FrameTimer.Free;
+
   Clear;
   ActionList.Free;
+
+
   inherited;
 end;
 
@@ -210,6 +248,16 @@ end;
 
 
 
+
+{ TAnimateAction }
+
+destructor TAnimateAction.Destroy;
+begin
+  if assigned(Animation) then Animation.Free;
+
+  inherited;
+end;
+
 { TSingleAnimation }
 
 constructor TSingleAnimation.Create(const ID: TUniqueID; const StartValue, EndValue: single; Time: integer; ApplyMethod: TApplyAnimationMethod);
@@ -233,13 +281,33 @@ begin
   FApplyMethod(self);
 end;
 
-{ TAnimateAction }
+{ TByteAnimation }
 
-destructor TAnimateAction.Destroy;
+constructor TByteAnimation.Create(const ID: TUniqueID; const StartValue, EndValue: byte; Time: integer; ApplyMethod: TApplyAnimationMethod);
 begin
-  if assigned(Animation) then Animation.Free;
-
-  inherited;
+  self.fID           := ID;
+  self.fTime         := Time; //Animation running time in milliseconds.
+  self.FApplyMethod  := ApplyMethod;
+  self.FCurrentValue := StartValue;
+  self.FStartValue   := StartValue;
+  self.FEndValue     := EndValue;
 end;
+
+function TByteAnimation.RunStep(const FramePos: single): boolean;
+begin
+  assert(FramePos >= 0);
+  assert(FramePos <= 1);
+  assert(Assigned(FApplyMethod));
+
+  FCurrentValue := round(FStartValue * (1 - FramePos) + FEndValue * FramePos);
+
+  FApplyMethod(self);
+end;
+
+initialization
+
+finalization
+  if assigned(FGlobalAnimator)
+    then FGlobalAnimator.Free;
 
 end.

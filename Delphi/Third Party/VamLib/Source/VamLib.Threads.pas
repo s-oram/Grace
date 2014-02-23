@@ -18,9 +18,13 @@ type
 
 procedure RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0; OnFinished : TProc = nil);
 
+
+procedure DelayedGuiAction(const Delay : integer; Action : TProc);
+
 implementation
 
 uses
+  ExtCtrls,
   OtlTask, OtlTaskControl;
 
 procedure RunTask(aTask : TProc);
@@ -127,6 +131,29 @@ begin
     TaskControl.OnTerminated(OnFinishCB);
   end;
 
+  TaskControl.Unobserved.Run;
+end;
+
+
+
+procedure DelayedGuiAction(const Delay : integer; Action : TProc);
+var
+  TaskControl : TOmniTaskControl;
+  Delgate     : TOmniTaskDelegate;
+  OnFinishCB  : TOmniOnTerminatedFunctionSimple;
+begin
+  Delgate := procedure(const task: IOmniTask)
+  begin
+    Sleep(Delay);
+  end;
+
+  OnFinishCB := procedure
+  begin
+    Action;
+  end;
+
+  TaskControl := TOmniTaskControl.Create(Delgate, '');
+  TaskControl.OnTerminated(OnFinishCB);
   TaskControl.Unobserved.Run;
 end;
 

@@ -25,6 +25,7 @@ object SampleMapFrame: TSampleMapFrame
       Margins.Top = 2
       Margins.Right = 2
       Margins.Bottom = 2
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -44,6 +45,7 @@ object SampleMapFrame: TSampleMapFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Color_Border = '$FF000000'
         Color_Background = '$FF888888'
@@ -64,6 +66,7 @@ object SampleMapFrame: TSampleMapFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           Color = '$FF000000'
           Transparent = False
@@ -78,6 +81,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 241
             Width = 626
             Height = 41
+            Opacity = 255
             HitTest = True
             Align = alBottom
             Visible = True
@@ -92,6 +96,7 @@ object SampleMapFrame: TSampleMapFrame
             Width = 626
             Height = 239
             Margins.Top = 0
+            Opacity = 255
             HitTest = True
             OnOleDragEnter = SampleMapOleDragEnter
             Color_Background = '$FF242B39'
@@ -137,6 +142,7 @@ object SampleMapFrame: TSampleMapFrame
         Margins.Top = 4
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Color = '$FF000000'
         CornerRadius1 = 3.000000000000000000
@@ -155,6 +161,7 @@ object SampleMapFrame: TSampleMapFrame
           Top = 31
           Width = 618
           Height = 30
+          Opacity = 255
           HitTest = True
           Visible = True
           object SampleNameLabel: TVamLabel
@@ -166,6 +173,7 @@ object SampleMapFrame: TSampleMapFrame
             Margins.Top = 0
             Margins.Right = 8
             Margins.Bottom = 0
+            Opacity = 255
             Text = 'Awesome Sample.wav'
             HitTest = True
             AutoSize = False
@@ -185,6 +193,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 3
             Width = 61
             Height = 24
+            Opacity = 255
             Text = 'Root'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
@@ -209,6 +218,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 3
             Width = 61
             Height = 24
+            Opacity = 255
             Text = 'Low Vel'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
@@ -233,6 +243,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 3
             Width = 61
             Height = 24
+            Opacity = 255
             Text = 'High Vel'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
@@ -257,6 +268,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 3
             Width = 61
             Height = 24
+            Opacity = 255
             Text = 'Low Note'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET
@@ -281,6 +293,7 @@ object SampleMapFrame: TSampleMapFrame
             Top = 3
             Width = 61
             Height = 24
+            Opacity = 255
             Text = 'High Note'
             HitTest = True
             Font.Charset = DEFAULT_CHARSET

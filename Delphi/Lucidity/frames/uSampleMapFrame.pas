@@ -3,7 +3,8 @@ unit uSampleMapFrame;
 interface
 
 uses
-  VamLib.ZeroObject,
+  VamLib.UniqueID,
+  VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.SampleMapContextMenu, eeGuiStandard,
   eePlugin, uLucidityKeyGroupInterface, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -71,6 +72,9 @@ type
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
+    MessageOverlay         : TVamShortMessageOverlay;
+    MessageOverlayAnimateID : TUniqueID;
+
     KeyStateTrackerOverlay : TKeyStateTrackerOverlay;
     SampleMapMenu : TSampleMapContextMenu;
     procedure ScrollPosChanged;
@@ -101,6 +105,8 @@ type
 implementation
 
 uses
+  VamLib.Animation,
+  VamLib.Threads,
   VamLib.Utils,
   SampleMapFrame.Extra,
   Lucidity.Types,
@@ -114,6 +120,8 @@ uses
 constructor TSampleMapFrame.Create(AOwner: TComponent);
 begin
   inherited;
+  MessageOverlayAnimateID.Init;
+
   SampleMapMenu := TSampleMapContextMenu.Create;
 
   ScrollPosChanged;
@@ -124,6 +132,25 @@ begin
   KeyStateTrackerOverlay.Align := alClient;
   KeyStateTrackerOverlay.Visible := true;
   KeyStateTrackerOverlay.HitTest := false;
+
+  MessageOverlay := TVamShortMessageOverlay.Create(aOwner);
+  MessageOverlay.Visible := false;
+  MessageOverlay.Align := alClient;
+  MessageOverlay.Parent := SampleMap;
+  MessageOverlay.HitTest := false;
+  MessageOverlay.AutoSizeBackground := true;
+  MessageOverlay.TextPadding.SetBounds(10,6,10,6);
+  MessageOverlay.BorderWidth := 3;
+  MessageOverlay.CornerRadius1 := 3;
+  MessageOverlay.CornerRadius2 := 3;
+  MessageOverlay.CornerRadius3 := 3;
+  MessageOverlay.CornerRadius4 := 3;
+  MessageOverlay.Color     := kColor_LcdDark6;
+  MessageOverlay.ColorText := kColor_LcdDark1;
+  MessageOverlay.ColorBorder := kColor_LcdDark1;
+  MessageOverlay.ShowBorder := true;
+
+
 end;
 
 destructor TSampleMapFrame.Destroy;
@@ -467,10 +494,20 @@ begin
   SampleMapKeys.Invalidate;
 end;
 
-procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
+procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
+  if MsgID = TLucidMsgID.Msg_XRegionsDuplicated then
+  begin
+    MessageOverlay.Text := string(Data^);
+    MessageOverlay.Opacity := 255;
+    MessageOverlay.Visible := true;
 
+    GlobalAnimator.Animate(TByteAnimation.Create(MessageOverlayAnimateID, 255,0,700, procedure(AniObj : TCustomAnimation)
+    begin
+      MessageOverlay.Opacity := (AniObj as TByteAnimation).CurrentValue;
+    end));
+
+  end;
 end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);
