@@ -502,9 +502,9 @@ begin
     MessageOverlay.Opacity := 255;
     MessageOverlay.Visible := true;
 
-    GlobalAnimator.Animate(TByteAnimation.Create(MessageOverlayAnimateID, 255,0,700, procedure(AniObj : TCustomAnimation)
+    GlobalAnimator.Animate(MessageOverlayAnimateID, TByteAnimation.Create(255,0,1400, procedure(AniObj : TCustomAnimation; CurrentValue:Byte)
     begin
-      MessageOverlay.Opacity := (AniObj as TByteAnimation).CurrentValue;
+      MessageOverlay.Opacity := CurrentValue;
     end));
 
   end;

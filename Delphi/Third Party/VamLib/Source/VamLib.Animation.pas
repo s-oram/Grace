@@ -19,18 +19,24 @@ type
   TAnimateActionList   = class;
   TAnimateController   = class;
 
-  TApplyAnimationMethod = reference to procedure(AniObj : TCustomAnimation);
 
-  TCustomAnimation = class
+
+  ICustomAnimation = interface
+    ['{57E7F1DA-74E3-4B8D-8ADA-42815A05F02B}']
+    function RunStep(const FramePos : single):boolean;
+    function GetTime: integer;
+    procedure SetTime(const Value: integer);
+  end;
+
+  TCustomAnimation = class(TRefCountedZeroObject, ICustomAnimation)
   private
-    fID          : TUniqueID;
     fTime        : integer;
-    FApplyMethod : TApplyAnimationMethod;
+    function GetTime: integer;
+    procedure SetTime(const Value: integer);
   protected
     function RunStep(const FramePos : single):boolean; virtual; abstract;
   public
-    property ID   : TUniqueID read fID   write fID;
-    property Time : integer  read fTime write fTime; //milliseconds;
+    property Time : integer  read GetTime write SetTime; //milliseconds;
   end;
 
   TAnimateAction = class
@@ -41,7 +47,7 @@ type
     ActiveTime : integer; //milliseconds
     IsActive   : boolean;
     IsExpired  : boolean;
-    Animation  : TCustomAnimation;
+    Animation  : ICustomAnimation;
 
     destructor Destroy; override;
   end;
@@ -55,42 +61,42 @@ type
     procedure Handle_FrameTimerEvent(Sender : TObject);
   protected
     procedure MakeActive(Action : TAnimateAction);
-
     procedure AddAction(Action : TAnimateAction);
   public
     constructor Create;
     destructor Destroy; override;
-
-    procedure Animate(Animation : TCustomAnimation);
-
+    procedure Animate(const ID : TUniqueID; Animation : ICustomAnimation);
     procedure Clear;
   end;
 
   //==============================================================================
   //               Animation Types
   //==============================================================================
-  TSingleAnimation = class(TCustomAnimation)
+  TGenericAnimation<T> = class(TCustomAnimation)
   private
-    FStartValue   : single;
-    FEndValue     : single;
-    FCurrentValue : single;
+    FStartValue   : T;
+    FEndValue     : T;
+    FCurrentValue : T;
+  protected type
+    TApplyAnimationMethod = reference to procedure(AniObj : TCustomAnimation; CurrentValue:T);
   protected
-    function RunStep(const FramePos : single):boolean; override;
+    FApplyMethod : TApplyAnimationMethod;
   public
-    constructor Create(const ID : TUniqueID; const StartValue, EndValue : single; Time : integer; ApplyMethod : TApplyAnimationMethod);
-    property CurrentValue : single read fCurrentValue;
+    constructor Create(const StartValue, EndValue : T; Time : integer; ApplyMethod : TApplyAnimationMethod);
+    property CurrentValue : T read fCurrentValue;
   end;
 
-  TByteAnimation = class(TCustomAnimation)
-  private
-    FStartValue   : byte;
-    FEndValue     : byte;
-    FCurrentValue : byte;
+  TSingleAnimation = class(TGenericAnimation<Single>)
   protected
     function RunStep(const FramePos : single):boolean; override;
   public
-    constructor Create(const ID : TUniqueID; const StartValue, EndValue : byte; Time : integer; ApplyMethod : TApplyAnimationMethod);
-    property CurrentValue : byte read fCurrentValue;
+  end;
+
+  TByteAnimation = class(TGenericAnimation<Byte>)
+  private
+  protected
+    function RunStep(const FramePos : single):boolean; override;
+  public
   end;
 
 
@@ -189,15 +195,15 @@ begin
   ActionList.Add(Action.ID, Action);
 end;
 
-procedure TAnimateController.Animate(Animation: TCustomAnimation);
+procedure TAnimateController.Animate(const ID : TUniqueID; Animation: ICustomAnimation);
 var
   Action : TAnimateAction;
 begin
   Action := TAnimateAction.Create;
   Action.IsActive   := false;
   Action.IsExpired  := false;
-  Action.ID         := Animation.ID;
-  Action.ActiveTime := Animation.Time;
+  Action.ID         := ID;
+  Action.ActiveTime := Animation.GetTime;
   Action.Animation  := Animation;
 
   AddAction(Action);
@@ -253,16 +259,13 @@ end;
 
 destructor TAnimateAction.Destroy;
 begin
-  if assigned(Animation) then Animation.Free;
-
+  Animation := nil;
   inherited;
 end;
 
-{ TSingleAnimation }
-
-constructor TSingleAnimation.Create(const ID: TUniqueID; const StartValue, EndValue: single; Time: integer; ApplyMethod: TApplyAnimationMethod);
+{ TGenericAnimation<T> }
+constructor TGenericAnimation<T>.Create(const StartValue, EndValue: T; Time: integer; ApplyMethod: TApplyAnimationMethod);
 begin
-  self.fID           := ID;
   self.fTime         := Time; //Animation running time in milliseconds.
   self.FApplyMethod  := ApplyMethod;
   self.FCurrentValue := StartValue;
@@ -270,6 +273,7 @@ begin
   self.FEndValue     := EndValue;
 end;
 
+{ TSingleAnimation }
 function TSingleAnimation.RunStep(const FramePos: single): boolean;
 begin
   assert(FramePos >= 0);
@@ -278,21 +282,10 @@ begin
 
   FCurrentValue := FStartValue * (1 - FramePos) + FEndValue * FramePos;
 
-  FApplyMethod(self);
+  FApplyMethod(self, FCurrentValue);
 end;
 
 { TByteAnimation }
-
-constructor TByteAnimation.Create(const ID: TUniqueID; const StartValue, EndValue: byte; Time: integer; ApplyMethod: TApplyAnimationMethod);
-begin
-  self.fID           := ID;
-  self.fTime         := Time; //Animation running time in milliseconds.
-  self.FApplyMethod  := ApplyMethod;
-  self.FCurrentValue := StartValue;
-  self.FStartValue   := StartValue;
-  self.FEndValue     := EndValue;
-end;
-
 function TByteAnimation.RunStep(const FramePos: single): boolean;
 begin
   assert(FramePos >= 0);
@@ -301,7 +294,22 @@ begin
 
   FCurrentValue := round(FStartValue * (1 - FramePos) + FEndValue * FramePos);
 
-  FApplyMethod(self);
+  FApplyMethod(self, FCurrentValue);
+end;
+
+
+
+
+{ TCustomAnimation }
+
+function TCustomAnimation.GetTime: integer;
+begin
+  result := FTime;
+end;
+
+procedure TCustomAnimation.SetTime(const Value: integer);
+begin
+  FTime := Value;
 end;
 
 initialization
