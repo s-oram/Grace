@@ -17,7 +17,7 @@ type
   TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
-    fPos: single;
+    ExternalPos: single;
     fImageStrip: TBitmap;
     fImageStripGlyphCount: integer;
     fVisibleSteps: integer;
@@ -34,10 +34,12 @@ type
     fModLineOffColor : TRedFoxColor;
     fKnobMode: TKnobMode;
     fParameterIndex: integer;
-    fModAmount: single;
+    ExternalModAmount: single;
     fOnModAmountChanged: TNotifyEvent;
     fModLineWidth: single;
     fIsBipolarKnob: boolean;
+    fInternalPos: single;
+    fInternalModAmount: single;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -101,7 +103,9 @@ type
     procedure DrawKnob_Indicator;
 
 
-
+    //InternalPos is the knob pos. It is only available internally.
+    property InternalPos       : single read fInternalPos       write fInternalPos;
+    property InternalModAmount : single read fInternalModAmount write fInternalModAmount;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -126,9 +130,8 @@ type
     property IsKnobEnabled : boolean   read fIsKnobEnabled  write SetIsKnobEnabled;
     property VisibleSteps  : integer   read fVisibleSteps   write SetVisibleSteps;
 
-    property Pos : single read fPos write SetPos;
-
-    property ModAmount : single read fModAmount write SetModAmount;
+    property Pos       : single read ExternalPos       write SetPos;
+    property ModAmount : single read ExternalModAmount write SetModAmount;
 
     property MinModDepth : single read fMinModDepth write SetMinModDepth;
     property MaxModDepth : single read fMaxModDepth write SetMaxModDepth;
@@ -215,6 +218,9 @@ begin
   fMaxModDepth := 0;
   fModLineColor    := GetAggColor(clRed);
   fModLineOffColor := GetAggColor(clSilver);
+
+
+  fInternalPos := 0;
 end;
 
 destructor TVamKnob.Destroy;
@@ -239,13 +245,15 @@ begin
   ReferencePoint := Point(X, Y);
 
   if CurrentEditMode = TKnobMode.PositionEdit
-    then ReferenceValue   := fPos
-    else ReferenceValue   := fModAmount;
+    then ReferenceValue   := InternalPos
+    else ReferenceValue   := InternalModAmount;
 end;
 
 
 
 procedure TVamKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  CurrentValue : single;
 begin
   inherited;
 
@@ -255,13 +263,22 @@ begin
       then CurrentEditMode := TKnobMode.ModEdit
       else CurrentEditMode := TKnobMode.PositionEdit;
 
-
     IsGrabbed := true;
     UpdateReferencePoints(X, Y);
 
     if (ssShift in Shift)
       then IsFineAdjustment := true
       else IsFineAdjustment := false;
+
+    case CurrentEditMode of
+      TKnobMode.PositionEdit: CurrentValue := self.ExternalPos;
+      TKnobMode.ModEdit:      CurrentValue := self.ExternalModAmount;
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+
+
   end;
 
 end;
@@ -313,14 +330,14 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
-      if fPos <> NewValue then
+      InternalPos := NewValue;
+
+      if InternalPos <> ExternalPos then
       begin
-        fPos := NewValue;
+        ExternalPos := InternalPos;
         Invalidate;
         KnobPosChanged;
       end;
-
-
     end else
     begin
       // NOTE: Reset the reference point whenever the knob position limit is exceeded.
@@ -328,21 +345,23 @@ begin
       // position limits.
 
       // NOTE: Clamp the mod amount values to the end of the knob ranges.
-      if fPos + NewValue > 1 then
+      if InternalPos + NewValue > 1 then
       begin
-        NewValue := 1 - fPos;
+        NewValue := 1 - InternalPos;
         UpdateReferencePoints(X, Y);
       end;
 
-      if fPos + NewValue < 0 then
+      if ExternalPos + NewValue < 0 then
       begin
-        NewValue := 0 - fPos;
+        NewValue := 0 - InternalPos;
         UpdateReferencePoints(X, Y);
       end;
 
-      if fModAmount <> NewValue then
+      InternalModAmount := NewValue;
+
+      if InternalModAmount <> ExternalModAmount then
       begin
-        fModAmount := NewValue;
+        ExternalModAmount := InternalModAmount;
         Invalidate;
         ModAmountChanged;
       end;
@@ -358,20 +377,25 @@ begin
   begin
     IsGrabbed := false;
 
-    if fPos + fModAmount > 1 then
+    if InternalPos + InternalModAmount > 1
+      then InternalModAmount := 1 - InternalPos;
+
+    if InternalPos + InternalModAmount < 0
+      then InternalModAmount := 0 - InternalPos;
+
+    if InternalPos <> ExternalPos then
     begin
-      fModAmount := 1 - fPos;
+      ExternalPos := InternalPos;
+      Invalidate;
+      KnobPosChanged;
+    end;
+
+    if InternalModAmount <> ExternalModAmount then
+    begin
+      ExternalModAmount := InternalModAmount;
       Invalidate;
       ModAmountChanged;
     end;
-
-    if fPos + fModAmount < 0 then
-    begin
-      fModAmount := 0 - fPos;
-      Invalidate;
-      ModAmountChanged;
-    end;
-
   end;
 
 end;
@@ -467,12 +491,15 @@ end;
 
 procedure TVamKnob.SetModAmount(const Value: single);
 begin
+  if IsGrabbed then exit;
+
   assert(Value >= -1);
   assert(Value <= 1);
 
-  if (Value <> fModAmount) then
+  if (Value <> ExternalModAmount) or (Value <> InternalModAmount) then
   begin
-    fModAmount := Value;
+    ExternalModAmount := Value;
+    InternalModAmount := Value;
     if KnobMode = TKnobMode.ModEdit
       then Invalidate;
   end;
@@ -505,12 +532,12 @@ end;
 
 function TVamKnob.GetKnobValue: single;
 begin
-  result := Pos;
+  result := ExternalPos;
 end;
 
 function TVamKnob.GetModAmountValue: single;
 begin
-  result := fModAmount;
+  result := ExternalModAmount;
 end;
 
 function TVamKnob.GetModLineColor: TRedFoxColorString;
@@ -540,9 +567,10 @@ begin
   if Value < 0 then Value := 0
   else if Value > 1 then Value := 1;
 
-  if Value <> fPos then
+  if (Value <> ExternalPos) or (Value <> InternalPos) then
   begin
-    fPos := Value;
+    ExternalPos := Value;
+    InternalPos := Value;
     Invalidate;
   end;
 end;
@@ -690,8 +718,8 @@ begin
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
   BackBuffer.BufferInterface.LineColor := fModLineColor;
 
-  Angle1 := kMinAngle + kArcSpan * Clamp((Pos + MinModDepth), 0, 1);
-  Angle2 := kMinAngle + kArcSpan * Clamp((Pos + MaxModDepth), 0, 1);
+  Angle1 := kMinAngle + kArcSpan * Clamp((InternalPos + MinModDepth), 0, 1);
+  Angle2 := kMinAngle + kArcSpan * Clamp((InternalPos + MaxModDepth), 0, 1);
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
@@ -716,7 +744,7 @@ begin
     then Angle1 := kMinAngle + kArcSpan * 0.5
     else Angle1 := kMinAngle;
 
-  Angle2 := kMinAngle + kArcSpan * (Pos);
+  Angle2 := kMinAngle + kArcSpan * (InternalPos);
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
@@ -750,8 +778,8 @@ begin
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
   BackBuffer.BufferInterface.LineColor := fModLineColor;
 
-  Angle1 := kMinAngle + kArcSpan * Clamp((Pos), 0, 1);
-  Angle2 := kMinAngle + kArcSpan * Clamp((Pos + ModAmount), 0, 1);
+  Angle1 := kMinAngle + kArcSpan * Clamp((InternalPos), 0, 1);
+  Angle2 := kMinAngle + kArcSpan * Clamp((InternalPos + ModAmount), 0, 1);
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
@@ -784,7 +812,7 @@ var
 begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
-  Angle   := kMinAngle + kArcSpan * Pos;
+  Angle   := kMinAngle + kArcSpan * InternalPos;
   PolarToCartesian(MiddleX, MiddleY, Angle, IndicatorDist, IndicatorX, IndicatorY);
 
   BackBuffer.BufferInterface.NoLine;
@@ -804,8 +832,8 @@ begin
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
   if VisibleSteps > 0
-    then xPos := round(Pos * VisibleSteps) / VisibleSteps
-    else xPos := Pos;
+    then xPos := round(InternalPos * VisibleSteps) / VisibleSteps
+    else xPos := InternalPos;
 
   BitmapIndex := floor((ImageStripGlyphCount-1) * xPos);
 
@@ -836,8 +864,8 @@ var
   xPos : single;
 begin
   if VisibleSteps > 0
-    then xPos := round(Pos * VisibleSteps) / VisibleSteps
-    else xPos := Pos;
+    then xPos := round(InternalPos * VisibleSteps) / VisibleSteps
+    else xPos := InternalPos;
 
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
@@ -867,8 +895,8 @@ begin
   BackBuffer.BufferInterface.LineWidth := 4;
   BackBuffer.BufferInterface.LineColor := GetAggColor(clRed);   // <-- set color to red.
 
-  s1 := (fpos * 300) + 120;
-  s2 := s1 - (fpos * 300) ;
+  s1 := (InternalPos * 300) + 120;
+  s2 := s1 - (InternalPos * 300) ;
   s1 := s1 / 360 * 2 * pi;
   s2 := s2 / 360 * 2 * pi;
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY,Radius1, Radius1, s1, s2);
