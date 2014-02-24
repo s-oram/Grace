@@ -14,11 +14,6 @@ procedure RunTask(aTask, FinishedCallback : TProc); overload;
 
 procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
 
-type
-  TRepeatingTask = reference to function:integer;
-
-function RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0):IOmniTaskControl;
-
 procedure DelayedGuiAction(const Delay : integer; Action : TProc);
 
 implementation
@@ -91,37 +86,6 @@ begin
   end;
 
   TaskControl.Unobserved.Run;
-end;
-
-
-function RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0):IOmniTaskControl;
-var
-  TaskControl : TOmniTaskControl;
-  Delgate : TOmniTaskDelegate;
-  OnFinishCB : TOmniOnTerminatedFunctionSimple;
-  r : integer;
-begin
-  Delgate := procedure(const task: IOmniTask)
-  var
-    IsActive : boolean;
-    RunDelay : integer;
-  begin
-    IsActive := true;
-    RunDelay := Delay;
-    while (IsActive) and (Task.Terminated = false) do
-    begin
-      if RunDelay > 0
-        then Sleep(RunDelay);
-      r := aTask;
-      if r = -1
-        then IsActive := false
-        else RunDelay := r;
-    end;
-  end;
-
-  TaskControl := TOmniTaskControl.Create(Delgate, '');
-  TaskControl.Run;
-  result := TaskControl;
 end;
 
 

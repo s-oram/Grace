@@ -76,7 +76,7 @@ constructor TKnobSmoother.Create;
 begin
   ActionList  := TSmoothActionList.Create(0);
 
-  fSlewStepSize := 0.005;
+  fSlewStepSize := 0.05;
 
   IsProcessingActive := false;
 
@@ -90,7 +90,7 @@ begin
 
   MakeQuickExit := true;
   while IsProcessingActive
-    do sleep(10);
+    do sleep(1);
 
   ClearActionList;
   ActionList.Free;
@@ -177,6 +177,7 @@ procedure TKnobSmoother.FinaliseKnob(const Obj: TObject);
 var
   Action : TSmoothAction;
 begin
+  //TODO:
   {
   if ActionList.TryGetValue(Obj, Action) then
   begin
