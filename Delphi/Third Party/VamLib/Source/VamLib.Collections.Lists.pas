@@ -14,7 +14,7 @@ type
   TSimpleList<T> = class;
   TSimpleObjectList<T : class> = class;
 
-  TObjectList = class;
+  //TObjectList = class;
 
   TSimplePointerList = class;
 
@@ -54,15 +54,21 @@ type
   end;
 
 
+  //TODO: It would be better to move some of this code to a TCustomObjectList so
+  // it isn't re-compiled into generic versions of the list.
+  //TODO: this object list isn't working as expected.
+  //  I can't add an object and then test if it exists via IndexOf().
+  //  This behaviour was noticed within the eeGuiStandard.RedFoxKnob handler class
+  //  implementation. I should come back and rewrite this and retest everything...
   TSimpleObjectList<T : class> = class
   private
     fCount : integer;
     fCapacity : integer;
     fOwnsObjects: boolean;
+    fAllowDuplicates: boolean;
     procedure SetCount(const Value: integer);
     procedure SetCapacity(const Value: integer);
     function GetItem(Index: integer): T;  inline;
-
     procedure Grow;
     procedure SetItem(Index: integer; const Value: T);
   protected
@@ -72,8 +78,11 @@ type
 
     destructor Destroy; override;
 
+    function IndexOf(Item : T):integer;
+
     function Add(Item : T):integer;
-    procedure Delete(const Index : integer);
+    procedure Delete(const Index : integer); overload;
+    procedure Delete(const Item : T); overload;
 
     procedure Clear;
 
@@ -83,6 +92,8 @@ type
     property Items[Index:integer]:T read GetItem write SetItem; default;
 
     property OwnsObjects : boolean read fOwnsObjects write fOwnsObjects;
+
+    property AllowDuplicates : boolean read fAllowDuplicates write fAllowDuplicates default true;
   end;
 
   TSimpleRecordList<T : record> = class
@@ -114,10 +125,13 @@ type
   end;
 
 
+  {
+  //DO not use for now...
   TObjectList = class(TSimpleObjectList<TObject>)
   private
   public
   end;
+  }
 
   TSimplePointerList = class(TSimpleList<Pointer>)
   private
@@ -242,6 +256,9 @@ end;
 
 
 
+
+
+
 { TSimpleObjectList<T> }
 
 destructor TSimpleObjectList<T>.Destroy;
@@ -285,6 +302,19 @@ begin
   inc(fCapacity, 10);
 end;
 
+function TSimpleObjectList<T>.IndexOf(Item: T): integer;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to fCount-1 do
+  begin
+    if Raw[c1] = T
+      then exit(c1);
+  end;
+
+  result := -1;
+end;
+
 procedure TSimpleObjectList<T>.SetCapacity(const Value: integer);
 begin
   fCapacity := Value;
@@ -310,6 +340,11 @@ end;
 
 function TSimpleObjectList<T>.Add(Item: T): integer;
 begin
+  if (AllowDuplicates = false) and (IndexOf(Item) <> -1) then
+  begin
+    exit; //Item already in list.
+  end;
+
   if fCount = fCapacity then Grow;
   Raw[fCount] := Item;
   inc(fCount);
@@ -341,6 +376,16 @@ begin
     dec(fCount);
   end;
 end;
+
+procedure TSimpleObjectList<T>.Delete(const Item: T);
+var
+  Index : integer;
+begin
+  Index := IndexOf(Item);
+  if Index <> -1
+    then Delete(Index);
+end;
+
 
 
 { TRecordArray<T> }

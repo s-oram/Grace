@@ -14,7 +14,7 @@ uses
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
   VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
   LucidityGui.VectorSequence,
-  LucidityGui.Scope, Vcl.ExtCtrls;
+  LucidityGui.Scope, Vcl.ExtCtrls, Contnrs;
 
 type
   TAltFilterText = record

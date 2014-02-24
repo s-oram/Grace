@@ -3,13 +3,15 @@ unit eeGuiStandard.RedFoxKnob;
 interface
 
 uses
-  VamLib.Collections.Lists,
+  Controls,
   Menus, eePlugin,
+  VamLib.Collections.Lists,
   VamLib.Collections.RecordArray,
   VamGuiControlInterfaces,
   eeVstParameter,
   eeVstParameterEx,
-  Classes, Controls, eeGlobals;
+  eeGlobals,
+  Classes, Types, Contnrs;
 
 type
   PControlInfo = ^TControlInfo;
@@ -28,6 +30,7 @@ type
   TRedFoxKnobHandler = class
   private
     fGlobals: TGlobals;
+    ActiveControls          : TObjectList;
     ControlLinks            : TControlInfoList;
     ControlContextMenu      : TPopupMenu;
     IsManualGuiUpdateActive : boolean;
@@ -120,12 +123,17 @@ begin
   ControlContextMenu := TPopupMenu.Create(nil);
 
   ControlLinks := TControlInfoList.Create;
+
+  ActiveControls := TObjectList.Create;
+  ActiveControls.OwnsObjects := false;
+  //ActiveControls.AllowDuplicates := false;
 end;
 
 destructor TRedFoxKnobHandler.Destroy;
 begin
   ControlContextMenu.Free;
   ControlLinks.Free;
+  ActiveControls.Free;
   inherited;
 end;
 
@@ -220,7 +228,10 @@ begin
 
   if (Button = mbLeft) then
   begin
+    ActiveControls.Add(ControlLinks[Index].Control);
+
     BeginParameterEdit(Index);
+
     if (ssCtrl in Shift)
       then SetParameterToDefaut(Index)
       else SetParameterValue(Index, Value);
@@ -249,6 +260,8 @@ begin
       then SetParameterValue(Index, Value);
 
     EndParameterEdit(Index);
+
+    ActiveControls.Remove(ControlLinks[Index].Control);
   end;
 end;
 
@@ -415,8 +428,12 @@ var
   c : TControl;
 begin
   c := ControlLinks[Index].Control;
-  parValue := ControlLinks[Index].LinkedParameter.ValueVST;
-  ControlLinks[Index].KnobControl.SetKnobValue(ParValue);
+
+  if ActiveControls.IndexOf(c) = -1 then
+  begin
+    parValue := ControlLinks[Index].LinkedParameter.ValueVST;
+    ControlLinks[Index].KnobControl.SetKnobValue(ParValue);
+  end;
 end;
 
 procedure TRedFoxKnobHandler.UpdateControls;
