@@ -3,6 +3,7 @@ unit VamKnob;
 interface
 
 uses
+  VamKnobSmoother,
   VamGuiControlInterfaces,
   Types, Controls, Classes, Graphics, AggColor,
   RedFox, RedFoxGraphicControl, RedFoxColor,
@@ -534,6 +535,8 @@ end;
 
 procedure TVamKnob.SetPos(Value: single);
 begin
+  if IsGrabbed then exit;
+
   if Value < 0 then Value := 0
   else if Value > 1 then Value := 1;
 
