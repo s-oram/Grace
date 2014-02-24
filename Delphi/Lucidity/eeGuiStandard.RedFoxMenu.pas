@@ -143,9 +143,6 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-
-  Globals.InfoBarReceiver.EnterControl(Sender);
-  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxMenuHandler.Handle_MouseLeave(Sender: TObject);
@@ -154,8 +151,6 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-
-  Globals.InfoBarReceiver.LeaveControl(Sender);
 end;
 
 

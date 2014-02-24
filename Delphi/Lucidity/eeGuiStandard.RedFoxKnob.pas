@@ -190,9 +190,6 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-
-  Globals.InfoBarReceiver.EnterControl(Sender);
-  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxKnobHandler.Handle_MouseLeave(Sender: TObject);
@@ -201,8 +198,6 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
-
-  Globals.InfoBarReceiver.LeaveControl(Sender);
 end;
 
 
@@ -255,8 +250,6 @@ begin
 
     EndParameterEdit(Index);
   end;
-
-  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxKnobHandler.Handle_KnobPosChanged(Sender: TObject);
@@ -271,8 +264,6 @@ begin
   Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   SetParameterValue(Index, Value);
-
-  Globals.InfoBarReceiver.SendControlMessage(Sender, ControlLinks[Index].LinkedParameter.ParInfo);
 end;
 
 procedure TRedFoxKnobHandler.Handle_ModAmountChanged(Sender: TObject);
@@ -290,8 +281,6 @@ begin
   SetModAmount(Index, Value);
 
   msg := 'Mod Amount: ' + IntToStr(Round(Value * 100)) + '%';
-
-  Globals.InfoBarReceiver.SendControlMessage(Sender, Msg);
 end;
 
 
