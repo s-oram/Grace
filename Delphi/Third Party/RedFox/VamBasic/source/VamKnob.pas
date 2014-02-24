@@ -259,6 +259,9 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
+    KnobSmoother.FinaliseKnob(self);
+
+
     if (ssAlt in Shift) and (KnobMode = TKnobMode.ModEdit)
       then CurrentEditMode := TKnobMode.ModEdit
       else CurrentEditMode := TKnobMode.PositionEdit;
@@ -277,6 +280,7 @@ begin
       raise Exception.Create('Type not handled.');
     end;
 
+    KnobSmoother.KnobDown(self, CurrentValue, nil);
 
 
   end;
@@ -289,6 +293,7 @@ var
   NewValue : single;
   ScaleFactor : single;
   CurrentAdjustmentState : boolean;
+  ApplyValue : TApplyValueMethod;
 begin
   inherited;
 
@@ -330,13 +335,19 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
-      InternalPos := NewValue;
 
-      if InternalPos <> ExternalPos then
+
+      if InternalPos <> NewValue then
       begin
-        ExternalPos := InternalPos;
+        ApplyValue := procedure(x : single)
+        begin
+          ExternalPos := x;
+          KnobPosChanged;
+        end;
+
+        InternalPos := NewValue;
         Invalidate;
-        KnobPosChanged;
+        KnobSmoother.KnobMove(self, InternalPos, ApplyValue);
       end;
     end else
     begin
@@ -357,19 +368,27 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
-      InternalModAmount := NewValue;
-
-      if InternalModAmount <> ExternalModAmount then
+      if InternalModAmount <> NewValue then
       begin
-        ExternalModAmount := InternalModAmount;
+        InternalModAmount := NewValue;
         Invalidate;
-        ModAmountChanged;
+
+        ApplyValue := procedure(x : single)
+        begin
+          ExternalModAmount := InternalModAmount;
+          ModAmountChanged;
+        end;
+
+        KnobSmoother.KnobMove(self, InternalModAmount, ApplyValue);
       end;
     end;
   end;
 end;
 
 procedure TVamKnob.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  CurrentValue : single;
+  ApplyValue : TApplyValueMethod;
 begin
   inherited;
 
@@ -377,25 +396,37 @@ begin
   begin
     IsGrabbed := false;
 
-    if InternalPos + InternalModAmount > 1
-      then InternalModAmount := 1 - InternalPos;
-
-    if InternalPos + InternalModAmount < 0
-      then InternalModAmount := 0 - InternalPos;
-
-    if InternalPos <> ExternalPos then
+    ApplyValue := procedure(x : single)
     begin
-      ExternalPos := InternalPos;
+      if InternalPos + InternalModAmount > 1
+        then InternalModAmount := 1 - InternalPos;
+
+      if InternalPos + InternalModAmount < 0
+        then InternalModAmount := 0 - InternalPos;
+
+      if InternalPos <> ExternalPos then
+      begin
+        ExternalPos := InternalPos;
+        KnobPosChanged;
+      end;
+
+      if InternalModAmount <> ExternalModAmount then
+      begin
+        ExternalModAmount := InternalModAmount;
+        ModAmountChanged;
+      end;
+
       Invalidate;
-      KnobPosChanged;
     end;
 
-    if InternalModAmount <> ExternalModAmount then
-    begin
-      ExternalModAmount := InternalModAmount;
-      Invalidate;
-      ModAmountChanged;
+    case CurrentEditMode of
+      TKnobMode.PositionEdit: CurrentValue := InternalPos;
+      TKnobMode.ModEdit:      CurrentValue := InternalModAmount;
+    else
+      raise Exception.Create('Type not handled.');
     end;
+
+    KnobSmoother.KnobUp(self, CurrentValue, ApplyValue);
   end;
 
 end;

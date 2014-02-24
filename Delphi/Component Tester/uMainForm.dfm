@@ -133,8 +133,6 @@ object Form1: TForm1
       ParameterIndex = 0
       OnKnobPosChanged = VamKnob1KnobPosChanged
       Visible = True
-      OnMouseDown = VamKnob1MouseDown
-      OnMouseUp = VamKnob1MouseUp
     end
     object VamKnob2: TVamKnob
       Left = 376

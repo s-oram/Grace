@@ -75,7 +75,7 @@ constructor TKnobSmoother.Create;
 begin
   ActionList  := TSmoothActionList.Create(0);
 
-  fSlewStepSize := 0.05;
+  fSlewStepSize := 0.1;
 
   IsProcessingActive := false;
 
@@ -89,7 +89,7 @@ begin
 
   MakeQuickExit := true;
   while IsProcessingActive
-    do sleep(1);
+    do sleep(250);
 
   ClearActionList;
   ActionList.Free;
@@ -125,17 +125,20 @@ begin
 
     Action.KnobMove := nil;
     Action.KnobUp   := nil;
-
     Action.IsActive := true;
-
     if assigned(ApplyValue) then ApplyValue(CurrentValue);
 
     ActionList.Add(Obj, Action);
   end else
   begin
     Action.IsActive := true;
-    Action.TargetValue := CurrentValue;
-    Action.KnobUp := nil;
+    Action.CurrentValue := CurrentValue;
+    Action.TargetValue  := CurrentValue;
+
+    Action.KnobMove := nil;
+    Action.KnobUp   := nil;
+    Action.IsActive := true;
+    if assigned(ApplyValue) then ApplyValue(CurrentValue);
   end;
 
   if IsProcessingActive = false then
@@ -176,19 +179,17 @@ procedure TKnobSmoother.FinaliseKnob(const Obj: TObject);
 var
   Action : TSmoothAction;
 begin
-  //TODO:
-  {
   if ActionList.TryGetValue(Obj, Action) then
   begin
     Action.CurrentValue := Action.TargetValue;
-    if assigned(Action.KnobUp) then
-    begin
-      Action.KnobUp(Action.CurrentValue);
-    end;
+    if assigned(Action.KnobMove)
+      then Action.KnobMove(Action.CurrentValue);
+
+    if assigned(Action.KnobUp)
+      then Action.KnobUp(Action.CurrentValue);
 
     Action.IsActive := false;
   end;
-  }
 end;
 
 procedure TKnobSmoother.ProcessAction(Action: TSmoothAction);
@@ -256,7 +257,7 @@ begin
       end;
     end;
 
-    Sleep(5);
+    Sleep(250);
   end;
 end;
 
