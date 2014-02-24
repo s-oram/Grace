@@ -2,9 +2,15 @@ unit eeKnobSmoother;
 
 interface
 
+// TODO: It might be good to make a high speed timer based around
+// the omni thread library functionality.
+
 uses
   SysUtils,
+  OtlTaskControl,
+  OtlParallel,
   Generics.Collections,
+  VamLib.Threads,
   ExtCtrls;
 
 type
@@ -12,14 +18,12 @@ type
 
   TApplyValueMethod = reference to procedure(NewValue : single);
 
-
   TSmoothAction = class
   public
     LinkedObject : TObject;
     CurrentValue : single;
     TargetValue  : single;
     IsActive     : boolean;
-
     KnobMove : TApplyValueMethod;
     KnobUp   : TApplyValueMethod;
   end;
@@ -28,12 +32,16 @@ type
 
   TKnobSmoother = class
   private
-    UpdateTimer : TTimer;
+    MakeQuickExit : boolean;
     ActionList  : TSmoothActionList;
     fSlewStepSize: single;
+    IsProcessingActive : boolean;
 
     procedure ProcessAction(Action : TSmoothAction);
-    procedure ProcessKnobActions(Sender : TObject);
+    procedure ProcessKnobActionsB;
+
+    procedure ClearActionList;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -66,14 +74,13 @@ end;
 
 constructor TKnobSmoother.Create;
 begin
-  UpdateTimer := TTimer.Create(nil);
-  UpdateTimer.OnTimer := ProcessKnobActions;
-  UpdateTimer.Interval := 1;
-
   ActionList  := TSmoothActionList.Create(0);
 
-  fSlewStepSize := 0.01;
+  fSlewStepSize := 0.005;
 
+  IsProcessingActive := false;
+
+  MakeQuickExit := false;
 end;
 
 destructor TKnobSmoother.Destroy;
@@ -81,11 +88,30 @@ begin
   if FGlobalKnobSmoother = self
     then FGlobalKnobSmoother := nil;
 
-  UpdateTimer.Free;
+  MakeQuickExit := true;
+  while IsProcessingActive
+    do sleep(10);
+
+  ClearActionList;
   ActionList.Free;
 
   inherited;
 end;
+
+procedure TKnobSmoother.ClearActionList;
+var
+  c1 : integer;
+  Action : TSmoothAction;
+begin
+  for c1 := ActionList.Count-1 downto 0 do
+  begin
+    Action := ActionList.ToArray[c1].Value;
+    ActionList.Remove(Action.LinkedObject);
+    Action.Free;
+  end;
+end;
+
+
 
 procedure TKnobSmoother.KnobDown(const Obj: TObject; CurrentValue: single; ApplyValue: TApplyValueMethod);
 var
@@ -113,7 +139,14 @@ begin
     Action.KnobUp := nil;
   end;
 
-  UpdateTimer.Enabled := true;
+  if IsProcessingActive = false then
+  begin
+    Async(ProcessKnobActionsB).Await(
+    procedure
+    begin
+      IsProcessingActive := false;
+    end);
+  end;
 end;
 
 procedure TKnobSmoother.KnobMove(const Obj: TObject; TargetValue: single; ApplyValue: TApplyValueMethod);
@@ -200,33 +233,34 @@ begin
 
 end;
 
-procedure TKnobSmoother.ProcessKnobActions(Sender: TObject);
+procedure TKnobSmoother.ProcessKnobActionsB;
 var
   c1 : integer;
   Action : TSmoothAction;
 begin
-  for c1 := ActionList.Count-1 downto 0 do
+  while (ActionList.Count > 0) and (not MakeQuickExit) do
   begin
-    Action := ActionList.ToArray[c1].Value;
-    ProcessAction(Action);
-  end;
-
-  for c1 := ActionList.Count-1 downto 0 do
-  begin
-    Action := ActionList.ToArray[c1].Value;
-    if Action.IsActive = false then
+    for c1 := ActionList.Count-1 downto 0 do
     begin
-      ActionList.Remove(Action.LinkedObject);
-      Action.Free;
+      Action := ActionList.ToArray[c1].Value;
+      ProcessAction(Action);
     end;
-  end;
 
-  if ActionList.Count = 0 then
-  begin
-    UpdateTimer.Enabled := false;
-  end;
+    for c1 := ActionList.Count-1 downto 0 do
+    begin
+      Action := ActionList.ToArray[c1].Value;
+      if Action.IsActive = false then
+      begin
+        ActionList.Remove(Action.LinkedObject);
+        Action.Free;
+      end;
+    end;
 
+    Sleep(5);
+  end;
 end;
+
+
 
 
 initialization

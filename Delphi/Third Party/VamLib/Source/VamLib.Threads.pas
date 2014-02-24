@@ -3,7 +3,8 @@ unit VamLib.Threads;
 interface
 
 uses
-  SysUtils;
+  SysUtils,
+  OtlTaskControl;
 
 procedure RunTask(aTask : TProc); overload;
 
@@ -16,8 +17,7 @@ procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : T
 type
   TRepeatingTask = reference to function:integer;
 
-procedure RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0; OnFinished : TProc = nil);
-
+function RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0):IOmniTaskControl;
 
 procedure DelayedGuiAction(const Delay : integer; Action : TProc);
 
@@ -25,7 +25,7 @@ implementation
 
 uses
   ExtCtrls,
-  OtlTask, OtlTaskControl;
+  OtlTask;
 
 procedure RunTask(aTask : TProc);
 var
@@ -94,7 +94,7 @@ begin
 end;
 
 
-procedure RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0; OnFinished : TProc = nil);
+function RunRepeatingTask(aTask : TRepeatingTask; Delay:integer = 0):IOmniTaskControl;
 var
   TaskControl : TOmniTaskControl;
   Delgate : TOmniTaskDelegate;
@@ -108,7 +108,7 @@ begin
   begin
     IsActive := true;
     RunDelay := Delay;
-    while IsActive do
+    while (IsActive) and (Task.Terminated = false) do
     begin
       if RunDelay > 0
         then Sleep(RunDelay);
@@ -120,18 +120,8 @@ begin
   end;
 
   TaskControl := TOmniTaskControl.Create(Delgate, '');
-
-  if assigned(OnFinished) then
-  begin
-    OnFinishCB := procedure
-    begin
-      OnFinished;
-    end;
-
-    TaskControl.OnTerminated(OnFinishCB);
-  end;
-
-  TaskControl.Unobserved.Run;
+  TaskControl.Run;
+  result := TaskControl;
 end;
 
 
