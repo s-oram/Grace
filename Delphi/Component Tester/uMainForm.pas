@@ -4,6 +4,7 @@ interface
 
 uses
   eeKnobSmoother,
+  VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
@@ -32,17 +33,22 @@ type
     Button5: TButton;
     VamKnob1: TVamKnob;
     VamKnob2: TVamKnob;
-    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
+    procedure HandleTimerEvent(Sender: TObject);
     procedure VamKnob1KnobPosChanged(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     ID : TUniqueID;
     KnobValue : single;
+    TimeReference : TDateTime;
+    Timer : THighSpeedTimer;
     procedure UpdateLabel;
+
   public
     procedure UpdateMemo;
   end;
@@ -59,7 +65,8 @@ uses
   eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
-  VamLib.Utils;
+  VamLib.Utils,
+  DateUtils;
 
 type
   TProcDictionary = TDictionary<integer, TDateTime>;
@@ -71,39 +78,57 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   ID.Init;
 
+  Memo1.Clear;
 
+
+  Timer := THighSpeedTimer.Create;
+  Timer.OnTimer := self.HandleTimerEvent;
+  Timer.UseMainThreadForTimerEvent := false;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  ////
+  Timer.Free;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
-var
-  AniObj : TSingleAnimation;
 begin
-  AniObj := TSingleAnimation.Create;
-  AniObj.StartValue := 0;
-  AniObj.EndValue   := 400;
-  AniObj.RunTime    := 5000;
-  AniObj.ApplyMethod := procedure(CurrentValue:single)
-  begin
-    Button2.Left := round(CurrentValue);
-  end;
-
-  GlobalAnimator.Animate(ID, AniObj);
+  TimeReference := Now;
+  Timer.Interval := 300;
+  Timer.Enabled := true;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
-  Button2.Free;
+  Timer.Enabled := false;
 end;
 
 
+procedure TForm1.HandleTimerEvent(Sender: TObject);
+var
+  ms : Int64;
+begin
+  ms := MillisecondsBetween(Now, TimeReference);
+  TimeReference := Now;
+  Memo1.Lines.Add(IntToStr(ms));
+  Memo1.Invalidate;
 
+end;
 
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  Timer.Interval := 200;
+end;
 
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  Timer.Interval := 1000;
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+  Timer.Interval := 750;
+end;
 
 procedure TForm1.UpdateLabel;
 begin
@@ -127,11 +152,6 @@ end;
 procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
 begin
   VamKnob2.Pos := VamKnob1.Pos;
-end;
-
-procedure TForm1.Timer1Timer(Sender: TObject);
-begin
-  //VamKnob2.Pos := KnobValue;
 end;
 
 

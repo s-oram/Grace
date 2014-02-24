@@ -24,19 +24,10 @@ object Form1: TForm1
     TabOrder = 0
     OnClick = Button1Click
   end
-  object Memo1: TMemo
-    Left = 368
-    Top = 32
-    Width = 537
-    Height = 265
-    Lines.Strings = (
-      'Memo1')
-    TabOrder = 1
-  end
   object RedFoxContainer1: TRedFoxContainer
     Left = 64
     Top = 32
-    Width = 649
+    Width = 521
     Height = 289
     Color = '$FFCCCCCC'
     object Knob1: TVamNumericKnob
@@ -163,22 +154,25 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 3
+    OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 72
-    Top = 451
+    Left = 89
+    Top = 411
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 4
+    OnClick = Button3Click
   end
   object Button4: TButton
-    Left = 250
-    Top = 451
+    Left = 170
+    Top = 411
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 5
+    OnClick = Button4Click
   end
   object Button5: TButton
     Left = 153
@@ -189,10 +183,13 @@ object Form1: TForm1
     TabOrder = 6
     OnClick = Button5Click
   end
-  object Timer1: TTimer
-    Interval = 1
-    OnTimer = Timer1Timer
-    Left = 784
-    Top = 88
+  object Memo1: TMemo
+    Left = 424
+    Top = 200
+    Width = 537
+    Height = 265
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 1
   end
 end
