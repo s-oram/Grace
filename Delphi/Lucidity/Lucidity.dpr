@@ -141,7 +141,8 @@ uses
   eePluginGuiMeta in 'eePluginGuiMeta.pas',
   GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas',
   soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
-  uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame};
+  uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
+  eeKnobSmoother in '..\Third Party\EasyEffect\EasyEffectExtra\eeKnobSmoother.pas';
 
 {$R *.res}
 
