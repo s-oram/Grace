@@ -74,7 +74,8 @@ contains
   VamSamplePeakBuffer in '..\source\VamSamplePeakBuffer.pas',
   VamModSelector in '..\source\VamModSelector.pas',
   VamGuiControlInterfaces in '..\source\VamGuiControlInterfaces.pas',
-  VamShortMessageOverlay in '..\source\VamShortMessageOverlay.pas';
+  VamShortMessageOverlay in '..\source\VamShortMessageOverlay.pas',
+  VamKnobSmoother in '..\source\VamKnobSmoother.pas';
 
 end.
 
