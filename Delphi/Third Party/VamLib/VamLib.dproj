@@ -112,6 +112,7 @@
 			<DCCReference Include="Source\VamLib.Animation.pas"/>
 			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
 			<DCCReference Include="Source\VamLib.ZeroObjectForms.pas"/>
+			<DCCReference Include="Source\VamLib.HighSpeedTimer.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
