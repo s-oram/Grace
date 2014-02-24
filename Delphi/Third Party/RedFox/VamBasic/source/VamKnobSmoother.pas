@@ -7,7 +7,6 @@ interface
 
 uses
   SysUtils,
-  OtlTaskControl,
   OtlParallel,
   Generics.Collections,
   ExtCtrls;

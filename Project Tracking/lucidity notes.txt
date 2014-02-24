@@ -212,3 +212,10 @@ loop_sustain: the player will play the loop while the note is held, by keeping i
 
 
 Marketing Tag - WHAT DO YOU WANT TO SAMPLE?
+
+
+
+
+
+Listen to "Sea See" by machine drum. Listen to the background textures. 
+recreate with Lucidity. (Tempo synced LFOs)
