@@ -10,6 +10,7 @@ uses
   VamGuiControlInterfaces,
   eeVstParameter,
   eeVstParameterEx,
+  eeKnobSmoother,
   eeGlobals,
   Classes, Types, Contnrs;
 
@@ -215,6 +216,9 @@ var
   Value : single;
   Block : boolean;
   Index : integer;
+
+  ApplyValue : TApplyValueMethod;
+
 begin
   assert(Supports(Sender, IKnobControl));
 
@@ -228,13 +232,22 @@ begin
 
   if (Button = mbLeft) then
   begin
-    ActiveControls.Add(ControlLinks[Index].Control);
+    if ActiveControls.IndexOf(ControlLinks[Index].Control) = -1 then
+    begin
+      ActiveControls.Add(ControlLinks[Index].Control);
+    end;
 
-    BeginParameterEdit(Index);
+    ApplyValue := procedure(CurrentValue:single)
+    begin
+      BeginParameterEdit(Index);
 
-    if (ssCtrl in Shift)
-      then SetParameterToDefaut(Index)
-      else SetParameterValue(Index, Value);
+      if (ssCtrl in Shift)
+        then SetParameterToDefaut(Index)
+        else SetParameterValue(Index, CurrentValue);
+    end;
+
+    KnobSmoother.KnobDown(Sender, Value, ApplyValue);
+
   end else
   if (Button = mbRight) then
   begin
@@ -243,11 +256,32 @@ begin
 
 end;
 
+procedure TRedFoxKnobHandler.Handle_KnobPosChanged(Sender: TObject);
+var
+  Index : integer;
+  Value : single;
+  ApplyValue : TApplyValueMethod;
+begin
+  if IsManualGuiUpdateActive then exit;
+
+  Index := FindIndexOfControl(Sender as TControl);
+  assert(Index <> -1);
+  Value := ControlLinks[Index].KnobControl.GetKnobValue;
+
+  ApplyValue := procedure(CurrentValue:single)
+  begin
+    SetParameterValue(Index, CurrentValue);
+  end;
+
+  KnobSmoother.KnobMove(Sender, Value, ApplyValue);
+end;
+
 
 procedure TRedFoxKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
   Value : single;
+  ApplyValue : TApplyValueMethod;
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
@@ -256,28 +290,19 @@ begin
 
   if (Button = mbLeft) then
   begin
-    if not (ssCtrl in Shift)
-      then SetParameterValue(Index, Value);
+    ApplyValue := procedure(CurrentValue:single)
+    begin
+      if not (ssCtrl in Shift)
+        then SetParameterValue(Index, CurrentValue);
+      EndParameterEdit(Index);
+      ActiveControls.Remove(ControlLinks[Index].Control);
+    end;
 
-    EndParameterEdit(Index);
-
-    ActiveControls.Remove(ControlLinks[Index].Control);
+    KnobSmoother.KnobUp(Sender, Value, ApplyValue);
   end;
 end;
 
-procedure TRedFoxKnobHandler.Handle_KnobPosChanged(Sender: TObject);
-var
-  Index : integer;
-  Value : single;
-begin
-  if IsManualGuiUpdateActive then exit;
 
-  Index := FindIndexOfControl(Sender as TControl);
-  assert(Index <> -1);
-  Value := ControlLinks[Index].KnobControl.GetKnobValue;
-
-  SetParameterValue(Index, Value);
-end;
 
 procedure TRedFoxKnobHandler.Handle_ModAmountChanged(Sender: TObject);
 var

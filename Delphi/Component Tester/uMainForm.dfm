@@ -34,11 +34,11 @@ object Form1: TForm1
     TabOrder = 1
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 80
-    Top = 20
+    Left = 64
+    Top = 32
     Width = 649
-    Height = 309
-    Color = '$FFFF0000'
+    Height = 289
+    Color = '$FFCCCCCC'
     object Knob1: TVamNumericKnob
       Left = 48
       Top = 56
@@ -112,6 +112,51 @@ object Form1: TForm1
       Font.Style = []
       Visible = True
     end
+    object VamKnob1: TVamKnob
+      Left = 360
+      Top = 40
+      Width = 100
+      Height = 41
+      Opacity = 255
+      Text = 'VamKnob1'
+      HitTest = True
+      ModLineDist = 17.000000000000000000
+      ModLineWidth = 3.000000000000000000
+      ModLineColor = '$FFFF0000'
+      ModLineOffColor = '$FFC0C0C0'
+      IndicatorSize = 2.500000000000000000
+      IndicatorDist = 9.000000000000000000
+      IsBipolarKnob = False
+      KnobMode = PositionEdit
+      IsKnobEnabled = True
+      VisibleSteps = 0
+      ParameterIndex = 0
+      OnKnobPosChanged = VamKnob1KnobPosChanged
+      Visible = True
+      OnMouseDown = VamKnob1MouseDown
+      OnMouseUp = VamKnob1MouseUp
+    end
+    object VamKnob2: TVamKnob
+      Left = 376
+      Top = 128
+      Width = 100
+      Height = 41
+      Opacity = 255
+      Text = 'VamKnob1'
+      HitTest = True
+      ModLineDist = 17.000000000000000000
+      ModLineWidth = 3.000000000000000000
+      ModLineColor = '$FFFF0000'
+      ModLineOffColor = '$FFC0C0C0'
+      IndicatorSize = 2.500000000000000000
+      IndicatorDist = 9.000000000000000000
+      IsBipolarKnob = False
+      KnobMode = PositionEdit
+      IsKnobEnabled = True
+      VisibleSteps = 0
+      ParameterIndex = 0
+      Visible = True
+    end
   end
   object Button2: TButton
     Left = 8
@@ -145,5 +190,11 @@ object Form1: TForm1
     Caption = 'Button1'
     TabOrder = 6
     OnClick = Button5Click
+  end
+  object Timer1: TTimer
+    Interval = 1
+    OnTimer = Timer1Timer
+    Left = 784
+    Top = 88
   end
 end

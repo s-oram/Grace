@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+  eeKnobSmoother,
   VamLib.UniqueID,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
@@ -15,7 +16,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
   VamModSelector, VamCompoundNumericKnob, VamNumericKnob,
-  LucidityGui.DropBoxSelector, VamShortMessageOverlay;
+  LucidityGui.DropBoxSelector, VamShortMessageOverlay, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
@@ -29,12 +30,22 @@ type
     Button4: TButton;
     VamShortMessageOverlay1: TVamShortMessageOverlay;
     Button5: TButton;
+    VamKnob1: TVamKnob;
+    VamKnob2: TVamKnob;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure VamKnob1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure VamKnob1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure VamKnob1KnobPosChanged(Sender: TObject);
   private
     ID : TUniqueID;
+    KnobValue : single;
     procedure UpdateLabel;
   public
     procedure UpdateMemo;
@@ -113,6 +124,67 @@ begin
   end;
   }
 end;
+
+
+
+
+procedure TForm1.VamKnob1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  tx : single;
+  ApplyValue : TApplyValueMethod;
+begin
+
+
+  tx := (Sender as TVamKnob).Pos;
+
+  ApplyValue := procedure(CurrentValue : single)
+  begin
+    KnobValue := CurrentValue;
+  end;
+
+  KnobSmoother.KnobDown(Sender, tx, ApplyValue);
+end;
+
+procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
+var
+  tx : single;
+  ApplyValue : TApplyValueMethod;
+begin
+  tx := (Sender as TVamKnob).Pos;
+  ApplyValue := procedure(CurrentValue : single)
+  begin
+    KnobValue := CurrentValue;
+  end;
+
+  KnobSmoother.KnobMove(Sender, tx, ApplyValue);
+
+
+  //KnobSmoother.
+end;
+
+procedure TForm1.VamKnob1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  tx : single;
+  ApplyValue : TApplyValueMethod;
+begin
+  tx := (Sender as TVamKnob).Pos;
+
+  ApplyValue := procedure(CurrentValue : single)
+  begin
+    KnobValue := CurrentValue;
+  end;
+
+  KnobSmoother.KnobUp(Sender, tx, ApplyValue);
+
+
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  VamKnob2.Pos := KnobValue;
+end;
+
+
 
 initialization
   GlobalDict := TProcDictionary.Create(100);

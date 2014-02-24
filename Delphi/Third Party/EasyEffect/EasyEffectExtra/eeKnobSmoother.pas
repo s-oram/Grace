@@ -3,10 +3,13 @@ unit eeKnobSmoother;
 interface
 
 uses
+  SysUtils,
   Generics.Collections,
   ExtCtrls;
 
 type
+  EKnobSmootherException = class(Exception);
+
   TApplyValueMethod = reference to procedure(NewValue : single);
 
 
@@ -141,6 +144,7 @@ procedure TKnobSmoother.FinaliseKnob(const Obj: TObject);
 var
   Action : TSmoothAction;
 begin
+  {
   if ActionList.TryGetValue(Obj, Action) then
   begin
     Action.CurrentValue := Action.TargetValue;
@@ -151,6 +155,7 @@ begin
 
     Action.IsActive := false;
   end;
+  }
 end;
 
 procedure TKnobSmoother.ProcessAction(Action: TSmoothAction);
@@ -172,13 +177,23 @@ begin
         Action.CurrentValue := Action.CurrentValue - SlewStepSize;
       end;
 
-      Action.KnobMove(Action.CurrentValue);
+      try
+        Action.KnobMove(Action.CurrentValue);
+      except
+        raise EKnobSmootherException.Create('ERROR');
+      end;
+
+
     end;
 
 
     if (Action.CurrentValue = Action.TargetValue) and (assigned(Action.KnobUp)) then
     begin
-      Action.KnobUp(Action.CurrentValue);
+      try
+        Action.KnobUp(Action.CurrentValue);
+      except
+        raise EKnobSmootherException.Create('ERROR');
+      end;
       Action.IsActive := false;
     end;
   end;
@@ -202,6 +217,7 @@ begin
     if Action.IsActive = false then
     begin
       ActionList.Remove(Action.LinkedObject);
+      Action.Free;
     end;
   end;
 
