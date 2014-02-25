@@ -205,7 +205,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<Manifest_File>None</Manifest_File>
 			<DCC_BplOutput>$(DelphiCompiledLib)\bpl\$(PLATFORM)</DCC_BplOutput>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<GenDll>true</GenDll>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</CfgDependentOn>
@@ -585,7 +585,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectExtra\eeKnobSmoother.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
@@ -636,7 +635,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
 		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -644,7 +643,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -652,7 +651,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -660,7 +659,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -668,7 +667,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -676,7 +675,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -684,7 +683,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -692,7 +691,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -700,7 +699,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -708,7 +707,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -716,7 +715,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -724,7 +723,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -732,7 +731,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -740,7 +739,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -748,7 +747,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -756,7 +755,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -764,7 +763,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -772,7 +771,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -780,7 +779,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -788,7 +787,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -796,7 +795,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -804,7 +803,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -812,7 +811,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -820,7 +819,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -828,7 +827,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -836,7 +835,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -844,7 +843,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
