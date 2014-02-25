@@ -86,6 +86,8 @@ type
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
+    LfoOut : Psingle;
+
     SampleLevelOffsetA : single;
     SampleLevelOffsetB : single;
 
@@ -263,6 +265,8 @@ begin
 
   LfoA := TLucidityLfo.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
+  LfoOut := LfoA.GetModPointer('LfoOutput');
+
   LfoB := TLucidityLfo.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo2, LfoB.GetModPointer('LfoOutput'));
 
@@ -653,8 +657,11 @@ begin
     FilterTwo.AudioRateStep(MixX1, MixX2);
     OscVCA.AudioRateStep(MixX1, MixX2);
 
-    pxA^ := MixX1 * SampleLevelOffsetA;
-    pxB^ := MixX2 * SampleLevelOffsetB;
+    //pxA^ := MixX1 * SampleLevelOffsetA;
+    //pxB^ := MixX2 * SampleLevelOffsetB;
+
+    pxA^ := LfoOut^;
+    pxB^ := LfoOut^;
 
     inc(pxA);
     inc(pxB);

@@ -138,8 +138,18 @@ begin
 
       FindMinMaxValues(ReadIndex, SamplesPerPixel, BufferSize, Buffer, MinBuffer, MaxBuffer);
 
-      y1 := Clamp((MinBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
-      y2 := Clamp((MaxBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
+      //y1 := Clamp((MinBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
+      //y2 := Clamp((MaxBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
+
+      y1 := (1 - Clamp((MinBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
+      y2 := (1 - Clamp((MaxBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
+
+      if abs(y1 - y2) <= 2 then
+      begin
+        y1 := y1 - 1;
+        y2 := y2 + 1;
+      end;
+
 
       BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmClear;
       BackBuffer.BufferInterface.Line(DrawXIndex + 0.5, 0, DrawXIndex + 0.5, BackBuffer.Height);

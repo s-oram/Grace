@@ -1100,6 +1100,13 @@ begin
     VoiceController.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
 
+    ClearBuffer(Outputs[0], SampleFrames);
+    ClearBuffer(Outputs[1], SampleFrames);
+    ClearBuffer(Outputs[2], SampleFrames);
+    ClearBuffer(Outputs[3], SampleFrames);
+    ClearBuffer(Outputs[4], SampleFrames);
+    ClearBuffer(Outputs[5], SampleFrames);
+
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do
     begin
@@ -1109,26 +1116,6 @@ begin
     begin
       inc(Outputs[c1], SampleFrames);
     end;
-
-
-    {
-    //Don't forget to increment inputs and outputs.
-    inc(Inputs[0],SampleFrames);
-    inc(Inputs[1],SampleFrames);
-
-    inc(Outputs[0],SampleFrames);
-    inc(Outputs[1],SampleFrames);
-
-    for c1 := 0 to SampleFrames-1 do
-    begin
-      Outputs[3]^ := Outputs[2]^;
-      Outputs[5]^ := Outputs[4]^;
-      inc(Outputs[2]);
-      inc(Outputs[3]);
-      inc(Outputs[4]);
-      inc(Outputs[5]);
-    end;
-    }
 
     inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
   except
