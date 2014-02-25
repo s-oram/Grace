@@ -141,7 +141,8 @@ uses
   eePluginGuiMeta in 'eePluginGuiMeta.pas',
   GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas',
   soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
-  uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame};
+  uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
+  soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas';
 
 {$R *.res}
 

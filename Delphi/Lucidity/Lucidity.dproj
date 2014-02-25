@@ -585,6 +585,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
+			<DCCReference Include="SoundObjects\soLfo.WaveTableLfo.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

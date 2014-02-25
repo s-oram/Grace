@@ -47,8 +47,6 @@ type
     VelocityScaler     : single;
     CurrentHoldCount   : integer;
 
-
-
     AttackCoefficient  :double;
     DecayCoefficient   :double;
     ReleaseCoefficient :double;
@@ -57,7 +55,6 @@ type
     HoldTimeInSamples    : single;
     DecayTimeInSamples   : single;
     CurrentStageTime     : integer;
-
   public
     constructor Create;
 	  destructor Destroy; override;

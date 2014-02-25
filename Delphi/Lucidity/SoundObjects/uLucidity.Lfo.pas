@@ -10,6 +10,7 @@ uses
   uLucidityEnums,
   Lucidity.Types,
   B2.MovingAverageFilter,
+  soLfo.WaveTableLfo,
   eeVirtualCV, Math, uLucidityClock, eeDsp,
   uConstants;
 
@@ -104,23 +105,26 @@ type
     procedure SetPar3(const Value: PSynthPar);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
-    fLfo : TLfo;
+    fLfo_OLD          : TLfo;
     FModuleIndex  : integer;
-    LfoOutput : single;
+
+    LfoOutput     : single;
+
+    WaveTableLfo : TWaveTableLfo;
 
     procedure UpdateLfoParameters;
 
-    property Lfo : TLfo read fLfo;
+    property Lfo : TLfo read fLfo_OLD;
   public
     constructor Create(const aModuleIndex : integer; const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
 
-    procedure ResetLfoPhase;
-
     function GetModPointer(const Name:string):PSingle;
 
-    property Bpm        : single    read fBpm        write SetBpm;
+    procedure ResetLfoPhase;
+
     property SampleRate : single    read fSampleRate write SetSampleRate;
+    property Bpm        : single    read fBpm        write SetBpm;
     property Shape      : TLfoShape read fShape      write fShape;
 
     property Par1 : PSynthPar read fPar1 write SetPar1;
@@ -152,14 +156,18 @@ constructor TLucidityLfo.Create(const aModuleIndex : integer; const aVoiceClockM
 begin
   VoiceClockManager := aVoiceClockManager;
 
-  fLfo := TLfo.Create;
+  WaveTableLfo := TWaveTableLfo.Create;
+
+  fLfo_OLD := TLfo.Create;
 
   fModuleIndex := aModuleIndex;
 end;
 
 destructor TLucidityLfo.Destroy;
 begin
-  fLfo.Free;
+  fLfo_OLD.Free;
+
+  WaveTableLfo.Free;
 
   inherited;
 end;
@@ -181,6 +189,7 @@ procedure TLucidityLfo.SetBpm(const Value: single);
 begin
   fBpm := Value;
   Lfo.Bpm := Value;
+  WaveTableLfo.Bpm := Value;
 end;
 
 procedure TLucidityLfo.SetPar1(const Value: PSynthPar);
@@ -202,13 +211,12 @@ procedure TLucidityLfo.SetSampleRate(const Value: single);
 begin
   fSampleRate := Value;
   Lfo.SampleRate := Value;
+  WaveTableLfo.SampleRate := Value;
 end;
 
 procedure TLucidityLfo.FastControlProcess;
 begin
-  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
-
-  LfoOutput := random;
+  LfoOutput := WaveTableLfo.Step;
 
   if Lfo.FastControlProcess then
   begin
@@ -220,55 +228,30 @@ end;
 
 procedure TLucidityLfo.SlowControlProcess;
 begin
-
-
-  Lfo.SlowControlProcess;
+  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
 end;
 
 procedure TLucidityLfo.StepResetA;
 begin
   UpdateLfoParameters;
-  Lfo.StepResetA;
 end;
 
 procedure TLucidityLfo.StepResetB;
 begin
   UpdateLfoParameters;
-  Lfo.StepResetB;
 end;
 
 procedure TLucidityLfo.UpdateLfoParameters;
-var
-  Par1 : single;
-  Par2 : single;
-  Par1Mod: single;
-  Par2Mod: single;
 begin
-  //TODO:
-  {
-  if ModuleIndex = 0 then
-  begin
-    Par1 := ParValueData^[TModParIndex.Lfo1Par1].ParValue;
-    Par2 := ParValueData^[TModParIndex.Lfo1Par2].ParValue;
+  assert(InRange(Par1^, 0, 1));
+  assert(InRange(Par2^, 0, 1));
+  assert(InRange(Par3^, 0, 1));
 
-    Par1Mod := ParModData^[TModParIndex.Lfo1Par1];
-    Par2Mod := ParModData^[TModParIndex.Lfo1Par2];
-  end else
-  begin
-    Par1 := ParValueData^[TModParIndex.Lfo2Par1].ParValue;
-    Par2 := ParValueData^[TModParIndex.Lfo2Par2].ParValue;
+  WaveTableLFO.Freq          := (Par1^ * Par1^) * 150 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
+  WaveTableLFO.PhaseOffset   := Par2^;
+  WaveTableLFO.PulseWidthMod := Par3^;
 
-    Par1Mod := ParModData^[TModParIndex.Lfo2Par1];
-    Par2Mod := ParModData^[TModParIndex.Lfo2Par2];
-  end;
-
-  Lfo.Speed := VamLib.Utils.Clamp(Par1 + Par1Mod, 0, 1);
-  Lfo.ParB  := VamLib.Utils.Clamp(Par2 + Par2Mod, 0, 1);
-  Lfo.Shape := self.Shape;
-  }
-  // TODO: Instead of summing these values together, it might be better to
-  // try to send both values to the LFO so that the modulation input
-  // can use 1v/oct scaling.
+  WaveTableLFO.UpdateStepSize;
 end;
 
 
