@@ -123,8 +123,6 @@ type
     property OscModule : TOscModule read fOscModule write fOscModule;
 
     procedure UpdateOscPitch;
-
-
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -132,9 +130,6 @@ type
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
 
     procedure Trigger(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
-    //procedure Trigger_Poly(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
-    //procedure Trigger_Mono(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion); //used by Mono and legato modes.
-    //procedure Trigger_Legato(const MidiNote, MidiVelocity:byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion; const WithGlide : boolean); //used by Mono and legato modes.
     procedure Release;
     procedure QuickRelease;
     procedure Kill;
