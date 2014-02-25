@@ -94,24 +94,26 @@ type
     fSampleRate: single;
     fBpm: single;
     fShape: TLfoShape;
+    fPar1: PSynthPar;
+    fPar2: PSynthPar;
+    fPar3: PSynthPar;
     procedure SetSampleRate(const Value: single);
     procedure SetBpm(const Value: single);
+    procedure SetPar1(const Value: PSynthPar);
+    procedure SetPar2(const Value: PSynthPar);
+    procedure SetPar3(const Value: PSynthPar);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
     fLfo : TLfo;
-
-    ModuleIndex  : integer;
-    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
-    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
+    FModuleIndex  : integer;
+    LfoOutput : single;
 
     procedure UpdateLfoParameters;
 
     property Lfo : TLfo read fLfo;
   public
-    constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
+    constructor Create(const aModuleIndex : integer; const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
-
-    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
 
     procedure ResetLfoPhase;
 
@@ -120,6 +122,10 @@ type
     property Bpm        : single    read fBpm        write SetBpm;
     property SampleRate : single    read fSampleRate write SetSampleRate;
     property Shape      : TLfoShape read fShape      write fShape;
+
+    property Par1 : PSynthPar read fPar1 write SetPar1;
+    property Par2 : PSynthPar read fPar2 write SetPar2;
+    property Par3 : PSynthPar read fPar3 write SetPar3;
 
     procedure StepResetA;
     procedure StepResetB;
@@ -142,12 +148,13 @@ uses
 
 { TLucidityLfo }
 
-constructor TLucidityLfo.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
+constructor TLucidityLfo.Create(const aModuleIndex : integer; const aVoiceClockManager : TLucidityVoiceClockManager);
 begin
   VoiceClockManager := aVoiceClockManager;
 
   fLfo := TLfo.Create;
 
+  fModuleIndex := aModuleIndex;
 end;
 
 destructor TLucidityLfo.Destroy;
@@ -159,22 +166,10 @@ end;
 
 function TLucidityLfo.GetModPointer(const Name: string): PSingle;
 begin
-  if Name = 'LfoOutput' then Exit(Lfo.GetModPointer('LfoOutput'));
-  if Name = 'LfoRateMod1' then Exit(Lfo.GetModPointer('ParAInput'));
-  if Name = 'LfoParBMod1' then Exit(Lfo.GetModPointer('ParBInput'));
+  if Name = 'LfoOutput' then Exit(@LfoOutput);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
-end;
-
-procedure TLucidityLfo.Init(const aModuleIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
-begin
-  assert(ModuleIndex >= 0);
-  assert(ModuleIndex <= 1);
-
-  ModuleIndex  := aModuleIndex;
-  ParValueData := aPars;
-  ParModData   := aModData;
 end;
 
 procedure TLucidityLfo.ResetLfoPhase;
@@ -188,6 +183,21 @@ begin
   Lfo.Bpm := Value;
 end;
 
+procedure TLucidityLfo.SetPar1(const Value: PSynthPar);
+begin
+  fPar1 := Value;
+end;
+
+procedure TLucidityLfo.SetPar2(const Value: PSynthPar);
+begin
+  fPar2 := Value;
+end;
+
+procedure TLucidityLfo.SetPar3(const Value: PSynthPar);
+begin
+  fPar3 := Value;
+end;
+
 procedure TLucidityLfo.SetSampleRate(const Value: single);
 begin
   fSampleRate := Value;
@@ -198,9 +208,11 @@ procedure TLucidityLfo.FastControlProcess;
 begin
   UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
 
+  LfoOutput := random;
+
   if Lfo.FastControlProcess then
   begin
-    if ModuleIndex = 0
+    if FModuleIndex = 0
       then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
       else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
   end;
@@ -232,6 +244,8 @@ var
   Par1Mod: single;
   Par2Mod: single;
 begin
+  //TODO:
+  {
   if ModuleIndex = 0 then
   begin
     Par1 := ParValueData^[TModParIndex.Lfo1Par1].ParValue;
@@ -251,7 +265,7 @@ begin
   Lfo.Speed := VamLib.Utils.Clamp(Par1 + Par1Mod, 0, 1);
   Lfo.ParB  := VamLib.Utils.Clamp(Par2 + Par2Mod, 0, 1);
   Lfo.Shape := self.Shape;
-
+  }
   // TODO: Instead of summing these values together, it might be better to
   // try to send both values to the LFO so that the modulation input
   // can use 1v/oct scaling.

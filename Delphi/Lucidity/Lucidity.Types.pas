@@ -3,9 +3,11 @@ unit Lucidity.Types;
 interface
 
 uses
+  Windows,
   uConstants,
-  VamLib.Collections.Lists,
-  Windows;
+  VamLib.MoreTypes,
+  VamLib.Collections.Lists;
+
 
 type
   TGuidList = TSimpleList<TGUID>;
@@ -49,6 +51,12 @@ type
   TParModulationData = array[0..kModulatedParameterCount-1] of single;
 
 
+  // NOTE: PSynthPar is intended for usage in
+  // the voice processing classes. Individual modules need
+  // access to the combined parameter value plus modulation amount.
+  // This combined value is calculated by the Mod Matrix and
+  // stored in the voice class. (If these comments are up to date!)
+  PSynthPar = PSingle;
 
 implementation
 

@@ -144,8 +144,8 @@ type
     procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
-    property IsActive : boolean read fIsActive;
-    property TriggerNote : byte read fTriggerNote;
+    property IsActive    : boolean read fIsActive;
+    property TriggerNote : byte    read fTriggerNote;
 
     //==== Sound modules ====
     property GrainStretchOsc  : TLucidityGrainStretchOsc read fGrainStretchOsc  write fGrainStretchOsc;
@@ -264,11 +264,11 @@ begin
   ModMatrix.SetModDestPointer(TModDest.VoiceAmplitude, OscVCA.GetModPointer('ModInput_Gain'));
   ModMatrix.SetModDestPointer(TModDest.VoicePan, OscVCA.GetModPointer('ModInput_Gain')); //HACK: Delete asap!
 
-  LfoA := TLucidityLfo.Create(VoiceClockManager);
+  LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
   LfoOut := LfoA.GetModPointer('LfoOutput');
 
-  LfoB := TLucidityLfo.Create(VoiceClockManager);
+  LfoB := TLucidityLfo.Create(1, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo2, LfoB.GetModPointer('LfoOutput'));
 
   StepSeqOne := TLucidyStepSequencer.Create(VoiceClockManager);
@@ -452,6 +452,14 @@ begin
   StepSeqOne.SequenceData := aSampleGroup.GetSequenceData(0);
   StepSeqTwo.SequenceData := aSampleGroup.GetSequenceData(1);
 
+  LfoA.Par1 := @ParValueData^[TModParIndex.Lfo1Par1].ModulatedParValue;
+  LfoA.Par2 := @ParValueData^[TModParIndex.Lfo1Par2].ModulatedParValue;
+  LfoA.Par3 := @ParValueData^[TModParIndex.Lfo1Par3].ModulatedParValue;
+
+  LfoB.Par1 := @ParValueData^[TModParIndex.Lfo2Par1].ModulatedParValue;
+  LfoB.Par2 := @ParValueData^[TModParIndex.Lfo2Par2].ModulatedParValue;
+  LfoB.Par3 := @ParValueData^[TModParIndex.Lfo2Par3].ModulatedParValue;
+
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
   ModMatrix.UpdateModConnections;
@@ -461,8 +469,6 @@ begin
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
   FilterOne.Init(0, ParValueData, @self.ParModData);
   FilterTwo.Init(1, ParValueData, @self.ParModData);
-  LfoA.Init(0, ParValueData, @self.ParModData);
-  LfoB.Init(1, ParValueData, @self.ParModData);
   AmpEnv.Init(0, ParValueData, @self.ParModData);
   FilterEnv.Init(1, ParValueData, @self.ParModData);
 
