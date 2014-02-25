@@ -6,8 +6,8 @@ interface
 // the omni thread library functionality.
 
 uses
+  VamLib.HighSpeedTimer,
   SysUtils,
-  OtlParallel,
   Generics.Collections,
   ExtCtrls;
 
@@ -30,15 +30,18 @@ type
 
   TKnobSmoother = class
   private
-    MakeQuickExit : boolean;
     ActionList  : TSmoothActionList;
-    fSlewStepSize: single;
-    IsProcessingActive : boolean;
+    fSlewStepSize      : single;
+    fChangeCoefficient : single;
+
+    Timer : THighSpeedTimer;
 
     procedure ProcessAction(Action : TSmoothAction);
     procedure ProcessKnobActionsB;
 
     procedure ClearActionList;
+
+    procedure HandleTimerEvent(Sender : TObject);
 
   public
     constructor Create;
@@ -57,6 +60,9 @@ function KnobSmoother : TKnobSmoother;
 
 implementation
 
+uses
+  Math;
+
 var
   FGlobalKnobSmoother : TKnobSmoother;
 
@@ -73,12 +79,12 @@ end;
 constructor TKnobSmoother.Create;
 begin
   ActionList  := TSmoothActionList.Create(0);
+  fSlewStepSize := 0.003;
+  fChangeCoefficient := 0.15;
 
-  fSlewStepSize := 0.1;
-
-  IsProcessingActive := false;
-
-  MakeQuickExit := false;
+  Timer := THighSpeedTimer.Create;
+  Timer.Interval := 15;
+  Timer.OnTimer := self.HandleTimerEvent;
 end;
 
 destructor TKnobSmoother.Destroy;
@@ -86,9 +92,7 @@ begin
   if FGlobalKnobSmoother = self
     then FGlobalKnobSmoother := nil;
 
-  MakeQuickExit := true;
-  while IsProcessingActive
-    do sleep(250);
+  Timer.Free;
 
   ClearActionList;
   ActionList.Free;
@@ -140,14 +144,8 @@ begin
     if assigned(ApplyValue) then ApplyValue(CurrentValue);
   end;
 
-  if IsProcessingActive = false then
-  begin
-    Async(ProcessKnobActionsB).Await(
-    procedure
-    begin
-      IsProcessingActive := false;
-    end);
-  end;
+  if Timer.Enabled = false
+    then Timer.Enabled := true;
 end;
 
 procedure TKnobSmoother.KnobMove(const Obj: TObject; TargetValue: single; ApplyValue: TApplyValueMethod);
@@ -172,8 +170,6 @@ begin
   end;
 end;
 
-
-
 procedure TKnobSmoother.FinaliseKnob(const Obj: TObject);
 var
   Action : TSmoothAction;
@@ -191,23 +187,35 @@ begin
   end;
 end;
 
+procedure TKnobSmoother.HandleTimerEvent(Sender: TObject);
+begin
+  ProcessKnobActionsB;
+end;
+
 procedure TKnobSmoother.ProcessAction(Action: TSmoothAction);
+var
+  Dist : single;
 begin
   if (Action.IsActive) then
   begin
     if (Action.CurrentValue <> Action.TargetValue) and (assigned(Action.KnobMove)) then
     begin
-      if abs(Action.TargetValue - Action.CurrentValue) <= SlewStepSize then
+      Dist := Action.TargetValue - Action.CurrentValue;
+
+      if abs(Dist) <= SlewStepSize then
       begin
-        Action.CurrentValue := Action.TargetValue;
+        Action.CurrentValue := Action.TargetValue
       end else
-      if (Action.CurrentValue < Action.TargetValue) then
+      if Dist > 0 then
       begin
-        Action.CurrentValue := Action.CurrentValue + SlewStepSize;
+        Action.CurrentValue := Action.CurrentValue + fChangeCoefficient * Dist + SlewStepSize;
+        if Action.CurrentValue > Action.TargetValue
+          then Action.CurrentValue := Action.TargetValue;
       end else
-      if (Action.CurrentValue > Action.TargetValue) then
       begin
-        Action.CurrentValue := Action.CurrentValue - SlewStepSize;
+        Action.CurrentValue := Action.CurrentValue + fChangeCoefficient * Dist - SlewStepSize;
+        if Action.CurrentValue < Action.TargetValue
+          then Action.CurrentValue := Action.TargetValue;
       end;
 
       try
@@ -215,8 +223,6 @@ begin
       except
         raise EKnobSmootherException.Create('ERROR');
       end;
-
-
     end;
 
 
@@ -238,26 +244,23 @@ var
   c1 : integer;
   Action : TSmoothAction;
 begin
-  while (ActionList.Count > 0) and (not MakeQuickExit) do
+  for c1 := ActionList.Count-1 downto 0 do
   begin
-    for c1 := ActionList.Count-1 downto 0 do
-    begin
-      Action := ActionList.ToArray[c1].Value;
-      ProcessAction(Action);
-    end;
-
-    for c1 := ActionList.Count-1 downto 0 do
-    begin
-      Action := ActionList.ToArray[c1].Value;
-      if Action.IsActive = false then
-      begin
-        ActionList.Remove(Action.LinkedObject);
-        Action.Free;
-      end;
-    end;
-
-    Sleep(250);
+    Action := ActionList.ToArray[c1].Value;
+    ProcessAction(Action);
   end;
+
+  for c1 := ActionList.Count-1 downto 0 do
+  begin
+    Action := ActionList.ToArray[c1].Value;
+    if Action.IsActive = false then
+    begin
+      ActionList.Remove(Action.LinkedObject);
+      Action.Free;
+    end;
+  end;
+
+  if ActionList.Count = 0 then Timer.Enabled := false;
 end;
 
 
