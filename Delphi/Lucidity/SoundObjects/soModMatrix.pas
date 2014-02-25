@@ -5,9 +5,10 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Utils,
   VamLib.MoreTypes, LucidityModConnections,
   Lucidity.Types,
-  uConstants, uLucidityEnums, eeFunctions,
+  uConstants, uLucidityEnums,
   SoundObjectTypes;
 
   {$SCOPEDENUMS ON}
@@ -261,6 +262,7 @@ var
   c1 : integer;
   y : single;
   Index : integer;
+  pv, combinedModValues : single;
 begin
   {$IFDEF StrictDebugChecks}
   AreModSourceValuesInRange; //Expensive!!
@@ -277,6 +279,10 @@ begin
   begin
     Index := FastModulationIndexes[c1];
     ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
+
+    pv := ParValueData^[Index].ParValue;
+    combinedModValues := ParModData^[Index];
+    ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 
 end;
@@ -285,12 +291,17 @@ procedure TModMatrix.SlowControlProcess;
 var
   c1 : integer;
   Index : integer;
+  pv, combinedModValues : single;
 begin
   // calc the modulation for each modulated parameter.
   for c1 := 0 to SlowModulationCount-1 do
   begin
     Index := SlowModulationIndexes[c1];
     ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
+
+    pv := ParValueData^[Index].ParValue;
+    combinedModValues := ParModData^[Index];
+    ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 end;
 

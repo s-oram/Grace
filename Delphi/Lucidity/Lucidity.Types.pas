@@ -38,10 +38,17 @@ type
   PModulatedPars = ^TModulatedPars;
   TModulatedPars = array[0..kModulatedParameterCount-1] of TModulatedPar;
 
-  // TParModulationData is a structure intended to hold summed modulation amounts
+
+  // TODO: the summed modulation is now calculated in the ModMatrix class
+  // and stored in the TModulatedPar structure. This structure below should
+  // be removed from use and deleted.
+  //
+  // NOTE: TParModulationData is a structure intended to hold summed modulation amounts
   // for all parameters.
   PParModulationData = ^TParModulationData;
   TParModulationData = array[0..kModulatedParameterCount-1] of single;
+
+
 
 implementation
 
