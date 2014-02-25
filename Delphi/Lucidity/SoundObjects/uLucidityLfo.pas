@@ -98,7 +98,7 @@ type
     VoiceClockManager : TLucidityVoiceClockManager;
     fLfo : TLfo;
 
-    ModuleIndex     : integer;
+    ModuleIndex  : integer;
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 

@@ -228,9 +228,6 @@ begin
   ModMatrix.SetModDestPointer(TModDest.LoopEnd, @ModPoints.LoopEnd);
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
-  //ModMatrix.SetModDestPointer(TModDest.GrainStretch_GrainSize, GrainStretchOsc.GetModPointer('DestGrainSize'));
-  //ModMatrix.SetModDestPointer(TModDest.GrainStretch_Rate,      GrainStretchOsc.GetModPointer('DestRate'));
-  //ModMatrix.SetModDestPointer(TModDest.GrainStretch_Position,  GrainStretchOsc.GetModPointer('DestPosition'));
 
   OneShotSampleOsc := TOneShotSampleOsc.Create(@ModPoints, VoiceClockManager);
   OneShotSampleOsc.OnFinished := self.SampleFinished;
@@ -351,22 +348,13 @@ end;
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);
 begin
   fPitchTracking := Value;
-
   //NOTE: The voice class expects the SamplePlayback type to not change while Active.
   if IsActive then assert('ERROR: Changing Pitch Tracking type while Voice is active.');
-
-
-  {
-  if (PitchTracking = TPitchTracking.Note) or (PitchTracking = TPitchTracking.Off)
-    then OscModule := TOscModule.oscNoteSampler
-    else OscModule := TOscModule.oscLoopSampler;
-  }
 end;
 
 procedure TLucidityVoice.SetSamplePlaybackType(const Value: TSamplePlaybackType);
 begin
   fSamplePlaybackType := Value;
-
   //NOTE: The voice class expects the SamplePlayback type to not change while Active.
   if IsActive then assert('ERROR: Changing Playback type while Voice is active.');
 end;
@@ -395,15 +383,6 @@ end;
 procedure TLucidityVoice.SampleResetClockEvent(Sender: TObject; ClockID: cardinal);
 begin
   OneShotSampleOsc.ResetSamplePosition;
-
-  {
-  case OscModule of
-    oscNoteSampler: OneShotSampleOsc.ResetSamplePosition;
-    oscLoopSampler: LoopSampleOsc.ResetSamplePosition;
-  else
-    raise Exception.Create('type not handled.');
-  end;
-  }
 end;
 
 function TLucidityVoice.CalcPitchTransitionTime: single;
@@ -418,7 +397,6 @@ var
   PitchOne: single;
   PitchTwo: single;
 begin
-
   PitchOne := ParValueData^[TModParIndex.VoicePitchOne].ParValue + ParModData[TModParIndex.VoicePitchOne];
   PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1;
 
@@ -436,37 +414,6 @@ begin
   OscPitchParameters^.SamplePitchAdjust := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
   OscPitchParameters^.VoicePitchAdjust  := round(PitchOne * 12) + PitchTwo;
   OscPitchParameters^.PitchBendAdjust   := GlobalModPoints^.Source_MidiPitchBendST;
-
-
-
-  {
-  case PitchTracking of
-    TPitchTracking.Note:
-    begin
-      if VoiceMode = TVoiceMode.Poly
-        then PitchShift := fTriggerNote
-        else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
-
-      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-      PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
-      OneShotSampleOsc.PitchShift := PitchShift;
-    end;
-
-    TPitchTracking.BPM:
-    begin
-      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-      OneShotSampleOsc.PitchShift := CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
-    end;
-
-    TPitchTracking.Off:
-    begin
-      SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-      OneShotSampleOsc.PitchShift := CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
-    end;
-  else
-    raise Exception.Create('type not handled.');
-  end;
-  }
 end;
 
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
@@ -496,7 +443,6 @@ begin
   ModConnections := aSampleGroup.GetModConnectionsPointer;
 
   //=== init all processing objects with links to voice parameters etc ===
-
   StepSeqOne.SequenceData := aSampleGroup.GetSequenceData(0);
   StepSeqTwo.SequenceData := aSampleGroup.GetSequenceData(1);
 
@@ -542,7 +488,6 @@ begin
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
-  //ModMatrix.UpdateAllModLinks(aModConnections);
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
 
@@ -560,40 +505,6 @@ begin
   UpdateOscPitch;
 
   OneShotSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
-
-
-
-  {
-  case OscModule of
-    oscNoteSampler:
-    begin
-      if (PitchTracking = TPitchTracking.Note) then
-      begin
-        if VoiceMode = TVoiceMode.Poly
-          then PitchShift := fTriggerNote
-          else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
-
-        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-        PitchShift := (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
-        OneShotSampleOsc.PitchShift := PitchShift;
-      end else
-      begin
-        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-        OneShotSampleOsc.PitchShift := CalcPitchShift(aSampleRegion.GetProperties^.RootNote, aSampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
-      end;
-
-      OneShotSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
-    end;
-
-    oscLoopSampler:
-    begin
-      LoopSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
-    end
-  else
-    raise Exception.Create('type not handled.');
-  end;
-  }
-
 
   FilterOne.Reset;
   FilterTwo.Reset;
@@ -666,8 +577,6 @@ var
   CV : TModularVoltage;
   SamplePitch : single;
 begin
-  //GlobalProfiler.StartTimer('Control Rate Process');
-
   // update sample pan / volume offsets..
   assert(SampleRegion.GetProperties^.SamplePan >= -100);
   assert(SampleRegion.GetProperties^.SamplePan <= 100);
@@ -700,44 +609,9 @@ begin
 
   //=== Control rate step for all audio rate modules ===
   OscVCA.FastControlProcess(AmpEnv.Value);
-  //OscPanner.FastControlProcess;
-
-
-  {
-  case OscModule of
-    oscNoteSampler:
-    begin
-      if (PitchTracking = TPitchTracking.Note) then
-      begin
-        if VoiceMode = TVoiceMode.Poly
-          then PitchShift := fTriggerNote
-          else PitchShift := GlobalModPoints.Source_MonophonicMidiNote;
-        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-        PitchShift := GlobalModPoints.Source_MidiPitchBendST + (PitchShift - SampleRegion.GetProperties^.RootNote) + round(PitchOne * 12) + PitchTwo + SamplePitch;
-        OneShotSampleOsc.PitchShift := PitchShift;
-      end else
-      begin
-        SamplePitch := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-        OneShotSampleOsc.PitchShift := GlobalModPoints.Source_MidiPitchBendST + CalcPitchShift(SampleRegion.GetProperties^.RootNote, SampleRegion.GetProperties^.RootNote, PitchOne, PitchTwo, SamplePitch);
-      end;
-
-      OneShotSampleOsc.FastControlProcess;
-    end;
-
-    oscLoopSampler:
-    begin
-      LoopSampleOsc.FastControlProcess;
-    end
-  else
-    raise Exception.Create('type not handled.');
-  end;
-  }
 
   FilterOne.FastControlProcess;
   FilterTwo.FastControlProcess;
-
-
-  //GlobalProfiler.StopTimer;
 end;
 
 procedure TLucidityVoice.SlowControlProcess;
@@ -751,15 +625,6 @@ begin
 
   ModMatrix.SlowControlProcess;
   OneShotSampleOsc.SlowControlProcess;
-
-  {
-  case OscModule of
-    oscNoteSampler:
-    oscLoopSampler: LoopSampleOsc.SlowControlProcess;
-  else
-    raise Exception.Create('type not handled.');
-  end;
-  }
 end;
 
 
@@ -771,8 +636,6 @@ var
   MixX1, MixX2 : single;
   pxA, pxB : PSingle;
 begin
-  //GlobalProfiler.StartTimer('Audio Rate Process');
-
   assert(IsActive);
 
   pxA := @BufferA[0];
@@ -781,23 +644,13 @@ begin
   for c1 := 0 to SampleFrames-1 do
   begin
     OneShotSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
-    {
-    case OscModule of
-      oscNoteSampler: OneShotSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
-      oscLoopSampler: LoopSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
-    else
-      raise Exception.Create('type not handled.');
-    end;
-    }
 
     MixX1 := SampleOscX1;
     MixX2 := SampleOscX2;
 
     FilterOne.AudioRateStep(MixX1, MixX2);
     FilterTwo.AudioRateStep(MixX1, MixX2);
-    //TODO: OscVCA and OscPanner could be combined into one module.
     OscVCA.AudioRateStep(MixX1, MixX2);
-    //OscPanner.AudioRateStep(MixX1, MixX2);
 
     pxA^ := MixX1 * SampleLevelOffsetA;
     pxB^ := MixX2 * SampleLevelOffsetB;
@@ -819,11 +672,6 @@ begin
     // Important: Clear voice resources...
     CleanUp;
   end;
-
-
-  //GlobalProfiler_StopTimer('AudioRateProcess');
-  //GlobalProfiler.StopTimer;
-
 end;
 
 procedure TLucidityVoice.GetGuiFeedBack(const FeedbackData: TGuiFeedBackData);
@@ -835,15 +683,6 @@ begin
   begin
     FeedbackData.SampleBounds.ShowRealTimeMarkers := true;
     OneShotSampleOsc.GetGuiFeedBack(FeedbackData);
-
-    {
-    case OscModule of
-      oscNoteSampler:
-      oscLoopSampler: LoopSampleOsc.GetGuiFeedBack(FeedbackData);
-    else
-      raise Exception.Create('type not handled.');
-    end;
-    }
   end else
   begin
     FeedbackData.SampleBounds.ShowRealTimeMarkers := false;

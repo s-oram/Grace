@@ -43,8 +43,8 @@ type
     FastModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
     SlowModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
 
-    ParValueData: PModulatedPars;
-    ParModData: PParModulationData;
+    ParValueData  : PModulatedPars;
+    ParModData    : PParModulationData;
     ModConnections: PModConnections;
 
     ModSlotValues : array[0..kModSlotCount-1] of single;
