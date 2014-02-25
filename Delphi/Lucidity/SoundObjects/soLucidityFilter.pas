@@ -9,6 +9,7 @@ uses
   uConstants,
   uLucidityEnums,
   Math,
+  Lucidity.Types,
   eeVirtualCV, eeFunctions,
   FilterCore.SimperSVF,
   soFilter.Test,

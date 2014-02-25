@@ -16,6 +16,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
       Top = 0
       Width = 833
       Height = 302
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -35,6 +36,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
         Margins.Top = 0
         Margins.Right = 0
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Color = '$FF000000'
         CornerRadius1 = 3.000000000000000000
@@ -59,6 +61,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           LineColor = '$FF555555'
           Align = alClient
@@ -70,6 +73,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Top = 245
           Width = 819
           Height = 47
+          Opacity = 255
           HitTest = True
           Align = alBottom
           Visible = True
@@ -83,6 +87,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             Margins.Top = 0
             Margins.Right = 0
             Margins.Bottom = 0
+            Opacity = 255
             HitTest = True
             Align = alTop
             Visible = True
@@ -92,6 +97,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Top = 0
               Width = 107
               Height = 27
+              Opacity = 255
               Text = 'Awesome Sample.wav'
               HitTest = True
               AutoSize = True
@@ -111,6 +117,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Top = 0
               Width = 68
               Height = 27
+              Opacity = 255
               Text = 'Beats'
               HitTest = True
               Font.Charset = DEFAULT_CHARSET
@@ -145,6 +152,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Margins.Top = 0
               Margins.Right = 10
               Margins.Bottom = 0
+              Opacity = 255
               Text = 'Volume'
               HitTest = True
               Font.Charset = DEFAULT_CHARSET
@@ -180,6 +188,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Margins.Top = 0
               Margins.Right = 10
               Margins.Bottom = 0
+              Opacity = 255
               Text = 'Pan'
               HitTest = True
               Font.Charset = DEFAULT_CHARSET
@@ -215,6 +224,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Margins.Top = 0
               Margins.Right = 10
               Margins.Bottom = 0
+              Opacity = 255
               Text = 'Fine'
               HitTest = True
               Font.Charset = DEFAULT_CHARSET
@@ -249,6 +259,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Margins.Top = 0
               Margins.Right = 10
               Margins.Bottom = 0
+              Opacity = 255
               Text = 'Tune'
               HitTest = True
               Font.Charset = DEFAULT_CHARSET

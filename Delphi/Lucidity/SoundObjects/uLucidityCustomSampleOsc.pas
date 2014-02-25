@@ -7,6 +7,7 @@ unit uLucidityCustomSampleOsc;
 interface
 
 uses
+  Lucidity.Types,
   VamLib.MoreTypes, Lucidity.SampleMap, uConstants, eeSampleFloat,
   uLucidityClock;
 

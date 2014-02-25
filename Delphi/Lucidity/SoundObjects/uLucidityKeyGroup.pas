@@ -3,6 +3,7 @@ unit uLucidityKeyGroup;
 interface
 
 uses
+  Lucidity.Types,
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   uLucidityKeyGroupInterface, LucidityModConnections,
@@ -31,7 +32,6 @@ type
     fVoiceParameters: TLucidityVoiceParameterWrapper;
     fModConnections: TModConnections;
 
-    function GetVoiceParameters : TLucidityVoiceParameterWrapper;
     function GetObject : TObject;
     function GetTriggeredNoteCount:cardinal;
     procedure IncTriggeredNoteCount;
@@ -95,8 +95,6 @@ uses
 { TLucidityEngine }
 
 constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
-var
-  c1: Integer;
 begin
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
@@ -156,10 +154,6 @@ begin
   end;
 end;
 
-function TKeyGroup.GetVoiceParameters: TLucidityVoiceParameterWrapper;
-begin
-  result := fVoiceParameters;
-end;
 
 procedure TKeyGroup.IncTriggeredNoteCount;
 begin

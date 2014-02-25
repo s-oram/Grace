@@ -4,6 +4,7 @@ interface
 
 uses
   uConstants,
+  Lucidity.Types,
   Lucidity.SequencerDataObject,
   LucidityModConnections;
 

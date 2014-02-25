@@ -6,6 +6,7 @@ interface
 
 uses
   VamLib.MoreTypes, LucidityModConnections,
+  Lucidity.Types,
   uConstants, uLucidityEnums, eeFunctions,
   SoundObjectTypes;
 

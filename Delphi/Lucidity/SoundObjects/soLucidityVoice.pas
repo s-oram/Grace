@@ -12,6 +12,7 @@ uses
   eeTypes, eeVirtualCV, uLucidityKeyGroupInterface,
   VamLib.MoreTypes, eeGlobals, eeVoiceLogic,
   eeCounter,
+  Lucidity.Types,
   Lucidity.Env.ADSR,
   Lucidity.Env.ASR,
   Lucidity.Osc.OneShotSampler,

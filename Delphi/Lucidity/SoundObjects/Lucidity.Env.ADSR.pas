@@ -6,6 +6,7 @@ interface
 
 uses
   uConstants,
+  Lucidity.Types,
   VamLib.MoreTypes, soADSR, {eeFunctions,} uLucidityEnums, eeDsp;
 
 type

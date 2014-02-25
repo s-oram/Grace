@@ -3,7 +3,7 @@ unit uMiniSampleDisplayFrame;
 interface
 
 uses
-  VamLib.ZeroObject,
+  VamLib.ZeroObject, Math,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.SampleMap, uLucidityKeyGroupInterface, Menu.SampleDisplayMenu,
   eePlugin, eeGuiStandard, uGuiFeedbackData, LuciditySampleOverlay,
@@ -754,7 +754,7 @@ end;
 procedure TMiniSampleDisplayFrame.UpdateControlVisibility;
 var
   Par : TVstParameter;
-  Ref, Target : TControl;
+  Target : TControl;
   mode : TPitchTracking;
 
   xpos : integer;
