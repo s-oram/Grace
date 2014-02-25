@@ -2,6 +2,11 @@ unit soLfo.WaveTableLfo;
 
 interface
 
+uses
+  Math,
+  VamLib.Utils,
+  eeDsp;
+
 type
   TWaveTableLfo = class
   private
@@ -11,6 +16,7 @@ type
     fPulseWidthMod: single;
     fFreq: single;
   protected
+    //TODO: this should be changed to be cardinal values...
     StepSize : single;
     LfoPhase : single;
   public
@@ -33,11 +39,48 @@ type
 
 implementation
 
+{$EXCESSPRECISION OFF}
+
+const
+  kWaveTableSize = 256;
+
+var
+  SineTable : array[0..kWaveTableSize] of single;
+  SawTable  : array[0..kWaveTableSize] of single;
+  TriTable  : array[0..kWaveTableSize] of single;
+  SqrTable  : array[0..kWaveTableSize] of single;
+
+  AreWaveTablesInitialized : boolean;
+
+
+procedure InitWaveTables;
+var
+  c1: Integer;
+  x : single;
+
+begin
+  AreWaveTablesInitialized := true;
+
+  for c1 := 0 to kWaveTableSize-1 do
+  begin
+    x := c1 / (kWaveTableSize - 1);
+    x := Sin(2 * pi * x) * 0.5 + 0.5;
+    x := Clamp(x, kDenormal, 1);
+    SineTable[c1] := x;
+  end;
+
+  SineTable[kWaveTableSize] := SineTable[0];
+end;
+
 { TWaveTableLfo }
 
 constructor TWaveTableLfo.Create;
 begin
+  if not AreWaveTablesInitialized
+    then InitWaveTables;
+
   StepSize := 0;
+  LfoPhase := 0;
 end;
 
 destructor TWaveTableLfo.Destroy;
@@ -52,18 +95,41 @@ begin
 end;
 
 function TWaveTableLfo.Step: single;
+var
+  TableIndex : integer;
+  Frac       : single;
+  ax : single;
+  bx : single;
+  x : single;
 begin
+  TableIndex := floor(LfoPhase * kWaveTableSize);
+  Frac := (LfoPhase * kWaveTableSize) - TableIndex;
+
+  ax := SineTable[TableIndex];
+  bx := SineTable[TableIndex + 1];
+
+  result := LinearInterpolation(ax,bx, Frac);
+
+
+  LfoPhase := LfoPhase + StepSize;
   if LfoPhase >= 1 then LfoPhase := LfoPhase - 1;
 
   // output should be ranged 0..1.
-  result := LfoPhase;
-
-  LfoPhase := LfoPhase + StepSize;
+  assert(InRange(result,0,1));
 end;
 
 procedure TWaveTableLfo.UpdateStepSize;
 begin
   StepSize := 1 / SampleRate * Freq;
 end;
+
+
+
+
+initialization
+  AreWaveTablesInitialized := false;
+
+finalization
+
 
 end.

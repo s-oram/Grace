@@ -52,3 +52,7 @@
 {$ELSEIF Defined(UseASM) and Defined(CPUX86)}
 {$ELSE}
 {$IFEND}
+
+
+
+{$EXCESSPRECISION OFF}
