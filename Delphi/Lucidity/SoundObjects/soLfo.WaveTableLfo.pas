@@ -10,6 +10,9 @@ type
     fPhaseOffset: single;
     fPulseWidthMod: single;
     fFreq: single;
+  protected
+    StepSize : single;
+    LfoPhase : single;
   public
     constructor Create;
     destructor Destroy; override;
@@ -34,7 +37,7 @@ implementation
 
 constructor TWaveTableLfo.Create;
 begin
-
+  StepSize := 0;
 end;
 
 destructor TWaveTableLfo.Destroy;
@@ -50,15 +53,17 @@ end;
 
 function TWaveTableLfo.Step: single;
 begin
+  if LfoPhase >= 1 then LfoPhase := LfoPhase - 1;
 
   // output should be ranged 0..1.
-  //result := 0;
-  result := random * 0.5 + 0.5;
+  result := LfoPhase;
+
+  LfoPhase := LfoPhase + StepSize;
 end;
 
 procedure TWaveTableLfo.UpdateStepSize;
 begin
-
+  StepSize := 1 / SampleRate * Freq;
 end;
 
 end.

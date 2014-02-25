@@ -16,6 +16,7 @@ type
   // These structures are intended for storing the modulated parameter values.
   // I'm not entirely sure of the variable naming yet. It doesn't seem quite right.
   TModulatedPar = record
+  public
     //Holds the actual parameter value. Range should be 0..1
     ParValue  : single;
 

@@ -41,9 +41,11 @@ type
 
     FastModulationCount : integer;
     SlowModulationCount : integer;
+    NoModulationCount   : integer;
 
     FastModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
     SlowModulationIndexes : array[0..kModulatedParameterCount-1] of integer;
+    NoModulationIndexes   : array[0..kModulatedParameterCount-1] of integer;
 
     ParValueData  : PModulatedPars;
     ParModData    : PParModulationData;
@@ -284,7 +286,6 @@ begin
     combinedModValues := ParModData^[Index];
     ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
-
 end;
 
 procedure TModMatrix.SlowControlProcess;
@@ -302,6 +303,12 @@ begin
     pv := ParValueData^[Index].ParValue;
     combinedModValues := ParModData^[Index];
     ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
+  end;
+
+  for c1 := 0 to NoModulationCount-1 do
+  begin
+    Index := NoModulationIndexes[c1];
+    ParValueData^[Index].ModulatedParValue := ParValueData^[Index].ParValue;
   end;
 end;
 
@@ -401,6 +408,7 @@ begin
   // update modulated parameters
   FastModulationCount := 0;
   SlowModulationCount := 0;
+  NoModulationCount   := 0;
 
   for c1 := 0 to kModulatedParameterCount-1 do
   begin
@@ -417,6 +425,11 @@ begin
         SlowModulationIndexes[Index] := c1;
         inc(SlowModulationCount);
       end;
+    end else
+    begin
+      Index := NoModulationCount;
+      NoModulationIndexes[Index] := c1;
+      inc(NoModulationCount);
     end;
   end;
 end;
