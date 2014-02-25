@@ -75,8 +75,10 @@ procedure TSignalDisplay.ProcessSignal(Dest : TRedFoxImageBuffer; const DestRect
   begin
     if OldWriteIndex < CurrentWriteIndex
       then exit(CurrentWriteIndex - OldWriteIndex);
+
     if OldWriteIndex > CurrentWriteIndex
       then exit(BufferSize - OldWriteIndex - 1 + CurrentWriteIndex);
+
     // If we've made it this far...
     result := 0;
   end;
@@ -131,25 +133,20 @@ begin
 
     SamplesAvailable := CalcSamplesAvailable(WriteIndex, CurrentWriteIndex, BufferSize);
 
-
     while SamplesAvailable >= SamplesPerPixel do
     begin
       dec(SamplesAvailable, SamplesPerPixel);
 
       FindMinMaxValues(ReadIndex, SamplesPerPixel, BufferSize, Buffer, MinBuffer, MaxBuffer);
 
-      //y1 := Clamp((MinBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
-      //y2 := Clamp((MaxBuffer * 0.5 + 0.5), 0, 1) * BackBuffer.Height;
-
-      y1 := (1 - Clamp((MinBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
-      y2 := (1 - Clamp((MaxBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
+      y1 := (1 - Clamp((MaxBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
+      y2 := (1 - Clamp((MinBuffer * 0.5 + 0.5), 0, 1)) * BackBuffer.Height;
 
       if abs(y1 - y2) <= 2 then
       begin
         y1 := y1 - 1;
         y2 := y2 + 1;
       end;
-
 
       BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmClear;
       BackBuffer.BufferInterface.Line(DrawXIndex + 0.5, 0, DrawXIndex + 0.5, BackBuffer.Height);
@@ -161,27 +158,11 @@ begin
       if DrawXIndex >= BackBuffer.Width then
       begin
         DrawXIndex := 0;
-        //BackBuffer.BufferInterface.ClearAll(0,0,0,0);
       end;
 
       inc(WriteIndex, SamplesPerPixel);
       if WriteIndex >= BufferSize then WriteIndex := WriteIndex - BufferSize;
     end;
-
-
-    {
-    if SamplesAvailable > 0 then
-    begin
-      x1 := Random * BackBuffer.Width;
-      x2 := Random * BackBuffer.Width;
-      y1 := Random * BackBuffer.Height;
-      y2 := Random * BackBuffer.Height;
-
-      Backbuffer.BufferInterface.Line(x1,y1,x2,y2);
-
-      WriteIndex := CurrentWriteIndex;
-    end;
-    }
   end;
 end;
 
