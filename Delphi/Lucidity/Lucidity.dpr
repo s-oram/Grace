@@ -44,7 +44,7 @@ uses
   FilterCore.SimperSVF in 'SoundObjects\FilterCore.SimperSVF.pas',
   soFilter.BandPassA in 'SoundObjects\soFilter.BandPassA.pas',
   soFilter.HighPassA in 'SoundObjects\soFilter.HighPassA.pas',
-  uLucidityLfo in 'SoundObjects\uLucidityLfo.pas',
+  uLucidity.Lfo in 'SoundObjects\uLucidity.Lfo.pas',
   soModMatrix in 'SoundObjects\soModMatrix.pas',
   uGuiUtils in 'uGuiUtils.pas',
   SoundObjectTypes in 'SoundObjects\SoundObjectTypes.pas',

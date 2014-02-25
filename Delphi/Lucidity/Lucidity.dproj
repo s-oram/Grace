@@ -459,7 +459,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\FilterCore.SimperSVF.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.BandPassA.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.HighPassA.pas"/>
-			<DCCReference Include="SoundObjects\uLucidityLfo.pas"/>
+			<DCCReference Include="SoundObjects\uLucidity.Lfo.pas"/>
 			<DCCReference Include="SoundObjects\soModMatrix.pas"/>
 			<DCCReference Include="uGuiUtils.pas"/>
 			<DCCReference Include="SoundObjects\SoundObjectTypes.pas"/>

@@ -7,7 +7,8 @@ interface
 uses
   Math,
   VamLib.MoreTypes, eeVoiceLogic, soLucidityVoice, eeGlobals,
-  uConstants, Lucidity.SampleMap, soLucidityWaveOsc, uLucidityLfo,
+  uConstants, Lucidity.SampleMap, soLucidityWaveOsc,
+  uLucidity.Lfo,
   FilterCore.SimperSVF,
   eeSampleFloat,
   uLucidityEnums,

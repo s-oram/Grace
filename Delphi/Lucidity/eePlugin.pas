@@ -43,7 +43,7 @@ uses
   SampleOscUtils,
   soGateEnvelope,
   uLucidityClock,
-  uLucidityLfo,
+  uLucidity.Lfo,
   uLucidityCustomSampleOsc,
   soDynamicWaveTableOsc,
   soGrainStretchSubOsc,
