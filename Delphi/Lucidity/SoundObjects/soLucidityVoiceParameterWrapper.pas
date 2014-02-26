@@ -441,7 +441,6 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetLfoAPar2(const Value: single);
 begin
   fLfoAPar2 := Value;
-
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoAPar3(const Value: single);
