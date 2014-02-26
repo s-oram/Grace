@@ -143,7 +143,7 @@ uses
   soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
   uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
   soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas',
-  eeOscPhaseCounterV2 in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounterV2.pas';
+  eeOscPhaseCounter in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas';
 
 {$R *.res}
 
