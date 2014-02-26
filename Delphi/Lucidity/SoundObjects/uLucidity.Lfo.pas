@@ -184,7 +184,7 @@ begin
 
   WaveTableLFO.Freq          := (Par1^ * Par1^) * 150 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
   WaveTableLFO.PhaseOffset   := Par2^;
-  WaveTableLFO.PulseWidthMod := Par3^;
+  WaveTableLFO.Symmetry := Par3^;
 
   WaveTableLFO.UpdateStepSize;
 end;

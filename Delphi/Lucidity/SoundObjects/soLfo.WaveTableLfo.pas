@@ -9,6 +9,7 @@ interface
 uses
   Math,
   VamLib.Utils,
+  eeOscPhaseCounter,
   eeDsp;
 
 type
@@ -19,13 +20,13 @@ type
     fSampleRate: single;
     fBpm: single;
     fPhaseOffset: single;
-    fPulseWidthMod: single;
+    fSymmetry: single;
     fFreq: single;
     fWaveShape: TWaveTableLfoShape;
   protected
     //TODO: this should be changed to be cardinal values...
-    StepSize : single;
-    LfoPhase : single;
+    StepSize : TOscPhaseCounter;
+    LfoPhase : TOscPhaseCounter;
   public
     constructor Create;
     destructor Destroy; override;
@@ -35,12 +36,12 @@ type
     procedure UpdateStepSize; //call when the step size needs to be re-calculated. Normally after changing any LFO parameter.
     function Step : single; // generate the next LFO output sample.
 
-    property Bpm        : single read fBpm        write fBpm;
-    property SampleRate : single read fSampleRate write fSampleRate;
+    property Bpm           : single read fBpm           write fBpm;
+    property SampleRate    : single read fSampleRate    write fSampleRate;
 
     property Freq          : single read fFreq          write fFreq;          // LFO frequency in hertz.
     property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // Range 0..1
-    property PulseWidthMod : single read fPulseWidthMod write fPulseWidthMod; // Range 0..1, with 0.5 being no modulation.
+    property Symmetry      : single read fSymmetry      write fSymmetry;      // Range 0..1, with 0.5 being the default position.
 
 
     property WaveShape : TWaveTableLfoShape read fWaveShape write fWaveShape;
@@ -152,15 +153,14 @@ begin
 end;
 
 
-function ReadWaveTable(const Phase : single; const wt:TLfoWaveTable):single;
+function ReadWaveTable(const Phase : TOscPhaseCounter; const wt:TLfoWaveTable):single;
 var
   TableIndex : integer;
   Frac       : single;
   ax : single;
   bx : single;
 begin
-  TableIndex := floor(Phase * kWaveTableSize);
-  Frac       := (Phase * kWaveTableSize) - TableIndex;
+  Phase.GetIndex256(TableIndex, Frac);
 
   ax := wt[TableIndex];
   bx := wt[TableIndex + 1];
@@ -192,32 +192,20 @@ end;
 
 function TWaveTableLfo.Step: single;
 var
-  pwmOffset : single;
-  xPhase : single;
-  PhaseAndOffset : single;
+  pwmOffset      : single;
+  xPhase         : TOscPhaseCounter;
+  PhaseAndOffset : TOscPhaseCounter;
 begin
   //TODO: we are keeping track of the LFO phase with a float variable.
   // This should be changed to a integer implementation to automatically
   // wrap around when overflowing and for quick TableIndex and Frac calculation.
   PhaseAndOffset := LfoPhase + PhaseOffset;
-  if PhaseAndOffset > 1 then PhaseAndOffset := PhaseAndOffset - 1;
 
-  if PulseWidthMod < 0.5
+  if Symmetry < 0.5
     then pwmOffset := ReadWaveTable(PhaseAndOffset, OffsetTable)
     else pwmOffset := ReadWaveTable(1-PhaseAndOffset, OffsetTable);
 
-  xPhase := PhaseAndOffset + pwmOffset * (fPulseWidthMod * -2 + 1);
-
-  //TODO: I don't think these checks are needed.
-  //assert(xPhase >= 0);
-  //assert(xPhase <= 1);
-  if xPhase < 0
-    then xPhase := xPhase + 1;
-  if xPhase >= 1
-    then xPhase := xPhase - 1;
-
-
-
+  xPhase := PhaseAndOffset + TOscPhaseCounter(pwmOffset * (fSymmetry * -2 + 1));
 
   case WaveShape of
     TWaveTableLfoShape.Sine: result := ReadWaveTable(xPhase, SineTable);
@@ -229,12 +217,7 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-
-  LfoPhase := LfoPhase + StepSize;
-  if LfoPhase >= 1 then LfoPhase := LfoPhase - 1;
-
-  // output should be ranged 0..1.
-  assert(InRange(result,0,1));
+  LfoPhase.IncBy(StepSize);
 end;
 
 procedure TWaveTableLfo.UpdateStepSize;

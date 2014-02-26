@@ -27,7 +27,7 @@ type
 
   TOscPhaseCounter = record
     // http://docwiki.embarcadero.com/RADStudio/XE3/en/Operator_Overloading_%28Delphi%29
-    class operator Implicit(a : TOscPhaseCounter):single;
+    class operator Explicit(a : TOscPhaseCounter):single;
     class operator Implicit(a : single):TOscPhaseCounter;
     class operator Add(a : TOscPhaseCounter; b : TOscPhaseCounter):TOscPhaseCounter;
     class operator Subtract(a : TOscPhaseCounter; b : TOscPhaseCounter):TOscPhaseCounter;
@@ -44,10 +44,10 @@ type
     function IncByWithOverflowCheck(a : TOscPhaseCounter):boolean;
     function DecByWithOverflowCheck(a : TOscPhaseCounter):boolean;
 
-    procedure GetIndex256(out Index : cardinal; out Frac : single);
-    procedure GetIndex512(out Index : cardinal; out Frac : single);
-    procedure GetIndex1024(out Index : cardinal; out Frac : single);
-    procedure GetIndex2048(out Index : cardinal; out Frac : single);
+    procedure GetIndex256(out Index : integer; out Frac : single);
+    procedure GetIndex512(out Index : integer; out Frac : single);
+    procedure GetIndex1024(out Index : integer; out Frac : single);
+    procedure GetIndex2048(out Index : integer; out Frac : single);
   end;
 
 implementation
@@ -67,16 +67,15 @@ const
 
 { TOscPhaseCounter }
 
-class operator TOscPhaseCounter.Implicit(a: TOscPhaseCounter): single;
+class operator TOscPhaseCounter.Explicit(a: TOscPhaseCounter): single;
 begin
   result := a.PhaseInt / MaxCardinal;
 end;
 
 class operator TOscPhaseCounter.Implicit(a: single): TOscPhaseCounter;
 begin
-  assert(a >= 0);
-  assert(a <= 1);
-
+  // NOTE: WARNING: The phase counter is always within a 0..1 range.
+  // Values outside of this range will wrap around. IE. 2.3 will become 0.3.
   result.PhaseInt := round(a * MaxCardinal);
 end;
 
@@ -147,7 +146,7 @@ end;
 {$Q-}
 
 
-procedure TOscPhaseCounter.GetIndex256(out Index: cardinal; out Frac: single);
+procedure TOscPhaseCounter.GetIndex256(out Index: integer; out Frac: single);
 const
   ScaleFactor = 1/MaxCardinal*256;
   ShiftAmount = 24;
@@ -156,7 +155,7 @@ begin
   Frac := (PhaseInt * ScaleFactor) - (PhaseInt shr ShiftAmount);
 end;
 
-procedure TOscPhaseCounter.GetIndex512(out Index: cardinal; out Frac: single);
+procedure TOscPhaseCounter.GetIndex512(out Index: integer; out Frac: single);
 const
   ScaleFactor = 1/MaxCardinal*512;
   ShiftAmount = 23;
@@ -165,7 +164,7 @@ begin
   Frac := (PhaseInt * ScaleFactor) - (PhaseInt shr ShiftAmount);
 end;
 
-procedure TOscPhaseCounter.GetIndex1024(out Index: cardinal; out Frac: single);
+procedure TOscPhaseCounter.GetIndex1024(out Index: integer; out Frac: single);
 const
   ScaleFactor = 1/MaxCardinal*1024;
   ShiftAmount = 22;
@@ -174,7 +173,7 @@ begin
   Frac := (PhaseInt * ScaleFactor) - (PhaseInt shr ShiftAmount);
 end;
 
-procedure TOscPhaseCounter.GetIndex2048(out Index: cardinal; out Frac: single);
+procedure TOscPhaseCounter.GetIndex2048(out Index: integer; out Frac: single);
 const
   ScaleFactor = 1/MaxCardinal*2048;
   ShiftAmount = 21;

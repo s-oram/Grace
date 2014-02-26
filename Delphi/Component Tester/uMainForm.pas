@@ -3,7 +3,7 @@ unit uMainForm;
 interface
 
 uses
-  eeOscPhaseCounterV2,
+  eeOscPhaseCounter,
   VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.ZeroObject,
@@ -88,8 +88,9 @@ begin
   Timer.OnTimer := self.HandleTimerEvent;
   Timer.UseMainThreadForTimerEvent := true;
 
-  OscPhase := 0.99;
-  StepSize := 0.0001;
+  OscPhase := -1.25;
+  StepSize := 0;
+  HandleTimerEvent(nil);
 
 end;
 
@@ -102,7 +103,7 @@ procedure TForm1.HandleTimerEvent(Sender: TObject);
 var
   ms : Int64;
   Overflow : boolean;
-  Index : cardinal;
+  Index : integer;
   Frac  : single;
   s : string;
 begin
@@ -116,12 +117,9 @@ begin
   Memo1.Invalidate;
 
 
-  {
-  if Overflow
-    then Memo1.Lines.Add(IntToStr(round(single(OscPhase) * 100)) + ' OVERFLOW')
-    else Memo1.Lines.Add(IntToStr(round(single(OscPhase) * 100)));
+  Memo1.Lines.Add(IntToStr(round(single(OscPhase) * 100)));
   Memo1.Invalidate;
-  }
+
 end;
 
 
