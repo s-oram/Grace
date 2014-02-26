@@ -78,6 +78,11 @@ var
   GlobalDict : TProcDictionary;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  ax, ay : single;
+  x, y : cardinal;
+  sx : single;
+  sy : single;
 begin
   ID.Init;
 
@@ -88,9 +93,9 @@ begin
   Timer.OnTimer := self.HandleTimerEvent;
   Timer.UseMainThreadForTimerEvent := true;
 
-  OscPhase := -1.25;
-  StepSize := 0;
-  HandleTimerEvent(nil);
+  OscPhase := 0.5;
+  StepSize := 0.1;
+
 
 end;
 

@@ -205,6 +205,8 @@ begin
     then pwmOffset := ReadWaveTable(PhaseAndOffset, OffsetTable)
     else pwmOffset := ReadWaveTable(1-PhaseAndOffset, OffsetTable);
 
+  //TODO: This TOscPhaseCounter conversion involves a Round() call behind the
+  // scenes. I wonder if the conversion can be hidden somehow.
   xPhase := PhaseAndOffset + TOscPhaseCounter(pwmOffset * (fSymmetry * -2 + 1));
 
   case WaveShape of

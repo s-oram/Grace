@@ -36,7 +36,9 @@ type
   private
     PhaseInt : cardinal;
   public
+    function Raw : cardinal;
     function AsSingle : single;
+
 
     procedure IncBy(a : TOscPhaseCounter);
     procedure DecBy(a : TOscPhaseCounter);
@@ -100,6 +102,11 @@ begin
 end;
 
 
+
+function TOscPhaseCounter.Raw: cardinal;
+begin
+  result := PhaseInt;
+end;
 
 function TOscPhaseCounter.AsSingle: single;
 begin
