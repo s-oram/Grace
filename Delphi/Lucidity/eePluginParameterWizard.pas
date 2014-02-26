@@ -844,7 +844,7 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
+      result := 'LFO A Par2: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(SetModPar_Callback);
     aPar.SetCallback_GetParValue(GetModPar_Callback);
@@ -859,7 +859,7 @@ begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       //TODO:
-      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar2 * 100)) + '%';
+      result := 'LFO A Par3: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoAPar3 * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(SetModPar_Callback);
     aPar.SetCallback_GetParValue(GetModPar_Callback);
@@ -890,7 +890,7 @@ begin
   begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
-      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
+      result := 'LFO B Par2: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(SetModPar_Callback);
     aPar.SetCallback_GetParValue(GetModPar_Callback);
@@ -906,7 +906,7 @@ begin
     aPar.SetCallback_SetParInfoMethod(function:string
     begin
       //TODO:
-      result := 'LFO Mod: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar2 * 100)) + '%';
+      result := 'LFO B Par3: ' + IntToStr(round(Plugin.ActiveVoicePar.LfoBPar3 * 100)) + '%';
     end);
     aPar.SetCallback_SetParValue(SetModPar_Callback);
     aPar.SetCallback_GetParValue(GetModPar_Callback);
