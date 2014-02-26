@@ -667,8 +667,8 @@ begin
     pxA^ := MixX1 * SampleLevelOffsetA;
     pxB^ := MixX2 * SampleLevelOffsetB;
 
-    //pxA^ := LfoOut^;
-    //pxB^ := LfoOut^;
+    pxA^ := LfoOut^;
+    pxB^ := LfoOut^;
 
     inc(pxA);
     inc(pxB);

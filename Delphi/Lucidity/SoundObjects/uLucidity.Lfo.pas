@@ -103,6 +103,7 @@ type
     procedure SetPar1(const Value: PSynthPar);
     procedure SetPar2(const Value: PSynthPar);
     procedure SetPar3(const Value: PSynthPar);
+    procedure SetShape(const Value: TLfoShape);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
     fLfo_OLD          : TLfo;
@@ -125,7 +126,7 @@ type
 
     property SampleRate : single    read fSampleRate write SetSampleRate;
     property Bpm        : single    read fBpm        write SetBpm;
-    property Shape      : TLfoShape read fShape      write fShape;
+    property Shape      : TLfoShape read fShape      write SetShape;
 
     property Par1 : PSynthPar read fPar1 write SetPar1;
     property Par2 : PSynthPar read fPar2 write SetPar2;
@@ -212,6 +213,22 @@ begin
   fSampleRate := Value;
   Lfo.SampleRate := Value;
   WaveTableLfo.SampleRate := Value;
+end;
+
+procedure TLucidityLfo.SetShape(const Value: TLfoShape);
+begin
+  fShape := Value;
+
+  case Value of
+    TLfoShape.SawUp:    WaveTableLfo.WaveShape := TWaveTableLfoShape.Saw;
+    TLfoShape.SawDown:  WaveTableLfo.WaveShape := TWaveTableLfoShape.Ramp;
+    TLfoShape.Square:   WaveTableLfo.WaveShape := TWaveTableLfoShape.Sqr;
+    TLfoShape.Triangle: WaveTableLfo.WaveShape := TWaveTableLfoShape.Tri;
+    TLfoShape.Sine:     WaveTableLfo.WaveShape := TWaveTableLfoShape.Sine;
+    TLfoShape.Random:   WaveTableLfo.WaveShape := TWaveTableLfoShape.Sine;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 procedure TLucidityLfo.FastControlProcess;

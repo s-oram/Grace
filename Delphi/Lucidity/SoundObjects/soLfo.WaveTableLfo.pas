@@ -2,12 +2,18 @@ unit soLfo.WaveTableLfo;
 
 interface
 
+{$INCLUDE Defines.inc}
+
+{$SCOPEDENUMS ON}
+
 uses
   Math,
   VamLib.Utils,
   eeDsp;
 
 type
+  TWaveTableLfoShape = (Sine, Tri, Sqr, Saw, Ramp);
+
   TWaveTableLfo = class
   private
     fSampleRate: single;
@@ -15,6 +21,7 @@ type
     fPhaseOffset: single;
     fPulseWidthMod: single;
     fFreq: single;
+    fWaveShape: TWaveTableLfoShape;
   protected
     //TODO: this should be changed to be cardinal values...
     StepSize : single;
@@ -35,11 +42,15 @@ type
     property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // Range 0..1
     property PulseWidthMod : single read fPulseWidthMod write fPulseWidthMod; // Range 0..1, with 0.5 being no modulation.
 
+
+    property WaveShape : TWaveTableLfoShape read fWaveShape write fWaveShape;
+
   end;
 
 implementation
 
-{$EXCESSPRECISION OFF}
+uses
+  SysUtils;
 
 const
   kWaveTableSize = 256;
@@ -86,6 +97,37 @@ begin
   end;
 
   SawTable[kWaveTableSize] := SawTable[0];
+
+  //===== Create the triangle wave table =====
+  // TODO: table should be created using additive synthesis.
+  for c1 := 0 to kWaveTableSize-1 do
+  begin
+    x := (1-(c1 / (kWaveTableSize - 1))) * 4 - 2;
+    if x > 1
+      then x := 1 - (x - 1);
+    if x < -1
+      then x := -1 - (x + 1);
+
+    TriTable[c1] := x * 0.5 + 0.5;
+  end;
+
+  TriTable[kWaveTableSize] := TriTable[0];
+
+
+  //===== Create the triangle wave table =====
+  // TODO: table should be created using additive synthesis.
+  for c1 := 0 to kWaveTableSize-1 do
+  begin
+    x := c1 / (kWaveTableSize - 1);
+    if x > 0.5
+      then x := 1;
+    if x < 0.5
+      then x := 0;
+
+    SqrTable[c1] := x;
+  end;
+
+  SqrTable[kWaveTableSize] := SqrTable[0];
 
 
   //======= create the offset table =====
@@ -162,7 +204,18 @@ begin
   if xPhase >= 1
     then xPhase := xPhase - 1;
 
-  result := ReadWaveTable(xPhase, SineTable);
+
+  case WaveShape of
+    TWaveTableLfoShape.Sine: result := ReadWaveTable(xPhase, SineTable);
+    TWaveTableLfoShape.Tri:  result := ReadWaveTable(xPhase, TriTable);
+    TWaveTableLfoShape.Sqr:  result := ReadWaveTable(xPhase, SqrTable);
+    TWaveTableLfoShape.Saw:  result := ReadWaveTable(xPhase, SawTable);
+    TWaveTableLfoShape.Ramp: result := 1 - ReadWaveTable(xPhase, SawTable);
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
 
 
 
