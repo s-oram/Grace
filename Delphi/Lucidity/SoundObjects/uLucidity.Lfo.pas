@@ -250,12 +250,16 @@ end;
 
 procedure TLucidityLfo.StepResetA;
 begin
+  WaveTableLFO.ResetPhase;
   UpdateLfoParameters;
+  LfoOutput := WaveTableLfo.Step;
 end;
 
 procedure TLucidityLfo.StepResetB;
 begin
+  WaveTableLFO.ResetPhase;
   UpdateLfoParameters;
+  LfoOutput := WaveTableLfo.Step;
 end;
 
 procedure TLucidityLfo.UpdateLfoParameters;

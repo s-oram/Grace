@@ -131,6 +131,7 @@ begin
 
 
   //======= create the offset table =====
+  // TODO: This offset table should be smoothed with a filter or something...
   for c1 := 0 to kWaveTableSize-1 do
   begin
     x := c1 / (kWaveTableSize - 1);
@@ -186,23 +187,36 @@ end;
 
 procedure TWaveTableLfo.ResetPhase;
 begin
-  //TODO:
+  LfoPhase := 0;
 end;
 
 function TWaveTableLfo.Step: single;
 var
   pwmOffset : single;
   xPhase : single;
+  PhaseAndOffset : single;
 begin
-  if PulseWidthMod < 0.5
-    then pwmOffset := ReadWaveTable(LfoPhase, OffsetTable)
-    else pwmOffset := ReadWaveTable(1-LfoPhase, OffsetTable);
+  //TODO: we are keeping track of the LFO phase with a float variable.
+  // This should be changed to a integer implementation to automatically
+  // wrap around when overflowing and for quick TableIndex and Frac calculation.
+  PhaseAndOffset := LfoPhase + PhaseOffset;
+  if PhaseAndOffset > 1 then PhaseAndOffset := PhaseAndOffset - 1;
 
-  xPhase := LfoPhase + pwmOffset * (fPulseWidthMod * -2 + 1);
+  if PulseWidthMod < 0.5
+    then pwmOffset := ReadWaveTable(PhaseAndOffset, OffsetTable)
+    else pwmOffset := ReadWaveTable(1-PhaseAndOffset, OffsetTable);
+
+  xPhase := PhaseAndOffset + pwmOffset * (fPulseWidthMod * -2 + 1);
+
+  //TODO: I don't think these checks are needed.
+  //assert(xPhase >= 0);
+  //assert(xPhase <= 1);
   if xPhase < 0
     then xPhase := xPhase + 1;
   if xPhase >= 1
     then xPhase := xPhase - 1;
+
+
 
 
   case WaveShape of
@@ -214,26 +228,6 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
-
-
-
-
-
-
-
-  {
-  pwmOffset := ReadWaveTable(LfoPhase, OffsetTable);
-
-  xPhase := LfoPhase + pwmOffset * (fPulseWidthMod * 2 - 1);
-  if xPhase < 0  then xPhase := xPhase + 1;
-  if xPhase >= 1 then xPhase := xPhase - 1;
-
-  result := ReadWaveTable(xPhase, SineTable);
-  }
-
-  //result := ReadWaveTable(LfoPhase, OffsetTable);
-
-
 
 
   LfoPhase := LfoPhase + StepSize;
