@@ -1100,13 +1100,6 @@ begin
     VoiceController.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
 
-    ClearBuffer(Outputs[0], SampleFrames);
-    ClearBuffer(Outputs[1], SampleFrames);
-    ClearBuffer(Outputs[2], SampleFrames);
-    ClearBuffer(Outputs[3], SampleFrames);
-    ClearBuffer(Outputs[4], SampleFrames);
-    ClearBuffer(Outputs[5], SampleFrames);
-
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do
     begin
@@ -1128,4 +1121,16 @@ begin
 end;
 
 
+
+
 end.
+
+
+
+
+
+
+
+
+
+

@@ -664,11 +664,11 @@ begin
     FilterTwo.AudioRateStep(MixX1, MixX2);
     OscVCA.AudioRateStep(MixX1, MixX2);
 
-    //pxA^ := MixX1 * SampleLevelOffsetA;
-    //pxB^ := MixX2 * SampleLevelOffsetB;
+    pxA^ := MixX1 * SampleLevelOffsetA;
+    pxB^ := MixX2 * SampleLevelOffsetB;
 
-    pxA^ := LfoOut^;
-    pxB^ := LfoOut^;
+    //pxA^ := LfoOut^;
+    //pxB^ := LfoOut^;
 
     inc(pxA);
     inc(pxB);
