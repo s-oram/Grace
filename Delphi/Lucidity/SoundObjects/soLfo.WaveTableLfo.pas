@@ -31,9 +31,9 @@ type
     property Bpm        : single read fBpm        write fBpm;
     property SampleRate : single read fSampleRate write fSampleRate;
 
-    property Freq          : single read fFreq          write fFreq;        // LFO frequency in hertz.
-    property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset; //Range 0..1
-    property PulseWidthMod : single read fPulseWidthMod write fPulseWidthMod; //Range 0..1, with 0.5 being no modulation.
+    property Freq          : single read fFreq          write fFreq;          // LFO frequency in hertz.
+    property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // Range 0..1
+    property PulseWidthMod : single read fPulseWidthMod write fPulseWidthMod; // Range 0..1, with 0.5 being no modulation.
 
   end;
 
@@ -44,11 +44,15 @@ implementation
 const
   kWaveTableSize = 256;
 
+type
+  TLfoWaveTable = array[0..kWaveTableSize] of single;
+
 var
-  SineTable : array[0..kWaveTableSize] of single;
-  SawTable  : array[0..kWaveTableSize] of single;
-  TriTable  : array[0..kWaveTableSize] of single;
-  SqrTable  : array[0..kWaveTableSize] of single;
+  SineTable   : TLfoWaveTable;
+  SawTable    : TLfoWaveTable;
+  TriTable    : TLfoWaveTable;
+  SqrTable    : TLfoWaveTable;
+  OffsetTable : TLfoWaveTable;
 
   AreWaveTablesInitialized : boolean;
 
@@ -57,19 +61,68 @@ procedure InitWaveTables;
 var
   c1: Integer;
   x : single;
-
+  MaxOffset : single;
+  MidPoint : single;
 begin
   AreWaveTablesInitialized := true;
 
+  //===== Create the sine wave table =====
   for c1 := 0 to kWaveTableSize-1 do
   begin
     x := c1 / (kWaveTableSize - 1);
     x := Sin(2 * pi * x) * 0.5 + 0.5;
-    x := Clamp(x, kDenormal, 1);
     SineTable[c1] := x;
   end;
 
   SineTable[kWaveTableSize] := SineTable[0];
+
+
+  //===== Create the saw wave table =====
+  // TODO: table should be created using additive synthesis.
+  for c1 := 0 to kWaveTableSize-1 do
+  begin
+    x := c1 / (kWaveTableSize - 1);
+    SawTable[c1] := x;
+  end;
+
+  SawTable[kWaveTableSize] := SawTable[0];
+
+
+  //======= create the offset table =====
+  for c1 := 0 to kWaveTableSize-1 do
+  begin
+    x := c1 / (kWaveTableSize - 1);
+    if x < 1/8 then
+    begin
+      MaxOffset := x / (1/8) * 0.5;
+    end else
+    begin
+      MaxOffset := (x - (1/8)) / (7/8) * 0.5 + 0.5;
+    end;
+
+    MidPoint  := c1 / (kWaveTableSize - 1);
+
+    OffsetTable[c1] := (MaxOffset - MidPoint);
+  end;
+
+  OffsetTable[kWaveTableSize] := OffsetTable[0];
+end;
+
+
+function ReadWaveTable(const Phase : single; const wt:TLfoWaveTable):single;
+var
+  TableIndex : integer;
+  Frac       : single;
+  ax : single;
+  bx : single;
+begin
+  TableIndex := floor(Phase * kWaveTableSize);
+  Frac       := (Phase * kWaveTableSize) - TableIndex;
+
+  ax := wt[TableIndex];
+  bx := wt[TableIndex + 1];
+
+  result := LinearInterpolation(ax,bx, Frac);
 end;
 
 { TWaveTableLfo }
@@ -96,19 +149,38 @@ end;
 
 function TWaveTableLfo.Step: single;
 var
-  TableIndex : integer;
-  Frac       : single;
-  ax : single;
-  bx : single;
-  x : single;
+  pwmOffset : single;
+  xPhase : single;
 begin
-  TableIndex := floor(LfoPhase * kWaveTableSize);
-  Frac := (LfoPhase * kWaveTableSize) - TableIndex;
+  if PulseWidthMod < 0.5
+    then pwmOffset := ReadWaveTable(LfoPhase, OffsetTable)
+    else pwmOffset := ReadWaveTable(1-LfoPhase, OffsetTable);
 
-  ax := SineTable[TableIndex];
-  bx := SineTable[TableIndex + 1];
+  xPhase := LfoPhase + pwmOffset * (fPulseWidthMod * -2 + 1);
+  if xPhase < 0
+    then xPhase := xPhase + 1;
+  if xPhase >= 1
+    then xPhase := xPhase - 1;
 
-  result := LinearInterpolation(ax,bx, Frac);
+  result := ReadWaveTable(xPhase, SineTable);
+
+
+
+
+
+  {
+  pwmOffset := ReadWaveTable(LfoPhase, OffsetTable);
+
+  xPhase := LfoPhase + pwmOffset * (fPulseWidthMod * 2 - 1);
+  if xPhase < 0  then xPhase := xPhase + 1;
+  if xPhase >= 1 then xPhase := xPhase - 1;
+
+  result := ReadWaveTable(xPhase, SineTable);
+  }
+
+  //result := ReadWaveTable(LfoPhase, OffsetTable);
+
+
 
 
   LfoPhase := LfoPhase + StepSize;
