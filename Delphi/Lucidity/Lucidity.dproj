@@ -586,6 +586,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="SoundObjects\soLfo.WaveTableLfo.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\eeGen\eeOscPhaseCounterV2.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

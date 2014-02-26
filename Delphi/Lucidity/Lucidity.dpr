@@ -142,7 +142,8 @@ uses
   GuiMeta.ScopeHandler in 'GuiMeta.ScopeHandler.pas',
   soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
   uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
-  soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas';
+  soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas',
+  eeOscPhaseCounterV2 in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounterV2.pas';
 
 {$R *.res}
 

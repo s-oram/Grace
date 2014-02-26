@@ -3,7 +3,7 @@ unit uMainForm;
 interface
 
 uses
-  eeKnobSmoother,
+  eeOscPhaseCounterV2,
   VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.ZeroObject,
@@ -43,6 +43,9 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
   private
+    OscPhase : TOscPhaseCounter;
+    StepSize : TOscPhaseCounter;
+
     ID : TUniqueID;
     KnobValue : single;
     TimeReference : TDateTime;
@@ -83,13 +86,45 @@ begin
 
   Timer := THighSpeedTimer.Create;
   Timer.OnTimer := self.HandleTimerEvent;
-  Timer.UseMainThreadForTimerEvent := false;
+  Timer.UseMainThreadForTimerEvent := true;
+
+  OscPhase := 0.99;
+  StepSize := 0.0001;
+
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Timer.Free;
 end;
+
+procedure TForm1.HandleTimerEvent(Sender: TObject);
+var
+  ms : Int64;
+  Overflow : boolean;
+  Index : cardinal;
+  Frac  : single;
+  s : string;
+begin
+  OscPhase.IncBy(StepSize);
+
+  OscPhase.GetIndex2048(Index, Frac);
+
+
+  s := IntToStr(Index) + ' ' + FloatToStr(Frac);
+  Memo1.Lines.Add(s);
+  Memo1.Invalidate;
+
+
+  {
+  if Overflow
+    then Memo1.Lines.Add(IntToStr(round(single(OscPhase) * 100)) + ' OVERFLOW')
+    else Memo1.Lines.Add(IntToStr(round(single(OscPhase) * 100)));
+  Memo1.Invalidate;
+  }
+end;
+
+
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
@@ -103,17 +138,6 @@ begin
   Timer.Enabled := false;
 end;
 
-
-procedure TForm1.HandleTimerEvent(Sender: TObject);
-var
-  ms : Int64;
-begin
-  ms := MillisecondsBetween(Now, TimeReference);
-  TimeReference := Now;
-  Memo1.Lines.Add(IntToStr(ms));
-  Memo1.Invalidate;
-
-end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 begin

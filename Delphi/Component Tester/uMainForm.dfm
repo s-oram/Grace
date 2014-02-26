@@ -184,8 +184,8 @@ object Form1: TForm1
     OnClick = Button5Click
   end
   object Memo1: TMemo
-    Left = 424
-    Top = 200
+    Left = 320
+    Top = 207
     Width = 537
     Height = 265
     Lines.Strings = (
