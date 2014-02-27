@@ -665,7 +665,7 @@ begin
 
 
 
-
+  {
   Par := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape);
   LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
   case LfoShape of
@@ -680,7 +680,7 @@ begin
       LfoLabel2.Visible := true;
     end;
 
-    TLfoShape.Random:
+    TLfoShape.RandomSmooth:
     begin
       LfoLabel2.Text    := 'MOD';
       LfoKnob2.Enabled  := true;
@@ -689,7 +689,7 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
-
+  }
 
 
 

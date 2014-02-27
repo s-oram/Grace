@@ -145,12 +145,13 @@ begin
   fShape := Value;
 
   case Value of
-    TLfoShape.SawUp:    ActiveLfo := TActiveLfo.WaveTable;
-    TLfoShape.SawDown:  ActiveLfo := TActiveLfo.WaveTable;
-    TLfoShape.Square:   ActiveLfo := TActiveLfo.WaveTable;
-    TLfoShape.Triangle: ActiveLfo := TActiveLfo.WaveTable;
-    TLfoShape.Sine:     ActiveLfo := TActiveLfo.WaveTable;
-    TLfoShape.Random:   ActiveLfo := TActiveLfo.Random;
+    TLfoShape.SawUp:         ActiveLfo := TActiveLfo.WaveTable;
+    TLfoShape.SawDown:       ActiveLfo := TActiveLfo.WaveTable;
+    TLfoShape.Square:        ActiveLfo := TActiveLfo.WaveTable;
+    TLfoShape.Triangle:      ActiveLfo := TActiveLfo.WaveTable;
+    TLfoShape.Sine:          ActiveLfo := TActiveLfo.WaveTable;
+    TLfoShape.RandomSmooth:  ActiveLfo := TActiveLfo.Random;
+    TLfoShape.RandomStepped: ActiveLfo := TActiveLfo.Random;
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -164,7 +165,8 @@ begin
     TLfoShape.Triangle: WaveTableLfo.WaveShape := TWaveTableLfoShape.Tri;
     TLfoShape.Sine:     WaveTableLfo.WaveShape := TWaveTableLfoShape.Sine;
 
-    TLfoShape.Random:   RandomLfo.WaveShape := TRandomLfoShape.RandomStepped;
+    TLfoShape.RandomSmooth:  RandomLfo.WaveShape := TRandomLfoShape.RandomSmooth;
+    TLfoShape.RandomStepped: RandomLfo.WaveShape := TRandomLfoShape.RandomStepped;
   else
     raise Exception.Create('Type not handled.');
   end;
