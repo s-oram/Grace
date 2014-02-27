@@ -34,7 +34,9 @@ type
     procedure ResetPhase;
 
     procedure UpdateStepSize; //call when the step size needs to be re-calculated. Normally after changing any LFO parameter.
-    function Step : single; // generate the next LFO output sample.
+
+    function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
+    function Step: single; overload;
 
     property Bpm           : single read fBpm           write fBpm;
     property SampleRate    : single read fSampleRate    write fSampleRate;
@@ -189,12 +191,19 @@ begin
   LfoPhase := 0;
 end;
 
+function TWaveTableLfo.Step: single;
+var
+  x : boolean;
+begin
+  result := Step(x);
+end;
+
 procedure TWaveTableLfo.UpdateStepSize;
 begin
   StepSize := 1 / SampleRate * Freq;
 end;
 
-function TWaveTableLfo.Step: single;
+function TWaveTableLfo.Step(out CycleEnd : boolean):single;
 var
   pwmOffset      : single;
   xPhase         : TOscPhaseCounter;
@@ -223,7 +232,7 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-  LfoPhase.IncBy(StepSize);
+  CycleEnd := LfoPhase.IncByWithOverflowCheck(StepSize);
 end;
 
 

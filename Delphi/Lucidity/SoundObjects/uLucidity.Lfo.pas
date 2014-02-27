@@ -172,33 +172,6 @@ begin
   end;
 end;
 
-procedure TLucidityLfo.FastControlProcess;
-begin
-  case ActiveLFO of
-    TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step;
-    TActiveLFO.Random:    LfoOutput := RandomLfo.Step;
-  else
-    raise Exception.Create('Type not handled');
-  end;
-
-
-
-  // TODO: need to send clock event when LFO loops.
-
-  {
-  if Lfo.FastControlProcess then
-  begin
-    if FModuleIndex = 0
-      then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
-      else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
-  end;
-  }
-end;
-
-procedure TLucidityLfo.SlowControlProcess;
-begin
-  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
-end;
 
 procedure TLucidityLfo.StepResetA;
 begin
@@ -243,6 +216,42 @@ begin
   WaveTableLFO.UpdateStepSize;
   RandomLfo.UpdateStepSize;
 end;
+
+procedure TLucidityLfo.FastControlProcess;
+var
+  IsCycleEnd : boolean;
+begin
+  case ActiveLFO of
+    TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step(IsCycleEnd);
+    TActiveLFO.Random:    LfoOutput := RandomLfo.Step(IsCycleEnd);
+  else
+    raise Exception.Create('Type not handled');
+  end;
+
+  // HACK: NOTE: This bit feels a bit hackish because
+  // the LFO "knows" whether it's LFO 1 or LFO 2.
+  // The LFO shouldn't really know that. A better design would
+  // be to fire an event here. This particular bit of code is a
+  // hangover from an earlier version of the LFO, most of which
+  // has since been rewritten or refactored away. While I don't
+  // like the code below I've not changed it yet because it's
+  // possibly slightly more CPU efficient with one less layer of
+  // indirection. Lately I'm also coming to the opion that
+  // it's really hard to reuse sound generation objects across
+  // multiple projects and perhaps it's not worth doing so.
+  if IsCycleEnd then
+  begin
+    if FModuleIndex = 0
+      then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
+      else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
+  end;
+end;
+
+procedure TLucidityLfo.SlowControlProcess;
+begin
+  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
+end;
+
 
 
 end.

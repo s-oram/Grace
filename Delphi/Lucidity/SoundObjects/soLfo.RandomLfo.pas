@@ -40,7 +40,9 @@ type
     procedure ResetPhase;
 
     procedure UpdateStepSize; //call when the step size needs to be re-calculated. Normally after changing any LFO parameter.
-    function Step : single; // generate the next LFO output sample.
+
+    function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
+    function Step: single; overload;
 
     property Bpm          : single read fBpm           write fBpm;
     property SampleRate   : single read fSampleRate    write SetSampleRate;
@@ -100,13 +102,25 @@ begin
 end;
 
 function TRandomLfo.Step: single;
+var
+  x : boolean;
+begin
+  result := Step(x);
+end;
+
+function TRandomLfo.Step(out CycleEnd : boolean):single;
 begin
   if LfoPhase.IncByWithOverflowCheck(StepSize) then
   begin
-    if Random < Density
-      then TargetValue := LinearInterpolation(LastValue, Random, fFlux);
+    if Random < Density then
+    begin
+      TargetValue := LinearInterpolation(LastValue, Random, fFlux);
+      CycleEnd := true;
+    end;
+  end else
+  begin
+    CycleEnd := false;
   end;
-
 
   LastValue := Lowpass.Step(TargetValue);
 
