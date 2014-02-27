@@ -36,15 +36,13 @@ type
   private
     PhaseInt : cardinal;
   public
-    function Raw : cardinal;
     function AsSingle : single;
-
 
     procedure IncBy(a : TOscPhaseCounter);
     procedure DecBy(a : TOscPhaseCounter);
 
+    // WARNING: The overflow check only looks for overflows, not underflows.
     function IncByWithOverflowCheck(a : TOscPhaseCounter):boolean;
-    function DecByWithOverflowCheck(a : TOscPhaseCounter):boolean;
 
     procedure GetIndex256(out Index : integer; out Frac : single);
     procedure GetIndex512(out Index : integer; out Frac : single);
@@ -101,13 +99,6 @@ begin
   result := (a.PhaseInt <> b.PhaseInt);
 end;
 
-
-
-function TOscPhaseCounter.Raw: cardinal;
-begin
-  result := PhaseInt;
-end;
-
 function TOscPhaseCounter.AsSingle: single;
 begin
   result := PhaseInt / MaxCardinal;
@@ -124,33 +115,19 @@ begin
 end;
 
 
-{$Q+}
-function TOscPhaseCounter.IncByWithOverflowCheck(a: TOscPhaseCounter): boolean;
-begin
-  try
-    Inc(PhaseInt, a.PhaseInt);
-    result := false;
-  except
-    on EIntOverflow do result := true;
-    on EUnderflow   do result := true;
-    else raise;
-  end;
-end;
-{$Q-}
 
-{$Q+}
-function TOscPhaseCounter.DecByWithOverflowCheck(a: TOscPhaseCounter): boolean;
+function TOscPhaseCounter.IncByWithOverflowCheck(a: TOscPhaseCounter): boolean;
+var
+  LastPhase : cardinal;
 begin
-  try
-    Dec(PhaseInt, a.PhaseInt);
-    result := false;
-  except
-    on EIntOverflow do result := true;
-    on EUnderflow   do result := true;
-    else raise;
-  end;
+  LastPhase := PhaseInt;
+  Inc(PhaseInt, a.PhaseInt);
+
+  if PhaseInt >= LastPhase
+    then result := false
+    else result := true;
+
 end;
-{$Q-}
 
 
 procedure TOscPhaseCounter.GetIndex256(out Index: integer; out Frac: single);

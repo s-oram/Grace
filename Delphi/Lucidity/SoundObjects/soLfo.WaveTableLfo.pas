@@ -43,7 +43,6 @@ type
     property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // Range 0..1
     property Symmetry      : single read fSymmetry      write fSymmetry;      // Range 0..1, with 0.5 being the default position.
 
-
     property WaveShape : TWaveTableLfoShape read fWaveShape write fWaveShape;
 
   end;
@@ -190,6 +189,11 @@ begin
   LfoPhase := 0;
 end;
 
+procedure TWaveTableLfo.UpdateStepSize;
+begin
+  StepSize := 1 / SampleRate * Freq;
+end;
+
 function TWaveTableLfo.Step: single;
 var
   pwmOffset      : single;
@@ -222,10 +226,7 @@ begin
   LfoPhase.IncBy(StepSize);
 end;
 
-procedure TWaveTableLfo.UpdateStepSize;
-begin
-  StepSize := 1 / SampleRate * Freq;
-end;
+
 
 
 

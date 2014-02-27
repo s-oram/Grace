@@ -3,6 +3,7 @@
 interface
 
 uses
+  eeDsp,
   VamLib.MoreTypes;
 
 
@@ -137,7 +138,7 @@ var
 begin
   In0 := In1;
   In1 := In2;
-  In2 := x;
+  In2 := x + kDenormal;
 
   Outx := (b0 * In0) + (b1 * In1) + (b2 * in2) + (a1 * Out1) + (a2 * Out2);
 

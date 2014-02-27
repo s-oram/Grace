@@ -2,6 +2,8 @@ library Lucidity;
 
 {$INCLUDE Defines.inc}
 
+{$EXCESSPRECISION OFF}
+
 {$R 'resources.res' 'resources.rc'}
 {$R 'VersionInfo.res' 'VersionInfo.rc'}
 
@@ -143,7 +145,8 @@ uses
   soSignalRecorder in 'SoundObjects\soSignalRecorder.pas',
   uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
   soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas',
-  eeOscPhaseCounter in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas';
+  eeOscPhaseCounter in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas',
+  soLfo.RandomLfo in 'SoundObjects\soLfo.RandomLfo.pas';
 
 {$R *.res}
 
