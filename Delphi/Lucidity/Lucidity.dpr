@@ -146,7 +146,8 @@ uses
   uSequencerFrame in 'frames\uSequencerFrame.pas' {SequencerFrame: TFrame},
   soLfo.WaveTableLfo in 'SoundObjects\soLfo.WaveTableLfo.pas',
   eeOscPhaseCounter in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas',
-  soLfo.RandomLfo in 'SoundObjects\soLfo.RandomLfo.pas';
+  soLfo.RandomLfo in 'SoundObjects\soLfo.RandomLfo.pas',
+  soLfo.SlopeGen in 'SoundObjects\soLfo.SlopeGen.pas';
 
 {$R *.res}
 

@@ -3,7 +3,7 @@ unit soLfo.WaveTableLfo;
 interface
 
 {$INCLUDE Defines.inc}
-
+{$EXCESSPRECISION OFF}
 {$SCOPEDENUMS ON}
 
 uses
@@ -24,7 +24,6 @@ type
     fFreq: single;
     fWaveShape: TWaveTableLfoShape;
   protected
-    //TODO: this should be changed to be cardinal values...
     StepSize : TOscPhaseCounter;
     LfoPhase : TOscPhaseCounter;
   public

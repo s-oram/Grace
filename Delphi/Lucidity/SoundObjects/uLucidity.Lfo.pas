@@ -14,11 +14,12 @@ uses
   B2.MovingAverageFilter,
   soLfo.WaveTableLfo,
   soLfo.RandomLfo,
+  soLfo.SlopeGen,
   eeVirtualCV, Math, uLucidityClock, eeDsp,
   uConstants;
 
 type
-  TActiveLFO = (WaveTable, Random);
+  TActiveLFO = (WaveTable, Random, Slope);
 
   TLucidityLfo = class
   private
@@ -43,6 +44,7 @@ type
 
     WaveTableLfo  : TWaveTableLfo;
     RandomLFO     : TRandomLfo;
+    SlopeGen      : TSlopeGen;
 
     procedure UpdateLfoParameters;
   public
@@ -87,6 +89,7 @@ begin
   VoiceClockManager := aVoiceClockManager;
   WaveTableLfo := TWaveTableLfo.Create;
   RandomLFO    := TRandomLfo.Create;
+  SlopeGen     := TSlopeGen.Create;
   fModuleIndex := aModuleIndex;
 end;
 
@@ -94,6 +97,7 @@ destructor TLucidityLfo.Destroy;
 begin
   WaveTableLfo.Free;
   RandomLfo.Free;
+  SlopeGen.Free;
   inherited;
 end;
 
@@ -103,19 +107,6 @@ begin
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
-end;
-
-procedure TLucidityLfo.ResetLfoPhase;
-begin
-  WaveTableLFO.ResetPhase;
-  RandomLfo.ResetPhase;
-end;
-
-procedure TLucidityLfo.SetBpm(const Value: single);
-begin
-  fBpm := Value;
-  WaveTableLfo.Bpm := Value;
-  RandomLFO.Bpm    := Value;
 end;
 
 procedure TLucidityLfo.SetPar1(const Value: PSynthPar);
@@ -133,11 +124,26 @@ begin
   fPar3 := Value;
 end;
 
+procedure TLucidityLfo.ResetLfoPhase;
+begin
+  WaveTableLFO.ResetPhase;
+  RandomLfo.ResetPhase;
+end;
+
+procedure TLucidityLfo.SetBpm(const Value: single);
+begin
+  fBpm := Value;
+  WaveTableLfo.Bpm := Value;
+  RandomLFO.Bpm    := Value;
+  SlopeGen.Bpm     := Value;
+end;
+
 procedure TLucidityLfo.SetSampleRate(const Value: single);
 begin
   fSampleRate := Value;
   WaveTableLfo.SampleRate := Value;
   RandomLfo.SampleRate    := Value;
+  SlopeGen.SampleRate     := Value;
 end;
 
 procedure TLucidityLfo.SetShape(const Value: TLfoShape);
@@ -175,24 +181,24 @@ end;
 
 procedure TLucidityLfo.StepResetA;
 begin
+  SlopeGen.Trigger;
   WaveTableLFO.ResetPhase;
   RandomLfo.ResetPhase;
 
   UpdateLfoParameters;
 
-  LfoOutput := WaveTableLfo.Step;
-  LfoOutput := RandomLfo.Step;
+  case ActiveLFO of
+    TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step;
+    TActiveLFO.Random:    LfoOutput := RandomLfo.Step;
+    TActiveLFO.Slope:     LfoOutput := 0;
+  else
+    raise Exception.Create('Type not handled');
+  end;
 end;
 
 procedure TLucidityLfo.StepResetB;
 begin
-  WaveTableLFO.ResetPhase;
-  //RandomLfo.ResetPhase;
-
   UpdateLfoParameters;
-
-  LfoOutput := WaveTableLfo.Step;
-  //LfoOutput := RandomLfo.Step;
 end;
 
 procedure TLucidityLfo.UpdateLfoParameters;
@@ -213,6 +219,10 @@ begin
   RandomLFO.Density  := Par2^;
   RandomLFO.Flux     := Par3^;
 
+  SlopeGen.Curve      := Par1^;
+  SlopeGen.AttackTime := (Par2^ * Par2^) * 2000 + 10;
+  SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000 + 10;
+
   WaveTableLFO.UpdateStepSize;
   RandomLfo.UpdateStepSize;
 end;
@@ -224,6 +234,7 @@ begin
   case ActiveLFO of
     TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step(IsCycleEnd);
     TActiveLFO.Random:    LfoOutput := RandomLfo.Step(IsCycleEnd);
+    TActiveLFO.Slope:     LfoOutput := SlopeGen.Step(IsCycleEnd);
   else
     raise Exception.Create('Type not handled');
   end;

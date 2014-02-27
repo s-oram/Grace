@@ -2,8 +2,8 @@ unit soLfo.RandomLfo;
 
 interface
 
+{$INCLUDE Defines.inc}
 {$EXCESSPRECISION OFF}
-
 {$SCOPEDENUMS ON}
 
 uses
@@ -28,7 +28,7 @@ type
   protected
     LastValue : single;
     TargetValue : single;
-    //TODO: this should be changed to be cardinal values...
+
     StepSize : TOscPhaseCounter;
     LfoPhase : TOscPhaseCounter;
 

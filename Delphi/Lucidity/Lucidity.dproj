@@ -588,6 +588,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\soLfo.WaveTableLfo.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas"/>
 			<DCCReference Include="SoundObjects\soLfo.RandomLfo.pas"/>
+			<DCCReference Include="SoundObjects\soLfo.SlopeGen.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
