@@ -45,6 +45,7 @@ type
 
     procedure Trigger;
     procedure Release;
+    procedure Kill;
 
     function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
     function Step: single; overload;
@@ -78,6 +79,11 @@ destructor TSlopeGen.Destroy;
 begin
 
   inherited;
+end;
+
+procedure TSlopeGen.Kill;
+begin
+  CurrentValue := 0;
 end;
 
 procedure TSlopeGen.SetAttackTime(const Value: single);

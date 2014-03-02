@@ -55,6 +55,7 @@ type
 
     procedure Trigger;
     procedure Release;
+    procedure Kill;
     procedure ResetLfoPhase;
 
     property SampleRate : single    read fSampleRate write SetSampleRate;
@@ -245,6 +246,13 @@ procedure TLucidityLfo.Release;
 begin
   SlopeGen.Release;
 end;
+
+procedure TLucidityLfo.Kill;
+begin
+  SlopeGen.Kill;
+end;
+
+
 
 procedure TLucidityLfo.FastControlProcess;
 var

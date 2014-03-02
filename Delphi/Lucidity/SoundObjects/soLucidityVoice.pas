@@ -573,6 +573,8 @@ begin
   OneShotSampleOsc.Kill;
   LoopSampleOsc.Kill;
   GrainStretchOsc.Kill;
+  LfoA.Kill;
+  LfoB.Kill;
 
   if assigned(OnFinish) then OnFinish(self);
 end;
@@ -670,8 +672,8 @@ begin
     pxA^ := MixX1 * SampleLevelOffsetA;
     pxB^ := MixX2 * SampleLevelOffsetB;
 
-    pxA^ := LfoOut^;
-    pxB^ := LfoOut^;
+    //pxA^ := LfoOut^;
+    //pxB^ := LfoOut^;
 
     inc(pxA);
     inc(pxB);
