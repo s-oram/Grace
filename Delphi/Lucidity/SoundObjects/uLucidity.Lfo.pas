@@ -53,6 +53,8 @@ type
 
     function GetModPointer(const Name:string):PSingle;
 
+    procedure Trigger;
+    procedure Release;
     procedure ResetLfoPhase;
 
     property SampleRate : single    read fSampleRate write SetSampleRate;
@@ -158,6 +160,9 @@ begin
     TLfoShape.Sine:          ActiveLfo := TActiveLfo.WaveTable;
     TLfoShape.RandomSmooth:  ActiveLfo := TActiveLfo.Random;
     TLfoShape.RandomStepped: ActiveLfo := TActiveLfo.Random;
+    TLfoShape.AttackDecay:   ActiveLfo := TActiveLfo.Slope;
+    TLfoShape.AttackRelease: ActiveLfo := TActiveLfo.Slope;
+    TLfoShape.Cycle:         ActiveLfo := TActiveLfo.Slope;
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -165,14 +170,18 @@ begin
 
 
   case Value of
-    TLfoShape.SawUp:    WaveTableLfo.WaveShape := TWaveTableLfoShape.Saw;
-    TLfoShape.SawDown:  WaveTableLfo.WaveShape := TWaveTableLfoShape.Ramp;
-    TLfoShape.Square:   WaveTableLfo.WaveShape := TWaveTableLfoShape.Sqr;
-    TLfoShape.Triangle: WaveTableLfo.WaveShape := TWaveTableLfoShape.Tri;
-    TLfoShape.Sine:     WaveTableLfo.WaveShape := TWaveTableLfoShape.Sine;
+    TLfoShape.SawUp:         WaveTableLfo.WaveShape := TWaveTableLfoShape.Saw;
+    TLfoShape.SawDown:       WaveTableLfo.WaveShape := TWaveTableLfoShape.Ramp;
+    TLfoShape.Square:        WaveTableLfo.WaveShape := TWaveTableLfoShape.Sqr;
+    TLfoShape.Triangle:      WaveTableLfo.WaveShape := TWaveTableLfoShape.Tri;
+    TLfoShape.Sine:          WaveTableLfo.WaveShape := TWaveTableLfoShape.Sine;
 
     TLfoShape.RandomSmooth:  RandomLfo.WaveShape := TRandomLfoShape.RandomSmooth;
     TLfoShape.RandomStepped: RandomLfo.WaveShape := TRandomLfoShape.RandomStepped;
+
+    TLfoShape.AttackDecay:   SlopeGen.SlopeMode := TSlopeMode.AD;
+    TLfoShape.AttackRelease: SlopeGen.SlopeMode := TSlopeMode.AR;
+    TLfoShape.Cycle:         SlopeGen.SlopeMode := TSlopeMode.Cycle;
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -181,7 +190,6 @@ end;
 
 procedure TLucidityLfo.StepResetA;
 begin
-  SlopeGen.Trigger;
   WaveTableLFO.ResetPhase;
   RandomLfo.ResetPhase;
 
@@ -200,6 +208,7 @@ procedure TLucidityLfo.StepResetB;
 begin
   UpdateLfoParameters;
 end;
+
 
 procedure TLucidityLfo.UpdateLfoParameters;
 var
@@ -220,11 +229,21 @@ begin
   RandomLFO.Flux     := Par3^;
 
   SlopeGen.Curve      := Par1^;
-  SlopeGen.AttackTime := (Par2^ * Par2^) * 2000 + 10;
-  SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000 + 10;
+  SlopeGen.AttackTime := (Par2^ * Par2^) * 2000;
+  SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000;
 
   WaveTableLFO.UpdateStepSize;
   RandomLfo.UpdateStepSize;
+end;
+
+procedure TLucidityLfo.Trigger;
+begin
+  SlopeGen.Trigger;
+end;
+
+procedure TLucidityLfo.Release;
+begin
+  SlopeGen.Release;
 end;
 
 procedure TLucidityLfo.FastControlProcess;

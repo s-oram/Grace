@@ -6,6 +6,9 @@ interface
 {$EXCESSPRECISION OFF}
 {$SCOPEDENUMS ON}
 
+//TODO:
+// The slope gen needs to know when the note-off event occurs!
+
 uses
   Math,
   VamLib.Utils,
@@ -29,7 +32,7 @@ type
     procedure SetDecayTime(const Value: single);
 
   protected type
-    TEnvStage = (Attack, Release, Off);
+    TEnvStage = (Attack, Sustrain, Release, Off);
   protected
     EnvStage : TEnvStage;
 
@@ -41,6 +44,7 @@ type
     destructor Destroy; override;
 
     procedure Trigger;
+    procedure Release;
 
     function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
     function Step: single; overload;
@@ -58,11 +62,16 @@ type
 
 implementation
 
+uses
+  SysUtils;
+
 { TSlopeGen }
 
 constructor TSlopeGen.Create;
 begin
-
+  CurrentValue   := 0;
+  AttackStepSize := 0;
+  DecayStepSize  := 0;
 end;
 
 destructor TSlopeGen.Destroy;
@@ -74,22 +83,39 @@ end;
 procedure TSlopeGen.SetAttackTime(const Value: single);
 begin
   fAttackTime := Value;
+  if Value > 0
+    then AttackStepSize := 1 / (fSampleRate * Value * 0.001)
+    else AttackStepSize := 1;
 end;
 
 procedure TSlopeGen.SetDecayTime(const Value: single);
 begin
   fDecayTime := Value;
+  if Value > 0
+    then DecayStepSize := 1 / (fSampleRate * Value * 0.001)
+    else DecayStepSize := 1;
+
+
+
 end;
 
 procedure TSlopeGen.SetSampleRate(const Value: single);
 begin
-
+  fSampleRate := value;
 end;
 
 procedure TSlopeGen.Trigger;
 begin
-
+  EnvStage := TEnvStage.Attack;
 end;
+
+procedure TSlopeGen.Release;
+begin
+  if SlopeMode = TSlopeMode.AR
+    then EnvStage := TEnvStage.Release;
+end;
+
+
 
 function TSlopeGen.Step: single;
 var
@@ -101,7 +127,47 @@ end;
 function TSlopeGen.Step(out CycleEnd: boolean): single;
 begin
   CycleEnd := false;
-  result := 0;
+
+  case EnvStage of
+    TSlopeGen.TEnvStage.Attack:
+    begin
+      CurrentValue := CurrentValue + AttackStepSize;
+      if CurrentValue >= 1 then
+      begin
+        CurrentValue := 1;
+        if SlopeMode = TSlopeMode.AR
+          then EnvStage := TEnvStage.Sustrain
+          else EnvStage := TEnvStage.Release;
+      end;
+    end;
+
+    TSlopeGen.TEnvStage.Sustrain:
+    begin
+
+    end;
+
+    TSlopeGen.TEnvStage.Release:
+    begin
+      CurrentValue := CurrentValue - DecayStepSize;
+      if CurrentValue <= 0 then
+      begin
+        CurrentValue := 0;
+        if SlopeMode = TSlopeMode.Cycle
+          then EnvStage := TEnvStage.Attack
+          else EnvStage := TEnvStage.Off;
+      end;
+    end;
+
+    TSlopeGen.TEnvStage.Off:
+    begin
+
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  result := CurrentValue;
 end;
 
 

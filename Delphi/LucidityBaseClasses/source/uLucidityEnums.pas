@@ -30,7 +30,7 @@ type
   TStepSequencerDirection = (Forwards, Backwards, PingPong, Random);
   TStepSequencerDirectionHelper = class(TEnumHelper<TStepSequencerDirection>);
 
-  TLfoShape = (SawUp, SawDown, Square, Triangle, Sine, RandomStepped, RandomSmooth);
+  TLfoShape = (SawUp, SawDown, Square, Triangle, Sine, RandomStepped, RandomSmooth, AttackDecay, AttackRelease, Cycle);
   TLfoShapeHelper = class(TEnumHelper<TLfoShape>)
   public
     class function ToFullGuiString(aEnum : TLfoShape):string; override;
@@ -332,6 +332,9 @@ begin
     TLfoShape.Sine:     result := 'Sine';
     TLfoShape.RandomSmooth:  result := 'Random Smooth';
     TLfoShape.RandomStepped: result := 'Random Stepped';
+    TLfoShape.AttackDecay:   result := 'Attack-Decay';
+    TLfoShape.AttackRelease: result := 'Attack-Release';
+    TLfoShape.Cycle:         result := 'Cycle';
   else
     result := inherited;
   end;
@@ -347,6 +350,9 @@ begin
     TLfoShape.Sine:     result := 'Sine';
     TLfoShape.RandomSmooth:  result := 'R-Smooth';
     TLfoShape.RandomStepped: result := 'R-Stepped';
+    TLfoShape.AttackDecay:   result := 'AD';
+    TLfoShape.AttackRelease: result := 'AR';
+    TLfoShape.Cycle:         result := 'Cycle';
   else
     result := inherited;
   end;

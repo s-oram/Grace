@@ -513,6 +513,8 @@ begin
   // Call Trigger on all components that need it....
   AmpEnv.Trigger(MidiVelocity / 127);
   FilterEnv.Trigger(MidiVelocity / 127);
+  LfoA.Trigger;
+  LfoB.Trigger;
 
   UpdateOscPitch;
 
@@ -526,12 +528,13 @@ procedure TLucidityVoice.Release;
 begin
   if HasBeenReleased = false then
   begin
-    AmpEnv.Release;
-    FilterEnv.Release;
     HasBeenReleased := true;
 
-
     OneShotSampleOsc.Release;
+    AmpEnv.Release;
+    FilterEnv.Release;
+    LfoA.Release;
+    LfoB.Release;
   end;
 end;
 
@@ -667,8 +670,8 @@ begin
     pxA^ := MixX1 * SampleLevelOffsetA;
     pxB^ := MixX2 * SampleLevelOffsetB;
 
-    //pxA^ := LfoOut^;
-    //pxB^ := LfoOut^;
+    pxA^ := LfoOut^;
+    pxB^ := LfoOut^;
 
     inc(pxA);
     inc(pxB);
