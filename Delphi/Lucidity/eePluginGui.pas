@@ -374,7 +374,7 @@ begin
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
     SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
+    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);

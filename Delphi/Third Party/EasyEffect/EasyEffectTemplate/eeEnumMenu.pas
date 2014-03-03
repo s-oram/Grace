@@ -9,6 +9,7 @@ type
   TCustomEnumMenu = class
   private
     fOnMenuClose: TMenuCloseEvent;
+    function GetItems: TMenuItem;
   protected
     fMenu : TPopUpMenuEx;
 
@@ -24,9 +25,9 @@ type
     destructor Destroy; override;
 
     function FindMenuItemByName(Name : string):TMenuItem;
-
     procedure PopUp(X, Y : integer); overload;
 
+    property Items: TMenuItem read GetItems;
     property OnClose : TMenuCloseEvent read fOnMenuClose write fOnMenuClose;
   end;
 
@@ -41,15 +42,11 @@ type
     procedure MenuItemClicked(Sender : TObject); override;
   public
     constructor Create(const aEnumHelper:TCustomEnumHelperClass); reintroduce;
-
-
+    function FindMenuItemByEnum(Enum : TEnum):TMenuItem;
 
     procedure Init;
-
     procedure PopUp(X, Y : integer; CurrentValue:TEnum); overload;
-
     property Menu;
-
     property OnItemSelected : TEnumValueEvent<TEnum> read fOnItemSelected write fOnItemSelected;
   end;
 
@@ -89,6 +86,11 @@ begin
 
   // if we've made it this far no item has been found.
   result := nil;
+end;
+
+function TCustomEnumMenu.GetItems: TMenuItem;
+begin
+  result := fMenu.Items;
 end;
 
 procedure TCustomEnumMenu.InitMenu<TEnum>(const aEnumHelper:TCustomEnumHelperClass);
@@ -168,6 +170,14 @@ begin
 
   //finally
   Init;
+end;
+
+function TEnumMenu<TEnum>.FindMenuItemByEnum(Enum: TEnum): TMenuItem;
+var
+  s : string;
+begin
+  s := TEnumHelper<TEnum>.ToString(Enum);
+  result := FindMenuItemByName(s);
 end;
 
 procedure TEnumMenu<TEnum>.Init;

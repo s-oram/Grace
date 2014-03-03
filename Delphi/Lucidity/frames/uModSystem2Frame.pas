@@ -3,6 +3,8 @@ unit uModSystem2Frame;
 interface
 
 uses
+  uDialogDisplayArea,
+  Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
   uLucidityEnums, uLucidityKeyGroupInterface,
   uConstants, eePlugin, eeGuiStandard, eeEnumMenu,
@@ -19,8 +21,7 @@ type
     // selectors show.
     ActiveModParIndex : integer;
 
-    ModSourceMenu : TEnumMenu<TModSource>;
-    ModViaMenu    : TEnumMenu<TModSource>;
+    ModContextMenu : TModSelectorContextMenu;
 
     MenuModSlot : integer;
     MenuKeyGroup : IKeyGroup;
@@ -50,11 +51,7 @@ type
     procedure Handle_ModSelectorMouseEnter(Sender : TObject);
     procedure Handle_ModSelectorMouseLeave(Sender : TObject);
 
-    procedure Handle_ModSourceSelected(Sender : TObject; aSource : TModSource);
-    procedure Handle_ModViaSelected(Sender : TObject; aSource : TModSource);
-
-    procedure Handle_ShowModSourceMenu(Sender:TObject);
-    procedure Handle_ShowModViaMenu(Sender:TObject);
+    procedure Handle_ShowModContextMenu(Sender : TObject);
   private
     FMotherShip : IMothership;
     function GetMotherShipReference:IMotherShip;
@@ -68,7 +65,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
   end;
 
 implementation
@@ -99,17 +96,9 @@ begin
   // can receive messages posted by the EasyEffect Globals class.
   MsgHandle := AllocateHWND(MessageHandler);
 
-  ModSourceMenu := TEnumMenu<TModSource>.Create(TModSourceHelper);
-  ModSourceMenu.OnItemSelected := Handle_ModSourceSelected;
-  //ModSourceMenu.OnClose := EventHandler_ModMenuClosed;
-
-  ModViaMenu    := TEnumMenu<TModSource>.Create(TModSourceHelper);
-  ModViaMenu.OnItemSelected := Handle_ModViaSelected;
-  //ModViaMenu.OnClose := EventHandler_ModMenuClosed;
-
+  ModContextMenu := TModSelectorContextMenu.Create;
 
   ActiveModParIndex := -1;
-
 
   for c1 := 0 to kModSlotCount-1 do
   begin
@@ -118,8 +107,7 @@ begin
     ModSelectors[c1].Visible := true;
     ModSelectors[c1].Tag := c1;
     ModSelectors[c1].OnMouseDown := Handle_ModSelectorMouseDown;
-    ModSelectors[c1].OnShowModSourceMenu := Handle_ShowModSourceMenu;
-    ModSelectors[c1].OnShowModViaMenu    := Handle_ShowModViaMenu;
+    ModSelectors[c1].OnShowContextMenu := Handle_ShowModContextMenu;
     ModSelectors[c1].OnMouseEnter := self.Handle_ModSelectorMouseEnter;
     ModSelectors[c1].OnMouseLeave := self.Handle_ModSelectorMouseLeave;
   end;
@@ -208,8 +196,7 @@ begin
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(self);
 
-  ModViaMenu.Free;
-  ModSourceMenu.Free;
+  ModContextMenu.Free;
 
   MenuKeyGroup := nil;
 
@@ -239,7 +226,7 @@ begin
   FMotherShip := aMothership;
 end;
 
-procedure TModSystem2Frame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
+procedure TModSystem2Frame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
@@ -250,6 +237,8 @@ begin
   begin
     Plugin.Globals.AddWindowsMessageListener(MsgHandle);
   end;
+
+  ModContextMenu.Initialize(aPlugin, aDialogDisplayArea);
 
   // finally
   UpdateModulation;
@@ -394,44 +383,12 @@ begin
 
 end;
 
-
-
-procedure TModSystem2Frame.Handle_ShowModSourceMenu(Sender: TObject);
-begin
-  MenuModSlot := (Sender as TVamModSelector).Tag;
-  MenuKeyGroup := Plugin.ActiveKeyGroup;
-  ModSourceMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y);
-end;
-
-procedure TModSystem2Frame.Handle_ShowModViaMenu(Sender: TObject);
-begin
-  MenuModSlot := (Sender as TVamModSelector).Tag;
-  MenuKeyGroup := Plugin.ActiveKeyGroup;
-  ModViaMenu.PopUp(Mouse.CursorPos.X, Mouse.CursorPos.Y);
-end;
-
-procedure TModSystem2Frame.Handle_ModSourceSelected(Sender: TObject; aSource: TModSource);
+procedure TModSystem2Frame.Handle_ShowModContextMenu(Sender: TObject);
 var
-  ModConnections : TModConnections;
+  ModSlotIndex : integer;
 begin
-  ModConnections := MenuKeyGroup.GetModConnections;
-
-  //ModConnections.ModSource[MenuModSlot] := aSource;
-  ModConnections.SetModSource(MenuModSlot, aSource);
-
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
-end;
-
-procedure TModSystem2Frame.Handle_ModViaSelected(Sender: TObject; aSource: TModSource);
-var
-  ModConnections : TModConnections;
-begin
-  ModConnections := MenuKeyGroup.GetModConnections;
-
-  //ModConnections.ModVia[MenuModSlot] := aSource;
-  ModConnections.SetModVia(MenuModSlot, aSource);
-
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  ModSlotIndex := (Sender as TVamModSelector).Tag;
+  ModContextMenu.Popup(ModSlotIndex, Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
 procedure TModSystem2Frame.Handle_ModSelectorMouseEnter(Sender: TObject);

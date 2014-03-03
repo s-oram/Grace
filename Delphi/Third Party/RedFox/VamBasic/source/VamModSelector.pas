@@ -28,6 +28,7 @@ type
     fShowModAmount: boolean;
     fShowMuteIcon: boolean;
     fModAmountX2: single;
+    fOnShowContextMenu: TNotifyEvent;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -99,6 +100,7 @@ type
     property ModAmountX2 : single read fModAmountX2 write SetModAmountX2;
     property ShowMuteIcon : boolean read fShowMuteIcon write SetShowMuteIcon;
 
+    property OnShowContextMenu   : TNotifyEvent read fOnShowContextMenu   write fOnShowContextMenu;
     property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
     property OnShowModViaMenu    : TNotifyEvent read fOnShowModViaMenu    write fOnShowModViaMenu;
 
@@ -190,8 +192,6 @@ procedure TVamModSelector.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
 begin
   inherited;
 
-
-
   if (Button = mbRight) then
   begin
     IsControlGrabbed := true;
@@ -208,7 +208,9 @@ begin
   if (Button = mbRight) and (IsControlGrabbed) then
   begin
     IsControlGrabbed := false;
+    if assigned(OnShowContextMenu) then OnShowContextMenu(self);
 
+    {
     cr := GetActiveControlRegion(x, y);
 
     case cr of
@@ -217,6 +219,7 @@ begin
     else
       raise Exception.Create('Type not handled.');
     end;
+    }
   end;
 
 end;

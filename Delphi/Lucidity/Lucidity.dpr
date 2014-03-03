@@ -148,7 +148,8 @@ uses
   eeOscPhaseCounter in '..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas',
   soLfo.RandomLfo in 'SoundObjects\soLfo.RandomLfo.pas',
   soLfo.SlopeGen in 'SoundObjects\soLfo.SlopeGen.pas',
-  GuiMeta.ActiveModDisplay in 'GuiMeta.ActiveModDisplay.pas';
+  GuiMeta.ActiveModDisplay in 'GuiMeta.ActiveModDisplay.pas',
+  Menu.ModSelectorContextMenu in 'frames\Menu.ModSelectorContextMenu.pas';
 
 {$R *.res}
 
