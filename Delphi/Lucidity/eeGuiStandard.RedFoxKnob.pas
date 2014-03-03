@@ -314,6 +314,8 @@ begin
   Value := ControlLinks[Index].KnobControl.GetKnobValue;
 
   SetParameterValue(Index, Value);
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
 end;
 
 procedure TRedFoxKnobHandler.Handle_ModAmountChanged(Sender: TObject);
@@ -331,6 +333,8 @@ begin
   SetModAmount(Index, Value);
 
   msg := 'Mod Amount: ' + IntToStr(Round(Value * 100)) + '%';
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
 end;
 
 

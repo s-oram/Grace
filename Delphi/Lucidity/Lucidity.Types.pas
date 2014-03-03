@@ -24,7 +24,7 @@ type
     // range should be 0..1
     ModulatedParValue : single;
 
-    //Stores the modulation amount for each mod slot.
+    //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
     ModAmount : array[0..kModSlotCount-1] of single;
 
     // ModMin / ModMax stores the manimum and maximum modulation depth when the

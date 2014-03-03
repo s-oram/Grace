@@ -24,9 +24,10 @@ type
     fTextB: string;
     fOnShowModSourceMenu: TNotifyEvent;
     fOnShowModViaMenu: TNotifyEvent;
-    fModAmount: single;
+    fModAmountX1: single;
     fShowModAmount: boolean;
     fShowMuteIcon: boolean;
+    fModAmountX2: single;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -43,9 +44,10 @@ type
     function GetColor_ModAmountOn: TRedFoxColorString;
     procedure SetColor_ModAmountOff(const Value: TRedFoxColorString);
     procedure SetColor_ModAmountOn(const Value: TRedFoxColorString);
-    procedure SetModAmount(const Value: single);
+    procedure SetModAmountX1(const Value: single);
     procedure SetShowModAmount(const Value: boolean);
     procedure SetShowMuteIcon(const Value: boolean);
+    procedure SetModAmountX2(const Value: single);
 
   protected type
       TActiveControlRegion = (ModDisplay, ViaDisplay);
@@ -93,7 +95,8 @@ type
 
 
     property ShowModAmount : boolean read fShowModAmount write SetShowModAmount;
-    property ModAmount : single read fModAmount write SetModAmount;
+    property ModAmountX1 : single read fModAmountX1 write SetModAmountX1;
+    property ModAmountX2 : single read fModAmountX2 write SetModAmountX2;
     property ShowMuteIcon : boolean read fShowMuteIcon write SetShowMuteIcon;
 
     property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
@@ -129,7 +132,7 @@ begin
   fTextB := 'James';
 
   fShowModAmount := true;
-  fModAmount := 0.3;
+  fModAmountX1 := 0.3;
 end;
 
 destructor TVamModSelector.Destroy;
@@ -280,11 +283,20 @@ begin
   end;
 end;
 
-procedure TVamModSelector.SetModAmount(const Value: single);
+procedure TVamModSelector.SetModAmountX1(const Value: single);
 begin
-  if Value <> fModAmount then
+  if Value <> fModAmountX1 then
   begin
-    fModAmount := Value;
+    fModAmountX1 := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamModSelector.SetModAmountX2(const Value: single);
+begin
+  if fModAmountX2 <> Value then
+  begin
+    fModAmountX2 := Value;
     Invalidate;
   end;
 end;
@@ -395,11 +407,14 @@ begin
     then Draw_MuteIcon(TextBounds);
 
   //== draw the mod amount ==
-  ElementBounds.Top := Height - kModSliderHeight - kModSliderMargin * 2;
-  ElementBounds.Bottom := Height - kModSliderMargin;
-  ElementBounds.Left   := kModSliderMargin;
-  ElementBounds.Right  := Width - kModSliderMargin;
-  Draw_ModAmountSlider(ElementBounds);
+  if (ShowModAmount) then
+  begin
+    ElementBounds.Top := Height - kModSliderHeight - kModSliderMargin * 2;
+    ElementBounds.Bottom := Height - kModSliderMargin;
+    ElementBounds.Left   := kModSliderMargin;
+    ElementBounds.Right  := Width - kModSliderMargin;
+    Draw_ModAmountSlider(ElementBounds);
+  end;
 
   if assigned(ImageOverlay) then
   begin
@@ -464,22 +479,21 @@ begin
   BackBuffer.BufferInterface.RoundedRect(SliderBounds.Left, SliderBounds.Top, SliderBounds.Right, SliderBounds.Bottom, 1.5);
 
 
-  if ModAmount > 0 then
+  if ModAmountX1 < ModAmountX2 then
   begin
     BackBuffer.BufferInterface.FillColor := fColor_ModAmountOn;
-    x1 := SliderBounds.Left + (SliderBounds.Width * 0.5);
-    x2 := x1 + SliderBounds.Width * 0.5 * ModAmount;
+    x1 := SliderBounds.Left + (SliderBounds.Width * ModAmountX1);
+    x2 := SliderBounds.Left + (SliderBounds.Width * ModAmountX2);
     BackBuffer.BufferInterface.RoundedRect(x1, SliderBounds.Top, x2, SliderBounds.Bottom, 1.5);
   end;
 
-  if ModAmount < 0 then
+  if ModAmountX1 > ModAmountX2 then
   begin
     BackBuffer.BufferInterface.FillColor := fColor_ModAmountOn;
-    x2 := SliderBounds.Left + (SliderBounds.Width * 0.5);
-    x1 := x2 - SliderBounds.Width * 0.5 * ModAmount;
+    x1 := SliderBounds.Left + (SliderBounds.Width * ModAmountX2);
+    x2 := SliderBounds.Left + (SliderBounds.Width * ModAmountX1);
     BackBuffer.BufferInterface.RoundedRect(x1, SliderBounds.Top, x2, SliderBounds.Bottom, 1.5);
   end;
-
 end;
 
 procedure TVamModSelector.Draw_MuteIcon(TextAreaBounds: TRect);

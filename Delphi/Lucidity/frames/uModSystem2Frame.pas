@@ -15,6 +15,10 @@ type
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
   private
+    // ActiveModParIndex determines what modulation amounts the modulation
+    // selectors show.
+    ActiveModParIndex : integer;
+
     ModSourceMenu : TEnumMenu<TModSource>;
     ModViaMenu    : TEnumMenu<TModSource>;
 
@@ -34,8 +38,10 @@ type
     procedure MessageHandler(var Message : TMessage);
 
     procedure UpdateModulation;
+    procedure UpdateModSelector_ModulationAmounts;
 
-    procedure Handle_OnControlEnterMsg(Data : Pointer);
+
+    procedure Handle_ActiveModParIndexChanged(Data : Pointer);
 
     procedure Handle_ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -69,6 +75,7 @@ implementation
 
 uses
   LucidityModConnections,
+  eeVstParameterEx,
   VamLib.Threads,
   RedFox, RedFoxColor;
 
@@ -101,7 +108,7 @@ begin
   //ModViaMenu.OnClose := EventHandler_ModMenuClosed;
 
 
-
+  ActiveModParIndex := -1;
 
 
   for c1 := 0 to kModSlotCount-1 do
@@ -222,8 +229,9 @@ end;
 
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
-  if MsgID = TLucidMsgID.ModSlotChanged then UpdateModulation;
-  if MsgID = TLucidMsgID.OnControlEnter then self.Handle_OnControlEnterMsg(Data);
+  if MsgID = TLucidMsgID.ModSlotChanged           then UpdateModulation;
+  if MsgID = TLucidMsgID.ActiveModParIndexChanged then Handle_ActiveModParIndexChanged(Data);
+  if MsgID = TLucidMsgID.ModAmountChanged         then UpdateModSelector_ModulationAmounts;
 end;
 
 procedure TModSystem2Frame.SetMotherShipReference(aMotherShip: IMothership);
@@ -242,7 +250,6 @@ begin
   begin
     Plugin.Globals.AddWindowsMessageListener(MsgHandle);
   end;
-
 
   // finally
   UpdateModulation;
@@ -350,7 +357,44 @@ begin
     end;
   end;
 
+
+  // Call the next update method.
+  UpdateModSelector_ModulationAmounts;
 end;
+
+procedure TModSystem2Frame.UpdateModSelector_ModulationAmounts;
+var
+  c1 : integer;
+  Par : TVstParameterEx;
+  x1, x2 : single;
+  ModAmount : single;
+begin
+  if ActiveModParIndex = -1 then
+  begin
+    for c1 := 0 to kModSlotCount-1 do
+    begin
+      ModSelectors[c1].ShowModAmount := false;
+    end;
+  end else
+  begin
+
+    for c1 := 0 to kModSlotCount-1 do
+    begin
+      x1 := Plugin.ActiveKeyGroup.GetModParValue(ActiveModParIndex);
+      ModAmount := Plugin.ActiveKeyGroup.GetModParModAmount(ActiveModParIndex, c1);
+      x2 := x1 + ModAmount;
+      ModSelectors[c1].ModAmountX1   := x1;
+      ModSelectors[c1].ModAmountX2   := x2;
+
+      if abs(x1 - x2) <> 0
+        then ModSelectors[c1].ShowModAmount := true
+        else ModSelectors[c1].ShowModAmount := false;
+    end;
+  end;
+
+end;
+
+
 
 procedure TModSystem2Frame.Handle_ShowModSourceMenu(Sender: TObject);
 begin
@@ -424,9 +468,10 @@ begin
 end;
 
 
-procedure TModSystem2Frame.Handle_OnControlEnterMsg(Data: Pointer);
+procedure TModSystem2Frame.Handle_ActiveModParIndexChanged(Data: Pointer);
 begin
-  //
+  ActiveModParIndex := Integer(Data^);
+  UpdateModSelector_ModulationAmounts
 end;
 
 
