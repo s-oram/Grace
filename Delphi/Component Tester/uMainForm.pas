@@ -33,6 +33,7 @@ type
     Button5: TButton;
     VamKnob1: TVamKnob;
     VamKnob2: TVamKnob;
+    VamModSelector1: TVamModSelector;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);

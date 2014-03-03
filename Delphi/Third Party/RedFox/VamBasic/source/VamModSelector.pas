@@ -3,6 +3,7 @@ unit VamModSelector;
 interface
 
 uses
+  Types,
   Graphics, Controls,
   Classes, RedFox, RedFoxColor, RedFoxWinControl, VamWinControl;
 
@@ -13,6 +14,8 @@ type
     fColorBorder : TRedFoxColor;
     fColor : TRedFoxColor;
     fColorMouseOver : TRedFoxColor;
+    fColor_ModAmountOff : TRedFoxColor;
+    fColor_ModAmountOn  : TRedFoxColor;
     fText: string;
     fTextVAlign: TRedFoxAlign;
     fTextAlign: TRedFoxAlign;
@@ -21,6 +24,8 @@ type
     fTextB: string;
     fOnShowModSourceMenu: TNotifyEvent;
     fOnShowModViaMenu: TNotifyEvent;
+    fModAmount: single;
+    fShowModAmount: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -33,6 +38,12 @@ type
     function GetColorBorder: TRedFoxColorString;
     procedure SetColorBorder(const Value: TRedFoxColorString);
     procedure SetTextB(const Value: string);
+    function GetColor_ModAmountOff: TRedFoxColorString;
+    function GetColor_ModAmountOn: TRedFoxColorString;
+    procedure SetColor_ModAmountOff(const Value: TRedFoxColorString);
+    procedure SetColor_ModAmountOn(const Value: TRedFoxColorString);
+    procedure SetModAmount(const Value: single);
+    procedure SetShowModAmount(const Value: boolean);
 
   protected type
       TActiveControlRegion = (ModDisplay, ViaDisplay);
@@ -50,6 +61,9 @@ type
 
     procedure Paint; override;
 
+    procedure Draw_Text(TextAreaBounds : TRect);
+    procedure Draw_ModAmountSlider(SliderBounds : TRect);
+
     procedure EventHandle_TextPaddingChange(Sender : TObject);
   public
     constructor Create(AOwner: TComponent); override;
@@ -59,7 +73,9 @@ type
   published
     property ColorBorder    : TRedFoxColorString read GetColorBorder    write SetColorBorder;
     property Color          : TRedFoxColorString read GetColor          write SetColor;
-    property ColorMouseOver : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
+    property ColorMouseOver     : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
+    property Color_ModAmountOff : TRedFoxColorString read GetColor_ModAmountOff write SetColor_ModAmountOff;
+    property Color_ModAmountOn  : TRedFoxColorString read GetColor_ModAmountOn  write SetColor_ModAmountOn;
 
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
@@ -73,6 +89,9 @@ type
     property ImageOverlay:TBitmap read fImageOverlay write SetImageOverlay;
 
 
+    property ShowModAmount : boolean read fShowModAmount write SetShowModAmount;
+    property ModAmount : single read fModAmount write SetModAmount;
+
     property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
     property OnShowModViaMenu    : TNotifyEvent read fOnShowModViaMenu    write fOnShowModViaMenu;
 
@@ -82,7 +101,7 @@ type
 implementation
 
 uses
-  SysUtils, Types, AggPixelFormat;
+  SysUtils, AggPixelFormat;
 
 { TVamTextBox }
 
@@ -93,6 +112,9 @@ begin
   fColor.SetColor('$FF3E3E3E');
   fColorMouseOver.SetColor('$FF3E3E3E');
 
+  fColor_ModAmountOff := '$FF666666';
+  fColor_ModAmountOn  := '$FFcccccc';
+
   Font.Color := clWhite;
 
   FTextPadding := TPadding.Create(Self);
@@ -101,6 +123,9 @@ begin
 
   fText := 'Bang';
   fTextB := 'James';
+
+  fShowModAmount := true;
+  fModAmount := 0.3;
 end;
 
 destructor TVamModSelector.Destroy;
@@ -134,6 +159,16 @@ end;
 function TVamModSelector.GetColorMouseOver: TRedFoxColorString;
 begin
   result := fColorMouseOver.AsString;
+end;
+
+function TVamModSelector.GetColor_ModAmountOff: TRedFoxColorString;
+begin
+  result := fColor_ModAmountOff;
+end;
+
+function TVamModSelector.GetColor_ModAmountOn: TRedFoxColorString;
+begin
+  result := fColor_ModAmountOn;
 end;
 
 procedure TVamModSelector.MouseEnter;
@@ -214,11 +249,47 @@ begin
   end;
 end;
 
+procedure TVamModSelector.SetColor_ModAmountOff(const Value: TRedFoxColorString);
+begin
+  if fColor_ModAmountOff <> Value then
+  begin
+    fColor_ModAmountOff := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamModSelector.SetColor_ModAmountOn(const Value: TRedFoxColorString);
+begin
+  if fColor_ModAmountOn <> Value then
+  begin
+    fColor_ModAmountOn := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TVamModSelector.SetImageOverlay(const Value: TBitmap);
 begin
   if fImageOverlay <> Value then
   begin
     fImageOverlay := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamModSelector.SetModAmount(const Value: single);
+begin
+  if Value <> fModAmount then
+  begin
+    fModAmount := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TVamModSelector.SetShowModAmount(const Value: boolean);
+begin
+  if Value <> fShowModAmount then
+  begin
+    fShowModAmount := Value;
     Invalidate;
   end;
 end;
@@ -265,9 +336,13 @@ begin
 end;
 
 procedure TVamModSelector.Paint;
+const
+  kModSliderHeight = 4;
+  kModSliderMargin = 4;
 var
   aColor : TRedFoxColor;
   TextBounds : TRect;
+  ElementBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
   VOffset : integer;
@@ -298,27 +373,20 @@ begin
   BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
   //== draw the text ==
-  //TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-TextPadding.Right, Height-TextPadding.Bottom);
-  //BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
-
-  VOffset := TextPadding.Top;
-  VHeight := Height - TextPadding.Top - TextPadding.Bottom;
-  TextBounds.Left   := 0;
-  TextBounds.Right  := Width;
-
-  TextBounds.Top    := round(VHeight * 0/3) + VOffset;
-  TextBounds.Bottom := round(VHeight * 1/3) + VOffset;
-  BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
-
-  TextBounds.Top    := round(VHeight * 1/3) + VOffset;
-  TextBounds.Bottom := round(VHeight * 2/3) + VOffset;
-  BackBuffer.DrawText('via', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
-
-  TextBounds.Top    := round(VHeight * 2/3) + VOffset;
-  TextBounds.Bottom := round(VHeight * 3/3) + VOffset;
-  BackBuffer.DrawText(TextB, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+  TextBounds.Top    := TextPadding.Top;
+  TextBounds.Bottom := Height - TextPadding.Bottom - kModSliderHeight - kModSliderMargin * 2;
+  TextBounds.Left   := TextPadding.Left;
+  TextBounds.Right  := Width - TextPadding.Right;
+  Draw_Text(TextBounds);
 
 
+
+  //== draw the mod amount ==
+  ElementBounds.Top := Height - kModSliderHeight - kModSliderMargin * 2;
+  ElementBounds.Bottom := Height - kModSliderMargin;
+  ElementBounds.Left   := kModSliderMargin;
+  ElementBounds.Right  := Width - kModSliderMargin;
+  Draw_ModAmountSlider(ElementBounds);
 
   if assigned(ImageOverlay) then
   begin
@@ -335,6 +403,9 @@ begin
     BackBuffer.TransformImage(ImageOverlay, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
   end;
 
+
+
+
   //== draw the border ==
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineColor := fColorBorder;
@@ -342,5 +413,64 @@ begin
   BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
 
 end;
+
+procedure TVamModSelector.Draw_Text(TextAreaBounds : TRect);
+var
+  TextBounds : TRect;
+  VOffset : integer;
+  VHeight : integer;
+begin
+  VOffset := TextAreaBounds.Top;
+  VHeight := TextAreaBounds.Bottom - TextAreaBounds.Top;
+  TextBounds.Left   := 0;
+  TextBounds.Right  := Width;
+
+  TextBounds.Top    := round(VHeight * 0/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 1/3) + VOffset;
+  BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+  TextBounds.Top    := round(VHeight * 1/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 2/3) + VOffset;
+  BackBuffer.DrawText('via', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+  TextBounds.Top    := round(VHeight * 2/3) + VOffset;
+  TextBounds.Bottom := round(VHeight * 3/3) + VOffset;
+  BackBuffer.DrawText(TextB, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+end;
+
+procedure TVamModSelector.Draw_ModAmountSlider(SliderBounds: TRect);
+var
+  x1, x2 : single;
+begin
+  BackBuffer.BufferInterface.FillColor := fColor_ModAmountOff;
+  BackBuffer.BufferInterface.NoLine;
+
+  fColor_ModAmountOff := '$FF666666';
+  fColor_ModAmountOn  := '$FFcccccc';
+
+  BackBuffer.BufferInterface.RoundedRect(SliderBounds.Left, SliderBounds.Top, SliderBounds.Right, SliderBounds.Bottom, 1.5);
+
+
+  if ModAmount > 0 then
+  begin
+    BackBuffer.BufferInterface.FillColor := fColor_ModAmountOn;
+    x1 := SliderBounds.Left + (SliderBounds.Width * 0.5);
+    x2 := x1 + SliderBounds.Width * 0.5 * ModAmount;
+    BackBuffer.BufferInterface.RoundedRect(x1, SliderBounds.Top, x2, SliderBounds.Bottom, 1.5);
+  end;
+
+  if ModAmount < 0 then
+  begin
+    BackBuffer.BufferInterface.FillColor := fColor_ModAmountOn;
+    x2 := SliderBounds.Left + (SliderBounds.Width * 0.5);
+    x1 := x2 - SliderBounds.Width * 0.5 * ModAmount;
+    BackBuffer.BufferInterface.RoundedRect(x1, SliderBounds.Top, x2, SliderBounds.Bottom, 1.5);
+  end;
+
+end;
+
+
+
+
 
 end.

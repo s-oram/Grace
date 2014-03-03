@@ -146,6 +146,27 @@ object Form1: TForm1
       ParameterIndex = 0
       Visible = True
     end
+    object VamModSelector1: TVamModSelector
+      Left = 56
+      Top = 184
+      Width = 81
+      Height = 65
+      Opacity = 255
+      Text = 'Bang'
+      HitTest = True
+      ColorBorder = '$00000000'
+      Color = '$FF3E3E3E'
+      ColorMouseOver = '$FF3E3E3E'
+      TextAlign = AlignNear
+      TextVAlign = AlignNear
+      TextB = 'James'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Visible = True
+    end
   end
   object Button2: TButton
     Left = 8
@@ -184,9 +205,9 @@ object Form1: TForm1
     OnClick = Button5Click
   end
   object Memo1: TMemo
-    Left = 320
-    Top = 207
-    Width = 537
+    Left = 616
+    Top = 88
+    Width = 353
     Height = 265
     Lines.Strings = (
       'Memo1')
