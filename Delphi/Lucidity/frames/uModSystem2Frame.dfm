@@ -21,6 +21,7 @@ object ModSystem2Frame: TModSystem2Frame
       Top = 0
       Width = 689
       Height = 238
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False

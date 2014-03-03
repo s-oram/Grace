@@ -35,6 +35,8 @@ type
 
     procedure UpdateModulation;
 
+    procedure Handle_OnControlEnterMsg(Data : Pointer);
+
     procedure Handle_ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_BackwardSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -221,6 +223,7 @@ end;
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
   if MsgID = TLucidMsgID.ModSlotChanged then UpdateModulation;
+  if MsgID = TLucidMsgID.OnControlEnter then self.Handle_OnControlEnterMsg(Data);
 end;
 
 procedure TModSystem2Frame.SetMotherShipReference(aMotherShip: IMothership);
@@ -419,6 +422,15 @@ begin
 
   RunTask(LeaveControl, 150, nil);
 end;
+
+
+procedure TModSystem2Frame.Handle_OnControlEnterMsg(Data: Pointer);
+begin
+  //
+end;
+
+
+
 
 
 

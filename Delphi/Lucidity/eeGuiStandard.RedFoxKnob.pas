@@ -231,6 +231,8 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.OnControlEnter, @Sender);
 end;
 
 procedure TRedFoxKnobHandler.Handle_MouseLeave(Sender: TObject);
@@ -239,6 +241,8 @@ var
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.OnControlLeave, @Sender);
 end;
 
 

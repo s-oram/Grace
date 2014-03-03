@@ -5,6 +5,7 @@ interface
 uses
   WinApi.Windows,
   eePlugin, eePluginGui,
+  GuiMeta.ActiveModDisplay,
   GuiMeta.ScopeHandler;
 
 type
@@ -19,6 +20,7 @@ type
     SystemWindow : hwnd;
 
     ScopeHandler : TScopeHandler;
+    ActiveModDetector : TModDisplayDetector;
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy; override;
@@ -66,7 +68,8 @@ begin
   end;
 
 
-
+  ActiveModDetector := TModDisplayDetector.Create(Plugin);
+  aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector);
 
 
 
@@ -75,6 +78,7 @@ end;
 destructor TPluginGuiMeta.Destroy;
 begin
   ScopeHandler.Free;
+  ActiveModDetector.Free;
 end;
 
 end.

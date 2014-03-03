@@ -42,7 +42,8 @@ type
     FocusedControlChanged            = 11;
     ModSlotChanged                   = 12;
     LfoChanged                       = 13;
-    Command                          = LfoChanged + 1;
+    ActiveModParIndexChanged         = 14;
+    Command                          = ActiveModParIndexChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;
     Command_HideSampleMapEdit        = Command + 2;
     Command_ShowAboutDialog          = Command + 3;
@@ -57,6 +58,9 @@ type
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
     Msg_XRegionsDuplicated           = Actions + 4;
+    OnControlEnter                   = Actions + 5;
+    OnControlLeave                   = Actions + 6;
+
   end;
 
 const
