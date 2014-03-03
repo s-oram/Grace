@@ -36,6 +36,8 @@ type
     // Max Slot will be 50%
     ModMin    : single;
     ModMax    : single;
+
+    function IsModulated:boolean;
   end;
 
   PModulatedPars = ^TModulatedPars;
@@ -60,5 +62,19 @@ type
   PSynthPar = PSingle;
 
 implementation
+
+{ TModulatedPar }
+
+function TModulatedPar.IsModulated: boolean;
+var
+  c1 : integer;
+begin
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    if ModAmount[c1] <> 0 then exit(true);
+  end;
+
+  result := false;
+end;
 
 end.

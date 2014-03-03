@@ -50,6 +50,9 @@ type
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
 
+    procedure Handle_ClearCurrentModulation(Sender:TObject);
+    procedure Handle_ClearAllModulation(Sender:TObject);
+
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -76,12 +79,42 @@ type
 implementation
 
 uses
+  uConstants,
   LucidityModConnections,
   uLucidityKeyGroupInterface,
   SysUtils,
   Vcl.Dialogs,
   eeMidiMap,
-  TypInfo;
+  TypInfo,
+  uGuiUtils;
+
+function ShowClearCurrentModulationCommand(const Plugin : TeePlugin; Par: TVstParameterEx):boolean;
+var
+  ModParIndex : integer;
+  ModSlotIndex : integer;
+begin
+  if Plugin.Globals.SelectedModSlot = -1 then exit(false);
+
+  if Par.HasModLink = false then exit(false);
+
+  ModParIndex := Par.ModLinkIndex;
+  ModSlotIndex := Plugin.Globals.SelectedModSlot;
+
+  if Plugin.ActiveKeyGroup.GetModulatedParameters^[ModParIndex].ModAmount[ModSlotIndex] <> 0
+    then result := true
+    else result := false;
+end;
+
+
+
+function ShowClearAllModulationCommand(const Plugin : TeePlugin; Par: TVstParameterEx):boolean;
+var
+  ModParIndex : integer;
+begin
+  if Par.HasModLink = false then exit(false);
+  ModParIndex := Par.ModLinkIndex;
+  result := Plugin.ActiveKeyGroup.GetModulatedParameters^[ModParIndex].IsModulated;
+end;
 
 { TControlInfoList }
 
@@ -381,11 +414,45 @@ var
 
   ParIndex : integer;
   LinkIndex : integer absolute ControlLinkIndex;
+
+  Par : TVstParameterEx;
 begin
+  Par := ControlLinks[ControlLinkIndex].LinkedParameter;
+
   // Clear the menu
   ControlContextMenu.Items.Clear;
 
-  // Rebuild the context menu before showing it.
+
+
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := 'Clear Current Modulation';
+  mi.OnClick := Handle_ClearCurrentModulation;
+  mi.Tag     := ControlLinkIndex;
+  if ShowClearCurrentModulationCommand(Plugin, Par)
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  ControlContextMenu.Items.Add(mi);
+  miMidiLearn := mi;
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := 'Clear All Modulation';
+  mi.OnClick := Handle_ClearAllModulation;
+  mi.Tag     := ControlLinkIndex;
+  if ShowClearAllModulationCommand(Plugin, Par)
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  ControlContextMenu.Items.Add(mi);
+  miMidiLearn := mi;
+
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := '-';
+  ControlContextMenu.Items.Add(mi);
+
+
+
+
   mi := TMenuItem.Create(ControlContextMenu);
   mi.Caption := 'MIDI Learn';
   mi.OnClick := Handle_MidiLearn;
@@ -529,6 +596,54 @@ begin
     ShowMessage('Error: ' + ErrorMessage);
   end;
 end;
+
+procedure TRedFoxKnobHandler.Handle_ClearAllModulation(Sender: TObject);
+var
+  c1 : integer;
+  ControlLinkIndex : integer;
+  Par : TVstParameterEx;
+  ModParIndex : integer;
+  ModSlotIndex : integer;
+begin
+  ControlLinkIndex := (Sender as TMenuItem).Tag;
+
+  Par := ControlLinks[ControlLinkIndex].LinkedParameter;
+
+  if Par.HasModLink = false then exit;
+
+  ModParIndex  := Par.ModLinkIndex;
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    Plugin.ActiveKeyGroup.SetModParModAmount(ModParIndex, c1, 0);
+  end;
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+end;
+
+procedure TRedFoxKnobHandler.Handle_ClearCurrentModulation(Sender: TObject);
+var
+  c1 : integer;
+  ControlLinkIndex : integer;
+  Par : TVstParameterEx;
+  ModParIndex : integer;
+  ModSlotIndex : integer;
+begin
+  ControlLinkIndex := (Sender as TMenuItem).Tag;
+
+  Par := ControlLinks[ControlLinkIndex].LinkedParameter;
+
+  if Par.HasModLink = false then exit;
+
+  ModParIndex  := Par.ModLinkIndex;
+  ModSlotIndex := Plugin.Globals.SelectedModSlot;
+
+  Plugin.ActiveKeyGroup.SetModParModAmount(ModParIndex, ModSlotIndex, 0);
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+end;
+
+
 
 
 

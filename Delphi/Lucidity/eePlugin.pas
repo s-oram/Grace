@@ -174,6 +174,7 @@ type
 
 
 
+
   published
     // Global parameters. These properties are for the benefit of the statemanager.
     property VoiceMode  : TVoiceMode read GetVoiceMode    write SetVoiceMode;
