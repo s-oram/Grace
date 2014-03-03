@@ -26,6 +26,7 @@ type
     fOnShowModViaMenu: TNotifyEvent;
     fModAmount: single;
     fShowModAmount: boolean;
+    fShowMuteIcon: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -44,6 +45,7 @@ type
     procedure SetColor_ModAmountOn(const Value: TRedFoxColorString);
     procedure SetModAmount(const Value: single);
     procedure SetShowModAmount(const Value: boolean);
+    procedure SetShowMuteIcon(const Value: boolean);
 
   protected type
       TActiveControlRegion = (ModDisplay, ViaDisplay);
@@ -63,6 +65,7 @@ type
 
     procedure Draw_Text(TextAreaBounds : TRect);
     procedure Draw_ModAmountSlider(SliderBounds : TRect);
+    procedure Draw_MuteIcon(TextAreaBounds : TRect);
 
     procedure EventHandle_TextPaddingChange(Sender : TObject);
   public
@@ -91,6 +94,7 @@ type
 
     property ShowModAmount : boolean read fShowModAmount write SetShowModAmount;
     property ModAmount : single read fModAmount write SetModAmount;
+    property ShowMuteIcon : boolean read fShowMuteIcon write SetShowMuteIcon;
 
     property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
     property OnShowModViaMenu    : TNotifyEvent read fOnShowModViaMenu    write fOnShowModViaMenu;
@@ -294,6 +298,15 @@ begin
   end;
 end;
 
+procedure TVamModSelector.SetShowMuteIcon(const Value: boolean);
+begin
+  if Value <> fShowMuteIcon then
+  begin
+    fShowMuteIcon := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TVamModSelector.SetText(const Value: string);
 begin
   if Value <> fText then
@@ -378,8 +391,8 @@ begin
   TextBounds.Left   := TextPadding.Left;
   TextBounds.Right  := Width - TextPadding.Right;
   Draw_Text(TextBounds);
-
-
+  if ShowMuteIcon
+    then Draw_MuteIcon(TextBounds);
 
   //== draw the mod amount ==
   ElementBounds.Top := Height - kModSliderHeight - kModSliderMargin * 2;
@@ -469,8 +482,25 @@ begin
 
 end;
 
+procedure TVamModSelector.Draw_MuteIcon(TextAreaBounds: TRect);
+var
+  ptx, pty : single;
+  ElementBounds : TRect;
+begin
+  pty := TextAreaBounds.Top + TextAreaBounds.Height * 0.5;
+  ptx := TextAreaBounds.Left + TextAreaBounds.Width * 1/5;
 
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
+  BackBuffer.BufferInterface.Circle(ptx, pty, 7);
 
+  ElementBounds.Left   := round(ptx - 8);
+  Elementbounds.Right  := round(ptx + 9);
+  ElementBounds.Top    := round(pty - 8);
+  ElementBounds.Bottom := round(pty + 9);
 
+  BackBuffer.DrawText('M', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, ElementBounds, Color);
+
+end;
 
 end.
