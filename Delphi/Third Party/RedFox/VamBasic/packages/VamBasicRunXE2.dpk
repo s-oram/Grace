@@ -75,7 +75,8 @@ contains
   VamModSelector in '..\source\VamModSelector.pas',
   VamGuiControlInterfaces in '..\source\VamGuiControlInterfaces.pas',
   VamShortMessageOverlay in '..\source\VamShortMessageOverlay.pas',
-  VamKnobSmoother in '..\source\VamKnobSmoother.pas';
+  VamKnobSmoother in '..\source\VamKnobSmoother.pas',
+  VamSliderSwitch in '..\source\VamSliderSwitch.pas';
 
 end.
 

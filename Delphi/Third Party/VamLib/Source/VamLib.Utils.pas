@@ -20,9 +20,13 @@ function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 procedure SwapValues(var x1, x2:single); inline; overload;
 procedure SwapValues(var x1, x2:integer); inline; overload;
 
+// Expands a 0-1 ranged float to an arbitary integer range.
+function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
+
 implementation
 
 uses
+  Math,
   SysUtils;
 
 
@@ -123,6 +127,24 @@ begin
   tx := x1;
   x1 := x2;
   x2 := tx;
+end;
+
+
+function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
+var
+  Dist : integer;
+begin
+  assert(Value >= 0);
+  assert(Value <= 1);
+
+  Dist := MaxValue - MinValue;
+
+  result := MinValue + round(Dist * Value);
+
+
+  assert(result >= MinValue);
+  assert(result <= MaxValue);
+
 end;
 
 

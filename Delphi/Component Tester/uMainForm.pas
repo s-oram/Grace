@@ -17,7 +17,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
   VamModSelector, VamCompoundNumericKnob, VamNumericKnob,
-  LucidityGui.DropBoxSelector, VamShortMessageOverlay, Vcl.ExtCtrls;
+  LucidityGui.DropBoxSelector, VamShortMessageOverlay, Vcl.ExtCtrls,
+  VamSliderSwitch;
 
 type
   TForm1 = class(TForm)
@@ -34,6 +35,7 @@ type
     VamKnob1: TVamKnob;
     VamKnob2: TVamKnob;
     VamModSelector1: TVamModSelector;
+    VamSliderSwitch1: TVamSliderSwitch;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);

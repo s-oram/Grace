@@ -25,6 +25,7 @@ uses
   VamScrollBox,
   VamShortMessageOverlay,
   VamSlider,
+  VamSliderSwitch,
   VamStatusLed,
   VamTabs,
   VamTabPanel,
@@ -69,6 +70,7 @@ begin
   RegisterComponents('Vam VST', [TVamSampleZoomControl]);
   RegisterComponents('Vam VST', [TVamStatusLed]);
   RegisterComponents('Vam VST', [TVamSlider]);
+  RegisterComponents('Vam VST', [TVamSliderSwitch]);
   RegisterComponents('Vam VST', [TVamXYPad]);
 
   RegisterComponents('Vam Compound', [TVamCompoundLabel]);

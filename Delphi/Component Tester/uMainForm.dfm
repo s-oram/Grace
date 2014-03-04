@@ -73,8 +73,8 @@ object Form1: TForm1
       Visible = True
     end
     object VamShortMessageOverlay1: TVamShortMessageOverlay
-      Left = 170
-      Top = 168
+      Left = 178
+      Top = 143
       Width = 137
       Height = 49
       Opacity = 255
@@ -157,6 +157,8 @@ object Form1: TForm1
       ColorBorder = '$00000000'
       Color = '$FF3E3E3E'
       ColorMouseOver = '$FF3E3E3E'
+      Color_ModAmountOff = '$FF666666'
+      Color_ModAmountOn = '$FFCCCCCC'
       TextAlign = AlignNear
       TextVAlign = AlignNear
       TextB = 'James'
@@ -165,6 +167,22 @@ object Form1: TForm1
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
+      ShowModAmount = True
+      ModAmountX1 = 0.300000011920929000
+      ShowMuteIcon = False
+      Visible = True
+    end
+    object VamSliderSwitch1: TVamSliderSwitch
+      Left = 232
+      Top = 216
+      Width = 217
+      Height = 33
+      Opacity = 255
+      Text = 'VamSliderSwitch1'
+      HitTest = True
+      Enabled = False
+      SwitchSteps = 3
+      SwitchPos = 0
       Visible = True
     end
   end

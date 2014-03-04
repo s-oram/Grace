@@ -13,7 +13,6 @@ type
 
   TVamSlider = class(TVamWinControl)
   private
-
     fOnChanged: TNotifyEvent;
     fPos: single;
     fImageStrip: TBitmap;
