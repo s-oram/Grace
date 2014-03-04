@@ -398,12 +398,6 @@ begin
 
     ApplyValue := procedure(x : single)
     begin
-      if InternalPos + InternalModAmount > 1
-        then InternalModAmount := 1 - InternalPos;
-
-      if InternalPos + InternalModAmount < 0
-        then InternalModAmount := 0 - InternalPos;
-
       if InternalPos <> ExternalPos then
       begin
         ExternalPos := InternalPos;
