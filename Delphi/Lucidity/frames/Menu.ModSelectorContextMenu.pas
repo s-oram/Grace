@@ -17,6 +17,8 @@ type
 
     procedure Handle_ModSourceSelected(Sender : TObject; aSource : TModSource);
     procedure Handle_ModViaSelected(Sender : TObject; aSource : TModSource);
+
+    procedure Handle_ToggleModulationMute(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,11 +50,17 @@ begin
   Menu.Items.Add(ModSourceMenu.Items);
   Menu.Items.Add(ModViaMenu.Items);
 
-  {
+
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Mod Via';
+  mi.Caption := 'Mute Modulation';
+  mi.OnClick := self.Handle_ToggleModulationMute;
   Menu.Items.Add(mi);
-  }
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Un-mute Modulation';
+  mi.OnClick := self.Handle_ToggleModulationMute;
+  Menu.Items.Add(mi);
+
 end;
 
 destructor TModSelectorContextMenu.Destroy;
@@ -65,6 +73,7 @@ end;
 
 procedure TModSelectorContextMenu.Popup(const aModSlotIndex : integer; const x, y: integer);
 var
+  IsMute : boolean;
   s : string;
   mi : TMenuItem;
   c1: Integer;
@@ -97,6 +106,33 @@ begin
 
 
 
+
+  IsMute := Plugin.ActiveKeyGroup.GetModConnections.GetModMute(ModSlotIndex);
+  if IsMute then
+  begin
+    mi := Menu.Items.Find('Mute Modulation');
+    if assigned(mi)
+      then mi.Visible := false;
+
+    mi := Menu.Items.Find('Un-mute Modulation');
+    if assigned(mi)
+      then mi.Visible := true;
+  end else
+  begin
+    mi := Menu.Items.Find('Mute Modulation');
+    if assigned(mi)
+      then mi.Visible := true;
+
+    mi := Menu.Items.Find('Un-mute Modulation');
+    if assigned(mi)
+      then mi.Visible := false;
+  end;
+
+
+
+
+
+
   Menu.Popup(x, y);
 
 
@@ -114,6 +150,14 @@ begin
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
-
+procedure TModSelectorContextMenu.Handle_ToggleModulationMute(Sender: TObject);
+var
+  IsMute : boolean;
+begin
+  IsMute := Plugin.ActiveKeyGroup.GetModConnections.GetModMute(ModSlotIndex);
+  IsMute := not IsMute;
+  Plugin.ActiveKeyGroup.GetModConnections.SetModMute(ModSlotIndex, IsMute);
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+end;
 
 end.

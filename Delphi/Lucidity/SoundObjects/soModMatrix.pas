@@ -386,19 +386,22 @@ procedure TModMatrix.UpdateModConnections;
 var
   c1: Integer;
   aModSource : TModSource;
+  IsMute : boolean;
   Index : integer;
 begin
 
   // Update mod source pointers...
   for c1 := 0 to kModSlotCount-1 do
   begin
+    IsMute := self.ModConnections^.GetModMute(c1);
+
     aModSource := self.ModConnections^.GetModSource(c1);
-    if aModSource <> TModSource.None
+    if (aModSource <> TModSource.None) and (IsMute = false)
       then ModSlotSourcePointers[c1] := fModSourceValues[Integer(aModSource)]
       else ModSlotSourcePointers[c1] := @SourceNoneValue;
 
-    aModSource := self.ModConnections^.GetModSource(c1);
-    if aModSource <> TModSource.None
+    aModSource := self.ModConnections^.GetModVia(c1);
+    if (aModSource <> TModSource.None) and (IsMute = false)
       then ModSlotViaPointers[c1] := fModSourceValues[Integer(aModSource)]
       else ModSlotViaPointers[c1] := @ViaNoneValue;
   end;

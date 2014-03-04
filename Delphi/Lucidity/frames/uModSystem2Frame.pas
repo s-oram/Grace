@@ -293,6 +293,7 @@ end;
 procedure TModSystem2Frame.UpdateModulation;
 var
   c1 : integer;
+  IsMute    : boolean;
   ModSource : TModSource;
   ModSourceText : string;
   kg : IKeyGroup;
@@ -311,6 +312,9 @@ begin
     ModSource := ModConnections.GetModVia(c1);
     ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
     ModSelectors[c1].TextB := ModSourceText;
+
+    IsMute := ModConnections.GetModMute(c1);
+    ModSelectors[c1].ShowMuteIcon := IsMute;
   end;
 
 
@@ -345,7 +349,6 @@ begin
       ModSelectors[c1].ColorMouseOver  := kColor_LcdDark6;
     end;
   end;
-
 
   // Call the next update method.
   UpdateModSelector_ModulationAmounts;

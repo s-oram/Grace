@@ -22,6 +22,7 @@ type
   private
     fModSource : array[0..kModSlotCount-1] of TModSource;
     fModVia    : array[0..kModSlotCount-1] of TModSource;
+    fModMute   : array[0..kModSlotCount-1] of boolean;
 
     //TODO: Delete ModLinks. - it's not being used.
     fModLinks: TModLinkArray;
@@ -30,6 +31,9 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    function GetModMute(const ModSlotIndex : integer) : boolean;
+    procedure SetModMute(const ModSlotIndex : integer; IsMuted:boolean);
 
     function GetModSource(const ModSlotIndex : integer) : TModSource;
     procedure SetModSource(const ModSlotIndex : integer; aSource:TModSource);
@@ -112,6 +116,11 @@ begin
 end;
 
 
+function TModConnections.GetModMute(const ModSlotIndex: integer): boolean;
+begin
+  result := fModMute[ModSlotIndex];
+end;
+
 function TModConnections.GetModSource(const ModSlotIndex: integer): TModSource;
 begin
   result := fModSource[ModSlotIndex];
@@ -120,6 +129,11 @@ end;
 function TModConnections.GetModVia(const ModSlotIndex: integer): TModSource;
 begin
   result := fModVia[ModSlotIndex]
+end;
+
+procedure TModConnections.SetModMute(const ModSlotIndex: integer; IsMuted: boolean);
+begin
+  fModMute[ModSlotIndex] := IsMuted;
 end;
 
 procedure TModConnections.SetModSource(const ModSlotIndex: integer; aSource: TModSource);

@@ -464,6 +464,9 @@ begin
       StepSeqNode.NodeNew('StepValue').ValueUnicode := DataIO_FloatToStr(SeqData.GetStepValue(c3));
     end;
 
+
+    //TODO: save mod slot values...
+
   end;
 end;
 
