@@ -157,6 +157,9 @@ begin
     ModSelectors[c1].ColorMouseOver  := kColor_ButtonMouseOver;
     ModSelectors[c1].TextPadding.Top    := 5;
     ModSelectors[c1].TextPadding.Bottom := 5;
+
+    ModSelectors[c1].Color_ModAmountOff := kColor_LcdDark3;
+    ModSelectors[c1].Color_ModAmountOn  := kColor_LcdDark5;
   end;
 
   MainSelector.Text := 'Main';
@@ -370,10 +373,8 @@ begin
     end;
   end else
   begin
-
     for c1 := 0 to kModSlotCount-1 do
     begin
-      //x1 := Plugin.ActiveKeyGroup.GetModParValue(ActiveModParIndex);
       x1 := 0.5;
       ModAmount := Plugin.ActiveKeyGroup.GetModParModAmount(ActiveModParIndex, c1);
       ModAmount := ModAmount * 0.5;
@@ -387,7 +388,6 @@ begin
         else ModSelectors[c1].ShowModAmount := false;
     end;
   end;
-
 end;
 
 procedure TModSystem2Frame.Handle_ShowModContextMenu(Sender: TObject);

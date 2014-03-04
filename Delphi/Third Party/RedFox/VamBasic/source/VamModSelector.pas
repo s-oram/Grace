@@ -473,12 +473,9 @@ procedure TVamModSelector.Draw_ModAmountSlider(SliderBounds: TRect);
 var
   x1, x2 : single;
 begin
-  BackBuffer.BufferInterface.FillColor := fColor_ModAmountOff;
+  BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.NoLine;
-
-  fColor_ModAmountOff := '$FF666666';
-  fColor_ModAmountOn  := '$FFcccccc';
-
+  BackBuffer.BufferInterface.FillColor := fColor_ModAmountOff;
   BackBuffer.BufferInterface.RoundedRect(SliderBounds.Left, SliderBounds.Top, SliderBounds.Right, SliderBounds.Bottom, 1.5);
 
 
@@ -497,6 +494,10 @@ begin
     x2 := SliderBounds.Left + (SliderBounds.Width * ModAmountX1);
     BackBuffer.BufferInterface.RoundedRect(x1, SliderBounds.Top, x2, SliderBounds.Bottom, 1.5);
   end;
+
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineColor := fColor_ModAmountOff;
+  BackBuffer.BufferInterface.RoundedRect(SliderBounds.Left-0.5, SliderBounds.Top-0.5, SliderBounds.Right+0.5, SliderBounds.Bottom+0.5, 1.5);
 end;
 
 procedure TVamModSelector.Draw_MuteIcon(TextAreaBounds: TRect);

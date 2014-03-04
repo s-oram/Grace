@@ -147,7 +147,7 @@ const
   kColor_LcdDark1 = '$ff242B39';
   kColor_LcdDark2 = '$ff313B4F';
   kColor_LcdDark3 = '$ff5D7095';
-  kColor_LcdDark4 = '$ff64718D';
+  kColor_LcdDark4 = '$ff8792A9';
   kColor_LcdDark5 = '$ffA1BDED';
   kColor_LcdDark6 = '$ffD3E0F7';
 

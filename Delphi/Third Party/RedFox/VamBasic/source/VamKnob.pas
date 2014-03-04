@@ -362,7 +362,7 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
-      if ExternalPos + NewValue < 0 then
+      if InternalPos + NewValue < 0 then
       begin
         NewValue := 0 - InternalPos;
         UpdateReferencePoints(X, Y);
@@ -382,6 +382,8 @@ begin
         KnobSmoother.KnobMove(self, InternalModAmount, ApplyValue);
       end;
     end;
+
+    Invalidate;
   end;
 end;
 
