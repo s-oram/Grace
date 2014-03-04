@@ -14,7 +14,7 @@ uses
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
   VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
   LucidityGui.VectorSequence,
-  LucidityGui.Scope, Vcl.ExtCtrls, Contnrs;
+  LucidityGui.Scope, Vcl.ExtCtrls, Contnrs, VamSliderSwitch;
 
 type
   TAltFilterText = record
@@ -116,6 +116,7 @@ type
     LfoSelectButton2: TVamButton;
     Scope: TLucidityScope;
     Timer1: TTimer;
+    LfoSelector: TVamSliderSwitch;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -287,10 +288,10 @@ begin
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter(TParName.FilterVelocity),  TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),       TSequencerClockHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),  TStepSequencerLengthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),      TStepSequencerLengthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),       TSequencerClockHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),  TStepSequencerLengthHelper);
+  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),      TStepSequencerLengthHelper);
 
 
 
@@ -398,7 +399,7 @@ begin
   FilterEnvContainer.Height := RowHeight;
   FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
-  LfoAContainer.Width := (FilterKnobWidth + 32 + 32);
+  LfoAContainer.Width := (FilterKnobWidth + 32 + 32 + 8);
   LfoAContainer.Height := RowHeight;
   LfoAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
@@ -523,13 +524,16 @@ begin
   LfoContainerLabel.Width  := kw * 2;
   LfoContainerLabel.Height := TGuiConst.SectionLabelHeight;
   LfoContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
-  LfoContainerLabel.Layout.SetPos(41, 0);
+  LfoContainerLabel.Layout.SetPos(10, 0);
 
   LfoSelectButton2.Layout.SetSize(18,18);
-  LfoSelectButton2.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-1,0);
+  LfoSelectButton2.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-6,0);
   LfoSelectButton2.Top := 0;
 
-  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
+  LfoSelector.Layout.SetSize(30,18);
+  LfoSelector.Layout.Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
+
+  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelector).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
 
 
   LfoKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
@@ -542,6 +546,9 @@ begin
 
   LfoShapeTextBox1.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
   LfoShapeTextBox1.Layout.AdjustBounds(-4,0,-4,0);
+
+
+
   //==================================================
 
 
@@ -597,8 +604,18 @@ begin
   Scope.ColorBackground := kColor_LcdDark1;
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
 
+
+
+  LfoSelector.BackgroundImage := Plugin.Globals.SkinImageLoader.GetImage('Switch_Background');
+  LfoSelector.IndexImage      := Plugin.Globals.SkinImageLoader.GetImage('Switch_Index');
+
+
+
   Timer1.Enabled := true;
   Timer1.Interval := 40;
+
+
+
 
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;

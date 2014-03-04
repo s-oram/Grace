@@ -1104,7 +1104,7 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
         object LfoSelectButton1: TVamButton
-          Left = 47
+          Left = 31
           Top = 79
           Width = 20
           Height = 20
@@ -1130,7 +1130,7 @@ object ModControlFrame: TModControlFrame
         end
         object LfoSelectButton2: TVamButton
           Tag = 1
-          Left = 73
+          Left = 57
           Top = 79
           Width = 20
           Height = 20
@@ -1154,6 +1154,21 @@ object ModControlFrame: TModControlFrame
           OnChanged = LfoSelectButton1Changed
           Visible = True
           OnMouseUp = LfoSelectButton2MouseUp
+        end
+        object LfoSelector: TVamSliderSwitch
+          Left = 83
+          Top = 79
+          Width = 38
+          Height = 22
+          Opacity = 255
+          Text = 'LfoSelector'
+          HitTest = True
+          ColorBackground = '$FF666666'
+          ColorIndex = '$FFCCCCFF'
+          Enabled = False
+          SwitchSteps = 2
+          SwitchPos = 0
+          Visible = True
         end
       end
       object AmpEnvContainer: TVamDiv

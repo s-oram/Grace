@@ -143,10 +143,8 @@ begin
   LoadSkinImage('Locked_Icon');
   LoadSkinImage('Unlocked_Icon');
   LoadSkinImage('Preview_Icon');
-
-
-
-
+  LoadSkinImage('Switch_Background');
+  LoadSkinImage('Switch_Index');
 
 end;
 

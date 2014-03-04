@@ -256,9 +256,11 @@ var
 begin
   inherited;
 
+  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+
   if assigned(BackgroundImage) then
   begin
-
+    BackBuffer.TransformImage(BackgroundImage, 0,0);
   end else
   begin
     BackBuffer.BufferInterface.NoLine;
@@ -274,7 +276,32 @@ begin
 
   if assigned(IndexImage) then
   begin
+    IndexWidth  := IndexImage.Width;
+    IndexHeight := IndexImage.Height;
 
+    case SliderType of
+      stVert:
+      begin
+        //TODO:
+      end;
+
+      stHorz:
+      begin
+        IndexHeight := Height;
+        IndexWidth  := IndexHeight;
+        ThrowDist := Width - IndexWidth;
+
+        x1 := ThrowDist * IndexPos;
+        x2 := x1 + IndexWidth;
+        y1 := round((Height - IndexHeight) * 0.5);
+        y2 := y1 + IndexHeight;
+        IndexBounds := Rect(round(x1), round(y1), round(x2), round(y2)); //IMPORTANT!
+
+        BackBuffer.TransformImage(IndexImage, x1, y1);
+      end;
+    else
+      raise Exception.Create('Type not handled.');
+    end;
 
 
   end else
@@ -287,6 +314,7 @@ begin
       begin
         IndexWidth := Width;
         IndexHeight := IndexWidth;
+        //TODO:
       end;
 
       stHorz:
@@ -300,10 +328,11 @@ begin
         x2 := x1 + IndexWidth;
         y1 := 0;
         y2 := Width;
+        IndexBounds := Rect(round(x1), round(y1), round(x2), round(y2)); //IMPORTANT!
 
         BackBuffer.BufferInterface.Rectangle(x1,y1,x2,y2);
 
-        IndexBounds := Rect(round(x1), round(y1), round(x2), round(y2));
+
       end;
     else
       raise Exception.Create('Type not handled.');

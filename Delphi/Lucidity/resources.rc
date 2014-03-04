@@ -17,5 +17,8 @@ PREVIEW_ICON         RCDATA Resources\PreviewIcon.png
 KNOB_UPPER           RCDATA Resources\Knob_Main.png
 KNOB_LOWER           RCDATA Resources\Knob_Main.png
 SMALL_KNOB           RCDATA Resources\Small_WhiteKnob.png
+SWITCH_BACKGROUND    RCDATA Resources\SwitchBackgroundHorz.png
+SWITCH_INDEX         RCDATA Resources\SwitchIndex.png
+
 
 
