@@ -1135,7 +1135,7 @@ object ModControlFrame: TModControlFrame
           Width = 20
           Height = 20
           Opacity = 255
-          Text = 'A'
+          Text = 'B'
           HitTest = True
           ShowBorder = True
           Color_Border = '$FF242B39'
@@ -1168,6 +1168,7 @@ object ModControlFrame: TModControlFrame
           Enabled = False
           SwitchSteps = 2
           SwitchPos = 0
+          OnChanged = LfoSelectorChanged
           Visible = True
         end
       end

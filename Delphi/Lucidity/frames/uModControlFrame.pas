@@ -124,6 +124,7 @@ type
     procedure LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Timer1Timer(Sender: TObject);
+    procedure LfoSelectorChanged(Sender: TObject);
   private
     fPlugin: TeePlugin;
     fGuiStandard: TGuiStandard;
@@ -524,16 +525,16 @@ begin
   LfoContainerLabel.Width  := kw * 2;
   LfoContainerLabel.Height := TGuiConst.SectionLabelHeight;
   LfoContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
-  LfoContainerLabel.Layout.SetPos(10, 0);
+  LfoContainerLabel.Layout.SetPos(12, 0);
 
   LfoSelectButton2.Layout.SetSize(18,18);
   LfoSelectButton2.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-6,0);
   LfoSelectButton2.Top := 0;
 
   LfoSelector.Layout.SetSize(30,18);
-  LfoSelector.Layout.Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
+  LfoSelector.Layout.Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
 
-  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelector).SnapToEdge(TControlFeature.LeftEdge).Move(-2,0);
+  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelector).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
 
 
   LfoKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
@@ -608,6 +609,18 @@ begin
 
   LfoSelector.BackgroundImage := Plugin.Globals.SkinImageLoader.GetImage('Switch_Background');
   LfoSelector.IndexImage      := Plugin.Globals.SkinImageLoader.GetImage('Switch_Index');
+
+  LfoSelectButton1.Color_Border := '$00000000';
+  LfoSelectButton1.ColorOnA     := '$00000000';
+  LfoSelectButton1.ColorOnB     := '$66000000';
+  LfoSelectButton1.ColorOffA    := '$00000000';
+  LfoSelectButton1.ColorOffB    := '$66000000';
+
+  LfoSelectButton2.Color_Border := '$00000000';
+  LfoSelectButton2.ColorOnA     := '$00000000';
+  LfoSelectButton2.ColorOnB     := '$66000000';
+  LfoSelectButton2.ColorOffA    := '$00000000';
+  LfoSelectButton2.ColorOffB    := '$66000000';
 
 
 
@@ -980,6 +993,7 @@ begin
 
     LfoSelectButton1.IsOn := true;
     LfoSelectButton2.IsOn := false;
+    LfoSelector.SwitchPos := 0;
 
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
@@ -998,6 +1012,7 @@ begin
 
     LfoSelectButton1.IsOn := false;
     LfoSelectButton2.IsOn := true;
+    LfoSelector.SwitchPos := 1;
 
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
@@ -1035,5 +1050,17 @@ begin
   // by the user, when it needs to be a toggle type switch.
 end;
 
+
+procedure TModControlFrame.LfoSelectorChanged(Sender: TObject);
+var
+  Index : integer;
+begin
+  Index := (Sender as TVamSliderSwitch).SwitchPos;
+  assert(Index >= 0);
+  assert(Index <= 1);
+  Plugin.Globals.SelectedLfo := Index;
+  UpdateLfo;
+  UpdateModulation;
+end;
 
 end.
