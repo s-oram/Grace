@@ -73,6 +73,7 @@ implementation
 uses
   LucidityModConnections,
   eeVstParameterEx,
+  VamLib.Utils,
   VamLib.Threads,
   RedFox, RedFoxColor;
 
@@ -372,9 +373,12 @@ begin
 
     for c1 := 0 to kModSlotCount-1 do
     begin
-      x1 := Plugin.ActiveKeyGroup.GetModParValue(ActiveModParIndex);
+      //x1 := Plugin.ActiveKeyGroup.GetModParValue(ActiveModParIndex);
+      x1 := 0.5;
       ModAmount := Plugin.ActiveKeyGroup.GetModParModAmount(ActiveModParIndex, c1);
+      ModAmount := ModAmount * 0.5;
       x2 := x1 + ModAmount;
+      x2 := Clamp(x2, 0, 1);
       ModSelectors[c1].ModAmountX1   := x1;
       ModSelectors[c1].ModAmountX2   := x2;
 
