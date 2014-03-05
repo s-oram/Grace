@@ -283,6 +283,8 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par3));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par4));
 
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter1KeyFollow));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter2KeyFollow));
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);

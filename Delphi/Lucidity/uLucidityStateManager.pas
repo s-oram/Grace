@@ -437,6 +437,8 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
+    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
+    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2KeyFollow');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'AmpVelocityDepth');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'FilterVelocityDepth');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoShape1');
@@ -619,6 +621,8 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
+      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
+      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter2KeyFollow');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'AmpVelocityDepth');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'FilterVelocityDepth');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoShape1');
