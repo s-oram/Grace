@@ -3,13 +3,14 @@ unit VamCompoundNumericKnob;
 interface
 
 uses
+  VamGuiControlInterfaces,
   Types, Controls, Classes, StdCtrls, Graphics,
   RedFox, RedFoxColor,
   VamWinControl, VamScrollBar, VamDiv,
   VamNumericKnob, VamArrows, VamLabel;
 
 type
-  TVamCompoundNumericKnob = class(TVamWinControl)
+  TVamCompoundNumericKnob = class(TVamWinControl, IKnobControl)
   private
     fColor_Arrows2: TRedFoxColorString;
     fColor_Arrows1: TRedFoxColorString;
@@ -43,6 +44,30 @@ type
     procedure SetColor_Background(const Value: TRedFoxColorString);
 
     procedure DoPaddingChange(Sender: TObject);
+
+
+
+  private
+    //==========================================================================
+    // These procedures were added to satisfy IKnobControl.
+    fParameterIndex : integer;
+    fModAmount : single;
+    procedure SetParameterIndex(Index : integer);
+    function  GetParameterIndex:integer;
+    function  KnobControl_GetKnobValue : single;
+    procedure KnobControl_SetKnobValue(Value : single);
+    function  GetModAmountValue : single;
+    procedure SetModAmountValue(Value : single);
+    procedure SetOnMouseEnter(Handler:TNotifyEvent);
+    procedure SetOnMouseLeave(Handler:TNotifyEvent);
+    procedure SetOnMouseDown(Handler:TMouseEvent);
+    procedure SetOnMouseUp(Handler:TMouseEvent);
+    procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
+    procedure SetOnModAmountChanged(Handler:TNotifyEvent);
+
+    function  IKnobControl.GetKnobValue = KnobControl_GetKnobValue;
+    procedure IKnobControl.SetKnobValue = KnobControl_SetKnobValue;
+    //==========================================================================
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
@@ -160,6 +185,24 @@ begin
   inherited;
 end;
 
+function TVamCompoundNumericKnob.KnobControl_GetKnobValue: single;
+var
+  KnobRange : single;
+begin
+  KnobRange := (KnobMax - KnobMin);
+  if KnobRange <> 0
+    then result := KnobValue - KnobMin / KnobRange
+    else result := 0;
+end;
+
+procedure TVamCompoundNumericKnob.KnobControl_SetKnobValue(Value: single);
+var
+  KnobRange : single;
+begin
+  KnobRange := (KnobMax - KnobMin);
+  KnobValue := (Value * KnobRange) + KnobMin;
+end;
+
 procedure TVamCompoundNumericKnob.DoPaddingChange(Sender: TObject);
 begin
   Realign;
@@ -193,6 +236,16 @@ end;
 function TVamCompoundNumericKnob.GetKnobValue: double;
 begin
   result := Knob.KnobValue;
+end;
+
+function TVamCompoundNumericKnob.GetModAmountValue: single;
+begin
+  result := fModAmount;
+end;
+
+function TVamCompoundNumericKnob.GetParameterIndex: integer;
+begin
+  result := fParameterIndex;
 end;
 
 function TVamCompoundNumericKnob.GetText: string;
@@ -289,6 +342,46 @@ end;
 procedure TVamCompoundNumericKnob.SetKnobValue(const Value: double);
 begin
   Knob.KnobValue := Value;
+end;
+
+procedure TVamCompoundNumericKnob.SetModAmountValue(Value: single);
+begin
+  fModAmount := Value;
+end;
+
+procedure TVamCompoundNumericKnob.SetOnKnobPosChanged(Handler: TNotifyEvent);
+begin
+  OnChanged := Handler;
+end;
+
+procedure TVamCompoundNumericKnob.SetOnModAmountChanged(Handler: TNotifyEvent);
+begin
+  //do nothing.
+end;
+
+procedure TVamCompoundNumericKnob.SetOnMouseDown(Handler: TMouseEvent);
+begin
+  OnMouseDown := Handler;
+end;
+
+procedure TVamCompoundNumericKnob.SetOnMouseEnter(Handler: TNotifyEvent);
+begin
+  OnMouseEnter := Handler;
+end;
+
+procedure TVamCompoundNumericKnob.SetOnMouseLeave(Handler: TNotifyEvent);
+begin
+  OnMouseLeave := Handler;
+end;
+
+procedure TVamCompoundNumericKnob.SetOnMouseUp(Handler: TMouseEvent);
+begin
+  OnMouseUp := Handler;
+end;
+
+procedure TVamCompoundNumericKnob.SetParameterIndex(Index: integer);
+begin
+  fParameterIndex := Index;
 end;
 
 procedure TVamCompoundNumericKnob.SetText(const Value: string);
