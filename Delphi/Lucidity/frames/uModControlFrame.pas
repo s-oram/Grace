@@ -14,7 +14,8 @@ uses
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
   VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
   LucidityGui.VectorSequence,
-  LucidityGui.Scope, Vcl.ExtCtrls, Contnrs, VamSliderSwitch;
+  LucidityGui.Scope, Vcl.ExtCtrls, Contnrs, VamSliderSwitch,
+  VamCompoundNumericKnob;
 
 type
   TAltFilterText = record
@@ -117,6 +118,8 @@ type
     Scope: TLucidityScope;
     Timer1: TTimer;
     LfoSelector: TVamSliderSwitch;
+    Filter1KeyTrackKnob: TVamCompoundNumericKnob;
+    Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -346,8 +349,14 @@ begin
   Filter1Container.Width  := (4 * FilterKnobWidth);
   Filter1Container.Height := RowHeight;
   Filter1Container.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
-      Filter1TypeTextBox.Layout.SetSize(FilterKnobWidth * 3, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+      Filter1TypeTextBox.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+
+      Filter1KeyTrackKnob.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight);
+      Filter1KeyTrackKnob.Layout.Anchor(Filter1TypeTextBox).SnapToEdge(TControlFeature.RightEdge);
+
       Filter1TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
+      Filter1KeyTrackKnob.Layout.AdjustBounds(-4,0,-4,0);
+
 
   AmpEnvContainer.Width := (5 * FilterKnobWidth);
   AmpEnvContainer.Height := RowHeight;
@@ -391,8 +400,13 @@ begin
   FilterTwoContainer.Width  := (4 * FilterKnobWidth);
   FilterTwoContainer.Height := RowHeight;
   FilterTwoContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
-      Filter2TypeTextBox.Layout.SetSize(FilterKnobWidth * 3, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+      Filter2TypeTextBox.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
+
+      Filter2KeyTrackKnob.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight);
+      Filter2KeyTrackKnob.Layout.Anchor(Filter2TypeTextBox).SnapToEdge(TControlFeature.RightEdge);
+
       Filter2TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
+      Filter2KeyTrackKnob.Layout.AdjustBounds(-4,0,-4,0);
 
   FilterEnvContainer.Width := (5 * FilterKnobWidth);
   FilterEnvContainer.Height := RowHeight;
@@ -575,6 +589,24 @@ begin
   Seq2DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq2StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Scope.Font.Color                := GetRedFoxColor(kColor_LcdDark5);
+
+  Filter1KeyTrackKnob.Padding.Left  := 4;
+  Filter1KeyTrackKnob.Padding.Right := 4;
+  Filter1KeyTrackKnob.Color_Background := kColor_LcdDark1;
+  Filter1KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
+  Filter1KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
+  Filter1KeyTrackKnob.Color_Arrows1 := '$33FFFFFF';
+  Filter1KeyTrackKnob.Color_Arrows2 := '$ccFFFFFF';
+
+  Filter2KeyTrackKnob.Padding.Left  := 4;
+  Filter2KeyTrackKnob.Padding.Right := 4;
+  Filter2KeyTrackKnob.Color_Background := kColor_LcdDark1;
+  Filter2KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
+  Filter2KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
+  Filter2KeyTrackKnob.Color_Arrows1 := '$33FFFFFF'; // TODO: This should be a constant.
+  Filter2KeyTrackKnob.Color_Arrows2 := '$ccFFFFFF'; // TODO: This should be a constant.
+
+
 
   AmpVelocityButton.Color    := kColor_LcdDark1;
   FilterVelocityButton.Color := kColor_LcdDark1;

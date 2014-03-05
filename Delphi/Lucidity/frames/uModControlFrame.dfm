@@ -663,6 +663,30 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
+        object Filter2KeyTrackKnob: TVamCompoundNumericKnob
+          Left = 99
+          Top = 67
+          Width = 73
+          Height = 17
+          Opacity = 255
+          Text = 'Key'
+          HitTest = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Units = '%'
+          Color_Label = clGray
+          Color_Numeric = clBlack
+          Color_Arrows1 = '$cc000000'
+          Color_Arrows2 = '$FF000000'
+          KnobMin = -100
+          KnobMax = 100
+          KnobNumericStyle = nsInteger
+          KnobDecimalPlaces = 2
+          Visible = True
+        end
       end
       object FilterEnvContainer: TVamDiv
         AlignWithMargins = True
@@ -1434,7 +1458,7 @@ object ModControlFrame: TModControlFrame
       end
       object Filter1Container: TVamDiv
         AlignWithMargins = True
-        Left = 14
+        Left = 11
         Top = 43
         Width = 224
         Height = 102
@@ -1657,6 +1681,30 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          Visible = True
+        end
+        object Filter1KeyTrackKnob: TVamCompoundNumericKnob
+          Left = 110
+          Top = 70
+          Width = 82
+          Height = 17
+          Opacity = 255
+          Text = 'Key'
+          HitTest = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Units = '%'
+          Color_Label = clGray
+          Color_Numeric = clBlack
+          Color_Arrows1 = '$cc000000'
+          Color_Arrows2 = '$FF000000'
+          KnobMin = -100
+          KnobMax = 100
+          KnobNumericStyle = nsInteger
+          KnobDecimalPlaces = 2
           Visible = True
         end
       end

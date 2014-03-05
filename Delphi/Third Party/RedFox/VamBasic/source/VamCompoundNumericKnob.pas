@@ -18,6 +18,7 @@ type
     fOnChanged: TNotifyEvent;
     fOnRotaryStepUp: TNotifyEvent;
     fOnRotaryStepDown: TNotifyEvent;
+    fColor_Background: TRedFoxColorString;
 
     procedure SetColor_Arrows1(const Value: TRedFoxColorString);
     procedure SetColor_Arrows2(const Value: TRedFoxColorString);
@@ -39,6 +40,9 @@ type
     procedure SetUnits(const Value: string);
     function GetCustomText: string;
     procedure SetCustomText(const Value: string);
+    procedure SetColor_Background(const Value: TRedFoxColorString);
+
+    procedure DoPaddingChange(Sender: TObject);
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
@@ -68,6 +72,7 @@ type
     property Text  : string read GetText  write SetText;
     property Units : string read GetUnits write SetUnits;
 
+    property Color_Background : TRedFoxColorString read fColor_Background write SetColor_Background;
     property Color_Label   : TColor             read fColor_Label   write SetColor_Label;
     property Color_Numeric : TColor             read fColor_Numeric write SetColor_Numeric;
     property Color_Arrows1 : TRedFoxColorString read fColor_Arrows1 write SetColor_Arrows1;
@@ -101,6 +106,10 @@ type
 constructor TVamCompoundNumericKnob.Create(AOwner: TComponent);
 begin
   inherited;
+
+  Padding.OnChange := DoPaddingChange;
+
+  fColor_Background := '$00000000';
 
   ControlLabel := TVamLabel.Create(self);
   ControlLabel.AutoSize := true;
@@ -149,6 +158,11 @@ begin
   Arrows.Free;
   Knob.Free;
   inherited;
+end;
+
+procedure TVamCompoundNumericKnob.DoPaddingChange(Sender: TObject);
+begin
+  Realign;
 end;
 
 function TVamCompoundNumericKnob.GetCustomText: string;
@@ -217,6 +231,11 @@ begin
   begin
     fColor_Arrows2 := Value;
   end;
+end;
+
+procedure TVamCompoundNumericKnob.SetColor_Background(const Value: TRedFoxColorString);
+begin
+  fColor_Background := Value;
 end;
 
 procedure TVamCompoundNumericKnob.SetColor_Label(const Value: TColor);
@@ -339,7 +358,15 @@ begin
   inherited;
 
   //NOTE: clear the background becuase it's not completed in the child component.
-  BackBuffer.BufferInterface.ClearAll(255,255,255,0);
+  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+
+
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(fColor_Background);
+  BackBuffer.BufferInterface.NoLine;
+
+  BackBuffer.BufferInterface.RoundedRect(0,0,Width,Height,3);
+
+
 end;
 
 
