@@ -1,6 +1,5 @@
 == Finished for the next release ==
 
-
 Rewrote the internal messaging system. Previously components could only send messages
 to the GUI. Now components can send messages to audio and other non-visual components. 
 
@@ -9,9 +8,13 @@ The step sequence controls have been moved to seperate tabs.
 Lfo Controls Updated
 - The LFO has been page-afied. Only one LFO can be edited at a time. 
 - Added an additional LFO parameter. 
-
+- Added Attack-Decay LFO envelope shapes.
 
 Add Duplicate Regions command to the sample map context menu.
+
+A modulation slot can now be muted. 
+
+Knob parameter changes are now smoothed. 
 
 
 

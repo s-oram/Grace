@@ -195,7 +195,6 @@ begin
 
   KnobList := TObjectList.Create;
 
-
   KnobList.Add(AmpEnvAttackKnob);
   KnobList.Add(AmpEnvHoldKnob);
   KnobList.Add(AmpEnvDecayKnob);
@@ -284,7 +283,6 @@ begin
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1,       Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape),       TLfoShapeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter(TParName.FilterVelocity),  TEnvVelocityDepthHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),       TSequencerClockHelper);
@@ -692,39 +690,6 @@ begin
   Labels[3] := Filter2P4Label;
 
   UpdateFilterControls(Knobs, Labels, FT);
-
-
-
-  {
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape);
-  LfoShape := TLfoShapeHelper.ToEnum(Par.ValueVST);
-  case LfoShape of
-    TLfoShape.SawUp,
-    TLfoShape.SawDown,
-    TLfoShape.Square,
-    TLfoShape.Triangle,
-    TLfoShape.Sine:
-    begin
-      LfoLabel2.Text    := 'PH';
-      LfoKnob2.Enabled := true;
-      LfoLabel2.Visible := true;
-    end;
-
-    TLfoShape.RandomSmooth:
-    begin
-      LfoLabel2.Text    := 'MOD';
-      LfoKnob2.Enabled  := true;
-      LfoLabel2.Visible := true;
-    end;
-  else
-    raise Exception.Create('Type not handled.');
-  end;
-  }
-
-
-
-
-
 end;
 
 procedure TModControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -974,6 +939,8 @@ begin
 end;
 
 procedure TModControlFrame.UpdateLfo;
+var
+  CurrentLfoShape : TLfoShape;
 begin
   assert((Plugin.Globals.SelectedLfo = 0) or (Plugin.Globals.SelectedLfo = 1));
 
@@ -998,6 +965,11 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par3));
+
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
+
+
+    CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
   end;
 
   if Plugin.Globals.SelectedLfo = 1 then
@@ -1017,7 +989,59 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par3));
+
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
+
+    CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
   end;
+
+
+
+  case CurrentLfoShape of
+    TLfoShape.SawUp,
+    TLfoShape.SawDown,
+    TLfoShape.Square,
+    TLfoShape.Triangle,
+    TLfoShape.Sine:
+    begin
+      LfoLabel1.Text := 'RATE';
+      LfoLabel2.Text := 'PH';
+      LfoLabel3.Text := 'SYM';
+    end;
+
+    TLfoShape.RandomStepped,
+    TLfoShape.RandomSmooth:
+    begin
+      LfoLabel1.Text := 'RATE';
+      LfoLabel2.Text := '%';
+      LfoLabel3.Text := 'FLUX';
+    end;
+
+    TLfoShape.AttackDecay:
+    begin
+      LfoLabel1.Text := 'CURVE';
+      LfoLabel2.Text := 'A';
+      LfoLabel3.Text := 'D';
+    end;
+
+    TLfoShape.AttackRelease:
+    begin
+      LfoLabel1.Text := 'CURVE';
+      LfoLabel2.Text := 'A';
+      LfoLabel3.Text := 'R';
+    end;
+
+    TLfoShape.Cycle:
+    begin
+      LfoLabel1.Text := 'CURVE';
+      LfoLabel2.Text := 'A';
+      LfoLabel3.Text := 'D';
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
 end;
 
 procedure TModControlFrame.LfoSelectButton1Changed(Sender: TObject);

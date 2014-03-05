@@ -23,6 +23,11 @@ uses
   But maybe I'm going to make an exception here....
 }
 
+// TODO: Currently all parameters are 'private' parameters. I will
+// need to expose some parameters as VST parameters
+// so that they can be automated in plugin hosts.
+
+
 type
   TPluginParameterWizard= class
   private
@@ -791,7 +796,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.LfoShape1 := TLfoShapeHelper.ToEnum(Value);
-      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
@@ -813,7 +818,7 @@ begin
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
       Plugin.ActiveVoicePar.LfoShape2 := TLfoShapeHelper.ToEnum(Value);
-      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
