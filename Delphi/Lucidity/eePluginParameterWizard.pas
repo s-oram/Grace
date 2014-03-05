@@ -646,6 +646,45 @@ begin
   end;
 
 
+  aPar := TVstParameterEx.Create(TParName.Filter1KeyFollow);
+  aPar.SetDefault(0);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'Key Follow: ';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.Filter1KeyFollow := Value * 2 - 1;
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := Plugin.ActiveVoicePar.Filter1KeyFollow * 0.5 + 0.5;
+    end);
+  end;
+
+  aPar := TVstParameterEx.Create(TParName.Filter2KeyFollow);
+  aPar.SetDefault(0);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'Key Follow: ';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.Filter2KeyFollow := Value * 2 - 1;
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := Plugin.ActiveVoicePar.Filter2KeyFollow * 0.5 + 0.5;
+    end);
+  end;
+
+
 
 
   aPar := TVstParameterEx.Create(TParName.Filter1Par1);

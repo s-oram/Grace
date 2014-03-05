@@ -27,9 +27,11 @@ type
   private
     fSampleRate: single;
     fFilterType: TFilterType;
+    fKeyFollow: single;
 
     procedure SetSampleRate(const Value: single);
     procedure SetFilterType(const Value: TFilterType);
+    procedure SetKeyFollow(const Value: single);
   protected
     DistortionA : TDistortionA;
     RingModA    : TRingModA;
@@ -65,6 +67,7 @@ type
 
     //==== Parameters ====
     property FilterType : TFilterType read fFilterType write SetFilterType;
+    property KeyFollow  : single      read fKeyFollow  write SetKeyFollow;  //range -1..1.
 
 
   end;
@@ -142,6 +145,11 @@ begin
   HighPassA.Reset;
   RingModA.Reset;
   DistortionA.Reset;
+end;
+
+procedure TLucidityFilter.SetKeyFollow(const Value: single);
+begin
+  fKeyFollow := Value;
 end;
 
 procedure TLucidityFilter.SetSampleRate(const Value: single);

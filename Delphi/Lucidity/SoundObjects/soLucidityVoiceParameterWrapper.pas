@@ -87,6 +87,8 @@ type
     fPitchTracking: TPitchTracking;
     fLfoBPar3: single;
     fLfoAPar3: single;
+    fFilter2KeyFollow: single;
+    fFilter1KeyFollow: single;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -137,6 +139,8 @@ type
     procedure SetPitchTracking(const Value: TPitchTracking);
     procedure SetLfoAPar3(const Value: single);
     procedure SetLfoBPar3(const Value: single);
+    procedure SetFilter1KeyFollow(const Value: single);
+    procedure SetFilter2KeyFollow(const Value: single);
   protected
     OwningSampleGroup : IKeyGroup;
     Voices : PArrayOfLucidityVoice;
@@ -185,6 +189,8 @@ type
     property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
     property Filter1Type              : TFilterType                        read fFilter1Type             write SetFilter1Type;
     property Filter2Type              : TFilterType                        read fFilter2Type             write SetFilter2Type;
+    property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write SetFilter1KeyFollow; //range -1..1
+    property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write SetFilter2KeyFollow; //range -1..1
     property Filter1Par1              : single                             read fFilter1Par1             write SetFilter1Par1;
     property Filter1Par2              : single                             read fFilter1Par2             write SetFilter1Par2;
     property Filter1Par3              : single                             read fFilter1Par3             write SetFilter1Par3;
@@ -316,6 +322,30 @@ begin
     procedure(v:PLucidityVoice)
     begin
       v^.FilterOne.FilterType := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetFilter1KeyFollow(const Value: single);
+begin
+  fFilter1KeyFollow := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.FilterOne.KeyFollow := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetFilter2KeyFollow(const Value: single);
+begin
+  fFilter2KeyFollow := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.FilterTwo.KeyFollow := Value;
     end
   );
 end;
@@ -767,6 +797,8 @@ begin
   Self.VoicePitchTwo            := Source.VoicePitchTwo;
   Self.Filter1Type              := Source.Filter1Type;
   Self.Filter2Type              := Source.Filter2Type;
+  Self.Filter1KeyFollow         := Source.Filter1KeyFollow;
+  Self.Filter2KeyFollow         := Source.Filter2KeyFollow;
   Self.Filter1Par1              := Source.Filter1Par1;
   Self.Filter1Par2              := Source.Filter1Par2;
   Self.Filter1Par3              := Source.Filter1Par3;
@@ -829,6 +861,8 @@ begin
   //aVoice.StepSeq2Clock := ClockDivisionB; //I don't think this is needed.
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
+  aVoice.FilterOne.KeyFollow             := Filter1KeyFollow;
+  aVoice.FilterTwo.KeyFollow             := Filter2KeyFollow;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
   aVoice.FilterEnv.VelocityDepth         := FilterVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
