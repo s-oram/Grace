@@ -52,6 +52,7 @@ type
 
     procedure Handle_ClearCurrentModulation(Sender:TObject);
     procedure Handle_ClearAllModulation(Sender:TObject);
+    procedure Handle_ClearModulationFromX(Sender:TObject);
 
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
@@ -60,6 +61,8 @@ type
     procedure Handle_KnobPosChanged(Sender: TObject);
     procedure Handle_ModAmountChanged(Sender: TObject);
   protected
+    TargetModSlot : integer;
+
     property Globals : TGlobals read fGlobals;
     property Plugin  : TeePlugin read fPlugin;
 
@@ -80,6 +83,7 @@ implementation
 
 uses
   uConstants,
+  uLucidityEnums,
   LucidityModConnections,
   uLucidityKeyGroupInterface,
   SysUtils,
@@ -114,6 +118,32 @@ begin
   if Par.HasModLink = false then exit(false);
   ModParIndex := Par.ModLinkIndex;
   result := Plugin.ActiveKeyGroup.GetModulatedParameters^[ModParIndex].IsModulated;
+end;
+
+
+procedure GetModulationDetails(const Plugin : TeePlugin; Par : TVstParameterEx; ModSlotIndex : integer; out IsModulated : boolean; out ModSourceAsText : string);
+var
+  ModLinkIndex : integer;
+  ModAmount : single;
+  ModSource : TModSource;
+begin
+  if Par.HasModLink = false then
+  begin
+    IsModulated := false;
+    ModSourceAsText := '';
+    exit;
+  end;
+
+  ModLinkIndex := Par.ModLinkIndex;
+
+  ModAmount := Plugin.ActiveKeyGroup.GetModParModAmount(ModLinkIndex, ModSlotIndex);
+
+  if ModAmount = 0
+    then IsModulated := false
+    else IsModulated := true;
+
+  ModSource := Plugin.ActiveKeyGroup.GetModConnections.GetModSource(ModSlotIndex);
+  ModSourceAsText := TModSourceHelper.ToFullGuiString(ModSource);
 end;
 
 { TControlInfoList }
@@ -373,9 +403,7 @@ begin
   if (ControlLinks[ControlLinkIndex].LinkedParameter.HasModLink) and (ModSlot >= 0) then
   begin
     ModLinkIndex := ControlLinks[ControlLinkIndex].LinkedParameter.ModLinkIndex;
-
     kg := Plugin.ActiveKeyGroup;
-
     kg.SetModParModAmount(ModLinkIndex, ModSlot, Value);
   end;
 
@@ -415,6 +443,8 @@ end;
 
 procedure TRedFoxKnobHandler.ShowControlContextMenu(const X, Y, ControlLinkIndex: integer);
 var
+  c1 : integer;
+
   mi : TMenuItem;
   MidiCC : integer;
   Text   : string;
@@ -424,7 +454,12 @@ var
   LinkIndex : integer absolute ControlLinkIndex;
 
   Par : TVstParameterEx;
+
+  IsModulated     : boolean;
+  ModSourceAsText : string;
 begin
+  //TODO: it would be better if the context menu was selfcontained in it's own unit.
+
   Par := ControlLinks[ControlLinkIndex].LinkedParameter;
 
   // Clear the menu
@@ -459,6 +494,26 @@ begin
   ControlContextMenu.Items.Add(mi);
 
 
+  for c1 := 0 to kModSlotcount-1 do
+  begin
+    GetModulationDetails(Plugin, Par, c1, IsModulated, ModSourceAsText);
+    if IsModulated then
+    begin
+      mi := TMenuItem.Create(ControlContextMenu);
+      mi.Caption := 'Clear Modulation: ' + ModSourceAsText;
+      mi.OnClick := Handle_ClearModulationFromX;
+      mi.Tag := ControlLinkIndex;
+      mi.Hint := IntToStr(c1); //somewhat hacky.
+      ControlContextMenu.Items.Add(mi);
+    end;
+  end;
+
+
+
+
+  mi := TMenuItem.Create(ControlContextMenu);
+  mi.Caption := '-';
+  ControlContextMenu.Items.Add(mi);
 
 
   mi := TMenuItem.Create(ControlContextMenu);
@@ -651,10 +706,20 @@ begin
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
 end;
 
+procedure TRedFoxKnobHandler.Handle_ClearModulationFromX(Sender: TObject);
+var
+  Par : TVstParameterEx;
+  ModSlotIndex : integer;
+  ControlLinkIndex : integer;
+begin
+  ControlLinkIndex := (Sender as TMenuItem).Tag;
+  ModSlotIndex     := StrToInt((Sender as TMenuItem).Hint);
 
+  Par := ControlLinks[ControlLinkIndex].LinkedParameter;
+  assert(Par.ModLinkIndex <> -1);
+  Plugin.ActiveKeyGroup.SetModParModAmount(Par.ModLinkIndex, ModSlotIndex, 0);
 
-
-
-
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+end;
 
 end.

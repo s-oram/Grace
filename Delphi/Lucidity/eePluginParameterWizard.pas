@@ -26,6 +26,8 @@ uses
 // TODO: Currently all parameters are 'private' parameters. I will
 // need to expose some parameters as VST parameters
 // so that they can be automated in plugin hosts.
+// TODO: Check if Kontakt exposes any parameters.
+
 
 
 type
