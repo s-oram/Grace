@@ -434,12 +434,15 @@ begin
   if Plugin.Globals.SkinImageLoader.Exists('Small_Knob')
     then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Small_Knob');
 
+  if Plugin.Globals.SkinImageLoader.Exists('Knob_PlaceHolder')
+    then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
+
   VQ := VamQueryRequest(RedFoxContainer, 'SmallBipolarKnob');
   for c in VQ.List do
   begin
     //(c as TVamKnob).Image_KnobLower := bm1;
     (c as TVamKnob).Image_KnobUpper := bm2;
-    //(c as TVamKnob).DisabledImage   := bm3;
+    (c as TVamKnob).DisabledImage   := bm3;
 
     (c as TVamKnob).ModLineDist  := 12;
     (c as TVamKnob).ModLineWidth := 3.5;
@@ -456,7 +459,7 @@ begin
   begin
     //(c as TVamKnob).Image_KnobLower := bm1;
     (c as TVamKnob).Image_KnobUpper := bm2;
-    //(c as TVamKnob).DisabledImage   := bm3;
+    (c as TVamKnob).DisabledImage   := bm3;
 
     (c as TVamKnob).ModLineDist  := 12;
     (c as TVamKnob).ModLineWidth := 3.5;

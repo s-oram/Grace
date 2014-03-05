@@ -21,6 +21,7 @@ object VoiceControlFrame: TVoiceControlFrame
       Top = 0
       Width = 873
       Height = 362
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -31,6 +32,7 @@ object VoiceControlFrame: TVoiceControlFrame
         Top = 15
         Width = 817
         Height = 362
+        Opacity = 255
         HitTest = True
         Visible = True
         OnResize = VoiceControlsContainerResize
@@ -39,6 +41,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 0
           Width = 817
           Height = 18
+          Opacity = 255
           Text = 'VOICE CONTROLS'
           HitTest = True
           AutoSize = False
@@ -62,6 +65,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 10
+          Opacity = 255
           HitTest = True
           Visible = False
           object GrainStretchLabel: TVamLabel
@@ -69,6 +73,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 52
             Width = 211
             Height = 18
+            Opacity = 255
             Text = 'GRAIN STRETCH '
             HitTest = True
             AutoSize = False
@@ -87,6 +92,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'SIZE'
             HitTest = True
             AutoSize = False
@@ -104,6 +110,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'RATE'
             HitTest = True
             AutoSize = False
@@ -121,6 +128,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'POS'
             HitTest = True
             AutoSize = False
@@ -138,6 +146,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'LOOP'
             HitTest = True
             AutoSize = False
@@ -155,6 +164,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 17
             Width = 50
             Height = 16
+            Opacity = 255
             DisplayClass = 'MenuButton'
             Text = '---'
             HitTest = True
@@ -176,6 +186,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 1
             Width = 50
             Height = 32
+            Opacity = 255
             DisplayClass = 'UniPolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -198,6 +209,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 1
             Width = 50
             Height = 32
+            Opacity = 255
             DisplayClass = 'BiPolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -220,6 +232,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 1
             Width = 50
             Height = 32
+            Opacity = 255
             DisplayClass = 'UniPolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -248,6 +261,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 10
+          Opacity = 255
           HitTest = True
           Visible = False
           object OscillatorLabel: TVamLabel
@@ -255,6 +269,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 52
             Width = 211
             Height = 18
+            Opacity = 255
             Text = 'OSCILLATOR'
             HitTest = True
             AutoSize = False
@@ -273,6 +288,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 40
             Height = 16
+            Opacity = 255
             Text = 'SHAPE'
             HitTest = True
             AutoSize = False
@@ -290,6 +306,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 31
             Width = 40
             Height = 16
+            Opacity = 255
             Text = 'PW'
             HitTest = True
             AutoSize = False
@@ -307,6 +324,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 1
             Width = 40
             Height = 32
+            Opacity = 255
             DisplayClass = 'UniPolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -329,6 +347,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 1
             Width = 40
             Height = 32
+            Opacity = 255
             DisplayClass = 'UniPolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -357,6 +376,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 10
+          Opacity = 255
           HitTest = True
           Visible = False
           object SampleOneShotLabel: TVamLabel
@@ -364,6 +384,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Top = 52
             Width = 211
             Height = 18
+            Opacity = 255
             Text = 'SAMPLE ONE-SHOT'
             HitTest = True
             AutoSize = False
@@ -383,6 +404,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 269
           Width = 118
           Height = 16
+          Opacity = 255
           Text = 'PLAYBACK'
           HitTest = True
           AutoSize = False
@@ -400,6 +422,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 255
           Width = 118
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -421,6 +444,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 46
           Width = 70
           Height = 16
+          Opacity = 255
           Text = 'RESET'
           HitTest = True
           AutoSize = False
@@ -438,6 +462,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 32
           Width = 70
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -459,6 +484,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 41
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallBipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -481,6 +507,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 71
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'TUNE'
           HitTest = True
           AutoSize = False
@@ -498,6 +525,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 71
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'FINE'
           HitTest = True
           AutoSize = False
@@ -515,6 +543,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 41
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallBipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -537,6 +566,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 32
           Width = 50
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -558,6 +588,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 46
           Width = 50
           Height = 16
+          Opacity = 255
           Text = 'BOUNDS'
           HitTest = True
           AutoSize = False
@@ -575,6 +606,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 32
           Width = 70
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -596,6 +628,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 46
           Width = 70
           Height = 16
+          Opacity = 255
           Text = 'MODE'
           HitTest = True
           AutoSize = False
@@ -613,6 +646,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 20
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallUnipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -635,6 +669,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 50
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'GLIDE'
           HitTest = True
           AutoSize = False
@@ -652,6 +687,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 46
           Width = 50
           Height = 16
+          Opacity = 255
           Text = 'LOOP'
           HitTest = True
           AutoSize = False
@@ -669,6 +705,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 32
           Width = 50
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -690,6 +727,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 32
           Width = 70
           Height = 16
+          Opacity = 255
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
@@ -711,6 +749,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 46
           Width = 70
           Height = 16
+          Opacity = 255
           Text = 'TRACK'
           HitTest = True
           AutoSize = False
@@ -728,6 +767,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 55
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallUnipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -750,6 +790,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 86
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'GAIN'
           HitTest = True
           AutoSize = False
@@ -767,6 +808,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 53
           Width = 40
           Height = 32
+          Opacity = 255
           DisplayClass = 'SmallBipolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
@@ -789,6 +831,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Top = 85
           Width = 40
           Height = 16
+          Opacity = 255
           Text = 'PAN'
           HitTest = True
           AutoSize = False

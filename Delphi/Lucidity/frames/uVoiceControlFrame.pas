@@ -415,19 +415,19 @@ begin
   case vm of
     TVoiceMode.Poly:
     begin
-      GlideKnob.Enabled := false;
+      GlideKnob.IsKnobEnabled := false;
       GlideLabel.Visible := false;
     end;
 
     TVoiceMode.Mono:
     begin
-      GlideKnob.Enabled := true;
+      GlideKnob.IsKnobEnabled := true;
       GlideLabel.Visible := true;
     end;
 
     TVoiceMode.Legato:
     begin
-      GlideKnob.Enabled := true;
+      GlideKnob.IsKnobEnabled := true;
       GlideLabel.Visible := true;
     end;
   else

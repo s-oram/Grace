@@ -620,46 +620,40 @@ begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
 
-
-  BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-  DrawKnob_Upper;
-  DrawKnob_Indicator;
-
-  DrawKnob_Arc;
-
-  if KnobMode = TKnobMode.PositionEdit
-    then DrawKnob_ModDepth
-    else DrawKnob_ModAmount;
-
-
-
-  {
-  if (IsKnobEnabled) or (not assigned(DisabledImage))then
+  if (IsKnobEnabled) then
   begin
-    if assigned(fImageStrip)
-      then DrawKnob_BitmapStyle
-      else DrawKnob_VectorStyle;
+    BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+    BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+    DrawKnob_Upper;
+    DrawKnob_Indicator;
+
+    DrawKnob_Arc;
+
+    if KnobMode = TKnobMode.PositionEdit
+      then DrawKnob_ModDepth
+      else DrawKnob_ModAmount;
   end else
   begin
-    BackBuffer.BufferInterface.ClearAll(0,0,0,0);
-    BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+    if assigned(DisabledImage) then
+    begin
+      BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
-    SrcRect.Left   := 0;
-    SrcRect.Width  := DisabledImage.Width;
-    SrcRect.Top    := 0;
-    SrcRect.Bottom := DisabledImage.Height;
+      SrcRect.Left   := 0;
+      SrcRect.Width  := DisabledImage.Width;
+      SrcRect.Top    := 0;
+      SrcRect.Bottom := DisabledImage.Height;
 
-    DstRect.Left   := (Width - SrcRect.Width)   div 2;
-    DstRect.Right  := DstRect.Left + SrcRect.Width;
-    DstRect.Top    := (Height - SrcRect.Height) div 2;
-    DstRect.Bottom := DstRect.Top + SrcRect.Height;
+      DstRect.Left   := (Width - SrcRect.Width)   div 2;
+      DstRect.Right  := DstRect.Left + SrcRect.Width;
+      DstRect.Top    := (Height - SrcRect.Height) div 2;
+      DstRect.Bottom := DstRect.Top + SrcRect.Height;
 
-    BackBuffer.TransformImage(DisabledImage, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
+      BackBuffer.TransformImage(DisabledImage, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
+    end;
   end;
-  }
 end;
 
 procedure TVamKnob.DrawKnob;
