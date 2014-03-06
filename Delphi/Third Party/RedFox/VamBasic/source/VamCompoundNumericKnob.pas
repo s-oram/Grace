@@ -12,6 +12,27 @@ uses
 type
   TVamCompoundNumericKnob = class(TVamWinControl, IKnobControl)
   private
+    //==========================================================================
+    // These procedures were added to satisfy IKnobControl.
+    fParameterIndex : integer;
+    fModAmount : single;
+    procedure SetParameterIndex(Index : integer);
+    function  GetParameterIndex:integer;
+    function  KnobControl_GetKnobValue : single;
+    procedure KnobControl_SetKnobValue(Value : single);
+    function  GetModAmountValue : single;
+    procedure SetModAmountValue(Value : single);
+    procedure SetOnMouseEnter(Handler:TNotifyEvent);
+    procedure SetOnMouseLeave(Handler:TNotifyEvent);
+    procedure SetOnMouseDown(Handler:TMouseEvent);
+    procedure SetOnMouseUp(Handler:TMouseEvent);
+    procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
+    procedure SetOnModAmountChanged(Handler:TNotifyEvent);
+
+    function  IKnobControl.GetKnobValue = KnobControl_GetKnobValue;
+    procedure IKnobControl.SetKnobValue = KnobControl_SetKnobValue;
+    //==========================================================================
+  private
     fColor_Arrows2: TRedFoxColorString;
     fColor_Arrows1: TRedFoxColorString;
     fColor_Label: TColor;
@@ -47,27 +68,7 @@ type
 
 
 
-  private
-    //==========================================================================
-    // These procedures were added to satisfy IKnobControl.
-    fParameterIndex : integer;
-    fModAmount : single;
-    procedure SetParameterIndex(Index : integer);
-    function  GetParameterIndex:integer;
-    function  KnobControl_GetKnobValue : single;
-    procedure KnobControl_SetKnobValue(Value : single);
-    function  GetModAmountValue : single;
-    procedure SetModAmountValue(Value : single);
-    procedure SetOnMouseEnter(Handler:TNotifyEvent);
-    procedure SetOnMouseLeave(Handler:TNotifyEvent);
-    procedure SetOnMouseDown(Handler:TMouseEvent);
-    procedure SetOnMouseUp(Handler:TMouseEvent);
-    procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
-    procedure SetOnModAmountChanged(Handler:TNotifyEvent);
 
-    function  IKnobControl.GetKnobValue = KnobControl_GetKnobValue;
-    procedure IKnobControl.SetKnobValue = KnobControl_SetKnobValue;
-    //==========================================================================
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
@@ -191,7 +192,7 @@ var
 begin
   KnobRange := (KnobMax - KnobMin);
   if KnobRange <> 0
-    then result := KnobValue - KnobMin / KnobRange
+    then result := (KnobValue - KnobMin) / KnobRange
     else result := 0;
 end;
 

@@ -49,8 +49,10 @@ type
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 
     DummyModValue : single; //TODO: Delete this.
+
+    VoiceModPoints : PVoiceModulationPoints;
   public
-    constructor Create;
+    constructor Create(const aVoiceModPoints : PVoiceModulationPoints);
     destructor Destroy; override;
 
     procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
@@ -76,12 +78,15 @@ implementation
 
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  eeDsp,
   SysUtils;
 
 { TLucidityFilter }
 
-constructor TLucidityFilter.Create;
+constructor TLucidityFilter.Create(const aVoiceModPoints : PVoiceModulationPoints);
 begin
+  VoiceModPoints := aVoiceModPoints;
+
   TestFilter := TTestFilter.Create;
   RingModA   := TRingModA.Create;
   DistortionA := TDistortionA.Create;
@@ -149,6 +154,8 @@ end;
 
 procedure TLucidityFilter.SetKeyFollow(const Value: single);
 begin
+  assert(Value >= -1);
+  assert(Value <= 1);
   fKeyFollow := Value;
 end;
 
@@ -193,6 +200,8 @@ var
   px1 : single;
   px2 : single;
   px3 : single;
+
+  FreqMultFactor : single;
 begin
   if ModuleIndex = 0 then
   begin
@@ -218,7 +227,7 @@ begin
     Par4Mod := ParModData^[TModParIndex.Filter2Par4];
   end;
 
-
+  FreqMultFactor := LinearInterpolation(1, VoiceModPoints^.KeyFollowFreqMultiplier, fKeyFollow);
 
   case FilterType of
     ftNone:
@@ -228,7 +237,7 @@ begin
     ftLowPassA:
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV);
+      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
       Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
@@ -241,7 +250,7 @@ begin
     ftBandPassA:
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV);
+      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
       Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
@@ -254,7 +263,7 @@ begin
     ftHighPassA:
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV);
+      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
       Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
@@ -267,7 +276,7 @@ begin
     ftLofiA:
     begin
       //==== Lofi A ====
-      px1 := Par1 + Par1Mod;
+      px1 := (Par1 + Par1Mod)  * FreqMultFactor;
       Clamp(px1, 0, 1);
       LofiA.RateReduction := px1;
 
@@ -284,7 +293,7 @@ begin
     begin
       //==== Ring Mod A ====
       CV := (Par1 * 12) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(15, CV);
+      cFreq := VoltsToFreq(15, CV)  * FreqMultFactor;
       Clamp(cFreq, 15, 18000);
       RingModA.OscFreq := cFreq;
 
@@ -315,7 +324,7 @@ begin
     ftCombA:
     begin
       //==== Comb A ====
-      px1 := Par1 + Par1Mod;
+      px1 := (Par1 + Par1Mod) * FreqMultFactor;
       Clamp(px1, 0, 1);
       CombA.Par1 := px1;
 

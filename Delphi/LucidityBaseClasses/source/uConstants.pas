@@ -113,11 +113,12 @@ type
   PVoiceModulationPoints = ^TVoiceModulationPoints;
   TVoiceModulationPoints = record
     // Modulation Input Points
-    MidiNote         : single; //MIDI note. 0 = c2.
-    SampleStart      : single;
-    SampleEnd        : single;
-    LoopStart        : single;
-    LoopEnd          : single;
+    MidiNote                : single; //MIDI note. 0 = c2.
+    KeyFollowFreqMultiplier : single;
+    SampleStart             : single;
+    SampleEnd               : single;
+    LoopStart               : single;
+    LoopEnd                 : single;
 
     // Modulation Output Points
     OutputAmplitudeLevel : single;

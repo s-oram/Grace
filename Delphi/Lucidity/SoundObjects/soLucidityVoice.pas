@@ -248,13 +248,13 @@ begin
   FilterEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.FilterEnv, FilterEnv.GetModPointer('EnvOut'));
 
-  FilterOne := TLucidityFilter.Create;
+  FilterOne := TLucidityFilter.Create(@ModPoints);
   ModMatrix.SetModDestPointer(TModDest.Filter1_Par1, FilterOne.GetModPointer('Par1Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter1_Par2, FilterOne.GetModPointer('Par2Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter1_Par3, FilterOne.GetModPointer('Par3Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter1_Par4, FilterOne.GetModPointer('Par4Mod'));
 
-  FilterTwo := TLucidityFilter.Create;
+  FilterTwo := TLucidityFilter.Create(@ModPoints);
   ModMatrix.SetModDestPointer(TModDest.Filter2_Par1, FilterTwo.GetModPointer('Par1Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter2_Par2, FilterTwo.GetModPointer('Par2Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter2_Par3, FilterTwo.GetModPointer('Par3Mod'));
@@ -486,10 +486,12 @@ begin
     // pitch scaling in modular synths. I want filters to be able to track the keyboard.
     CV := MidiNote / 12;
     ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(MidiNote - 36);
   end else
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
     ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
   end;
 
   // call StepReset on all modulation sources.
@@ -611,6 +613,7 @@ begin
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
     ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
   end;
 
   //=== Control rate step for all control rate modules ===

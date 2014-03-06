@@ -328,6 +328,9 @@ end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1KeyFollow(const Value: single);
 begin
+  assert(Value >= -1);
+  assert(Value <= 1);
+
   fFilter1KeyFollow := Value;
 
   UpdateActiveVoices(
@@ -340,6 +343,9 @@ end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2KeyFollow(const Value: single);
 begin
+  assert(Value >= -1);
+  assert(Value <= 1);
+
   fFilter2KeyFollow := Value;
 
   UpdateActiveVoices(
