@@ -333,11 +333,11 @@ end;
 class function TLfoShapeHelper.ToFullGuiString(aEnum: TLfoShape): string;
 begin
   case aEnum of
-    TLfoShape.SawUp:    result := 'Saw (Up)';
-    TLfoShape.SawDown:  result := 'Ramp (Down)';
-    TLfoShape.Square:   result := 'Square';
-    TLfoShape.Triangle: result := 'Triangle';
-    TLfoShape.Sine:     result := 'Sine';
+    TLfoShape.SawUp:         result := 'Saw (Up)';
+    TLfoShape.SawDown:       result := 'Ramp (Down)';
+    TLfoShape.Square:        result := 'Square';
+    TLfoShape.Triangle:      result := 'Triangle';
+    TLfoShape.Sine:          result := 'Sine';
     TLfoShape.RandomSmooth:  result := 'Random Smooth';
     TLfoShape.RandomStepped: result := 'Random Stepped';
     TLfoShape.AttackDecay:   result := 'Attack-Decay';
@@ -351,13 +351,13 @@ end;
 class function TLfoShapeHelper.ToShortGuiString(aEnum: TLfoShape): string;
 begin
   case aEnum of
-    TLfoShape.SawUp:    result := 'Saw';
-    TLfoShape.SawDown:  result := 'Ramp';
-    TLfoShape.Square:   result := 'Square';
-    TLfoShape.Triangle: result := 'Tri';
-    TLfoShape.Sine:     result := 'Sine';
+    TLfoShape.SawUp:         result := 'Saw';
+    TLfoShape.SawDown:       result := 'Ramp';
+    TLfoShape.Square:        result := 'Square';
+    TLfoShape.Triangle:      result := 'Tri';
+    TLfoShape.Sine:          result := 'Sine';
     TLfoShape.RandomSmooth:  result := 'R-Smooth';
-    TLfoShape.RandomStepped: result := 'R-Stepped';
+    TLfoShape.RandomStepped: result := 'R-Step';
     TLfoShape.AttackDecay:   result := 'AD';
     TLfoShape.AttackRelease: result := 'AR';
     TLfoShape.Cycle:         result := 'Cycle';

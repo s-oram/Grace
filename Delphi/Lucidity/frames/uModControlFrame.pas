@@ -560,8 +560,14 @@ begin
   LfoLabel2.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob2).SnapToEdge(TControlFeature.BottomEdge);
   LfoLabel3.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
-  LfoShapeTextBox1.Layout.SetSize(2 * kw, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoShapeTextBox1.Layout.AdjustBounds(-4,0,-4,0);
+  LfoShapeTextBox1.Layout.SetSize(68, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+
+  LfoFreqModeTextBox.Layout.SetSize(36, TGuiConst.SelectorButtonHeight);
+  LfoFreqModeTextBox.Layout.Anchor(LfoShapeTextBox1).SnapToEdge(TControlFeature.RightEdge);
+
+  LfoShapeTextBox1.Layout.AdjustBounds(0,0,-4,0);
+  LfoFreqModeTextBox.Layout.AdjustBounds(-4,0,0,0);
+
 
 
 
@@ -585,6 +591,7 @@ begin
   Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   LfoShapeTextBox1.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  LfoFreqModeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   Seq1ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq1DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq1StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
@@ -616,6 +623,7 @@ begin
   Filter1TypeTextBox.Color   := kColor_LcdDark1;
   Filter2TypeTextBox.Color   := kColor_LcdDark1;
   LfoShapeTextBox1.Color     := kColor_LcdDark1;
+  LfoFreqModeTextBox.Color   := kColor_LcdDark1;
   Seq1ClockTextBox.Color     := kColor_LcdDark1;
   Seq1DirectionTextBox.Color := kColor_LcdDark1;
   Seq1StepsTextBox.Color     := kColor_LcdDark1;
@@ -628,6 +636,7 @@ begin
   Filter1TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   LfoShapeTextBox1.ColorMouseOver     := kColor_ButtonMouseOver;
+  LfoFreqModeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   Seq1ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq1StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
@@ -1002,6 +1011,7 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par3));
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
 
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
@@ -1026,6 +1036,7 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par3));
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
   end;
