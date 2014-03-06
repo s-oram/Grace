@@ -868,6 +868,52 @@ begin
   end;
 
 
+  //===========================================================================
+
+  aPar := TVstParameterEx.Create(TParName.Lfo1FreqMode);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'LFO Freq Mode';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.LfoFreqMode1 := TLfoFreqModeHelper.ToEnum(Value);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := TLfoFreqModeHelper.ToSingle(Plugin.ActiveVoicePar.LfoFreqMode1);
+    end);
+  end;
+
+
+
+
+  aPar := TVstParameterEx.Create(TParName.Lfo2FreqMode);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'LFO Shape';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.LfoFreqMode2 := TLfoFreqModeHelper.ToEnum(Value);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := TLfoFreqModeHelper.ToSingle(Plugin.ActiveVoicePar.LfoFreqMode2);
+    end);
+  end;
+
+  //===========================================================================
+
+
   aPar := TVstParameterEx.Create(TParName.Lfo1Par1);
   aPar.SetDefault(0.5);
   aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
