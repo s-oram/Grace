@@ -189,8 +189,8 @@ type
     property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
     property Filter1Type              : TFilterType                        read fFilter1Type             write SetFilter1Type;
     property Filter2Type              : TFilterType                        read fFilter2Type             write SetFilter2Type;
-    property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write SetFilter1KeyFollow; //range -1..1
-    property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write SetFilter2KeyFollow; //range -1..1
+    property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write SetFilter1KeyFollow; //range 0..1
+    property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write SetFilter2KeyFollow; //range 0..1
     property Filter1Par1              : single                             read fFilter1Par1             write SetFilter1Par1;
     property Filter1Par2              : single                             read fFilter1Par2             write SetFilter1Par2;
     property Filter1Par3              : single                             read fFilter1Par3             write SetFilter1Par3;
@@ -328,7 +328,7 @@ end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter1KeyFollow(const Value: single);
 begin
-  assert(Value >= -1);
+  assert(Value >= 0);
   assert(Value <= 1);
 
   fFilter1KeyFollow := Value;
@@ -343,7 +343,7 @@ end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilter2KeyFollow(const Value: single);
 begin
-  assert(Value >= -1);
+  assert(Value >= 0);
   assert(Value <= 1);
 
   fFilter2KeyFollow := Value;

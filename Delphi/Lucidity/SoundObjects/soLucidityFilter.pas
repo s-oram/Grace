@@ -69,7 +69,7 @@ type
 
     //==== Parameters ====
     property FilterType : TFilterType read fFilterType write SetFilterType;
-    property KeyFollow  : single      read fKeyFollow  write SetKeyFollow;  //range -1..1.
+    property KeyFollow  : single      read fKeyFollow  write SetKeyFollow;  //range 0..1.
 
 
   end;
@@ -154,7 +154,7 @@ end;
 
 procedure TLucidityFilter.SetKeyFollow(const Value: single);
 begin
-  assert(Value >= -1);
+  assert(Value >= 0);
   assert(Value <= 1);
   fKeyFollow := Value;
 end;
@@ -276,7 +276,7 @@ begin
     ftLofiA:
     begin
       //==== Lofi A ====
-      px1 := (Par1 + Par1Mod)  * FreqMultFactor;
+      px1 := (Par1 + Par1Mod);
       Clamp(px1, 0, 1);
       LofiA.RateReduction := px1;
 
@@ -324,7 +324,7 @@ begin
     ftCombA:
     begin
       //==== Comb A ====
-      px1 := (Par1 + Par1Mod) * FreqMultFactor;
+      px1 := (Par1 + Par1Mod);
       Clamp(px1, 0, 1);
       CombA.Par1 := px1;
 

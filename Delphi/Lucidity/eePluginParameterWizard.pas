@@ -657,14 +657,11 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
-      assert(Value >= 0);
-      assert(Value <= 1);
-
-      Plugin.ActiveVoicePar.Filter1KeyFollow := Value * 2 - 1;
+      Plugin.ActiveVoicePar.Filter1KeyFollow := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.Filter1KeyFollow * 0.5 + 0.5;
+      Value := Plugin.ActiveVoicePar.Filter1KeyFollow;
     end);
   end;
 
@@ -679,14 +676,11 @@ begin
     end);
     aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
     begin
-      assert(Value >= 0);
-      assert(Value <= 1);
-
-      Plugin.ActiveVoicePar.Filter2KeyFollow := Value * 2 - 1;
+      Plugin.ActiveVoicePar.Filter2KeyFollow := Value;
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
-      Value := Plugin.ActiveVoicePar.Filter2KeyFollow * 0.5 + 0.5;
+      Value := Plugin.ActiveVoicePar.Filter2KeyFollow;
     end);
   end;
 

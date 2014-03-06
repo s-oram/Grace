@@ -681,7 +681,7 @@ object ModControlFrame: TModControlFrame
           Color_Numeric = clBlack
           Color_Arrows1 = '$cc000000'
           Color_Arrows2 = '$FF000000'
-          KnobMin = -100
+          KnobMin = 0
           KnobMax = 100
           KnobNumericStyle = nsInteger
           KnobDecimalPlaces = 2
@@ -1701,7 +1701,7 @@ object ModControlFrame: TModControlFrame
           Color_Numeric = clBlack
           Color_Arrows1 = '$cc000000'
           Color_Arrows2 = '$FF000000'
-          KnobMin = -100
+          KnobMin = 0
           KnobMax = 100
           KnobNumericStyle = nsInteger
           KnobDecimalPlaces = 2
