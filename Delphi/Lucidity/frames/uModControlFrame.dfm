@@ -1128,7 +1128,7 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
         object LfoSelectButton1: TVamButton
-          Left = 31
+          Left = 52
           Top = 79
           Width = 20
           Height = 20
@@ -1154,7 +1154,7 @@ object ModControlFrame: TModControlFrame
         end
         object LfoSelectButton2: TVamButton
           Tag = 1
-          Left = 57
+          Left = 78
           Top = 79
           Width = 20
           Height = 20
@@ -1180,7 +1180,7 @@ object ModControlFrame: TModControlFrame
           OnMouseUp = LfoSelectButton2MouseUp
         end
         object LfoSelector: TVamSliderSwitch
-          Left = 83
+          Left = 103
           Top = 79
           Width = 38
           Height = 22
@@ -1193,6 +1193,28 @@ object ModControlFrame: TModControlFrame
           SwitchSteps = 2
           SwitchPos = 0
           OnChanged = LfoSelectorChanged
+          Visible = True
+        end
+        object LfoFreqModeTextBox: TVamTextBox
+          Left = 3
+          Top = 87
+          Width = 40
+          Height = 16
+          Opacity = 255
+          DisplayClass = 'MenuButton'
+          Text = '---'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
           Visible = True
         end
       end

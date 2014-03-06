@@ -120,6 +120,7 @@ type
     LfoSelector: TVamSliderSwitch;
     Filter1KeyTrackKnob: TVamCompoundNumericKnob;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
+    LfoFreqModeTextBox: TVamTextBox;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);

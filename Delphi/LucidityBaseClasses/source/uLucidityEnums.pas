@@ -37,8 +37,16 @@ type
     class function ToShortGuiString(aEnum : TLfoShape):string; override;
   end;
 
+  // TODO: delete TLfoMode
   TLfoMode = (Free, Sync, Tempo);
   TLfoModeHelper = class(TEnumHelper<TLfoMode>);
+
+  TLfoFreqMode = (Hertz, SyncQuarters, SyncSixteenths);
+  TLfoFreqModeHelper = class(TEnumHelper<TLfoFreqMode>)
+  public
+    class function ToFullGuiString(aEnum : TLfoFreqMode):string; override;
+    class function ToShortGuiString(aEnum : TLfoFreqMode):string; override;
+  end;
 
   TLfoPhaseReset = (ph0, ph90, ph180, ph270);
   TLfoPhaseResetHelper = class(TEnumHelper<TLfoPhaseReset>);
@@ -690,6 +698,30 @@ begin
     TPitchTracking.Note: result := 'Note';
     TPitchTracking.BPM:  result := 'BPM';
     TPitchTracking.Off:  result := 'Off';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+{ TLfoFreqModeHelper }
+
+class function TLfoFreqModeHelper.ToFullGuiString(aEnum: TLfoFreqMode): string;
+begin
+  case aEnum of
+    TLfoFreqMode.Hertz:          result := 'Hertz';
+    TLfoFreqMode.SyncQuarters:   result := 'Sync 1/4';
+    TLfoFreqMode.SyncSixteenths: result := 'Sync 1/16';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+class function TLfoFreqModeHelper.ToShortGuiString(aEnum: TLfoFreqMode): string;
+begin
+  case aEnum of
+    TLfoFreqMode.Hertz:          result := 'Hz';
+    TLfoFreqMode.SyncQuarters:   result := '1/4';
+    TLfoFreqMode.SyncSixteenths: result := '1/16';
   else
     raise Exception.Create('Type not handled.');
   end;
