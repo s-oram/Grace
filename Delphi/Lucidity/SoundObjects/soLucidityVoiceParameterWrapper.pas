@@ -89,6 +89,8 @@ type
     fLfoAPar3: single;
     fFilter2KeyFollow: single;
     fFilter1KeyFollow: single;
+    fLfoFreqMode2: TLfoFreqMode;
+    fLfoFreqMode1: TLfoFreqMode;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -141,6 +143,8 @@ type
     procedure SetLfoBPar3(const Value: single);
     procedure SetFilter1KeyFollow(const Value: single);
     procedure SetFilter2KeyFollow(const Value: single);
+    procedure SetLfoFreqMode1(const Value: TLfoFreqMode);
+    procedure SetLfoFreqMode2(const Value: TLfoFreqMode);
   protected
     OwningSampleGroup : IKeyGroup;
     Voices : PArrayOfLucidityVoice;
@@ -208,6 +212,8 @@ type
     property FilterVelocityDepth      : TEnvVelocityDepth                  read fFilterVelocityDepth     write SetFilterVelocityDepth;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write SetLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
+    property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write SetLfoFreqMode1;
+    property LfoFreqMode2             : TLfoFreqMode                       read fLfoFreqMode2            write SetLfoFreqMode2;
 
     //TODO: I don't know if these parameter wrapped values are required any more.
     property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
@@ -492,6 +498,30 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetLfoBPar3(const Value: single);
 begin
   fLfoBPar3 := Value;
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetLfoFreqMode1(const Value: TLfoFreqMode);
+begin
+  fLfoFreqMode1 := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.LfoA.FreqMode := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetLfoFreqMode2(const Value: TLfoFreqMode);
+begin
+  fLfoFreqMode2 := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.LfoB.FreqMode := Value;
+    end
+  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoRate1(const Value: single);
@@ -822,6 +852,8 @@ begin
   Self.FilterVelocityDepth      := Source.FilterVelocityDepth;
   Self.LfoShape1                := Source.LfoShape1;
   Self.LfoShape2                := Source.LfoShape2;
+  Self.LfoFreqMode1             := Source.LfoFreqMode1;
+  Self.LfoFreqMode2             := Source.LfoFreqMode2;
   Self.LfoRate1                 := Source.LfoRate1;
   Self.LfoRate2                 := Source.LfoRate2;
   self.LfoAPar2                 := Source.LfoAPar2;
@@ -873,6 +905,8 @@ begin
   aVoice.FilterEnv.VelocityDepth         := FilterVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;
+  aVoice.LfoA.FreqMode                   := LfoFreqMode1;
+  aVoice.LfoB.FreqMode                   := LfoFreqMode2;
   aVoice.StepSeqOne.Clock                := Seq1Clock;
   aVoice.StepSeqOne.Direction            := Seq1Direction;
   aVoice.StepSeqOne.StepCount            := StepSeq1Length;

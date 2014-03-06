@@ -29,6 +29,7 @@ type
     fPar1: PSynthPar;
     fPar2: PSynthPar;
     fPar3: PSynthPar;
+    fFreqMode: TLfoFreqMode;
     procedure SetSampleRate(const Value: single);
     procedure SetBpm(const Value: single);
     procedure SetPar1(const Value: PSynthPar);
@@ -58,9 +59,10 @@ type
     procedure Kill;
     procedure ResetLfoPhase;
 
-    property SampleRate : single    read fSampleRate write SetSampleRate;
-    property Bpm        : single    read fBpm        write SetBpm;
-    property Shape      : TLfoShape read fShape      write SetShape;
+    property SampleRate : single       read fSampleRate write SetSampleRate;
+    property Bpm        : single       read fBpm        write SetBpm;
+    property Shape      : TLfoShape    read fShape      write SetShape;
+    property FreqMode   : TLfoFreqMode read fFreqMode   write fFreqMode;
 
     property Par1 : PSynthPar read fPar1 write SetPar1;
     property Par2 : PSynthPar read fPar2 write SetPar2;
