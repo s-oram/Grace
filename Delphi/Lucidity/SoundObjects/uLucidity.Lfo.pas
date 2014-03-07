@@ -90,32 +90,31 @@ uses
 
 
 function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
+  function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision, Bars : integer): single; inline;
+  var
+    InvPar : single;
+    LfoFreq : single;
+    BeatSync : double;
+  begin
+    InvPar := 1 - (FreqPar * FreqPar);
+    BeatSync := (1 + round(InvPar * BeatDivision * Bars)) / BeatDivision;
+    LfoFreq := SyncToSamples(BeatSync, Bpm, SampleRate);
+    LfoFreq := SampleRate / LfoFreq;
+    result := LfoFreq;
+  end;
 var
   InvPar : single;
   LfoFreq : single;
   Beats : double;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:
-    begin
-      LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
-    end;
-
-    TLfoFreqMode.SyncQuarters:
-    begin
-      InvPar := 1 - FreqPar;
-      Beats := 1 + round(InvPar * 16);
-      LfoFreq := SyncToSamples(Beats/4, Bpm, SampleRate);
-      LfoFreq := SampleRate / LfoFreq;
-    end;
-
-    TLfoFreqMode.SyncSixteenths:
-    begin
-      InvPar := 1 - FreqPar;
-      Beats := 1 + round(InvPar * 32);
-      LfoFreq := SyncToSamples(Beats/16, Bpm, SampleRate);
-      LfoFreq := SampleRate / LfoFreq;
-    end;
+    TLfoFreqMode.Hertz:   LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
+    TLfoFreqMode.Sync4:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 4,   1);
+    TLfoFreqMode.Sync8:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 8,   1);
+    TLfoFreqMode.Sync16:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 16,  1);
+    TLfoFreqMode.Sync32:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 32,  1);
+    TLfoFreqMode.Sync64:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 64,  1);
+    TLfoFreqMode.Sync128: LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 128, 1);
   else
     raise Exception.Create('Type not handled.');
   end;

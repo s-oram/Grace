@@ -41,7 +41,7 @@ type
   TLfoMode = (Free, Sync, Tempo);
   TLfoModeHelper = class(TEnumHelper<TLfoMode>);
 
-  TLfoFreqMode = (Hertz, SyncQuarters, SyncSixteenths);
+  TLfoFreqMode = (Hertz, Sync4, Sync8, Sync16, Sync32, Sync64, Sync128);
   TLfoFreqModeHelper = class(TEnumHelper<TLfoFreqMode>)
   public
     class function ToFullGuiString(aEnum : TLfoFreqMode):string; override;
@@ -708,9 +708,13 @@ end;
 class function TLfoFreqModeHelper.ToFullGuiString(aEnum: TLfoFreqMode): string;
 begin
   case aEnum of
-    TLfoFreqMode.Hertz:          result := 'Hertz';
-    TLfoFreqMode.SyncQuarters:   result := 'Sync 1/4';
-    TLfoFreqMode.SyncSixteenths: result := 'Sync 1/16';
+    TLfoFreqMode.Hertz:   result := 'Hertz';
+    TLfoFreqMode.Sync4:   result := 'Sync 1/4';
+    TLfoFreqMode.Sync8:   result := 'Sync 1/8';
+    TLfoFreqMode.Sync16:  result := 'Sync 1/16';
+    TLfoFreqMode.Sync32:  result := 'Sync 1/32';
+    TLfoFreqMode.Sync64:  result := 'Sync 1/64';
+    TLfoFreqMode.Sync128: result := 'Sync 1/128';
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -719,9 +723,13 @@ end;
 class function TLfoFreqModeHelper.ToShortGuiString(aEnum: TLfoFreqMode): string;
 begin
   case aEnum of
-    TLfoFreqMode.Hertz:          result := 'Hz';
-    TLfoFreqMode.SyncQuarters:   result := '1/4';
-    TLfoFreqMode.SyncSixteenths: result := '1/16';
+    TLfoFreqMode.Hertz:   result := 'Hz';
+    TLfoFreqMode.Sync4:   result := '1/4';
+    TLfoFreqMode.Sync8:   result := '1/8';
+    TLfoFreqMode.Sync16:  result := '1/16';
+    TLfoFreqMode.Sync32:  result := '1/32';
+    TLfoFreqMode.Sync64:  result := '1/64';
+    TLfoFreqMode.Sync128: result := '1/128';
   else
     raise Exception.Create('Type not handled.');
   end;
