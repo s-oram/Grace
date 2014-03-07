@@ -7,6 +7,7 @@ interface
 {$SCOPEDENUMS ON}
 
 uses
+  eeDsp,
   B2.Filter.CriticallyDampedLowpass,
   VamLib.MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
   uLucidityEnums,
@@ -15,7 +16,7 @@ uses
   soLfo.WaveTableLfo,
   soLfo.RandomLfo,
   soLfo.SlopeGen,
-  eeVirtualCV, Math, uLucidityClock, eeDsp,
+  eeVirtualCV, Math, uLucidityClock,
   uConstants;
 
 type
@@ -37,6 +38,7 @@ type
     procedure SetPar3(const Value: PSynthPar);
     procedure SetShape(const Value: TLfoShape);
   protected
+    IsActive : boolean;
     VoiceClockManager : TLucidityVoiceClockManager;
     FModuleIndex  : integer;
     LfoOutput     : single;
@@ -85,6 +87,41 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
+
+
+function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
+var
+  InvPar : single;
+  LfoFreq : single;
+  Beats : double;
+begin
+  case FreqMode of
+    TLfoFreqMode.Hertz:
+    begin
+      LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
+    end;
+
+    TLfoFreqMode.SyncQuarters:
+    begin
+      InvPar := 1 - FreqPar;
+      Beats := 1 + round(InvPar * 16);
+      LfoFreq := SyncToSamples(Beats/4, Bpm, SampleRate);
+      LfoFreq := SampleRate / LfoFreq;
+    end;
+
+    TLfoFreqMode.SyncSixteenths:
+    begin
+      InvPar := 1 - FreqPar;
+      Beats := 1 + round(InvPar * 32);
+      LfoFreq := SyncToSamples(Beats/16, Bpm, SampleRate);
+      LfoFreq := SampleRate / LfoFreq;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+  result := LfoFreq;
+end;
 
 
 { TLucidityLfo }
@@ -188,6 +225,9 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+
+  if IsActive
+    then UpdateLfoParameters;
 end;
 
 
@@ -214,33 +254,43 @@ end;
 
 
 procedure TLucidityLfo.UpdateLfoParameters;
-var
-  LfoFreq : single;
 begin
   assert(InRange(Par1^, 0, 1));
   assert(InRange(Par2^, 0, 1));
   assert(InRange(Par3^, 0, 1));
 
-  LfoFreq := (Par1^ * Par1^) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
+  case ActiveLFO of
+    TActiveLFO.WaveTable:
+    begin
+      WaveTableLFO.Freq          := ComputeLfoFrequency(Par1^, FreqMode, Bpm, SampleRate);
+      WaveTableLFO.PhaseOffset   := Par2^;
+      WaveTableLFO.Symmetry      := Par3^;
+      WaveTableLFO.UpdateStepSize;
+    end;
 
-  WaveTableLFO.Freq          := LfoFreq;
-  WaveTableLFO.PhaseOffset   := Par2^;
-  WaveTableLFO.Symmetry      := Par3^;
+    TActiveLFO.Random:
+    begin
+      RandomLFO.Freq     := ComputeLfoFrequency(Par1^, FreqMode, Bpm, SampleRate);
+      RandomLFO.Density  := Par2^;
+      RandomLFO.Flux     := Par3^;
+      RandomLfo.UpdateStepSize;
+    end;
 
-  RandomLFO.Freq     := LfoFreq;
-  RandomLFO.Density  := Par2^;
-  RandomLFO.Flux     := Par3^;
-
-  SlopeGen.Curve      := Par1^;
-  SlopeGen.AttackTime := (Par2^ * Par2^) * 2000;
-  SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000;
-
-  WaveTableLFO.UpdateStepSize;
-  RandomLfo.UpdateStepSize;
+    TActiveLFO.Slope:
+    begin
+      //TODO: Slope gen needs to have it's attack and decay times quantised as well.
+      SlopeGen.Curve      := Par1^;
+      SlopeGen.AttackTime := (Par2^ * Par2^) * 2000;
+      SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 procedure TLucidityLfo.Trigger;
 begin
+  IsActive := true;
   SlopeGen.Trigger;
 end;
 
@@ -252,6 +302,7 @@ end;
 procedure TLucidityLfo.Kill;
 begin
   SlopeGen.Kill;
+  IsActive := false;
 end;
 
 
@@ -289,7 +340,7 @@ end;
 
 procedure TLucidityLfo.SlowControlProcess;
 begin
-  UpdateLfoParameters; //TODO: this should probably be moved to slowControlProcess().
+  UpdateLfoParameters;
 end;
 
 

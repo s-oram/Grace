@@ -349,6 +349,9 @@ begin
 
   StepSeqOne.Bpm := Globals.Tempo;
   StepSeqTwo.Bpm := Globals.Tempo;
+
+  LfoA.Bpm := Globals.Tempo;
+  LfoB.Bpm := Globals.Tempo;
 end;
 
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);
