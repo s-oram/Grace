@@ -15,7 +15,8 @@ procedure RunTask(aTask : TProc); overload;
 procedure RunTask(aTask, FinishedCallback : TProc); overload;
 procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
 
-procedure DelayedGuiAction(const Delay : integer; Action : TProc);
+// Action's are executed in the main thead (usually GUI afaik).
+procedure DelayedAction(const Delay : integer; Action : TProc);
 
 implementation
 
@@ -57,7 +58,7 @@ end;
 
 
 
-procedure DelayedGuiAction(const Delay : integer; Action : TProc);
+procedure DelayedAction(const Delay : integer; Action : TProc);
 var
   Delegate : TProc;
 begin

@@ -429,7 +429,8 @@ begin
     end;
   end;
 
-  Async(procedure begin sleep(150) end).Await(LeaveControl);
+
+  DelayedAction(150, LeaveControl);
 end;
 
 
