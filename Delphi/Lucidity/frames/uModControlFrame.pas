@@ -122,6 +122,7 @@ type
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     LfoFreqModeTextBox: TVamTextBox;
     FilterRoutingButton: TVamTextBox;
+    LfoRangeButton: TVamTextBox;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -563,13 +564,16 @@ begin
   LfoLabel2.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob2).SnapToEdge(TControlFeature.BottomEdge);
   LfoLabel3.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
-  LfoShapeTextBox1.Layout.SetSize(68, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  //LfoShapeTextBox1.Layout.SetSize(68, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoShapeTextBox1.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
 
-  LfoFreqModeTextBox.Layout.SetSize(36, TGuiConst.SelectorButtonHeight);
+  LfoFreqModeTextBox.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
   LfoFreqModeTextBox.Layout.Anchor(LfoShapeTextBox1).SnapToEdge(TControlFeature.RightEdge);
+  LfoRangeButton.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoFreqModeTextBox).SnapToEdge(TControlFeature.RightEdge);
 
-  LfoShapeTextBox1.Layout.AdjustBounds(0,0,-4,0);
-  LfoFreqModeTextBox.Layout.AdjustBounds(-4,0,0,0);
+  LfoShapeTextBox1.Layout.AdjustBounds(0,0,-2,0);
+  LfoFreqModeTextBox.Layout.AdjustBounds(-2,0,-2,0);
+  LfoRangeButton.Layout.AdjustBounds(-2,0,0,0);
   //==================================================
 
 
@@ -593,6 +597,7 @@ begin
   Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   LfoShapeTextBox1.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   LfoFreqModeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
+  LfoRangeButton.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
   Seq1ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq1DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq1StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
@@ -626,6 +631,7 @@ begin
   Filter2TypeTextBox.Color   := kColor_LcdDark1;
   LfoShapeTextBox1.Color     := kColor_LcdDark1;
   LfoFreqModeTextBox.Color   := kColor_LcdDark1;
+  LfoRangeButton.Color       := kColor_LcdDark1;
   Seq1ClockTextBox.Color     := kColor_LcdDark1;
   Seq1DirectionTextBox.Color := kColor_LcdDark1;
   Seq1StepsTextBox.Color     := kColor_LcdDark1;
@@ -640,6 +646,7 @@ begin
   Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   LfoShapeTextBox1.ColorMouseOver     := kColor_ButtonMouseOver;
   LfoFreqModeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
+  LfoRangeButton.ColorMouseOver       := kColor_ButtonMouseOver;
   Seq1ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq1StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;

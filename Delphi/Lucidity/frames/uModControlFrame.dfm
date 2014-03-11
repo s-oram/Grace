@@ -955,7 +955,7 @@ object ModControlFrame: TModControlFrame
         Left = 184
         Top = 474
         Width = 145
-        Height = 121
+        Height = 143
         Margins.Left = 0
         Margins.Top = 0
         Margins.Right = 0
@@ -1198,6 +1198,28 @@ object ModControlFrame: TModControlFrame
         object LfoFreqModeTextBox: TVamTextBox
           Left = 3
           Top = 87
+          Width = 40
+          Height = 16
+          Opacity = 255
+          DisplayClass = 'MenuButton'
+          Text = '---'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Visible = True
+        end
+        object LfoRangeButton: TVamTextBox
+          Left = 3
+          Top = 109
           Width = 40
           Height = 16
           Opacity = 255
