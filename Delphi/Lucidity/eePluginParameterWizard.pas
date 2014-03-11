@@ -9,7 +9,7 @@ uses
 
 // GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
 // the automatically generated ParNames.inc file needs to be updated.
-{_$define GENERATE_PAR_INFO}
+{$define GENERATE_PAR_INFO}
 
 
 {
@@ -1303,7 +1303,7 @@ begin
 
   Text.Add('  end;');
 
-  fn := 'D:\Delphi Projects\Lucidity\Delphi\Lucidity\ParNames.inc';
+  fn := 'D:\Delphi Projects\Lucidity\Delphi\LucidityBaseClasses\source\ParNames.inc';
 
   Text.SaveToFile(fn);
 
