@@ -123,6 +123,13 @@ begin
 end;
 
 
+
+function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
+begin
+  //TODO:
+end;
+
+
 { TLucidityLfo }
 
 constructor TLucidityLfo.Create(const aModuleIndex : integer; const aVoiceClockManager : TLucidityVoiceClockManager);
