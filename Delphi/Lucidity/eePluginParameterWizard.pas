@@ -948,6 +948,47 @@ begin
 
   //===========================================================================
 
+  aPar := TVstParameterEx.Create(TParName.Lfo1Range);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'LFO Range';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.LfoRange1 := TLfoRangeHelper.ToEnum(Value);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := TLfoRangeHelper.ToSingle(Plugin.ActiveVoicePar.LfoRange1);
+    end);
+  end;
+
+
+
+
+  aPar := TVstParameterEx.Create(TParName.Lfo2Range);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'LFO Range';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.LfoRange2 := TLfoRangeHelper.ToEnum(Value);
+      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := TLfoRangeHelper.ToSingle(Plugin.ActiveVoicePar.LfoRange2);
+    end);
+  end;
+
 
   aPar := TVstParameterEx.Create(TParName.Lfo1Par1);
   aPar.SetDefault(0.5);
