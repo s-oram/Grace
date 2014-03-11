@@ -759,7 +759,7 @@ class function TFilterRoutingHelper.ToShortGuiString(aEnum: TFilterRouting): str
 begin
   case aEnum of
     TFilterRouting.Serial:     result := 'Serial';
-    TFilterRouting.Parallel:   result := 'Parallel';
+    TFilterRouting.Parallel:   result := 'Paral';
     TFilterRouting.FiftyFifty: result := '50/50';
   else
     raise Exception.Create('Type not handled.');
