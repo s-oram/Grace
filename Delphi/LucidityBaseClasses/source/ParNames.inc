@@ -1,6 +1,4 @@
 type
-
-//asdfasdf
   TVstParIndex = record
   const
     VoiceMode = 0;
@@ -39,32 +37,38 @@ type
     FilterSustain = 33;
     FilterRelease = 34;
     FilterVelocity = 35;
-    Filter1Type = 36;
-    Filter2Type = 37;
-    Filter1Par1 = 38;
-    Filter1Par2 = 39;
-    Filter1Par3 = 40;
-    Filter1Par4 = 41;
-    Filter2Par1 = 42;
-    Filter2Par2 = 43;
-    Filter2Par3 = 44;
-    Filter2Par4 = 45;
-    Lfo1Shape = 46;
-    Lfo2Shape = 47;
-    Lfo1Par1 = 48;
-    Lfo1Par2 = 49;
-    Lfo1Par3 = 50;
-    Lfo2Par1 = 51;
-    Lfo2Par2 = 52;
-    Lfo2Par3 = 53;
-    Seq1Clock = 54;
-    Seq1Direction = 55;
-    Seq1Length = 56;
-    Seq2Clock = 57;
-    Seq2Direction = 58;
-    Seq2Length = 59;
-    PreviewVolume = 60;
-    Preview = 61;
+    FilterRouting = 36;
+    FilterOutputBlend = 37;
+    Filter1Type = 38;
+    Filter2Type = 39;
+    Filter1KeyFollow = 40;
+    Filter2KeyFollow = 41;
+    Filter1Par1 = 42;
+    Filter1Par2 = 43;
+    Filter1Par3 = 44;
+    Filter1Par4 = 45;
+    Filter2Par1 = 46;
+    Filter2Par2 = 47;
+    Filter2Par3 = 48;
+    Filter2Par4 = 49;
+    Lfo1Shape = 50;
+    Lfo2Shape = 51;
+    Lfo1FreqMode = 52;
+    Lfo2FreqMode = 53;
+    Lfo1Par1 = 54;
+    Lfo1Par2 = 55;
+    Lfo1Par3 = 56;
+    Lfo2Par1 = 57;
+    Lfo2Par2 = 58;
+    Lfo2Par3 = 59;
+    Seq1Clock = 60;
+    Seq1Direction = 61;
+    Seq1Length = 62;
+    Seq2Clock = 63;
+    Seq2Direction = 64;
+    Seq2Length = 65;
+    PreviewVolume = 66;
+    Preview = 67;
   end;
   
   
@@ -88,18 +92,19 @@ type
     FilterDecay = 15;
     FilterSustain = 16;
     FilterRelease = 17;
-    Filter1Par1 = 18;
-    Filter1Par2 = 19;
-    Filter1Par3 = 20;
-    Filter1Par4 = 21;
-    Filter2Par1 = 22;
-    Filter2Par2 = 23;
-    Filter2Par3 = 24;
-    Filter2Par4 = 25;
-    Lfo1Par1 = 26;
-    Lfo1Par2 = 27;
-    Lfo1Par3 = 28;
-    Lfo2Par1 = 29;
-    Lfo2Par2 = 30;
-    Lfo2Par3 = 31;
+    FilterOutputBlend = 18;
+    Filter1Par1 = 19;
+    Filter1Par2 = 20;
+    Filter1Par3 = 21;
+    Filter1Par4 = 22;
+    Filter2Par1 = 23;
+    Filter2Par2 = 24;
+    Filter2Par3 = 25;
+    Filter2Par4 = 26;
+    Lfo1Par1 = 27;
+    Lfo1Par2 = 28;
+    Lfo1Par3 = 29;
+    Lfo2Par1 = 30;
+    Lfo2Par2 = 31;
+    Lfo2Par3 = 32;
   end;
