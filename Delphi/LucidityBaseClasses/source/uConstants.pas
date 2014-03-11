@@ -68,8 +68,8 @@ const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
 
-  kParameterCount          = 67;
-  kModulatedParameterCount = 32;
+  kParameterCount          = 68;
+  kModulatedParameterCount = 33;
   kModSlotCount = 8;
 
 
@@ -271,6 +271,7 @@ type
     FilterRelease          = 'FilterRelease';
     FilterVelocity         = 'FilterVelocity';
     FilterRouting          = 'FilterRouting';
+    FilterOutputBlend      = 'FilterOutputBlend';
     Filter1Type            = 'Filter1Type';
     Filter2Type            = 'Filter2Type';
     Filter1KeyFollow       = 'Filter1KeyFollow';

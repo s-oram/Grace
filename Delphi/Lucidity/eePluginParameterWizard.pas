@@ -620,6 +620,20 @@ begin
     end);
   end;
 
+  aPar := TVstParameterEx.Create(TParName.FilterOutputBlend);
+  aPar.SetDefault(0.5);
+  aPar.SetHasModLink(true, GetModLinkIndex(aModLinkIndex));
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'Filter Blend';
+    end);
+    aPar.SetCallback_SetParValue(SetModPar_Callback);
+    aPar.SetCallback_GetParValue(GetModPar_Callback);
+  end;
+
 
 
 
