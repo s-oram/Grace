@@ -1758,7 +1758,7 @@ object ModControlFrame: TModControlFrame
           Align = alTop
           Visible = True
         end
-        object Lfo2RateLabel: TVamLabel
+        object FilterBlendLabel: TVamLabel
           Left = 7
           Top = 51
           Width = 32
@@ -1776,7 +1776,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object LfoSpeedKnob2: TVamKnob
+        object FilterBlendKnob: TVamKnob
           Left = 3
           Top = 17
           Width = 40

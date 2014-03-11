@@ -109,8 +109,8 @@ type
     Filter1P4Label: TVamLabel;
     FilterBlendContainer: TVamDiv;
     VamLabel13: TVamLabel;
-    Lfo2RateLabel: TVamLabel;
-    LfoSpeedKnob2: TVamKnob;
+    FilterBlendLabel: TVamLabel;
+    FilterBlendKnob: TVamKnob;
     LfoKnob3: TVamKnob;
     LfoLabel3: TVamLabel;
     LfoSelectButton1: TVamButton;
@@ -221,7 +221,7 @@ begin
   KnobList.Add(LfoKnob1);
   KnobList.Add(LfoKnob2);
   KnobList.Add(LfoKnob3);
-  KnobList.Add(LfoSpeedKnob2);
+  KnobList.Add(FilterBlendKnob);
 
 end;
 
@@ -574,10 +574,10 @@ begin
 
 
   //=== Filter Blend ====
-  LfoSpeedKnob2.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  Lfo2RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
-  Lfo2RateLabel.Layout.Anchor(LfoSpeedKnob2).SnapToEdge(TControlFeature.BottomEdge);
-  FilterRoutingButton.Layout.SetSize(FilterKnobWidth, TGuiConst.SelectorButtonHeight).Anchor(Lfo2RateLabel).SnapToEdge(TControlFeature.BottomEdge);
+  FilterBlendKnob.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  FilterBlendLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
+  FilterBlendLabel.Layout.Anchor(FilterBlendKnob).SnapToEdge(TControlFeature.BottomEdge);
+  FilterRoutingButton.Layout.SetSize(FilterKnobWidth, TGuiConst.SelectorButtonHeight).Anchor(FilterBlendLabel).SnapToEdge(TControlFeature.BottomEdge);
   //==================================================
 
 
