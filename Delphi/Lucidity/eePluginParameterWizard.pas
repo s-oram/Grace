@@ -600,6 +600,27 @@ begin
   end;
 
 
+  aPar := TVstParameterEx.Create(TParName.FilterRouting);
+  aPar.SetDefault(0);
+  Parmanager.Add(aPar);
+  if (assigned(Plugin)) and (assigned(VoiceController)) then
+  begin
+    aPar.SetCallback_SetParInfoMethod(function:string
+    begin
+      result := 'Filter Routing';
+    end);
+    aPar.SetCallback_SetParValue(procedure(Sender:TVstParameter; Value : single)
+    begin
+      Plugin.ActiveVoicePar.FilterRouting := TFilterRoutingHelper.ToEnum(Value);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
+    end);
+    aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
+    begin
+      Value := TFilterRoutingHelper.ToSingle(Plugin.ActiveVoicePar.FilterRouting);
+    end);
+  end;
+
+
 
 
   aPar := TVstParameterEx.Create(TParName.Filter1Type);

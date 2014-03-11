@@ -435,6 +435,7 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopMode');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
+    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
@@ -621,6 +622,7 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopMode');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
+      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
