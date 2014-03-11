@@ -1,4 +1,6 @@
 type
+
+//asdfasdf
   TVstParIndex = record
   const
     VoiceMode = 0;
