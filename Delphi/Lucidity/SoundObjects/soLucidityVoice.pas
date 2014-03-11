@@ -116,6 +116,9 @@ type
     FRInput     : single;
     FRFilterOne : single;
 
+    FBOut1 : single;
+    FBOut2 : single;
+
     procedure SampleRateChanged(Sender:TObject);
     procedure TempoChanged(Sender:TObject);
 
@@ -670,6 +673,10 @@ begin
 
   FilterOne.FastControlProcess;
   FilterTwo.FastControlProcess;
+
+
+  //==========
+  //ParValueData^[TModParIndex.FilterOutputBlend]
 end;
 
 procedure TLucidityVoice.SlowControlProcess;

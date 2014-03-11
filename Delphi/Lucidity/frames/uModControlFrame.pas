@@ -276,6 +276,7 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.FilterDecay));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterSustain));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterRelease));
+  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterBlendKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.FilterOutputBlend));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par2));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par3));
