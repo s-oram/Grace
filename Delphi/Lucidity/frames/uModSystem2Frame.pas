@@ -71,6 +71,7 @@ type
 implementation
 
 uses
+  OtlParallel,
   LucidityModConnections,
   eeVstParameterEx,
   VamLib.Utils,
@@ -428,7 +429,7 @@ begin
     end;
   end;
 
-  RunTask(LeaveControl, 150, nil);
+  Async(procedure begin sleep(150) end).Await(LeaveControl);
 end;
 
 
