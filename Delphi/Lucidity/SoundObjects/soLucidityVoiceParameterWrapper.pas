@@ -92,6 +92,8 @@ type
     fLfoFreqMode2: TLfoFreqMode;
     fLfoFreqMode1: TLfoFreqMode;
     fFilterRouting: TFilterRouting;
+    fLfoRange2: TLfoRange;
+    fLfoRange1: TLfoRange;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -147,6 +149,8 @@ type
     procedure SetLfoFreqMode1(const Value: TLfoFreqMode);
     procedure SetLfoFreqMode2(const Value: TLfoFreqMode);
     procedure SetFilterRouting(const Value: TFilterRouting);
+    procedure SetLfoRange1(const Value: TLfoRange);
+    procedure SetLfoRange2(const Value: TLfoRange);
   protected
     OwningSampleGroup : IKeyGroup;
     Voices : PArrayOfLucidityVoice;
@@ -217,6 +221,8 @@ type
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
     property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write SetLfoFreqMode1;
     property LfoFreqMode2             : TLfoFreqMode                       read fLfoFreqMode2            write SetLfoFreqMode2;
+    property LfoRange1                : TLfoRange                          read fLfoRange1               write SetLfoRange1;
+    property LfoRange2                : TLfoRange                          read fLfoRange2               write SetLfoRange2;
 
     //TODO: I don't know if these parameter wrapped values are required any more.
     property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
@@ -535,6 +541,30 @@ begin
     procedure(v:PLucidityVoice)
     begin
       v^.LfoB.FreqMode := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetLfoRange1(const Value: TLfoRange);
+begin
+  fLfoRange1 := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.LfoA.Range := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetLfoRange2(const Value: TLfoRange);
+begin
+  fLfoRange2 := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.LfoB.Range := Value;
     end
   );
 end;
@@ -870,6 +900,8 @@ begin
   Self.LfoShape2                := Source.LfoShape2;
   Self.LfoFreqMode1             := Source.LfoFreqMode1;
   Self.LfoFreqMode2             := Source.LfoFreqMode2;
+  Self.LfoRange1                := Source.LfoRange1;
+  Self.LfoRange2                := Source.LfoRange2;
   Self.LfoRate1                 := Source.LfoRate1;
   Self.LfoRate2                 := Source.LfoRate2;
   self.LfoAPar2                 := Source.LfoAPar2;
@@ -924,6 +956,8 @@ begin
   aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.LfoA.FreqMode                   := LfoFreqMode1;
   aVoice.LfoB.FreqMode                   := LfoFreqMode2;
+  aVoice.LfoA.Range                      := LfoRange1;
+  aVoice.LfoB.Range                      := LfoRange2;
   aVoice.StepSeqOne.Clock                := Seq1Clock;
   aVoice.StepSeqOne.Direction            := Seq1Direction;
   aVoice.StepSeqOne.StepCount            := StepSeq1Length;

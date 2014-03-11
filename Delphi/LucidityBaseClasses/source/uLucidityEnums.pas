@@ -55,6 +55,13 @@ type
     class function ToShortGuiString(aEnum : TLfoFreqMode):string; override;
   end;
 
+  TLfoRange = (x1, x2, x4, x8);
+  TLfoRangeHelper = class(TEnumHelper<TLfoRange>)
+  public
+    class function ToFullGuiString(aEnum : TLfoRange):string; override;
+    class function ToShortGuiString(aEnum : TLfoRange):string; override;
+  end;
+
   TLfoPhaseReset = (ph0, ph90, ph180, ph270);
   TLfoPhaseResetHelper = class(TEnumHelper<TLfoPhaseReset>);
 
@@ -761,6 +768,32 @@ begin
     TFilterRouting.Serial:     result := 'Serial';
     TFilterRouting.Parallel:   result := 'Paral';
     TFilterRouting.FiftyFifty: result := '50/50';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+{ TLfoRangeHelper }
+
+class function TLfoRangeHelper.ToFullGuiString(aEnum: TLfoRange): string;
+begin
+  case aEnum of
+    TLfoRange.x1: result := 'Max Time x 1';
+    TLfoRange.x2: result := 'Max Time x 2';
+    TLfoRange.x4: result := 'Max Time x 4';
+    TLfoRange.x8: result := 'Max Time x 8';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+class function TLfoRangeHelper.ToShortGuiString(aEnum: TLfoRange): string;
+begin
+  case aEnum of
+    TLfoRange.x1: result := 'x1';
+    TLfoRange.x2: result := 'x2';
+    TLfoRange.x4: result := 'x4';
+    TLfoRange.x8: result := 'x8';
   else
     raise Exception.Create('Type not handled.');
   end;

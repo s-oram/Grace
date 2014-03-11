@@ -31,12 +31,14 @@ type
     fPar2: PSynthPar;
     fPar3: PSynthPar;
     fFreqMode: TLfoFreqMode;
+    fLfoRange: TLfoRange;
     procedure SetSampleRate(const Value: single);
     procedure SetBpm(const Value: single);
     procedure SetPar1(const Value: PSynthPar);
     procedure SetPar2(const Value: PSynthPar);
     procedure SetPar3(const Value: PSynthPar);
     procedure SetShape(const Value: TLfoShape);
+    procedure SetLfoRange(const Value: TLfoRange);
   protected
     IsActive : boolean;
     VoiceClockManager : TLucidityVoiceClockManager;
@@ -65,6 +67,7 @@ type
     property Bpm        : single       read fBpm        write SetBpm;
     property Shape      : TLfoShape    read fShape      write SetShape;
     property FreqMode   : TLfoFreqMode read fFreqMode   write fFreqMode;
+    property Range      : TLfoRange    read fLfoRange   write SetLfoRange;
 
     property Par1 : PSynthPar read fPar1 write SetPar1;
     property Par2 : PSynthPar read fPar2 write SetPar2;
@@ -207,6 +210,11 @@ begin
   WaveTableLfo.Bpm := Value;
   RandomLFO.Bpm    := Value;
   SlopeGen.Bpm     := Value;
+end;
+
+procedure TLucidityLfo.SetLfoRange(const Value: TLfoRange);
+begin
+  fLfoRange := Value;
 end;
 
 procedure TLucidityLfo.SetSampleRate(const Value: single);
