@@ -9,7 +9,7 @@ uses
 
 // GENERATE_PAR_INFO should be enabled when the parameter listing has changed and
 // the automatically generated ParNames.inc file needs to be updated.
-{$define GENERATE_PAR_INFO}
+{_$define GENERATE_PAR_INFO}
 
 
 {

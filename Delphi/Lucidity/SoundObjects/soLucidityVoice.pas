@@ -636,6 +636,7 @@ var
   PitchShift : single;
   CV : TModularVoltage;
   SamplePitch : single;
+  Par1 : single;
 begin
   // update sample pan / volume offsets..
   assert(SampleRegion.GetProperties^.SamplePan >= -100);
@@ -676,7 +677,11 @@ begin
 
 
   //==========
-  //ParValueData^[TModParIndex.FilterOutputBlend]
+  Par1 := ParValueData^[TModParIndex.FilterOutputBlend].ModulatedParValue;
+  assert(Par1 >= 0);
+  assert(Par1 <= 1);
+  FBOut1 := 1 - Par1;
+  FBOut2 := Par1;
 end;
 
 procedure TLucidityVoice.SlowControlProcess;
@@ -721,8 +726,8 @@ begin
 
     FilterTwo.AudioRateStep(MixY1, MixY2);
 
-    MixX1 := (MixX1 * 0.5) + (MixY1 * 0.5);
-    MixX2 := (MixX2 * 0.5) + (MixY2 * 0.5);
+    MixX1 := (MixX1 * FBOut1) + (MixY1 * FBOut2);
+    MixX2 := (MixX2 * FBOut1) + (MixY2 * FBOut2);
 
     OscVCA.AudioRateStep(MixX1, MixX2);
 
