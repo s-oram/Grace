@@ -121,6 +121,7 @@ type
     Filter1KeyTrackKnob: TVamCompoundNumericKnob;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     LfoFreqModeTextBox: TVamTextBox;
+    FilterRoutingButton: TVamTextBox;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -287,6 +288,7 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter1KeyFollow));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter2KeyFollow));
 
+  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);
@@ -567,27 +569,25 @@ begin
 
   LfoShapeTextBox1.Layout.AdjustBounds(0,0,-4,0);
   LfoFreqModeTextBox.Layout.AdjustBounds(-4,0,0,0);
-
-
-
-
   //==================================================
 
 
 
-  //==== LFO 2 =======================================
+  //=== Filter Blend ====
   LfoSpeedKnob2.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
   Lfo2RateLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight);
   Lfo2RateLabel.Layout.Anchor(LfoSpeedKnob2).SnapToEdge(TControlFeature.BottomEdge);
+  FilterRoutingButton.Layout.SetSize(FilterKnobWidth, TGuiConst.SelectorButtonHeight).Anchor(Lfo2RateLabel).SnapToEdge(TControlFeature.BottomEdge);
+  //==================================================
 
 
 
-  //===================================================
 
 
   //=== colors ===
   AmpVelocityButton.Font.Color    := GetRedFoxColor(kColor_LcdDark5);
   FilterVelocityButton.Font.Color := GetRedFoxColor(kColor_LcdDark5);
+  FilterRoutingButton.Font.Color  := GetRedFoxColor(kColor_LcdDark5);
   Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   LfoShapeTextBox1.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
@@ -620,6 +620,7 @@ begin
 
   AmpVelocityButton.Color    := kColor_LcdDark1;
   FilterVelocityButton.Color := kColor_LcdDark1;
+  FilterRoutingButton.Color  := kColor_LcdDark1;
   Filter1TypeTextBox.Color   := kColor_LcdDark1;
   Filter2TypeTextBox.Color   := kColor_LcdDark1;
   LfoShapeTextBox1.Color     := kColor_LcdDark1;
@@ -633,6 +634,7 @@ begin
 
   AmpVelocityButton.ColorMouseOver    := kColor_ButtonMouseOver;
   FilterVelocityButton.ColorMouseOver := kColor_ButtonMouseOver;
+  FilterRoutingButton.ColorMouseOver  := kColor_ButtonMouseOver;
   Filter1TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   LfoShapeTextBox1.ColorMouseOver     := kColor_ButtonMouseOver;
