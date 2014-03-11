@@ -3,12 +3,15 @@ unit LucidityGui.Scope;
 interface
 
 uses
+  VamLib.UniqueID,
+  VamLib.Animation,
   //=================================================
   // NOTE: Any Lucidity specific units must be
   // drawn from the Ludcidity Base Classes project.
   // I want to avoid circural type depencies where
   uLucidityEnums,
   //=================================================
+
   LucidityGui.Scope.SignalRecorder,
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
@@ -74,6 +77,9 @@ type
     fColorForeground : TRedFoxColor;
 
     ScopeRect : TRect;
+
+    SignalAniID : TUniqueID;
+    SignalOpacity : byte;
 
     procedure Draw_ADSR;
     procedure Draw_Lfo;
@@ -194,6 +200,11 @@ begin
 
   SignalDisplay := TSignalDisplay.Create;
   SignalDisplay.LineColor := fColorForeground;
+
+
+  SignalAniID.Init;
+
+  SignalOpacity := 255;
 end;
 
 destructor TLucidityScope.Destroy;
@@ -256,12 +267,41 @@ end;
 
 
 procedure TLucidityScope.SetScopeDisplayMode(const Value: TScopeDisplayMode);
+var
+  animation : TByteAnimation;
 begin
   if Value <> fScopeMode then
   begin
     fScopeMode := Value;
     Invalidate;
   end;
+
+
+  if fScopeMode = TScopeDisplayMode.DisplayOff then
+  begin
+    animation := TByteAnimation.Create;
+    Animation.RunTime := 500;
+    Animation.StartValue := SignalOpacity;
+    Animation.EndValue   := 255;
+    Animation.ApplyMethod := procedure(CurrentValue : byte)
+    begin
+      SignalOpacity := CurrentValue;
+    end;
+    GlobalAnimator.Animate(SignalAniID, Animation);
+  end else
+  begin
+    animation := TByteAnimation.Create;
+    Animation.RunTime := 150;
+    Animation.StartValue := SignalOpacity;
+    Animation.EndValue   := 100;
+    Animation.ApplyMethod := procedure(CurrentValue : byte)
+    begin
+      SignalOpacity := CurrentValue;
+    end;
+    GlobalAnimator.Animate(SignalAniID, Animation);
+  end;
+
+
 end;
 
 procedure TLucidityScope.SetText(const Value: string);
@@ -305,6 +345,12 @@ begin
   begin
     SignalDisplay.ProcessSignal(BackBuffer, ScopeRect, SignalRecorder);
     SignalDisplay.DrawTo(BackBuffer, ScopeRect);
+
+    BackBuffer.BufferInterface.FillColor := fColorBackground.WithAlpha(255-SignalOpacity);
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.Rectangle(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom);
+
+
   end;
 
   case ScopeMode of
