@@ -105,13 +105,8 @@ type
       CleanUp : TProc;
     end;
   private
-    GuiMessageQueue : TOmniQueue;
-    GuiMessageTimer : TTimer;
     Objects          : TObjectList;
     function GetZeroObjectCount: integer;
-
-    procedure Handle_GuiMessageTimer(Sender : TObject);
-
     property ZeroObjectCount : integer read GetZeroObjectCount;
   public
     constructor Create;
@@ -134,6 +129,7 @@ type
 implementation
 
 uses
+  OtlParallel,
   VamLib.WinUtils;
 
 {$I InterlockedAPIs.inc}
@@ -231,12 +227,6 @@ end;
 
 constructor TMotherShip.Create;
 begin
-  GuiMessageQueue := TOmniQueue.Create;
-  GuiMessageTimer := TTimer.Create(nil);
-  GuiMessageTimer.Interval := 1;
-  GuiMessageTimer.Enabled := false;
-  GuiMessagetimer.OnTimer := Handle_GuiMessageTimer;
-
   Objects := TObjectList.Create;
   Objects.OwnsObjects := false;
 end;
@@ -247,9 +237,6 @@ var
   Text : string;
   zo : IZeroObject;
 begin
-  GuiMessageTimer.Free;
-  GuiMessageQueue.Free;
-
   if Objects.Count > 0 then
   begin
     for c1 := Objects.Count-1 downto 0 do
@@ -325,46 +312,21 @@ end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
 var
-  GuiMessage : TGuiMessage;
-  OmniValue : TOmniValue;
+  DoIt, DoNothing : TProc;
 begin
-  GuiMessage.MsgID   := MsgID;
-  GuiMessage.Data    := Data;
-  GuiMessage.CleanUp := CleanUp;
-
-  OmniValue := TOmniValue.FromRecord<TGuiMessage>(GuiMessage);
-  GuiMessageQueue.Enqueue(OmniValue);
-
-  GuiMessageTimer.Enabled := true;
-end;
-
-procedure TMotherShip.Handle_GuiMessageTimer(Sender: TObject);
-var
-  GuiMessage : TGuiMessage;
-  OmniValue : TOmniValue;
-  c1: Integer;
-  zo : IZeroObject;
-begin
-  GuiMessageTimer.Enabled := false;
-
-  while GuiMessageQueue.TryDequeue(OmniValue) do
+  DoNothing := procedure
   begin
-    GuiMessage := OmniValue.ToRecord<TGuiMessage>;
-
-    for c1 := 0 to Objects.Count - 1 do
-    begin
-      if Supports(Objects[c1], IZeroObject, zo) then
-      begin
-        zo.ProcessZeroObjectMessage(GuiMessage.MsgID, GuiMessage.Data);
-      end;
-    end;
-
-    if assigned(GuiMessage.CleanUp)
-      then GuiMessage.CleanUp();
   end;
+
+  DoIt := procedure
+  begin
+    SendMessage(MsgID, Data);
+    if assigned(CleanUp)
+      then CleanUp;
+  end;
+
+  Async(DoNothing).Await(DoIt);
 end;
-
-
 
 
 { TRefCountedZeroObject }
