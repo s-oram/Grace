@@ -4,14 +4,15 @@ interface
 
 uses
   SysUtils,
+  OtlParallel,
   OtlTaskControl;
 
+
+// I wrote the RunTask() procedures before finding the OTL Async() procedure which
+// does the same thing (but probably better). I've rewritten the RunTask() methods
+// as wrappers around the Async() procedure.
 procedure RunTask(aTask : TProc); overload;
-
-//FinishedCallBack will always be executed in the same thread as the calling code. This makes
-// it useful for updating GUI components as it will be thread safe.
 procedure RunTask(aTask, FinishedCallback : TProc); overload;
-
 procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
 
 procedure DelayedGuiAction(const Delay : integer; Action : TProc);
@@ -23,92 +24,49 @@ uses
   OtlTask;
 
 procedure RunTask(aTask : TProc);
-var
-  Delgate : TOmniTaskDelegate;
 begin
-  Delgate := procedure(const task: IOmniTask)
-  begin
-    aTask;
-  end;
-  TOmniTaskControl.Create(Delgate, '').Unobserved.Run;
+  Async(aTask);
 end;
 
 procedure RunTask(aTask, FinishedCallback : TProc);
-var
-  TaskControl : TOmniTaskControl;
-  Delgate : TOmniTaskDelegate;
-  OnFinishCB : TOmniOnTerminatedFunctionSimple;
 begin
-  Delgate := procedure(const task: IOmniTask)
-  begin
-    aTask;
-  end;
+  // NOTE: FinishedCallBack will always be executed in the same thread as the calling code. This makes
+  // it useful for updating GUI components as it will be thread safe.
 
-  TaskControl := TOmniTaskControl.Create(Delgate, '');
-
-  if assigned(FinishedCallback) then
-  begin
-    OnFinishCB := procedure
-    begin
-      FinishedCallback;
-    end;
-
-    TaskControl.OnTerminated(OnFinishCB);
-  end;
-
-  TaskControl.Unobserved.Run;
+  Async(aTask).Await(FinishedCallback);
 end;
-
 
 procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
 var
-  TaskControl : TOmniTaskControl;
-  Delgate : TOmniTaskDelegate;
-  OnFinishCB : TOmniOnTerminatedFunctionSimple;
+  Delegate : TProc;
 begin
-  Delgate := procedure(const task: IOmniTask)
+  // NOTE: FinishedCallBack will always be executed in the same thread as the calling code. This makes
+  // it useful for updating GUI components as it will be thread safe.
+
+  Delegate := procedure
   begin
     if aTaskStartDelay > 0
       then Sleep(aTaskStartDelay);
     aTask;
   end;
 
-  TaskControl := TOmniTaskControl.Create(Delgate, '');
-
-  if assigned(FinishedCallback) then
-  begin
-    OnFinishCB := procedure
-    begin
-      FinishedCallback;
-    end;
-
-    TaskControl.OnTerminated(OnFinishCB);
-  end;
-
-  TaskControl.Unobserved.Run;
+  if assigned(FinishedCallback)
+    then Async(Delegate).Await(FinishedCallback)
+    else Async(Delegate);
 end;
 
 
 
 procedure DelayedGuiAction(const Delay : integer; Action : TProc);
 var
-  TaskControl : TOmniTaskControl;
-  Delgate     : TOmniTaskDelegate;
-  OnFinishCB  : TOmniOnTerminatedFunctionSimple;
+  Delegate : TProc;
 begin
-  Delgate := procedure(const task: IOmniTask)
+  Delegate := procedure
   begin
     Sleep(Delay);
   end;
 
-  OnFinishCB := procedure
-  begin
-    Action;
-  end;
-
-  TaskControl := TOmniTaskControl.Create(Delgate, '');
-  TaskControl.OnTerminated(OnFinishCB);
-  TaskControl.Unobserved.Run;
+  Async(Delegate).Await(Action);
 end;
 
 end.
