@@ -79,11 +79,13 @@ type
     fOscModule: TOscModule;
     fLucidityLfoA: TLucidityLfo;
     fLucidityLfoB: TLucidityLfo;
+    fFilterRouting: TFilterRouting;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
     procedure SetVoiceGlide(const Value: single);
     procedure SetPitchTracking(const Value: TPitchTracking);
+    procedure SetFilterRouting(const Value: TFilterRouting);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
@@ -171,6 +173,8 @@ type
     property VoiceMode          : TVoiceMode          read fVoiceMode          write fVoiceMode;
     property VoiceGlide         : single              read fVoiceGlide         write SetVoiceGlide; //range 0..1.
     property SampleReset        : TClockSource        read fSampleReset        write SetSampleReset;
+
+    property FilterRouting      : TFilterRouting      read fFilterRouting      write SetFilterRouting;
 
     property LinkedSampleRegion : IRegion read fSampleRegion;
 
@@ -352,6 +356,11 @@ begin
 
   LfoA.Bpm := Globals.Tempo;
   LfoB.Bpm := Globals.Tempo;
+end;
+
+procedure TLucidityVoice.SetFilterRouting(const Value: TFilterRouting);
+begin
+  fFilterRouting := Value;
 end;
 
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);

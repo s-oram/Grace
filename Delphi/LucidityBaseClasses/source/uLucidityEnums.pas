@@ -19,8 +19,15 @@ type
 //==== Lfo Shape Types ====
 {$SCOPEDENUMS ON}
 
-
 type
+  TFilterRouting = (Serial, Parallel, FiftyFifty);
+  TFilterRoutingHelper = class(TEnumHelper<TFilterRouting>)
+  public
+    class function ToFullGuiString(aEnum : TFilterRouting):string; override;
+    class function ToShortGuiString(aEnum : TFilterRouting):string; override;
+  end;
+
+
   TStepSequencerLength = (Two, Three, Four, Five, Six, Seven, Eight, Twelve, Sixteen);
   TStepSequencerLengthHelper = class(TEnumHelper<TStepSequencerLength>);
 
@@ -730,6 +737,30 @@ begin
     TLfoFreqMode.Sync32:  result := '1/32';
     TLfoFreqMode.Sync64:  result := '1/64';
     TLfoFreqMode.Sync128: result := '1/128';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+{ TFilterRoutingHelper }
+
+class function TFilterRoutingHelper.ToFullGuiString(aEnum: TFilterRouting): string;
+begin
+  case aEnum of
+    TFilterRouting.Serial:     result := 'Serial';
+    TFilterRouting.Parallel:   result := 'Parallel';
+    TFilterRouting.FiftyFifty: result := 'FiftyFifty';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+class function TFilterRoutingHelper.ToShortGuiString(aEnum: TFilterRouting): string;
+begin
+  case aEnum of
+    TFilterRouting.Serial:     result := 'Serial';
+    TFilterRouting.Parallel:   result := 'Parallel';
+    TFilterRouting.FiftyFifty: result := '50/50';
   else
     raise Exception.Create('Type not handled.');
   end;

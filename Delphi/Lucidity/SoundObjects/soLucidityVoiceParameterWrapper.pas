@@ -91,6 +91,7 @@ type
     fFilter1KeyFollow: single;
     fLfoFreqMode2: TLfoFreqMode;
     fLfoFreqMode1: TLfoFreqMode;
+    fFilterRouting: TFilterRouting;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -145,6 +146,7 @@ type
     procedure SetFilter2KeyFollow(const Value: single);
     procedure SetLfoFreqMode1(const Value: TLfoFreqMode);
     procedure SetLfoFreqMode2(const Value: TLfoFreqMode);
+    procedure SetFilterRouting(const Value: TFilterRouting);
   protected
     OwningSampleGroup : IKeyGroup;
     Voices : PArrayOfLucidityVoice;
@@ -191,6 +193,7 @@ type
 
     property OscShape                 : single                             read fOscShape                write SetOscShape;
     property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
+    property FilterRouting            : TFilterRouting                     read fFilterRouting           write SetFilterRouting;
     property Filter1Type              : TFilterType                        read fFilter1Type             write SetFilter1Type;
     property Filter2Type              : TFilterType                        read fFilter2Type             write SetFilter2Type;
     property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write SetFilter1KeyFollow; //range 0..1
@@ -412,6 +415,18 @@ end;
 procedure TLucidityVoiceParameterWrapper.SetFilterRelease(const Value: single);
 begin
   fFilterRelease := Value;
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetFilterRouting(const Value: TFilterRouting);
+begin
+  fFilterRouting := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.FilterRouting := Value;
+    end
+  );
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterSustain(const Value: single);
@@ -831,6 +846,7 @@ begin
   Self.VoicePan                 := Source.VoicePan;
   Self.VoicePitchOne            := Source.VoicePitchOne;
   Self.VoicePitchTwo            := Source.VoicePitchTwo;
+  Self.FilterRouting            := Source.FilterRouting;
   Self.Filter1Type              := Source.Filter1Type;
   Self.Filter2Type              := Source.Filter2Type;
   Self.Filter1KeyFollow         := Source.Filter1KeyFollow;
@@ -897,6 +913,7 @@ begin
   //aVoice.SampleOsc.AmAmount := OscAm;  //!! what's going on here. duplicated parameters again?
   //aVoice.StepSeq1Clock := ClockDivisionA; //I don't think this is needed.
   //aVoice.StepSeq2Clock := ClockDivisionB; //I don't think this is needed.
+  aVoice.FilterRouting                   := FilterRouting;
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
   aVoice.FilterOne.KeyFollow             := Filter1KeyFollow;
