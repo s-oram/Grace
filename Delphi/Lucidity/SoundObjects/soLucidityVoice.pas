@@ -113,6 +113,9 @@ type
     fIsActive, HasBeenReleased, HasBeenQuickReleased : boolean;
     AmpLevel : single;
 
+    FRInput     : single;
+    FRFilterOne : single;
+
     procedure SampleRateChanged(Sender:TObject);
     procedure TempoChanged(Sender:TObject);
 
@@ -361,6 +364,29 @@ end;
 procedure TLucidityVoice.SetFilterRouting(const Value: TFilterRouting);
 begin
   fFilterRouting := Value;
+
+  case Value of
+    TFilterRouting.Serial:
+    begin
+      FRInput     := 0;
+      FRFilterOne := 1;
+    end;
+
+    TFilterRouting.Parallel:
+    begin
+      FRInput     := 1;
+      FRFilterOne := 0;
+    end;
+
+
+    TFilterRouting.FiftyFifty:
+    begin
+      FRInput     := 0.5;
+      FRFilterOne := 0.5;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);
@@ -666,6 +692,7 @@ var
   c1: Integer;
   SampleOscX1, SampleOscX2 : single;
   MixX1, MixX2 : single;
+  MixY1, MixY2 : single;
   pxA, pxB : PSingle;
 begin
   assert(IsActive);
@@ -681,7 +708,15 @@ begin
     MixX2 := SampleOscX2;
 
     FilterOne.AudioRateStep(MixX1, MixX2);
-    FilterTwo.AudioRateStep(MixX1, MixX2);
+
+    MixY1 := (SampleOscX1 * FRInput) + (MixX1 * FRFilterOne);
+    MixY2 := (SampleOscX2 * FRInput) + (MixX2 * FRFilterOne);
+
+    FilterTwo.AudioRateStep(MixY1, MixY2);
+
+    MixX1 := (MixX1 * 0.5) + (MixY1 * 0.5);
+    MixX2 := (MixX2 * 0.5) + (MixY2 * 0.5);
+
     OscVCA.AudioRateStep(MixX1, MixX2);
 
     pxA^ := MixX1 * SampleLevelOffsetA;
