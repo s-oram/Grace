@@ -103,9 +103,7 @@ function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMo
     result := LfoFreq;
   end;
 var
-  InvPar : single;
   LfoFreq : single;
-  Beats : double;
 begin
   case FreqMode of
     TLfoFreqMode.Hertz:   LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
@@ -125,8 +123,33 @@ end;
 
 
 function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
+  function CalcTime(const TimePar, Bpm, SampleRate : single; const BeatDivision, Bars : integer): single; inline;
+  var
+    InvPar : single;
+    TimeInSamples : single;
+    BeatSync : double;
+  begin
+    InvPar := 1 - (TimePar * TimePar);
+    BeatSync := (round(InvPar * BeatDivision * Bars)) / BeatDivision;
+    TimeInSamples := SyncToSamples(BeatSync, Bpm, SampleRate);
+    result := SamplesToMilliSeconds(TimeInSamples, SampleRate);
+  end;
+var
+  SlopeTime : single;
 begin
-  //TODO:
+  case FreqMode of
+    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000;
+    TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   1);
+    TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   1);
+    TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  1);
+    TLfoFreqMode.Sync32:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 32,  1);
+    TLfoFreqMode.Sync64:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 64,  1);
+    TLfoFreqMode.Sync128: SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 128, 1);
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+  result := SlopeTime;
 end;
 
 
@@ -286,8 +309,8 @@ begin
     begin
       //TODO: Slope gen needs to have it's attack and decay times quantised as well.
       SlopeGen.Curve      := Par1^;
-      SlopeGen.AttackTime := (Par2^ * Par2^) * 2000;
-      SlopeGen.DecayTime  := (Par3^ * Par3^) * 2000;
+      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, Bpm, SampleRate);
+      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, Bpm, SampleRate);
     end;
   else
     raise Exception.Create('Type not handled.');
