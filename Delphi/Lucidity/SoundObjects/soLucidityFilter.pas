@@ -13,6 +13,7 @@ uses
   eeVirtualCV, eeFunctions,
   FilterCore.SimperSVF,
   soFilter.Test,
+  soFilter.MoogLadder,
   soFilter.LofiA,
   soFilter.RingModA,
   soFilter.DistortionA,
@@ -41,6 +42,7 @@ type
     BandPassA   : TBandPassA;
     HighPassA   : THighPassA;
     LowPassB    : TLowPassB;
+    MoogLadder  : TMoogLadder;
 
     TestFilter : TTestFilter;
 
@@ -96,6 +98,7 @@ begin
   BandPassA  := TBandPassA.Create;
   HighPassA  := THighPassA.Create;
   LowPassB    := TLowPassB.Create;
+  MoogLadder := TMoogLadder.Create;
 end;
 
 destructor TLucidityFilter.Destroy;
@@ -109,6 +112,7 @@ begin
   RingModA.Free;
   DistortionA.Free;
   LowPassB.Free;
+  MoogLadder.Free;
   inherited;
 end;
 
@@ -120,6 +124,7 @@ begin
   LowPassB.Reset;
   BandPassA.Reset;
   HighPassA.Reset;
+  MoogLadder.Reset;
 end;
 
 function TLucidityFilter.GetModPointer(const Name: string): PSingle;
@@ -150,6 +155,7 @@ begin
   HighPassA.Reset;
   RingModA.Reset;
   DistortionA.Reset;
+  MoogLadder.Reset;
 end;
 
 procedure TLucidityFilter.SetKeyFollow(const Value: single);

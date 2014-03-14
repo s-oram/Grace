@@ -149,7 +149,8 @@ uses
   soLfo.RandomLfo in 'SoundObjects\soLfo.RandomLfo.pas',
   soLfo.SlopeGen in 'SoundObjects\soLfo.SlopeGen.pas',
   GuiMeta.ActiveModDisplay in 'GuiMeta.ActiveModDisplay.pas',
-  Menu.ModSelectorContextMenu in 'frames\Menu.ModSelectorContextMenu.pas';
+  Menu.ModSelectorContextMenu in 'frames\Menu.ModSelectorContextMenu.pas',
+  soFilter.MoogLadder in 'SoundObjects\soFilter.MoogLadder.pas';
 
 {$R *.res}
 
