@@ -1002,6 +1002,7 @@ begin
   GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob2);
   GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob3);
 
+
   if Plugin.Globals.SelectedLfo = 0 then
   begin
     RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo2);
@@ -1022,6 +1023,7 @@ begin
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeButton, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Range), TLfoRangeHelper);
 
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
@@ -1047,6 +1049,7 @@ begin
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeButton, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Range), TLfoRangeHelper);
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
   end;

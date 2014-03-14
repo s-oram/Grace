@@ -50,6 +50,7 @@ type
     WaveTableLfo  : TWaveTableLfo;
     RandomLFO     : TRandomLfo;
     SlopeGen      : TSlopeGen;
+    RangeMult     : integer;
 
     procedure UpdateLfoParameters;
   public
@@ -109,13 +110,13 @@ var
   LfoFreq : single;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well.
-    TLfoFreqMode.Sync4:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 4,   1);
-    TLfoFreqMode.Sync8:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 8,   1);
-    TLfoFreqMode.Sync16:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 16,  1);
-    TLfoFreqMode.Sync32:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 32,  1);
-    TLfoFreqMode.Sync64:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 64,  1);
-    TLfoFreqMode.Sync128: LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 128, 1);
+    TLfoFreqMode.Hertz:   LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well. //TODO: incorporate range mult.
+    TLfoFreqMode.Sync4:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 4,   RangeMult);
+    TLfoFreqMode.Sync8:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 8,   RangeMult);
+    TLfoFreqMode.Sync16:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 16,  RangeMult);
+    TLfoFreqMode.Sync32:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 32,  RangeMult);
+    TLfoFreqMode.Sync64:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 64,  RangeMult);
+    TLfoFreqMode.Sync128: LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 128, RangeMult);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -141,13 +142,13 @@ var
   SlopeTime : single;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000;
-    TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   1);
-    TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   1);
-    TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  1);
-    TLfoFreqMode.Sync32:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 32,  1);
-    TLfoFreqMode.Sync64:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 64,  1);
-    TLfoFreqMode.Sync128: SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 128, 1);
+    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000 * RangeMult;
+    TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   RangeMult);
+    TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   RangeMult);
+    TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  RangeMult);
+    TLfoFreqMode.Sync32:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 32,  RangeMult);
+    TLfoFreqMode.Sync64:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 64,  RangeMult);
+    TLfoFreqMode.Sync128: SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 128, RangeMult);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -165,7 +166,10 @@ begin
   RandomLFO    := TRandomLfo.Create;
   SlopeGen     := TSlopeGen.Create;
   fModuleIndex := aModuleIndex;
+
+  RangeMult := 1;
 end;
+
 
 destructor TLucidityLfo.Destroy;
 begin
@@ -215,6 +219,15 @@ end;
 procedure TLucidityLfo.SetLfoRange(const Value: TLfoRange);
 begin
   fLfoRange := Value;
+
+  case Value of
+    TLfoRange.x1: RangeMult := 1;
+    TLfoRange.x2: RangeMult := 2;
+    TLfoRange.x4: RangeMult := 4;
+    TLfoRange.x8: RangeMult := 8;
+  else
+    raise Exception.Create('type not handled.');
+  end;
 end;
 
 procedure TLucidityLfo.SetSampleRate(const Value: single);
