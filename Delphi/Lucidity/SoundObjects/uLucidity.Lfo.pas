@@ -93,8 +93,8 @@ uses
   SysUtils;
 
 
-function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
-  function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision, Bars : integer): single; inline;
+function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
+  function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
   var
     InvPar : single;
     LfoFreq : single;
@@ -126,8 +126,8 @@ end;
 
 
 
-function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const Bpm, SampleRate : single):single;
-  function CalcTime(const TimePar, Bpm, SampleRate : single; const BeatDivision, Bars : integer): single; inline;
+function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
+  function CalcTime(const TimePar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
   var
     InvPar : single;
     TimeInSamples : single;
@@ -142,7 +142,7 @@ var
   SlopeTime : single;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000 * RangeMult;
+    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000;
     TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   RangeMult);
     TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   RangeMult);
     TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  RangeMult);
@@ -312,7 +312,7 @@ begin
   case ActiveLFO of
     TActiveLFO.WaveTable:
     begin
-      WaveTableLFO.Freq          := ComputeLfoFrequency(Par1^, FreqMode, Bpm, SampleRate);
+      WaveTableLFO.Freq          := ComputeLfoFrequency(Par1^, FreqMode, RangeMult, Bpm, SampleRate);
       WaveTableLFO.PhaseOffset   := Par2^;
       WaveTableLFO.Symmetry      := Par3^;
       WaveTableLFO.UpdateStepSize;
@@ -320,7 +320,7 @@ begin
 
     TActiveLFO.Random:
     begin
-      RandomLFO.Freq     := ComputeLfoFrequency(Par1^, FreqMode, Bpm, SampleRate);
+      RandomLFO.Freq     := ComputeLfoFrequency(Par1^, FreqMode, RangeMult, Bpm, SampleRate);
       RandomLFO.Density  := Par2^;
       RandomLFO.Flux     := Par3^;
       RandomLfo.UpdateStepSize;
@@ -330,8 +330,8 @@ begin
     begin
       //TODO: Slope gen needs to have it's attack and decay times quantised as well.
       SlopeGen.Curve      := Par1^;
-      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, Bpm, SampleRate);
-      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, Bpm, SampleRate);
+      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, RangeMult, Bpm, SampleRate);
+      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, RangeMult, Bpm, SampleRate);
     end;
   else
     raise Exception.Create('Type not handled.');
