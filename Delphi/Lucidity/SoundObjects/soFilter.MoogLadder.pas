@@ -15,6 +15,7 @@ type
     fQ: single;
 
     CoreA, CoreB : TMoogLadderFilterCore;
+    fInputGain: single;
     procedure SetFreq(const Value: single);
     procedure SetQ(const Value: single);
   public
@@ -27,8 +28,9 @@ type
 
     property SampleRate : single read fSampleRate write fSampleRate;
 
-    property Freq : single read fFreq write SetFreq; // range 10?..1/4 Nyquist?
-    property Q    : single read fQ    write SetQ;    // range 0..1
+    property Freq      : single read fFreq      write SetFreq; // range 10?..1/4 Nyquist?
+    property Q         : single read fQ         write SetQ;    // range 0..1
+    property InputGain : single read fInputGain write fInputGain; //Linear value.
   end;
 
 implementation
@@ -61,7 +63,6 @@ var
 begin
   fFreq := Value;
 
-
   wc := 2 * pi * Value / SampleRate;
   g := (0.9892 * wc) - (0.4342 * wc * wc) + (0.1381 * wc * wc * wc) - (0.0202 * wc * wc * wc * wc);
 
@@ -79,8 +80,8 @@ end;
 
 procedure TMoogLadder.Step(var x1, x2: single);
 begin
-  x1 := CoreA.Step(x1);
-  x2 := CoreB.Step(x2);
+  x1 := CoreA.Step(x1 * InputGain);
+  x2 := CoreB.Step(x2 * InputGain);
 end;
 
 end.

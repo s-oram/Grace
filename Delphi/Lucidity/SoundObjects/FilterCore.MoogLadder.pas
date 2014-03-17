@@ -38,6 +38,8 @@ type
     function Step(Input:double):double;
 
 
+
+
     // G is cutoff frequency where
     // G = 2 * pi * Cutoff / SampleRate
     // G is only approximate and will need to be

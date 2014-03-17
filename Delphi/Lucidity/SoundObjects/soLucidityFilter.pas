@@ -5,12 +5,13 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Utils,
   VamLib.MoreTypes,
   uConstants,
   uLucidityEnums,
   Math,
   Lucidity.Types,
-  eeVirtualCV, eeFunctions,
+  eeVirtualCV,
   FilterCore.SimperSVF,
   soFilter.Test,
   soFilter.MoogLadder,
@@ -193,7 +194,7 @@ var
   cQ    : single;
   CV    : single;
 
-
+  //TODO: Delete these old Par1 and Par1Mod parameters.
   Par1 : single;
   Par2 : single;
   Par3 : single;
@@ -203,6 +204,12 @@ var
   Par2Mod: single;
   Par3Mod: single;
   Par4Mod: single;
+
+  //TODO: The above parameters will be replaced with these 4.
+  mPar1 : single;
+  mPar2 : single;
+  mPar3 : single;
+  mPar4 : single;
 
   px1 : single;
   px2 : single;
@@ -221,6 +228,11 @@ begin
     Par2Mod := ParModData^[TModParIndex.Filter1Par2];
     Par3Mod := ParModData^[TModParIndex.Filter1Par3];
     Par4Mod := ParModData^[TModParIndex.Filter1Par4];
+
+    mPar1 := ParValueData^[TModParIndex.Filter1Par1].ModulatedParValue;
+    mPar2 := ParValueData^[TModParIndex.Filter1Par2].ModulatedParValue;
+    mPar3 := ParValueData^[TModParIndex.Filter1Par3].ModulatedParValue;
+    mPar4 := ParValueData^[TModParIndex.Filter1Par4].ModulatedParValue;
   end else
   begin
     Par1 := ParValueData^[TModParIndex.Filter2Par1].ParValue;
@@ -232,6 +244,11 @@ begin
     Par2Mod := ParModData^[TModParIndex.Filter2Par2];
     Par3Mod := ParModData^[TModParIndex.Filter2Par3];
     Par4Mod := ParModData^[TModParIndex.Filter2Par4];
+
+    mPar1 := ParValueData^[TModParIndex.Filter2Par1].ModulatedParValue;
+    mPar2 := ParValueData^[TModParIndex.Filter2Par2].ModulatedParValue;
+    mPar3 := ParValueData^[TModParIndex.Filter2Par3].ModulatedParValue;
+    mPar4 := ParValueData^[TModParIndex.Filter2Par4].ModulatedParValue;
   end;
 
   FreqMultFactor := LinearInterpolation(1, VoiceModPoints^.KeyFollowFreqMultiplier, fKeyFollow);
@@ -245,10 +262,10 @@ begin
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      Clamp(cFreq, kMinFreq, kMaxFreq);
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
-      Clamp(cQ, kMinQ, kMaxQ);
+      cQ := Clamp(cQ, kMinQ, kMaxQ);
 
       LowPassA.Freq := cFreq;
       LowPassA.Q    := cQ;
@@ -258,10 +275,10 @@ begin
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      Clamp(cFreq, kMinFreq, kMaxFreq);
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
-      Clamp(cQ, kMinQ, kMaxQ);
+      cQ := Clamp(cQ, kMinQ, kMaxQ);
 
       BandPassA.Freq := cFreq;
       BandPassA.Q    := cQ;
@@ -271,10 +288,10 @@ begin
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      Clamp(cFreq, kMinFreq, kMaxFreq);
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod) * 0.98;
-      Clamp(cQ, kMinQ, kMaxQ);
+      cQ := Clamp(cQ, kMinQ, kMaxQ);
 
       HighPassA.Freq := cFreq;
       HighPassA.Q    := cQ;
@@ -284,15 +301,15 @@ begin
     begin
       //==== Lofi A ====
       px1 := (Par1 + Par1Mod);
-      Clamp(px1, 0, 1);
+      px1 := Clamp(px1, 0, 1);
       LofiA.RateReduction := px1;
 
       px2 := Par2 + Par2Mod;
-      clamp(px2, 0, 1);
+      px2 := clamp(px2, 0, 1);
       LofiA.BitReduction := px2;
 
       px3 := Par3 + Par3Mod;
-      clamp(px3, 0, 1);
+      px3 := clamp(px3, 0, 1);
       LofiA.BitEmphasis := px3;
     end;
 
@@ -301,11 +318,11 @@ begin
       //==== Ring Mod A ====
       CV := (Par1 * 12) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(15, CV)  * FreqMultFactor;
-      Clamp(cFreq, 15, 18000);
+      cFreq := Clamp(cFreq, 15, 18000);
       RingModA.OscFreq := cFreq;
 
       px2 := Par2 + Par2Mod;
-      clamp(px2, 0, 1);
+      px2 := clamp(px2, 0, 1);
       RingModA.Depth := px2;
     end;
 
@@ -332,15 +349,15 @@ begin
     begin
       //==== Comb A ====
       px1 := (Par1 + Par1Mod);
-      Clamp(px1, 0, 1);
+      px1 := Clamp(px1, 0, 1);
       CombA.Par1 := px1;
 
       px2 := Par2 + Par2Mod;
-      clamp(px2, 0, 1);
+      px2 := clamp(px2, 0, 1);
       CombA.Par2 := px2;
 
       px3 := Par3 + Par3Mod;
-      clamp(px3, 0, 1);
+      px3 := clamp(px3, 0, 1);
       CombA.Par3 := px3;
     end;
 
@@ -348,13 +365,14 @@ begin
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      Clamp(cFreq, kMinFreq, kMaxFreq);
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
       cQ := (Par2 + Par2Mod);
-      Clamp(cQ, kMinQ, kMaxQ);
+      cQ := Clamp(cQ, kMinQ, kMaxQ);
 
       MoogLadder.Freq := cFreq;
       MoogLadder.Q    := cQ;
+      MoogLadder.InputGain := DecibelsToLinear(mPar3 * 72 - 36);
     end;
 
   end;
