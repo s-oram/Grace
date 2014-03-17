@@ -65,8 +65,8 @@ begin
   wc := 2 * pi * Value / SampleRate;
   g := (0.9892 * wc) - (0.4342 * wc * wc) + (0.1381 * wc * wc * wc) - (0.0202 * wc * wc * wc * wc);
 
-  CoreA.G := G;
-  CoreB.G := G;
+  CoreA.CutoffGain := G;
+  CoreB.CutoffGain := G;
 end;
 
 procedure TMoogLadder.SetQ(const Value: single);
