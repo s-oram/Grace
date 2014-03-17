@@ -9,7 +9,12 @@ uses
 //==== Filter Types ====
 {$SCOPEDENUMS OFF}
 type
-  TFilterType = (ftNone, ftLowPassA, ftBandPassA, ftHighPassA, ftLofiA, ftRingModA, ftCombA{, ftDistA});
+  TFilterType = (
+    ftNone,
+    ftLowPassA, ftBandPassA, ftHighPassA, ftLofiA, ftRingModA, ftCombA,
+    ftMoogLadderLP2
+  );
+
   TFilterTypeHelper = class(TEnumHelper<TFilterType>)
   public
     class function ToFullGuiString(aEnum : TFilterType):string; override;
@@ -508,14 +513,15 @@ end;
 class function TFilterTypeHelper.ToFullGuiString(aEnum: TFilterType): string;
 begin
   case aEnum of
-    ftNone:      result := 'None';
-    ftLowPassA:  result := 'Lowpass';
-    ftBandPassA: result := 'Bandpass';
-    ftHighPassA: result := 'Highpass';
-    ftLofiA:     result := 'LoFi';
-    ftRingModA:  result := 'Ring Mod';
-    //ftDistA:     result := 'Distortion';
-    ftCombA:     result := 'Comb';
+    ftNone:          result := 'None';
+    ftLowPassA:      result := 'Lowpass';
+    ftBandPassA:     result := 'Bandpass';
+    ftHighPassA:     result := 'Highpass';
+    ftLofiA:         result := 'LoFi';
+    ftRingModA:      result := 'Ring Mod';
+    //ftDistA:         result := 'Distortion';
+    ftCombA:         result := 'Comb';
+    ftMoogLadderLP2: result := 'LP Ladder';
   else
     raise Exception.Create('type not handled.');
   end;
@@ -524,14 +530,15 @@ end;
 class function TFilterTypeHelper.ToShortGuiString(aEnum: TFilterType): string;
 begin
   case aEnum of
-    ftNone:      result := '-';
-    ftLowPassA:  result := 'Lowpass';
-    ftBandPassA: result := 'Bandpass';
-    ftHighPassA: result := 'Highpass';
-    ftLofiA:     result := 'LoFi';
-    ftRingModA:  result := 'Ring Mod';
-    //ftDistA:     result := 'Distortion';
-    ftCombA:     result := 'Comb';
+    ftNone:          result := '-';
+    ftLowPassA:      result := 'Lowpass';
+    ftBandPassA:     result := 'Bandpass';
+    ftHighPassA:     result := 'Highpass';
+    ftLofiA:         result := 'LoFi';
+    ftRingModA:      result := 'Ring Mod';
+    //ftDistA:         result := 'Distortion';
+    ftCombA:         result := 'Comb';
+    ftMoogLadderLP2: result := 'LP Ladder';
   else
     raise Exception.Create('type not handled.');
   end;

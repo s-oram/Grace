@@ -611,6 +611,11 @@ begin
     begin
 
     end;
+
+    ftMoogLadderLP2:
+    begin
+
+    end;
   end;
 end;
 

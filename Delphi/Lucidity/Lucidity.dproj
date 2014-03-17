@@ -592,6 +592,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="GuiMeta.ActiveModDisplay.pas"/>
 			<DCCReference Include="frames\Menu.ModSelectorContextMenu.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.MoogLadder.pas"/>
+			<DCCReference Include="SoundObjects\FilterCore.MoogLadder.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

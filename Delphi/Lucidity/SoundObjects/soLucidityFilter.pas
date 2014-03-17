@@ -177,6 +177,7 @@ begin
   CombA.SampleRate := Value;
   RingModA.SampleRate := Value;
   DistortionA.SampleRate := Value;
+  MoogLadder.SampleRate := value;
 end;
 
 
@@ -343,6 +344,19 @@ begin
       CombA.Par3 := px3;
     end;
 
+    ftMoogLadderLP2:
+    begin
+      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
+      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
+      Clamp(cFreq, kMinFreq, kMaxFreq);
+
+      cQ := (Par2 + Par2Mod);
+      Clamp(cQ, kMinQ, kMaxQ);
+
+      MoogLadder.Freq := cFreq;
+      MoogLadder.Q    := cQ;
+    end;
+
   end;
 
 end;
@@ -363,6 +377,7 @@ begin
     ftRingModA:  RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
     ftCombA:     CombA.AudioRateStep(x1, x2);
+    ftMoogLadderLP2: MoogLadder.Step(x1, x2);
   else
     raise Exception.Create('Unexpected filter type.');
   end;
