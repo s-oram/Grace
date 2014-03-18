@@ -24,7 +24,13 @@ type
 
     procedure Reset;
 
-    procedure Step(var x1, x2 : single); inline;
+    procedure StepAs2PoleLP(var x1, x2 : single); inline;
+    procedure StepAs2PoleBP(var x1, x2 : single); inline;
+    procedure StepAs2PoleHP(var x1, x2 : single); inline;
+
+    procedure StepAs4PoleLP(var x1, x2 : single); inline;
+    procedure StepAs4PoleBP(var x1, x2 : single); inline;
+    procedure StepAs4PoleHP(var x1, x2 : single); inline;
 
     property SampleRate : single read fSampleRate write fSampleRate;
 
@@ -78,10 +84,43 @@ begin
   CoreB.FeedbackGain := Value;
 end;
 
-procedure TMoogLadder.Step(var x1, x2: single);
+procedure TMoogLadder.StepAs2PoleLP(var x1, x2: single);
 begin
-  x1 := CoreA.Step(x1 * InputGain);
-  x2 := CoreB.Step(x2 * InputGain);
+  x1 := CoreA.StepAs2PoleLP(x1 * InputGain);
+  x2 := CoreB.StepAs2PoleLP(x2 * InputGain);
 end;
+
+procedure TMoogLadder.StepAs2PoleBP(var x1, x2: single);
+begin
+  x1 := CoreA.StepAs2PoleBP(x1 * InputGain);
+  x2 := CoreB.StepAs2PoleBP(x2 * InputGain);
+end;
+
+procedure TMoogLadder.StepAs2PoleHP(var x1, x2: single);
+begin
+  x1 := CoreA.StepAs2PoleHP(x1 * InputGain);
+  x2 := CoreB.StepAs2PoleHP(x2 * InputGain);
+end;
+
+
+procedure TMoogLadder.StepAs4PoleLP(var x1, x2: single);
+begin
+  x1 := CoreA.StepAs4PoleLP(x1 * InputGain);
+  x2 := CoreB.StepAs4PoleLP(x2 * InputGain);
+end;
+
+procedure TMoogLadder.StepAs4PoleBP(var x1, x2: single);
+begin
+  x1 := CoreA.StepAs4PoleBP(x1 * InputGain);
+  x2 := CoreB.StepAs4PoleBP(x2 * InputGain);
+end;
+
+procedure TMoogLadder.StepAs4PoleHP(var x1, x2: single);
+begin
+  x1 := CoreA.StepAs4PoleHP(x1 * InputGain);
+  x2 := CoreB.StepAs4PoleHP(x2 * InputGain);
+end;
+
+
 
 end.

@@ -12,7 +12,12 @@ type
   TFilterType = (
     ftNone,
     ftLowPassA, ftBandPassA, ftHighPassA, ftLofiA, ftRingModA, ftCombA,
-    ftMoogLadderLP2
+    ft2PoleLowPass,
+    ft2PoleBandPass,
+    ft2PoleHighPass,
+    ft4PoleLowPass,
+    ft4PoleBandPass,
+    ft4PoleHighPass
   );
 
   TFilterTypeHelper = class(TEnumHelper<TFilterType>)
@@ -521,7 +526,12 @@ begin
     ftRingModA:      result := 'Ring Mod';
     //ftDistA:         result := 'Distortion';
     ftCombA:         result := 'Comb';
-    ftMoogLadderLP2: result := 'LP Ladder';
+    ft2PoleLowPass:  result := '2 Pole Low Pass';
+    ft2PoleBandPass: result := '2 Pole Band Pass';
+    ft2PoleHighPass: result := '2 Pole High Pass';
+    ft4PoleLowPass:  result := '4 Pole Low Pass';
+    ft4PoleBandPass: result := '4 Pole Band Pass';
+    ft4PoleHighPass: result := '4 Pole High Pass';
   else
     raise Exception.Create('type not handled.');
   end;
@@ -538,7 +548,12 @@ begin
     ftRingModA:      result := 'Ring Mod';
     //ftDistA:         result := 'Distortion';
     ftCombA:         result := 'Comb';
-    ftMoogLadderLP2: result := 'LP Ladder';
+    ft2PoleLowPass:  result := '2xLP';
+    ft2PoleBandPass: result := '2xBP';
+    ft2PoleHighPass: result := '2xHP';
+    ft4PoleLowPass:  result := '4xLP';
+    ft4PoleBandPass: result := '4xBP';
+    ft4PoleHighPass: result := '4xHP';
   else
     raise Exception.Create('type not handled.');
   end;

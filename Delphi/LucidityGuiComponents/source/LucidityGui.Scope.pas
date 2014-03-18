@@ -612,7 +612,12 @@ begin
 
     end;
 
-    ftMoogLadderLP2:
+    ft2PoleLowPass,
+    ft2PoleBandPass,
+    ft2PoleHighPass,
+    ft4PoleLowPass,
+    ft4PoleBandPass,
+    ft4PoleHighPass:
     begin
 
     end;

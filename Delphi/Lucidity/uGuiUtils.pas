@@ -469,7 +469,12 @@ begin
       FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
-    ftMoogLadderLP2:
+    ft2PoleLowPass,
+    ft2PoleBandPass,
+    ft2PoleHighPass,
+    ft4PoleLowPass,
+    ft4PoleBandPass,
+    ft4PoleHighPass:
     begin
       FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
       FastUpdateControl(Knobs[1], Labels[1], 'RES');

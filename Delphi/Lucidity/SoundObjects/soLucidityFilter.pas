@@ -361,7 +361,12 @@ begin
       CombA.Par3 := px3;
     end;
 
-    ftMoogLadderLP2:
+    ft2PoleLowPass,
+    ft2PoleBandPass,
+    ft2PoleHighPass,
+    ft4PoleLowPass,
+    ft4PoleBandPass,
+    ft4PoleHighPass:
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
@@ -372,7 +377,7 @@ begin
 
       MoogLadder.Freq := cFreq;
       MoogLadder.Q    := cQ;
-      MoogLadder.InputGain := DecibelsToLinear(mPar3 * 72 - 36);
+      MoogLadder.InputGain := DecibelsToLinear(mPar3 * 72 - 12);
     end;
 
   end;
@@ -395,7 +400,12 @@ begin
     ftRingModA:  RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
     ftCombA:     CombA.AudioRateStep(x1, x2);
-    ftMoogLadderLP2: MoogLadder.Step(x1, x2);
+    ft2PoleLowPass:  MoogLadder.StepAs2PoleLP(x1, x2);
+    ft2PoleBandPass: MoogLadder.StepAs2PoleBP(x1, x2);
+    ft2PoleHighPass: MoogLadder.StepAs2PoleHP(x1, x2);
+    ft4PoleLowPass:  MoogLadder.StepAs4PoleLP(x1, x2);
+    ft4PoleBandPass: MoogLadder.StepAs4PoleBP(x1, x2);
+    ft4PoleHighPass: MoogLadder.StepAs4PoleHP(x1, x2);
   else
     raise Exception.Create('Unexpected filter type.');
   end;
