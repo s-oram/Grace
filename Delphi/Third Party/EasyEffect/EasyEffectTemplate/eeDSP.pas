@@ -940,23 +940,5 @@ begin
   GainCh2 := (b *    PanPos) + (c *    PanPos *    PanPos);
 end;
 
-procedure Calculate1_5dbPan(const PanPos : single; out GainCh1, GainCh2 : single); inline;
-const
-  b = 3.496740;
-  c = -4.759060;
-  d = 2.262320;
-var
-  InvPanPos : single;
-begin
-  assert(PanPos >= 0);
-  assert(PanPos <= 1);
-
-  InvPanPos := 1 - PanPos;
-
-  GainCh1 := (b * InvPanPos) + (c * InvPanPos * InvPanPos) + (d * InvPanPos * InvPanPos * InvPanPos);
-  GainCh2 := (b *    PanPos) + (c *    PanPos *    PanPos) + (d *    PanPos *    PanPos * PanPos);
-end;
-
-
 
 end.

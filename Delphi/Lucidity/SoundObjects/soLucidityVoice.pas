@@ -93,6 +93,8 @@ type
 
     SampleGainCh1 : single;
     SampleGainCh2 : single;
+    VoiceGainCh1 : single;
+    VoiceGainCh2 : single;
 
     BufferA, BufferB : array of single;
 
@@ -641,8 +643,21 @@ var
   CV : TModularVoltage;
   SamplePitch : single;
   Par1 : single;
-begin
 
+  PanX, VolX : single;
+begin
+  VolX := ParValueData^[TModParIndex.OutputGain].ModulatedParValue;
+  PanX := ParValueData^[TModParIndex.OutputPan].ModulatedParValue;
+
+  assert(InRange(VolX, 0, 1));
+  assert(InRange(PanX, 0, 1));
+
+  Calculate3dbPan(PanX, VoiceGainCh1, VoiceGainCh2);
+
+  Volx := Volx * Volx * 4 * k3dB;
+
+  VoiceGainCh1 := VoiceGainCh1 * Volx;
+  VoiceGainCh2 := VoiceGainCh2 * Volx;
 
   if VoiceMode = TVoiceMode.Poly then
   begin
@@ -745,8 +760,8 @@ begin
 
     //OscVCA.AudioRateStep(MixX1, MixX2);
 
-    pxA^ := MixX1;
-    pxB^ := MixX2;
+    pxA^ := MixX1 * VoiceGainCh1;
+    pxB^ := MixX2 * VoiceGainCh2;
 
     //pxA^ := LfoOut^;
     //pxB^ := LfoOut^;
