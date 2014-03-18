@@ -61,11 +61,6 @@ begin
   inherited;
 end;
 
-procedure TOutputMixer.FastControlProcess;
-begin
-
-end;
-
 function TOutputMixer.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'ModOutA' then Exit(@fModOutA);
@@ -77,6 +72,11 @@ end;
 procedure TOutputMixer.SetVoicePan(const Value: single);
 begin
   fVoicePan := Value;
+end;
+
+procedure TOutputMixer.FastControlProcess;
+begin
+
 end;
 
 procedure TOutputMixer.SlowControlProcess;
@@ -98,8 +98,11 @@ begin
 
   for c1 := 0 to SampleFrames-1 do
   begin
-    Outs[0]^ := Outs[0]^ + VoiceX1^ * fVoiceMixMain;
-    Outs[1]^ := Outs[1]^ + VoiceX2^ * fVoiceMixMain;
+    //Outs[0]^ := Outs[0]^ + VoiceX1^ * fVoiceMixMain;
+    //Outs[1]^ := Outs[1]^ + VoiceX2^ * fVoiceMixMain;
+
+    Outs[0]^ := Outs[0]^ + VoiceX1^;
+    Outs[1]^ := Outs[1]^ + VoiceX2^;
 
     //Outs[2]^ := Outs[2]^ + VoiceX1^ * fVoiceMixAuxA;
     //Outs[3]^ := Outs[3]^ + VoiceX2^ * fVoiceMixAuxA;

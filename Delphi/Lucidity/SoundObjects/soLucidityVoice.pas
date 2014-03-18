@@ -91,8 +91,8 @@ type
 
     LfoOut : Psingle;
 
-    SampleLevelOffsetA : single;
-    SampleLevelOffsetB : single;
+    SampleGainCh1 : single;
+    SampleGainCh2 : single;
 
     BufferA, BufferB : array of single;
 
@@ -195,12 +195,17 @@ type
 
 implementation
 
+
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeCustomGlobals,
   eeProfiler,
   SysUtils, eePitch,
   soADSR;
+
+const
+  k3dB : double = 1.4125;
+
 
 { TLucidityVoice }
 
@@ -632,19 +637,11 @@ end;
 
 procedure TLucidityVoice.FastControlProcess;
 var
-  PanX, VolX : single;
   PitchShift : single;
   CV : TModularVoltage;
   SamplePitch : single;
   Par1 : single;
 begin
-  // update sample pan / volume offsets..
-  assert(SampleRegion.GetProperties^.SamplePan >= -100);
-  assert(SampleRegion.GetProperties^.SamplePan <= 100);
-  PanX := (SampleRegion.GetProperties^.SamplePan + 100) / 200;
-  VolX := DecibelsToVoltage(SampleRegion.GetProperties^.SampleVolume);
-  SampleLevelOffsetA := VolX * Sqrt(1 - PanX);
-  SampleLevelOffsetB := VolX * Sqrt(PanX);
 
 
   if VoiceMode = TVoiceMode.Poly then
@@ -670,7 +667,7 @@ begin
   ModMatrix.FastControlProcess;
 
   //=== Control rate step for all audio rate modules ===
-  OscVCA.FastControlProcess(AmpEnv.Value);
+  //OscVCA.FastControlProcess(AmpEnv.Value);
 
   FilterOne.FastControlProcess;
   FilterTwo.FastControlProcess;
@@ -685,6 +682,8 @@ begin
 end;
 
 procedure TLucidityVoice.SlowControlProcess;
+var
+  PanX, VolX : single;
 begin
   UpdateOscPitch;
 
@@ -695,6 +694,17 @@ begin
 
   ModMatrix.SlowControlProcess;
   OneShotSampleOsc.SlowControlProcess;
+
+
+  // update sample pan / volume offsets..
+  assert(SampleRegion.GetProperties^.SamplePan >= -100);
+  assert(SampleRegion.GetProperties^.SamplePan <= 100);
+  PanX := (SampleRegion.GetProperties^.SamplePan + 100) / 200;
+  VolX := DecibelsToLinear(SampleRegion.GetProperties^.SampleVolume);
+
+  Calculate3dbPan(PanX, SampleGainCh1, SampleGainCh2);
+  SampleGainCh1 := SampleGainCh1 * VolX;
+  SampleGainCh2 := SampleGainCh2 * VolX;
 end;
 
 
@@ -716,8 +726,8 @@ begin
   begin
     OneShotSampleOsc.AudioRateStep(SampleOscX1, SampleOscX2);
 
-    MixX1 := SampleOscX1;
-    MixX2 := SampleOscX2;
+    MixX1 := SampleOscX1 * SampleGainCh1;
+    MixX2 := SampleOscX2 * SampleGainCh2;
 
     FilterOne.AudioRateStep(MixX1, MixX2);
 
@@ -729,10 +739,14 @@ begin
     MixX1 := (MixX1 * FBOut1) + (MixY1 * FBOut2);
     MixX2 := (MixX2 * FBOut1) + (MixY2 * FBOut2);
 
-    OscVCA.AudioRateStep(MixX1, MixX2);
 
-    pxA^ := MixX1 * SampleLevelOffsetA;
-    pxB^ := MixX2 * SampleLevelOffsetB;
+    MixX1 := MixX1 * AmpEnv.Value;
+    MixX2 := MixX2 * AmpEnv.Value;
+
+    //OscVCA.AudioRateStep(MixX1, MixX2);
+
+    pxA^ := MixX1;
+    pxB^ := MixX2;
 
     //pxA^ := LfoOut^;
     //pxB^ := LfoOut^;
@@ -744,6 +758,10 @@ begin
   pxA := @BufferA[0];
   pxB := @BufferB[0];
 
+
+  //TODO: This output mixer isn't being utilised at this stage. It seem to make
+  // sense when there were multiple outputs but perhaps it would be better to
+  // remove it entirely for the time being.
   OutputMixer.AudioRateProcess(pxA, pxB, Outputs, SampleFrames);
 
   AmpLevel := AmpEnv.Value;

@@ -233,9 +233,6 @@ begin
 
   if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := true;
   if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := false;
-
-
-
 end;
 
 procedure TMiniSampleDisplayFrame.SetPlugin(const Value: TeePlugin);
