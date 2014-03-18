@@ -514,8 +514,8 @@ begin
     end;
 
     GlobalAnimator.Animate(MessageOverlayAnimateID, AniObj);
-
   end;
+
 end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);

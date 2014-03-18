@@ -66,14 +66,19 @@ procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const
 
 
 
-
-
+type
+  Command = record
+  public
+    class procedure NormaliseSamples(Plugin : TeePlugin); static;
+  end;
 
 
 
 implementation
 
 uses
+  eeDsp,
+  eeSampleFloat,
   uConstants,
   LucidityModConnections,
   eeVstParameterEx,
@@ -594,5 +599,66 @@ end;
 
 
 
+{ Command }
+
+class procedure Command.NormaliseSamples(Plugin: TeePlugin);
+var
+  Region:IRegion;
+  sample : PSampleFloat;
+
+  c1 : integer;
+  MaxSampleValue : single;
+  MaxDB : single;
+  ch1 : PSingle;
+  ch2 : PSingle;
+begin
+  Region := Plugin.SampleMap.FindFocusedRegion;
+  if not assigned(Region) then exit;
+
+  Sample := Region.GetSample;
+  if not assigned(Sample) then exit;
+  if not Sample^.Properties.IsValid then exit;
+
+
+  if Sample.Properties.ChannelCount = 1 then
+  begin
+    ch1 := Sample.Properties.Ch1;
+    ch2 := Sample.Properties.Ch1;
+  end else
+  if Sample.Properties.ChannelCount = 2 then
+  begin
+    ch1 := Sample.Properties.Ch1;
+    ch2 := Sample.Properties.Ch2;
+  end else
+  begin
+    exit; // channel count not supported.
+  end;
+
+
+
+
+  MaxSampleValue := 0;
+
+  for c1 := 0 to Sample.Properties.SampleFrames-1 do
+  begin
+    if abs(ch1^) > MaxSampleValue
+      then MaxSampleValue := abs(ch1^);
+
+    if abs(ch2^) > MaxSampleValue
+      then MaxSampleValue := abs(ch2^);
+
+    inc(ch1);
+    inc(ch2);
+  end;
+
+
+
+  MaxDB := LinearToDecibels(MaxSampleValue);
+
+  Region.GetProperties^.SampleVolume := -MaxDB;
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateSampleDisplay);
+
+end;
 
 end.

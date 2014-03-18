@@ -54,7 +54,9 @@ type
     Command_UpdateModMatrix          = Command + 7;
     Command_ShowReplaceRegionMessage = Command + 8;
     Command_HideReplaceRegionMessage = Command + 9;
-    Actions                          = Command_HideReplaceRegionMessage + 1;
+    Command_UpdateSampleDisplay      = Command + 10;
+    Command_UpdateSampleInfo         = Command + 11;
+    Actions                          = Command_UpdateSampleInfo + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;

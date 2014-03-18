@@ -7,8 +7,6 @@ function IsLucidityProgramFile(const FileName : string): boolean;
 function IsSupportedProgramFormat(const FileName : string): boolean;
 function IsSupportedAudioFormat(const FileName : string): boolean;
 
-
-
 procedure SendMsg_StartProfiling;
 procedure SendMsg_StopProfiling;
 

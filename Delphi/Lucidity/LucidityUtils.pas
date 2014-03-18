@@ -17,6 +17,9 @@ var
 function ModLinkIndexToParName(Index : integer):string;
 function ParNameToModLinkIndex(Name : string):integer;
 
+
+
+
 implementation
 
 function ModLinkIndexToParName(Index : integer):string;

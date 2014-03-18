@@ -13,6 +13,7 @@ type
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
 
+    procedure EventHandle_NormaliseSample(Sender : TObject);
     procedure EventHandle_EditSamplePoints(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ShowInWindowsExplorer(Sender : TObject);
@@ -29,6 +30,7 @@ type
 implementation
 
 uses
+  uGuiUtils,
   SysUtils,
   eeWinEx,
   Lucidity.SampleMap,
@@ -57,6 +59,12 @@ var
   mi : TMenuItem;
 begin
   Menu.Items.Clear;
+
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Normalise Sample';
+  mi.OnClick := EventHandle_NormaliseSample;
+  Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Edit Sample Points...';
@@ -92,6 +100,12 @@ procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
+end;
+
+procedure TSampleDisplayMenu.EventHandle_NormaliseSample(Sender: TObject);
+begin
+  if not assigned(Plugin) then exit;
+  Command.NormaliseSamples(Plugin);
 end;
 
 procedure TSampleDisplayMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);

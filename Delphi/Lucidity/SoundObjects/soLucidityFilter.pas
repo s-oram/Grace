@@ -90,16 +90,16 @@ constructor TLucidityFilter.Create(const aVoiceModPoints : PVoiceModulationPoint
 begin
   VoiceModPoints := aVoiceModPoints;
 
-  TestFilter := TTestFilter.Create;
-  RingModA   := TRingModA.Create;
+  TestFilter  := TTestFilter.Create;
+  RingModA    := TRingModA.Create;
   DistortionA := TDistortionA.Create;
   LofiA       := TLofiA.Create;
   CombA       := TCombA.Create;
-  LowPassA   := TLowPassA.Create;
-  BandPassA  := TBandPassA.Create;
-  HighPassA  := THighPassA.Create;
+  LowPassA    := TLowPassA.Create;
+  BandPassA   := TBandPassA.Create;
+  HighPassA   := THighPassA.Create;
   LowPassB    := TLowPassB.Create;
-  MoogLadder := TMoogLadder.Create;
+  MoogLadder  := TMoogLadder.Create;
 end;
 
 destructor TLucidityFilter.Destroy;

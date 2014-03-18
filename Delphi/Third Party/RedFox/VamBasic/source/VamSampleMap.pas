@@ -289,11 +289,11 @@ type
     // 3: The Focused region. (is called while the focused region is being moved or resized.)
     property OnRegionInfoChanged : TNotifyEvent read fOnRegionInfoChanged write fOnRegionInfoChanged;
     {$INCLUDE TControlProperties.inc}
-
-
-
-
   end;
+
+
+
+
 
 implementation
 

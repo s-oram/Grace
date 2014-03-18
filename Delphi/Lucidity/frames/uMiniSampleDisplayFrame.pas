@@ -225,9 +225,11 @@ procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data
 begin
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
-  if MsgID = TLucidMsgID.SampleFocusChanged   then UpdateControlVisibility;
-  if MsgID = TLucidMsgID.SampleOscTypeChanged then UpdateControlVisibility;
-  if MsgID = TLucidMsgID.LoopTypeChanged      then UpdateSampleDisplayInfo;
+  if MsgID = TLucidMsgID.SampleFocusChanged              then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
+  if MsgID = TLucidMsgID.LoopTypeChanged                 then UpdateSampleDisplayInfo;
+  if MsgID = TLucidMsgID.Command_UpdateSampleDisplay     then UpdateSampleDisplay;
+  if MsgID = TLucidMsgID.Command_UpdateSampleInfo        then UpdateSampleDisplayInfo;
 
   if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := true;
   if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := false;

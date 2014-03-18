@@ -161,7 +161,6 @@ type
 
     function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
 
-
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
@@ -171,9 +170,6 @@ type
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
-
-
-
 
   published
     // Global parameters. These properties are for the benefit of the statemanager.
