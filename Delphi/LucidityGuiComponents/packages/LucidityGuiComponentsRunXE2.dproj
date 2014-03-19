@@ -89,6 +89,7 @@
 			<DCCReference Include="..\source\LucidityGui.Scope.SignalRecorder.pas"/>
 			<DCCReference Include="..\source\LucidityGui.DropBoxSelector.pas"/>
 			<DCCReference Include="..\source\LucidityGui.VectorSequence.pas"/>
+			<DCCReference Include="..\source\LucidityGui.Scope.FreqAnalyzer.pas"/>
 			<None Include="..\source\TControlProperties.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

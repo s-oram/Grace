@@ -11,7 +11,7 @@ uses
   // I want to avoid circural type depencies where
   uLucidityEnums,
   //=================================================
-
+  LucidityGui.Scope.FreqAnalyzer,
   LucidityGui.Scope.SignalRecorder,
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
@@ -64,6 +64,7 @@ type
     fText: string;
     fScopeMode: TScopeDisplayMode;
     fSignalRecorder: IScopeSignalRecorder;
+    fFreqAnalyzer: IFreqAnalyzer;
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
     procedure SetText(const Value: string);
@@ -71,6 +72,7 @@ type
 
   protected
     SignalDisplay : TSignalDisplay;
+    FreqDisplay   : TFreqDisplay;
 
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
@@ -85,6 +87,7 @@ type
     procedure Draw_Lfo;
     procedure Draw_Filter;
     procedure Draw_FilterBlend;
+    procedure Draw_Spectrum;
   public
     AdsrValues        : TScopeAdsrValues;
     LfoValues         : TScopeLfoValues;
@@ -108,6 +111,7 @@ type
 
 
     property SignalRecorder : IScopeSignalRecorder read fSignalRecorder write fSignalRecorder;
+    property FreqAnalyzer   : IFreqAnalyzer        read fFreqAnalyzer   write fFreqAnalyzer;
 
   published
     property ColorBackground : TRedFoxColorString index 0 read GetColors write SetColors;
@@ -201,6 +205,10 @@ begin
   SignalDisplay := TSignalDisplay.Create;
   SignalDisplay.LineColor := fColorForeground;
 
+  FreqDisplay   := TFreqDisplay.Create;
+  FreqDisplay.LineColor := fColorForeground;
+
+
 
   SignalAniID.Init;
 
@@ -210,6 +218,7 @@ end;
 destructor TLucidityScope.Destroy;
 begin
   FreeAndNil(SignalDisplay);
+  FreeAndNil(FreqDisplay);
   inherited;
 end;
 
@@ -234,6 +243,11 @@ begin
 
     if assigned(SignalDisplay)
       then SignalDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
+
+    if assigned(FreqDisplay)
+      then FreqDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
+
+
   end else
   begin
     ScopeRect := Rect(0,0,aWidth,aHeight);
@@ -245,7 +259,11 @@ var
   pc : PRedFoxColor;
 begin
   case Index of
-  2: SignalDisplay.LineColor := Value;
+    2:
+    begin
+      SignalDisplay.LineColor := Value;
+      FreqDisplay.LineColor := Value;
+    end;
   end;
 
   case Index of
@@ -464,7 +482,9 @@ begin
 
 
 
+  Draw_Spectrum;
 
+  {
   case FilterValues.FilterType of
     ftNone:
     begin
@@ -619,9 +639,10 @@ begin
     ft4PoleBandPass,
     ft4PoleHighPass:
     begin
-
+      Draw_Spectrum;
     end;
   end;
+  }
 end;
 
 procedure TLucidityScope.Draw_FilterBlend;
@@ -634,8 +655,10 @@ begin
 
 end;
 
-
-
-
+procedure TLucidityScope.Draw_Spectrum;
+begin
+  FreqDisplay.ProcessSignal(BackBuffer, ScopeRect, FreqAnalyzer);
+  FreqDisplay.DrawTo(BackBuffer, ScopeRect);
+end;
 
 end.

@@ -188,6 +188,22 @@ function MidiToName(x:integer):string; deprecated;          //replace with funct
 procedure Calculate3dbPan(const PanPos : single; out GainCh1, GainCh2 : single); inline;
 
 
+
+function Pow2(const x:single):single; inline;
+function Pow3(const x:single):single; inline;
+function Pow4(const x:single):single; inline;
+function Pow5(const x:single):single; inline;
+
+//=============  FFT Related Stuff ================================================
+
+function CalcFFTBinMagnitude(const RealPart, ImagPart : single):single; inline;
+function CalcFFTBinPhase(const RealPart, ImagPart : single):single; inline;
+
+
+
+//=================================================================================
+
+
 implementation
 
 uses
@@ -938,6 +954,41 @@ begin
 
   GainCh1 := (b * InvPanPos) + (c * InvPanPos * InvPanPos);
   GainCh2 := (b *    PanPos) + (c *    PanPos *    PanPos);
+end;
+
+
+function Pow2(const x:single):single; inline;
+begin
+  result := x * x;
+end;
+
+function Pow3(const x:single):single; inline;
+begin
+  result := x * x * x;
+end;
+
+function Pow4(const x:single):single; inline;
+begin
+  result := x * x * x * x;
+end;
+
+function Pow5(const x:single):single; inline;
+begin
+  result := x * x * x * x * x;
+end;
+
+
+
+function CalcFFTBinMagnitude(const RealPart, ImagPart : single):single;
+// Source: "Understanding Digital Singal Processing" Second Edition, Richard Lyons. Page 49.
+begin
+  result := Sqrt((RealPart * RealPart) + (ImagPart * ImagPart));
+end;
+
+function CalcFFTBinPhase(const RealPart, ImagPart : single):single;
+// Source: "Understanding Digital Singal Processing" Second Edition, Richard Lyons. Page 49.
+begin
+  result := ArcTan(ImagPart / RealPart);
 end;
 
 

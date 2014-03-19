@@ -38,6 +38,7 @@ contains
   LucidityGui.Scope in '..\source\LucidityGui.Scope.pas',
   LucidityGui.Scope.SignalRecorder in '..\source\LucidityGui.Scope.SignalRecorder.pas',
   LucidityGui.DropBoxSelector in '..\source\LucidityGui.DropBoxSelector.pas',
-  LucidityGui.VectorSequence in '..\source\LucidityGui.VectorSequence.pas';
+  LucidityGui.VectorSequence in '..\source\LucidityGui.VectorSequence.pas',
+  LucidityGui.Scope.FreqAnalyzer in '..\source\LucidityGui.Scope.FreqAnalyzer.pas';
 
 end.

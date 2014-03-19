@@ -263,6 +263,7 @@ begin
 
 
   Scope.SignalRecorder := Plugin.SignalRecorder;
+  Scope.FreqAnalyzer   := Plugin.FreqAnalyzer;
 
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);

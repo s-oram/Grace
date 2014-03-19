@@ -34,6 +34,7 @@ uses
   Lucidity.Osc.OneShotSampler,
   Lucidity.Osc.OneShotSampler.SubOsc,
   soADSR,
+  soFreqAnalyzer,
   soSignalRecorder,
   soFilter.LowpassA,
   soFilter.BandPassA,
@@ -67,6 +68,7 @@ type
     fFocusedKeyGroup: IKeyGroup;
     fIsPreviewEnabled: boolean;
     fSignalRecorder  : TSignalRecorder;
+    fFreqAnalyzer: TFrequencyAnalyzer;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
     function GetVoiceGlide: single;
@@ -170,6 +172,7 @@ type
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
+    property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
 
   published
     // Global parameters. These properties are for the benefit of the statemanager.
@@ -229,6 +232,9 @@ begin
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   fSignalRecorder.RegisterWithMotherShip(Globals.MotherShip);
+
+  fFreqAnalyzer := TFrequencyAnalyzer.Create;
+  fFreqAnalyzer.RegisterWithMotherShip(Globals.MotherShip);
 
   // TODO: Should do some data directory validation here.
   // - check if the data directory exists,
@@ -378,6 +384,7 @@ begin
   AudioPreviewPlayer.Free;
   fSampleDirectories.Free;
   fSignalRecorder.Free;
+  fFreqAnalyzer.Free;
 
   TProfiler.Close;
 
@@ -1096,6 +1103,7 @@ begin
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
+    FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do

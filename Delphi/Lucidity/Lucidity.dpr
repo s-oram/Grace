@@ -151,7 +151,8 @@ uses
   GuiMeta.ActiveModDisplay in 'GuiMeta.ActiveModDisplay.pas',
   Menu.ModSelectorContextMenu in 'frames\Menu.ModSelectorContextMenu.pas',
   soFilter.MoogLadder in 'SoundObjects\soFilter.MoogLadder.pas',
-  FilterCore.MoogLadder in 'SoundObjects\FilterCore.MoogLadder.pas';
+  FilterCore.MoogLadder in 'SoundObjects\FilterCore.MoogLadder.pas',
+  soFreqAnalyzer in 'SoundObjects\soFreqAnalyzer.pas';
 
 {$R *.res}
 
