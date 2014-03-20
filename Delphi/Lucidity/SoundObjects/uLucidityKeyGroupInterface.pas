@@ -5,7 +5,7 @@ interface
 uses
   uConstants,
   Lucidity.Types,
-  Lucidity.SequencerDataObject,
+  Lucidity.Interfaces,
   LucidityModConnections;
 
 type

@@ -4,11 +4,11 @@
 			<MainSource>DragDropDXE2.dpk</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
-			<TargetedPlatforms>1</TargetedPlatforms>
+			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Package</AppType>
 			<FrameworkType>None</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<Platform Condition="'$(Platform)'==''">Win64</Platform>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -119,11 +119,10 @@
 			<DCCReference Include="..\Source\DropSource.dcr"/>
 			<DCCReference Include="..\Source\DropTarget.dcr"/>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="DesignIDE.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="..\Source\DragDrop.pas"/>
 			<DCCReference Include="..\Source\DragDropComObj.pas"/>
 			<DCCReference Include="..\Source\DragDropContext.pas"/>
-			<DCCReference Include="..\Source\DragDropDesign.pas"/>
 			<DCCReference Include="..\Source\DragDropFile.pas"/>
 			<DCCReference Include="..\Source\DragDropFormats.pas"/>
 			<DCCReference Include="..\Source\DragDropGraphics.pas"/>
@@ -189,7 +188,7 @@
 					</Excluded_Packages>
 				</Delphi.Personality>
 				<Platforms>
-					<Platform value="Win64">False</Platform>
+					<Platform value="Win64">True</Platform>
 					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>

@@ -31,8 +31,7 @@ requires
   rtl,
   VamBasicRunXE2,
   RedFoxRunXE2,
-  LucidityBaseClasses,
-  EasyEffect;
+  LucidityBaseClasses;
 
 contains
   LucidityGui.Scope in '..\source\LucidityGui.Scope.pas',

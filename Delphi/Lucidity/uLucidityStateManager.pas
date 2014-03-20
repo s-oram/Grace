@@ -3,6 +3,7 @@ unit uLucidityStateManager;
 interface
 
 uses
+  Lucidity.Interfaces,
   LucidityModConnections,
   uLucidityEnums, soModMatrix,
   SysUtils, uLucidityKeyGroup,

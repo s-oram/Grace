@@ -4,6 +4,7 @@ interface
 
 uses
   Lucidity.Types,
+  Lucidity.Interfaces,
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   uLucidityKeyGroupInterface, LucidityModConnections,

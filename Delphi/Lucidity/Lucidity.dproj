@@ -8,8 +8,8 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
+			<Platform Condition="'$(Platform)'==''">Win64</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -205,7 +205,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<Manifest_File>None</Manifest_File>
 			<DCC_BplOutput>$(DelphiCompiledLib)\bpl\$(PLATFORM)</DCC_BplOutput>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<GenDll>true</GenDll>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</CfgDependentOn>
@@ -385,6 +385,9 @@ $(PreBuildEvent)]]></PreBuildEvent>
 						<Source Name="MainSource">Lucidity.dpr</Source>
 					</Source>
 					<Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\LucidityGuiComponentsDesXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
@@ -594,6 +597,8 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\soFilter.MoogLadder.pas"/>
 			<DCCReference Include="SoundObjects\FilterCore.MoogLadder.pas"/>
 			<DCCReference Include="SoundObjects\soFreqAnalyzer.pas"/>
+			<DCCReference Include="Lucidity.SequencerDataObject.pas"/>
+			<DCCReference Include="uConstants.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

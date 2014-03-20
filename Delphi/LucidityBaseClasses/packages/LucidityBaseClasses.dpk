@@ -30,12 +30,11 @@ package LucidityBaseClasses;
 requires
   rtl,
   vcl,
-  EasyEffect,
-  VamBasicRunXE2;
+  VamLib;
 
 contains
-  uConstants in '..\source\uConstants.pas',
   uLucidityEnums in '..\source\uLucidityEnums.pas',
-  Lucidity.SequencerDataObject in '..\source\Lucidity.SequencerDataObject.pas';
+  Lucidity.Interfaces in '..\source\Lucidity.Interfaces.pas',
+  eeEnumHelper in '..\source\eeEnumHelper.pas';
 
 end.

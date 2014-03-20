@@ -7,7 +7,7 @@ uses
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl,
-  Lucidity.SequencerDataObject;
+  Lucidity.Interfaces;
 
 const
   kMaxSeqLength = 64;

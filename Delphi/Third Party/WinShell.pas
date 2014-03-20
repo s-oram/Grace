@@ -29,7 +29,8 @@ function GetProgramFilesDir: string;
 implementation
 
 uses
-  SysUtils, Registry;
+  System.Win.Registry,
+  SysUtils;
 
 function BrowseDialog (AppHandle: hwnd; const Title: string; const Flag: integer): string;
 var
@@ -204,3 +205,4 @@ end;
 
 
 end.
+

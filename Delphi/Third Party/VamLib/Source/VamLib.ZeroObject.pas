@@ -93,7 +93,7 @@ type
   // NOTE TRefCountedZeroObjects are reference counted.
   TRefCountedZeroObject = class(TZeroObject)
   protected
-    function GetIsReferenceCounted: boolean; virtual;
+    function GetIsReferenceCounted: boolean; override;
   end;
 
   // TMotherShip is not reference counted.
@@ -106,8 +106,6 @@ type
     end;
   private
     Objects          : TObjectList;
-    function GetZeroObjectCount: integer;
-    property ZeroObjectCount : integer read GetZeroObjectCount;
   public
     constructor Create;
     destructor Destroy; override;
@@ -242,7 +240,7 @@ begin
     for c1 := Objects.Count-1 downto 0 do
     begin
       Text := Objects[c1].ClassName + ' has not been freed!';
-      SendDebugMesssage(Text);
+      //VamLib.WinUtils.SendDebugMesssage(Text);
     end;
     // TODO: the hard arse way to respond to unfreed zero objects. This
     // should probably be removed in release builds!
@@ -252,12 +250,6 @@ begin
   Objects.Free;
 
   inherited;
-end;
-
-function TMotherShip.GetZeroObjectCount: integer;
-begin
-  //result := Objects_IntfList.Count;
-  result := Objects.Count;
 end;
 
 procedure TMotherShip.RegisterZeroObject(obj: TObject);

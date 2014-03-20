@@ -147,7 +147,8 @@ begin
 end;
 {$else}
 begin
- WinProcs.OutputDebugString(lpOutputString);
+  // TODO: this stop compilation in 64 bit. Ignore for now.
+ //OutputDebugString(lpOutputString);
 end;
 {$endif}
 

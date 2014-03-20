@@ -26,7 +26,7 @@ implementation
 
 uses
   uConstants,
-  Lucidity.SequencerDataObject,
+  Lucidity.Interfaces,
   uLucidityKeyGroup,
   uAboutDialog,
   SysUtils,

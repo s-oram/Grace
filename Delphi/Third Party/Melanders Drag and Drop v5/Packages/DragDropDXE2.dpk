@@ -42,13 +42,12 @@ package DragDropDXE2;
 
 requires
   rtl,
-  DesignIDE;
+  vcl;
 
 contains
   DragDrop in '..\Source\DragDrop.pas',
   DragDropComObj in '..\Source\DragDropComObj.pas',
   DragDropContext in '..\Source\DragDropContext.pas',
-  DragDropDesign in '..\Source\DragDropDesign.pas',
   DragDropFile in '..\Source\DragDropFile.pas',
   DragDropFormats in '..\Source\DragDropFormats.pas',
   DragDropGraphics in '..\Source\DragDropGraphics.pas',
