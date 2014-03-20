@@ -61,10 +61,34 @@ end;
 procedure TFreqDisplay.ProcessSignal(Dest: TRedFoxImageBuffer; const DestRect: TRect; const Source: IFreqAnalyzer);
 var
   x1, y1, x2, y2, destX, destY : integer;
+  MData : PSingle;
+  MFrames : integer;
+  c1: Integer;
+
+  dx1, dx2, dy1, dy2 : single;
 begin
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
   BackBuffer.BufferInterface.LineColor := LineColor;
-  BackBuffer.BufferInterface.Line(0,0, BackBuffer.Width, BackBuffer.Height);
+  //BackBuffer.BufferInterface.Line(0,0, BackBuffer.Width, BackBuffer.Height);
+
+
+  Source.GetAnalysisData(MData, MFrames);
+
+  dx1 := 0;
+  dy1 := BackBuffer.Height;
+
+  for c1 := 0 to MFrames-1 do
+  begin
+    dx2 := (c1 / (MFrames-1)) * BackBuffer.Width;
+    dy2 := (1 - MData^) * BackBuffer.Height;
+
+    BackBuffer.BufferInterface.Line(dx1, dy1, dx2, dy2);
+
+    dx1 := dx2;
+    dy1 := dy2;
+
+    inc(MData);
+  end;
 
   //BackBuffer.RedFoxInterface.BlendTo(Dest.RedFoxInterface, 0, 0);
 

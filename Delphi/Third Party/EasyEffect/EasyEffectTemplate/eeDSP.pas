@@ -22,10 +22,10 @@ function SyncToSamples(SyncFactor, BPM, SampleRate: double): double; inline;
 function SamplesToSync(Samples, BPM, SampleRate: double): double; inline;
 
 function DecibelsToVoltage(dB:single):single; inline;
-function VoltageToDecibels(Voltage:single):single; inline;
+function VoltageToDecibels(const Voltage:single):single; inline;
 
 function DecibelsToLinear(dB:single):single; inline;
-function LinearToDecibels(Linear:single):single; inline;
+function LinearToDecibels(const Linear:single):single; inline;
 
 function ExponentialShift(const StartingValue, OctaveShift:single):single; inline;
 
@@ -198,8 +198,8 @@ function Pow5(const x:single):single; inline;
 
 function CalcFFTBinMagnitude(const RealPart, ImagPart : single):single; inline;
 function CalcFFTBinPhase(const RealPart, ImagPart : single):single; inline;
-
-
+function CalcFFTBinFreq(const BinIndex, WindowSize : integer; const SampleRate : single):single;
+function CalcFFTScaler(const WindowSize : integer):single;
 
 //=================================================================================
 
@@ -293,7 +293,7 @@ end;
 
 function DecibelsToVoltage(dB:single):single; inline;
 const
-  OneOver20 = 0.05; // = 1/20
+  OneOver20 = 1/20;
 begin
   //result := Power(10, db / 20);
   //result := Power(10, db * OneOver20);
@@ -302,25 +302,32 @@ begin
     else result := 0;
 end;
 
-function VoltageToDecibels(Voltage:single):single; inline;
+function VoltageToDecibels(const Voltage:single):single; inline;
+const
+  Neg120dB = 0.000001;
 begin
-  result := 20 * Log10(Voltage);
+  if Voltage > Neg120dB
+    then result := 20 * Log10(Voltage)
+    else result := -120;
 end;
 
 function DecibelsToLinear(dB:single):single; inline;
 const
-  OneOver20 = 0.05; // = 1/20
+  OneOver20 = 1/20;
 begin
-  //result := Power(10, db / 20);
   if dB > -120
     then result := Power(10, db * OneOver20)
     else result := 0;
 end;
 
 
-function LinearToDecibels(Linear:single):single; inline;
+function LinearToDecibels(const Linear:single):single; inline;
+const
+  Neg120dB = 0.000001;
 begin
-  result := 20 * Log10(Linear);
+  if Linear > Neg120dB
+    then result := 20 * Log10(Linear)
+    else result := -120;
 end;
 
 function ExponentialShift(const StartingValue, OctaveShift:single):single; inline;
@@ -941,6 +948,7 @@ end;
 
 
 procedure Calculate3dbPan(const PanPos : single; out GainCh1, GainCh2 : single); inline;
+// Uses an polynominal sqrt() appromination.
 const
   b = 1.831783;
   c = -0.831783;
@@ -990,6 +998,23 @@ function CalcFFTBinPhase(const RealPart, ImagPart : single):single;
 begin
   result := ArcTan(ImagPart / RealPart);
 end;
+
+
+function CalcFFTBinFreq(const BinIndex, WindowSize : integer; const SampleRate : single):single;
+// Calculates the analysis frequency for a FFT bin.
+// Source: "Understanding Digital Singal Processing" Second Edition, Richard Lyons. Page 48.
+begin
+  result := BinIndex * SampleRate / WindowSize;
+end;
+
+function CalcFFTScaler(const WindowSize : integer):single;
+// Calculates a scaling coefficient to scale the result of a FFT to match the magnitude of the
+// input signal.
+// Source: "Understanding Digital Singal Processing" Second Edition, Richard Lyons. Page 61.
+begin
+  result := 2 / WindowSize;
+end;
+
 
 
 end.

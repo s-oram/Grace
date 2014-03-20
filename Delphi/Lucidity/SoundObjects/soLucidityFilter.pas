@@ -188,7 +188,7 @@ const
   kMinFreq = 0.001;
   kMaxFreq = 18000;
   kMinQ = 0;
-  kMaxQ = 0.98;
+  kMaxQ = 1;
 var
   cFreq : single;
   cQ    : single;
