@@ -186,7 +186,7 @@ procedure TLucidityFilter.FastControlProcess;
 const
   kBaseFilterFreq = 4.0878994578;
   kMinFreq = 0.001;
-  kMaxFreq = 18000;
+  kMaxFreq = 20000;
   kMinQ = 0;
   kMaxQ = 1;
 var

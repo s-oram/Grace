@@ -75,12 +75,12 @@ begin
   Source.GetAnalysisData(MData, MFrames);
 
   dx1 := 0;
-  dy1 := BackBuffer.Height;
+  dy1 := DestRect.Height;
 
   for c1 := 0 to MFrames-1 do
   begin
-    dx2 := (c1 / (MFrames-1)) * BackBuffer.Width;
-    dy2 := (1 - MData^) * BackBuffer.Height;
+    dx2 := (c1 / (MFrames-1)) * DestRect.Width;
+    dy2 := (1 - MData^) * DestRect.Height;
 
     BackBuffer.BufferInterface.Line(dx1, dy1, dx2, dy2);
 
@@ -90,14 +90,12 @@ begin
     inc(MData);
   end;
 
-  //BackBuffer.RedFoxInterface.BlendTo(Dest.RedFoxInterface, 0, 0);
-
   x1 := 0;
   y1 := 0;
   x2 := BackBuffer.Width;
   y2 := BackBuffer.Height;
-  DestX := 0;
-  DestY := 0;
+  DestX := DestRect.Left;
+  DestY := DestRect.Top;
 
   RedFox_AlphaBlit(Dest.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, destX, destY, 255);
 end;
