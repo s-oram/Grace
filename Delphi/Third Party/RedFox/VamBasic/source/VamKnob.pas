@@ -69,8 +69,10 @@ type
     procedure SetModLineOffColor(const Value: TRedFoxColorString);
     //=================================================
   protected
+    IsBeingEdited : boolean;
     IsGrabbed : boolean;
     IsFineAdjustment : boolean;
+
 
     CurrentEditMode : TKnobMode;
 
@@ -267,6 +269,7 @@ begin
       else CurrentEditMode := TKnobMode.PositionEdit;
 
     IsGrabbed := true;
+    IsBeingEdited := true;
     UpdateReferencePoints(X, Y);
 
     if (ssShift in Shift)
@@ -413,6 +416,7 @@ begin
       end;
 
       Invalidate;
+      IsBeingEdited := false;
     end;
 
     case CurrentEditMode of
@@ -518,7 +522,7 @@ end;
 
 procedure TVamKnob.SetModAmount(const Value: single);
 begin
-  if IsGrabbed then exit;
+  if IsBeingEdited then exit;
 
   assert(Value >= -1);
   assert(Value <= 1);
@@ -589,7 +593,7 @@ end;
 
 procedure TVamKnob.SetPos(Value: single);
 begin
-  if IsGrabbed then exit;
+  if IsBeingEdited then exit;
 
   if Value < 0 then Value := 0
   else if Value > 1 then Value := 1;
