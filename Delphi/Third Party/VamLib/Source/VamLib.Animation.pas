@@ -59,6 +59,7 @@ type
 
   TAnimateController = class(TZeroObject)
   private
+    //TODO: Use high speed timer here.
     FrameTimer : TTimer;
     ActionList : TAnimateActionList;
     procedure Handle_FrameTimerEvent(Sender : TObject);

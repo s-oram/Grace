@@ -37,6 +37,7 @@ type
   TThrottleController = class
   private
     TaskList : TInfoList;
+    //TODO: Use high speed timer here.
     Timer : TTimer;
     procedure HandleTimerEvent(Sender : TObject);
   public

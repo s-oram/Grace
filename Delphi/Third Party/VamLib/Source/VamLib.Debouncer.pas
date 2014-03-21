@@ -47,6 +47,7 @@ type
   TDebounceController = class
   private
   protected
+    //TODO: Use high speed timer here.
     Timer : TTimer;
     InfoList : TDebounceInfoList;
 

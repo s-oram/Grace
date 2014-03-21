@@ -80,11 +80,13 @@ begin
 
   if (fEnabled) and (not IsTaskActive) then
   begin
+    // TODO: OmniThreadLibrary has a SetTimer() method. It might
+    // be preferable to use that.
     IsTaskActive := true;
     TaskControl := CreateTask(TaskLoop);
     TaskControl.OnMessage(TaskMessage);
     TaskControl.OnTerminated(HandleTaskTerminated);
-    TaskControl.Run
+    TaskControl.Schedule;
   end;
 end;
 
@@ -117,8 +119,6 @@ begin
     IsTaskActive := false;
   end;
 end;
-
-
 
 procedure THighSpeedTimer.TaskMessage(const task: IOmniTaskControl; const msg: TOmniMessage);
 begin
