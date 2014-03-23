@@ -516,6 +516,12 @@ begin
     GlobalAnimator.Animate(MessageOverlayAnimateID, AniObj);
   end;
 
+  if MsgID = TLucidMsgID.MidiKeyChanged then
+  begin
+    MidiKeyChanged;
+  end;
+
+
 end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);

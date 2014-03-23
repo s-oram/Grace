@@ -1028,9 +1028,10 @@ begin
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
-
-    // TODO: SendGuiMessage is blocking and way too slow.
+    // TODO: Send message using GUI thread doesn't seem to be working.
+    // I'm not sure. Perhaps it's something to do with OTL's async().await(). method.
     Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+    Globals.MotherShip.SendMessage(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsControlChange(Event) then

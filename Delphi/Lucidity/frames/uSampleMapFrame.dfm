@@ -201,6 +201,7 @@ object SampleMapFrame: TSampleMapFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            Color_Background = '$00000000'
             Color_Label = clGray
             Color_Numeric = clBlack
             Color_Arrows1 = '$cc000000'
@@ -226,6 +227,7 @@ object SampleMapFrame: TSampleMapFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            Color_Background = '$00000000'
             Color_Label = clGray
             Color_Numeric = clBlack
             Color_Arrows1 = '$cc000000'
@@ -251,6 +253,7 @@ object SampleMapFrame: TSampleMapFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            Color_Background = '$00000000'
             Color_Label = clGray
             Color_Numeric = clBlack
             Color_Arrows1 = '$cc000000'
@@ -276,6 +279,7 @@ object SampleMapFrame: TSampleMapFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            Color_Background = '$00000000'
             Color_Label = clGray
             Color_Numeric = clBlack
             Color_Arrows1 = '$cc000000'
@@ -301,6 +305,7 @@ object SampleMapFrame: TSampleMapFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            Color_Background = '$00000000'
             Color_Label = clGray
             Color_Numeric = clBlack
             Color_Arrows1 = '$cc000000'
