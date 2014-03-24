@@ -3,6 +3,7 @@ unit uMiniSampleDisplayFrame;
 interface
 
 uses
+  VamLib.UniqueID,
   VamLib.ZeroObject, Math,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.SampleMap, uLucidityKeyGroupInterface, Menu.SampleDisplayMenu,
@@ -32,6 +33,8 @@ type
     procedure InfoDivResize(Sender: TObject);
     procedure InsidePanelResize(Sender: TObject);
   private
+    UpdateSampleDisplayThottleToken : TUniqueID;
+
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
 
@@ -95,6 +98,7 @@ type
 implementation
 
 uses
+  VamLib.Throttler,
   eeDsp,
   VamLib.Graphics,
   eeVstXml, eeVstParameter, uLucidityEnums,
@@ -109,6 +113,8 @@ uses
 constructor TMiniSampleDisplayFrame.Create(AOwner: TComponent);
 begin
   inherited;
+
+  UpdateSampleDisplayThottleToken.Init;
 
   MsgHandle := AllocateHWND(MessageHandler);
 
@@ -722,8 +728,11 @@ begin
     end;
   end;
 
-  UpdateSampleDisplay;
 
+  Throttle(UpdateSampleDisplayThottleToken, 25, procedure
+  begin
+    UpdateSampleDisplay;
+  end);
 end;
 
 function TMiniSampleDisplayFrame.GetMotherShipReference: IMotherShip;

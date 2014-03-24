@@ -7,8 +7,6 @@
 
   NOTE: It would probably be a good idea to ensure the usage of the global class
   is entirely optional.
-
-
 }
 
 unit eeCustomGlobals;
@@ -209,7 +207,6 @@ type
     property VstMethods : PVstMethodReferences read fVstMethods;
 
     property HostProperties : PHostProperties read GetHostProperties;
-
 
     // TODO: consider using a GUI mothership and a Audio Thread MotherShip.
     property MotherShip : IMotherShip read GetMotherShip;
