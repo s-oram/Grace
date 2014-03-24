@@ -65,6 +65,8 @@ type
     procedure SetColor_Background(const Value: TRedFoxColorString);
 
     procedure DoPaddingChange(Sender: TObject);
+    function GetKnobSensitivity: single;
+    procedure SetKnobSensitivity(const Value: single);
 
 
 
@@ -109,6 +111,8 @@ type
     property KnobMax           : integer       read GetKnobMax           write SetKnobMax;
     property KnobNumericStyle  : TNumericStyle read GetKnobNumericStyle  write SetKnobNumericStyle;
     property KnobDecimalPlaces : integer       read GetKnobDecimalPlaces write SetKnobDecimalPlaces;
+
+    property KnobSensitivity : single read GetKnobSensitivity write SetKnobSensitivity;
 
     property KnobCustomText : string read GetCustomText write SetCustomText;
 
@@ -234,6 +238,11 @@ begin
   result := Knob.NumericStyle;
 end;
 
+function TVamCompoundNumericKnob.GetKnobSensitivity: single;
+begin
+  result := Knob.Sensitivity;
+end;
+
 function TVamCompoundNumericKnob.GetKnobValue: double;
 begin
   result := Knob.KnobValue;
@@ -338,6 +347,11 @@ end;
 procedure TVamCompoundNumericKnob.SetKnobNumericStyle(const Value: TNumericStyle);
 begin
   Knob.NumericStyle := Value;
+end;
+
+procedure TVamCompoundNumericKnob.SetKnobSensitivity(const Value: single);
+begin
+  Knob.Sensitivity := Value;
 end;
 
 procedure TVamCompoundNumericKnob.SetKnobValue(const Value: double);

@@ -210,6 +210,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobMax = 127
             KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
+            KnobSensitivity = 0.400000005960464500
             Align = alRight
             Visible = True
           end
@@ -236,6 +237,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobMax = 127
             KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
+            KnobSensitivity = 0.400000005960464500
             Align = alRight
             Visible = True
           end
@@ -262,6 +264,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobMax = 127
             KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
+            KnobSensitivity = 0.400000005960464500
             Align = alRight
             Visible = True
           end
@@ -288,6 +291,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobMax = 127
             KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
+            KnobSensitivity = 0.400000005960464500
             Align = alRight
             Visible = True
           end
@@ -314,6 +318,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobMax = 127
             KnobNumericStyle = nsInteger
             KnobDecimalPlaces = 2
+            KnobSensitivity = 0.400000005960464500
             Align = alRight
             Visible = True
           end

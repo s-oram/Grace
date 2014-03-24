@@ -22,6 +22,7 @@ type
     fCustomText: string;
     fOnRotaryStepUp: TNotifyEvent;
     fOnRotaryStepDown: TNotifyEvent;
+    fSensitivity: single;
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     procedure SetNumericStyle(const Value: TNumericStyle);
@@ -53,6 +54,8 @@ type
     destructor Destroy; override;
 
   published
+
+
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
 
@@ -61,6 +64,8 @@ type
     property KnobValue : double read fKnobValue write SetKnobValue;
     property KnobMin : integer read fKnobMin write SetKnobMin;
     property KnobMax : integer read fKnobMax write SetKnobMax;
+
+    property Sensitivity : single read fSensitivity write fSensitivity;
 
     property NumericStyle  : TNumericStyle read fNumericStyle  write SetNumericStyle;
     property DecimalPlaces : integer       read fDecimalPlaces write SetDecimalPlaces;
@@ -107,6 +112,8 @@ begin
   GraphicSplitPoint := 0;
 
   fUnits := '';
+
+  Sensitivity := 1;
 end;
 
 destructor TVamNumericKnob.Destroy;
@@ -263,7 +270,7 @@ begin
         then ScaleFactor := 0.005
         else ScaleFactor := 0.00175;
 
-      ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+      ScaleFactor := ScaleFactor * (KnobMax - KnobMin) * Sensitivity;
 
       Dist := (ReferencePoint.Y - Y) * ScaleFactor;
       Dist := Round(Dist);
@@ -275,7 +282,7 @@ begin
         then ScaleFactor := 0.005
         else ScaleFactor := 0.00175;
 
-      ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+      ScaleFactor := ScaleFactor * (KnobMax - KnobMin) * Sensitivity;
 
       Dist := (ReferencePoint.Y - Y) * ScaleFactor;
       Dist := Round(Dist);
@@ -287,7 +294,7 @@ begin
         then ScaleFactor := 0.005
         else ScaleFactor := 0.075 / Power(10, DecimalPlaces);
 
-      Dist := (ReferencePoint.Y - Y) * ScaleFactor;
+      Dist := (ReferencePoint.Y - Y) * ScaleFactor * Sensitivity;
     end;
 
     NewKnobValue := ReferenceKnobValue + Dist;
@@ -326,7 +333,7 @@ begin
       then ScaleFactor := 0.005
       else ScaleFactor := 0.00175;
 
-    ScaleFactor := ScaleFactor * (KnobMax - KnobMin);
+    ScaleFactor := ScaleFactor * (KnobMax - KnobMin) * Sensitivity;
 
     Dist := (ReferencePoint.Y - Y) * ScaleFactor;
     Dist := Round(Dist);

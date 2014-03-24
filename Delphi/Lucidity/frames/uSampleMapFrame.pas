@@ -538,7 +538,7 @@ begin
     else Plugin.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
 
   UpdateRegionInfoDisplay;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MouseOverSampleRegionChanged);
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.MouseOverSampleRegionChanged);
 end;
 
 
