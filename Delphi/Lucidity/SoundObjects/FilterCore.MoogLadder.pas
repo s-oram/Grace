@@ -17,8 +17,8 @@ uses
 type
   TOnePoleSection = record
   private
-    zA, zB : double;
   public
+    zA, zB : double;
     g : double;
 
     procedure Reset;
@@ -74,6 +74,7 @@ type
 
 
 
+function ProcessOnePoleSection(var Section : TOnePoleSection; const Input:double):double; inline;
 
 
 implementation
@@ -131,6 +132,23 @@ begin
 end;
 
 
+function ProcessOnePoleSection(var Section : TOnePoleSection; const Input:double):double; inline;
+const
+  Gain1 : double = (1/1.3);
+  Gain2 : double = (0.3/1.3);
+var
+  x : double;
+begin
+  x := (Input * (1/1.3)) + (Section.zA * (0.3/1.3)) - (Section.zB);
+  x := x * Section.g;
+  x := x + Section.zB;
+  result := x;
+
+  Section.zA := Input;
+  Section.zB := x;
+end;
+
+
 { TOnePoleSection }
 
 procedure TOnePoleSection.Reset;
@@ -147,7 +165,8 @@ const
 var
   x : double;
 begin
-  Input := NonLinearSpice_Flavor2(Input);
+  //Input := NonLinearSpice_Flavor2(Input);
+  //Input :=  NonLinearSpice_orig(Input);
 
   x := (Input * Gain1) + (zA * Gain2) - (zB);
   x := x * g;
@@ -209,16 +228,16 @@ begin
   x := NonLinearSpice_Flavor2(x);
 
   FilterState.OutputA := x;
-  x := LpA.Step(x);
+  x := ProcessOnePoleSection(LpA, x);
 
   FilterState.OutputB := x;
-  x := LpB.Step(x);
+  x := ProcessOnePoleSection(LpB, x);
 
   FilterState.OutputC := x;
-  x := LpC.Step(x);
+  x := ProcessOnePoleSection(LpC, x);
 
   FilterState.OutputD := x;
-  x := LpD.Step(x);
+  x := ProcessOnePoleSection(LpD, x);
 
   FilterState.OutputE := x;
   FilterState.z1 := x;
