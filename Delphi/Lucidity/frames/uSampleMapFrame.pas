@@ -77,6 +77,8 @@ type
 
     KeyStateTrackerOverlay : TKeyStateTrackerOverlay;
     SampleMapMenu : TSampleMapContextMenu;
+
+    ThrottleID : TUniqueID;
     procedure ScrollPosChanged;
 
     procedure UpdateRegionInfoControls(const SampleName, LowNote, HighNote, LowVel, HighVel, RootNote : string); overload;
@@ -105,6 +107,7 @@ type
 implementation
 
 uses
+  VamLib.Throttler,
   VamLib.Animation,
   VamLib.Threads,
   VamLib.Utils,
@@ -120,6 +123,8 @@ uses
 constructor TSampleMapFrame.Create(AOwner: TComponent);
 begin
   inherited;
+  ThrottleID.Init;
+
   MessageOverlayAnimateID.Init;
 
   SampleMapMenu := TSampleMapContextMenu.Create;
@@ -956,12 +961,19 @@ begin
 
   if Sender = RootNoteKnob then TAdjustRegions.DecRootNote(Plugin, RegionList);
 
-  //TODO: throttle this call..
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
 
-  //TODO: throttle this call..
-  //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
+  UpdateSampleRegions;
+  UpdateRegionInfoDisplay;
+
+
+  // TODO: There is a bug here. For some reason the sample map frame numeric knobs
+  // are only updated to show the correct value after the SampleRegionChanged message
+  // has been set. This results in a very slight delay for the final value to show.
+  // It's not a showstopper bug but would be great to fix.
+  Throttle(ThrottleID, 25, procedure
+  begin
+    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.SampleRegionChanged);
+  end);
 
 end;
 
@@ -987,12 +999,16 @@ begin
 
   if Sender = RootNoteKnob then TAdjustRegions.IncRootNote(Plugin, RegionList);
 
-  //TODO: throttle this call..
-  UpdateRegionInfoDisplay;
+
   UpdateSampleRegions;
+  UpdateRegionInfoDisplay;
+
 
   //TODO: throttle this call..
-  //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
+  Throttle(ThrottleID, 25, procedure
+  begin
+    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.SampleRegionChanged);
+  end);
 end;
 
 
