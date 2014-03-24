@@ -531,7 +531,7 @@ begin
     SampleMapFrame.UpdateSampleRegions;
     SampleDisplayFrame.UpdateSampleDisplay;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
-    MenuBarFrame.SampleFocusChanged;
+
   end;
 
   if MsgID = TLucidMsgId.SampleRegionChanged then
@@ -541,7 +541,6 @@ begin
     SampleMapFrame.UpdateRegionInfoDisplay;
     SampleDisplayFrame.UpdateSampleDisplay;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
-    MenuBarFrame.SampleFocusChanged;
   end;
 
   if MsgID = TLucidMsgId.MidiKeyChanged then
@@ -551,7 +550,6 @@ begin
 
   if MsgID = TLucidMsgId.MouseOverSampleRegionChanged then
   begin
-    MenuBarFrame.SampleFocusChanged;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
   end;
 
@@ -733,7 +731,6 @@ begin
         Plugin.FocusRegion(aRegion.GetProperties^.UniqueID);
 
         // trigger extra updates to avoid the message queue latency.
-        MenuBarFrame.SampleFocusChanged;
         MiniSampleDisplayFrame.UpdateSampleDisplay;
       end;
     end;

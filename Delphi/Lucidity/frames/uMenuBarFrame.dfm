@@ -16,6 +16,7 @@ object MenuBarFrame: TMenuBarFrame
       Top = 0
       Width = 680
       Height = 108
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       CornerRadius1 = 3.000000000000000000
@@ -35,6 +36,7 @@ object MenuBarFrame: TMenuBarFrame
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        Opacity = 255
         HitTest = True
         Visible = True
         object SampleMenuButton: TVamTextBox
@@ -47,6 +49,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Sample'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -74,6 +77,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Group'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -101,6 +105,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'MENU'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -128,6 +133,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'M'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -155,6 +161,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'S'
           HitTest = True
           Color = '$FF3E3E3E'

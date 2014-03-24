@@ -210,6 +210,8 @@ type
 
     property HostProperties : PHostProperties read GetHostProperties;
 
+
+    // TODO: consider using a GUI mothership and a Audio Thread MotherShip.
     property MotherShip : IMotherShip read GetMotherShip;
   end;
 

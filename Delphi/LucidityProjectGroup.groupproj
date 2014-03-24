@@ -43,7 +43,7 @@
 				<Dependencies>LucidityBaseClasses\packages\LucidityBaseClasses.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Lucidity.dproj">
-				<Dependencies>Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj;Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;Third Party\VamLib\VamLib.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Third Party\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityBaseClasses\packages\LucidityBaseClasses.dproj</Dependencies>
+				<Dependencies>LucidityBaseClasses\packages\LucidityBaseClasses.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Code Gen\CodeGen.dproj">
 				<Dependencies/>
@@ -179,13 +179,13 @@
 		<Target Name="LucidityGuiComponentsDesXE2:Make" DependsOnTargets="LucidityBaseClasses:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj"/>
 		</Target>
-		<Target Name="Lucidity" DependsOnTargets="DragDropDXE2;OmniThreadLibraryRuntimeXE2;LucidityGuiComponentsRunXE2;VamLib;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityBaseClasses">
+		<Target Name="Lucidity" DependsOnTargets="LucidityBaseClasses;LucidityGuiComponentsRunXE2">
 			<MSBuild Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Clean" DependsOnTargets="DragDropDXE2:Clean;OmniThreadLibraryRuntimeXE2:Clean;LucidityGuiComponentsRunXE2:Clean;VamLib:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityBaseClasses:Clean">
+		<Target Name="Lucidity:Clean" DependsOnTargets="LucidityBaseClasses:Clean;LucidityGuiComponentsRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
-		<Target Name="Lucidity:Make" DependsOnTargets="DragDropDXE2:Make;OmniThreadLibraryRuntimeXE2:Make;LucidityGuiComponentsRunXE2:Make;VamLib:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityBaseClasses:Make">
+		<Target Name="Lucidity:Make" DependsOnTargets="LucidityBaseClasses:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Lucidity.dproj"/>
 		</Target>
 		<Target Name="CodeGen">

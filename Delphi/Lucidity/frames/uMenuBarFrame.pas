@@ -40,11 +40,13 @@ type
     function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+
+    procedure SampleFocusChanged; // Called when the sample focus changes...
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure SampleFocusChanged; // Called when the sample focus changes...
+
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
@@ -140,6 +142,11 @@ begin
   MapEditButton.Text  := '';
   MapEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_ProgramIcon');
 
+
+  //===
+
+  SampleFocusChanged;
+
 end;
 
 
@@ -220,13 +227,10 @@ begin
   MainMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
-
-
-
 procedure TMenuBarFrame.SampleEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_ShowLoopEditFrame);
 end;
 
 procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
@@ -234,16 +238,28 @@ begin
   if not assigned(Plugin) then exit;
 
   if Plugin.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
+    then Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_HideSampleMapEdit)
+    else Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_ShowSampleMapEdit);
 end;
 
-
-
-
-procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal;
-  Data: Pointer);
+procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
+  if MsgID = TLucidmsgID.SampleFocusChanged then
+  begin
+    SampleFocusChanged;
+  end;
+
+  if MsgID = TLucidmsgID.MouseOverSampleRegionChanged then
+  begin
+    SampleFocusChanged;
+  end;
+
+  if MsgID = TLucidmsgID.SampleRegionChanged then
+  begin
+    SampleFocusChanged;
+  end;
+
+  //TODO: will maybe need to respond when hiding the sample map edit.
 
 end;
 
