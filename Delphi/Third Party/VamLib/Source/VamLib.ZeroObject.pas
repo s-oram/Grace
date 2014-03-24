@@ -99,13 +99,20 @@ type
   // TMotherShip is not reference counted.
   TMotherShip = class(TPureInterfacedObject, IMotherShip)
   private type
-    TGuiMessage = record
+    TMessageData = record
       MsgID   : cardinal;
       Data    : pointer;
       CleanUp : TProc;
     end;
   private
-    Objects          : TObjectList;
+    Objects      : TObjectList;
+
+    // TODO: Instead of using a timer, it might be better to try and implement a
+    // background window handle or something similer so the window handle has
+    // a Process Messages loop.... I'm not sure of the exact terminolgy.
+    GuiMessageQueue : TOmniQueue;
+    GuiMessageTimer : TTimer;
+    procedure Handle_GuiMessageTimerEvent(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -227,6 +234,12 @@ constructor TMotherShip.Create;
 begin
   Objects := TObjectList.Create;
   Objects.OwnsObjects := false;
+
+  GuiMessageQueue := TOmniQueue.Create;
+  GuiMessageTimer := TTimer.Create(nil);
+  GuiMessageTimer.Interval := 25;
+  GuiMessageTimer.OnTimer := Handle_GuiMessageTimerEvent;
+  GuiMessageTimer.Enabled := true;
 end;
 
 destructor TMotherShip.Destroy;
@@ -247,7 +260,9 @@ begin
     raise Exception.Create('Not all ZeroObjects have been freed.');
   end;
 
+  GuiMessageTimer.Free;
   Objects.Free;
+  GuiMessageQueue.Free;
 
   inherited;
 end;
@@ -304,21 +319,35 @@ end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
 var
+  msgData : TMessageData;
+  QueueValue : TOmniValue;
   DoIt, DoNothing : TProc;
 begin
-  DoNothing := procedure
-  begin
-  end;
+  msgData.MsgID := MsgID;
+  msgData.Data := Data;
+  msgData.CleanUp := CleanUp;
 
-  DoIt := procedure
-  begin
-    SendMessage(MsgID, Data);
-    if assigned(CleanUp)
-      then CleanUp;
-  end;
-
-  Async(DoNothing).Await(DoIt);
+  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
+  GuiMessageQueue.Enqueue(QueueValue);
 end;
+
+procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
+var
+  msgData : TMessageData;
+  QueueValue : TOmniValue;
+begin
+  while GuiMessageQueue.TryDequeue(QueueValue) do
+  begin
+    MsgData := QueueValue.ToRecord<TMessageData>;
+
+    SendMessage(msgData.MsgID, msgData.Data);
+
+    if assigned(msgData.CleanUp)
+      then msgData.CleanUp();
+  end;
+end;
+
+
 
 
 { TRefCountedZeroObject }
