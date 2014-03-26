@@ -14,11 +14,16 @@ uses
   LucidityGui.Scope.FreqAnalyzer,
   LucidityGui.Scope.SignalRecorder,
   Types, Controls, Classes, Graphics,
-  RedFox, RedFoxGraphicControl, RedFoxColor,
+  RedFox, RedFoxGraphicControl, RedFoxColor, RedFoxImageBuffer,
   VamGraphicControl, VamWinControl;
+
+const
+  kRandomValueCount = 64;
 
 
 type
+  TLfoDrawingRoutines = class;
+
   {$SCOPEDENUMS ON}
   TScopeDisplayMode = (
     DisplayOff,
@@ -41,10 +46,18 @@ type
   end;
 
   TScopeLfoValues = record
+  private
+    LastRandomUpdate : TDateTime;
+    IsRandomInitialised : boolean;
+  public
     Shape : TLfoShape;
     Par1  : single;
     Par2  : single;
     Par3  : single;
+    RandomValues : array[0..kRandomValueCount-1] of single;
+
+    procedure UpdateRandomValues;
+    function FakeRandom(var Seed : integer):single;
   end;
 
   TScopeFilterValues = record
@@ -58,6 +71,8 @@ type
   TScopeFilterBlendValues = record
     BlendAmt : single;
   end;
+
+
 
   TLucidityScope = class(TVamWinControl)
   private
@@ -85,6 +100,7 @@ type
 
     procedure Draw_ADSR;
     procedure Draw_Lfo;
+
     procedure Draw_Filter;
     procedure Draw_FilterBlend;
     procedure Draw_Spectrum;
@@ -103,16 +119,10 @@ type
 
 
     //== AHDSR values ==
-
-
     //== Lfo values ==
-
     //== Filter values ==
-
-
     property SignalRecorder : IScopeSignalRecorder read fSignalRecorder write fSignalRecorder;
     property FreqAnalyzer   : IFreqAnalyzer        read fFreqAnalyzer   write fFreqAnalyzer;
-
   published
     property ColorBackground : TRedFoxColorString index 0 read GetColors write SetColors;
     property ColorBorder     : TRedFoxColorString index 1 read GetColors write SetColors;
@@ -126,10 +136,26 @@ type
   end;
 
 
+  TLfoDrawingRoutines = class
+  private
+  public
+    class procedure Draw_Lfo_SawUp(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_SawDown(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_Tri(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_Sine(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_Square(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_RandomStepped(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_RandomSmooth(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_AttackDecay(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+    class procedure Draw_Lfo_Cycle(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+  end;
+
+
 
 implementation
 
 uses
+  DateUtils,
   SysUtils,
   Math,
   VamLib.Utils,
@@ -180,8 +206,6 @@ begin
   Canvas.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
 end;
 
-
-
 function Quantise(const x : single; const Steps : integer):single;
 begin
   result := round(x * Steps) / Steps;
@@ -191,6 +215,66 @@ function LinearInterpolation(const f, a, b : single):single;
 begin
   result := a * (1-f) + b * f;
 end;
+
+function SymmetryMod(Input:single; ModAmount:single):single;
+var
+  a : single;
+  x : single;
+  y : single;
+begin
+  assert(InRange(ModAmount, 0, 1));
+  assert(InRange(Input, -1, 1));
+  a := 1-(1/ModAmount);
+  x := Input * 0.5 + 0.5;
+  y := x / (x+a*(x-1));
+  result := y * 2 - 1;
+end;
+
+
+function EnvCurve(const StartValue, EndValue, EnvPhase, CurveAmount : single):single;
+var
+  a : single;
+  x : single;
+  y : single;
+begin
+  assert(InRange(EnvPhase, 0 ,1));
+  assert(InRange(CurveAmount, 0, 1));
+
+  a := 1-(1/CurveAmount);
+  x := EnvPhase;
+  y := x / (x+a*(x-1));
+  result := StartValue + (EndValue - StartValue) * y;
+end;
+
+
+procedure DrawEnvCurve(Buffer: TRedFoxImageBuffer; x1, y1, x2, y2, CurveAmount : single);
+var
+  Steps : integer;
+  Dist  : single;
+  c1: Integer;
+  dx1, dx2, dy1, dy2 : single;
+  EnvPhase : single;
+begin
+  assert(x2 > x1);
+  Steps := ceil(x2 - x1);
+  Dist  := x2 - x1;
+
+  dx1 := x1;
+  dy1 := y1;
+
+  for c1 := 1 to Steps-1 do
+  begin
+    EnvPhase := c1 / (Steps-1);
+    dx2 := x1 + (EnvPhase * Dist);
+    dy2 := EnvCurve(y1, y2, EnvPhase, CurveAmount);
+    Buffer.BufferInterface.Line(dx1, dy1, dx2, dy2);
+
+    dx1 := dx2;
+    dy1 := dy2;
+  end;
+end;
+
+
 
 
 { TLucidityScope }
@@ -208,7 +292,7 @@ begin
   FreqDisplay   := TFreqDisplay.Create;
   FreqDisplay.LineColor := fColorForeground;
 
-
+  LfoValues.UpdateRandomValues;
 
   SignalAniID.Init;
 
@@ -337,6 +421,8 @@ var
   x1, y1, x2, y2 : single;
 begin
   inherited;
+
+  LfoValues.UpdateRandomValues;
 
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);
 
@@ -479,8 +565,6 @@ begin
   BackBuffer.BufferInterface.NoFill;
   BackBuffer.BufferInterface.LineWidth := 1.5;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
-
-
 
   Draw_Spectrum;
 
@@ -651,7 +735,31 @@ begin
 end;
 
 procedure TLucidityScope.Draw_Lfo;
+var
+  aFunction : TDrawFunction;
 begin
+  BackBuffer.BufferInterface.LineColor := fColorForeground;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineWidth := 1.5;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+
+
+  case LfoValues.Shape of
+    TLfoShape.SawUp:    TLfoDrawingRoutines.Draw_Lfo_SawUp(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.SawDown:  TLfoDrawingRoutines.Draw_Lfo_SawDown(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.Square:   TLfoDrawingRoutines.Draw_Lfo_Square(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.Triangle: TLfoDrawingRoutines.Draw_Lfo_Tri(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.Sine:     TLfoDrawingRoutines.Draw_Lfo_Sine(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.RandomStepped: TLfoDrawingRoutines.Draw_Lfo_RandomStepped(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.RandomSmooth:  TLfoDrawingRoutines.Draw_Lfo_RandomSmooth(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.AttackDecay:   TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.AttackRelease: TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(BackBuffer, ScopeRect, LfoValues);
+  end;
+
+
+
 
 end;
 
@@ -659,6 +767,343 @@ procedure TLucidityScope.Draw_Spectrum;
 begin
   FreqDisplay.ProcessSignal(BackBuffer, ScopeRect, FreqAnalyzer);
   FreqDisplay.DrawTo(BackBuffer, ScopeRect);
+end;
+
+{ TLfoDrawingRoutines }
+
+
+
+{ TLfoDrawingRoutines }
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_SawUp(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := tx + (LfoValues.Par2 * 2 - 1);  //Phase
+    tx := Wrap(tx, -1, 1);
+    tx := SymmetryMod(tx, (LfoValues.Par3 * 0.7 + 0.15));
+    result := tx;
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction);
+end;
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_SawDown(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := tx + (LfoValues.Par2 * 2 - 1);  //Phase
+    tx := Wrap(tx, -1, 1);
+    tx := SymmetryMod(tx, (LfoValues.Par3 * 0.7 + 0.15));
+    result := tx * -1;
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction);
+end;
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_Square(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := tx + (LfoValues.Par2 * 2 - 1);  //Phase
+    tx := Wrap(tx, -1, 1);
+    tx := SymmetryMod(tx, (LfoValues.Par3 * 0.7 + 0.15));
+    result := -1 + (2 * Integer(tx >= 0));
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction);
+end;
+
+
+
+
+
+
+
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_Sine(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := tx + (LfoValues.Par2 * 2 - 1);  //Phase
+    tx := Wrap(tx, -1, 1);
+    tx := SymmetryMod(tx, (LfoValues.Par3 * 0.7 + 0.15));
+    result := Sin(tx * pi);
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction);
+end;
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_Tri(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := tx + (LfoValues.Par2 * 2 - 1);  //Phase
+    tx := Wrap(tx, -1, 1);
+    tx := SymmetryMod(tx, (LfoValues.Par3 * 0.7 + 0.15));
+    result := abs(tx) * 2 - 1;
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction);
+end;
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+const
+  kMinStageTime : single = 0.1;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  x3, y3 : single;
+  x4, y4 : single;
+  SectionWidth : single;
+var
+  aFunction : TDrawFunction;
+  CurveAmount : single;
+begin
+  SectionWidth := ScopeRect.Width / 2.3;
+
+
+  CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
+
+  //== Draw Attack Stage ==
+  x1 := ScopeRect.Left;
+  y1 := ScopeRect.Bottom;
+  x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
+  y4 := ScopeRect.Top;
+
+  DrawEnvCurve(BackBuffer, x1,y1, x4,y4, CurveAmount);
+
+
+  //== Draw Release Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
+  y4 := ScopeRect.Bottom;
+
+  DrawEnvCurve(BackBuffer, x1,y1, x4,y4, 1-CurveAmount);
+
+
+  //== Draw Off Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := ScopeRect.Right;
+  y4 := ScopeRect.Bottom;
+  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+end;
+
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_Cycle(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+const
+  kMinStageTime : single = 0.1;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  x3, y3 : single;
+  x4, y4 : single;
+  SectionWidth : single;
+var
+  aFunction : TDrawFunction;
+  CurveAmount : single;
+begin
+  SectionWidth := ScopeRect.Width / 2.3;
+
+
+  CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
+
+  x1 := ScopeRect.Left;
+  y1 := ScopeRect.Bottom;
+
+  while x1 < ScopeRect.Right do
+  begin
+    //== Draw Attack Stage ==
+    x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
+    y4 := ScopeRect.Top;
+    DrawEnvCurve(BackBuffer, x1,y1, x4,y4, CurveAmount);
+
+    //== Draw Release Stage ==
+    x1 := x4;
+    y1 := y4;
+    x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
+    y4 := ScopeRect.Bottom;
+
+    DrawEnvCurve(BackBuffer, x1,y1, x4,y4, 1-CurveAmount);
+
+    x1 := x4;
+    y1 := y4;
+  end;
+
+end;
+
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_RandomStepped(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+const
+  kMinStageTime : single = 0.1;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  SectionWidth : single;
+  RandomSeed : integer;
+  ChanceOfNewValue : single;
+  RandomNewOffset  : single;
+  DoToggleChance   : single;
+  Dist : single;
+  yFrac : single;
+begin
+  RandomSeed := 0;
+  SectionWidth := 30;
+
+  x1 := ScopeRect.Left;
+  y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
+  y2 := y1;
+  x2 := x1;
+
+  while x1 <= ScopeRect.Right-2 do
+  begin
+    Dist := 3 + SectionWidth * LfoValues.Par1;
+    x2 := x1 + Dist;
+    if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
+
+    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed) - 0.1;
+    RandomNewOffset  := LfoValues.FakeRandom(RandomSeed) - 0.5;
+    DoToggleChance   := LfoValues.FakeRandom(RandomSeed);
+
+    if ChanceOfNewValue <= LfoValues.Par2 then
+    begin
+      yFrac := (y1 - ScopeRect.Top) / ScopeRect.Height;
+      yFrac := (yFrac - 0.5);
+      if (sign(yFrac) = sign(RandomNewOffset)) and (abs(yFrac) > DoToggleChance) then
+      begin
+        RandomNewOffset := RandomNewOffset * -1;
+      end;
+
+      y2 := y1 + ScopeRect.Height * (RandomNewOffset) * LfoValues.Par3;
+      y2 := Clamp(y2, ScopeRect.Top, ScopeRect.Bottom);
+    end;
+
+    BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
+    BackBuffer.BufferInterface.Line(x1, y2, x2, y2);
+
+    x1 := x2;
+    y1 := y2;
+  end;
+end;
+
+class procedure TLfoDrawingRoutines.Draw_Lfo_RandomSmooth(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+const
+  kMinStageTime : single = 0.1;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  cx1, cy1 : single;
+  cx2, cy2 : single;
+  SectionWidth : single;
+  RandomSeed : integer;
+  ChanceOfNewValue : single;
+  RandomNewOffset  : single;
+  DoToggleChance   : single;
+  Dist : single;
+  yFrac : single;
+begin
+  RandomSeed := 0;
+  SectionWidth := 30;
+
+  x1 := ScopeRect.Left;
+  y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
+  y2 := y1;
+  x2 := x1;
+
+  while x1 <= ScopeRect.Right-2 do
+  begin
+    Dist := 3 + SectionWidth * LfoValues.Par1;
+    x2 := x1 + Dist;
+    if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
+
+    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed) - 0.1;
+    RandomNewOffset  := LfoValues.FakeRandom(RandomSeed) - 0.5;
+    DoToggleChance   := LfoValues.FakeRandom(RandomSeed);
+
+    if ChanceOfNewValue <= LfoValues.Par2 then
+    begin
+      yFrac := (y1 - ScopeRect.Top) / ScopeRect.Height;
+      yFrac := (yFrac - 0.5);
+      if (sign(yFrac) = sign(RandomNewOffset)) and (abs(yFrac) > DoToggleChance) then
+      begin
+        RandomNewOffset := RandomNewOffset * -1;
+      end;
+
+      y2 := y1 + ScopeRect.Height * (RandomNewOffset) * LfoValues.Par3;
+      y2 := Clamp(y2, ScopeRect.Top, ScopeRect.Bottom);
+    end;
+
+    cx1 := x1 + (Dist * 0.5);
+    cy1 := y1;
+
+    cx2 := x2 - (Dist * 0.5);
+    cy2 := y2;
+
+    BackBuffer.BufferInterface.Curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
+
+    x1 := x2;
+    y1 := y2;
+  end;
+
+end;
+
+
+{ TScopeLfoValues }
+
+function TScopeLfoValues.FakeRandom(var Seed: integer): single;
+begin
+  result := self.RandomValues[seed];
+  inc(Seed);
+  if seed >= kRandomValueCount
+    then seed := 0;
+
+end;
+
+procedure TScopeLfoValues.UpdateRandomValues;
+var
+  c1: Integer;
+begin
+  if (self.IsRandomInitialised = false) or (MilliSecondsBetween(Now, self.LastRandomUpdate) > 900) then
+  begin
+    self.LastRandomUpdate := Now;
+    self.IsRandomInitialised := true;
+    for c1 := 0 to kRandomValueCount-1 do
+    begin
+      self.RandomValues[c1] := Random;
+    end;
+  end;
 end;
 
 end.

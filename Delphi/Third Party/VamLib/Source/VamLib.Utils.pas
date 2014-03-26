@@ -15,6 +15,10 @@ function CastToCardinal(Value : integer):cardinal;
 function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
 function Clamp(const Value, MinValue, MaxValue : single):single; overload;
 
+// The Wrap() function forces a value to overflow around an arbitary minimum
+// and maximum.
+function Wrap(Input : single; const MinValue, MaxValue : single):single;
+
 function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 
 procedure SwapValues(var x1, x2:single); inline; overload;
@@ -102,6 +106,23 @@ begin
   else
     result := Value;
 end;
+
+function Wrap(Input : single; const MinValue, MaxValue : single):single; overload;
+begin
+  while Input < MinValue do
+  begin
+    Input := Input + (MaxValue - MinValue);
+  end;
+
+  while Input > MaxValue do
+  begin
+    Input := Input - (MaxValue - MinValue);
+  end;
+
+  result := Input;
+end;
+
+
 
 function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 begin

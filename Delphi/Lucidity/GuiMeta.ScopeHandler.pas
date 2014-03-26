@@ -172,18 +172,20 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ScopeControl.LfoValues.Par1 := Globals.VstParameters.FindParameter(TParName.Lfo1Par1).ValueVST;
-      ScopeControl.LfoValues.Par2 := Globals.VstParameters.FindParameter(TParName.Lfo1Par2).ValueVST;
-      ScopeControl.LfoValues.Par3 := Globals.VstParameters.FindParameter(TParName.Lfo1Par3).ValueVST;
+      ScopeControl.LfoValues.Shape := Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
+      ScopeControl.LfoValues.Par1  := Globals.VstParameters.FindParameter(TParName.Lfo1Par1).ValueVST;
+      ScopeControl.LfoValues.Par2  := Globals.VstParameters.FindParameter(TParName.Lfo1Par2).ValueVST;
+      ScopeControl.LfoValues.Par3  := Globals.VstParameters.FindParameter(TParName.Lfo1Par3).ValueVST;
     end;
 
     TScopeFocus.Lfo2:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ScopeControl.LfoValues.Par1 := Globals.VstParameters.FindParameter(TParName.Lfo2Par1).ValueVST;
-      ScopeControl.LfoValues.Par2 := Globals.VstParameters.FindParameter(TParName.Lfo2Par2).ValueVST;
-      ScopeControl.LfoValues.Par3 := Globals.VstParameters.FindParameter(TParName.Lfo2Par3).ValueVST;
+      ScopeControl.LfoValues.Shape := Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
+      ScopeControl.LfoValues.Par1  := Globals.VstParameters.FindParameter(TParName.Lfo2Par1).ValueVST;
+      ScopeControl.LfoValues.Par2  := Globals.VstParameters.FindParameter(TParName.Lfo2Par2).ValueVST;
+      ScopeControl.LfoValues.Par3  := Globals.VstParameters.FindParameter(TParName.Lfo2Par3).ValueVST;
     end;
 
     TScopeFocus.Filter1:
