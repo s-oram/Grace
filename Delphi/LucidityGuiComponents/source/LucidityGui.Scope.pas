@@ -69,6 +69,7 @@ type
   end;
 
   TScopeFilterBlendValues = record
+    FilterRouting : TFilterRouting;
     BlendAmt : single;
   end;
 
@@ -148,6 +149,21 @@ type
     class procedure Draw_Lfo_RandomSmooth(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
     class procedure Draw_Lfo_AttackDecay(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
     class procedure Draw_Lfo_Cycle(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
+  end;
+
+  TFilterBlendDrawingRoutines = class
+  private
+    class procedure Draw_SignalTriangleRight(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
+    class procedure Draw_SignalTriangleDown(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
+
+    class procedure Draw_Boxes(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
+    class procedure Draw_InputOutputLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Color:TRedFoxColor; FR : TFilterRouting; const Box1, Box2, Box3 : TRect);
+
+    class procedure Draw_BlendAmountLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
+  public
+    class procedure Draw_Serial(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
+    class procedure Draw_Parallel(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
+    class procedure Draw_FiftyFifty(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
   end;
 
 
@@ -732,6 +748,16 @@ end;
 procedure TLucidityScope.Draw_FilterBlend;
 begin
 
+
+  case FilterBlendValues.FilterRouting of
+    TFilterRouting.Serial:     TFilterBlendDrawingRoutines.Draw_Serial(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.Parallel:   TFilterBlendDrawingRoutines.Draw_Parallel(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.FiftyFifty: TFilterBlendDrawingRoutines.Draw_FiftyFifty(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
 end;
 
 procedure TLucidityScope.Draw_Lfo;
@@ -1105,5 +1131,320 @@ begin
     end;
   end;
 end;
+
+{ TFilterBlendDrawingRoutines }
+
+
+{ TFilterBlendDrawingRoutines }
+
+class procedure TFilterBlendDrawingRoutines.Draw_SignalTriangleDown(BackBuffer: TRedFoxImageBuffer; TargetPointX, TargetPointY: single);
+var
+  TriPoints : array[0..2] of TPointDouble;
+begin
+  TriPoints[0].X := TargetPointX;
+  TriPoints[0].Y := TargetPointY;
+  TriPoints[1].X := TargetPointX-2.5;
+  TriPoints[1].Y := TargetPointY-5.5;
+  TriPoints[2].X := TargetPointX+2.5;
+  TriPoints[2].Y := TargetPointY-5.5;
+  BackBuffer.BufferInterface.Polygon(@TriPoints[0], 3);
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_SignalTriangleRight(BackBuffer: TRedFoxImageBuffer; TargetPointX, TargetPointY: single);
+var
+  TriPoints : array[0..2] of TPointDouble;
+begin
+  TriPoints[0].X := TargetPointX;
+  TriPoints[0].Y := TargetPointY;
+  TriPoints[1].X := TargetPointX-5.5;
+  TriPoints[1].Y := TargetPointY-2.5;
+  TriPoints[2].X := TargetPointX-5.5;
+  TriPoints[2].Y := TargetPointY+2.5;
+  BackBuffer.BufferInterface.Polygon(@TriPoints[0], 3);
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_BlendAmountLines(BackBuffer: TRedFoxImageBuffer;
+  ScopeRect: TRect; Font: TFont; const BlendAmt: single; Color: TRedFoxColor; out Box1, Box2, Box3: TRect);
+var
+  x1, y1, x2, y2 : single;
+  cx1, cy1, cx2, cy2 : single;
+  s : string;
+  TextRect : TRect;
+  px1, py1 : single;
+  BlendFactor1 : single;
+  BlendFactor2 : single;
+begin
+  if BlendAmt = 0 then
+  begin
+    BlendFactor1 := 1;
+    BlendFactor2 := 0;
+  end else
+  if BlendAmt >= 1 then
+  begin
+    BlendFactor1 := 0;
+    BlendFactor2 := 1;
+  end else
+  begin
+    BlendFactor1 := 0.2 + 0.8 * (1-BlendAmt);
+    BlendFactor2 := 0.2 + 0.8 * BlendAmt;
+  end;
+
+
+
+  if BlendFactor1 > 0 then
+  begin
+    BackBuffer.BufferInterface.LineWidth := 2 * BlendFactor1;
+
+    x1 := Box1.Right;
+    y1 := Box1.Top + Box1.Height * 0.5;
+    x2 := Box3.Left;
+    y2 := Box3.Top + (Box3.Height * 0.25);
+
+    cx1 := x1 + 20;
+    cy1 := y1;
+    cx2 := x2 - 40;
+    cy2 := y2;
+    BackBuffer.BufferInterface.Curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
+    Draw_SignalTriangleRight(BackBuffer, x2, y2);
+
+    px1 := Box1.Right + 44;
+    py1 := ScopeRect.Top  + (1/5 * ScopeRect.Height);
+
+    TextRect.Left   := round(px1 - 20);
+    TextRect.Right  := round(px1 + 20);
+    TextRect.Top    := round(py1 - 20);
+    TextRect.Bottom := round(py1 + 20);
+
+    s := IntToStr(Round((1-BlendAmt) * 100)) + '%';
+
+    BackBuffer.DrawText(s, Font, TRedFoxAlign.AlignNear, TRedFoxAlign.AlignCenter, TextRect);
+  end;
+
+
+  if BlendFactor2 > 0 then
+  begin
+    BackBuffer.BufferInterface.LineWidth := 2 * BlendFactor2;
+
+    x1 := Box2.Right;
+    y1 := Box2.Top + Box2.Height * 0.5;
+    x2 := Box3.Left;
+    y2 := Box3.Bottom - (Box3.Height * 0.25);
+
+    cx1 := x1 + 20;
+    cy1 := y1;
+    cx2 := x2 - 40;
+    cy2 := y2;
+    BackBuffer.BufferInterface.Curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
+    Draw_SignalTriangleRight(BackBuffer, x2, y2);
+
+
+    px1 := Box1.Right + 44;
+    py1 := ScopeRect.Top  + (4/5 * ScopeRect.Height);
+
+    TextRect.Left   := round(px1 - 20);
+    TextRect.Right  := round(px1 + 20);
+    TextRect.Top    := round(py1 - 20);
+    TextRect.Bottom := round(py1 + 20);
+
+    s := IntToStr(Round(BlendAmt * 100)) + '%';
+
+    BackBuffer.DrawText(s, Font, TRedFoxAlign.AlignNear, TRedFoxAlign.AlignCenter, TextRect);
+  end;
+
+
+
+
+
+
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_Boxes(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font: TFont; const BlendAmt: single; Color:TRedFoxColor; out Box1, Box2, Box3: TRect);
+var
+  tw : single;
+  th : single;
+  TextRect : TRect;
+  px1, py1 : single;
+begin
+  //==== Filter One =====
+  tw := BackBuffer.TextWidth('Filter 1') + 7;
+  th := BackBuffer.TextHeight + 7;
+
+  px1 := ScopeRect.Left + (1/4 * ScopeRect.Width);
+  py1 := ScopeRect.Top  + (1/5 * ScopeRect.Height);
+
+  TextRect.Left   := round(px1 - 20);
+  TextRect.Right  := round(px1 + 20);
+  TextRect.Top    := round(py1 - 20);
+  TextRect.Bottom := round(py1 + 20);
+
+  Box1.Left   := round(px1 - tw * 0.5);
+  Box1.Right  := round(px1 + tw * 0.5);
+  Box1.Top    := round(py1 - th * 0.5);
+  Box1.Bottom := round(py1 + th * 0.5);
+
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.FillColor := Color;
+  BackBuffer.DrawText('Filter 1', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextRect);
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.Rectangle(Box1.Left - 0.5, Box1.Top + 0.5, Box1.Right - 0.5, Box1.Bottom - 0.5);
+
+
+
+
+  //==== Filter Two =====
+  tw := BackBuffer.TextWidth('Filter 2') + 7;
+  th := BackBuffer.TextHeight + 7;
+
+  px1 := ScopeRect.Left + (1/4 * ScopeRect.Width);
+  py1 := ScopeRect.Top  + (4/5 * ScopeRect.Height);
+
+  TextRect.Left   := round(px1 - 20);
+  TextRect.Right  := round(px1 + 20);
+  TextRect.Top    := round(py1 - 20);
+  TextRect.Bottom := round(py1 + 20);
+
+  Box2.Left   := round(px1 - tw * 0.5);
+  Box2.Right  := round(px1 + tw * 0.5);
+  Box2.Top    := round(py1 - th * 0.5);
+  Box2.Bottom := round(py1 + th * 0.5);
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.FillColor := Color;
+  BackBuffer.DrawText('Filter 2', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextRect);
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.Rectangle(Box2.Left - 0.5, Box2.Top + 0.5, Box2.Right - 0.5, Box2.Bottom - 0.5);
+
+
+
+
+
+  //==== Output =====
+  tw := BackBuffer.TextWidth('Output') + 7;
+  th := BackBuffer.TextHeight + 7;
+
+  px1 := ScopeRect.Left + (4/5 * ScopeRect.Width);
+  py1 := ScopeRect.Top  + (1/2 * ScopeRect.Height);
+
+  TextRect.Left   := round(px1 - 20);
+  TextRect.Right  := round(px1 + 20);
+  TextRect.Top    := round(py1 - 20);
+  TextRect.Bottom := round(py1 + 20);
+
+  Box3.Left   := round(px1 - tw * 0.5);
+  Box3.Right  := round(px1 + tw * 0.5);
+  Box3.Top    := round(py1 - th * 0.5);
+  Box3.Bottom := round(py1 + th * 0.5);
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.FillColor := Color;
+  BackBuffer.DrawText('Output', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextRect);
+
+  BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.Rectangle(Box3.Left - 0.5, Box3.Top + 0.5, Box3.Right - 0.5, Box3.Bottom - 0.5);
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_InputOutputLines(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Color: TRedFoxColor; FR : TFilterRouting; const Box1, Box2, Box3: TRect);
+var
+  x1, y1, x2, y2 : single;
+  TriPoints : array[0..2] of TPointDouble;
+begin
+  //== draw the in out arrows ==
+  BackBuffer.BufferInterface.FillColor := color;
+
+  x1 := ScopeRect.Left;
+  x2 := Box1.Left;
+  y1 := Box1.Top + Box1.Height * 0.5;
+  y1 := round(y1) - 0.5;
+  y2 := y1;
+
+  BackBuffer.BufferInterface.Line(x1, y1, x2, y2);
+  Draw_SignalTriangleRight(BackBuffer, x2, y2);
+
+
+  x1 := Box3.Right;
+  x2 := ScopeRect.Right;
+  y1 := Box3.Top + Box3.Height * 0.5;
+  y1 := round(y1) - 0.5;
+  y2 := y1;
+
+  BackBuffer.BufferInterface.Line(x1, y1, x2, y2);
+  Draw_SignalTriangleRight(BackBuffer, x2, y2);
+
+
+  if (FR = TFilterRouting.Parallel) or (FR = TFilterRouting.FiftyFifty) then
+  begin
+    x1 := ScopeRect.Left;
+    x2 := Box2.Left;
+    y1 := Box2.Top + Box2.Height * 0.5;
+    y1 := round(y1) - 0.5;
+    y2 := y1;
+
+    BackBuffer.BufferInterface.Line(x1, y1, x2, y2);
+    Draw_SignalTriangleRight(BackBuffer, x2, y2);
+  end;
+
+  if (FR = TFilterRouting.Serial) or (FR = TFilterRouting.FiftyFifty) then
+  begin
+    x1 := Box1.Left + Box1.Width * 0.5;
+    x1 := round(x1) - 0.5;
+    x2 := x1;
+    y1 := Box1.Bottom;
+    y2 := Box2.Top;
+
+    BackBuffer.BufferInterface.Line(x1, y1, x2, y2);
+    Draw_SignalTriangleDown(BackBuffer, x2, y2);
+  end;
+
+end;
+
+
+
+
+class procedure TFilterBlendDrawingRoutines.Draw_FiftyFifty(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; Color:TRedFoxColor);
+var
+  Box1, Box2, Box3 : TRect;
+begin
+  BackBuffer.UpdateFont(Font);
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+  Draw_Boxes(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+  Draw_InputOutputLines(BackBuffer, ScopeRect, Color, TFilterRouting.FiftyFifty, Box1, Box2, Box3);
+  Draw_BlendAmountLines(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_Parallel(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; Color:TRedFoxColor);
+var
+  Box1, Box2, Box3 : TRect;
+begin
+  BackBuffer.UpdateFont(Font);
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+  Draw_Boxes(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+  Draw_InputOutputLines(BackBuffer, ScopeRect, Color, TFilterRouting.Parallel, Box1, Box2, Box3);
+  Draw_BlendAmountLines(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+end;
+
+class procedure TFilterBlendDrawingRoutines.Draw_Serial(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; Color:TRedFoxColor);
+var
+  Box1, Box2, Box3 : TRect;
+begin
+  BackBuffer.UpdateFont(Font);
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+  Draw_Boxes(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+  Draw_InputOutputLines(BackBuffer, ScopeRect, Color, TFilterRouting.Serial, Box1, Box2, Box3);
+  Draw_BlendAmountLines(BackBuffer, ScopeRect, Font, BlendAmt, Color, Box1, Box2, Box3);
+end;
+
+
 
 end.

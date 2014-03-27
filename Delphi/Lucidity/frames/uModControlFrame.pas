@@ -326,11 +326,14 @@ begin
   AddDisplayClass(Filter2Par2Knob,        TScopeFocusID.Filter2);
   AddDisplayClass(Filter2Par3Knob,        TScopeFocusID.Filter2);
   AddDisplayClass(Filter2Par4Knob,        TScopeFocusID.Filter2);
+  AddDisplayClass(FilterBlendKnob,        TScopeFocusID.FilterBlend);
 
   AddDisplayClass(Filter1TypeTextBox,     TScopeFocusID.Filter1);
   AddDisplayClass(Filter2TypeTextBox,     TScopeFocusID.Filter2);
   AddDisplayClass(AmpVelocityButton,      TScopeFocusID.AmpEnv);
   AddDisplayClass(FilterVelocityButton,   TScopeFocusID.ModEnv);
+
+
 
   //AddDisplayClass(LfoShapeTextBox1,       TScopeFocusID);
   //AddDisplayClass(Seq1ClockTextBox,       TScopeFocusID);

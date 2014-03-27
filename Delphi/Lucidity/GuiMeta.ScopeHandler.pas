@@ -214,8 +214,8 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.FilterBlend;
 
-      //TODO: add link to filter blend amount!
-      //ScopeControl.FilterBlendValues.BlendAmt := Globals.VstParameters.FindParameter(TParName.fiFilter1Par1).ValueVST;
+      ScopeControl.FilterBlendValues.FilterRouting := Globals.VstParameters.FindParameter(TParName.FilterRouting).ValueAsEnum<TFilterRouting>;
+      ScopeControl.FilterBlendValues.BlendAmt      := Globals.VstParameters.FindParameter(TParName.FilterOutputBlend).ValueVST;
     end;
   end;
 

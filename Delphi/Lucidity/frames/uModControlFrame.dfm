@@ -677,6 +677,7 @@ object ModControlFrame: TModControlFrame
           Font.Name = 'Tahoma'
           Font.Style = []
           Units = '%'
+          Color_Background = '$00000000'
           Color_Label = clGray
           Color_Numeric = clBlack
           Color_Arrows1 = '$cc000000'
@@ -685,6 +686,7 @@ object ModControlFrame: TModControlFrame
           KnobMax = 100
           KnobNumericStyle = nsInteger
           KnobDecimalPlaces = 2
+          KnobSensitivity = 1.000000000000000000
           Visible = True
         end
       end
@@ -1741,6 +1743,7 @@ object ModControlFrame: TModControlFrame
           Font.Name = 'Tahoma'
           Font.Style = []
           Units = '%'
+          Color_Background = '$00000000'
           Color_Label = clGray
           Color_Numeric = clBlack
           Color_Arrows1 = '$cc000000'
@@ -1749,6 +1752,7 @@ object ModControlFrame: TModControlFrame
           KnobMax = 100
           KnobNumericStyle = nsInteger
           KnobDecimalPlaces = 2
+          KnobSensitivity = 1.000000000000000000
           Visible = True
         end
       end
