@@ -99,6 +99,11 @@ type
     SignalAniID : TUniqueID;
     SignalOpacity : byte;
 
+
+    DiagramBuffer : TRedFoxImageBuffer;
+    DiagramBufferAlpha : byte;
+    DiagramBufferAnimationID : TUniqueID;
+
     procedure Draw_ADSR;
     procedure Draw_Lfo;
 
@@ -155,15 +160,19 @@ type
   private
     class procedure Draw_SignalTriangleRight(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
     class procedure Draw_SignalTriangleDown(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
-
     class procedure Draw_Boxes(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
     class procedure Draw_InputOutputLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Color:TRedFoxColor; FR : TFilterRouting; const Box1, Box2, Box3 : TRect);
-
     class procedure Draw_BlendAmountLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
   public
     class procedure Draw_Serial(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
     class procedure Draw_Parallel(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
     class procedure Draw_FiftyFifty(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor);
+  end;
+
+  TAdsrDrawingRoutines = class
+  private
+  public
+    class procedure Draw_Adsr(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Color:TRedFoxColor; AdsrValues : TScopeAdsrValues);
   end;
 
 
@@ -175,8 +184,10 @@ uses
   SysUtils,
   Math,
   VamLib.Utils,
+  AggPixelFormat,
   Agg2D,
-  AggBasics;
+  AggBasics,
+  RedFox2D;
 
 type
   TDrawFunction = reference to function(x:single):single;
@@ -311,14 +322,19 @@ begin
   LfoValues.UpdateRandomValues;
 
   SignalAniID.Init;
+  DiagramBufferAnimationID.Init;
 
   SignalOpacity := 255;
+
+
+  DiagramBuffer := TRedFoxImageBuffer.Create;
 end;
 
 destructor TLucidityScope.Destroy;
 begin
-  FreeAndNil(SignalDisplay);
-  FreeAndNil(FreqDisplay);
+  DiagramBuffer.Free;
+  SignalDisplay.Free;
+  FreqDisplay.Free;
   inherited;
 end;
 
@@ -341,11 +357,18 @@ begin
   begin
     ScopeRect := Rect(8,8,aWidth-8,aHeight-24);
 
+    if assigned(DiagramBuffer) then
+    begin
+      DiagramBuffer.SetSize(AWidth, AHeight);
+      DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
+    end;
+
     if assigned(SignalDisplay)
       then SignalDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
 
     if assigned(FreqDisplay)
       then FreqDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
+
 
 
   end else
@@ -386,7 +409,7 @@ end;
 
 procedure TLucidityScope.SetScopeDisplayMode(const Value: TScopeDisplayMode);
 var
-  animation : TByteAnimation;
+  Animation : TByteAnimation;
 begin
   if Value <> fScopeMode then
   begin
@@ -397,7 +420,7 @@ begin
 
   if fScopeMode = TScopeDisplayMode.DisplayOff then
   begin
-    animation := TByteAnimation.Create;
+    Animation := TByteAnimation.Create;
     Animation.RunTime := 500;
     Animation.StartValue := SignalOpacity;
     Animation.EndValue   := 255;
@@ -406,18 +429,43 @@ begin
       SignalOpacity := CurrentValue;
     end;
     GlobalAnimator.Animate(SignalAniID, Animation);
+
+
+    Animation := TByteAnimation.Create;
+    Animation.RunTime := 500;
+    Animation.StartValue := DiagramBufferAlpha;
+    Animation.EndValue   := 0;
+    Animation.ApplyMethod := procedure(CurrentValue : byte)
+    begin
+      DiagramBufferAlpha := CurrentValue;
+    end;
+    GlobalAnimator.Animate(DiagramBufferAnimationID, Animation);
+
   end else
   begin
-    animation := TByteAnimation.Create;
-    Animation.RunTime := 150;
+    Animation := TByteAnimation.Create;
+    Animation.RunTime := 250;
     Animation.StartValue := SignalOpacity;
-    Animation.EndValue   := 100;
+    Animation.EndValue   := 65;
     Animation.ApplyMethod := procedure(CurrentValue : byte)
     begin
       SignalOpacity := CurrentValue;
     end;
     GlobalAnimator.Animate(SignalAniID, Animation);
+
+    Animation := TByteAnimation.Create;
+    Animation.RunTime := 250;
+    Animation.StartValue := DiagramBufferAlpha;
+    Animation.EndValue   := 255;
+    Animation.ApplyMethod := procedure(CurrentValue : byte)
+    begin
+      DiagramBufferAlpha := CurrentValue;
+    end;
+    GlobalAnimator.Animate(DiagramBufferAnimationID, Animation);
   end;
+
+
+
 
 
 end;
@@ -437,6 +485,8 @@ var
   x1, y1, x2, y2 : single;
 begin
   inherited;
+
+
 
   LfoValues.UpdateRandomValues;
 
@@ -469,16 +519,19 @@ begin
     BackBuffer.BufferInterface.FillColor := fColorBackground.WithAlpha(255-SignalOpacity);
     BackBuffer.BufferInterface.NoLine;
     BackBuffer.BufferInterface.Rectangle(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom);
-
-
   end;
 
-  case ScopeMode of
-    //TScopeDisplayMode.DisplayOff:  SignalDisplay.DrawTo(BackBuffer, ScopeRect);
-    TScopeDisplayMode.ADSR:        Draw_ADSR;
-    TScopeDisplayMode.LFO:         Draw_Lfo;
-    TScopeDisplayMode.Filter:      Draw_Filter;
-    TScopeDisplayMode.FilterBlend: Draw_FilterBlend;
+
+  if DiagramBufferAlpha > 0 then
+  begin
+    case ScopeMode of
+      TScopeDisplayMode.ADSR:        Draw_ADSR;
+      TScopeDisplayMode.LFO:         Draw_Lfo;
+      TScopeDisplayMode.Filter:      Draw_Filter;
+      TScopeDisplayMode.FilterBlend: Draw_FilterBlend;
+    end;
+
+    RedFox_AlphaBlit(BackBuffer.RedFoxInterface, DiagramBuffer.RedFoxInterface, 0, 0, DiagramBuffer.Width, DiagramBuffer.Height, 0, 0, DiagramBufferAlpha);
   end;
 
 
@@ -489,88 +542,9 @@ begin
 end;
 
 procedure TLucidityScope.Draw_ADSR;
-const
-  kMinStageTime : single = 0.1;
-var
-  x1, y1 : single;
-  x2, y2 : single;
-  x3, y3 : single;
-  x4, y4 : single;
-  SectionWidth : single;
 begin
-  BackBuffer.BufferInterface.LineColor := fColorForeground;
-  BackBuffer.BufferInterface.NoFill;
-  BackBuffer.BufferInterface.LineWidth := 1.5;
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
-
-  SectionWidth := ScopeRect.Width / 5;
-
-  //== Draw Attack Stage ==
-  x1 := ScopeRect.Left;
-  y1 := ScopeRect.Bottom;
-  x4 := x1 + SectionWidth * (AdsrValues.Attack + kMinStageTime);
-  y4 := ScopeRect.Top;
-
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  x2 := x1 + (x4 - x1) * 1/3;
-  y2 := y1 + (y4 - y1) * 2.5/3;
-  x3 := x1 + (x4 - x1) * 2/3;
-  y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
-
-  //== Draw Hold Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := x1 + SectionWidth * AdsrValues.Hold * 0.5;
-  y4 := ScopeRect.Top;
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  x2 := x1 + (x4 - x1) * 1/3;
-  y2 := y1 + (y4 - y1) * 2.5/3;
-  x3 := x1 + (x4 - x1) * 2/3;
-  y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
-
-
-  //== Draw Decay Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := x1 + SectionWidth * (AdsrValues.Decay + kMinStageTime);
-  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  x2 := x1 + (x4 - x1) * 1/3;
-  y2 := y1 + (y4 - y1) * 2.5/3;
-  x3 := x1 + (x4 - x1) * 2/3;
-  y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
-
-  //== Draw Sustain Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := x1 + SectionWidth * ((1 - AdsrValues.Attack) + (1 - AdsrValues.Decay) + (1 - AdsrValues.Hold * 0.5));
-  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-
-
-
-  //== Draw Release Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := x1 + SectionWidth * (AdsrValues.Release + kMinStageTime);
-  y4 := ScopeRect.Bottom;
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  x2 := x1 + (x4 - x1) * 1/3;
-  y2 := y1 + (y4 - y1) * 2.5/3;
-  x3 := x1 + (x4 - x1) * 2/3;
-  y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
-
-
-  //== Draw Off Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := ScopeRect.Right;
-  y4 := ScopeRect.Bottom;
-  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
+  TAdsrDrawingRoutines.Draw_Adsr(DiagramBuffer, ScopeRect, fColorForeground, AdsrValues);
 end;
 
 procedure TLucidityScope.Draw_Filter;
@@ -747,45 +721,40 @@ end;
 
 procedure TLucidityScope.Draw_FilterBlend;
 begin
-
+  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
   case FilterBlendValues.FilterRouting of
-    TFilterRouting.Serial:     TFilterBlendDrawingRoutines.Draw_Serial(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
-    TFilterRouting.Parallel:   TFilterBlendDrawingRoutines.Draw_Parallel(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
-    TFilterRouting.FiftyFifty: TFilterBlendDrawingRoutines.Draw_FiftyFifty(BackBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.Serial:     TFilterBlendDrawingRoutines.Draw_Serial(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.Parallel:   TFilterBlendDrawingRoutines.Draw_Parallel(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.FiftyFifty: TFilterBlendDrawingRoutines.Draw_FiftyFifty(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
   else
     raise Exception.Create('Type not handled.');
   end;
-
-
 end;
 
 procedure TLucidityScope.Draw_Lfo;
 var
   aFunction : TDrawFunction;
 begin
-  BackBuffer.BufferInterface.LineColor := fColorForeground;
-  BackBuffer.BufferInterface.NoFill;
-  BackBuffer.BufferInterface.LineWidth := 1.5;
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
-
+  DiagramBuffer.BufferInterface.LineColor := fColorForeground;
+  DiagramBuffer.BufferInterface.NoFill;
+  DiagramBuffer.BufferInterface.LineWidth := 1.5;
+  DiagramBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
   case LfoValues.Shape of
-    TLfoShape.SawUp:    TLfoDrawingRoutines.Draw_Lfo_SawUp(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.SawDown:  TLfoDrawingRoutines.Draw_Lfo_SawDown(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.Square:   TLfoDrawingRoutines.Draw_Lfo_Square(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.Triangle: TLfoDrawingRoutines.Draw_Lfo_Tri(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.Sine:     TLfoDrawingRoutines.Draw_Lfo_Sine(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.RandomStepped: TLfoDrawingRoutines.Draw_Lfo_RandomStepped(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.RandomSmooth:  TLfoDrawingRoutines.Draw_Lfo_RandomSmooth(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.AttackDecay:   TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.AttackRelease: TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer, ScopeRect, LfoValues);
-    TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(BackBuffer, ScopeRect, LfoValues);
+    TLfoShape.SawUp:    TLfoDrawingRoutines.Draw_Lfo_SawUp(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.SawDown:  TLfoDrawingRoutines.Draw_Lfo_SawDown(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.Square:   TLfoDrawingRoutines.Draw_Lfo_Square(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.Triangle: TLfoDrawingRoutines.Draw_Lfo_Tri(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.Sine:     TLfoDrawingRoutines.Draw_Lfo_Sine(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.RandomStepped: TLfoDrawingRoutines.Draw_Lfo_RandomStepped(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.RandomSmooth:  TLfoDrawingRoutines.Draw_Lfo_RandomSmooth(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.AttackDecay:   TLfoDrawingRoutines.Draw_Lfo_AttackDecay(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.AttackRelease: TLfoDrawingRoutines.Draw_Lfo_AttackDecay(DiagramBuffer, ScopeRect, LfoValues);
+    TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(DiagramBuffer, ScopeRect, LfoValues);
   end;
-
-
-
 
 end;
 
@@ -1446,5 +1415,92 @@ begin
 end;
 
 
+
+{ TAdsrDrawingRoutines }
+
+class procedure TAdsrDrawingRoutines.Draw_Adsr(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Color : TRedfoxColor; AdsrValues: TScopeAdsrValues);
+const
+  kMinStageTime : single = 0.1;
+var
+  x1, y1 : single;
+  x2, y2 : single;
+  x3, y3 : single;
+  x4, y4 : single;
+  SectionWidth : single;
+begin
+  BackBuffer.BufferInterface.LineColor := Color; //fColorForeground;
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineWidth := 1.5;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+
+  SectionWidth := ScopeRect.Width / 5;
+
+  //== Draw Attack Stage ==
+  x1 := ScopeRect.Left;
+  y1 := ScopeRect.Bottom;
+  x4 := x1 + SectionWidth * (AdsrValues.Attack + kMinStageTime);
+  y4 := ScopeRect.Top;
+
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+
+  //== Draw Hold Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * AdsrValues.Hold * 0.5;
+  y4 := ScopeRect.Top;
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+
+
+  //== Draw Decay Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * (AdsrValues.Decay + kMinStageTime);
+  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+
+  //== Draw Sustain Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * ((1 - AdsrValues.Attack) + (1 - AdsrValues.Decay) + (1 - AdsrValues.Hold * 0.5));
+  y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
+  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+
+
+
+  //== Draw Release Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := x1 + SectionWidth * (AdsrValues.Release + kMinStageTime);
+  y4 := ScopeRect.Bottom;
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  x2 := x1 + (x4 - x1) * 1/3;
+  y2 := y1 + (y4 - y1) * 2.5/3;
+  x3 := x1 + (x4 - x1) * 2/3;
+  y3 := y1 + (y4 - y1) * 3/3;
+  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+
+
+  //== Draw Off Stage ==
+  x1 := x4;
+  y1 := y4;
+  x4 := ScopeRect.Right;
+  y4 := ScopeRect.Bottom;
+  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+end;
 
 end.
