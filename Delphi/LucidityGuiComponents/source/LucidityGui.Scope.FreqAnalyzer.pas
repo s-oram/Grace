@@ -16,7 +16,6 @@ type
 
   TFreqDisplay = class
   private
-    BackBuffer: TRedFoxImageBuffer;
     ResetRequired : boolean;
     ReadIndex  : integer;
     WriteIndex : integer;
@@ -30,7 +29,6 @@ type
     procedure SetSize(w,h:integer);
 
     procedure ProcessSignal(Dest : TRedFoxImageBuffer; const DestRect:TRect; const Source: IFreqAnalyzer);
-    procedure DrawTo(Dest : TRedFoxImageBuffer; const DestRect:TRect);
 
     property LineColor : TRedFoxColor read fLineColor write fLineColor;
   end;
@@ -44,18 +42,15 @@ uses
 
 constructor TFreqDisplay.Create;
 begin
-  BackBuffer := TRedFoxImageBuffer.Create;
 end;
 
 destructor TFreqDisplay.Destroy;
 begin
-  BackBuffer.Free;
   inherited;
 end;
 
 procedure TFreqDisplay.SetSize(w, h: integer);
 begin
-  BackBuffer.SetSize(w, h);
 end;
 
 procedure TFreqDisplay.ProcessSignal(Dest: TRedFoxImageBuffer; const DestRect: TRect; const Source: IFreqAnalyzer);
@@ -64,44 +59,30 @@ var
   MData : PSingle;
   MFrames : integer;
   c1: Integer;
-
   dx1, dx2, dy1, dy2 : single;
 begin
-  BackBuffer.BufferInterface.ClearAll(255,255,255,0);
-  BackBuffer.BufferInterface.LineColor := LineColor;
-  //BackBuffer.BufferInterface.Line(0,0, BackBuffer.Width, BackBuffer.Height);
-
+  Dest.BufferInterface.ClearAll(255,255,255,0);
+  Dest.BufferInterface.LineColor := LineColor;
+  Dest.BufferInterface.NoFill;
+  Dest.BufferInterface.LineWidth := 1;
 
   Source.GetAnalysisData(MData, MFrames);
 
-  dx1 := 0;
+  dx1 := DestRect.Left;
   dy1 := DestRect.Height;
 
   for c1 := 0 to MFrames-1 do
   begin
-    dx2 := (c1 / (MFrames-1)) * DestRect.Width;
-    dy2 := (1 - MData^) * DestRect.Height;
+    dx2 := DestRect.Left + (c1 / (MFrames-1)) * DestRect.Width;
+    dy2 := DestRect.Top  + (1 - MData^) * DestRect.Height;
 
-    BackBuffer.BufferInterface.Line(dx1, dy1, dx2, dy2);
+    Dest.BufferInterface.Line(dx1, dy1, dx2, dy2);
 
     dx1 := dx2;
     dy1 := dy2;
 
     inc(MData);
   end;
-
-  x1 := 0;
-  y1 := 0;
-  x2 := BackBuffer.Width;
-  y2 := BackBuffer.Height;
-  DestX := DestRect.Left;
-  DestY := DestRect.Top;
-
-  RedFox_AlphaBlit(Dest.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, destX, destY, 255);
-end;
-
-procedure TFreqDisplay.DrawTo(Dest: TRedFoxImageBuffer; const DestRect: TRect);
-begin
 
 end;
 

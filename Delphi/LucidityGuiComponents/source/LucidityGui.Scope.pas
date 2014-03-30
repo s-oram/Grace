@@ -106,10 +106,8 @@ type
 
     procedure Draw_ADSR;
     procedure Draw_Lfo;
-
     procedure Draw_Filter;
     procedure Draw_FilterBlend;
-    procedure Draw_Spectrum;
   public
     AdsrValues        : TScopeAdsrValues;
     LfoValues         : TScopeLfoValues;
@@ -548,175 +546,9 @@ begin
 end;
 
 procedure TLucidityScope.Draw_Filter;
-var
-  aFunction : TDrawFunction;
 begin
-  BackBuffer.BufferInterface.LineColor := fColorForeground;
-  BackBuffer.BufferInterface.NoFill;
-  BackBuffer.BufferInterface.LineWidth := 1.5;
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
-
-  Draw_Spectrum;
-
-  {
-  case FilterValues.FilterType of
-    ftNone:
-    begin
-
-    end;
-
-    ftLowPassA:
-    begin
-      aFunction := function(x:single):single
-      const
-        a = 1 - (1/0.1);
-      var
-        ScaledX : single;
-        ResPeak : single;
-        ResPeak2 : single;
-        BaseValue : single;
-      begin
-        ResPeak := (0.7 - Power((FilterValues.Par1 - x),2) * 1800 * FilterValues.Par2 * FilterValues.Par2) * FilterValues.Par2;
-
-        if (x < FilterValues.Par1) then
-        begin
-          ScaledX := 1 + (X - FilterValues.Par1);
-          ResPeak2 := ScaledX / (ScaledX + a * (ScaledX - 1));
-          ResPeak2 := ResPeak2;
-          ResPeak2 := 0.3 + (ResPeak2 * 0.7) * FilterValues.Par2;
-          result := ResPeak2;
-        end else
-        begin
-          BaseValue := 0.3 - Power((FilterValues.Par1 - x),2) * 24;
-          result := BaseValue + ResPeak;
-        end;
-      end;
-
-      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
-    end;
-
-    ftBandPassA:
-    begin
-      aFunction := function(x:single):single
-      const
-        a = 1 - (1/0.1);
-      var
-        Cutoff : single;
-        Res : single;
-        ScaledX : single;
-        ResPeak : single;
-        ResPeak2 : single;
-        BaseValue : single;
-      begin
-        CutOff := FilterValues.Par1;
-        Res    := FilterValues.Par2 * 0.7 + 0.3;
-
-        ResPeak := (0.7 - Power((Cutoff - x),2) * 1800 * Sqr(Res)) * Res;
-        result := 0.3 + ResPeak;
-      end;
-
-      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
-
-    end;
-
-    ftHighPassA:
-    begin
-      aFunction := function(x:single):single
-      const
-        a = 1 - (1/0.1);
-      var
-        ScaledX : single;
-        ResPeak : single;
-        ResPeak2 : single;
-        BaseValue : single;
-      begin
-        ResPeak := (0.7 - Power((FilterValues.Par1 - x),2) * 1800 * FilterValues.Par2 * FilterValues.Par2) * FilterValues.Par2;
-
-        if (x > FilterValues.Par1) then
-        begin
-          ScaledX := 1 + (FilterValues.Par1 - X);
-          ResPeak2 := ScaledX / (ScaledX + a * (ScaledX - 1));
-          ResPeak2 := ResPeak2;
-          ResPeak2 := 0.3 + (ResPeak2 * 0.7) * FilterValues.Par2;
-          result := ResPeak2;
-        end else
-        begin
-          BaseValue := 0.3 - Power((FilterValues.Par1 - x),2) * 24;
-          result := BaseValue + ResPeak;
-        end;
-      end;
-
-      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
-    end;
-
-
-
-    ftLofiA:
-    begin
-
-    end;
-
-    ftRingModA:
-    begin
-      aFunction := function(x:single):single
-        function TriEnvelope(const Cutoff, X:single):single;
-        begin
-          result := 1 - abs(Cutoff - x);
-        end;
-        function SmoothEnvelope(const Cutoff, X:single):single;
-        const
-          a = 1 - (1/0.23);
-        var
-          Env : single;
-        begin
-          Env := 1 - Clamp((abs((Cutoff - x) * 4)), 0, 1);
-          Env := Env / (Env + a * (Env - 1));
-          result := Env;
-        end;
-        function Peaks(const Cutoff, X:single):single;
-        var
-          Env : single;
-        begin
-          Env := ((2 * pi * (x - Cutoff)) * 12);
-          Env := abs(sin(Env));
-          result := Env;
-        end;
-      var
-        Cutoff : single;
-        Res : single;
-        Env : single;
-      begin
-        CutOff := FilterValues.Par1;
-        Res    := FilterValues.Par2;
-
-        Cutoff := Quantise(Cutoff, ScopeRect.Width-1);
-        x      := Quantise(x, ScopeRect.Width-1);
-
-        Env := Peaks(Cutoff, x) * SmoothEnvelope(Cutoff, x) * 2.3 - 1.1;
-
-        result := LinearInterpolation(Res, 0.3, Env);
-      end;
-
-      DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width, aFunction);
-
-    end;
-
-    ftCombA:
-    begin
-
-    end;
-
-    ft2PoleLowPass,
-    ft2PoleBandPass,
-    ft2PoleHighPass,
-    ft4PoleLowPass,
-    ft4PoleBandPass,
-    ft4PoleHighPass:
-    begin
-      Draw_Spectrum;
-    end;
-  end;
-  }
+  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
+  FreqDisplay.ProcessSignal(DiagramBuffer, ScopeRect, FreqAnalyzer);
 end;
 
 procedure TLucidityScope.Draw_FilterBlend;
@@ -756,12 +588,6 @@ begin
     TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(DiagramBuffer, ScopeRect, LfoValues);
   end;
 
-end;
-
-procedure TLucidityScope.Draw_Spectrum;
-begin
-  FreqDisplay.ProcessSignal(BackBuffer, ScopeRect, FreqAnalyzer);
-  FreqDisplay.DrawTo(BackBuffer, ScopeRect);
 end;
 
 { TLfoDrawingRoutines }

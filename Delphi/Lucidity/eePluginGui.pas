@@ -291,7 +291,6 @@ end;
 procedure TPluginGui.PostCreate(const aVstWindow : HWnd);
 var
   fn : string;
-  msg : TMessage;
   VQ : IVamQuery;
   c : TControl;
   bm1 : TBitmap;
@@ -392,13 +391,16 @@ begin
 
   //===== set up the skin graphics =======
   if Plugin.Globals.SkinImageLoader.Exists('Knob_Lower')
-    then bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Lower');
+    then bm1 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Lower')
+    else bm1 := nil;
 
   if Plugin.Globals.SkinImageLoader.Exists('Knob_Upper')
-    then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Upper');
+    then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Knob_Upper')
+    else bm2 := nil;
 
   if Plugin.Globals.SkinImageLoader.Exists('Knob_PlaceHolder')
-    then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder');
+    then bm3 := Plugin.Globals.SkinImageLoader.GetImage('Knob_PlaceHolder')
+    else bm3 := nil;
 
   VQ := VamQueryRequest(RedFoxContainer, 'UniPolarKnob');
   for c in VQ.List do
