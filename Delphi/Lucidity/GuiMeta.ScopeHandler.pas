@@ -55,7 +55,9 @@ uses
   VamQuery,
   VamWinControl,
   uConstants,
-  VamKnob;
+  VamKnob,
+  VamTextBox,
+  VamButton;
 
 
 
@@ -82,6 +84,21 @@ begin
     (c as TVamKnob).MouseLeaveMultiEvent.Add(KnobMouseLeave);
     (c as TVamKnob).ChangedMultiEvent.Add(KnobChanged);
   end;
+
+  if (c is TVamTextBox) then
+  begin
+    (c as TVamTextBox).MouseEnterMultiEvent.Add(KnobMouseEnter);
+    (c as TVamTextBox).MouseLeaveMultiEvent.Add(KnobMouseLeave);
+    (c as TVamTextBox).ChangedMultiEvent.Add(KnobChanged);
+  end;
+
+  if (c is TVamButton) then
+  begin
+    (c as TVamButton).MouseEnterMultiEvent.Add(KnobMouseEnter);
+    (c as TVamButton).MouseLeaveMultiEvent.Add(KnobMouseLeave);
+    (c as TVamButton).ChangedMultiEvent.Add(KnobChanged);
+  end;
+
 
 end;
 

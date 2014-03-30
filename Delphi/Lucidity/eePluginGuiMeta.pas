@@ -34,7 +34,9 @@ uses
   Classes,
   Controls,
   LucidityGui.Scope,
-  VamKnob;
+  VamKnob,
+  VamTextBox,
+  VamButton;
 
 { TPluginGuiMeta }
 
@@ -61,6 +63,19 @@ begin
   if assigned(Parent) then
   begin
     VQ := VamQueryRequest(Parent as TControl, TVamKnob);
+    for c in VQ.List do
+    begin
+      ScopeHandler.RegisterControl(c);
+    end;
+
+
+    VQ := VamQueryRequest(Parent as TControl, TVamTextBox);
+    for c in VQ.List do
+    begin
+      ScopeHandler.RegisterControl(c);
+    end;
+
+    VQ := VamQueryRequest(Parent as TControl, TVamButton);
     for c in VQ.List do
     begin
       ScopeHandler.RegisterControl(c);

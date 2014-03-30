@@ -80,7 +80,7 @@ type
     LfoContainerLabel: TVamLabel;
     LfoLabel2: TVamLabel;
     LfoLabel1: TVamLabel;
-    LfoShapeTextBox1: TVamTextBox;
+    LfoShapeSelector: TVamTextBox;
     LfoKnob1: TVamKnob;
     LfoKnob2: TVamKnob;
     AmpEnvContainer: TVamDiv;
@@ -120,9 +120,9 @@ type
     LfoSelector: TVamSliderSwitch;
     Filter1KeyTrackKnob: TVamCompoundNumericKnob;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
-    LfoFreqModeTextBox: TVamTextBox;
+    LfoFreqModeSelector: TVamTextBox;
     FilterRoutingButton: TVamTextBox;
-    LfoRangeButton: TVamTextBox;
+    LfoRangeSelector: TVamTextBox;
     procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
@@ -329,9 +329,15 @@ begin
   AddDisplayClass(FilterBlendKnob,        TScopeFocusID.FilterBlend);
 
   AddDisplayClass(Filter1TypeTextBox,     TScopeFocusID.Filter1);
+  AddDisplayClass(Filter1KeyTrackKnob,    TScopeFocusID.Filter1);
   AddDisplayClass(Filter2TypeTextBox,     TScopeFocusID.Filter2);
+  AddDisplayClass(Filter2KeyTrackKnob,    TScopeFocusID.Filter2);
   AddDisplayClass(AmpVelocityButton,      TScopeFocusID.AmpEnv);
   AddDisplayClass(FilterVelocityButton,   TScopeFocusID.ModEnv);
+
+
+  AddDisplayClass(LfoSelectButton1, TScopeFocusID.Lfo1);
+  AddDisplayClass(LfoSelectButton2, TScopeFocusID.Lfo2);
 
 
 
@@ -569,15 +575,15 @@ begin
   LfoLabel3.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
   //LfoShapeTextBox1.Layout.SetSize(68, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoShapeTextBox1.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
 
-  LfoFreqModeTextBox.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
-  LfoFreqModeTextBox.Layout.Anchor(LfoShapeTextBox1).SnapToEdge(TControlFeature.RightEdge);
-  LfoRangeButton.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoFreqModeTextBox).SnapToEdge(TControlFeature.RightEdge);
+  LfoFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
+  LfoFreqModeSelector.Layout.Anchor(LfoShapeSelector).SnapToEdge(TControlFeature.RightEdge);
+  LfoRangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
 
-  LfoShapeTextBox1.Layout.AdjustBounds(0,0,-2,0);
-  LfoFreqModeTextBox.Layout.AdjustBounds(-2,0,-2,0);
-  LfoRangeButton.Layout.AdjustBounds(-2,0,0,0);
+  LfoShapeSelector.Layout.AdjustBounds(0,0,-2,0);
+  LfoFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
+  LfoRangeSelector.Layout.AdjustBounds(-2,0,0,0);
   //==================================================
 
 
@@ -599,9 +605,9 @@ begin
   FilterRoutingButton.Font.Color  := GetRedFoxColor(kColor_LcdDark5);
   Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
   Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
-  LfoShapeTextBox1.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  LfoFreqModeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
-  LfoRangeButton.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
+  LfoShapeSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  LfoFreqModeSelector.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
+  LfoRangeSelector.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
   Seq1ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   Seq1DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
   Seq1StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
@@ -633,9 +639,9 @@ begin
   FilterRoutingButton.Color  := kColor_LcdDark1;
   Filter1TypeTextBox.Color   := kColor_LcdDark1;
   Filter2TypeTextBox.Color   := kColor_LcdDark1;
-  LfoShapeTextBox1.Color     := kColor_LcdDark1;
-  LfoFreqModeTextBox.Color   := kColor_LcdDark1;
-  LfoRangeButton.Color       := kColor_LcdDark1;
+  LfoShapeSelector.Color     := kColor_LcdDark1;
+  LfoFreqModeSelector.Color  := kColor_LcdDark1;
+  LfoRangeSelector.Color     := kColor_LcdDark1;
   Seq1ClockTextBox.Color     := kColor_LcdDark1;
   Seq1DirectionTextBox.Color := kColor_LcdDark1;
   Seq1StepsTextBox.Color     := kColor_LcdDark1;
@@ -648,9 +654,9 @@ begin
   FilterRoutingButton.ColorMouseOver  := kColor_ButtonMouseOver;
   Filter1TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
   Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
-  LfoShapeTextBox1.ColorMouseOver     := kColor_ButtonMouseOver;
-  LfoFreqModeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
-  LfoRangeButton.ColorMouseOver       := kColor_ButtonMouseOver;
+  LfoShapeSelector.ColorMouseOver     := kColor_ButtonMouseOver;
+  LfoFreqModeSelector.ColorMouseOver  := kColor_ButtonMouseOver;
+  LfoRangeSelector.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
   Seq1DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
   Seq1StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
@@ -1017,6 +1023,14 @@ begin
     AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);
     AddDisplayClass(LfoKnob3, TScopeFocusID.Lfo1);
 
+    RemoveDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo2);
+    RemoveDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo2);
+    RemoveDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo2);
+
+    AddDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo1);
+    AddDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo1);
+    AddDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo1);
+
     LfoSelectButton1.IsOn := true;
     LfoSelectButton2.IsOn := false;
     LfoSelector.SwitchPos := 0;
@@ -1025,9 +1039,9 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par3));
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeButton, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Range), TLfoRangeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Range), TLfoRangeHelper);
 
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
@@ -1043,6 +1057,14 @@ begin
     AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo2);
     AddDisplayClass(LfoKnob3, TScopeFocusID.Lfo2);
 
+    RemoveDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo1);
+    RemoveDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo1);
+    RemoveDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo1);
+
+    AddDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo2);
+    AddDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo2);
+    AddDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo2);
+
     LfoSelectButton1.IsOn := false;
     LfoSelectButton2.IsOn := true;
     LfoSelector.SwitchPos := 1;
@@ -1051,9 +1073,9 @@ begin
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
     GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par3));
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeTextBox1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeTextBox, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeButton, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Range), TLfoRangeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);
+    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Range), TLfoRangeHelper);
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
   end;

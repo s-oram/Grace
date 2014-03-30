@@ -1020,7 +1020,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object LfoShapeTextBox1: TVamTextBox
+        object LfoShapeSelector: TVamTextBox
           Left = 0
           Top = 65
           Width = 40
@@ -1197,7 +1197,7 @@ object ModControlFrame: TModControlFrame
           OnChanged = LfoSelectorChanged
           Visible = True
         end
-        object LfoFreqModeTextBox: TVamTextBox
+        object LfoFreqModeSelector: TVamTextBox
           Left = 3
           Top = 87
           Width = 40
@@ -1219,7 +1219,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = []
           Visible = True
         end
-        object LfoRangeButton: TVamTextBox
+        object LfoRangeSelector: TVamTextBox
           Left = 3
           Top = 109
           Width = 40
