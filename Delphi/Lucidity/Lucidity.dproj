@@ -599,6 +599,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\soFreqAnalyzer.pas"/>
 			<DCCReference Include="Lucidity.SequencerDataObject.pas"/>
 			<DCCReference Include="uConstants.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.OptimisedFilter.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

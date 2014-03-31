@@ -22,7 +22,8 @@ uses
   soFilter.LowPassA,
   soFilter.LowPassB,
   soFilter.BandPassA,
-  soFilter.HighPassA;
+  soFilter.HighPassA,
+  soFilter.OptimisedFilter;
 
 type
   TLucidityFilter = class
@@ -44,6 +45,7 @@ type
     HighPassA   : THighPassA;
     LowPassB    : TLowPassB;
     MoogLadder  : TMoogLadder;
+    OptimisedFilter : TOptimisedFilter;
 
     TestFilter : TTestFilter;
 
@@ -100,6 +102,7 @@ begin
   HighPassA   := THighPassA.Create;
   LowPassB    := TLowPassB.Create;
   MoogLadder  := TMoogLadder.Create;
+  OptimisedFilter := TOptimisedFilter.Create;
 end;
 
 destructor TLucidityFilter.Destroy;
@@ -114,6 +117,7 @@ begin
   DistortionA.Free;
   LowPassB.Free;
   MoogLadder.Free;
+  OptimisedFilter.Free;
   inherited;
 end;
 
@@ -126,6 +130,7 @@ begin
   BandPassA.Reset;
   HighPassA.Reset;
   MoogLadder.Reset;
+  OptimisedFilter.Reset;
 end;
 
 function TLucidityFilter.GetModPointer(const Name: string): PSingle;
@@ -157,6 +162,7 @@ begin
   RingModA.Reset;
   DistortionA.Reset;
   MoogLadder.Reset;
+  OptimisedFilter.reset;
 end;
 
 procedure TLucidityFilter.SetKeyFollow(const Value: single);
@@ -179,6 +185,7 @@ begin
   RingModA.SampleRate := Value;
   DistortionA.SampleRate := Value;
   MoogLadder.SampleRate := value;
+  OptimisedFilter.SampleRate := Value;
 end;
 
 

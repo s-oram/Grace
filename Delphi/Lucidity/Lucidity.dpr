@@ -154,7 +154,8 @@ uses
   FilterCore.MoogLadder in 'SoundObjects\FilterCore.MoogLadder.pas',
   soFreqAnalyzer in 'SoundObjects\soFreqAnalyzer.pas',
   Lucidity.SequencerDataObject in 'Lucidity.SequencerDataObject.pas',
-  uConstants in 'uConstants.pas';
+  uConstants in 'uConstants.pas',
+  soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas';
 
 {$R *.res}
 
