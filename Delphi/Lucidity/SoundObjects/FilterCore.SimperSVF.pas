@@ -37,7 +37,65 @@ type
     function StepAsPeak(const x1:double):double;  inline;  //untested.
   end;
 
+function NonLinearSpice(x:double):double;
+function NonLinearSpice2(x:double):double;
+
+
 implementation
+
+uses
+  VamLib.Utils,
+  Math;
+
+function NonLinearSpice2(x:double):double;
+const
+  a : double = 0.007825;
+  b : double = 1.017189;
+  c : double = -0.271803;
+  //d : double = ;
+begin
+  x := Clamp(x, -2, 2);
+  result := sign(x) * (a + (b * abs(x)) + (c * x * x));
+end;
+
+function NonLinearSpice(x:double):double;
+const
+  a : double = 0;
+  b : double = 0.833588;
+  c : double = 0;
+  d : double = -0.090188;
+var
+  tx : double;
+
+  xa  : double;
+  x2  : double;
+  x3  : double;
+  x4  : double;
+  x7  : double;
+  res : double;
+begin
+  //result := tanh(x);
+
+  //tx := (x*x + 1);
+  //tx := power(tx, 0.5);
+  //result := ln(x + tx)
+
+  //result := x + (x * x * x) * 0.3;
+
+
+  xa := abs(x);
+  x2 := xa * xa;
+  x3 := xa * x2;
+  x4 := x2 * x2;
+  x7 := x3 * x4;
+  res := (1.0 - 1.0 / (1.0 + xa + x2 + 0.58576695 * x3 + 0.55442112 * x4 + 0.057481508 * x7));
+  result := res * sign(x);
+
+
+  //x := Clamp(x * 1.5, -1.75, 1.75);
+  //result := (a + (b * x) + (c * x * x) + (d * x * x * x));
+end;
+
 
 { TFilterCore_SimperSvf }
 
@@ -94,11 +152,14 @@ begin
   v2z := v2;
   v0  := x1 + kDenormal;
   v1  := v1z + g * (v0 + v0z - 2*(g + k)*v1z - 2*v2z) / (1 + g*(g + k));
+  //v1 := NonLinearSpice(v1 * 0.5) * 2;
   v2  := v2z + g * (v1 + v1z);
   v0z := v0;
 
   //== Lowpass output ==
-  result := v2;
+  v2 := NonLinearSpice(v2 * 0.25) * 4;
+  //result := v2;
+  result := NonLinearSpice(v2 * 0.75) * 2;
 
   //==Outputs==
   //band  := v1;

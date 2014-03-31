@@ -269,6 +269,8 @@ begin
 
       LowPassA.Freq := cFreq;
       LowPassA.Q    := cQ;
+      //LowPassA.InputGain := mPar3;
+      LowPassA.InputGain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
     end;
 
     ftBandPassA:

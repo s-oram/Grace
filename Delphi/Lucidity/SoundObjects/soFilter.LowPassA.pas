@@ -13,6 +13,7 @@ type
     fSampleRate: single;
     fFreq: single;
     fQ: single;
+    fInputGain: single;
     procedure SetFreq(const Value: single);
     procedure SetQ(const Value: single);
   protected
@@ -30,6 +31,7 @@ type
 
     property Freq : single read fFreq write SetFreq; // range 10?..1/4 Nyquist?
     property Q    : single read fQ    write SetQ;    // range 0..1
+    property InputGain : single read fInputGain write fInputGain; //Linear value.
   end;
 
 implementation
@@ -101,10 +103,10 @@ end;
 
 procedure TLowPassA.Step(var x1, x2: single);
 begin
-  x1 := CoreL1.StepAsLowPass(x1);
+  x1 := CoreL1.StepAsLowPass(x1 * InputGain);
   //x1 := CoreL2.StepAsLowPass(x1);
 
-  x2 := CoreR1.StepAsLowPass(x2);
+  x2 := CoreR1.StepAsLowPass(x2 * InputGain);
   //x2 := CoreR2.StepAsLowPass(x2);
 end;
 
