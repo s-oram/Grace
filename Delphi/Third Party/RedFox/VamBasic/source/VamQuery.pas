@@ -224,6 +224,7 @@ begin
   if SameText(ChildName, Parent.Name) then
   begin
     result := Parent;
+    exit; //======= exit ====>>
   end else
   if (Parent is TWinControl) and ((Parent as TWinControl).ControlCount > 0) then
   begin
@@ -248,4 +249,6 @@ begin
 end;
 
 end.
+
+
 

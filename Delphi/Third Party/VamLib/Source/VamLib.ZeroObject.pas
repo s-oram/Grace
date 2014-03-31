@@ -154,6 +154,10 @@ end;
 
 destructor TZeroObject.Destroy;
 begin
+  // TODO: instead of maintaining a reference to the mother ship, the zero object
+  // could use a multi-event to notify objects of it's destruction.
+  // IE. a NotifyOnFree() event.
+
   // Important: Deregister from the mother ship..
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(self);

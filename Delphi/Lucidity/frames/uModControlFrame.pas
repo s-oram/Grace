@@ -338,7 +338,7 @@ begin
 
   AddDisplayClass(LfoSelectButton1, TScopeFocusID.Lfo1);
   AddDisplayClass(LfoSelectButton2, TScopeFocusID.Lfo2);
-
+  AddDisplayClass(LfoSelector, LfoControlDisplayClass);
 
 
   //AddDisplayClass(LfoShapeTextBox1,       TScopeFocusID);

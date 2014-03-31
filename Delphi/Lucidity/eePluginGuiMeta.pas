@@ -52,6 +52,7 @@ begin
   SystemWindow := aSystemWindow;
 
   ScopeHandler := TScopeHandler.Create(Plugin.Globals);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler);
 
   c := FindControlbyName(Gui, 'Scope');
   if assigned(c) then
@@ -80,6 +81,9 @@ begin
     begin
       ScopeHandler.RegisterControl(c);
     end;
+
+    c := FindControlByName(Parent as TControl, 'LfoSelector');
+    ScopeHandler.RegisterControl(c);
   end;
 
 

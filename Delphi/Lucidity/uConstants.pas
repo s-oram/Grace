@@ -308,7 +308,6 @@ type
     Preview                = 'Preview';
   end;
 
-
   TScopeFocusID = record
   const
     AmpEnv      = 'AmpEnv';
@@ -319,6 +318,9 @@ type
     Filter2     = 'Filter2';
     FilterBlend = 'FilterBlend';
   end;
+
+const
+  LfoControlDisplayClass = 'LfoControl';
 
 
 

@@ -3,6 +3,7 @@ unit GuiMeta.ScopeHandler;
 interface
 
 uses
+  VamLib.ZeroObject,
   eeGlobals,
   Classes,
   Controls,
@@ -22,7 +23,7 @@ type
     FilterBlend
   );
 
-  TScopeHandler = class
+  TScopeHandler = class(TZeroObject)
   private
     fScopeControl: TLucidityScope;
   protected
@@ -38,6 +39,8 @@ type
     procedure ControlChanged(c : TControl);
 
     function FindScopeFocus(c : TControl):TScopeFocus;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create(aGlobals : TGlobals);
     destructor Destroy; override;
@@ -50,6 +53,7 @@ type
 implementation
 
 uses
+  SysUtils,
   VamLib.Throttler,
   uLucidityEnums,
   VamQuery,
@@ -57,7 +61,8 @@ uses
   uConstants,
   VamKnob,
   VamTextBox,
-  VamButton;
+  VamButton,
+  VamSliderSwitch;
 
 
 
@@ -99,6 +104,14 @@ begin
     (c as TVamButton).ChangedMultiEvent.Add(KnobChanged);
   end;
 
+  if (c is TVamSliderSwitch) then
+  begin
+    (c as TVamSliderSwitch).MouseEnterMultiEvent.Add(KnobMouseEnter);
+    (c as TVamSliderSwitch).MouseLeaveMultiEvent.Add(KnobMouseLeave);
+    (c as TVamSliderSwitch).ChangedMultiEvent.Add(KnobChanged);
+  end;
+
+
 
 end;
 
@@ -134,6 +147,30 @@ begin
     FocusedControl := nil;
     ScopeControl.Text := '';
     ScopeFocus := TScopeFocus.None;
+    ControlChanged(nil);
+  end;
+
+end;
+
+procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+  inherited;
+
+  if MsgID = TLucidMsgID.LfoChanged then
+  begin
+    // NOTE:
+    // The scope needs to be updated when the LFO selector is changed by the USER
+    // on the GUI.
+    if (ScopeFocus = TScopeFocus.Lfo1) or (ScopeFocus = TScopeFocus.Lfo2) then
+    begin
+      case Globals.SelectedLfo of
+        0: ScopeFocus := TScopeFocus.Lfo1;
+        1: ScopeFocus := TScopeFocus.Lfo2;
+      else
+        raise Exception.Create('Type not handled.');
+      end;
+    end;
+
     ControlChanged(nil);
   end;
 
@@ -250,6 +287,16 @@ begin
     if HasDisplayClass(c, TScopeFocusID.Filter1)     then exit(TScopeFocus.Filter1);
     if HasDisplayClass(c, TScopeFocusID.Filter2)     then exit(TScopeFocus.Filter2);
     if HasDisplayClass(c, TScopeFocusID.FilterBlend) then exit(TScopeFocus.FilterBlend);
+
+    if HasDisplayClass(c, LfoControlDisplayClass) then
+    begin
+      case Globals.SelectedLfo of
+        0: exit(TScopeFocus.Lfo1);
+        1: exit(TScopeFocus.Lfo2);
+      else
+        raise Exception.Create('Selected LFO value not handled.');
+      end;
+    end;
   end;
 
   // if we've made it this far...
