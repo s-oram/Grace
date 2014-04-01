@@ -53,13 +53,13 @@
 			<CfgDependentOn>..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<DCC_UsePackage>TeeDB;vclib;Tee;vclimg;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;vclie;vcltouch;websnap;vclribbon;VclSmp;vcl;dsnapcon;vclx;webdsnap;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_UsePackage>VamBasicRunXE2;madBasic_;AggPasRunXE2;VamLib;SignalTool416;vcldbx;frx16;TeeDB;Rave100VCL;vclib;Tee;inetdbbde;MtxTools416;RedFoxDesXE2;AggPasDesXE2;madDisAsm_;svnui;vclimg;fmi;intrawebdb_120_160;frxDB16;fs16;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;RedFoxRunXE2;vclie;madExcept_;vcltouch;Intraweb_120_160;websnap;vclribbon;VclSmp;frxe16;fsDB16;MtxDb416;vcl;CodeSiteExpressPkg;MtxCore416;dsnapcon;VamBasicDesXE2;vclx;SignalCore416;webdsnap;svn;OmniThreadLibraryRuntimeXE2;bdertl;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -85,6 +85,8 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="uAsmTest.pas"/>
+			<DCCReference Include="AsmExample.CopyVector.pas"/>
+			<DCCReference Include="AsmDev.SimpleSVF.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

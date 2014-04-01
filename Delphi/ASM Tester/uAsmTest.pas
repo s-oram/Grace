@@ -12,6 +12,7 @@ procedure RunProgram;
 implementation
 
 uses
+  AsmExample.CopyVector,
   VamLib.PerformanceTuning,
   Windows,
   SysUtils,
@@ -699,6 +700,20 @@ var
   WorkA, WorkB : TProc;
   Reset : TProc;
 begin
+  AsmExample.CopyVector.WorkA;
+  AsmExample.CopyVector.WorkB;
+
+
+  //WriteLn(CalcPerformanceDifference(uAsmExamples.WorkA, uAsmExamples.WorkB, nil));
+  //WriteLn(CalcPerformanceDifference(uAsmExamples.WorkA, uAsmExamples.WorkB, nil));
+  //WriteLn(CalcPerformanceDifference(uAsmExamples.WorkA, uAsmExamples.WorkB, nil));
+  //WriteLn(CalcPerformanceDifference(uAsmExamples.WorkA, uAsmExamples.WorkB, nil));
+
+
+  ReadLn;
+
+
+  {
   Optimal4x3_orig(1, 2, 3, 4, 5);
   Optimal4x3(1, 2, 3, 4, 5);
   Optimal4x3_asm2(1, 2, 3, 4, 5);
@@ -755,6 +770,7 @@ begin
 
   // finally
   ReadLn;
+  }
 end;
 
 

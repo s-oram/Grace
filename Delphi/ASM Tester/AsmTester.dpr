@@ -6,7 +6,9 @@ program AsmTester;
 
 uses
   System.SysUtils,
-  uAsmTest in 'uAsmTest.pas';
+  uAsmTest in 'uAsmTest.pas',
+  AsmExample.CopyVector in 'AsmExample.CopyVector.pas',
+  AsmDev.SimpleSVF in 'AsmDev.SimpleSVF.pas';
 
 begin
   try
