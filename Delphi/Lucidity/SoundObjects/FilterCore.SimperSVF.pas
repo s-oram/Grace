@@ -417,44 +417,14 @@ end;
 
 class procedure TSimperVCF.StepAsBandPass(var Data: TDualSimperSVFData);
 begin
-  Data.v1z[0] := Data.v1[0];
-  Data.v2z[0] := Data.v2[0];
-  Data.v0[0]  := Data.Input[0];
-  Data.v1[0]  := Data.v1z[0] + Data.g[0] * (Data.v0[0] + Data.v0z[0] - 2*(Data.g[0] + Data.k[0])*Data.v1z[0] - 2*Data.v2z[0]) / (1 + Data.g[0]*(Data.g[0] + Data.k[0]));
-  Data.v2[0]  := Data.v2z[0] + Data.g[0] * (Data.v1[0] + Data.v1z[0]);
-  Data.v0z[0] := Data.v0[0];
-
-  Data.v1z[1] := Data.v1[1];
-  Data.v2z[1] := Data.v2[1];
-  Data.v0[1]  := Data.Input[1];
-  Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - 2*(Data.g[1] + Data.k[1])*Data.v1z[1] - 2*Data.v2z[1]) / (1 + Data.g[1]*(Data.g[1] + Data.k[1]));
-  Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
-  Data.v0z[1] := Data.v0[1];
-
-  // calc outputs..
-  Data.Ouput[0] := Data.v1[0];
-  Data.Ouput[1] := Data.v1[1];
+  StepFilter_asm(Data);
+  GetBandpassOutput(Data);
 end;
 
 class procedure TSimperVCF.StepAsHighPass(var Data: TDualSimperSVFData);
 begin
-  Data.v1z[0] := Data.v1[0];
-  Data.v2z[0] := Data.v2[0];
-  Data.v0[0]  := Data.Input[0];
-  Data.v1[0]  := Data.v1z[0] + Data.g[0] * (Data.v0[0] + Data.v0z[0] - 2*(Data.g[0] + Data.k[0])*Data.v1z[0] - 2*Data.v2z[0]) / (1 + Data.g[0]*(Data.g[0] + Data.k[0]));
-  Data.v2[0]  := Data.v2z[0] + Data.g[0] * (Data.v1[0] + Data.v1z[0]);
-  Data.v0z[0] := Data.v0[0];
-
-  Data.v1z[1] := Data.v1[1];
-  Data.v2z[1] := Data.v2[1];
-  Data.v0[1]  := Data.Input[1];
-  Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - 2*(Data.g[1] + Data.k[1])*Data.v1z[1] - 2*Data.v2z[1]) / (1 + Data.g[1]*(Data.g[1] + Data.k[1]));
-  Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
-  Data.v0z[1] := Data.v0[1];
-
-  //== Highpass output ==
-  Data.Ouput[0] := Data.v0[0] - Data.k[0]* Data.v1[0] - Data.v2[0];
-  Data.Ouput[1] := Data.v0[1] - Data.k[1]* Data.v1[1] - Data.v2[1];
+  StepFilter_asm(Data);
+  GetHighpassOutput(Data);
 end;
 
 
