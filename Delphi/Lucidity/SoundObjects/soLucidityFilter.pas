@@ -389,6 +389,26 @@ begin
       MoogLadder.InputGain := DecibelsToLinear(mPar3 * 72 - 12);
     end;
 
+
+    ft2PoleLowPassOP,
+    ft2PoleBandPassOP,
+    ft2PoleHighPassOP,
+    ft4PoleLowPassOP,
+    ft4PoleBandPassOP,
+    ft4PoleHighPassOP:
+    begin
+      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
+      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
+
+      cQ := (Par2 + Par2Mod);
+      cQ := Clamp(cQ, kMinQ, kMaxQ);
+
+      OptimisedFilter.Freq := cFreq;
+      OptimisedFilter.Q    := cQ;
+      OptimisedFilter.InputGain := DecibelsToLinear(mPar3 * 72 - 12);
+    end;
+
   end;
 
 end;
@@ -415,6 +435,12 @@ begin
     ft4PoleLowPass:  MoogLadder.StepAs4PoleLP(x1, x2);
     ft4PoleBandPass: MoogLadder.StepAs4PoleBP(x1, x2);
     ft4PoleHighPass: MoogLadder.StepAs4PoleHP(x1, x2);
+    ft2PoleLowPassOP:  OptimisedFilter.StepAs2PoleLP(x1, x2);
+    ft2PoleBandPassOp: OptimisedFilter.StepAs2PoleBP(x1, x2);
+    ft2PoleHighPassOp: OptimisedFilter.StepAs2PoleHP(x1, x2);
+    ft4PoleLowPassOP:  OptimisedFilter.StepAs4PoleLP(x1, x2);
+    ft4PoleBandPassOP: OptimisedFilter.StepAs4PoleBP(x1, x2);
+    ft4PoleHighPassOP: OptimisedFilter.StepAs4PoleHP(x1, x2);
   else
     raise Exception.Create('Unexpected filter type.');
   end;

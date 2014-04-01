@@ -169,7 +169,10 @@ begin
   //if assigned(ChildModule) then SampleMap.SetPatchData(ChildModule);
 end;
 
+
+
 procedure TKeyGroup.GetFilterInfo(const Info: PFilterParameterInfo);
+// TODO: it's possible that this method can be deleted.
   procedure GetFullName(const FilterType : TFilterType; ps1, ps2, ps3 : PString);
   begin
     case FilterType of
