@@ -66,12 +66,18 @@ type
 
 
   TSimperVCF = class
+  private
+    class procedure StepFilter_Pascal(var Data : TDualSimperSVFData);
+    class procedure StepFilter_Alt(var Data : TDualSimperSVFData);
+    class procedure StepFilter_asm(var Data : TDualSimperSVFData);
+
+    class procedure GetLowpassOutput(var Data : TDualSimperSVFData);
+    class procedure GetBandpassOutput(var Data : TDualSimperSVFData);
+    class procedure GetHighpassOutput(var Data : TDualSimperSVFData);
   public
-    class procedure StepAsLowPass(var Data : TDualSimperSVFData);
-    class procedure StepAsLowPass_ALT1(var Data : TDualSimperSVFData);
-    class procedure StepAsLowPass_asm(var Data : TDualSimperSVFData);
-    class procedure StepAsBandPass(var Data : TDualSimperSVFData);
-    class procedure StepAsHighPass(var Data : TDualSimperSVFData);
+    class procedure StepAsLowPass(var Data : TDualSimperSVFData); inline;
+    class procedure StepAsBandPass(var Data : TDualSimperSVFData); inline;
+    class procedure StepAsHighPass(var Data : TDualSimperSVFData); inline;
   end;
 
 
@@ -239,7 +245,7 @@ end;
 
 { TSimperVCF }
 
-class procedure TSimperVCF.StepAsLowPass(var Data: TDualSimperSVFData);
+class procedure TSimperVCF.StepFilter_Pascal(var Data: TDualSimperSVFData);
 begin
   Data.v1z[0] := Data.v1[0];
   Data.v2z[0] := Data.v2[0];
@@ -254,14 +260,9 @@ begin
   Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - Data.Factor1[1]*Data.v1z[1] - 2*Data.v2z[1]) * Data.Factor2[1];
   Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
   Data.v0z[1] := Data.v0[1];
-
-
-  //Calc outputs...
-  Data.Ouput[0] := Data.v2[0];
-  Data.Ouput[1] := Data.v2[1];
 end;
 
-class procedure TSimperVCF.StepAsLowPass_ALT1(var Data: TDualSimperSVFData);
+class procedure TSimperVCF.StepFilter_Alt(var Data: TDualSimperSVFData);
 var
   Temp1 : array[0..1] of double;
   Temp2 : array[0..1] of double;
@@ -299,16 +300,9 @@ begin
   Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
   Data.v0z[1] := Data.v0[1];
 
-
-  //Calc outputs...
-  Data.Ouput[0] := Data.v2[0];
-  Data.Ouput[1] := Data.v2[1];
 end;
 
-class procedure TSimperVCF.StepAsLowPass_asm(var Data: TDualSimperSVFData);
-//Temp1 = xmm5
-//Temp2 = xmm6
-//Temp3 = xmm7
+class procedure TSimperVCF.StepFilter_asm(var Data: TDualSimperSVFData);
 asm
   //Data.v1z[0] := Data.v1[0];
   movupd xmm0, [Data].TDualSimperSVFData.v1[0]
@@ -358,7 +352,6 @@ asm
   //Data.v1[0]  := Temp2[0];
   movupd [Data].TDualSimperSVFData.v1[0], xmm6
 
-
   //Temp3[0] := Data.v1[0];
   movupd xmm7, xmm6
 
@@ -366,7 +359,7 @@ asm
   addpd xmm7, xmm0
 
   //Temp3[0] := Temp3[0] * Data.g[0];
-  movupd xmm3, [Data].TDualSimperSVFData.g[0]
+  //movupd xmm3, [Data].TDualSimperSVFData.g[0]
   mulpd xmm7, xmm3
 
   //Temp3[0] := Temp3[0] + Data.v2z[0];
@@ -377,90 +370,50 @@ asm
 
   //Data.v0z[0] := Data.v0[0];
   movupd [Data].TDualSimperSVFData.v0z[0], xmm2
+end;
 
+class procedure TSimperVCF.GetLowpassOutput(var Data: TDualSimperSVFData);
+asm
   //Calc outputs...
   //Data.Ouput[0] := Data.v2[0];
+  movupd xmm7, [Data].TDualSimperSVFData.v2[0]
   movupd [Data].TDualSimperSVFData.Ouput[0], xmm7
 end;
 
-{
-class procedure TSimperVCF.StepAsLowPass_asm(var Data: TDualSimperSVFData);
+class procedure TSimperVCF.GetBandpassOutput(var Data: TDualSimperSVFData);
 asm
-  //Data.v1z[0] := Data.v1[0];
-  movupd xmm0, [Data].TDualSimperSVFData.v1[0]
-  movupd [Data].TDualSimperSVFData.v1z[0], xmm0
-
-  //Data.v2z[0] := Data.v2[0];
-  movupd xmm1, [Data].TDualSimperSVFData.v2[0]
-  movupd [Data].TDualSimperSVFData.v2z[0], xmm1
-
-  //Data.v0[0]  := Data.Input[0];
-  movupd xmm2, [Data].TDualSimperSVFData.Input[0]
-  movupd [Data].TDualSimperSVFData.v0[0], xmm2
-
-  //Temp3[0]    := Data.Factor1[0]*Data.v1z[0];
-  movupd xmm3, [Data].TDualSimperSVFData.Factor1[0]
-  mulpd xmm3, xmm0
-
-  //Temp2[0]    := Data.v0[0];
-  //Temp2[0]    := Temp2[0] + Data.v0z[0];
-  movupd xmm4, [Data].TDualSimperSVFData.v0z[0]
-  addpd xmm4, xmm2
-
-  //Temp2[0]    := Temp2[0] - Temp3[0];
-  subpd xmm4, xmm3
-
-
-
-  //Temp1[0]    := 2*Data.v2z[0];
-  // ** xmm3 is reused here **
-  movupd xmm3, [Data].TDualSimperSVFData.v2z[0]
-  addpd xmm3, xmm3
-
-  //Temp2[0]    := Temp2[0] - Temp1[0];
-  subpd xmm2, xmm3
-
-  //Temp2[0]    := Temp2[0] * Data.Factor2[0];
-  movupd xmm5, [Data].TDualSimperSVFData.Factor2[0]
-  mulpd xmm2, xmm5
-
-  //Temp2[0]    := Temp2[0] * Data.g[0];
-  movupd xmm5, [Data].TDualSimperSVFData.g[0]
-  mulpd xmm2, xmm5
-
-  //Data.v1[0]  := Temp2[0] + Data.v1z[0];
-  addpd xmm5, xmm0
-  movupd [Data].TDualSimperSVFData.v1[0], xmm5
-
-
-  //Temp2[0] := Data.v1[0] + Data.v1z[0];
-  addpd xmm5, xmm0
-
-  //Temp2[0] := Temp2[0] * Data.g[0];
-  addpd xmm5, [Data].TDualSimperSVFData.g[0]
-
-
-  //Temp2[0] := Temp2[0] * Data.v2z[0];
-  //Data.v2[0]  := Temp2[0];
-
-
-
-
-  //Data.v0z[0] := Data.v0[0];
-
-  //Data.v1z[1] := Data.v1[1];
-  //Data.v2z[1] := Data.v2[1];
-  //Data.v0[1]  := Data.Input[1];
-  //Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - Data.Factor1[1]*Data.v1z[1] - 2*Data.v2z[1]) * Data.Factor2[1];
-  //Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
-  //Data.v0z[1] := Data.v0[1];
-
-
   //Calc outputs...
   //Data.Ouput[0] := Data.v2[0];
-  //Data.Ouput[1] := Data.v2[1];
+  movupd xmm7, [Data].TDualSimperSVFData.v1[0]
+  movupd [Data].TDualSimperSVFData.Ouput[0], xmm7
 end;
-}
+
+class procedure TSimperVCF.GetHighpassOutput(var Data: TDualSimperSVFData);
+asm
+  //Data.Ouput[0] := Data.v0[0] - Data.k[0]* Data.v1[0] - Data.v2[0];
+  //Data.Ouput[1] := Data.v0[1] - Data.k[1]* Data.v1[1] - Data.v2[1];
+
+  movupd xmm0, [Data].TDualSimperSVFData.v0[0]
+  movupd xmm1, [Data].TDualSimperSVFData.v1[0]
+  movupd xmm2, [Data].TDualSimperSVFData.v2[0]
+  movupd xmm3, [Data].TDualSimperSVFData.k[0]
+
+  mulpd xmm3, xmm1
+  subpd xmm0, xmm3
+  subpd xmm0, xmm2
+
+  movupd [Data].TDualSimperSVFData.Ouput[0], xmm0
+end;
+
+
+class procedure TSimperVCF.StepAsLowPass(var Data: TDualSimperSVFData);
+begin
+  //TODO: There are some small oppurtunities for optimisations here.
+  // Perhaps the Data varable can be stored in the register or something
+  // and
+  StepFilter_asm(Data);
+  GetLowpassOutput(Data);
+end;
 
 class procedure TSimperVCF.StepAsBandPass(var Data: TDualSimperSVFData);
 begin

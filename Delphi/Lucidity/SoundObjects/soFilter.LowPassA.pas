@@ -97,12 +97,12 @@ begin
   FilterData1.Input[0] := x1 + kDenormal;
   FilterData1.Input[1] := x2 + kDenormal;
 
-  TSimperVCF.StepAsLowPass_asm(FilterData1);
+  TSimperVCF.StepAsLowPass(FilterData1);
 
   FilterData2.Input[0] := FilterData1.Ouput[0] + kDenormal;
   FilterData2.Input[1] := FilterData1.Ouput[1] + kDenormal;
 
-  TSimperVCF.StepAsLowPass_asm(FilterData2);
+  TSimperVCF.StepAsLowPass(FilterData2);
 
   x1 := FilterData2.Ouput[0];
   x2 := FilterData2.Ouput[1];
