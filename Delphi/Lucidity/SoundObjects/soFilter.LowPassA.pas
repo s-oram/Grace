@@ -17,20 +17,22 @@ type
     procedure SetFreq(const Value: single);
     procedure SetQ(const Value: single);
   protected
-    CoreL1, CoreL2 : TFilterCore_SimperSVF;
-    CoreR1, CoreR2 : TFilterCore_SimperSVF;
+    FilterData1 : TDualSimperSVFData;
+    FilterData2 : TDualSimperSVFData;
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure Reset;
-
     procedure Step(var x1, x2 : single); inline;
+
+    // Freq range 10?..1/4 Nyquist?
+    // Q range 0..1
+    // Input gain is a linear multipication
+    procedure UpdateParameters(const Freq, Q, InputGain : single);
 
     property SampleRate : single read fSampleRate write fSampleRate;
 
-    property Freq : single read fFreq write SetFreq; // range 10?..1/4 Nyquist?
-    property Q    : single read fQ    write SetQ;    // range 0..1
     property InputGain : single read fInputGain write fInputGain; //Linear value.
   end;
 
@@ -43,28 +45,18 @@ uses
 
 constructor TLowPassA.Create;
 begin
-  CoreL1 := TFilterCore_SimperSVF.Create;
-  CoreL2 := TFilterCore_SimperSVF.Create;
-  CoreR1 := TFilterCore_SimperSVF.Create;
-  CoreR2 := TFilterCore_SimperSVF.Create;
 end;
 
 destructor TLowPassA.Destroy;
 begin
-  CoreL1.Free;
-  CoreL2.Free;
-  CoreR1.Free;
-  CoreR2.Free;
   inherited;
 end;
 
 
 procedure TLowPassA.Reset;
 begin
-  CoreL1.Reset;
-  CoreL2.Reset;
-  CoreR1.Reset;
-  CoreR2.Reset;
+  FilterData1.Reset;
+  FilterData2.Reset;
 end;
 
 procedure TLowPassA.SetFreq(const Value: single);
@@ -76,10 +68,10 @@ begin
   //g := tan (pi * Value / samplerate);
   g := Fast_Tan0(pi * Value / samplerate);
 
-  CoreL1.G := G;
-  CoreL2.G := G;
-  CoreR1.G := G;
-  CoreR2.G := G;
+  FilterData1.G[0] := G;
+  FilterData1.G[1] := G;
+  FilterData2.G[0] := G;
+  FilterData2.G[1] := G;
 end;
 
 procedure TLowPassA.SetQ(const Value: single);
@@ -94,20 +86,50 @@ begin
   //Damping factor range is 2..0.    0 = self oscillation.
   DampingFactor := 2 - (Value * 2);
 
-
-  CoreL1.K := DampingFactor;
-  CoreL2.K := DampingFactor;
-  CoreR1.K := DampingFactor;
-  CoreR2.K := DampingFactor;
+  FilterData1.K[0] := DampingFactor;
+  FilterData1.K[1] := DampingFactor;
+  FilterData2.K[0] := DampingFactor;
+  FilterData2.K[1] := DampingFactor;
 end;
 
 procedure TLowPassA.Step(var x1, x2: single);
 begin
-  x1 := CoreL1.StepAsLowPass(x1 * InputGain);
+  FilterData1.Input[0] := x1 + kDenormal;
+  FilterData1.Input[1] := x2 + kDenormal;
+
+  TSimperVCF.StepAsLowPass_asm(FilterData1);
+
+  FilterData2.Input[0] := FilterData1.Ouput[0] + kDenormal;
+  FilterData2.Input[1] := FilterData1.Ouput[1] + kDenormal;
+
+  TSimperVCF.StepAsLowPass_asm(FilterData2);
+
+  x1 := FilterData2.Ouput[0];
+  x2 := FilterData2.Ouput[1];
+
+
+  //x1 := CoreL1.StepAsLowPass(x1 * InputGain);
   //x1 := CoreL2.StepAsLowPass(x1);
 
-  x2 := CoreR1.StepAsLowPass(x2 * InputGain);
+  //x2 := CoreR1.StepAsLowPass(x2 * InputGain);
   //x2 := CoreR2.StepAsLowPass(x2);
+end;
+
+procedure TLowPassA.UpdateParameters(const Freq, Q, InputGain: single);
+var
+  G : single;
+  K : single;
+begin
+  fFreq := Freq;
+
+  //g := tan (pi * Value / samplerate);
+  G := Fast_Tan0(pi * Freq / samplerate);
+
+  //Damping factor range is 2..0.    0 = self oscillation.
+  K := 2 - (Q * 2);
+
+  FilterData1.SetGK(G, K);
+  FilterData2.SetGK(G, K);
 end;
 
 end.

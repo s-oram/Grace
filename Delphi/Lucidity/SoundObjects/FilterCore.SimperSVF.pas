@@ -43,8 +43,8 @@ function NonLinearSpice2(x:double):double;
 
 type
   TDualSimperSVFData = record
-    Input  : array[0..1] of double;
     Ouput  : array[0..1] of double;
+    Input  : array[0..1] of double;
     v0     : array[0..1] of double;
     v1     : array[0..1] of double;
     v2     : array[0..1] of double;
@@ -52,16 +52,24 @@ type
     v1z    : array[0..1] of double;
     v2z    : array[0..1] of double;
 
+    Factor1 : array[0..1] of double;
+    Factor2 : array[0..1] of double;
+
     //G := tan (pi * Cutoff / SampleRate);
     G      : array[0..1] of double;
     // K is a damping factor. Range 2..0. (for resonance)
     K      : array[0..1] of double;
+
+    procedure Reset;
+    procedure SetGK(const aG, aK : double);
   end;
 
 
   TSimperVCF = class
   public
     class procedure StepAsLowPass(var Data : TDualSimperSVFData);
+    class procedure StepAsLowPass_ALT1(var Data : TDualSimperSVFData);
+    class procedure StepAsLowPass_asm(var Data : TDualSimperSVFData);
     class procedure StepAsBandPass(var Data : TDualSimperSVFData);
     class procedure StepAsHighPass(var Data : TDualSimperSVFData);
   end;
@@ -236,21 +244,223 @@ begin
   Data.v1z[0] := Data.v1[0];
   Data.v2z[0] := Data.v2[0];
   Data.v0[0]  := Data.Input[0];
-  Data.v1[0]  := Data.v1z[0] + Data.g[0] * (Data.v0[0] + Data.v0z[0] - 2*(Data.g[0] + Data.k[0])*Data.v1z[0] - 2*Data.v2z[0]) / (1 + Data.g[0]*(Data.g[0] + Data.k[0]));
+  Data.v1[0]  := Data.v1z[0] + Data.g[0] * (Data.v0[0] + Data.v0z[0] - Data.Factor1[0]*Data.v1z[0] - 2*Data.v2z[0]) * Data.Factor2[0];
   Data.v2[0]  := Data.v2z[0] + Data.g[0] * (Data.v1[0] + Data.v1z[0]);
   Data.v0z[0] := Data.v0[0];
-
-  Data.Ouput[0] := Data.v2[0];
 
   Data.v1z[1] := Data.v1[1];
   Data.v2z[1] := Data.v2[1];
   Data.v0[1]  := Data.Input[1];
-  Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - 2*(Data.g[1] + Data.k[1])*Data.v1z[1] - 2*Data.v2z[1]) / (1 + Data.g[1]*(Data.g[1] + Data.k[1]));
+  Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - Data.Factor1[1]*Data.v1z[1] - 2*Data.v2z[1]) * Data.Factor2[1];
   Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
   Data.v0z[1] := Data.v0[1];
 
+
+  //Calc outputs...
+  Data.Ouput[0] := Data.v2[0];
   Data.Ouput[1] := Data.v2[1];
 end;
+
+class procedure TSimperVCF.StepAsLowPass_ALT1(var Data: TDualSimperSVFData);
+var
+  Temp1 : array[0..1] of double;
+  Temp2 : array[0..1] of double;
+  Temp3 : array[0..1] of double;
+begin
+  Data.v1z[0] := Data.v1[0];
+  Data.v2z[0] := Data.v2[0];
+  Data.v0[0]  := Data.Input[0];
+
+
+  Temp1[0] := Data.Factor1[0]*Data.v1z[0];
+  Temp2[0] := Data.v0[0] - Temp1[0];
+  Temp2[0] := Temp2[0] - Data.v2z[0];
+  Temp2[0] := Temp2[0] - Data.v2z[0];
+  Temp2[0] := Temp2[0] + Data.v0z[0];
+  Temp2[0] := Temp2[0] * Data.Factor2[0];
+  Temp2[0] := Temp2[0] * Data.g[0];
+  Temp2[0] := Temp2[0] + Data.v1z[0];
+
+  Data.v1[0]  := Temp2[0];
+
+
+  Temp3[0] := Data.v1[0];
+  Temp3[0] := Temp3[0] + Data.v1z[0];
+  Temp3[0] := Temp3[0] * Data.g[0];
+  Temp3[0] := Temp3[0] + Data.v2z[0];
+  Data.v2[0]  := Temp3[0];
+
+  Data.v0z[0] := Data.v0[0];
+
+  Data.v1z[1] := Data.v1[1];
+  Data.v2z[1] := Data.v2[1];
+  Data.v0[1]  := Data.Input[1];
+  Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - Data.Factor1[1]*Data.v1z[1] - 2*Data.v2z[1]) * Data.Factor2[1];
+  Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
+  Data.v0z[1] := Data.v0[1];
+
+
+  //Calc outputs...
+  Data.Ouput[0] := Data.v2[0];
+  Data.Ouput[1] := Data.v2[1];
+end;
+
+class procedure TSimperVCF.StepAsLowPass_asm(var Data: TDualSimperSVFData);
+//Temp1 = xmm5
+//Temp2 = xmm6
+//Temp3 = xmm7
+asm
+  //Data.v1z[0] := Data.v1[0];
+  movupd xmm0, [Data].TDualSimperSVFData.v1[0]
+  movupd [Data].TDualSimperSVFData.v1z[0], xmm0
+
+  //Data.v2z[0] := Data.v2[0];
+  movupd xmm1, [Data].TDualSimperSVFData.v2[0]
+  movupd [Data].TDualSimperSVFData.v2z[0], xmm1
+
+
+  //Data.v0[0]  := Data.Input[0];
+  movupd xmm2, [Data].TDualSimperSVFData.Input[0]
+  movupd [Data].TDualSimperSVFData.v0[0], xmm2
+
+
+  //Temp1[0] := Data.Factor1[0]*Data.v1z[0];
+  movupd xmm5, [Data].TDualSimperSVFData.Factor1[0]
+  mulpd xmm5, xmm0
+
+  //Temp2[0] := Data.v0[0];
+  movupd xmm6, xmm2
+
+  //Temp2[0] := Temp2[0] - Temp1[0];
+  subpd xmm6, xmm5
+
+  //Temp2[0] := Temp2[0] - Data.v2z[0];
+  subpd xmm6, xmm1
+
+  //Temp2[0] := Temp2[0] - Data.v2z[0];
+  subpd xmm6, xmm1
+
+  //Temp2[0] := Temp2[0] + Data.v0z[0];
+  movupd xmm3, [Data].TDualSimperSVFData.v0z[0]
+  addpd xmm6, xmm3
+
+  //Temp2[0] := Temp2[0] * Data.Factor2[0];
+  movupd xmm3, [Data].TDualSimperSVFData.Factor2[0]
+  mulpd xmm6, xmm3
+
+  //Temp2[0] := Temp2[0] * Data.g[0];
+  movupd xmm3, [Data].TDualSimperSVFData.g[0]
+  mulpd xmm6, xmm3
+
+  //Temp2[0] := Temp2[0] + Data.v1z[0];
+  addpd xmm6, xmm0
+
+  //Data.v1[0]  := Temp2[0];
+  movupd [Data].TDualSimperSVFData.v1[0], xmm6
+
+
+  //Temp3[0] := Data.v1[0];
+  movupd xmm7, xmm6
+
+  //Temp3[0] := Temp3[0] + Data.v1z[0];
+  addpd xmm7, xmm0
+
+  //Temp3[0] := Temp3[0] * Data.g[0];
+  movupd xmm3, [Data].TDualSimperSVFData.g[0]
+  mulpd xmm7, xmm3
+
+  //Temp3[0] := Temp3[0] + Data.v2z[0];
+  addpd xmm7, xmm1
+
+  //Data.v2[0]  := Temp3[0];
+  movupd [Data].TDualSimperSVFData.v2[0], xmm7
+
+  //Data.v0z[0] := Data.v0[0];
+  movupd [Data].TDualSimperSVFData.v0z[0], xmm2
+
+  //Calc outputs...
+  //Data.Ouput[0] := Data.v2[0];
+  movupd [Data].TDualSimperSVFData.Ouput[0], xmm7
+end;
+
+{
+class procedure TSimperVCF.StepAsLowPass_asm(var Data: TDualSimperSVFData);
+asm
+  //Data.v1z[0] := Data.v1[0];
+  movupd xmm0, [Data].TDualSimperSVFData.v1[0]
+  movupd [Data].TDualSimperSVFData.v1z[0], xmm0
+
+  //Data.v2z[0] := Data.v2[0];
+  movupd xmm1, [Data].TDualSimperSVFData.v2[0]
+  movupd [Data].TDualSimperSVFData.v2z[0], xmm1
+
+  //Data.v0[0]  := Data.Input[0];
+  movupd xmm2, [Data].TDualSimperSVFData.Input[0]
+  movupd [Data].TDualSimperSVFData.v0[0], xmm2
+
+  //Temp3[0]    := Data.Factor1[0]*Data.v1z[0];
+  movupd xmm3, [Data].TDualSimperSVFData.Factor1[0]
+  mulpd xmm3, xmm0
+
+  //Temp2[0]    := Data.v0[0];
+  //Temp2[0]    := Temp2[0] + Data.v0z[0];
+  movupd xmm4, [Data].TDualSimperSVFData.v0z[0]
+  addpd xmm4, xmm2
+
+  //Temp2[0]    := Temp2[0] - Temp3[0];
+  subpd xmm4, xmm3
+
+
+
+  //Temp1[0]    := 2*Data.v2z[0];
+  // ** xmm3 is reused here **
+  movupd xmm3, [Data].TDualSimperSVFData.v2z[0]
+  addpd xmm3, xmm3
+
+  //Temp2[0]    := Temp2[0] - Temp1[0];
+  subpd xmm2, xmm3
+
+  //Temp2[0]    := Temp2[0] * Data.Factor2[0];
+  movupd xmm5, [Data].TDualSimperSVFData.Factor2[0]
+  mulpd xmm2, xmm5
+
+  //Temp2[0]    := Temp2[0] * Data.g[0];
+  movupd xmm5, [Data].TDualSimperSVFData.g[0]
+  mulpd xmm2, xmm5
+
+  //Data.v1[0]  := Temp2[0] + Data.v1z[0];
+  addpd xmm5, xmm0
+  movupd [Data].TDualSimperSVFData.v1[0], xmm5
+
+
+  //Temp2[0] := Data.v1[0] + Data.v1z[0];
+  addpd xmm5, xmm0
+
+  //Temp2[0] := Temp2[0] * Data.g[0];
+  addpd xmm5, [Data].TDualSimperSVFData.g[0]
+
+
+  //Temp2[0] := Temp2[0] * Data.v2z[0];
+  //Data.v2[0]  := Temp2[0];
+
+
+
+
+  //Data.v0z[0] := Data.v0[0];
+
+  //Data.v1z[1] := Data.v1[1];
+  //Data.v2z[1] := Data.v2[1];
+  //Data.v0[1]  := Data.Input[1];
+  //Data.v1[1]  := Data.v1z[1] + Data.g[1] * (Data.v0[1] + Data.v0z[1] - Data.Factor1[1]*Data.v1z[1] - 2*Data.v2z[1]) * Data.Factor2[1];
+  //Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
+  //Data.v0z[1] := Data.v0[1];
+
+
+  //Calc outputs...
+  //Data.Ouput[0] := Data.v2[0];
+  //Data.Ouput[1] := Data.v2[1];
+end;
+}
 
 class procedure TSimperVCF.StepAsBandPass(var Data: TDualSimperSVFData);
 begin
@@ -261,8 +471,6 @@ begin
   Data.v2[0]  := Data.v2z[0] + Data.g[0] * (Data.v1[0] + Data.v1z[0]);
   Data.v0z[0] := Data.v0[0];
 
-  Data.Ouput[0] := Data.v1[0];
-
   Data.v1z[1] := Data.v1[1];
   Data.v2z[1] := Data.v2[1];
   Data.v0[1]  := Data.Input[1];
@@ -270,6 +478,8 @@ begin
   Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
   Data.v0z[1] := Data.v0[1];
 
+  // calc outputs..
+  Data.Ouput[0] := Data.v1[0];
   Data.Ouput[1] := Data.v1[1];
 end;
 
@@ -282,11 +492,6 @@ begin
   Data.v2[0]  := Data.v2z[0] + Data.g[0] * (Data.v1[0] + Data.v1z[0]);
   Data.v0z[0] := Data.v0[0];
 
-  //== Highpass output ==
-  Data.Ouput[0] := Data.v0[0] - Data.k[0]* Data.v1[0] - Data.v2[0];
-
-
-
   Data.v1z[1] := Data.v1[1];
   Data.v2z[1] := Data.v2[1];
   Data.v0[1]  := Data.Input[1];
@@ -294,9 +499,45 @@ begin
   Data.v2[1]  := Data.v2z[1] + Data.g[1] * (Data.v1[1] + Data.v1z[1]);
   Data.v0z[1] := Data.v0[1];
 
+  //== Highpass output ==
+  Data.Ouput[0] := Data.v0[0] - Data.k[0]* Data.v1[0] - Data.v2[0];
   Data.Ouput[1] := Data.v0[1] - Data.k[1]* Data.v1[1] - Data.v2[1];
 end;
 
 
+
+{ TDualSimperSVFData }
+
+procedure TDualSimperSVFData.Reset;
+begin
+  v0[0] := 0;
+  v1[0] := 0;
+  v2[0] := 0;
+  v0z[0] := 0;
+  v1z[0] := 0;
+  v2z[0] := 0;
+
+  v0[1] := 0;
+  v1[1] := 0;
+  v2[1] := 0;
+  v0z[1] := 0;
+  v1z[1] := 0;
+  v2z[1] := 0;
+end;
+
+procedure TDualSimperSVFData.SetGK(const aG, aK: double);
+begin
+  G[0] := aG;
+  G[1] := aG;
+
+  k[0] := aK;
+  k[1] := aK;
+
+  Factor1[0] := 2 * (aG + aK);
+  Factor1[1] := 2 * (aG + aK);
+
+  Factor2[0] := 1 / (1 + aG * (aG + aK));
+  Factor2[1] := 1 / (1 + aG * (aG + aK));
+end;
 
 end.

@@ -18,6 +18,8 @@ type
     G      : array[0..1] of double;
     // K is a damping factor. Range 2..0. (for resonance)
     K      : array[0..1] of double;
+
+    procedure SetGK(const aG, aK : double);
   end;
 
 
@@ -101,5 +103,12 @@ end;
 
 
 
+
+{ TDualSimperSVFData }
+
+procedure TDualSimperSVFData.SetGK(const aG, aK: double);
+begin
+
+end;
 
 end.

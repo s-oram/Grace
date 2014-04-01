@@ -200,6 +200,7 @@ var
   cFreq : single;
   cQ    : single;
   CV    : single;
+  Gain  : single;
 
   //TODO: Delete these old Par1 and Par1Mod parameters.
   Par1 : single;
@@ -274,10 +275,15 @@ begin
       cQ := (Par2 + Par2Mod) * 0.98;
       cQ := Clamp(cQ, kMinQ, kMaxQ);
 
-      LowPassA.Freq := cFreq;
-      LowPassA.Q    := cQ;
+      //Gain := mPar3
+      Gain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
+
+      LowpassA.UpdateParameters(cFreq, cQ, Gain);
+
+      //LowPassA.Freq := cFreq;
+      //LowPassA.Q    := cQ;
       //LowPassA.InputGain := mPar3;
-      LowPassA.InputGain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
+      //LowPassA.InputGain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
     end;
 
     ftBandPassA:
