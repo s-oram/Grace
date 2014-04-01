@@ -26,6 +26,10 @@ type
     procedure Reset;
     procedure Step(var x1, x2 : single); inline;
 
+    procedure StepAsLowpass4P(var x1, x2 : single); inline;
+    procedure StepAsBandpass4P(var x1, x2 : single); inline;
+    procedure StepAsHighpass4P(var x1, x2 : single); inline;
+
     // Freq range 10?..1/4 Nyquist?
     // Q range 0..1
     // Input gain is a linear multipication
@@ -106,13 +110,54 @@ begin
 
   x1 := FilterData2.Ouput[0];
   x2 := FilterData2.Ouput[1];
+end;
 
+procedure TLowPassA.StepAsLowpass4P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 + kDenormal;
+  FilterData1.Input[1] := x2 + kDenormal;
 
-  //x1 := CoreL1.StepAsLowPass(x1 * InputGain);
-  //x1 := CoreL2.StepAsLowPass(x1);
+  TSimperVCF.StepAsLowPass(FilterData1);
 
-  //x2 := CoreR1.StepAsLowPass(x2 * InputGain);
-  //x2 := CoreR2.StepAsLowPass(x2);
+  FilterData2.Input[0] := FilterData1.Ouput[0] + kDenormal;
+  FilterData2.Input[1] := FilterData1.Ouput[1] + kDenormal;
+
+  TSimperVCF.StepAsLowPass(FilterData2);
+
+  x1 := FilterData2.Ouput[0];
+  x2 := FilterData2.Ouput[1];
+end;
+
+procedure TLowPassA.StepAsBandpass4P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 + kDenormal;
+  FilterData1.Input[1] := x2 + kDenormal;
+
+  TSimperVCF.StepAsBandPass(FilterData1);
+
+  FilterData2.Input[0] := FilterData1.Ouput[0] + kDenormal;
+  FilterData2.Input[1] := FilterData1.Ouput[1] + kDenormal;
+
+  TSimperVCF.StepAsBandPass(FilterData2);
+
+  x1 := FilterData2.Ouput[0];
+  x2 := FilterData2.Ouput[1];
+end;
+
+procedure TLowPassA.StepAsHighpass4P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 + kDenormal;
+  FilterData1.Input[1] := x2 + kDenormal;
+
+  TSimperVCF.StepAsHighPass(FilterData1);
+
+  FilterData2.Input[0] := FilterData1.Ouput[0] + kDenormal;
+  FilterData2.Input[1] := FilterData1.Ouput[1] + kDenormal;
+
+  TSimperVCF.StepAsHighPass(FilterData2);
+
+  x1 := FilterData2.Ouput[0];
+  x2 := FilterData2.Ouput[1];
 end;
 
 procedure TLowPassA.UpdateParameters(const Freq, Q, InputGain: single);

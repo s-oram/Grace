@@ -21,8 +21,6 @@ uses
   soFilter.CombA,
   soFilter.LowPassA,
   soFilter.LowPassB,
-  soFilter.BandPassA,
-  soFilter.HighPassA,
   soFilter.OptimisedFilter;
 
 type
@@ -41,8 +39,6 @@ type
     LofiA       : TLofiA;
     CombA       : TCombA;
     LowPassA    : TLowPassA;
-    BandPassA   : TBandPassA;
-    HighPassA   : THighPassA;
     LowPassB    : TLowPassB;
     MoogLadder  : TMoogLadder;
     OptimisedFilter : TOptimisedFilter;
@@ -98,8 +94,6 @@ begin
   LofiA       := TLofiA.Create;
   CombA       := TCombA.Create;
   LowPassA    := TLowPassA.Create;
-  BandPassA   := TBandPassA.Create;
-  HighPassA   := THighPassA.Create;
   LowPassB    := TLowPassB.Create;
   MoogLadder  := TMoogLadder.Create;
   OptimisedFilter := TOptimisedFilter.Create;
@@ -109,8 +103,6 @@ destructor TLucidityFilter.Destroy;
 begin
   TestFilter.Free;
   LowPassA.Free;
-  BandPassA.Free;
-  HighPassA.Free;
   LofiA.Free;
   CombA.Free;
   RingModA.Free;
@@ -127,8 +119,6 @@ begin
   RingModA.Reset;
   LowPassA.Reset;
   LowPassB.Reset;
-  BandPassA.Reset;
-  HighPassA.Reset;
   MoogLadder.Reset;
   OptimisedFilter.Reset;
 end;
@@ -157,8 +147,6 @@ begin
   CombA.Reset;
   LowPassA.Reset;
   LowPassB.Reset;
-  BandPassA.Reset;
-  HighPassA.Reset;
   RingModA.Reset;
   DistortionA.Reset;
   MoogLadder.Reset;
@@ -178,8 +166,6 @@ begin
 
   LowPassA.SampleRate := Value;
   LowPassB.SampleRate := Value;
-  BandPassA.SampleRate := Value;
-  HighPassA.SampleRate := Value;
   LofiA.SampleRate := Value;
   CombA.SampleRate := Value;
   RingModA.SampleRate := Value;
@@ -266,7 +252,9 @@ begin
     begin
     end;
 
-    ftLowPassA:
+    ftLowPassA,
+    ftBandPassA,
+    ftHighPassA:
     begin
       CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
@@ -286,31 +274,7 @@ begin
       //LowPassA.InputGain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
     end;
 
-    ftBandPassA:
-    begin
-      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
-      cQ := (Par2 + Par2Mod) * 0.98;
-      cQ := Clamp(cQ, kMinQ, kMaxQ);
-
-      BandPassA.Freq := cFreq;
-      BandPassA.Q    := cQ;
-    end;
-
-    ftHighPassA:
-    begin
-      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
-
-      cQ := (Par2 + Par2Mod) * 0.98;
-      cQ := Clamp(cQ, kMinQ, kMaxQ);
-
-      HighPassA.Freq := cFreq;
-      HighPassA.Q    := cQ;
-    end;
 
     ftLofiA:
     begin
@@ -428,9 +392,9 @@ procedure TLucidityFilter.AudioRateStep(var x1, x2: single);
 begin
   case FilterType of
     ftNone: ;
-    ftLowPassA:  LowPassA.Step(x1, x2);
-    ftBandPassA: BandPassA.Step(x1, x2);
-    ftHighPassA: HighPassA.Step(x1, x2);
+    ftLowPassA:  LowPassA.StepAsLowpass4P(x1, x2);
+    ftBandPassA: LowPassA.StepAsBandpass4P(x1, x2);
+    ftHighPassA: LowPassA.StepAsHighpass4P(x1, x2);
     ftLofiA:     LofiA.Step(x1, x2);
     ftRingModA:  RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
