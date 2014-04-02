@@ -76,7 +76,8 @@ contains
   VamGuiControlInterfaces in '..\source\VamGuiControlInterfaces.pas',
   VamShortMessageOverlay in '..\source\VamShortMessageOverlay.pas',
   VamKnobSmoother in '..\source\VamKnobSmoother.pas',
-  VamSliderSwitch in '..\source\VamSliderSwitch.pas';
+  VamSliderSwitch in '..\source\VamSliderSwitch.pas',
+  VamSampleMap.Movement in '..\source\VamSampleMap.Movement.pas';
 
 end.
 

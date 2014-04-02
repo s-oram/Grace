@@ -138,6 +138,7 @@
 			<DCCReference Include="..\source\VamShortMessageOverlay.pas"/>
 			<DCCReference Include="..\source\VamKnobSmoother.pas"/>
 			<DCCReference Include="..\source\VamSliderSwitch.pas"/>
+			<DCCReference Include="..\source\VamSampleMap.Movement.pas"/>
 			<None Include="..\source\TGaphicControlProperties.inc"/>
 			<None Include="..\source\TWinControlProperties.inc"/>
 			<None Include="..\source\TControlProperties.inc"/>
