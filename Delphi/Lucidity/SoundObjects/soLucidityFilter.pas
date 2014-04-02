@@ -38,7 +38,7 @@ type
     RingModA    : TRingModA;
     LofiA       : TLofiA;
     CombA       : TCombA;
-    LowPassA    : TLowPassA;
+    BlueFilter  : TLowPassA;
     LowPassB    : TLowPassB;
     MoogLadder  : TMoogLadder;
     OptimisedFilter : TOptimisedFilter;
@@ -93,7 +93,7 @@ begin
   DistortionA := TDistortionA.Create;
   LofiA       := TLofiA.Create;
   CombA       := TCombA.Create;
-  LowPassA    := TLowPassA.Create;
+  BlueFilter  := TLowPassA.Create;
   LowPassB    := TLowPassB.Create;
   MoogLadder  := TMoogLadder.Create;
   OptimisedFilter := TOptimisedFilter.Create;
@@ -102,7 +102,7 @@ end;
 destructor TLucidityFilter.Destroy;
 begin
   TestFilter.Free;
-  LowPassA.Free;
+  BlueFilter.Free;
   LofiA.Free;
   CombA.Free;
   RingModA.Free;
@@ -117,7 +117,7 @@ procedure TLucidityFilter.Reset;
 begin
   DistortionA.Reset;
   RingModA.Reset;
-  LowPassA.Reset;
+  BlueFilter.Reset;
   LowPassB.Reset;
   MoogLadder.Reset;
   OptimisedFilter.Reset;
@@ -145,7 +145,7 @@ begin
 
   LofiA.Reset;
   CombA.Reset;
-  LowPassA.Reset;
+  BlueFilter.Reset;
   LowPassB.Reset;
   RingModA.Reset;
   DistortionA.Reset;
@@ -164,7 +164,7 @@ procedure TLucidityFilter.SetSampleRate(const Value: single);
 begin
   fSampleRate := Value;
 
-  LowPassA.SampleRate := Value;
+  BlueFilter.SampleRate := Value;
   LowPassB.SampleRate := Value;
   LofiA.SampleRate := Value;
   CombA.SampleRate := Value;
@@ -263,15 +263,9 @@ begin
       cQ := (Par2 + Par2Mod) * 0.98;
       cQ := Clamp(cQ, kMinQ, kMaxQ);
 
-      //Gain := mPar3
       Gain := mPar3;
 
-      LowpassA.UpdateParameters(cFreq, cQ, Gain);
-
-      //LowPassA.Freq := cFreq;
-      //LowPassA.Q    := cQ;
-      //LowPassA.InputGain := mPar3;
-      //LowPassA.InputGain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
+      BlueFilter.UpdateParameters(cFreq, cQ, Gain);
     end;
 
 
@@ -392,9 +386,9 @@ procedure TLucidityFilter.AudioRateStep(var x1, x2: single);
 begin
   case FilterType of
     ftNone: ;
-    ftLowPassA:  LowPassA.StepAsLowpass4P(x1, x2);
-    ftBandPassA: LowPassA.StepAsBandpass4P(x1, x2);
-    ftHighPassA: LowPassA.StepAsHighpass4P(x1, x2);
+    ftLowPassA:  BlueFilter.StepAsLowpass4P(x1, x2);
+    ftBandPassA: BlueFilter.StepAsBandpass4P(x1, x2);
+    ftHighPassA: BlueFilter.StepAsHighpass4P(x1, x2);
     ftLofiA:     LofiA.Step(x1, x2);
     ftRingModA:  RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
