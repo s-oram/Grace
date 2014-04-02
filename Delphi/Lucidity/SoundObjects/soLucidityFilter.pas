@@ -264,7 +264,7 @@ begin
       cQ := Clamp(cQ, kMinQ, kMaxQ);
 
       //Gain := mPar3
-      Gain := DecibelsToLinear(mPar3 * 72 - 12); //TODO: optimise here.
+      Gain := mPar3;
 
       LowpassA.UpdateParameters(cFreq, cQ, Gain);
 

@@ -74,6 +74,8 @@ type
     class procedure GetLowpassOutput(var Data : TDualSimperSVFData);
     class procedure GetBandpassOutput(var Data : TDualSimperSVFData);
     class procedure GetHighpassOutput(var Data : TDualSimperSVFData);
+
+    class procedure ApplyNonLinearMagic_Pascal(var Data : TDualSimperSVFData);
   public
     class procedure StepAsLowPass(var Data : TDualSimperSVFData); inline;
     class procedure StepAsBandPass(var Data : TDualSimperSVFData); inline;
@@ -81,11 +83,87 @@ type
   end;
 
 
+
+const
+  Factorial_0 = 1;
+  Factorial_1 = 1;
+  Factorial_2 = 2;
+  Factorial_3 = 6;
+  Factorial_4 = 24;
+  Factorial_5 = 120;
+  Factorial_6 = 720;
+  Factorial_7 = 5040;
+  Factorial_8 = 40320;
+
+  OneOverFactorial_0 = 1/1;
+  OneOverFactorial_1 = 1/1;
+  OneOverFactorial_2 = 1/2;
+  OneOverFactorial_3 = 1/6;
+  OneOverFactorial_4 = 1/24;
+  OneOverFactorial_5 = 1/120;
+  OneOverFactorial_6 = 1/720;
+  OneOverFactorial_7 = 1/5040;
+  OneOverFactorial_8 = 1/40320;
+
 implementation
 
 uses
   VamLib.Utils,
   Math;
+
+function FastExp(const x:double) : double; inline;
+// NOTE: an exp() function is approximated with the taylor series.
+var
+  ax2 : double;
+  ax3 : double;
+  ax4 : double;
+  ax5 : double;
+  ax6 : double;
+  ax7 : double;
+  ax8 : double;
+begin
+  ax2 := x * x;
+  ax3 := ax2 * x;
+  ax4 := ax3 * x;
+  ax5 := ax4 * x;
+  ax6 := ax5 * x;
+  ax7 := ax6 * x;
+  ax8 := ax7 * x;
+
+  {
+  result := 1 + x
+         + (ax2 * OneOverFactorial_2)
+         + (ax3 * OneOverFactorial_3)
+         + (ax4 * OneOverFactorial_4)
+         + (ax5 * OneOverFactorial_5)
+         + (ax6 * OneOverFactorial_6)
+         + (ax7 * OneOverFactorial_7)
+         + (ax8 * OneOverFactorial_8);
+  }
+
+  result := 1 + x
+         + (ax2 * OneOverFactorial_2)
+         + (ax3 * OneOverFactorial_3)
+         + (ax4 * OneOverFactorial_4);
+end;
+
+
+function FastTanH(const x:double) : double; inline;
+// A TanH approximation. Extracted from the delphi Tanh() source.
+var
+  y : extended;
+begin
+  case TDoubleRec(x).SpecialType of
+    fsPositive,
+    fsNegative:
+    begin
+      y := FastExp(2*x);
+      Result := 1 - (2/(y + 1));
+    end
+  else
+    result := x;
+  end;
+end;
 
 function NonLinearSpice2(x:double):double;
 const
@@ -405,6 +483,12 @@ asm
   movupd [Data].TDualSimperSVFData.Ouput[0], xmm0
 end;
 
+class procedure TSimperVCF.ApplyNonLinearMagic_Pascal(var Data: TDualSimperSVFData);
+begin
+  //TODO: maybe this non-linear magic here can be optimised somewhat.
+  Data.v2[0] := FastTanH(Data.v2[0] * 0.125) * 8;
+  Data.v2[1] := FastTanH(Data.v2[1] * 0.125) * 8;
+end;
 
 class procedure TSimperVCF.StepAsLowPass(var Data: TDualSimperSVFData);
 begin
@@ -412,18 +496,21 @@ begin
   // Perhaps the Data varable can be stored in the register or something
   // and
   StepFilter_asm(Data);
+  ApplyNonLinearMagic_Pascal(Data);
   GetLowpassOutput(Data);
 end;
 
 class procedure TSimperVCF.StepAsBandPass(var Data: TDualSimperSVFData);
 begin
   StepFilter_asm(Data);
+  ApplyNonLinearMagic_Pascal(Data);
   GetBandpassOutput(Data);
 end;
 
 class procedure TSimperVCF.StepAsHighPass(var Data: TDualSimperSVFData);
 begin
   StepFilter_asm(Data);
+  ApplyNonLinearMagic_Pascal(Data);
   GetHighpassOutput(Data);
 end;
 
@@ -448,7 +535,7 @@ begin
   v2z[1] := 0;
 end;
 
-procedure TDualSimperSVFData.SetGK(const aG, aK: double);
+procedure TDualSimperSVFData.SetGK(const aG, aK : double);
 begin
   G[0] := aG;
   G[1] := aG;

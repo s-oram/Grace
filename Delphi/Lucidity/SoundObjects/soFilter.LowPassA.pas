@@ -17,6 +17,8 @@ type
     procedure SetFreq(const Value: single);
     procedure SetQ(const Value: single);
   protected
+    GainIn  : double;
+    GainOut : double;
     FilterData1 : TDualSimperSVFData;
     FilterData2 : TDualSimperSVFData;
   public
@@ -114,8 +116,8 @@ end;
 
 procedure TLowPassA.StepAsLowpass4P(var x1, x2: single);
 begin
-  FilterData1.Input[0] := x1 + kDenormal;
-  FilterData1.Input[1] := x2 + kDenormal;
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
 
   TSimperVCF.StepAsLowPass(FilterData1);
 
@@ -124,8 +126,8 @@ begin
 
   TSimperVCF.StepAsLowPass(FilterData2);
 
-  x1 := FilterData2.Ouput[0];
-  x2 := FilterData2.Ouput[1];
+  x1 := FilterData2.Ouput[0] * GainOut;
+  x2 := FilterData2.Ouput[1] * GainOut;
 end;
 
 procedure TLowPassA.StepAsBandpass4P(var x1, x2: single);
@@ -175,6 +177,9 @@ begin
 
   FilterData1.SetGK(G, K);
   FilterData2.SetGK(G, K);
+
+  GainIn  := 1 * (1 + (InputGain * 8));
+  GainOut := 1 / (1 + (InputGain * 4));
 end;
 
 end.

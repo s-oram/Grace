@@ -700,8 +700,9 @@ var
   WorkA, WorkB : TProc;
   Reset : TProc;
 begin
-  AsmExample.CopyVector.WorkA;
-  AsmExample.CopyVector.WorkB;
+  //AsmExample.CopyVector.WorkA;
+  //AsmExample.CopyVector.WorkB;
+  AsmExample.CopyVector.RunExample02;
 
 
   //WriteLn(CalcPerformanceDifference(uAsmExamples.WorkA, uAsmExamples.WorkB, nil));

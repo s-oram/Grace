@@ -4,6 +4,8 @@ interface
 
 
 procedure RunExample01;
+procedure RunExample02;
+
 
 const
   kDataSize = 2;
@@ -23,11 +25,46 @@ type
 
 procedure WorkA;
 procedure WorkB;
-
 implementation
 
 uses
   SysUtils;
+
+procedure MultiplyVector(var QD:TDoubleX2); overload;
+const
+  k01 : double = 5;
+asm
+  movupd xmm0, [QD].TQuadData.Data[0] //move 128 bits to XMM0
+  movhpd xmm1, k01
+  movlpd xmm1, k01
+
+  mulpd xmm0, xmm1
+
+  movupd [QD].TQuadData.Data[0], xmm0
+end;
+
+procedure MultiplyVector(var QD:TDoubleX2; const Scaler:double); overload;
+asm
+  movupd xmm0, [ecx].TQuadData.Data[0] //move 128 bits to XMM0
+  movddup xmm1, [Scaler]
+  //movhpd xmm1, [Scaler]
+  //movlpd xmm1, [Scaler]
+
+  mulpd xmm0, xmm1
+
+  movupd [QD].TQuadData.Data[0], xmm0
+end;
+
+procedure Push_DX2(var QD:TDoubleX2);
+asm
+  mov ecx, QD
+end;
+
+procedure Pop_DX2(var QD:TDoubleX2);
+asm
+
+end;
+
 
 procedure DoWork(var QD:TQuadData);
 asm
@@ -125,6 +162,32 @@ begin
     s := FloatToStr(x);
     WriteLn(s);
   end;
+
+  WriteLn('=========');
+  WriteLn('Finished');
+end;
+
+procedure RunExample02;
+var
+  Data : TDoubleX2;
+  c1 : integer;
+  x : double;
+  s : string;
+begin
+  Data.Vector[0] := 2;
+  Data.Vector[1] := 3;
+
+  Push_DX2(Data);
+  MultiplyVector(Data,4);
+  //Pop_DX2(Data);
+
+  for c1 := 0 to kDataSize-1 do
+  begin
+    x := Data.Vector[c1];
+    s := FloatToStr(x);
+    WriteLn(s);
+  end;
+
 
   WriteLn('=========');
   WriteLn('Finished');
