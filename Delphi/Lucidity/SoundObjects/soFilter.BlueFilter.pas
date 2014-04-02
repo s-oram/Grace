@@ -28,6 +28,10 @@ type
     procedure Reset;
     procedure Step(var x1, x2 : single); inline;
 
+    procedure StepAsLowpass2P(var x1, x2 : single); inline;
+    procedure StepAsBandpass2P(var x1, x2 : single); inline;
+    procedure StepAsHighpass2P(var x1, x2 : single); inline;
+
     procedure StepAsLowpass4P(var x1, x2 : single); inline;
     procedure StepAsBandpass4P(var x1, x2 : single); inline;
     procedure StepAsHighpass4P(var x1, x2 : single); inline;
@@ -113,6 +117,40 @@ begin
   x1 := FilterData2.Ouput[0];
   x2 := FilterData2.Ouput[1];
 end;
+
+procedure TLowPassA.StepAsLowpass2P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
+
+  TSimperVCF.StepAsLowPass(FilterData1);
+
+  x1 := FilterData2.Ouput[0] * GainOut;
+  x2 := FilterData2.Ouput[1] * GainOut;
+end;
+
+procedure TLowPassA.StepAsBandpass2P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
+
+  TSimperVCF.StepAsBandPass(FilterData1);
+
+  x1 := FilterData2.Ouput[0] * GainOut;
+  x2 := FilterData2.Ouput[1] * GainOut;
+end;
+
+procedure TLowPassA.StepAsHighpass2P(var x1, x2: single);
+begin
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
+
+  TSimperVCF.StepAsHighPass(FilterData1);
+
+  x1 := FilterData2.Ouput[0] * GainOut;
+  x2 := FilterData2.Ouput[1] * GainOut;
+end;
+
 
 procedure TLowPassA.StepAsLowpass4P(var x1, x2: single);
 begin
