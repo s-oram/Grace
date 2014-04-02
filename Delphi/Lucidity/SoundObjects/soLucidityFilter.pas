@@ -19,8 +19,7 @@ uses
   soFilter.RingModA,
   soFilter.DistortionA,
   soFilter.CombA,
-  soFilter.LowPassA,
-  soFilter.LowPassB,
+  soFilter.BlueFilter,
   soFilter.OptimisedFilter;
 
 type

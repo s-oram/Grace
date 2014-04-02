@@ -458,10 +458,8 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\uHarmonicWaveTableGen.pas"/>
 			<DCCReference Include="SoundObjects\soLucidityFilter.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.Test.pas"/>
-			<DCCReference Include="SoundObjects\soFilter.LowPassA.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.BlueFilter.pas"/>
 			<DCCReference Include="SoundObjects\FilterCore.SimperSVF.pas"/>
-			<DCCReference Include="SoundObjects\soFilter.BandPassA.pas"/>
-			<DCCReference Include="SoundObjects\soFilter.HighPassA.pas"/>
 			<DCCReference Include="SoundObjects\uLucidity.Lfo.pas"/>
 			<DCCReference Include="SoundObjects\soModMatrix.pas"/>
 			<DCCReference Include="uGuiUtils.pas"/>
