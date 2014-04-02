@@ -125,8 +125,8 @@ begin
 
   TSimperVCF.StepAsLowPass(FilterData1);
 
-  x1 := FilterData2.Ouput[0] * GainOut;
-  x2 := FilterData2.Ouput[1] * GainOut;
+  x1 := FilterData1.Ouput[0] * GainOut;
+  x2 := FilterData1.Ouput[1] * GainOut;
 end;
 
 procedure TLowPassA.StepAsBandpass2P(var x1, x2: single);
@@ -136,8 +136,8 @@ begin
 
   TSimperVCF.StepAsBandPass(FilterData1);
 
-  x1 := FilterData2.Ouput[0] * GainOut;
-  x2 := FilterData2.Ouput[1] * GainOut;
+  x1 := FilterData1.Ouput[0] * GainOut;
+  x2 := FilterData1.Ouput[1] * GainOut;
 end;
 
 procedure TLowPassA.StepAsHighpass2P(var x1, x2: single);
@@ -147,8 +147,8 @@ begin
 
   TSimperVCF.StepAsHighPass(FilterData1);
 
-  x1 := FilterData2.Ouput[0] * GainOut;
-  x2 := FilterData2.Ouput[1] * GainOut;
+  x1 := FilterData1.Ouput[0] * GainOut;
+  x2 := FilterData1.Ouput[1] * GainOut;
 end;
 
 

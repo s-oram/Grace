@@ -11,19 +11,13 @@ uses
 type
   TFilterType = (
     ftNone,
-    ftLowPassA, ftBandPassA, ftHighPassA, ftLofiA, ftRingModA, ftCombA,
+    ftLofiA, ftRingModA, ftCombA,
     ft2PoleLowPass,
     ft2PoleBandPass,
     ft2PoleHighPass,
     ft4PoleLowPass,
     ft4PoleBandPass,
-    ft4PoleHighPass,
-    ft2PoleLowPassOP,
-    ft2PoleBandPassOP,
-    ft2PoleHighPassOP,
-    ft4PoleLowPassOP,
-    ft4PoleBandPassOP,
-    ft4PoleHighPassOP
+    ft4PoleHighPass
   );
 
   TFilterTypeHelper = class(TEnumHelper<TFilterType>)
@@ -525,9 +519,6 @@ class function TFilterTypeHelper.ToFullGuiString(aEnum: TFilterType): string;
 begin
   case aEnum of
     ftNone:          result := 'None';
-    ftLowPassA:      result := 'Lowpass';
-    ftBandPassA:     result := 'Bandpass';
-    ftHighPassA:     result := 'Highpass';
     ftLofiA:         result := 'LoFi';
     ftRingModA:      result := 'Ring Mod';
     //ftDistA:         result := 'Distortion';
@@ -538,12 +529,6 @@ begin
     ft4PoleLowPass:  result := '4 Pole Low Pass';
     ft4PoleBandPass: result := '4 Pole Band Pass';
     ft4PoleHighPass: result := '4 Pole High Pass';
-    ft2PoleLowPassOP:   result := '2 Pole Low Pass OP';
-    ft2PoleBandPassOP:  result := '2 Pole Band Pass OP';
-    ft2PoleHighPassOP:  result := '2 Pole High Pass OP';
-    ft4PoleLowPassOP:   result := '4 Pole Low Pass OP';
-    ft4PoleBandPassOP:  result := '4 Pole Band Pass OP';
-    ft4PoleHighPassOP:  result := '4 Pole High Pass OP';
   else
     raise Exception.Create('type not handled.');
   end;
@@ -553,9 +538,6 @@ class function TFilterTypeHelper.ToShortGuiString(aEnum: TFilterType): string;
 begin
   case aEnum of
     ftNone:             result := '-';
-    ftLowPassA:         result := 'Lowpass';
-    ftBandPassA:        result := 'Bandpass';
-    ftHighPassA:        result := 'Highpass';
     ftLofiA:            result := 'LoFi';
     ftRingModA:         result := 'Ring Mod';
     //ftDistA:            result := 'Distortion';
@@ -566,12 +548,6 @@ begin
     ft4PoleLowPass:     result := '4xLP';
     ft4PoleBandPass:    result := '4xBP';
     ft4PoleHighPass:    result := '4xHP';
-    ft2PoleLowPassOP:   result := '2xLP OP';
-    ft2PoleBandPassOP:  result := '2xBP OP';
-    ft2PoleHighPassOP:  result := '2xHP OP';
-    ft4PoleLowPassOP:   result := '4xLP OP';
-    ft4PoleBandPassOP:  result := '4xBP OP';
-    ft4PoleHighPassOP:  result := '4xHP OP';
   else
     raise Exception.Create('type not handled.');
   end;

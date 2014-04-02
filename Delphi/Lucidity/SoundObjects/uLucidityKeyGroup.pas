@@ -183,13 +183,6 @@ procedure TKeyGroup.GetFilterInfo(const Info: PFilterParameterInfo);
         ps3^ := '-';
       end;
 
-      ftLowPassA, ftBandPassA, ftHighPassA:
-      begin
-        ps1^ := 'HZ';
-        ps2^ := 'RES';
-        ps3^ := '';
-      end;
-
       ftLofiA:
       begin
         ps1^ := 'Sample Rate';
@@ -231,13 +224,6 @@ procedure TKeyGroup.GetFilterInfo(const Info: PFilterParameterInfo);
       begin
         ps1^ := '';
         ps2^ := '';
-        ps3^ := '';
-      end;
-
-      ftLowPassA, ftBandPassA, ftHighPassA:
-      begin
-        ps1^ := 'HZ';
-        ps2^ := 'RES';
         ps3^ := '';
       end;
 

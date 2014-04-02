@@ -438,14 +438,6 @@ begin
       FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 
-    ftLowPassA, ftBandPassA, ftHighPassA:
-    begin
-      FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
-      FastUpdateControl(Knobs[1], Labels[1], 'RES');
-      FastUpdateControl(Knobs[2], Labels[2], 'GAIN');
-      FastUpdateControl(Knobs[3], Labels[3], '');
-    end;
-
     ftLofiA:
     begin
       FastUpdateControl(Knobs[0], Labels[0], 'SR');
@@ -480,19 +472,6 @@ begin
     ft4PoleLowPass,
     ft4PoleBandPass,
     ft4PoleHighPass:
-    begin
-      FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
-      FastUpdateControl(Knobs[1], Labels[1], 'RES');
-      FastUpdateControl(Knobs[2], Labels[2], 'GAIN');
-      FastUpdateControl(Knobs[3], Labels[3], '');
-    end;
-
-    ft2PoleLowPassOP,
-    ft2PoleBandPassOP,
-    ft2PoleHighPassOP,
-    ft4PoleLowPassOP,
-    ft4PoleBandPassOP,
-    ft4PoleHighPassOP:
     begin
       FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
       FastUpdateControl(Knobs[1], Labels[1], 'RES');

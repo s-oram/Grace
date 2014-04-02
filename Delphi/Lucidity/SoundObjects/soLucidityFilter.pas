@@ -245,24 +245,6 @@ begin
     begin
     end;
 
-    ftLowPassA,
-    ftBandPassA,
-    ftHighPassA:
-    begin
-      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
-
-      cQ := (Par2 + Par2Mod) * 0.98;
-      cQ := Clamp(cQ, kMinQ, kMaxQ);
-
-      Gain := mPar3;
-
-      BlueFilter.UpdateParameters(cFreq, cQ, Gain);
-    end;
-
-
-
     ftLofiA:
     begin
       //==== Lofi A ====
@@ -338,34 +320,13 @@ begin
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
       cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
 
-      cQ := (Par2 + Par2Mod);
+      cQ := (Par2 + Par2Mod) * 0.98;
       cQ := Clamp(cQ, kMinQ, kMaxQ);
 
-      MoogLadder.Freq := cFreq;
-      MoogLadder.Q    := cQ;
-      MoogLadder.InputGain := DecibelsToLinear(mPar3 * 72 - 12);
+      Gain := mPar3;
+
+      BlueFilter.UpdateParameters(cFreq, cQ, Gain);
     end;
-
-
-    ft2PoleLowPassOP,
-    ft2PoleBandPassOP,
-    ft2PoleHighPassOP,
-    ft4PoleLowPassOP,
-    ft4PoleBandPassOP,
-    ft4PoleHighPassOP:
-    begin
-      CV := (Par1 * 15) + AudioRangeToModularVoltage(Par1Mod);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
-
-      cQ := (Par2 + Par2Mod);
-      cQ := Clamp(cQ, kMinQ, kMaxQ);
-
-      OptimisedFilter.Freq := cFreq;
-      OptimisedFilter.Q    := cQ;
-      OptimisedFilter.InputGain := DecibelsToLinear(mPar3 * 72 - 12);
-    end;
-
   end;
 
 end;
@@ -379,25 +340,16 @@ procedure TLucidityFilter.AudioRateStep(var x1, x2: single);
 begin
   case FilterType of
     ftNone: ;
-    ftLowPassA:  BlueFilter.StepAsLowpass4P(x1, x2);
-    ftBandPassA: BlueFilter.StepAsBandpass4P(x1, x2);
-    ftHighPassA: BlueFilter.StepAsHighpass4P(x1, x2);
     ftLofiA:     LofiA.Step(x1, x2);
     ftRingModA:  RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
     ftCombA:     CombA.AudioRateStep(x1, x2);
-    ft2PoleLowPass:  MoogLadder.StepAs2PoleLP(x1, x2);
-    ft2PoleBandPass: MoogLadder.StepAs2PoleBP(x1, x2);
-    ft2PoleHighPass: MoogLadder.StepAs2PoleHP(x1, x2);
-    ft4PoleLowPass:  MoogLadder.StepAs4PoleLP(x1, x2);
-    ft4PoleBandPass: MoogLadder.StepAs4PoleBP(x1, x2);
-    ft4PoleHighPass: MoogLadder.StepAs4PoleHP(x1, x2);
-    ft2PoleLowPassOP:  OptimisedFilter.StepAs2PoleLP(x1, x2);
-    ft2PoleBandPassOp: OptimisedFilter.StepAs2PoleBP(x1, x2);
-    ft2PoleHighPassOp: OptimisedFilter.StepAs2PoleHP(x1, x2);
-    ft4PoleLowPassOP:  OptimisedFilter.StepAs4PoleLP(x1, x2);
-    ft4PoleBandPassOP: OptimisedFilter.StepAs4PoleBP(x1, x2);
-    ft4PoleHighPassOP: OptimisedFilter.StepAs4PoleHP(x1, x2);
+    ft2PoleLowPass:  BlueFilter.StepAsLowpass2P(x1, x2);
+    ft2PoleBandPass: BlueFilter.StepAsBandpass2P(x1, x2);
+    ft2PoleHighPass: BlueFilter.StepAsHighpass2P(x1, x2);
+    ft4PoleLowPass:  BlueFilter.StepAsLowpass4P(x1, x2);
+    ft4PoleBandPass: BlueFilter.StepAsBandpass4P(x1, x2);
+    ft4PoleHighPass: BlueFilter.StepAsHighpass4P(x1, x2);
   else
     raise Exception.Create('Unexpected filter type.');
   end;
