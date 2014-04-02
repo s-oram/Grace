@@ -5,18 +5,38 @@ interface
 uses
   VamSampleMap;
 
-procedure MoveSelectedRegions(Regions : TVamSampleRegionList; KeyOffset, VelocityOffset : integer; const Snapping : boolean);
+procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 
 implementation
 
-procedure MoveSelectedRegions(Regions : TVamSampleRegionList; KeyOffset, VelocityOffset : integer; const Snapping : boolean);
+uses
+  Types;
+
+procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 var
   c1: Integer;
   LimitedKeyOffset : integer;
   LimitedVelocityOffset : integer;
   rw, rh : integer;
   rwShift, rhShift : integer;
+
+  NewBounds : TRect;
 begin
+  NewBounds.Left   := FocusedRegion.LowKey  + KeyOffset;
+  NewBounds.Right  := FocusedRegion.HighKey + KeyOffset;
+  NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
+  NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
+
+
+
+
+
+
+
+
+
+
+  {
   for c1 := 0 to Regions.Count-1 do
   begin
 
@@ -76,6 +96,7 @@ begin
       Regions[c1].MovedRootNote     := Regions[c1].RootNote     + LimitedKeyOffset;
     end;
   end;
+  }
 end;
 
 end.

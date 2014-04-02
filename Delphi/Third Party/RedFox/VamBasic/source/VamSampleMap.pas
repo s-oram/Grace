@@ -1435,9 +1435,13 @@ begin
     begin
       LastDistKey := DistKey;
       LastDistVelocity := DistVelocity;
-      if IsCopyRegionActive
-        then MoveSelectedRegions(CopiedRegions, DistKey, DistVelocity, IsSnapping)
-        else MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
+
+      //if IsCopyRegionActive
+      //  then MoveSelectedRegions(CopiedRegions, DistKey, DistVelocity, IsSnapping)
+      //  else MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
+      MoveSelectedRegions(MouseDownRegion, SampleRegions, DistKey, DistVelocity, IsSnapping);
+
+
       Invalidate;
       RegionInfoChanged;
     end;
