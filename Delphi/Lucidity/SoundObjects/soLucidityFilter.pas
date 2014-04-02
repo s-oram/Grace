@@ -39,7 +39,6 @@ type
     LofiA       : TLofiA;
     CombA       : TCombA;
     BlueFilter  : TLowPassA;
-    LowPassB    : TLowPassB;
     MoogLadder  : TMoogLadder;
     OptimisedFilter : TOptimisedFilter;
 
@@ -94,7 +93,6 @@ begin
   LofiA       := TLofiA.Create;
   CombA       := TCombA.Create;
   BlueFilter  := TLowPassA.Create;
-  LowPassB    := TLowPassB.Create;
   MoogLadder  := TMoogLadder.Create;
   OptimisedFilter := TOptimisedFilter.Create;
 end;
@@ -107,7 +105,6 @@ begin
   CombA.Free;
   RingModA.Free;
   DistortionA.Free;
-  LowPassB.Free;
   MoogLadder.Free;
   OptimisedFilter.Free;
   inherited;
@@ -118,7 +115,6 @@ begin
   DistortionA.Reset;
   RingModA.Reset;
   BlueFilter.Reset;
-  LowPassB.Reset;
   MoogLadder.Reset;
   OptimisedFilter.Reset;
 end;
@@ -146,7 +142,6 @@ begin
   LofiA.Reset;
   CombA.Reset;
   BlueFilter.Reset;
-  LowPassB.Reset;
   RingModA.Reset;
   DistortionA.Reset;
   MoogLadder.Reset;
@@ -165,7 +160,6 @@ begin
   fSampleRate := Value;
 
   BlueFilter.SampleRate := Value;
-  LowPassB.SampleRate := Value;
   LofiA.SampleRate := Value;
   CombA.SampleRate := Value;
   RingModA.SampleRate := Value;
