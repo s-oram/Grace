@@ -40,6 +40,7 @@
 			<Cfg_2>true</Cfg_2>
 			<Base>true</Base>
 		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('S:\Delphi\Basic Paths.optset')" Project="S:\Delphi\Basic Paths.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DllSuffix>.DelphiXE2</DllSuffix>
 			<DCC_Description>Spring4D Extensions package</DCC_Description>
@@ -55,9 +56,9 @@
 			<DCC_S>false</DCC_S>
 			<GenDll>true</GenDll>
 			<DCC_K>false</DCC_K>
-			<DCC_DcuOutput>..\..\Library\DelphiXE2\$(Platform)\$(Config)</DCC_DcuOutput>
 			<DCC_E>false</DCC_E>
 			<DCC_F>false</DCC_F>
+			<CfgDependentOn>S:\Delphi\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -105,6 +106,7 @@
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
+				<DependentOn>S:\Delphi\Basic Paths.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_1</Key>
@@ -147,6 +149,7 @@
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>

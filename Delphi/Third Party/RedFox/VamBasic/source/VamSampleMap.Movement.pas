@@ -10,6 +10,8 @@ procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVam
 implementation
 
 uses
+  VamLib.Collections.Lists,
+  Spring,
   Types;
 
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
@@ -19,13 +21,14 @@ var
   LimitedVelocityOffset : integer;
   rw, rh : integer;
   rwShift, rhShift : integer;
-
   NewBounds : TRect;
+  //VertSnapPoints:TIntegerList;
 begin
   NewBounds.Left   := FocusedRegion.LowKey  + KeyOffset;
   NewBounds.Right  := FocusedRegion.HighKey + KeyOffset;
   NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
   NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
+
 
 
 

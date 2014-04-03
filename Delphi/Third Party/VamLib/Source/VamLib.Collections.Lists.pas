@@ -40,7 +40,7 @@ type
 
     function New:Pointer;
 
-    function Add(const Value : T):integer;
+    function Add(const Value : T):integer; virtual;
     function Append(const Value : T):integer; deprecated; //TODO: delete these append methods.
     procedure Delete(const Index : integer);
 
@@ -137,6 +137,22 @@ type
   private
   public
     procedure Delete(Value : Pointer); overload;
+  end;
+
+
+
+
+  TIntegerList = class(TSimpleList<Integer>)
+  private
+    fAllowDuplicates: boolean;
+  public
+    constructor Create; override;
+
+    function Contains(const Value : integer): boolean;
+    function Add(const Value : integer):integer; override;
+    procedure DeleteValue(const Value : integer);
+
+    property AllowDuplicates : boolean read fAllowDuplicates write fAllowDuplicates;
   end;
 
 implementation
@@ -504,5 +520,52 @@ begin
       then Delete(c1);
   end;
 end;
+
+{ TIntegerList }
+
+constructor TIntegerList.Create;
+begin
+  inherited;
+  AllowDuplicates := true;
+end;
+
+function TIntegerList.Add(const Value: integer): integer;
+begin
+  if AllowDuplicates then
+  begin
+    inherited Add(Value);
+  end else
+  if Contains(Value) = false then
+  begin
+    inherited Add(Value);
+  end;
+end;
+
+procedure TIntegerList.DeleteValue(const Value: integer);
+var
+  c1: Integer;
+begin
+  for c1 := Count-1 downto 0 do
+  begin
+    if Items[c1] = Value
+      then Delete(c1);
+  end;
+end;
+
+
+
+function TIntegerList.Contains(const Value: integer): boolean;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to Count-1 do
+  begin
+    if Raw[c1] = Value
+      then exit(true); //==== exit ====>>
+  end;
+
+  result := false;
+end;
+
 
 end.

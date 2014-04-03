@@ -93,6 +93,7 @@
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="RedFoxRunXE2.dcp"/>
+			<DCCReference Include="Spring.Base.dcp"/>
 			<DCCReference Include="..\source\VamLabel.pas"/>
 			<DCCReference Include="..\source\VamScrollBar.pas"/>
 			<DCCReference Include="..\source\VamPanel.pas"/>

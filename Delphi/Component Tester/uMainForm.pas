@@ -133,10 +133,42 @@ end;
 
 
 procedure TForm1.Button1Click(Sender: TObject);
+var
+  s : string;
+  List : TIntegerList;
+  c1: Integer;
 begin
-  TimeReference := Now;
-  Timer.Interval := 300;
-  Timer.Enabled := true;
+  Memo1.Lines.Clear;
+  Memo1.Invalidate;
+
+  List := TIntegerList.Create;
+  //List.AllowDuplicates := false;
+
+  List.Add(10);
+  List.Add(10);
+  List.Add(10);
+  List.Add(11);
+  List.Add(11);
+  List.Add(12);
+  List.Add(1);
+  List.Add(4);
+
+  List.DeleteValue(10);
+
+  for c1 := 0 to List.Count-1 do
+  begin
+    s := IntToStr(List[c1]);
+    Memo1.Lines.Add(s);
+  end;
+
+  Memo1.Invalidate;
+
+
+
+
+
+  List.Free;
+
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);

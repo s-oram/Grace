@@ -47,6 +47,7 @@ object Form1: TForm1
       Font.Style = []
       KnobMin = 0
       KnobMax = 100
+      Sensitivity = 1.000000000000000000
       NumericStyle = nsFloat
       DecimalPlaces = 2
       Visible = True
@@ -68,6 +69,7 @@ object Form1: TForm1
       Font.Style = []
       KnobMin = 0
       KnobMax = 100
+      Sensitivity = 1.000000000000000000
       NumericStyle = nsFloat
       DecimalPlaces = 2
       Visible = True
@@ -180,6 +182,8 @@ object Form1: TForm1
       Opacity = 255
       Text = 'VamSliderSwitch1'
       HitTest = True
+      ColorBackground = '$FF666666'
+      ColorIndex = '$FFCCCCFF'
       Enabled = False
       SwitchSteps = 3
       SwitchPos = 0
