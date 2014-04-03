@@ -18,7 +18,6 @@ uses
 
 function FindClosestValue(const Value : integer; const ValueList : TIntegerList):integer;
 var
-  IsSnapPointFound : boolean;
   Dist : integer;
   cv : integer;
   c1: Integer;
@@ -26,47 +25,22 @@ var
 begin
   assert(ValueList.Count > 0);
 
+  cv := ValueList[0];
+  Dist := abs(cv - Value);
 
-
-
-
-
-
-  IsSnapPointFound := false;
-
-  for c1 := 0 to ValueList.Count-1 do
+  for c1 := 1 to ValueList.Count-1 do
   begin
-    if ValueList[c1] <= Value then
+    TestDist := abs(ValueList[c1] - Value);
+    if TestDist < Dist then
     begin
-      if IsSnapPointFound = false then
-      begin
-        IsSnapPointFound := true;
-        cv := ValueList[c1];
-        Dist := abs(ValueList[c1] - Value);
-      end else
-      begin
-        TestDist := abs(ValueList[c1] - Value);
-        if TestDist < Dist then
-        begin
-          Dist := TestDist;
-          cv := ValueList[c1];
-        end;
-      end;
+      Dist := TestDist;
+      cv := ValueList[c1];
     end;
   end;
 
-
-
-  if IsSnapPointFound = false then
-  begin
-    //cv := ValueList[0];
-    //Dist := cv - Value;
-    cv := Value;
-  end;
-
   result := cv;
-
 end;
+
 
 
 
