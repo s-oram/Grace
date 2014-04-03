@@ -1,0 +1,192 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{5A3903D4-6239-4FB7-A9EA-C63F248C3CE1}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Demo.General\Demo.Spring.ObjectContainer.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.SimpleInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.FieldInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.PropertyInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.ConstructorInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.DependencyInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.Collections\Demo.Spring.Collections.Stack.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.Collections\Demo.Spring.Enumerators.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.General\Demo.Spring.Predicates.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.General\Demo.Spring.Nullable.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.General\Demo.Spring.Enum.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.Patterns\Factory\Demo.Spring.FactoryPattern.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.Patterns\Observer\Demo.Spring.ObserverPattern.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo.DependencyInjection\Demo.Spring.DelegatedConstructor.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="Demo_Spring_ObjectContainer">
+			<MSBuild Projects="Demo.General\Demo.Spring.ObjectContainer.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_ObjectContainer:Clean">
+			<MSBuild Projects="Demo.General\Demo.Spring.ObjectContainer.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_ObjectContainer:Make">
+			<MSBuild Projects="Demo.General\Demo.Spring.ObjectContainer.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_SimpleInjection">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.SimpleInjection.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_SimpleInjection:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.SimpleInjection.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_SimpleInjection:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.SimpleInjection.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_FieldInjection">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.FieldInjection.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_FieldInjection:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.FieldInjection.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_FieldInjection:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.FieldInjection.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_PropertyInjection">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.PropertyInjection.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_PropertyInjection:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.PropertyInjection.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_PropertyInjection:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.PropertyInjection.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_ConstructorInjection">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.ConstructorInjection.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_ConstructorInjection:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.ConstructorInjection.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_ConstructorInjection:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.ConstructorInjection.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_DependencyInjection">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DependencyInjection.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_DependencyInjection:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DependencyInjection.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_DependencyInjection:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DependencyInjection.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_Collections_Stack">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Collections.Stack.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_Collections_Stack:Clean">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Collections.Stack.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_Collections_Stack:Make">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Collections.Stack.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_Enumerators">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Enumerators.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_Enumerators:Clean">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Enumerators.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_Enumerators:Make">
+			<MSBuild Projects="Demo.Collections\Demo.Spring.Enumerators.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_Predicates">
+			<MSBuild Projects="Demo.General\Demo.Spring.Predicates.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_Predicates:Clean">
+			<MSBuild Projects="Demo.General\Demo.Spring.Predicates.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_Predicates:Make">
+			<MSBuild Projects="Demo.General\Demo.Spring.Predicates.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_Nullable">
+			<MSBuild Projects="Demo.General\Demo.Spring.Nullable.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_Nullable:Clean">
+			<MSBuild Projects="Demo.General\Demo.Spring.Nullable.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_Nullable:Make">
+			<MSBuild Projects="Demo.General\Demo.Spring.Nullable.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_Enum">
+			<MSBuild Projects="Demo.General\Demo.Spring.Enum.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_Enum:Clean">
+			<MSBuild Projects="Demo.General\Demo.Spring.Enum.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_Enum:Make">
+			<MSBuild Projects="Demo.General\Demo.Spring.Enum.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_FactoryPattern">
+			<MSBuild Projects="Demo.Patterns\Factory\Demo.Spring.FactoryPattern.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_FactoryPattern:Clean">
+			<MSBuild Projects="Demo.Patterns\Factory\Demo.Spring.FactoryPattern.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_FactoryPattern:Make">
+			<MSBuild Projects="Demo.Patterns\Factory\Demo.Spring.FactoryPattern.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_ObserverPattern">
+			<MSBuild Projects="Demo.Patterns\Observer\Demo.Spring.ObserverPattern.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_ObserverPattern:Clean">
+			<MSBuild Projects="Demo.Patterns\Observer\Demo.Spring.ObserverPattern.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_ObserverPattern:Make">
+			<MSBuild Projects="Demo.Patterns\Observer\Demo.Spring.ObserverPattern.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Demo_Spring_DelegatedConstructor">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DelegatedConstructor.dproj"/>
+		</Target>
+		<Target Name="Demo_Spring_DelegatedConstructor:Clean">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DelegatedConstructor.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Demo_Spring_DelegatedConstructor:Make">
+			<MSBuild Projects="Demo.DependencyInjection\Demo.Spring.DelegatedConstructor.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="Demo_Spring_ObjectContainer;Demo_Spring_SimpleInjection;Demo_Spring_FieldInjection;Demo_Spring_PropertyInjection;Demo_Spring_ConstructorInjection;Demo_Spring_DependencyInjection;Demo_Spring_Collections_Stack;Demo_Spring_Enumerators;Demo_Spring_Predicates;Demo_Spring_Nullable;Demo_Spring_Enum;Demo_Spring_FactoryPattern;Demo_Spring_ObserverPattern;Demo_Spring_DelegatedConstructor"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="Demo_Spring_ObjectContainer:Clean;Demo_Spring_SimpleInjection:Clean;Demo_Spring_FieldInjection:Clean;Demo_Spring_PropertyInjection:Clean;Demo_Spring_ConstructorInjection:Clean;Demo_Spring_DependencyInjection:Clean;Demo_Spring_Collections_Stack:Clean;Demo_Spring_Enumerators:Clean;Demo_Spring_Predicates:Clean;Demo_Spring_Nullable:Clean;Demo_Spring_Enum:Clean;Demo_Spring_FactoryPattern:Clean;Demo_Spring_ObserverPattern:Clean;Demo_Spring_DelegatedConstructor:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="Demo_Spring_ObjectContainer:Make;Demo_Spring_SimpleInjection:Make;Demo_Spring_FieldInjection:Make;Demo_Spring_PropertyInjection:Make;Demo_Spring_ConstructorInjection:Make;Demo_Spring_DependencyInjection:Make;Demo_Spring_Collections_Stack:Make;Demo_Spring_Enumerators:Make;Demo_Spring_Predicates:Make;Demo_Spring_Nullable:Make;Demo_Spring_Enum:Make;Demo_Spring_FactoryPattern:Make;Demo_Spring_ObserverPattern:Make;Demo_Spring_DelegatedConstructor:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

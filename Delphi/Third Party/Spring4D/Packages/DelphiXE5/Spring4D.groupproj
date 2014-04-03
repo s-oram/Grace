@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{4C209682-5EE6-4924-AF89-0D517C0D2A6E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Spring.Base.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Spring.Core.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Spring.Extensions.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\Tests\Spring.Tests.DelphiXE5.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Spring_Base">
+        <MSBuild Projects="Spring.Base.dproj"/>
+    </Target>
+    <Target Name="Spring_Base:Clean">
+        <MSBuild Projects="Spring.Base.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Base:Make">
+        <MSBuild Projects="Spring.Base.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Core">
+        <MSBuild Projects="Spring.Core.dproj"/>
+    </Target>
+    <Target Name="Spring_Core:Clean">
+        <MSBuild Projects="Spring.Core.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Core:Make">
+        <MSBuild Projects="Spring.Core.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Extensions">
+        <MSBuild Projects="Spring.Extensions.dproj"/>
+    </Target>
+    <Target Name="Spring_Extensions:Clean">
+        <MSBuild Projects="Spring.Extensions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Extensions:Make">
+        <MSBuild Projects="Spring.Extensions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Tests_DelphiXE5">
+        <MSBuild Projects="..\..\Tests\Spring.Tests.DelphiXE5.dproj"/>
+    </Target>
+    <Target Name="Spring_Tests_DelphiXE5:Clean">
+        <MSBuild Projects="..\..\Tests\Spring.Tests.DelphiXE5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Tests_DelphiXE5:Make">
+        <MSBuild Projects="..\..\Tests\Spring.Tests.DelphiXE5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;Spring_Tests_DelphiXE5"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;Spring_Tests_DelphiXE5:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;Spring_Tests_DelphiXE5:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

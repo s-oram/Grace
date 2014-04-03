@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="iproparray" invoke="auto">
+		<point name="propertyName">
+			<text>
+				PropertyName
+			</text>
+			<hint>
+				Property name
+			</hint>
+		</point>
+		<point name="index">
+			<text>
+				index
+			</text>
+			<hint>
+				Index name
+			</hint>
+		</point>
+		<point name="indexType">
+			<text>
+				Integer
+			</text>
+			<hint>
+				Index Type
+			</hint>
+		</point>
+		<point name="propertyType">
+			<hint>
+				property type
+			</hint>
+			<text>
+				string
+			</text>
+		</point>
+		<description>
+			interface property declaration (with getter and setter)
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+function Get|propertyName|(const |index|: |indexType|): |propertyType|;
+procedure Set|propertyName|(const |index|: |indexType|; const value: |propertyType|);
+property |propertyName|[const |index|: |indexType|]: |propertyType| read Get|propertyName| write Set|propertyName|; |end|
+]]>
+		</code>
+	</template>
+</codetemplate>

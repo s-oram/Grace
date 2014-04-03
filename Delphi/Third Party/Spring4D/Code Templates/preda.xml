@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="preda" invoke="auto">
+		<description>
+		anonymous predicate (TPredicate<T>)
+		</description>
+		<author>
+		Zuo Baoquan (Paul)
+		</author>
+		<point name="argument">
+			<text>
+				value
+			</text>
+			<hint>
+				argument
+			</hint>
+		</point>
+		<point name="argumentType">
+			<text>
+				TObject
+			</text>
+			<hint>
+				argument Type
+			</hint>
+		</point>
+		<code language="Delphi" context="methodbody" delimiter="|"><![CDATA[
+function (|argument|: |argumentType|): Boolean
+begin
+|*||end|
+end]]>
+		</code>
+	</template>
+</codetemplate>

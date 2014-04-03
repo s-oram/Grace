@@ -1,0 +1,132 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{8F0B7B07-C38D-4FB9-A7CB-8BB20F272245}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="1-StartingOut\StartingOut.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="2-MoveToInterfaces\MovingToInterfaces.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="3-ConstructorInjection\ConstructorInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="4-UseMocks\UseMocks.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="5-IsolateInterfaces\IsolateInterfaces.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="6-UseContainer\UseContainer.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="7-CustomConstructor\CustomConstructor.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="8-FieldInjection\FieldInjection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="9-DecoratorInjection\DecoratorInjection.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="StartingOut">
+			<MSBuild Projects="1-StartingOut\StartingOut.dproj"/>
+		</Target>
+		<Target Name="StartingOut:Clean">
+			<MSBuild Targets="Clean" Projects="1-StartingOut\StartingOut.dproj"/>
+		</Target>
+		<Target Name="StartingOut:Make">
+			<MSBuild Targets="Make" Projects="1-StartingOut\StartingOut.dproj"/>
+		</Target>
+		<Target Name="MovingToInterfaces">
+			<MSBuild Projects="2-MoveToInterfaces\MovingToInterfaces.dproj"/>
+		</Target>
+		<Target Name="MovingToInterfaces:Clean">
+			<MSBuild Targets="Clean" Projects="2-MoveToInterfaces\MovingToInterfaces.dproj"/>
+		</Target>
+		<Target Name="MovingToInterfaces:Make">
+			<MSBuild Targets="Make" Projects="2-MoveToInterfaces\MovingToInterfaces.dproj"/>
+		</Target>
+		<Target Name="ConstructorInjection">
+			<MSBuild Projects="3-ConstructorInjection\ConstructorInjection.dproj"/>
+		</Target>
+		<Target Name="ConstructorInjection:Clean">
+			<MSBuild Targets="Clean" Projects="3-ConstructorInjection\ConstructorInjection.dproj"/>
+		</Target>
+		<Target Name="ConstructorInjection:Make">
+			<MSBuild Targets="Make" Projects="3-ConstructorInjection\ConstructorInjection.dproj"/>
+		</Target>
+		<Target Name="UseMocks">
+			<MSBuild Projects="4-UseMocks\UseMocks.dproj"/>
+		</Target>
+		<Target Name="UseMocks:Clean">
+			<MSBuild Targets="Clean" Projects="4-UseMocks\UseMocks.dproj"/>
+		</Target>
+		<Target Name="UseMocks:Make">
+			<MSBuild Targets="Make" Projects="4-UseMocks\UseMocks.dproj"/>
+		</Target>
+		<Target Name="IsolateInterfaces">
+			<MSBuild Projects="5-IsolateInterfaces\IsolateInterfaces.dproj"/>
+		</Target>
+		<Target Name="IsolateInterfaces:Clean">
+			<MSBuild Targets="Clean" Projects="5-IsolateInterfaces\IsolateInterfaces.dproj"/>
+		</Target>
+		<Target Name="IsolateInterfaces:Make">
+			<MSBuild Targets="Make" Projects="5-IsolateInterfaces\IsolateInterfaces.dproj"/>
+		</Target>
+		<Target Name="UseContainer">
+			<MSBuild Projects="6-UseContainer\UseContainer.dproj"/>
+		</Target>
+		<Target Name="UseContainer:Clean">
+			<MSBuild Targets="Clean" Projects="6-UseContainer\UseContainer.dproj"/>
+		</Target>
+		<Target Name="UseContainer:Make">
+			<MSBuild Targets="Make" Projects="6-UseContainer\UseContainer.dproj"/>
+		</Target>
+		<Target Name="CustomConstructor">
+			<MSBuild Projects="7-CustomConstructor\CustomConstructor.dproj"/>
+		</Target>
+		<Target Name="CustomConstructor:Clean">
+			<MSBuild Targets="Clean" Projects="7-CustomConstructor\CustomConstructor.dproj"/>
+		</Target>
+		<Target Name="CustomConstructor:Make">
+			<MSBuild Targets="Make" Projects="7-CustomConstructor\CustomConstructor.dproj"/>
+		</Target>
+		<Target Name="FieldInjection">
+			<MSBuild Projects="8-FieldInjection\FieldInjection.dproj"/>
+		</Target>
+		<Target Name="FieldInjection:Clean">
+			<MSBuild Targets="Clean" Projects="8-FieldInjection\FieldInjection.dproj"/>
+		</Target>
+		<Target Name="FieldInjection:Make">
+			<MSBuild Targets="Make" Projects="8-FieldInjection\FieldInjection.dproj"/>
+		</Target>
+		<Target Name="DecoratorInjection">
+			<MSBuild Projects="9-DecoratorInjection\DecoratorInjection.dproj"/>
+		</Target>
+		<Target Name="DecoratorInjection:Clean">
+			<MSBuild Targets="Clean" Projects="9-DecoratorInjection\DecoratorInjection.dproj"/>
+		</Target>
+		<Target Name="DecoratorInjection:Make">
+			<MSBuild Targets="Make" Projects="9-DecoratorInjection\DecoratorInjection.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="StartingOut;MovingToInterfaces;ConstructorInjection;UseMocks;IsolateInterfaces;UseContainer;CustomConstructor;FieldInjection;DecoratorInjection"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="StartingOut:Clean;MovingToInterfaces:Clean;ConstructorInjection:Clean;UseMocks:Clean;IsolateInterfaces:Clean;UseContainer:Clean;CustomConstructor:Clean;FieldInjection:Clean;DecoratorInjection:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="StartingOut:Make;MovingToInterfaces:Make;ConstructorInjection:Make;UseMocks:Make;IsolateInterfaces:Make;UseContainer:Make;CustomConstructor:Make;FieldInjection:Make;DecoratorInjection:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

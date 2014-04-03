@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="upds" invoke="auto">
+		<description>
+		Update Strings
+		</description>
+		<author>
+		Zuo Baoquan (Paul)
+		</author>
+		<point name="strings">
+			<text>
+				strings
+			</text>
+			<hint>
+				TStrings
+			</hint>
+		</point>
+		<code language="Delphi" context="methodbody" delimiter="|"><![CDATA[
+UpdateStrings(|strings|,
+|*|procedure
+|*|begin
+|*||*||end|
+|*|end
+);
+		]]>
+		</code>
+	</template>
+</codetemplate>

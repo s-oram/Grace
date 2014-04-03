@@ -1,0 +1,72 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9446FA84-73F1-4EAC-B910-5CB78C9CDB22}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\..\..\Packages\DelphiXE5\Spring.Base.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\Packages\DelphiXE5\Spring.Core.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\Packages\DelphiXE5\Spring.Extensions.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Spring.Tests.Mobile.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Spring_Base">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Base.dproj"/>
+    </Target>
+    <Target Name="Spring_Base:Clean">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Base.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Base:Make">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Base.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Core">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Core.dproj"/>
+    </Target>
+    <Target Name="Spring_Core:Clean">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Core.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Core:Make">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Core.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Extensions">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Extensions.dproj"/>
+    </Target>
+    <Target Name="Spring_Extensions:Clean">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Extensions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Extensions:Make">
+        <MSBuild Projects="..\..\..\Packages\DelphiXE5\Spring.Extensions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Spring_Tests_Mobile">
+        <MSBuild Projects="Spring.Tests.Mobile.dproj"/>
+    </Target>
+    <Target Name="Spring_Tests_Mobile:Clean">
+        <MSBuild Projects="Spring.Tests.Mobile.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Spring_Tests_Mobile:Make">
+        <MSBuild Projects="Spring.Tests.Mobile.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;Spring_Tests_Mobile"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;Spring_Tests_Mobile:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;Spring_Tests_Mobile:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="propfs" invoke="auto">
+		<point name="propertyName">
+			<text>
+				PropertyName
+			</text>
+			<hint>
+				property name
+			</hint>
+		</point>
+		<point name="propertyType">
+			<script language="Delphi">
+				InvokeCodeCompletion;
+			</script>
+			<hint>
+				property type
+			</hint>
+			<text>
+				string
+			</text>
+		</point>
+		<description>
+			property (with field and Setter)
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<script language="Delphi" onenter="false" onleave="true">
+			InvokeClassCompletion;
+		</script>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+property |propertyName|: |propertyType| read f|propertyName| write Set|propertyName|;
+]]>
+		</code>
+	</template>
+</codetemplate>

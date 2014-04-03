@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="testcase" invoke="manual">
+		<point name="classname">
+			<text>
+				Test
+			</text>
+			<hint>
+				class name
+			</hint>
+		</point>
+		<point name="ancestor">
+			<script language="Delphi">
+				InvokeCodeCompletion;
+			</script>
+			<hint>
+				ancestor name
+			</hint>
+			<text>
+				TestCase
+			</text>
+		</point>
+		<description>
+			test case class declaration
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<script language="Delphi" onenter="false" onleave="true">
+			InvokeClassCompletion;
+		</script>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+T|classname| = class(T|ancestor|)
+strict private
+|*||end|
+protected
+|*|procedure SetUp; override;
+|*|procedure TearDown; override;
+published
+
+end;
+]]>
+		</code>
+	</template>
+</codetemplate>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="funca" invoke="auto">
+		<description>
+		anonymous function
+		</description>
+		<author>
+		Zuo Baoquan (Paul)
+		</author>
+		<point name="returnType">
+			<text>
+				Boolean
+			</text>
+			<hint>
+				return Type
+			</hint>
+		</point>
+		<code language="Delphi" context="methodbody" delimiter="|"><![CDATA[
+function: |returnType|
+begin
+|*||end|
+end]]>
+		</code>
+	</template>
+</codetemplate>

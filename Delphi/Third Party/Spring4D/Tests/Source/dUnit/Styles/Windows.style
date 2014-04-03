@@ -1,0 +1,149 @@
+object TStyleContainer
+  object TLayout
+    StyleName = 'ItemPass'
+    DesignVisible = False
+    Height = 23.000000000000000000
+    Width = 296.000000000000000000
+    object TSpeedButton
+      StyleName = 'button'
+      Align = alLeft
+      Height = 17.000000000000000000
+      Margins.Left = 3.000000000000000000
+      Margins.Top = 3.000000000000000000
+      Margins.Right = 3.000000000000000000
+      Margins.Bottom = 3.000000000000000000
+      Position.X = 3.000000000000000000
+      Position.Y = 3.000000000000000000
+      StyleLookup = 'treeviewexpanderbuttonstyle'
+      Width = 15.000000000000000000
+    end
+    object TLayout
+      Align = alContents
+      Height = 23.000000000000000000
+      Margins.Left = 20.000000000000000000
+      Width = 276.000000000000000000
+      object TCheckBox
+        StyleName = 'check'
+        Align = alLeft
+        CanFocus = False
+        DisableFocusEffect = True
+        Height = 23.000000000000000000
+        TabOrder = 0
+        Width = 20.000000000000000000
+      end
+      object TActiveStyleTextObject
+        StyleName = 'text'
+        Align = alClient
+        Color = claGreen
+        Locked = True
+        Height = 23.000000000000000000
+        HorzTextAlign = taLeading
+        Width = 256.000000000000000000
+        WordWrap = False
+        Shadow.Color = claNull
+        ShadowVisible = False
+        ActiveTrigger = stSelected
+        ActiveColor = claGreen
+        ActiveShadow.Color = claNull
+      end
+    end
+  end
+  object TLayout
+    StyleName = 'ItemFail'
+    DesignVisible = False
+    Height = 23.000000000000000000
+    Width = 296.000000000000000000
+    object TSpeedButton
+      StyleName = 'button'
+      Align = alLeft
+      Height = 17.000000000000000000
+      Margins.Left = 3.000000000000000000
+      Margins.Top = 3.000000000000000000
+      Margins.Right = 3.000000000000000000
+      Margins.Bottom = 3.000000000000000000
+      Position.X = 3.000000000000000000
+      Position.Y = 3.000000000000000000
+      StyleLookup = 'treeviewexpanderbuttonstyle'
+      Width = 15.000000000000000000
+    end
+    object TLayout
+      Align = alContents
+      Height = 23.000000000000000000
+      Margins.Left = 20.000000000000000000
+      Width = 276.000000000000000000
+      object TCheckBox
+        StyleName = 'check'
+        Align = alLeft
+        CanFocus = False
+        DisableFocusEffect = True
+        Height = 23.000000000000000000
+        TabOrder = 0
+        Width = 20.000000000000000000
+      end
+      object TActiveStyleTextObject
+        StyleName = 'text'
+        Align = alClient
+        Color = claFuchsia
+        Locked = True
+        Height = 23.000000000000000000
+        HorzTextAlign = taLeading
+        Width = 256.000000000000000000
+        WordWrap = False
+        Shadow.Color = claNull
+        ShadowVisible = False
+        ActiveTrigger = stSelected
+        ActiveColor = claFuchsia
+        ActiveShadow.Color = claNull
+      end
+    end
+  end
+  object TLayout
+    StyleName = 'ItemError'
+    DesignVisible = False
+    Height = 23.000000000000000000
+    Width = 296.000000000000000000
+    object TSpeedButton
+      StyleName = 'button'
+      Align = alLeft
+      Height = 17.000000000000000000
+      Margins.Left = 3.000000000000000000
+      Margins.Top = 3.000000000000000000
+      Margins.Right = 3.000000000000000000
+      Margins.Bottom = 3.000000000000000000
+      Position.X = 3.000000000000000000
+      Position.Y = 3.000000000000000000
+      StyleLookup = 'treeviewexpanderbuttonstyle'
+      Width = 15.000000000000000000
+    end
+    object TLayout
+      Align = alContents
+      Height = 23.000000000000000000
+      Margins.Left = 20.000000000000000000
+      Width = 276.000000000000000000
+      object TCheckBox
+        StyleName = 'check'
+        Align = alLeft
+        CanFocus = False
+        DisableFocusEffect = True
+        Height = 23.000000000000000000
+        TabOrder = 0
+        Width = 20.000000000000000000
+      end
+      object TActiveStyleTextObject
+        StyleName = 'text'
+        Align = alClient
+        Color = claRed
+        Locked = True
+        Height = 23.000000000000000000
+        HorzTextAlign = taLeading
+        Width = 256.000000000000000000
+        WordWrap = False
+        Shadow.Color = claNull
+        ShadowVisible = False
+        ActiveTrigger = stSelected
+        ActiveColor = claRed
+        ActiveShadow.Color = claNull
+      end
+    end
+  end
+end

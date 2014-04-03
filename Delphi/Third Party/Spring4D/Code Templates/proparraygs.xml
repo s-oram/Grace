@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="proparraygs" invoke="auto">
+		<point name="propertyName">
+			<text>
+				PropertyName
+			</text>
+			<hint>
+				Property name
+			</hint>
+		</point>
+		<point name="index">
+			<text>
+				index
+			</text>
+			<hint>
+				Index name
+			</hint>
+		</point>
+		<point name="indexType">
+			<text>
+				Integer
+			</text>
+			<hint>
+				Index Type
+			</hint>
+		</point>
+		<point name="propertyType">
+			<script language="Delphi">
+				InvokeCodeCompletion;
+			</script>
+			<hint>
+				property type
+			</hint>
+			<text>
+				string
+			</text>
+		</point>
+		<description>
+			property (with getter and setter)
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<script language="Delphi" onenter="false" onleave="true">
+			InvokeClassCompletion;
+		</script>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+property |propertyName|[const |index|: |indexType|]: |propertyType| read Get|propertyName| write Set|propertyName|;
+]]>
+		</code>
+	</template>
+</codetemplate>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="enum" invoke="manual">
+		<point name="enumname">
+			<text>
+				MyEnum
+			</text>
+			<hint>
+				enum name
+			</hint>
+		</point>
+		<point name="one">
+			<text>
+				meOne
+			</text>
+			<hint>
+				enum element
+			</hint>
+		</point>
+		<point name="two">
+			<text>
+				meTwo
+			</text>
+			<hint>
+				enum element
+			</hint>
+		</point>
+		<point name="three">
+			<text>
+				meThree
+			</text>
+			<hint>
+				enum element
+			</hint>
+		</point>
+		<description>
+			enumeration declaration
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+/// <summary>
+/// T|enumname|
+/// </summary>
+T|enumname| = (
+|*||one|,    
+|*||two|,    
+|*||three||end|
+);]]>
+		</code>
+	</template>
+</codetemplate>

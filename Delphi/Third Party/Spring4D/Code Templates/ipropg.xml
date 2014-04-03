@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="ipropg" invoke="auto">
+		<point name="propertyName">
+			<text>
+				PropertyName
+			</text>
+			<hint>
+				property name
+			</hint>
+		</point>
+		<point name="propertyType">
+			<hint>
+				property type
+			</hint>
+			<text>
+				string
+			</text>
+		</point>
+		<description>
+			interface property (with getter)
+		</description>
+		<author>
+			Zuo Baoquan (Paul)
+		</author>
+		<code language="Delphi" context="typedecl" delimiter="|"><![CDATA[
+function Get|propertyName|: |propertyType|;
+property |propertyName|: |propertyType| read Get|propertyName|; |end|
+]]>
+		</code>
+	</template>
+</codetemplate>

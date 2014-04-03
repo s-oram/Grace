@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="argn" invoke="auto">
+		<description>
+		TArgument.CheckNotNull
+		</description>
+		<author>                  
+		Zuo Baoquan (Paul)
+		</author>
+		<point name="argument">
+			<text>
+				argument
+			</text>
+			<hint>
+				Argument
+			</hint>
+		</point>
+		<code language="Delphi" context="methodbody" delimiter="|"><![CDATA[
+TArgument.CheckNotNull(|argument|, '|argument|');|end|]]>
+		</code>
+	</template>
+</codetemplate>

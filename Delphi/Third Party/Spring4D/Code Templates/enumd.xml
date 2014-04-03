@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="enumd" invoke="auto">
+		<description>
+		Walkthrough all dataset records from the first one.
+		</description>
+		<author>
+		Zuo Baoquan (Paul)
+		</author>
+		<point name="dataSet">
+			<text>
+				dataSet
+			</text>
+			<hint>
+				DataSet
+			</hint>
+		</point>
+		<code language="Delphi" context="methodbody" delimiter="|"><![CDATA[
+EnumerateDataSet(|dataSet|,
+|*|function: Boolean
+|*|begin
+|*||*||end|
+|*|end
+);
+		]]>
+		</code>
+	</template>
+</codetemplate>

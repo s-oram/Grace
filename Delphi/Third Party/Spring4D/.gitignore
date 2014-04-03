@@ -1,0 +1,26 @@
+# IDE files
+*.~*
+*.cbk
+*.dsk
+*.identcache
+*.local
+*.skincfg
+*.tvsconfig
+__history/
+
+# Delphi Compiler output files
+*.dcu
+*.drc
+*.jdbg
+*.map
+*.plist
+*.rsm
+*.tds
+
+# 64bit Delphi files
+*.o
+
+# Spring4D files:
+*.bak
+*.mes
+Tests/Bin/
