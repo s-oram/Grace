@@ -68,6 +68,42 @@ begin
 end;
 
 
+
+procedure FindMinMaxOffsets(const Regions : TVamSampleRegionList; out MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset : integer);
+var
+  LowKey  : integer;
+  HighKey : integer;
+  LowVelocity   : integer;
+  HighVelocity  : integer;
+  c1: Integer;
+begin
+  assert(Regions.Count > 0);
+
+  LowKey  := 127;
+  HighKey := 0;
+  LowVelocity  := 127;
+  HighVelocity := 0;
+
+  for c1 := 0 to Regions.Count-1 do
+  begin
+    if Regions[c1].IsSelected then
+    begin
+      if LowKey > Regions[c1].LowKey   then LowKey := Regions[c1].LowKey;
+      if HighKey < Regions[c1].HighKey then HighKey := Regions[c1].HighKey;
+
+      if LowVelocity > Regions[c1].LowVelocity   then LowVelocity := Regions[c1].LowVelocity;
+      if HighVelocity < Regions[c1].HighVelocity then HighVelocity := Regions[c1].HighVelocity;
+    end;
+  end;
+
+  //== return the results ===
+  MaxKeyOffset := 127 - HighKey;
+  MinKeyOffset := -LowKey;
+  MaxVelocityOffset := 127 - HighVelocity;
+  MinVelocityOffset := -LowVelocity;
+end;
+
+
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 var
   c1: Integer;
@@ -84,6 +120,13 @@ var
   DistA, DistB : integer;
 
   pos, dist : integer;
+
+  MaxKeyOffset : integer;
+  MinKeyOffset : integer;
+  MaxVelocityOffset : integer;
+  MinVelocityOffset : integer;
+
+  ModifiedOffsetX, ModifiedOffsetY : integer;
 begin
   VertSnapPoints := TIntegerList.Create;
   VertSnapPoints.AllowDuplicates := false;
@@ -209,78 +252,26 @@ begin
     then SnapOffsetY := cvHorzA - NewBounds.Bottom
     else SnapOffsetY := cvHorzB - NewBounds.Top;
 
+
+
+  FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
+
+
+  ModifiedOffsetX := KeyOffset + SnapOffsetX;
+  ModifiedOffsetY := VelocityOffset + SnapOffsetY;
+
+  ModifiedOffsetX := Clamp(ModifiedOffsetX, MinKeyOffset,      MaxKeyOffset);
+  ModifiedOffsetY := Clamp(ModifiedOffsetY, MinVelocityOffset, MaxVelocityOffset);
+
   for c1 := 0 to Regions.Count-1 do
   begin
     if Regions[c1].IsSelected then
     begin
-      MoveRegion(Regions[c1], KeyOffset + SnapOffsetX, VelocityOffset + SnapOffsetY);
+      MoveRegion(Regions[c1], ModifiedOffsetX, ModifiedOffsetY);
     end;
   end;
 
 
-
-
-  {
-  for c1 := 0 to Regions.Count-1 do
-  begin
-
-    //==== Limit Key Shfits =====
-    LimitedKeyOffset := KeyOffset;
-
-
-    if Snapping then
-    begin
-      // Region width...
-      rw := Regions[c1].HighKey - Regions[c1].LowKey + 1;
-
-      if rw >= 12 then
-      begin
-        // snap key shifts to octave boundaries.
-        rwShift := round((Regions[c1].LowKey + KeyOffset) / 12) * 12 - Regions[c1].LowKey;
-        LimitedKeyOffset := rwShift;
-      end else
-      begin
-        // Limit key shift to quantised shifts equal to the region width.
-        rwShift := round(LimitedKeyOffset / rw);
-        LimitedKeyOffset := rw * rwShift;
-      end;
-    end;
-
-    if Regions[c1].LowKey  + LimitedKeyOffset < 0   then LimitedKeyOffset := -Regions[c1].LowKey;
-    if Regions[c1].HighKey + LimitedKeyOffset > 127 then LimitedKeyOffset := 127 - Regions[c1].HighKey;
-
-
-
-
-    //==== Limit Velocity Shifts ====
-
-    LimitedVelocityOffset := VelocityOffset;
-
-    if Snapping then
-    begin
-      // Limit velocity shifts to quantised shifts equal to the region hight.
-      rh := Regions[c1].HighVelocity - Regions[c1].LowVelocity + 1;
-      if rh > 16 then rh := 16;
-
-      rhShift := round(LimitedVelocityOffset / rh);
-      LimitedVelocityOffset := rh * rhShift;
-    end;
-
-    if Regions[c1].LowVelocity  + LimitedVelocityOffset < 0   then LimitedVelocityOffset := -Regions[c1].LowVelocity;
-    if Regions[c1].HighVelocity + LimitedVelocityOffset > 127 then LimitedVelocityOffset := 127 - Regions[c1].HighVelocity;
-
-
-    if Regions[c1].IsSelected then
-    begin
-      Regions[c1].IsMoving          := true;
-      Regions[c1].MovedLowKey       := Regions[c1].LowKey       + LimitedKeyOffset;
-      Regions[c1].MovedHighKey      := Regions[c1].HighKey      + LimitedKeyOffset;
-      Regions[c1].MovedLowVelocity  := Regions[c1].LowVelocity  + LimitedVelocityOffset;
-      Regions[c1].MovedHighVelocity := Regions[c1].HighVelocity + LimitedVelocityOffset;
-      Regions[c1].MovedRootNote     := Regions[c1].RootNote     + LimitedKeyOffset;
-    end;
-  end;
-  }
 end;
 
 end.
