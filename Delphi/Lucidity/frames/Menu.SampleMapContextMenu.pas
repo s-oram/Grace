@@ -70,6 +70,12 @@ begin
 
   Menu.Items.Clear;
 
+  mi := TMenuItem.Create(Menu);
+  mi.Tag     := 1;
+  mi.Caption := 'Delete Regions...';
+  mi.OnClick := MenuItemClicked;
+  Menu.Items.Add(mi);
+
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Duplicate Regions...';
@@ -106,15 +112,6 @@ begin
 
   //============================================================================
 
-
-
-
-
-  mi := TMenuItem.Create(Menu);
-  mi.Tag     := 1;
-  mi.Caption := 'Delete Regions...';
-  mi.OnClick := MenuItemClicked;
-  Menu.Items.Add(mi);
 
 
   mi := TMenuItem.Create(Menu);
