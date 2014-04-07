@@ -1815,7 +1815,6 @@ begin
       if (SampleRegions[c1].IsDragSelected)
         or (SampleRegions[c1].IsFocused)
         or (SampleRegions[c1].IsSelected)
-        or (SampleRegions[c1] = MouseOverRegion)
         then aColor := Color_RegionFocused;
 
       if SampleRegions[c1].IsSampleError then
