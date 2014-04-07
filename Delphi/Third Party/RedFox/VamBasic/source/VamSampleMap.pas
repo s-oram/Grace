@@ -206,6 +206,8 @@ type
     function FindRegionBelow(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
     function FindRegionLeft(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
     function FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
+
+    procedure DeselectOtherRegions(const TargetRegion : TVamSampleRegion);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -499,6 +501,20 @@ begin
   Color_RegionError           := '$66FF0000';
   Color_OtherKeyGroup         := '$55FFD455';
   Color_OtherKeyGroupSelected := '$bbFFD455';
+end;
+
+procedure TVamSampleMap.DeselectOtherRegions(const TargetRegion: TVamSampleRegion);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    if SampleRegions[c1] <> TargetRegion then
+    begin
+      SampleRegions[c1].IsSelected := false;
+    end;
+
+  end;
 end;
 
 destructor TVamSampleMap.Destroy;
@@ -1286,6 +1302,7 @@ begin
         end
         else if (MouseDownRegion.IsSelected) then
         begin
+          DeselectOthersOnMouseUp := true;
           if assigned(OnFocusRegion) then OnFocusRegion(self, MouseDownRegion);
         end
         else if (MouseDownRegion.IsSelected = false) then
@@ -1625,6 +1642,7 @@ begin
 
     if DeselectOthersOnMouseUp then
     begin
+      DeselectOtherRegions(MouseDownRegion);
       if assigned(OnDeselectOtherRegions) then OnDeselectOtherRegions(self, MouseDownRegion);
     end;
 
