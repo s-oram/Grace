@@ -681,12 +681,7 @@ procedure TVamSampleMap.UpdateProposedRegions_SingleFileDrop(DropPoint: TPoint; 
 var
   sr : TVamSampleRegion;
   kp : TPoint;
-  KeyWidth : integer;
-  LastHighVelocity : integer;
-  RegionAtDropPoint : TVamSampleRegion;
-
   LowKey, HighKey, LowVelocity, HighVelocity : integer;
-
   AboveRegion : TVamSampleRegion;
   BelowRegion : TVamSampleRegion;
   LeftRegion, RightRegion : TVamSampleRegion;
@@ -773,7 +768,6 @@ var
   kp : TPoint;
   KeyWidth : integer;
   NextLowVelocity : integer;
-  RegionAtDropPoint : TVamSampleRegion;
 begin
   // Check if the number of sample regions needs to be updated.
   if ProposedSampleRegions.Count <> NewRegionCount then
@@ -1728,155 +1722,6 @@ begin
   end;
 end;
 
-
-{
-procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
-const
-  KSnap = 6; //Key Snap Size
-  VSnap = 8; //Velocity Snap Size;
-var
-  c1: Integer;
-  LimitedKeyOffset, LimitedVelocityOffset : integer;
-  rw, rh : integer;
-  aRegion : TVamSampleRegion;
-  tx : integer;
-begin
-  // NOTE: At the moment snapping has been hardcoded in place. It would
-  // be cool to write some snapping-type functions.
-  // The snap functions would take an array of values and the current value.
-  // the current value would then be snapped to the closest value.
-
-  for c1 := 0 to SampleRegions.Count-1 do
-  begin
-    if SampleRegions[c1].IsSelected then
-    begin
-      aRegion := SampleRegions[c1];
-
-      // Set default un-move values...
-      aRegion.IsMoving          := true;
-      aRegion.MovedLowKey       := aRegion.LowKey;
-      aRegion.MovedHighKey      := aRegion.HighKey;
-      aRegion.MovedLowVelocity  := aRegion.LowVelocity;
-      aRegion.MovedHighVelocity := aRegion.HighVelocity;
-      aRegion.MovedRootNote     := aRegion.RootNote;
-
-      LimitedKeyOffset      := KeyOffset;
-      LimitedVelocityOffset := VelocityOffset;
-
-      // compute moved edges
-      if (Handle = rhTopLeft) or (Handle = rhLeft) or (Handle = rhBottomLeft) then
-      begin
-        aRegion.MovedLowKey := aRegion.LowKey + LimitedKeyOffset;
-
-        if (Snapping) then
-        begin
-          rw := aRegion.MovedHighKey - aRegion.MovedLowKey;
-          if (abs(rw + 1) >= KSnap) then
-          begin
-            rw := round(rw / KSnap) * KSnap;
-            if rw > 0 then dec(rw);
-            aRegion.MovedLowKey := aRegion.MovedHighKey - rw;
-          end;
-        end;
-
-        if aRegion.MovedLowKey > aRegion.MovedHighKey then
-        begin
-          tx := aRegion.MovedLowKey;
-          aRegion.MovedLowKey  := aRegion.MovedHighKey + 1;
-          aRegion.MovedHighKey := tx;
-        end;
-
-        if aRegion.RootNote < aRegion.MovedLowKey
-          then aRegion.MovedRootNote := aRegion.MovedLowKey;
-      end;
-
-      if (Handle = rhTopRight) or (Handle = rhRight) or (Handle = rhBottomRight) then
-      begin
-        aRegion.MovedHighKey := aRegion.HighKey + LimitedKeyOffset;
-
-        if (Snapping) then
-        begin
-          rw := aRegion.MovedHighKey - aRegion.MovedLowKey;
-          if (abs(rw + 1) >= KSnap) then
-          begin
-            rw := round(rw / KSnap) * KSnap;
-            if rw > 0 then dec(rw);
-            aRegion.MovedHighKey := aRegion.MovedLowKey + rw;
-          end;
-        end;
-
-        if aRegion.MovedHighKey < aRegion.MovedLowKey then
-        begin
-          tx := aRegion.MovedLowKey;
-          aRegion.MovedLowKey  := aRegion.MovedHighKey;
-          aRegion.MovedHighKey := tx - 1;
-        end;
-
-        if aRegion.RootNote > aRegion.MovedHighKey
-          then aRegion.MovedRootNote := aRegion.MovedHighKey;
-      end;
-
-      if (Handle = rhTopLeft) or (Handle = rhTop) or (Handle = rhTopRight) then
-      begin
-        aRegion.MovedHighVelocity := aRegion.HighVelocity + LimitedVelocityOffset;
-
-        if Snapping then
-        begin
-          aRegion.MovedHighVelocity := round((aRegion.MovedHighVelocity) / VSnap) * VSnap - 1;
-          rh := aRegion.MovedHighVelocity - aRegion.MovedLowVelocity;
-
-          if (rh < 0) then aRegion.MovedHighVelocity := aRegion.MovedHighVelocity + 1;
-
-          CorrectMovingRegionBounds(aRegion);
-
-          if abs(aRegion.MovedHighVelocity - aRegion.MovedLowVelocity) < VSnap then
-          begin
-            aRegion.MovedHighVelocity := aRegion.MovedLowVelocity + (VSnap - 1);
-          end;
-        end;
-
-
-        if aRegion.MovedHighVelocity < aRegion.MovedLowVelocity then
-        begin
-          tx := aRegion.MovedLowVelocity;
-          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
-          aRegion.MovedHighVelocity := tx - 1;
-        end;
-      end;
-
-      if (Handle = rhBottomLeft) or (Handle = rhBottom) or (Handle = rhBottomRight) then
-      begin
-        aRegion.MovedLowVelocity  := aRegion.LowVelocity + LimitedVelocityOffset;
-
-        if Snapping then
-        begin
-          aRegion.MovedLowVelocity := round((aRegion.MovedLowVelocity) / VSnap) * VSnap;
-          rh := aRegion.MovedHighVelocity - aRegion.MovedLowVelocity;
-
-          if (rh < 0) then aRegion.MovedLowVelocity := aRegion.MovedLowVelocity - 1;
-
-          CorrectMovingRegionBounds(aRegion);
-
-          if abs(aRegion.MovedHighVelocity - aRegion.MovedLowVelocity) < VSnap then
-          begin
-            aRegion.MovedLowVelocity := aRegion.MovedHighVelocity - (VSnap - 1);
-          end;
-        end;
-
-        if aRegion.MovedLowVelocity > aRegion.MovedHighVelocity then
-        begin
-          tx := aRegion.MovedLowVelocity;
-          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
-          aRegion.MovedHighVelocity := tx;
-        end;
-      end;
-
-      CorrectMovingRegionBounds(aRegion);
-    end;
-  end;
-
-end;
-}
 
 
 procedure TVamSampleMap.Paint;
