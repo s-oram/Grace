@@ -191,7 +191,7 @@ type
     function GetRegionAt(PixelPosX, PixelPosY:integer):TVamSampleRegion;
     function GetRegionHandleAt(PixelPosX, PixelPosY:integer):TRegionHandleID;
 
-    procedure ResizeSelectedRegions(KeyOffset, VelocityOffset : integer; Handle : TRegionHandleID; const Snapping : boolean);
+    //procedure ResizeSelectedRegions(KeyOffset, VelocityOffset : integer; Handle : TRegionHandleID; const Snapping : boolean);
     procedure Paint; override;
 
     procedure SortSampleRegionList;
@@ -1444,7 +1444,9 @@ begin
     begin
       LastDistKey := DistKey;
       LastDistVelocity := DistVelocity;
-      ResizeSelectedRegions(DistKey, DistVelocity, MouseDownRegionHandle, IsSnapping);
+
+      ResizeSelectedRegions(MouseDownRegion, SampleRegions, DistKey, DistVelocity, MouseDownRegionHandle, IsSnapping);
+
       Invalidate;
       RegionInfoChanged;
     end;
@@ -1727,7 +1729,7 @@ begin
 end;
 
 
-
+{
 procedure TVamSampleMap.ResizeSelectedRegions(KeyOffset, VelocityOffset: integer; Handle: TRegionHandleID; const Snapping : boolean);
 const
   KSnap = 6; //Key Snap Size
@@ -1874,7 +1876,7 @@ begin
   end;
 
 end;
-
+}
 
 
 procedure TVamSampleMap.Paint;

@@ -7,6 +7,13 @@ uses
 
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 
+procedure ResizeSelectedRegions(
+    const FocusedRegion:TVamSampleRegion;
+    const Regions:TVamSampleRegionList;
+    const KeyOffset, VelocityOffset : integer;
+    const Handle : TRegionHandleID;
+    const Snapping : boolean );
+
 implementation
 
 uses
@@ -289,5 +296,130 @@ begin
 
 
 end;
+
+
+
+
+
+procedure CorrectMovingRegionBounds(const aRegion : TVamSampleRegion);
+begin
+  if aRegion.MovedLowKey < 0   then aRegion.MovedLowKey := 0;
+  if aRegion.MovedLowKey > 127 then aRegion.MovedLowKey := 127;
+
+  if aRegion.MovedHighKey < 0   then aRegion.MovedHighKey := 0;
+  if aRegion.MovedHighKey > 127 then aRegion.MovedHighKey := 127;
+
+  if aRegion.MovedRootNote < 0   then aRegion.MovedRootNote := 0;
+  if aRegion.MovedRootNote > 127 then aRegion.MovedRootNote := 127;
+
+  if aRegion.MovedLowVelocity < 0   then aRegion.MovedLowVelocity := 0;
+  if aRegion.MovedLowVelocity > 127 then aRegion.MovedLowVelocity := 127;
+
+  if aRegion.MovedHighVelocity < 0   then aRegion.MovedHighVelocity := 0;
+  if aRegion.MovedHighVelocity > 127 then aRegion.MovedHighVelocity := 127;
+end;
+
+
+procedure ApplyRegionResize(
+    const Regions:TVamSampleRegionList;
+    const Handle : TRegionHandleID;
+    const KeyOffset, VelocityOffset:integer );
+var
+  c1 : integer;
+  aRegion : TVamSampleRegion;
+  SampleRegions : TVamSampleRegionList absolute Regions;
+  tx : integer;
+begin
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    if SampleRegions[c1].IsSelected then
+    begin
+      aRegion := SampleRegions[c1];
+
+      // Set default un-move values...
+      aRegion.IsMoving          := true;
+      aRegion.MovedLowKey       := aRegion.LowKey;
+      aRegion.MovedHighKey      := aRegion.HighKey;
+      aRegion.MovedLowVelocity  := aRegion.LowVelocity;
+      aRegion.MovedHighVelocity := aRegion.HighVelocity;
+      aRegion.MovedRootNote     := aRegion.RootNote;
+
+      // compute moved edges
+      if (Handle = rhTopLeft) or (Handle = rhLeft) or (Handle = rhBottomLeft) then
+      begin
+        aRegion.MovedLowKey := aRegion.LowKey + KeyOffset;
+
+        if aRegion.MovedLowKey > aRegion.MovedHighKey then
+        begin
+          tx := aRegion.MovedLowKey;
+          aRegion.MovedLowKey  := aRegion.MovedHighKey + 1;
+          aRegion.MovedHighKey := tx;
+        end;
+
+        if aRegion.RootNote < aRegion.MovedLowKey
+          then aRegion.MovedRootNote := aRegion.MovedLowKey;
+      end;
+
+      if (Handle = rhTopRight) or (Handle = rhRight) or (Handle = rhBottomRight) then
+      begin
+        aRegion.MovedHighKey := aRegion.HighKey + KeyOffset;
+
+        if aRegion.MovedHighKey < aRegion.MovedLowKey then
+        begin
+          tx := aRegion.MovedLowKey;
+          aRegion.MovedLowKey  := aRegion.MovedHighKey;
+          aRegion.MovedHighKey := tx - 1;
+        end;
+
+        if aRegion.RootNote > aRegion.MovedHighKey
+          then aRegion.MovedRootNote := aRegion.MovedHighKey;
+      end;
+
+      if (Handle = rhTopLeft) or (Handle = rhTop) or (Handle = rhTopRight) then
+      begin
+        aRegion.MovedHighVelocity := aRegion.HighVelocity + VelocityOffset;
+
+        if aRegion.MovedHighVelocity < aRegion.MovedLowVelocity then
+        begin
+          tx := aRegion.MovedLowVelocity;
+          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
+          aRegion.MovedHighVelocity := tx - 1;
+        end;
+      end;
+
+      if (Handle = rhBottomLeft) or (Handle = rhBottom) or (Handle = rhBottomRight) then
+      begin
+        aRegion.MovedLowVelocity  := aRegion.LowVelocity + VelocityOffset;
+
+        if aRegion.MovedLowVelocity > aRegion.MovedHighVelocity then
+        begin
+          tx := aRegion.MovedLowVelocity;
+          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
+          aRegion.MovedHighVelocity := tx;
+        end;
+      end;
+
+      CorrectMovingRegionBounds(aRegion);
+    end;
+  end;
+end;
+
+
+procedure ResizeSelectedRegions(
+    const FocusedRegion:TVamSampleRegion;
+    const Regions:TVamSampleRegionList;
+    const KeyOffset, VelocityOffset : integer;
+    const Handle : TRegionHandleID;
+    const Snapping : boolean );
+begin
+  if not Snapping then
+  begin
+    ApplyRegionResize(Regions, Handle, KeyOffset, VelocityOffset);
+  end else
+  begin
+    ApplyRegionResize(Regions, Handle, KeyOffset, VelocityOffset);
+  end;
+end;
+
 
 end.
