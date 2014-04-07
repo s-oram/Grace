@@ -178,8 +178,6 @@ type
     procedure UpdateProposedRegions_MultiFileDrop(DropPoint : TPoint; NewRegionCount:integer);
     procedure UpdateProposedRegions_SingleFileDrop(DropPoint : TPoint; NewRegionCount:integer);
 
-
-
     procedure DrawSampleRegion(const aRegion:TVamSampleRegion; aColor:TRedFoxColor; const UseMovingBounds : boolean);
     procedure DrawSampleRegionResizeHandles(const aRegion:TVamSampleRegion; const aColor:TRedFoxColor; const UseMovingBounds : boolean);
 
@@ -195,7 +193,6 @@ type
 
     procedure ResizeSelectedRegions(KeyOffset, VelocityOffset : integer; Handle : TRegionHandleID; const Snapping : boolean);
     procedure Paint; override;
-
 
     procedure SortSampleRegionList;
 

@@ -128,146 +128,162 @@ var
 
   ModifiedOffsetX, ModifiedOffsetY : integer;
 begin
-  VertSnapPoints := TIntegerList.Create;
-  VertSnapPoints.AllowDuplicates := false;
-  AutoFree(@VertSnapPoints);
-
-  HorzSnapPoints := TIntegerList.Create;
-  HorzSnapPoints.AllowDuplicates := false;
-  AutoFree(@HorzSnapPoints);
-
-
-  //Add default snapping points...
-  VertSnapPoints.Add(0);
-  VertSnapPoints.Add(12);
-  VertSnapPoints.Add(24);
-  VertSnapPoints.Add(36);
-  VertSnapPoints.Add(48);
-  VertSnapPoints.Add(60);
-  VertSnapPoints.Add(72);
-  VertSnapPoints.Add(84);
-  VertSnapPoints.Add(96);
-  VertSnapPoints.Add(108);
-  VertSnapPoints.Add(120);
-  VertSnapPoints.Add(128);
-
-  HorzSnapPoints.Add(0);
-  HorzSnapPoints.Add(8);
-  HorzSnapPoints.Add(16);
-  HorzSnapPoints.Add(24);
-  HorzSnapPoints.Add(32);
-  HorzSnapPoints.Add(40);
-  HorzSnapPoints.Add(48);
-  HorzSnapPoints.Add(56);
-  HorzSnapPoints.Add(64);
-  HorzSnapPoints.Add(72);
-  HorzSnapPoints.Add(80);
-  HorzSnapPoints.Add(88);
-  HorzSnapPoints.Add(96);
-  HorzSnapPoints.Add(104);
-  HorzSnapPoints.Add(112);
-  HorzSnapPoints.Add(120);
-  HorzSnapPoints.Add(128);
-
-
-
-  // add snap points for multiplies of the current location + region width...
-  VertSnapPoints.Add(FocusedRegion.LowKey);
-
-  Dist := FocusedRegion.HighKey - FocusedRegion.LowKey + 1;
-  Pos  := FocusedRegion.LowKey;
-  while Pos < 128 do
+  if not Snapping then
   begin
-    inc(Pos, Dist);
-    VertSnapPoints.Add(Pos);
-  end;
+    FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
 
-  Pos  := FocusedRegion.LowKey;
-  while Pos > 128 do
-  begin
-    dec(Pos, Dist);
-    VertSnapPoints.Add(Pos);
-  end;
+    ModifiedOffsetX := Clamp(KeyOffset,      MinKeyOffset,      MaxKeyOffset);
+    ModifiedOffsetY := Clamp(VelocityOffset, MinVelocityOffset, MaxVelocityOffset);
 
-
-  // add snap points for multiplies of the current location + region height...
-  HorzSnapPoints.Add(FocusedRegion.LowVelocity);
-
-  Dist := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity + 1;
-  Pos  := FocusedRegion.LowVelocity;
-  while Pos < 128 do
-  begin
-    inc(Pos, Dist);
-    HorzSnapPoints.Add(Pos);
-  end;
-
-  Pos  := FocusedRegion.LowVelocity;
-  while Pos > 128 do
-  begin
-    dec(Pos, Dist);
-    HorzSnapPoints.Add(Pos);
-  end;
-
-
-  //Add snap points to align with existing regions...
-  for c1 := 0 to Regions.Count-1 do
-  begin
-    if Regions[c1].IsSelected = false then
+    for c1 := 0 to Regions.Count-1 do
     begin
-      VertSnapPoints.Add(Regions[c1].LowKey);
-      VertSnapPoints.Add(Regions[c1].HighKey + 1);
-
-      HorzSnapPoints.Add(Regions[c1].LowVelocity);
-      HorzSnapPoints.Add(Regions[c1].HighVelocity + 1);
+      if Regions[c1].IsSelected then
+      begin
+        MoveRegion(Regions[c1], ModifiedOffsetX, ModifiedOffsetY);
+      end;
     end;
-  end;
-
-
-
-
-
-  NewBounds.Left   := FocusedRegion.LowKey  + KeyOffset;
-  NewBounds.Right  := FocusedRegion.HighKey + KeyOffset;
-  NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
-  NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
-
-  cvVertA := FindClosestValue(NewBounds.Left,  VertSnapPoints);
-  cvVertB := FindClosestValue(NewBounds.Right+1, VertSnapPoints)-1;
-
-  cvHorzA := FindClosestValue(NewBounds.Bottom, HorzSnapPoints);
-  cvHorzB := FindClosestValue(NewBounds.Top+1,    HorzSnapPoints)-1;
-
-
-  DistA := abs(cvVertA - NewBounds.Left);
-  DistB := abs(cvVertB - NewBounds.Right);
-
-  if DistA < DistB
-    then SnapOffsetX := cvVertA - NewBounds.Left
-    else SnapOffsetX := cvVertB - NewBounds.Right;
-
-  DistA := abs(cvHorzA - NewBounds.Bottom);
-  DistB := abs(cvHorzB - NewBounds.Top);
-
-  if DistA < DistB
-    then SnapOffsetY := cvHorzA - NewBounds.Bottom
-    else SnapOffsetY := cvHorzB - NewBounds.Top;
-
-
-
-  FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
-
-
-  ModifiedOffsetX := KeyOffset + SnapOffsetX;
-  ModifiedOffsetY := VelocityOffset + SnapOffsetY;
-
-  ModifiedOffsetX := Clamp(ModifiedOffsetX, MinKeyOffset,      MaxKeyOffset);
-  ModifiedOffsetY := Clamp(ModifiedOffsetY, MinVelocityOffset, MaxVelocityOffset);
-
-  for c1 := 0 to Regions.Count-1 do
+  end else
   begin
-    if Regions[c1].IsSelected then
+    VertSnapPoints := TIntegerList.Create;
+    VertSnapPoints.AllowDuplicates := false;
+    AutoFree(@VertSnapPoints);
+
+    HorzSnapPoints := TIntegerList.Create;
+    HorzSnapPoints.AllowDuplicates := false;
+    AutoFree(@HorzSnapPoints);
+
+
+    //Add default snapping points...
+    VertSnapPoints.Add(0);
+    VertSnapPoints.Add(12);
+    VertSnapPoints.Add(24);
+    VertSnapPoints.Add(36);
+    VertSnapPoints.Add(48);
+    VertSnapPoints.Add(60);
+    VertSnapPoints.Add(72);
+    VertSnapPoints.Add(84);
+    VertSnapPoints.Add(96);
+    VertSnapPoints.Add(108);
+    VertSnapPoints.Add(120);
+    VertSnapPoints.Add(128);
+
+    HorzSnapPoints.Add(0);
+    HorzSnapPoints.Add(8);
+    HorzSnapPoints.Add(16);
+    HorzSnapPoints.Add(24);
+    HorzSnapPoints.Add(32);
+    HorzSnapPoints.Add(40);
+    HorzSnapPoints.Add(48);
+    HorzSnapPoints.Add(56);
+    HorzSnapPoints.Add(64);
+    HorzSnapPoints.Add(72);
+    HorzSnapPoints.Add(80);
+    HorzSnapPoints.Add(88);
+    HorzSnapPoints.Add(96);
+    HorzSnapPoints.Add(104);
+    HorzSnapPoints.Add(112);
+    HorzSnapPoints.Add(120);
+    HorzSnapPoints.Add(128);
+
+
+
+    // add snap points for multiplies of the current location + region width...
+    VertSnapPoints.Add(FocusedRegion.LowKey);
+
+    Dist := FocusedRegion.HighKey - FocusedRegion.LowKey + 1;
+    Pos  := FocusedRegion.LowKey;
+    while Pos < 128 do
     begin
-      MoveRegion(Regions[c1], ModifiedOffsetX, ModifiedOffsetY);
+      inc(Pos, Dist);
+      VertSnapPoints.Add(Pos);
+    end;
+
+    Pos  := FocusedRegion.LowKey;
+    while Pos > 128 do
+    begin
+      dec(Pos, Dist);
+      VertSnapPoints.Add(Pos);
+    end;
+
+
+    // add snap points for multiplies of the current location + region height...
+    HorzSnapPoints.Add(FocusedRegion.LowVelocity);
+
+    Dist := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity + 1;
+    Pos  := FocusedRegion.LowVelocity;
+    while Pos < 128 do
+    begin
+      inc(Pos, Dist);
+      HorzSnapPoints.Add(Pos);
+    end;
+
+    Pos  := FocusedRegion.LowVelocity;
+    while Pos > 128 do
+    begin
+      dec(Pos, Dist);
+      HorzSnapPoints.Add(Pos);
+    end;
+
+
+    //Add snap points to align with existing regions...
+    for c1 := 0 to Regions.Count-1 do
+    begin
+      if Regions[c1].IsSelected = false then
+      begin
+        VertSnapPoints.Add(Regions[c1].LowKey);
+        VertSnapPoints.Add(Regions[c1].HighKey + 1);
+
+        HorzSnapPoints.Add(Regions[c1].LowVelocity);
+        HorzSnapPoints.Add(Regions[c1].HighVelocity + 1);
+      end;
+    end;
+
+
+
+
+
+    NewBounds.Left   := FocusedRegion.LowKey  + KeyOffset;
+    NewBounds.Right  := FocusedRegion.HighKey + KeyOffset;
+    NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
+    NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
+
+    cvVertA := FindClosestValue(NewBounds.Left,  VertSnapPoints);
+    cvVertB := FindClosestValue(NewBounds.Right+1, VertSnapPoints)-1;
+
+    cvHorzA := FindClosestValue(NewBounds.Bottom, HorzSnapPoints);
+    cvHorzB := FindClosestValue(NewBounds.Top+1,    HorzSnapPoints)-1;
+
+
+    DistA := abs(cvVertA - NewBounds.Left);
+    DistB := abs(cvVertB - NewBounds.Right);
+
+    if DistA < DistB
+      then SnapOffsetX := cvVertA - NewBounds.Left
+      else SnapOffsetX := cvVertB - NewBounds.Right;
+
+    DistA := abs(cvHorzA - NewBounds.Bottom);
+    DistB := abs(cvHorzB - NewBounds.Top);
+
+    if DistA < DistB
+      then SnapOffsetY := cvHorzA - NewBounds.Bottom
+      else SnapOffsetY := cvHorzB - NewBounds.Top;
+
+
+
+    FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
+
+    ModifiedOffsetX := KeyOffset + SnapOffsetX;
+    ModifiedOffsetY := VelocityOffset + SnapOffsetY;
+
+    ModifiedOffsetX := Clamp(ModifiedOffsetX, MinKeyOffset,      MaxKeyOffset);
+    ModifiedOffsetY := Clamp(ModifiedOffsetY, MinVelocityOffset, MaxVelocityOffset);
+
+    for c1 := 0 to Regions.Count-1 do
+    begin
+      if Regions[c1].IsSelected then
+      begin
+        MoveRegion(Regions[c1], ModifiedOffsetX, ModifiedOffsetY);
+      end;
     end;
   end;
 
