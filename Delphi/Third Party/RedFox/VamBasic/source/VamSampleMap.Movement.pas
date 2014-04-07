@@ -17,6 +17,7 @@ procedure ResizeSelectedRegions(
 implementation
 
 uses
+  SysUtils,
   VamLib.Utils,
   VamLib.Collections.Lists,
   Spring,
@@ -110,6 +111,102 @@ begin
   MinVelocityOffset := -LowVelocity;
 end;
 
+procedure SetupSnapPoints(
+      const FocusedRegion:TVamSampleRegion;
+      const Regions:TVamSampleRegionList;
+      var VertSnapPoints : TIntegerList;
+      var HorzSnapPoints : TIntegerList);
+var
+  c1 : integer;
+  Dist, Pos : integer;
+begin
+  //Add default snapping points...
+  VertSnapPoints.Add(0);
+  VertSnapPoints.Add(12);
+  VertSnapPoints.Add(24);
+  VertSnapPoints.Add(36);
+  VertSnapPoints.Add(48);
+  VertSnapPoints.Add(60);
+  VertSnapPoints.Add(72);
+  VertSnapPoints.Add(84);
+  VertSnapPoints.Add(96);
+  VertSnapPoints.Add(108);
+  VertSnapPoints.Add(120);
+  VertSnapPoints.Add(128);
+
+  HorzSnapPoints.Add(0);
+  HorzSnapPoints.Add(8);
+  HorzSnapPoints.Add(16);
+  HorzSnapPoints.Add(24);
+  HorzSnapPoints.Add(32);
+  HorzSnapPoints.Add(40);
+  HorzSnapPoints.Add(48);
+  HorzSnapPoints.Add(56);
+  HorzSnapPoints.Add(64);
+  HorzSnapPoints.Add(72);
+  HorzSnapPoints.Add(80);
+  HorzSnapPoints.Add(88);
+  HorzSnapPoints.Add(96);
+  HorzSnapPoints.Add(104);
+  HorzSnapPoints.Add(112);
+  HorzSnapPoints.Add(120);
+  HorzSnapPoints.Add(128);
+
+
+
+  // add snap points for multiplies of the current location + region width...
+  VertSnapPoints.Add(FocusedRegion.LowKey);
+
+  Dist := FocusedRegion.HighKey - FocusedRegion.LowKey + 1;
+  Pos  := FocusedRegion.LowKey;
+  while Pos < 128 do
+  begin
+    inc(Pos, Dist);
+    VertSnapPoints.Add(Pos);
+  end;
+
+  Pos  := FocusedRegion.LowKey;
+  while Pos > 128 do
+  begin
+    dec(Pos, Dist);
+    VertSnapPoints.Add(Pos);
+  end;
+
+
+  // add snap points for multiplies of the current location + region height...
+  HorzSnapPoints.Add(FocusedRegion.LowVelocity);
+
+  Dist := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity + 1;
+  Pos  := FocusedRegion.LowVelocity;
+  while Pos < 128 do
+  begin
+    inc(Pos, Dist);
+    HorzSnapPoints.Add(Pos);
+  end;
+
+  Pos  := FocusedRegion.LowVelocity;
+  while Pos > 128 do
+  begin
+    dec(Pos, Dist);
+    HorzSnapPoints.Add(Pos);
+  end;
+
+
+  //Add snap points to align with existing regions...
+  for c1 := 0 to Regions.Count-1 do
+  begin
+    if Regions[c1].IsSelected = false then
+    begin
+      VertSnapPoints.Add(Regions[c1].LowKey);
+      VertSnapPoints.Add(Regions[c1].HighKey + 1);
+
+      HorzSnapPoints.Add(Regions[c1].LowVelocity);
+      HorzSnapPoints.Add(Regions[c1].HighVelocity + 1);
+    end;
+  end;
+
+end;
+
 
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 var
@@ -159,95 +256,7 @@ begin
     HorzSnapPoints.AllowDuplicates := false;
     AutoFree(@HorzSnapPoints);
 
-
-    //Add default snapping points...
-    VertSnapPoints.Add(0);
-    VertSnapPoints.Add(12);
-    VertSnapPoints.Add(24);
-    VertSnapPoints.Add(36);
-    VertSnapPoints.Add(48);
-    VertSnapPoints.Add(60);
-    VertSnapPoints.Add(72);
-    VertSnapPoints.Add(84);
-    VertSnapPoints.Add(96);
-    VertSnapPoints.Add(108);
-    VertSnapPoints.Add(120);
-    VertSnapPoints.Add(128);
-
-    HorzSnapPoints.Add(0);
-    HorzSnapPoints.Add(8);
-    HorzSnapPoints.Add(16);
-    HorzSnapPoints.Add(24);
-    HorzSnapPoints.Add(32);
-    HorzSnapPoints.Add(40);
-    HorzSnapPoints.Add(48);
-    HorzSnapPoints.Add(56);
-    HorzSnapPoints.Add(64);
-    HorzSnapPoints.Add(72);
-    HorzSnapPoints.Add(80);
-    HorzSnapPoints.Add(88);
-    HorzSnapPoints.Add(96);
-    HorzSnapPoints.Add(104);
-    HorzSnapPoints.Add(112);
-    HorzSnapPoints.Add(120);
-    HorzSnapPoints.Add(128);
-
-
-
-    // add snap points for multiplies of the current location + region width...
-    VertSnapPoints.Add(FocusedRegion.LowKey);
-
-    Dist := FocusedRegion.HighKey - FocusedRegion.LowKey + 1;
-    Pos  := FocusedRegion.LowKey;
-    while Pos < 128 do
-    begin
-      inc(Pos, Dist);
-      VertSnapPoints.Add(Pos);
-    end;
-
-    Pos  := FocusedRegion.LowKey;
-    while Pos > 128 do
-    begin
-      dec(Pos, Dist);
-      VertSnapPoints.Add(Pos);
-    end;
-
-
-    // add snap points for multiplies of the current location + region height...
-    HorzSnapPoints.Add(FocusedRegion.LowVelocity);
-
-    Dist := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity + 1;
-    Pos  := FocusedRegion.LowVelocity;
-    while Pos < 128 do
-    begin
-      inc(Pos, Dist);
-      HorzSnapPoints.Add(Pos);
-    end;
-
-    Pos  := FocusedRegion.LowVelocity;
-    while Pos > 128 do
-    begin
-      dec(Pos, Dist);
-      HorzSnapPoints.Add(Pos);
-    end;
-
-
-    //Add snap points to align with existing regions...
-    for c1 := 0 to Regions.Count-1 do
-    begin
-      if Regions[c1].IsSelected = false then
-      begin
-        VertSnapPoints.Add(Regions[c1].LowKey);
-        VertSnapPoints.Add(Regions[c1].HighKey + 1);
-
-        HorzSnapPoints.Add(Regions[c1].LowVelocity);
-        HorzSnapPoints.Add(Regions[c1].HighVelocity + 1);
-      end;
-    end;
-
-
-
-
+    SetupSnapPoints(FocusedRegion, Regions, VertSnapPoints, HorzSnapPoints);
 
     NewBounds.Left   := FocusedRegion.LowKey  + KeyOffset;
     NewBounds.Right  := FocusedRegion.HighKey + KeyOffset;
@@ -353,7 +362,7 @@ begin
         begin
           tx := aRegion.MovedLowKey;
           aRegion.MovedLowKey  := aRegion.MovedHighKey + 1;
-          aRegion.MovedHighKey := tx;
+          aRegion.MovedHighKey := tx-1;
         end;
 
         if aRegion.RootNote < aRegion.MovedLowKey
@@ -367,7 +376,7 @@ begin
         if aRegion.MovedHighKey < aRegion.MovedLowKey then
         begin
           tx := aRegion.MovedLowKey;
-          aRegion.MovedLowKey  := aRegion.MovedHighKey;
+          aRegion.MovedLowKey  := aRegion.MovedHighKey + 1;
           aRegion.MovedHighKey := tx - 1;
         end;
 
@@ -382,7 +391,7 @@ begin
         if aRegion.MovedHighVelocity < aRegion.MovedLowVelocity then
         begin
           tx := aRegion.MovedLowVelocity;
-          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity;
+          aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
           aRegion.MovedHighVelocity := tx - 1;
         end;
       end;
@@ -395,7 +404,7 @@ begin
         begin
           tx := aRegion.MovedLowVelocity;
           aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
-          aRegion.MovedHighVelocity := tx;
+          aRegion.MovedHighVelocity := tx - 1;
         end;
       end;
 
@@ -405,19 +414,144 @@ begin
 end;
 
 
+procedure CheckSmartSnappingState(
+    const FocusedRegion:TVamSampleRegion;
+    const KeyOffset, VelocityOffset : integer;
+    const Handle : TRegionHandleID;
+    out VertSmartSnapDisable : boolean;
+    out HorzSmartSnapDisable : boolean );
+var
+  rw, rh : integer;
+begin
+  rw := FocusedRegion.HighKey - FocusedRegion.LowKey;
+  rh := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity;
+
+  case Handle of
+    rhBottomLeft,
+    rhTopLeft,
+    rhLeft:
+    begin
+      rw := rw - KeyOffset;
+    end;
+
+    rhBottomRight,
+    rhTopRight,
+    rhRight:
+    begin
+      rw := rw + KeyOffset;
+    end;
+
+    rhTop,
+    rhBottom:
+    begin
+      rw := rw;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  if abs(rw) >= 12
+    then VertSmartSnapDisable := false
+    else VertSmartSnapDisable := true;
+
+  HorzSmartSnapDisable := false;
+end;
+
+
+
 procedure ResizeSelectedRegions(
     const FocusedRegion:TVamSampleRegion;
     const Regions:TVamSampleRegionList;
     const KeyOffset, VelocityOffset : integer;
     const Handle : TRegionHandleID;
     const Snapping : boolean );
+var
+  VertSnapPoints : TIntegerList;
+  HorzSnapPoints : TIntegerList;
+  TargetKey, TargetVelocity : integer;
+  ModifiedVelocityOffset : integer;
+  ModifiedKeyOffset : integer;
+  VertSmartSnapDisable : boolean;
+  HorzSmartSnapDisable : boolean;
 begin
   if not Snapping then
   begin
     ApplyRegionResize(Regions, Handle, KeyOffset, VelocityOffset);
   end else
   begin
-    ApplyRegionResize(Regions, Handle, KeyOffset, VelocityOffset);
+    VertSnapPoints := TIntegerList.Create;
+    VertSnapPoints.AllowDuplicates := false;
+    AutoFree(@VertSnapPoints);
+
+    HorzSnapPoints := TIntegerList.Create;
+    HorzSnapPoints.AllowDuplicates := false;
+    AutoFree(@HorzSnapPoints);
+
+    SetupSnapPoints(FocusedRegion, Regions, VertSnapPoints, HorzSnapPoints);
+
+    case Handle of
+      rhTopLeft,
+      rhTopRight,
+      rhTop:
+      begin
+        TargetVelocity := FocusedRegion.HighVelocity + VelocityOffset;
+        TargetVelocity := FindClosestValue(TargetVelocity+1, HorzSnapPoints)-1;
+        ModifiedVelocityOffset := TargetVelocity - FocusedRegion.HighVelocity;
+      end;
+
+      rhBottomRight,
+      rhBottomLeft,
+      rhBottom:
+      begin
+        TargetVelocity := FocusedRegion.LowVelocity + VelocityOffset;
+        TargetVelocity := FindClosestValue(TargetVelocity, HorzSnapPoints);
+        ModifiedVelocityOffset := TargetVelocity - FocusedRegion.LowVelocity;
+      end;
+
+      rhRight,
+      rhLeft:
+      begin
+        ModifiedVelocityOffset := VelocityOffset;
+      end
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+
+    case Handle of
+      rhBottomLeft,
+      rhTopLeft,
+      rhLeft:
+      begin
+        TargetKey := FocusedRegion.LowKey + KeyOffset;
+        TargetKey := FindClosestValue(TargetKey, VertSnapPoints);
+        ModifiedKeyOffset := TargetKey - FocusedRegion.LowKey;
+      end;
+
+      rhBottomRight,
+      rhTopRight,
+      rhRight:
+      begin
+        TargetKey := FocusedRegion.HighKey + KeyOffset;
+        TargetKey := FindClosestValue(TargetKey+1, VertSnapPoints)-1;
+        ModifiedKeyOffset := TargetKey - FocusedRegion.HighKey;
+      end;
+
+      rhTop,
+      rhBottom:
+      begin
+        ModifiedKeyOffset := KeyOffset;
+      end;
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+    CheckSmartSnappingState(FocusedRegion, KeyOffset, VelocityOffset, Handle, VertSmartSnapDisable, HorzSmartSnapDisable);
+    if VertSmartSnapDisable
+      then ModifiedKeyOffset := KeyOffset;
+
+    ApplyRegionResize(Regions, Handle, ModifiedKeyOffset, ModifiedVelocityOffset);
   end;
 end;
 
