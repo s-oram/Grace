@@ -1409,7 +1409,7 @@ begin
     then IsSnapping := false
     else IsSnapping := true;
 
-  if (IsGrabbedByLeft) then
+  if (DeselectOthersOnMouseUp) and (MouseDownPos.X <> X) and (MouseDownPos.Y <> Y) then
   begin
     DeselectOthersOnMouseUp := false;
   end;
