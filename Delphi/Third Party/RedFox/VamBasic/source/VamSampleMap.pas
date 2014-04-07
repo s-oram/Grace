@@ -181,8 +181,8 @@ type
 
 
 
-    procedure DrawSampleRegion(const aRegion:TVamSampleRegion; aColor:TRedFoxColor);
-    procedure DrawSampleRegionResizeHandles(const aRegion:TVamSampleRegion; const aColor:TRedFoxColor);
+    procedure DrawSampleRegion(const aRegion:TVamSampleRegion; aColor:TRedFoxColor; const UseMovingBounds : boolean);
+    procedure DrawSampleRegionResizeHandles(const aRegion:TVamSampleRegion; const aColor:TRedFoxColor; const UseMovingBounds : boolean);
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -1269,8 +1269,6 @@ var
 begin
   inherited;
 
-
-
   IsGrabbedByLeft    := false;
   IsGrabbedByRight   := false;
   IsDragSelectActive := false;
@@ -1337,9 +1335,8 @@ begin
         and (not(ssCtrl  in Shift))
         and (not(ssShift in Shift)) then
       begin
-        PrepareCopiedRegionsList;
+        //PrepareCopiedRegionsList;
         IsCopyRegionActive := true;
-
       end;
 
 
@@ -1625,35 +1622,37 @@ begin
     IsGrabbedByRight := false;
 
     //Finalise and moved regions.
-    for c1 := 0 to SampleRegions.Count-1 do
+    if not IsCopyRegionActive then
     begin
-      if SampleRegions[c1].IsMoving then
+      for c1 := 0 to SampleRegions.Count-1 do
       begin
-        SampleRegions[c1].IsMoving := false;
-        if assigned(OnRegionMoved) then OnRegionMoved(self, SampleRegions[c1]);
+        if SampleRegions[c1].IsMoving then
+        begin
+          SampleRegions[c1].IsMoving := false;
+          if assigned(OnRegionMoved) then OnRegionMoved(self, SampleRegions[c1]);
+        end;
       end;
     end;
 
     //Finalise copied regions..
-    if CopiedRegions.Count > 0 then
+    if IsCopyRegionActive then
     begin
+      PrepareCopiedRegionsList;
       CommitRegionMovement(CopiedRegions);
       CopySampleRegions(ProposedSampleRegions, CopiedRegions);
       CopiedRegions.Clear;
 
       if assigned(OnNewCopiedRegions) then OnNewCopiedRegions(self, ProposedSampleRegions);
       ProposedSampleRegions.Clear;
-
-      Invalidate;
-      RegionInfoChanged;
     end;
-
 
 
     if DeselectOthersOnMouseUp then
     begin
       if assigned(OnDeselectOtherRegions) then OnDeselectOtherRegions(self, MouseDownRegion);
     end;
+
+    IsCopyRegionActive := false;
   end;
 
 
@@ -1675,6 +1674,15 @@ begin
   if (Button = mbLeft) and (IsGrabbedByLeft) then
   begin
     MouseDownRegion := nil;
+
+    // Cancel region movement for existing regions.
+    for c1 := 0 to SampleRegions.Count-1 do
+    begin
+      if SampleRegions[c1].IsMoving then
+      begin
+        SampleRegions[c1].IsMoving := false;
+      end;
+    end;
   end;
 
   if (Button = mbRight) and (IsGrabbedByRight) then
@@ -1687,11 +1695,8 @@ begin
     UpdateCursorIcon(Shift, X, Y);
   end;
 
-
-
   Invalidate;
   RegionInfoChanged;
-
 
   SortSampleRegionList;
 end;
@@ -1954,7 +1959,89 @@ begin
 
 
   //==== draw sample regions ==============
+  for c1 := SampleRegions.Count-1 downto 0 do
+  begin
+    if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = false)then
+    begin
+      if SampleRegions[c1].IsInOtherKeyGroup = false
+        then aColor := Color_Region
+        else aColor := Color_OtherKeyGroup;
 
+      if (SampleRegions[c1].IsDragSelected)
+        or (SampleRegions[c1].IsFocused)
+        or (SampleRegions[c1].IsSelected)
+        or (SampleRegions[c1] = MouseOverRegion)
+        then aColor := Color_RegionFocused;
+
+      if SampleRegions[c1].IsSampleError then
+      begin
+        ErrorColor := Color_RegionError;
+        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
+        ErrorColor.A := aColor.A;
+        aColor := ErrorColor;
+      end;
+
+      DrawSampleRegion(SampleRegions[c1], aColor, false);
+    end;
+  end;
+
+
+  // Draw the regions being copied at their original position.
+  if IsCopyRegionActive then
+  begin
+    for c1 := SampleRegions.Count-1 downto 0 do
+    begin
+      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
+      begin
+        if SampleRegions[c1].IsInOtherKeyGroup = false
+          then aColor := Color_Region
+          else aColor := Color_OtherKeyGroup;
+
+        if SampleRegions[c1].IsSampleError then
+        begin
+          ErrorColor := Color_RegionError;
+          ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
+          ErrorColor.A := aColor.A;
+          aColor := ErrorColor;
+        end;
+
+        DrawSampleRegion(SampleRegions[c1], aColor, false);
+      end;
+    end;
+  end;
+
+
+
+
+  // Draw moving regions... (includes copied regions destination position)
+  for c1 := SampleRegions.Count-1 downto 0 do
+  begin
+    if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
+    begin
+      if SampleRegions[c1].IsInOtherKeyGroup = false
+        then aColor := Color_RegionFocused
+        else aColor := Color_OtherKeyGroupSelected;
+
+      if IsCopyRegionActive
+        then aColor := Color_RegionFocused;
+
+      if SampleRegions[c1].IsSampleError then
+      begin
+        ErrorColor := Color_RegionError;
+        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
+        ErrorColor.A := aColor.A;
+        aColor := ErrorColor;
+      end;
+
+      DrawSampleRegion(SampleRegions[c1], aColor, true);
+    end;
+  end;
+
+
+
+
+
+  {
   for c1 := SampleRegions.Count-1 downto 0 do
   begin
     if (SampleRegions[c1].IsDragSelected = false)
@@ -2000,6 +2087,9 @@ begin
         aColor := ErrorColor;
       end;
 
+      if (IsCopyRegionActive) and (SampleRegions[c1].IsMoving)
+        then aColor := Color_ProposedRegions;
+
       if (SampleRegions[c1].IsVisible) or (ShowOtherRegions) then
       begin
         DrawSampleRegion(SampleRegions[c1], aColor);
@@ -2007,10 +2097,29 @@ begin
       end;
     end;
   end;
-
+  }
 
   if assigned(MouseOverRegion) then
   begin
+    if (MouseOverRegion.IsVisible) or (ShowOtherRegions) then
+    begin
+      aColor := Color_RegionFocused;
+
+      if MouseOverRegion.IsMoving
+        then DrawSampleRegionResizeHandles(MouseOverRegion, aColor, true)
+        else DrawSampleRegionResizeHandles(MouseOverRegion, aColor, false);
+
+      if (MouseOverRegionHandle <> rhNone) then
+      begin
+        BackBuffer.BufferInterface.FillColor := GetRedFoxColor('$FFFFFFFF').AsAggRgba8;
+        BackBuffer.BufferInterface.NoLine;
+        HandleBounds := CalcRegionHandleBounds(MouseOverRegion, MouseOverRegionHandle);
+        BackBuffer.BufferInterface.Rectangle(HandleBounds.Left, HandleBounds.Top, HandleBounds.Right, HandleBounds.Bottom);
+      end;
+    end;
+
+
+    {
     if MouseOverRegion.IsInOtherKeyGroup = false
         then aColor := Color_RegionMouseOver
         else aColor := Color_OtherKeyGroupSelected;
@@ -2025,8 +2134,8 @@ begin
 
     if (MouseOverRegion.IsVisible) or (ShowOtherRegions) then
     begin
-      DrawSampleRegion(MouseOverRegion, aColor);
-      DrawSampleRegionResizeHandles(MouseOverRegion, aColor);
+      DrawSampleRegion(MouseOverRegion, aColor, false);
+      DrawSampleRegionResizeHandles(MouseOverRegion, aColor, false);
 
       if (MouseOverRegionHandle <> rhNone) then
       begin
@@ -2036,6 +2145,7 @@ begin
         BackBuffer.BufferInterface.Rectangle(HandleBounds.Left, HandleBounds.Top, HandleBounds.Right, HandleBounds.Bottom);
       end;
     end;
+    }
   end;
 
 
@@ -2047,15 +2157,16 @@ begin
   begin
     for c1 := 0 to ProposedSampleRegions.Count-1 do
     begin
-      DrawSampleRegion(ProposedSampleRegions[c1], aColor);
+      DrawSampleRegion(ProposedSampleRegions[c1], aColor, false);
     end;
   end else
   if (ProposedSampleRegions.Count > 0) and (ProposedMapInfo.IsFullKeyboardSpread = true) then
   begin
-    DrawSampleRegion(ProposedSampleRegions.First, aColor);
+    DrawSampleRegion(ProposedSampleRegions.First, aColor, false);
   end;
 
   //==== draw copied regions ==============
+  {
   aColor := Color_ProposedRegions;
   if (CopiedRegions.Count > 0) then
   begin
@@ -2064,7 +2175,7 @@ begin
       DrawSampleRegion(CopiedRegions[c1], aColor);
     end;
   end;
-
+  }
 
 
 
@@ -2079,7 +2190,7 @@ begin
 
 end;
 
-procedure TVamSampleMap.DrawSampleRegion(const aRegion: TVamSampleRegion; aColor: TRedFoxColor);
+procedure TVamSampleMap.DrawSampleRegion(const aRegion: TVamSampleRegion; aColor: TRedFoxColor; const UseMovingBounds : boolean);
 var
   SampleRegionBounds : TRectF;
 begin
@@ -2087,7 +2198,7 @@ begin
   BackBuffer.BufferInterface.LineColor := aColor.WithAlphaBlend(255).AsAggRgba8;
   BackBuffer.BufferInterface.LineWidth := 1;
 
-  if aRegion.IsMoving
+  if UseMovingBounds
     then SampleRegionBounds := CalcSampleRegionBounds(aRegion, true)
     else SampleRegionBounds := CalcSampleRegionBounds(aRegion, false);
 
@@ -2096,7 +2207,7 @@ begin
   BackBuffer.BufferInterface.Rectangle(SampleRegionBounds.Left, SampleRegionBounds.Top, SampleRegionBounds.Right, SampleRegionBounds.Bottom);
 end;
 
-procedure TVamSampleMap.DrawSampleRegionResizeHandles(const aRegion: TVamSampleRegion; const aColor:TRedFoxColor);
+procedure TVamSampleMap.DrawSampleRegionResizeHandles(const aRegion: TVamSampleRegion; const aColor:TRedFoxColor; const UseMovingBounds : boolean);
 const
   HandleSize = 4;
   HandleSizeDiv2 = 4;
@@ -2109,7 +2220,7 @@ begin
   BackBuffer.BufferInterface.LineColor := aColor;
   BackBuffer.BufferInterface.LineWidth := 1;
 
-  if aRegion.IsMoving
+  if UseMovingBounds
     then SampleRegionBounds := CalcSampleRegionBounds(aRegion, true)
     else SampleRegionBounds := CalcSampleRegionBounds(aRegion, false);
 
