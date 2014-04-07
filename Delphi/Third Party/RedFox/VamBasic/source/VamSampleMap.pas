@@ -119,7 +119,6 @@ type
     fOnDragSelectEnd: TNotifyEvent;
     fOnGetDragRegionCount: TVamDragRegionCountEvent;
     fOnNewRegions: TVamNewRegionsEvent;
-    fCopiedRegions: TVamSampleRegionList;
     fOnNewCopiedRegions: TVamNewCopiedRegionsEvent;
     fOnReplaceRegion: TVamReplaceRegionEvent;
     fOnShowReplaceRegionMessage: TBooleanEvent;
@@ -202,8 +201,6 @@ type
 
     function GetDragRegionCount(const Data : IVamDragData):integer;
 
-    procedure PrepareCopiedRegionsList;
-
     procedure UpdateCursorIcon(Shift: TShiftState; X, Y: Integer);
 
     procedure ShowReplaceRegionMessage(Show : boolean);
@@ -225,7 +222,6 @@ type
 
     property SampleRegions         : TVamSampleRegionList read fSampleRegions         write fSampleRegions;
     property ProposedSampleRegions : TVamSampleRegionList read fProposedSampleRegions write fProposedSampleRegions;
-    property CopiedRegions         : TVamSampleRegionList read fCopiedRegions         write fCopiedRegions;
 
     function FindRegionByUniqueID(UniqueID : TGUID):TVamSampleRegion;
 
@@ -390,6 +386,25 @@ begin
 end;
 
 
+procedure PrepareCopiedRegions(const Regions, ProposedRegions : TVamSampleRegionList);
+var
+  c1 : integer;
+  aRegion : TVamSampleRegion;
+begin
+  for c1 := 0 to Regions.Count-1 do
+  begin
+    if Regions[c1].IsSelected then
+    begin
+      aRegion := TVamSampleRegion.Create;
+      aRegion.AssignFrom(Regions[c1]);
+      ProposedRegions.Add(aRegion);
+
+      Regions[c1].IsSelected := false;
+    end;
+  end;
+end;
+
+
 { TRedFoxSampleRegion }
 
 
@@ -476,8 +491,6 @@ begin
 
   SampleRegions := TVamSampleRegionList.Create(true);
   ProposedSampleRegions := TVamSampleRegionList.Create(true);
-  CopiedRegions := TVamSampleRegionList.Create(true);
-
 
   Color_Background            := '$FF242B39';
   Color_BackgroundLines       := '$FF64718D';
@@ -495,7 +508,6 @@ destructor TVamSampleMap.Destroy;
 begin
   SampleRegions.Free;
   ProposedSampleRegions.Free;
-  CopiedRegions.Free;
   inherited;
 end;
 
@@ -1241,27 +1253,6 @@ begin
   end;
 end;
 
-procedure TVamSampleMap.PrepareCopiedRegionsList;
-var
-  c1 : integer;
-  aRegion : TVamSampleRegion;
-begin
-  CopiedRegions.Clear;
-
-  for c1 := 0 to SampleRegions.Count-1 do
-  begin
-    if SampleRegions[c1].IsSelected then
-    begin
-      aRegion := TVamSampleRegion.Create;
-      aRegion.AssignFrom(SampleRegions[c1]);
-      CopiedRegions.Add(aRegion);
-    end;
-
-  end;
-
-end;
-
-
 
 procedure TVamSampleMap.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
@@ -1335,7 +1326,6 @@ begin
         and (not(ssCtrl  in Shift))
         and (not(ssShift in Shift)) then
       begin
-        //PrepareCopiedRegionsList;
         IsCopyRegionActive := true;
       end;
 
@@ -1433,11 +1423,7 @@ begin
       LastDistKey := DistKey;
       LastDistVelocity := DistVelocity;
 
-      //if IsCopyRegionActive
-      //  then MoveSelectedRegions(CopiedRegions, DistKey, DistVelocity, IsSnapping)
-      //  else MoveSelectedRegions(SampleRegions, DistKey, DistVelocity, IsSnapping);
       MoveSelectedRegions(MouseDownRegion, SampleRegions, DistKey, DistVelocity, IsSnapping);
-
 
       Invalidate;
       RegionInfoChanged;
@@ -1637,10 +1623,7 @@ begin
     //Finalise copied regions..
     if IsCopyRegionActive then
     begin
-      PrepareCopiedRegionsList;
-      CommitRegionMovement(CopiedRegions);
-      CopySampleRegions(ProposedSampleRegions, CopiedRegions);
-      CopiedRegions.Clear;
+      PrepareCopiedRegions(SampleRegions, ProposedSampleRegions);
 
       if assigned(OnNewCopiedRegions) then OnNewCopiedRegions(self, ProposedSampleRegions);
       ProposedSampleRegions.Clear;
@@ -2164,19 +2147,6 @@ begin
   begin
     DrawSampleRegion(ProposedSampleRegions.First, aColor, false);
   end;
-
-  //==== draw copied regions ==============
-  {
-  aColor := Color_ProposedRegions;
-  if (CopiedRegions.Count > 0) then
-  begin
-    for c1 := 0 to CopiedRegions.Count-1 do
-    begin
-      DrawSampleRegion(CopiedRegions[c1], aColor);
-    end;
-  end;
-  }
-
 
 
   if IsDragSelectActive then
