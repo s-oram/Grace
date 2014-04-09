@@ -126,10 +126,6 @@ type
     OutputAmplitudeLevel : single;
   end;
 
-
-
-
-type
   PFilePreviewInfo = ^TFilePreviewInfo;
   TFilePreviewInfo = record
     FileName     : string;
@@ -141,6 +137,11 @@ type
     ChannelCount : string;
     procedure Clear;
   end;
+
+
+
+
+
 
 //==============================================================================
 //   GUI Skin Constants

@@ -35,6 +35,9 @@ type
 
 implementation
 
+uses
+  Lucidity.Types;
+
 {$R *.dfm}
 
 { TRegionInfoFrame }

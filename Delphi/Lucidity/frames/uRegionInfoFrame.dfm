@@ -20,6 +20,7 @@ object RegionInfoFrame: TRegionInfoFrame
       Top = 0
       Width = 320
       Height = 240
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False

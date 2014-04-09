@@ -98,6 +98,7 @@ type
 implementation
 
 uses
+  Lucidity.Types,
   VamLib.Throttler,
   eeDsp,
   VamLib.Graphics,

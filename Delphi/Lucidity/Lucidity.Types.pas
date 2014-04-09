@@ -61,6 +61,45 @@ type
   // stored in the voice class. (If these comments are up to date!)
   PSynthPar = PSingle;
 
+
+
+
+
+
+
+  PRegionProperties = ^TRegionProperties;
+  TRegionProperties = record
+    UniqueID         : TGuid;
+    SampleFileName   : string;
+    SampleDataLoaded : boolean;
+    IsSampleError    : boolean;
+    ErrorMessage     : string;
+
+    IsSelected     : boolean; //Multiple regions can be selected.
+    IsFocused      : boolean; //only a single region should be 'focused' at once.
+
+    //== Sample Map ==
+    LowNote        : integer;
+    HighNote       : integer;
+    LowVelocity    : integer;
+    HighVelocity   : integer;
+    RootNote       : integer;
+
+    //== Markers ==
+    SampleStart : integer;
+    SampleEnd   : integer;
+    LoopStart   : integer;
+    LoopEnd     : integer;
+
+    //== Sample ==
+    SampleVolume  : single;  // In db. Range -96..+12
+    SamplePan     : single;  // range -100..+100 (%)
+    SampleTune    : integer; // Semitones. -24..+24
+    SampleFine    : integer; // FineTune - Cents -100..100
+    //SamplePitch   : double;  // In Semitones. -24..+24
+    SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
+  end;
+
 implementation
 
 { TModulatedPar }
