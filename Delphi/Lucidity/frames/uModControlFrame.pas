@@ -261,10 +261,10 @@ begin
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
 
-
+  //TODO: This should be tied to the active voice group, or the active voice.
+  // not the global scope.
   Scope.SignalRecorder := Plugin.SignalRecorder;
   Scope.FreqAnalyzer   := Plugin.FreqAnalyzer;
-
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 

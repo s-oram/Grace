@@ -154,7 +154,8 @@ uses
   Lucidity.SequencerDataObject in 'Lucidity.SequencerDataObject.pas',
   uConstants in 'uConstants.pas',
   soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas',
-  soLevelMeter in 'SoundObjects\soLevelMeter.pas';
+  soLevelMeter in 'SoundObjects\soLevelMeter.pas',
+  LucidityInterfaces in 'LucidityInterfaces.pas';
 
 {$R *.res}
 

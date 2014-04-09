@@ -13,6 +13,7 @@ uses
   eeVstParameterList, eePatchObject,
   uConstants,
   Lucidity.SampleMap,
+  soLevelMeter,
   soLucidityVoice, soLucidityVoiceParameterWrapper,
   uModularConnectionManager,
   uLucidityStepSequencer,
@@ -32,6 +33,7 @@ type
     fSampleMap: TSampleMap;
     fVoiceParameters: TLucidityVoiceParameterWrapper;
     fModConnections: TModConnections;
+    fLevelMonitor: TLevelMonitor;
 
     function GetObject : TObject;
     function GetTriggeredNoteCount:cardinal;
@@ -41,6 +43,8 @@ type
     function GetModulatedParameters : PModulatedPars;
 
     function GetSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
+
+    procedure SampleRateChanged(Sender:TObject);
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -85,12 +89,14 @@ type
 
     property Seq1Data : TSequencerDataObject read FSeq1Data;
     property Seq2Data : TSequencerDataObject read FSeq1Data;
+
+    property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
   end;
 
 implementation
 
 uses
-  SysUtils,
+  SysUtils, eeCustomGlobals,
   uLucidityEnums;
 
 { TLucidityEngine }
@@ -99,6 +105,7 @@ constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalM
 begin
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
+  Globals.AddEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
 
   Voices := aVoices;
 
@@ -111,6 +118,8 @@ begin
   FSeq2Data := TSequencerDataObject.Create;
 
   fTriggeredNoteCount := 0;
+
+  fLevelMonitor := TLevelMonitor.Create;
 end;
 
 destructor TKeyGroup.Destroy;
@@ -119,6 +128,7 @@ begin
   FSeq2Data.Free;
   fVoiceParameters.Free;
   fModConnections.Free;
+  fLevelMonitor.Free;
   inherited;
 end;
 
@@ -316,6 +326,11 @@ end;
 procedure TKeyGroup.SetModParValue(const ModParIndex: integer; const Value: single);
 begin
   ModulatedParameters[ModParIndex].ParValue := Value;
+end;
+
+procedure TKeyGroup.SampleRateChanged(Sender: TObject);
+begin
+  LevelMonitor.SampleRate := Globals.SampleRate
 end;
 
 procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);

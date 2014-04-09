@@ -8,7 +8,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamKnob, RedFoxGraphicControl,
-  VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage, VamMiniLevelMeter;
+  VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage, VamMiniLevelMeter,
+  Vcl.ExtCtrls;
 
 type
   TVoiceControlFrame = class(TFrame, IZeroObject)
@@ -57,7 +58,9 @@ type
     MainPanKnob: TVamKnob;
     MainPanLabel: TVamLabel;
     VoiceLevelMeter: TVamMiniLevelMeter;
+    Timer1: TTimer;
     procedure VoiceControlsContainerResize(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -306,6 +309,9 @@ begin
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
   UpdateModulation;
+
+  Timer1.Enabled := true;
+  Timer1.Interval := 40;
 end;
 
 procedure TVoiceControlFrame.VoiceControlsContainerResize(Sender: TObject);
@@ -369,6 +375,12 @@ begin
 
   end;
 
+end;
+
+procedure TVoiceControlFrame.Timer1Timer(Sender: TObject);
+begin
+  //Plugin.act
+  VoiceLevelMeter.Invalidate;
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;
