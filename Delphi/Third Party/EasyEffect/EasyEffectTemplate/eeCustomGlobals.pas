@@ -79,7 +79,6 @@ type
     fFastControlRate: integer;
     fSlowControlRate: integer;
     FMotherShip: TMotherShip;
-    procedure SetSampleRate(const Value: integer);
     procedure SetBlockSize(const Value: integer);
     procedure SetTempo(const Value: single);
     procedure SetTransportPlaying(const Value: boolean);
@@ -87,8 +86,6 @@ type
     procedure SetTransportRecording(const Value: boolean);
     procedure SetOverSampleFactor(const Value: integer);
     function GetHostProperties: PHostProperties;
-    procedure SetFastControlRate(const Value: integer);
-    procedure SetSlowControlRate(const Value: integer);
     function GetMotherShip: IMotherShip;
   protected
     fHostProperties : THostProperties;
@@ -369,39 +366,11 @@ begin
   end;
 end;
 
-procedure TCustomGlobals.SetFastControlRate(const Value: integer);
-begin
-  if Value <> fFastControlRate then
-  begin
-    fFastControlRate := Value;
-    SampleRateList.TriggerAll(self);
-  end;
-end;
-
 procedure TCustomGlobals.SetOverSampleFactor(const Value: integer);
 begin
   if Value <> fOversampleFactor then
   begin
     fOverSampleFactor := Value;
-    SampleRateList.TriggerAll(self);
-  end;
-end;
-
-procedure TCustomGlobals.SetSampleRate(const Value: integer);
-begin
-  if Value > 0 then
-  begin
-    fSampleRate := Value;
-    fOneOverSampleRate := 1 / Value;
-    SampleRateList.TriggerAll(self);
-  end;
-end;
-
-procedure TCustomGlobals.SetSlowControlRate(const Value: integer);
-begin
-  if Value <> fSlowControlRate then
-  begin
-    fSlowControlRate := Value;
     SampleRateList.TriggerAll(self);
   end;
 end;
@@ -651,7 +620,6 @@ end;
 
 procedure TWindowsMessageGateKeeper.DoPump;
 var
-  aWinMessage : TMsgData;
   Data : TOmniValue;
   Msg: cardinal;
   wParam :  NativeUInt;
@@ -678,7 +646,6 @@ end;
 
 procedure TWindowsMessageGateKeeper.SendWindowsMessage(const Msg: cardinal; const wParam: NativeUInt; const lParam: NativeInt);
 var
-  aWinMessage : TMsgData;
   Data : TOmniValue;
 begin
   //Add message to thread safe queue.

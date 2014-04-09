@@ -11,7 +11,6 @@ interface
 uses
   SysUtils, Math;
 
-
 function CpsToMidi(x:double):integer; inline;
 function MidiToCps(x: double): double; inline;
 
@@ -25,11 +24,6 @@ function BeatsToSamples(Beats,Tempo,SampleRate:single):single; inline;
 function SemiToneShiftToStepSize(Shift,StepSize:double):double; inline;
 
 function MidiNoteToName(x:integer):string;
-
-
-
-
-
 
 implementation
 
@@ -95,3 +89,4 @@ end;
 
 
 end.
+

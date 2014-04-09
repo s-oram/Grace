@@ -9,6 +9,9 @@ type
     procedure SetStepValue(Index : integer; const Value:single);
   end;
 
+
+
+
 implementation
 
 end.

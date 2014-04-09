@@ -150,9 +150,7 @@ end;
 
 function TBiquadFilterCore.Step_DirectForm2(const x: single): single;
 var
-  c1: Integer;
   temp : double;
-  outX : double;
 begin
   temp := x + (a1 * z1) + (a2 * z2);
   result := (b0 * temp) + (b1 * z1) + (b2 * z2);

@@ -3,6 +3,7 @@ unit uLucidityStateManager;
 interface
 
 uses
+  VamLib.Utils,
   Lucidity.Interfaces,
   LucidityModConnections,
   uLucidityEnums, soModMatrix,
@@ -659,7 +660,7 @@ begin
         if c3 < kMaxStepSequencerLength then
         begin
           StepValue := DataIO_StrToFloat(StepValuesNodeList[c3].ValueUnicode, 0.5);
-          Clamp(StepValue, 0, 1);
+          StepValue := Clamp(StepValue, 0, 1);
           SeqData.SetStepValue(c3, StepValue);
         end;
       end;

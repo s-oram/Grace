@@ -3,6 +3,7 @@ unit uLucidityVoiceAmp;
 interface
 
 uses
+  VamLib.Utils,
   VamLib.MoreTypes, eeFunctions;
 
 type
@@ -77,10 +78,10 @@ var
 
 begin
   xLeft := ModPoints.ModInput_Gain * ModPoints.ModInput_Gain;
-  Clamp(xLeft, 0,1);
+  xLeft := Clamp(xLeft, 0,1);
 
   PanPos := fPanScaled + ModPoints.ModInput_Pan;
-  Clamp(PanPos, 0,1);
+  PanPos := Clamp(PanPos, 0,1);
 
   GainLeft  := xLeft * Gain * Sqrt(1 - PanPos);
   GainRight := xLeft * Gain * Sqrt(PanPos);

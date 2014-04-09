@@ -35,14 +35,7 @@ type
     ControlLinks            : TControlInfoList;
     IsManualGuiUpdateActive : boolean;
     MenuBuilder             : TGuiMenuBuilder;
-
     function FindIndexOfControl(c:TControl):integer;
-
-    procedure BeginParameterEdit(const ControlLinkIndex : integer);
-    procedure EndParameterEdit(const ControlLinkIndex : integer);
-    procedure SetParameterToDefaut(const ControlLinkIndex : integer);
-    procedure SetParameterValue(const ControlLinkIndex : integer; const Value : single);
-
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -187,59 +180,8 @@ begin
 end;
 
 
-procedure TRedFoxMenuHandler.BeginParameterEdit(const ControlLinkIndex: integer);
-var
-  Tag : integer;
-begin
-  if ControlLinks[ControlLinkIndex].LinkedParameter.IsPublished then
-  begin
-    Tag := ControlLinks[ControlLinkIndex].LinkedParameter.PublishedVSTParameterIndex;
-    Globals.VstMethods^.BeginParameterEdit(Tag);
-  end;
-end;
-
-procedure TRedFoxMenuHandler.EndParameterEdit(const ControlLinkIndex: integer);
-var
-  Tag : integer;
-begin
-  if ControlLinks[ControlLinkIndex].LinkedParameter.IsPublished then
-  begin
-    Tag := ControlLinks[ControlLinkIndex].LinkedParameter.PublishedVSTParameterIndex;
-    Globals.VstMethods^.EndParameterEdit(Tag);
-  end;
-end;
-
-procedure TRedFoxMenuHandler.SetParameterToDefaut(const ControlLinkIndex: integer);
-var
-  Tag : integer;
-  dv : single;
-begin
-  dv := ControlLinks[ControlLinkIndex].LinkedParameter.DefaultVST;
-
-  if ControlLinks[ControlLinkIndex].LinkedParameter.IsPublished then
-  begin
-    Tag := ControlLinks[ControlLinkIndex].LinkedParameter.PublishedVSTParameterIndex;
-    Globals.VstMethods^.SetParameterAutomated(Tag, dv);
-  end else
-  begin
-    ControlLinks[ControlLinkIndex].LinkedParameter.ValueVST := dv;
-  end;
-end;
 
 
-procedure TRedFoxMenuHandler.SetParameterValue(const ControlLinkIndex: integer; const Value: single);
-var
-  Tag : integer;
-begin
-  if ControlLinks[ControlLinkIndex].LinkedParameter.IsPublished then
-  begin
-    Tag := ControlLinks[ControlLinkIndex].LinkedParameter.PublishedVSTParameterIndex;
-    Globals.VstMethods^.SetParameterAutomated(Tag, Value);
-  end else
-  begin
-    ControlLinks[ControlLinkIndex].LinkedParameter.ValueVST := Value;
-  end;
-end;
 
 procedure TRedFoxMenuHandler.UpdateControls;
 var

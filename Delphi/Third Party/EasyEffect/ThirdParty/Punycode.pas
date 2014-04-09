@@ -114,7 +114,6 @@ begin
           if digit>(MAXINT-i) div w then
         raise TPunycodeException.Create(TPunycodeException.OVERFLOW);
       i:=i+digit*w;
-      t:=0;
       if k<=bias then
         t:=TMIN
       else if k>=bias+TMAX then
@@ -199,7 +198,6 @@ begin
         k:=BASE;
         while True do
         begin
-          t:=0;
           if k<=bias then
             t:=TMIN
           else if k>=bias+Tmax then

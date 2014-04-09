@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Utils,
   OtlCommon.Utils,
   RTTI,
   GpStuff,
@@ -617,7 +618,7 @@ begin
     if aRegion.GetProperties^.IsSelected then
     begin
       NewRoot := aRegion.GetProperties^.RootNote + RootKeyOffset;
-      Clamp(NewRoot, 0, 127);
+      NewRoot := Clamp(NewRoot, 0, 127);
       aRegion.GetProperties^.RootNote := NewRoot;
     end;
   end;

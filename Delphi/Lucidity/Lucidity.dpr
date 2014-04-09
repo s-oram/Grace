@@ -153,7 +153,8 @@ uses
   soFreqAnalyzer in 'SoundObjects\soFreqAnalyzer.pas',
   Lucidity.SequencerDataObject in 'Lucidity.SequencerDataObject.pas',
   uConstants in 'uConstants.pas',
-  soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas';
+  soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas',
+  soLevelMeter in 'SoundObjects\soLevelMeter.pas';
 
 {$R *.res}
 

@@ -103,9 +103,6 @@ function CopyFile(ExistingFileName, NewFileName:string):longBool;
 
 procedure Wrap(var Input:single; const MinValue, MaxValue : single);
 
-procedure Clamp(var Input:single; const MinValue, MaxValue : single); inline; overload;   deprecated; //use VamLib.Utils.Clamp() instead.
-procedure Clamp(var Input:integer; const MinValue, MaxValue : integer); inline; overload; deprecated; //use VamLib.Utils.Clamp() instead.
-
 procedure SwapValues(var x1, x2:single); inline; overload;
 procedure SwapValues(var x1, x2:integer); inline; overload;
 
@@ -964,20 +961,6 @@ begin
   begin
     Input := Input - (MaxValue - MinValue);
   end;
-end;
-
-procedure Clamp(var Input:single; const MinValue, MaxValue : single); inline; overload;
-begin
-  if Input > MaxValue then Input := MaxValue
-  else
-  if Input < MinValue then Input := MinValue;
-end;
-
-procedure Clamp(var Input:integer; const MinValue, MaxValue : integer); inline; overload;
-begin
-  if Input > MaxValue then Input := MaxValue
-  else
-  if Input < MinValue then Input := MinValue;
 end;
 
 procedure SwapValues(var x1, x2:single); inline; overload;

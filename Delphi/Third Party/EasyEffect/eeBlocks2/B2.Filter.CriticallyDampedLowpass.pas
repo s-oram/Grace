@@ -3,6 +3,7 @@ unit B2.Filter.CriticallyDampedLowpass;
 interface
 
 uses
+  eeDsp,
   eeBiquadFilters, eeBiquadFilterCore;
 
 type

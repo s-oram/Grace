@@ -188,9 +188,6 @@ end;
 procedure TADSR.Step;
 var
   TargetValue     : single;
-  TargetEnvValue  : single;
-  TargetStageTime : single;
-  NextStage : boolean;
 begin
 
   case Stage of

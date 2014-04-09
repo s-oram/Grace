@@ -2,6 +2,9 @@ unit LucidityParameterScaling;
 
 interface
 
+uses
+  Math;
+
 type
   // TParScaler is a class to centralise converting
   // from 0..1 VST parameter range to the target parameter range.

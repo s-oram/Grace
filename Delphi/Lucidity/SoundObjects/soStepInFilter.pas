@@ -19,7 +19,7 @@ type
     GainFilter : TCriticallyDampedLowpass;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     procedure Trigger;
 
@@ -55,6 +55,7 @@ end;
 destructor TStepInFilter.Destroy;
 begin
   GainFilter.Free;
+  inherited;
 end;
 
 procedure TStepInFilter.SetDecayTime(const Value: double);

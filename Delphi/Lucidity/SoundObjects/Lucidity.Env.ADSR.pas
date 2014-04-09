@@ -134,8 +134,6 @@ begin
 end;
 
 procedure TLucidityADSR.SetSustainLevel(const Value: single);
-var
-  db : single;
 begin
   assert((Value >= 0) and (Value <= 1));
   fSustainLevel := Value;

@@ -29,6 +29,7 @@ uses
   soGrainStretchSubOsc,
   soSawSquareOsc,
   soDynamicWaveTableOsc,
+  soLevelMeter,
   FilterCore.SimperSVF,
   soFilter.BlueFilter,
   soFilter.LowpassB,
@@ -78,6 +79,7 @@ type
     fLucidityLfoA: TLucidityLfo;
     fLucidityLfoB: TLucidityLfo;
     fFilterRouting: TFilterRouting;
+    fLevelMonitor: TLevelMonitor;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
@@ -172,6 +174,8 @@ type
     property StepSeqOne       : TLucidyStepSequencer     read fStepSeqOne       write fStepSeqOne;
     property StepSeqTwo       : TLucidyStepSequencer     read fStepSeqTwo       write fStepSeqTwo;
     property ModMatrix        : TModMatrix               read fModMatrix        write fModMatrix;
+
+    property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
     //===== Parameters ======
     property SamplePlaybackType : TSamplePlaybackType read fSamplePlaybackType write SetSamplePlaybackType;
@@ -297,6 +301,9 @@ begin
   ModMatrix.SetModDestPointer(TModDest.ModOutB, OutputMixer.GetModPointer('ModOutB'));
   OutputMixer.VoiceMixMain := 1;
 
+  LevelMonitor := TLevelMonitor.Create;
+  Globals.MotherShip.RegisterZeroObject(LevelMonitor);
+
   // Finally,
   SampleRateChanged(self);
   TempoChanged(self);
@@ -324,6 +331,7 @@ begin
   SetLength(BufferB, 0);
   OutputMixer.Free;
   VoiceClockManager.Free;
+  LevelMonitor.Free;
   inherited;
 end;
 
@@ -776,6 +784,7 @@ begin
   // sense when there were multiple outputs but perhaps it would be better to
   // remove it entirely for the time being.
   OutputMixer.AudioRateProcess(pxA, pxB, Outputs, SampleFrames);
+  LevelMonitor.Process(pxA, pxB, SampleFrames);
 
   AmpLevel := AmpEnv.Value;
 

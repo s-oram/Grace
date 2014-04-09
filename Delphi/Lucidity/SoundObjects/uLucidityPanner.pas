@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Utils,
   VamLib.MoreTypes, eeFunctions;
 
 type
@@ -76,7 +77,7 @@ var
   PanPos : single;
 begin
   PanPos := fPanScaled + ModPoints.ModInput_Pan;
-  Clamp(PanPos, 0,1);
+  PanPos := Clamp(PanPos, 0,1);
 
   GainLeft  := Sqrt(1 - PanPos);
   GainRight := Sqrt(PanPos);

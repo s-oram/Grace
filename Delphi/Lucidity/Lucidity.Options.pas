@@ -55,15 +55,12 @@ end;
 
 procedure TOptions.AddNewSoundEditor(const AppExe: string);
 var
-  IsSoundEditorInList : boolean;
-  InfoIndex : integer;
   c1: Integer;
   appName : string;
   s : string;
-
   Info : PSoundEditorInfo;
 begin
-  IsSoundEditorInList := false;
+  Info := nil;
 
   appName := RemoveFileExt(AppExe);
 
@@ -71,14 +68,13 @@ begin
   begin
     if SoundEditors[c1].ApplicationName = AppName then
     begin
-      IsSoundEditorInList := true;
+
       Info := @SoundEditors.Raw[c1];
       break;
     end;
   end;
 
-
-  if IsSoundEditorInList = false then
+  if not assigned(Info) then
   begin
     Info := SoundEditors.New;
   end;
@@ -98,7 +94,6 @@ var
   XML : TNativeXML;
   NodeList : TsdNodeList;
   c1: Integer;
-  AppName, AppExe : string;
 begin
   XML := TNativeXML.Create(nil);
   try
@@ -133,13 +128,10 @@ procedure TOptions.WriteToFile(FileName: string);
 var
   XML : TNativeXML;
   Node : TXmlNode;
-  ChildNode : TXmlNode;
   c1: Integer;
 begin
   XML := TNativeXML.CreateName('root');
   try
-    Node := xml.Root;
-
     for c1 := 0 to SoundEditors.Count-1 do
     begin
       Node := NodeWiz(xml.Root).CreateNode('SoundEditor');

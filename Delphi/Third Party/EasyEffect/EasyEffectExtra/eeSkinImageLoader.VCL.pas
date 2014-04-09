@@ -148,7 +148,7 @@ var
   ResourceName : string;
   LoadResult : boolean;
 begin
-  if Exists(FinalImageID) then exit;
+  if Exists(FinalImageID) then exit(true);
 
   LoadResult := false;
 
