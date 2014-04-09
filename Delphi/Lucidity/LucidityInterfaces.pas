@@ -35,7 +35,7 @@ type
     function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
     procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, MoxMax:single);
 
-    function GetSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
+    function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
   end;
 
 

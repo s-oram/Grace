@@ -25,12 +25,12 @@ type
     fStepSeqClock: TSequencerClock;
     fSampleRate: single;
     fBpm: single;
-    FSequenceData: IVectorSequenceDataObject;
+    FSequenceData: IStepSequenceDataObject;
     procedure SetStepCount(const Value: TStepSequencerLength);
     procedure SetStepSeqClock(const Value: TSequencerClock);
     procedure SetBpm(const Value: single);
     procedure SetSampleRate(const Value: single);
-    procedure SetSequenceData(const Value: IVectorSequenceDataObject);
+    procedure SetSequenceData(const Value: IStepSequenceDataObject);
     function GetCurrentStepValue(Index: integer): single;
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
@@ -54,7 +54,7 @@ type
     constructor Create(const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
 
-    property SequenceData : IVectorSequenceDataObject read FSequenceData write SetSequenceData;
+    property SequenceData : IStepSequenceDataObject read FSequenceData write SetSequenceData;
 
     property SampleRate : single read fSampleRate write SetSampleRate;
     property Bpm        : single read fBpm        write SetBpm;
@@ -152,7 +152,7 @@ begin
   end;
 end;
 
-procedure TLucidyStepSequencer.SetSequenceData(const Value: IVectorSequenceDataObject);
+procedure TLucidyStepSequencer.SetSequenceData(const Value: IStepSequenceDataObject);
 begin
   FSequenceData := Value;
 end;

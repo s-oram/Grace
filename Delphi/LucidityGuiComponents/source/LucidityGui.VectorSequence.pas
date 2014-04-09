@@ -22,14 +22,14 @@ type
     fColor_Border: TRedFoxColorString;
     fColor_StepActive: TRedFoxColorString;
     fColor_Step: TRedFoxColorString;
-    fSequenceData: IVectorSequenceDataObject;
+    fSequenceData: IStepSequenceDataObject;
 
     function GetSequenceValue(Index: integer): single;
     procedure SetSequenceValue(Index: integer; const Value: single);
     procedure SetSequenceLength(const Value: integer);
     procedure SetCurrentStep(const Value: integer);
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
-    procedure SetSequenceData(const Value: IVectorSequenceDataObject);
+    procedure SetSequenceData(const Value: IStepSequenceDataObject);
   protected
     fSequenceValues : array[0..kMaxSeqLength] of single;
 
@@ -57,7 +57,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    property SequenceData : IVectorSequenceDataObject read fSequenceData write SetSequenceData;
+    property SequenceData : IStepSequenceDataObject read fSequenceData write SetSequenceData;
 
     property SequenceValue[Index:integer]:single read GetSequenceValue write SetSequenceValue; //sequence value range -1..1
   published
@@ -184,7 +184,7 @@ begin
   end;
 end;
 
-procedure TLucidityVectorSequence.SetSequenceData(const Value: IVectorSequenceDataObject);
+procedure TLucidityVectorSequence.SetSequenceData(const Value: IStepSequenceDataObject);
 begin
   fSequenceData := Value;
   Invalidate;

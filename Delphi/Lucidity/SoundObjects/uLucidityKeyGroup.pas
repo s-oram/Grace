@@ -42,7 +42,7 @@ type
     function GetModConnectionsPointer : PModConnections;
     function GetModulatedParameters : PModulatedPars;
 
-    function GetSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
+    function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
 
     procedure SampleRateChanged(Sender:TObject);
   protected
@@ -155,7 +155,7 @@ begin
   result := fTriggeredNoteCount;
 end;
 
-function TKeyGroup.GetSequenceData(SeqIndex: integer): IVectorSequenceDataObject;
+function TKeyGroup.GetSequenceData(SeqIndex: integer): IStepSequenceDataObject;
 begin
   case SeqIndex of
     0: result := self.FSeq1Data;

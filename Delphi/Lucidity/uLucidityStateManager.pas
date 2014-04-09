@@ -362,7 +362,7 @@ var
   c3: Integer;
   ModLinkState : TModLinkLoadInfo;
 
-  SeqData : IVectorSequenceDataObject;
+  SeqData : IStepSequenceDataObject;
 begin
   ModLinkState := TModLinkLoadInfo.Create;
   AutoFree(@ModLinkState);
@@ -513,7 +513,7 @@ var
 
   StepValue : single;
 
-  SeqData : IVectorSequenceDataObject;
+  SeqData : IStepSequenceDataObject;
 begin
   SampleGroupNodeList := TsdNodeList.Create;
   AutoFree(@SampleGroupNodeList);

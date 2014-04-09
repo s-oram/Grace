@@ -9,7 +9,7 @@ uses
   VamLib.ZeroObject;
 
 type
-  TSequencerDataObject = class(TZeroObject, IVectorSequenceDataObject)
+  TSequencerDataObject = class(TZeroObject, IStepSequenceDataObject)
   private
     function GetStepValue(Index: integer): single;
     procedure SetStepValue(Index: integer; const Value: single);

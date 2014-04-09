@@ -83,7 +83,7 @@ var
   SG : IKeyGroup;
   CurEngine : TKeyGroup;
   x1 : single;
-  SeqData : IVectorSequenceDataObject;
+  SeqData : IStepSequenceDataObject;
 begin
   if not assigned(Plugin) then exit;
 
@@ -127,7 +127,7 @@ var
   SG : IKeyGroup;
   CurEngine : TKeyGroup;
   x1 : single;
-  SeqData : IVectorSequenceDataObject;
+  SeqData : IStepSequenceDataObject;
 begin
   if not assigned(Plugin) then exit;
 
