@@ -4,7 +4,7 @@ interface
 
 uses
   Lucidity.Types,
-  Lucidity.Interfaces,
+  VamGuiControlInterfaces,
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   LucidityInterfaces, LucidityModConnections,

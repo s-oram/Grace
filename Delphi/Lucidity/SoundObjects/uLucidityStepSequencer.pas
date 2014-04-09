@@ -6,7 +6,7 @@ interface
 
 uses
   VamLib.ZeroObject,
-  Lucidity.Interfaces,
+  VamGuiControlInterfaces,
   B2.Filter.CriticallyDampedLowpass, eeBiquadFilterCore,
   VamLib.MoreTypes,
   uLucidityEnums,

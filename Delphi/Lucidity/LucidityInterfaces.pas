@@ -8,7 +8,7 @@ uses
   VamSampleDisplayBackBuffer,
   VamSamplePeakBuffer,
   Lucidity.Types,
-  Lucidity.Interfaces,
+  VamGuiControlInterfaces,
   LucidityModConnections,
   uSampleZeroCrossings;
 

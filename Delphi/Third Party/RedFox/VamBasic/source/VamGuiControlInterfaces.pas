@@ -50,10 +50,20 @@ type
     procedure SetOnMouseUp(Handler:TMouseEvent);
   end;
 
+
+
+
+
+  //==== Data source interfaces ====
   ILevelMonitor = interface
     ['{AE6977D8-D39D-4093-B9FA-7875F02A838C}']
-
     procedure GetDbLevel(out Ch1, Ch2 : single);
+  end;
+
+  IVectorSequenceDataObject = interface
+    ['{2CB04233-08C0-425A-B122-C8D476A5D50F}']
+    function GetStepValue(Index : integer):single;
+    procedure SetStepValue(Index : integer; const Value:single);
   end;
 
 implementation

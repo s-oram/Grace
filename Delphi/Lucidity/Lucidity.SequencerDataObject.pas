@@ -3,7 +3,7 @@ unit Lucidity.SequencerDataObject;
 interface
 
 uses
-  Lucidity.Interfaces,
+  VamGuiControlInterfaces,
   uConstants,
   uLucidityEnums,
   VamLib.ZeroObject;

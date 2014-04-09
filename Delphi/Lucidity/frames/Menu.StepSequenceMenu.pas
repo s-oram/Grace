@@ -3,6 +3,7 @@ unit Menu.StepSequenceMenu;
 interface
 
 uses
+  VamGuiControlInterfaces,
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
 type

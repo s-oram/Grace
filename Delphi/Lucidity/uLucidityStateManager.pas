@@ -4,7 +4,7 @@ interface
 
 uses
   VamLib.Utils,
-  Lucidity.Interfaces,
+  VamGuiControlInterfaces,
   LucidityModConnections,
   uLucidityEnums, soModMatrix,
   SysUtils, uLucidityKeyGroup,
