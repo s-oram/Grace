@@ -65,7 +65,7 @@ uses
   RedFoxColor,
   uConstants,
   Lucidity.SampleMap,
-  uLucidityKeyGroupInterface;
+  LucidityInterfaces;
 
 { TMenuBarFrame }
 

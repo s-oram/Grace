@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   uDialogDisplayArea,
-  uGuiFeedbackData, uLucidityKeyGroupInterface, VamStatusLed,
+  uGuiFeedbackData, LucidityInterfaces, VamStatusLed,
   eePlugin, eeGuiStandard, eeGuiStandard_MenuBuilder,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,

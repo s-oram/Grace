@@ -85,7 +85,7 @@ uses
   uConstants,
   uLucidityEnums,
   LucidityModConnections,
-  uLucidityKeyGroupInterface,
+  LucidityInterfaces,
   SysUtils,
   Vcl.Dialogs,
   eeMidiMap,

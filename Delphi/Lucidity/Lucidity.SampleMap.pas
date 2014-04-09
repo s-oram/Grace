@@ -8,7 +8,7 @@ uses
   VamLib.MoreTypes, Generics.Collections,
   VamSamplePeakBuffer,
   VamSampleDisplay,
-  uConstants, uLucidityKeyGroupInterface,
+  uConstants, LucidityInterfaces,
   Classes, eeSampleFloat, eePatchObject,
   uSampleZeroCrossings;
 

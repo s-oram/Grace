@@ -3,7 +3,7 @@ unit uSampleGroupManager;
 interface
 
 uses
-  VamLib.MoreTypes, soLucidityVoice, uLucidityVoiceController, uLucidityKeyGroupInterface,
+  VamLib.MoreTypes, soLucidityVoice, uLucidityVoiceController, LucidityInterfaces,
   Classes, Contnrs, uConstants, uLucidityKeyGroup,
   eeGlobals, SyncObjs;
 

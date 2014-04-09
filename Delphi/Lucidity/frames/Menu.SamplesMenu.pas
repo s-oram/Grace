@@ -46,7 +46,7 @@ implementation
 uses
   SysUtils, Classes,
   uKeyGroupManager, Lucidity.SampleMap,
-  uConstants, uLucidityKeyGroupInterface,
+  uConstants, LucidityInterfaces,
   uAutoFree;
 
 { TSamplesMenu }

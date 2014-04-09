@@ -21,7 +21,7 @@ uses
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat, uGuiState,
   Classes, eePluginBase , eeMidiEvents, eeMidiAutomation,
-  Lucidity.SampleMap, uLucidityKeyGroup, uGuiFeedBackData, uLucidityKeyGroupInterface,
+  Lucidity.SampleMap, uLucidityKeyGroup, uGuiFeedBackData, LucidityInterfaces,
   uKeyGroupManager,
   eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,

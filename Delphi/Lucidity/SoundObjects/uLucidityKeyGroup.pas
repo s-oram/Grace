@@ -7,7 +7,7 @@ uses
   Lucidity.Interfaces,
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
-  uLucidityKeyGroupInterface, LucidityModConnections,
+  LucidityInterfaces, LucidityModConnections,
   VamLib.MoreTypes, eeGlobals,
   eeVoiceLogic, eeVstParameter,
   eeVstParameterList, eePatchObject,
@@ -21,7 +21,7 @@ uses
 
 type
   // redeclare ISampleGroup for convenience.
-  IKeyGroup = uLucidityKeyGroupInterface.IKeyGroup;
+  IKeyGroup = LucidityInterfaces.IKeyGroup;
 
 type
   TKeyGroup = class;

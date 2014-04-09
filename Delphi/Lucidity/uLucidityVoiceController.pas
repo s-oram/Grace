@@ -32,7 +32,7 @@ uses
   soDynamicWaveTableOsc,
   soGrainStretchSubOsc,
   uLucidityStepSequencer,
-  uLucidityKeyGroup, uLucidityKeyGroupInterface;
+  uLucidityKeyGroup, LucidityInterfaces;
 
 const
   kSoftVoiceLimit = 8;

@@ -25,6 +25,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
       Margins.Top = 2
       Margins.Right = 2
       Margins.Bottom = 2
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -37,6 +38,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
         Width = 766
         Height = 22
         Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
         Align = alTop
         Visible = True
@@ -47,6 +49,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
         Top = 28
         Width = 766
         Height = 142
+        Opacity = 255
         HitTest = True
         OnOleDragOver = SampleDisplayOleDragOver
         OnOleDragDrop = SampleDisplayOleDragDrop
@@ -60,6 +63,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
         Top = 176
         Width = 766
         Height = 34
+        Opacity = 255
         HitTest = True
         LineColor = '$FFFF0000'
         Align = alBottom
@@ -70,6 +74,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 6
           Width = 61
           Height = 25
+          Opacity = 255
           HitTest = True
           IndexB = 1.000000000000000000
           OnChanged = SampleZoomControlChanged
@@ -82,6 +87,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
         Top = 216
         Width = 766
         Height = 115
+        Opacity = 255
         HitTest = True
         Color = '$FFCCCCCC'
         Transparent = False
@@ -92,6 +98,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 28
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -102,6 +109,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -121,6 +129,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'S.Start'
             HitTest = True
             AutoSize = False
@@ -140,6 +149,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 53
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -150,6 +160,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -169,6 +180,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'S.End'
             HitTest = True
             AutoSize = False
@@ -188,6 +200,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 3
           Width = 253
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -198,6 +211,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 191
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -217,6 +231,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Sample'
             HitTest = True
             AutoSize = False
@@ -236,6 +251,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 28
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -246,6 +262,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -265,6 +282,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Fade In'
             HitTest = True
             AutoSize = False
@@ -284,6 +302,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 53
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -294,6 +313,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -313,6 +333,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Fade Out'
             HitTest = True
             AutoSize = False
@@ -332,6 +353,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 3
           Width = 253
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -342,6 +364,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 191
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -361,6 +384,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Loop'
             HitTest = True
             AutoSize = False
@@ -380,6 +404,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 28
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -390,6 +415,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -409,6 +435,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'L.Start'
             HitTest = True
             AutoSize = False
@@ -428,6 +455,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 53
           Width = 125
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -438,6 +466,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -457,6 +486,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'L.End'
             HitTest = True
             AutoSize = False
@@ -476,6 +506,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 28
           Width = 98
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -486,6 +517,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 38
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -505,6 +537,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Mod'
             HitTest = True
             AutoSize = False
@@ -524,6 +557,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 53
           Width = 98
           Height = 22
+          Opacity = 255
           HitTest = True
           Color = '$FF3E3E3E'
           Transparent = False
@@ -534,6 +568,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 38
             Height = 16
+            Opacity = 255
             Text = '0'
             HitTest = True
             AutoSize = False
@@ -553,6 +588,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
             Top = 3
             Width = 50
             Height = 16
+            Opacity = 255
             Text = 'Mod'
             HitTest = True
             AutoSize = False
@@ -572,6 +608,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 28
           Width = 21
           Height = 21
+          Opacity = 255
           HitTest = True
           ShowBorder = False
           Color_Border = '$FF242B39'
@@ -594,6 +631,7 @@ object SampleDisplayFrame: TSampleDisplayFrame
           Top = 53
           Width = 21
           Height = 21
+          Opacity = 255
           HitTest = True
           ShowBorder = False
           Color_Border = '$FF242B39'
