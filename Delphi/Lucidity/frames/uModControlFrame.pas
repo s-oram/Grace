@@ -1045,9 +1045,8 @@ begin
 
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
-  end;
-
-  if Plugin.Globals.SelectedLfo = 1 then
+  end else
+  //if Plugin.Globals.SelectedLfo = 1 then
   begin
     RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo1);
     RemoveDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);

@@ -211,10 +211,10 @@ end;
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 var
   c1: Integer;
-  LimitedKeyOffset : integer;
-  LimitedVelocityOffset : integer;
-  rw, rh : integer;
-  rwShift, rhShift : integer;
+  //LimitedKeyOffset : integer;
+  //LimitedVelocityOffset : integer;
+  //rw, rh : integer;
+  //rwShift, rhShift : integer;
   NewBounds : TRect;
   VertSnapPoints : TIntegerList;
   HorzSnapPoints : TIntegerList;
@@ -222,14 +222,11 @@ var
   cvVertA, cvHorzA : integer;
   cvVertB, cvHorzB : integer;
   DistA, DistB : integer;
-
-  pos, dist : integer;
-
+  //pos, dist : integer;
   MaxKeyOffset : integer;
   MinKeyOffset : integer;
   MaxVelocityOffset : integer;
   MinVelocityOffset : integer;
-
   ModifiedOffsetX, ModifiedOffsetY : integer;
 begin
   if not Snapping then
@@ -424,7 +421,7 @@ var
   rw, rh : integer;
 begin
   rw := FocusedRegion.HighKey - FocusedRegion.LowKey;
-  rh := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity;
+  //rh := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity;
 
   case Handle of
     rhBottomLeft,

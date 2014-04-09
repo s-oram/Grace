@@ -25,6 +25,7 @@ type
 implementation
 
 uses
+  UITypes,
   Agg2D,
   RedFoxImageBuffer;
 
