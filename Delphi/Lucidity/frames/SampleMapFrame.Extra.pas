@@ -4,6 +4,7 @@ interface
 
 uses
   eePlugin,
+  LucidityInterfaces,
   Lucidity.Types;
 
 type

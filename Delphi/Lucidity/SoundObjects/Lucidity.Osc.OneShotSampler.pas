@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  LucidityInterfaces,
   Classes,
   VamLib.MoreTypes, Lucidity.SampleMap, uLucidityCustomSampleOsc, soGateEnvelope,
   uConstants, uLucidityEnums, eeSampleFloat, uLucidityClock,

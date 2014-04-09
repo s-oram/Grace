@@ -3,6 +3,7 @@ unit Lucidity.SampleImageRenderer;
 interface
 
 uses
+  LucidityInterfaces,
   Types,
   RedFoxColor,
   RedFoxBitmapWrapper,

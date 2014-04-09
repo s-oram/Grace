@@ -3,6 +3,7 @@ unit Lucidity.FlexSampleRenderer;
 interface
 
 uses
+  LucidityInterfaces,
   VamLib.Graphics,
   System.Classes, System.Types, Graphics,
   RedFox, RedFoxColor,

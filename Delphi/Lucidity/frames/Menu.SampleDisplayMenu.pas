@@ -3,6 +3,7 @@ unit Menu.SampleDisplayMenu;
 interface
 
 uses
+  LucidityInterfaces,
   eePlugin, Vcl.Menus;
 
 

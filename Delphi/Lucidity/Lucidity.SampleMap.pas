@@ -15,7 +15,6 @@ uses
 
 type
   //=== Forward Declarations ==========
-  IRegion = interface;
   TRegion = class;
 
   TSampleMapInfo = class;
@@ -25,24 +24,13 @@ type
 
 
 
+
+
+
+
   
 
   TRegionInterfaceList = class(TList<IRegion>);
-
-  IRegion = interface
-    ['{2A1E25FA-DF90-46CE-BA90-EB69EDAE57F4}']
-    function GetObject:TObject;
-    function GetProperties    : PRegionProperties;
-    function GetSample        : PSampleFloat;
-    function GetKeyGroup      : IKeyGroup;
-    function GetZeroCrossings : TSampleZeroCrossings;
-    function GetSampleImage   : ISampleImageBuffer;
-    function GetPeakBuffer    : IPeakBuffer;
-
-    function GetDbLevelAt(SamplePoint:integer):single;
-
-    procedure UpdateSampleImage;
-  end;
 
   TRegion = class(TInterfacedObject, IRegion)
   strict private

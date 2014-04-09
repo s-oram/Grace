@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  LucidityInterfaces,
   VamLib.MoreTypes, B2.Filter.CriticallyDampedLowpass,
   Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,

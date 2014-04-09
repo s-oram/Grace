@@ -3,10 +3,14 @@ unit LucidityInterfaces;
 interface
 
 uses
+  eeSampleFloat,
   uConstants,
+  VamSampleDisplayBackBuffer,
+  VamSamplePeakBuffer,
   Lucidity.Types,
   Lucidity.Interfaces,
-  LucidityModConnections;
+  LucidityModConnections,
+  uSampleZeroCrossings;
 
 type
   IKeyGroup = interface(IInterface)
@@ -32,6 +36,22 @@ type
     procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, MoxMax:single);
 
     function GetSequenceData(SeqIndex : integer):IVectorSequenceDataObject;
+  end;
+
+
+  IRegion = interface
+    ['{2A1E25FA-DF90-46CE-BA90-EB69EDAE57F4}']
+    function GetObject:TObject;
+    function GetProperties    : PRegionProperties;
+    function GetSample        : PSampleFloat;
+    function GetKeyGroup      : IKeyGroup;
+    function GetZeroCrossings : TSampleZeroCrossings;
+    function GetSampleImage   : ISampleImageBuffer;
+    function GetPeakBuffer    : IPeakBuffer;
+
+    function GetDbLevelAt(SamplePoint:integer):single;
+
+    procedure UpdateSampleImage;
   end;
 
 

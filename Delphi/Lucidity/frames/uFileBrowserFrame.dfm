@@ -21,6 +21,7 @@ object FileBrowserFrame: TFileBrowserFrame
       Margins.Top = 2
       Margins.Right = 2
       Margins.Bottom = 2
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -31,6 +32,7 @@ object FileBrowserFrame: TFileBrowserFrame
         Top = 536
         Width = 297
         Height = 102
+        Opacity = 255
         HitTest = True
         Align = alBottom
         Visible = True
@@ -43,6 +45,7 @@ object FileBrowserFrame: TFileBrowserFrame
           Top = 4
           Width = 219
           Height = 96
+          Opacity = 255
           HitTest = True
           Align = alClient
           Visible = True
@@ -51,6 +54,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 40
             Width = 219
             Height = 20
+            Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
             AutoSize = False
@@ -69,6 +73,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 0
             Width = 219
             Height = 20
+            Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
             AutoSize = False
@@ -87,6 +92,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 20
             Width = 219
             Height = 20
+            Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
             AutoSize = False
@@ -106,6 +112,7 @@ object FileBrowserFrame: TFileBrowserFrame
           Top = 4
           Width = 70
           Height = 96
+          Opacity = 255
           HitTest = True
           Align = alRight
           Visible = True
@@ -114,6 +121,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 40
             Width = 70
             Height = 20
+            Opacity = 255
             Text = 'PREVIEW'
             HitTest = True
             AutoSize = False
@@ -136,6 +144,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Margins.Left = 27
             Margins.Top = 6
             Margins.Bottom = 2
+            Opacity = 255
             DisplayClass = 'SmallUnipolarKnob'
             HitTest = True
             ModLineDist = 17.000000000000000000
@@ -157,6 +166,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 13
             Width = 20
             Height = 20
+            Opacity = 255
             Text = 'A'
             HitTest = True
             ShowBorder = True
@@ -183,6 +193,7 @@ object FileBrowserFrame: TFileBrowserFrame
         Top = 0
         Width = 297
         Height = 473
+        Opacity = 255
         HitTest = True
         Color_Border = '$FF000000'
         Color_Background = '$FF888888'
@@ -199,6 +210,7 @@ object FileBrowserFrame: TFileBrowserFrame
           Top = 0
           Width = 281
           Height = 473
+          Opacity = 255
           HitTest = True
           Color = '$FFC6CAD5'
           CornerRadius1 = 3.000000000000000000
@@ -215,6 +227,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Top = 4
             Width = 273
             Height = 465
+            Opacity = 255
             HitTest = True
             SelectedNodeColor = clBlack
             SelectedNodeAlpha = 35

@@ -26,6 +26,7 @@ object LoopEditForm: TLoopEditForm
       Top = 0
       Width = 689
       Height = 403
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
@@ -40,6 +41,7 @@ object LoopEditForm: TLoopEditForm
         Top = 3
         Width = 683
         Height = 18
+        Opacity = 255
         Text = 'SAMPLE POINTS EDITOR'
         HitTest = True
         AutoSize = False
@@ -62,6 +64,7 @@ object LoopEditForm: TLoopEditForm
         Margins.Left = 0
         Margins.Top = 0
         Margins.Right = 0
+        Opacity = 255
         HitTest = True
         Align = alBottom
         Visible = True
@@ -76,6 +79,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = '-'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -103,6 +107,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           Text = '+'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -130,6 +135,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Loop End'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -157,6 +163,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Loop Start'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -184,6 +191,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Sample End'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -211,6 +219,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Sample Start'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -238,6 +247,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'Marker'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -264,6 +274,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 1
           Margins.Bottom = 0
+          Opacity = 255
           Text = 'ZOOM'
           HitTest = True
           AutoSize = False
@@ -288,6 +299,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 4
           Margins.Bottom = 0
+          Opacity = 255
           Text = '100%'
           HitTest = True
           Color = '$FF3E3E3E'
@@ -311,6 +323,7 @@ object LoopEditForm: TLoopEditForm
         Top = 24
         Width = 677
         Height = 299
+        Opacity = 255
         HitTest = True
         Color = '$FFCCCCCC'
         Transparent = False
@@ -325,6 +338,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
+          Opacity = 255
           HitTest = True
           LineColor = '$FFFF0000'
           Visible = True
@@ -335,6 +349,7 @@ object LoopEditForm: TLoopEditForm
         Top = 326
         Width = 683
         Height = 49
+        Opacity = 255
         HitTest = True
         Color = '$FFCCCCCC'
         Transparent = False
@@ -350,6 +365,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           LineColor = '$FFFF0000'
           Visible = True
@@ -363,6 +379,7 @@ object LoopEditForm: TLoopEditForm
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
+          Opacity = 255
           HitTest = True
           IndexB = 1.000000000000000000
           Visible = True
