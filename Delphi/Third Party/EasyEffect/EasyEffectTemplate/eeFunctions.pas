@@ -101,13 +101,6 @@ function CopyFile(ExistingFileName, NewFileName:string):longBool;
 //    Variable Handling
 //==============================================================
 
-procedure Wrap(var Input:single; const MinValue, MaxValue : single);
-
-procedure SwapValues(var x1, x2:single); inline; overload;
-procedure SwapValues(var x1, x2:integer); inline; overload;
-
-function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
-
 
  // x := StaggeredExpand(0.5, 100,200,400,800);
  // InputValue range is 0..1.
@@ -948,44 +941,6 @@ var
 begin
   aGUID := CreateGuidEx;
   result := GuidToString(aGuid);
-end;
-
-procedure Wrap(var Input:single; const MinValue, MaxValue : single);
-begin
-  while Input < MinValue do
-  begin
-    Input := Input + (MaxValue - MinValue);
-  end;
-
-  while Input > MaxValue do
-  begin
-    Input := Input - (MaxValue - MinValue);
-  end;
-end;
-
-procedure SwapValues(var x1, x2:single); inline; overload;
-var
-  tx : single;
-begin
-  tx := x1;
-  x1 := x2;
-  x2 := tx;
-end;
-
-procedure SwapValues(var x1, x2:integer); inline; overload;
-var
-  tx : integer;
-begin
-  tx := x1;
-  x1 := x2;
-  x2 := tx;
-end;
-
-function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
-begin
-  if (Value >= MinValue) and (Value <= MaxValue)
-    then result := true
-    else result := false;
 end;
 
 function MoveFile(ExistingFileName, NewFileName:string):longBool;

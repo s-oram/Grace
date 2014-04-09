@@ -12,12 +12,12 @@ function AutoFree(const aObject: PObject): IUnknown;
 function CastToInteger(Value : cardinal):integer;
 function CastToCardinal(Value : integer):cardinal;
 
-function Clamp(const Value, MinValue, MaxValue : integer):integer; overload;
-function Clamp(const Value, MinValue, MaxValue : single):single; overload;
+function Clamp(const Value, MinValue, MaxValue : integer):integer; overload; inline;
+function Clamp(const Value, MinValue, MaxValue : single):single; overload; inline;
 
 // The Wrap() function forces a value to overflow around an arbitary minimum
 // and maximum.
-function Wrap(Input : single; const MinValue, MaxValue : single):single;
+function Wrap(Input : single; const MinValue, MaxValue : single):single; inline;
 
 function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 
