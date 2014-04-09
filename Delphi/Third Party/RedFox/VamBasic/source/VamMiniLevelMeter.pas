@@ -59,8 +59,8 @@ begin
     fLevelMonitor.GetDbLevel(dbA, dbB);
   end else
   begin
-    dbA := 1;
-    dbB := 1;
+    dbA := -120;
+    dbB := -120;
   end;
 
   DrawMeter := procedure(const x1, y1, Width, Height : integer; const DbLevel : single)

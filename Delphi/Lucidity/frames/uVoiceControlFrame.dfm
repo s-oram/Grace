@@ -844,6 +844,15 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
+        object VoiceLevelMeter: TVamMiniLevelMeter
+          Left = 8
+          Top = 37
+          Width = 8
+          Height = 65
+          Opacity = 255
+          Text = 'VoiceLevelMeter'
+          HitTest = True
+        end
       end
     end
   end

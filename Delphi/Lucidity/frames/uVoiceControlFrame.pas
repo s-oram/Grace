@@ -8,7 +8,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamKnob, RedFoxGraphicControl,
-  VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage;
+  VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage, VamMiniLevelMeter;
 
 type
   TVoiceControlFrame = class(TFrame, IZeroObject)
@@ -56,6 +56,7 @@ type
     MainOutputLabel: TVamLabel;
     MainPanKnob: TVamKnob;
     MainPanLabel: TVamLabel;
+    VoiceLevelMeter: TVamMiniLevelMeter;
     procedure VoiceControlsContainerResize(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
@@ -257,6 +258,10 @@ begin
   VoiceControlsContainer.AlignWithMargins := true;
   VoiceControlsContainer.Margins.SetBounds(0,0,0,0);
 
+  VoiceLevelMeter.Layout.SetPos(0,18);
+  VoiceLevelMeter.Layout.SetSize(8,32+12);
+  VoiceLevelMeter.BringToFront;
+
 
   //** Gain, Pan, Tune, Fine **
   MainOutputKnob.Layout.SetSize(32,32);
@@ -264,8 +269,8 @@ begin
   VoicePitch1Knob.Layout.SetSize(32,32);
   VoicePitch2Knob.Layout.SetSize(32,32);
 
-  MainOutputKnob.Layout.SetPos(0,18);
-  MainPanKnob.Layout.SetPos(32,18);
+  MainOutputKnob.Layout.SetPos(12,18);
+  MainPanKnob.Layout.Anchor(MainOutputKnob).SnapToEdge(TControlFeature.RightEdge);
   VoicePitch1Knob.Layout.Anchor(MainPanKnob).SnapToEdge(TControlFeature.RightEdge).Move(8, 0);
   VoicePitch2Knob.Layout.Anchor(VoicePitch1Knob).SnapToEdge(TControlFeature.RightEdge);
 
