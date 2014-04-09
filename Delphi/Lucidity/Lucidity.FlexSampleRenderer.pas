@@ -318,7 +318,7 @@ function TFlexSampleImageRenderer.RenderSample(const aSampleRegion: IRegion; con
     FirstPeak : integer;
   begin
     x := CalcPeakCount(SampleData.SampleFrames, Par.Zoom, Par.ImageWidth);
-    assert(x >= Par.ImageWidth);
+    assert(x >= CastToInteger(Par.ImageWidth));
 
     PeakData := TPeakData.Create;
     AutoFree(@PeakData);
@@ -374,7 +374,7 @@ begin
 
     x := CalcPeakCount(SampleData.SampleFrames, Par.Zoom, Par.ImageWidth);
 
-    if x >= Par.ImageWidth
+    if x >= CastToInteger(Par.ImageWidth)
       then DrawSample_UsingPeaks(SampleData, Wrapper);
       //else DrawSample_UsingPoints;
   end;

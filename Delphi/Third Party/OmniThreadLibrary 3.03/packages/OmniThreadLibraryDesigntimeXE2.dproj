@@ -64,7 +64,7 @@
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_UsePackage>vcl;vclx;OmniThreadLibraryRuntimeXE2;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>

@@ -352,9 +352,9 @@ begin
   LoopSampleOsc.SampleRate          := Globals.SampleRate;
   GrainStretchOsc.SampleRate        := Globals.SampleRate;
   WaveOsc.SampleRate                := Globals.SampleRate;
-
-  FilterOne.SampleRate := Globals.SampleRate;
-  FilterTwo.SampleRate := Globals.SampleRate;
+  FilterOne.SampleRate              := Globals.SampleRate;
+  FilterTwo.SampleRate              := Globals.SampleRate;
+  LevelMonitor.SampleRate           := Globals.SampleRate;
 
   //==== Control Rate Modules ====
   AmpEnv.SampleRate     := Globals.ControlRate;
@@ -363,6 +363,8 @@ begin
   LfoB.SampleRate       := Globals.ControlRate;
   StepSeqOne.SampleRate := Globals.ControlRate;
   StepSeqTwo.SampleRate := Globals.ControlRate;
+
+
 end;
 
 procedure TLucidityVoice.TempoChanged(Sender: TObject);

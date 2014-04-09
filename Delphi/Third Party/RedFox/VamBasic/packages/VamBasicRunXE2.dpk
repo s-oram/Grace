@@ -78,7 +78,8 @@ contains
   VamShortMessageOverlay in '..\source\VamShortMessageOverlay.pas',
   VamKnobSmoother in '..\source\VamKnobSmoother.pas',
   VamSliderSwitch in '..\source\VamSliderSwitch.pas',
-  VamSampleMap.Movement in '..\source\VamSampleMap.Movement.pas';
+  VamSampleMap.Movement in '..\source\VamSampleMap.Movement.pas',
+  VamMiniLevelMeter in '..\source\VamMiniLevelMeter.pas';
 
 end.
 

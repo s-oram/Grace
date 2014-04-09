@@ -13,6 +13,7 @@ uses
   VamKnob,
   VamLabel,
   VamMemo,
+  VamMiniLevelMeter,
   VamModularJack,
   VamMultiLineTextBox,
   VamNumericKnob,
@@ -60,6 +61,7 @@ begin
 
   RegisterComponents('Vam VST', [TVamArrows]);
   RegisterComponents('Vam VST', [TVamKnob]);
+  RegisterComponents('Vam VST', [TVamMiniLevelMeter]);
   RegisterComponents('Vam VST', [TVamModSelector]);
   RegisterComponents('Vam VST', [TVamModularCableOverlay]);
   RegisterComponents('Vam VST', [TVamModularJack]);

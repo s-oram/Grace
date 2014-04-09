@@ -50,6 +50,12 @@ type
     procedure SetOnMouseUp(Handler:TMouseEvent);
   end;
 
+  ILevelMonitor = interface
+    ['{AE6977D8-D39D-4093-B9FA-7875F02A838C}']
+
+    procedure GetDbLevel(out Ch1, Ch2 : single);
+  end;
+
 implementation
 
 end.
