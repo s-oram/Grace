@@ -22,6 +22,8 @@ type
   //===================================
 
 
+
+
   PRegionProperties = ^TRegionProperties;
   TRegionProperties = record
     UniqueID         : TGuid;

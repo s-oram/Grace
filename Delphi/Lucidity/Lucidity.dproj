@@ -490,7 +490,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			</DCCReference>
 			<DCCReference Include="uKeyGroupManager.pas"/>
 			<DCCReference Include="uLucidityVoiceController.pas"/>
-			<DCCReference Include="SoundObjects\uLucidityKeyGroupInterface.pas"/>
 			<DCCReference Include="frames\Menu.KeyGroupsMenu.pas"/>
 			<DCCReference Include="frames\uRegionInfoFrame.pas">
 				<Form>RegionInfoFrame</Form>

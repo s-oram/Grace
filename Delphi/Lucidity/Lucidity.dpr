@@ -68,7 +68,6 @@ uses
   uMenuBarFrame in 'frames\uMenuBarFrame.pas' {MenuBarFrame: TFrame},
   uKeyGroupManager in 'uKeyGroupManager.pas',
   uLucidityVoiceController in 'uLucidityVoiceController.pas',
-  uLucidityKeyGroupInterface in 'SoundObjects\uLucidityKeyGroupInterface.pas',
   Menu.KeyGroupsMenu in 'frames\Menu.KeyGroupsMenu.pas',
   uRegionInfoFrame in 'frames\uRegionInfoFrame.pas' {RegionInfoFrame: TFrame},
   Menu.SamplesMenu in 'frames\Menu.SamplesMenu.pas',
