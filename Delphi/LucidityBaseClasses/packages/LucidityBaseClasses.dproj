@@ -96,7 +96,6 @@
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
 			<DCCReference Include="..\source\uLucidityEnums.pas"/>
-			<DCCReference Include="..\source\Lucidity.Interfaces.pas"/>
 			<DCCReference Include="..\source\eeEnumHelper.pas"/>
 			<None Include="..\source\ParNames.inc"/>
 			<None Include="..\source\Defines.inc"/>

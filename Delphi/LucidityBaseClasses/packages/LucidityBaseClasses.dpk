@@ -34,7 +34,6 @@ requires
 
 contains
   uLucidityEnums in '..\source\uLucidityEnums.pas',
-  Lucidity.Interfaces in '..\source\Lucidity.Interfaces.pas',
   eeEnumHelper in '..\source\eeEnumHelper.pas';
 
 end.
