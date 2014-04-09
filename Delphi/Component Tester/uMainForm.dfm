@@ -189,6 +189,15 @@ object Form1: TForm1
       SwitchPos = 0
       Visible = True
     end
+    object VamMiniLevelMeter1: TVamMiniLevelMeter
+      Left = 288
+      Top = 40
+      Width = 25
+      Height = 57
+      Opacity = 255
+      Text = 'VamMiniLevelMeter1'
+      HitTest = True
+    end
   end
   object Button2: TButton
     Left = 8
