@@ -183,6 +183,7 @@ uses
   Math,
   VamLib.Utils,
   AggPixelFormat,
+  AggColor,
   Agg2D,
   AggBasics,
   RedFox2D;
@@ -565,8 +566,6 @@ begin
 end;
 
 procedure TLucidityScope.Draw_Lfo;
-var
-  aFunction : TDrawFunction;
 begin
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
@@ -703,12 +702,11 @@ const
   kMinStageTime : single = 0.1;
 var
   x1, y1 : single;
-  x2, y2 : single;
-  x3, y3 : single;
+  //x2, y2 : single;
+  //x3, y3 : single;
   x4, y4 : single;
   SectionWidth : single;
 var
-  aFunction : TDrawFunction;
   CurveAmount : single;
 begin
   SectionWidth := ScopeRect.Width / 2.3;
@@ -748,12 +746,11 @@ const
   kMinStageTime : single = 0.1;
 var
   x1, y1 : single;
-  x2, y2 : single;
-  x3, y3 : single;
+  //x2, y2 : single;
+  //x3, y3 : single;
   x4, y4 : single;
   SectionWidth : single;
 var
-  aFunction : TDrawFunction;
   CurveAmount : single;
 begin
   SectionWidth := ScopeRect.Width / 2.3;
@@ -806,7 +803,7 @@ begin
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
   y2 := y1;
-  x2 := x1;
+  //x2 := x1;
 
   while x1 <= ScopeRect.Right-2 do
   begin
@@ -861,7 +858,7 @@ begin
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
   y2 := y1;
-  x2 := x1;
+  //x2 := x1;
 
   while x1 <= ScopeRect.Right-2 do
   begin
@@ -1147,7 +1144,6 @@ end;
 class procedure TFilterBlendDrawingRoutines.Draw_InputOutputLines(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Color: TRedFoxColor; FR : TFilterRouting; const Box1, Box2, Box3: TRect);
 var
   x1, y1, x2, y2 : single;
-  TriPoints : array[0..2] of TPointDouble;
 begin
   //== draw the in out arrows ==
   BackBuffer.BufferInterface.FillColor := color;

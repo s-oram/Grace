@@ -216,28 +216,28 @@ begin
     begin
       if ActiveDirection <> adHorz then
       begin
-        DistX := 0;
-        DistY := 0;
+        //DistX := 0;
+        //DistY := 0;
         ActiveDirection := adHorz;
         ReferencePoint := Point(X, Y);
         ReferencePos   := fPos;
       end;
 
       DistX := (ReferencePoint.X - X) * ScaleFactor;
-      DistY := (Y - ReferencePoint.Y) * ScaleFactor;
+      //DistY := (Y - ReferencePoint.Y) * ScaleFactor;
       Dist := DistX;
     end else
     begin
       if ActiveDirection <> adVert then
       begin
-        DistX := 0;
-        DistY := 0;
+        //DistX := 0;
+        //DistY := 0;
         ActiveDirection := adVert;
         ReferencePoint := Point(X, Y);
         ReferencePos   := fPos;
       end;
 
-      DistX := (ReferencePoint.X - X) * ScaleFactor;
+      //DistX := (ReferencePoint.X - X) * ScaleFactor;
       DistY := (Y - ReferencePoint.Y) * ScaleFactor;
       Dist := DistY;
     end;
