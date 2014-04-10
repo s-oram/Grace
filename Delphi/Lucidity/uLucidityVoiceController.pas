@@ -44,6 +44,7 @@ type
     KeyGroup : IKeyGroup;
     Region   : IRegion;
   end;
+
   TVoiceReleaseScore = record
     VoiceIndex   : integer;
     ReleaseScore : integer;
@@ -82,8 +83,6 @@ type
     ModWheel_Filter : TCriticallyDampedLowpass;
     ModWheel_Current : double;
     ModWheel_Target  : double;
-
-
 
     GlobalModPoints : PGlobalModulationPoints;
 
