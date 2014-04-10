@@ -84,7 +84,7 @@ uses
   eeVstParameterEx,
   GuidEx,
   Lucidity.Globals,
-  uLucidityKeyGroup,
+  Lucidity.KeyGroup,
   SysUtils;
 
 

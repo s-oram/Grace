@@ -439,7 +439,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<Form>ScrollPanelFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="SoundObjects\uLucidityKeyGroup.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.KeyGroup.pas"/>
 			<DCCReference Include="SoundObjects\soLucidityVoice.pas"/>
 			<DCCReference Include="SoundObjects\soADSR.pas"/>
 			<DCCReference Include="SoundObjects\uSamplePhaseCounter.pas"/>

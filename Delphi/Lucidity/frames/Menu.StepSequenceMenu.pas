@@ -28,7 +28,7 @@ implementation
 uses
   uConstants,
   Lucidity.Interfaces,
-  uLucidityKeyGroup,
+  Lucidity.KeyGroup,
   uAboutDialog,
   SysUtils,
   uAutoFree,

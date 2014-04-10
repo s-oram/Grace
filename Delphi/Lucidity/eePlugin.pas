@@ -21,7 +21,7 @@ uses
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat, uGuiState,
   Classes, eePluginBase , eeMidiEvents, eeMidiAutomation,
-  Lucidity.SampleMap, uLucidityKeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
+  Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   uKeyGroupManager,
   eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,
@@ -81,7 +81,6 @@ type
     ParameterWizard : TPluginParameterWizard;
     GlobalModPoints : TGlobalModulationPoints;
     VoiceController : TLucidityVoiceController;
-
 
     EmptyKeyGroup : IKeyGroup;
 

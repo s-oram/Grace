@@ -7,7 +7,7 @@ uses
   VamGuiControlInterfaces,
   LucidityModConnections,
   uLucidityEnums, soModMatrix,
-  SysUtils, uLucidityKeyGroup,
+  SysUtils, Lucidity.KeyGroup,
   eePlugin, Classes, NativeXML;
 
 type

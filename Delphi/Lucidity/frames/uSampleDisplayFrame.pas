@@ -100,7 +100,7 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   uGuiUtils,
-  uLucidityKeyGroup;
+  Lucidity.KeyGroup;
 
 
 

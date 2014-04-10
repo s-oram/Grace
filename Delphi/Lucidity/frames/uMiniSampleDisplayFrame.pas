@@ -105,7 +105,7 @@ uses
   eeVstXml, eeVstParameter, uLucidityEnums,
   GuidEx, RedFoxColor, uLucidityExtra,
   uGuiUtils, VamLayoutWizard,
-  uConstants, uLucidityKeyGroup;
+  uConstants, Lucidity.KeyGroup;
 
 {$R *.dfm}
 

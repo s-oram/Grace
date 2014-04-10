@@ -116,7 +116,7 @@ uses
   eeVstXml,
   RedFoxColor, eePitch,
   VamKeyStateTracker, GuidEx,
-  uConstants, Lucidity.SampleMap, uLucidityKeyGroup;
+  uConstants, Lucidity.SampleMap, Lucidity.KeyGroup;
 
 {$R *.dfm}
 

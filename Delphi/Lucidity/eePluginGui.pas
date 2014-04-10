@@ -122,7 +122,7 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eePluginDataDir,
   uLoopEditDialog,
-  uLucidityKeyGroup,
+  Lucidity.KeyGroup,
   GuidEx,
   RedFoxColor,
   eeGuiSetup,

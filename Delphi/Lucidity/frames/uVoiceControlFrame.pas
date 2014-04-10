@@ -107,7 +107,7 @@ uses
   RedFoxColor,
   uGuiUtils,
   uLucidityEnums,
-  uLucidityKeyGroup;
+  Lucidity.KeyGroup;
 
 { TVoiceControlFrame }
 

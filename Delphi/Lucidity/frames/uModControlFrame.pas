@@ -179,7 +179,7 @@ uses
   VamLayoutWizard, eeVstParameter,
   RedFoxColor, uLucidityEnums,
   uConstants, uGuiUtils,
-  uLucidityKeyGroup,
+  Lucidity.KeyGroup,
   LucidityModConnections;
 
 {$R *.dfm}
