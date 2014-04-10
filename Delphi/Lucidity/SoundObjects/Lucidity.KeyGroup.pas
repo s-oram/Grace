@@ -51,8 +51,6 @@ type
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
 
-    Voices : PArrayOfLucidityVoice;
-
     ModulatedParameters: TModulatedPars;
 
     function GetName:string;
@@ -106,8 +104,6 @@ begin
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
-
-  Voices := aVoices;
 
   fModConnections := TModConnections.Create;
   fModConnections.OnChanged := Handle_ModConnectionsChanged;
