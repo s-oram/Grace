@@ -50,6 +50,10 @@ type
     KeyGroupID : TKeyGroupID;
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
+
+  protected
+    ActiveVoices        : TLucidityVoiceList;
+    procedure SetActiveVoices(const ActiveVoiceList : TObject);
   protected
 
     FSeq1Data : TSequencerDataObject;
@@ -59,8 +63,7 @@ type
 
     ModulatedParameters: TModulatedPars;
 
-    ActiveVoices        : TLucidityVoiceList;
-    procedure SetActiveVoices(const ActiveVoiceList : TLucidityVoiceList);
+
 
 
     function GetName:string;
@@ -98,6 +101,9 @@ type
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
 
+    // TODO: Asking the Key Groups to process the relevent voices added about 5-7% cpu.
+    // Perhaps there are ways to reduce that by being smarter about how the voices
+    // and key groups are processed.
     procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
@@ -349,9 +355,11 @@ begin
   LevelMonitor.SampleRate := Globals.SampleRate
 end;
 
-procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TLucidityVoiceList);
+procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TObject);
 begin
-  ActiveVoices := ActiveVoiceList;
+  assert(ActiveVoiceList is TLucidityVoiceList);
+
+  ActiveVoices := ActiveVoiceList as TLucidityVoiceList;
 end;
 
 procedure TKeyGroup.SetID(ID: TKeyGroupID);
@@ -417,13 +425,29 @@ begin
 end;
 
 procedure TKeyGroup.FastControlProcess;
+var
+  c1 : integer;
 begin
-
+  for c1 := ActiveVoices.Count-1 downto 0 do
+  begin
+    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
+    begin
+      ActiveVoices[c1].FastControlProcess;
+    end;
+  end;
 end;
 
 procedure TKeyGroup.SlowControlProcess;
+var
+  c1 : integer;
 begin
-
+  for c1 := ActiveVoices.Count-1 downto 0 do
+  begin
+    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
+    begin
+      ActiveVoices[c1].SlowControlProcess;
+    end;
+  end;
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
@@ -432,12 +456,10 @@ var
 begin
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
-    {
-    if ActiveVoices[c1].SampleGroup = self then
+    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
     begin
       ActiveVoices[c1].AudioProcess(Outputs[0], Outputs[1], SampleFrames);
     end;
-    }
   end;
 end;
 

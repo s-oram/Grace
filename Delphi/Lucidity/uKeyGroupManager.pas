@@ -2,6 +2,8 @@ unit uKeyGroupManager;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   VamLib.MoreTypes, soLucidityVoice, Lucidity.Interfaces,
   Classes, Contnrs, uConstants, Lucidity.KeyGroup,
@@ -64,6 +66,11 @@ type
     function FindFirstKeyGroup:IKeyGroup;
     function FindSampleGroup(aName : string):IKeyGroup; overload;
     procedure DeleteKeyGroup(aName : string);
+
+
+    procedure FastControlProcess; inline;
+    procedure SlowControlProcess; inline;
+    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
   end;
 
 
@@ -212,6 +219,7 @@ begin
     inc(SGCreateCount);
 
     sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+    sg.SetActiveVoices(VoiceController.GetActiveVoiceList);
 
     //==========================================================================
     //TODO: There is a very small potential for a bug here. The KeyGroupID is
@@ -306,6 +314,45 @@ begin
   (InitReference.GetObject as TKeyGroup).AssignFrom((sg.GetObject as TKeyGroup));
 end;
 
+
+procedure TKeyGroupManager.FastControlProcess;
+var
+  c1: Integer;
+  sg : IKeyGroup;
+begin
+  for c1 := 0 to fList.Count-1 do
+  begin
+    sg := (fList[c1] as IKeyGroup);
+    (sg.GetObject as TKeyGroup).FastControlProcess;
+  end;
+end;
+
+procedure TKeyGroupManager.SlowControlProcess;
+var
+  c1: Integer;
+  sg : IKeyGroup;
+begin
+  for c1 := 0 to fList.Count-1 do
+  begin
+    sg := (fList[c1] as IKeyGroup);
+    (sg.GetObject as TKeyGroup).SlowControlProcess;
+  end;
+end;
+
+procedure TKeyGroupManager.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
+var
+  c1: Integer;
+  sg : IKeyGroup;
+begin
+  for c1 := 0 to fList.Count-1 do
+  begin
+    sg := (fList[c1] as IKeyGroup);
+    (sg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
+  end;
+end;
+
+
+
 { TSampleGroupsInfo }
 
 constructor TKeyGroupsInfo.Create;
@@ -339,5 +386,8 @@ function TKeyGroupsInfo.GetKeyGroupCount: integer;
 begin
   result := GroupsList.Count;
 end;
+
+
+
 
 end.

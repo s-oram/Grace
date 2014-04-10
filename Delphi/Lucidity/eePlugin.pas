@@ -1061,8 +1061,9 @@ procedure TeePlugin.FastControlProcess;
 begin
   try
     XYPads.ControlRateProcess;
-    VoiceController.FastControlProcess;
     MidiAutomation.FastControlProcess;
+    VoiceController.FastControlProcess;
+    KeyGroups.FastControlProcess;
   except
     {$IFDEF MadExcept}
     HandleException;
@@ -1076,6 +1077,7 @@ procedure TeePlugin.SlowControlProcess;
 begin
   try
     VoiceController.SlowControlProcess;
+    KeyGroups.SlowControlProcess;
 
   except
     {$IFDEF MadExcept}
@@ -1101,6 +1103,7 @@ begin
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
+    KeyGroups.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 

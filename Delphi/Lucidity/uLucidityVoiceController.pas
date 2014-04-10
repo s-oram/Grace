@@ -96,6 +96,8 @@ type
     procedure RegionTriggerCheck(const Data1, Data2 : byte; const SampleMap : TSampleMap; const MonoVoicesOnly : boolean);
 
     function CalcPitchTransitionTime : single;
+
+    function GetActiveVoiceList : TObject;
   public
     constructor Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -113,9 +115,10 @@ type
     procedure PitchBend(const PitchBendAmount : single);
     procedure Modwheel(const Value : single);
 
-    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
+
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
+    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
 
     property VoiceMode    : TVoiceMode read fVoiceMode   write SetVoiceMode;
     property VoiceGlide   : single     read fVoiceGlide  write SetVoiceGlide; //range 0..1
@@ -300,6 +303,11 @@ end;
 function TLucidityVoiceController.GetActiveVoiceCount: integer;
 begin
   result := ActiveVoices.Count;
+end;
+
+function TLucidityVoiceController.GetActiveVoiceList: TObject;
+begin
+  result := ActiveVoices;
 end;
 
 procedure TLucidityVoiceController.CullVoice(const TriggerNote: byte);
@@ -648,33 +656,17 @@ begin
     assert(InRange(GlobalModPoints.Source_MidiPitchbend, 0, 1));
   end;
 
-  for c1 := ActiveVoices.Count-1 downto 0 do
-  begin
-    ActiveVoices[c1].FastControlProcess;
-  end;
 end;
 
 procedure TLucidityVoiceController.SlowControlProcess;
-var
-  c1: Integer;
 begin
-  for c1 := ActiveVoices.Count-1 downto 0 do
-  begin
-    ActiveVoices[c1].SlowControlProcess;
-  end;
 end;
 
 
 
 
 procedure TLucidityVoiceController.AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames: integer);
-var
-  c1: Integer;
 begin
-  for c1 := ActiveVoices.Count-1 downto 0 do
-  begin
-    ActiveVoices[c1].AudioProcess(Outputs[0], Outputs[1], SampleFrames);
-  end;
 end;
 
 
