@@ -60,9 +60,6 @@ type
     property SampleMap : TSampleMap read fSampleMap write fSampleMap;
 
     procedure Handle_ModConnectionsChanged(Sender : TObject);
-
-
-
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
