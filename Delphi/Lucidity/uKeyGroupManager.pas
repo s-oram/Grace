@@ -196,25 +196,25 @@ function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
 var
   sg : IKeyGroup;
 begin
-  if aName = '' then raise Exception.Create('Can not create SampleGroup with an empty name.');
-
-
-  // check if a group of the same name already exists, if so, return it and
-  // don't make a new group...
-  sg := FindSampleGroup(aName);
-  if sg <> nil then exit(sg);
-  //====================================
-
-
   ListLock.Acquire;
   try
+    if aName <> '' then
+    begin
+      // check if a group of the same name already exists, if so, return it and
+      // don't make a new group...
+      sg := FindSampleGroup(aName);
+      if sg <> nil then exit(sg);
+    end;
+
     inc(SGCreateCount);
 
     sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
 
     (sg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
 
-    sg.SetName(aName);
+    if aName <> ''
+      then sg.SetName(aName)
+      else sg.SetName('Group ' + IntToStr(SGCreateCount));
     fList.Add(sg);
 
     result := sg;
@@ -224,24 +224,8 @@ begin
 end;
 
 function TKeyGroupManager.NewKeyGroup: IKeyGroup;
-var
-  sg : IKeyGroup;
 begin
-  ListLock.Acquire;
-  try
-    inc(SGCreateCount);
-
-    sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
-
-    (sg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
-
-    sg.SetName('Group ' + IntToStr(SGCreateCount));
-    fList.Add(sg);
-
-    result := sg;
-  finally
-    ListLock.Release;
-  end;
+ NewKeyGroup('');
 end;
 
 
