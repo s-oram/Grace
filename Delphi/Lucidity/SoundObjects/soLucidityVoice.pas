@@ -739,6 +739,7 @@ var
   MixX1, MixX2 : single;
   MixY1, MixY2 : single;
   pxA, pxB : PSingle;
+  pOutA, pOutB : PSingle;
 begin
   assert(IsActive);
 
@@ -781,12 +782,27 @@ begin
   pxA := @BufferA[0];
   pxB := @BufferB[0];
 
+  LevelMonitor.Process(pxA, pxB, SampleFrames);
+
+  pOutA := Outputs[0];
+  pOutB := Outputs[1];
+
+  for c1 := 0 to SampleFrames-1 do
+  begin
+    pOutA^ := pOutA^ + pxA^;
+    pOutB^ := pOutB^ + pxB^;
+
+    inc(pOutA);
+    inc(pOutB);
+    inc(pxA);
+    inc(pxB);
+  end;
+
 
   //TODO: This output mixer isn't being utilised at this stage. It seem to make
   // sense when there were multiple outputs but perhaps it would be better to
   // remove it entirely for the time being.
-  OutputMixer.AudioRateProcess(pxA, pxB, Outputs, SampleFrames);
-  LevelMonitor.Process(pxA, pxB, SampleFrames);
+  //OutputMixer.AudioRateProcess(pxA, pxB, Outputs, SampleFrames);
 
   AmpLevel := AmpEnv.Value;
 
