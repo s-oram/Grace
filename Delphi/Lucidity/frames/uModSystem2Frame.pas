@@ -6,7 +6,7 @@ uses
   uDialogDisplayArea,
   Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
-  uLucidityEnums, LucidityInterfaces,
+  uLucidityEnums, Lucidity.Interfaces,
   uConstants, eePlugin, eeGuiStandard, eeEnumMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,

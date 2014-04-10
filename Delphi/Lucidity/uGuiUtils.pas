@@ -9,7 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
-  VamKnob, LucidityInterfaces,
+  VamKnob, Lucidity.Interfaces,
   Dialogs, Lucidity.SampleMap, eePlugin, uLucidityEnums,
   eeGlobals, VamLabel, VamTextBox, eeEnumHelper, VamWinControl, RedFoxContainer, VamPanel,
   Controls;

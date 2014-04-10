@@ -3,7 +3,7 @@ unit uLoopEditDialog;
 interface
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   VamLib.ZeroObject,
   Math,
   uConstants,

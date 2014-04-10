@@ -3,7 +3,7 @@ unit uRegionInfoFrame;
 interface
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   Lucidity.SampleMap,
   eePlugin, uGuiFeedbackData, eeGuiStandard,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,

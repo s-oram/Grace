@@ -9,7 +9,7 @@ uses
   Generics.Collections,
   Math, uLucidityEnums, uGuiFeedbackData,
   eeSampleFloat, eeDsp,
-  eeTypes, eeVirtualCV, LucidityInterfaces,
+  eeTypes, eeVirtualCV, Lucidity.Interfaces,
   VamLib.MoreTypes, eeGlobals, eeVoiceLogic,
   eeCounter,
   Lucidity.Types,

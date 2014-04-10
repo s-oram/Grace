@@ -7,7 +7,7 @@ uses
   LucidityGui.VectorSequence,
   LucidityModConnections,
   uConstants, uLucidityEnums, soModMatrix,
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   soLucidityVoice;
 
 type

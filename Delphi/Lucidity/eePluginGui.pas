@@ -6,7 +6,7 @@ interface
 
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   VamLib.ZeroObject,
   uSequencerFrame,
   OtlComm, uModSystem2Frame,

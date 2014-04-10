@@ -1,4 +1,4 @@
-unit LucidityInterfaces;
+unit Lucidity.Interfaces;
 
 interface
 

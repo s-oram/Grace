@@ -3,7 +3,7 @@ unit Lucidity.StateHelpers;
 interface
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   Lucidity.SampleMap,
   NativeXml,
   NativeXmlEx;

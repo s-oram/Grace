@@ -3,7 +3,7 @@ unit soGrainStretchSubOsc;
 interface
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   SysUtils, VamLib.MoreTypes,
   Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,

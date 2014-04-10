@@ -6,7 +6,7 @@ uses
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.SampleMapContextMenu, eeGuiStandard,
-  eePlugin, LucidityInterfaces, uKeyStateTrackerOverlay,
+  eePlugin, Lucidity.Interfaces, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer, VamSampleMap,

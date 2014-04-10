@@ -3,7 +3,7 @@ unit uGuiFeedbackData;
 interface
 
 uses
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   uConstants,
   uLucidityEnums,
   Lucidity.SampleMap;

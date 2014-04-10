@@ -154,7 +154,7 @@ uses
   uConstants in 'uConstants.pas',
   soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas',
   soLevelMeter in 'SoundObjects\soLevelMeter.pas',
-  LucidityInterfaces in 'LucidityInterfaces.pas';
+  Lucidity.Interfaces in 'Lucidity.Interfaces.pas';
 
 {$R *.res}
 

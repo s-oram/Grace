@@ -9,7 +9,7 @@ uses
   VamLib.MoreTypes, Generics.Collections,
   VamSamplePeakBuffer,
   VamSampleDisplay,
-  uConstants, LucidityInterfaces,
+  uConstants, Lucidity.Interfaces,
   Classes, eeSampleFloat, eePatchObject,
   uSampleZeroCrossings;
 

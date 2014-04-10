@@ -103,7 +103,7 @@ uses
   eeGuiHelpers,
   Lucidity.SampleMap,
   VamLayoutWizard,
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   RedFoxColor,
   uGuiUtils,
   uLucidityEnums,

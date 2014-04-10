@@ -5,7 +5,7 @@ interface
 uses
   VamLib.ZeroObject,
   Menu.FileTreeMenu,
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandard,
   uLucidityEnums, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,

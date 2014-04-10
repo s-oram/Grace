@@ -8,7 +8,7 @@ interface
 
 uses
   Lucidity.Types,
-  LucidityInterfaces,
+  Lucidity.Interfaces,
   VamLib.MoreTypes, Lucidity.SampleMap, uConstants, eeSampleFloat,
   uLucidityClock;
 
