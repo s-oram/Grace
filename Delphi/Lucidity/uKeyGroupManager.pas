@@ -3,7 +3,7 @@ unit uKeyGroupManager;
 interface
 
 uses
-  VamLib.MoreTypes, soLucidityVoice, uLucidityVoiceController, Lucidity.Interfaces,
+  VamLib.MoreTypes, soLucidityVoice, Lucidity.Interfaces,
   Classes, Contnrs, uConstants, Lucidity.KeyGroup,
   eeGlobals, SyncObjs;
 
@@ -37,7 +37,7 @@ type
     Globals : TGlobals;
 
     Voices : PArrayOfLucidityVoice;
-    VoiceController:PLucidityVoiceController;
+    VoiceController:IVoiceController;
 
     SGCreateCount : cardinal;
 
@@ -49,7 +49,7 @@ type
     function SampleGroup(const Index:integer):IKeyGroup; overload;
     property SampleGroupCount : integer read GetSampleGroupCount;
   public
-    constructor Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:PLucidityVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+    constructor Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
 
     procedure UpdateInitReference;
@@ -108,7 +108,7 @@ begin
   result := fList.Count;
 end;
 
-constructor TKeyGroupManager.Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:PLucidityVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+constructor TKeyGroupManager.Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 begin
   fList := TInterfaceList.Create;
 
@@ -122,9 +122,7 @@ begin
 
   SGCreateCount := 0;
 
-
   InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
-
 
   KeyGroupIDCount := 1;
 

@@ -293,7 +293,7 @@ begin
 
   fSampleMap := TSampleMap.Create;
 
-  fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, @VoiceController, @GlobalModPoints, Globals);
+  fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
 
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals);
 

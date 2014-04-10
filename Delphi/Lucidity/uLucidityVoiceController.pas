@@ -52,7 +52,7 @@ type
   end;
 
   PLucidityVoiceController = ^TLucidityVoiceController;
-  TLucidityVoiceController = class(TZeroObject)
+  TLucidityVoiceController = class(TZeroObject, IVoiceController)
   private
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;

@@ -13,6 +13,10 @@ uses
   uSampleZeroCrossings;
 
 type
+  IVoiceController = interface
+    ['{33599814-7B6A-42F6-83AB-99BB3833321C}']
+  end;
+
   IKeyGroup = interface(IInterface)
     ['{5E91B9E8-D1BC-41E7-9686-0F24B44744C3}']
 
