@@ -6,6 +6,7 @@ interface
 
 uses
   Math,
+  VamLib.ZeroObject,
   VamLib.MoreTypes, eeVoiceLogic, soLucidityVoice, eeGlobals,
   uConstants, Lucidity.SampleMap, soLucidityWaveOsc,
   uLucidity.Lfo,
@@ -51,7 +52,7 @@ type
   end;
 
   PLucidityVoiceController = ^TLucidityVoiceController;
-  TLucidityVoiceController = class
+  TLucidityVoiceController = class(TZeroObject)
   private
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
