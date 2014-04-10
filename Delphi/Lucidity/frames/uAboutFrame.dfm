@@ -16,6 +16,7 @@ object AboutFrame: TAboutFrame
       Top = 0
       Width = 549
       Height = 369
+      Opacity = 255
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCCC'
