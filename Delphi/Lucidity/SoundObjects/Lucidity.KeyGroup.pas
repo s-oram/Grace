@@ -45,7 +45,13 @@ type
     function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
 
     procedure SampleRateChanged(Sender:TObject);
+
   protected
+    KeyGroupID : TKeyGroupID;
+    function GetID:TKeyGroupID;
+    procedure SetID(ID:TKeyGroupID);
+  protected
+
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
     Globals : TGlobals;
@@ -308,6 +314,11 @@ procedure TKeyGroup.GetGuiFeedBack(const FeedbackData: TGuiFeedBackData);
 begin
 end;
 
+function TKeyGroup.GetID: TKeyGroupID;
+begin
+  result := KeyGroupID;
+end;
+
 function TKeyGroup.GetModConnections: TModConnections;
 begin
   result := fModConnections;
@@ -341,6 +352,11 @@ end;
 procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TLucidityVoiceList);
 begin
   ActiveVoices := ActiveVoiceList;
+end;
+
+procedure TKeyGroup.SetID(ID: TKeyGroupID);
+begin
+  KeyGroupID := ID;
 end;
 
 procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);

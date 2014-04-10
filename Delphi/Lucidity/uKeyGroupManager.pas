@@ -43,6 +43,8 @@ type
 
     InitReference : IKeyGroup;
 
+    KeyGroupIDCount : cardinal;
+
     function SampleGroup(const Name:string):IKeyGroup; overload;
     function SampleGroup(const Index:integer):IKeyGroup; overload;
     property SampleGroupCount : integer read GetSampleGroupCount;
@@ -122,6 +124,9 @@ begin
 
 
   InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+
+
+  KeyGroupIDCount := 1;
 
 end;
 
@@ -209,6 +214,15 @@ begin
     inc(SGCreateCount);
 
     sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+
+    //==========================================================================
+    //TODO: There is a very small potential for a bug here. The KeyGroupID is
+    // a cardinal and will eventually wrap around if enough Key Groups are
+    // ever created. A very unlikely sceneraio but it is lazy programming
+    // to ignore it.
+    sg.SetID(KeyGroupIDCount);
+    inc(KeyGroupIDCount);
+    //==========================================================================
 
     (sg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
 

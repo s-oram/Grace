@@ -20,6 +20,9 @@ type
     procedure SetName(Value : string);
     function GetObject : TObject;
 
+    function GetID:TKeyGroupID;
+    procedure SetID(ID:TKeyGroupID);
+
     function GetTriggeredNoteCount:cardinal;
     procedure IncTriggeredNoteCount;
 
