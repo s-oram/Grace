@@ -3,8 +3,10 @@ unit Lucidity.KeyGroup;
 interface
 
 uses
-  Lucidity.Types,
+
+
   VamGuiControlInterfaces,
+  Lucidity.Types,
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   Lucidity.Interfaces, LucidityModConnections,
@@ -26,7 +28,7 @@ type
 type
   TKeyGroup = class;
 
-  TKeyGroup = class(TInterfacedObject, IKeyGroup)
+  TKeyGroup = class(TInterfacedObject, IKeyGroup) //, ILevelMonitor)
   private
     fTriggeredNoteCount : cardinal;
     fName     : string;
@@ -45,9 +47,14 @@ type
     function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
 
     procedure SampleRateChanged(Sender:TObject);
+    procedure BlockSizeChanged(Sender:TObject);
 
   protected
     KeyGroupID : TKeyGroupID;
+
+    VoiceBufferA : array of single;
+    VoiceBufferB : array of single;
+
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
 
@@ -55,16 +62,12 @@ type
     ActiveVoices        : TLucidityVoiceList;
     procedure SetActiveVoices(const ActiveVoiceList : TObject);
   protected
-
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
-    Globals : TGlobals;
+    Globals         : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
 
     ModulatedParameters: TModulatedPars;
-
-
-
 
     function GetName:string;
     procedure SetName(Value : string);
@@ -112,6 +115,7 @@ type
 implementation
 
 uses
+  eeAudioBufferUtils,
   SysUtils, eeCustomGlobals,
   uLucidityEnums;
 
@@ -122,6 +126,7 @@ begin
   Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
+  Globals.AddEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
 
   fModConnections := TModConnections.Create;
   fModConnections.OnChanged := Handle_ModConnectionsChanged;
@@ -146,6 +151,10 @@ begin
   fModConnections.Free;
   fLevelMonitor.Free;
   ActiveVoices.Free;
+
+  SetLength(VoiceBufferA, 0);
+  SetLength(VoiceBufferB, 0);
+
   inherited;
 end;
 
@@ -355,6 +364,13 @@ begin
   LevelMonitor.SampleRate := Globals.SampleRate
 end;
 
+procedure TKeyGroup.BlockSizeChanged(Sender: TObject);
+begin
+  SetLength(VoiceBufferA, Globals.BlockSize);
+  SetLength(VoiceBufferB, Globals.BlockSize);
+end;
+
+
 procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TObject);
 begin
   assert(ActiveVoiceList is TLucidityVoiceList);
@@ -453,15 +469,39 @@ end;
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
 var
   c1 : integer;
+  pxA, pxB : PSingle;
+  pOutA, pOutB : PSingle;
 begin
+  pxA := @VoiceBufferA[0];
+  pxB := @VoiceBufferA[0];
+
+  ClearBuffer(pxA, SampleFrames);
+  ClearBuffer(pxB, SampleFrames);
+
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
     begin
-      ActiveVoices[c1].AudioProcess(Outputs[0], Outputs[1], SampleFrames);
+      ActiveVoices[c1].AudioProcess(pxA, pxB, SampleFrames);
     end;
   end;
+
+  LevelMonitor.Process(pxA, pxB, SampleFrames);
+
+  pOutA := Outputs[0];
+  pOutB := Outputs[1];
+
+  for c1 := 0 to SampleFrames-1 do
+  begin
+    pOutA^ := pOutA^ + VoiceBufferA[c1];
+    pOutB^ := pOutB^ + VoiceBufferA[c1];
+
+    inc(pOutA);
+    inc(pOutB);
+  end;
+
 end;
+
 
 
 
