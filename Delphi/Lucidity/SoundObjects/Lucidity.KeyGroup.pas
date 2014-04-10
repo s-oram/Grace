@@ -101,6 +101,7 @@ type
     property Seq1Data : TSequencerDataObject read FSeq1Data;
     property Seq2Data : TSequencerDataObject read FSeq1Data;
 
+    //property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor implements ILevelMonitor;
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
 

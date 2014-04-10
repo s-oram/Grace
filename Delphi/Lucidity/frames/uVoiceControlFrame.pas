@@ -98,6 +98,7 @@ implementation
 {$R *.dfm}
 
 uses
+  VamGuiControlInterfaces,
   eeVstParameter,
   eeGuiStandard_MenuController,
   eeGuiHelpers,
@@ -378,9 +379,18 @@ begin
 end;
 
 procedure TVoiceControlFrame.Timer1Timer(Sender: TObject);
+var
+  LM : ILevelMonitor;
 begin
   //Plugin.act
-  VoiceLevelMeter.Invalidate;
+
+
+  if Supports(Plugin.ActiveKeyGroup, ILevelMonitor, LM) then
+  begin
+    VoiceLevelMeter.LevelMonitor := LM;
+    VoiceLevelMeter.Invalidate;
+  end;
+
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;

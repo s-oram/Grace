@@ -54,7 +54,7 @@ begin
   fSampleRate := Value;
 
   //https://en.wikipedia.org/wiki/Peak_programme_meter
-  DecayCoefficient := CalcRcEnvelopeCoefficient(1700, fSampleRate);
+  DecayCoefficient := CalcRcEnvelopeCoefficient(700, fSampleRate);
 end;
 
 procedure TLevelMonitor.Process(InputA, InputB: PSingle; const SampleFrames: integer);
