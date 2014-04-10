@@ -244,7 +244,8 @@ type
 implementation
 
 uses
-  SysUtils, System.TypInfo;
+  SysUtils, System.TypInfo,
+  Lucidity.Types;
 
 
 { TLucidityEngineParameterWrapper }
@@ -271,6 +272,7 @@ end;
 procedure TLucidityVoiceParameterWrapper.UpdateActiveVoices(UpdateAction: TUpdateActionProcedure);
 var
   c1 : integer;
+  OwningID : TKeyGroupID;
 begin
   // UpdateActiveVoices() takes uses an anonymous method.
   // The anonymous method specifies how the voice needs to be updated.
@@ -280,7 +282,8 @@ begin
   // place in the code.
   for c1 := 0 to kMaxVoiceCount-1 do
   begin
-    if (Voices^[c1].IsActive) and (Voices^[c1].SampleGroup = self.OwningSampleGroup) then
+    OwningID := OwningSampleGroup.GetID;
+    if (Voices^[c1].IsActive) and (Voices^[c1].KeyGroupID = OwningID) then
     begin
       UpdateAction(@Voices^[c1]);
     end;

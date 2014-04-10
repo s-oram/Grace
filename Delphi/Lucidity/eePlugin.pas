@@ -690,7 +690,7 @@ begin
   if assigned(SG) then
   begin
     aVoice := VoiceController.GetLastTriggeredVoice;
-    if (assigned(aVoice)) and (aVoice.IsActive) and (aVoice.SampleGroup = SG) then
+    if (assigned(aVoice)) and (aVoice.IsActive) and (aVoice.KeyGroupID = SG.GetID) then
     begin
       // There is an active voice and it matches the current sample group.
       FeedBackData.IsVoiceActive := true;

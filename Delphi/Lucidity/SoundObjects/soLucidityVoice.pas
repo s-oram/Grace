@@ -5,14 +5,18 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  Classes, LucidityModConnections,
+  Classes,
   Generics.Collections,
-  Math, uLucidityEnums, uGuiFeedbackData,
+  Math,
+  VamLib.MoreTypes,
   eeSampleFloat, eeDsp,
-  eeTypes, eeVirtualCV, Lucidity.Interfaces,
-  VamLib.MoreTypes, eeGlobals, eeVoiceLogic,
+  eeTypes, eeVirtualCV,
+  eeGlobals, eeVoiceLogic,
   eeCounter,
+  uLucidityEnums,
+  Lucidity.Interfaces,
   Lucidity.Types,
+  LucidityModConnections,
   Lucidity.Env.ADSR,
   Lucidity.Env.ASR,
   Lucidity.Osc.OneShotSampler,
@@ -20,6 +24,7 @@ uses
   Lucidity.Osc.LoopSampler,
   Lucidity.Osc.GrainStretch,
   Lucidity.SampleMap, soLucidityWaveOsc, soLucidityFilter,
+  uGuiFeedbackData,
   soModMatrix, soFivePointEnvelope,
   uLucidity.Lfo,
   uLucidityStepSequencer,
@@ -110,7 +115,10 @@ type
     fOneShotSampleOsc : TOneShotSampleOsc;
     OscPitchParameters : PSampleOscPitchPar;
 
-    fSampleGroup  : IKeyGroup;
+
+    // TODO: fSampleREgion is only used as a reference point for other code outside
+    // the TLucidityVoice. Rather than maintaining a reference to an interface
+    // it might be better to use a SampleRegionID similar to the KeyGroupID.
     fSampleRegion : IRegion;
 
     fIsActive, HasBeenReleased, HasBeenQuickReleased : boolean;
@@ -190,7 +198,6 @@ type
     property LinkedSampleRegion : IRegion read fSampleRegion;
 
     property KeyGroupID   : TKeyGroupID read fKeyGroupID;
-    property SampleGroup  : IKeyGroup read fSampleGroup;
     property SampleRegion : IRegion   read fSampleRegion;
 
     property VoiceID : integer read fVoiceID write fVoiceID;
@@ -320,7 +327,6 @@ begin
   GrainStretchOsc.Free;
   fWaveOsc.Free;
   fKeyGroupID   := 0;
-  fSampleGroup  := nil;
   fSampleRegion := nil;
   FilterOne.Free;
   FilterTwo.Free;
@@ -502,7 +508,6 @@ begin
 
   //=== Pre-trigger setup ======================================================
   fKeyGroupID   := aSampleGroup.GetID;
-  fSampleGroup  := aSampleGroup;
   fSampleRegion := aSampleRegion;
 
   ParValueData   := aSampleGroup.GetModulatedParameters;
@@ -628,10 +633,9 @@ procedure TLucidityVoice.CleanUp;
 begin
   // CleanUp() clears references to other resouces and zeros some internal values.
   // It should be called whenever the voice becomes in-active.
-  // NOTE: it's important to nil the fSampleGroup and fSampleRegion interface references
+  // NOTE: it's important to nil fSampleRegion interface references
   // here. Lucidity uses interface reference count as a garbage collection device.
   fKeyGroupID := 0;
-  fSampleGroup  := nil;
   fSampleRegion := nil;
   OneShotSampleOsc.Kill;
   LoopSampleOsc.Kill;
