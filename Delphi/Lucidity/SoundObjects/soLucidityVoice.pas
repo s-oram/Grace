@@ -150,7 +150,7 @@ type
 
     procedure GetVoiceState(out aIsActive, aHasBeenReleased, aHasBeenQuickReleased: boolean;  out aAmpLevel: single);
 
-    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer);{$IFDEF AudioInline}inline;{$ENDIF}
+    procedure AudioProcess(const OutA, OutB:PSingle; const SampleFrames : integer);{$IFDEF AudioInline}inline;{$ENDIF}
     procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
@@ -732,7 +732,7 @@ end;
 
 
 
-procedure TLucidityVoice.AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames: integer);
+procedure TLucidityVoice.AudioProcess(const OutA, OutB:PSingle; const SampleFrames: integer);
 var
   c1: Integer;
   SampleOscX1, SampleOscX2 : single;
@@ -784,8 +784,8 @@ begin
 
   LevelMonitor.Process(pxA, pxB, SampleFrames);
 
-  pOutA := Outputs[0];
-  pOutB := Outputs[1];
+  pOutA := OutA;
+  pOutB := OutB;
 
   for c1 := 0 to SampleFrames-1 do
   begin
