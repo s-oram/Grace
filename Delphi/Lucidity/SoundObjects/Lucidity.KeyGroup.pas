@@ -53,6 +53,10 @@ type
 
     ModulatedParameters: TModulatedPars;
 
+    ActiveVoices        : TLucidityVoiceList;
+    procedure SetActiveVoices(const ActiveVoiceList : TLucidityVoiceList);
+
+
     function GetName:string;
     procedure SetName(Value : string);
 
@@ -86,6 +90,11 @@ type
     property Seq2Data : TSequencerDataObject read FSeq1Data;
 
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
+
+
+    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
+    procedure FastControlProcess; inline;
+    procedure SlowControlProcess; inline;
   end;
 
 implementation
@@ -113,6 +122,8 @@ begin
   fTriggeredNoteCount := 0;
 
   fLevelMonitor := TLevelMonitor.Create;
+
+  ActiveVoices := TLucidityVoiceList.Create(false);
 end;
 
 destructor TKeyGroup.Destroy;
@@ -122,6 +133,7 @@ begin
   fVoiceParameters.Free;
   fModConnections.Free;
   fLevelMonitor.Free;
+  ActiveVoices.Free;
   inherited;
 end;
 
@@ -326,6 +338,11 @@ begin
   LevelMonitor.SampleRate := Globals.SampleRate
 end;
 
+procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TLucidityVoiceList);
+begin
+  ActiveVoices := ActiveVoiceList;
+end;
+
 procedure TKeyGroup.SetModParModAmount(const ModParIndex, ModSlot: integer; const Value: single);
 var
   aMin, aMax : single;
@@ -382,6 +399,31 @@ begin
   if assigned(fVoiceParameters)
     then fVoiceParameters.UpdateModConnections;
 end;
+
+procedure TKeyGroup.FastControlProcess;
+begin
+
+end;
+
+procedure TKeyGroup.SlowControlProcess;
+begin
+
+end;
+
+procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
+var
+  c1 : integer;
+begin
+  for c1 := ActiveVoices.Count-1 downto 0 do
+  begin
+    if ActiveVoices[c1].SampleGroup = self then
+    begin
+      ActiveVoices[c1].AudioProcess(Outputs[0], Outputs[1], SampleFrames);
+    end;
+  end;
+end;
+
+
 
 
 
