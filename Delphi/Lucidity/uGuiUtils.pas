@@ -83,7 +83,7 @@ uses
   LucidityModConnections,
   eeVstParameterEx,
   GuidEx,
-  LucidityGlobals,
+  Lucidity.Globals,
   uLucidityKeyGroup,
   SysUtils;
 
@@ -237,9 +237,9 @@ procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
 var
   ft : TFileTypeItem;
 begin
-  if (LucidityGlobals.LastProgramLoadDir <> '') and (DirectoryExists(LucidityGlobals.LastProgramSaveDir)) then
+  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
   begin
-    SaveDialog.DefaultFolder := LucidityGlobals.LastProgramSaveDir;
+    SaveDialog.DefaultFolder := Lucidity.Globals.LastProgramSaveDir;
   end;
 
   ft := SaveDialog.FileTypes.Add;
@@ -253,9 +253,9 @@ procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
 var
   ft : TFileTypeItem;
 begin
-  if (LucidityGlobals.LastProgramLoadDir <> '') and (DirectoryExists(LucidityGlobals.LastProgramSaveDir)) then
+  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
   begin
-    OpenDialog.DefaultFolder := LucidityGlobals.LastProgramLoadDir;
+    OpenDialog.DefaultFolder := Lucidity.Globals.LastProgramLoadDir;
   end;
 
   ft := OpenDialog.FileTypes.Add;
@@ -492,9 +492,9 @@ begin
   case Target of
     dtLucidityProgram:
     begin
-      if (LucidityGlobals.LastProgramLoadDir <> '') and (DirectoryExists(LucidityGlobals.LastProgramSaveDir)) then
+      if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
       begin
-        OpenDialog.DefaultFolder := LucidityGlobals.LastProgramLoadDir;
+        OpenDialog.DefaultFolder := Lucidity.Globals.LastProgramLoadDir;
       end;
 
       ft := OpenDialog.FileTypes.Add;

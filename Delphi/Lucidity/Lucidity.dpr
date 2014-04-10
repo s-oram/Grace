@@ -95,7 +95,7 @@ uses
   Lucidity.Env.ADSR in 'SoundObjects\Lucidity.Env.ADSR.pas',
   soFilter.LowPassB in 'SoundObjects\soFilter.LowPassB.pas',
   soFilter.FilterBCore in 'SoundObjects\soFilter.FilterBCore.pas',
-  LucidityGlobals in 'LucidityGlobals.pas',
+  Lucidity.Globals in 'Lucidity.Globals.pas',
   uLucidityExtra in 'uLucidityExtra.pas',
   Menu.SampleMapContextMenu in 'frames\Menu.SampleMapContextMenu.pas',
   Lucidity.Env.ASR in 'SoundObjects\Lucidity.Env.ASR.pas',

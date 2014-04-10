@@ -523,7 +523,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\Lucidity.Env.ADSR.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.LowPassB.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.FilterBCore.pas"/>
-			<DCCReference Include="LucidityGlobals.pas"/>
+			<DCCReference Include="Lucidity.Globals.pas"/>
 			<DCCReference Include="uLucidityExtra.pas"/>
 			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
 			<DCCReference Include="SoundObjects\Lucidity.Env.ASR.pas"/>

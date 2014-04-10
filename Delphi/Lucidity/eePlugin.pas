@@ -192,7 +192,7 @@ uses
   eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
   SysUtils, NativeXML, uAutoFree, eeFunctions, eeDsp,
-  Dialogs, uLucidityStateManager, LucidityGlobals, Lucidity.StateHelpers,
+  Dialogs, uLucidityStateManager, Lucidity.Globals, Lucidity.StateHelpers,
   AudioIO,
   eeSaveLoadFunctions;
 
@@ -784,7 +784,7 @@ var
   StateManager : TLucidityStateManager;
 begin
   {$IFNDEF Demo}
-  LucidityGlobals.LastProgramLoadDir := ExtractFileDir(FileName);
+  Lucidity.Globals.LastProgramLoadDir := ExtractFileDir(FileName);
 
   PreLoadProgram;
 
@@ -808,7 +808,7 @@ var
   StateManager : TLucidityStateManager;
 begin
   {$IFNDEF Demo}
-  LucidityGlobals.LastProgramLoadDir := ExtractFileDir(FileName);
+  Lucidity.Globals.LastProgramLoadDir := ExtractFileDir(FileName);
 
   PreLoadProgram;
 
@@ -878,7 +878,7 @@ var
 begin
   {$IFNDEF Demo}
 
-  LucidityGlobals.LastProgramSaveDir := ExtractFileDir(FileName);
+  Lucidity.Globals.LastProgramSaveDir := ExtractFileDir(FileName);
 
   SaveSamplesToDisk(FileName, SampleMap);
 
