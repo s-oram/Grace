@@ -100,10 +100,7 @@ type
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
   end;
 
-
-
   TKeyGroupID = cardinal;
-
 
 implementation
 
