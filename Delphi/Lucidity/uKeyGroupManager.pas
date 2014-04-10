@@ -16,6 +16,14 @@ type
   //===================================
 
 
+
+  // HACK: WARNING: TODO: I think there is a problem with how key groups are deleted.
+  // If a key group is deleted and active voices for that group aren't currently killed.
+  // Nor will the active voices continue to sound. It would be better for
+  // key groups to be added to an 'active' key group list. That way key groups
+  // could be deleted and active voices would continue to play out.
+
+
   TKeyGroupManager = class
   private
     function GetSampleGroupCount: integer;
@@ -245,7 +253,7 @@ end;
 
 function TKeyGroupManager.NewKeyGroup: IKeyGroup;
 begin
- NewKeyGroup('');
+ result := NewKeyGroup('');
 end;
 
 
