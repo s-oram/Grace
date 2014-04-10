@@ -416,10 +416,12 @@ var
 begin
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
+    {
     if ActiveVoices[c1].SampleGroup = self then
     begin
       ActiveVoices[c1].AudioProcess(Outputs[0], Outputs[1], SampleFrames);
     end;
+    }
   end;
 end;
 
