@@ -228,6 +228,7 @@ begin
 
   VoiceClockManager := TLucidityVoiceClockManager.Create;
 
+  //TODO: This buffer size needs to be set correctly.
   SetLength(BufferA, 512);
   SetLength(BufferB, 512);
 
