@@ -382,15 +382,11 @@ procedure TVoiceControlFrame.Timer1Timer(Sender: TObject);
 var
   LM : ILevelMonitor;
 begin
-  //Plugin.act
-
-
   if Supports(Plugin.ActiveKeyGroup, ILevelMonitor, LM) then
   begin
     VoiceLevelMeter.LevelMonitor := LM;
     VoiceLevelMeter.Invalidate;
   end;
-
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;

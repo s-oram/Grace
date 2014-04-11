@@ -26,9 +26,7 @@ type
   IKeyGroup = Lucidity.Interfaces.IKeyGroup;
 
 type
-  TKeyGroup = class;
-
-  TKeyGroup = class(TInterfacedObject, IKeyGroup) //, ILevelMonitor)
+  TKeyGroup = class(TInterfacedObject, IKeyGroup, ILevelMonitor)
   private
     fTriggeredNoteCount : cardinal;
     fName     : string;
@@ -101,9 +99,7 @@ type
     property Seq1Data : TSequencerDataObject read FSeq1Data;
     property Seq2Data : TSequencerDataObject read FSeq1Data;
 
-    //property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor implements ILevelMonitor;
-    property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
-
+    property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor implements ILevelMonitor;
 
     // TODO: Asking the Key Groups to process the relevent voices added about 5-7% cpu.
     // Perhaps there are ways to reduce that by being smarter about how the voices
