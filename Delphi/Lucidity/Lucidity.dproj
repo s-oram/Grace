@@ -602,9 +602,13 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.pas"/>
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.SignalRecorder.pas"/>
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas"/>
+			<DCCReference Include="eeEnumHelper.pas"/>
+			<DCCReference Include="uLucidityEnums.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
+			<None Include="ParNames.inc"/>
+			<None Include="Defines.inc"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>

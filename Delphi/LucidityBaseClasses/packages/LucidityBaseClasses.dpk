@@ -32,8 +32,4 @@ requires
   vcl,
   VamLib;
 
-contains
-  uLucidityEnums in '..\source\uLucidityEnums.pas',
-  eeEnumHelper in '..\source\eeEnumHelper.pas';
-
 end.

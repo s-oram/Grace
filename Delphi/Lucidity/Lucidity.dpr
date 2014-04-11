@@ -157,7 +157,9 @@ uses
   Lucidity.Interfaces in 'Lucidity.Interfaces.pas',
   LucidityGui.Scope in 'GuiComponents\LucidityGui.Scope.pas',
   LucidityGui.Scope.SignalRecorder in 'GuiComponents\LucidityGui.Scope.SignalRecorder.pas',
-  LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas';
+  LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas',
+  eeEnumHelper in 'eeEnumHelper.pas',
+  uLucidityEnums in 'uLucidityEnums.pas';
 
 {$R *.res}
 
