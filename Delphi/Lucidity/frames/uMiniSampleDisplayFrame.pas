@@ -234,6 +234,7 @@ begin
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
   if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;
+  if MsgID = TLucidMsgID.ModAmountChanged                then UpdateModulation;
   if MsgID = TLucidMsgID.SampleFocusChanged              then UpdateControlVisibility;
   if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.LoopTypeChanged                 then UpdateSampleDisplayInfo;

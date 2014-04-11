@@ -44,6 +44,9 @@ const
   LoopStartTag   = 3;
   LoopEndTag     = 4;
 
+  Caption_ClearAllModulation     = 'Clear All Modulation';
+  Caption_ClearCurrentModulation = 'Clear Current Modulation';
+
 { TSampleDisplayMenu }
 
 constructor TSampleDisplayMenu.Create;
@@ -104,13 +107,15 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.Caption := Caption_ClearCurrentModulation;
+    ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.Caption := Caption_ClearAllModulation;
+    ChildMi.Hint    := Caption_ClearAllModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
@@ -122,13 +127,15 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.Caption := Caption_ClearCurrentModulation;
+    ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.Caption := Caption_ClearAllModulation;
+    ChildMi.Hint    := Caption_ClearAllModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
@@ -140,13 +147,15 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.Caption := Caption_ClearCurrentModulation;
+    ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.Caption := Caption_ClearAllModulation;
+    ChildMi.Hint    := Caption_ClearAllModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
@@ -158,13 +167,15 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.Caption := Caption_ClearCurrentModulation;
+    ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.Caption := Caption_ClearAllModulation;
+    ChildMi.Hint    := Caption_ClearAllModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
     ChildMi.Tag := Tag;
     mi.Add(ChildMi);
@@ -219,7 +230,36 @@ begin
 end;
 
 procedure TSampleDisplayMenu.EventHandle_ModulationCommand(Sender: TObject);
+var
+  Tag : integer;
+  ModParIndex : integer;
+  Caption : string;
 begin
+  Tag := (Sender as TMenuItem).Tag;
+
+  case Tag of
+    SampleStartTag : ModParIndex := TModParIndex.SampleStart;
+    SampleEndTag   : ModParIndex := TModParIndex.SampleEnd;
+    LoopStartTag   : ModParIndex := TModParIndex.LoopStart;
+    LoopEndTag     : ModParIndex := TModParIndex.LoopEnd;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  Caption := (Sender as TMenuItem).Hint;
+
+  if Caption = Caption_ClearCurrentModulation then
+  begin
+    Command.ClearCurrentModulationForParameter(Plugin, ModParIndex);
+  end;
+
+  if Caption = Caption_ClearAllModulation then
+  begin
+    Command.ClearAllModulationForParameter(Plugin, ModParIndex);
+  end;
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
 
 end;
 
