@@ -70,6 +70,8 @@ type
   Command = record
   public
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
+    class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
+    class procedure ClearAllModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
   end;
 
 
@@ -648,7 +650,37 @@ begin
   Region.GetProperties^.SampleVolume := -MaxDB;
 
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateSampleDisplay);
+end;
+
+
+class procedure Command.ClearAllModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
+var
+  kg : IKeyGroup;
+  c1: Integer;
+begin
+  kg := Plugin.ActiveKeyGroup;
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    kg.SetModParModAmount(ModParIndex, c1, 0);
+  end;
 
 end;
+
+class procedure Command.ClearCurrentModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
+var
+  ModSlot : integer;
+  kg : IKeyGroup;
+begin
+  ModSlot := Plugin.Globals.SelectedModSlot;
+
+  if ModSlot <> -1 then
+  begin
+    kg := Plugin.ActiveKeyGroup;
+    kg.SetModParModAmount(ModParIndex, ModSlot, 0);
+  end;
+end;
+
+
 
 end.
