@@ -246,7 +246,6 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-
   Caption := (Sender as TMenuItem).Hint;
 
   if Caption = Caption_ClearCurrentModulation then
