@@ -599,6 +599,9 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\soFilter.OptimisedFilter.pas"/>
 			<DCCReference Include="SoundObjects\soLevelMeter.pas"/>
 			<DCCReference Include="Lucidity.Interfaces.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.SignalRecorder.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

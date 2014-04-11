@@ -24,7 +24,6 @@ type
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy; override;
-
   end;
 
 implementation

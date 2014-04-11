@@ -154,7 +154,10 @@ uses
   uConstants in 'uConstants.pas',
   soFilter.OptimisedFilter in 'SoundObjects\soFilter.OptimisedFilter.pas',
   soLevelMeter in 'SoundObjects\soLevelMeter.pas',
-  Lucidity.Interfaces in 'Lucidity.Interfaces.pas';
+  Lucidity.Interfaces in 'Lucidity.Interfaces.pas',
+  LucidityGui.Scope in 'GuiComponents\LucidityGui.Scope.pas',
+  LucidityGui.Scope.SignalRecorder in 'GuiComponents\LucidityGui.Scope.SignalRecorder.pas',
+  LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas';
 
 {$R *.res}
 

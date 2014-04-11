@@ -115,7 +115,6 @@ type
     LfoLabel3: TVamLabel;
     LfoSelectButton1: TVamButton;
     LfoSelectButton2: TVamButton;
-    Scope: TLucidityScope;
     Timer1: TTimer;
     LfoSelector: TVamSliderSwitch;
     Filter1KeyTrackKnob: TVamCompoundNumericKnob;
@@ -156,6 +155,8 @@ type
     ParIndexFilter2Type : integer;
 
     StepSequenceMenu : TStepSequenceMenu;
+
+    Scope : TLucidityScope;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -223,6 +224,13 @@ begin
   KnobList.Add(LfoKnob2);
   KnobList.Add(LfoKnob3);
   KnobList.Add(FilterBlendKnob);
+
+
+  Scope := TLucidityScope.Create(AOwner);
+  Scope.Visible := true;
+  Scope.Parent := BackgroundPanel;
+  Scope.Name := 'Scope';
+
 
 end;
 

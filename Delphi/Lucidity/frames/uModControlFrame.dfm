@@ -1848,25 +1848,6 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
       end
-      object Scope: TLucidityScope
-        Left = 486
-        Top = 67
-        Width = 193
-        Height = 121
-        Opacity = 255
-        Text = 'Scope'
-        HitTest = True
-        ColorBackground = '$FF000000'
-        ColorBorder = '$00000000'
-        ColorForeground = '$00000000'
-        ScopeMode = DisplayOff
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Visible = True
-      end
     end
   end
   object Timer1: TTimer
