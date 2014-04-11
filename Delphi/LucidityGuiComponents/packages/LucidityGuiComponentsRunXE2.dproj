@@ -83,7 +83,6 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="VamBasicRunXE2.dcp"/>
 			<DCCReference Include="RedFoxRunXE2.dcp"/>
-			<DCCReference Include="LucidityBaseClasses.dcp"/>
 			<DCCReference Include="..\source\LucidityGui.DropBoxSelector.pas"/>
 			<DCCReference Include="..\source\LucidityGui.VectorSequence.pas"/>
 			<None Include="..\source\TControlProperties.inc"/>

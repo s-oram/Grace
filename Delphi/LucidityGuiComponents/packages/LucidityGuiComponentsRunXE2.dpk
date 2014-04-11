@@ -30,8 +30,7 @@ package LucidityGuiComponentsRunXE2;
 requires
   rtl,
   VamBasicRunXE2,
-  RedFoxRunXE2,
-  LucidityBaseClasses;
+  RedFoxRunXE2;
 
 contains
   LucidityGui.DropBoxSelector in '..\source\LucidityGui.DropBoxSelector.pas',
