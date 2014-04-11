@@ -3,6 +3,7 @@ unit uSampleDisplayFrame;
 interface
 
 uses
+  Lucidity.Types,
   eeGuiStandard, VamVisibleControl,
   eePlugin, Lucidity.SampleMap, uGuiFeedbackData, uConstants, Lucidity.Interfaces,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,

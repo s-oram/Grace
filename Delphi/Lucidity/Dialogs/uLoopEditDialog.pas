@@ -10,6 +10,7 @@ uses
   VamLib.UniqueID,
   VamLib.Debouncer,
   uLucidityPopUpMenu,
+  Lucidity.Types,
   Lucidity.SampleImageRenderer,
   Lucidity.FlexSampleRenderer,
   LuciditySampleOverlay,

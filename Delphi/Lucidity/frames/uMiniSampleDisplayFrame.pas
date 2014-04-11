@@ -6,7 +6,9 @@ uses
   VamLib.UniqueID,
   VamLib.ZeroObject, Math,
   VamVisibleControl, Lucidity.SampleImageRenderer,
-  Lucidity.SampleMap, Lucidity.Interfaces, Menu.SampleDisplayMenu,
+  Lucidity.Types,
+  Lucidity.Interfaces,
+  Lucidity.SampleMap, Menu.SampleDisplayMenu,
   eePlugin, eeGuiStandard, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
@@ -98,7 +100,6 @@ type
 implementation
 
 uses
-  Lucidity.Types,
   VamLib.Throttler,
   eeDsp,
   VamLib.Graphics,

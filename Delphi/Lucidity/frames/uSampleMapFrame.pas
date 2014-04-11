@@ -123,6 +123,7 @@ uses
 constructor TSampleMapFrame.Create(AOwner: TComponent);
 begin
   inherited;
+
   ThrottleID.Init;
 
   MessageOverlayAnimateID.Init;

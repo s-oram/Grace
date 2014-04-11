@@ -3,16 +3,17 @@ unit LuciditySampleOverlay;
 interface
 
 uses
+
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl,
-  uGuiFeedbackData;
+  uGuiFeedbackData,
+  Lucidity.Types;
 
 type
   TSampleMarkerSelect = (msMarkersOnly, msWithPreferenceToMarkers, msWithPreferenceToModAmounts);
 
-  TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker,
-                   smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
+  
 
   TSampleMarkerChangedEvent = procedure(Sender:TObject; Marker:TSampleMarker; NewPosition : integer) of object;
 

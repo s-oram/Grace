@@ -102,6 +102,11 @@ type
 
   TKeyGroupID = cardinal;
 
+
+
+  TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker,
+                   smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
+
 implementation
 
 { TModulatedPar }
