@@ -18,6 +18,7 @@ type
     procedure EventHandle_EditSamplePoints(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ShowInWindowsExplorer(Sender : TObject);
+    procedure EventHandle_ModulationCommand(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -36,6 +37,12 @@ uses
   eeWinEx,
   Lucidity.SampleMap,
   uConstants;
+
+const
+  SampleStartTag = 1;
+  SampleEndTag   = 2;
+  LoopStartTag   = 3;
+  LoopEndTag     = 4;
 
 { TSampleDisplayMenu }
 
@@ -58,6 +65,8 @@ end;
 procedure TSampleDisplayMenu.Popup(const x, y: integer);
 var
   mi : TMenuItem;
+  Childmi : TMenuItem;
+  Tag : integer;
 begin
   Menu.Items.Clear;
 
@@ -82,6 +91,86 @@ begin
   mi.Caption := 'Show in Windows Exporer...';
   mi.OnClick := EventHandle_ShowInWindowsExplorer;
   Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+
+
+
+  Tag := SampleStartTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Sample Start';
+  Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+
+  Tag := SampleEndTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Sample End';
+  Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+
+  Tag := LoopStartTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Loop Start';
+  Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+
+  Tag := LoopEndTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Loop End';
+  Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear Current Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := 'Clear All Modulation';
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+
+
 
 
   Menu.Popup(x, y);
@@ -128,5 +217,12 @@ begin
 
   end;
 end;
+
+procedure TSampleDisplayMenu.EventHandle_ModulationCommand(Sender: TObject);
+begin
+
+end;
+
+
 
 end.

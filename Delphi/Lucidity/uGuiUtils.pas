@@ -627,8 +627,6 @@ begin
   end;
 
 
-
-
   MaxSampleValue := 0;
 
   for c1 := 0 to Sample.Properties.SampleFrames-1 do
