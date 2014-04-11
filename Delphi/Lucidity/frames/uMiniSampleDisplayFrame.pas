@@ -17,6 +17,12 @@ uses
   VamCompoundNumericKnob;
 
 type
+  TSampleDisplayFrameInfo = record
+    Region     : IRegion;
+    Info : TSampleDisplayInfo;
+  end;
+
+
   TMiniSampleDisplayFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
@@ -55,10 +61,11 @@ type
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
-    Zoom, Offset : single;
+    CurrentSample : TSampleDisplayFrameInfo;
 
+    Zoom, Offset : single;
     fSampleOverlay : TLuciditySampleOverlay;
-    SampleInfo : TSampleDisplayInfo;
+
     SampleOverlayClickPos : TPoint;
     SampleDisplayMenu : TSampleDisplayMenu;
 
@@ -140,7 +147,7 @@ begin
 
   fSampleOverlay.OnDblClick := SampleOverlayDblClicked;
 
-  SampleInfo.IsValid := false;
+  CurrentSample.Info.IsValid := false;
 
   SampleDisplayMenu := TSampleDisplayMenu.Create;
 
@@ -163,6 +170,9 @@ begin
 
   SampleDisplayMenu.Free;
   SampleRenderer.Free;
+
+  CurrentSample.Region := nil;
+
   inherited;
 end;
 
@@ -301,6 +311,8 @@ var
   xSampleImage : IInterfacedBitmap;
   Par:TSampleRenderParameters;
 begin
+  CurrentSample.Region := Region;
+
   if (assigned(Region)) then
   begin
     if Region.GetSample^.Properties.IsValid then
@@ -329,22 +341,22 @@ begin
       SampleDisplay.Offset := aOffset;
 
 
-      SampleInfo.IsValid := true;
-      SampleInfo.ChannelCount := Region.GetSample^.Properties.ChannelCount;
-      SampleInfo.SampleFrames := Region.GetSample^.Properties.SampleFrames;
+      CurrentSample.SampleInfo.IsValid := true;
+      CurrentSample.SampleInfo.ChannelCount := Region.GetSample^.Properties.ChannelCount;
+      CurrentSample.SampleInfo.SampleFrames := Region.GetSample^.Properties.SampleFrames;
 
       if Region.GetSample^.Properties.ChannelCount = 1 then
       begin
-        SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
+        CurrentSample.SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
       end;
 
       if Region.GetSample^.Properties.ChannelCount = 2 then
       begin
-        SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
-        SampleInfo.Ch2 := Region.GetSample^.Properties.Ch2;
+        CurrentSample.SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
+        CurrentSample.SampleInfo.Ch2 := Region.GetSample^.Properties.Ch2;
       end;
 
-      SampleDisplay.DrawSample(SampleInfo);
+      SampleDisplay.DrawSample(CurrentSample.SampleInfo);
       SampleDisplay.Invalidate;
       }
     end else
@@ -366,12 +378,12 @@ begin
   begin
     if Region.GetSample^.Properties.IsValid then
     begin
-      SampleInfo.IsValid := true;
-      SampleInfo.ChannelCount := Region.GetSample^.Properties.ChannelCount;
-      SampleInfo.SampleFrames := Region.GetSample^.Properties.SampleFrames;
+      CurrentSample.Info.IsValid := true;
+      CurrentSample.Info.ChannelCount := Region.GetSample^.Properties.ChannelCount;
+      CurrentSample.Info.SampleFrames := Region.GetSample^.Properties.SampleFrames;
 
       //== Sample Overlay ==
-      fSampleOverlay.SetSampleInfo(true, SampleInfo.SampleFrames);
+      fSampleOverlay.SetSampleInfo(true, CurrentSample.Info.SampleFrames);
       fSampleOverlay.SampleStart := Region.GetProperties^.SampleStart;
       fSampleOverlay.SampleEnd   := Region.GetProperties^.SampleEnd;
       fSampleOverlay.LoopStart   := Region.GetProperties^.LoopStart;
@@ -400,7 +412,7 @@ begin
     InfoDiv.Visible := true;
   end else
   begin
-    SampleInfo.IsValid := false;
+    CurrentSample.Info.IsValid := false;
     SampleOverlay.NoSampleMessage := NoRegionMessage;
 
     //===========================================
@@ -673,6 +685,7 @@ begin
   if (Button = mbRight) then
   begin
     //SampleOverlayClickPos := Point(X, Y);
+    //SampleOverlay.PixelPosToSamplePos(x1)
     SampleDisplayMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
 end;

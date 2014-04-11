@@ -2,6 +2,9 @@ unit uSampleDisplayFrame;
 
 interface
 
+//TODO: This whole sample display frame needs to be deleted. It has been replaced
+// by MiniSampleDisplayFrame
+
 uses
   Lucidity.Types,
   eeGuiStandard, VamVisibleControl,
@@ -393,6 +396,9 @@ var
   SampleFrames : integer;
   CurRegion : IRegion;
 begin
+  // TODO: I think this sample overlay context menu needs to be deleted. It has
+  // been replaced by the Menu.SampleDisplayMenu.pas unit.
+
   if not assigned(Plugin) then exit;
 
   CurRegion := Plugin.FocusedRegion;
