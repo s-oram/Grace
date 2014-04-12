@@ -685,6 +685,8 @@ begin
 
   if (Button = mbRight) and (CurrentSample.Info.IsValid) then
   begin
+    SampleDisplayMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
+
     MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
     SampleDisplayMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
   end;

@@ -10,6 +10,7 @@ uses
 type
   TSampleDisplayMenu = class
   private
+    fLoopPointsVisible: boolean;
   protected
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
@@ -27,6 +28,8 @@ type
     procedure Initialize(aPlugin : TeePlugin);
 
     procedure Popup(const x, y : integer; const aMouseDownSamplePos : integer);
+
+    property LoopPointsVisible : boolean read fLoopPointsVisible write fLoopPointsVisible;
 
   end;
 
@@ -161,62 +164,62 @@ begin
     mi.Add(ChildMi);
 
 
-  Tag := LoopStartTag;
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Loop Start';
-  Menu.Items.Add(mi);
+  if LoopPointsVisible then
+  begin
 
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_MoveHere;
-    ChildMi.Hint    := Caption_MoveHere;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
+    Tag := LoopStartTag;
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Loop Start';
+    Menu.Items.Add(mi);
 
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_ClearCurrentModulation;
-    ChildMi.Hint    := Caption_ClearCurrentModulation;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_MoveHere;
+      ChildMi.Hint    := Caption_MoveHere;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
 
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_ClearAllModulation;
-    ChildMi.Hint    := Caption_ClearAllModulation;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_ClearCurrentModulation;
+      ChildMi.Hint    := Caption_ClearCurrentModulation;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
 
-
-  Tag := LoopEndTag;
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Loop End';
-  Menu.Items.Add(mi);
-
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_MoveHere;
-    ChildMi.Hint    := Caption_MoveHere;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
-
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_ClearCurrentModulation;
-    ChildMi.Hint    := Caption_ClearCurrentModulation;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
-
-    Childmi := TMenuItem.Create(Menu);
-    ChildMi.Caption := Caption_ClearAllModulation;
-    ChildMi.Hint    := Caption_ClearAllModulation;
-    ChildMi.OnClick := EventHandle_ModulationCommand;
-    ChildMi.Tag := Tag;
-    mi.Add(ChildMi);
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_ClearAllModulation;
+      ChildMi.Hint    := Caption_ClearAllModulation;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
 
 
+    Tag := LoopEndTag;
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Loop End';
+    Menu.Items.Add(mi);
 
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_MoveHere;
+      ChildMi.Hint    := Caption_MoveHere;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
 
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_ClearCurrentModulation;
+      ChildMi.Hint    := Caption_ClearCurrentModulation;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
+
+      Childmi := TMenuItem.Create(Menu);
+      ChildMi.Caption := Caption_ClearAllModulation;
+      ChildMi.Hint    := Caption_ClearAllModulation;
+      ChildMi.OnClick := EventHandle_ModulationCommand;
+      ChildMi.Tag := Tag;
+      mi.Add(ChildMi);
+  end;
 
   Menu.Popup(x, y);
 end;
