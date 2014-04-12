@@ -9,9 +9,15 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
-  VamKnob, Lucidity.Interfaces,
-  Dialogs, Lucidity.SampleMap, eePlugin, uLucidityEnums,
-  eeGlobals, VamLabel, VamTextBox, eeEnumHelper, VamWinControl, RedFoxContainer, VamPanel,
+  Dialogs,
+  VamKnob,
+  eeEnumHelper,
+  eeGlobals,
+  uLucidityEnums,
+  Lucidity.Interfaces,
+  Lucidity.Types,
+  Lucidity.SampleMap, eePlugin,
+  VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
 
 procedure UpdateTextBoxWithParValue(const TextBox : TVamLabel; const ParIndex:integer; const EnumHelper:TCustomEnumHelperClass; const Globals : TGlobals); overload;
@@ -67,9 +73,11 @@ procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const
 
 
 type
+  //These commands are utilised by the GUI.
   Command = record
   public
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
+    class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
     class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
     class procedure ClearAllModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
   end;
@@ -665,6 +673,7 @@ begin
     kg.SetModParModAmount(ModParIndex, c1, 0);
   end;
 
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
 end;
 
 class procedure Command.ClearCurrentModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
@@ -679,8 +688,26 @@ begin
     kg := Plugin.ActiveKeyGroup;
     kg.SetModParModAmount(ModParIndex, ModSlot, 0);
   end;
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
 end;
 
 
+
+class procedure Command.MoveSampleMarker(const Plugin: TeePlugin; const Marker: TSampleMarker; const NewSamplePos: integer);
+var
+  Region : IRegion;
+begin
+  Region := Plugin.FocusedRegion;
+
+  case Marker of
+    smSampleStartMarker: Region.GetProperties^.SampleStart := NewSamplePos;
+    smSampleEndMarker:   Region.GetProperties^.SampleEnd   := NewSamplePos;
+    smLoopStartMarker:   Region.GetProperties^.LoopStart   := NewSamplePos;
+    smLoopEndMarker:     Region.GetProperties^.LoopEnd     := NewSamplePos;
+  end;
+
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+end;
 
 end.

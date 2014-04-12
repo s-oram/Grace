@@ -678,15 +678,15 @@ end;
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   CurRegion : IRegion;
+  MouseDownSamplePos : integer;
 begin
   CurRegion := Plugin.FocusedRegion;
   if CurRegion = nil then exit;
 
-  if (Button = mbRight) then
+  if (Button = mbRight) and (CurrentSample.Info.IsValid) then
   begin
-    //SampleOverlayClickPos := Point(X, Y);
-    //SampleOverlay.PixelPosToSamplePos(x1)
-    SampleDisplayMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+    MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
+    SampleDisplayMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
   end;
 end;
 

@@ -13,6 +13,7 @@ type
   protected
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
+    MouseDownSamplePos : integer;
 
     procedure EventHandle_NormaliseSample(Sender : TObject);
     procedure EventHandle_EditSamplePoints(Sender : TObject);
@@ -25,13 +26,14 @@ type
 
     procedure Initialize(aPlugin : TeePlugin);
 
-    procedure Popup(const x, y : integer);
+    procedure Popup(const x, y : integer; const aMouseDownSamplePos : integer);
 
   end;
 
 implementation
 
 uses
+  Lucidity.Types,
   uGuiUtils,
   SysUtils,
   eeWinEx,
@@ -44,6 +46,7 @@ const
   LoopStartTag   = 3;
   LoopEndTag     = 4;
 
+  Caption_MoveHere               = 'Move Here';
   Caption_ClearAllModulation     = 'Clear All Modulation';
   Caption_ClearCurrentModulation = 'Clear Current Modulation';
 
@@ -65,13 +68,16 @@ begin
   Plugin := aPlugin;
 end;
 
-procedure TSampleDisplayMenu.Popup(const x, y: integer);
+procedure TSampleDisplayMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer);
 var
   mi : TMenuItem;
   Childmi : TMenuItem;
   Tag : integer;
 begin
   Menu.Items.Clear;
+
+
+  MouseDownSamplePos := aMouseDownSamplePos;
 
 
   mi := TMenuItem.Create(Menu);
@@ -107,6 +113,13 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := Caption_MoveHere;
+    ChildMi.Hint    := Caption_MoveHere;
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
     ChildMi.Caption := Caption_ClearCurrentModulation;
     ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
@@ -125,6 +138,13 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Sample End';
   Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := Caption_MoveHere;
+    ChildMi.Hint    := Caption_MoveHere;
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
     ChildMi.Caption := Caption_ClearCurrentModulation;
@@ -147,6 +167,13 @@ begin
   Menu.Items.Add(mi);
 
     Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := Caption_MoveHere;
+    ChildMi.Hint    := Caption_MoveHere;
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
+
+    Childmi := TMenuItem.Create(Menu);
     ChildMi.Caption := Caption_ClearCurrentModulation;
     ChildMi.Hint    := Caption_ClearCurrentModulation;
     ChildMi.OnClick := EventHandle_ModulationCommand;
@@ -165,6 +192,13 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Loop End';
   Menu.Items.Add(mi);
+
+    Childmi := TMenuItem.Create(Menu);
+    ChildMi.Caption := Caption_MoveHere;
+    ChildMi.Hint    := Caption_MoveHere;
+    ChildMi.OnClick := EventHandle_ModulationCommand;
+    ChildMi.Tag := Tag;
+    mi.Add(ChildMi);
 
     Childmi := TMenuItem.Create(Menu);
     ChildMi.Caption := Caption_ClearCurrentModulation;
@@ -234,6 +268,7 @@ var
   Tag : integer;
   ModParIndex : integer;
   Caption : string;
+  SampleMarker : TSampleMarker;
 begin
   Tag := (Sender as TMenuItem).Tag;
 
@@ -246,7 +281,21 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
+  case Tag of
+    SampleStartTag : SampleMarker := smSampleStartMarker;
+    SampleEndTag   : SampleMarker := smSampleEndMarker;
+    LoopStartTag   : SampleMarker := smLoopStartMarker;
+    LoopEndTag     : SampleMarker := smLoopEndMarker;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
   Caption := (Sender as TMenuItem).Hint;
+
+  if Caption = Caption_MoveHere then
+  begin
+    Command.MoveSampleMarker(Plugin, SampleMarker, MouseDownSamplePos);
+  end;
 
   if Caption = Caption_ClearCurrentModulation then
   begin
@@ -258,7 +307,7 @@ begin
     Command.ClearAllModulationForParameter(Plugin, ModParIndex);
   end;
 
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
+
 
 end;
 
