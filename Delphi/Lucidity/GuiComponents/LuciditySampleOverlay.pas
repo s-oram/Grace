@@ -12,7 +12,6 @@ uses
 
 type
   TSampleMarkerSelect = (msMarkersOnly, msWithPreferenceToMarkers, msWithPreferenceToModAmounts);
-
   
 
   TSampleMarkerChangedEvent = procedure(Sender:TObject; Marker:TSampleMarker; NewPosition : integer) of object;
@@ -227,6 +226,11 @@ var
   PixSampleEndMarker   : single;
   PixLoopStartMarker : single;
   PixLoopEndMarker   : single;
+
+
+
+
+
 begin
   // default result.
   result := smNone;
@@ -328,12 +332,15 @@ begin
   begin
     IsGrabbed := true;
 
-
-    if (IsModEditActive) and (ssAlt in Shift)
-      then GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
-      else GrabbedMode := IsNearMarker(X, Y, msMarkersOnly);
-
-
+    if (IsModEditActive) then
+    begin
+      if (ssAlt in Shift)
+        then GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
+        else GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToMarkers);
+    end else
+    begin
+      GrabbedMode := IsNearMarker(X, Y, msMarkersOnly);
+    end;
 
     CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
 
