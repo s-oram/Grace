@@ -222,19 +222,139 @@ const
   kMarkerOffset = 3;
 var
   SPos : single;
+  PixPos : single;
   PixSampleStartMarker : single;
   PixSampleEndMarker   : single;
   PixLoopStartMarker : single;
   PixLoopEndMarker   : single;
 
-
-
-
-
+  IsNearMarker_SampleStart    : boolean;
+  IsNearMarker_SampleEnd      : boolean;
+  IsNearMarker_LoopStart      : boolean;
+  IsNearMarker_LoopEnd        : boolean;
+  IsNearMarker_SampleStartMod : boolean;
+  IsNearMarker_SampleEndMod   : boolean;
+  IsNearMarker_LoopStartMod   : boolean;
+  IsNearMarker_LoopEndMod     : boolean;
 begin
   // default result.
   result := smNone;
 
+
+  assert(InRange(SampleStartMod, -1, 1));
+  assert(InRange(SampleEndMod, -1, 1));
+  assert(InRange(LoopStartMod, -1, 1));
+  assert(InRange(LoopEndMod, -1, 1));
+
+
+  // Sample Start
+  PixPos := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
+  if IsNear(PixelPosX, PixPos + kMarkerOffset , kTolarance)
+    then IsNearMarker_SampleStart := true
+    else IsNearMarker_SampleStart := false;
+
+
+  // Sample End
+  PixPos   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleEnd, SampleFrames, Width, Zoom, Offset);
+  if IsNear(PixelPosX, PixPos - kMarkerOffset, kTolarance)
+    then IsNearMarker_SampleEnd := true
+    else IsNearMarker_SampleEnd := false;
+
+
+  // Loop Start
+  PixPos   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopStart, SampleFrames, Width, Zoom, Offset);
+  if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixPos + kMarkerOffset, kTolarance))
+    then IsNearMarker_LoopStart := true
+    else IsNearMarker_LoopStart := false;
+
+  // Loop End
+  PixPos     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopEnd, SampleFrames, Width, Zoom, Offset);
+  if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixPos - kMarkerOffset, kTolarance))
+    then IsNearMarker_LoopEnd := true
+    else IsNearMarker_LoopEnd := false;
+
+
+
+  // Sample start Mod
+  spos := SampleStart + SampleStartMod * SampleFrames;
+  PixPos := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+  if (IsNear(PixelPosX, PixPos + kMarkerOffset, kTolarance))
+    then IsNearMarker_SampleStartMod := true
+    else IsNearMarker_SampleStartMod := false;
+
+  // Sample End Mod
+  spos := SampleEnd + SampleEndMod * SampleFrames;
+  PixPos   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+  if (IsNear(PixelPosX, PixPos + kMarkerOffset, kTolarance))
+    then IsNearMarker_SampleEndMod := true
+    else IsNearMarker_SampleEndMod := false;
+
+
+   // Loop Start Mod
+  spos := LoopStart + LoopStartMod * SampleFrames;
+  PixPos   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+  if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixPos + kMarkerOffset, kTolarance))
+    then IsNearMarker_LoopStartMod := true
+    else IsNearMarker_LoopStartMod := false;
+
+  // Loop End Mod
+  spos := LoopEnd + LoopEndMod * SampleFrames;
+  PixPos     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
+
+  if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixPos - kMarkerOffset, kTolarance))
+    then IsNearMarker_LoopEndMod := true
+    else IsNearMarker_LoopEndMod := false;
+
+
+  case SelectPreference of
+    msWithPreferenceToModAmounts:
+    begin
+      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
+      if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
+      if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
+
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+    end;
+
+    msWithPreferenceToMarkers:
+    begin
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+
+      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
+      if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
+      if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
+    end;
+
+    msMarkersOnly:
+    begin
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+    end;
+
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+
+
+
+
+
+  {
   if SelectPreference <> msMarkersOnly then
   begin
     assert(InRange(SampleStartMod, -1, 1));
@@ -297,6 +417,8 @@ begin
       if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
     end;
   end;
+  }
+
 end;
 
 
@@ -409,7 +531,7 @@ begin
   begin
     if (IsModEditActive) and (ssAlt in Shift)
       then Marker := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
-      else Marker := IsNearMarker(X, Y, msMarkersOnly);
+      else Marker := IsNearMarker(X, Y, msWithPreferenceToMarkers);
 
     case Marker of
       smNone:                  Cursor := crDefault;
