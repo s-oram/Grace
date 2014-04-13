@@ -138,6 +138,10 @@ begin
   fLevelMonitor := TLevelMonitor.Create;
 
   ActiveVoices := TLucidityVoiceList.Create(false);
+
+
+  SampleRateChanged(self);
+  BlockSizeChanged(self);
 end;
 
 destructor TKeyGroup.Destroy;
