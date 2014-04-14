@@ -486,7 +486,6 @@ begin
   inherited;
 
 
-
   LfoValues.UpdateRandomValues;
 
   BackBuffer.BufferInterface.ClearAll(0,0,0,0);

@@ -231,6 +231,9 @@ begin
   Scope.Parent := BackgroundPanel;
   Scope.Name := 'Scope';
 
+  Scope.Font.Name := 'Tahoma';
+  Scope.Font.Style := [];
+
 
 end;
 
