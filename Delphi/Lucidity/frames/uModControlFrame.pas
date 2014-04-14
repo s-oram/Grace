@@ -337,7 +337,9 @@ begin
   AddDisplayClass(Filter2Par2Knob,        TScopeFocusID.Filter2);
   AddDisplayClass(Filter2Par3Knob,        TScopeFocusID.Filter2);
   AddDisplayClass(Filter2Par4Knob,        TScopeFocusID.Filter2);
+
   AddDisplayClass(FilterBlendKnob,        TScopeFocusID.FilterBlend);
+  AddDisplayClass(FilterRoutingButton,    TScopeFocusID.FilterBlend);
 
   AddDisplayClass(Filter1TypeTextBox,     TScopeFocusID.Filter1);
   AddDisplayClass(Filter1KeyTrackKnob,    TScopeFocusID.Filter1);
@@ -349,7 +351,7 @@ begin
 
   AddDisplayClass(LfoSelectButton1, TScopeFocusID.Lfo1);
   AddDisplayClass(LfoSelectButton2, TScopeFocusID.Lfo2);
-  AddDisplayClass(LfoSelector, LfoControlDisplayClass);
+  AddDisplayClass(LfoSelector,      LfoControlDisplayClass);
 
 
   //AddDisplayClass(LfoShapeTextBox1,       TScopeFocusID);
