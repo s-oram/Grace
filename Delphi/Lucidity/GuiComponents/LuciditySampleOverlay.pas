@@ -170,7 +170,7 @@ const
   kMessageColor    = uConstants.kColor_LcdDark5;
   kSampleStart = '$FF0F952A';
   kSampleEnd   = '$FFD11F1F';
-  kLoopPoint   = '$FF208ED1';
+  kLoopPoint   = '$FF66DDFA';
   kZoomSelectionColor = '$FFFFFF55';
   kMarkerTabHeight = 10;
 
@@ -918,6 +918,8 @@ var
 begin
   inherited;
 
+
+  BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
@@ -929,6 +931,10 @@ begin
 
   if SampleIsValid then
   begin
+    if IsModEditActive
+      then Draw_ModPointAreas;
+
+
     if assigned(FeedbackData) then
     begin
       //== Draw the buffered loop boundary points...
@@ -936,35 +942,64 @@ begin
       begin
         BackBuffer.BufferInterface.LineWidth := 1;
 
+
         if (FeedBackData^.SampleBounds.ShowPlaybackBounds) then
         begin
-          BackBuffer.BufferInterface.FillColor := GetRedFoxColor('$22FFFFFF').AsAggRgba8;
+          BackBuffer.BufferInterface.FillColor :=  GetRedFoxColor(kLoopPoint).WithAlpha(30);
           BackBuffer.BufferInterface.NoLine;
 
           x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.PlaybackStart, SampleFrames, Width, Zoom, Offset);
           x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.PlaybackEnd,   SampleFrames, Width, Zoom, Offset);
 
+
           y1 := 0;
           y2 := self.Height;
 
-          BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
+          //BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
+
+
+          BackBuffer.BufferInterface.LineWidth := 2;
+          BackBuffer.BufferInterface.LineColor :=  GetRedFoxColor(kLoopPoint);
+          BackBuffer.BufferInterface.NoFill;
+
+          x1 := round(x1) + 0.5;
+          x2 := round(x2) - 0.5;
+          BackBuffer.BufferInterface.Line(x1, y2-1, x2, y2-1);
+
+          BackBuffer.BufferInterface.LineWidth := 1;
         end;
 
 
+        {
         if (FeedBackData^.SampleBounds.ShowHighlightBounds) then
         begin
-          BackBuffer.BufferInterface.FillColor := GetRedFoxColor('$22FFFFFF').AsAggRgba8;
+          BackBuffer.BufferInterface.FillColor :=  GetRedFoxColor(kLoopPoint).WithAlpha(30);
           BackBuffer.BufferInterface.NoLine;
 
-          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.HighlightStart, SampleFrames, Width, Zoom, Offset);
-          x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.HighlightEnd,   SampleFrames, Width, Zoom, Offset);
+          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.PlaybackStart, SampleFrames, Width, Zoom, Offset);
+          x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.PlaybackEnd,   SampleFrames, Width, Zoom, Offset);
+
 
           y1 := 0;
           y2 := self.Height;
 
           BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
-        end;
 
+          //BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
+          //BackBuffer.BufferInterface.Line(x2, y1, x2, y2);
+
+
+          BackBuffer.BufferInterface.LineWidth := 2;
+          BackBuffer.BufferInterface.LineColor :=  GetRedFoxColor(kLoopPoint);
+          BackBuffer.BufferInterface.NoFill;
+
+          x1 := round(x1) + 0.5;
+          x2 := round(x2) - 0.5;
+          BackBuffer.BufferInterface.Line(x1, y2-1, x2, y2-1);
+
+          BackBuffer.BufferInterface.LineWidth := 1;
+        end;
+        }
 
         if (FeedbackData^.SampleBounds.ShowRealTimeMarkers) then
         begin
@@ -973,19 +1008,18 @@ begin
           self.Draw_PlayBackPosition(x1);
 
           //== draw the modulated loop points ==
-          //x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopStart, SampleFrames, Width, Zoom, Offset);
-          //self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
+          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopStart, SampleFrames, Width, Zoom, Offset);
+          self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
 
-          //x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopEnd, SampleFrames, Width, Zoom, Offset);
-          //self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
+          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopEnd, SampleFrames, Width, Zoom, Offset);
+          self.Draw_ModLoopPoint(x1-1); // TODO: currently disable. Think about re-enabling.
         end;
       end;
     end;
 
 
 
-    if IsModEditActive
-      then Draw_ModPointAreas;
+
 
     // Show the min-max modulation amounts.
     Draw_ModPointAmounts;

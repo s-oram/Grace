@@ -509,8 +509,9 @@ begin
     raise Exception.Create('Loop type not handled.');
   end;
 
-  FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.SampleStart;
-  FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.SampleEnd;
+
+
+
 
   FeedBackData.SampleBounds.LoopStart      := CurrentSampleBounds.LoopStart;
   FeedBackData.SampleBounds.LoopEnd        := CurrentSampleBounds.LoopEnd;
@@ -524,8 +525,27 @@ begin
   // get real time sample bounds...
   self.Event_UpdateSampleBounds(self, self.CurRegion, @SampleBounds);
 
-  FeedBackData.SampleBounds.ModLoopStart := SampleBounds.LoopStart;
-  FeedBackData.SampleBounds.ModLoopEnd   := SampleBounds.LoopEnd;
+
+
+  case LoopBounds of
+    TSamplerLoopBounds.LoopSample:
+    begin
+      FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.SampleStart;
+      FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.SampleEnd;
+      FeedBackData.SampleBounds.ModLoopStart   := SampleBounds.SampleStart;
+      FeedBackData.SampleBounds.ModLoopEnd     := SampleBounds.SampleEnd;
+    end;
+
+    TSamplerLoopBounds.LoopPoints:
+    begin
+      FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.LoopStart;
+      FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.LoopEnd;
+      FeedBackData.SampleBounds.ModLoopStart   := SampleBounds.LoopStart;
+      FeedBackData.SampleBounds.ModLoopEnd     := SampleBounds.LoopEnd;
+    end
+  else
+    raise Exception.Create('Loop type not handled.');
+  end;
 
 end;
 
