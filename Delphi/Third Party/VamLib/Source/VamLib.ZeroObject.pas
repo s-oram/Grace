@@ -50,6 +50,15 @@ type
     Create a ZeroObject implementation that can be added to frames etc
     that can't descend from the TZeroObject class.
 
+    Think about getting rid of the SendMessageUsingGuiThread() function.
+    - It would really simplify the mother ship implementation.
+    - Cross thread communication would be good but the current implement
+      only goes one way and it's a tad complicated. Perhaps a more
+      general solution could be implemented.
+
+    - Zero objects should have a 'Name' parameter so objects can
+      be received. Maybe the name parameter should be dynamic so
+      objects can match multiple names at different times...
 
   }
 
@@ -137,6 +146,15 @@ type
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgAll(MsgID : cardinal); overload;
+    procedure MsgAll(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgMain(MsgID : cardinal); overload;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgAudio(MsgID : cardinal); overload;
+    procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
 
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
@@ -380,6 +398,71 @@ end;
 
 
 
+
+procedure TMotherShip.MsgAll(MsgID: cardinal; Data: Pointer);
+var
+  c1: Integer;
+  zo : IZeroObject;
+begin
+  for c1 := 0 to AudioObjects.Count - 1 do
+  begin
+    if Supports(AudioObjects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  end;
+
+  for c1 := 0 to MainObjects.Count - 1 do
+  begin
+    if Supports(MainObjects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  end;
+end;
+
+procedure TMotherShip.MsgAll(MsgID: cardinal);
+begin
+  MsgAll(MsgID, nil);
+end;
+
+procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
+var
+  c1: Integer;
+  zo : IZeroObject;
+begin
+  for c1 := 0 to AudioObjects.Count - 1 do
+  begin
+    if Supports(AudioObjects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  end;
+end;
+
+procedure TMotherShip.MsgAudio(MsgID: cardinal);
+begin
+  MsgAudio(MsgID, nil);
+end;
+
+procedure TMotherShip.MsgMain(MsgID: cardinal);
+begin
+  MsgMain(MsgID, nil);
+end;
+
+procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
+var
+  c1: Integer;
+  zo : IZeroObject;
+begin
+  for c1 := 0 to MainObjects.Count - 1 do
+  begin
+    if Supports(MainObjects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  end;
+end;
 
 { TRefCountedZeroObject }
 
