@@ -174,6 +174,13 @@ begin
     ControlChanged(nil);
   end;
 
+
+  if MsgID = TLucidMsgID.Command_UpdateScope then
+  begin
+    ControlChanged(nil);
+  end;
+
+
 end;
 
 procedure TScopeHandler.ControlChanged(c: TControl);

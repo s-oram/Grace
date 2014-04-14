@@ -56,7 +56,8 @@ type
     Command_HideReplaceRegionMessage = Command + 9;
     Command_UpdateSampleDisplay      = Command + 10;
     Command_UpdateSampleInfo         = Command + 11;
-    Actions                          = Command_UpdateSampleInfo + 1;
+    Command_UpdateScope              = Command + 12;
+    Actions                          = Command_UpdateScope + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;

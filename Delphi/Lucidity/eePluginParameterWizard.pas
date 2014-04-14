@@ -613,6 +613,7 @@ begin
     begin
       Plugin.ActiveVoicePar.FilterRouting := TFilterRoutingHelper.ToEnum(Value);
       Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
+      Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateScope);
     end);
     aPar.SetCallback_GetParValue(procedure(Sender:TVstParameter; out Value : single)
     begin
