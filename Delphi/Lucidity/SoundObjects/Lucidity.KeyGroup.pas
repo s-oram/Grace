@@ -474,7 +474,7 @@ var
   pOutA, pOutB : PSingle;
 begin
   pxA := @VoiceBufferA[0];
-  pxB := @VoiceBufferA[0];
+  pxB := @VoiceBufferB[0];
 
   ClearBuffer(pxA, SampleFrames);
   ClearBuffer(pxB, SampleFrames);
@@ -495,7 +495,7 @@ begin
   for c1 := 0 to SampleFrames-1 do
   begin
     pOutA^ := pOutA^ + VoiceBufferA[c1];
-    pOutB^ := pOutB^ + VoiceBufferA[c1];
+    pOutB^ := pOutB^ + VoiceBufferB[c1];
 
     inc(pOutA);
     inc(pOutB);
