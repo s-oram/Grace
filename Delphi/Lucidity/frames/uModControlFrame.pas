@@ -144,7 +144,6 @@ type
 
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -986,10 +985,6 @@ begin
   end;
 end;
 
-function TModControlFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 procedure TModControlFrame.FilterChanged;
 begin

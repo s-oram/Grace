@@ -54,7 +54,6 @@ type
     procedure Handle_ShowModContextMenu(Sender : TObject);
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -206,11 +205,6 @@ begin
   MenuKeyGroup := nil;
 
   inherited;
-end;
-
-function TModSystem2Frame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
 end;
 
 procedure TModSystem2Frame.MessageHandler(var Message: TMessage);

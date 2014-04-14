@@ -43,7 +43,6 @@ type
     procedure MessageHandler(var Message : TMessage);
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -437,10 +436,6 @@ begin
   MainContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
-function TFileBrowserFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 procedure TFileBrowserFrame.EventHandle_GetNodeBitmap(Sender: TObject; const NodeFileName: string; var Bitmap: TBitmap);
 var

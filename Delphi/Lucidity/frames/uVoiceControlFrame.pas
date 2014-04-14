@@ -73,7 +73,6 @@ type
 
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -142,11 +141,6 @@ begin
     then FMotherShip.DeregisterZeroObject(self);
 
   inherited;
-end;
-
-function TVoiceControlFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
 end;
 
 procedure TVoiceControlFrame.MessageHandler(var Message: TMessage);

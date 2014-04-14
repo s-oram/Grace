@@ -68,7 +68,7 @@ type
     procedure SetScollPosY(const Value: single);
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
+
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -246,10 +246,6 @@ begin
 
 end;
 
-function TSampleMapFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 function TSampleMapFrame.GetScrollPosX: single;
 begin

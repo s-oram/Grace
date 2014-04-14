@@ -57,7 +57,6 @@ type
     procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -756,10 +755,6 @@ begin
   end);
 end;
 
-function TMiniSampleDisplayFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 procedure TMiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;
 begin

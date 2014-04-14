@@ -22,6 +22,7 @@ object SequencerFrame: TSequencerFrame
       Top = 0
       Width = 766
       Height = 412
+      Opacity = 255
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCCC'
@@ -38,6 +39,7 @@ object SequencerFrame: TSequencerFrame
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        Opacity = 255
         Text = 'SeqBackPanel'
         HitTest = True
         Color = '$FFCCCCCC'
@@ -58,6 +60,7 @@ object SequencerFrame: TSequencerFrame
           Top = 373
           Width = 750
           Height = 27
+          Opacity = 255
           Text = 'InfoDiv'
           HitTest = True
           Align = alBottom
@@ -67,6 +70,7 @@ object SequencerFrame: TSequencerFrame
             Top = 0
             Width = 177
             Height = 27
+            Opacity = 255
             Text = 'Sequencer'
             HitTest = True
             AutoSize = False
@@ -90,6 +94,7 @@ object SequencerFrame: TSequencerFrame
             Margins.Top = 0
             Margins.Right = 0
             Margins.Bottom = 0
+            Opacity = 255
             Text = 'StepCountSelector'
             HitTest = True
             ColorTextA = '$FFFFFFFF'
@@ -119,6 +124,7 @@ object SequencerFrame: TSequencerFrame
             Margins.Top = 0
             Margins.Right = 0
             Margins.Bottom = 0
+            Opacity = 255
             Text = 'DropBoxSelector1'
             HitTest = True
             ColorTextA = '$FFFFFFFF'
@@ -148,6 +154,7 @@ object SequencerFrame: TSequencerFrame
             Margins.Top = 0
             Margins.Right = 0
             Margins.Bottom = 0
+            Opacity = 255
             Text = 'DropBoxSelector1'
             HitTest = True
             ColorTextA = '$FFFFFFFF'
@@ -173,6 +180,7 @@ object SequencerFrame: TSequencerFrame
           Top = 88
           Width = 225
           Height = 169
+          Opacity = 255
           Text = 'StepSeqControl'
           HitTest = True
           OnShowContextMenu = StepSeqControlShowContextMenu

@@ -63,7 +63,6 @@ type
     fPlugin: TeePlugin;
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -678,11 +677,6 @@ begin
   SampleZoomControl.IndexA := ZoomPos.IndexA;
   SampleZoomControl.IndexB := ZoomPos.IndexB;
   SampleZoomControl.Invalidate;
-end;
-
-function TLoopEditForm.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
 end;
 
 procedure TLoopEditForm.GuiEvent_SampleMakersChanged;

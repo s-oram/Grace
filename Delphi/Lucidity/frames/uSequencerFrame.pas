@@ -31,7 +31,6 @@ type
     fPlugin: TeePlugin;
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -79,10 +78,6 @@ begin
   FMotherShip := aMotherShip;
 end;
 
-function TSequencerFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea: TDialogDisplayArea);
 begin

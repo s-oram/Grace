@@ -37,7 +37,6 @@ type
     SamplesMenu : TSamplesMenu;
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
 
@@ -168,10 +167,6 @@ begin
   SamplesMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
-function TMenuBarFrame.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
 
 procedure TMenuBarFrame.SetMotherShipReference(aMotherShip: IMothership);
 begin

@@ -35,6 +35,22 @@ type
     It might be possible to only store ZeroObjects as TObjects
     and cast back to IZeroObject when needing to send messages....
 
+
+    TODO:
+
+    I think I want to modify the mother ship so that
+    objects are registered as
+    Audio Objects or Main Objects.
+    - Audio Objects generally process audio on the audio thread
+      and have high priority. Audio Objects should be minimised if
+      possible and only sent messages when necessary.
+    - Main Objects operate on the main or GUI thread. They run at
+      less then real-time priority and can be used more freely.
+
+    Create a ZeroObject implementation that can be added to frames etc
+    that can't descend from the TZeroObject class.
+
+
   }
 
   //Forward declarations
@@ -233,7 +249,6 @@ destructor TMotherShip.Destroy;
 var
   c1: Integer;
   Text : string;
-  zo : IZeroObject;
 begin
   if Objects.Count > 0 then
   begin
@@ -308,7 +323,6 @@ procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; 
 var
   msgData : TMessageData;
   QueueValue : TOmniValue;
-  DoIt, DoNothing : TProc;
 begin
   msgData.MsgID := MsgID;
   msgData.Data := Data;

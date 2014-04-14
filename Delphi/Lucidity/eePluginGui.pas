@@ -58,7 +58,6 @@ type
     procedure SetLowerTabState(const Value: TLowerTabOptions);
   private
     FMotherShip : IMothership;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
@@ -688,11 +687,6 @@ begin
     OverlayContainer.Width :=  self.Width;
     OverlayContainer.Height := self.Height;
   end;
-end;
-
-function TPluginGui.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
 end;
 
 procedure TPluginGui.ShowSampleMapEdit;
