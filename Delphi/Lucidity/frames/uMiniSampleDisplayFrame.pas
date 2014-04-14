@@ -82,6 +82,7 @@ type
     procedure SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayZoomChanged(Sender : TObject; aZoom, aOffset : single);
+    procedure SampleOverlayMouseOverMarkerChanged(Sender : TObject);
 
     procedure SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
     procedure SampleDisplayOleDragOver(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
@@ -140,6 +141,7 @@ begin
   fSampleOverlay.OnMouseUp   := SampleOverlayMouseUp;
   fSampleOverlay.OnSampleMarkerChanged := SampleMarkerChanged;
   fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
+  fSampleOverlay.OnMouseOverMakerChanged := SampleOverlayMouseOverMarkerChanged;
 
   fSampleOverlay.OnOleDragDrop  := SampleDisplayOleDragDrop;
   fSampleOverlay.OnOleDragOver  := SampleDisplayOleDragOver;
@@ -924,6 +926,28 @@ begin
     kg.SetModParModAmount(Index, ModSlot, ModAmount);
   end;
 
+end;
+
+procedure TMiniSampleDisplayFrame.SampleOverlayMouseOverMarkerChanged(Sender: TObject);
+var
+  Marker : TSampleMarker;
+  ActiveModParIndex : integer;
+begin
+  Marker := (Sender as TLuciditySampleOverlay).MouseOverMarker;
+
+  case Marker  of
+    smNone:                  ActiveModParIndex := -1;
+    smSampleStartMarker:     ActiveModParIndex := TModParIndex.SampleStart;
+    smSampleEndMarker:       ActiveModParIndex := TModParIndex.SampleEnd;
+    smLoopStartMarker:       ActiveModParIndex := TModParIndex.LoopStart;
+    smLoopEndMarker:         ActiveModParIndex := TModParIndex.LoopEnd;
+    smSampleStartModMarker:  ActiveModParIndex := TModParIndex.SampleStart;
+    smSampleEndModMarker:    ActiveModParIndex := TModParIndex.SampleEnd;
+    smLoopStartModMarker:    ActiveModParIndex := TModParIndex.LoopStart;
+    smLoopEndModMarker:      ActiveModParIndex := TModParIndex.LoopEnd;
+  end;
+
+  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
 end;
 
 

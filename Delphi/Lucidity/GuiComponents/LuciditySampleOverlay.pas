@@ -437,6 +437,7 @@ begin
   if fMouseOverMarker <> TSampleMarker.smNone then
     begin
       fMouseOverMarker := TSampleMarker.smNone;
+      if assigned(OnMouseOverMakerChanged) then OnMouseOverMakerChanged(self);
       Invalidate;
     end;
 end;
@@ -528,9 +529,9 @@ begin
 
   if (IsGrabbed = false) and (SampleIsValid) then
   begin
-    if (IsModEditActive) and (ssAlt in Shift)
-      then Marker := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
-      else Marker := IsNearMarker(X, Y, msWithPreferenceToMarkers);
+    if (IsModEditActive)
+      then Marker := IsNearMarker(X, Y, msWithPreferenceToMarkers)
+      else Marker := IsNearMarker(X, Y, msMarkersOnly);
 
     case Marker of
       smNone:                  Cursor := crDefault;
@@ -551,6 +552,7 @@ begin
     begin
       fMouseOverMarkerVertOffset := Y;
       fMouseOverMarker := Marker;
+      if assigned(OnMouseOverMakerChanged) then OnMouseOverMakerChanged(self);
       Invalidate;
     end else
     if (Marker <> TSampleMarker.smNone) and (fMouseOverMarkerVertOffset <> Y) then
