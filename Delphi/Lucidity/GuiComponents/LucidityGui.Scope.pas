@@ -500,6 +500,7 @@ begin
   BackBuffer.BufferInterface.FillColor := fColorBackground;
 
   BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
+  BackBuffer.BufferInterface.LineWidth := 1.5;
 
 
   //=== draw the lower text ====
@@ -806,7 +807,7 @@ begin
 
   while x1 <= ScopeRect.Right-2 do
   begin
-    Dist := 3 + SectionWidth * LfoValues.Par1;
+    Dist := 3 + SectionWidth * (1-LfoValues.Par1);
     x2 := x1 + Dist;
     if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
 
@@ -861,7 +862,7 @@ begin
 
   while x1 <= ScopeRect.Right-2 do
   begin
-    Dist := 3 + SectionWidth * LfoValues.Par1;
+    Dist := 3 + SectionWidth * (1-LfoValues.Par1);
     x2 := x1 + Dist;
     if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
 

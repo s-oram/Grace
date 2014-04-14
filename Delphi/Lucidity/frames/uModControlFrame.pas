@@ -700,7 +700,7 @@ begin
 
 
   Timer1.Enabled := true;
-  Timer1.Interval := 40;
+  Timer1.Interval := 190;
 
 
 
