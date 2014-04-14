@@ -83,7 +83,6 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
     destructor Destroy; override;
-    procedure RegisterWithMotherShip(const aMothership:IMotherShip);
 
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
@@ -165,13 +164,6 @@ begin
   inherited;
 end;
 
-procedure TZeroObject.RegisterWithMotherShip(const aMothership: IMotherShip);
-begin
-  // NOTE:
-  // ZeroObjects can register with a MotherShip. They must derigister themselves
-  // in the destructor.
-  aMothership.RegisterZeroObject(self);
-end;
 
 procedure TZeroObject.SetMotherShipReference(aMotherShip: IMothership);
 begin

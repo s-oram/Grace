@@ -229,10 +229,11 @@ begin
   {$ENDIF}
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
-  fSignalRecorder.RegisterWithMotherShip(Globals.MotherShip);
+  Globals.MotherShip.RegisterZeroObject(fSignalRecorder);
 
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
-  fFreqAnalyzer.RegisterWithMotherShip(Globals.MotherShip);
+  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer);
+
 
   // TODO: Should do some data directory validation here.
   // - check if the data directory exists,
