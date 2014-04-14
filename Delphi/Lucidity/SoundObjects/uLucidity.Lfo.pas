@@ -87,6 +87,7 @@ type
 implementation
 
 uses
+  eePitch,
   VamLib.Utils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   LucidityParameterScaling,
@@ -94,29 +95,37 @@ uses
 
 
 function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
+
   function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
   var
-    InvPar : single;
     LfoFreq : single;
     BeatSync : double;
+    Beats : integer;
   begin
-    InvPar := 1 - (FreqPar * FreqPar);
-    BeatSync := (1 + round(InvPar * BeatDivision * Bars)) / BeatDivision;
+    Beats := round(BeatDivision * Bars * (1-FreqPar));
+    if Beats < 1
+      then Beats := 1;
+    BeatSync := Beats / BeatDivision;
     LfoFreq := SyncToSamples(BeatSync, Bpm, SampleRate);
     LfoFreq := SampleRate / LfoFreq;
     result := LfoFreq;
   end;
 var
   LfoFreq : single;
+  MinFreq, MaxFreq : single;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   LfoFreq := (FreqPar * FreqPar) * 60 + 0.01; //TODO: Maybe use 1v/oct scaling here as well. //TODO: incorporate range mult.
+    TLfoFreqMode.Hertz:
+    begin
+      MaxFreq := 30;
+      MinFreq := 1 / Power(2,RangeMult);
+      LfoFreq := (FreqPar * FreqPar) * (MaxFreq-MinFreq) + MinFreq;
+    end;
     TLfoFreqMode.Sync4:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 4,   RangeMult);
     TLfoFreqMode.Sync8:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 8,   RangeMult);
     TLfoFreqMode.Sync16:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 16,  RangeMult);
     TLfoFreqMode.Sync32:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 32,  RangeMult);
     TLfoFreqMode.Sync64:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 64,  RangeMult);
-    TLfoFreqMode.Sync128: LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 128, RangeMult);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -132,26 +141,37 @@ function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode;
     InvPar : single;
     TimeInSamples : single;
     BeatSync : double;
+    Beats : integer;
   begin
-    InvPar := 1 - (TimePar * TimePar);
-    BeatSync := (round(InvPar * BeatDivision * Bars)) / BeatDivision;
+    Beats := round(BeatDivision * Bars * TimePar);
+    if Beats < 1
+      then Beats := 1;
+    BeatSync := Beats / BeatDivision;
     TimeInSamples := SyncToSamples(BeatSync, Bpm, SampleRate);
     result := SamplesToMilliSeconds(TimeInSamples, SampleRate);
   end;
 var
   SlopeTime : single;
+  MaxTime : single;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   SlopeTime := (TimePar * TimePar) * 2000;
+    TLfoFreqMode.Hertz:
+    begin
+      MaxTime := 1000 * RangeMult;
+      SlopeTime := (TimePar * TimePar) * MaxTime;
+    end;
     TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   RangeMult);
     TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   RangeMult);
     TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  RangeMult);
     TLfoFreqMode.Sync32:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 32,  RangeMult);
     TLfoFreqMode.Sync64:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 64,  RangeMult);
-    TLfoFreqMode.Sync128: SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 128, RangeMult);
   else
     raise Exception.Create('Type not handled.');
   end;
+
+  if SlopeTime < 20
+    then SlopeTime := 20;
+
 
   result := SlopeTime;
 end;

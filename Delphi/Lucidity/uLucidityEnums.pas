@@ -58,7 +58,7 @@ type
   TLfoMode = (Free, Sync, Tempo);
   TLfoModeHelper = class(TEnumHelper<TLfoMode>);
 
-  TLfoFreqMode = (Hertz, Sync4, Sync8, Sync16, Sync32, Sync64, Sync128);
+  TLfoFreqMode = (Hertz, Sync4, Sync8, Sync16, Sync32, Sync64);
   TLfoFreqModeHelper = class(TEnumHelper<TLfoFreqMode>)
   public
     class function ToFullGuiString(aEnum : TLfoFreqMode):string; override;
@@ -744,7 +744,6 @@ begin
     TLfoFreqMode.Sync16:  result := 'Sync 1/16';
     TLfoFreqMode.Sync32:  result := 'Sync 1/32';
     TLfoFreqMode.Sync64:  result := 'Sync 1/64';
-    TLfoFreqMode.Sync128: result := 'Sync 1/128';
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -759,7 +758,6 @@ begin
     TLfoFreqMode.Sync16:  result := '1/16';
     TLfoFreqMode.Sync32:  result := '1/32';
     TLfoFreqMode.Sync64:  result := '1/64';
-    TLfoFreqMode.Sync128: result := '1/128';
   else
     raise Exception.Create('Type not handled.');
   end;
