@@ -263,7 +263,6 @@ begin
   begin
     KnobSmoother.FinaliseKnob(self);
 
-
     if (ssAlt in Shift) and (KnobMode = TKnobMode.ModEdit)
       then CurrentEditMode := TKnobMode.ModEdit
       else CurrentEditMode := TKnobMode.PositionEdit;
