@@ -67,8 +67,8 @@ type
     ReferenceX : integer;
     ReferenceModAmount : single;
 
-    MouseOverMarker : TSampleMarker;
-    MouseOverMarkerVertOffset : integer;
+    fMouseOverMarker : TSampleMarker;
+    fMouseOverMarkerVertOffset : integer;
 
     IsZooming : boolean;
     ZoomDragx1 : integer;
@@ -223,11 +223,6 @@ const
 var
   SPos : single;
   PixPos : single;
-  PixSampleStartMarker : single;
-  PixSampleEndMarker   : single;
-  PixLoopStartMarker : single;
-  PixLoopEndMarker   : single;
-
   IsNearMarker_SampleStart    : boolean;
   IsNearMarker_SampleEnd      : boolean;
   IsNearMarker_LoopStart      : boolean;
@@ -435,9 +430,9 @@ begin
   inherited;
   Cursor := crDefault;
 
-  if MouseOverMarker <> TSampleMarker.smNone then
+  if fMouseOverMarker <> TSampleMarker.smNone then
     begin
-      MouseOverMarker := TSampleMarker.smNone;
+      fMouseOverMarker := TSampleMarker.smNone;
       Invalidate;
     end;
 end;
@@ -548,15 +543,15 @@ begin
     end;
 
 
-    if (Marker <> MouseOverMarker) then
+    if (Marker <> fMouseOverMarker) then
     begin
-      MouseOverMarkerVertOffset := Y;
-      MouseOverMarker := Marker;
+      fMouseOverMarkerVertOffset := Y;
+      fMouseOverMarker := Marker;
       Invalidate;
     end else
-    if (Marker <> TSampleMarker.smNone) and (MouseOverMarkerVertOffset <> Y) then
+    if (Marker <> TSampleMarker.smNone) and (fMouseOverMarkerVertOffset <> Y) then
     begin
-      MouseOverMarkerVertOffset := Y;
+      fMouseOverMarkerVertOffset := Y;
       Invalidate;
     end;
   end;
@@ -1030,13 +1025,13 @@ begin
 
     if (IsGrabbed = false) then
     begin
-      case MouseOverMarker of
+      case fMouseOverMarker of
         smSampleStartMarker:
         begin
           x1 := SampleStart;
           x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
           Draw_SampleStart(x1);
-          Draw_MarkerTag(x1, MouseOverMarkerVertOffset, TSampleMarker.smSampleStartMarker);
+          Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smSampleStartMarker);
         end;
 
         smSampleEndMarker:
@@ -1044,7 +1039,7 @@ begin
           x1 := SampleEnd;
           x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
           Draw_SampleEnd(x1);
-          Draw_MarkerTag(x1, MouseOverMarkerVertOffset, TSampleMarker.smSampleEndMarker);
+          Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smSampleEndMarker);
         end;
 
         smLoopStartMarker:
@@ -1054,7 +1049,7 @@ begin
             x1 := LoopStart;
             x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
             Draw_LoopStart(x1);
-            Draw_MarkerTag(x1, MouseOverMarkerVertOffset, TSampleMarker.smLoopStartMarker);
+            Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smLoopStartMarker);
           end;
 
         end;
@@ -1066,7 +1061,7 @@ begin
             x1 := LoopEnd;
             x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
             Draw_LoopEnd(x1);
-            Draw_MarkerTag(x1, MouseOverMarkerVertOffset, TSampleMarker.smLoopEndMarker);
+            Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smLoopEndMarker);
           end;
         end;
       end;
