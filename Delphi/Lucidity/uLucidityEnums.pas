@@ -377,11 +377,11 @@ begin
   case aEnum of
     TLfoShape.SawUp:         result := 'Saw';
     TLfoShape.SawDown:       result := 'Ramp';
-    TLfoShape.Square:        result := 'Square';
+    TLfoShape.Square:        result := 'Sqr';
     TLfoShape.Triangle:      result := 'Tri';
     TLfoShape.Sine:          result := 'Sine';
-    TLfoShape.RandomSmooth:  result := 'R-Smooth';
-    TLfoShape.RandomStepped: result := 'R-Step';
+    TLfoShape.RandomSmooth:  result := 'R.Smth';
+    TLfoShape.RandomStepped: result := 'R.Stp';
     TLfoShape.AttackDecay:   result := 'AD';
     TLfoShape.AttackRelease: result := 'AR';
     TLfoShape.Cycle:         result := 'Cycle';
