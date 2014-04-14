@@ -46,7 +46,6 @@ type
 
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   end;
@@ -67,7 +66,6 @@ type
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
-    function GetMotherShipReference:IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
     FRefCount: Integer;
@@ -169,13 +167,6 @@ procedure TZeroObject.SetMotherShipReference(aMotherShip: IMothership);
 begin
   FMotherShip := aMotherShip;
 end;
-
-function TZeroObject.GetMotherShipReference: IMotherShip;
-begin
-  result := FMotherShip;
-end;
-
-
 
 function TZeroObject.GetIsReferenceCounted: boolean;
 begin
