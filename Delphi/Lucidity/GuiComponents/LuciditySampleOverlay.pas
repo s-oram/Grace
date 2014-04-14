@@ -45,6 +45,7 @@ type
     fLoopStartModMax: single;
     fLoopEndModMax: single;
     fSampleStartModMax: single;
+    fOnMouseOverMarkerChanged: TNotifyEvent;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -139,12 +140,15 @@ type
     property NoSampleMessage : string read fNoSampleMessage write SetNoSampleMessage;
 
     property IsModEditActive : boolean read fIsModEditActive write SetIsModEditActive;
+
+    property MouseOverMarker : TSampleMarker read fMouseOverMarker;
   published
     property ShowMarkerTags : boolean read fShowMarkerTags write SetShowMarkerTags;
 
     property OnSampleMarkerChanged : TSampleMarkerChangedEvent read fOnSampleMarkerChanged write fOnSampleMarkerChanged;
     property OnZoomChanged         : TSampleOverlayZoomEvent   read fOnZoomChanged         write fOnZoomChanged;
     property OnModAmountsChanged   : TNotifyEvent              read fOnModAmountsChanged   write fOnModAmountsChanged;
+    property OnMouseOverMakerChanged : TNotifyEvent            read fOnMouseOverMarkerChanged write fOnMouseOverMarkerChanged;
 
     property Font;
 
