@@ -53,12 +53,13 @@ type
 
   }
 
+  TZeroObjectRank = (zoMain, zoAudio);
+
   //Forward declarations
   IZeroObject = interface;
   TZeroObject = class;
 
   IMotherShip = interface;
-  TMotherShip = class;
 
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
@@ -68,7 +69,7 @@ type
 
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
-    procedure RegisterZeroObject(obj:TObject);
+    procedure RegisterZeroObject(obj:TObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal); overload;
@@ -118,7 +119,8 @@ type
       CleanUp : TProc;
     end;
   private
-    Objects      : TObjectList;
+    AudioObjects  : TObjectList;
+    MainObjects   : TObjectList;
 
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
@@ -130,7 +132,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure RegisterZeroObject(obj:TObject);
+    procedure RegisterZeroObject(obj:TObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(obj:TObject);
 
     procedure SendMessage(MsgID : cardinal); overload;
@@ -235,8 +237,11 @@ end;
 
 constructor TMotherShip.Create;
 begin
-  Objects := TObjectList.Create;
-  Objects.OwnsObjects := false;
+  AudioObjects := TObjectList.Create;
+  AudioObjects.OwnsObjects := false;
+
+  MainObjects := TObjectList.Create;
+  MainObjects.OwnsObjects := false;
 
   GuiMessageQueue := TOmniQueue.Create;
   GuiMessageTimer := TTimer.Create(nil);
@@ -250,11 +255,11 @@ var
   c1: Integer;
   Text : string;
 begin
-  if Objects.Count > 0 then
+  if AudioObjects.Count > 0 then
   begin
-    for c1 := Objects.Count-1 downto 0 do
+    for c1 := AudioObjects.Count-1 downto 0 do
     begin
-      Text := Objects[c1].ClassName + ' has not been freed!';
+      Text := AudioObjects[c1].ClassName + ' has not been freed!';
       //VamLib.WinUtils.SendDebugMesssage(Text);
     end;
     // TODO: the hard arse way to respond to unfreed zero objects. This
@@ -263,21 +268,37 @@ begin
   end;
 
   GuiMessageTimer.Free;
-  Objects.Free;
+  AudioObjects.Free;
+  MainObjects.Free;
   GuiMessageQueue.Free;
 
   inherited;
 end;
 
-procedure TMotherShip.RegisterZeroObject(obj: TObject);
+procedure TMotherShip.RegisterZeroObject(obj: TObject; const Rank : TZeroObjectRank);
 var
   zo : IZeroObject;
 begin
   if Supports(obj, IZeroObject, zo) then
   begin
     zo.SetMotherShipReference(self);
-    if Objects.IndexOf(Obj) = -1
-      then Objects.Add(Obj);
+
+    case Rank of
+      zoMain:
+      begin
+        if MainObjects.IndexOf(Obj) = -1
+          then MainObjects.Add(Obj);
+      end;
+
+      zoAudio:
+      begin
+        if AudioObjects.IndexOf(Obj) = -1
+          then AudioObjects.Add(Obj);
+      end;
+    else
+      raise Exception.Create('Rank not supported.');
+    end;
+
   end else
   begin
     raise Exception.Create('Object isn''t a ZeroObject.');
@@ -291,7 +312,8 @@ begin
   if Supports(obj, IZeroObject, zo) then
   begin
     zo.SetMotherShipReference(nil);
-    Objects.Remove(Obj);
+    AudioObjects.Remove(Obj);
+    MainObjects.Remove(Obj);
   end;
 end;
 
@@ -305,9 +327,17 @@ var
   c1: Integer;
   zo : IZeroObject;
 begin
-  for c1 := 0 to Objects.Count - 1 do
+  for c1 := 0 to AudioObjects.Count - 1 do
   begin
-    if Supports(Objects[c1], IZeroObject, zo) then
+    if Supports(AudioObjects[c1], IZeroObject, zo) then
+    begin
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  end;
+
+  for c1 := 0 to MainObjects.Count - 1 do
+  begin
+    if Supports(MainObjects[c1], IZeroObject, zo) then
     begin
       zo.ProcessZeroObjectMessage(MsgID, Data);
     end;

@@ -305,8 +305,7 @@ begin
   GuiStandard := TGuiStandard.Create(Plugin, Plugin.Globals);
   GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
-  Plugin.Globals.MotherShip.RegisterZeroObject(self);
-
+  Plugin.Globals.MotherShip.RegisterZeroObject(self, zoAudio);
 
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
   fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
@@ -355,14 +354,14 @@ begin
 
 
   //====== Register frames as zero objects =====================================
-  Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame);
+  Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame, zoMain);
 
 
   try

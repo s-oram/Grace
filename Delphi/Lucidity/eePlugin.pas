@@ -184,6 +184,7 @@ type
 implementation
 
 uses
+  VamLib.ZeroObject,
   MadExcept, Windows,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeCustomGlobals,
@@ -229,10 +230,10 @@ begin
   {$ENDIF}
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
-  Globals.MotherShip.RegisterZeroObject(fSignalRecorder);
+  Globals.MotherShip.RegisterZeroObject(fSignalRecorder, zoAudio);
 
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
-  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer);
+  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, zoAudio);
 
 
   // TODO: Should do some data directory validation here.

@@ -210,6 +210,7 @@ implementation
 
 
 uses
+  VamLib.ZeroObject,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeCustomGlobals,
   eeProfiler,
@@ -312,7 +313,7 @@ begin
   OutputMixer.VoiceMixMain := 1;
 
   LevelMonitor := TLevelMonitor.Create;
-  Globals.MotherShip.RegisterZeroObject(LevelMonitor);
+  Globals.MotherShip.RegisterZeroObject(LevelMonitor, zoAudio);
 
   // Finally,
   SampleRateChanged(self);

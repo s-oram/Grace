@@ -29,6 +29,7 @@ type
 implementation
 
 uses
+  VamLib.ZeroObject,
   VamQuery,
   Classes,
   Controls,
@@ -51,7 +52,7 @@ begin
   SystemWindow := aSystemWindow;
 
   ScopeHandler := TScopeHandler.Create(Plugin.Globals);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, zoMain);
 
   c := FindControlbyName(Gui, 'Scope');
   if assigned(c) then
@@ -87,10 +88,7 @@ begin
 
 
   ActiveModDetector := TModDisplayDetector.Create(Plugin);
-  aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector);
-
-
-
+  aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, zoMain);
 end;
 
 destructor TPluginGuiMeta.Destroy;
