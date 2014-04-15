@@ -78,8 +78,8 @@ type
 
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
-    procedure RegisterZeroObject(obj:TObject; const Rank : TZeroObjectRank);
-    procedure DeregisterZeroObject(obj:TObject);
+    procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
+    procedure DeregisterZeroObject(obj:IZeroObject);
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
@@ -128,8 +128,8 @@ type
       CleanUp : TProc;
     end;
   private
-    AudioObjects  : TObjectList;
-    MainObjects   : TObjectList;
+    AudioObjects  : TList;
+    MainObjects   : TList;
 
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
@@ -141,8 +141,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure RegisterZeroObject(obj:TObject; const Rank : TZeroObjectRank);
-    procedure DeregisterZeroObject(obj:TObject);
+    procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
+    procedure DeregisterZeroObject(obj:IZeroObject);
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
@@ -255,11 +255,10 @@ end;
 
 constructor TMotherShip.Create;
 begin
-  AudioObjects := TObjectList.Create;
-  AudioObjects.OwnsObjects := false;
+  AudioObjects := TList.Create;
 
-  MainObjects := TObjectList.Create;
-  MainObjects.OwnsObjects := false;
+  MainObjects := TList.Create;
+
 
   GuiMessageQueue := TOmniQueue.Create;
   GuiMessageTimer := TTimer.Create(nil);
@@ -273,6 +272,7 @@ var
   c1: Integer;
   Text : string;
 begin
+  {
   if AudioObjects.Count > 0 then
   begin
     for c1 := AudioObjects.Count-1 downto 0 do
@@ -284,6 +284,7 @@ begin
     // should probably be removed in release builds!
     raise Exception.Create('Not all ZeroObjects have been freed.');
   end;
+  }
 
   GuiMessageTimer.Free;
   AudioObjects.Free;
@@ -293,10 +294,32 @@ begin
   inherited;
 end;
 
-procedure TMotherShip.RegisterZeroObject(obj: TObject; const Rank : TZeroObjectRank);
+procedure TMotherShip.RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
 var
   zo : IZeroObject;
+  ptr : Pointer;
 begin
+  ptr := Pointer(obj); //Weak reference to zero object
+  obj.SetMotherShipReference(self);
+
+  case Rank of
+    zoMain:
+    begin
+      if MainObjects.IndexOf(ptr) = -1
+        then MainObjects.Add(ptr);
+    end;
+
+    zoAudio:
+    begin
+      if AudioObjects.IndexOf(ptr) = -1
+        then AudioObjects.Add(ptr);
+    end;
+  else
+    raise Exception.Create('Rank not supported.');
+  end;
+
+
+  {
   if Supports(obj, IZeroObject, zo) then
   begin
     zo.SetMotherShipReference(self);
@@ -321,18 +344,18 @@ begin
   begin
     raise Exception.Create('Object isn''t a ZeroObject.');
   end;
+  }
 end;
 
-procedure TMotherShip.DeregisterZeroObject(obj: TObject);
+procedure TMotherShip.DeregisterZeroObject(obj: IZeroObject);
 var
+  ptr : Pointer;
   zo : IZeroObject;
 begin
-  if Supports(obj, IZeroObject, zo) then
-  begin
-    zo.SetMotherShipReference(nil);
-    AudioObjects.Remove(Obj);
-    MainObjects.Remove(Obj);
-  end;
+  ptr := Pointer(obj); //Weak reference to zero object
+  AudioObjects.Remove(ptr);
+  MainObjects.Remove(ptr);
+  obj.SetMotherShipReference(nil);
 end;
 
 procedure TMotherShip.SendMessage(MsgID: cardinal);
@@ -347,18 +370,14 @@ var
 begin
   for c1 := 0 to AudioObjects.Count - 1 do
   begin
-    if Supports(AudioObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(AudioObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 
   for c1 := 0 to MainObjects.Count - 1 do
   begin
-    if Supports(MainObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(MainObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 end;
 
@@ -406,18 +425,14 @@ var
 begin
   for c1 := 0 to AudioObjects.Count - 1 do
   begin
-    if Supports(AudioObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(AudioObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 
   for c1 := 0 to MainObjects.Count - 1 do
   begin
-    if Supports(MainObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(MainObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 end;
 
@@ -433,10 +448,8 @@ var
 begin
   for c1 := 0 to AudioObjects.Count - 1 do
   begin
-    if Supports(AudioObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(AudioObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 end;
 
@@ -457,10 +470,8 @@ var
 begin
   for c1 := 0 to MainObjects.Count - 1 do
   begin
-    if Supports(MainObjects[c1], IZeroObject, zo) then
-    begin
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
+    zo := IZeroObject(MainObjects[c1]);
+    zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
 end;
 
