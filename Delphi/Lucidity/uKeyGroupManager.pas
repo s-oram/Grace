@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   VamLib.MoreTypes, soLucidityVoice, Lucidity.Interfaces,
   Classes, Contnrs, uConstants, Lucidity.KeyGroup,
   eeGlobals, SyncObjs;
@@ -106,6 +107,19 @@ type
     property KeyGroups[Index : integer] : IKeyGroup read GetKeyGroup;
 
     property FocusedGroup : IKeyGroup read fFocusedGroup;
+  end;
+
+
+
+  TKeyGroupPlayer = class(TZeroObject)
+  private
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure FastControlProcess; inline;
+    procedure SlowControlProcess; inline;
+    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
   end;
 
 
@@ -395,6 +409,36 @@ begin
   result := GroupsList.Count;
 end;
 
+
+
+
+{ TKeyGroupPlayer }
+
+constructor TKeyGroupPlayer.Create;
+begin
+
+end;
+
+destructor TKeyGroupPlayer.Destroy;
+begin
+
+  inherited;
+end;
+
+procedure TKeyGroupPlayer.FastControlProcess;
+begin
+
+end;
+
+procedure TKeyGroupPlayer.SlowControlProcess;
+begin
+
+end;
+
+procedure TKeyGroupPlayer.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
+begin
+
+end;
 
 
 
