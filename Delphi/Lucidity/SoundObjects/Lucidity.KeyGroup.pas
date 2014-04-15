@@ -3,8 +3,7 @@ unit Lucidity.KeyGroup;
 interface
 
 uses
-
-
+  VamLib.ZeroObject,
   VamGuiControlInterfaces,
   Lucidity.Types,
   Lucidity.SequencerDataObject,
@@ -26,7 +25,7 @@ type
   IKeyGroup = Lucidity.Interfaces.IKeyGroup;
 
 type
-  TKeyGroup = class(TInterfacedObject, IKeyGroup, ILevelMonitor)
+  TKeyGroup = class(TRefCountedZeroObject, IKeyGroup, ILevelMonitor)
   private
     fTriggeredNoteCount : cardinal;
     fName     : string;
