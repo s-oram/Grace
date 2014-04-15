@@ -158,8 +158,6 @@ type
 
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
-
-
   end;
 
 
