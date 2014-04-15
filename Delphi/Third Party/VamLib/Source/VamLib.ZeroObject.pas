@@ -62,6 +62,9 @@ type
 
   }
 
+
+  // Main is for the GUI and VCL objects. It needs to be thead-safe.
+  // Audio is for audio/realtime objects.
   TZeroObjectRank = (zoMain, zoAudio);
 
   //Forward declarations
@@ -85,6 +88,14 @@ type
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
+
+    procedure MsgMain(MsgID : cardinal); overload;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgMainTS(MsgID : cardinal); overload;
+    procedure MsgMainTS(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload; //Thread Safe version.
+
+    procedure MsgAudio(MsgID : cardinal); overload;
+    procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
   end;
 
 
@@ -128,14 +139,14 @@ type
       CleanUp : TProc;
     end;
   private
-    AudioObjects  : TList;
-    MainObjects   : TList;
+    AudioObjects : TList;
+    MainObjects  : TList;
 
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
-    GuiMessageQueue : TOmniQueue;
-    GuiMessageTimer : TTimer;
+    MainMessageQueue : TOmniQueue;
+    MainMessageTimer : TTimer;
     procedure Handle_GuiMessageTimerEvent(Sender : TObject);
   public
     constructor Create;
@@ -144,17 +155,16 @@ type
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(obj:IZeroObject);
 
-    procedure SendMessage(MsgID : cardinal); overload;
-    procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
-
-    procedure MsgAll(MsgID : cardinal); overload;
-    procedure MsgAll(MsgID : cardinal; Data : Pointer); overload;
-
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgMainTS(MsgID : cardinal); overload;
+    procedure MsgMainTS(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload; //Thread Safe version.
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure SendMessage(MsgID : cardinal); overload;
+    procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
 
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
@@ -258,11 +268,11 @@ begin
   MainObjects := TList.Create;
 
 
-  GuiMessageQueue := TOmniQueue.Create;
-  GuiMessageTimer := TTimer.Create(nil);
-  GuiMessageTimer.Interval := 25;
-  GuiMessageTimer.OnTimer := Handle_GuiMessageTimerEvent;
-  GuiMessageTimer.Enabled := true;
+  MainMessageQueue := TOmniQueue.Create;
+  MainMessageTimer := TTimer.Create(nil);
+  MainMessageTimer.Interval := 25;
+  MainMessageTimer.OnTimer := Handle_GuiMessageTimerEvent;
+  MainMessageTimer.Enabled := true;
 end;
 
 destructor TMotherShip.Destroy;
@@ -284,10 +294,10 @@ begin
   end;
   }
 
-  GuiMessageTimer.Free;
+  MainMessageTimer.Free;
   AudioObjects.Free;
   MainObjects.Free;
-  GuiMessageQueue.Free;
+  MainMessageQueue.Free;
 
   inherited;
 end;
@@ -316,33 +326,6 @@ begin
     raise Exception.Create('Rank not supported.');
   end;
 
-
-  {
-  if Supports(obj, IZeroObject, zo) then
-  begin
-    zo.SetMotherShipReference(self);
-
-    case Rank of
-      zoMain:
-      begin
-        if MainObjects.IndexOf(Obj) = -1
-          then MainObjects.Add(Obj);
-      end;
-
-      zoAudio:
-      begin
-        if AudioObjects.IndexOf(Obj) = -1
-          then AudioObjects.Add(Obj);
-      end;
-    else
-      raise Exception.Create('Rank not supported.');
-    end;
-
-  end else
-  begin
-    raise Exception.Create('Object isn''t a ZeroObject.');
-  end;
-  }
 end;
 
 procedure TMotherShip.DeregisterZeroObject(obj: IZeroObject);
@@ -394,7 +377,7 @@ begin
   msgData.CleanUp := CleanUp;
 
   QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-  GuiMessageQueue.Enqueue(QueueValue);
+  MainMessageQueue.Enqueue(QueueValue);
 end;
 
 procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
@@ -402,42 +385,17 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  while GuiMessageQueue.TryDequeue(QueueValue) do
+  while MainMessageQueue.TryDequeue(QueueValue) do
   begin
     MsgData := QueueValue.ToRecord<TMessageData>;
 
-    SendMessage(msgData.MsgID, msgData.Data);
+    MsgMain(msgData.MsgID, msgData.Data);
 
     if assigned(msgData.CleanUp)
       then msgData.CleanUp();
   end;
 end;
 
-
-
-
-procedure TMotherShip.MsgAll(MsgID: cardinal; Data: Pointer);
-var
-  c1: Integer;
-  zo : IZeroObject;
-begin
-  for c1 := 0 to AudioObjects.Count - 1 do
-  begin
-    zo := IZeroObject(AudioObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
-  end;
-
-  for c1 := 0 to MainObjects.Count - 1 do
-  begin
-    zo := IZeroObject(MainObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
-  end;
-end;
-
-procedure TMotherShip.MsgAll(MsgID: cardinal);
-begin
-  MsgAll(MsgID, nil);
-end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 var
@@ -471,6 +429,24 @@ begin
     zo := IZeroObject(MainObjects[c1]);
     zo.ProcessZeroObjectMessage(MsgID, Data);
   end;
+end;
+
+procedure TMotherShip.MsgMainTS(MsgID: cardinal);
+begin
+  MsgMainTS(MsgID, nil, nil);
+end;
+
+procedure TMotherShip.MsgMainTS(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
+var
+  msgData : TMessageData;
+  QueueValue : TOmniValue;
+begin
+  msgData.MsgID := MsgID;
+  msgData.Data := Data;
+  msgData.CleanUp := CleanUp;
+
+  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
+  MainMessageQueue.Enqueue(QueueValue);
 end;
 
 { TRefCountedZeroObject }
