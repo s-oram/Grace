@@ -47,6 +47,8 @@ type
     procedure SampleRateChanged(Sender:TObject);
     procedure BlockSizeChanged(Sender:TObject);
 
+    procedure GetDbLevel(out Ch1, Ch2 : single);
+    property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor;
   protected
     KeyGroupID : TKeyGroupID;
 
@@ -99,7 +101,7 @@ type
     property Seq1Data : TSequencerDataObject read FSeq1Data;
     property Seq2Data : TSequencerDataObject read FSeq1Data;
 
-    property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor implements ILevelMonitor;
+
 
     // TODO: Asking the Key Groups to process the relevent voices added about 5-7% cpu.
     // Perhaps there are ways to reduce that by being smarter about how the voices
@@ -207,6 +209,11 @@ begin
 end;
 
 
+
+procedure TKeyGroup.GetDbLevel(out Ch1, Ch2: single);
+begin
+  LevelMonitor.GetDbLevel(Ch1, Ch2);
+end;
 
 procedure TKeyGroup.GetFilterInfo(const Info: PFilterParameterInfo);
 // TODO: it's possible that this method can be deleted.

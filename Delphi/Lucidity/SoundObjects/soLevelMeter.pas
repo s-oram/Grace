@@ -15,11 +15,11 @@ type
     fSampleRate: single;
     DecayCoefficient : single;
     procedure SetSampleRate(const Value: single);
-
-    procedure GetDbLevel(out Ch1, Ch2 : single);
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure GetDbLevel(out Ch1, Ch2 : single);
 
     procedure Process(InputA, InputB : PSingle; const SampleFrames : integer);
 
