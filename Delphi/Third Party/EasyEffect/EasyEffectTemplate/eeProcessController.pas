@@ -83,7 +83,6 @@ type
 implementation
 
 uses
-  eeProfilerV2, //TODO: remove TProfiler usage.
   Windows,
   SysUtils,
   eeTypes;
@@ -408,8 +407,6 @@ begin
 
   while SampleFrames > 0 do
   begin
-
-
     ProcessReplacingOffset := SamplesProcessed;
 
     //Get the next delta values and calucate how many samples to process.
@@ -432,18 +429,13 @@ begin
 
     if SamplesToProcess > 0 then
     begin
-      TProfiler.StartTimer('AC');
-
       //Process those samples..
       Plugin.AudioProcess(SamplesToProcess);
       inc(SamplesProcessed, SamplesToProcess);
       dec(SampleFrames, SamplesToProcess);
       inc(ControlRateOffset, SamplesToProcess);
-
-      TProfiler.StopTimer('AC');
     end else
     begin
-      TProfiler.StartTimer('1');
       // or process whatever events...
       if NextMidiEventDelta = 0 then
       begin
@@ -451,9 +443,6 @@ begin
         Plugin.ProcessMidiEvent(ev);
         Inc(CurEv);
       end;
-      TProfiler.StopTimer('1');
-
-      TProfiler.StartTimer('2');
 
       if NextControlRateDelta = 0 then
       begin
@@ -468,8 +457,6 @@ begin
           Plugin.SlowControlProcess;
         end;
       end;
-
-      TProfiler.StopTimer('2');
     end;
 
 
