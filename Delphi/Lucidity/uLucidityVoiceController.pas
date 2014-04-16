@@ -96,8 +96,6 @@ type
     procedure RegionTriggerCheck(const Data1, Data2 : byte; const SampleMap : TSampleMap; const MonoVoicesOnly : boolean);
 
     function CalcPitchTransitionTime : single;
-
-    function GetActiveVoiceList : TObject;
   public
     constructor Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -114,7 +112,6 @@ type
     procedure NoteOff(const Data1, Data2 : byte; const SampleMap: TSampleMap);
     procedure PitchBend(const PitchBendAmount : single);
     procedure Modwheel(const Value : single);
-
 
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
@@ -303,11 +300,6 @@ end;
 function TLucidityVoiceController.GetActiveVoiceCount: integer;
 begin
   result := ActiveVoices.Count;
-end;
-
-function TLucidityVoiceController.GetActiveVoiceList: TObject;
-begin
-  result := ActiveVoices;
 end;
 
 procedure TLucidityVoiceController.CullVoice(const TriggerNote: byte);

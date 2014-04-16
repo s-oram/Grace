@@ -58,8 +58,6 @@ type
     procedure SetID(ID:TKeyGroupID);
 
   protected
-    ActiveVoices        : TLucidityVoiceList;
-    procedure SetActiveVoices(const ActiveVoiceList : TObject);
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -138,9 +136,6 @@ begin
 
   fLevelMonitor := TLevelMonitor.Create;
 
-  ActiveVoices := TLucidityVoiceList.Create(false);
-
-
   SampleRateChanged(self);
   BlockSizeChanged(self);
 end;
@@ -152,7 +147,6 @@ begin
   fVoiceParameters.Free;
   fModConnections.Free;
   fLevelMonitor.Free;
-  ActiveVoices.Free;
 
   SetLength(VoiceBufferA, 0);
   SetLength(VoiceBufferB, 0);
@@ -377,14 +371,6 @@ begin
   SetLength(VoiceBufferB, Globals.BlockSize);
 end;
 
-
-procedure TKeyGroup.SetActiveVoices(const ActiveVoiceList: TObject);
-begin
-  assert(ActiveVoiceList is TLucidityVoiceList);
-
-  ActiveVoices := ActiveVoiceList as TLucidityVoiceList;
-end;
-
 procedure TKeyGroup.SetID(ID: TKeyGroupID);
 begin
   KeyGroupID := ID;
@@ -451,6 +437,7 @@ procedure TKeyGroup.FastControlProcess;
 var
   c1 : integer;
 begin
+  {
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
@@ -458,12 +445,14 @@ begin
       ActiveVoices[c1].FastControlProcess;
     end;
   end;
+  }
 end;
 
 procedure TKeyGroup.SlowControlProcess;
 var
   c1 : integer;
 begin
+  {
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
@@ -471,6 +460,7 @@ begin
       ActiveVoices[c1].SlowControlProcess;
     end;
   end;
+  }
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
@@ -479,6 +469,7 @@ var
   pxA, pxB : PSingle;
   pOutA, pOutB : PSingle;
 begin
+  {
   pxA := @VoiceBufferA[0];
   pxB := @VoiceBufferB[0];
 
@@ -506,7 +497,7 @@ begin
     inc(pOutA);
     inc(pOutB);
   end;
-
+  }
 end;
 
 

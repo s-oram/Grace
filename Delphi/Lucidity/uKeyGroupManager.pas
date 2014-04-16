@@ -48,7 +48,6 @@ type
     Globals : TGlobals;
 
     Voices : PArrayOfLucidityVoice;
-    VoiceController:IVoiceController;
 
     SGCreateCount : cardinal;
 
@@ -145,7 +144,6 @@ begin
   GlobalModPoints := aGlobalModPoints;
 
   Voices := aVoices;
-  VoiceController := aVoiceController;
 
   ListLock := TMutex.Create;
 
@@ -241,7 +239,6 @@ begin
     inc(SGCreateCount);
 
     sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
-    sg.SetActiveVoices(VoiceController.GetActiveVoiceList);
 
     //==========================================================================
     //TODO: There is a very small potential for a bug here. The KeyGroupID is

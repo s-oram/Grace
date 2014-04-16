@@ -15,7 +15,6 @@ uses
 type
   IVoiceController = interface
     ['{33599814-7B6A-42F6-83AB-99BB3833321C}']
-    function GetActiveVoiceList : TObject;
   end;
 
   IKeyGroup = interface(IInterface)
@@ -27,8 +26,6 @@ type
 
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
-
-    procedure SetActiveVoices(const ActiveVoiceList : TObject);
 
     function GetTriggeredNoteCount:cardinal;
     procedure IncTriggeredNoteCount;
