@@ -109,21 +109,6 @@ type
   end;
 
 
-
-  TKeyGroupPlayer = class(TZeroObject)
-  private
-  public
-    constructor Create;
-    destructor Destroy; override;
-
-    procedure FastControlProcess; inline;
-    procedure SlowControlProcess; inline;
-    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
-  end;
-
-
-
-
 implementation
 
 uses
@@ -225,6 +210,7 @@ end;
 function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
 var
   sg : IKeyGroup;
+  zo : IZeroObject;
 begin
   ListLock.Acquire;
   try
@@ -239,6 +225,9 @@ begin
     inc(SGCreateCount);
 
     sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+
+
+
 
     //==========================================================================
     //TODO: There is a very small potential for a bug here. The KeyGroupID is
@@ -255,6 +244,11 @@ begin
       then sg.SetName(aName)
       else sg.SetName('Group ' + IntToStr(SGCreateCount));
     fList.Add(sg);
+
+    if supports(sg, IZeroObject, zo) then
+    begin
+      Globals.MotherShip.RegisterZeroObject(zo, zoAudio);
+    end;
 
     result := sg;
   finally
@@ -404,37 +398,6 @@ end;
 function TKeyGroupsInfo.GetKeyGroupCount: integer;
 begin
   result := GroupsList.Count;
-end;
-
-
-
-
-{ TKeyGroupPlayer }
-
-constructor TKeyGroupPlayer.Create;
-begin
-
-end;
-
-destructor TKeyGroupPlayer.Destroy;
-begin
-
-  inherited;
-end;
-
-procedure TKeyGroupPlayer.FastControlProcess;
-begin
-
-end;
-
-procedure TKeyGroupPlayer.SlowControlProcess;
-begin
-
-end;
-
-procedure TKeyGroupPlayer.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
-begin
-
 end;
 
 

@@ -48,7 +48,8 @@ uses
   soDynamicWaveTableOsc,
   soGrainStretchSubOsc,
   soLucidityVoiceParameterWrapper,
-  uLucidityStepSequencer;
+  uLucidityStepSequencer,
+  Lucidity.KeyGroupPlayer;
 
 type
   TeePlugin = class(TeePluginBase)
@@ -81,6 +82,7 @@ type
     ParameterWizard : TPluginParameterWizard;
     GlobalModPoints : TGlobalModulationPoints;
     VoiceController : TLucidityVoiceController;
+    KeyGroupPlayer  : TKeyGroupPlayer;
 
     EmptyKeyGroup : IKeyGroup;
 
@@ -293,6 +295,9 @@ begin
 
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
 
+  KeyGroupPlayer  := TKeyGroupPlayer.Create;
+  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, zoAudio);
+
   fSampleMap := TSampleMap.Create;
 
   fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
@@ -376,6 +381,7 @@ begin
   ParameterWizard.Free;
   MidiAutomation.Free;
   VoiceController.Free;  //here.
+  KeyGroupPlayer.Free;
   fKeyGroups.Free;
   fSampleMap.Free;
   fGuiState.Free;
@@ -1067,10 +1073,7 @@ begin
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     VoiceController.FastControlProcess;
-    //TODO: Try pulling the key groups process
-    // out to a new class. It might help isolate where the crashes are
-    // occuring.
-    //KeyGroups.FastControlProcess;
+    KeyGroupPlayer.FastControlProcess;
   except
     {$IFDEF MadExcept}
     HandleException;
@@ -1084,8 +1087,7 @@ procedure TeePlugin.SlowControlProcess;
 begin
   try
     VoiceController.SlowControlProcess;
-    //KeyGroups.SlowControlProcess;
-
+    KeyGroupPlayer.SlowControlProcess;
   except
     {$IFDEF MadExcept}
     HandleException;
@@ -1100,7 +1102,6 @@ procedure TeePlugin.AudioProcess(Sampleframes: integer);
 var
   c1: Integer;
 begin
-
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
   ClearBuffer(Outputs[2], SampleFrames);
@@ -1109,10 +1110,9 @@ begin
   ClearBuffer(Outputs[5], SampleFrames);
 
   try
-
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
-    //KeyGroups.AudioProcess(Outputs, SampleFrames);
+    KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 

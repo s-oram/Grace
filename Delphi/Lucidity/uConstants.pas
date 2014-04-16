@@ -29,6 +29,7 @@ var
 type
   TLucidMsgID = record
   const
+    //----- Gui Messages---------------
     SampleFocusChanged               = 1; //sent when the region or sample group focus changes..
     SampleRegionChanged              = 2; //sent when something about a region has changed. ie. the region has moved.
     MouseOverSampleRegionChanged     = 3;
@@ -64,8 +65,20 @@ type
     Msg_XRegionsDuplicated           = Actions + 4;
     OnControlEnter                   = Actions + 5;
     OnControlLeave                   = Actions + 6;
-
+    //----- Audio Messages---------------
+    AudioMsg                         = OnControlLeave + 1;
+    Audio_VoiceTriggered             = AudioMsg + 1;
+    Audio_VoiceFinished              = AudioMsg + 2;
   end;
+
+
+
+  PMsgData_Audio_VoiceTriggered = ^TMsgData_Audio_VoiceTriggered;
+  TMsgData_Audio_VoiceTriggered = record
+    KeyGroup : Pointer;
+    Voice    : Pointer;
+  end;
+
 
 const
   kMaxStepSequencerLength = 32;

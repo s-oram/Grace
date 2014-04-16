@@ -21,6 +21,12 @@ uses
   VamSliderSwitch, VamMiniLevelMeter;
 
 type
+  TMyTestObject = class(TRefCountedZeroObject)
+  public
+    destructor Destroy; override;
+  end;
+
+
   TForm1 = class(TForm)
     Button1: TButton;
     Memo1: TMemo;
@@ -47,6 +53,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
   private
+    MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
     StepSize : TOscPhaseCounter;
 
@@ -87,7 +94,14 @@ var
   x, y : cardinal;
   sx : single;
   sy : single;
+  zo:IZeroObject;
 begin
+  MotherShip := TMotherShip.Create;
+
+  zo := TMyTestObject.Create;
+  MotherShip.RegisterZeroObject(zo, zoMain);
+  zo := nil;
+
   ID.Init;
 
   Memo1.Clear;
@@ -106,6 +120,7 @@ end;
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Timer.Free;
+  MotherShip.Free;
 end;
 
 procedure TForm1.HandleTimerEvent(Sender: TObject);
@@ -218,6 +233,14 @@ begin
 end;
 
 
+
+{ TMyTestObject }
+
+destructor TMyTestObject.Destroy;
+begin
+
+  inherited;
+end;
 
 initialization
   GlobalDict := TProcDictionary.Create(100);

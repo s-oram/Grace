@@ -572,6 +572,8 @@ var
   KG : IKeyGroup;
   UseGlide : boolean;
   IsTriggered: boolean;
+
+  TriggerMsg : TMsgData_Audio_VoiceTriggered;
 begin
   for c1 := 0 to SampleMap.RegionCount-1 do
   begin
@@ -611,6 +613,10 @@ begin
 
         if IsTriggered then
         begin
+          TriggerMsg.Voice    := @aVoice;
+          TriggerMsg.KeyGroup := Pointer(aRegion.GetKeyGroup);
+          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
+
           if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);
           TriggeredVoiceStack.Add(aVoice);
 

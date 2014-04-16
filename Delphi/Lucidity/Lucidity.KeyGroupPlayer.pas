@@ -3,12 +3,16 @@ unit Lucidity.KeyGroupPlayer;
 interface
 
 uses
+  Classes,
   VamLib.MoreTypes,
   VamLib.ZeroObject;
 
 type
   TKeyGroupPlayer = class(TZeroObject)
   private
+    ActiveRegions : TInterfaceList;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create;
     destructor Destroy; override;
@@ -20,23 +24,45 @@ type
 
 implementation
 
+uses
+  Lucidity.Interfaces,
+  uConstants;
+
 { TKeyGroupPlayer }
 
 constructor TKeyGroupPlayer.Create;
 begin
-
+  ActiveRegions := TInterfaceList.Create;
 end;
 
 destructor TKeyGroupPlayer.Destroy;
 begin
-
+  ActiveRegions.Free;
   inherited;
 end;
+
+procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);
+var
+  pKG : pointer;
+begin
+  inherited;
+
+  if MsgID = TLucidMsgID.Audio_VoiceTriggered then
+  begin
+    pKG := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
+    if ActiveRegions.IndexOf(IKeyGroup(pKG)) = -1 then
+      ActiveRegions.Add(IKeyGroup(pKG));
+  end;
+
+
+end;
+
 
 procedure TKeyGroupPlayer.FastControlProcess;
 begin
 
 end;
+
 
 procedure TKeyGroupPlayer.SlowControlProcess;
 begin

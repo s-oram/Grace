@@ -48,6 +48,8 @@ type
 
     procedure GetDbLevel(out Ch1, Ch2 : single);
     property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   protected
     KeyGroupID : TKeyGroupID;
 
@@ -58,6 +60,7 @@ type
     procedure SetID(ID:TKeyGroupID);
 
   protected
+    ActiveVoices : TLucidityVoiceList;
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -141,6 +144,8 @@ begin
 
   SampleRateChanged(self);
   BlockSizeChanged(self);
+
+  ActiveVoices := TLucidityVoiceList.Create(false);
 end;
 
 destructor TKeyGroup.Destroy;
@@ -154,6 +159,8 @@ begin
   SetLength(VoiceBufferA, 0);
   SetLength(VoiceBufferB, 0);
 
+  ActiveVoices.Free;
+
   inherited;
 end;
 
@@ -162,6 +169,26 @@ begin
   self.VoiceParameters.AssignFrom(Source.VoiceParameters);
 end;
 
+
+procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  pKG : pointer;
+  pVoice : PLucidityVoice;
+begin
+  inherited;
+
+
+  if MsgID = TLucidMsgID.Audio_VoiceTriggered then
+  begin
+    pKG    := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
+    pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
+
+    if IKeyGroup(pKG) = IKeyGroup(self) then
+    begin
+      ActiveVoices.Add(pVoice^)
+    end;
+  end;
+end;
 
 
 
@@ -440,7 +467,7 @@ procedure TKeyGroup.FastControlProcess;
 var
   c1 : integer;
 begin
-  {
+
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
@@ -448,14 +475,12 @@ begin
       ActiveVoices[c1].FastControlProcess;
     end;
   end;
-  }
 end;
 
 procedure TKeyGroup.SlowControlProcess;
 var
   c1 : integer;
 begin
-  {
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
@@ -463,7 +488,6 @@ begin
       ActiveVoices[c1].SlowControlProcess;
     end;
   end;
-  }
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
@@ -472,7 +496,6 @@ var
   pxA, pxB : PSingle;
   pOutA, pOutB : PSingle;
 begin
-  {
   pxA := @VoiceBufferA[0];
   pxB := @VoiceBufferB[0];
 
@@ -500,7 +523,6 @@ begin
     inc(pOutA);
     inc(pOutB);
   end;
-  }
 end;
 
 
