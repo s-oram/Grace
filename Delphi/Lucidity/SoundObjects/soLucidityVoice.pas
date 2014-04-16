@@ -86,6 +86,7 @@ type
     fFilterRouting: TFilterRouting;
     fLevelMonitor: TLevelMonitor;
     fKeyGroupID: TKeyGroupID;
+    fKeyGroup : IKeyGroup;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
@@ -197,7 +198,9 @@ type
 
     property LinkedSampleRegion : IRegion read fSampleRegion;
 
+
     property KeyGroupID   : TKeyGroupID read fKeyGroupID;
+    property KeyGroup     : IKeyGroup   read fKeyGroup;
     property SampleRegion : IRegion   read fSampleRegion;
 
     property VoiceID : integer read fVoiceID write fVoiceID;
@@ -329,6 +332,7 @@ begin
   GrainStretchOsc.Free;
   fWaveOsc.Free;
   fKeyGroupID   := 0;
+  fKeyGroup     := nil;
   fSampleRegion := nil;
   FilterOne.Free;
   FilterTwo.Free;
@@ -510,6 +514,7 @@ begin
 
   //=== Pre-trigger setup ======================================================
   fKeyGroupID   := aSampleGroup.GetID;
+  fKeyGroup     := aSampleGroup;
   fSampleRegion := aSampleRegion;
 
   ParValueData   := aSampleGroup.GetModulatedParameters;
@@ -637,7 +642,8 @@ begin
   // It should be called whenever the voice becomes in-active.
   // NOTE: it's important to nil fSampleRegion interface references
   // here. Lucidity uses interface reference count as a garbage collection device.
-  fKeyGroupID := 0;
+  fKeyGroupID   := 0;
+  fKeyGroup     := nil;
   fSampleRegion := nil;
   OneShotSampleOsc.Kill;
   LoopSampleOsc.Kill;
