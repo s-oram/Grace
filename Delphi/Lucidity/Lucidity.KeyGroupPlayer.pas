@@ -55,7 +55,12 @@ begin
       ActiveRegions.Add(IKeyGroup(pKG));
   end;
 
-
+  if MsgID = TLucidMsgID.Audio_KeyGroupInactive then
+  begin
+    pKG := Data;
+    if ActiveRegions.IndexOf(IKeyGroup(pKG)) <> -1
+      then ActiveRegions.Remove(IKeyGroup(pKG));
+  end;
 end;
 
 

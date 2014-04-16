@@ -496,6 +496,8 @@ var
   c1 : integer;
   pxA, pxB : PSingle;
   pOutA, pOutB : PSingle;
+  dbA, dbB : single;
+  pKG : pointer;
 begin
   pxA := @VoiceBufferA[0];
   pxB := @VoiceBufferB[0];
@@ -521,6 +523,23 @@ begin
     inc(pOutA);
     inc(pOutB);
   end;
+
+
+  if (ActiveVoices.Count = 0) then
+  begin
+    LevelMonitor.GetDbLevel(dbA, dbB);
+    if (dbA < -75) and (dbB < -75) then
+    begin
+      pKG := Pointer(IKeyGroup(self));
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_KeyGroupInactive, pKG);
+    end;
+  end;
+
+
+
+  // NOTE: LevelMonitor needs it's process method called when there are no active
+  // voices if it's to fade out slowly. Perhaps key groups shouldn't become inactive
+  // until the LevelMonitor is
 end;
 
 

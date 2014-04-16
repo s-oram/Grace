@@ -69,6 +69,7 @@ type
     AudioMsg                         = OnControlLeave + 1;
     Audio_VoiceTriggered             = AudioMsg + 1;
     Audio_VoiceFinished              = AudioMsg + 2;
+    Audio_KeyGroupInactive           = AudioMsg + 3;
   end;
 
 
