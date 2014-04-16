@@ -89,7 +89,7 @@ type
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
 
-    {
+
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgMainTS(MsgID : cardinal); overload;
@@ -97,7 +97,6 @@ type
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
-    }
   end;
 
 
@@ -351,19 +350,7 @@ var
   c1: Integer;
   zo : IZeroObject;
 begin
-  {
-  for c1 := 0 to AudioObjects.Count - 1 do
-  begin
-    zo := IZeroObject(AudioObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
-  end;
-
-  for c1 := 0 to MainObjects.Count - 1 do
-  begin
-    zo := IZeroObject(MainObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
-  end;
-  }
+  MsgMain(MsgID, Data);
 end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal);
@@ -372,22 +359,8 @@ begin
 end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
-var
-  msgData : TMessageData;
-  QueueValue : TOmniValue;
 begin
-  if assigned(CleanUp)
-    then CleanUp;
-  
-
-  {
-  msgData.MsgID := MsgID;
-  msgData.Data := Data;
-  msgData.CleanUp := CleanUp;
-
-  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-  MainMessageQueue.Enqueue(QueueValue);
-  }
+  MsgMainTS(MsgID, Data, CleanUp);
 end;
 
 procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
