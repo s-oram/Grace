@@ -70,6 +70,7 @@ type
   //Forward declarations
   IZeroObject = interface;
   TZeroObject = class;
+  IZeroObjectPtr = Pointer;
 
   IMotherShip = interface;
 
@@ -82,7 +83,7 @@ type
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
-    procedure DeregisterZeroObject(obj:IZeroObject);
+    procedure DeregisterZeroObject(obj:IZeroObjectPtr);
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
@@ -149,12 +150,14 @@ type
     MainMessageQueue : TOmniQueue;
     MainMessageTimer : TTimer;
     procedure Handle_GuiMessageTimerEvent(Sender : TObject);
+
+    procedure DeregisterZeroObject(obj:IZeroObjectPtr);
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
-    procedure DeregisterZeroObject(obj:IZeroObject);
+
 
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
@@ -195,14 +198,20 @@ begin
 end;
 
 destructor TZeroObject.Destroy;
+var
+  ptr : IZeroObjectPtr;
 begin
   // TODO: instead of maintaining a reference to the mother ship, the zero object
   // could use a multi-event to notify objects of it's destruction.
   // IE. a NotifyOnFree() event.
 
   // Important: Deregister from the mother ship..
-  if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+  if (assigned(FMotherShip)) then
+  begin
+    ptr := Pointer(IZeroObject(Self));
+    FMotherShip.DeregisterZeroObject(ptr);
+    FMotherShip := nil;
+  end;
 
   inherited;
 end;
@@ -329,15 +338,22 @@ begin
 
 end;
 
-procedure TMotherShip.DeregisterZeroObject(obj: IZeroObject);
+procedure TMotherShip.DeregisterZeroObject(obj: IZeroObjectPtr);
 var
   ptr : Pointer;
   zo : IZeroObject;
 begin
-  ptr := Pointer(obj); //Weak reference to zero object
-  AudioObjects.Remove(ptr);
-  MainObjects.Remove(ptr);
-  obj.SetMotherShipReference(nil);
+  //ptr := Pointer(obj); //Weak reference to zero object
+
+  if AudioObjects.IndexOf(obj) <> -1 then
+  begin
+    AudioObjects.Remove(obj);
+  end;
+
+  if MainObjects.IndexOf(obj) <> -1 then
+  begin
+    MainObjects.Remove(obj);
+  end;
 end;
 
 procedure TMotherShip.SendMessage(MsgID: cardinal);
