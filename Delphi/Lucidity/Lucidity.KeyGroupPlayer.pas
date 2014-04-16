@@ -25,6 +25,7 @@ type
 implementation
 
 uses
+  Lucidity.KeyGroup,
   Lucidity.Interfaces,
   uConstants;
 
@@ -59,19 +60,40 @@ end;
 
 
 procedure TKeyGroupPlayer.FastControlProcess;
+var
+  c1: Integer;
+  kg : IKeyGroup;
 begin
-
+  for c1 := 0 to ActiveRegions.Count-1 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).FastControlProcess;
+  end;
 end;
 
 
 procedure TKeyGroupPlayer.SlowControlProcess;
+var
+  c1: Integer;
+  kg : IKeyGroup;
 begin
-
+  for c1 := 0 to ActiveRegions.Count-1 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).SlowControlProcess;
+  end;
 end;
 
 procedure TKeyGroupPlayer.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
+var
+  c1: Integer;
+  kg : IKeyGroup;
 begin
-
+  for c1 := 0 to ActiveRegions.Count-1 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
+  end;
 end;
 
 

@@ -638,9 +638,15 @@ begin
 end;
 
 procedure TLucidityVoice.CleanUp;
+var
+  vp : PLucidityVoice;
 begin
+  // TODO: Need to board cast the voice being finished here.
+  vp := @self;
+  Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceFinished, vp);
+
   // CleanUp() clears references to other resouces and zeros some internal values.
-  // It should be called whenever the voice becomes in-active.
+  // It should be called whenever the voice becomes inactive.
   // NOTE: it's important to nil fSampleRegion interface references
   // here. Lucidity uses interface reference count as a garbage collection device.
   fKeyGroupID   := 0;

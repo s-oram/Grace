@@ -51,16 +51,12 @@ type
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   protected
+    ActiveVoices : TLucidityVoiceList;
     KeyGroupID : TKeyGroupID;
-
     VoiceBufferA : array of single;
     VoiceBufferB : array of single;
-
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
-
-  protected
-    ActiveVoices : TLucidityVoiceList;
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -170,25 +166,6 @@ begin
 end;
 
 
-procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-var
-  pKG : pointer;
-  pVoice : PLucidityVoice;
-begin
-  inherited;
-
-
-  if MsgID = TLucidMsgID.Audio_VoiceTriggered then
-  begin
-    pKG    := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
-    pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
-
-    if IKeyGroup(pKG) = IKeyGroup(self) then
-    begin
-      ActiveVoices.Add(pVoice^)
-    end;
-  end;
-end;
 
 
 
@@ -463,6 +440,36 @@ begin
     then fVoiceParameters.UpdateModConnections;
 end;
 
+
+procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  pKG : pointer;
+  pVoice : PLucidityVoice;
+begin
+  inherited;
+
+
+  if MsgID = TLucidMsgID.Audio_VoiceTriggered then
+  begin
+    pKG    := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
+    pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
+
+    if IKeyGroup(pKG) = IKeyGroup(self) then
+    begin
+      ActiveVoices.Add(pVoice^)
+    end;
+  end;
+
+
+  if MsgID = TLucidMsgID.Audio_VoiceFinished then
+  begin
+    pVoice := Data;
+    if ActiveVoices.IndexOf(pVoice^) <> -1
+      then ActiveVoices.Remove(pVoice^);
+  end;
+end;
+
+
 procedure TKeyGroup.FastControlProcess;
 var
   c1 : integer;
@@ -470,10 +477,7 @@ begin
 
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
-    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
-    begin
-      ActiveVoices[c1].FastControlProcess;
-    end;
+    ActiveVoices[c1].FastControlProcess;
   end;
 end;
 
@@ -483,10 +487,7 @@ var
 begin
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
-    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
-    begin
-      ActiveVoices[c1].SlowControlProcess;
-    end;
+    ActiveVoices[c1].SlowControlProcess;
   end;
 end;
 
@@ -504,10 +505,7 @@ begin
 
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
-    if ActiveVoices[c1].KeyGroupID = self.KeyGroupID then
-    begin
-      ActiveVoices[c1].AudioProcess(pxA, pxB, SampleFrames);
-    end;
+    ActiveVoices[c1].AudioProcess(pxA, pxB, SampleFrames);
   end;
 
   LevelMonitor.Process(pxA, pxB, SampleFrames);
