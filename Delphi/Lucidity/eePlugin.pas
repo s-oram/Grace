@@ -1015,6 +1015,8 @@ var
 begin
   inherited;
 
+  {
+
   if IsNoteOn(Event) then
   begin
     Globals.MotherShip.SendMessageUsingGuiThread(1, nil, nil);
@@ -1052,7 +1054,7 @@ begin
     VoiceController.PitchBend(pba);
   end;
 
-
+  }
 
 
 end;
@@ -1062,11 +1064,9 @@ end;
 procedure TeePlugin.FastControlProcess;
 begin
   try
-    XYPads.ControlRateProcess;
-    MidiAutomation.FastControlProcess;
-    VoiceController.FastControlProcess;
-
-
+    //XYPads.ControlRateProcess;
+    //MidiAutomation.FastControlProcess;
+    //VoiceController.FastControlProcess;
     //TODO: Try pulling the key groups process
     // out to a new class. It might help isolate where the crashes are
     // occuring.
@@ -1083,7 +1083,7 @@ end;
 procedure TeePlugin.SlowControlProcess;
 begin
   try
-    VoiceController.SlowControlProcess;
+    //VoiceController.SlowControlProcess;
     //KeyGroups.SlowControlProcess;
 
   except
@@ -1100,6 +1100,7 @@ procedure TeePlugin.AudioProcess(Sampleframes: integer);
 var
   c1: Integer;
 begin
+
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
   ClearBuffer(Outputs[2], SampleFrames);
@@ -1108,6 +1109,7 @@ begin
   ClearBuffer(Outputs[5], SampleFrames);
 
   try
+    {
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
     //KeyGroups.AudioProcess(Outputs, SampleFrames);
@@ -1123,7 +1125,7 @@ begin
     begin
       inc(Outputs[c1], SampleFrames);
     end;
-
+    }
     inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
   except
     {$IFDEF MadExcept}
@@ -1132,6 +1134,7 @@ begin
     raise;
     {$ENDIF}
   end;
+
 end;
 
 

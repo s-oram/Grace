@@ -325,15 +325,16 @@ end;
 
 destructor TLucidityVoice.Destroy;
 begin
+  fKeyGroupID   := 0;
+  fKeyGroup     := nil;
+  fSampleRegion := nil;
+
   AmpEnv.Free;
   FilterEnv.Free;
   OneShotSampleOsc.Free;
   LoopSampleOsc.Free;
   GrainStretchOsc.Free;
   fWaveOsc.Free;
-  fKeyGroupID   := 0;
-  fKeyGroup     := nil;
-  fSampleRegion := nil;
   FilterOne.Free;
   FilterTwo.Free;
   OscVCA.Free;
