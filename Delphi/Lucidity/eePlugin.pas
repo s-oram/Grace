@@ -1065,7 +1065,12 @@ begin
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     VoiceController.FastControlProcess;
-    KeyGroups.FastControlProcess;
+
+
+    //TODO: Try pulling the key groups process
+    // out to a new class. It might help isolate where the crashes are
+    // occuring.
+    //KeyGroups.FastControlProcess;
   except
     {$IFDEF MadExcept}
     HandleException;
@@ -1079,7 +1084,7 @@ procedure TeePlugin.SlowControlProcess;
 begin
   try
     VoiceController.SlowControlProcess;
-    KeyGroups.SlowControlProcess;
+    //KeyGroups.SlowControlProcess;
 
   except
     {$IFDEF MadExcept}
@@ -1105,7 +1110,7 @@ begin
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
     VoiceController.AudioProcess(Outputs, SampleFrames);
-    KeyGroups.AudioProcess(Outputs, SampleFrames);
+    //KeyGroups.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 

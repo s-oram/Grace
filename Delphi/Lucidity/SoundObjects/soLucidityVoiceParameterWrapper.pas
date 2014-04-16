@@ -152,7 +152,7 @@ type
     procedure SetLfoRange1(const Value: TLfoRange);
     procedure SetLfoRange2(const Value: TLfoRange);
   protected
-    OwningSampleGroup : IKeyGroup;
+    OwningSampleGroup : Pointer; //weak reference to IKeyGroup
     Voices : PArrayOfLucidityVoice;
     VoiceCount : integer;
     fSeq1StepValues : array[0..kMaxStepSequencerLength-1] of single;
@@ -252,7 +252,7 @@ uses
 
 constructor TLucidityVoiceParameterWrapper.Create(const aVoices:PArrayOfLucidityVoice; const aOwningSampleGroup : IKeyGroup);
 begin
-  OwningSampleGroup := aOwningSampleGroup;
+  OwningSampleGroup := Pointer(aOwningSampleGroup);
   VoiceCount := uConstants.kMaxVoiceCount;
   Voices := aVoices;
 
@@ -282,7 +282,7 @@ begin
   // place in the code.
   for c1 := 0 to kMaxVoiceCount-1 do
   begin
-    OwningID := OwningSampleGroup.GetID;
+    OwningID := IKeyGroup(OwningSampleGroup).GetID;
     if (Voices^[c1].IsActive) and (Voices^[c1].KeyGroupID = OwningID) then
     begin
       UpdateAction(@Voices^[c1]);

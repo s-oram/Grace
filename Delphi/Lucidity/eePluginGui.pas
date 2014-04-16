@@ -501,6 +501,8 @@ begin
   //Update the gui elements here.
   Manually := true;
 
+
+  {
   if assigned(PluginKeyHook) then
   begin
     PluginKeyHook.RefreshKeyHookTarget;
@@ -519,8 +521,8 @@ begin
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
-
-  GuiStandard.UpdateControls;
+  }
+  //GuiStandard.UpdateControls;
 
   Manually := false;
 end;
