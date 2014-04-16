@@ -159,7 +159,8 @@ uses
   LucidityGui.Scope.SignalRecorder in 'GuiComponents\LucidityGui.Scope.SignalRecorder.pas',
   LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas',
   eeEnumHelper in 'eeEnumHelper.pas',
-  uLucidityEnums in 'uLucidityEnums.pas';
+  uLucidityEnums in 'uLucidityEnums.pas',
+  Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas';
 
 {$R *.res}
 

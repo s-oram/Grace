@@ -604,6 +604,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas"/>
 			<DCCReference Include="eeEnumHelper.pas"/>
 			<DCCReference Include="uLucidityEnums.pas"/>
+			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
