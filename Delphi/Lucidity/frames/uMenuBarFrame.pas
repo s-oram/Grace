@@ -93,7 +93,7 @@ end;
 destructor TMenuBarFrame.Destroy;
 begin
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   GroupsMenu.Free;
   SamplesMenu.Free;
