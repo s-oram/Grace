@@ -39,13 +39,6 @@ const
   kSoftVoiceLimit = 8;
 
 type
-  TFirstNoteInfo = record
-    Data1 : byte; // Note
-    Data2 : byte; // Velocity.
-    KeyGroup : IKeyGroup;
-    Region   : IRegion;
-  end;
-
   TVoiceReleaseScore = record
     VoiceIndex   : integer;
     ReleaseScore : integer;
@@ -64,8 +57,6 @@ type
     VoiceControl        : TVoiceControl;
 
     NoteStack           : TNoteStack;
-    FirstNoteInfo       : TFirstNoteInfo;
-    LastNoteInfo        : TFirstNoteInfo;
 
     ActiveVoices        : TLucidityVoiceList;
     TriggeredVoiceStack : TLucidityVoiceList; // Keeps track of last triggerered voice.
