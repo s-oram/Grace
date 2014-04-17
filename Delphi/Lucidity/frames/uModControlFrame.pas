@@ -245,7 +245,7 @@ begin
   DeallocateHWnd(MsgHandle);
 
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   StepSequenceMenu.Free;
   KnobList.Free;

@@ -247,7 +247,7 @@ end;
 destructor TLoopEditForm.Destroy;
 begin
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   FreeAndNil(ZoomMarkerMenu);
   SampleRenderer.Free;

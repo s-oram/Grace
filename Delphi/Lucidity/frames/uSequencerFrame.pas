@@ -67,7 +67,7 @@ end;
 destructor TSequencerFrame.Destroy;
 begin
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   StepSequenceMenu.Free;
   inherited;

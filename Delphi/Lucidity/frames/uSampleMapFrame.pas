@@ -162,7 +162,7 @@ end;
 destructor TSampleMapFrame.Destroy;
 begin
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   KeyStateTrackerOverlay.Free;
   SampleMapMenu.Free;

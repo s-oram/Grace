@@ -323,12 +323,18 @@ var
   c1: Integer;
   Text : string;
 begin
-  MainMessageTimer.Free;
-  AudioObjects.Free;
-  MainObjects.Free;
-  MainMessageQueue.Free;
+  if AudioObjects.Count > 0
+    then Log.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
 
+  if MainObjects.Count > 0
+    then Log.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
+
+  MainMessageTimer.Free;
+  MainMessageQueue.Free;
   MainMessageLock.Free;
+
+  FreeAndNil(AudioObjects);
+  FreeAndNil(MainObjects);
 
   inherited;
 end;

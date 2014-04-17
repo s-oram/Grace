@@ -151,7 +151,6 @@ uses
 constructor TeePluginBase.Create;
 begin
   Globals     := TGlobals.Create;
-
   AudioEffect := TVstAudioEffect.Create;
 
   fIsSuspended := true;
@@ -170,8 +169,8 @@ begin
   SetLength(Inputs,0);
   SetLength(Outputs,0);
 
-  Globals.Free;
   AudioEffect.Free;
+  Globals.Free;
   inherited;
 end;
 

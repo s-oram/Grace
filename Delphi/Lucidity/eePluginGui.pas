@@ -260,7 +260,7 @@ end;
 procedure TPluginGui.FormDestroy(Sender: TObject);
 begin
   if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(self);
+    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   if assigned(GuiStandard)
     then GuiStandard.Free;

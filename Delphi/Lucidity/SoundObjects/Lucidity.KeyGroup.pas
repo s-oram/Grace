@@ -110,6 +110,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   eeAudioBufferUtils,
   SysUtils, eeCustomGlobals,
   uLucidityEnums;
@@ -118,6 +119,7 @@ uses
 
 constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 begin
+  Log.LogMessage('KeyGroup Created');
   // TODO: The key group shouldn't know about "aVoices". But as my code is currently written the voiceParameter wrapper class is owned by
   // the key group and the voice parameter wrapper does need to know about the voices.
 

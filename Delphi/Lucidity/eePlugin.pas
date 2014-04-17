@@ -377,6 +377,7 @@ begin
     else fn := '';
 
   FActiveKeyGroup := nil;
+  EmptyKeyGroup   := nil;
 
   ParameterWizard.Free;
   MidiAutomation.Free;
@@ -391,9 +392,7 @@ begin
   fSampleDirectories.Free;
   fSignalRecorder.Free;
   fFreqAnalyzer.Free;
-
   TProfiler.Close;
-
   inherited;
 end;
 
