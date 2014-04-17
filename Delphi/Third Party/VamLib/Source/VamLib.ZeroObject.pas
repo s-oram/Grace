@@ -78,6 +78,7 @@ type
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    function ClassType: TClass;
   end;
 
   IMotherShip = interface
@@ -100,6 +101,10 @@ type
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
 
     procedure SetIsGuiOpen(IsOpen : boolean);
+
+
+    procedure LogAudioObjects;
+    procedure LogMainObjects;
   end;
 
 
@@ -147,6 +152,7 @@ type
     MainObjects  : TList;
 
     MainMessageLock : TFixedCriticalSection;
+    DisableMessageSending : boolean;
 
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
@@ -161,6 +167,8 @@ type
     procedure SetIsGuiOpen(IsOpen : boolean);
 
     property IsGuiOpen : boolean read fIsGuiOpen;
+
+    procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
   public
     constructor Create;
     destructor Destroy; override;
@@ -182,7 +190,8 @@ type
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
 
-
+    procedure LogAudioObjects;
+    procedure LogMainObjects;
   end;
 
 
@@ -293,6 +302,8 @@ end;
 
 constructor TMotherShip.Create;
 begin
+  DisableMessageSending := false;
+
   MainMessageLock := TFixedCriticalSection.Create;
 
   AudioObjects := TList.Create;
@@ -398,6 +409,8 @@ var
   zo : IZeroObject;
   LogMsg : string;
 begin
+  SendMessageToList(AudioObjects, MsgID, Data);
+  {
   try
     LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')';
 
@@ -410,6 +423,7 @@ begin
     Log.LogMessage(LogMsg);
     raise;
   end;
+  }
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal);
@@ -427,7 +441,14 @@ var
   c1: Integer;
   zo : IZeroObject;
   LogMsg : string;
+  aClass : TClass;
 begin
+  SendMessageToList(MainObjects, MsgID, Data);
+
+
+
+
+  {
   MainMessageLock.Enter;
   try
     LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')';
@@ -438,6 +459,10 @@ begin
         for c1 := 0 to MainObjects.Count - 1 do
         begin
           zo := IZeroObject(MainObjects[c1]);
+
+          aClass := zo.ClassType;
+          LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
+
           zo.ProcessZeroObjectMessage(MsgID, Data);
         end;
       end;
@@ -448,6 +473,7 @@ begin
   finally
     MainMessageLock.Leave;
   end;
+  }
 end;
 
 procedure TMotherShip.MsgMainTS(MsgID: cardinal);
@@ -498,6 +524,102 @@ begin
     MainMessageLock.Leave;
   end;
 end;
+
+
+
+procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer);
+var
+  c1: Integer;
+  zo : IZeroObject;
+  LogMsg : string;
+  aClass : TClass;
+begin
+  MainMessageLock.Enter;
+  try
+    if ObjectList = MainObjects then LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')'
+    else
+    if ObjectList = AudioObjects then LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')'
+    else
+      LogMsg := 'Error : Unknown Object List';
+
+    if (ObjectList = MainObjects) and (IsGuiOpen = false)
+      then exit;
+
+    if DisableMessageSending then exit;
+
+    try
+      for c1 := 0 to ObjectList.Count - 1 do
+      begin
+        zo := IZeroObject(ObjectList[c1]);
+
+        aClass := zo.ClassType;
+        LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
+
+        zo.ProcessZeroObjectMessage(MsgID, Data);
+      end;
+    except
+      DisableMessageSending := true;
+      Log.LogMessage('ERROR' + LogMsg);
+      raise;
+    end;
+  finally
+    MainMessageLock.Leave;
+  end;
+end;
+
+
+procedure TMotherShip.LogAudioObjects;
+var
+  c1: Integer;
+  zo : IZeroObject;
+  LogMsg : string;
+  ObjectList : TList;
+  aClass : TClass;
+begin
+  Log.LogMessage('==========================');
+  LogMsg := 'Current Audio Objects';
+  Log.LogMessage(LogMsg);
+
+  ObjectList := AudioObjects;
+
+  for c1 := 0 to ObjectList.Count - 1 do
+  begin
+    zo := IZeroObject(ObjectList[c1]);
+    aClass := zo.ClassType;
+    LogMsg := 'ClassName = ' + aClass.ClassName;
+    Log.LogMessage(LogMsg);
+  end;
+  Log.LogMessage('==========================');
+end;
+
+procedure TMotherShip.LogMainObjects;
+var
+  c1: Integer;
+  zo : IZeroObject;
+  LogMsg : string;
+  ObjectList : TList;
+  aClass : TClass;
+begin
+  Log.LogMessage('==========================');
+  LogMsg := 'Current Main Objects';
+  Log.LogMessage(LogMsg);
+
+  ObjectList := MainObjects;
+
+  for c1 := 0 to ObjectList.Count - 1 do
+  begin
+    zo := IZeroObject(ObjectList[c1]);
+    aClass := zo.ClassType;
+    LogMsg := 'ClassName = ' + aClass.ClassName;
+    Log.LogMessage(LogMsg);
+  end;
+  Log.LogMessage('==========================');
+end;
+
+
+
+
+
 
 
 end.

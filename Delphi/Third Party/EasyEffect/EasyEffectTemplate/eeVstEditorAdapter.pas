@@ -148,6 +148,10 @@ begin
   if (UseCount = 0) then
   begin
     try
+      Plugin.Globals.MotherShip.LogMainObjects;
+      Plugin.Globals.MotherShip.LogAudioObjects;
+
+
       PluginGUI := TPluginGui.CreateParented(SystemWindow);
       PluginGUI.Width  := PluginInfo.InitialGuiWidth;
       PluginGUI.Height := PluginInfo.InitialGuiHeight;
@@ -181,6 +185,9 @@ begin
     Plugin.IsGuiOpen := false;
     systemWindow := 0;
     UseCount := 0;
+
+    Plugin.Globals.MotherShip.LogMainObjects;
+    Plugin.Globals.MotherShip.LogAudioObjects;
   end;
 end;
 
