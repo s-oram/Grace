@@ -158,6 +158,8 @@ begin
 
       // finally...
       Plugin.IsGuiOpen := true;
+
+      Plugin.Globals.MotherShip.SetIsGuiOpen(true);
     finally
       UseCount := 1;
     end;
@@ -171,6 +173,8 @@ begin
   // been opened/is still opened etc.
   if (UseCount > 0) then
   begin
+    Plugin.Globals.MotherShip.SetIsGuiOpen(false);
+
     if assigned(PluginGuiMeta) then FreeAndNil(PluginGuiMeta);
     if assigned(PluginGui)     then FreeAndNil(PluginGui);
 

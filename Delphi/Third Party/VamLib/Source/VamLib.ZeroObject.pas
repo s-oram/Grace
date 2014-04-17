@@ -6,10 +6,10 @@ uses
   SysUtils,
   Classes,
   ExtCtrls,
-  VamLib.Types,
   Contnrs,
   OtlCommon,
-  OtlContainers;
+  OtlContainers,
+  VamLib.Types;
 
 type
   {
@@ -101,6 +101,8 @@ type
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure SetIsGuiOpen(IsOpen : boolean);
   end;
 
 
@@ -147,14 +149,21 @@ type
     AudioObjects : TList;
     MainObjects  : TList;
 
+    MainMessageLock : TFixedCriticalSection;
+
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
     MainMessageQueue : TOmniQueue;
     MainMessageTimer : TTimer;
+    fIsGuiOpen: boolean;
     procedure Handle_GuiMessageTimerEvent(Sender : TObject);
 
     procedure DeregisterZeroObject(obj:IZeroObjectPtr);
+
+    procedure SetIsGuiOpen(IsOpen : boolean);
+
+    property IsGuiOpen : boolean read fIsGuiOpen;
   public
     constructor Create;
     destructor Destroy; override;
@@ -175,6 +184,8 @@ type
 
     procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
+
+
   end;
 
 
@@ -271,11 +282,21 @@ procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
 end;
 
+{ TRefCountedZeroObject }
+
+function TRefCountedZeroObject.GetIsReferenceCounted: boolean;
+begin
+  result := true;
+end;
+
+
 
 { TMotherShip }
 
 constructor TMotherShip.Create;
 begin
+  MainMessageLock := TFixedCriticalSection.Create;
+
   AudioObjects := TList.Create;
 
   MainObjects := TList.Create;
@@ -293,24 +314,13 @@ var
   c1: Integer;
   Text : string;
 begin
-  {
-  if AudioObjects.Count > 0 then
-  begin
-    for c1 := AudioObjects.Count-1 downto 0 do
-    begin
-      Text := AudioObjects[c1].ClassName + ' has not been freed!';
-      //VamLib.WinUtils.SendDebugMesssage(Text);
-    end;
-    // TODO: the hard arse way to respond to unfreed zero objects. This
-    // should probably be removed in release builds!
-    raise Exception.Create('Not all ZeroObjects have been freed.');
-  end;
-  }
-
   MainMessageTimer.Free;
   AudioObjects.Free;
   MainObjects.Free;
   MainMessageQueue.Free;
+
+
+  MainMessageLock.Free;
 
   inherited;
 end;
@@ -382,21 +392,6 @@ begin
   MsgMainTS(MsgID, Data, CleanUp);
 end;
 
-procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
-var
-  msgData : TMessageData;
-  QueueValue : TOmniValue;
-begin
-  while MainMessageQueue.TryDequeue(QueueValue) do
-  begin
-    MsgData := QueueValue.ToRecord<TMessageData>;
-
-    MsgMain(msgData.MsgID, msgData.Data);
-
-    if assigned(msgData.CleanUp)
-      then msgData.CleanUp();
-  end;
-end;
 
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
@@ -426,10 +421,18 @@ var
   c1: Integer;
   zo : IZeroObject;
 begin
-  for c1 := 0 to MainObjects.Count - 1 do
-  begin
-    zo := IZeroObject(MainObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
+  MainMessageLock.Enter;
+  try
+    if IsGuiOpen then
+    begin
+      for c1 := 0 to MainObjects.Count - 1 do
+      begin
+        zo := IZeroObject(MainObjects[c1]);
+        zo.ProcessZeroObjectMessage(MsgID, Data);
+      end;
+    end;
+  finally
+    MainMessageLock.Leave;
   end;
 end;
 
@@ -451,11 +454,36 @@ begin
   MainMessageQueue.Enqueue(QueueValue);
 end;
 
-{ TRefCountedZeroObject }
-
-function TRefCountedZeroObject.GetIsReferenceCounted: boolean;
+procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
+var
+  msgData : TMessageData;
+  QueueValue : TOmniValue;
 begin
-  result := true;
+  while MainMessageQueue.TryDequeue(QueueValue) do
+  begin
+    MsgData := QueueValue.ToRecord<TMessageData>;
+
+    MsgMain(msgData.MsgID, msgData.Data);
+
+    if assigned(msgData.CleanUp)
+      then msgData.CleanUp();
+  end;
 end;
+
+procedure TMotherShip.SetIsGuiOpen(IsOpen: boolean);
+begin
+  MainMessageLock.Enter;
+  try
+    fIsGuiOpen := IsOpen;
+
+    //if IsOpen then
+    //begin
+    //  MainMessageTimer.Enabled := true;
+    //end;
+  finally
+    MainMessageLock.Leave;
+  end;
+end;
+
 
 end.
