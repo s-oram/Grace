@@ -137,11 +137,12 @@ begin
   InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
 
   KeyGroupIDCount := 1;
-
 end;
 
 destructor TKeyGroupManager.Destroy;
 begin
+  Clear;
+
   InitReference := nil;
   fList.Free;
   ListLock.Free;
@@ -196,10 +197,17 @@ begin
 end;
 
 procedure TKeyGroupManager.Clear;
+var
+  c1: Integer;
 begin
   //Blocking the audio thread here seems bad....
   ListLock.Acquire;
   try
+    for c1 := 0 to fList.Count-1 do
+    begin
+      fList[c1] := nil;
+    end;
+
     fList.Clear;
     SGCreateCount := 0;
   finally

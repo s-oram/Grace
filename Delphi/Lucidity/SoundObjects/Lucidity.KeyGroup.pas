@@ -27,6 +27,7 @@ type
 type
   TKeyGroup = class(TRefCountedZeroObject, IKeyGroup, ILevelMonitor)
   private
+    ID : cardinal;
     fTriggeredNoteCount : cardinal;
     fName     : string;
     fSampleMap: TSampleMap;
@@ -115,11 +116,21 @@ uses
   SysUtils, eeCustomGlobals,
   uLucidityEnums;
 
+var
+  RefKeyGroupID : cardinal;
+
 { TLucidityEngine }
 
 constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 begin
-  Log.LogMessage('KeyGroup Created');
+  KeyGroupID := RefKeyGroupID;
+  inc(RefKeyGroupID);
+
+  Log.LogMessage('KeyGroup Created ID = ' + IntToStr(KeyGroupID));
+
+
+
+
   // TODO: The key group shouldn't know about "aVoices". But as my code is currently written the voiceParameter wrapper class is owned by
   // the key group and the voice parameter wrapper does need to know about the voices.
 
@@ -148,6 +159,8 @@ end;
 
 destructor TKeyGroup.Destroy;
 begin
+  Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID));
+
   FSeq1Data.Free;
   FSeq2Data.Free;
   fVoiceParameters.Free;
@@ -546,6 +559,9 @@ end;
 
 
 
+initialization
+  RefKeyGroupID := 0;
+finalization
 
 
 
