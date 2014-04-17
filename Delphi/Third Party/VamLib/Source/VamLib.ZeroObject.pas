@@ -328,7 +328,6 @@ begin
   MainObjects.Free;
   MainMessageQueue.Free;
 
-
   MainMessageLock.Free;
 
   inherited;
@@ -365,16 +364,16 @@ var
   ptr : Pointer;
   zo : IZeroObject;
 begin
-  //ptr := Pointer(obj); //Weak reference to zero object
-
-  if AudioObjects.IndexOf(obj) <> -1 then
-  begin
-    AudioObjects.Remove(obj);
-  end;
-
   if MainObjects.IndexOf(obj) <> -1 then
   begin
     MainObjects.Remove(obj);
+  end else
+  if AudioObjects.IndexOf(obj) <> -1 then
+  begin
+    AudioObjects.Remove(obj);
+  end else
+  begin
+    raise Exception.Create('ZeroObject faided to deregister itself.');
   end;
 end;
 
@@ -401,29 +400,9 @@ begin
   MsgMainTS(MsgID, Data, CleanUp);
 end;
 
-
-
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
-var
-  c1: Integer;
-  zo : IZeroObject;
-  LogMsg : string;
 begin
   SendMessageToList(AudioObjects, MsgID, Data);
-  {
-  try
-    LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')';
-
-    for c1 := 0 to AudioObjects.Count - 1 do
-    begin
-      zo := IZeroObject(AudioObjects[c1]);
-      zo.ProcessZeroObjectMessage(MsgID, Data);
-    end;
-  except
-    Log.LogMessage(LogMsg);
-    raise;
-  end;
-  }
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal);
@@ -437,43 +416,8 @@ begin
 end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
-var
-  c1: Integer;
-  zo : IZeroObject;
-  LogMsg : string;
-  aClass : TClass;
 begin
   SendMessageToList(MainObjects, MsgID, Data);
-
-
-
-
-  {
-  MainMessageLock.Enter;
-  try
-    LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')';
-
-    try
-      if IsGuiOpen then
-      begin
-        for c1 := 0 to MainObjects.Count - 1 do
-        begin
-          zo := IZeroObject(MainObjects[c1]);
-
-          aClass := zo.ClassType;
-          LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
-
-          zo.ProcessZeroObjectMessage(MsgID, Data);
-        end;
-      end;
-    except
-      Log.LogMessage(LogMsg);
-      raise;
-    end;
-  finally
-    MainMessageLock.Leave;
-  end;
-  }
 end;
 
 procedure TMotherShip.MsgMainTS(MsgID: cardinal);
@@ -515,11 +459,6 @@ begin
   MainMessageLock.Enter;
   try
     fIsGuiOpen := IsOpen;
-
-    //if IsOpen then
-    //begin
-    //  MainMessageTimer.Enabled := true;
-    //end;
   finally
     MainMessageLock.Leave;
   end;
