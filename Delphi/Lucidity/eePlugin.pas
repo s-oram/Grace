@@ -489,10 +489,12 @@ begin
 
     if assigned(aRegion)
       then SampleMap.FocusRegion(aRegion.GetProperties^.UniqueID);
+
+    // signal to the GUI that the focus has changed.
+    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
   end;
 
-  // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+
 end;
 
 procedure TeePlugin.FocusKeyGroup(const aKeyGroupName: string);
@@ -519,11 +521,13 @@ begin
     begin
       SampleMap.FocusRegion(aRegion.GetProperties^.UniqueID);
     end;
+
+    // signal to the GUI that the focus has changed.
+    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
   end;
 
 
-  // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+
 end;
 
 procedure TeePlugin.FocusRegion(aRegionID: TGUID);
@@ -541,11 +545,10 @@ begin
     end;
 
     SampleMap.FocusRegion(aRegionID);
+
+    // signal to the GUI that the focus has changed.
+    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
   end;
-
-
-  // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.SelectRegion(aRegionID: TGUID);
@@ -1136,6 +1139,9 @@ begin
   end;
 
 end;
+
+
+
 
 
 

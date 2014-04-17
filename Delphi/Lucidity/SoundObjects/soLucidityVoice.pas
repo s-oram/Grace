@@ -214,7 +214,10 @@ implementation
 
 uses
   VamLib.ZeroObject,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}
+  SmartInspectLogging,
+  VamLib.LoggingProxy,
+  {$ENDIF}
   eeCustomGlobals,
   eeProfiler,
   SysUtils, eePitch,

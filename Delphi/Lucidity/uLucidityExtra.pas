@@ -10,9 +10,15 @@ function IsSupportedAudioFormat(const FileName : string): boolean;
 procedure SendMsg_StartProfiling;
 procedure SendMsg_StopProfiling;
 
+
+
+procedure SetUpLogging;
+
 implementation
 
 uses
+  VamLib.LoggingProxy,
+  SmartInspectLogging,
   Windows,
   AudioIO,
   SysUtils;
@@ -57,6 +63,13 @@ end;
 function IsSupportedAudioFormat(const FileName : string): boolean;
 begin
   result := IsSupportedAudioFileFormat(Filename, true);
+end;
+
+
+procedure SetUpLogging;
+begin
+  VamLib.LoggingProxy.Log.SetProxy(TSmartInspectProxy.Create);
+  Log.LogMessage('Logging Proxy Initialised');
 end;
 
 end.

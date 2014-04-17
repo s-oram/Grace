@@ -60,9 +60,6 @@ type
       be received. Maybe the name parameter should be dynamic so
       objects can match multiple names at different times...
 
-
-
-
   }
 
 
@@ -194,7 +191,8 @@ implementation
 
 uses
   OtlParallel,
-  VamLib.WinUtils;
+  VamLib.WinUtils,
+  VamLib.LoggingProxy;
 
 {$I InterlockedAPIs.inc}
 
@@ -398,11 +396,19 @@ procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 var
   c1: Integer;
   zo : IZeroObject;
+  LogMsg : string;
 begin
-  for c1 := 0 to AudioObjects.Count - 1 do
-  begin
-    zo := IZeroObject(AudioObjects[c1]);
-    zo.ProcessZeroObjectMessage(MsgID, Data);
+  try
+    LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')';
+
+    for c1 := 0 to AudioObjects.Count - 1 do
+    begin
+      zo := IZeroObject(AudioObjects[c1]);
+      zo.ProcessZeroObjectMessage(MsgID, Data);
+    end;
+  except
+    Log.LogMessage(LogMsg);
+    raise;
   end;
 end;
 
@@ -420,16 +426,24 @@ procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 var
   c1: Integer;
   zo : IZeroObject;
+  LogMsg : string;
 begin
   MainMessageLock.Enter;
   try
-    if IsGuiOpen then
-    begin
-      for c1 := 0 to MainObjects.Count - 1 do
+    LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')';
+
+    try
+      if IsGuiOpen then
       begin
-        zo := IZeroObject(MainObjects[c1]);
-        zo.ProcessZeroObjectMessage(MsgID, Data);
+        for c1 := 0 to MainObjects.Count - 1 do
+        begin
+          zo := IZeroObject(MainObjects[c1]);
+          zo.ProcessZeroObjectMessage(MsgID, Data);
+        end;
       end;
+    except
+      Log.LogMessage(LogMsg);
+      raise;
     end;
   finally
     MainMessageLock.Leave;

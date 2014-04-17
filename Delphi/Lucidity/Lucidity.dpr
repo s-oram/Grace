@@ -171,6 +171,8 @@ function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
   SendMsg_StartProfiling;
 
+  SetUpLogging;
+
   try
     //check a few things are in place before creating the plugin.
     FirstRunSetup;
