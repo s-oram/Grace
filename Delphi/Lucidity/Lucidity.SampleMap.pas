@@ -37,7 +37,8 @@ type
   TRegion = class(TInterfacedObject, IRegion)
   strict private
     fSampleFloat   : TSampleFloat;
-    fProperties    : PRegionProperties;
+    fProperties    : TRegionProperties;
+    fPropertiesPtr : PRegionProperties;
     fKeyGroup      : IKeyGroup;
     fZeroCrossings : TSampleZeroCrossings;
     fSampleImage   : ISampleImageBuffer;
@@ -59,7 +60,7 @@ type
 
     property Sample        : TSampleFloat         read fSampleFloat    write fSampleFloat;
     property KeyGroup      : IKeyGroup            read fKeyGroup       write fKeyGroup;
-    property Properties    : PRegionProperties    read fProperties;
+    property Properties    : PRegionProperties    read fPropertiesPtr;
     property ZeroCrossings : TSampleZeroCrossings read fZeroCrossings;
     property SampleImage   : ISampleImageBuffer   read fSampleImage;
     property PeakBuffer    : IPeakBuffer          read fPeakBuffer;
@@ -237,8 +238,8 @@ end;
 
 constructor TRegion.Create;
 begin
-  New(fProperties);
-  Sample := TSampleFloat.Create;
+  fPropertiesPtr := @ fProperties;
+  Sample         := TSampleFloat.Create;
   fZeroCrossings := TSampleZeroCrossings.Create;
   fSampleImage   := TSampleImageBuffer.Create;
   fPeakBuffer    := TPeakBuffer.Create;
@@ -246,11 +247,10 @@ end;
 
 destructor TRegion.Destroy;
 begin
-  fKeyGroup    := nil;
-  fProperties  := nil;
-  fSampleImage := nil;
-  fPeakBuffer  := nil;
-  Dispose(fProperties);
+  fKeyGroup      := nil;
+  fPropertiesPtr := nil;
+  fSampleImage   := nil;
+  fPeakBuffer    := nil;
   Sample.Free;
   fZeroCrossings.Free;
   inherited;
@@ -268,7 +268,7 @@ end;
 
 function TRegion.GetProperties: PRegionProperties;
 begin
-  result := fProperties;
+  result := fPropertiesPtr;
 end;
 
 function TRegion.GetSample: PSampleFloat;

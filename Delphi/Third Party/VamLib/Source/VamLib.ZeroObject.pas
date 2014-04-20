@@ -169,6 +169,7 @@ type
     property IsGuiOpen : boolean read fIsGuiOpen;
 
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
+    procedure ClearMotherShipReferences;
   public
     constructor Create;
     destructor Destroy; override;
@@ -329,6 +330,9 @@ begin
   if MainObjects.Count > 0
     then Log.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
 
+  ClearMotherShipReferences;
+
+
   MainMessageTimer.Free;
   MainMessageQueue.Free;
   MainMessageLock.Free;
@@ -338,6 +342,26 @@ begin
 
   inherited;
 end;
+
+procedure TMotherShip.ClearMotherShipReferences;
+var
+  c1: Integer;
+  zo : IZeroObject;
+begin
+  for c1 := 0 to MainObjects.Count-1 do
+  begin
+    zo := IZeroObject(MainObjects[c1]);
+    zo.SetMotherShipReference(nil);
+  end;
+
+  for c1 := 0 to AudioObjects.Count-1 do
+  begin
+    zo := IZeroObject(AudioObjects[c1]);
+    zo.SetMotherShipReference(nil);
+  end;
+end;
+
+
 
 procedure TMotherShip.RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
 var
