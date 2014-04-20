@@ -100,9 +100,6 @@ type
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
 
-    procedure SetIsGuiOpen(IsOpen : boolean);
-
-
     procedure LogAudioObjects;
     procedure LogMainObjects;
   end;
@@ -159,14 +156,9 @@ type
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
     MainMessageQueue : TOmniQueue;
     MainMessageTimer : TTimer;
-    fIsGuiOpen: boolean;
     procedure Handle_GuiMessageTimerEvent(Sender : TObject);
 
     procedure DeregisterZeroObject(obj:IZeroObjectPtr);
-
-    procedure SetIsGuiOpen(IsOpen : boolean);
-
-    property IsGuiOpen : boolean read fIsGuiOpen;
 
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
     procedure ClearMotherShipReferences;
@@ -175,7 +167,6 @@ type
     destructor Destroy; override;
 
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
-
 
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
@@ -484,18 +475,6 @@ begin
   end;
 end;
 
-procedure TMotherShip.SetIsGuiOpen(IsOpen: boolean);
-begin
-  MainMessageLock.Enter;
-  try
-    fIsGuiOpen := IsOpen;
-  finally
-    MainMessageLock.Leave;
-  end;
-end;
-
-
-
 procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer);
 var
   c1: Integer;
@@ -510,9 +489,6 @@ begin
     if ObjectList = AudioObjects then LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')'
     else
       LogMsg := 'Error : Unknown Object List';
-
-    if (ObjectList = MainObjects) and (IsGuiOpen = false)
-      then exit;
 
     if DisableMessageSending then exit;
 
