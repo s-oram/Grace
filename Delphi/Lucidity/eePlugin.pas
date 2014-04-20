@@ -295,13 +295,17 @@ begin
   fXYPads.PadX1 := -0.5;
 
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
+  Globals.MotherShip.RegisterZeroObject(VoiceController, zoAudio);
+
 
   KeyGroupPlayer  := TKeyGroupPlayer.Create;
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, zoAudio);
 
   fSampleMap := TSampleMap.Create;
+  Globals.MotherShip.RegisterZeroObject(fSampleMap, zoAudio);
 
   fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
+  Globals.MotherShip.RegisterZeroObject(fKeyGroups, zoAudio);
 
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals);
 

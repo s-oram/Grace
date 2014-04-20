@@ -5,11 +5,13 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  Lucidity.Types,
+  VamLib.ZeroObject,
   VamLib.MoreTypes, Generics.Collections,
   VamSamplePeakBuffer,
   VamSampleDisplay,
-  uConstants, Lucidity.Interfaces,
+  Lucidity.Types,
+  Lucidity.Interfaces,
+  uConstants,
   Classes, eeSampleFloat, eePatchObject,
   uSampleZeroCrossings;
 
@@ -78,7 +80,7 @@ type
     procedure AssignFrom(Source : IRegion); overload;
   end;
 
-  TSampleMap = class
+  TSampleMap = class(TZeroObject)
   private
     function GetRegionCount: integer;
     function GetRegion(Index: integer): IRegion;

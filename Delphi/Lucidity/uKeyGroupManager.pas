@@ -25,7 +25,7 @@ type
   // could be deleted and active voices would continue to play out.
 
 
-  TKeyGroupManager = class
+  TKeyGroupManager = class(TZeroObject)
   private
     function GetSampleGroupCount: integer;
   protected
