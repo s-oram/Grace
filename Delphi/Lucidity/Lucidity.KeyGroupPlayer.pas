@@ -38,6 +38,7 @@ end;
 
 destructor TKeyGroupPlayer.Destroy;
 begin
+
   ActiveRegions.Free;
   inherited;
 end;

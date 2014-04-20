@@ -168,6 +168,7 @@ type
 
     function GetVstParameterValue(Index:integer):single;
 
+    //TODO: GuiState could probably be move to the globals class.
     property GuiState : TGuiState read fGuiState;
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;

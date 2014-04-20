@@ -244,12 +244,13 @@ end;
 
 destructor TRegion.Destroy;
 begin
-  Sample.Free;
-  Dispose(fProperties);
-  fProperties := nil;
-  fZeroCrossings.Free;
+  fKeyGroup    := nil;
+  fProperties  := nil;
   fSampleImage := nil;
   fPeakBuffer  := nil;
+  Dispose(fProperties);
+  Sample.Free;
+  fZeroCrossings.Free;
   inherited;
 end;
 
