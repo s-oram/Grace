@@ -8,7 +8,7 @@ uses
   RedFoxImageBuffer, RedFoxContainer, RedFoxAccessible;
 
 type
-  TRedFoxWinControl = class(TWinControl, IRedFoxVisibleControl, IAccessible)
+  TRedFoxWinControl = class(TWinControl, IRedFoxVisibleControl)
   private
     fBackBuffer: TRedFoxImageBuffer;
     fHitTest: boolean;
@@ -19,8 +19,6 @@ type
     fInvalidateRequired : boolean;
     fTransparent: boolean;
 
-    fIAccessibleWrapper: IAccessible;
-    fAccessible: TRedFoxAccessibleProperties;
     fDisplayClass: string;
     fOpacity: byte;
 
@@ -33,7 +31,6 @@ type
     function GetVisible: boolean;
     procedure SetVisible(const Value: boolean);
     procedure SetTransparent(const Value: boolean);
-    procedure SetAccessible(const Value: TRedFoxAccessibleProperties);
     procedure SetOpacity(const Value: byte);
 
     property IsBackBufferDirty : boolean read fIsBackBufferDirty;
@@ -41,13 +38,9 @@ type
     procedure MarkAsInvalidateRequired;
     function GetIsTransparent : boolean;
 
-    procedure WMGetObject(var Message : TMessage); message WM_GETOBJECT;
-    property AccessibleIntF : IAccessible read fIAccessibleWrapper implements IAccessible;
-
     function GetDisplayClass : string;
   protected
     function QueryInterface(const IID: TGUID; out Obj): HResult; override;
-    property Accessible : TRedFoxAccessibleProperties read fAccessible write SetAccessible;
 
     procedure PaintWindow(DC: HDC); override;
 
@@ -125,14 +118,10 @@ begin
   BackBuffer := TRedFoxImageBuffer.Create;
   fIsBackBufferDirty := true;
   fTransparent := false;
-
-  fAccessible := TRedFoxAccessibleProperties.Create;
-  fIAccessibleWrapper := TRedFoxAccessibleWrapper.Create(self, fAccessible);
 end;
 
 destructor TRedFoxWinControl.Destroy;
 begin
-  fAccessible.Free;
   CancelInvalidateRequests(self);
   BackBuffer.Free;
   inherited;
@@ -236,15 +225,7 @@ end;
 
 function TRedFoxWinControl.QueryInterface(const IID: TGUID; out Obj): HResult;
 begin
-  if IID = IID_IAccessible then
-    result := fIAccessibleWrapper.QueryInterface(IID, Obj)
-  else
-    result := inherited QueryInterface(IID, Obj);
-end;
-
-procedure TRedFoxWinControl.SetAccessible(const Value: TRedFoxAccessibleProperties);
-begin
-  Value.AssignTo(fAccessible);
+  result := inherited QueryInterface(IID, Obj);
 end;
 
 procedure TRedFoxWinControl.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
@@ -399,23 +380,6 @@ end;
 procedure TRedFoxWinControl.WMEraseBkgnd(var Message: TWmEraseBkgnd);
 begin
   Message.Result := 1;
-end;
-
-procedure TRedFoxWinControl.WMGetObject(var Message: TMessage);
-var
-  ac : IAccessible;
-begin
-  // Source for code in this method.
-  // http://stackoverflow.com/a/16442500/395461
-
-  if (Message.Msg = WM_GETOBJECT) then
-  begin
-    ac :=  fIAccessibleWrapper;
-    QueryInterface(IID_IAccessible, ac);
-    Message.Result := LresultFromObject(IID_IAccessible, Message.WParam, fIAccessibleWrapper);
-  end
-  else
-    Message.Result := DefWindowProc(Handle, Message.Msg, Message.WParam, Message.LParam);
 end;
 
 procedure TRedFoxWinControl.WMNCHitTest(var Message: TWMNCHitTest);

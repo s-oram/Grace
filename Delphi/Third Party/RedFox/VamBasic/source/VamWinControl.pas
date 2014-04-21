@@ -103,8 +103,6 @@ type
     property MouseUpMultiEvent    : TMouseMultiEvent     read fMouseUpMultiEvent;
     property MouseMoveMultiEvent  : TMouseMoveMultiEvent read fMouseMoveMultiEvent;
   published
-    property Accessible;
-
     property Text;
     property HitTest;
 
