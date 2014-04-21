@@ -23,7 +23,7 @@ type
     class function NewGuid : TGuid;
     class function EmptyGuid : TGuid;
     class function IsEmptyGuid(Guid : TGuid) : boolean;
-    class function ToString(Guid : TGuid) : string;
+    class function ToUnicodeString(Guid : TGuid) : string;
     class function ToQuotedString(Guid : TGuid) : string;
     class function FromString(Value : string) : TGuid;
     class function EqualGuids(Guid1, Guid2 : TGuid) : boolean;
@@ -63,10 +63,10 @@ end;
 
 class function TGuidEx.ToQuotedString(Guid: TGuid): string;
 begin
-  result := QuotedStr(ToString(Guid));
+  result := QuotedStr(ToUnicodeString(Guid));
 end;
 
-class function TGuidEx.ToString(Guid: TGuid): string;
+class function TGuidEx.ToUnicodeString(Guid: TGuid): string;
 begin
   result := GuidToString(Guid);
 end;
