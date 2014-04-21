@@ -170,7 +170,7 @@ end;
 
 function TBlitOsc.ProcessAsBlit: single;
 var
-  Blit1,Blit2:single;
+  Blit1 :single;
 begin
   Phase := Phase + StepSize;
   if Phase >= 1 then Phase := Phase - 1;
@@ -186,7 +186,7 @@ end;
 
 function TBlitOsc.ProcessAsSaw: single;
 var
-  Blit1,Blit2:single;
+  Blit1 :single;
   BiPolarBlit:single;
   //k : double;
   //g : double;
@@ -196,7 +196,7 @@ begin
   if Phase >= 1 then Phase := Phase - 1;
 
   Blit1 := Blit((Phase * PeriodLength), Harmonics, PeriodLength);
-
+  BiPolarBlit := 0; //TODO: BiPolarBlit calculation isn't made here.
 
   Saw := Saw + (Blit1 - 0.5);
 
@@ -205,6 +205,7 @@ begin
 
 
   //TODO: The DC bleed off stage needs to be improved. To much is bleed at low osc frequencies.
+
   Square := Square + BiPolarBlit;
 
   //k := PeriodLength * PulseWidth;
