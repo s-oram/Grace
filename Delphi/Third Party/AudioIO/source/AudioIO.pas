@@ -94,7 +94,7 @@ function IsSupportedAudioFileFormat(const FileName:string; out ErrorMessage:stri
 function AudioFileFormatToStr(aFileFormat:TAudioFileFormat):string;
 procedure GetAudioFileInfoEx(FileName:String; var Info:TAudioFileInfo);
 
-function LoadAudioFromFile(const LoadParameters:TAudioFileLoadParameters):boolean; overload; deprecated;
+function LoadAudioFromFile(const LoadParameters:TAudioFileLoadParameters):boolean; overload;
 function LoadAudioFromFile(const LoadParameters:TAudioFileLoadParameters; out ErrorMessage:string):boolean; overload;
 function SaveAudioToFile(const FileName:string; const SaveInfo:TAudioFileSaveInfo):boolean;
 
@@ -111,14 +111,14 @@ function CalcSampleDataSize(const SampleFrames, ChannelCount : integer; const Sa
 //====================================================================================================================
 //   Private Methods    TODO: These methods should be made private. (Maybe move to a different unit?)
 //====================================================================================================================
-function LoadMono(FileName:string; LeftData:PSingle):boolean;  deprecated;
-function LoadStereo(FileName:string; LeftData,RightData:PSingle):boolean; deprecated;
+function LoadMono(FileName:string; LeftData:PSingle):boolean;
+function LoadStereo(FileName:string; LeftData,RightData:PSingle):boolean;
 
-procedure SaveMono(FileName:string; LeftData:PSingle; SampleRate, SampleFrames, BitDepth:integer); deprecated;
-procedure SaveStereo(FileName:string; LeftData, RightData:PSingle; SampleRate, SampleFrames, BitDepth:integer); deprecated;
+procedure SaveMono(FileName:string; LeftData:PSingle; SampleRate, SampleFrames, BitDepth:integer);
+procedure SaveStereo(FileName:string; LeftData, RightData:PSingle; SampleRate, SampleFrames, BitDepth:integer);
 
-function LoadMono_Int(FileName:string; LeftData:PSmallInt):boolean; deprecated;
-function LoadStereo_Int(FileName:string; LeftData,RightData:PSmallInt):boolean; deprecated;
+function LoadMono_Int(FileName:string; LeftData:PSmallInt):boolean;
+function LoadStereo_Int(FileName:string; LeftData,RightData:PSmallInt):boolean;
 //====================================================================================================================
 
 
@@ -574,7 +574,7 @@ begin
 end;
 
 
-function LoadAudioFromFile(const LoadParameters:TAudioFileLoadParameters):boolean;
+function LoadAudioFromFile(const LoadParameters:TAudioFileLoadParameters):boolean; overload;
 var
   Ext:string;
   FileFormat:TAudioFileFormat;
