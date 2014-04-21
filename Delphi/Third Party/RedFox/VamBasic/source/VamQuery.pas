@@ -45,7 +45,7 @@ type
     fList: TControlList;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     function List : TControlList;
 
@@ -143,6 +143,7 @@ end;
 destructor TVamQuery.Destroy;
 begin
   fList.Free;
+  inherited;
 end;
 
 function TVamQuery.List: TControlList;

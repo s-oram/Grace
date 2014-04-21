@@ -758,7 +758,7 @@ var
   hka : THotkeyAssignment;
   msg : string;
 begin
-  msg := 'Key (' + Key + ') is not a valid VST short cut option.';
+  msg := 'Key (' + String(Key) + ') is not a valid VST short cut option.';
   if IsValidVstKeyChar(Key) = false then raise Exception.Create(msg);
 
   if (Key = '') and (VirtualKey = TVstVirtualKey.vkNone) then raise Exception.Create('No key code specified for hot key.');
@@ -816,7 +816,7 @@ begin
   for c1 := 0 to AssignmentList.Count-1 do
   begin
     hka := AssignmentList[c1];
-    if (KeyCode.character = hka.KeyChar) and (KeyCode.virt = ord(hka.VirtualKey)) and (IsShift = hka.WithShift) and (IsAlt = hka.WithAlt) and (IsCtrl = hka.WithCtrl) then
+    if (KeyCode.character = hka.KeyChar) and (SmallInt(KeyCode.virt) = ord(hka.VirtualKey)) and (IsShift = hka.WithShift) and (IsAlt = hka.WithAlt) and (IsCtrl = hka.WithCtrl) then
     begin
       CommandKeyDown(hka.CommandID);
       exit(true);
@@ -842,7 +842,7 @@ begin
   for c1 := 0 to AssignmentList.Count-1 do
   begin
     hka := AssignmentList[c1];
-    if (KeyCode.character = hka.KeyChar) and (KeyCode.virt = ord(hka.VirtualKey)) and (IsShift = hka.WithShift) and (IsAlt = hka.WithAlt) and (IsCtrl = hka.WithCtrl) then
+    if (KeyCode.character = hka.KeyChar) and (SmallInt(KeyCode.virt) = ord(hka.VirtualKey)) and (IsShift = hka.WithShift) and (IsAlt = hka.WithAlt) and (IsCtrl = hka.WithCtrl) then
     begin
       CommandKeyUp(hka.CommandID);
       exit(true);

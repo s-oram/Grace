@@ -99,8 +99,6 @@ end;
 procedure TInfoBarController.EventHandle_ControlMouseEnter(Sender: TObject);
 var
   c : TControl;
-  s : string;
-  Tag : integer;
 begin
   c := (Sender as TControl);
   LastControl := (Sender as TControl);

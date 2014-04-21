@@ -34,9 +34,10 @@ type
   TCustomAnimation = class(TRefCountedZeroObject, ICustomAnimation)
   private
     fTime        : integer;
+  protected
     function GetRunTime: integer;
     procedure SetRunTime(const Value: integer);
-  protected
+
     procedure RunStep(const FramePos : single); virtual; abstract;
     property RunTime : integer  read GetRunTime write SetRunTime; //milliseconds;
   public

@@ -122,7 +122,6 @@ type
     LfoFreqModeSelector: TVamTextBox;
     FilterRoutingButton: TVamTextBox;
     LfoRangeSelector: TVamTextBox;
-    procedure StepSeq1Changed(Sender: TObject);
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure LfoSelectButton1Changed(Sender: TObject);
@@ -730,8 +729,6 @@ procedure TModControlFrame.UpdateControlVisibility;
 var
   Par : TVstParameter;
   FT  : TFilterType;
-  LfoShape : TLfoShape;
-
   Knobs : array[0..3] of TControl;
   Labels : array[0..3] of TControl;
 begin
@@ -769,101 +766,8 @@ begin
 end;
 
 procedure TModControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
-var
-  c1 : integer;
-  x1 : single;
-  a1 : integer;
-  TargetTextBox : TVamTextBox;
-  SG : IKeyGroup;
-  CurEngine : TKeyGroup;
-  SeqLength : TStepSequencerLength;
 begin
-  // NOTE: Don't enable the Update GUI time until the plugin variable as been assigned.
-  assert(assigned(Plugin));
 
-
-  //TODO: Rather then pulling the focused engine from the plugin, perhaps it
-  // would be better to at the Focused engine check as part of the GUI FeedBack data.
-  SG := Plugin.FocusedKeyGroup;
-
-  {
-  //== Step Seq 1 ==
-  if assigned(SG) then
-  begin
-    CurEngine := SG.GetObject as TKeyGroup;
-    if StepSeq1.IsControlGrabbed = false then
-    begin
-      for c1 := 0 to kMaxStepSequencerLength-1 do
-      begin
-        x1 := CurEngine.VoiceParameters.Seq1StepValue[c1] * 2 - 1;
-        if StepSeq1.SequenceValue[c1] <> x1 then StepSeq1.SequenceValue[c1] := x1;
-      end;
-    end;
-  end;
-
-  x1 := Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length).ValueVST;
-  SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
-  case SeqLength of
-    TStepSequencerLength.Two:     a1 := 2;
-    TStepSequencerLength.Three:   a1 := 3;
-    TStepSequencerLength.Four:    a1 := 4;
-    TStepSequencerLength.Five:    a1 := 5;
-    TStepSequencerLength.Six:     a1 := 6;
-    TStepSequencerLength.Seven:   a1 := 7;
-    TStepSequencerLength.Eight:   a1 := 8;
-    TStepSequencerLength.Twelve:  a1 := 12;
-    TStepSequencerLength.Sixteen: a1 := 16;
-  else
-    raise Exception.Create('unexpected step count value.');
-  end;
-  if StepSeq1.SequenceLength <> a1 then StepSeq1.SequenceLength := a1;
-
-
-
-  //== Step Seq 2 ==
-  if assigned(SG) then
-  begin
-    CurEngine := SG.GetObject as TKeyGroup;
-    if StepSeq2.IsControlGrabbed = false then
-    begin
-      for c1 := 0 to kMaxStepSequencerLength-1 do
-      begin
-        x1 := CurEngine.VoiceParameters.Seq2StepValue[c1] * 2 - 1;
-        if StepSeq2.SequenceValue[c1] <> x1 then StepSeq2.SequenceValue[c1] := x1;
-      end;
-    end;
-  end;
-
-  x1 := Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length).ValueVST;
-  SeqLength := TStepSequencerLengthHelper.ToEnum(x1);
-  case SeqLength of
-    TStepSequencerLength.Two:     a1 := 2;
-    TStepSequencerLength.Three:   a1 := 3;
-    TStepSequencerLength.Four:    a1 := 4;
-    TStepSequencerLength.Five:    a1 := 5;
-    TStepSequencerLength.Six:     a1 := 6;
-    TStepSequencerLength.Seven:   a1 := 7;
-    TStepSequencerLength.Eight:   a1 := 8;
-    TStepSequencerLength.Twelve:  a1 := 12;
-    TStepSequencerLength.Sixteen: a1 := 16;
-  else
-    raise Exception.Create('unexpected step count value.');
-  end;
-  if StepSeq2.SequenceLength <> a1 then StepSeq2.SequenceLength := a1;
-
-
-
-  if FeedBack^.IsVoiceActive then
-  begin
-    if StepSeq1.CurrentStep <> FeedBack^.StepSeq1CurStep then StepSeq1.CurrentStep := FeedBack^.StepSeq1CurStep;
-    if StepSeq2.CurrentStep <> FeedBack^.StepSeq2CurStep then StepSeq2.CurrentStep := FeedBack^.StepSeq2CurStep;
-  end else
-  begin
-    if StepSeq1.CurrentStep <> -1 then StepSeq1.CurrentStep := -1;
-    if StepSeq2.CurrentStep <> -1 then StepSeq2.CurrentStep := -1;
-  end;
-
-  }
 end;
 
 procedure TModControlFrame.UpdateModulation;
@@ -885,49 +789,6 @@ procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);
 begin
   FMotherShip := aMotherShip;
 end;
-
-procedure TModControlFrame.StepSeq1Changed(Sender: TObject);
-var
-  Tag : integer;
-  c1: integer;
-  x1 : single;
-  SG : IKeyGroup;
-  CurEngine : TKeyGroup;
-begin
-  {
-  if not assigned(Plugin) then exit;
-
-  SG := Plugin.FocusedKeyGroup;
-
-  if not assigned(sg) then exit;
-
-  CurEngine := SG.GetObject as TKeyGroup;
-
-  Tag := (Sender as TVamVectorSequence).Tag;
-
-  //== Step Seq 1 ==
-  if Tag = 1 then
-  begin
-    for c1 := 0 to kMaxStepSequencerLength-1 do
-    begin
-      x1 := StepSeq1.SequenceValue[c1] * 0.5 + 0.5;
-      if CurEngine.VoiceParameters.Seq1StepValue[c1] <> x1 then CurEngine.VoiceParameters.Seq1StepValue[c1] := x1;
-    end;
-  end;
-
-
-  //== Step Seq 2 ==
-  if Tag = 2 then
-  begin
-    for c1 := 0 to kMaxStepSequencerLength-1 do
-    begin
-      x1 := StepSeq2.SequenceValue[c1] * 0.5 + 0.5;
-      if CurEngine.VoiceParameters.Seq2StepValue[c1] <> x1 then CurEngine.VoiceParameters.Seq2StepValue[c1] := x1;
-    end;
-  end;
-  }
-end;
-
 
 procedure TModControlFrame.FilterKnobMouseEnter(Sender: TObject);
 begin

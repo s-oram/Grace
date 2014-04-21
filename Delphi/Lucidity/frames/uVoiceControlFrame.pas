@@ -158,8 +158,6 @@ end;
 
 
 procedure TVoiceControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
-var
-  ParIndex : integer;
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
@@ -488,7 +486,6 @@ end;
 
 procedure TVoiceControlFrame.UpdateModulation;
 var
-  c1 : integer;
   ModSlot : integer;
 begin
   if Plugin.Globals.IsMouseOverModSlot

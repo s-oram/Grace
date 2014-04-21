@@ -109,7 +109,7 @@ begin
   begin
     if (Par.Zoom = 0) then
     begin
-      if (PeaksData <> nil) and (PeaksData.GetDataFrames = Par.ImageWidth) then
+      if (PeaksData <> nil) and (PeaksData.GetDataFrames = Integer(Par.ImageWidth)) then
       begin
         DrawSampleUsingPeakBuffer(aSampleRegion, PeaksData, Par, Wrapper)
       end else

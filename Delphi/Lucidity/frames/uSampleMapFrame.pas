@@ -947,7 +947,7 @@ begin
   for c1 := 0 to SampleMap.SampleRegions.Count-1 do
   begin
     if SampleMap.SampleRegions[c1].IsSelected
-      then RegionList.Append(SampleMap.SampleRegions[c1].UniqueID);
+      then RegionList.Add(SampleMap.SampleRegions[c1].UniqueID);
   end;
 
   if Sender = LowNoteKnob  then TAdjustRegions.DecLowNote(Plugin, RegionList);
@@ -985,7 +985,7 @@ begin
   for c1 := 0 to SampleMap.SampleRegions.Count-1 do
   begin
     if SampleMap.SampleRegions[c1].IsSelected
-      then RegionList.Append(SampleMap.SampleRegions[c1].UniqueID);
+      then RegionList.Add(SampleMap.SampleRegions[c1].UniqueID);
   end;
 
   if Sender = LowNoteKnob  then TAdjustRegions.IncLowNote(Plugin, RegionList);

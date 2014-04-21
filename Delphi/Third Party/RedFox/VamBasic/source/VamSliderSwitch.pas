@@ -22,7 +22,7 @@ type
     fIndexImage: TBitmap;
     function GetColor(const Index: Integer): TRedFoxColorString;
     procedure SetColor(const Index: Integer; const Value: TRedFoxColorString);
-    procedure SetEnabled(const Value: boolean);
+
     procedure SetSliderType(const Value: TVamSliderType);
     procedure SetSwitchPos(const Value: integer);
   protected
@@ -47,6 +47,8 @@ type
 
     procedure Changed;
     procedure Paint; override;
+
+    procedure SetEnabled(Value: boolean); override;
 
     property SliderType : TVamSliderType read fSliderType write SetSliderType;
   public
@@ -229,7 +231,7 @@ begin
 
 end;
 
-procedure TVamSliderSwitch.SetEnabled(const Value: boolean);
+procedure TVamSliderSwitch.SetEnabled(Value: boolean);
 begin
   fEnabled := Value;
 end;
@@ -276,8 +278,8 @@ begin
 
   if assigned(IndexImage) then
   begin
-    IndexWidth  := IndexImage.Width;
-    IndexHeight := IndexImage.Height;
+    //IndexWidth  := IndexImage.Width;
+    //IndexHeight := IndexImage.Height;
 
     case SliderType of
       stVert:
@@ -312,8 +314,8 @@ begin
     case SliderType of
       stVert:
       begin
-        IndexWidth := Width;
-        IndexHeight := IndexWidth;
+        //IndexWidth := Width;
+        //IndexHeight := IndexWidth;
         //TODO:
       end;
 

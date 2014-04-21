@@ -50,7 +50,6 @@ type
   TDrawMeterMethod = reference to procedure(const x1, y1, Width, Height : integer; const DbLevel : single);
 var
   dbA, dbB : single;
-  x1, y1, x2, y2 : single;
   DrawMeter : TDrawMeterMethod;
 begin
   inherited;

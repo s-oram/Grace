@@ -418,7 +418,7 @@ procedure CheckSmartSnappingState(
     out VertSmartSnapDisable : boolean;
     out HorzSmartSnapDisable : boolean );
 var
-  rw, rh : integer;
+  rw : integer;
 begin
   rw := FocusedRegion.HighKey - FocusedRegion.LowKey;
   //rh := FocusedRegion.HighVelocity - FocusedRegion.LowVelocity;

@@ -327,7 +327,7 @@ begin
 
   if (IsGrabbed) and (NumericStyle = nsCustom) then
   begin
-    Dist := 0;
+    //Dist := 0;
 
     if IsFineAdjustment = false
       then ScaleFactor := 0.005

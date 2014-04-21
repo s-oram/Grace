@@ -25,7 +25,6 @@ type
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
     procedure SetVisibleSteps(const Value: integer);
-    procedure SetEnabled(const Value: boolean);
     procedure SetDisabledImage(const Value: TBitmap);
     procedure SetSliderType(const Value: TVamSliderType);
     function GetColor(const Index: Integer): TRedFoxColorString;
@@ -53,6 +52,8 @@ type
     procedure DrawKnob_BitmapStyle;
 
     property SliderType : TVamSliderType read fSliderType write SetSliderType;
+
+    procedure SetEnabled(Value: boolean); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -326,7 +327,7 @@ begin
   end;
 end;
 
-procedure TVamSlider.SetEnabled(const Value: boolean);
+procedure TVamSlider.SetEnabled(Value: boolean);
 begin
   if Value <> fEnabled then
   begin
@@ -430,12 +431,12 @@ end;
 
 procedure TVamSlider.DrawKnob_VectorStyle;
 var
-  MiddleX, MiddleY:single;
-  EndX, EndY   : single;
-  EndX2, EndY2 : single;
-  Angle : single;
-  Radius1:single;
-  Radius2:single;
+  //MiddleX, MiddleY:single;
+  //EndX, EndY   : single;
+  //EndX2, EndY2 : single;
+  //Angle : single;
+  //Radius1:single;
+  //Radius2:single;
   xPos : single;
   r : TRectF;
   vx1, vx2 : integer;

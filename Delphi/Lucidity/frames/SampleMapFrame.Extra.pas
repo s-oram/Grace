@@ -32,7 +32,6 @@ class procedure TAdjustRegions.IncLowNote(const Plugin: TeePlugin; const RegionL
 var
   c1 : integer;
   MapRegion : IRegion;
-  Proceed : boolean;
 begin
   for c1 := 0 to RegionList.Count-1 do
   begin

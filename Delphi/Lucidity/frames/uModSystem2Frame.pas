@@ -23,7 +23,6 @@ type
 
     ModContextMenu : TModSelectorContextMenu;
 
-    MenuModSlot : integer;
     MenuKeyGroup : IKeyGroup;
 
     ModSelectors : array[0..kModSlotCount-1] of TVamModSelector;
@@ -356,7 +355,6 @@ end;
 procedure TModSystem2Frame.UpdateModSelector_ModulationAmounts;
 var
   c1 : integer;
-  Par : TVstParameterEx;
   x1, x2 : single;
   ModAmount : single;
 begin

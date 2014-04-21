@@ -11,7 +11,6 @@ type
   private
     IsMouseOver : boolean;
     fColor : TRedFoxColor;
-    fColorMouseOver : TRedFoxColor;
     fColorBorder : TRedFoxColor;
     fColorText   : TRedFoxColor;
     fText: string;
@@ -29,10 +28,7 @@ type
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     function GetColor: TRedFoxColorString;
-    function GetColorMouseOver: TRedFoxColorString;
     procedure SetColor(const Value: TRedFoxColorString);
-    procedure SetColorMouseOver(const Value: TRedFoxColorString);
-    procedure SetMenuText(Value : string);
     function GetColorBorder: TRedFoxColorString;
     procedure SetColorBorder(const Value: TRedFoxColorString);
     procedure SetShowBorder(const Value: boolean);
@@ -134,11 +130,6 @@ begin
   result := fColorBorder.AsString;
 end;
 
-function TVamShortMessageOverlay.GetColorMouseOver: TRedFoxColorString;
-begin
-  result := fColorMouseOver.AsString;
-end;
-
 function TVamShortMessageOverlay.GetColorText: TRedFoxColorString;
 begin
   result := FColorText.AsString;
@@ -196,15 +187,6 @@ begin
   end;
 end;
 
-procedure TVamShortMessageOverlay.SetColorMouseOver(const Value: TRedFoxColorString);
-begin
-  if Value <> fColorMouseOver.AsString then
-  begin
-    fColorMouseOver.SetColor(Value);
-    Invalidate;
-  end;
-end;
-
 procedure TVamShortMessageOverlay.SetColorText(const Value: TRedFoxColorString);
 begin
   FColorText := Value;
@@ -228,11 +210,6 @@ end;
 procedure TVamShortMessageOverlay.SetCornerRadius4(const Value: double);
 begin
   fCornerRadius4 := Value;
-end;
-
-procedure TVamShortMessageOverlay.SetMenuText(Value: string);
-begin
-  SetText(Value);
 end;
 
 procedure TVamShortMessageOverlay.SetShowBorder(const Value: boolean);
@@ -279,8 +256,6 @@ end;
 procedure TVamShortMessageOverlay.Paint;
 var
   TextBounds : TRect;
-  SrcRect : TRect;
-  DstRect : TRect;
   IntPadding : integer;
   BackgroundRect : TRect;
   w, h : integer;

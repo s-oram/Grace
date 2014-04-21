@@ -913,11 +913,10 @@ end;
 
 procedure TLuciditySampleOverlay.Paint;
 var
-  x1, y1, x2, y2 : single;
+  x1, x2, y2 : single;
   TextBounds : TRect;
 begin
   inherited;
-
 
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
@@ -952,7 +951,7 @@ begin
           x2 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.PlaybackEnd,   SampleFrames, Width, Zoom, Offset);
 
 
-          y1 := 0;
+          //y1 := 0;
           y2 := self.Height;
 
           //BackBuffer.BufferInterface.Rectangle(x1, y1, x2, y2);
