@@ -108,7 +108,7 @@ begin
     mi := TMenuItem.Create(fMenu);
     mi.Tag := c1;
     mi.Caption := aEnumHelper.ToFullGuiString(c1);
-    mi.Name    := 'mi' + aEnumHelper.ToString(c1);
+    mi.Name    := 'mi' + aEnumHelper.ToUnicodeString(c1);
     mi.OnClick := MenuItemClicked;
 
     fMenu.Items.Add(mi);
@@ -142,7 +142,7 @@ begin
     fMenu.Items[c1].Checked := false;
   end;
 
-  s := TEnumHelper<TEnum>.ToString(CurrentValue);
+  s := TEnumHelper<TEnum>.ToUnicodeString(CurrentValue);
   s := 'mi' + s;
 
   for c1 := 0 to fMenu.Items.Count-1 do
@@ -176,7 +176,7 @@ function TEnumMenu<TEnum>.FindMenuItemByEnum(Enum: TEnum): TMenuItem;
 var
   s : string;
 begin
-  s := TEnumHelper<TEnum>.ToString(Enum);
+  s := TEnumHelper<TEnum>.ToUnicodeString(Enum);
   result := FindMenuItemByName(s);
 end;
 

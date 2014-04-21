@@ -37,8 +37,8 @@ type
     class function ToInteger(s : string):integer; overload; virtual; abstract;
     class function ToInteger(x : single):integer; overload; virtual; abstract;
 
-    class function ToString(Ordinal : integer):string; overload; virtual; abstract;
-    class function ToString(x : single):string; overload; virtual; abstract;
+    class function ToUnicodeString(Ordinal : integer):string; overload; virtual; abstract;
+    class function ToUnicodeString(x : single):string; overload; virtual; abstract;
 
     class function ToSingle(s : string):single; overload; virtual; abstract;
     class function ToSingle(Ordinal : integer):single; overload; virtual; abstract;
@@ -64,9 +64,9 @@ type
     class function ToSingle(Ordinal : integer):single; override;
     class function ToSingle(aEnum : TEnum):single; overload;
 
-    class function ToString(x : single):string; override;
-    class function ToString(Ordinal : integer):string; override;
-    class function ToString(aEnum : TEnum):string; overload;
+    class function ToUnicodeString(x : single):string; override;
+    class function ToUnicodeString(Ordinal : integer):string; override;
+    class function ToUnicodeString(aEnum : TEnum):string; overload;
 
     class function ToEnum(s : string): TEnum; overload;
     class function ToEnum(x : single): TEnum; overload;
@@ -113,7 +113,7 @@ begin
   for c1 := 0 to GetEnumTypeCount-1 do
   begin
     //TestString := ToString(ToEnum(c1));
-    TestString := ToString(c1);
+    TestString := ToUnicodeString(c1);
     if SameText(TestString, s) then
     begin
       result := ToEnum(c1);
@@ -184,7 +184,7 @@ var
 begin
   for c1 := 0 to GetEnumTypeCount - 1 do
   begin
-    TestString := ToString(c1);
+    TestString := ToUnicodeString(c1);
     if SameText(s, TestString) then
     begin
       result := ToSingle(c1);
@@ -203,12 +203,12 @@ begin
   result := Ordinal / (GetEnumTypeCount - 1);
 end;
 
-class function TEnumHelper<TEnum>.ToString(Ordinal: integer): string;
+class function TEnumHelper<TEnum>.ToUnicodeString(Ordinal: integer): string;
 begin
   result := ConvertToStringFromInt(Ordinal);
 end;
 
-class function TEnumHelper<TEnum>.ToString(aEnum: TEnum): string;
+class function TEnumHelper<TEnum>.ToUnicodeString(aEnum: TEnum): string;
 var
   i: Int64;
 begin
@@ -216,7 +216,7 @@ begin
   result := ConvertToStringFromInt(i);
 end;
 
-class function TEnumHelper<TEnum>.ToString(x: single): string;
+class function TEnumHelper<TEnum>.ToUnicodeString(x: single): string;
 var
   AsInt : integer;
 begin
@@ -238,7 +238,7 @@ end;
 
 class function TEnumHelper<TEnum>.ToFullGuiString(aEnum: TEnum): string;
 begin
-  result := Self.ToString(aEnum);
+  result := Self.ToUnicodeString(aEnum);
 end;
 
 class function TEnumHelper<TEnum>.ToFullGuiString(Ordinal: integer): string;
@@ -260,7 +260,7 @@ end;
 
 class function TEnumHelper<TEnum>.ToShortGuiString(aEnum: TEnum): string;
 begin
-  result := Self.ToString(aEnum);
+  result := Self.ToUnicodeString(aEnum);
 end;
 
 class function TEnumHelper<TEnum>.ToShortGuiString(Ordinal: integer): string;

@@ -372,7 +372,7 @@ begin
       x := fModSourceValues[c1]^;
       if InRange(x, 0, 1) = false then
       begin
-        s := TModSourceHelper.ToString(c1);
+        s := TModSourceHelper.ToUnicodeString(c1);
         raise Exception.Create(s + ' is out of range.');
       end;
     end;

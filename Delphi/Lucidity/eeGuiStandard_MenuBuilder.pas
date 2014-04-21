@@ -85,7 +85,7 @@ begin
     mi := TMenuItem.Create(nil);
 
     mi.Caption := EnumHelper.ToFullGuiString(c1);
-    mi.Name    := 'mi' + EnumHelper.ToString(c1);
+    mi.Name    := 'mi' + EnumHelper.ToUnicodeString(c1);
     mi.Tag     := c1;
     mi.OnClick := MenuItemClicked;
 

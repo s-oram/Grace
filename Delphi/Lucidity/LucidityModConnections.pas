@@ -185,7 +185,7 @@ var
 begin
   for c1 := 0 to ModLinkCount-1 do
   begin
-    fModLinks[c1].UniqueID := TModDestHelper.ToString(c1 div 4) + '_Offset' + IntToStr(c1 mod 4);
+    fModLinks[c1].UniqueID := TModDestHelper.ToUnicodeString(c1 div 4) + '_Offset' + IntToStr(c1 mod 4);
     fModLinks[c1].Dest     := TModDestHelper.ToEnum(c1 div 4);
     fModLinks[c1].Source   := TModSource.None;
     fModLinks[c1].Via      := TModSource.None;
