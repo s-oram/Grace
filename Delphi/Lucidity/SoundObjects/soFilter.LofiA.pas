@@ -151,12 +151,6 @@ begin
 end;
 
 procedure TLofiA.Step(var x1, x2: single);
-var
-  EmphasisFactor   : single;
-  DeemphasisFactor : single;
-  CurveFactor : single;
-
-  tx1, tx2 : single;
 begin
   //x1 := EmpFunction(x1, fBitEmphasis);
   //x2 := EmpFunction(x2, fBitEmphasis);

@@ -533,11 +533,14 @@ function TIntegerList.Add(const Value: integer): integer;
 begin
   if AllowDuplicates then
   begin
-    inherited Add(Value);
+    result := inherited Add(Value);
   end else
   if Contains(Value) = false then
   begin
-    inherited Add(Value);
+    result := inherited Add(Value);
+  end else
+  begin
+    result := -1;
   end;
 end;
 

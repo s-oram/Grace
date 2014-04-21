@@ -53,7 +53,8 @@ uses
   soGrainStretchSubOsc,
   soLucidityVoiceParameterWrapper,
   uLucidityStepSequencer,
-  Lucidity.KeyGroupPlayer;
+  Lucidity.KeyGroupPlayer,
+  eeSimpleGate;
 
 type
   TeePlugin = class(TeePluginBase)

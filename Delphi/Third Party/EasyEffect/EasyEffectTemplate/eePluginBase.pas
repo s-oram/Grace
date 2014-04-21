@@ -30,13 +30,10 @@ type
     fSetParameterAutomated: TSetParameterProcedure;
     fIsGuiOpen: boolean;
     fIsSuspended:boolean;
-
-    BufferedEventList:TBufferedEventList;
     fOnResizeGuiWindow: TResizeGuiWindowEvent;
     fHostPlayState: THostPlayState;
     fAudioEffect: TVstAudioEffect;
     fOnPresetNameChanged: TNotifyEvent;
-
     function GetSettings: TeePluginSettings;
     procedure SetPresetName(const Value: string);
   protected

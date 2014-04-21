@@ -83,13 +83,13 @@ end;
 
 function TSineOsc.AudioRateStep: single;
 var
-  ax, bx : integer;
+  ax : integer;
   frac : single;
   sax, sbx : single;
 begin
   //== Calc Osc Phase ==
   ax := floor(CurPhase);
-  bx := ax + 1;
+  //bx := ax + 1;
   frac := CurPhase - ax;
 
   sax := WaveData[ax];

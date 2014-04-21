@@ -359,7 +359,6 @@ var
   ax         : integer;
   frac       : single;
   xOut1, xOut2 : single;
-  StepSize : single;
 begin
   if (assigned(CurSample))  then
   begin
@@ -487,7 +486,6 @@ end;
 procedure TOneShotSampleOsc.GetGuiFeedBack(const FeedbackData: TGuiFeedBackData);
 var
   SampleBounds : TSampleOsc_SampleBounds;
-  xPos : integer;
 begin
   // Get current playback position.
 

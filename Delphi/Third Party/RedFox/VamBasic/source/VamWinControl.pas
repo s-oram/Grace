@@ -86,7 +86,7 @@ type
     procedure AlignToParent(const UsingMargins : boolean = false);
 
     // Resize calls SetBounds() then fires the OnResize() event.
-    procedure Resize(aLeft, aTop, aWidth, aHeight: Integer);
+    procedure Resize(aLeft, aTop, aWidth, aHeight: Integer); reintroduce;
 
     // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
     // always be followed by a EndUpdate() call.
@@ -351,7 +351,7 @@ var
 begin
   inherited;
 
-  x := Message.WheelDelta;
+  //x := Message.WheelDelta;
 
   Shift := [];
 

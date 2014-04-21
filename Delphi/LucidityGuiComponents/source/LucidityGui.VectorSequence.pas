@@ -87,8 +87,6 @@ uses
 { TVamVectorSequence }
 
 constructor TLucidityVectorSequence.Create(AOwner: TComponent);
-var
-  c1: Integer;
 begin
   inherited;
 
@@ -101,13 +99,6 @@ begin
   fColor_StepActive := '$55FFFFFF';
 
   fSequenceLength := 8;
-
-  {
-  for c1 := 0 to kMaxSeqLength-1 do
-  begin
-    SequenceValue[c1] := random * 2 - 1;
-  end;
-  }
 end;
 
 destructor TLucidityVectorSequence.Destroy;

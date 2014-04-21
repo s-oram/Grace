@@ -115,13 +115,13 @@ end;
 
 function TDynamicWaveTableOsc.Step: single;
 var
-  ax, bx : integer;
+  ax : integer;
   frac : single;
   sax, sbx : single;
   Out1 : single;
 begin
   ax := floor(CurPhase);
-  bx := ax + 1;
+  //bx := ax + 1;
   frac := CurPhase - ax;
 
   sax := WaveData[ax];

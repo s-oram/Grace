@@ -93,8 +93,6 @@ uses
   Menu.FileTreeMenu in 'frames\Menu.FileTreeMenu.pas',
   uAboutFrame in 'frames\uAboutFrame.pas' {AboutFrame: TFrame},
   Lucidity.Env.ADSR in 'SoundObjects\Lucidity.Env.ADSR.pas',
-  soFilter.LowPassB in 'SoundObjects\soFilter.LowPassB.pas',
-  soFilter.FilterBCore in 'SoundObjects\soFilter.FilterBCore.pas',
   Lucidity.Globals in 'Lucidity.Globals.pas',
   uLucidityExtra in 'uLucidityExtra.pas',
   Menu.SampleMapContextMenu in 'frames\Menu.SampleMapContextMenu.pas',

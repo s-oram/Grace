@@ -6,7 +6,10 @@ uses
   {$IFNDEF VER230}
   eeSampleLoader,
   {$ENDIF}
-  VamLib.MoreTypes, eeSampleInt, eeAudioFilePreviewPlayerVoice;
+  eeSampleFloat,
+  eeSampleInt,
+  eeSimpleGate,
+  VamLib.MoreTypes, eeAudioFilePreviewPlayerVoice;
 
 
 
@@ -62,7 +65,7 @@ type
 implementation
 
 uses
-  eeSimpleGate, eeCustomSample, AudioIO, SysUtils;
+  eeCustomSample, AudioIO, SysUtils;
 
 
 

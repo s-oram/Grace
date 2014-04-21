@@ -28,7 +28,7 @@ type
     property IsUpdating : boolean read GetIsUpdating;
 
     // Resize calls SetBounds() then fires the OnResize() event.
-    procedure Resize(aLeft, aTop, aWidth, aHeight: Integer);
+    procedure Resize(aLeft, aTop, aWidth, aHeight: Integer); reintroduce;
 
 
     //TODO: These methods need to be made private and should be accessed via the interface.

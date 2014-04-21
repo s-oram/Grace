@@ -84,7 +84,6 @@ end;
 
 function CalcMaxHarmonics(RootFreq, MaxFreq:single):integer;
 var
-  x : single;
   HarmonicCount : integer;
 begin
   HarmonicCount := Floor(MaxFreq / RootFreq);

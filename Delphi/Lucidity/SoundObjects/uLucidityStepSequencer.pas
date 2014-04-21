@@ -84,8 +84,6 @@ uses
 { TLucidyStepSequencer }
 
 constructor TLucidyStepSequencer.Create(const aVoiceClockManager : TLucidityVoiceClockManager);
-var
-  c1: Integer;
 begin
   VoiceClockManager := aVoiceClockManager;
 
@@ -192,7 +190,7 @@ begin
   end else
   begin
     x := StepSequencerLengthToInteger(StepCount);
-    fCurrentStep := TriggeredNote mod x;
+    fCurrentStep := Integer(TriggeredNote) mod x;
     IsSteppingForwards := true;
 
     TargetOutput  := CurrentStepValues[fCurrentStep];

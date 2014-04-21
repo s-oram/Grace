@@ -174,7 +174,7 @@ procedure FindNodes(const Node : TXmlNode; const NodeName : UTF8String; const Li
     for i := 0 to aNode.NodeCount - 1 do
     begin
       SubNode := aNode.Nodes[i];
-      if EndsText(NodeName, SubNode.FullPath)
+      if EndsText(String(NodeName), string(SubNode.FullPath))
         then aList.Add(SubNode);
       FindNodesRecursive(SubNode, aList);
     end;

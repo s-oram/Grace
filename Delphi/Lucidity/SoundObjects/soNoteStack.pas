@@ -130,7 +130,6 @@ end;
 procedure TNoteStack.CondenseStack;
 var
   ReadIndex, WriteIndex : integer;
-  c1: Integer;
 begin
   // Null some old notes to ensure there is some empty room to condense
   // the stack. Don't null the very first note, NoteStack[0], as this

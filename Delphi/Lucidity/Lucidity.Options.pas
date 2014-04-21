@@ -57,7 +57,6 @@ procedure TOptions.AddNewSoundEditor(const AppExe: string);
 var
   c1: Integer;
   appName : string;
-  s : string;
   Info : PSoundEditorInfo;
 begin
   Info := nil;

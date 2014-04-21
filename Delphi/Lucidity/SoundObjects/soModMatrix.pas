@@ -262,7 +262,6 @@ end;
 procedure TModMatrix.FastControlProcess;
 var
   c1 : integer;
-  y : single;
   Index : integer;
   pv, combinedModValues : single;
 begin

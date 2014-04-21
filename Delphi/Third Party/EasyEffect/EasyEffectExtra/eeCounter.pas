@@ -115,7 +115,7 @@ end;
 procedure TCounter.Step;
 begin
   inc(PhaseFrac, IntegerStepSize);
-  PhaseWhole := PhaseWhole + (((CounterFracOffset + PhaseFrac) shr 12) - CounterFracOffsetSHR12);
+  PhaseWhole := PhaseWhole + (((Integer(CounterFracOffset) + PhaseFrac) shr 12) - CounterFracOffsetSHR12);
   PhaseFrac  := (PhaseFrac and $00FFF);
 end;
 

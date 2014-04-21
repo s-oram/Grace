@@ -90,18 +90,13 @@ begin
 end;
 
 function TFilterCoreB.StepAsLowPass(const x1: double): double;
-var
-  c1 : integer;
 begin
-
   v1z := v1;
   v2z := v2;
   v0  := (x1) + kDenormal;
   v1  := v1z + g * (v0 + v0z - 2*(g + k)*v1z - 2*v2z) / (1 + g*(g + k));
   v2  := v2z + g * (v1 + v1z);
   v0z := v0;
-
-
 
   //== Lowpass output ==
   result := Fast_Tan0(v2 * 2) * 0.5;

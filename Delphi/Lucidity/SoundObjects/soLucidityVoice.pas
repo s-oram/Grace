@@ -37,7 +37,6 @@ uses
   soLevelMeter,
   FilterCore.SimperSVF,
   soFilter.BlueFilter,
-  soFilter.LowpassB,
   VamLib.Utils,
   SampleOscUtils,
   uConstants,
@@ -473,8 +472,6 @@ end;
 
 procedure TLucidityVoice.UpdateOscPitch;
 var
-  PitchShift : single;
-  SamplePitch : single;
   PitchOne: single;
   PitchTwo: single;
 begin
@@ -500,14 +497,12 @@ end;
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
 var
   CV : TModularVoltage;
-  PitchShift : single;
-  SamplePitch : single;
 begin
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
-  assert(MidiNote >= 0);
+  //assert(MidiNote >= 0);
   assert(MidiNote <= 127);
-  assert(MidiVelocity >= 0);
+  //assert(MidiVelocity >= 0);
   assert(MidiVelocity <= 127);
 
   fIsActive := true;
@@ -674,11 +669,8 @@ end;
 
 procedure TLucidityVoice.FastControlProcess;
 var
-  PitchShift : single;
   CV : TModularVoltage;
-  SamplePitch : single;
   Par1 : single;
-
   PanX, VolX : single;
 begin
   VolX := ParValueData^[TModParIndex.OutputGain].ModulatedParValue;

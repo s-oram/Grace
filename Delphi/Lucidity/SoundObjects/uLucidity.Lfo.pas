@@ -138,7 +138,6 @@ end;
 function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
   function CalcTime(const TimePar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
   var
-    InvPar : single;
     TimeInSamples : single;
     BeatSync : double;
     Beats : integer;

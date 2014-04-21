@@ -3,6 +3,8 @@ unit soFilter.CombA;
 interface
 
 uses
+  Math,
+  VamLib.MoreTypes,
   B2.DelayLine.StereoDelayBuffer;
 
 type

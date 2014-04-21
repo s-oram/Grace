@@ -3,6 +3,7 @@ unit soLevelMeter;
 interface
 
 uses
+  Math,
   eeDsp,
   VamLib.MoreTypes,
   VamLib.ZeroObject,

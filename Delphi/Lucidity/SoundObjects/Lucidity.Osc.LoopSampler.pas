@@ -103,7 +103,8 @@ end;
 
 function TLoopSampleOsc.GetModPointer(const Name: string): PSingle;
 begin
-
+  assert(false, 'TODO');
+  result := nil;
 end;
 
 procedure TLoopSampleOsc.ResetSamplePosition;

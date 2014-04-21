@@ -3,6 +3,8 @@ unit B2.DelayLine.StereoDelayBuffer;
 interface
 
 uses
+  Math,
+  B2.Dsp,
   VamLib.MoreTypes;
 
 type
@@ -29,10 +31,6 @@ type
   end;
 
 implementation
-
-uses
-  Math,
-  B2.Dsp;
 
 { TStereoDelayLine }
 
@@ -91,7 +89,7 @@ begin
 
   inc(fWriteIndex);
 
-  if WriteIndex >= BufferSize then
+  if WriteIndex >= Integer(BufferSize) then
   begin
     WriteIndex := 0;
     Buffer[0, 0] := In1;

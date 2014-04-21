@@ -147,17 +147,17 @@ end;
 
 function TSawSquareOsc.Step(const AudioIn:single): single;
 var
-  ax, bx : integer;
+  ax : integer;
   frac : single;
   sax, sbx : single;
-  Out1 : single;
+  //Out1 : single;
   Saw1Out : single;
   Saw2Out : single;
   OffsetPhase : single;
 begin
   //== Calc Saw Osc One ==
   ax := floor(CurPhase);
-  bx := ax + 1;
+  //bx := ax + 1;
   frac := CurPhase - ax;
 
   sax := WaveData[ax];
@@ -170,7 +170,7 @@ begin
   OffsetPhase := CurPhase + (TableSize * PulseWidth);
   if OffsetPhase >= TableSize then OffsetPhase := OffsetPhase - TableSize;
   ax := floor(OffsetPhase);
-  bx := ax + 1;
+  //bx := ax + 1;
   frac := OffsetPhase - ax;
 
   sax := WaveData[ax];

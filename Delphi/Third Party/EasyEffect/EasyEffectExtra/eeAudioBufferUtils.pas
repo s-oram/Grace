@@ -3,6 +3,7 @@ unit eeAudioBufferUtils;
 interface
 
 uses
+  Math,
   VamLib.MoreTypes;
 
 procedure NormaliseBuffer(Input : PSingle; const SampleFrames : integer; const TargetLevel : single);

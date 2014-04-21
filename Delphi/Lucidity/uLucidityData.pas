@@ -298,12 +298,8 @@ var
   RootNode : TXmlNode;
   DataDirNode : TXmlNode;
   c1: Integer;
-  aNode: TObject;
-
   Name, Path : string;
   DirInfo : TDirectoryInfo;
-
-
   SampleDirNodes : TSdNodeList;
 begin
   if FileExists(FileName) = false then raise Exception.Create('File doesn''t exist. (' + FileName + ')');

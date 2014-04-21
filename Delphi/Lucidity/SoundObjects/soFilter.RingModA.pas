@@ -57,8 +57,6 @@ begin
 end;
 
 procedure TRingModA.SetDepth(const Value: single);
-var
-  MixAmount : single;
 begin
   assert(Value >= 0);
   assert(Value <= 1);

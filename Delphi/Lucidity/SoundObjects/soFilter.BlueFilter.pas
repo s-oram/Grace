@@ -12,10 +12,7 @@ type
   private
     fSampleRate: single;
     fFreq: single;
-    fQ: single;
     fInputGain: single;
-    procedure SetFreq(const Value: single);
-    procedure SetQ(const Value: single);
   protected
     GainIn  : double;
     GainOut : double;
@@ -67,39 +64,6 @@ procedure TLowPassA.Reset;
 begin
   FilterData1.Reset;
   FilterData2.Reset;
-end;
-
-procedure TLowPassA.SetFreq(const Value: single);
-var
-  g : double;
-begin
-  fFreq := Value;
-
-  //g := tan (pi * Value / samplerate);
-  g := Fast_Tan0(pi * Value / samplerate);
-
-  FilterData1.G[0] := G;
-  FilterData1.G[1] := G;
-  FilterData2.G[0] := G;
-  FilterData2.G[1] := G;
-end;
-
-procedure TLowPassA.SetQ(const Value: single);
-var
-  DampingFactor : single;
-begin
-  assert(Value >= 0);
-  assert(Value <= 1);
-
-  fQ := Value;
-
-  //Damping factor range is 2..0.    0 = self oscillation.
-  DampingFactor := 2 - (Value * 2);
-
-  FilterData1.K[0] := DampingFactor;
-  FilterData1.K[1] := DampingFactor;
-  FilterData2.K[0] := DampingFactor;
-  FilterData2.K[1] := DampingFactor;
 end;
 
 procedure TLowPassA.Step(var x1, x2: single);

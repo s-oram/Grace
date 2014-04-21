@@ -7,6 +7,7 @@ interface
 uses
   VamLib.Utils,
   VamLib.MoreTypes,
+  B2.DelayLine.StereoDelayBuffer,
   uConstants,
   uLucidityEnums,
   Math,
@@ -20,7 +21,8 @@ uses
   soFilter.DistortionA,
   soFilter.CombA,
   soFilter.BlueFilter,
-  soFilter.OptimisedFilter;
+  soFilter.OptimisedFilter,
+  soSineOsc;
 
 type
   TLucidityFilter = class

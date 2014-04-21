@@ -62,8 +62,6 @@ var
   HasBeenQuickReleased:boolean;
   AmpLevel:single;
   VoiceFound:boolean;
-  VoiceToKill:IVoiceStateInfo;
-  avc:integer;
 begin
   result := nil;
   VoiceFound := false;

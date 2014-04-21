@@ -20,7 +20,7 @@ type
     procedure SetCount(const Value: integer);
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     property Count : integer read fCount write SetCount;
     property Harmonics : TArrayOfHarmonic read fHarmonics write fHarmonics;
@@ -47,6 +47,7 @@ end;
 destructor THarmonicMap.Destroy;
 begin
   Count := 0;
+  inherited;
 end;
 
 procedure THarmonicMap.GenerateWaveTable(Output: PSingle; OutputSampleFrames, MaxHarmonics: integer);

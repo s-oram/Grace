@@ -84,18 +84,18 @@ var
   ax2 : double;
   ax3 : double;
   ax4 : double;
-  ax5 : double;
-  ax6 : double;
-  ax7 : double;
-  ax8 : double;
+  //ax5 : double;
+  //ax6 : double;
+  //ax7 : double;
+  //ax8 : double;
 begin
   ax2 := x * x;
   ax3 := ax2 * x;
   ax4 := ax3 * x;
-  ax5 := ax4 * x;
-  ax6 := ax5 * x;
-  ax7 := ax6 * x;
-  ax8 := ax7 * x;
+  //ax5 := ax4 * x;
+  //ax6 := ax5 * x;
+  //ax7 := ax6 * x;
+  //ax8 := ax7 * x;
 
   {
   result := 1 + x

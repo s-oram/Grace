@@ -140,15 +140,15 @@ procedure TSfzImporter.Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue 
 var
   DataInt   : integer;
   DataText  : string;
-  DataFloat : single;
+  //DataFloat : single;
   TargetNode : TXmlNode;
 begin
   if not assigned(CurrentRegion) then exit;
 
-  DataInt   := 0;
+  //DataInt   := 0;
   DataText  := '';
-  DataFloat := 0;
-  TargetNode := nil;
+  //DataFloat := 0;
+  //TargetNode := nil;
 
   //   SFZ Opcode documentation
   //   http://www.cakewalk.com/DevXchange/article.aspx?aid=108
