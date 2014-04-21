@@ -3,7 +3,8 @@ unit uLucidityData;
 interface
 
 uses
-  Generics.Collections;
+  Generics.Collections,
+  VamLib.ZeroObject;
 
 
 
@@ -49,7 +50,7 @@ type
 
   TDirectoryInfoList = TList<TDirectoryInfo>;
 
-  TSampleDirectories = class
+  TSampleDirectories = class(TZeroObject)
   private
     // TODO: It could be possible to make this class
     // use a single class variable to hold the directory list.

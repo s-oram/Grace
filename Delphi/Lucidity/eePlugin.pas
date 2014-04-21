@@ -243,6 +243,8 @@ begin
   // - check if the data directory exists,
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
+  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, zoMain);
+
 
   if (PluginDataDir^.Exists) then
   begin
