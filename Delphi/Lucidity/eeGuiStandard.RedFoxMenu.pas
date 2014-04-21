@@ -85,10 +85,6 @@ end;
 procedure TRedFoxMenuHandler.RegisterControl(c: TControl; aLinkedParameter: TVstParameter; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TMenuCallback = nil);
 var
   ci : PControlInfo;
-
-  cType : string;
-  m     : TMethod;
-  kc : IMenuControl;
 begin
   assert(Supports(c, IMenuControl));
 
@@ -149,8 +145,6 @@ end;
 
 procedure TRedFoxMenuHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  Value : single;
-  Block : boolean;
   Index : integer;
 begin
   assert(Supports(Sender, IMenuControl));
@@ -168,7 +162,6 @@ end;
 procedure TRedFoxMenuHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Index : integer;
-  Value : single;
 begin
   Index := FindIndexOfControl(Sender as TControl);
   assert(Index <> -1);
@@ -188,13 +181,12 @@ var
   c1: Integer;
   parValue : single;
   TextValue : string;
-  c : TControl;
 begin
   IsManualGuiUpdateActive := true;
   try
     for c1 := 0 to ControlLinks.Count-1 do
     begin
-      c := ControlLinks[c1].Control;
+      //c := ControlLinks[c1].Control;
       parValue := ControlLinks[c1].LinkedParameter.ValueVST;
 
       TextValue := ControlLinks[c1].EnumHelper.ToShortGuiString(parValue);

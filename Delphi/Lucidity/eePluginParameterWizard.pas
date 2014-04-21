@@ -69,7 +69,6 @@ constructor TPluginParameterWizard.Create(aPlugin : TObject; VoiceController : T
 var
   Plugin : TeePlugin;
   c1 : integer;
-  InfoMethod : TStringFunction;
   aPar : TVstParameterEx;
   Globals : TGlobals;
   aModLinkIndex : integer;

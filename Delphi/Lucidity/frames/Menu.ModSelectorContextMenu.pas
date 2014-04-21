@@ -74,7 +74,6 @@ end;
 procedure TModSelectorContextMenu.Popup(const aModSlotIndex : integer; const x, y: integer);
 var
   IsMute : boolean;
-  s : string;
   mi : TMenuItem;
   c1: Integer;
   ModSource : TModSource;

@@ -60,8 +60,6 @@ begin
 end;
 
 procedure TSfzImporter.ConvertFile(SourceFileName: string; var Dest: TNativeXML);
-var
-  aNode : TXmlNode;
 begin
   RootNode      := nil;
   CurrentRegion := nil;

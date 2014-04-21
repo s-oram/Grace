@@ -9,6 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  Math,
   Dialogs,
   VamKnob,
   eeEnumHelper,
@@ -178,8 +179,8 @@ begin
 
   if DisplayPixelWidth >= SampleFrames then
   begin
-    SampleIndexA := 0;
-    SampleIndexB := SampleFrames-1;
+    //SampleIndexA := 0;
+    //SampleIndexB := SampleFrames-1;
     result.Zoom := 0;
     result.Offset := 0;
     result.IndexA := 0;
@@ -545,7 +546,6 @@ var
   ModLinkIndex : integer;
   kg : IKeyGroup;
   VstPar : TVstParameterEx;
-  ModConnections : TModConnections;
   ModAmount : single;
   ModMin, ModMax : single;
 begin
@@ -554,7 +554,7 @@ begin
     else km := TKnobMode.ModEdit;
 
   kg := Plugin.ActiveKeyGroup;
-  ModConnections := kg.GetModConnections; //TODO: Remove reliance on GetModConnections(). Use methods in the keygroup interface instead.
+  //ModConnections := kg.GetModConnections; //TODO: Remove reliance on GetModConnections(). Use methods in the keygroup interface instead.
 
   if km = TKnobMode.PositionEdit then
   begin

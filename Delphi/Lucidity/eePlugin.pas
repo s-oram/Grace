@@ -15,6 +15,8 @@ uses
   OtlSync,
   eePluginParameterWizard,
   eeAudioBufferUtils,
+  eeAudioFilePreviewPlayerVoice,
+  eeMidiInputSmoother,
   uLucidityEnums, uLucidityData,
   Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads, uLucidityVoiceController,
@@ -22,6 +24,7 @@ uses
   eeSampleInt, eeSampleFloat, uGuiState,
   Classes, eePluginBase , eeMidiEvents, eeMidiAutomation,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
+  B2.Filter.CriticallyDampedLowpass,
   uKeyGroupManager,
   eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,
@@ -208,7 +211,6 @@ const
 
 constructor TeePlugin.Create;
 var
-  kg : IKeyGroup;
   kgObj : TKeyGroup;
   DefaultMidiMapFileName : string;
   //aPar : TVstParameter;
@@ -443,12 +445,6 @@ end;
 procedure TeePlugin.InitializeState;
 var
   c1: Integer;
-  fn, DataDir :string;
-  RegionCreateInfo : TRegionCreateInfo;
-  kg : IKeyGroup;
-  aRegion : IRegion;
-  SG : IKeyGroup;
-  x : single;
 begin
   inherited;
 
@@ -646,7 +642,6 @@ end;
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
 var
   KG : IKeyGroup;
-  c1: Integer;
 begin
   KG := KeyGroups.FindSampleGroup(aKeyGroupName);
   if not assigned(KG) then raise Exception.Create('Key group (' + aKeyGroupName + ') doesn''t exist. ');
@@ -1025,7 +1020,6 @@ procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);
 const
   OneOver127 = 1 / 127;
 var
-  kg : IKeyGroup;
   pba : single;
 begin
   inherited;

@@ -81,7 +81,6 @@ procedure TStepSequenceMenu.EventHandle_RandomizeSteps(Sender: TObject);
 var
   c1 : integer;
   SG : IKeyGroup;
-  CurEngine : TKeyGroup;
   x1 : single;
   SeqData : IStepSequenceDataObject;
 begin
@@ -90,8 +89,6 @@ begin
   SG := Plugin.FocusedKeyGroup;
 
   if not assigned(sg) then exit;
-
-  CurEngine := SG.GetObject as TKeyGroup;
 
   //== Step Seq 1 ==
   if SequenceIndex = 0 then
@@ -125,7 +122,6 @@ procedure TStepSequenceMenu.EventHandle_ResetSteps(Sender: TObject);
 var
   c1 : integer;
   SG : IKeyGroup;
-  CurEngine : TKeyGroup;
   x1 : single;
   SeqData : IStepSequenceDataObject;
 begin
@@ -134,8 +130,6 @@ begin
   SG := Plugin.FocusedKeyGroup;
 
   if not assigned(sg) then exit;
-
-  CurEngine := SG.GetObject as TKeyGroup;
 
   //== Step Seq 1 ==
   if SequenceIndex = 0 then

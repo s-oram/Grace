@@ -353,7 +353,6 @@ var
   RegionNode : TXmlNode;
   RegionPropertiesNode : TXmlNode;
   SamplePropertiesNode : TXmlNode;
-  ModLinkNode : TXmlNode;
   StepSeqNode : TXmlNode;
   SGInfo : IKeyGroupsInfo;
   sg : TKeyGroup;
@@ -481,7 +480,6 @@ end;
 
 procedure TLucidityStatemanager.ReadStateFromXML(var XML: TNativeXML);
 var
-  NodeValue : string;
   c1, c2 : integer;
   RootNode : TXMLNode;
   aNode : TXmlNode;
@@ -501,15 +499,11 @@ var
   RegionNode : TXmlNode;
   RegionPropertiesNode : TXmlNode;
   SamplePropertiesNode : TXmlNode;
-  ModLinkNode : TXmlNode;
   StepSeqNode : TXmlNode;
 
   RegionLoadInfo : TRegionLoadInfo;
   ModLinkState : TModLinkLoadInfo;
   c3: Integer;
-
-  TempModLink : TModLink_OLD;
-  TargetModLink : PModLink_OLD;
 
   StepValue : single;
 

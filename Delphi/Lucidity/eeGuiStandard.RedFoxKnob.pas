@@ -280,7 +280,6 @@ end;
 procedure TRedFoxKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Value : single;
-  Block : boolean;
   Index : integer;
 begin
   assert(Supports(Sender, IKnobControl));
@@ -396,7 +395,6 @@ var
   ModSlot : integer;
   ModLinkIndex : integer;
   kg : IKeyGroup;
-  ModConnections : TModConnections;
 begin
   ModSlot := Globals.SelectedModSlot;
 
@@ -476,7 +474,7 @@ begin
     then mi.Enabled := true
     else mi.Enabled := false;
   ControlContextMenu.Items.Add(mi);
-  miMidiLearn := mi;
+  //miMidiLearn := mi;
 
   mi := TMenuItem.Create(ControlContextMenu);
   mi.Caption := 'Clear All Modulation';
@@ -486,7 +484,7 @@ begin
     then mi.Enabled := true
     else mi.Enabled := false;
   ControlContextMenu.Items.Add(mi);
-  miMidiLearn := mi;
+  //miMidiLearn := mi;
 
 
   mi := TMenuItem.Create(ControlContextMenu);
@@ -666,7 +664,6 @@ var
   ControlLinkIndex : integer;
   Par : TVstParameterEx;
   ModParIndex : integer;
-  ModSlotIndex : integer;
 begin
   ControlLinkIndex := (Sender as TMenuItem).Tag;
 
@@ -686,7 +683,6 @@ end;
 
 procedure TRedFoxKnobHandler.Handle_ClearCurrentModulation(Sender: TObject);
 var
-  c1 : integer;
   ControlLinkIndex : integer;
   Par : TVstParameterEx;
   ModParIndex : integer;

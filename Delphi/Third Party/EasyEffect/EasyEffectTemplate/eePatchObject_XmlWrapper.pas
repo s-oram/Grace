@@ -243,8 +243,8 @@ begin
   RootNode := XmlPatchData.Root;
 
   PatchInfoNode := RootNode.NodeNew('PatchInfo');
-  PatchInfoNode.NodeNew('Format').ValueUnicode := UTF8String(CurrentPatchFormat);
-  PatchInfoNode.NodeNew('FormatVersion').ValueUnicode := UTF8String(IntToStr(CurrentPatchVersion));
+  PatchInfoNode.NodeNew('Format').ValueUnicode := CurrentPatchFormat;
+  PatchInfoNode.NodeNew('FormatVersion').ValueUnicode := IntToStr(CurrentPatchVersion);
 
   PatchDataNode := RootNode.NodeNew('PatchData');
 
@@ -337,7 +337,7 @@ begin
       ParName  := UTF8String(PatchModule.PatchValue[c1].Name);
       ParValue := UTF8String(PatchModule.PatchValue[c1].Value);
 
-      ValuesNode.NodeNew(ParName).ValueUnicode := ParValue;
+      ValuesNode.NodeNew(ParName).ValueUnicode := String(ParValue);
     end;
   end;
 

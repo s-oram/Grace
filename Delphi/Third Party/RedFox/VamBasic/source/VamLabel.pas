@@ -15,9 +15,11 @@ type
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
-    procedure SetAutoSize(const Value: boolean);
+
   protected
     procedure Paint; override;
+
+    procedure SetAutoSize(Value: boolean); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -58,9 +60,8 @@ begin
   inherited;
 end;
 
-procedure TVamLabel.SetAutoSize(const Value: boolean);
+procedure TVamLabel.SetAutoSize(Value: boolean);
 begin
-
   fAutoSize := Value;
 
   if Value then

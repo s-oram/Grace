@@ -116,7 +116,6 @@ begin
     0: pc := @fColorTextA;
     1: pc := @fColorTextB;
   else
-    pc := nil;
     exit;
   end;
 
@@ -290,7 +289,7 @@ begin
   TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-PaddingRight, Height-TextPadding.Bottom);
   BackBuffer.DrawText(TextA, Font, TRedFoxAlign.AlignNear, TRedFoxAlign.AlignCenter, TextBounds, ColorTextA);
 
-  LabelTextWidth := round(BackBuffer.BufferInterface.TextWidth(TextA + '--'));
+  LabelTextWidth := round(BackBuffer.BufferInterface.TextWidth(AnsiString(TextA + '--')));
 
   TextBounds := Rect(TextPadding.Left + LabelTextWidth, TextPadding.Top, Width-PaddingRight, Height-TextPadding.Bottom);
   BackBuffer.DrawText(TextB, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds, ColorTextB);

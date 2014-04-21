@@ -660,9 +660,6 @@ begin
 end;
 
 procedure TVamKnob.DrawKnob;
-var
-  SrcRect : TRect;
-  DstRect : TRect;
 begin
 end;
 
@@ -677,7 +674,6 @@ end;
 procedure TVamKnob.DrawKnob_Upper;
 var
   SrcRect : TRect;
-  DstRect : TRect;
   x1, y1 : integer;
 begin
   if assigned(Image_KnobUpper) then
@@ -698,7 +694,6 @@ var
   MiddleX, MiddleY : single;
   Angle1, Angle2 : single;
   s1, s2 : single;
-  color2 : TRedFoxColor;
 begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;

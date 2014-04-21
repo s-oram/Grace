@@ -157,7 +157,6 @@ procedure TVamMultiLineTextBox.Paint;
 const
   S = 'TVamMultiLineTextBox.Paint TVamMultiLineTextBox.Paint';
 var
-  format : cardinal;
   Bounds : TRect;
 begin
   inherited;

@@ -20,7 +20,7 @@ type
 
     IsTaskActive : boolean;
     TaskControl : IOmniTaskControl;
-    Monitor : IOmniTaskControlMonitor;
+
     fUseMainThreadForTimerEvent: boolean;
 
     procedure SetEnabled(const Value: boolean);
