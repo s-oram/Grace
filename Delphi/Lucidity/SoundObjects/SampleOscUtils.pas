@@ -77,7 +77,7 @@ procedure ReadValuesFromSample_4x3_Optimal(const aSample:TSampleFloat; const Rea
 var
   x1, x2, x3, x4 : single;
 begin
-  assert(ReadIndex < aSample.Properties.SampleFrames-4);
+  assert(ReadIndex < cardinal(aSample.Properties.SampleFrames-4));
 
   if aSample.Properties.ChannelCount = 1 then
   begin

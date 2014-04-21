@@ -169,14 +169,11 @@ procedure TPeakBuffer.InternalGenPeaks(Input: PSingle; const InputSampleFrames, 
     end;
   end;
 var
-  SamplesPerPeak : integer;
   c1: Integer;
   MarkA : integer;
   MarkB : integer;
   MinValue, MaxValue : single;
 begin
-  SamplesPerPeak := round(InputSampleFrames / PeakFrames) + 1;
-
   for c1 := 0 to PeakFrames-1 do
   begin
     MarkA := round( (c1)   * (InputSampleFrames / PeakFrames) );

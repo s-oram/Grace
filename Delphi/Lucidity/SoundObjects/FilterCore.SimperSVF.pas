@@ -34,9 +34,11 @@ type
 
   TSimperVCF = class
   private
+    {$Hints Off}
     class procedure StepFilter_Pascal(var Data : TDualSimperSVFData);
     class procedure StepFilter_Alt(var Data : TDualSimperSVFData);
     class procedure StepFilter_asm(var Data : TDualSimperSVFData);
+    {$Hints On}
 
     class procedure GetLowpassOutput(var Data : TDualSimperSVFData);
     class procedure GetBandpassOutput(var Data : TDualSimperSVFData);

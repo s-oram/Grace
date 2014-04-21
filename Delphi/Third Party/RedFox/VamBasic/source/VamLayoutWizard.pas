@@ -207,8 +207,6 @@ begin
 end;
 
 function TVamLayoutWizard.SnapToParentEdge(const SnapPoint: TControlFeature): IVamLayoutWizard;
-var
-  PosX, PosY : integer;
 begin
   case SnapPoint of
     TControlFeature.LeftEdge:
