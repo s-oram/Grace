@@ -557,7 +557,7 @@ begin
     yPos := 0;
   end;
 
-  BufferInterface.Text(xPos, yPos, Text);
+  BufferInterface.Text(xPos, yPos, AnsiString(Text));
 end;
 
 

@@ -110,9 +110,7 @@ var
   Buffer : PArrayOfSingle;
   SamplesAvailable : integer;
   MinBuffer, MaxBuffer : single;
-
   y1, y2 : single;
-  x1, x2 : single;
 begin
   BackBuffer.BufferInterface.LineColor := LineColor;
 
@@ -155,7 +153,7 @@ begin
       Backbuffer.BufferInterface.Line(DrawXIndex + 0.5, y1, DrawXIndex + 0.5, y2);
 
       inc(DrawXIndex);
-      if DrawXIndex >= BackBuffer.Width then
+      if DrawXIndex >= Integer(BackBuffer.Width) then
       begin
         DrawXIndex := 0;
       end;

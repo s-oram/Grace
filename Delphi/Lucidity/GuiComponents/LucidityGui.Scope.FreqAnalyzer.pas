@@ -16,11 +16,6 @@ type
 
   TFreqDisplay = class
   private
-    ResetRequired : boolean;
-    ReadIndex  : integer;
-    WriteIndex : integer;
-    BufferSize : integer;
-    DrawXIndex : integer;
     fLineColor: TRedFoxColor;
   public
     constructor Create;
@@ -55,7 +50,6 @@ end;
 
 procedure TFreqDisplay.ProcessSignal(Dest: TRedFoxImageBuffer; const DestRect: TRect; const Source: IFreqAnalyzer);
 var
-  x1, y1, x2, y2, destX, destY : integer;
   MData : PSingle;
   MFrames : integer;
   c1: Integer;

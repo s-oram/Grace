@@ -486,7 +486,6 @@ var
   LData_Float, RData_Float:PSingle;
   SaveResult:boolean;
   sb, db   : PSingle;
-  ssf, dsf : integer;
 begin
   SaveResult := false;
 

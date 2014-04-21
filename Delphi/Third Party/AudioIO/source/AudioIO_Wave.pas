@@ -293,8 +293,6 @@ end;
 
 function LocateFmtChunk(WaveFile:TWinFile):integer;
 var
-  s:ansistring;
-  ChunkSize:DWORD;
   ChunkDescriptor : TChunkDescriptor;
 begin
   //LocateFmtChunk will change the WaveFile.Position value to the
@@ -319,9 +317,7 @@ end;
 
 function LocateDataChunk(WaveFile:TWinFile):integer;
 var
-  s:ansistring;
   ReadIndex : integer;
-  ChunkSize:DWORD;
   ChunkDescriptor : TChunkDescriptor;
 begin
   // TODO: It would be better to write a generic LocateChunk() method that could be used to find any chunk.

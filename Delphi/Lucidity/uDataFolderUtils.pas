@@ -22,7 +22,6 @@ uses
 function LocateDataFolder(CompanyName, ProductName:string):string;
 var
   DataFileName : string;
-  xml : TNativeXml;
   VstDir : string;
   XmlDataDir : string;
   TempDir    : string;

@@ -311,9 +311,6 @@ begin
 end;
 
 destructor TMotherShip.Destroy;
-var
-  c1: Integer;
-  Text : string;
 begin
   if AudioObjects.Count > 0
     then Log.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
@@ -356,7 +353,6 @@ end;
 
 procedure TMotherShip.RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
 var
-  zo : IZeroObject;
   ptr : Pointer;
 begin
   ptr := Pointer(obj); //Weak reference to zero object
@@ -381,9 +377,6 @@ begin
 end;
 
 procedure TMotherShip.DeregisterZeroObject(obj: IZeroObjectPtr);
-var
-  ptr : Pointer;
-  zo : IZeroObject;
 begin
   if MainObjects.IndexOf(obj) <> -1 then
   begin
@@ -404,9 +397,6 @@ begin
 end;
 
 procedure TMotherShip.SendMessage(MsgID: cardinal; Data: Pointer);
-var
-  c1: Integer;
-  zo : IZeroObject;
 begin
   MsgMain(MsgID, Data);
 end;

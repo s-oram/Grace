@@ -27,7 +27,6 @@ type
 type
   TKeyGroup = class(TRefCountedZeroObject, IKeyGroup, ILevelMonitor)
   private
-    ID : cardinal;
     fTriggeredNoteCount : cardinal;
     fName     : string;
     fSampleMap: TSampleMap;

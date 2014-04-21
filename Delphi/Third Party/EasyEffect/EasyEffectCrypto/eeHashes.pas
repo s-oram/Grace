@@ -25,7 +25,7 @@ var
   hash: MessageDigest_5.IMD5;
 begin
   hash := MessageDigest_5.GetMD5();
-  hash.Update(Value);
+  hash.Update(String(Value));
   Result := hash.AsString();
 end;
 

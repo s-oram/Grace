@@ -42,7 +42,7 @@ var
   TempSrcBuffer : array of Double;
   TempDestBuffer : array of Double;
   PSrcBuffer, PDestBuffer : PR8BDouble;
-  Latency : integer;
+  //Latency : integer;
   SamplesProcessed : integer;
   BufferSize : integer;
   c1: Integer;
@@ -68,7 +68,7 @@ begin
     SetLength(TempSrcBuffer,  round(MaxInputLength * SrcRate)+1);
     SetLength(TempDestBuffer, round(MaxInputLength * DstRate)+1);
 
-    Latency := r8b_get_latency(rsHandle);
+    //Latency := r8b_get_latency(rsHandle);
 
     SamplesProcessed := 0;
     while SamplesProcessed < SourceSampleFrames do

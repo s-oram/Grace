@@ -3,6 +3,7 @@ unit soFreqAnalyzer;
 interface
 
 uses
+  Math,
   MtxVec,
   SignalUtils,
   VamLib.ZeroObject,

@@ -152,7 +152,6 @@ end;
 procedure TSfzParser.ParseText(Text: TStringList);
 var
   c1: Integer;
-  s : string;
 begin
   IsRegionOpen := false;
   IsGroupOpen  := false;

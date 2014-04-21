@@ -5,13 +5,14 @@ interface
 uses
   Classes,
   VamLib.MoreTypes,
-  VamLib.ZeroObject;
+  VamLib.ZeroObject,
+  Lucidity.KeyGroup;
 
 type
   TKeyGroupPlayer = class(TZeroObject)
   private
     ActiveRegions : TInterfaceList;
-
+  protected
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create;
@@ -25,7 +26,6 @@ type
 implementation
 
 uses
-  Lucidity.KeyGroup,
   Lucidity.Interfaces,
   uConstants;
 
