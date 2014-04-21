@@ -277,11 +277,13 @@ end;
 function TVstParameter.SetCallback_SetParValue(aCallback: TSetParValueProcedure): TVstParameter;
 begin
   SetParValueProcedure := aCallback;
+  result := self;
 end;
 
 function TVstParameter.SetCallback_GetParValue(aCallback: TGetParValueProcedure): TVstParameter;
 begin
   GetParValueProcedure := aCallback;
+  result := self;
 end;
 
 

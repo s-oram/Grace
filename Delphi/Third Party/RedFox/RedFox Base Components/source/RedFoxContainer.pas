@@ -435,12 +435,9 @@ function TRedFoxContainer.IsPaintRequiredForControl(const aControl: TControl; aR
 var
   c1: Integer;
   aVisibleControl : IRedFoxVisibleControl;
-  TempRect : TRect;
   ControlBounds : TRect;
   aWinControl : TWinControl;
-  DesignRect : TRect;
   ClippedRegion : TRect;
-
   xChildRequiresRepaint : boolean;
 begin
   // assume no controls need to be painted by default.

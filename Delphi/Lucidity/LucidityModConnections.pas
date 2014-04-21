@@ -24,10 +24,12 @@ type
     fModVia    : array[0..kModSlotCount-1] of TModSource;
     fModMute   : array[0..kModSlotCount-1] of boolean;
 
+    fOnChanged: TNotifyEvent;
+
     //TODO: Delete ModLinks. - it's not being used.
     fModLinks: TModLinkArray;
-    fOnChanged: TNotifyEvent;
     property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -260,7 +262,6 @@ end;
 procedure TModConnections_OLD.UpdateModLinkByID(const UniqueID: string; const NewLinkData: PModLink_OLD);
 var
   c1: Integer;
-  Dest : TModDest;
 begin
   if NewLinkData^.UniqueID <> UniqueID
     then raise Exception.Create('ModLink unique IDs don''t match.');

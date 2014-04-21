@@ -342,7 +342,6 @@ const
   MK_RBUTTON = $0002; //0x0002
   MK_SHIFT   = $0004; //0x0004
 var
-  x : integer;
   Shift : TShiftState;
   MousePos : TPoint;
   Handled : boolean;

@@ -330,9 +330,7 @@ end;
 
 procedure TSampleImageBuffer.DrawSample;
 var
-  DestBounds : TRectF;
   x : integer;
-  //CenterPeak : integer;
 begin
   if SampleData.IsValid = false then
   begin

@@ -85,7 +85,7 @@ const
   kHysterisisAmt = 0.0000316227766; //approx -90dB
 var
   LastZeroCrossingIndex : integer;
-  CurrentIndex : integer;
+  //CurrentIndex : integer;
   c1: Integer;
 
   InputSignalSum : single;
@@ -159,7 +159,7 @@ begin
     begin
       //Insert a zero crossing point to mark the end of the file.
       InsertZeroCrossing(aSample.Properties.SampleFrames-1);
-      LastZeroCrossingIndex := aSample.Properties.SampleFrames-1;
+      //LastZeroCrossingIndex := aSample.Properties.SampleFrames-1;
     end;
 
   end;
