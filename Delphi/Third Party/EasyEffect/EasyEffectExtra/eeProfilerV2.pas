@@ -176,7 +176,6 @@ end;
 
 procedure TProfilerBrain.StopTimer(aSectionName : string);
 var
-  Index : integer;
   st : TSectionTime;
   freq:Int64;
   xStop : Int64;
@@ -231,9 +230,7 @@ var
   c1: Integer;
   TotalTime : single;
   s : string;
-  AverageTime : single;
   MinPercent, MaxPercent : single;
-  SmoothedPercent : single;
   st : TSectionTime;
 begin
   TotalTime := 0;

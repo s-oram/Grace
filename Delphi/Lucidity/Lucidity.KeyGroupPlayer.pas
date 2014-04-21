@@ -4,9 +4,14 @@ interface
 
 uses
   Classes,
+  eeGlobals,
+  eeCustomGlobals,
+  soLevelMeter,
+  eeAudioBufferUtils,
   VamLib.MoreTypes,
   VamLib.ZeroObject,
-  Lucidity.KeyGroup;
+  Lucidity.KeyGroup,
+  soLucidityVoice;
 
 type
   TKeyGroupPlayer = class(TZeroObject)

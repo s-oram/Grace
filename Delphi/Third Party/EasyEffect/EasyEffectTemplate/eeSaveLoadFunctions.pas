@@ -165,7 +165,7 @@ begin
      //Create new node and assign value.
      Namef8  := UTF8String(Name);
      Valuef8 := UTF8String(Value);
-     XmlNode.NodeNew(Namef8).ValueUnicode := Valuef8;
+     XmlNode.NodeNew(Namef8).ValueUnicode := String(Valuef8);
 
    end;
 end;

@@ -48,8 +48,6 @@ type
 
     procedure GetDbLevel(out Ch1, Ch2 : single);
     property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor;
-
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   protected
     ActiveVoices : TLucidityVoiceList;
     KeyGroupID : TKeyGroupID;
@@ -57,6 +55,8 @@ type
     VoiceBufferB : array of single;
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;

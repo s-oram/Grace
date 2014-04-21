@@ -45,22 +45,8 @@ type
     fFilterDecay: single;
     fFilterSustain: single;
     fFilterRelease: single;
-    fLfoShape1: TLfoShape;
-    fLfoShape2: TLfoShape;
-    fLfoShape3: TLfoShape;
-    fLfoShape4: TLfoShape;
     fLfoRate1: single;
     fLfoRate2: single;
-    fLfoRate3: single;
-    fLfoRate4: single;
-    fLfoResetPhase1: TLfoPhaseReset;
-    fLfoResetPhase2: TLfoPhaseReset;
-    fLfoResetPhase3: TLfoPhaseReset;
-    fLfoResetPhase4: TLfoPhaseReset;
-    fFilter1ModDepth1: single;
-    fFilter1ModDepth2: single;
-    fFilter2ModDepth1: single;
-    fFilter2ModDepth2: single;
     fSeq1Clock: TSequencerClock;
     fSeq1Direction: TStepSequencerDirection;
     fStepSeq1Length: TStepSequencerLength;
@@ -94,6 +80,8 @@ type
     fFilterRouting: TFilterRouting;
     fLfoRange2: TLfoRange;
     fLfoRange1: TLfoRange;
+    fLfoShape2: TLfoShape;
+    fLfoShape1: TLfoShape;
     procedure SetFilter1Par1(const Value: single);
     procedure SetFilter1Par2(const Value: single);
     procedure SetFilter1Par3(const Value: single);
@@ -852,8 +840,6 @@ begin
 end;
 
 procedure TLucidityVoiceParameterWrapper.AssignFrom(const Source: TLucidityVoiceParameterWrapper);
-var
-  c1: Integer;
 begin
   //self.VoiceMode                := Source.VoiceMode;
   //self.VoiceGlide               := Source.VoiceGlide;
@@ -918,8 +904,6 @@ begin
 end;
 
 procedure TLucidityVoiceParameterWrapper.ApplyParametersToVoice(aVoice: TLucidityVoice);
-var
-  c1 : integer;
 begin
   //=== set all one-to-one properties.====
   //aVoice.VoiceMode                       := VoiceMode;

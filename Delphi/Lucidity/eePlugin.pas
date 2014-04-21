@@ -28,6 +28,7 @@ uses
   uKeyGroupManager,
   eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,
+  soLevelMeter,
   soLucidityWaveOsc,
   soLucidityVoice,
   uLucidityPanner,

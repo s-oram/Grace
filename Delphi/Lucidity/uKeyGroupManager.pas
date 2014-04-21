@@ -5,6 +5,8 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  eeAudioBufferUtils,
+  soLevelMeter,
   VamLib.ZeroObject,
   VamLib.MoreTypes, soLucidityVoice, Lucidity.Interfaces,
   Classes, Contnrs, uConstants, Lucidity.KeyGroup,
