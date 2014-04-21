@@ -5,7 +5,9 @@ interface
 uses
   Types,
   Graphics, Controls,
-  Classes, RedFox, RedFoxColor, RedFoxWinControl, VamWinControl;
+  Classes,
+  AggColor,
+  RedFox, RedFoxColor, RedFoxWinControl, VamWinControl;
 
 type
   TVamModSelector = class(TVamWinControl)
@@ -200,8 +202,6 @@ begin
 end;
 
 procedure TVamModSelector.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  cr : TActiveControlRegion;
 begin
   inherited;
 
@@ -209,19 +209,7 @@ begin
   begin
     IsControlGrabbed := false;
     if assigned(OnShowContextMenu) then OnShowContextMenu(self);
-
-    {
-    cr := GetActiveControlRegion(x, y);
-
-    case cr of
-      ModDisplay: if assigned(OnShowModSourceMenu) then OnShowModSourceMenu(self);
-      ViaDisplay: if assigned(OnShowModViaMenu)    then OnShowModViaMenu(self);
-    else
-      raise Exception.Create('Type not handled.');
-    end;
-    }
   end;
-
 end;
 
 procedure TVamModSelector.MouseLeave;
@@ -373,8 +361,6 @@ var
   ElementBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
-  VOffset : integer;
-  VHeight : integer;
 begin
   inherited;
 

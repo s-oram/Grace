@@ -615,15 +615,6 @@ begin
 end;
 
 procedure TGuiStandard.UpdateControls;
-var
-  c1: Integer;
-  c : TObject;
-  cType : string;
-  cTag  : integer;
-  parValue  : single;
-  PropValue : single;
-  s : string;
-  ControlName : string;
 begin
   try
     RedFoxKnobHandler.UpdateControls;
