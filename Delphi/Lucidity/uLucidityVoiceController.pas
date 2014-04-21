@@ -389,11 +389,7 @@ procedure TLucidityVoiceController.NoteOn(const Data1, Data2: byte; const Sample
 var
   AVC : integer;
   c1: Integer;
-  aRegion : IRegion;
   aVoice : TLucidityVoice;
-  KG : IKeyGroup;
-  UseGlide : boolean;
-  IsTriggered: boolean;
 begin
   // TODO: Mono and Legato voices always track the monophonic pitch.
   // With very short glide times there is a very slight click when new
@@ -488,8 +484,6 @@ var
   Amp : single;
   aVoice : TLucidityVoice;
   ActiveNoteChanged : boolean;
-  LastNoteData : PNoteData;
-  UseQuickRelease : boolean;
 begin
   case VoiceMode of
     TVoiceMode.Poly:
@@ -556,12 +550,10 @@ end;
 
 procedure TLucidityVoiceController.RegionTriggerCheck(const Data1, Data2: byte; const SampleMap: TSampleMap; const MonoVoicesOnly : boolean);
 var
-  AVC : integer;
   c1: Integer;
   aRegion : IRegion;
   aVoice : TLucidityVoice;
   KG : IKeyGroup;
-  UseGlide : boolean;
   IsTriggered: boolean;
 
   TriggerMsg : TMsgData_Audio_VoiceTriggered;
@@ -628,8 +620,6 @@ end;
 
 
 procedure TLucidityVoiceController.FastControlProcess;
-var
-  c1: Integer;
 begin
   if MidiNote_Current <> MidiNote_Target then
   begin
