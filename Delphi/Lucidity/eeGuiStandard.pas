@@ -620,7 +620,7 @@ begin
     RedFoxKnobHandler.UpdateControls;
     RedFoxMenuHandler.UpdateControls;  //TODO:
   except
-
+    // TODO: HACK: an exception is being swallowed here.
   end;
 end;
 
