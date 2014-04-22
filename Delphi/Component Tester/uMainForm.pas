@@ -20,7 +20,11 @@ uses
   LucidityGui.DropBoxSelector, VamShortMessageOverlay, Vcl.ExtCtrls,
   VamSliderSwitch, VamMiniLevelMeter, VamCustomTreeView, VamTreeView,
   VamTextBox, VamTabPanel, VamTabs, VamScrollBox, VamScrollBar, VamPanel,
-  VamMultiLineTextBox, VamMemo, VamImage, VamDiv, VamButton;
+  VamMultiLineTextBox, VamMemo, VamImage, VamDiv, VamButton,
+  RedFoxGraphicControl, VamGraphicControl, VamArrows, VamXYPad, VamSlider,
+  VamStatusLed, VamSampleZoomControl, VamSamplerKeys, VamSampleMap,
+  VamModularJack, LucidityGui.VectorSequence, VamCompoundModMatrixSection,
+  VamCompoundLabel;
 
 type
   TMyTestObject = class(TRefCountedZeroObject)
@@ -37,21 +41,7 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
-    VamTreeView1: TVamTreeView;
-    VamTextBox1: TVamTextBox;
-    VamTabPanel1: TVamTabPanel;
-    VamTabs1: TVamTabs;
-    VamShortMessageOverlay1: TVamShortMessageOverlay;
-    VamScrollBox1: TVamScrollBox;
-    VamScrollBar1: TVamScrollBar;
-    VamPanel1: TVamPanel;
-    VamMultiLineTextBox1: TVamMultiLineTextBox;
-    VamMemo1: TVamMemo;
-    VamDiv1: TVamDiv;
-    VamButton1: TVamButton;
-    VamImage1: TVamImage;
-    VamLabel1: TVamLabel;
-    VamMemo2: TVamMemo;
+    VamArrows1: TVamArrows;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
   private
     MotherShip : TMotherShip;
