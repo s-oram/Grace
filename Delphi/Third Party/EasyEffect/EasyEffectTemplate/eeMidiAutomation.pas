@@ -3,7 +3,7 @@ unit eeMidiAutomation;
 interface
 
 uses
-
+  VamLib.Types,
   SyncObjs, Classes, eeIniFile, eeMidiMap, eeMidiInputSmoother;
 
 type
@@ -26,7 +26,7 @@ type
 
     InputSmoother : TMidiInputSmoother;
     LastTouched:TMidiBinding;
-    InstanceLock : TCriticalSection;
+    InstanceLock : TFixedCriticalSection;
     class var InstanceCount : integer;
     property InitialMidiMapFileName : string read fInitialMidiMapFileName write fInitialMidiMapFileName;
 
@@ -76,7 +76,7 @@ begin
   FSampleRate := 44100;
   AutoSaveMidiMapOnExit := true;
 
-  InstanceLock := TCriticalSection.Create;
+  InstanceLock := TFixedCriticalSection.Create;
   InstanceLock.Acquire;
 
   InitialMidiMapFileName := aMidiMapFileName;
