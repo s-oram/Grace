@@ -1,6 +1,7 @@
 library Lucidity;
 
 {$INCLUDE Defines.inc}
+{$INCLUDE FastMM4Options.inc}
 
 {$EXCESSPRECISION OFF}
 

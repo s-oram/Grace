@@ -140,7 +140,7 @@ end;
 
 destructor TRedFoxImageBuffer.Destroy;
 begin
-  if assigned(AsImage) then AsImage.Free;
+  if assigned(fBufferAsImage) then fBufferAsImage.Free;
   BufferInterface.Free;
   RedFoxInterface.Free;
   fBitmap.Free;

@@ -608,6 +608,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
 			<None Include="ParNames.inc"/>
 			<None Include="Defines.inc"/>
+			<None Include="FastMM4Options.inc"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>
