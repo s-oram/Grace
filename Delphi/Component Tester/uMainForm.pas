@@ -18,7 +18,9 @@ uses
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
   VamModSelector, VamCompoundNumericKnob, VamNumericKnob,
   LucidityGui.DropBoxSelector, VamShortMessageOverlay, Vcl.ExtCtrls,
-  VamSliderSwitch, VamMiniLevelMeter;
+  VamSliderSwitch, VamMiniLevelMeter, VamCustomTreeView, VamTreeView,
+  VamTextBox, VamTabPanel, VamTabs, VamScrollBox, VamScrollBar, VamPanel,
+  VamMultiLineTextBox, VamMemo, VamImage, VamDiv, VamButton;
 
 type
   TMyTestObject = class(TRefCountedZeroObject)
@@ -31,27 +33,26 @@ type
     Button1: TButton;
     Memo1: TMemo;
     RedFoxContainer1: TRedFoxContainer;
-    Knob1: TVamNumericKnob;
-    Knob2: TVamNumericKnob;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
-    VamShortMessageOverlay1: TVamShortMessageOverlay;
     Button5: TButton;
-    VamKnob1: TVamKnob;
-    VamKnob2: TVamKnob;
-    VamModSelector1: TVamModSelector;
-    VamSliderSwitch1: TVamSliderSwitch;
-    VamMiniLevelMeter1: TVamMiniLevelMeter;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
-    procedure HandleTimerEvent(Sender: TObject);
+    VamTreeView1: TVamTreeView;
+    VamTextBox1: TVamTextBox;
+    VamTabPanel1: TVamTabPanel;
+    VamTabs1: TVamTabs;
+    VamShortMessageOverlay1: TVamShortMessageOverlay;
+    VamScrollBox1: TVamScrollBox;
+    VamScrollBar1: TVamScrollBar;
+    VamPanel1: TVamPanel;
+    VamMultiLineTextBox1: TVamMultiLineTextBox;
+    VamMemo1: TVamMemo;
+    VamDiv1: TVamDiv;
+    VamButton1: TVamButton;
+    VamImage1: TVamImage;
+    VamLabel1: TVamLabel;
+    VamMemo2: TVamMemo;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
   private
     MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
@@ -87,45 +88,6 @@ type
 
 var
   GlobalDict : TProcDictionary;
-
-procedure TForm1.FormCreate(Sender: TObject);
-begin
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-end;
-
-procedure TForm1.HandleTimerEvent(Sender: TObject);
-begin
-end;
-
-
-
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-end;
-
-procedure TForm1.Button5Click(Sender: TObject);
-begin
-
-end;
-
-
-procedure TForm1.Button2Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.Button3Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.Button4Click(Sender: TObject);
-begin
-
-end;
 
 procedure TForm1.UpdateLabel;
 begin
