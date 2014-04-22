@@ -167,6 +167,8 @@ var
 
 function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
+  ReportMemoryLeaksOnShutDown := True;
+
   SendMsg_StartProfiling;
 
   SetUpLogging;
