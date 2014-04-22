@@ -125,6 +125,8 @@ begin
     InstanceLock.Release;
   end;
 
+
+  InstanceLock.Free;
   InputSmoother.Free;
 
   inherited;
