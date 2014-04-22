@@ -14,9 +14,12 @@ procedure SendMsg_StopProfiling;
 
 procedure SetUpLogging;
 
+procedure LogMemoryUsage;
+
 implementation
 
 uses
+  VamLib.Utils,
   VamLib.LoggingProxy,
   SmartInspectLogging,
   Windows,
@@ -70,6 +73,18 @@ procedure SetUpLogging;
 begin
   VamLib.LoggingProxy.Log.SetProxy(TSmartInspectProxy.Create);
   Log.LogMessage('Logging Proxy Initialised');
+end;
+
+
+procedure LogMemoryUsage;
+var
+  MemUsage : single;
+  s : string;
+begin
+  MemUsage := BytesToMegaBytes(MemoryUsed);
+  s := FloatToStr(MemUsage);
+
+  LogMain.LogSingle('Mem Usage MB', MemUsage);
 end;
 
 end.

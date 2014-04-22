@@ -27,6 +27,11 @@ procedure SwapValues(var x1, x2:integer); inline; overload;
 // Expands a 0-1 ranged float to an arbitary integer range.
 function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
 
+function MemoryUsed: cardinal;
+
+function BytesToMegaBytes(const Value : single):single;
+
+
 implementation
 
 uses
@@ -166,6 +171,24 @@ begin
   assert(result >= MinValue);
   assert(result <= MaxValue);
 
+end;
+
+function MemoryUsed: cardinal;
+var
+    st: TMemoryManagerState;
+    sb: TSmallBlockTypeState;
+begin
+    GetMemoryManagerState(st);
+    result := st.TotalAllocatedMediumBlockSize + st.TotalAllocatedLargeBlockSize;
+    for sb in st.SmallBlockTypeStates do begin
+        result := result + sb.UseableBlockSize * sb.AllocatedBlockCount;
+    end;
+end;
+
+function BytesToMegaBytes(const Value : single):single;
+begin
+  // http://www.matisse.net/bitcalc/?input_amount=1&input_units=megabytes&notation=legacy
+  result := Value / 1048576;
 end;
 
 

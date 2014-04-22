@@ -196,6 +196,7 @@ uses
   MadExcept, Windows,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeCustomGlobals,
+  uLucidityExtra,
   LucidityParameterScaling,
   eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
@@ -223,6 +224,8 @@ var
   fnA, fnB : string;
 begin
   inherited;
+
+  LogMemoryUsage;
 
   fIsPreviewEnabled := true;
 

@@ -18,7 +18,7 @@ function  GetLinkTarget(const LinkFileName : string) : string;
 var
    psl  : IShellLink;
    ppf  : IPersistFile;
-   WidePath  : Array[0..260] of WideChar;
+   WidePath  : Array[0..MAX_PATH] of WideChar;
    Info      : Array[0..MAX_PATH] of Char;
    wfs       : TWin32FindData;
    lpMultiByteString : PAnsiChar;

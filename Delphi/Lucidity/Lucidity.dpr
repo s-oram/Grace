@@ -170,6 +170,8 @@ function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
   ReportMemoryLeaksOnShutDown := True;
 
+  LogMemoryUsage;
+
   SendMsg_StartProfiling;
 
   SetUpLogging;
@@ -197,6 +199,8 @@ begin
     raise;
     {$ENDIF}
   end;
+
+  LogMemoryUsage;
 end;
 
 // NOTE: The Main function is exported twice, once using 'main', the original name, and 'VSTPluginMain' as
