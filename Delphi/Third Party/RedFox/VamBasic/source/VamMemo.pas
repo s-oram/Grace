@@ -72,6 +72,7 @@ end;
 
 destructor TVamMemo.Destroy;
 begin
+  fText.Free;
   TextBuffer.Free;
   inherited;
 end;
