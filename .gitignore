@@ -43,4 +43,11 @@ Lucidity Create Installers.bat
 Lucidity.dll
 
 
+### Un-ignore MtxVec DLLs. ###
+### I'm not sure why these are being igored in the first place however.
+!/MtxVec Dlls/Single/*
+!/MtxVec Dlls/Single64/*
+!/MtxVec Dlls/Double/*
+!/MtxVec Dlls/Double64/*
+
 
