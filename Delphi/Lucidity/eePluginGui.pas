@@ -278,6 +278,7 @@ begin
   FreeAndNil(InfoBarFrame);
   FreeAndNil(ModSystem2Frame);
   FreeAndNil(SequencerFrame);
+  FreeAndNil(AboutFrame);
 
   DropFileTarget.Free;
   FeedBackData.Free;
