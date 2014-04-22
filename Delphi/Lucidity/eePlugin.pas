@@ -1109,10 +1109,10 @@ var
 begin
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
-  ClearBuffer(Outputs[2], SampleFrames);
-  ClearBuffer(Outputs[3], SampleFrames);
-  ClearBuffer(Outputs[4], SampleFrames);
-  ClearBuffer(Outputs[5], SampleFrames);
+  //ClearBuffer(Outputs[2], SampleFrames);
+  //ClearBuffer(Outputs[3], SampleFrames);
+  //ClearBuffer(Outputs[4], SampleFrames);
+  //ClearBuffer(Outputs[5], SampleFrames);
 
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);

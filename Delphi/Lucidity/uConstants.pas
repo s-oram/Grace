@@ -373,7 +373,7 @@ begin
     Global_Info.SoftBypass         := false;
 
     Global_Info.InitialInputCount  := 0;
-    Global_Info.InitialOutputCount := 10;
+    Global_Info.InitialOutputCount := 2;
 
     Global_Info.IsOverSamplingEnabled   := true;
     Global_Info.OverSampleFactor        := 2;
