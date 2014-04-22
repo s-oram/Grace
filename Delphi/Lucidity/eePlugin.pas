@@ -225,7 +225,7 @@ var
 begin
   inherited;
 
-  LogMemoryUsage;
+  LogMemoryUsage('TPlugin.Create Begin');
 
   fIsPreviewEnabled := true;
 
@@ -233,17 +233,25 @@ begin
 
   TProfiler.Open;
 
+  LogMemoryUsage;
+
   {$IFDEF Logging}
   if (PluginDataDir^.Exists)
     then LogMain.LogText('Data Directory Found', PluginDataDir^.Path)
     else LogMain.LogText('Data Directory NOT Found!', '');
   {$ENDIF}
 
+  LogMemoryUsage;
+
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(fSignalRecorder, zoAudio);
 
+  LogMemoryUsage;
+
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
   Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, zoAudio);
+
+  LogMemoryUsage;
 
 
   // TODO: Should do some data directory validation here.
@@ -251,6 +259,8 @@ begin
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
   Globals.MotherShip.RegisterZeroObject(fSampleDirectories, zoMain);
+
+  LogMemoryUsage;
 
 
   if (PluginDataDir^.Exists) then
@@ -278,12 +288,17 @@ begin
 
   end;
 
+  LogMemoryUsage;
 
   PreviewInfo^.Clear;
+
+  LogMemoryUsage;
 
   AudioPreviewPlayer := TAudioFilePreviewPlayer.Create;
   KeyStateTracker    := TKeyStateTracker.Create;
   fGuiState          := TGuiState.Create;
+
+  LogMemoryUsage;
 
   DeltaOffset := 0;
 
@@ -300,25 +315,40 @@ begin
     MidiAutomation.OnVstParameterAutomation := VstParameterChangedViaMidiAutomation;
   end;
 
+  LogMemoryUsage;
+
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
   fXYPads.PadX1 := -0.5;
+
+  LogMemoryUsage;
 
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(VoiceController, zoAudio);
 
+  LogMemoryUsage;
 
   KeyGroupPlayer  := TKeyGroupPlayer.Create;
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, zoAudio);
 
+  LogMemoryUsage;
+
   fSampleMap := TSampleMap.Create;
   Globals.MotherShip.RegisterZeroObject(fSampleMap, zoAudio);
+
+  LogMemoryUsage;
 
   fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(fKeyGroups, zoAudio);
 
+  LogMemoryUsage;
+
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals);
 
+  LogMemoryUsage('ParWizard');
+
   ParameterWizard := TPluginParameterWizard.Create(self, VoiceController, self.Globals.VstParameters);
+
+  LogMemoryUsage;
 
 
   //==== Look for key file ===
@@ -380,6 +410,10 @@ begin
       then LoadProgramFromFile(fnB);
 
   end;
+
+
+
+  LogMemoryUsage('TPlugin.Create End');
 end;
 
 destructor TeePlugin.Destroy;

@@ -14,7 +14,7 @@ procedure SendMsg_StopProfiling;
 
 procedure SetUpLogging;
 
-procedure LogMemoryUsage;
+procedure LogMemoryUsage(const LogTag : string = '');
 
 implementation
 
@@ -76,15 +76,29 @@ begin
 end;
 
 
-procedure LogMemoryUsage;
+
+var
+  GlobalMemUsageTag : cardinal;
+
+procedure LogMemoryUsage(const LogTag : string = '');
 var
   MemUsage : single;
   s : string;
+  Tag : string;
 begin
+  Tag := 'Tag ' + IntToStr(GlobalMemUsageTag);
+  inc(GlobalMemUsageTag);
+
   MemUsage := BytesToMegaBytes(MemoryUsed);
   s := FloatToStr(MemUsage);
 
-  LogMain.LogSingle('Mem Usage MB', MemUsage);
+  LogMain.LogSingle('Mem Usage MB ' + Tag + ' ' + LogTag, MemUsage);
 end;
+
+
+initialization
+  GlobalMemUsageTag := 0;
+
+finalization
 
 end.
