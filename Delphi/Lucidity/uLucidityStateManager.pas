@@ -17,11 +17,9 @@ type
 
   TLucidityStatemanager = class
   strict private
-
     procedure SaveModulatedParametersToNode(ParentNode : TXmlNode; sg : TKeyGroup);
     procedure LoadModulatedParametersFromNode(ParentNode : TXmlNode; sg : TKeyGroup);
   private
-
   protected
     Plugin : TeePlugin;
 

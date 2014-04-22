@@ -236,10 +236,8 @@ var
   xml   : TNativeXML;
   Node  : TXmlNode;
 begin
-  xml := TNativeXml.Create(nil);
+  xml := TNativeXML.CreateName('root');
   AutoFree(@xml);
-
-  xml.CreateName('root');
 
   Name := 'FileType';
   Value := 'MidiMap';
