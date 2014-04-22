@@ -144,6 +144,7 @@ begin
   fMouseDownMultiEvent.Free;
   fMouseUpMultiEvent.Free;
   fMouseMoveMultiEvent.Free;
+  fLayout.Free;
   inherited;
 end;
 
