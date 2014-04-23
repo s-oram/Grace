@@ -12,7 +12,6 @@ type
   TVamMiniLevelMeter = class(TVamWinControl)
   private
     fLevelMonitor: ILevelMonitor;
-
   protected
     procedure Paint; override;
   public
@@ -41,7 +40,7 @@ end;
 
 destructor TVamMiniLevelMeter.Destroy;
 begin
-
+  fLevelMonitor := nil;
   inherited;
 end;
 
