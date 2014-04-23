@@ -4,6 +4,8 @@ interface
 
 {$INCLUDE Defines.inc}
 
+{$M+}
+
 uses
   VamLib.Utils,
   OtlCommon.Utils,

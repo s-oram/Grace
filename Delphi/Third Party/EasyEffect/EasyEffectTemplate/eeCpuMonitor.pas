@@ -57,7 +57,7 @@ function TCpuMonitor.StopProcessingReplacingTimer:boolean;
 var
   pc:Int64;
   freq:Int64;
-  s:string;
+  {$IFDEF Logging}s : string;{$ENDIF}
 begin
   QueryPerformanceCounter(pc);
   QueryPerformanceFrequency(freq);

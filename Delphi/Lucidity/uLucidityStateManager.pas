@@ -2,6 +2,8 @@ unit uLucidityStateManager;
 
 interface
 
+{$M+}
+
 uses
   VamLib.Utils,
   VamGuiControlInterfaces,
@@ -114,6 +116,8 @@ type
     property Amount   : single     read fAmount    write fAmount;
     property Offset   : single     read fOffset    write fOffset;
   end;
+
+  {$M+}
 
   TModParSaveObject = class
   private

@@ -2,6 +2,8 @@ unit soLucidityVoiceParameterWrapper;
 
 interface
 
+{$M+}
+
 uses
   VamLib.ZeroObject,
   LucidityGui.VectorSequence,

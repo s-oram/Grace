@@ -3,6 +3,7 @@ unit eeVstParameterList;
 interface
 
 uses
+  Classes,
   Contnrs,
   eeVstParameter;
 
