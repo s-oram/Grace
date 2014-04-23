@@ -698,7 +698,7 @@ begin
 
 
   Timer1.Enabled := true;
-  Timer1.Interval := 190;
+  Timer1.Interval := 25;
 
 
 
