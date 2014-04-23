@@ -16,9 +16,15 @@ procedure SetUpLogging;
 
 procedure LogMemoryUsage(const LogTag : string = '');
 
+
+procedure LogStackTrace;
+
 implementation
 
 uses
+  {$IFDEF MadExcept}
+  MadStackTrace,
+  {$ENDIF}
   VamLib.Utils,
   VamLib.LoggingProxy,
   SmartInspectLogging,
@@ -93,6 +99,13 @@ begin
   s := FloatToStr(MemUsage);
 
   LogMain.LogSingle('Mem Usage MB ' + Tag + ' ' + LogTag, MemUsage);
+end;
+
+
+
+procedure LogStackTrace;
+begin
+  LogMain.LogText('Stack Trace', MadStackTrace.StackTrace);
 end;
 
 
