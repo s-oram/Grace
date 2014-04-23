@@ -110,6 +110,7 @@ type
 implementation
 
 uses
+  uLucidityExtra,
   VamLib.LoggingProxy,
   eeAudioBufferUtils,
   SysUtils, eeCustomGlobals,
@@ -159,6 +160,7 @@ end;
 destructor TKeyGroup.Destroy;
 begin
   Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID));
+  LogStackTrace;
 
   FSeq1Data.Free;
   FSeq2Data.Free;
