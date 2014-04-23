@@ -102,6 +102,10 @@ Sample map
 * LOFI - Bit Depth knob needs to be reversed.
 
 
+* Removing MtxVec would reduce the install file size and required memory.
+  MtxVec is used for it's FFT routines. It's used by the filter FFT display.
+
+
 ==Bug report==
 GUI disappears in Samplitude Music Studio 16
 thunderlink://messageid=CANuKor_nDaqXRv_dOR5O+Sb2Q1Ksn-bVXehEC9pcgQyaKGE6qA@mail.gmail.com
