@@ -540,7 +540,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="frames\Menu.StepSequenceMenu.pas"/>
 			<DCCReference Include="frames\uInfoBarFrame.pas">
 				<Form>InfoBarFrame</Form>
-				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="LucidityGui.InfoBarController.pas"/>
@@ -560,7 +559,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="Lucidity.FlexSampleRenderer.pas"/>
 			<DCCReference Include="frames\uModSystem2Frame.pas">
 				<Form>ModSystem2Frame</Form>
-				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="eePlugin.pas"/>
@@ -580,7 +578,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="SoundObjects\soSignalRecorder.pas"/>
 			<DCCReference Include="frames\uSequencerFrame.pas">
 				<Form>SequencerFrame</Form>
-				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="SoundObjects\soLfo.WaveTableLfo.pas"/>
