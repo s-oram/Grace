@@ -913,7 +913,7 @@ procedure TScopeLfoValues.UpdateRandomValues;
 var
   c1: Integer;
 begin
-  if (self.IsRandomInitialised = false) or (MilliSecondsBetween(Now, self.LastRandomUpdate) > 900) then
+  if (self.IsRandomInitialised = false) or (MilliSecondsBetween(Now, self.LastRandomUpdate) > 1700) then
   begin
     self.LastRandomUpdate := Now;
     self.IsRandomInitialised := true;
