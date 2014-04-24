@@ -45,8 +45,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure RegisterHandler(const Handler : IStandardControlHandler; const HandlerName : string);
-    procedure RegisterControl(const c : TObject; const HandlerName : string);
+    procedure RegisterHandler(const HandlerName : string; const Handler : IStandardControlHandler);
+    procedure RegisterControl(const HandlerName : string; const c : TObject);
     procedure DeregisterControl(const c : TObject);
 
     procedure UpdateControls;
@@ -126,7 +126,7 @@ begin
   result := -1;
 end;
 
-procedure TGuiStandard.RegisterHandler(const Handler: IStandardControlHandler; const HandlerName: string);
+procedure TGuiStandard.RegisterHandler(const HandlerName : string; const Handler : IStandardControlHandler);
 var
   Index : integer;
   hr : THandlerReference;
@@ -141,7 +141,7 @@ begin
   HandlerList.Add(hr);
 end;
 
-procedure TGuiStandard.RegisterControl(const c: TObject; const HandlerName : string);
+procedure TGuiStandard.RegisterControl(const HandlerName : string; const c : TObject);
 var
   Index : integer;
   cr : TControlReference;

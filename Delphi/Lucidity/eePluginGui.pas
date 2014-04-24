@@ -8,6 +8,7 @@ interface
 uses
   eeGuiStandard,
   eeGuiStandardv2,
+  LucidityGui.KnobHandler,
   Lucidity.Interfaces,
   VamLib.ZeroObject,
   uSequencerFrame,
@@ -65,6 +66,7 @@ type
   protected
     Manually:boolean;
     GuiStandard_OLD : eeGuiStandard.TGuiStandard;
+    GuiStandard : TGuiStandard;
     DialogDisplayArea : TDialogDisplayArea;
     VstWindow : Hwnd;
     DropFileTarget : TRedFoxDropFileTarget;
@@ -266,6 +268,11 @@ begin
   if assigned(GuiStandard_OLD)
     then GuiStandard_OLD.Free;
 
+  if assigned(GuiStandard)
+    then GuiStandard.Free;
+
+
+
   DialogDisplayArea.Free;
   CurrentGuiState.Free;
 
@@ -306,6 +313,13 @@ begin
 
   GuiStandard_OLD := eeGuiStandard.TGuiStandard.Create(Plugin, Plugin.Globals);
   GuiStandard_OLD.OnControlMouseDown := self.EventHandle_ControlMouseDown;
+
+
+  GuiStandard := TGuiStandard.Create;
+  GuiStandard.RegisterHandler('KnobHandler', TKnobHandler.Create(Plugin));
+  // TODO - register handlers here.
+
+
 
   Plugin.Globals.MotherShip.RegisterZeroObject(self, zoAudio);
 
