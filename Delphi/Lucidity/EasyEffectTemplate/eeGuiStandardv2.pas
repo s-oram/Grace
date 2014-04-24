@@ -40,12 +40,13 @@ type
 
     function FindReferenceIndex(const c : TObject):integer;
     function FindHandlerIndex(const Name : string):integer;
+    function FindHandler(const Name : string):IStandardControlHandler;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure RegisterHandler(const Handler : IStandardControlHandler; const Name : string);
-    procedure RegisterControl(const c : TObject; const Handler : IStandardControlHandler);
+    procedure RegisterHandler(const Handler : IStandardControlHandler; const HandlerName : string);
+    procedure RegisterControl(const c : TObject; const HandlerName : string);
     procedure DeregisterControl(const c : TObject);
 
     procedure UpdateControls;
@@ -72,6 +73,25 @@ begin
   ControlList.Free;
   HandlerList.Free;
   inherited;
+end;
+
+function TGuiStandard.FindHandler(const Name: string): IStandardControlHandler;
+var
+  c1: Integer;
+  s : string;
+begin
+  for c1 := 0 to HandlerList.Count-1 do
+  begin
+    s := (HandlerList[c1] as THandlerReference).Name;
+    if SameText(s, Name) then
+    begin
+      result := (HandlerList[c1] as THandlerReference).Handler;
+      exit; //=========================>> exit >>========>>
+    end;
+  end;
+
+  //If we've made it this far, no match has been found, exit.
+  result := nil;
 end;
 
 function TGuiStandard.FindHandlerIndex(const Name: string): integer;
@@ -106,26 +126,33 @@ begin
   result := -1;
 end;
 
-procedure TGuiStandard.RegisterHandler(const Handler: IStandardControlHandler; const Name: string);
+procedure TGuiStandard.RegisterHandler(const Handler: IStandardControlHandler; const HandlerName: string);
 var
   Index : integer;
   hr : THandlerReference;
 begin
-  Index := FindHandlerIndex(Name);
+  Index := FindHandlerIndex(HandlerName);
   if Index <> -1 then raise Exception.Create('Handler with that name already registered.');
 
   hr := THandlerReference.Create;
-  hr.Name := Name;
+  hr.Name    := HandlerName;
   hr.Handler := Handler;
 
   HandlerList.Add(hr);
 end;
 
-procedure TGuiStandard.RegisterControl(const c: TObject; const Handler: IStandardControlHandler);
+procedure TGuiStandard.RegisterControl(const c: TObject; const HandlerName : string);
 var
   Index : integer;
   cr : TControlReference;
+  h : IStandardControlHandler;
 begin
+  h := FindHandler(HandlerName);
+  if not assigned(h)
+    then raise Exception.Create('Handler with name "' + HandlerName + '" not found.');
+
+
+
   Index := FindReferenceIndex(c);
   if Index = -1 then
   begin
@@ -136,9 +163,10 @@ begin
     cr := ControlList[Index] as TControlReference;
   end;
 
+
   cr.Control := c;
-  cr.Handler := Handler;
-  Handler.SetupControl(c);
+  cr.Handler := h;
+  h.SetupControl(c);
 end;
 
 procedure TGuiStandard.DeregisterControl(const c: TObject);
