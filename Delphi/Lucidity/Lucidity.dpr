@@ -161,7 +161,8 @@ uses
   uLucidityEnums in 'uLucidityEnums.pas',
   Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas',
   eeGuiStandardv2 in 'EasyEffectTemplate\eeGuiStandardv2.pas',
-  Lucidity.PluginParameterController in 'Lucidity.PluginParameterController.pas';
+  Lucidity.PluginParameterController in 'Lucidity.PluginParameterController.pas',
+  Constants.ParNames in 'Constants.ParNames.pas';
 
 {$R *.res}
 

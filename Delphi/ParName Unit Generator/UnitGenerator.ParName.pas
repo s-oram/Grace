@@ -81,6 +81,9 @@ type
   end;
 
 
+  //function ParNameToParIndex(const Name : string):integer;
+  //function ParIndexToParName(const Name : string):integer;
+
 procedure Generate;
 
 implementation
@@ -95,13 +98,15 @@ uses
 procedure Generate;
 const
   SourceFN : string = 'S:\Delphi\ParName Unit Generator\Source_ParName.txt';
-  DestFN   : string = 'S:\Delphi\ParName Unit Generator\Constants.ParNames.txt';
+  DestFN1  : string = 'S:\Delphi\ParName Unit Generator\Constants.ParNames.txt';
+  DestFN2  : string = 'S:\Delphi\Lucidity\Constants.ParNames.pas';
 var
   c1 : integer;
   Names : TStringList;
   Text : TStringList;
   fn : string;
   s : string;
+  QuotedStr : string;
 begin
   Names := TStringList.Create;
   AutoFree(@Names);
@@ -111,12 +116,20 @@ begin
 
   Names.LoadFromFile(SourceFN);
 
-  fn := TrimFileExt(DestFN);
+  fn := TrimFileExt(DestFN1);
 
   TUnitGen.AddUnitHeader(Text, fn);
 
-  //=== Generate TVSTParIndex constants record ====
+  //============================================
+  //  Add some constants
+  Text.Add('const');
+  Text.Add('  kParNameCount = ' + IntToStr(Names.Count) + ';');
+  TUnitGen.AddEmptyLine(Text);
+
+
+  //============================================
   Text.Add('type');
+  //=== Generate TVSTParIndex constants record ====
   Text.Add('  TVstParIndex = record');
   Text.Add('  const');
 
@@ -132,7 +145,6 @@ begin
 
 
   //=== Generate TVSTParIndex constants record ====
-  Text.Add('type');
   Text.Add('  TVstParName = record');
   Text.Add('  const');
 
@@ -146,15 +158,61 @@ begin
   //============================================
   TUnitGen.AddEmptyLine(Text);
 
+  Text.Add('function ParNameToParIndex(const Name : string):integer;');
+  Text.Add('function ParIndexToParName(const Index : integer):string;');
+  TUnitGen.AddEmptyLine(Text);
 
+
+  //============================================
+  //============================================
   TUnitGen.AddImplementationHeader(Text);
+  TUnitGen.AddEmptyLine(Text);
+  //============================================
+  //============================================
+
+  Text.Add('function ParNameToParIndex(const Name : string):integer;');
+  Text.Add('begin');
+
+  for c1 := 0 to Names.Count-1 do
+  begin
+    QuotedStr := '''' + Names[c1] + '''';
+    s := '  if Name = ' + QuotedStr + ' then exit(' + IntToStr(c1) + ');';
+    Text.Add(s);
+  end;
+  s := '  result := -1;';
+  Text.Add(s);
+
+  Text.Add('end;');
+
+  TUnitGen.AddEmptyLine(Text);
+
+  //============================================
+
+  Text.Add('function ParIndexToParName(const Index : integer):string;');
+  Text.Add('begin');
+
+  Text.Add('  case Index of');
+  for c1 := 0 to Names.Count-1 do
+  begin
+    QuotedStr := '''' + Names[c1] + '''';
+    s := '    ' + IntToStr(c1) + ': result := ' + QuotedStr + ';';
+    Text.Add(s);
+  end;
+  Text.Add('  else');
+  Text.Add('    result := ''''');
+  Text.Add('  end;');
+
+  Text.Add('end;');
+  TUnitGen.AddEmptyLine(Text);
+
   TUnitGen.AddUnitFooter(Text);
 
 
 
 
   //ShowMessage(Text.Text);
-  Text.SaveToFile(DestFN);
+  Text.SaveToFile(DestFN1);
+  Text.SaveToFile(DestFN2);
 
 
 end;

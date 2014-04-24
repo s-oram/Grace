@@ -602,6 +602,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2.pas"/>
 			<DCCReference Include="Lucidity.PluginParameterController.pas"/>
+			<DCCReference Include="Constants.ParNames.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
