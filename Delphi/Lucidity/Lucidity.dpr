@@ -159,7 +159,8 @@ uses
   LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas',
   eeEnumHelper in 'eeEnumHelper.pas',
   uLucidityEnums in 'uLucidityEnums.pas',
-  Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas';
+  Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas',
+  eeGuiStandardv2 in 'EasyEffectTemplate\eeGuiStandardv2.pas';
 
 {$R *.res}
 
