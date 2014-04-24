@@ -1,0 +1,153 @@
+unit Constants.ParNames;
+
+interface
+
+type
+  TVstParIndex = record
+  const
+    VoiceMode = 0;
+    VoiceGlide = 1;
+    PitchTracking = 2;
+    SamplePlaybackType = 3;
+    SampleResetClockSource = 4;
+    SamplerLoopBounds = 5;
+    SamplerLoopMode = 6;
+    GrainLoop = 7;
+    GrainLength = 8;
+    GrainRate = 9;
+    GrainPosition = 10;
+    OutputGain = 11;
+    OutputPan = 12;
+    VoicePitchOne = 13;
+    VoicePitchTwo = 14;
+    AuxALevel = 15;
+    AuxBLevel = 16;
+    OscShape = 17;
+    OscPulseWidth = 18;
+    NoiseLevel = 19;
+    SampleStart = 20;
+    SampleEnd = 21;
+    LoopStart = 22;
+    LoopEnd = 23;
+    AmpAttack = 24;
+    AmpHold = 25;
+    AmpDecay = 26;
+    AmpSustain = 27;
+    AmpRelease = 28;
+    AmpVelocity = 29;
+    FilterAttack = 30;
+    FilterHold = 31;
+    FilterDecay = 32;
+    FilterSustain = 33;
+    FilterRelease = 34;
+    FilterVelocity = 35;
+    FilterRouting = 36;
+    FilterOutputBlend = 37;
+    Filter1Type = 38;
+    Filter2Type = 39;
+    Filter1KeyFollow = 40;
+    Filter2KeyFollow = 41;
+    Filter1Par1 = 42;
+    Filter1Par2 = 43;
+    Filter1Par3 = 44;
+    Filter1Par4 = 45;
+    Filter2Par1 = 46;
+    Filter2Par2 = 47;
+    Filter2Par3 = 48;
+    Filter2Par4 = 49;
+    Lfo1Shape = 50;
+    Lfo2Shape = 51;
+    Lfo1FreqMode = 52;
+    Lfo2FreqMode = 53;
+    Lfo1Par1 = 54;
+    Lfo1Par2 = 55;
+    Lfo1Par3 = 56;
+    Lfo2Par1 = 57;
+    Lfo2Par2 = 58;
+    Lfo2Par3 = 59;
+    Seq1Clock = 60;
+    Seq1Direction = 61;
+    Seq1Length = 62;
+    Seq2Clock = 63;
+    Seq2Direction = 64;
+    Seq2Length = 65;
+    PreviewVolume = 66;
+    Preview = 67;
+  end;
+
+type
+  TVstParIndex = record
+  const
+    VoiceMode = 'VoiceMode';
+    VoiceGlide = 'VoiceGlide';
+    PitchTracking = 'PitchTracking';
+    SamplePlaybackType = 'SamplePlaybackType';
+    SampleResetClockSource = 'SampleResetClockSource';
+    SamplerLoopBounds = 'SamplerLoopBounds';
+    SamplerLoopMode = 'SamplerLoopMode';
+    GrainLoop = 'GrainLoop';
+    GrainLength = 'GrainLength';
+    GrainRate = 'GrainRate';
+    GrainPosition = 'GrainPosition';
+    OutputGain = 'OutputGain';
+    OutputPan = 'OutputPan';
+    VoicePitchOne = 'VoicePitchOne';
+    VoicePitchTwo = 'VoicePitchTwo';
+    AuxALevel = 'AuxALevel';
+    AuxBLevel = 'AuxBLevel';
+    OscShape = 'OscShape';
+    OscPulseWidth = 'OscPulseWidth';
+    NoiseLevel = 'NoiseLevel';
+    SampleStart = 'SampleStart';
+    SampleEnd = 'SampleEnd';
+    LoopStart = 'LoopStart';
+    LoopEnd = 'LoopEnd';
+    AmpAttack = 'AmpAttack';
+    AmpHold = 'AmpHold';
+    AmpDecay = 'AmpDecay';
+    AmpSustain = 'AmpSustain';
+    AmpRelease = 'AmpRelease';
+    AmpVelocity = 'AmpVelocity';
+    FilterAttack = 'FilterAttack';
+    FilterHold = 'FilterHold';
+    FilterDecay = 'FilterDecay';
+    FilterSustain = 'FilterSustain';
+    FilterRelease = 'FilterRelease';
+    FilterVelocity = 'FilterVelocity';
+    FilterRouting = 'FilterRouting';
+    FilterOutputBlend = 'FilterOutputBlend';
+    Filter1Type = 'Filter1Type';
+    Filter2Type = 'Filter2Type';
+    Filter1KeyFollow = 'Filter1KeyFollow';
+    Filter2KeyFollow = 'Filter2KeyFollow';
+    Filter1Par1 = 'Filter1Par1';
+    Filter1Par2 = 'Filter1Par2';
+    Filter1Par3 = 'Filter1Par3';
+    Filter1Par4 = 'Filter1Par4';
+    Filter2Par1 = 'Filter2Par1';
+    Filter2Par2 = 'Filter2Par2';
+    Filter2Par3 = 'Filter2Par3';
+    Filter2Par4 = 'Filter2Par4';
+    Lfo1Shape = 'Lfo1Shape';
+    Lfo2Shape = 'Lfo2Shape';
+    Lfo1FreqMode = 'Lfo1FreqMode';
+    Lfo2FreqMode = 'Lfo2FreqMode';
+    Lfo1Par1 = 'Lfo1Par1';
+    Lfo1Par2 = 'Lfo1Par2';
+    Lfo1Par3 = 'Lfo1Par3';
+    Lfo2Par1 = 'Lfo2Par1';
+    Lfo2Par2 = 'Lfo2Par2';
+    Lfo2Par3 = 'Lfo2Par3';
+    Seq1Clock = 'Seq1Clock';
+    Seq1Direction = 'Seq1Direction';
+    Seq1Length = 'Seq1Length';
+    Seq2Clock = 'Seq2Clock';
+    Seq2Direction = 'Seq2Direction';
+    Seq2Length = 'Seq2Length';
+    PreviewVolume = 'PreviewVolume';
+    Preview = 'Preview';
+  end;
+
+implementation
+
+end.

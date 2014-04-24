@@ -32,6 +32,27 @@ function MemoryUsed: cardinal;
 function BytesToMegaBytes(const Value : single):single;
 
 
+
+
+function TrimFileExt(FileName:string):string;
+
+
+
+//==============================================================
+// Use the DataIO functions to convert values to and from strings for
+// storing into save files. The DataIO functions ensure values are valid
+// when converting back from strings.
+function DataIO_BoolToStr(Value:boolean):string;
+function DataIO_FloatToStr(Value:single):string;
+function DataIO_IntToStr(Value:integer):string;
+
+function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
+function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
+function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
+//==============================================================
+
+
+
 implementation
 
 uses
@@ -191,6 +212,109 @@ begin
   result := Value / 1048576;
 end;
 
+
+
+
+
+function TrimFileExt(FileName:string):string;
+var
+  Ext:string;
+  Index:integer;
+  cc:integer;
+begin
+  FileName := ExtractFileName(FileName); //Remove path information, if there is any.
+
+  Ext := ExtractFileExt(FileName);
+
+  if Ext ='' then
+  begin
+    //There is no extension.
+    result := FileName;
+    exit; //==================================================>
+  end;
+
+  cc := Length(Ext);
+  Index := Pos(Ext,FileName);
+
+  Delete(FileName,Index,cc);
+
+  result := FileName;
+end;
+
+
+
+
+function DataIO_BoolToStr(Value:boolean):string;
+begin
+  if Value
+    then result := 'true'
+    else result := 'false';
+end;
+
+function DataIO_FloatToStr(Value:single):string;
+var
+  fs:TFormatSettings;
+begin
+  fs.ThousandSeparator := ',';
+  fs.DecimalSeparator  := '.';
+  result := FloatToStr(Value, fs);
+end;
+
+function DataIO_IntToStr(Value:integer):string;
+begin
+  result := IntToStr(Value);
+end;
+
+
+
+
+
+function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
+begin
+  Value := Trim(Value);
+  try
+    if SameText(Value, '1')     then exit(true);
+    if SameText(Value, 'true')  then exit(true);
+    if SameText(Value, 'T')     then exit(true);
+    if SameText(Value, 'Y')     then exit(true);
+    if SameText(Value, 'Yes')   then exit(true);
+
+    if SameText(Value, '0')     then exit(false);
+    if SameText(Value, 'false') then exit(false);
+    if SameText(Value, 'F')     then exit(false);
+    if SameText(Value, 'N')     then exit(false);
+    if SameText(Value, 'No')    then exit(false);
+
+    if Value = '' then exit(false);
+
+    //if we've made it this far, exit with the fall back value.
+    result := FallBackValue;
+  except
+    result := FallBackValue;
+  end;
+end;
+
+function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
+var
+  fs:TFormatSettings;
+begin
+  fs.ThousandSeparator := ',';
+  fs.DecimalSeparator  := '.';
+  try
+    result := StrToFloat(Value, fs)
+  except
+    result := FallBackValue;
+  end;
+end;
+
+function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
+begin
+  try
+    result := StrToInt(Value)
+  except
+    result := FallBackValue;
+  end;
+end;
 
 
 end.
