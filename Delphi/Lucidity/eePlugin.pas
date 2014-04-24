@@ -7,6 +7,8 @@ interface
 {$M+}
 
 uses
+  Lucidity.PluginParameterController,
+  Lucidity.Types,
   VamLib.Utils,
   OtlCommon.Utils,
   RTTI,
@@ -107,6 +109,10 @@ type
     constructor Create; override;
 	  destructor Destroy; override;
 
+    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single);
+    function GetPluginParameter(const ParName : string):single;
+
+
     procedure Suspend; override;
     procedure Resume; override;
 
@@ -141,7 +147,7 @@ type
     procedure TriggerPreview(const fn : string);
     procedure StopPreview;
     procedure ClearPreviewInfo;
-    property PreviewVolume    : single  read GetPreviewVolume    write SetPreviewVolume;
+    property PreviewVolume    : single  read GetPreviewVolume  write SetPreviewVolume;
     property IsPreviewEnabled : boolean read fIsPreviewEnabled write fIsPreviewEnabled;
 
     //== The GUI should access the current Engine/Region using these properties ===
@@ -445,6 +451,17 @@ begin
   TProfiler.Close;
   inherited;
 end;
+
+function TeePlugin.GetPluginParameter(const ParName: string): single;
+begin
+  result := TPluginParameterController.GetPluginParameter(self, ParName);
+end;
+
+procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName, ParName: string; const Value: single);
+begin
+  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParName, Value);
+end;
+
 
 procedure TeePlugin.EventHandle_SampleRateChanged(Sender: TObject);
 begin

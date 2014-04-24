@@ -96,7 +96,6 @@ end;
 procedure TGuiStandard.DeregisterControl(const c: TObject);
 var
   Index : integer;
-  cr : TControlReference;
 begin
   Index := FindReferenceIndex(c);
 

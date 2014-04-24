@@ -107,6 +107,9 @@ type
   TSampleMarker = (smNone, smSampleStartMarker, smSampleEndMarker, smLoopStartMarker, smLoopEndMarker,
                    smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
 
+
+  TParChangeScope = (psGlobal, psFocusedKeyGroup, psKeyGroup);
+
 implementation
 
 { TModulatedPar }

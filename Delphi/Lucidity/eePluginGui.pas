@@ -148,7 +148,6 @@ begin
   DialogDisplayArea.OnHideDialogArea := DoHideDialogArea;
   DialogDisplayArea.OnGetDisplayArea := DoGetDialogArea;
 
-
   OverlayContainer := TVamPanel.Create(self);
   OverlayContainer.HitTest := true;
   OverlayContainer.Parent := RedFoxContainer;
