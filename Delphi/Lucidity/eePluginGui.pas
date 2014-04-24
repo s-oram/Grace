@@ -6,6 +6,8 @@ interface
 
 
 uses
+  eeGuiStandard,
+  eeGuiStandardv2,
   Lucidity.Interfaces,
   VamLib.ZeroObject,
   uSequencerFrame,
@@ -19,7 +21,7 @@ uses
   uMenuBarFrame,
   uModControlFrame, uMiniSampleDisplayFrame,
   eeFileBrowserAddon, eeRedFoxDropFileTarget,
-  eePlugin, eeGuiStandard,
+  eePlugin,
   Windows, Messages, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, RedFoxContainer, RedFoxWinControl, VamWinControl, VamPanel, VamDiv,
   VamScrollBox, VamCustomTreeView, VamTreeView, RedFoxGraphicControl,
@@ -62,7 +64,7 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     Manually:boolean;
-    GuiStandard : TGuiStandard;
+    GuiStandard_OLD : eeGuiStandard.TGuiStandard;
     DialogDisplayArea : TDialogDisplayArea;
     VstWindow : Hwnd;
     DropFileTarget : TRedFoxDropFileTarget;
@@ -261,8 +263,8 @@ begin
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
-  if assigned(GuiStandard)
-    then GuiStandard.Free;
+  if assigned(GuiStandard_OLD)
+    then GuiStandard_OLD.Free;
 
   DialogDisplayArea.Free;
   CurrentGuiState.Free;
@@ -302,8 +304,8 @@ begin
 
   VstWindow := aVstWindow;
 
-  GuiStandard := TGuiStandard.Create(Plugin, Plugin.Globals);
-  GuiStandard.OnControlMouseDown := self.EventHandle_ControlMouseDown;
+  GuiStandard_OLD := eeGuiStandard.TGuiStandard.Create(Plugin, Plugin.Globals);
+  GuiStandard_OLD.OnControlMouseDown := self.EventHandle_ControlMouseDown;
 
   Plugin.Globals.MotherShip.RegisterZeroObject(self, zoAudio);
 
@@ -366,16 +368,16 @@ begin
 
   try
     // Initalize all the frame controls...
-    MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
-    MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
-    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-    ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
-    InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
+    MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    MenuBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    SampleMapFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    ModControlFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    SequencerFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    InfoBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, RedFoxContainer);
   except
   end;
 
@@ -520,7 +522,7 @@ begin
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
-  GuiStandard.UpdateControls;
+  GuiStandard_OLD.UpdateControls;
 
   Manually := false;
 end;
@@ -739,7 +741,7 @@ var
   CloseCallback : TProc;
 begin
   LoopEditDialog := TLoopEditDialog.Create;
-  LoopEditDialog.Setup(DialogDisplayArea.GetDisplayArea, Plugin, GuiStandard);
+  LoopEditDialog.Setup(DialogDisplayArea.GetDisplayArea, Plugin, GuiStandard_OLD);
 
   CloseCallback := procedure
   begin
