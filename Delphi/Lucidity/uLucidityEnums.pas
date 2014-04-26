@@ -30,86 +30,6 @@ type
 {$SCOPEDENUMS ON}
 
 type
-  TPluginParameter = (
-    VoiceMode,
-    VoiceGlide,
-    PitchTracking,
-    SamplePlaybackType,
-    SampleResetClockSource,
-    SamplerLoopBounds,
-    SamplerLoopMode,
-    GrainLoop,
-    GrainLength,
-    GrainRate,
-    GrainPosition,
-    OutputGain,
-    OutputPan,
-    VoicePitchOne,
-    VoicePitchTwo,
-    AuxALevel,
-    AuxBLevel,
-    OscShape,
-    OscPulseWidth,
-    NoiseLevel,
-    SampleStart,
-    SampleEnd,
-    LoopStart,
-    LoopEnd,
-    AmpAttack,
-    AmpHold,
-    AmpDecay,
-    AmpSustain,
-    AmpRelease,
-    AmpVelocity,
-    FilterAttack,
-    FilterHold,
-    FilterDecay,
-    FilterSustain,
-    FilterRelease,
-    FilterVelocity,
-    FilterRouting,
-    FilterOutputBlend,
-    Filter1Type,
-    Filter2Type,
-    Filter1KeyFollow,
-    Filter2KeyFollow,
-    Filter1Par1,
-    Filter1Par2,
-    Filter1Par3,
-    Filter1Par4,
-    Filter2Par1,
-    Filter2Par2,
-    Filter2Par3,
-    Filter2Par4,
-    Lfo1Shape,
-    Lfo2Shape,
-    Lfo1FreqMode,
-    Lfo2FreqMode,
-    Lfo1Par1,
-    Lfo1Par2,
-    Lfo1Par3,
-    Lfo2Par1,
-    Lfo2Par2,
-    Lfo2Par3,
-    Seq1Clock,
-    Seq1Direction,
-    Seq1Length,
-    Seq2Clock,
-    Seq2Direction,
-    Seq2Length,
-    PreviewVolume,
-    Preview
-  );
-
-
-  TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
-  end;
-
-  function PluginParToName(const Par : TPluginParameter):string;
-  function PluginParFromName(const Name : string):TPluginParameter;
-
-
-type
   TFilterRouting = (Serial, Parallel, FiftyFifty);
   TFilterRoutingHelper = class(TEnumHelper<TFilterRouting>)
   public
@@ -895,15 +815,7 @@ end;
 
 
 
-function PluginParToName(const Par : TPluginParameter):string;
-begin
-  result := TPluginParameterHelper.ToUnicodeString(Par);
-end;
 
-function PluginParFromName(const Name : string):TPluginParameter;
-begin
-  result := TPluginParameterHelper.ToEnum(Name);
-end;
 
 end.
 

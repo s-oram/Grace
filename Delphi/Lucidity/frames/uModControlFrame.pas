@@ -3,6 +3,7 @@ unit uModControlFrame;
 interface
 
 uses
+  Lucidity.PluginParameters,
   eeGuiStandardv2,
   eeGuiStandard, eeGuiStandard_MenuBuilder,
   VamLib.ZeroObject,

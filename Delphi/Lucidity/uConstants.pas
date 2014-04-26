@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Lucidity.PluginParameters,
   SysUtils,
   eeEnumHelper,
   uLucidityEnums,
@@ -407,6 +408,10 @@ end;
 
 
 initialization
+  {
+  if kParameterCount  <> TPluginParameterHelper.GetEnumTypeCount
+    then raise Exception.Create('kParameterCount doesn''t match enum type count.');
+  }
 
 finalization
   if assigned(Global_Info) then Global_Info.Free;
