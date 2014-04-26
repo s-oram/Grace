@@ -105,7 +105,11 @@ type
   TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
   end;
 
+  function PluginParToName(const Par : TPluginParameter):string;
+  function PluginParFromName(const Name : string):TPluginParameter;
 
+
+type
   TFilterRouting = (Serial, Parallel, FiftyFifty);
   TFilterRoutingHelper = class(TEnumHelper<TFilterRouting>)
   public
@@ -887,6 +891,18 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+end;
+
+
+
+function PluginParToName(const Par : TPluginParameter):string;
+begin
+  result := TPluginParameterHelper.ToUnicodeString(Par);
+end;
+
+function PluginParFromName(const Name : string):TPluginParameter;
+begin
+  result := TPluginParameterHelper.ToEnum(Name);
 end;
 
 end.

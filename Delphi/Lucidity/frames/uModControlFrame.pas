@@ -279,11 +279,26 @@ begin
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter(TParName.AmpAttack));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.AmpHold));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.AmpDecay));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpSustain));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpRelease));
+
+  AmpEnvAttackKnob.ParameterName  := PluginParToName(TPluginParameter.AmpAttack);
+  AmpEnvHoldKnob.ParameterName    := PluginParToName(TPluginParameter.AmpHold);
+  AmpEnvDecayKnob.ParameterName   := PluginParToName(TPluginParameter.AmpDecay);
+  AmpEnvSustainKnob.ParameterName := PluginParToName(TPluginParameter.AmpSustain);
+  AmpEnvReleaseKnob.ParameterName := PluginParToName(TPluginParameter.AmpRelease);
+
+  aGuiStandard.RegisterControl('KnobHandler', AmpEnvAttackKnob);
+  aGuiStandard.RegisterControl('KnobHandler', AmpEnvHoldKnob);
+  aGuiStandard.RegisterControl('KnobHandler', AmpEnvDecayKnob);
+  aGuiStandard.RegisterControl('KnobHandler', AmpEnvSustainKnob);
+  aGuiStandard.RegisterControl('KnobHandler', AmpEnvReleaseKnob);
+
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter(TParName.AmpAttack));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.AmpHold));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.AmpDecay));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpSustain));
+  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpRelease));
+
+
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.FilterAttack));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvHoldKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.FilterHold));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.FilterDecay));

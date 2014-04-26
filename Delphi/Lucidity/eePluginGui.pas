@@ -542,6 +542,7 @@ begin
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
   GuiStandard_OLD.UpdateControls;
+  GuiStandard.UpdateControls;
 
   Manually := false;
 end;
