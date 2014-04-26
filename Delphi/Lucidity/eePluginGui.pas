@@ -392,7 +392,7 @@ begin
     MenuBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard_OLD);
     SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard_OLD);
-    ModControlFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    ModControlFrame.InitializeFrame(Plugin, GuiStandard_OLD, GuiStandard, DialogDisplayArea);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard_OLD);

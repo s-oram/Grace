@@ -3,11 +3,13 @@ unit uModControlFrame;
 interface
 
 uses
+  eeGuiStandardv2,
+  eeGuiStandard, eeGuiStandard_MenuBuilder,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   uDialogDisplayArea,
   uGuiFeedbackData, Lucidity.Interfaces, VamStatusLed,
-  eePlugin, eeGuiStandard, eeGuiStandard_MenuBuilder,
+  eePlugin,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
@@ -159,7 +161,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard_OLD:TGuiStandard; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
@@ -251,7 +253,7 @@ begin
   inherited;
 end;
 
-procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard_OLD:TGuiStandard; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
 const
   kContainerWidth  = 600;
   kContainerHeight = 322;
@@ -266,7 +268,7 @@ begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
-  fGuiStandard := aGuiStandard;
+  fGuiStandard := aGuiStandard_OLD;
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
 
