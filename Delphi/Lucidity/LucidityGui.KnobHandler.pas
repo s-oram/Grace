@@ -35,6 +35,7 @@ implementation
 
 uses
   VamKnob,
+  Lucidity.Types,
   uConstants,
   uGuiUtils;
 
@@ -79,8 +80,23 @@ begin
 end;
 
 procedure TKnobHandler.UpdateControl(const c: TObject);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ParValue : single;
 begin
+  assert(c is TVamKnob);
+  Knob := c as TVamKnob;
 
+  ParName  := Knob.ParameterName;
+  // TODO: It might be handy to have a IsParNameValid() function here
+  // to assert that parameter names are correct.
+  ParValue := Plugin.GetPluginParameter(ParName);
+
+  assert(ParValue >= 0);
+  assert(ParValue <= 1);
+
+  Knob.Pos := ParValue;
 end;
 
 procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);
@@ -99,8 +115,25 @@ begin
 end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ParValue : single;
 begin
+  assert(Sender is TVamKnob);
+  Knob := Sender as TVamKnob;
 
+  ParName  := Knob.ParameterName;
+  ParValue := Knob.Pos;
+
+
+
+  // TODO: Check if the parameter is a published vst parameter,
+  // Send parameter change via the published VST parameter route if so,
+  // otherwise set parameter value directly in plugin.
+
+
+  Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
 end;
 
 procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
