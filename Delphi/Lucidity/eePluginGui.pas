@@ -306,6 +306,8 @@ var
   bm2 : TBitmap;
   bm3 : TBitmap;
   aRegionID : TGUID;
+  KnobHandler : TKnobHandler;
+
 begin
   assert(assigned(Plugin));
 
@@ -316,8 +318,11 @@ begin
 
 
   GuiStandard := TGuiStandard.Create;
-  GuiStandard.RegisterHandler('KnobHandler', TKnobHandler.Create(Plugin));
-  // TODO - register handlers here.
+
+  KnobHandler := TKnobHandler.Create(Plugin);
+  GuiStandard.RegisterHandler('KnobHandler', KnobHandler);
+  Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.zoMain);
+
 
 
 

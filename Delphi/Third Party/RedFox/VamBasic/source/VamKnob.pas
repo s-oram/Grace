@@ -40,6 +40,7 @@ type
     fIsBipolarKnob: boolean;
     fInternalPos: single;
     fInternalModAmount: single;
+    fParameterName: string;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -138,6 +139,7 @@ type
     property MinModDepth : single read fMinModDepth write SetMinModDepth;
     property MaxModDepth : single read fMaxModDepth write SetMaxModDepth;
 
+    property ParameterName  : string  read fParameterName  write fParameterName;
     // typically used to store the VST parameter index.
     property ParameterIndex : integer read fParameterIndex write fParameterIndex;
 
