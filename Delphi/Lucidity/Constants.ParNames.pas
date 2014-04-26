@@ -153,6 +153,9 @@ type
 function ParNameToParIndex(const Name : string):integer;
 function ParIndexToParName(const Index : integer):string;
 
+
+
+
 implementation
 
 
