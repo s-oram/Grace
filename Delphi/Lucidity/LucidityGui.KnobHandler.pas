@@ -84,6 +84,8 @@ var
   Knob : TVamKnob;
   ParName  : string;
   ParValue : single;
+  ModIndex       : integer;
+  ModAmountValue : single;
 begin
   assert(c is TVamKnob);
   Knob := c as TVamKnob;
@@ -97,10 +99,15 @@ begin
   assert(ParValue <= 1);
 
   Knob.Pos := ParValue;
-end;
 
-procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);
-begin
+  ModIndex := Plugin.Globals.SelectedModSlot;
+
+  if ModIndex <> -1 then
+  begin
+    ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+    Knob.ModAmount := ModAmountValue;
+  end;
+
 
 end;
 
@@ -135,6 +142,29 @@ begin
 
   Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
 end;
+
+procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ModIndex       : integer;
+  ModAmountValue : single;
+begin
+  assert(Sender is TVamKnob);
+  Knob := Sender as TVamKnob;
+
+  ParName  := Knob.ParameterName;
+  ModAmountValue := Knob.ModAmount;
+  ModIndex := Plugin.Globals.SelectedModSlot;
+
+  if ModIndex <> -1 then
+  begin
+    Plugin.SetPluginParameterModAmount(TParChangeScope.psFocusedKeyGroup, ParName, ModIndex, ModAmountValue);
+  end;
+
+end;
+
+
 
 procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
