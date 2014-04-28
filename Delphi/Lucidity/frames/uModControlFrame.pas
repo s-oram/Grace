@@ -300,10 +300,11 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, Filter2Par4Knob,                 TPluginParameter.Filter2Par4);
   GuiStandard_RegisterControl(aGuiStandard, Filter1KeyTrackKnob,             TPluginParameter.Filter1KeyFollow);
   GuiStandard_RegisterControl(aGuiStandard, Filter2KeyTrackKnob,             TPluginParameter.Filter2KeyFollow);
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob1,                        TPluginParameter.Lfo1Par1);
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                        TPluginParameter.Lfo1Par2);
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                        TPluginParameter.Lfo1Par3);
 
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob1,                TPluginParameter.Lfo1Par1);
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                TPluginParameter.Lfo1Par2);
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                TPluginParameter.Lfo1Par3);
+
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
