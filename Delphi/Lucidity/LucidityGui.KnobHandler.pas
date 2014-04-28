@@ -77,6 +77,18 @@ begin
       UpdateModulation(ControlList[c1]);
     end;
   end;
+
+  if MsgID = TLucidMsgID.OnPostCreateFinished then
+  begin
+    for c1 := 0 to ControlList.Count-1 do
+    begin
+      UpdateControl(ControlList[c1]);
+      UpdateModulation(ControlList[c1]);
+    end;
+  end;
+
+
+
 end;
 
 

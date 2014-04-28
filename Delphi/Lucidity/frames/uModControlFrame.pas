@@ -280,33 +280,31 @@ begin
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  GuiStandard_RegisterControl(aGuiStandard, AmpEnvAttackKnob, TPluginParameter.AmpAttack);
-  GuiStandard_RegisterControl(aGuiStandard, AmpEnvHoldKnob, TPluginParameter.AmpHold);
-  GuiStandard_RegisterControl(aGuiStandard, AmpEnvDecayKnob, TPluginParameter.AmpDecay);
-  GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob, TPluginParameter.AmpSustain);
-  GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob, TPluginParameter.AmpRelease);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvAttackKnob,                TPluginParameter.AmpAttack);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvHoldKnob,                  TPluginParameter.AmpHold);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvDecayKnob,                 TPluginParameter.AmpDecay);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob,               TPluginParameter.AmpSustain);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob,               TPluginParameter.AmpRelease);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvAttackKnob,             TPluginParameter.FilterAttack);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvHoldKnob,               TPluginParameter.FilterHold);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvDecayKnob,              TPluginParameter.FilterDecay);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvSustainKnob,            TPluginParameter.FilterSustain);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvReleaseKnob,            TPluginParameter.FilterRelease);
+  GuiStandard_RegisterControl(aGuiStandard, FilterBlendKnob,                 TPluginParameter.FilterOutputBlend);
+  GuiStandard_RegisterControl(aGuiStandard, Filter1Par1Knob,                 TPluginParameter.Filter1Par1);
+  GuiStandard_RegisterControl(aGuiStandard, Filter1Par2Knob,                 TPluginParameter.Filter1Par2);
+  GuiStandard_RegisterControl(aGuiStandard, Filter1Par3Knob,                 TPluginParameter.Filter1Par3);
+  GuiStandard_RegisterControl(aGuiStandard, Filter1Par4Knob,                 TPluginParameter.Filter1Par4);
+  GuiStandard_RegisterControl(aGuiStandard, Filter2Par1Knob,                 TPluginParameter.Filter2Par1);
+  GuiStandard_RegisterControl(aGuiStandard, Filter2Par2Knob,                 TPluginParameter.Filter2Par2);
+  GuiStandard_RegisterControl(aGuiStandard, Filter2Par3Knob,                 TPluginParameter.Filter2Par3);
+  GuiStandard_RegisterControl(aGuiStandard, Filter2Par4Knob,                 TPluginParameter.Filter2Par4);
+  GuiStandard_RegisterControl(aGuiStandard, Filter1KeyTrackKnob,             TPluginParameter.Filter1KeyFollow);
+  GuiStandard_RegisterControl(aGuiStandard, Filter2KeyTrackKnob,             TPluginParameter.Filter2KeyFollow);
 
-
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.FilterAttack));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvHoldKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.FilterHold));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.FilterDecay));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterSustain));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterRelease));
-
-
-
-  GuiStandard.RedFoxKnobHandler.RegisterControl(FilterBlendKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.FilterOutputBlend));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par1));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par2));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par3));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par4));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par1));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par2));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par3Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par3));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2Par4Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Par4));
-
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter1KeyFollow));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(Filter2KeyTrackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.Filter2KeyFollow));
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob1,                TPluginParameter.Lfo1Par1);
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                TPluginParameter.Lfo1Par2);
+  GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                TPluginParameter.Lfo1Par3);
 
   GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
@@ -787,11 +785,13 @@ begin
     then ModSlot := Plugin.Globals.MouseOverModSlot
     else ModSlot := Plugin.Globals.SelectedModSlot;
 
+  {
   // TODO: Delete this (or parts of this) once Lucidity is using the new Gui Standard system.
   for c1 := 0 to KnobList.Count-1 do
   begin
     UpdateModAmount((KnobList[c1] as TVamKnob), ModSlot, Plugin);
   end;
+  }
 end;
 
 procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);
@@ -886,10 +886,6 @@ var
 begin
   assert((Plugin.Globals.SelectedLfo = 0) or (Plugin.Globals.SelectedLfo = 1));
 
-  GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob1);
-  GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob2);
-  GuiStandard.RedFoxKnobHandler.DeregisterControl(LfoKnob3);
-
 
   if Plugin.Globals.SelectedLfo = 0 then
   begin
@@ -913,14 +909,13 @@ begin
     LfoSelectButton2.IsOn := false;
     LfoSelector.SwitchPos := 0;
 
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par1));
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par2));
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Par3));
+    LfoKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo1Par1);
+    LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo1Par2);
+    LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo1Par3);
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Range), TLfoRangeHelper);
-
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
   end else
@@ -946,9 +941,9 @@ begin
     LfoSelectButton2.IsOn := true;
     LfoSelector.SwitchPos := 1;
 
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob1, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par1));
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob2, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par2));
-    GuiStandard.RedFoxKnobHandler.RegisterControl(LfoKnob3, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Par3));
+    LfoKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo2Par1);
+    LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo2Par2);
+    LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo2Par3);
 
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
     GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);

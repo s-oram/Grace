@@ -504,6 +504,8 @@ begin
     MiniSampleDisplayFrame.UpdateSampleDisplay;
   end;
 
+
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnPostCreateFinished);
 end;
 
 procedure TPluginGui.BeforeClose;
