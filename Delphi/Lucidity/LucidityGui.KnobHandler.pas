@@ -103,8 +103,6 @@ begin
   ControlList.Remove(c);
 end;
 
-
-
 procedure TKnobHandler.UpdateControl(const c: TObject);
 var
   Knob : TVamKnob;
@@ -113,7 +111,6 @@ var
   ParValue : single;
   ModIndex       : integer;
   ModAmountValue : single;
-  ModMin, ModMax : single;
 begin
   assert(c is TVamKnob);
   Knob := c as TVamKnob;
@@ -177,7 +174,6 @@ var
   Knob : TVamKnob;
   Par : TPluginParameter;
   ParName  : string;
-  ParValue : single;
   ModIndex       : integer;
   ModAmountValue : single;
   ModMin, ModMax : single;
@@ -234,7 +230,6 @@ procedure TKnobHandler.Handle_MouseEnter(Sender: TObject);
 var
   Knob : TVamKnob;
   ParName  : string;
-  ParValue : single;
 begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
@@ -246,7 +241,6 @@ procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
 var
   Knob : TVamKnob;
   ParName  : string;
-  ParValue : single;
 begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;

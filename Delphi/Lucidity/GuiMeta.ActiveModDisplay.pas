@@ -49,6 +49,18 @@ procedure TModDisplayDetector.ProcessZeroObjectMessage(MsgID: cardinal; Data: Po
 begin
   if MsgID = TLucidMsgID.OnControlEnter then self.Handle_OnControlEnterMsg(Data);
   if MsgID = TLucidMsgID.OnControlLeave then self.Handle_OnControlLeaveMsg(Data);
+
+  if MsgID = TLucidMsgID.OnParControlEnter then
+  begin
+    // TODO: this functionality needs to
+    // mimic the Handle_OnControlEnterMsg() implementation.
+  end;
+
+  if MsgID = TLucidMsgID.OnParControlLeave then
+  begin
+    // TODO: this functionality needs to
+    // mimic the Handle_OnControlLeaveMsg() implementation.
+  end;
 end;
 
 procedure TModDisplayDetector.Handle_OnControlEnterMsg(Data: Pointer);

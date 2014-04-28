@@ -181,6 +181,19 @@ begin
   end;
 
 
+  if MsgID = TLucidMsgID.OnParControlEnter then
+  begin
+    // TODO: this functionality needs to
+    // mimic the ControlChanged() implementation.
+  end;
+
+  if MsgID = TLucidMsgID.OnParControlLeave then
+  begin
+    // TODO: this functionality needs to
+    // mimic the ControlChanged() implementation.
+  end;
+
+
 end;
 
 procedure TScopeHandler.ControlChanged(c: TControl);
