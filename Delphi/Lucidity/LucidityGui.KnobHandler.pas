@@ -19,6 +19,9 @@ type
     Plugin : TeePlugin;
 
     procedure UpdateAllControls;
+    procedure UpdateModulation(const c : TObject);
+
+
     procedure UpdateControl(const c : TObject);
     procedure RegisterControl(const c : TObject);
     procedure DeregisterControl(const c : TObject);
@@ -62,10 +65,18 @@ begin
 end;
 
 procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  c1: Integer;
 begin
   inherited;
 
-  if MsgID = TLucidMsgID.ModSlotChanged then UpdateAllControls;
+  if MsgID = TLucidMsgID.ModSlotChanged then
+  begin
+    for c1 := 0 to ControlList.Count-1 do
+    begin
+      UpdateModulation(ControlList[c1]);
+    end;
+  end;
 end;
 
 
@@ -118,6 +129,65 @@ begin
 
   Knob.Pos := ParValue;
 
+  if IsModPar(Par) then
+  begin
+    if Plugin.Globals.IsMouseOverModSlot
+      then ModIndex := Plugin.Globals.MouseOverModSlot
+      else ModIndex := Plugin.Globals.SelectedModSlot;
+
+    if (ModIndex <> -1) then
+    begin
+      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+      Knob.ModAmount := ModAmountValue;
+    end;
+  end;
+
+
+  {
+  if IsModPar(Par) = false then
+  begin
+    assert(Knob.KnobMode = TKnobMode.PositionEdit);
+  end else
+  begin
+    if Plugin.Globals.IsMouseOverModSlot
+      then ModIndex := Plugin.Globals.MouseOverModSlot
+      else ModIndex := Plugin.Globals.SelectedModSlot;
+
+    if (ModIndex <> -1) then
+    begin
+      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+      Knob.ModAmount := ModAmountValue;
+      Knob.KnobMode := TKnobMode.ModEdit;
+      Knob.ModLineColor := kModLineColorB;
+    end else
+    begin
+      Knob.KnobMode := TKnobMode.PositionEdit;
+      Knob.ModLineColor := kModLineColorA;
+
+      Plugin.GetModParModMinMax(ParName, ModMin, ModMax);
+      Knob.MinModDepth := ModMin;
+      Knob.MaxModDepth := ModMax;
+    end;
+  end;
+  }
+end;
+
+procedure TKnobHandler.UpdateModulation(const c: TObject);
+var
+  Knob : TVamKnob;
+  Par : TPluginParameter;
+  ParName  : string;
+  ParValue : single;
+  ModIndex       : integer;
+  ModAmountValue : single;
+  ModMin, ModMax : single;
+begin
+  assert(c is TVamKnob);
+  Knob := c as TVamKnob;
+
+  ParName  := Knob.ParameterName;
+  Par := PluginParFromName(Parname);
+
   if IsModPar(Par) = false then
   begin
     assert(Knob.KnobMode = TKnobMode.PositionEdit);
@@ -145,6 +215,8 @@ begin
     end;
   end;
 end;
+
+
 
 procedure TKnobHandler.UpdateAllControls;
 var

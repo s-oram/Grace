@@ -797,6 +797,7 @@ begin
     then ModSlot := Plugin.Globals.MouseOverModSlot
     else ModSlot := Plugin.Globals.SelectedModSlot;
 
+  // TODO: Delete this (or parts of this) once Lucidity is using the new Gui Standard system.
   for c1 := 0 to KnobList.Count-1 do
   begin
     UpdateModAmount((KnobList[c1] as TVamKnob), ModSlot, Plugin);
