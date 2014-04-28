@@ -71,6 +71,10 @@ procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const
 
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 
+procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
+
+
+function FindMenuHelperForParameter(const Par : TPluginParameter) : TCustomEnumHelperClass;
 
 
 type
@@ -723,6 +727,52 @@ begin
     gs.RegisterControl('KnobHandler', Control);
   end;
 
+end;
+
+procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
+var
+  gs : TGuiStandard;
+begin
+  assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
+  gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
+
+  if (Control is TVamTextBox) then
+  begin
+    (Control as TVamTextBox).ParameterName := PluginParToName(Par);
+    gs.RegisterControl('MenuButtonHandler', Control);
+  end;
+end;
+
+
+function FindMenuHelperForParameter(const Par : TPluginParameter) : TCustomEnumHelperClass;
+begin
+  case Par of
+    TPluginParameter.VoiceMode:              result := TVoiceModeHelper;
+    TPluginParameter.PitchTracking:          result := TPitchTrackingHelper;
+    TPluginParameter.SamplePlaybackType:     result := TSamplePlaybackTypeHelper;
+    TPluginParameter.SampleResetClockSource: result := TClockSourceHelper;
+    TPluginParameter.SamplerLoopBounds:      result := TSamplerLoopBoundsHelper;
+    TPluginParameter.SamplerLoopMode:        result := TSamplerLoopModeHelper;
+    TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper;
+    TPluginParameter.FilterVelocity:         result := TEnvVelocityDepthHelper;
+    TPluginParameter.FilterRouting:          result := TFilterRoutingHelper;
+    TPluginParameter.Filter1Type:            result := TFilterTypeHelper;
+    TPluginParameter.Filter2Type:            result := TFilterTypeHelper;
+    TPluginParameter.Lfo1Shape:              result := TLfoShapeHelper;
+    TPluginParameter.Lfo2Shape:              result := TLfoShapeHelper;
+    TPluginParameter.Lfo1FreqMode:           result := TLfoFreqModeHelper;
+    TPluginParameter.Lfo2FreqMode:           result := TLfoFreqModeHelper;
+    TPluginParameter.Lfo1Range:              result := TLfoRangeHelper;
+    TPluginParameter.Lfo2Range:              result := TLfoRangeHelper;
+    TPluginParameter.Seq1Clock:              result := TSequencerClockHelper;
+    TPluginParameter.Seq1Direction:          result := TStepSequencerDirectionHelper;
+    TPluginParameter.Seq1Length:             result := TStepSequencerLengthHelper;
+    TPluginParameter.Seq2Clock:              result := TSequencerClockHelper;
+    TPluginParameter.Seq2Direction:          result := TStepSequencerDirectionHelper;
+    TPluginParameter.Seq2Length:             result := TStepSequencerLengthHelper;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 
