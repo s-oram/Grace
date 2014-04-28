@@ -141,7 +141,6 @@ type
     MsgHandle : hwnd;
     procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
-    procedure UpdateModulation; //called when the mod slot changes...
     procedure UpdateLfo; //called when the mod slot changes...
 
   private
@@ -711,7 +710,6 @@ begin
 
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
-  UpdateModulation;
   UpdateLfo;
 end;
 
@@ -726,7 +724,6 @@ procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Point
 begin
   if MsgID = TLucidMsgID.FilterChanged                   then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
-  if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;
   if MsgID = TLucidMsgID.LfoChanged                      then UpdateLfo;
 
 end;
@@ -774,24 +771,6 @@ end;
 procedure TModControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
 
-end;
-
-procedure TModControlFrame.UpdateModulation;
-var
-  c1 : integer;
-  ModSlot : integer;
-begin
-  if Plugin.Globals.IsMouseOverModSlot
-    then ModSlot := Plugin.Globals.MouseOverModSlot
-    else ModSlot := Plugin.Globals.SelectedModSlot;
-
-  {
-  // TODO: Delete this (or parts of this) once Lucidity is using the new Gui Standard system.
-  for c1 := 0 to KnobList.Count-1 do
-  begin
-    UpdateModAmount((KnobList[c1] as TVamKnob), ModSlot, Plugin);
-  end;
-  }
 end;
 
 procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);
@@ -1008,7 +987,9 @@ begin
   Index := (Sender as TWinControl).Tag;
   Plugin.Globals.SelectedLfo := Index;
   UpdateLfo;
-  UpdateModulation;
+
+  //TODO: I'm not sure if this message here is entirely necessary.
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
 
 
   //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
@@ -1025,7 +1006,9 @@ begin
   Index := (Sender as TWinControl).Tag;
   Plugin.Globals.SelectedLfo := Index;
   UpdateLfo;
-  UpdateModulation;
+
+  //TODO: I'm not sure if this message here is entirely necessary.
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
 
   //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
   // by the user, when it needs to be a toggle type switch.
@@ -1041,7 +1024,9 @@ begin
   assert(Index <= 1);
   Plugin.Globals.SelectedLfo := Index;
   UpdateLfo;
-  UpdateModulation;
+
+  //TODO: I'm not sure if this message here is entirely necessary.
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
 end;
 
 end.
