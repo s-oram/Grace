@@ -9,6 +9,7 @@ uses
   eeGuiStandard,
   eeGuiStandardv2,
   LucidityGui.KnobHandler,
+  LucidityGui.MenuButtonHandler,
   Lucidity.Interfaces,
   VamLib.ZeroObject,
   uSequencerFrame,
@@ -306,8 +307,9 @@ var
   bm2 : TBitmap;
   bm3 : TBitmap;
   aRegionID : TGUID;
-  KnobHandler : TKnobHandler;
 
+  KnobHandler : TKnobHandler;
+  MenuHandler : TMenuButtonHandler;
 begin
   assert(assigned(Plugin));
 
@@ -323,7 +325,9 @@ begin
   GuiStandard.RegisterHandler('KnobHandler', KnobHandler);
   Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.zoMain);
 
-
+  MenuHandler := TMenuButtonHandler.Create(Plugin);
+  GuiStandard.RegisterHandler('MenuButtonHandler', MenuHandler);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.zoMain);
 
 
   Plugin.Globals.MotherShip.RegisterZeroObject(self, zoAudio);
