@@ -112,8 +112,8 @@ type
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single);
     function GetPluginParameter(const ParName : string):single;
 
-    procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModIndex : integer; const ModAmount : single);
-    function GetPluginParameterModAmount(const ParName : string; const ModIndex : integer):single;
+    procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
+    function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single;
 
 
     procedure Suspend; override;
@@ -465,14 +465,14 @@ begin
   TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParName, Value);
 end;
 
-function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModIndex: integer): single;
+function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin
-  result := TPluginParameterController.GetParameterModAmount(self, ParName, ModIndex);
+  result := TPluginParameterController.GetParameterModAmount(self, ParName, ModSlot);
 end;
 
-procedure TeePlugin.SetPluginParameterModAmount(const Scope: TParChangeScope; const ParName: string; const ModIndex: integer; const ModAmount: single);
+procedure TeePlugin.SetPluginParameterModAmount(const Scope: TParChangeScope; const ParName: string; const ModSlot: integer; const ModAmount: single);
 begin
-  TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModIndex, ModAmount);
+  TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModSlot, ModAmount);
 end;
 
 

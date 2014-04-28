@@ -18,8 +18,8 @@ type
     class procedure SetPluginParameter(const aPlugin : TObject; const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const ParValue : single); static; inline;
     class function GetPluginParameter(const aPlugin : TObject; const ParName : string):single; static; inline;
 
-    class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModIndex : integer; const ModAmount : single); static; inline;
-    class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModIndex : integer):single; static; inline;
+    class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single); static; inline;
+    class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModSlot : integer):single; static; inline;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -446,9 +446,24 @@ end;
 class function TPluginParameterController.GetParameterModAmount(
   const aPlugin: TObject;
   const ParName: string;
-  const ModIndex: integer): single;
+  const ModSlot: integer): single;
+var
+  Plugin : TeePlugin;
+  Par : TPluginParameter;
+  ModParIndex : integer;
+  kg : IKeyGroup;
 begin
-  result := 0; //TODO:
+  assert(aPlugin is TeePlugin);
+  Plugin := aPlugin as TeePlugin;
+
+  Par := PluginParFromName(ParName);
+
+  assert(IsModPar(Par));
+  ModParIndex := GetModParIndex(Par);
+  assert(ModParIndex <> -1);
+
+  kg :=  Plugin.ActiveKeyGroup;
+  result := kg.GetModParModAmount(ModParIndex, ModSlot);
 end;
 
 
@@ -456,9 +471,57 @@ class procedure TPluginParameterController.SetParameterModAmount(
   const aPlugin: TObject;
   const Scope: TParChangeScope;
   const ParName: string;
-  const ModIndex: integer;
+  const ModSlot: integer;
   const ModAmount: single);
+var
+  c1 : integer;
+  Plugin : TeePlugin;
+  Par : TPluginParameter;
+  ModParIndex : integer;
+  kg : IKeyGroup;
+  kgInfo : IKeyGroupsInfo;
 begin
+  assert(aPlugin is TeePlugin);
+  Plugin := aPlugin as TeePlugin;
+
+  Par := PluginParFromName(ParName);
+
+  assert(IsModPar(Par));
+  ModParIndex := GetModParIndex(Par);
+  assert(ModParIndex <> -1);
+
+  //======= Voice / Key Group scope Parameters ======================
+
+  case Scope of
+    psGlobal:
+    begin
+      kgInfo := Plugin.KeyGroups.GetInfo;
+
+      for c1 := 0 to kgInfo.GetKeyGroupCount-1 do
+      begin
+        kg := kgInfo.GetKeyGroup(c1);
+        kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
+      end;
+    end;
+
+    psFocusedKeyGroup:
+    begin
+      kg :=  Plugin.ActiveKeyGroup;
+      kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
+    end;
+
+    psKeyGroup:
+    begin
+      assert(false, 'TODO');
+      {
+      kg := Plugin.KeyGroups.FindSampleGroup(KeyGroupName);
+      if assigned(kg)
+        then kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
+      }
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 
 end;
 

@@ -136,6 +136,8 @@ begin
     begin
       Knob.KnobMode := TKnobMode.PositionEdit;
       Knob.ModLineColor := kModLineColorA;
+
+      // TODO: need to update knob with mod min/max amounts.
     end;
   end;
 end;

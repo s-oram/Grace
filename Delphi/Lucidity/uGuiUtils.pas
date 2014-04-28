@@ -64,6 +64,7 @@ procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
 
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 
+//TODO: delete this method once Lucidity has transitioned to the new GuiStandard system.
 procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
 
 
@@ -77,9 +78,6 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
-    class procedure SetParameter(const Plugin : TeePlugin; const ParName : string; const ParValue : single); static;
-    class function GetParameter(const Plugin : TeePlugin; const ParName : string):single; static;
-
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
     class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
@@ -710,18 +708,6 @@ begin
 
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
 end;
-
-class procedure Command.SetParameter(const Plugin: TeePlugin; const ParName: string; const ParValue: single);
-begin
-  //TODO: Check if the parameter is published, if so route the parameter change via the published route.
-  Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
-end;
-
-class function Command.GetParameter(const Plugin: TeePlugin; const ParName: string): single;
-begin
-  result := Plugin.GetPluginParameter(ParName);
-end;
-
 
 
 end.
