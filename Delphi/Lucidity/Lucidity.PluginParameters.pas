@@ -54,6 +54,8 @@ type
     Lfo2Shape,
     Lfo1FreqMode,
     Lfo2FreqMode,
+    Lfo1Range,
+    Lfo2Range,
     Lfo1Par1,
     Lfo1Par2,
     Lfo1Par3,
