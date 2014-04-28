@@ -117,19 +117,26 @@ begin
 
   Knob.Pos := ParValue;
 
-
-  if IsModPar(Par) = false
-    then ModIndex := -1
-    else ModIndex := Plugin.Globals.SelectedModSlot;
-
-  if (ModIndex <> -1) then
+  if IsModPar(Par) = false then
   begin
-    ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
-    Knob.ModAmount := ModAmountValue;
-    Knob.KnobMode := TKnobMode.ModEdit;
+    assert(Knob.KnobMode = TKnobMode.PositionEdit);
   end else
   begin
-    Knob.KnobMode := TKnobMode.PositionEdit;
+    if Plugin.Globals.IsMouseOverModSlot
+      then ModIndex := Plugin.Globals.MouseOverModSlot
+      else ModIndex := Plugin.Globals.SelectedModSlot;
+
+    if (ModIndex <> -1) then
+    begin
+      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+      Knob.ModAmount := ModAmountValue;
+      Knob.KnobMode := TKnobMode.ModEdit;
+      Knob.ModLineColor := kModLineColorB;
+    end else
+    begin
+      Knob.KnobMode := TKnobMode.PositionEdit;
+      Knob.ModLineColor := kModLineColorA;
+    end;
   end;
 end;
 
