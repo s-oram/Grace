@@ -35,8 +35,158 @@ uses
 { TPluginParameterController }
 
 class function TPluginParameterController.GetPluginParameter(const aPlugin : TObject; const ParName: string): single;
+var
+  Plugin : TeePlugin;
+  Par : TPluginParameter;
+  KeyGroup: IKeyGroup;
+  VoicePar : TLucidityVoiceParameterWrapper;
+  ModParIndex : integer;
 begin
-  result := 0;
+  assert(aPlugin is TeePlugin);
+  Plugin := aPlugin as TeePlugin;
+
+  KeyGroup := Plugin.ActiveKeyGroup;
+  Par := PluginParFromName(ParName);
+
+  if IsModPar(Par) then
+  begin
+    ModParIndex := GetModParIndex(Par);
+    result := KeyGroup.GetModParValue(ModParIndex);
+  end else
+  begin
+    VoicePar := (KeyGroup.GetObject as TKeyGroup).VoiceParameters;
+
+    case Par of
+      TPluginParameter.PitchTracking:
+      begin
+        result := TPitchTrackingHelper.ToSingle(VoicePar.PitchTracking);
+      end;
+
+      TPluginParameter.SamplePlaybackType:
+      begin
+        result := TSamplePlaybackTypeHelper.ToSingle(VoicePar.SamplePlaybackType);
+      end;
+
+      TPluginParameter.SampleResetClockSource:
+      begin
+        result := TClockSourceHelper.ToSingle(VoicePar.SampleReset);
+      end;
+
+      TPluginParameter.SamplerLoopBounds:
+      begin
+        result := TSamplerLoopBoundsHelper.ToSingle(VoicePar.SamplerLoopBounds);
+      end;
+
+      TPluginParameter.SamplerLoopMode:
+      begin
+        result := TSamplerLoopModeHelper.ToSingle(VoicePar.SamplerLoopMode);
+      end;
+
+      TPluginParameter.AmpVelocity:
+      begin
+        result := TEnvVelocityDepthHelper.ToSingle(VoicePar.AmpVelocityDepth);
+      end;
+
+      TPluginParameter.FilterVelocity:
+      begin
+        result := TEnvVelocityDepthHelper.ToSingle(VoicePar.FilterVelocityDepth);
+      end;
+
+      TPluginParameter.FilterRouting:
+      begin
+        result := TFilterRoutingHelper.ToSingle(VoicePar.FilterRouting);
+      end;
+
+      TPluginParameter.Filter1Type:
+      begin
+        result := TFilterTypeHelper.ToSingle(VoicePar.Filter1Type);
+      end;
+
+      TPluginParameter.Filter2Type:
+      begin
+        result := TFilterTypeHelper.ToSingle(VoicePar.Filter2Type);
+      end;
+
+      TPluginParameter.Filter1KeyFollow:
+      begin
+        result := VoicePar.Filter1KeyFollow;
+      end;
+
+      TPluginParameter.Filter2KeyFollow:
+      begin
+        result := VoicePar.Filter2KeyFollow;
+      end;
+
+      TPluginParameter.Lfo1Shape:
+      begin
+        result := TLfoShapeHelper.ToSingle(VoicePar.LfoShape1);
+      end;
+
+      TPluginParameter.Lfo2Shape:
+      begin
+        result := TLfoShapeHelper.ToSingle(VoicePar.LfoShape2);
+      end;
+
+      TPluginParameter.Lfo1FreqMode:
+      begin
+        result := TLfoFreqModeHelper.ToSingle(VoicePar.LfoFreqMode1);
+      end;
+
+      TPluginParameter.Lfo2FreqMode:
+      begin
+        result := TLfoFreqModeHelper.ToSingle(VoicePar.LfoFreqMode2);
+      end;
+
+      TPluginParameter.Lfo1Range:
+      begin
+        result := TLfoRangeHelper.ToSingle(VoicePar.LfoRange1);
+      end;
+
+      TPluginParameter.Lfo2Range:
+      begin
+        result := TLfoRangeHelper.ToSingle(VoicePar.LfoRange2);
+      end;
+
+      TPluginParameter.Seq1Clock:
+      begin
+        result := TSequencerClockHelper.ToSingle(VoicePar.Seq1Clock);
+      end;
+
+      TPluginParameter.Seq1Direction:
+      begin
+        result := TStepSequencerDirectionHelper.ToSingle(VoicePar.Seq1Direction);
+      end;
+
+      TPluginParameter.Seq1Length:
+      begin
+        result := TStepSequencerLengthHelper.ToSingle(VoicePar.StepSeq1Length);
+      end;
+
+      TPluginParameter.Seq2Clock:
+      begin
+        result := TSequencerClockHelper.ToSingle(VoicePar.Seq2Clock);
+      end;
+
+      TPluginParameter.Seq2Direction:
+      begin
+        result := TStepSequencerDirectionHelper.ToSingle(VoicePar.Seq2Direction);
+      end;
+
+      TPluginParameter.Seq2Length:
+      begin
+        result := TStepSequencerLengthHelper.ToSingle(VoicePar.StepSeq2Length);
+      end;
+
+
+      //TPluginParameter.PreviewVolume: ;
+      //TPluginParameter.Preview: ;
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+  end;
+
+
 end;
 
 class procedure TPluginParameterController.SetPluginParameter(
