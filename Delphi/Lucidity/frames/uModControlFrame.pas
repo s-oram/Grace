@@ -293,11 +293,7 @@ begin
   aGuiStandard.RegisterControl('KnobHandler', AmpEnvSustainKnob);
   aGuiStandard.RegisterControl('KnobHandler', AmpEnvReleaseKnob);
 
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvAttackKnob,                Plugin.Globals.VstParameters.FindParameter(TParName.AmpAttack));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvHoldKnob,                  Plugin.Globals.VstParameters.FindParameter(TParName.AmpHold));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvDecayKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.AmpDecay));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvSustainKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpSustain));
-  //GuiStandard.RedFoxKnobHandler.RegisterControl(AmpEnvReleaseKnob,               Plugin.Globals.VstParameters.FindParameter(TParName.AmpRelease));
+
 
 
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.FilterAttack));
@@ -305,6 +301,9 @@ begin
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvDecayKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.FilterDecay));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvSustainKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterSustain));
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvReleaseKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.FilterRelease));
+
+
+
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterBlendKnob,                 Plugin.Globals.VstParameters.FindParameter(TParName.FilterOutputBlend));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par1Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par1));
   GuiStandard.RedFoxKnobHandler.RegisterControl(Filter1Par2Knob,                 Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Par2));
