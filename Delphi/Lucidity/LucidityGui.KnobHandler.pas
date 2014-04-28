@@ -231,13 +231,44 @@ end;
 
 
 procedure TKnobHandler.Handle_MouseEnter(Sender: TObject);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ParValue : single;
 begin
-
+  assert(Sender is TVamKnob);
+  Knob := Sender as TVamKnob;
+  ParName  := Knob.ParameterName;
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
 end;
+
+procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ParValue : single;
+begin
+  assert(Sender is TVamKnob);
+  Knob := Sender as TVamKnob;
+  ParName  := Knob.ParameterName;
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+end;
+
 
 procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  // TODO: need to have BeginEdit() called here for Publised VST parameter.
 
+  // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
+  // aren't updated in the UpdateControl method.
+end;
+
+procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  // TODO: need to have BeginEdit() called here for Publised VST parameter.
+
+  // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
+  // aren't updated in the UpdateControl method.
 end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
@@ -251,8 +282,6 @@ begin
 
   ParName  := Knob.ParameterName;
   ParValue := Knob.Pos;
-
-
 
   // TODO: Check if the parameter is a published vst parameter,
   // Send parameter change via the published VST parameter route if so,
@@ -283,15 +312,8 @@ end;
 
 
 
-procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
 
-end;
 
-procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
-begin
-
-end;
 
 
 

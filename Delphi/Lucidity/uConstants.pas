@@ -64,10 +64,12 @@ type
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
     Msg_XRegionsDuplicated           = Actions + 4;
-    OnControlEnter                   = Actions + 5;
-    OnControlLeave                   = Actions + 6;
+    OnControlEnter                   = Actions + 5; //TODO: deprecated. replace by OnParControlEnter
+    OnControlLeave                   = Actions + 6; //TODO: deprecated. replace by OnParControlLeave
+    OnParControlEnter                = Actions + 7;
+    OnParControlLeave                = Actions + 8;
     //----- Audio Messages---------------
-    AudioMsg                         = OnControlLeave + 1;
+    AudioMsg                         = OnParControlLeave + 1;
     Audio_VoiceTriggered             = AudioMsg + 1;
     Audio_VoiceFinished              = AudioMsg + 2;
     Audio_KeyGroupInactive           = AudioMsg + 3;
