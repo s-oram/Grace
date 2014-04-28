@@ -102,6 +102,7 @@ var
   ParValue : single;
   ModIndex       : integer;
   ModAmountValue : single;
+  ModMin, ModMax : single;
 begin
   assert(c is TVamKnob);
   Knob := c as TVamKnob;
@@ -137,7 +138,10 @@ begin
       Knob.KnobMode := TKnobMode.PositionEdit;
       Knob.ModLineColor := kModLineColorA;
 
-      // TODO: need to update knob with mod min/max amounts.
+      Plugin.GetModParModMinMax(ParName, ModMin, ModMax);
+
+      Knob.MinModDepth := ModMin;
+      Knob.MaxModDepth := ModMax;
     end;
   end;
 end;
@@ -181,8 +185,6 @@ begin
   // TODO: Check if the parameter is a published vst parameter,
   // Send parameter change via the published VST parameter route if so,
   // otherwise set parameter value directly in plugin.
-
-
   Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
 end;
 

@@ -115,6 +115,8 @@ type
     procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
     function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single;
 
+    procedure GetModParModMinMax(const ParName : string; out ModMin, ModMax:single);
+
 
     procedure Suspend; override;
     procedure Resume; override;
@@ -474,6 +476,13 @@ procedure TeePlugin.SetPluginParameterModAmount(const Scope: TParChangeScope; co
 begin
   TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModSlot, ModAmount);
 end;
+
+procedure TeePlugin.GetModParModMinMax(const ParName: string; out ModMin, ModMax: single);
+begin
+  TPluginParameterController.GetModParModMinMax(self, ParName, ModMin, ModMax);
+end;
+
+
 
 
 

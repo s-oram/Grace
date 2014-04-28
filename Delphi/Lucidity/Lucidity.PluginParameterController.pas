@@ -20,6 +20,8 @@ type
 
     class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single); static; inline;
     class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModSlot : integer):single; static; inline;
+
+    class procedure GetModParModMinMax(const aPlugin : TObject; const ParName : string; out ModMin, ModMax:single); static; inline;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -433,7 +435,6 @@ begin
         VoicePar.StepSeq2Length := TStepSequencerLengthHelper.ToEnum(ParValue);
       end;
 
-
       //TPluginParameter.PreviewVolume: ;
       //TPluginParameter.Preview: ;
     else
@@ -441,6 +442,27 @@ begin
     end;
 
   end;
+end;
+
+class procedure TPluginParameterController.GetModParModMinMax(const aPlugin: TObject; const ParName: string; out ModMin, ModMax: single);
+var
+  Plugin : TeePlugin;
+  Par : TPluginParameter;
+  ModParIndex : integer;
+  kg : IKeyGroup;
+begin
+  assert(aPlugin is TeePlugin);
+  Plugin := aPlugin as TeePlugin;
+
+  Par := PluginParFromName(ParName);
+
+  assert(IsModPar(Par));
+  ModParIndex := GetModParIndex(Par);
+  assert(ModParIndex <> -1);
+
+  kg :=  Plugin.ActiveKeyGroup;
+
+  kg.GetModParModMinMax(ModParIndex, ModMin, ModMax);
 end;
 
 class function TPluginParameterController.GetParameterModAmount(
