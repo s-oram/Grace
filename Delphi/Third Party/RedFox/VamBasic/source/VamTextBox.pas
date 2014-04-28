@@ -20,6 +20,7 @@ type
     fImageOverlay: TBitmap;
     FTextPadding: TPadding;
     fShowBorder: boolean;
+    fParameterName: string;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -43,6 +44,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    // ParameterName is a 'Tag' type property used to store a VST parameter name.
+    property ParameterName  : string  read fParameterName  write fParameterName;
 
   published
     property Color : TRedFoxColorString read GetColor write SetColor;

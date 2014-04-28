@@ -37,6 +37,9 @@ type
 
 implementation
 
+uses
+  VamTextBox;
+
 { TMenuButtonHandler }
 
 constructor TMenuButtonHandler.Create(const aPlugin: TeePlugin);
