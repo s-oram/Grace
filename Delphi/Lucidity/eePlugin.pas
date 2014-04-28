@@ -112,6 +112,9 @@ type
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single);
     function GetPluginParameter(const ParName : string):single;
 
+    procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModIndex : integer; const ModAmount : single);
+    function GetPluginParameterModAmount(const ParName : string; const ModIndex : integer):single;
+
 
     procedure Suspend; override;
     procedure Resume; override;
@@ -461,6 +464,17 @@ procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGr
 begin
   TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParName, Value);
 end;
+
+function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModIndex: integer): single;
+begin
+  result := TPluginParameterController.GetParameterModAmount(self, ParName, ModIndex);
+end;
+
+procedure TeePlugin.SetPluginParameterModAmount(const Scope: TParChangeScope; const ParName: string; const ModIndex: integer; const ModAmount: single);
+begin
+  TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModIndex, ModAmount);
+end;
+
 
 
 procedure TeePlugin.EventHandle_SampleRateChanged(Sender: TObject);

@@ -12,11 +12,14 @@ uses
 type
   TPluginParameterController = class
   private
-    class procedure ApplyPluginParToKeyGroup(const aPlugin : TObject; const KeyGroup : IKeyGroup; const Par : TPluginParameter; const ParValue : single);
+    class procedure ApplyPluginParToKeyGroup(const aPlugin : TObject; const KeyGroup : IKeyGroup; const Par : TPluginParameter; const ParValue : single); static; inline;
 
   public
     class procedure SetPluginParameter(const aPlugin : TObject; const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const ParValue : single); static; inline;
     class function GetPluginParameter(const aPlugin : TObject; const ParName : string):single; static; inline;
+
+    class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModIndex : integer; const ModAmount : single); static; inline;
+    class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModIndex : integer):single; static; inline;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -439,6 +442,29 @@ begin
 
   end;
 end;
+
+class function TPluginParameterController.GetParameterModAmount(
+  const aPlugin: TObject;
+  const ParName: string;
+  const ModIndex: integer): single;
+begin
+
+end;
+
+
+class procedure TPluginParameterController.SetParameterModAmount(
+  const aPlugin: TObject;
+  const Scope: TParChangeScope;
+  const ParName: string;
+  const ModIndex: integer;
+  const ModAmount: single);
+begin
+
+end;
+
+
+
+
 
 
 
