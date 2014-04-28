@@ -105,7 +105,7 @@ begin
   Knob.OnKnobPosChanged   := Handle_KnobPosChanged;
   Knob.OnModAmountChanged := Handle_ModAmountChanged;
 
-  if ControlList.IndexOf(c) <> -1
+  if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
 end;
 
