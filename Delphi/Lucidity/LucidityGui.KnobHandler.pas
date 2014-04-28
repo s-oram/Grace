@@ -21,7 +21,6 @@ type
     procedure UpdateAllControls;
     procedure UpdateModulation(const c : TObject);
 
-
     procedure UpdateControl(const c : TObject);
     procedure RegisterControl(const c : TObject);
     procedure DeregisterControl(const c : TObject);
@@ -53,7 +52,6 @@ uses
 constructor TKnobHandler.Create(const aPlugin : TeePlugin);
 begin
   Plugin := aPlugin;
-
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
 end;
@@ -107,7 +105,8 @@ begin
   Knob.OnKnobPosChanged   := Handle_KnobPosChanged;
   Knob.OnModAmountChanged := Handle_ModAmountChanged;
 
-  ControlList.Add(c);
+  if ControlList.IndexOf(c) <> -1
+    then ControlList.Add(c);
 end;
 
 procedure TKnobHandler.DeregisterControl(const c: TObject);

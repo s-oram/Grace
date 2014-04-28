@@ -605,6 +605,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<DCCReference Include="Constants.ParNames.pas"/>
 			<DCCReference Include="LucidityGui.KnobHandler.pas"/>
 			<DCCReference Include="Lucidity.PluginParameters.pas"/>
+			<DCCReference Include="LucidityGui.MenuButtonHandler.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
