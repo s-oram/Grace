@@ -3,6 +3,7 @@ unit LucidityGui.KnobHandler;
 interface
 
 uses
+  Contnrs,
   Controls,
   Classes,
   eePlugin,
@@ -13,10 +14,14 @@ type
   TKnobHandler = class(TRefCountedZeroObject, IStandardControlHandler)
   private
   protected
+    ControlList : TObjectList;
+
     Plugin : TeePlugin;
-    CurrentModSlot : integer;
+
+    procedure UpdateAllControls;
     procedure UpdateControl(const c : TObject);
-    procedure SetupControl(const c : TObject);
+    procedure RegisterControl(const c : TObject);
+    procedure DeregisterControl(const c : TObject);
 
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
@@ -34,6 +39,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   VamKnob,
   Lucidity.Types,
   uConstants,
@@ -44,11 +50,14 @@ uses
 constructor TKnobHandler.Create(const aPlugin : TeePlugin);
 begin
   Plugin := aPlugin;
+
+  ControlList := TObjectList.Create;
+  ControlList.OwnsObjects := false;
 end;
 
 destructor TKnobHandler.Destroy;
 begin
-
+  ControlList.Free;
   inherited;
 end;
 
@@ -56,15 +65,12 @@ procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
   inherited;
 
-  if MsgID = TLucidMsgID.ModSlotChanged then
-  begin
-    CurrentModSlot := Plugin.Globals.SelectedModSlot;
-  end;
+  if MsgID = TLucidMsgID.ModSlotChanged then UpdateAllControls;
 end;
 
 
 
-procedure TKnobHandler.SetupControl(const c: TObject);
+procedure TKnobHandler.RegisterControl(const c: TObject);
 var
   Knob : TVamKnob;
 begin
@@ -77,11 +83,21 @@ begin
   Knob.OnMouseUp          := Handle_MouseUp;
   Knob.OnKnobPosChanged   := Handle_KnobPosChanged;
   Knob.OnModAmountChanged := Handle_ModAmountChanged;
+
+  ControlList.Add(c);
 end;
+
+procedure TKnobHandler.DeregisterControl(const c: TObject);
+begin
+  ControlList.Remove(c);
+end;
+
+
 
 procedure TKnobHandler.UpdateControl(const c: TObject);
 var
   Knob : TVamKnob;
+  Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
   ModIndex       : integer;
@@ -91,6 +107,7 @@ begin
   Knob := c as TVamKnob;
 
   ParName  := Knob.ParameterName;
+  Par := PluginParFromName(Parname);
   // TODO: It might be handy to have a IsParNameValid() function here
   // to assert that parameter names are correct.
   ParValue := Plugin.GetPluginParameter(ParName);
@@ -100,16 +117,33 @@ begin
 
   Knob.Pos := ParValue;
 
-  ModIndex := Plugin.Globals.SelectedModSlot;
 
-  if ModIndex <> -1 then
+  if IsModPar(Par) = false
+    then ModIndex := -1
+    else ModIndex := Plugin.Globals.SelectedModSlot;
+
+  if (ModIndex <> -1) then
   begin
     ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
     Knob.ModAmount := ModAmountValue;
+    Knob.KnobMode := TKnobMode.ModEdit;
+  end else
+  begin
+    Knob.KnobMode := TKnobMode.PositionEdit;
   end;
-
-
 end;
+
+procedure TKnobHandler.UpdateAllControls;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to ControlList.Count-1 do
+  begin
+    UpdateControl(ControlList[c1]);
+  end;
+end;
+
+
 
 procedure TKnobHandler.Handle_MouseEnter(Sender: TObject);
 begin

@@ -448,7 +448,7 @@ class function TPluginParameterController.GetParameterModAmount(
   const ParName: string;
   const ModIndex: integer): single;
 begin
-
+  result := 0; //TODO:
 end;
 
 

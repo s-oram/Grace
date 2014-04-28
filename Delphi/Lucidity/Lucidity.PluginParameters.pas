@@ -150,8 +150,6 @@ end;
 function IsModPar(const Par : TPluginParameter):boolean;
 var
   s : string;
-  ModParIndex : integer;
-  i: Int64;
   c1 : integer;
   TestString : string;
 begin
@@ -171,8 +169,6 @@ end;
 function GetModParIndex(const Par : TPluginParameter):integer;
 var
   s : string;
-  ModParIndex : integer;
-  i: Int64;
   c1 : integer;
   TestString : string;
 begin
