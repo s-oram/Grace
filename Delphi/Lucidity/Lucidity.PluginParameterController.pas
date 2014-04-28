@@ -3,6 +3,7 @@ unit Lucidity.PluginParameterController;
 interface
 
 uses
+  VamLib.Utils,
   Lucidity.Interfaces,
   Lucidity.PluginParameters,
   Lucidity.Types;
@@ -24,6 +25,7 @@ type
 implementation
 
 uses
+
   uKeyGroupManager,
   uConstants,
   SysUtils,
@@ -48,6 +50,22 @@ begin
   KeyGroup := Plugin.ActiveKeyGroup;
   Par := PluginParFromName(ParName);
 
+
+  //======= Plugin scope Parameters ======================
+  if IsGlobalPluginPar(Par) then
+  begin
+    case Par of
+      TPluginParameter.VoiceMode:     result := TVoiceModeHelper.ToSingle(Plugin.VoiceMode);
+      TPluginParameter.VoiceGlide:    result := Plugin.VoiceGlide;
+      TPluginParameter.PreviewVolume: result := Plugin.PreviewVolume;
+      TPluginParameter.Preview:       result := BooleanToFloat(Plugin.IsPreviewEnabled);
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+    exit; //=============================================>> exit >>=================>>
+  end;
+
+  //======= Voice / Key Group scope Parameters ======================
   if IsModPar(Par) then
   begin
     ModParIndex := GetModParIndex(Par);
@@ -205,10 +223,31 @@ begin
   assert(aPlugin is TeePlugin);
   Plugin := aPlugin as TeePlugin;
 
+  Par := PluginParFromName(ParName);
+
+  //======= Plugin scope Parameters ======================
+  if IsGlobalPluginPar(Par) then
+  begin
+    case Par of
+      TPluginParameter.VoiceMode:
+      begin
+        Plugin.VoiceMode  := TVoiceModeHelper.ToEnum(ParValue);
+        Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
+      end;
+      TPluginParameter.VoiceGlide:    Plugin.VoiceGlide := ParValue;
+      TPluginParameter.PreviewVolume: Plugin.PreviewVolume := ParValue;
+      TPluginParameter.Preview:       Plugin.IsPreviewEnabled := FloatToBoolean(ParValue);
+      else
+        raise Exception.Create('Type not handed.');
+    end;
+    exit; //=============================================>> exit >>=================>>
+  end;
+
+  //======= Voice / Key Group scope Parameters ======================
+
   case Scope of
     psGlobal:
     begin
-      Par := PluginParFromName(ParName);
       kgInfo := Plugin.KeyGroups.GetInfo;
 
       for c1 := 0 to kgInfo.GetKeyGroupCount-1 do
@@ -221,18 +260,14 @@ begin
     psFocusedKeyGroup:
     begin
       kg :=  Plugin.ActiveKeyGroup;
-      Par := PluginParFromName(ParName);
       ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
     end;
 
     psKeyGroup:
     begin
       kg := Plugin.KeyGroups.FindSampleGroup(KeyGroupName);
-      if assigned(kg) then
-      begin
-        Par := PluginParFromName(ParName);
-        ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
-      end;
+      if assigned(kg)
+        then ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
     end;
   else
     raise Exception.Create('Type not handled.');

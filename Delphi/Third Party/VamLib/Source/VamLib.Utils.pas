@@ -51,6 +51,9 @@ function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
 //==============================================================
 
+function FloatToBoolean(Value:single):boolean; inline;
+function BooleanToFloat(Value:boolean):single; inline;
+
 
 
 implementation
@@ -314,6 +317,18 @@ begin
   except
     result := FallBackValue;
   end;
+end;
+
+function FloatToBoolean(Value:single):boolean; inline;
+begin
+  result := (Value >= 0.5);
+end;
+
+function BooleanToFloat(Value:boolean):single; inline;
+begin
+  if Value
+    then result := 1
+    else result := 0;
 end;
 
 
