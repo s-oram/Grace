@@ -280,20 +280,11 @@ begin
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-
-  AmpEnvAttackKnob.ParameterName  := PluginParToName(TPluginParameter.AmpAttack);
-  AmpEnvHoldKnob.ParameterName    := PluginParToName(TPluginParameter.AmpHold);
-  AmpEnvDecayKnob.ParameterName   := PluginParToName(TPluginParameter.AmpDecay);
-  AmpEnvSustainKnob.ParameterName := PluginParToName(TPluginParameter.AmpSustain);
-  AmpEnvReleaseKnob.ParameterName := PluginParToName(TPluginParameter.AmpRelease);
-
-  aGuiStandard.RegisterControl('KnobHandler', AmpEnvAttackKnob);
-  aGuiStandard.RegisterControl('KnobHandler', AmpEnvHoldKnob);
-  aGuiStandard.RegisterControl('KnobHandler', AmpEnvDecayKnob);
-  aGuiStandard.RegisterControl('KnobHandler', AmpEnvSustainKnob);
-  aGuiStandard.RegisterControl('KnobHandler', AmpEnvReleaseKnob);
-
-
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvAttackKnob, TPluginParameter.AmpAttack);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvHoldKnob, TPluginParameter.AmpHold);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvDecayKnob, TPluginParameter.AmpDecay);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob, TPluginParameter.AmpSustain);
+  GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob, TPluginParameter.AmpRelease);
 
 
   GuiStandard.RedFoxKnobHandler.RegisterControl(FilterEnvAttackKnob,             Plugin.Globals.VstParameters.FindParameter(TParName.FilterAttack));

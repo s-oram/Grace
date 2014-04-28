@@ -17,6 +17,7 @@ uses
   uLucidityEnums,
   Lucidity.Interfaces,
   Lucidity.Types,
+  Lucidity.PluginParameters,
   Lucidity.SampleMap, eePlugin,
   VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
@@ -68,9 +69,7 @@ procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : T
 procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
 
 
-
-
-
+procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 
 
 
@@ -97,6 +96,7 @@ uses
   GuidEx,
   Lucidity.Globals,
   Lucidity.KeyGroup,
+  eeGuiStandardv2,
   SysUtils;
 
 
@@ -707,6 +707,22 @@ begin
   end;
 
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+end;
+
+
+procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
+var
+  gs : TGuiStandard;
+begin
+  assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
+  gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
+
+  if (Control is TVamKnob) then
+  begin
+    (Control as TVamKnob).ParameterName := PluginParToName(Par);
+    gs.RegisterControl('KnobHandler', Control);
+  end;
+
 end;
 
 
