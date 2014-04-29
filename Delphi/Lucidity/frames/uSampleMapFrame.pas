@@ -5,7 +5,7 @@ interface
 uses
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
-  Menu.SampleMapContextMenu, eeGuiStandard,
+  Menu.SampleMapContextMenu, eeGuiStandardv2,
   eePlugin, Lucidity.Interfaces, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,

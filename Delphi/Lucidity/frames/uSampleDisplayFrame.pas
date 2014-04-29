@@ -7,7 +7,7 @@ interface
 
 uses
   Lucidity.Types,
-  eeGuiStandard, VamVisibleControl,
+  eeGuiStandardv2, VamVisibleControl,
   eePlugin, Lucidity.SampleMap, uGuiFeedbackData, uConstants, Lucidity.Interfaces,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,

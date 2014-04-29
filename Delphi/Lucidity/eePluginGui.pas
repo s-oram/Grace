@@ -393,12 +393,12 @@ begin
     // Initalize all the frame controls...
     MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
-    MenuBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
-    SampleMapFrame.InitializeFrame(Plugin, GuiStandard_OLD);
-    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+    SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
+    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
-    SequencerFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
+    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+    SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, RedFoxContainer);
   except

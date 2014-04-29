@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   uConstants,
   Menu.StepSequenceMenu,
-  eePlugin, eeGuiStandard, uDialogDisplayArea, uGuiFeedbackData,
+  eePlugin, eeGuiStandardv2, uDialogDisplayArea, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, LucidityGui.DropBoxSelector,
@@ -50,6 +50,8 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
+  uGuiUtils,
   uLucidityEnums,
   RedFoxColor;
 
@@ -133,17 +135,19 @@ begin
   begin
     SequencerLabel.Text := 'Sequencer One';
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(ClockSelector,     Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),      TSequencerClockHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),  TStepSequencerDirectionHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),     TStepSequencerLengthHelper);
+    GuiStandard_RegisterMenuButton(GuiStandard, ClockSelector,            TPluginParameter.Seq1Clock);
+    //TODO:
+    //GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),  TStepSequencerDirectionHelper);
+    //GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),     TStepSequencerLengthHelper);
   end else
   if fSequencerIndex = 1 then
   begin
     SequencerLabel.Text := 'Sequencer Two';
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(ClockSelector,     Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),      TSequencerClockHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),  TStepSequencerDirectionHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
+    //TODO:
+    //GuiStandard.RedFoxMenuHandler.RegisterControl(ClockSelector,     Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),      TSequencerClockHelper);
+    //GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),  TStepSequencerDirectionHelper);
+    //GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
   end;
 
   StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);

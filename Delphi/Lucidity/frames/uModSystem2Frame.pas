@@ -7,7 +7,7 @@ uses
   Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
   uLucidityEnums, Lucidity.Interfaces,
-  uConstants, eePlugin, eeGuiStandard, eeEnumMenu,
+  uConstants, eePlugin, eeGuiStandardv2, eeEnumMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamModSelector, VamTextBox;

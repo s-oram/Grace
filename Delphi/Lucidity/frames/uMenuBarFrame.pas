@@ -5,7 +5,7 @@ interface
 uses
   VamLib.ZeroObject,
   uDialogDisplayArea,
-  eeGuiStandard, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
+  eeGuiStandardv2, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamDiv, RedFoxGraphicControl,
