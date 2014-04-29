@@ -3,13 +3,14 @@ unit uMiniSampleDisplayFrame;
 interface
 
 uses
+  eeGuiStandardv2,
   VamLib.UniqueID,
   VamLib.ZeroObject, Math,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.Types,
   Lucidity.Interfaces,
   Lucidity.SampleMap, Menu.SampleDisplayMenu,
-  eePlugin, eeGuiStandard, uGuiFeedbackData, LuciditySampleOverlay,
+  eePlugin, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamSampleDisplay, Vcl.Menus,

@@ -90,7 +90,6 @@ var
 begin
   assert((Sender is TMenuItem), 'Sender must be of TMenuItem type.');
 
-
   if assigned(ShowMenuState.ItemSelectedCallback) then
   begin
     Tag := (Sender as TMenuItem).Tag;
