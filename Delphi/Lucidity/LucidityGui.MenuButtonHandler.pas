@@ -129,13 +129,25 @@ begin
 end;
 
 procedure TMenuButtonHandler.Handle_MouseEnter(Sender: TObject);
+var
+  tb : TVamTextBox;
+  ParName  : string;
 begin
-
+  assert(Sender is TVamTextBox);
+  tb := (Sender as TVamTextBox);
+  ParName  := tb.ParameterName;
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
 end;
 
 procedure TMenuButtonHandler.Handle_MouseLeave(Sender: TObject);
+var
+  tb : TVamTextBox;
+  ParName  : string;
 begin
-
+  assert(Sender is TVamTextBox);
+  tb := (Sender as TVamTextBox);
+  ParName  := tb.ParameterName;
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
 end;
 
 procedure TMenuButtonHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
