@@ -24,6 +24,7 @@ type
 implementation
 
 uses
+  SysUtils,
   UITypes,
   Agg2D,
   RedFoxImageBuffer;
@@ -55,7 +56,14 @@ begin
 
   if assigned(fLevelMonitor) then
   begin
-    fLevelMonitor.GetDbLevel(dbA, dbB);
+    try
+      fLevelMonitor.GetDbLevel(dbA, dbB);
+    except
+      on EAccessViolation
+        do fLevelMonitor := nil;
+      else
+        raise;
+    end;
   end else
   begin
     dbA := -120;
