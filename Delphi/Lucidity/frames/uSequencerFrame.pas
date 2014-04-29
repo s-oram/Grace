@@ -135,19 +135,17 @@ begin
   begin
     SequencerLabel.Text := 'Sequencer One';
 
-    GuiStandard_RegisterMenuButton(GuiStandard, ClockSelector,            TPluginParameter.Seq1Clock);
-    //TODO:
-    //GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),  TStepSequencerDirectionHelper);
-    //GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),     TStepSequencerLengthHelper);
+    GuiStandard_RegisterMenuButton(GuiStandard, ClockSelector,       TPluginParameter.Seq1Clock);
+    GuiStandard_RegisterMenuButton(GuiStandard, ModeSelector,        TPluginParameter.Seq1Direction);
+    GuiStandard_RegisterMenuButton(GuiStandard, StepCountSelector,   TPluginParameter.Seq1Length);
   end else
   if fSequencerIndex = 1 then
   begin
     SequencerLabel.Text := 'Sequencer Two';
 
-    //TODO:
-    //GuiStandard.RedFoxMenuHandler.RegisterControl(ClockSelector,     Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),      TSequencerClockHelper);
-    //GuiStandard.RedFoxMenuHandler.RegisterControl(ModeSelector,      Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),  TStepSequencerDirectionHelper);
-    //GuiStandard.RedFoxMenuHandler.RegisterControl(StepCountSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),     TStepSequencerLengthHelper);
+    GuiStandard_RegisterMenuButton(GuiStandard, ClockSelector,       TPluginParameter.Seq2Clock);
+    GuiStandard_RegisterMenuButton(GuiStandard, ModeSelector,        TPluginParameter.Seq2Direction);
+    GuiStandard_RegisterMenuButton(GuiStandard, StepCountSelector,   TPluginParameter.Seq2Length);
   end;
 
   StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
