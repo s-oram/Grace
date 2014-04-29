@@ -8,6 +8,14 @@ uses
 {$SCOPEDENUMS ON}
 
 type
+  TPluginParameterInfo = record
+    Name : string;
+    ShortName : string;
+    Units     : string;
+    InfoDisplay : string;
+  end;
+
+
   TPluginParameter = (
     VoiceMode,
     VoiceGlide,

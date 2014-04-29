@@ -7,6 +7,7 @@ interface
 {$M+}
 
 uses
+  Lucidity.PluginParameters,
   Lucidity.PluginParameterController,
   Lucidity.Types,
   VamLib.Utils,
@@ -114,6 +115,7 @@ type
 
     procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
     function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single;
+    function GetPluginParameterInfo(const ParName : string) : TPluginParameterInfo;
 
     procedure GetModParModMinMax(const ParName : string; out ModMin, ModMax:single);
 
@@ -480,6 +482,11 @@ end;
 procedure TeePlugin.GetModParModMinMax(const ParName: string; out ModMin, ModMax: single);
 begin
   TPluginParameterController.GetModParModMinMax(self, ParName, ModMin, ModMax);
+end;
+
+function TeePlugin.GetPluginParameterInfo(const ParName: string): TPluginParameterInfo;
+begin
+  result := TPluginParameterController.GetParameterInfo(self, ParName);
 end;
 
 

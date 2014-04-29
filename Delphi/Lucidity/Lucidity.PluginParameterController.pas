@@ -22,6 +22,8 @@ type
     class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModSlot : integer):single; static; inline;
 
     class procedure GetModParModMinMax(const aPlugin : TObject; const ParName : string; out ModMin, ModMax:single); static; inline;
+
+    class function GetParameterInfo(const aPlugin : TObject; const ParName : string) : TPluginParameterInfo; static; inline;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -30,7 +32,6 @@ type
 implementation
 
 uses
-
   uKeyGroupManager,
   uConstants,
   SysUtils,
@@ -548,6 +549,14 @@ begin
 end;
 
 
+
+class function TPluginParameterController.GetParameterInfo(const aPlugin: TObject; const ParName: string): TPluginParameterInfo;
+begin
+  result.Name        := 'TEST';
+  result.ShortName   := 'TEST';
+  result.Units       := 'xx';
+  result.InfoDisplay := 'TEST xx TEST';
+end;
 
 
 
