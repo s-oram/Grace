@@ -6,7 +6,7 @@ interface
 
 
 uses
-  eeGuiStandard,
+  {eeGuiStandard,}
   eeGuiStandardv2,
   LucidityGui.KnobHandler,
   LucidityGui.MenuButtonHandler,
@@ -66,7 +66,6 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     Manually:boolean;
-    GuiStandard_OLD : eeGuiStandard.TGuiStandard;
     GuiStandard : TGuiStandard;
     DialogDisplayArea : TDialogDisplayArea;
     VstWindow : Hwnd;
@@ -128,8 +127,8 @@ uses
   uLoopEditDialog,
   Lucidity.KeyGroup,
   GuidEx,
-  RedFoxColor,
   eeGuiSetup,
+  RedFoxColor,
   uGuiUtils,
   uLucidityData,
   SysUtils,
@@ -266,9 +265,6 @@ begin
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
-  if assigned(GuiStandard_OLD)
-    then GuiStandard_OLD.Free;
-
   if assigned(GuiStandard)
     then GuiStandard.Free;
 
@@ -314,10 +310,6 @@ begin
   assert(assigned(Plugin));
 
   VstWindow := aVstWindow;
-
-  GuiStandard_OLD := eeGuiStandard.TGuiStandard.Create(Plugin, Plugin.Globals);
-  GuiStandard_OLD.OnControlMouseDown := self.EventHandle_ControlMouseDown;
-
 
   GuiStandard := TGuiStandard.Create;
 
@@ -400,7 +392,7 @@ begin
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
-    InfoBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, RedFoxContainer);
+    InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
   except
   end;
 
@@ -547,7 +539,6 @@ begin
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
-  GuiStandard_OLD.UpdateControls;
   GuiStandard.UpdateControls;
 
   Manually := false;
@@ -767,7 +758,7 @@ var
   CloseCallback : TProc;
 begin
   LoopEditDialog := TLoopEditDialog.Create;
-  LoopEditDialog.Setup(DialogDisplayArea.GetDisplayArea, Plugin, GuiStandard_OLD);
+  LoopEditDialog.Setup(DialogDisplayArea.GetDisplayArea, Plugin, GuiStandard);
 
   CloseCallback := procedure
   begin

@@ -5,7 +5,7 @@ interface
 uses
   Lucidity.Interfaces,
   Lucidity.SampleMap,
-  eePlugin, uGuiFeedbackData, eeGuiStandard,
+  eePlugin, uGuiFeedbackData, eeGuiStandardv2,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, Vcl.StdCtrls;

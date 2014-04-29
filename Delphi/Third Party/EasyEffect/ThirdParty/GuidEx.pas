@@ -16,6 +16,7 @@ database field types.
 
 
 interface
+
 uses SysUtils;
 
 type
@@ -72,6 +73,8 @@ begin
 end;
 
 end.
+
+
 
 
 

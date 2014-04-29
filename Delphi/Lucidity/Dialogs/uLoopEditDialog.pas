@@ -14,7 +14,7 @@ uses
   Lucidity.SampleImageRenderer,
   Lucidity.FlexSampleRenderer,
   LuciditySampleOverlay,
-  eePlugin, eeGuiStandard, uGuiFeedbackData,
+  eePlugin, eeGuiStandardv2, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Menus, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamButton, VamSampleDisplay, VamDiv,

@@ -16,6 +16,7 @@ object InfoBarFrame: TInfoBarFrame
       Top = 0
       Width = 626
       Height = 228
+      Opacity = 255
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFCCCCFF'
@@ -31,10 +32,13 @@ object InfoBarFrame: TInfoBarFrame
         Top = 52
         Width = 493
         Height = 49
+        Opacity = 255
         Text = 'Plugin Info Here!'
         HitTest = True
         Color = '$FF3E3E3E'
         ColorMouseOver = '$FF3E3E3E'
+        ColorBorder = '$00000000'
+        ShowBorder = False
         TextAlign = AlignNear
         TextVAlign = AlignCenter
         Font.Charset = DEFAULT_CHARSET
