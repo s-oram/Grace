@@ -399,7 +399,7 @@ begin
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
-    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
     InfoBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, RedFoxContainer);
   except
   end;

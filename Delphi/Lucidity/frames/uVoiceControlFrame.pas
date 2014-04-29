@@ -4,7 +4,8 @@ interface
 
 uses
   VamLib.ZeroObject,
-  uGuiFeedbackData, eePlugin, eeGuiStandard, Menus, uConstants,
+  eeGuiStandardv2,
+  uGuiFeedbackData, eePlugin, Menus, uConstants,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamKnob, RedFoxGraphicControl,
@@ -96,6 +97,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Lucidity.PluginParameters,
   VamGuiControlInterfaces,
   eeVstParameter,
   eeGuiStandard_MenuController,
@@ -170,26 +172,24 @@ begin
 
 
   //==== Assign standard control handling ====
+  GuiStandard_RegisterControl(aGuiStandard, MainOutputKnob,         TPluginParameter.OutputGain);
+  GuiStandard_RegisterControl(aGuiStandard, MainPanKnob,            TPluginParameter.OutputPan);
+  GuiStandard_RegisterControl(aGuiStandard, VoicePitch1Knob,        TPluginParameter.VoicePitchOne);
+  GuiStandard_RegisterControl(aGuiStandard, VoicePitch2Knob,        TPluginParameter.VoicePitchTwo);
+  GuiStandard_RegisterControl(aGuiStandard, GlideKnob,              TPluginParameter.VoiceGlide);
+  //GuiStandard_RegisterControl(aGuiStandard, GrainLengthKnob,        TPluginParameter.GrainLength);
+  //GuiStandard_RegisterControl(aGuiStandard, GrainRateKnob,          TPluginParameter.GrainRate);
+  //GuiStandard_RegisterControl(aGuiStandard, GrainPosKnob,           TPluginParameter.GrainPosition);
+  //GuiStandard_RegisterControl(aGuiStandard, OscShapeKnob,           TPluginParameter.OscShape);
+  //GuiStandard_RegisterControl(aGuiStandard, OscPulseWidthKnob,      TPluginParameter.OscPulseWidth);
 
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainOutputKnob,         Plugin.Globals.VstParameters.FindParameter(TParName.OutputGain));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(MainPanKnob,            Plugin.Globals.VstParameters.FindParameter(TParName.OutputPan));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch1Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchOne));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(VoicePitch2Knob,        Plugin.Globals.VstParameters.FindParameter(TParName.VoicePitchTwo));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GlideKnob,              Plugin.Globals.VstParameters.FindParameter(TParName.VoiceGlide));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainLengthKnob,        Plugin.Globals.VstParameters.FindParameter(TParName.GrainLength));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainRateKnob,          Plugin.Globals.VstParameters.FindParameter(TParName.GrainRate));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(GrainPosKnob,           Plugin.Globals.VstParameters.FindParameter(TParName.GrainPosition));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(OscShapeKnob,           Plugin.Globals.VstParameters.FindParameter(TParName.OscShape));
-  GuiStandard.RedFoxKnobHandler.RegisterControl(OscPulseWidthKnob,      Plugin.Globals.VstParameters.FindParameter(TParName.OscPulseWidth));
-
-
-  GuiStandard.RedFoxMenuHandler.RegisterControl(VoiceModeTextBox,            Plugin.Globals.VstParameters.FindParameter(TParName.VoiceMode),               TVoiceModeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplePlaybackTypeTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType),      TSamplePlaybackTypeHelper,   ShowPlayTypeMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(PitchTrackTextBox,           Plugin.Globals.VstParameters.FindParameter(TParName.PitchTracking),           TPitchTrackingHelper,        ShowPlayTypeMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(ResetTextBox,                Plugin.Globals.VstParameters.FindParameter(TParName.SampleResetClockSource),  TClockSourceHelper,          ShowSamplResetMenuCallBack);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopModeTextBox,      Plugin.Globals.VstParameters.FindParameter(TParName.SamplerLoopMode),         TSamplerLoopModeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(SamplerLoopBoundsTextBox,    Plugin.Globals.VstParameters.FindParameter(TParName.SamplerLoopBounds),       TSamplerLoopBoundsHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(GrainLoopTextBox,            Plugin.Globals.VstParameters.FindParameter(TParName.GrainLoop),               TGrainStretchLoopModeHelper);
+  GuiStandard_RegisterControl(aGuiStandard, VoiceModeTextBox,            TPluginParameter.VoiceMode);
+  GuiStandard_RegisterControl(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);   //ShowPlayTypeMenuCallBack);
+  GuiStandard_RegisterControl(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);        //ShowPlayTypeMenuCallBack);
+  GuiStandard_RegisterControl(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource);          //ShowSamplResetMenuCallBack);
+  GuiStandard_RegisterControl(aGuiStandard, SamplerLoopModeTextBox,      TPluginParameter.SamplerLoopMode);
+  GuiStandard_RegisterControl(aGuiStandard, SamplerLoopBoundsTextBox,    TPluginParameter.SamplerLoopBounds);
+  //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);
 
 
   //============================================================================
