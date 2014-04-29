@@ -44,6 +44,7 @@ type
 implementation
 
 uses
+  SysUtils,
   VamLib.Throttler,
   Lucidity.PluginParameters,
   VamKnob,
@@ -286,6 +287,7 @@ var
   Knob : TVamKnob;
   ParName  : string;
   ParValue : single;
+  CleanUp  : TProc;
 begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
@@ -301,7 +303,11 @@ begin
   Throttle(ThrottleHandle, 25,
   procedure
   begin
-    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlChanged, @ParName);
+    CleanUp := procedure
+    begin
+      ParName := '';
+    end;
+    Plugin.Globals.MotherShip.MsgMainTS(TLucidMsgID.OnParControlChanged, @ParName, nil);
   end);
 end;
 
