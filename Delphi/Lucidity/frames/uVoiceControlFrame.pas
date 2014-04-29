@@ -70,7 +70,6 @@ type
 
     procedure ShowPlayTypeMenuCallBack(aMenu : TMenu);
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
-
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
@@ -376,6 +375,9 @@ var
   kg : IKeyGroup;
   LM : ILevelMonitor;
 begin
+  // NOTE: TODO: there is something funky going on.
+  // The LFO 2 - Par 2 knob always causes a crash.
+  // Something here becomes un-defined.
   kg := Plugin.ActiveKeyGroup;
 
   if Supports(kg, ILevelMonitor, LM) then
