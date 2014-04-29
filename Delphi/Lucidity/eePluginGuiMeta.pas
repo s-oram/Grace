@@ -51,7 +51,7 @@ begin
   Gui          := aGui;
   SystemWindow := aSystemWindow;
 
-  ScopeHandler := TScopeHandler.Create(Plugin.Globals);
+  ScopeHandler := TScopeHandler.Create(Plugin);
   Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, zoMain);
 
   c := FindControlbyName(Gui, 'Scope');

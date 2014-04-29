@@ -279,11 +279,13 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvDecayKnob,                 TPluginParameter.AmpDecay);
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob,               TPluginParameter.AmpSustain);
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob,               TPluginParameter.AmpRelease);
+
   GuiStandard_RegisterControl(aGuiStandard, FilterEnvAttackKnob,             TPluginParameter.FilterAttack);
   GuiStandard_RegisterControl(aGuiStandard, FilterEnvHoldKnob,               TPluginParameter.FilterHold);
   GuiStandard_RegisterControl(aGuiStandard, FilterEnvDecayKnob,              TPluginParameter.FilterDecay);
   GuiStandard_RegisterControl(aGuiStandard, FilterEnvSustainKnob,            TPluginParameter.FilterSustain);
   GuiStandard_RegisterControl(aGuiStandard, FilterEnvReleaseKnob,            TPluginParameter.FilterRelease);
+
   GuiStandard_RegisterControl(aGuiStandard, FilterBlendKnob,                 TPluginParameter.FilterOutputBlend);
   GuiStandard_RegisterControl(aGuiStandard, Filter1Par1Knob,                 TPluginParameter.Filter1Par1);
   GuiStandard_RegisterControl(aGuiStandard, Filter1Par2Knob,                 TPluginParameter.Filter1Par2);

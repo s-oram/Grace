@@ -3,6 +3,7 @@ unit GuiMeta.ScopeHandler;
 interface
 
 uses
+  eePlugin,
   Lucidity.PluginParameters,
   VamLib.ZeroObject,
   eeGlobals,
@@ -28,6 +29,7 @@ type
   private
     fScopeControl: TLucidityScope;
   protected
+    Plugin  : TeePlugin;
     Globals : TGlobals;
 
     IsParFocusActive : boolean;
@@ -47,7 +49,7 @@ type
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
-    constructor Create(aGlobals : TGlobals);
+    constructor Create(aPlugin : TeePlugin);
     destructor Destroy; override;
 
     property ScopeControl : TLucidityScope read fScopeControl write fScopeControl;
@@ -139,9 +141,10 @@ end;
 
 { TScopeHandler }
 
-constructor TScopeHandler.Create(aGlobals : TGlobals);
+constructor TScopeHandler.Create(aPlugin : TeePlugin);
 begin
-  Globals := aGlobals;
+  Plugin  := aPlugin;
+  Globals := Plugin.Globals;
 
   ThrottleHandle.Init;
 end;
@@ -242,6 +245,7 @@ end;
 procedure TScopeHandler.UpdateScope;
 var
   ScopeFocus : TScopeFocus;
+  ParValue : single;
 begin
   if IsParFocusActive
     then ScopeFocus := FindScopeFocus_New(CurrentParFocus)
@@ -257,72 +261,80 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
 
-      ScopeControl.AdsrValues.Attack  := Globals.VstParameters.FindParameter(TParName.AmpAttack).ValueVST;
-      ScopeControl.AdsrValues.Hold    := Globals.VstParameters.FindParameter(TParName.AmpHold).ValueVST;
-      ScopeControl.AdsrValues.Decay   := Globals.VstParameters.FindParameter(TParName.AmpDecay).ValueVST;
-      ScopeControl.AdsrValues.Sustain := Globals.VstParameters.FindParameter(TParName.AmpSustain).ValueVST;
-      ScopeControl.AdsrValues.Release := Globals.VstParameters.FindParameter(TParName.AmpRelease).ValueVST;
+      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpAttack));
+      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpHold));
+      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpDecay));
+      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpSustain));
+      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpRelease));
     end;
 
     TScopeFocus.ModEnv:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
 
-      ScopeControl.AdsrValues.Attack  := Globals.VstParameters.FindParameter(TParName.FilterAttack).ValueVST;
-      ScopeControl.AdsrValues.Hold    := Globals.VstParameters.FindParameter(TParName.FilterHold).ValueVST;
-      ScopeControl.AdsrValues.Decay   := Globals.VstParameters.FindParameter(TParName.FilterDecay).ValueVST;
-      ScopeControl.AdsrValues.Sustain := Globals.VstParameters.FindParameter(TParName.FilterSustain).ValueVST;
-      ScopeControl.AdsrValues.Release := Globals.VstParameters.FindParameter(TParName.FilterRelease).ValueVST;
+      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterAttack));
+      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterHold));
+      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterDecay));
+      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterSustain));
+      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterRelease));
     end;
 
     TScopeFocus.Lfo1:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ScopeControl.LfoValues.Shape := Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
-      ScopeControl.LfoValues.Par1  := Globals.VstParameters.FindParameter(TParName.Lfo1Par1).ValueVST;
-      ScopeControl.LfoValues.Par2  := Globals.VstParameters.FindParameter(TParName.Lfo1Par2).ValueVST;
-      ScopeControl.LfoValues.Par3  := Globals.VstParameters.FindParameter(TParName.Lfo1Par3).ValueVST;
+      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Shape));
+      ScopeControl.LfoValues.Shape := TLfoShapeHelper.ToEnum(ParValue);
+
+      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par1));
+      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par2));
+      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par3));
     end;
 
     TScopeFocus.Lfo2:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ScopeControl.LfoValues.Shape := Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
-      ScopeControl.LfoValues.Par1  := Globals.VstParameters.FindParameter(TParName.Lfo2Par1).ValueVST;
-      ScopeControl.LfoValues.Par2  := Globals.VstParameters.FindParameter(TParName.Lfo2Par2).ValueVST;
-      ScopeControl.LfoValues.Par3  := Globals.VstParameters.FindParameter(TParName.Lfo2Par3).ValueVST;
+      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Shape));
+      ScopeControl.LfoValues.Shape := TLfoShapeHelper.ToEnum(ParValue);
+      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par1));
+      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par2));
+      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par3));
     end;
 
     TScopeFocus.Filter1:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
-      ScopeControl.FilterValues.FilterType := Globals.VstParameters.FindParameter(TParName.Filter1Type).ValueAsEnum<TFilterType>;
-      ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter1Par1).ValueVST;
-      ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter1Par2).ValueVST;
-      ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter1Par3).ValueVST;
-      ScopeControl.FilterValues.Par4 := Globals.VstParameters.FindParameter(TParName.Filter1Par4).ValueVST;
+      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Type));
+      ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
+
+      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par1));
+      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par2));
+      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par3));
+      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par4));
     end;
 
     TScopeFocus.Filter2:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
-      ScopeControl.FilterValues.FilterType := Globals.VstParameters.FindParameter(TParName.Filter2Type).ValueAsEnum<TFilterType>;
-      ScopeControl.FilterValues.Par1 := Globals.VstParameters.FindParameter(TParName.Filter2Par1).ValueVST;
-      ScopeControl.FilterValues.Par2 := Globals.VstParameters.FindParameter(TParName.Filter2Par2).ValueVST;
-      ScopeControl.FilterValues.Par3 := Globals.VstParameters.FindParameter(TParName.Filter2Par3).ValueVST;
-      ScopeControl.FilterValues.Par4 := Globals.VstParameters.FindParameter(TParName.Filter2Par4).ValueVST;
+      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Type));
+      ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
+
+      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par1));
+      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par2));
+      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par3));
+      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par4));
     end;
 
     TScopeFocus.FilterBlend:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.FilterBlend;
 
-      ScopeControl.FilterBlendValues.FilterRouting := Globals.VstParameters.FindParameter(TParName.FilterRouting).ValueAsEnum<TFilterRouting>;
-      ScopeControl.FilterBlendValues.BlendAmt      := Globals.VstParameters.FindParameter(TParName.FilterOutputBlend).ValueVST;
+      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterRouting));
+      ScopeControl.FilterBlendValues.FilterRouting := TFilterRoutingHelper.ToEnum(ParValue);
+      ScopeControl.FilterBlendValues.BlendAmt      := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterOutputBlend));
     end;
   end;
 
