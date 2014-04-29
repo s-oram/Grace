@@ -392,7 +392,7 @@ begin
   try
     // Initalize all the frame controls...
     MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard_OLD);
+    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
     MenuBarFrame.InitializeFrame(Plugin, GuiStandard_OLD, DialogDisplayArea);
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard_OLD);
     SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard_OLD);

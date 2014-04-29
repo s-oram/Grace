@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   Menu.FileTreeMenu,
   Lucidity.Interfaces,
-  eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandard,
+  eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandardv2,
   uLucidityEnums, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamCustomTreeView, VamTreeView,
@@ -76,6 +76,8 @@ type
 implementation
 
 uses
+  uGuiUtils,
+  Lucidity.PluginParameters,
   eeFunctions, uLucidityExtra,
   Lucidity.SampleMap, RedFoxColor;
 
@@ -126,7 +128,6 @@ begin
   if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
   if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged
-
 end;
 
 
@@ -157,7 +158,7 @@ begin
 
 
   //==== Parameters ====
-  GuiStandard.RedFoxKnobHandler.RegisterControl(PreviewVolumeKnob, Plugin.Globals.VstParameters.FindParameter(TParName.PreviewVolume));
+  GuiStandard_RegisterControl(aGuiStandard, PreviewVolumeKnob,         TPluginParameter.PreviewVolume);
 
   PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
 
@@ -182,13 +183,9 @@ begin
   PreviewOnOffButton.ImageOn      := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
   PreviewOnOffButton.ImageOff     := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
 
-
-
   //======================================
   RefreshFileBrowser; //Update some GUI controls...
   PreviewInfoChanged; //Update some GUI controls...
-
-
 end;
 
 procedure TFileBrowserFrame.SampleDirectoriesChanged;
