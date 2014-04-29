@@ -304,19 +304,21 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                        TPluginParameter.Lfo1Par2);
   GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                        TPluginParameter.Lfo1Par3);
 
-  GuiStandard_RegisterMenuButton(aGuiStandard, FilterRoutingButton,             TPluginParameter.FilterRouting);
+  GuiStandard_RegisterMenuButton(aGuiStandard, FilterRoutingButton,    TPluginParameter.FilterRouting);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Filter1TypeTextBox,     TPluginParameter.Filter1Type);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Filter2TypeTextBox,     TPluginParameter.Filter2Type);
+  GuiStandard_RegisterMenuButton(aGuiStandard, AmpVelocityButton,      TPluginParameter.AmpVelocity);
+  GuiStandard_RegisterMenuButton(aGuiStandard, FilterVelocityButton,   TPluginParameter.FilterVelocity);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq1ClockTextBox,       TPluginParameter.Seq1Clock);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq1DirectionTextBox,   TPluginParameter.Seq1Direction);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq1StepsTextBox,       TPluginParameter.Seq1Length);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq2ClockTextBox,       TPluginParameter.Seq2Clock);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq2DirectionTextBox,   TPluginParameter.Seq2Direction);
+  GuiStandard_RegisterMenuButton(aGuiStandard, Seq2StepsTextBox,       TPluginParameter.Seq2Length);
 
-  //GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterVelocityButton,   Plugin.Globals.VstParameters.FindParameter(TParName.FilterVelocity),  TEnvVelocityDepthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Clock),       TSequencerClockHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Direction),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq1StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length),      TStepSequencerLengthHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2ClockTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Clock),       TSequencerClockHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2DirectionTextBox,   Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Direction),   TStepSequencerDirectionHelper);
-  GuiStandard.RedFoxMenuHandler.RegisterControl(Seq2StepsTextBox,       Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length),      TStepSequencerLengthHelper);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoShapeSelector,       TPluginParameter.Lfo1Shape);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoFreqModeSelector,    TPluginParameter.Lfo1FreqMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoRangeSelector,       TPluginParameter.Lfo1Range);
 
 
 
@@ -893,9 +895,9 @@ begin
     LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo1Par2);
     LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo1Par3);
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape), TLfoShapeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1FreqMode), TLfoFreqModeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Range), TLfoRangeHelper);
+    LfoShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Shape);
+    LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo1FreqMode);
+    LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Range);
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
   end else
@@ -925,9 +927,9 @@ begin
     LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo2Par2);
     LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo2Par3);
 
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoShapeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape), TLfoShapeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoFreqModeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2FreqMode), TLfoFreqModeHelper);
-    GuiStandard.RedFoxMenuHandler.RegisterControl(LfoRangeSelector, Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Range), TLfoRangeHelper);
+    LfoShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Shape);
+    LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
+    LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Range);
 
     CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
   end;

@@ -55,7 +55,6 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
-
   MenuBuilder := TGuiMenuBuilder.Create;
 end;
 
