@@ -42,6 +42,9 @@ type
   IMenuControl = interface
     ['{24A7258B-A37B-4A88-8B81-2F5836CDBF8D}']
 
+    procedure SetParameterName(const Value: string);
+    function GetParameterName: string;
+
     procedure SetMenuText(Value : string);
 
     procedure SetOnMouseEnter(Handler:TNotifyEvent);

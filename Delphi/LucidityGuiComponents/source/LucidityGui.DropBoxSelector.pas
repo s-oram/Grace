@@ -21,6 +21,7 @@ type
     FTextPadding: TPadding;
     fShowBorder: boolean;
     fTextB: string;
+    fParameterName : string;
     procedure SetTextA(const Value: string);
     function GetColor: TRedFoxColorString;
     function GetColorMouseOver: TRedFoxColorString;
@@ -36,6 +37,8 @@ type
     function GetColorB(const Index: Integer): TRedFoxColorString;
     procedure SetColorB(const Index: Integer; const Value: TRedFoxColorString);
     procedure SetTextB(const Value: string);
+    function GetParameterName: string;
+    procedure SetParameterName(const Value: string);
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -47,6 +50,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    // ParameterName is a 'Tag' type property used to store a VST parameter name.
+    property ParameterName  : string  read GetParameterName  write SetParameterName;
 
   published
     property ColorTextA     : TRedFoxColorString index 0 read GetColorB write SetColorB;
@@ -153,6 +159,11 @@ begin
   result := fColorMouseOver.AsString;
 end;
 
+function TDropBoxSelector.GetParameterName: string;
+begin
+  result := fParameterName;
+end;
+
 procedure TDropBoxSelector.MouseEnter;
 begin
   inherited;
@@ -208,6 +219,11 @@ end;
 procedure TDropBoxSelector.SetMenuText(Value: string);
 begin
   SetTextB(Value);
+end;
+
+procedure TDropBoxSelector.SetParameterName(const Value: string);
+begin
+  fParameterName := Value;
 end;
 
 procedure TDropBoxSelector.SetShowBorder(const Value: boolean);

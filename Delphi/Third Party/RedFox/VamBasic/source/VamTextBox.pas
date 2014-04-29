@@ -35,6 +35,8 @@ type
     function GetColorBorder: TRedFoxColorString;
     procedure SetColorBorder(const Value: TRedFoxColorString);
     procedure SetShowBorder(const Value: boolean);
+    procedure SetParameterName(const Value: string);
+    function GetParameterName: string;
   protected
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -46,7 +48,7 @@ type
     destructor Destroy; override;
 
     // ParameterName is a 'Tag' type property used to store a VST parameter name.
-    property ParameterName  : string  read fParameterName  write fParameterName;
+    property ParameterName  : string  read GetParameterName  write SetParameterName;
 
   published
     property Color : TRedFoxColorString read GetColor write SetColor;
@@ -115,6 +117,11 @@ begin
   result := fColorMouseOver.AsString;
 end;
 
+function TVamTextBox.GetParameterName: string;
+begin
+  result := self.fParameterName;
+end;
+
 procedure TVamTextBox.MouseEnter;
 begin
   inherited;
@@ -170,6 +177,11 @@ end;
 procedure TVamTextBox.SetMenuText(Value: string);
 begin
   SetText(Value);
+end;
+
+procedure TVamTextBox.SetParameterName(const Value: string);
+begin
+  fParameterName := Value;
 end;
 
 procedure TVamTextBox.SetShowBorder(const Value: boolean);
