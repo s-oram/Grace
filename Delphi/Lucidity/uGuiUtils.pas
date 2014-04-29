@@ -744,14 +744,6 @@ begin
     mc.SetParameterName(PluginParToName(Par));
     gs.RegisterControl('MenuButtonHandler', Control);
   end;
-
-  {
-  if (Control is TVamTextBox) then
-  begin
-    (Control as TVamTextBox).ParameterName := PluginParToName(Par);
-    gs.RegisterControl('MenuButtonHandler', Control);
-  end;
-  }
 end;
 
 
