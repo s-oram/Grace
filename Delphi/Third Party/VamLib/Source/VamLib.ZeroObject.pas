@@ -203,6 +203,8 @@ procedure TZeroObject.AfterConstruction;
 begin
   // Release the constructor's implicit refcount
   InterlockedDecrement(FRefCount);
+
+  VamLib.LoggingProxy.Log.LogMessage('ZO.Create = ' + self.ClassName);
 end;
 
 procedure TZeroObject.BeforeDestruction;
@@ -214,6 +216,8 @@ destructor TZeroObject.Destroy;
 var
   ptr : IZeroObjectPtr;
 begin
+  VamLib.LoggingProxy.Log.LogMessage('ZO.Destroy = ' +self.ClassName);
+
   // TODO: instead of maintaining a reference to the mother ship, the zero object
   // could use a multi-event to notify objects of it's destruction.
   // IE. a NotifyOnFree() event.
