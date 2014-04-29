@@ -3,6 +3,7 @@ unit LucidityGui.KnobHandler;
 interface
 
 uses
+  VamLib.UniqueID,
   Contnrs,
   Controls,
   Classes,
@@ -17,6 +18,8 @@ type
     ControlList : TObjectList;
 
     Plugin : TeePlugin;
+
+    ThrottleHandle : TUniqueID;
 
     procedure UpdateAllControls;
     procedure UpdateModulation(const c : TObject);
@@ -41,6 +44,7 @@ type
 implementation
 
 uses
+  VamLib.Throttler,
   Lucidity.PluginParameters,
   VamKnob,
   Lucidity.Types,
@@ -54,6 +58,7 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
+  ThrottleHandle.Init;
 end;
 
 destructor TKnobHandler.Destroy;
@@ -256,7 +261,7 @@ begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
   ParName  := Knob.ParameterName;
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
 end;
 
 
@@ -292,6 +297,12 @@ begin
   // Send parameter change via the published VST parameter route if so,
   // otherwise set parameter value directly in plugin.
   Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+
+  Throttle(ThrottleHandle, 25,
+  procedure
+  begin
+    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlChanged, @ParName);
+  end);
 end;
 
 procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);

@@ -68,7 +68,8 @@ type
     OnControlLeave                   = Actions + 6; //TODO: deprecated. replace by OnParControlLeave
     OnParControlEnter                = Actions + 7;
     OnParControlLeave                = Actions + 8;
-    OnPostCreateFinished             = Actions + 9;
+    OnParControlChanged              = Actions + 9;
+    OnPostCreateFinished             = Actions + 10;
     //----- Audio Messages---------------
     AudioMsg                         = OnPostCreateFinished + 1;
     Audio_VoiceTriggered             = AudioMsg + 1;
