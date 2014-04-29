@@ -39,8 +39,6 @@ type
     ScopeFocus : TScopeFocus;
     ThrottleHandle : TUniqueID;
 
-
-
     procedure ParameterEnter(const ParName : string);
     procedure ParameterLeave(const ParName : string);
     procedure ParameterChanged(const ParName : string);
