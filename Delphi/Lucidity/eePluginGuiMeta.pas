@@ -60,33 +60,6 @@ begin
     ScopeHandler.ScopeControl := c as TLucidityScope;
   end;
 
-  Parent := Gui.FindComponent('RedFoxContainer');
-  if assigned(Parent) then
-  begin
-    VQ := VamQueryRequest(Parent as TControl, TVamKnob);
-    for c in VQ.List do
-    begin
-      ScopeHandler.RegisterControl(c);
-    end;
-
-
-    VQ := VamQueryRequest(Parent as TControl, TVamTextBox);
-    for c in VQ.List do
-    begin
-      ScopeHandler.RegisterControl(c);
-    end;
-
-    VQ := VamQueryRequest(Parent as TControl, TVamButton);
-    for c in VQ.List do
-    begin
-      ScopeHandler.RegisterControl(c);
-    end;
-
-    c := FindControlByName(Parent as TControl, 'LfoSelector');
-    ScopeHandler.RegisterControl(c);
-  end;
-
-
   ActiveModDetector := TModDisplayDetector.Create(Plugin);
   aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, zoMain);
 end;
