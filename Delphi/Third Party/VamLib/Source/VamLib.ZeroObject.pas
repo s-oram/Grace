@@ -204,7 +204,7 @@ begin
   // Release the constructor's implicit refcount
   InterlockedDecrement(FRefCount);
 
-  VamLib.LoggingProxy.Log.LogMessage('ZO.Create = ' + self.ClassName);
+  //VamLib.LoggingProxy.Log.LogMessage('ZO.Create = ' + self.ClassName);
 end;
 
 procedure TZeroObject.BeforeDestruction;
@@ -216,7 +216,7 @@ destructor TZeroObject.Destroy;
 var
   ptr : IZeroObjectPtr;
 begin
-  VamLib.LoggingProxy.Log.LogMessage('ZO.Destroy = ' +self.ClassName);
+  //VamLib.LoggingProxy.Log.LogMessage('ZO.Destroy = ' +self.ClassName);
 
   // TODO: instead of maintaining a reference to the mother ship, the zero object
   // could use a multi-event to notify objects of it's destruction.
@@ -417,6 +417,7 @@ end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 begin
+  VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
   SendMessageToList(AudioObjects, MsgID, Data);
 end;
 
@@ -432,6 +433,7 @@ end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
+  VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
   SendMessageToList(MainObjects, MsgID, Data);
 end;
 
@@ -464,8 +466,11 @@ begin
 
     MsgMain(msgData.MsgID, msgData.Data);
 
-    if assigned(msgData.CleanUp)
-      then msgData.CleanUp();
+    if assigned(msgData.CleanUp) then
+    begin
+      msgData.CleanUp();
+      msgData.CleanUp := nil;
+    end;
   end;
 end;
 

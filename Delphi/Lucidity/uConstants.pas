@@ -70,8 +70,10 @@ type
     OnParControlLeave                = Actions + 8;
     OnParControlChanged              = Actions + 9;
     OnPostCreateFinished             = Actions + 10;
+    OnLfoSelectorEnter               = Actions + 11;
+    OnLfoSelectorLeave               = Actions + 12;
     //----- Audio Messages---------------
-    AudioMsg                         = OnPostCreateFinished + 1;
+    AudioMsg                         = OnLfoSelectorLeave + 1;
     Audio_VoiceTriggered             = AudioMsg + 1;
     Audio_VoiceFinished              = AudioMsg + 2;
     Audio_KeyGroupInactive           = AudioMsg + 3;

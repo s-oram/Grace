@@ -35,9 +35,15 @@ type
     IsParFocusActive : boolean;
     CurrentParFocus : TPluginParameter;
 
+    // This LFO Selector business is working in conjunction with the IsParFocus
+    // and CurrentParFocus variables above to create a very hacky state machine.
+    // If this code becomes critically important it will need to be rewritten to
+    // be a bit more robust. It should be ok as currently used.
+    IsLfoSelectorOverride : boolean;
+    LfoSelectorCount      : integer;
+
     FocusedControl : TControl;
     ScopeFocus : TScopeFocus;
-    ThrottleHandle : TUniqueID;
 
     procedure ParameterEnter(const ParName : string);
     procedure ParameterLeave(const ParName : string);
@@ -143,8 +149,8 @@ constructor TScopeHandler.Create(aPlugin : TeePlugin);
 begin
   Plugin  := aPlugin;
   Globals := Plugin.Globals;
-
-  ThrottleHandle.Init;
+  IsParFocusActive := false;
+  LfoSelectorCount := 0;
 end;
 
 destructor TScopeHandler.Destroy;
@@ -161,26 +167,13 @@ begin
 
   if MsgID = TLucidMsgID.LfoChanged then
   begin
-    // NOTE:
-    // The scope needs to be updated when the LFO selector is changed by the USER
-    // on the GUI.
-    if (ScopeFocus = TScopeFocus.Lfo1) or (ScopeFocus = TScopeFocus.Lfo2) then
-    begin
-      case Globals.SelectedLfo of
-        0: ScopeFocus := TScopeFocus.Lfo1;
-        1: ScopeFocus := TScopeFocus.Lfo2;
-      else
-        raise Exception.Create('Type not handled.');
-      end;
-    end;
-
-    //TODO: update scope here.
+    UpdateScope;
   end;
 
 
   if MsgID = TLucidMsgID.Command_UpdateScope then
   begin
-    //TODO: update scope here.
+    UpdateScope;
   end;
 
 
@@ -188,6 +181,9 @@ begin
   begin
     s := string(Data^);
     ParameterEnter(s);
+
+    IsLfoSelectorOverride := false;
+    LfoSelectorCount := 0;
   end;
 
   if MsgID = TLucidMsgID.OnParControlLeave then
@@ -201,6 +197,33 @@ begin
     s := string(Data^);
     ParameterChanged(s);
   end;
+
+  if MsgID = TLucidMsgID.OnLfoSelectorEnter then
+  begin
+    if LfoSelectorCount < 0
+      then LfoSelectorCount := 0;
+
+    IsLfoSelectorOverride := true;
+    inc(LfoSelectorCount);
+
+    UpdateScope;
+  end;
+
+  if MsgID = TLucidMsgID.OnLfoSelectorLeave then
+  begin
+    dec(LfoSelectorCount);
+
+    if LfoSelectorCount <= 0 then
+    begin
+      LfoSelectorCount := 0;
+      IsLfoSelectorOverride := false;
+    end;
+
+    UpdateScope;
+  end;
+
+
+
 end;
 
 
@@ -245,9 +268,23 @@ var
   ScopeFocus : TScopeFocus;
   ParValue : single;
 begin
-  if IsParFocusActive
-    then ScopeFocus := FindScopeFocus_New(CurrentParFocus)
-    else ScopeFocus := TScopeFocus.None;
+  if IsLfoSelectorOverride then
+  begin
+    case Plugin.Globals.SelectedLfo of
+      0: ScopeFocus := TScopeFocus.Lfo1;
+      1: ScopeFocus := TScopeFocus.Lfo2;
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+  end else
+  if IsParFocusActive then
+  begin
+    ScopeFocus := FindScopeFocus_New(CurrentParFocus);
+  end else
+  begin
+    ScopeFocus := TScopeFocus.None;
+  end;
+
 
   case ScopeFocus of
     TScopeFocus.None:

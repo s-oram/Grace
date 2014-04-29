@@ -1153,6 +1153,8 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           OnChanged = LfoSelectButton1Changed
           Visible = True
+          OnMouseEnter = LfoSelectorMouseEnter
+          OnMouseLeave = LfoSelectorMouseLeave
         end
         object LfoSelectButton2: TVamButton
           Tag = 1
@@ -1179,6 +1181,8 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           OnChanged = LfoSelectButton1Changed
           Visible = True
+          OnMouseEnter = LfoSelectorMouseEnter
+          OnMouseLeave = LfoSelectorMouseLeave
           OnMouseUp = LfoSelectButton2MouseUp
         end
         object LfoSelector: TVamSliderSwitch
@@ -1196,6 +1200,8 @@ object ModControlFrame: TModControlFrame
           SwitchPos = 0
           OnChanged = LfoSelectorChanged
           Visible = True
+          OnMouseEnter = LfoSelectorMouseEnter
+          OnMouseLeave = LfoSelectorMouseLeave
         end
         object LfoFreqModeSelector: TVamTextBox
           Left = 3

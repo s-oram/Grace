@@ -287,7 +287,6 @@ var
   Knob : TVamKnob;
   ParName  : string;
   ParValue : single;
-  CleanUp  : TProc;
 begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
@@ -303,11 +302,7 @@ begin
   Throttle(ThrottleHandle, 25,
   procedure
   begin
-    CleanUp := procedure
-    begin
-      ParName := '';
-    end;
-    Plugin.Globals.MotherShip.MsgMainTS(TLucidMsgID.OnParControlChanged, @ParName, nil);
+    Plugin.Globals.MotherShip.MsgMainTS(TLucidMsgID.Command_UpdateScope);
   end);
 end;
 

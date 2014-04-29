@@ -131,6 +131,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure Timer1Timer(Sender: TObject);
     procedure LfoSelectorChanged(Sender: TObject);
+    procedure LfoSelectorMouseEnter(Sender: TObject);
+    procedure LfoSelectorMouseLeave(Sender: TObject);
   private
     fPlugin: TeePlugin;
     KnobList : TObjectList;
@@ -990,10 +992,7 @@ begin
 
   //TODO: I'm not sure if this message here is entirely necessary.
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
-
-
-  //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
-  // by the user, when it needs to be a toggle type switch.
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
 end;
 
 
@@ -1009,9 +1008,7 @@ begin
 
   //TODO: I'm not sure if this message here is entirely necessary.
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
-
-  //HACK: TODO: This here is a huge hack job. The lfo select buttons can be changed
-  // by the user, when it needs to be a toggle type switch.
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
 end;
 
 
@@ -1027,8 +1024,17 @@ begin
 
   //TODO: I'm not sure if this message here is entirely necessary.
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
+end;
 
-  //TODO: might need to board cast a message here..
+procedure TModControlFrame.LfoSelectorMouseEnter(Sender: TObject);
+begin
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnLfoSelectorEnter);
+end;
+
+procedure TModControlFrame.LfoSelectorMouseLeave(Sender: TObject);
+begin
+  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnLfoSelectorLeave);
 end;
 
 end.
