@@ -77,7 +77,6 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     procedure UpdateControlVisibility;
-    procedure UpdateModulation; //called when the mod slot changes...
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -154,9 +153,6 @@ var
 begin
   if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
-  if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
-  if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;
-
 
   if MsgID = TLucidMsgID.OnShowMenu then
   begin
@@ -324,7 +320,6 @@ begin
 
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
-  UpdateModulation;
 
   Timer1.Enabled := true;
   Timer1.Interval := 40;
@@ -510,24 +505,6 @@ begin
   end;
 
 end;
-
-
-procedure TVoiceControlFrame.UpdateModulation;
-var
-  ModSlot : integer;
-begin
-  if Plugin.Globals.IsMouseOverModSlot
-    then ModSlot := Plugin.Globals.MouseOverModSlot
-    else ModSlot := Plugin.Globals.SelectedModSlot;
-
-  UpdateModAmount(MainOutputKnob,  ModSlot, Plugin);
-  UpdateModAmount(MainPanKnob,     ModSlot, Plugin);
-  UpdateModAmount(VoicePitch1Knob, ModSlot, Plugin);
-  UpdateModAmount(VoicePitch2Knob, ModSlot, Plugin);
-end;
-
-
-
 
 
 end.

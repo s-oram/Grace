@@ -65,14 +65,8 @@ procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
 
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 
-//TODO: delete this method once Lucidity has transitioned to the new GuiStandard system.
-procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
-
-
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
-
 procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
-
 
 function FindMenuHelperForParameter(const Par : TPluginParameter) : TCustomEnumHelperClass;
 
@@ -544,67 +538,6 @@ begin
     raise Exception.Create('Target type not handled.');
   end;
 end;
-
-
-procedure UpdateModAmount(const aKnob : TVamKnob; const ModSlot : integer; const Plugin : TeePlugin);
-var
-  km : TKnobMode;
-  ModLinkIndex : integer;
-  kg : IKeyGroup;
-  VstPar : TVstParameterEx;
-  ModAmount : single;
-  ModMin, ModMax : single;
-begin
-  if ModSlot = -1
-    then km := TKnobMode.PositionEdit
-    else km := TKnobMode.ModEdit;
-
-  kg := Plugin.ActiveKeyGroup;
-  //ModConnections := kg.GetModConnections; //TODO: Remove reliance on GetModConnections(). Use methods in the keygroup interface instead.
-
-  if km = TKnobMode.PositionEdit then
-  begin
-
-
-    //==== Position Edit ====
-    aKnob.KnobMode := TKnobMode.PositionEdit;
-    aKnob.ModLineColor := kModLineColorA;
-
-    VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
-    if VstPar.HasModLink = false then
-    begin
-      aKnob.MinModDepth := 0;
-      aKnob.MaxModDepth := 0;
-    end else
-    begin
-      ModLinkIndex := VstPar.ModLinkIndex;
-      kg.GetModParModMinMax(ModLinkIndex, ModMin, ModMax);
-      aKnob.MinModDepth := ModMin;
-      aKnob.MaxModDepth := ModMax;
-    end;
-
-  end else
-  begin
-    //==== Mod Edit ====
-    VstPar := (Plugin.Globals.VstParameters[aKnob.ParameterIndex] as TVstParameterEx);
-
-    if VstPar.HasModLink = false then
-    begin
-      aKnob.KnobMode := TKnobMode.PositionEdit;
-      aKnob.ModLineColor := kModLineColorA;
-    end else
-    begin
-      ModLinkIndex := VstPar.ModLinkIndex;
-      ModAmount := kg.GetModulatedParameters^[ModLinkIndex].ModAmount[ModSlot];
-      aKnob.ModAmount := ModAmount;
-      aKnob.KnobMode := TKnobMode.ModEdit;
-      aKnob.ModLineColor := kModLineColorB;
-    end;
-
-  end;
-
-end;
-
 
 
 { Command }
