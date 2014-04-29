@@ -72,19 +72,25 @@ type
     OnPostCreateFinished             = Actions + 10;
     OnLfoSelectorEnter               = Actions + 11;
     OnLfoSelectorLeave               = Actions + 12;
+    OnShowMenu                       = Actions + 13;  //TMsgData_ShowMenu
     //----- Audio Messages---------------
-    AudioMsg                         = OnLfoSelectorLeave + 1;
+    AudioMsg                         = OnShowMenu + 1;
     Audio_VoiceTriggered             = AudioMsg + 1;
     Audio_VoiceFinished              = AudioMsg + 2;
     Audio_KeyGroupInactive           = AudioMsg + 3;
   end;
 
-
-
   PMsgData_Audio_VoiceTriggered = ^TMsgData_Audio_VoiceTriggered;
   TMsgData_Audio_VoiceTriggered = record
     KeyGroup : Pointer;
     Voice    : Pointer;
+  end;
+
+  PMsgData_ShowMenuEvent = ^TMsgData_ShowMenu;
+  TMsgData_ShowMenu = record
+  public
+    MenuName : string;
+    Menu     : Pointer;
   end;
 
 

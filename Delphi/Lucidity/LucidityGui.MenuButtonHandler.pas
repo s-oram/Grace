@@ -41,6 +41,7 @@ type
 implementation
 
 uses
+  Menus,
   eeEnumHelper,
   Lucidity.PluginParameters,
   Lucidity.Types,
@@ -192,6 +193,7 @@ var
   Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
+  ShowMenuCallback : TShowMenuCallback;
 begin
   assert(Sender is TVamTextBox);
   tb := (Sender as TVamTextBox);
@@ -214,9 +216,21 @@ begin
     UpdateControl(Sender);
   end;
 
+  ShowMenuCallback := procedure(aMenu : TMenu)
+  var
+    Data : TMsgData_ShowMenu;
+  begin
+    Data.MenuName := ParName;
+    Data.Menu     := @aMenu;
+
+    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnShowMenu, @Data);
+  end;
+
+
+
   if (Button = mbLeft) then
   begin
-    MenuBuilder.ShowMenuForVstParameter(ItemSelectedCallback, Mouse.CursorPos.X, Mouse.CursorPos.Y, ParValueAsInt, EnumHelper);
+    MenuBuilder.ShowMenuForVstParameter(ItemSelectedCallback, Mouse.CursorPos.X, Mouse.CursorPos.Y, ParValueAsInt, EnumHelper, ShowMenuCallback);
   end;
 
 

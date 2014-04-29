@@ -149,11 +149,35 @@ begin
 end;
 
 procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  NameA, NameB : string;
+  PMenu : ^TMenu;
 begin
   if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
   if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;
+
+
+  if MsgID = TLucidMsgID.OnShowMenu then
+  begin
+    NameA := PMsgData_ShowMenuEvent(Data)^.MenuName;
+    PMenu := PMsgData_ShowMenuEvent(Data)^.Menu;
+
+
+    NameB := PluginParToName(TPluginParameter.SamplePlaybackType);
+    if NameA = NameB
+      then ShowPlayTypeMenuCallBack(PMenu^);
+
+
+    NameB := PluginParToName(TPluginParameter.SampleResetClockSource);
+    if NameA = NameB
+      then ShowSamplResetMenuCallBack(PMenu^);
+
+
+
+  end;
+
 end;
 
 
@@ -183,12 +207,12 @@ begin
   //GuiStandard_RegisterControl(aGuiStandard, OscShapeKnob,           TPluginParameter.OscShape);
   //GuiStandard_RegisterControl(aGuiStandard, OscPulseWidthKnob,      TPluginParameter.OscPulseWidth);
 
-  GuiStandard_RegisterControl(aGuiStandard, VoiceModeTextBox,            TPluginParameter.VoiceMode);
-  GuiStandard_RegisterControl(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);   //ShowPlayTypeMenuCallBack);
-  GuiStandard_RegisterControl(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);        //ShowPlayTypeMenuCallBack);
-  GuiStandard_RegisterControl(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource);          //ShowSamplResetMenuCallBack);
-  GuiStandard_RegisterControl(aGuiStandard, SamplerLoopModeTextBox,      TPluginParameter.SamplerLoopMode);
-  GuiStandard_RegisterControl(aGuiStandard, SamplerLoopBoundsTextBox,    TPluginParameter.SamplerLoopBounds);
+  GuiStandard_RegisterMenuButton(aGuiStandard, VoiceModeTextBox,            TPluginParameter.VoiceMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);     // NOTE: Using ShowPlayTypeMenuCallBack().
+  GuiStandard_RegisterMenuButton(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);
+  GuiStandard_RegisterMenuButton(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource); // NOTE: Using ShowSamplResetMenuCallBack().
+  GuiStandard_RegisterMenuButton(aGuiStandard, SamplerLoopModeTextBox,      TPluginParameter.SamplerLoopMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, SamplerLoopBoundsTextBox,    TPluginParameter.SamplerLoopBounds);
   //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);
 
 

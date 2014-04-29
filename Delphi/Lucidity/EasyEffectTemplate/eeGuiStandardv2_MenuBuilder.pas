@@ -13,8 +13,7 @@ uses
 
 type
   TMenuItemSelectedCallback = reference to procedure(SelectedItemIndex : integer);
-
-  TMenuCallback = procedure (aMenu : TMenu) of object;
+  TShowMenuCallback         = reference to procedure(aMenu : TMenu);
 
   TShowMenuState = record
     ItemSelectedCallback : TMenuItemSelectedCallback;
@@ -30,7 +29,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure ShowMenuForVstParameter(SelectedCallback : TMenuItemSelectedCallback; const x, y:integer; const CurrentValueIndex:integer; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TMenuCallback = nil);
+    procedure ShowMenuForVstParameter(SelectedCallback : TMenuItemSelectedCallback; const x, y:integer; const CurrentValueIndex:integer; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TShowMenuCallback);
   end;
 
 
@@ -53,7 +52,7 @@ begin
   inherited;
 end;
 
-procedure TGuiMenuBuilder.ShowMenuForVstParameter(SelectedCallback : TMenuItemSelectedCallback; const x, y:integer; const CurrentValueIndex:integer; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TMenuCallback);
+procedure TGuiMenuBuilder.ShowMenuForVstParameter(SelectedCallback : TMenuItemSelectedCallback; const x, y:integer; const CurrentValueIndex:integer; const EnumHelper:TCustomEnumHelperClass; PopupCallBack : TShowMenuCallback);
 var
   MenuItemCount : integer;
   c1: Integer;
