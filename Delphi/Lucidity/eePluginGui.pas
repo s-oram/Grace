@@ -6,7 +6,6 @@ interface
 
 
 uses
-  {eeGuiStandard,}
   eeGuiStandardv2,
   LucidityGui.KnobHandler,
   LucidityGui.MenuButtonHandler,

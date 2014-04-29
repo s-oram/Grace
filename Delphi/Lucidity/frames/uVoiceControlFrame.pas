@@ -100,7 +100,6 @@ uses
   Lucidity.PluginParameters,
   VamGuiControlInterfaces,
   eeVstParameter,
-  eeGuiStandard_MenuController,
   eeGuiHelpers,
   Lucidity.SampleMap,
   VamLayoutWizard,
