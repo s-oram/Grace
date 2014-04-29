@@ -1027,6 +1027,8 @@ begin
 
   //TODO: I'm not sure if this message here is entirely necessary.
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
+
+  //TODO: might need to board cast a message here..
 end;
 
 end.

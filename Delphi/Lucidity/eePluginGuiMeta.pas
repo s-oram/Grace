@@ -43,8 +43,6 @@ uses
 
 constructor TPluginGuiMeta.Create(aPlugin: TeePlugin; aGui: TPluginGui; aSystemWindow: hwnd);
 var
-  VQ : IVamQuery;
-  Parent : TComponent;
   c : TControl;
 begin
   Plugin       := aPlugin;
