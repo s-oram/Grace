@@ -304,9 +304,9 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                        TPluginParameter.Lfo1Par2);
   GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                        TPluginParameter.Lfo1Par3);
 
+  GuiStandard_RegisterMenuButton(aGuiStandard, FilterRoutingButton,             TPluginParameter.FilterRouting);
 
-
-  GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
+  //GuiStandard.RedFoxMenuHandler.RegisterControl(FilterRoutingButton,    Plugin.Globals.VstParameters.FindParameter(TParName.FilterRouting),   TFilterRoutingHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter1TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(Filter2TypeTextBox,     Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type),     TFilterTypeHelper);
   GuiStandard.RedFoxMenuHandler.RegisterControl(AmpVelocityButton,      Plugin.Globals.VstParameters.FindParameter(TParName.AmpVelocity),     TEnvVelocityDepthHelper);

@@ -3,6 +3,7 @@ unit LucidityGui.MenuButtonHandler;
 interface
 
 uses
+  eeGuiStandardv2_MenuBuilder,
   Contnrs,
   Controls,
   Classes,
@@ -17,6 +18,8 @@ type
     ControlList : TObjectList;
 
     Plugin : TeePlugin;
+
+    MenuBuilder             : TGuiMenuBuilder;
 
     procedure UpdateAllControls;
 
@@ -38,6 +41,11 @@ type
 implementation
 
 uses
+  eeEnumHelper,
+  Lucidity.PluginParameters,
+  Lucidity.Types,
+  uConstants,
+  uGuiUtils,
   VamTextBox;
 
 { TMenuButtonHandler }
@@ -47,17 +55,30 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
+
+  MenuBuilder := TGuiMenuBuilder.Create;
 end;
 
 destructor TMenuButtonHandler.Destroy;
 begin
   ControlList.Free;
+  MenuBuilder.Free;
   inherited;
 end;
 
 procedure TMenuButtonHandler.RegisterControl(const c: TObject);
+var
+  tb : TVamTextBox;
 begin
-  if ControlList.IndexOf(c) <> -1
+  assert(c is TVamTextBox);
+  tb := c as TVamTextBox;
+
+  tb.OnMouseEnter := self.Handle_MouseEnter;
+  tb.OnMouseLeave := self.Handle_MouseLeave;
+  tb.OnMouseDown  := self.Handle_MouseDown;
+  tb.OnMouseUp    := self.Handle_MouseUp;
+
+  if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
 end;
 
@@ -83,8 +104,28 @@ begin
 end;
 
 procedure TMenuButtonHandler.UpdateControl(const c: TObject);
+var
+  tb : TVamTextBox;
+  Par : TPluginParameter;
+  ParName  : string;
+  ParValue : single;
+  EnumHelper : TCustomEnumHelperClass;
+  TextValue : string;
 begin
+  assert(c is TVamTextBox);
+  tb := (c as TVamTextBox);
 
+  ParName  := tb.ParameterName;
+  Par := PluginParFromName(Parname);
+
+  ParValue := Plugin.GetPluginParameter(ParName);
+
+  assert(ParValue >= 0);
+  assert(ParValue <= 1);
+
+  EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+  TextValue := EnumHelper.ToShortGuiString(ParValue);
+  if tb.Text <> TextValue then tb.Text := TextValue;
 end;
 
 procedure TMenuButtonHandler.Handle_MouseEnter(Sender: TObject);
@@ -98,12 +139,75 @@ begin
 end;
 
 procedure TMenuButtonHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  tb : TVamTextBox;
+  Par : TPluginParameter;
+  ParName  : string;
+  ParValue : single;
+  EnumHelper : TCustomEnumHelperClass;
+  ParValueAsInt : integer;
 begin
+  assert(Sender is TVamTextBox);
+  tb := (Sender as TVamTextBox);
 
+  if (Button = mbRight) then
+  begin
+    //===== Increment Enumerated Vst Parameter =================
+    ParName  := tb.ParameterName;
+    ParValue := Plugin.GetPluginParameter(ParName);
+    Par := PluginParFromName(Parname);
+    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+
+    ParValueAsInt := EnumHelper.ToInteger(ParValue);
+    inc(ParValueAsInt);
+    if ParValueAsInt >= EnumHelper.GetEnumTypeCount
+      then ParValueAsInt := 0;
+
+    ParValue := EnumHelper.ToSingle(ParValueAsInt);
+
+    // TODO: Should check if the parameter is a published vst parameter here.
+    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+
+    UpdateControl(Sender);
+  end;
 end;
 
 procedure TMenuButtonHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  ItemSelectedCallback : TMenuItemSelectedCallback;
+  ParValueAsInt : integer;
+  EnumHelper : TCustomEnumHelperClass;
+  tb : TVamTextBox;
+  Par : TPluginParameter;
+  ParName  : string;
+  ParValue : single;
 begin
+  assert(Sender is TVamTextBox);
+  tb := (Sender as TVamTextBox);
+
+  ParName  := tb.ParameterName;
+  ParValue := Plugin.GetPluginParameter(ParName);
+  Par := PluginParFromName(Parname);
+  EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+  ParValueAsInt := EnumHelper.ToInteger(ParValue);
+
+  ItemSelectedCallback := procedure(SelectedItemIndex : integer)
+  var
+    NewParValue : single;
+  begin
+    NewParValue := EnumHelper.ToSingle(SelectedItemIndex);
+
+    // TODO: Should check if the parameter is a published vst parameter here.
+    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, NewParValue);
+
+    UpdateControl(Sender);
+  end;
+
+  if (Button = mbLeft) then
+  begin
+    MenuBuilder.ShowMenuForVstParameter(ItemSelectedCallback, Mouse.CursorPos.X, Mouse.CursorPos.Y, ParValueAsInt, EnumHelper);
+  end;
+
 
 end;
 

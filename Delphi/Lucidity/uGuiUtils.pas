@@ -9,10 +9,10 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  eeEnumHelper,
   Math,
   Dialogs,
   VamKnob,
-  eeEnumHelper,
   eeGlobals,
   uLucidityEnums,
   Lucidity.Interfaces,
