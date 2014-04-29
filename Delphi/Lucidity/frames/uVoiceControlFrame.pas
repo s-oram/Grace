@@ -378,23 +378,11 @@ var
 begin
   kg := Plugin.ActiveKeyGroup;
 
-  //LM := ILevelMonitor(kg);
-  //VoiceLevelMeter.LevelMonitor := LM;
-  //VoiceLevelMeter.Invalidate;
-
   if Supports(kg, ILevelMonitor, LM) then
   begin
     VoiceLevelMeter.LevelMonitor := LM;
     VoiceLevelMeter.Invalidate;
   end;
-
-  {
-  if Supports(Plugin.ActiveKeyGroup, ILevelMonitor, LM) then
-  begin
-    VoiceLevelMeter.LevelMonitor := LM;
-    VoiceLevelMeter.Invalidate;
-  end;
-  }
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;
