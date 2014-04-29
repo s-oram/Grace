@@ -92,6 +92,7 @@ type
 implementation
 
 uses
+  VamGuiControlInterfaces,
   eeDsp,
   eeSampleFloat,
   uConstants,
@@ -732,15 +733,25 @@ end;
 procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 var
   gs : TGuiStandard;
+  mc : IMenuControl;
 begin
   assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
   gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
 
+
+  if Supports(Control, IMenuControl, mc)  then
+  begin
+    mc.SetParameterName(PluginParToName(Par));
+    gs.RegisterControl('MenuButtonHandler', Control);
+  end;
+
+  {
   if (Control is TVamTextBox) then
   begin
     (Control as TVamTextBox).ParameterName := PluginParToName(Par);
     gs.RegisterControl('MenuButtonHandler', Control);
   end;
+  }
 end;
 
 

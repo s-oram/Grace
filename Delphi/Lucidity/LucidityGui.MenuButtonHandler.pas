@@ -3,6 +3,7 @@ unit LucidityGui.MenuButtonHandler;
 interface
 
 uses
+  VamGuiControlInterfaces,
   eeGuiStandardv2_MenuBuilder,
   Contnrs,
   Controls,
@@ -16,10 +17,8 @@ type
   private
   protected
     ControlList : TObjectList;
-
     Plugin : TeePlugin;
-
-    MenuBuilder             : TGuiMenuBuilder;
+    MenuBuilder  : TGuiMenuBuilder;
 
     procedure UpdateAllControls;
 
@@ -41,13 +40,13 @@ type
 implementation
 
 uses
+  SysUtils,
   Menus,
   eeEnumHelper,
   Lucidity.PluginParameters,
   Lucidity.Types,
   uConstants,
-  uGuiUtils,
-  VamTextBox;
+  uGuiUtils;
 
 { TMenuButtonHandler }
 
@@ -68,18 +67,18 @@ end;
 
 procedure TMenuButtonHandler.RegisterControl(const c: TObject);
 var
-  tb : TVamTextBox;
+  mc : IMenuControl;
 begin
-  assert(c is TVamTextBox);
-  tb := c as TVamTextBox;
+  if Supports(c, IMenuControl, mc)  then
+  begin
+    mc.SetOnMouseEnter(Handle_MouseEnter);
+    mc.SetOnMouseLeave(Handle_MouseLeave);
+    mc.SetOnMouseDown(Handle_MouseDown);
+    mc.SetOnMouseUp(Handle_MouseUp);
 
-  tb.OnMouseEnter := self.Handle_MouseEnter;
-  tb.OnMouseLeave := self.Handle_MouseLeave;
-  tb.OnMouseDown  := self.Handle_MouseDown;
-  tb.OnMouseUp    := self.Handle_MouseUp;
-
-  if ControlList.IndexOf(c) = -1
-    then ControlList.Add(c);
+    if ControlList.IndexOf(c) = -1
+      then ControlList.Add(c);
+  end;
 end;
 
 procedure TMenuButtonHandler.DeregisterControl(const c: TObject);
@@ -105,82 +104,84 @@ end;
 
 procedure TMenuButtonHandler.UpdateControl(const c: TObject);
 var
-  tb : TVamTextBox;
   Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
   EnumHelper : TCustomEnumHelperClass;
   TextValue : string;
+  mc : IMenuControl;
 begin
-  assert(c is TVamTextBox);
-  tb := (c as TVamTextBox);
+  if Supports(c, IMenuControl, mc)  then
+  begin
+    ParName  := mc.GetParameterName;
+    Par := PluginParFromName(Parname);
 
-  ParName  := tb.ParameterName;
-  Par := PluginParFromName(Parname);
+    ParValue := Plugin.GetPluginParameter(ParName);
 
-  ParValue := Plugin.GetPluginParameter(ParName);
+    assert(ParValue >= 0);
+    assert(ParValue <= 1);
 
-  assert(ParValue >= 0);
-  assert(ParValue <= 1);
-
-  EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
-  TextValue := EnumHelper.ToShortGuiString(ParValue);
-  if tb.Text <> TextValue then tb.Text := TextValue;
+    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+    TextValue := EnumHelper.ToShortGuiString(ParValue);
+    mc.SetMenuText(TextValue);
+  end;
 end;
 
 procedure TMenuButtonHandler.Handle_MouseEnter(Sender: TObject);
 var
-  tb : TVamTextBox;
   ParName  : string;
+  mc : IMenuControl;
 begin
-  assert(Sender is TVamTextBox);
-  tb := (Sender as TVamTextBox);
-  ParName  := tb.ParameterName;
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+  if Supports(Sender, IMenuControl, mc)  then
+  begin
+    ParName  := mc.GetParameterName;
+    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+  end;
 end;
 
 procedure TMenuButtonHandler.Handle_MouseLeave(Sender: TObject);
 var
-  tb : TVamTextBox;
+  mc : IMenuControl;
   ParName  : string;
 begin
-  assert(Sender is TVamTextBox);
-  tb := (Sender as TVamTextBox);
-  ParName  := tb.ParameterName;
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
+  if Supports(Sender, IMenuControl, mc)  then
+  begin
+    ParName  := mc.GetParameterName;
+    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
+  end;
 end;
 
 procedure TMenuButtonHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  tb : TVamTextBox;
+  mc : IMenuControl;
   Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
   EnumHelper : TCustomEnumHelperClass;
   ParValueAsInt : integer;
 begin
-  assert(Sender is TVamTextBox);
-  tb := (Sender as TVamTextBox);
-
-  if (Button = mbRight) then
+  if Supports(Sender, IMenuControl, mc)  then
   begin
-    //===== Increment Enumerated Vst Parameter =================
-    ParName  := tb.ParameterName;
-    ParValue := Plugin.GetPluginParameter(ParName);
-    Par := PluginParFromName(Parname);
-    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+    if (Button = mbRight) then
+    begin
+      //===== Increment Enumerated Vst Parameter =================
+      ParName  := mc.GetParameterName;
+      ParValue := Plugin.GetPluginParameter(ParName);
+      Par := PluginParFromName(Parname);
+      EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
 
-    ParValueAsInt := EnumHelper.ToInteger(ParValue);
-    inc(ParValueAsInt);
-    if ParValueAsInt >= EnumHelper.GetEnumTypeCount
-      then ParValueAsInt := 0;
+      ParValueAsInt := EnumHelper.ToInteger(ParValue);
+      inc(ParValueAsInt);
+      if ParValueAsInt >= EnumHelper.GetEnumTypeCount
+        then ParValueAsInt := 0;
 
-    ParValue := EnumHelper.ToSingle(ParValueAsInt);
+      ParValue := EnumHelper.ToSingle(ParValueAsInt);
 
-    // TODO: Should check if the parameter is a published vst parameter here.
-    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+      // TODO: Should check if the parameter is a published vst parameter here.
+      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
 
-    UpdateControl(Sender);
+      UpdateControl(Sender);
+    end;
   end;
 end;
 
@@ -189,51 +190,47 @@ var
   ItemSelectedCallback : TMenuItemSelectedCallback;
   ParValueAsInt : integer;
   EnumHelper : TCustomEnumHelperClass;
-  tb : TVamTextBox;
+  mc : IMenuControl;
   Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
   ShowMenuCallback : TShowMenuCallback;
 begin
-  assert(Sender is TVamTextBox);
-  tb := (Sender as TVamTextBox);
-
-  ParName  := tb.ParameterName;
-  ParValue := Plugin.GetPluginParameter(ParName);
-  Par := PluginParFromName(Parname);
-  EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
-  ParValueAsInt := EnumHelper.ToInteger(ParValue);
-
-  ItemSelectedCallback := procedure(SelectedItemIndex : integer)
-  var
-    NewParValue : single;
+  if Supports(Sender, IMenuControl, mc)  then
   begin
-    NewParValue := EnumHelper.ToSingle(SelectedItemIndex);
+    ParName  := mc.GetParameterName;
+    ParValue := Plugin.GetPluginParameter(ParName);
+    Par := PluginParFromName(Parname);
+    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+    ParValueAsInt := EnumHelper.ToInteger(ParValue);
 
-    // TODO: Should check if the parameter is a published vst parameter here.
-    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, NewParValue);
+    ItemSelectedCallback := procedure(SelectedItemIndex : integer)
+    var
+      NewParValue : single;
+    begin
+      NewParValue := EnumHelper.ToSingle(SelectedItemIndex);
 
-    UpdateControl(Sender);
+      // TODO: Should check if the parameter is a published vst parameter here.
+      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, NewParValue);
+
+      UpdateControl(Sender);
+    end;
+
+    ShowMenuCallback := procedure(aMenu : TMenu)
+    var
+      Data : TMsgData_ShowMenu;
+    begin
+      Data.MenuName := ParName;
+      Data.Menu     := @aMenu;
+
+      Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnShowMenu, @Data);
+    end;
+
+    if (Button = mbLeft) then
+    begin
+      MenuBuilder.ShowMenuForVstParameter(ItemSelectedCallback, Mouse.CursorPos.X, Mouse.CursorPos.Y, ParValueAsInt, EnumHelper, ShowMenuCallback);
+    end;
   end;
-
-  ShowMenuCallback := procedure(aMenu : TMenu)
-  var
-    Data : TMsgData_ShowMenu;
-  begin
-    Data.MenuName := ParName;
-    Data.Menu     := @aMenu;
-
-    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnShowMenu, @Data);
-  end;
-
-
-
-  if (Button = mbLeft) then
-  begin
-    MenuBuilder.ShowMenuForVstParameter(ItemSelectedCallback, Mouse.CursorPos.X, Mouse.CursorPos.Y, ParValueAsInt, EnumHelper, ShowMenuCallback);
-  end;
-
-
 end;
 
 
