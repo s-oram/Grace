@@ -5,7 +5,6 @@ interface
 uses
   Lucidity.PluginParameters,
   eeGuiStandardv2,
-  eeGuiStandard, eeGuiStandard_MenuBuilder,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   uDialogDisplayArea,
@@ -134,8 +133,6 @@ type
     procedure LfoSelectorChanged(Sender: TObject);
   private
     fPlugin: TeePlugin;
-    fGuiStandard: TGuiStandard;
-
     KnobList : TObjectList;
 
     MsgHandle : hwnd;
@@ -161,11 +158,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard_OLD:TGuiStandard; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
-    property GuiStandard : TGuiStandard read fGuiStandard;
 
     procedure FilterChanged;
   end;
@@ -253,7 +249,7 @@ begin
   inherited;
 end;
 
-procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard_OLD:TGuiStandard; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
 const
   kContainerWidth  = 600;
   kContainerHeight = 322;
@@ -268,7 +264,6 @@ begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
-  fGuiStandard := aGuiStandard_OLD;
 
   if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
 
