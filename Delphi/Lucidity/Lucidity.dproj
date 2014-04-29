@@ -562,9 +562,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="eePlugin.pas"/>
-			<DCCReference Include="eeGuiStandard.pas"/>
-			<DCCReference Include="eeGuiStandard.RedFoxKnob.pas"/>
-			<DCCReference Include="eeGuiStandard.RedFoxMenu.pas"/>
 			<DCCReference Include="eeGlobals.InfoBarReceiver.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas"/>
