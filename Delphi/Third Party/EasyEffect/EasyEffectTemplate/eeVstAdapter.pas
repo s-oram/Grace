@@ -207,7 +207,7 @@ begin
   ProcessControllerV2 := TProcessController.Create(Plugin);
   ProcessControllerV2.TimeInfoMethod := self.GetTimeInfo;
 
-  inherited Create(audioMaster, Plugin.Settings.NumberOfPrograms, Plugin.Globals.VstParameters.PublishedParameterCount);
+  inherited Create(audioMaster, Plugin.Settings.NumberOfPrograms, Plugin.PublishedVstParameters.Count);
 
   // Update plugin with some host properties.
   Plugin.Globals.HostProperties^.HostName    := GetReportedHostName;
@@ -321,7 +321,7 @@ procedure TeeVstAdapter.GetParameterName(index: Integer; text: PAnsiChar);
 var
   s:AnsiString;
 begin
-  if (Index >= 0) and (Index < Plugin.Globals.VstParameters.PublishedParameterCount) then
+  if (Index >= 0) and (Index < Plugin.PublishedVstParameters.Count) then
   begin
         //TODO: I think the Vst adapter should access the published parameter directly
     // instead of going via the GetParameter...() method below.
@@ -341,7 +341,7 @@ procedure TeeVstAdapter.GetParameterDisplay(index: Integer; text: PAnsiChar);
 var
   s:AnsiString;
 begin
-  if (Index >= 0) and (Index < Plugin.Globals.VstParameters.PublishedParameterCount) then
+  if (Index >= 0) and (Index < Plugin.PublishedVstParameters.Count) then
   begin
         //TODO: I think the Vst adapter should access the published parameter directly
     // instead of going via the GetParameter...() method below.
@@ -361,7 +361,7 @@ procedure TeeVstAdapter.GetParameterLabel(index: Integer; aLabel: PAnsiChar);
 var
   s:AnsiString;
 begin
-  if (Index >= 0) and (Index < Plugin.Globals.VstParameters.PublishedParameterCount) then
+  if (Index >= 0) and (Index < Plugin.PublishedVstParameters.Count) then
   begin
     //TODO: I think the Vst adapter should access the published parameter directly
     // instead of going via the GetParameter...() method below.

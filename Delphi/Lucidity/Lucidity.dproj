@@ -548,7 +548,6 @@
 			<DCCReference Include="Controls\LucidityControl.ModSection.pas"/>
 			<DCCReference Include="LucidityModConnections.pas"/>
 			<DCCReference Include="Lucidity.Options.pas"/>
-			<DCCReference Include="eePluginParameterWizard.pas"/>
 			<DCCReference Include="Third Party File Support\Lucidity.Sfz.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstAdapter.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas"/>
@@ -658,220 +657,4 @@
 		<ItemGroup/>
 		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
 		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
-		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
-			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
-			<PreLinkEvent/>
-			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-			<PostBuildEvent/>
-			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
-		</PropertyGroup>
 	</Project>

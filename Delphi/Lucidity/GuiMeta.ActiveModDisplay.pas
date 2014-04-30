@@ -88,10 +88,10 @@ begin
 end;
 
 procedure TModDisplayDetector.SetCurrentMouseOverControl(const Value: TControl);
-var
-  ActiveModParIndex : integer;
-  k : TVamKnob;
-  Par : TVstParameterEx;
+//var
+  //ActiveModParIndex : integer;
+  //k : TVamKnob;
+  //Par : TVstParameterEx;
 begin
   // TODO: I need to re-write this code so it's not using VST parameters.
 

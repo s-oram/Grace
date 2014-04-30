@@ -112,7 +112,6 @@ uses
   LucidityControl.ModSection in 'Controls\LucidityControl.ModSection.pas',
   LucidityModConnections in 'LucidityModConnections.pas',
   Lucidity.Options in 'Lucidity.Options.pas',
-  eePluginParameterWizard in 'eePluginParameterWizard.pas',
   Lucidity.Sfz in 'Third Party File Support\Lucidity.Sfz.pas',
   eeVstAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstAdapter.pas',
   DAEffectX in '..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas',
