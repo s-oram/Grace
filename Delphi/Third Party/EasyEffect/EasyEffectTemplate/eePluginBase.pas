@@ -6,6 +6,7 @@ interface
 
 uses
   eeSyncObjects,
+  eePublishedVstParameters,
   eeTypes, eeMidiEvents, eePluginSettings,
   eeVstMidiTypes, eeBufferedEventList,
   Classes, VamLib.MoreTypes, eeGlobals;
@@ -60,15 +61,6 @@ type
 
 
     //==========================================================================
-    // TODO
-    // These methods are analogs for the similarly named methods in the VST
-    // protocol. GetParameter(), GetParameterName() etc. are all
-    // called  by the VST Adapter. These methods in turn find the
-    // results in the Globals.VstParameters lists.
-    // Now that Globals.VstParameters is a standard part of the EasyEffect
-    // template, these intermediate methods could be removed.
-    // The VST Adapter class could pull the required information from
-    // Globals.VstParameters directly.
     function GetParameter(Index:integer):single; virtual;
     procedure ParameterChanged(Index:integer; Value:single); virtual;
 
@@ -125,6 +117,9 @@ type
 
 
     property OnPresetNameChanged : TNotifyEvent read fOnPresetNameChanged write fOnPresetNameChanged;
+
+
+
   end;
 
 implementation
