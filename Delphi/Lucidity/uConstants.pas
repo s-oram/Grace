@@ -98,7 +98,6 @@ const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
 
-  kParameterCount          = 70;
   kModulatedParameterCount = 33;
   kModSlotCount = 8;
 
@@ -420,10 +419,6 @@ end;
 
 
 initialization
-  {
-  if kParameterCount  <> TPluginParameterHelper.GetEnumTypeCount
-    then raise Exception.Create('kParameterCount doesn''t match enum type count.');
-  }
 
 finalization
   if assigned(Global_Info) then Global_Info.Free;
