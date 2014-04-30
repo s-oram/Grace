@@ -133,18 +133,6 @@ type
     procedure UpdateSyncInfo;
     procedure UpdateTransportState(Playing, CycleActive, Recording:boolean);
 
-
-
-
-
-
-    // NOTE: VST Properties isn't yet being used by any plugins. I think
-    // it's probably a poorly implemented idea. I think it may be
-    // better to delete 'VstProperties' and replace it with a generic 'Broadcast'
-    // command. Individual classes could subscribe and be given a chance to
-    // react to any and all "broadcasts".
-    property VstProperties : TVstPropertyController read fVstProperties;
-
     //=============================================================================
     // NOTE: These values are updated by calling UpdateSyncInfo.
     property BarPos             : double  read fBarPos;  //in quarter beats.
@@ -252,8 +240,6 @@ begin
 
   WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
 
-  fVstProperties := TVstPropertyController.Create;
-
   SampleRateList       := TEventList.Create;
   BlockSizeList        := TEventList.Create;
   TempoList            := TEventList.Create;
@@ -296,7 +282,6 @@ begin
   PlayStateChangedList.Free;
   VstSuspendList.Free;
   VstResumeList.Free;
-  fVstProperties.Free;
   WindowsMessageGateKeeper.Free;
   FMotherShip.Free;
   inherited;
