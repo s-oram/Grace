@@ -148,6 +148,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   Lucidity.SequencerDataObject,
   LucidityUtils,
   Lucidity.StateHelpers,
@@ -244,10 +245,48 @@ var
   c1 : integer;
   ModParNode   : TXmlNode;
   ModParSaveObject : TModParSaveObject;
+  Par : TPluginParameter;
+  ModLinkIndex : integer;
 begin
   ModParSaveObject := TModParSaveObject.Create;
   AutoFree(@ModParSaveObject);
 
+  for c1 := 0 to GetPluginParameterCount-1 do
+  begin
+    Par := IndexToPluginParameter(c1);
+    if IsModPar(Par) then
+    begin
+      ModLinkIndex := GetModParIndex(Par);
+      ModParSaveObject.ParName    := PluginParToName(Par);
+      ModParSaveObject.ParValue   := sg.GetModParValue(ModLinkIndex);
+      ModParSaveObject.ModAmount1 := sg.GetModParModAmount(ModLinkIndex, 0);
+      ModParSaveObject.ModAmount2 := sg.GetModParModAmount(ModLinkIndex, 1);
+      ModParSaveObject.ModAmount3 := sg.GetModParModAmount(ModLinkIndex, 2);
+      ModParSaveObject.ModAmount4 := sg.GetModParModAmount(ModLinkIndex, 3);
+      ModParSaveObject.ModAmount5 := sg.GetModParModAmount(ModLinkIndex, 4);
+      ModParSaveObject.ModAmount6 := sg.GetModParModAmount(ModLinkIndex, 5);
+      ModParSaveObject.ModAmount7 := sg.GetModParModAmount(ModLinkIndex, 6);
+      ModParSaveObject.ModAmount8 := sg.GetModParModAmount(ModLinkIndex, 7);
+
+      ModParNode := ParentNode.NodeNew('ModulatedParameter');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParName');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParValue');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount1');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount2');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount3');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount4');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount5');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount6');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount7');
+      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount8');
+    end;
+
+
+  end;
+
+
+  //TODO: Delete this code.
+  {
   for c1 := 0 to kParameterCount-1 do
   begin
     if ParInfoEx[c1].ModLinkIndex <> -1 then
@@ -276,6 +315,7 @@ begin
       SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount8');
     end;
   end;
+  }
 end;
 
 procedure TLucidityStatemanager.LoadModulatedParametersFromNode(ParentNode: TXmlNode; sg: TKeyGroup);
@@ -286,6 +326,8 @@ var
   aNode : TXmlNode;
 
   ModLinkIndex : integer;
+
+  Par : TPluginParameter;
 begin
   ModParSaveObject := TModParSaveObject.Create;
   AutoFree(@ModParSaveObject);
@@ -310,6 +352,29 @@ begin
     LoadObjectPropertyFromXML(aNode, ModParSaveObject, 'ModAmount8');
 
 
+
+    if IsValidPluginParName(ModParSaveObject.ParName) then
+    begin
+      Par := PluginParFromName(ModParSaveObject.ParName);
+      if IsModPar(Par) then
+      begin
+        ModLinkIndex := GetModParIndex(Par);
+
+        sg.SetModParValue(ModLinkIndex, ModParSaveObject.ParValue);
+        sg.SetModParModAmount(ModLinkIndex, 0, ModParSaveObject.ModAmount1);
+        sg.SetModParModAmount(ModLinkIndex, 1, ModParSaveObject.ModAmount2);
+        sg.SetModParModAmount(ModLinkIndex, 2, ModParSaveObject.ModAmount3);
+        sg.SetModParModAmount(ModLinkIndex, 3, ModParSaveObject.ModAmount4);
+        sg.SetModParModAmount(ModLinkIndex, 4, ModParSaveObject.ModAmount5);
+        sg.SetModParModAmount(ModLinkIndex, 5, ModParSaveObject.ModAmount6);
+        sg.SetModParModAmount(ModLinkIndex, 6, ModParSaveObject.ModAmount7);
+        sg.SetModParModAmount(ModLinkIndex, 7, ModParSaveObject.ModAmount8);
+      end;
+    end;
+
+
+    //TODO: Delete this code.
+    {
     ModLinkIndex := ParNameToModLinkIndex(ModParSaveObject.ParName);
     if ModLinkIndex <> -1 then
     begin
@@ -323,7 +388,7 @@ begin
       sg.SetModParModAmount(ModLinkIndex, 6, ModParSaveObject.ModAmount7);
       sg.SetModParModAmount(ModLinkIndex, 7, ModParSaveObject.ModAmount8);
     end;
-
+    }
   end;
 end;
 

@@ -127,6 +127,7 @@ type
   end;
 
 
+function IsValidPluginParName(const Name : string):boolean;
 
 function PluginParToName(const Par : TPluginParameter):string;
 function PluginParFromName(const Name : string):TPluginParameter;
@@ -143,9 +144,8 @@ function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
 
 function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 
-
-
-
+function GetPluginParameterCount:integer;
+function IndexToPluginParameter(Index : integer):TPluginParameter;
 
 
 implementation
@@ -153,6 +153,21 @@ implementation
 uses
   SysUtils,
   Rtti;
+
+function IsValidPluginParName(const Name : string):boolean;
+var
+  c1: Integer;
+  s : string;
+begin
+  for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
+  begin
+    s := TPluginParameterHelper.ToUnicodeString(c1);
+    if Name = s
+      then exit(true);
+  end;
+  //=== no match if we've made it this far ==
+  result := false;
+end;
 
 function PluginParToName(const Par : TPluginParameter):string;
 begin
@@ -287,6 +302,19 @@ begin
     TPluginParameter.PreviewVolume: ;
     TPluginParameter.Preview: ;
   end;
+end;
+
+
+function GetPluginParameterCount:integer;
+begin
+  result := TPluginParameterHelper.GetEnumTypeCount;
+end;
+
+function IndexToPluginParameter(Index : integer):TPluginParameter;
+begin
+  assert(Index >= 0);
+  assert(Index <= TPluginParameterHelper.GetEnumTypeCount);
+  result := TPluginParameterHelper.ToEnum(Index);
 end;
 
 end.

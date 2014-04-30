@@ -5,6 +5,8 @@ interface
 uses
   uConstants;
 
+
+ // TODO: Delete all of this as soon as posible.
 type
   TParInfoEx = record
     Name : string;
