@@ -692,7 +692,7 @@ begin
   SampleMap.DeleteRegionsInKeyGroup(aKeyGroupName);
   KeyGroups.DeleteKeyGroup(aKeyGroupName);
 
-  //TODO: re-set focus
+  // re-set focus
   if assigned(FocusedKeyGroup) and (FocusedKeyGroup.GetName = aKeyGroupname)
     then self.FocusFirstKeyGroup;
 
@@ -798,7 +798,7 @@ begin
 
 
   // Get the current feedback data
-  SG := FocusedKeyGroup;
+  SG := ActiveKeyGroup;
   if assigned(SG) then
   begin
     aVoice := VoiceController.GetLastTriggeredVoice;
@@ -815,10 +815,6 @@ begin
     begin
       FeedBackData.IsVoiceActive := false;
     end;
-  end else
-  begin
-    //TODO:
-    //assert(false, 'TODO');
   end;
 end;
 
@@ -1130,6 +1126,7 @@ begin
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
+
     // TODO: Send message using GUI thread doesn't seem to be working.
     // I'm not sure. Perhaps it's something to do with OTL's async().await(). method.
     Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
