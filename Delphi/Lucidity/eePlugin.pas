@@ -231,12 +231,11 @@ constructor TeePlugin.Create;
 var
   kgObj : TKeyGroup;
   DefaultMidiMapFileName : string;
-  //aPar : TVstParameter;
-  c1: Integer;
   DataFileName : string;
   DataDir : string;
   fn : string;
   fnA, fnB : string;
+  ParName : string;
 begin
   inherited;
 
@@ -382,14 +381,21 @@ begin
   KeyGroups.NewKeyGroup;
   FocusFirstKeyGroup;
 
+  //TODO: need a way to reset parameters to default values.
+  {
   //Reset all VST parameters to default values.
   for c1 := 0 to Globals.VstParameters.Count-1 do
   begin
     Globals.VstParameters[c1].ResetToDefault;
   end;
+  }
 
-  Globals.VstParameters.FindParameter(TParName.Seq1Length).ValueVST := 1;
-  Globals.VstParameters.FindParameter(TParName.Seq2Length).ValueVST := 1;
+  ParName := PluginParToName(TPluginParameter.Seq1Length);
+  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
+
+  ParName := PluginParToName(TPluginParameter.Seq2Length);
+  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
+
 
   //Important: call SampleGroups.UpdateInitReference() after reseting all properties to default.
   KeyGroups.UpdateInitReference;
@@ -532,7 +538,7 @@ end;
 
 procedure TeePlugin.InitializeState;
 var
-  c1: Integer;
+  ParName : string;
 begin
   inherited;
 
@@ -542,14 +548,22 @@ begin
   KeyGroups.Clear;
   SampleMap.Clear;
 
+
+  //TODO: need a way to reset parameters to default values.
+  {
   //Reset all VST parameters to default values.
   for c1 := 0 to Globals.VstParameters.Count-1 do
   begin
     Globals.VstParameters[c1].ResetToDefault;
   end;
+  }
 
-  Globals.VstParameters.FindParameter(TParName.Seq1Length).ValueVST := 1;
-  Globals.VstParameters.FindParameter(TParName.Seq2Length).ValueVST := 1;
+
+  ParName := PluginParToName(TPluginParameter.Seq1Length);
+  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
+
+  ParName := PluginParToName(TPluginParameter.Seq2Length);
+  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
 
 
   fFocusedKeyGroup := nil;

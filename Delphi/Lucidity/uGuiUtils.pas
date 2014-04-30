@@ -9,6 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  Lucidity.PluginParameters,
   eeEnumHelper,
   Math,
   Dialogs,
@@ -17,7 +18,6 @@ uses
   uLucidityEnums,
   Lucidity.Interfaces,
   Lucidity.Types,
-  Lucidity.PluginParameters,
   Lucidity.SampleMap, eePlugin,
   VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
@@ -79,6 +79,9 @@ type
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
     class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
     class procedure ClearAllModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
+
+    class function GetParValue(const Plugin : TeePlugin; const Par : TPluginParameter):single; overload; static;
+    class function GetParValue<TEnum>(const Plugin : TeePlugin; const Par : TPluginParameter):TEnum; overload; static;
   end;
 
 
@@ -629,6 +632,24 @@ begin
   end;
 
   Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
+end;
+
+class function Command.GetParValue(const Plugin: TeePlugin; const Par: TPluginParameter): single;
+var
+  ParName : string;
+begin
+  ParName := PluginParToName(Par);
+  result := Plugin.GetPluginParameter(ParName);
+end;
+
+class function Command.GetParValue<TEnum>(const Plugin: TeePlugin; const Par: TPluginParameter): TEnum;
+var
+  ParName : string;
+  ParValue : single;
+begin
+  ParName := PluginParToName(Par);
+  ParValue := Plugin.GetPluginParameter(ParName);
+  result := TEnumHelper<TEnum>.ToEnum(ParValue);
 end;
 
 class procedure Command.MoveSampleMarker(const Plugin: TeePlugin; const Marker: TSampleMarker; const NewSamplePos: integer);

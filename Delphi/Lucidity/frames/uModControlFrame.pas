@@ -732,13 +732,15 @@ end;
 
 procedure TModControlFrame.UpdateControlVisibility;
 var
-  Par : TVstParameter;
-  FT  : TFilterType;
   Knobs : array[0..3] of TControl;
   Labels : array[0..3] of TControl;
+  ParName  : string;
+  ParValue : single;
+  FT  : TFilterType;
 begin
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Filter1Type);
-  FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
+  ParName := PluginParToName(TPluginParameter.Filter1Type);
+  ParValue := Plugin.GetPluginParameter(ParName);
+  FT := TFilterTypeHelper.ToEnum(ParValue);
 
   Knobs[0] := Filter1Par1Knob;
   Knobs[1] := Filter1Par2Knob;
@@ -754,8 +756,9 @@ begin
 
 
 
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.Filter2Type);
-  FT := TFilterTypeHelper.ToEnum(Par.ValueVST);
+  ParName := PluginParToName(TPluginParameter.Filter2Type);
+  ParValue := Plugin.GetPluginParameter(ParName);
+  FT := TFilterTypeHelper.ToEnum(ParValue);
 
   Knobs[0] := Filter2Par1Knob;
   Knobs[1] := Filter2Par2Knob;
@@ -898,7 +901,7 @@ begin
     LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo1FreqMode);
     LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Range);
 
-    CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo1Shape).ValueAsEnum<TLfoShape>;
+    CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo1Shape);
   end else
   //if Plugin.Globals.SelectedLfo = 1 then
   begin
@@ -930,7 +933,7 @@ begin
     LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
     LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Range);
 
-    CurrentLfoShape := Plugin.Globals.VstParameters.FindParameter(TParName.Lfo2Shape).ValueAsEnum<TLfoShape>;
+    CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo2Shape);
   end;
 
 

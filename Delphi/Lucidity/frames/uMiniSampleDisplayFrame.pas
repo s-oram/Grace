@@ -108,6 +108,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   VamLib.Throttler,
   eeDsp,
   VamLib.Graphics,
@@ -778,11 +779,11 @@ end;
 
 procedure TMiniSampleDisplayFrame.UpdateControlVisibility;
 var
-  Par : TVstParameter;
   Target : TControl;
   mode : TPitchTracking;
-
   xpos : integer;
+  ParName : string;
+  ParValue : single;
 begin
   SampleVolumeKnob.Align := alNone;
   SamplePanKnob.Align := alNone;
@@ -790,9 +791,9 @@ begin
   SampleTuneKnob.Align := alNone;
   SampleBeatsKnob.Align := alNone;
 
-
-  Par := Plugin.Globals.VstParameters.FindParameter('PitchTracking');
-  mode := TPitchTrackingHelper.ToEnum(Par.ValueVST);
+  ParName := PluginParToName(TPluginParameter.PitchTracking);
+  ParValue := Plugin.GetPluginParameter(ParName);
+  Mode := TPitchTrackingHelper.ToEnum(ParValue);
 
   case Mode of
     TPitchTracking.Note,

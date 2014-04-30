@@ -158,9 +158,11 @@ var
   x : integer;
 begin
 
+
+
   if fSequencerIndex = 0
-      then SeqLength := Plugin.Globals.VstParameters.FindParameter(TParName.Seq1Length).ValueAsEnum<TStepSequencerLength>
-      else SeqLength := Plugin.Globals.VstParameters.FindParameter(TParName.Seq2Length).ValueAsEnum<TStepSequencerLength>;
+      then SeqLength := Command.GetParValue<TStepSequencerLength>(Plugin, TPluginParameter.Seq1Length)
+      else SeqLength := Command.GetParValue<TStepSequencerLength>(Plugin, TPluginParameter.Seq2Length);
 
   x := StepSequencerLengthToInteger(SeqLength);
 

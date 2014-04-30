@@ -407,13 +407,14 @@ end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;
 var
-  Par : TVstParameter;
   vm : TVoiceMode;
+  PlaybackType :  TSamplePlaybackType;
 begin
   if not assigned(Plugin) then exit;
 
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType);
-  case TSamplePlaybackTypeHelper.ToEnum(Par.ValueVST) of
+  PlaybackType := Command.GetParValue<TSamplePlaybackType>(Plugin, TPluginParameter.SamplePlaybackType);
+
+  case PlaybackType of
     TSamplePlaybackType.NoteSampler:
     begin
       VoicePitch1Knob.Enabled := true;
@@ -447,10 +448,7 @@ begin
   end;
 
 
-
-
-  Par := Plugin.Globals.VstParameters.FindParameter(TParName.VoiceMode);
-  vm := TVoiceModeHelper.ToEnum(Par.ValueVST);
+  vm :=  Command.GetParValue<TVoiceMode>(Plugin, TPluginParameter.VoiceMode);
   case vm of
     TVoiceMode.Poly:
     begin
