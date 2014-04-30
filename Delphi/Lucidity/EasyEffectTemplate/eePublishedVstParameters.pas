@@ -6,6 +6,13 @@ uses
   VamLib.Collections.Lists;
 
 type
+  TVstParameterInfo = record
+    Name : string;
+    ShortName : string;
+    Display : string;
+    Units   : string;
+  end;
+
   TVstParameter = record
   public
     PluginParameterName : string;
@@ -25,6 +32,7 @@ type
     procedure AddParameter(const PluginParameterName : string);
 
     function FindParameterIndex(const PluginParameterName : string) : integer;
+    function FindParameterName(const Index : integer) : string;
 
     property Count : integer read GetCount;
   end;
@@ -63,6 +71,11 @@ begin
 
   //== no match has been found if we've made it this far ==
   result := -1;
+end;
+
+function TPublishedVstParameterController.FindParameterName(const Index: integer): string;
+begin
+  result := VstParameterList[Index].PluginParameterName;
 end;
 
 procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string);

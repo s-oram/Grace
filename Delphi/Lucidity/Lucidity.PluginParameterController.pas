@@ -4,6 +4,7 @@ interface
 
 uses
   VamLib.Utils,
+  eePublishedVstParameters,
   Lucidity.Interfaces,
   Lucidity.PluginParameters,
   Lucidity.Types;
@@ -24,6 +25,8 @@ type
     class procedure GetModParModMinMax(const aPlugin : TObject; const ParName : string; out ModMin, ModMax:single); static; inline;
 
     class function GetParameterInfo(const aPlugin : TObject; const ParName : string) : TPluginParameterInfo; static; inline;
+
+    class function GetPluginParameterVstInfo(const aPlugin : TObject; const ParName : string):TVstParameterInfo; static; inline;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -211,6 +214,14 @@ begin
   end;
 
 
+end;
+
+class function TPluginParameterController.GetPluginParameterVstInfo(const aPlugin: TObject; const ParName: string): TVstParameterInfo;
+begin
+  result.Name := ParName;
+  result.ShortName := ParName;
+  result.Display := '';
+  result.Units   := '';
 end;
 
 class procedure TPluginParameterController.SetPluginParameter(

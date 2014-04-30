@@ -7,6 +7,7 @@ interface
 {$M+}
 
 uses
+  eePublishedVstParameters,
   Lucidity.PluginParameters,
   Lucidity.PluginParameterController,
   Lucidity.Types,
@@ -110,8 +111,12 @@ type
     constructor Create; override;
 	  destructor Destroy; override;
 
-    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single);
-    function GetPluginParameter(const ParName : string):single;
+    function GetPluginParameter(const ParName : string):single; override;
+    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override;
+    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
+
+
+    function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
 
     procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
     function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single;
@@ -465,9 +470,18 @@ begin
   inherited;
 end;
 
+
+
 function TeePlugin.GetPluginParameter(const ParName: string): single;
 begin
   result := TPluginParameterController.GetPluginParameter(self, ParName);
+end;
+
+procedure TeePlugin.SetPluginParameter(const ParName: string; const ParValue: single);
+begin
+  // Generally this form of SetPluginParameter() will only be called by published VST parameters.
+  // those changes need to effect all key groups so use the 'Global' TParChange scope.
+  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParName, ParValue);
 end;
 
 procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName, ParName: string; const Value: single);
@@ -478,6 +492,11 @@ end;
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin
   result := TPluginParameterController.GetParameterModAmount(self, ParName, ModSlot);
+end;
+
+function TeePlugin.GetPluginParameterVstInfo(const ParName: string): TVstParameterInfo;
+begin
+  result := TPluginParameterController.GetPluginParameterVstInfo(self, ParName);
 end;
 
 procedure TeePlugin.SetPluginParameterModAmount(const Scope: TParChangeScope; const ParName: string; const ModSlot: integer; const ModAmount: single);

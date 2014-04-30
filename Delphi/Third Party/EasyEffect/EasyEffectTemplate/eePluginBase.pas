@@ -35,6 +35,7 @@ type
     fHostPlayState: THostPlayState;
     fAudioEffect: TVstAudioEffect;
     fOnPresetNameChanged: TNotifyEvent;
+    fPublishedVstParameters: TPublishedVstParameterController;
     function GetSettings: TeePluginSettings;
     procedure SetPresetName(const Value: string);
   protected
@@ -44,6 +45,11 @@ type
     procedure SetInitialOutputCount(const Value: integer);
 
     procedure SetHostPlayState(const Value: THostPlayState); virtual;
+
+    function GetPluginParameter(const ParName : string):single; virtual; abstract;
+    procedure SetPluginParameter(const ParName : string; const ParValue : single); virtual; abstract;
+    function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
+
   public
     Inputs  : TArrayOfPSingle;
     Outputs : TArrayOfPSingle;
@@ -119,7 +125,7 @@ type
     property OnPresetNameChanged : TNotifyEvent read fOnPresetNameChanged write fOnPresetNameChanged;
 
 
-
+    property PublishedVstParameters : TPublishedVstParameterController read fPublishedVstParameters;
   end;
 
 implementation
@@ -142,6 +148,8 @@ uses
 
 constructor TeePluginBase.Create;
 begin
+  fPublishedVstParameters := TPublishedVstParameterController.Create;
+
   Globals     := TGlobals.Create;
   AudioEffect := TVstAudioEffect.Create;
 
@@ -163,6 +171,7 @@ begin
 
   AudioEffect.Free;
   Globals.Free;
+  fPublishedVstParameters.Free;
   inherited;
 end;
 
@@ -199,27 +208,44 @@ begin
 end;
 
 function TeePluginBase.GetParameter(Index: integer): single;
+var
+  ParName : string;
 begin
-  //result := Globals.VstParameters[Index].ValueVST;
-  result := Globals.VstParameters.PublishedParameter(Index).ValueVST;
+  ParName := PublishedVstParameters.FindParameterName(Index);
+  result := GetPluginParameter(ParName);
 end;
 
-function TeePluginBase.GetParameterName(Index: integer): string;
+procedure TeePluginBase.ParameterChanged(Index: integer; Value: single);
+var
+  ParName : string;
 begin
-  //result := Globals.VstParameters[Index].ShortName;
-  result := Globals.VstParameters.PublishedParameter(Index).ShortName;
+  ParName := PublishedVstParameters.FindParameterName(Index);
+  SetPluginParameter(ParName, Value);
+end;
+
+
+function TeePluginBase.GetParameterName(Index: integer): string;
+var
+  ParName : string;
+begin
+  ParName := PublishedVstParameters.FindParameterName(Index);
+  result := self.GetPluginParameterVstInfo(ParName).Name;
 end;
 
 function TeePluginBase.GetParameterDisplay(Index: integer): string;
+var
+  ParName : string;
 begin
-  //TODO:
-  result := '';
+  ParName := PublishedVstParameters.FindParameterName(Index);
+  result := self.GetPluginParameterVstInfo(ParName).Display;
 end;
 
 function TeePluginBase.GetParameterLabel(Index: integer): string;
+var
+  ParName : string;
 begin
-  //result := Globals.VstParameters[Index].Units;
-  result := Globals.VstParameters.PublishedParameter(Index).ShortName;
+  ParName := PublishedVstParameters.FindParameterName(Index);
+  result := self.GetPluginParameterVstInfo(ParName).ShortName;
 end;
 
 //--------------------------------------------------------------
@@ -333,17 +359,6 @@ begin
 
 end;
 
-procedure TeePluginBase.ParameterChanged(Index: integer; Value: single);
-begin
-  assert(Value >= 0);
-  assert(Value <= 1);
-
-  assert(Index >=0 );
-  assert(Index < Globals.VstParameters.PublishedParameterCount);
-
-  //Globals.VstParameters[Index].ValueVST := Value;
-  Globals.VstParameters.PublishedParameter(Index).ValueVST := Value;
-end;
 
 procedure TeePluginBase.AudioProcess(Sampleframes: integer);
 begin
