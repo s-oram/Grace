@@ -93,6 +93,9 @@ var
   k : TVamKnob;
   Par : TVstParameterEx;
 begin
+  // TODO: I need to re-write this code so it's not using VST parameters.
+
+  {
   FCurrentMouseOverControl := Value;
 
   if FCurrentMouseOverControl = nil then
@@ -112,6 +115,7 @@ begin
 
     Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
   end;
+  }
 end;
 
 
