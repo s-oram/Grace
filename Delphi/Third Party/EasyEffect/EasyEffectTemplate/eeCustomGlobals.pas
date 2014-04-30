@@ -74,7 +74,6 @@ type
     fVstSuspendList: TEventList;
     fVstResumeList: TEventList;
     fSyncKeeper: Pointer;
-    fVstParameters: TVstParameterManager;
     fOverSampleFactor: integer;
     fFastControlRate: integer;
     fSlowControlRate: integer;
@@ -107,7 +106,6 @@ type
     property VstResumeList        : TEventList read fVstResumeList        write fVstResumeList;
     //======================================================================================================
   protected
-
   public
     constructor Create; virtual;
 	  destructor Destroy; override;
@@ -137,13 +135,7 @@ type
 
 
 
-    // VstParameters provides a single consistent way to work with 'parameters'
-    // that the audio engine exposes. The GUI can use the GuiStandards
-    // unit to quickly and uniformly connect GUI components to specific parameters.
-    // IE Knobs, buttones, etc.
-    // Individual VstParameters can be "Published". When published they will
-    // be exposed to the VST Host by the normal VST protocole methods.
-    property VstParameters : TVstParameterManager read fVstParameters;
+
 
 
     // NOTE: VST Properties isn't yet being used by any plugins. I think
@@ -260,8 +252,6 @@ begin
 
   WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
 
-  fVstParameters := TVstParameterManager.Create;
-
   fVstProperties := TVstPropertyController.Create;
 
   SampleRateList       := TEventList.Create;
@@ -306,7 +296,6 @@ begin
   PlayStateChangedList.Free;
   VstSuspendList.Free;
   VstResumeList.Free;
-  fVstParameters.Free;
   fVstProperties.Free;
   WindowsMessageGateKeeper.Free;
   FMotherShip.Free;

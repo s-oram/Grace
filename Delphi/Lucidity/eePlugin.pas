@@ -189,8 +189,6 @@ type
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
-    function GetVstParameterValue(Index:integer):single;
-
     //TODO: GuiState could probably be move to the globals class.
     property GuiState : TGuiState read fGuiState;
 
@@ -1019,16 +1017,6 @@ begin
 end;
 
 
-
-
-
-
-
-function TeePlugin.GetVstParameterValue(Index: integer): single;
-begin
-  result := Globals.VstParameters[Index].ValueVST;
-end;
-
 procedure TeePlugin.VstParameterChanged(const Par: TVstParameter);
 begin
 end;
@@ -1049,7 +1037,8 @@ end;
 
 procedure TeePlugin.VstParameterChangedViaMidiAutomation(Index: integer; Value: single);
 begin
-  Globals.VstParameters.Parameter[Index].ValueVST := Value;
+  // TODO: Need to be able to apply MIDI Automation value changes.
+  //Globals.VstParameters.Parameter[Index].ValueVST := Value;
 end;
 
 procedure TeePlugin.TriggerPreview(const fn: string);
