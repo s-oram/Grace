@@ -19,9 +19,7 @@ uses
   SysUtils,
   otlContainers, otlComm, otlCommon, otlTaskControl, otlTask,
   eeGuiStandard_Types,
-  Windows, Classes, uEventList, eeMidiEvents, DAEffectX,
-  eeVstParameter, eeVstParameterList, eeVstParameterManager,
-  eeVstProperties;
+  Windows, Classes, uEventList, eeMidiEvents, DAEffectX;
 
 type
   //=== Forward Declarations ============
@@ -90,7 +88,6 @@ type
     fHostProperties : THostProperties;
     fCpuUsage      : PCpuUsageInfo;
     fVstMethods    : PVstMethodReferences;
-    fVstProperties : TVstPropertyController;
 
     WindowsMessageGateKeeper : TWindowsMessageGateKeeper;
 
