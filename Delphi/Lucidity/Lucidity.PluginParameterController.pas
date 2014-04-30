@@ -216,14 +216,6 @@ begin
 
 end;
 
-class function TPluginParameterController.GetPluginParameterVstInfo(const aPlugin: TObject; const ParName: string): TVstParameterInfo;
-begin
-  result.Name := ParName;
-  result.ShortName := ParName;
-  result.Display := '';
-  result.Units   := '';
-end;
-
 class procedure TPluginParameterController.SetPluginParameter(
     const aPlugin : TObject;
     const Scope: TParChangeScope;
@@ -563,10 +555,15 @@ end;
 
 class function TPluginParameterController.GetParameterInfo(const aPlugin: TObject; const ParName: string): TPluginParameterInfo;
 begin
-  result.Name        := 'TEST';
-  result.ShortName   := 'TEST';
-  result.Units       := 'xx';
-  result.InfoDisplay := 'TEST xx TEST';
+  //TODO:
+end;
+
+class function TPluginParameterController.GetPluginParameterVstInfo(const aPlugin: TObject; const ParName: string): TVstParameterInfo;
+begin
+  result.Name := ParName;
+  result.ShortName := ParName;
+  result.Display := '';
+  result.Units   := '';
 end;
 
 

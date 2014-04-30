@@ -13,12 +13,11 @@ type
   TArrayOfComplex = array of TComplex;
 
   PSinglePoint = ^TSinglePoint;
-  TSinglePoint = record
+  TSinglePoint = packed record
     X:single;
     Y:single;
   end;
 
-  //TODO should check if this works as it should....
   TSingleRect = packed record
     case Integer of
     0: (Left, Top, Right, Bottom: Single);    1: (TopLeft, BottomRight: TSinglePoint);  end;

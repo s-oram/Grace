@@ -61,7 +61,7 @@ end;
 
 function eeGetClassName(WindowHandle:hwnd):string;
 {$IFDEF VER230}
-// TODO: I'm not sure if this will work. need to test this function...
+// NOTE: I'm not sure if this will work. need to test this function...
 const
   kMaxStringLength = 100;
 var

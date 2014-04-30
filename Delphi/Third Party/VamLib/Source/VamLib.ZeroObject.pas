@@ -31,13 +31,6 @@ type
     the IZeroObject kind of feels wrong. I wonder if the
     the mother ship should have the RegisterZeroObject method....
 
-    TODO:
-    It might be possible to only store ZeroObjects as TObjects
-    and cast back to IZeroObject when needing to send messages....
-
-
-    TODO:
-
     I think I want to modify the mother ship so that
     objects are registered as
     Audio Objects or Main Objects.

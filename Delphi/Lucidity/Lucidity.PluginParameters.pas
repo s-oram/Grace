@@ -8,15 +8,6 @@ uses
 {$SCOPEDENUMS ON}
 
 type
-  TPluginParameterInfo = record
-    Name : string;
-    ShortName : string;
-    Units     : string;
-    InfoDisplay : string;
-    DefaultValue : single;
-  end;
-
-
   TPluginParameter = (
     VoiceMode,
     VoiceGlide,
@@ -127,6 +118,14 @@ type
   end;
 
 
+  TPluginParameterInfo = record
+  public
+    DefaultValue : single;
+  end;
+
+function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
+
+
 function IsValidPluginParName(const Name : string):boolean;
 
 function PluginParToName(const Par : TPluginParameter):string;
@@ -142,7 +141,6 @@ function GetModParIndex(const Par : TPluginParameter):integer;
 function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
 
 
-function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 
 function GetPluginParameterCount:integer;
 function IndexToPluginParameter(Index : integer):TPluginParameter;
@@ -233,10 +231,6 @@ end;
 
 function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 begin
-  result.Name         := 'TEST';
-  result.ShortName    := 'Test';
-  result.Units        := '';
-  result.InfoDisplay  := '';
   result.DefaultValue := 0.5;
 
   case Par of

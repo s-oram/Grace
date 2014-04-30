@@ -237,6 +237,9 @@ var
   fn : string;
   fnA, fnB : string;
   ParName : string;
+  c1 : integer;
+  Par : TPluginParameter;
+  ParValue : single;
 begin
   inherited;
 
@@ -376,20 +379,14 @@ begin
   KeyGroups.NewKeyGroup;
   FocusFirstKeyGroup;
 
-  //TODO: need a way to reset parameters to default values.
-  {
-  //Reset all VST parameters to default values.
-  for c1 := 0 to Globals.VstParameters.Count-1 do
+  // Set all parameters to default values.
+  for c1 := 0 to GetPluginParameterCount-1 do
   begin
-    Globals.VstParameters[c1].ResetToDefault;
+    Par := IndexToPluginParameter(c1);
+    ParName  := PluginParToName(Par);
+    ParValue := GetPluginParInfo(Par).DefaultValue;
+    SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
   end;
-  }
-
-  ParName := PluginParToName(TPluginParameter.Seq1Length);
-  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
-
-  ParName := PluginParToName(TPluginParameter.Seq2Length);
-  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
 
 
   //Important: call SampleGroups.UpdateInitReference() after reseting all properties to default.
@@ -405,8 +402,6 @@ begin
   kgObj := (KeyGroups.FindFirstKeyGroup.GetObject as TKeyGroup);
   (EmptyKeyGroup.GetObject as TKeyGroup).AssignFrom(kgObj);
   //============================================================================
-
-
 
   InitializeState;
 
@@ -546,7 +541,10 @@ end;
 
 procedure TeePlugin.InitializeState;
 var
+  c1 : integer;
   ParName : string;
+  Par : TPluginParameter;
+  ParValue : single;
 begin
   inherited;
 
@@ -556,23 +554,15 @@ begin
   KeyGroups.Clear;
   SampleMap.Clear;
 
-
-  //TODO: need a way to reset parameters to default values.
-  {
-  //Reset all VST parameters to default values.
-  for c1 := 0 to Globals.VstParameters.Count-1 do
+  // Set all parameters to default values.
+  for c1 := 0 to GetPluginParameterCount-1 do
   begin
-    Globals.VstParameters[c1].ResetToDefault;
+    Par := IndexToPluginParameter(c1);
+    ParName  := PluginParToName(Par);
+    ParValue := GetPluginParInfo(Par).DefaultValue;
+
+    SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
   end;
-  }
-
-
-  ParName := PluginParToName(TPluginParameter.Seq1Length);
-  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
-
-  ParName := PluginParToName(TPluginParameter.Seq2Length);
-  self.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, 1);
-
 
   fFocusedKeyGroup := nil;
 end;
