@@ -108,7 +108,6 @@ uses
   Lucidity.StateHelpers in 'Lucidity.StateHelpers.pas',
   Menu.StepSequenceMenu in 'frames\Menu.StepSequenceMenu.pas',
   uInfoBarFrame in 'frames\uInfoBarFrame.pas' {InfoBarFrame: TFrame},
-  LucidityGui.InfoBarController in 'LucidityGui.InfoBarController.pas',
   LucidityParameterScaling in 'LucidityParameterScaling.pas',
   LucidityControl.ModSection in 'Controls\LucidityControl.ModSection.pas',
   LucidityModConnections in 'LucidityModConnections.pas',

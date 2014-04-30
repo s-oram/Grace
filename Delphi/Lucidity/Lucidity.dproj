@@ -542,7 +542,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
 				<Form>InfoBarFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="LucidityGui.InfoBarController.pas"/>
 			<DCCReference Include="LucidityParameterScaling.pas"/>
 			<DCCReference Include="Controls\LucidityControl.ModSection.pas"/>
 			<DCCReference Include="LucidityModConnections.pas"/>
