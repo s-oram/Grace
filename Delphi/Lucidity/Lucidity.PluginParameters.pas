@@ -139,6 +139,10 @@ function GetModParIndex(const Par : TPluginParameter):integer;
 // parameters are generally applied to "Key Groups".
 function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
 
+
+
+
+
 implementation
 
 uses

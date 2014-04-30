@@ -482,15 +482,13 @@ end;
 procedure TVoiceControlFrame.PlaybackTypeChanged;
 var
   SampleOscType : TSamplePlaybackType;
-  ParValue : single;
 begin
   if not assigned(Plugin) then exit;
 
-  ParValue := Plugin.Globals.VstParameters.FindParameter(TParName.SamplePlaybackType).ValueVST;
-  SampleOscType := TSamplePlaybackTypeHelper.ToEnum(ParValue);
-
   OneShotSampleControls.Visible := false;
   GrainStretchControls.Visible  := false;
+
+  SampleOscType := Command.GetParValue<TSamplePlaybackType>(Plugin, TPluginParameter.SamplePlaybackType);
 
   case SampleOscType of
     TSamplePlaybackType.NoteSampler:    OneShotSampleControls.Visible := true;

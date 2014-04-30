@@ -22,9 +22,6 @@ uses
   VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel,
   Controls;
 
-procedure UpdateTextBoxWithParValue(const TextBox : TVamLabel; const ParIndex:integer; const EnumHelper:TCustomEnumHelperClass; const Globals : TGlobals); overload;
-procedure UpdateTextBoxWithParValue(const TextBox : TVamTextBox; const ParIndex:integer; const EnumHelper:TCustomEnumHelperClass; const Globals : TGlobals); overload;
-
 type
   TZoomPos = record
     Zoom : single;    // range 0..1 (min zoom -> max zoom)
@@ -101,26 +98,6 @@ uses
   eeGuiStandardv2,
   SysUtils;
 
-
-procedure UpdateTextBoxWithParValue(const TextBox : TVamLabel; const ParIndex:integer; const EnumHelper:TCustomEnumHelperClass; const Globals : TGlobals);
-var
-  x1 : single;
-  s  : string;
-begin
-  x1 := Globals.VstParameters[ParIndex].ValueVST;
-  s  := EnumHelper.ToShortGuiString(x1);
-  if TextBox.Text <> s then TextBox.Text := s;
-end;
-
-procedure UpdateTextBoxWithParValue(const TextBox : TVamTextBox; const ParIndex:integer; const EnumHelper:TCustomEnumHelperClass; const Globals : TGlobals); overload;
-var
-  x1 : single;
-  s  : string;
-begin
-  x1 := Globals.VstParameters[ParIndex].ValueVST;
-  s  := EnumHelper.ToShortGuiString(x1);
-  if TextBox.Text <> s then TextBox.Text := s;
-end;
 
 procedure CalcZoomOffset(const IndexA, IndexB : single; const SampleFrames, DisplayPixelWidth : integer; out Zoom, Offset : single);
 var
