@@ -200,8 +200,6 @@
 			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
 			<DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
-			<PreBuildEvent><![CDATA[ call "$(PROJECTDIR)\resources.cmd" $(PROJECTDIR)
-$(PreBuildEvent)]]></PreBuildEvent>
 			<Manifest_File>None</Manifest_File>
 			<DCC_BplOutput>$(DelphiCompiledLib)\bpl\$(PLATFORM)</DCC_BplOutput>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -385,8 +383,12 @@ $(PreBuildEvent)]]></PreBuildEvent>
 						<Source Name="MainSource">Lucidity.dpr</Source>
 					</Source>
 					<Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\LucidityGuiComponentsDesXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">OmniThreadLibrary designtime</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\DragDropDXE2.bpl">Drag and Drop Component Suite</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\AggPasDesXE2.bpl">Anti-Grain Geometry Design Time Package</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
@@ -657,7 +659,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
 		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -665,7 +667,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -673,7 +675,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -681,7 +683,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -689,7 +691,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -697,7 +699,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -705,7 +707,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -713,7 +715,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -721,7 +723,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -729,7 +731,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -737,7 +739,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -745,7 +747,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -753,7 +755,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -761,7 +763,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -769,7 +771,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -777,7 +779,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -785,7 +787,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -793,7 +795,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -801,7 +803,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -809,7 +811,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -817,7 +819,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -825,7 +827,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -833,7 +835,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -841,7 +843,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -849,7 +851,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win64'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -857,7 +859,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='OSX32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -865,7 +867,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
 			<PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' And '$(Platform)'=='Win32'">
-			<PreBuildEvent> call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
+			<PreBuildEvent>call &quot;S:\07 Delete Compiled DCUs.bat&quot; &amp;&amp;call &quot;$(PROJECTDIR)\resources.cmd&quot; $(PROJECTDIR)</PreBuildEvent>
 			<PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
 			<PreLinkEvent/>
 			<PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
