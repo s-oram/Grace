@@ -5,6 +5,7 @@ interface
 uses
   SysUtils,
   ExtCtrls,
+  uGuiState,
   Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL,
   eeGlobals.InfoBarReceiver;
@@ -23,6 +24,7 @@ type
     fMouseOverModSlot: integer;
     fSelectedLfo: integer;
     fIsGuiOpen: boolean;
+    fGuiState: TGuiState;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
@@ -63,6 +65,8 @@ type
 
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
+    property GuiState : TGuiState read fGuiState;
+
   end;
 
 implementation
@@ -86,6 +90,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fGuiState := TGuiState.Create;
 
   VclTaskRunner := TTaskRunner.Create;
   VclTaskTimer  := TTimer.Create(nil);
@@ -171,6 +177,7 @@ begin
   fOptions.Free;
   VclTaskTimer.Free;
   VclTaskRunner.Free;
+  fGuiState.Free;
   inherited;
 end;
 

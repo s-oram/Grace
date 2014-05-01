@@ -383,9 +383,9 @@ begin
   //
   // The system would need to be stress tested in a testing app to ensure it doesn't blow up.
 
-  if Plugin.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
+  if Plugin.Globals.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
   begin
-    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.GuiState.MouseOverRegionID)
+    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.Globals.GuiState.MouseOverRegionID)
   end else
   begin
     CurRegion := Plugin.FocusedRegion;
@@ -639,9 +639,9 @@ begin
   // It needs an equivlent Show() method that will initialize the dialog/frame starting
   // state and something to be called when the dialog/frame closes so it can clean up
   // after itself.
-  if Plugin.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
+  if Plugin.Globals.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
   begin
-    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.GuiState.MouseOverRegionID)
+    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.Globals.GuiState.MouseOverRegionID)
   end else
   begin
     CurRegion := Plugin.FocusedRegion;
@@ -697,9 +697,9 @@ begin
   //
   // The system would need to be stress tested in a testing app to ensure it doesn't blow up.
 
-  if Plugin.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
+  if Plugin.Globals.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid then
   begin
-    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.GuiState.MouseOverRegionID)
+    CurRegion := Plugin.SampleMap.FindRegionByUniqueID(Plugin.Globals.GuiState.MouseOverRegionID)
   end else
   begin
     CurRegion := Plugin.FocusedRegion;

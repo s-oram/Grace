@@ -399,7 +399,7 @@ begin
 
 
   //Update the GUI to match the previous GUI state.
-  LowerTabState := Plugin.GuiState.LowerTabState;
+  LowerTabState := Plugin.Globals.GuiState.LowerTabState;
   UpdateLayout;
 
 
@@ -524,7 +524,7 @@ begin
     PluginKeyHook.RefreshKeyHookTarget;
   end;
 
-  if CurrentGuiState.IsSampleMapVisible <> Plugin.GuiState.IsSampleMapVisible then UpdateLayout;
+  if CurrentGuiState.IsSampleMapVisible <> Plugin.Globals.GuiState.IsSampleMapVisible then UpdateLayout;
 
   rd := FindRegionToDisplay(Plugin);
   FeedbackData.FocusedRegion := rd.Region;
@@ -658,7 +658,7 @@ begin
     raise Exception.Create('Error Message');
   end;
 
-  Plugin.GuiState.LowerTabState := TabSelected;
+  Plugin.Globals.GuiState.LowerTabState := TabSelected;
   self.LowerTabState := TabSelected;
 
 end;
@@ -709,7 +709,7 @@ procedure TPluginGui.ShowSampleMapEdit;
 begin
   if not assigned(Plugin) then exit;
 
-  Plugin.GuiState.IsSampleMapVisible := true;
+  Plugin.Globals.GuiState.IsSampleMapVisible := true;
 
   // NOTE: Logically it feels like SampleMapFrame.UpdateRootNoteKeys
   // should be called after UpdateLayout. But there is a noticable
@@ -730,7 +730,7 @@ var
   aRegion : IRegion;
 begin
   if not assigned(Plugin) then exit;
-  Plugin.GuiState.IsSampleMapVisible := false;
+  Plugin.Globals.GuiState.IsSampleMapVisible := false;
   UpdateLayout;
 
   if (Plugin.FocusedRegion = nil) and (Plugin.SampleMap.RegionCount > 0) then
@@ -952,7 +952,7 @@ begin
 
 
   //== Setup ==
-  CurrentGuiState.IsSampleMapVisible := Plugin.GuiState.IsSampleMapVisible;
+  CurrentGuiState.IsSampleMapVisible := Plugin.Globals.GuiState.IsSampleMapVisible;
   IsSampleMapVisible := CurrentGuiState.IsSampleMapVisible;
   //===================
 
@@ -1065,7 +1065,7 @@ end;
 
 procedure TPluginGui.EventHandle_ControlMouseDown(Sender: TObject; const Target: TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block: boolean);
 begin
-  Plugin.GuiState.FocusedControl := Target;
+  Plugin.Globals.GuiState.FocusedControl := Target;
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FocusedControlChanged);
 end;
 

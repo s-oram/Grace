@@ -159,7 +159,7 @@ procedure TMenuBarFrame.SampleMapButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  Plugin.GuiState.IsSampleMapVisible := not(Plugin.GuiState.IsSampleMapVisible);
+  Plugin.Globals.GuiState.IsSampleMapVisible := not(Plugin.Globals.GuiState.IsSampleMapVisible);
 end;
 
 procedure TMenuBarFrame.SampleMenuButtonClick(Sender: TObject);
@@ -232,7 +232,7 @@ procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.GuiState.IsSampleMapVisible
+  if Plugin.Globals.GuiState.IsSampleMapVisible
     then Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_HideSampleMapEdit)
     else Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_ShowSampleMapEdit);
 end;

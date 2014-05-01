@@ -228,7 +228,7 @@ procedure TSampleDisplayMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.GuiState.IsSampleMapVisible
+  if Plugin.Globals.GuiState.IsSampleMapVisible
     then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
     else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
 

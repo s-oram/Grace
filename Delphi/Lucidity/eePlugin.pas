@@ -65,7 +65,6 @@ type
   TeePlugin = class(TeePluginBase)
   private
     fMidiAutomation: TMidiAutomation;
-    fGuiState: TGuiState;
     fXYPads: TLucidityXYPads;
     fKeyGroups: TKeyGroupManager;
     fSampleMap: TSampleMap;
@@ -189,9 +188,6 @@ type
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
     procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
-    //TODO: GuiState could probably be move to the globals class.
-    property GuiState : TGuiState read fGuiState;
-
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
     property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
@@ -302,13 +298,18 @@ begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
+
   end;
+
+
 
   PreviewInfo^.Clear;
 
+
+
   AudioPreviewPlayer := TAudioFilePreviewPlayer.Create;
   KeyStateTracker    := TKeyStateTracker.Create;
-  fGuiState          := TGuiState.Create;
+
 
   DeltaOffset := 0;
 
@@ -438,7 +439,6 @@ begin
   KeyGroupPlayer.Free;
   fKeyGroups.Free;
   fSampleMap.Free;
-  fGuiState.Free;
   fXYPads.Free;
   KeyStateTracker.Free;
   AudioPreviewPlayer.Free;
@@ -974,7 +974,6 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
-
   // this one call here perhaps.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
 end;

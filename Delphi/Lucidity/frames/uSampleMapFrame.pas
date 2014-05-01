@@ -536,8 +536,8 @@ begin
   if not assigned(Plugin) then exit;
 
   if assigned(aRegion)
-    then Plugin.GuiState.MouseOverRegionID := aRegion.UniqueID
-    else Plugin.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
+    then Plugin.Globals.GuiState.MouseOverRegionID := aRegion.UniqueID
+    else Plugin.Globals.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
 
   UpdateRegionInfoDisplay;
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.MouseOverSampleRegionChanged);

@@ -283,7 +283,7 @@ begin
   end;
 
 
-  if (Plugin.GuiState.IsSampleMapVisible = false) then
+  if (Plugin.Globals.GuiState.IsSampleMapVisible = false) then
   begin
     rx := Plugin.FocusedRegion;
     rs := '';
@@ -311,9 +311,9 @@ begin
     end;
   end else
   begin
-    if (Plugin.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid) then
+    if (Plugin.Globals.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid) then
     begin
-      rx := Plugin.SampleMap.FindRegionByUniqueID(Plugin.GuiState.MouseOverRegionID);
+      rx := Plugin.SampleMap.FindRegionByUniqueID(Plugin.Globals.GuiState.MouseOverRegionID);
       if not assigned(rx) then rs := 'ERROR';
     end else
     begin
