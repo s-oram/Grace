@@ -136,12 +136,8 @@ type
   private
     fPlugin: TeePlugin;
     KnobList : TObjectList;
-
-    MsgHandle : hwnd;
-    procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
     procedure UpdateLfo; //called when the mod slot changes...
-
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
@@ -191,8 +187,6 @@ begin
 
   Timer1.Enabled := false;
 
-  MsgHandle := AllocateHWND(MessageHandler);
-
   AltFilterText.ShowAltText1 := false;
   AltFilterText.ShowAltText2 := false;
 
@@ -237,12 +231,6 @@ end;
 
 destructor TModControlFrame.Destroy;
 begin
-  if (MsgHandle <> 0) and (assigned(Plugin)) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
-  end;
-  DeallocateHWnd(MsgHandle);
-
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
@@ -266,8 +254,6 @@ begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
-
-  if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
 
   //TODO: This should be tied to the active voice group, or the active voice.
   // not the global scope.
@@ -713,13 +699,6 @@ begin
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
   UpdateLfo;
-end;
-
-
-
-procedure TModControlFrame.MessageHandler(var Message: TMessage);
-begin
-  //TODO : delete
 end;
 
 procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
