@@ -26,7 +26,7 @@ uses
   Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads, uLucidityVoiceController,
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
-  eeSampleInt, eeSampleFloat, uGuiState,
+  eeSampleInt, eeSampleFloat,
   Classes, eePluginBase , eeMidiEvents, eeMidiAutomation,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   B2.Filter.CriticallyDampedLowpass,
