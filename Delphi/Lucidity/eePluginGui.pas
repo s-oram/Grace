@@ -18,7 +18,7 @@ uses
   DAEffect, DAEffectX, eePluginKeyHook,
   uGuiState, eePluginHotkeys,
   uConstants, uGuiFeedbackData,
-  uSampleMapFrame, uFileBrowserFrame, uSampleDisplayFrame, uVoiceControlFrame,
+  uSampleMapFrame, uFileBrowserFrame, uVoiceControlFrame,
   uMenuBarFrame,
   uModControlFrame, uMiniSampleDisplayFrame,
   eeFileBrowserAddon, eeRedFoxDropFileTarget,
@@ -71,7 +71,6 @@ type
     DropFileTarget : TRedFoxDropFileTarget;
 
     MenuBarFrame           : TMenuBarFrame;
-    SampleDisplayFrame     : TSampleDisplayFrame;
     MiniSampleDisplayFrame : TMiniSampleDisplayFrame;
     SampleMapFrame         : TSampleMapFrame;
     FileBrowserFrame       : TFileBrowserFrame;
@@ -179,11 +178,6 @@ begin
   SampleMapFrame.BackgroundPanel.Align  := TAlign.alClient;
   SampleMapFrame.BackgroundPanel.Visible  := true;
 
-  SampleDisplayFrame := TSampleDisplayFrame.Create(self.Owner);
-  SampleDisplayFrame.BackgroundPanel.Parent := MainTop;
-  SampleDisplayFrame.BackgroundPanel.Align  := alClient;
-  SampleDisplayFrame.BackgroundPanel.Visible  := false;
-
   MiniSampleDisplayFrame := TMiniSampleDisplayFrame.Create(self.Owner);
   MiniSampleDisplayFrame.BackgroundPanel.Parent := MainTop;
   MiniSampleDisplayFrame.BackgroundPanel.Align := alClient;
@@ -246,7 +240,6 @@ begin
 
   DropFileTarget := TRedFoxDropFileTarget.Create(RedFoxContainer);
   DropFileTarget.RegisterTarget(SampleMapFrame.SampleMap);
-  DropFileTarget.RegisterTarget(SampleDisplayFrame.SampleOverlay);
   DropFileTarget.RegisterTarget(MiniSampleDisplayFrame.SampleOverlay);
 
 
@@ -272,7 +265,6 @@ begin
 
   FreeAndNil(MenuBarFrame);
   FreeAndNil(SampleMapFrame);
-  FreeAndNil(SampleDisplayFrame);
   FreeAndNil(MiniSampleDisplayFrame);
   FreeAndNil(FileBrowserFrame);
   FreeAndNil(VoiceControlFrame);
@@ -299,8 +291,6 @@ var
   bm1 : TBitmap;
   bm2 : TBitmap;
   bm3 : TBitmap;
-  aRegionID : TGUID;
-
   KnobHandler : TKnobHandler;
   MenuHandler : TMenuButtonHandler;
 begin
@@ -384,7 +374,6 @@ begin
     FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
     MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
-    SampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
@@ -490,13 +479,6 @@ begin
   self.LowerTabState := TLowerTabOptions.TabMain;
 
   //==============
-  if (Plugin.FocusedRegion = nil) and (Plugin.SampleMap.RegionCount > 0) then
-  begin
-    aRegionID := Plugin.SampleMap.Regions[0].GetProperties^.UniqueID;
-    Plugin.FocusRegion(aRegionID);
-    MiniSampleDisplayFrame.UpdateSampleDisplay;
-  end;
-
 
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnPostCreateFinished);
 end;
@@ -530,7 +512,6 @@ begin
   Plugin.GetGuiFeedBack(FeedbackData);
 
   MenuBarFrame.UpdateGui(Sender, @FeedbackData);
-  SampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   MiniSampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
@@ -546,7 +527,6 @@ begin
   if MsgID = TLucidMsgId.SampleFocusChanged then
   begin
     SampleMapFrame.UpdateSampleRegions;
-    SampleDisplayFrame.UpdateSampleDisplay;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
   end;
 
@@ -555,7 +535,6 @@ begin
     SampleMapFrame.UpdateSampleRegions;
     SampleMapFrame.UpdateRootNoteKeys;
     SampleMapFrame.UpdateRegionInfoDisplay;
-    SampleDisplayFrame.UpdateSampleDisplay;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
   end;
 
@@ -862,7 +841,6 @@ begin
         ClearPadding(self.TitlePanel);
 
   ClearPadding(MenuBarFrame.BackgroundPanel);
-  ClearPadding(SampleDisplayFrame.BackgroundPanel);
   ClearPadding(MiniSampleDisplayFrame.BackgroundPanel);
   ClearPadding(SampleMapFrame.BackgroundPanel);
   ClearPadding(FileBrowserFrame.BackgroundPanel);

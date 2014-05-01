@@ -20,7 +20,6 @@ uses
   uDataFolderUtils in 'uDataFolderUtils.pas',
   uSampleMapFrame in 'frames\uSampleMapFrame.pas' {SampleMapFrame: TFrame},
   uFileBrowserFrame in 'frames\uFileBrowserFrame.pas' {FileBrowserFrame: TFrame},
-  uSampleDisplayFrame in 'frames\uSampleDisplayFrame.pas' {SampleDisplayFrame: TFrame},
   uVoiceControlFrame in 'frames\uVoiceControlFrame.pas' {VoiceControlFrame: TFrame},
   uModControlFrame in 'frames\uModControlFrame.pas' {ModControlFrame: TFrame},
   uScrollPanelFrame in 'frames\uScrollPanelFrame.pas' {ScrollPanelFrame: TFrame},

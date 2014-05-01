@@ -425,10 +425,6 @@
 				<Form>FileBrowserFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="frames\uSampleDisplayFrame.pas">
-				<Form>SampleDisplayFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="frames\uVoiceControlFrame.pas">
 				<Form>VoiceControlFrame</Form>
 				<DesignClass>TFrame</DesignClass>
