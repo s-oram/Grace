@@ -41,11 +41,10 @@ type
     LoopTypeChanged                  = 8;
     SampleDirectoriesChanged         = 9;
     FilterChanged                    = 10;
-    FocusedControlChanged            = 11;
-    ModSlotChanged                   = 12;
-    LfoChanged                       = 13;
-    ActiveModParIndexChanged         = 14;
-    ModAmountChanged                 = 15;
+    ModSlotChanged                   = 11;
+    LfoChanged                       = 12;
+    ActiveModParIndexChanged         = 13;
+    ModAmountChanged                 = 14;
     Command                          = ModAmountChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;
     Command_HideSampleMapEdit        = Command + 2;

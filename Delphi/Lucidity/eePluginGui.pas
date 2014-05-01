@@ -103,8 +103,6 @@ type
     procedure DoShowDialogArea(Sender : TObject);
     procedure DoHideDialogArea(Sender : TObject);
 
-
-    procedure EventHandle_ControlMouseDown(Sender: TObject; const Target:TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block : boolean);
   public
     procedure PostCreate(const aVstWindow : HWnd);
     procedure BeforeClose;
@@ -1055,19 +1053,12 @@ end;
 
 procedure TPluginGui.OverlayContainerClicked(Sender: TObject);
 begin
-  //CloseCurrentDialog(msg);
-
   if DialogDisplayArea.AllowClose then
   begin
     DialogDisplayArea.Hide;
   end;
 end;
 
-procedure TPluginGui.EventHandle_ControlMouseDown(Sender: TObject; const Target: TControl; Button: TMouseButton; Shift: TShiftState; X, Y: Integer; var Block: boolean);
-begin
-  Plugin.Globals.GuiState.FocusedControl := Target;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FocusedControlChanged);
-end;
 
 
 
