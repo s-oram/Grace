@@ -383,35 +383,7 @@ begin
   AmpEnvContainer.Height := RowHeight;
   AmpEnvContainer.Layout.SetPos(16, 8);
 
-
-  //Scope.Layout.Anchor(AmpEnvContainer).MatchHeight.SnapToEdge(TControlFeature.RightEdge).Move(16, 0).AdjustBounds(0,-4,0,0);
-  //Scope.Width := 177;
-  //ShowMessage(IntToStr(Scope.Left));
-  //ShowMessage(IntToStr(Scope.Top));
-  //ShowMessage(IntToStr(Scope.Width));
-  //ShowMessage(IntToStr(Scope.Height));
-
   Scope.Layout.SetPos(232,12).SetSize(177,90);
-
-
-    //TODO:
-    {
-    ModEnvAContainer.Width := (2 * FilterKnobWidth);
-    ModEnvAContainer.Height := RowHeight;
-    ModEnvAContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
-
-    ModEnvBContainer.Width := (2 * FilterKnobWidth);
-    ModEnvBContainer.Height := RowHeight;
-    ModEnvBContainer.Layout.Anchor(ModEnvAContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
-    }
-
-
-
-
-    //LfoBContainer.Align := alRight;
-    //LfoAContainer.Align := alRight;
-
-
 
   //======= row 2 =======
   //Row2.Height := 82;
