@@ -161,6 +161,7 @@ begin
 
       // finally...
       Plugin.IsGuiOpen := true;
+      Plugin.Globals.IsGuiOpen := true;
     finally
       UseCount := 1;
     end;
@@ -174,12 +175,13 @@ begin
   // been opened/is still opened etc.
   if (UseCount > 0) then
   begin
-    if assigned(PluginGuiMeta) then FreeAndNil(PluginGuiMeta);
-    if assigned(PluginGui)     then FreeAndNil(PluginGui);
-
+    Plugin.Globals.IsGuiOpen := false;
     Plugin.IsGuiOpen := false;
     systemWindow := 0;
     UseCount := 0;
+
+    if assigned(PluginGuiMeta) then FreeAndNil(PluginGuiMeta);
+    if assigned(PluginGui)     then FreeAndNil(PluginGui);
 
     Plugin.Globals.MotherShip.LogMainObjects;
     Plugin.Globals.MotherShip.LogAudioObjects;

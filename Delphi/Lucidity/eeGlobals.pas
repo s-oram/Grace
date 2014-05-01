@@ -3,7 +3,9 @@ unit eeGlobals;
 interface
 
 uses
-  Lucidity.Options,
+  SysUtils,
+  ExtCtrls,
+  Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL,
   eeGlobals.InfoBarReceiver;
 
@@ -20,13 +22,20 @@ type
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
     fSelectedLfo: integer;
+    fIsGuiOpen: boolean;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
+    procedure SetIsGuiOpen(const Value: boolean);
   protected
   protected
+    VclTaskRunner : TTaskRunner;
+    VclTaskTimer  : TTimer;
+    procedure OnVclTimer(Sender : TObject);
   public
     constructor Create; override;
 	  destructor Destroy; override;
+
+    procedure AddVclTask(aTask : TProc);
 
     procedure LoadRegistrationKeyFile(FileName : string);
 
@@ -52,13 +61,14 @@ type
 
     property SelectedLfo        : integer read fSelectedLfo        write SetSelectedLfo;
 
+    property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
+
   end;
 
 implementation
 
 uses
   VamLib.Throttler,
-  SysUtils,
   uConstants,
   eePluginDataDir,
   eeFunctions;
@@ -76,6 +86,12 @@ var
   fn : string;
 begin
   inherited;
+
+  VclTaskRunner := TTaskRunner.Create;
+  VclTaskTimer  := TTimer.Create(nil);
+  VclTaskTimer.Enabled := false;
+  VclTaskTimer.Interval := 25;
+  VclTaskTimer.OnTimer := OnVclTimer;
 
   fSelectedModSlot := -1;
 
@@ -153,6 +169,8 @@ begin
   fInfoBarReceiver.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
+  VclTaskTimer.Free;
+  VclTaskRunner.Free;
   inherited;
 end;
 
@@ -181,6 +199,20 @@ begin
   end;
 end;
 
+procedure TGlobals.SetIsGuiOpen(const Value: boolean);
+begin
+  fIsGuiOpen := Value;
+
+  if fIsGuiOpen = true then
+  begin
+    VclTaskTimer.Enabled := true;
+  end else
+  begin
+    VclTaskTimer.Enabled := false;
+    VclTaskRunner.Clear;
+  end;
+end;
+
 procedure TGlobals.SetSelectedLfo(const Value: integer);
 begin
   assert((Value >= 0) and (Value <= 1));
@@ -203,5 +235,18 @@ begin
     MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
   end;
 end;
+
+procedure TGlobals.OnVclTimer(Sender: TObject);
+begin
+  VclTaskRunner.RunTasks;
+end;
+
+procedure TGlobals.AddVclTask(aTask: TProc);
+begin
+  VclTaskRunner.AddTask(aTask);
+end;
+
+
+
 
 end.

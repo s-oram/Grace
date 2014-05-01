@@ -162,7 +162,8 @@ uses
   Lucidity.PluginParameters in 'Lucidity.PluginParameters.pas',
   LucidityGui.MenuButtonHandler in 'LucidityGui.MenuButtonHandler.pas',
   eeGuiStandardv2_MenuBuilder in 'EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas',
-  eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas';
+  eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
+  eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas';
 
 {$R *.res}
 
