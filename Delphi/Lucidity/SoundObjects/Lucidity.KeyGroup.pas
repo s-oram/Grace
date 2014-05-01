@@ -49,6 +49,7 @@ type
     procedure GetDbLevel(out Ch1, Ch2 : single);
     property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor;
   protected
+    DebugTag : string;
     ActiveVoices : TLucidityVoiceList;
     KeyGroupID : TKeyGroupID;
     VoiceBufferA : array of single;
@@ -73,7 +74,7 @@ type
 
     procedure Handle_ModConnectionsChanged(Sender : TObject);
   public
-    constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+    constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals; const aDebugTag : string = 'Unnamed');
     destructor Destroy; override;
     procedure AssignFrom(const Source : TKeyGroup);
 
@@ -121,12 +122,14 @@ var
 
 { TLucidityEngine }
 
-constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals; const aDebugTag : string);
 begin
   KeyGroupID := RefKeyGroupID;
   inc(RefKeyGroupID);
 
-  Log.LogMessage('KeyGroup Created ID = ' + IntToStr(KeyGroupID));
+  DebugTag := aDebugTag;
+
+  Log.LogMessage('KeyGroup Created ID = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
 
 
 
@@ -159,7 +162,7 @@ end;
 
 destructor TKeyGroup.Destroy;
 begin
-  Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID));
+  Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   LogStackTrace;
 
   FSeq1Data.Free;
