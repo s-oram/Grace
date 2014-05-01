@@ -60,7 +60,7 @@ type
 
   // Main is for the GUI and VCL objects. It needs to be thead-safe.
   // Audio is for audio/realtime objects.
-  TZeroObjectRank = (zoMain, zoAudio);
+  TZeroObjectRank = (Main, Audio);
 
   //Forward declarations
   IZeroObject = interface;
@@ -353,13 +353,13 @@ begin
   obj.SetMotherShipReference(self);
 
   case Rank of
-    TZeroObjectRank.zoMain:
+    TZeroObjectRank.Main:
     begin
       if MainObjects.IndexOf(ptr) = -1
         then MainObjects.Add(ptr);
     end;
 
-    TZeroObjectRank.zoAudio:
+    TZeroObjectRank.Audio:
     begin
       if AudioObjects.IndexOf(ptr) = -1
         then AudioObjects.Add(ptr);

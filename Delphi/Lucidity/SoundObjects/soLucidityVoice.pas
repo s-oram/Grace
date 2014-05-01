@@ -318,7 +318,7 @@ begin
   OutputMixer.VoiceMixMain := 1;
 
   LevelMonitor := TLevelMonitor.Create;
-  Globals.MotherShip.RegisterZeroObject(LevelMonitor, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(LevelMonitor, TZeroObjectRank.Audio);
 
   // Finally,
   SampleRateChanged(self);

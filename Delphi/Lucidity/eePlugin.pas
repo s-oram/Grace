@@ -260,12 +260,12 @@ begin
 
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
-  Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.Audio);
 
 
 
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
-  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.Audio);
 
 
 
@@ -274,7 +274,7 @@ begin
   // - check if the data directory exists,
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
-  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.zoMain);
+  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.Main);
 
 
 
@@ -339,22 +339,22 @@ begin
 
 
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
-  Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
 
 
   KeyGroupPlayer  := TKeyGroupPlayer.Create;
-  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
 
 
 
   fSampleMap := TSampleMap.Create;
-  Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.Audio);
 
 
 
   fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
-  Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.zoAudio);
+  Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
 
 
 

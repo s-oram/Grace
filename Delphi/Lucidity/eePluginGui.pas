@@ -314,14 +314,14 @@ begin
 
   KnobHandler := TKnobHandler.Create(Plugin);
   GuiStandard.RegisterHandler('KnobHandler', KnobHandler);
-  Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.Main);
 
   MenuHandler := TMenuButtonHandler.Create(Plugin);
   GuiStandard.RegisterHandler('MenuButtonHandler', MenuHandler);
-  Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.Main);
 
 
-  Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.Main);
 
   //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
   fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
@@ -370,14 +370,14 @@ begin
 
 
   //====== Register frames as zero objects =====================================
-  Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame, TZeroObjectRank.zoMain);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame, TZeroObjectRank.zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame, TZeroObjectRank.Main);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame, TZeroObjectRank.Main);
 
 
   try
