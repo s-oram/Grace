@@ -54,11 +54,18 @@ function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
 function FloatToBoolean(Value:single):boolean; inline;
 function BooleanToFloat(Value:boolean):single; inline;
 
-
+function IntToStrB(Int:integer; MinDigits:integer):string;
+function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
+function IncrementName(Name:string; MinDigits:integer = 2):string;
 
 implementation
 
 uses
+  {$IFDEF VER230}
+  System.Regularexpressionscore,
+  {$ELSE}
+  PerlRegEx,
+  {$ENDIF}
   Math,
   SysUtils;
 
@@ -331,5 +338,97 @@ begin
     else result := 0;
 end;
 
+function IntToStrB(Int:integer; MinDigits:integer):string;
+begin
+  result := IntToStr(Int);
+  while Length(result) < MinDigits do result := '0' + result;
+end;
+
+
+function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
+const
+  Space = ' ';
+var
+  Path,Name,Ext:string;
+  RegEx:TPerlRegEx;
+  FileNumber:integer;
+  NumberString:string;
+begin
+  //RegEx := TPerlRegEx.Create(nil);
+  RegEx := TPerlRegEx.Create;
+  try
+    Path := ExtractFilePath(FileName);
+    Ext := ExtractFileExt(FileName);
+
+    FileName := StringReplace(FileName, Path, '', []);
+    Name := StringReplace(FileName, Ext, '', []);
+
+
+    //Check to see if there is an integer at the end of the filename.
+    //NOTE: The regex string also matches integers with preceding
+    //whitespace charactors if there are any.
+    RegEx.Subject := UTF8String(Name);
+    RegEx.RegEx := '(([\s]+)?[0-9]+)$';
+    if RegEx.Match then
+    begin
+      //If there is...
+      //FileNumber := StrToInt(RegEx.MatchedExpression);
+      FileNumber := StrToInt(String(RegEx.MatchedText));
+      inc(FileNumber);
+
+      //SetLength(Name, RegEx.MatchedExpressionOffset-1);
+      SetLength(Name, RegEx.MatchedOffset-1);
+    end else
+    begin
+      FileNumber := 1;
+    end;
+
+    NumberString := IntToStrB(FileNumber, MinDigits);
+
+    Name := Name + Space + NumberString;
+
+    result := Path + Name + Ext;
+  finally
+    RegEx.Free;
+  end;
+end;
+
+function IncrementName(Name:string; MinDigits:integer = 2):string;
+const
+  Space = ' ';
+var
+  RegEx:TPerlRegEx;
+  FileNumber:integer;
+  NumberString:string;
+begin
+  //RegEx := TPerlRegEx.Create(nil);
+  RegEx := TPerlRegEx.Create;
+  try
+    //Check to see if there is an integer at the end of the filename.
+    //NOTE: The regex string also matches integers with preceding
+    //whitespace charactors if there are any.
+    RegEx.Subject := UTF8String(Name);
+    RegEx.RegEx := '(([\s]+)?[0-9]+)$';
+    if RegEx.Match then
+    begin
+      //If there is...
+      //FileNumber := StrToInt(RegEx.MatchedExpression);
+      FileNumber := StrToInt(String(RegEx.MatchedText));
+      inc(FileNumber);
+
+      //SetLength(Name, RegEx.MatchedExpressionOffset-1);
+      SetLength(Name, RegEx.MatchedOffset-1);
+    end else
+    begin
+      FileNumber := 1;
+    end;
+
+    NumberString := IntToStrB(FileNumber, MinDigits);
+
+    result := Name + Space + NumberString;
+  finally
+    RegEx.Free;
+  end;
+end;
 
 end.
