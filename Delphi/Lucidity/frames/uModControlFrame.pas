@@ -309,53 +309,7 @@ begin
 
 
   //============================================================================
-  AddDisplayClass(AmpEnvAttackKnob,       TScopeFocusID.AmpEnv);
-  AddDisplayClass(AmpEnvHoldKnob,         TScopeFocusID.AmpEnv);
-  AddDisplayClass(AmpEnvDecayKnob,        TScopeFocusID.AmpEnv);
-  AddDisplayClass(AmpEnvSustainKnob,      TScopeFocusID.AmpEnv);
-  AddDisplayClass(AmpEnvReleaseKnob,      TScopeFocusID.AmpEnv);
-
-  AddDisplayClass(FilterEnvAttackKnob,    TScopeFocusID.ModEnv);
-  AddDisplayClass(FilterEnvHoldKnob,      TScopeFocusID.ModEnv);
-  AddDisplayClass(FilterEnvDecayKnob,     TScopeFocusID.ModEnv);
-  AddDisplayClass(FilterEnvSustainKnob,   TScopeFocusID.ModEnv);
-  AddDisplayClass(FilterEnvReleaseKnob,   TScopeFocusID.ModEnv);
-  AddDisplayClass(Filter1Par1Knob,        TScopeFocusID.Filter1);
-  AddDisplayClass(Filter1Par2Knob,        TScopeFocusID.Filter1);
-  AddDisplayClass(Filter1Par3Knob,        TScopeFocusID.Filter1);
-  AddDisplayClass(Filter1Par4Knob,        TScopeFocusID.Filter1);
-  AddDisplayClass(Filter2Par1Knob,        TScopeFocusID.Filter2);
-  AddDisplayClass(Filter2Par2Knob,        TScopeFocusID.Filter2);
-  AddDisplayClass(Filter2Par3Knob,        TScopeFocusID.Filter2);
-  AddDisplayClass(Filter2Par4Knob,        TScopeFocusID.Filter2);
-
-  AddDisplayClass(FilterBlendKnob,        TScopeFocusID.FilterBlend);
-  AddDisplayClass(FilterRoutingButton,    TScopeFocusID.FilterBlend);
-
-  AddDisplayClass(Filter1TypeTextBox,     TScopeFocusID.Filter1);
-  AddDisplayClass(Filter1KeyTrackKnob,    TScopeFocusID.Filter1);
-  AddDisplayClass(Filter2TypeTextBox,     TScopeFocusID.Filter2);
-  AddDisplayClass(Filter2KeyTrackKnob,    TScopeFocusID.Filter2);
-  AddDisplayClass(AmpVelocityButton,      TScopeFocusID.AmpEnv);
-  AddDisplayClass(FilterVelocityButton,   TScopeFocusID.ModEnv);
-
-
-  AddDisplayClass(LfoSelectButton1, TScopeFocusID.Lfo1);
-  AddDisplayClass(LfoSelectButton2, TScopeFocusID.Lfo2);
   AddDisplayClass(LfoSelector,      LfoControlDisplayClass);
-
-
-  //AddDisplayClass(LfoShapeTextBox1,       TScopeFocusID);
-  //AddDisplayClass(Seq1ClockTextBox,       TScopeFocusID);
-  //AddDisplayClass(Seq1DirectionTextBox,   TScopeFocusID);
-  //AddDisplayClass(Seq1StepsTextBox,       TScopeFocusID);
-  //AddDisplayClass(Seq2ClockTextBox,       TScopeFocusID);
-  //AddDisplayClass(Seq2DirectionTextBox,   TScopeFocusID);
-  //AddDisplayClass(Seq2StepsTextBox,       TScopeFocusID);
-
-
-
-
 
 
   //============================================================================
@@ -823,22 +777,6 @@ begin
 
   if Plugin.Globals.SelectedLfo = 0 then
   begin
-    RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo2);
-    RemoveDisplayClass(LfoKnob2, TScopeFocusID.Lfo2);
-    RemoveDisplayClass(LfoKnob3, TScopeFocusID.Lfo2);
-
-    AddDisplayClass(LfoKnob1, TScopeFocusID.Lfo1);
-    AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);
-    AddDisplayClass(LfoKnob3, TScopeFocusID.Lfo1);
-
-    RemoveDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo2);
-    RemoveDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo2);
-    RemoveDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo2);
-
-    AddDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo1);
-    AddDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo1);
-    AddDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo1);
-
     LfoSelectButton1.IsOn := true;
     LfoSelectButton2.IsOn := false;
     LfoSelector.SwitchPos := 0;
@@ -855,22 +793,6 @@ begin
   end else
   //if Plugin.Globals.SelectedLfo = 1 then
   begin
-    RemoveDisplayClass(LfoKnob1, TScopeFocusID.Lfo1);
-    RemoveDisplayClass(LfoKnob2, TScopeFocusID.Lfo1);
-    RemoveDisplayClass(LfoKnob3, TScopeFocusID.Lfo1);
-
-    AddDisplayClass(LfoKnob1, TScopeFocusID.Lfo2);
-    AddDisplayClass(LfoKnob2, TScopeFocusID.Lfo2);
-    AddDisplayClass(LfoKnob3, TScopeFocusID.Lfo2);
-
-    RemoveDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo1);
-    RemoveDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo1);
-    RemoveDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo1);
-
-    AddDisplayClass(LfoShapeSelector,    TScopeFocusID.Lfo2);
-    AddDisplayClass(LfoFreqModeSelector, TScopeFocusID.Lfo2);
-    AddDisplayClass(LfoRangeSelector,    TScopeFocusID.Lfo2);
-
     LfoSelectButton1.IsOn := false;
     LfoSelectButton2.IsOn := true;
     LfoSelector.SwitchPos := 1;
