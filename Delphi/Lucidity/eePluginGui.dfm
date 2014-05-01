@@ -128,17 +128,6 @@ object PluginGui: TPluginGui
           OnChanged = LowerTabsChanged
           Visible = True
         end
-        object SpacerPanel1: TVamPanel
-          Left = 128
-          Top = 696
-          Width = 253
-          Height = 21
-          Opacity = 255
-          HitTest = True
-          Color = '$FFCCCCCC'
-          Transparent = False
-          Visible = True
-        end
         object ModSystem2Div: TVamDiv
           Left = 48
           Top = 512

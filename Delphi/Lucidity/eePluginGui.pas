@@ -45,7 +45,6 @@ type
     VoiceControlDiv: TVamDiv;
     TabPanel: TVamTabPanel;
     SidePanel: TVamDiv;
-    SpacerPanel1: TVamPanel;
     ModSystem2Div: TVamDiv;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -889,13 +888,6 @@ begin
   TabPanel.CornerRadius3 := 3;
   TabPanel.CornerRadius4 := 3;
 
-  SpacerPanel1.CornerRadius1 := 3;
-  SpacerPanel1.CornerRadius2 := 3;
-  SpacerPanel1.CornerRadius3 := 3;
-  SpacerPanel1.CornerRadius4 := 3;
-
-
-
 
   //============== Set main panels to correct dimensions ================================
 
@@ -923,7 +915,6 @@ begin
 
   TabPanel.Left        := MainWorkArea.Padding.Left;
   ModSystem2Div.Left   := MainWorkArea.Padding.Left;
-  SpacerPanel1.Left    := MainWorkArea.Padding.Left;
 
 
   MainMenuBar.Width     := WorkAreaWidth;
@@ -932,7 +923,6 @@ begin
   VoiceControlDiv.Width := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
   ModSystem2Div.Width   := WorkAreaWidth;
-  SpacerPanel1.Width    := WorkAreaWidth;
 
   TitlePanel.Height      := 28;
   MainMenuBar.Height     := 28;
@@ -940,7 +930,6 @@ begin
   VoiceControlDiv.Height := 80;
   TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
-  SpacerPanel1.Height    := 36;
 
   //SampleMapDiv.Height    := 258;
   SampleMapDiv.Height    := 406;
@@ -951,7 +940,6 @@ begin
     VoiceControlDiv.Visible := false;
     TabPanel.Visible        := false;
     ModSystem2Div.Visible   := false;
-    SpacerPanel1.Visible    := false;
 
 
     MainMenuBar.Top := 1;
@@ -964,7 +952,6 @@ begin
     VoiceControlDiv.Visible := true;
     TabPanel.Visible        := true;
     ModSystem2Div.Visible   := true;
-    SpacerPanel1.Visible    := false;
 
     MainMenuBar.Top := 1;
     MainMenuBar.Left := 1;
@@ -972,13 +959,7 @@ begin
     Erector.Init(MainTop, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(VoiceControlDiv, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(TabPanel, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(ModSystem2Div, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
   end;
-
-
-
-  // TODO: SpacePanel1 should both be deleted.
-  SpacerPanel1.Visible := false;
 
   MainWorkArea.Repaint;
 end;
