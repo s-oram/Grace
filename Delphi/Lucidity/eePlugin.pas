@@ -211,6 +211,7 @@ uses
   VamLib.ZeroObject,
   MadExcept, Windows,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  VamLib.LoggingProxy,
   eeCustomGlobals,
   uLucidityExtra,
   LucidityParameterScaling,
@@ -565,8 +566,6 @@ begin
   end;
 
   fFocusedKeyGroup := nil;
-
-  ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
 end;
 
 procedure TeePlugin.FocusFirstKeyGroup;
@@ -960,6 +959,7 @@ begin
 
   FocusFirstKeyGroup;
 
+
   // select the first region after loading a program.
   if (FocusedRegion = nil) and (SampleMap.RegionCount > 0) then
   begin
@@ -977,6 +977,9 @@ begin
 
   // this one call here perhaps.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
+
+  Log.LogMessage('About to access Active Voice Par');
+  //self.ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
 end;
 
 
