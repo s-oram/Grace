@@ -204,6 +204,11 @@ const
   //kModLineColorB = '$ffFF7C4C';
   kModLineColorB = '$ffFFB264';
 
+  kArrowColor1 = '$33FFFFFF';
+  kArrowColor2 = '$ccFFFFFF';
+
+
+
 
 
 

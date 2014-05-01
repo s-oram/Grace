@@ -625,17 +625,16 @@ begin
   Filter1KeyTrackKnob.Color_Background := kColor_LcdDark1;
   Filter1KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
   Filter1KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
-  Filter1KeyTrackKnob.Color_Arrows1 := '$33FFFFFF';
-  Filter1KeyTrackKnob.Color_Arrows2 := '$ccFFFFFF';
+  Filter1KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
+  Filter1KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
 
   Filter2KeyTrackKnob.Padding.Left  := 4;
   Filter2KeyTrackKnob.Padding.Right := 4;
   Filter2KeyTrackKnob.Color_Background := kColor_LcdDark1;
   Filter2KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
   Filter2KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
-  Filter2KeyTrackKnob.Color_Arrows1 := '$33FFFFFF'; // TODO: This should be a constant.
-  Filter2KeyTrackKnob.Color_Arrows2 := '$ccFFFFFF'; // TODO: This should be a constant.
-
+  Filter2KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
+  Filter2KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
 
 
   AmpVelocityButton.Color    := kColor_LcdDark1;
