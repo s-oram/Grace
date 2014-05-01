@@ -58,9 +58,26 @@ type
   }
 
 
-  // Main is for the GUI and VCL objects. It needs to be thead-safe.
-  // Audio is for audio/realtime objects.
-  TZeroObjectRank = (Main, Audio);
+  // There are three Zero Object 'Ranks'. Objects are assigned a 'rank'
+  // when they are added to the mothership. (Objects can be added multiple
+  // times with multiple ranks.) Objects will only receive messages of the
+  // same rank that they were assigned with.
+  // - Audio rank messages are generally sent/received in the audio thread.
+  //   Timing is critical for these messages so their usage should be minimised
+  //   and messages should be processed quickly.
+  // - Main rank messages are for general purpose usage. While they can be
+  //   sent in the audio thread, perhaps consider not doing so.
+  // - VCL rank messages are for GUI objects. VCL rank objects should
+  //   be removed from the mothership when the GUI is closed.
+  //   VCL rank messages are always sent in the 'Main' GUI thread because
+  //   the Delph VCL isn't threadsafe.
+  //
+  // - Audio messages are only sent to Audio objects.
+  // - Main messages are sent to Main objects. Main messages will
+  //   also be sent to VCL objects if the GUI is open.
+  // - VCL messages will only be sent to VCL objects, and only if the GUI
+  //   is open.
+  TZeroObjectRank = (Audio, Main, VCL);
 
   //Forward declarations
   IZeroObject = interface;
@@ -85,12 +102,15 @@ type
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
-    procedure MsgMain(MsgID : cardinal); overload;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgMainTS(MsgID : cardinal);
-
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgMain(MsgID : cardinal); overload;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgVcl(MsgID : cardinal); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgVclTS(MsgID : cardinal);
 
     procedure LogAudioObjects;
     procedure LogMainObjects;
@@ -137,40 +157,48 @@ type
   private
     AudioObjects : TList;
     MainObjects  : TList;
+    VclObjects   : TList;
 
-    MainMessageLock : TFixedCriticalSection;
+    MessageLock : TFixedCriticalSection;
     DisableMessageSending : boolean;
+
+    MainThreadID : cardinal;
 
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
-    MainMessageQueue : TOmniQueue;
-    MainMessageTimer : TTimer;
-    procedure Handle_GuiMessageTimerEvent(Sender : TObject);
+    VclMessageQueue : TOmniQueue;
+    VclMessageTimer : TTimer;
+    fIsGuiOpen: boolean;
+    procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
     procedure DeregisterZeroObject(obj:IZeroObjectPtr);
 
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
     procedure ClearMotherShipReferences;
+    procedure SetIsGuiOpen(const Value: boolean);
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
 
-    procedure MsgMain(MsgID : cardinal); overload;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgMainTS(MsgID : cardinal);
-
-
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgMain(MsgID : cardinal); overload;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+
+    procedure MsgVcl(MsgID : cardinal); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgVclTS(MsgID : cardinal);
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
 
     procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
+    property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
     procedure LogAudioObjects;
     procedure LogMainObjects;
@@ -181,6 +209,7 @@ type
 implementation
 
 uses
+  Windows,
   OtlParallel,
   VamLib.WinUtils,
   VamLib.LoggingProxy;
@@ -288,20 +317,21 @@ end;
 
 constructor TMotherShip.Create;
 begin
+  MainThreadID := 0;
+
   DisableMessageSending := false;
 
-  MainMessageLock := TFixedCriticalSection.Create;
+  MessageLock := TFixedCriticalSection.Create;
 
   AudioObjects := TList.Create;
+  MainObjects  := TList.Create;
+  VclObjects   := TList.Create;
 
-  MainObjects := TList.Create;
-
-
-  MainMessageQueue := TOmniQueue.Create;
-  MainMessageTimer := TTimer.Create(nil);
-  MainMessageTimer.Interval := 25;
-  MainMessageTimer.OnTimer := Handle_GuiMessageTimerEvent;
-  MainMessageTimer.Enabled := true;
+  VclMessageQueue := TOmniQueue.Create;
+  VclMessageTimer := TTimer.Create(nil);
+  VclMessageTimer.Interval := 25;
+  VclMessageTimer.OnTimer := Handle_VclMessageTimerEvent;
+  VclMessageTimer.Enabled := true;
 end;
 
 destructor TMotherShip.Destroy;
@@ -315,12 +345,13 @@ begin
   ClearMotherShipReferences;
 
 
-  MainMessageTimer.Free;
-  MainMessageQueue.Free;
-  MainMessageLock.Free;
+  VclMessageTimer.Free;
+  VclMessageQueue.Free;
+  MessageLock.Free;
 
   FreeAndNil(AudioObjects);
   FreeAndNil(MainObjects);
+  FreeAndNil(VclObjects);
 
   inherited;
 end;
@@ -371,18 +402,31 @@ begin
 end;
 
 procedure TMotherShip.DeregisterZeroObject(obj: IZeroObjectPtr);
+var
+  IsD : boolean;
 begin
+  IsD := false;
+
   if MainObjects.IndexOf(obj) <> -1 then
   begin
     MainObjects.Remove(obj);
-  end else
+    IsD := true;
+  end;
+
   if AudioObjects.IndexOf(obj) <> -1 then
   begin
     AudioObjects.Remove(obj);
-  end else
-  begin
-    raise Exception.Create('ZeroObject faided to deregister itself.');
+    IsD := true;
   end;
+
+  if VclObjects.IndexOf(obj) <> -1 then
+  begin
+    VclObjects.Remove(obj);
+    IsD := true;
+  end;
+
+  if IsD = false
+    then raise Exception.Create('ZeroObject faided to deregister itself.');
 end;
 
 procedure TMotherShip.SendMessage(MsgID: cardinal);
@@ -397,7 +441,31 @@ end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal);
 begin
-  MsgMainTS(MsgID);
+  MsgVclTS(MsgID);
+end;
+
+procedure TMotherShip.SetIsGuiOpen(const Value: boolean);
+var
+  QueueValue : TOmniValue;
+begin
+  fIsGuiOpen := Value;
+
+  if fIsGuiOpen = true then
+  begin
+    MainThreadID := GetCurrentThreadId;
+    VclMessageTimer.Enabled := true;
+  end else
+  begin
+    VclMessageTimer.Enabled := false;
+    MainThreadID := 0;
+
+    //=== clear the VCL message queue ===
+    while VclMessageQueue.TryDequeue(QueueValue) do
+    begin
+      //do nothing, we're just clearing the queue.
+    end;
+  end;
+
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
@@ -414,33 +482,85 @@ end;
 procedure TMotherShip.MsgMain(MsgID: cardinal);
 begin
   MsgMain(MsgID, nil);
+  MsgVclTS(MsgID);
 end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
   VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
   SendMessageToList(MainObjects, MsgID, Data);
+
+  if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
+  begin
+    SendMessageToList(VclObjects, MsgID, Data);
+  end else
+  begin
+    // TODO: probably should log a warning here.
+  end;
 end;
 
-procedure TMotherShip.MsgMainTS(MsgID: cardinal);
+procedure TMotherShip.MsgVcl(MsgID: cardinal);
+begin
+  if (IsGuiOpen)  then
+  begin
+    if (MainThreadID = GetCurrentThreadId) then
+    begin
+      SendMessageToList(VclObjects, MsgID, nil);
+    end else
+    begin
+      // TODO: probably should log a warning or raise an error here.
+    end;
+  end;
+end;
+
+procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer);
+begin
+  // TODO: need to check calling thread ID.
+  if (IsGuiOpen) then
+  begin
+    if (MainThreadID = GetCurrentThreadId) then
+    begin
+      SendMessageToList(VclObjects, MsgID, Data);
+    end else
+    begin
+      // TODO: probably should log a warning or raise an error here.
+    end;
+  end;
+end;
+
+procedure TMotherShip.MsgVclTS(MsgID: cardinal);
 var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  msgData.MsgID   := MsgID;
-  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-  MainMessageQueue.Enqueue(QueueValue);
+  if IsGuiOpen then
+  begin
+    if (MainThreadID = GetCurrentThreadId) then
+    begin
+      SendMessageToList(VclObjects, MsgID, nil);
+    end else
+    begin
+      // TODO: a possible improvement would be to check the calling thread id. If
+      // it's the VCL thread, dispatch the message immediatly. If not, queue the
+      // message for later processing.
+      msgData.MsgID   := MsgID;
+      QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
+      VclMessageQueue.Enqueue(QueueValue);
+    end;
+  end;
 end;
 
-procedure TMotherShip.Handle_GuiMessageTimerEvent(Sender: TObject);
+procedure TMotherShip.Handle_VclMessageTimerEvent(Sender: TObject);
 var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  while MainMessageQueue.TryDequeue(QueueValue) do
+  MainThreadID := GetCurrentThreadId;
+
+  while VclMessageQueue.TryDequeue(QueueValue) do
   begin
     MsgData := QueueValue.ToRecord<TMessageData>;
-    MsgMain(msgData.MsgID, nil);
+    SendMessageToList(VclObjects, msgData.MsgID, nil);
   end;
 end;
 
@@ -451,7 +571,7 @@ var
   LogMsg : string;
   aClass : TClass;
 begin
-  MainMessageLock.Enter;
+  MessageLock.Enter;
   try
     if ObjectList = MainObjects then LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')'
     else
@@ -477,7 +597,7 @@ begin
       raise;
     end;
   finally
-    MainMessageLock.Leave;
+    MessageLock.Leave;
   end;
 end;
 
