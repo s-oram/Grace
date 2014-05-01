@@ -550,7 +550,6 @@ begin
     SampleMapFrame.UpdateSampleRegions;
     SampleDisplayFrame.UpdateSampleDisplay;
     MiniSampleDisplayFrame.UpdateSampleDisplay;
-
   end;
 
   if MsgID = TLucidMsgId.SampleRegionChanged then

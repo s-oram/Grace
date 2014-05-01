@@ -1119,7 +1119,13 @@ begin
 
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
-    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+
+    Globals.AddVclTask(
+    procedure
+    begin
+      Globals.MotherShip.MsgMain(TLucidMsgID.MidiKeyChanged);
+    end);
+    //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsNoteOff(Event) then
@@ -1127,10 +1133,16 @@ begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
 
+    Globals.AddVclTask(
+    procedure
+    begin
+      Globals.MotherShip.MsgMain(TLucidMsgID.MidiKeyChanged);
+    end);
+
     // TODO: Send message using GUI thread doesn't seem to be working.
     // I'm not sure. Perhaps it's something to do with OTL's async().await(). method.
-    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
-    Globals.MotherShip.SendMessage(TLucidMsgID.MidiKeyChanged);
+    //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+    //Globals.MotherShip.SendMessage(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsControlChange(Event) then

@@ -243,7 +243,9 @@ end;
 
 procedure TGlobals.AddVclTask(aTask: TProc);
 begin
-  VclTaskRunner.AddTask(aTask);
+  if IsGuiOpen
+    then VclTaskRunner.AddTask(aTask)
+    else aTask := nil;
 end;
 
 
