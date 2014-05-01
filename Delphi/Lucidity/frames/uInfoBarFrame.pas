@@ -47,7 +47,7 @@ end;
 
 procedure TInfoBarFrame.Handle_InfoMessageChanged(Sender: TObject);
 begin
-  InfoTextBox.Text := Plugin.Globals.InfoBarReceiver.MessageText;
+  //InfoTextBox.Text := Plugin.Globals.InfoBarReceiver.MessageText;
 end;
 
 procedure TInfoBarFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; GuiContainer: TControl);
@@ -66,7 +66,7 @@ begin
   InfoTextBox.ColorMouseOver := kColor_LcdDark1;
   InfoTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
 
-  Plugin.Globals.InfoBarReceiver.OnMessageChanged := Handle_InfoMessageChanged;
+  //Plugin.Globals.InfoBarReceiver.OnMessageChanged := Handle_InfoMessageChanged;
 end;
 
 

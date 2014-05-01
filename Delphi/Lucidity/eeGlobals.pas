@@ -7,8 +7,7 @@ uses
   ExtCtrls,
   uGuiState,
   Lucidity.Options, eeTaskRunner,
-  eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL,
-  eeGlobals.InfoBarReceiver;
+  eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 
 type
   TGlobals = class(TCustomGlobals)
@@ -18,7 +17,6 @@ type
     fUserDataDir: string;
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
-    fInfoBarReceiver: TInfoBarReceiver;
     fSelectedModSlot: integer;
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
@@ -49,10 +47,6 @@ type
     property SkinImageLoader : TSkinImageLoader read fSkinImageLoader;
 
     property Options : TOptions read fOptions;
-
-    // InfoBarReceiver is a central point for controls to send messages for the info bar to.
-    // The info bar can then respond to changes and display the message.
-    property InfoBarReceiver : TInfoBarReceiver read fInfoBarReceiver write fInfoBarReceiver;
 
     // SelectedModSlot shows which mod slot is active. valid range is -1..7.
     //   -1 indicates that the "Main" is selected and no mod slot is being edited.
@@ -100,8 +94,6 @@ begin
   VclTaskTimer.OnTimer := OnVclTimer;
 
   fSelectedModSlot := -1;
-
-  fInfoBarReceiver := TInfoBarReceiver.Create;
 
   fKeyData.Clear;
 
@@ -172,7 +164,6 @@ end;
 
 destructor TGlobals.Destroy;
 begin
-  fInfoBarReceiver.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
   VclTaskTimer.Free;
