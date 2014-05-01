@@ -81,14 +81,11 @@ type
 
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
-    procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
-    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
-
+    procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgMainTS(MsgID : cardinal); overload;
-    procedure MsgMainTS(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload; //Thread Safe version.
+    procedure MsgMainTS(MsgID : cardinal);
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
@@ -134,8 +131,6 @@ type
   private type
     TMessageData = record
       MsgID   : cardinal;
-      Data    : pointer;
-      CleanUp : TProc;
     end;
   private
     AudioObjects : TList;
@@ -163,8 +158,8 @@ type
 
     procedure MsgMain(MsgID : cardinal); overload;
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgMainTS(MsgID : cardinal); overload;
-    procedure MsgMainTS(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload; //Thread Safe version.
+    procedure MsgMainTS(MsgID : cardinal);
+
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
@@ -172,8 +167,8 @@ type
     procedure SendMessage(MsgID : cardinal); overload;
     procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
 
-    procedure SendMessageUsingGuiThread(MsgID : cardinal); overload;
-    procedure SendMessageUsingGuiThread(MsgID : cardinal; Data : Pointer; CleanUp : TProc); overload;
+    procedure SendMessageUsingGuiThread(MsgID : cardinal);
+
 
     procedure LogAudioObjects;
     procedure LogMainObjects;
@@ -400,12 +395,7 @@ end;
 
 procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal);
 begin
-  SendMessageUsingGuiThread(MsgID, nil, nil);
-end;
-
-procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
-begin
-  MsgMainTS(MsgID, Data, CleanUp);
+  MsgMainTS(MsgID);
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
@@ -431,19 +421,11 @@ begin
 end;
 
 procedure TMotherShip.MsgMainTS(MsgID: cardinal);
-begin
-  MsgMainTS(MsgID, nil, nil);
-end;
-
-procedure TMotherShip.MsgMainTS(MsgID: cardinal; Data: Pointer; CleanUp: TProc);
 var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  msgData.MsgID := MsgID;
-  msgData.Data := Data;
-  msgData.CleanUp := CleanUp;
-
+  msgData.MsgID   := MsgID;
   QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
   MainMessageQueue.Enqueue(QueueValue);
 end;
@@ -456,14 +438,7 @@ begin
   while MainMessageQueue.TryDequeue(QueueValue) do
   begin
     MsgData := QueueValue.ToRecord<TMessageData>;
-
-    MsgMain(msgData.MsgID, msgData.Data);
-
-    if assigned(msgData.CleanUp) then
-    begin
-      msgData.CleanUp();
-      msgData.CleanUp := nil;
-    end;
+    MsgMain(msgData.MsgID, nil);
   end;
 end;
 

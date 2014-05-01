@@ -1115,8 +1115,6 @@ begin
 
   if IsNoteOn(Event) then
   begin
-    Globals.MotherShip.SendMessageUsingGuiThread(1, nil, nil);
-
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
 
