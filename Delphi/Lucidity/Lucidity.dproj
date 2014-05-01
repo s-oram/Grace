@@ -558,7 +558,6 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="eePlugin.pas"/>
-			<DCCReference Include="eeGlobals.InfoBarReceiver.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas"/>
 			<DCCReference Include="eeVstParameterEx.pas"/>

@@ -122,7 +122,6 @@ uses
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
   uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
   eePlugin in 'eePlugin.pas',
-  eeGlobals.InfoBarReceiver in 'eeGlobals.InfoBarReceiver.pas',
   eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
   eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas',
   eeVstParameterEx in 'eeVstParameterEx.pas',
