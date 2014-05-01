@@ -593,7 +593,7 @@ begin
       then SampleMap.FocusRegion(aRegion.GetProperties^.UniqueID);
 
     // signal to the GUI that the focus has changed.
-    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 
 
@@ -625,7 +625,7 @@ begin
     end;
 
     // signal to the GUI that the focus has changed.
-    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 
 
@@ -649,7 +649,7 @@ begin
     SampleMap.FocusRegion(aRegionID);
 
     // signal to the GUI that the focus has changed.
-    Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -670,7 +670,7 @@ begin
   SampleMap.ClearFocus;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.ClearSelected;
@@ -678,7 +678,7 @@ begin
   SampleMap.DeselectAllRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -697,7 +697,7 @@ begin
     then self.FocusFirstKeyGroup;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteSelectedRegions;
@@ -705,7 +705,7 @@ begin
   SampleMap.DeleteSelectedRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DuplicateSelectedRegions;
@@ -713,7 +713,7 @@ begin
   SampleMap.DuplicateSelectedRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -736,7 +736,7 @@ begin
   end;
 
 
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
 end;
 
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
@@ -749,7 +749,7 @@ begin
   SampleMap.DeselectAllRegions;
 
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
 end;
 
 function TeePlugin.NewRegion(CreateInfo: TRegionCreateInfo): IRegion;
@@ -967,14 +967,14 @@ begin
 
 
   //TODO: These send message calls could be replaced by...
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleOscTypeChanged);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateModMatrix);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleMarkersChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
 
   // this one call here perhaps.
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ProgramLoaded);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
 end;
 
 
@@ -998,7 +998,7 @@ begin
 
   PresetName := RemoveFileExt(FileName);
 
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ProgramSavedToDisk);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk);
   {$ENDIF}
 end;
 
@@ -1067,7 +1067,7 @@ begin
     end;
   end;
 
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.PreviewInfoChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged);
 end;
 
 procedure TeePlugin.StopPreview;
@@ -1078,7 +1078,7 @@ end;
 procedure TeePlugin.ClearPreviewInfo;
 begin
   PreviewInfo^.Clear;
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.PreviewInfoChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged);
 end;
 
 procedure TeePlugin.TriggerNoteOn(const MidiNote, MidiVelocity: integer);
@@ -1088,7 +1088,7 @@ begin
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
   VoiceController.NoteOn(MidiNote, MidiVelocity, SampleMap);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
 
 procedure TeePlugin.TriggerNoteOff(const MidiNote, MidiVelocity: integer);
@@ -1098,7 +1098,7 @@ begin
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   VoiceController.NoteOff(MidiNote, MidiVelocity, SampleMap);
-  Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
 
 
@@ -1117,30 +1117,14 @@ begin
   begin
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
-
-    Globals.AddVclTask(
-    procedure
-    begin
-      Globals.MotherShip.MsgMain(TLucidMsgID.MidiKeyChanged);
-    end);
-    //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsNoteOff(Event) then
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
-
-    Globals.AddVclTask(
-    procedure
-    begin
-      Globals.MotherShip.MsgMain(TLucidMsgID.MidiKeyChanged);
-    end);
-
-    // TODO: Send message using GUI thread doesn't seem to be working.
-    // I'm not sure. Perhaps it's something to do with OTL's async().await(). method.
-    //Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.MidiKeyChanged);
-    //Globals.MotherShip.SendMessage(TLucidMsgID.MidiKeyChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsControlChange(Event) then
