@@ -106,7 +106,6 @@ uses
   soNoteStack in 'SoundObjects\soNoteStack.pas',
   Lucidity.StateHelpers in 'Lucidity.StateHelpers.pas',
   Menu.StepSequenceMenu in 'frames\Menu.StepSequenceMenu.pas',
-  uInfoBarFrame in 'frames\uInfoBarFrame.pas' {InfoBarFrame: TFrame},
   LucidityParameterScaling in 'LucidityParameterScaling.pas',
   LucidityControl.ModSection in 'Controls\LucidityControl.ModSection.pas',
   LucidityModConnections in 'LucidityModConnections.pas',

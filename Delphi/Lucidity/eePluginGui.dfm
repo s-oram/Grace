@@ -128,19 +128,6 @@ object PluginGui: TPluginGui
           OnChanged = LowerTabsChanged
           Visible = True
         end
-        object InfoBarDiv: TVamDiv
-          Left = 48
-          Top = 732
-          Width = 521
-          Height = 36
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
-          Opacity = 255
-          HitTest = True
-          Visible = True
-        end
         object SpacerPanel1: TVamPanel
           Left = 128
           Top = 696

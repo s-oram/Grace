@@ -13,7 +13,7 @@ uses
   VamLib.ZeroObject,
   uSequencerFrame,
   OtlComm, uModSystem2Frame,
-  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea, uInfoBarFrame,
+  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
   uGuiState, eePluginHotkeys,
@@ -45,7 +45,6 @@ type
     VoiceControlDiv: TVamDiv;
     TabPanel: TVamTabPanel;
     SidePanel: TVamDiv;
-    InfoBarDiv: TVamDiv;
     SpacerPanel1: TVamPanel;
     ModSystem2Div: TVamDiv;
     procedure FormCreate(Sender: TObject);
@@ -76,7 +75,6 @@ type
     FileBrowserFrame       : TFileBrowserFrame;
     VoiceControlFrame      : TVoiceControlFrame;
     ModControlFrame        : TModControlFrame;
-    InfoBarFrame           : TInfoBarFrame;
     AboutFrame             : TAboutFrame;
     ModSystem2Frame        : TModSystem2Frame;
     SequencerFrame         : TSequencerFrame;
@@ -209,13 +207,6 @@ begin
   ModControlFrame.BackgroundPanel.CornerRadius4 := 3;
   ModControlFrame.BackgroundPanel.Visible := false;
 
-
-
-  InfoBarFrame := TInfoBarFrame.Create(self.Owner);
-  InfoBarFrame.BackgroundPanel.Parent := InfoBarDiv;
-  InfoBarFrame.BackgroundPanel.Align  := alClient;
-  InfoBarFrame.BackgroundPanel.Visible := true;
-
   FileBrowserFrame := TFileBrowserFrame.Create(self.Owner);
   FileBrowserFrame.BackgroundPanel.Parent := SidePanel;
   FileBrowserFrame.BackgroundPanel.Align  := alClient;
@@ -269,7 +260,6 @@ begin
   FreeAndNil(FileBrowserFrame);
   FreeAndNil(VoiceControlFrame);
   FreeAndNil(ModControlFrame);
-  FreeAndNil(InfoBarFrame);
   FreeAndNil(ModSystem2Frame);
   FreeAndNil(SequencerFrame);
   FreeAndNil(AboutFrame);
@@ -378,7 +368,6 @@ begin
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
-    InfoBarFrame.InitializeFrame(Plugin, GuiStandard, RedFoxContainer);
   except
   end;
 
@@ -799,8 +788,6 @@ begin
   SequencerFrame.BackgroundPanel.Color         := kPanelLight;
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
   ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
-  InfoBarFrame.BackgroundPanel.Color           := kPanelDark;
-
 
 
   FileBrowserFrame.InsidePanel.Color := kColor_LcdDark1;
@@ -835,7 +822,6 @@ begin
         ClearPadding(self.MainTop);
         ClearPadding(self.VoiceControlDiv);
         ClearPadding(self.TabPanel);
-        ClearPadding(self.InfoBarDiv);
       ClearPadding(self.SideWorkArea);
         ClearPadding(self.SidePanel);
         ClearPadding(self.TitlePanel);
@@ -849,10 +835,6 @@ begin
   ClearPadding(ModControlFrame.BackgroundPanel);
   ClearPadding(SequencerFrame.BackgroundPanel);
   ClearPadding(ModSystem2Frame.BackgroundPanel);
-  ClearPadding(InfoBarFrame.BackgroundPanel);
-
-
-
 
 
   //============================================================================
@@ -887,8 +869,6 @@ begin
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModSystem2Frame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
 
-
-  //InfoBarDiv.Padding.SetBounds(0,2,0,0);
 
   //============================================================================
   //   A little more tweaking...
@@ -943,7 +923,6 @@ begin
 
   TabPanel.Left        := MainWorkArea.Padding.Left;
   ModSystem2Div.Left   := MainWorkArea.Padding.Left;
-  InfoBarDiv.Left      := MainWorkArea.Padding.Left;
   SpacerPanel1.Left    := MainWorkArea.Padding.Left;
 
 
@@ -953,7 +932,6 @@ begin
   VoiceControlDiv.Width := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
   ModSystem2Div.Width   := WorkAreaWidth;
-  InfoBarDiv.Width      := WorkAreaWidth;
   SpacerPanel1.Width    := WorkAreaWidth;
 
   TitlePanel.Height      := 28;
@@ -962,7 +940,6 @@ begin
   VoiceControlDiv.Height := 80;
   TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
-  InfoBarDiv.Height      := 30;
   SpacerPanel1.Height    := 36;
 
   //SampleMapDiv.Height    := 258;
@@ -981,10 +958,6 @@ begin
     MainMenuBar.Left := 1;
     Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(MainTop, SampleMapDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(SampleMapDiv, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(VoiceControlDiv, MainMid).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(SampleMapDiv, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-
   end else
   begin
     SampleMapDiv.Visible    := false;
@@ -1000,13 +973,11 @@ begin
     Erector.Init(VoiceControlDiv, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(TabPanel, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
     Erector.Init(ModSystem2Div, SpacerPanel1).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(ModSystem2Div, InfoBarDiv).SnapToEdge(cfBottomEdge).Move(0,2);
   end;
 
 
 
-  // TODO: InfoBarDiv and SpacePanel1 should both be deleted.
-  InfoBarDiv.Visible   := false;
+  // TODO: SpacePanel1 should both be deleted.
   SpacerPanel1.Visible := false;
 
   MainWorkArea.Repaint;

@@ -140,9 +140,6 @@ uses
   eeDsp,
   SysUtils, uConstants;
 
-
-
-
 { TeePluginBase }
 
 

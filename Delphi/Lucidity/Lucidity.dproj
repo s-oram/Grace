@@ -536,10 +536,6 @@
 			<DCCReference Include="SoundObjects\soNoteStack.pas"/>
 			<DCCReference Include="Lucidity.StateHelpers.pas"/>
 			<DCCReference Include="frames\Menu.StepSequenceMenu.pas"/>
-			<DCCReference Include="frames\uInfoBarFrame.pas">
-				<Form>InfoBarFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="LucidityParameterScaling.pas"/>
 			<DCCReference Include="Controls\LucidityControl.ModSection.pas"/>
 			<DCCReference Include="LucidityModConnections.pas"/>
