@@ -206,10 +206,14 @@ begin
   if fIsGuiOpen = true then
   begin
     VclTaskTimer.Enabled := true;
+
+    MotherShip.SetIsGuiOpen(true);
   end else
   begin
     VclTaskTimer.Enabled := false;
     VclTaskRunner.Clear;
+
+    MotherShip.SetIsGuiOpen(false);
   end;
 end;
 

@@ -167,7 +167,7 @@ begin
     Text := IntToStr(x) + ' regions duplicated';
   end;
 
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Msg_XRegionsDuplicated, @Text);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Msg_XRegionsDuplicated, @Text);
 end;
 
 procedure TSampleMapContextMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);

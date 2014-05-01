@@ -274,7 +274,7 @@ begin
   // - check if the data directory exists,
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
-  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.Main);
+  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.Audio); // or this could be TZeroObjectRank.Main? dunno.
 
 
 

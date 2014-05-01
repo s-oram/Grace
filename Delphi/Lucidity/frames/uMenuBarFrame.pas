@@ -225,7 +225,7 @@ end;
 procedure TMenuBarFrame.SampleEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_ShowLoopEditFrame);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_ShowLoopEditFrame);
 end;
 
 procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
@@ -233,8 +233,8 @@ begin
   if not assigned(Plugin) then exit;
 
   if Plugin.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.Command_ShowSampleMapEdit);
+    then Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_HideSampleMapEdit)
+    else Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_ShowSampleMapEdit);
 end;
 
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);

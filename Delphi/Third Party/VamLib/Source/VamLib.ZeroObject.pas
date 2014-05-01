@@ -77,6 +77,8 @@ type
   //   also be sent to VCL objects if the GUI is open.
   // - VCL messages will only be sent to VCL objects, and only if the GUI
   //   is open.
+  //
+  //  I'm not sure if "Main" is actually required.
   TZeroObjectRank = (Audio, Main, VCL);
 
   //Forward declarations
@@ -95,11 +97,13 @@ type
 
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
+    procedure SetIsGuiOpen(const Value: boolean);
+
     procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(obj:IZeroObjectPtr);
 
-    procedure SendMessage(MsgID : cardinal); overload;
-    procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
+    //procedure SendMessage(MsgID : cardinal); overload;
+    //procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
     procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
     procedure MsgAudio(MsgID : cardinal); overload;
@@ -384,16 +388,22 @@ begin
   obj.SetMotherShipReference(self);
 
   case Rank of
+    TZeroObjectRank.Audio:
+    begin
+      if AudioObjects.IndexOf(ptr) = -1
+        then AudioObjects.Add(ptr);
+    end;
+
     TZeroObjectRank.Main:
     begin
       if MainObjects.IndexOf(ptr) = -1
         then MainObjects.Add(ptr);
     end;
 
-    TZeroObjectRank.Audio:
+    TZeroObjectRank.VCL:
     begin
-      if AudioObjects.IndexOf(ptr) = -1
-        then AudioObjects.Add(ptr);
+      if VclObjects.IndexOf(ptr) = -1
+        then VclObjects.Add(ptr);
     end;
   else
     raise Exception.Create('Rank not supported.');

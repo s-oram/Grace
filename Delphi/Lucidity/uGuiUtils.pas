@@ -592,7 +592,7 @@ begin
     kg.SetModParModAmount(ModParIndex, c1, 0);
   end;
 
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
 end;
 
 class procedure Command.ClearCurrentModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
@@ -608,7 +608,7 @@ begin
     kg.SetModParModAmount(ModParIndex, ModSlot, 0);
   end;
 
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ModAmountChanged);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
 end;
 
 class function Command.GetParValue(const Plugin: TeePlugin; const Par: TPluginParameter): single;
@@ -642,7 +642,7 @@ begin
     smLoopEndMarker:     Region.GetProperties^.LoopEnd     := NewSamplePos;
   end;
 
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.SampleMarkersChanged);
 end;
 
 

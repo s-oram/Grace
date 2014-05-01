@@ -540,7 +540,7 @@ begin
     else Plugin.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
 
   UpdateRegionInfoDisplay;
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.MouseOverSampleRegionChanged);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.MouseOverSampleRegionChanged);
 end;
 
 
@@ -969,7 +969,7 @@ begin
   // It's not a showstopper bug but would be great to fix.
   Throttle(ThrottleID, 25, procedure
   begin
-    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.SampleRegionChanged);
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
   end);
 
 end;
@@ -1001,10 +1001,10 @@ begin
   UpdateRegionInfoDisplay;
 
 
-  //TODO: throttle this call..
+  //TODO: It would be handy to have a thread safe throttle.
   Throttle(ThrottleID, 25, procedure
   begin
-    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.SampleRegionChanged);
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
   end);
 end;
 

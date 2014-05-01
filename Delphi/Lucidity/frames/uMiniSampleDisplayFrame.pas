@@ -944,7 +944,7 @@ begin
     smLoopEndModMarker:      ActiveModParIndex := TModParIndex.LoopEnd;
   end;
 
-  Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
 end;
 
 

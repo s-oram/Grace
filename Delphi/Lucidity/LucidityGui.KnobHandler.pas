@@ -302,7 +302,7 @@ begin
   Throttle(ThrottleHandle, 25,
   procedure
   begin
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateScope);
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
   end);
 end;
 
