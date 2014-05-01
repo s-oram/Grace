@@ -8,6 +8,7 @@ uses
   Math,
   uConstants,
   VamLib.UniqueID,
+  VamLib.Throttler,
   VamLib.Debouncer,
   uLucidityPopUpMenu,
   Lucidity.Types,
@@ -508,8 +509,7 @@ begin
     Zoom := xZoom;
     Offset := xOffset;
 
-    //TODO: it might be better to throttle here instead of debounce.
-    Debounce(SampleUpdateDebounceID, 25, deTrailing, UpdateSampleDisplay);
+    Throttle(SampleUpdateDebounceID, 25, UpdateSampleDisplay);
   end;
 end;
 
