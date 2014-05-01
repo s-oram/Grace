@@ -11,6 +11,8 @@ uses
   OtlContainers,
   VamLib.Types;
 
+{$SCOPEDENUMS ON}
+
 type
   {
     TZeroObject and TMotherShip are implementations of
@@ -351,13 +353,13 @@ begin
   obj.SetMotherShipReference(self);
 
   case Rank of
-    zoMain:
+    TZeroObjectRank.zoMain:
     begin
       if MainObjects.IndexOf(ptr) = -1
         then MainObjects.Add(ptr);
     end;
 
-    zoAudio:
+    TZeroObjectRank.zoAudio:
     begin
       if AudioObjects.IndexOf(ptr) = -1
         then AudioObjects.Add(ptr);

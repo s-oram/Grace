@@ -50,7 +50,7 @@ begin
   SystemWindow := aSystemWindow;
 
   ScopeHandler := TScopeHandler.Create(Plugin);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, zoMain);
+  Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, TZeroObjectRank.zoMain);
 
   c := FindControlbyName(Gui, 'Scope');
   if assigned(c) then
@@ -59,7 +59,7 @@ begin
   end;
 
   ActiveModDetector := TModDisplayDetector.Create(Plugin);
-  aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, zoMain);
+  aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, TZeroObjectRank.zoMain);
 end;
 
 destructor TPluginGuiMeta.Destroy;

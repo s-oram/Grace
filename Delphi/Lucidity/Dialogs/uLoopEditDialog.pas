@@ -809,7 +809,7 @@ begin
 
   Form.BackgroundPanel.Visible := true;
 
-  aPlugin.Globals.MotherShip.RegisterZeroObject(Form, zoMain);
+  aPlugin.Globals.MotherShip.RegisterZeroObject(Form, TZeroObjectRank.zoMain);
 end;
 
 

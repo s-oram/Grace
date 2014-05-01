@@ -257,7 +257,7 @@ begin
 
     if supports(sg, IZeroObject, zo) then
     begin
-      Globals.MotherShip.RegisterZeroObject(zo, zoAudio);
+      Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.zoAudio);
     end;
 
     result := sg;
