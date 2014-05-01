@@ -565,6 +565,8 @@ begin
   end;
 
   fFocusedKeyGroup := nil;
+
+  ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
 end;
 
 procedure TeePlugin.FocusFirstKeyGroup;
