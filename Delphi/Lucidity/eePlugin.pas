@@ -186,7 +186,6 @@ type
     function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
-    procedure GetFilterInfo(const Info : PFilterParameterInfo);
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
@@ -817,22 +816,6 @@ begin
     end;
   end;
 end;
-
-procedure TeePlugin.GetFilterInfo(const Info: PFilterParameterInfo);
-var
-  SG : IKeyGroup;
-begin
-  SG := FocusedKeyGroup;
-  if assigned(SG) then
-  begin
-    (SG.GetObject as TKeyGroup).GetFilterInfo(Info);
-  end;
-
-end;
-
-
-
-
 
 procedure TeePlugin.GetPreset(var ms: TMemoryStream);
 var

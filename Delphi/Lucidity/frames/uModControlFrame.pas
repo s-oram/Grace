@@ -160,8 +160,6 @@ type
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
-
-    procedure FilterChanged;
   end;
 
 implementation
@@ -742,25 +740,6 @@ begin
     AltFilterText.ShowAltText2 := false;
   end;
 end;
-
-
-procedure TModControlFrame.FilterChanged;
-begin
-  //TODO:
-  assert(assigned(Plugin));
-  Plugin.GetFilterInfo(@FilterParameterInfo);
-
-  {
-  Filter1P1Label.Text := FilterParameterInfo.Filter1Par1ShortName;
-  Filter1P2Label.Text := FilterParameterInfo.Filter1Par2ShortName;
-  Filter1P3Label.Text := FilterParameterInfo.Filter1Par3ShortName;
-
-  Filter2P1Label.Text := FilterParameterInfo.Filter2Par1ShortName;
-  Filter2P2Label.Text := FilterParameterInfo.Filter2Par2ShortName;
-  Filter2P3Label.Text := FilterParameterInfo.Filter2Par3ShortName;
-  }
-end;
-
 
 
 procedure TModControlFrame.Timer1Timer(Sender: TObject);
