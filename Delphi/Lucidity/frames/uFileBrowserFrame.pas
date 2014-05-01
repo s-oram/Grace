@@ -38,9 +38,6 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
-
-    MsgHandle : hwnd;
-    procedure MessageHandler(var Message : TMessage);
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
@@ -94,22 +91,10 @@ begin
 
   MainContextMenu := TFileTreeViewMainContextMenu.Create;
   NodeContextMenu := TFileTreeViewNodeContextMenu.Create;
-
-  // NOTE: AFAIK TFrame should be receive a windows handle at some stage.
-  // for whatever reason this TFrame instance wasn't receiving a handle and
-  // i couldn't figure out why. This is a work-around so that the frame
-  // can receive messages posted by the EasyEffect Globals class.
-  MsgHandle := AllocateHWND(MessageHandler);
 end;
 
 destructor TFileBrowserFrame.Destroy;
 begin
-  if (MsgHandle <> 0) and (assigned(Plugin)) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
-  end;
-  DeallocateHWnd(MsgHandle);
-
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
@@ -117,10 +102,6 @@ begin
   MainContextMenu.Free;
   NodeContextMenu.Free;
   inherited;
-end;
-
-procedure TFileBrowserFrame.MessageHandler(var Message: TMessage);
-begin
 end;
 
 procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -141,12 +122,6 @@ begin
 
   fPlugin      := aPlugin;
   fGuiStandard := aGuiStandard;
-
-  if MsgHandle <> 0 then
-  begin
-    Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-  end;
-
 
   //==== Some basic GUI setup ====
   ScrollBox.Align := alClient;

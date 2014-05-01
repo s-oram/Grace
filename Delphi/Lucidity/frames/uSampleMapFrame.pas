@@ -68,7 +68,6 @@ type
     procedure SetScollPosY(const Value: single);
   private
     FMotherShip : IMothership;
-
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected

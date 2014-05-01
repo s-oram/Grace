@@ -34,9 +34,6 @@ type
 
     CurrentMouseOverControl : TControl;
 
-    MsgHandle : hwnd;
-    procedure MessageHandler(var Message : TMessage);
-
     procedure UpdateModulation;
     procedure UpdateModSelector_ModulationAmounts;
 
@@ -89,12 +86,6 @@ begin
   inherited;
 
   CurrentMouseOverControl := nil;
-
-  // NOTE: AFAIK TFrame should be receive a windows handle at some stage.
-  // for whatever reason this TFrame instance wasn't receiving a handle and
-  // i couldn't figure out why. This is a work-around so that the frame
-  // can receive messages posted by the EasyEffect Globals class.
-  MsgHandle := AllocateHWND(MessageHandler);
 
   ModContextMenu := TModSelectorContextMenu.Create;
 
@@ -190,12 +181,6 @@ end;
 
 destructor TModSystem2Frame.Destroy;
 begin
-  if (MsgHandle <> 0) and (assigned(Plugin)) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
-  end;
-  DeallocateHWnd(MsgHandle);
-
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
@@ -205,12 +190,6 @@ begin
 
   inherited;
 end;
-
-procedure TModSystem2Frame.MessageHandler(var Message: TMessage);
-begin
-  //TODO: Delete
-end;
-
 
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
@@ -230,11 +209,6 @@ begin
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
-
-  if MsgHandle <> 0 then
-  begin
-    Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-  end;
 
   ModContextMenu.Initialize(aPlugin, aDialogDisplayArea);
 

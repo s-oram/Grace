@@ -47,8 +47,6 @@ type
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
 
-    MsgHandle : hwnd;
-    procedure MessageHandler(var Message : TMessage);
     procedure UpdateControlVisibility;
     procedure UpdateModulation;
 
@@ -127,8 +125,6 @@ begin
 
   UpdateSampleDisplayThottleToken.Init;
 
-  MsgHandle := AllocateHWND(MessageHandler);
-
   Zoom   := 0;
   Offset := 0;
 
@@ -162,12 +158,6 @@ end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
 begin
-  if (MsgHandle <> 0) and (assigned(Plugin)) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
-  end;
-  DeallocateHWnd(MsgHandle);
-
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
@@ -191,9 +181,6 @@ begin
 
   Plugin := aPlugin;
   GuiStandard := aGuiStandard;
-
-  if MsgHandle <> 0 then Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-
 
   SampleDisplayMenu.Initialize(aPlugin);
 
@@ -236,10 +223,6 @@ begin
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
   UpdateModulation;
-end;
-
-procedure TMiniSampleDisplayFrame.MessageHandler(var Message: TMessage);
-begin
 end;
 
 procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);

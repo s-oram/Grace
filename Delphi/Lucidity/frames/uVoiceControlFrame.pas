@@ -65,10 +65,6 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
-
-    MsgHandle : hwnd;
-    procedure MessageHandler(var Message : TMessage);
-
     procedure ShowPlayTypeMenuCallBack(aMenu : TMenu);
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
   private
@@ -115,12 +111,6 @@ begin
   inherited;
   VoicePitch1Knob.VisibleSteps := 24; //24 steps reflects tuning by +/-12 semitones.
 
-  // NOTE: AFAIK TFrame should be receive a windows handle at some stage.
-  // for whatever reason this TFrame instance wasn't receiving a handle and
-  // i couldn't figure out why. This is a work-around so that the frame
-  // can receive messages posted by the EasyEffect Globals class.
-  MsgHandle := AllocateHWND(MessageHandler);
-
 
   //misc.
   GlideKnob.MinModDepth := 0;
@@ -130,20 +120,10 @@ end;
 
 destructor TVoiceControlFrame.Destroy;
 begin
-  if (MsgHandle <> 0) and (assigned(Plugin)) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(MsgHandle);
-  end;
-  DeallocateHWnd(MsgHandle);
-
   if (assigned(FMotherShip))
     then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
 
   inherited;
-end;
-
-procedure TVoiceControlFrame.MessageHandler(var Message: TMessage);
-begin
 end;
 
 procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -183,11 +163,6 @@ begin
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
-
-  if MsgHandle <> 0 then
-  begin
-    Plugin.Globals.AddWindowsMessageListener(MsgHandle);
-  end;
 
 
   //==== Assign standard control handling ====
