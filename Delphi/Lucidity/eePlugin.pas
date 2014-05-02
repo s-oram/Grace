@@ -425,7 +425,7 @@ begin
 
 
 
-  LogMemoryUsage('TPlugin.Create End');
+  //LogMemoryUsage('TPlugin.Create End');
 end;
 
 destructor TeePlugin.Destroy;
