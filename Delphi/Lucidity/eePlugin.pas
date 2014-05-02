@@ -64,8 +64,6 @@ uses
 type
   TeePlugin = class(TeePluginBase)
   private
-    FActiveKeyGroup : IKeyGroup; //HACK: Do not access variable directly. Use ActiveKeyGroup().
-
     fMidiAutomation: TMidiAutomation;
     fGuiState: TGuiState;
     fXYPads: TLucidityXYPads;
@@ -433,7 +431,6 @@ begin
     else fn := '';
 
   fFocusedKeyGroup := nil;
-  FActiveKeyGroup  := nil;
   EmptyKeyGroup    := nil;
 
   MidiAutomation.Free;
@@ -457,7 +454,6 @@ end;
 
 procedure TeePlugin.Clear;
 begin
-  FActiveKeyGroup  := nil;
   fFocusedKeyGroup := nil;
   KeyGroupPlayer.Clear;
   KeyGroups.Clear;
@@ -524,12 +520,9 @@ var
   kg : IKeyGroup;
 begin
   kg := FocusedKeyGroup;
-  if not assigned(kg) then kg := EmptyKeyGroup;
-
-  //HACK: Assign kg to FActiveKeyGroup to ensure the key group doesn't get free'ed
-  // while it's being used. This hack is required for ActiveVoicePar().
-  FActiveKeyGroup := kg;
-  result := FActiveKeyGroup;
+  if assigned(kg)
+    then result := kg
+    else result := EmptyKeyGroup;
 end;
 
 procedure TeePlugin.Suspend;
