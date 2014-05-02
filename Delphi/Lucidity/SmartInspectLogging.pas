@@ -10,6 +10,7 @@ var
   Si: TSmartInspect;
   LogMain : TSiSession;
   VamLibLog : TSiSession;
+  LogSpecial : TSiSession;
 
 type
   TSmartInspectProxy = class(TInterfacedObject, ILoggingProxy)
@@ -37,6 +38,8 @@ initialization
 
   LogMain   := Si.AddSession('Main', True);
   VamLibLog := Si.AddSession('VamLib', True);
+  LogSpecial := si.AddSession('LogSpecial', true);
+  LogSpecial.Active := false;
 
   Connections := 'pipe(reconnect=true, reconnect.interval=1s)';
 
@@ -56,6 +59,7 @@ finalization
 
   VamLibLog := nil;
   LogMain := nil;
+  LogSpecial := nil;
   FreeAndNil(Si);
 
 end.

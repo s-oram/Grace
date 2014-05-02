@@ -1179,11 +1179,40 @@ begin
   //ClearBuffer(Outputs[5], SampleFrames);
 
   try
+    try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
+    except
+      Log.LogMessage('AudioPreview Exception.');
+      raise;
+    end;
+
+    try
     VoiceController.AudioProcess(Outputs, SampleFrames);
+    except
+      Log.LogMessage('VoiceController Exception.');
+      raise;
+    end;
+
+    try
     KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
+    except
+      Log.LogMessage('KeyGroupPlayer Exception.');
+      raise;
+    end;
+
+    try
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
+    except
+      Log.LogMessage('Signal Exception.');
+      raise;
+    end;
+
+    try
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
+    except
+      Log.LogMessage('Freq Exception.');
+      raise;
+    end;
 
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do
@@ -1197,6 +1226,7 @@ begin
 
     inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
   except
+    Log.LogMessage('Audio Process Exception.');
     {$IFDEF MadExcept}
     HandleException;
     {$ELSE}

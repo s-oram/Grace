@@ -2,6 +2,8 @@ unit Lucidity.KeyGroupPlayer;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   Classes,
   eeGlobals,
@@ -33,6 +35,8 @@ type
 implementation
 
 uses
+  SysUtils,
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   Lucidity.Interfaces,
   uConstants;
 
@@ -58,21 +62,46 @@ end;
 procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);
 var
   pKG : pointer;
+  kg : IKeyGroup;
 begin
   inherited;
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
+    LogMain.EnterMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Triggered');
+    LogSpecial.Active := true;
+
     pKG := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
-    if ActiveRegions.IndexOf(IKeyGroup(pKG)) = -1 then
-      ActiveRegions.Add(IKeyGroup(pKG));
+    kg := IKeyGroup(pKG);
+    if ActiveRegions.IndexOf(kg) = -1 then
+    begin
+      ActiveRegions.Add(kg);
+    end;
+    kg := nil;
+
+    LogMain.LogMessage('Active Region Count = ' + IntToStr(ActiveRegions.Count));
+
+    LogSpecial.Active := false;
+    LogMain.LeaveMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Triggered');
   end;
 
   if MsgID = TLucidMsgID.Audio_KeyGroupInactive then
   begin
+    LogMain.EnterMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Inactive');
+    LogSpecial.Active := true;
+
     pKG := Data;
-    if ActiveRegions.IndexOf(IKeyGroup(pKG)) <> -1
-      then ActiveRegions.Remove(IKeyGroup(pKG));
+    kg := IKeyGroup(pKG);
+    if ActiveRegions.IndexOf(kg) <> -1 then
+    begin
+      ActiveRegions.Remove(kg);
+    end;
+    kg := nil;
+
+    LogMain.LogMessage('Active Region Count = ' + IntToStr(ActiveRegions.Count));
+
+    LogSpecial.Active := false;
+    LogMain.LeaveMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Inactive');
   end;
 end;
 

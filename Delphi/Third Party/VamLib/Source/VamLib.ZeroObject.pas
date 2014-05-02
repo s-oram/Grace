@@ -480,7 +480,7 @@ end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 begin
-  VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
+  //VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
   SendMessageToList(AudioObjects, MsgID, Data);
 end;
 
@@ -497,7 +497,7 @@ end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
-  VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
+  //VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
   SendMessageToList(MainObjects, MsgID, Data);
 
   if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then

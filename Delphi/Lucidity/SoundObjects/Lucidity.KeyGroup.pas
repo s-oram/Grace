@@ -2,6 +2,8 @@ unit Lucidity.KeyGroup;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   VamLib.ZeroObject,
   VamGuiControlInterfaces,
@@ -105,14 +107,15 @@ type
     // TODO: Asking the Key Groups to process the relevent voices added about 5-7% cpu.
     // Perhaps there are ways to reduce that by being smarter about how the voices
     // and key groups are processed.
-    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
-    procedure FastControlProcess; inline;
-    procedure SlowControlProcess; inline;
+    procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); //inline;
+    procedure FastControlProcess; //inline;
+    procedure SlowControlProcess; //inline;
   end;
 
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   uLucidityExtra,
   VamLib.LoggingProxy,
   eeAudioBufferUtils,
@@ -353,7 +356,6 @@ var
 begin
   inherited;
 
-
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
     pKG    := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
@@ -399,12 +401,14 @@ end;
 function TKeyGroup._AddRef: Integer;
 begin
   inherited;
+  LogSpecial.LogMessage('KeyGroup INC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //Log.LogMessage('KeyGroup Add Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //LogStackTrace;
 end;
 
 function TKeyGroup._Release: Integer;
 begin
+  LogSpecial.LogMessage('KeyGroup DEC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //Log.LogMessage('KeyGroup Remove Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //LogStackTrace;
   inherited;
@@ -447,7 +451,7 @@ begin
   if (ActiveVoices.Count = 0) then
   begin
     LevelMonitor.GetDbLevel(dbA, dbB);
-    if (dbA < -75) and (dbB < -75) then
+    if (dbA < -35) and (dbB < -35) then
     begin
       pKG := Pointer(IKeyGroup(self));
       Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_KeyGroupInactive, pKG);
