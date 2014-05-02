@@ -243,7 +243,6 @@ var
   c1 : integer;
   Par : TPluginParameter;
   ParValue : single;
-  kg : IKeyGroup;
 begin
   inherited;
 
@@ -355,15 +354,6 @@ begin
     end;
   end;
 
-  //KeyGroups.NewKeyGroup;
-  //KeyGroups.Clear;
-
-  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
-  kg := nil;
-  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
-  kg := nil;
-  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
-  kg := nil;
 
   {
   //===== Finially - Init Plugin State ========
@@ -404,7 +394,7 @@ begin
 
   //==== temporarily don't load default patch. ====
 
-  {
+
   // Now load default patch if it exists.
   if (PluginDataDir^.Exists) then
   begin
@@ -421,7 +411,10 @@ begin
       then LoadProgramFromFile(fnB);
 
   end;
-  }
+
+
+  //Clear;
+
 
 
   //LogMemoryUsage('TPlugin.Create End');
@@ -439,8 +432,9 @@ begin
     then fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Lucidity Profiler Report.txt'
     else fn := '';
 
-  FActiveKeyGroup := nil;
-  EmptyKeyGroup   := nil;
+  fFocusedKeyGroup := nil;
+  FActiveKeyGroup  := nil;
+  EmptyKeyGroup    := nil;
 
   MidiAutomation.Free;
   VoiceController.Free;  //here.
@@ -456,18 +450,18 @@ begin
   fFreqAnalyzer.Free;
   TProfiler.Close;
 
-  Log.LogMessage('TPlugin.Destroy - End');
+  Log.LogMessage('==== TPlugin.Destroy - End ====');
 
   inherited;
 end;
 
 procedure TeePlugin.Clear;
 begin
-  Log.LogMessage('TPlugin.Clear - Begin');
+  FActiveKeyGroup  := nil;
+  fFocusedKeyGroup := nil;
   KeyGroupPlayer.Clear;
   KeyGroups.Clear;
   SampleMap.Clear;
-  Log.LogMessage('TPlugin.Clear - Begin');
 end;
 
 
@@ -969,6 +963,7 @@ procedure TeePlugin.PostLoadProgram;
 var
   aRegionID : TGUID;
 begin
+
   if KeyGroups.GetInfo.GetKeyGroupCount = 0 then
   begin
     KeyGroups.NewKeyGroup;
@@ -994,9 +989,6 @@ begin
 
   // this one call here perhaps.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
-
-  Log.LogMessage('About to access Active Voice Par');
-  self.ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
 end;
 
 

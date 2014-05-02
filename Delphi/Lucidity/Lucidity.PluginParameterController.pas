@@ -346,9 +346,9 @@ begin
 
       TPluginParameter.FilterRouting:
       begin
-        Plugin.ActiveVoicePar.FilterRouting := TFilterRoutingHelper.ToEnum(ParValue);
-        //Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
-        //Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateScope);
+        VoicePar.FilterRouting := TFilterRoutingHelper.ToEnum(ParValue);
+        Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.FilterChanged);
+        Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateScope);
       end;
 
       TPluginParameter.Filter1Type:
