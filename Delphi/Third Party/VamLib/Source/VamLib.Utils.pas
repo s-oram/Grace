@@ -57,6 +57,7 @@ function BooleanToFloat(Value:boolean):single; inline;
 function IntToStrB(Int:integer; MinDigits:integer):string;
 function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
 function IncrementName(Name:string; MinDigits:integer = 2):string;
+function RandomString(const CharacterCount : integer):string;
 
 implementation
 
@@ -430,5 +431,23 @@ begin
     RegEx.Free;
   end;
 end;
+
+function RandomString(const CharacterCount : integer):string;
+var
+  s : string;
+  c1: Integer;
+  x : integer;
+begin
+  // Ansi charactor set reference.
+  // http://www.alanwood.net/demos/ansi.html
+  s := '';
+  for c1 := 0 to CharacterCount-1 do
+  begin
+    x := 97 + random(122-97);
+    s := s + Char(x);
+  end;
+  result := s;
+end;
+
 
 end.
