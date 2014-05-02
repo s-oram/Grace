@@ -114,7 +114,8 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  VamLib.Utils;
 
 { TSampleGroupManager }
 
@@ -136,7 +137,7 @@ begin
 
   SGCreateCount := 0;
 
-  InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+  InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'Init Reference');
 
   KeyGroupIDCount := 1;
 end;
@@ -221,6 +222,7 @@ function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
 var
   sg : IKeyGroup;
   zo : IZeroObject;
+  UniqueName : string;
 begin
   ListLock.Acquire;
   try
@@ -228,15 +230,22 @@ begin
     begin
       // check if a group of the same name already exists, if so, return it and
       // don't make a new group...
+      // TODO: --- Why??? I can't remember why I did this, maybe it's illogical.
+      // maybe I should delete it.
       sg := FindSampleGroup(aName);
       if sg <> nil then exit(sg);
     end;
 
     inc(SGCreateCount);
 
-    sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals);
+    sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'New KG - ' + aName + ' ' + RandomString(4));
 
 
+
+    // TODO:
+    // UniqueName := CreateUniqueKeyGroupName()
+
+    // Log the unique key group name for debugging purposes.
 
 
     //==========================================================================
@@ -250,6 +259,8 @@ begin
 
     (sg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
 
+
+    // TODO: use the unique key group name here.
     if aName <> ''
       then sg.SetName(aName)
       else sg.SetName('Group ' + IntToStr(SGCreateCount));

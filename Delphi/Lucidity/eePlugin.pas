@@ -359,7 +359,7 @@ begin
 
 
 
-  EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals);
+  EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty');
 
 
 
@@ -432,6 +432,8 @@ destructor TeePlugin.Destroy;
 var
   fn : string;
 begin
+  Log.LogMessage('TPlugin.Destroy - Begin');
+
   if (PluginDataDir^.Exists)
     then fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Lucidity Profiler Report.txt'
     else fn := '';
@@ -452,6 +454,9 @@ begin
   fSignalRecorder.Free;
   fFreqAnalyzer.Free;
   TProfiler.Close;
+
+  Log.LogMessage('TPlugin.Destroy - End');
+
   inherited;
 end;
 
@@ -979,7 +984,7 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
 
   Log.LogMessage('About to access Active Voice Par');
-  //self.ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
+  self.ActiveVoicePar.FilterRouting := TFilterRouting.Serial;
 end;
 
 
