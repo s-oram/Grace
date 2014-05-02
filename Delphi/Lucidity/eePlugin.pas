@@ -304,20 +304,13 @@ begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
-
   end;
 
-
-
   PreviewInfo^.Clear;
-
-
 
   AudioPreviewPlayer := TAudioFilePreviewPlayer.Create;
   KeyStateTracker    := TKeyStateTracker.Create;
   fGuiState          := TGuiState.Create;
-
-
 
   DeltaOffset := 0;
 
@@ -334,35 +327,22 @@ begin
     MidiAutomation.OnVstParameterAutomation := VstParameterChangedViaMidiAutomation;
   end;
 
-
-
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
   fXYPads.PadX1 := -0.5;
-
-
 
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
-
-
   KeyGroupPlayer  := TKeyGroupPlayer.Create;
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
-
-
 
   fSampleMap := TSampleMap.Create;
   Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.Audio);
 
-
-
   fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
 
-
-
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty');
-
 
   //==== Look for key file ===
   if Globals.UserDataDir <> '' then

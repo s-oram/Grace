@@ -53,8 +53,6 @@ type
 
     SGCreateCount : cardinal;
 
-    InitReference : IKeyGroup;
-
     KeyGroupIDCount : cardinal;
 
     function SampleGroup(const Name:string):IKeyGroup; overload;
@@ -65,8 +63,6 @@ type
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
-
-    procedure UpdateInitReference;
 
     function GetInfo:IKeyGroupsInfo;
     function Count : integer;
@@ -139,8 +135,6 @@ begin
 
   SGCreateCount := 0;
 
-  InitReference := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'Init Reference');
-
   KeyGroupIDCount := 1;
 end;
 
@@ -148,7 +142,6 @@ destructor TKeyGroupManager.Destroy;
 begin
   Clear;
 
-  InitReference := nil;
   fList.Free;
   ListLock.Free;
   inherited;
@@ -266,8 +259,6 @@ begin
     inc(KeyGroupIDCount);
     //==========================================================================
 
-    (kg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
-
     kg.SetName(UniqueName);
     fList.Add(kg);
 
@@ -342,17 +333,6 @@ begin
     ListLock.Release;
   end;
 end;
-
-
-
-procedure TKeyGroupManager.UpdateInitReference;
-var
-  sg : IKeyGroup;
-begin
-  sg := SampleGroup(0);
-  (InitReference.GetObject as TKeyGroup).AssignFrom((sg.GetObject as TKeyGroup));
-end;
-
 
 procedure TKeyGroupManager.FastControlProcess;
 var

@@ -148,8 +148,8 @@ begin
   if (UseCount = 0) then
   begin
     try
-      Plugin.Globals.MotherShip.LogMainObjects;
-      Plugin.Globals.MotherShip.LogAudioObjects;
+      //Plugin.Globals.MotherShip.LogMainObjects;
+      //Plugin.Globals.MotherShip.LogAudioObjects;
 
       PluginGUI := TPluginGui.CreateParented(SystemWindow);
       PluginGUI.Width  := PluginInfo.InitialGuiWidth;
@@ -183,8 +183,8 @@ begin
     if assigned(PluginGuiMeta) then FreeAndNil(PluginGuiMeta);
     if assigned(PluginGui)     then FreeAndNil(PluginGui);
 
-    Plugin.Globals.MotherShip.LogMainObjects;
-    Plugin.Globals.MotherShip.LogAudioObjects;
+    //Plugin.Globals.MotherShip.LogMainObjects;
+    //Plugin.Globals.MotherShip.LogAudioObjects;
   end;
 end;
 
