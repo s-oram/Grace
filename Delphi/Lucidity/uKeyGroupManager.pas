@@ -60,6 +60,8 @@ type
     function SampleGroup(const Name:string):IKeyGroup; overload;
     function SampleGroup(const Index:integer):IKeyGroup; overload;
     property SampleGroupCount : integer read GetSampleGroupCount;
+
+    function IsKeyGroupNameUnique(const aName : string) : boolean;
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -218,34 +220,41 @@ begin
   end;
 end;
 
+function TKeyGroupManager.IsKeyGroupNameUnique(const aName: string): boolean;
+var
+  c1 : integer;
+begin
+  for c1 := 0 to SampleGroupCount-1 do
+  begin
+    if SameText(aName, SampleGroup(c1).GetName)
+      then exit(false);
+  end;
+
+  //== no match has been found ==
+  result := true;
+end;
+
+
+
 function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
 var
-  sg : IKeyGroup;
+  kg : IKeyGroup;
   zo : IZeroObject;
   UniqueName : string;
 begin
   ListLock.Acquire;
   try
-    if aName <> '' then
-    begin
-      // check if a group of the same name already exists, if so, return it and
-      // don't make a new group...
-      // TODO: --- Why??? I can't remember why I did this, maybe it's illogical.
-      // maybe I should delete it.
-      sg := FindSampleGroup(aName);
-      if sg <> nil then exit(sg);
-    end;
-
     inc(SGCreateCount);
 
-    sg := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'New KG - ' + aName + ' ' + RandomString(4));
+    if aName <> ''
+      then UniqueName := aName
+      else UniqueName := 'Group ' + IntToStr(SGCreateCount);
 
+    while IsKeyGroupNameUnique(UniqueName) = false
+      do UniqueName := IncrementName(UniqueName, 1);
 
+    kg := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'New KG - ' + aName + ' ' + RandomString(4));
 
-    // TODO:
-    // UniqueName := CreateUniqueKeyGroupName()
-
-    // Log the unique key group name for debugging purposes.
 
 
     //==========================================================================
@@ -253,25 +262,21 @@ begin
     // a cardinal and will eventually wrap around if enough Key Groups are
     // ever created. A very unlikely sceneraio but it is lazy programming
     // to ignore it.
-    sg.SetID(KeyGroupIDCount);
+    kg.SetID(KeyGroupIDCount);
     inc(KeyGroupIDCount);
     //==========================================================================
 
-    (sg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
+    (kg.GetObject as TKeyGroup).AssignFrom((InitReference.GetObject as TKeyGroup));
 
+    kg.SetName(UniqueName);
+    fList.Add(kg);
 
-    // TODO: use the unique key group name here.
-    if aName <> ''
-      then sg.SetName(aName)
-      else sg.SetName('Group ' + IntToStr(SGCreateCount));
-    fList.Add(sg);
-
-    if supports(sg, IZeroObject, zo) then
+    if supports(kg, IZeroObject, zo) then
     begin
       Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.Audio);
     end;
 
-    result := sg;
+    result := kg;
   finally
     ListLock.Release;
   end;

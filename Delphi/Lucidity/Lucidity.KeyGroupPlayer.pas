@@ -23,6 +23,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
+    procedure Clear;
+
     procedure AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames : integer); inline;
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
@@ -46,6 +48,11 @@ begin
 
   ActiveRegions.Free;
   inherited;
+end;
+
+procedure TKeyGroupPlayer.Clear;
+begin
+  ActiveRegions.Clear;
 end;
 
 procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);

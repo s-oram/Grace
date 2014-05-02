@@ -105,6 +105,8 @@ type
 
     procedure PreLoadProgram;
     procedure PostLoadProgram;
+
+    procedure Clear;
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -362,8 +364,6 @@ begin
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty');
 
 
-
-
   //==== Look for key file ===
   if Globals.UserDataDir <> '' then
   begin
@@ -374,7 +374,7 @@ begin
     end;
   end;
 
-
+  {
   //===== Finially - Init Plugin State ========
   KeyGroups.Clear;
   KeyGroups.NewKeyGroup;
@@ -389,9 +389,10 @@ begin
     SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
   end;
 
-
   //Important: call SampleGroups.UpdateInitReference() after reseting all properties to default.
   KeyGroups.UpdateInitReference;
+  KeyGroups.Clear;
+  }
 
   //============================================================================
   // CODESMELL: HACK: WANRING: Update the "empty" keygroup with default values.
@@ -400,12 +401,19 @@ begin
   // i'm not yet sure if this will lead to problems now the track.
   // NOTE: This code copies the "default" key group parameter state to
   // the "Empty" keygroup.
-  kgObj := (KeyGroups.FindFirstKeyGroup.GetObject as TKeyGroup);
-  (EmptyKeyGroup.GetObject as TKeyGroup).AssignFrom(kgObj);
+  //kgObj := (KeyGroups.FindFirstKeyGroup.GetObject as TKeyGroup);
+  //(EmptyKeyGroup.GetObject as TKeyGroup).AssignFrom(kgObj);
   //============================================================================
 
-  InitializeState;
 
+
+  //==== temporarily don't initialize a default patch ====
+  //InitializeState;
+
+
+  //==== temporarily don't load default patch. ====
+
+  {
   // Now load default patch if it exists.
   if (PluginDataDir^.Exists) then
   begin
@@ -422,7 +430,7 @@ begin
       then LoadProgramFromFile(fnB);
 
   end;
-
+  }
 
 
   //LogMemoryUsage('TPlugin.Create End');
@@ -433,6 +441,8 @@ var
   fn : string;
 begin
   Log.LogMessage('TPlugin.Destroy - Begin');
+
+  Clear;
 
   if (PluginDataDir^.Exists)
     then fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Lucidity Profiler Report.txt'
@@ -459,6 +469,17 @@ begin
 
   inherited;
 end;
+
+procedure TeePlugin.Clear;
+begin
+  Log.LogMessage('TPlugin.Clear - Begin');
+  KeyGroupPlayer.Clear;
+  KeyGroups.Clear;
+  SampleMap.Clear;
+  Log.LogMessage('TPlugin.Clear - Begin');
+end;
+
+
 
 
 
