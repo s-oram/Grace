@@ -161,6 +161,9 @@ end;
 
 destructor TKeyGroup.Destroy;
 begin
+  Globals.RemoveEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
+  Globals.RemoveEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
+
   Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   LogStackTrace;
 
