@@ -243,6 +243,7 @@ var
   c1 : integer;
   Par : TPluginParameter;
   ParValue : single;
+  kg : IKeyGroup;
 begin
   inherited;
 
@@ -353,6 +354,16 @@ begin
       Globals.LoadRegistrationKeyFile(fn);
     end;
   end;
+
+  //KeyGroups.NewKeyGroup;
+  //KeyGroups.Clear;
+
+  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
+  kg := nil;
+  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
+  kg := nil;
+  kg := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty2');
+  kg := nil;
 
   {
   //===== Finially - Init Plugin State ========
