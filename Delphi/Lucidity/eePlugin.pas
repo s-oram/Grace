@@ -166,7 +166,7 @@ type
     property FocusedKeyGroup : IKeyGroup read fFocusedKeyGroup;
     property FocusedRegion   : IRegion   read GetFocusedRegion;
     function ActiveKeyGroup : IKeyGroup;
-    function ActiveVoicePar : TLucidityVoiceParameterWrapper;
+
 
     procedure FocusFirstKeyGroup;
     procedure FocusKeyGroup(const aKeyGroupName : string);
@@ -530,11 +530,6 @@ begin
   // while it's being used. This hack is required for ActiveVoicePar().
   FActiveKeyGroup := kg;
   result := FActiveKeyGroup;
-end;
-
-function TeePlugin.ActiveVoicePar: TLucidityVoiceParameterWrapper;
-begin
-  result := (ActiveKeyGroup.GetObject as TKeyGroup).VoiceParameters;
 end;
 
 procedure TeePlugin.Suspend;
