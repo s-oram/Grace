@@ -293,7 +293,19 @@ begin
       begin
         fList.Remove(kg);
         kgID := kg.GetID;
+
+        // Send out the dispose method to give other modules a chance to release
+        // there references.
         Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
+
+        // Dispose the reference in the global key group manager.
+        Globals.KeyGroupLifeTimeManager.Dispose(kgID);
+
+        // NOTE: I don't really think the above two step process to free the
+        // key groups should be required. After all the key group is implemented
+        // as a reference counted interface. But I'm having grief with AV errors
+        // after deleting key groups so I'll put this in here for now.
+
         kg := nil;
       end;
     end;

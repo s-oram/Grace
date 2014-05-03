@@ -15,13 +15,14 @@ type
     KeyGroupList : TInterfaceList;
     ListLock : TFixedCriticalSection;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
-    procedure Dispose(const KeyGroupID : TKeyGroupID);
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure Add(var KeyGroup : IKeyGroup);
     function Request(const KeyGroupID : TKeyGroupID):IKeyGroup;
+
+    procedure Dispose(const KeyGroupID : TKeyGroupID);
   end;
 
 implementation
@@ -98,11 +99,14 @@ var
 begin
   inherited;
 
+  // ignore this dispose method.
+  {
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
     kgID := TKeyGroupID(Data^);
     Dispose(kgID);
   end;
+  }
 end;
 
 end.
