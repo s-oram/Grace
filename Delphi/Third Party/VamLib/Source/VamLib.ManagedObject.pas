@@ -23,6 +23,7 @@ type
   private
   protected
     ObjectList : TList;
+    procedure Clear;
   public
     constructor Create;
     destructor Destroy; override;
@@ -75,7 +76,8 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  VamLib.LoggingProxy;
 
 {$I InterlockedAPIs.inc}
 
@@ -88,10 +90,34 @@ end;
 
 destructor TManagedObjectLifeTimeManager.Destroy;
 begin
+  if ObjectList.Count > 0 then
+  begin
+    Log.LogMessage('Managed Objects still registered (' + IntToStr(ObjectList.Count) + ').');
+
+    // All managed objects *should* have been returned and free'ed by now.
+    // Calling Clear will forcibly destroy any remaining objects regardless of
+    // their reference count. Obviously this will cause problems if those
+    // objects are still being used somewhere. However that indicates a bug
+    // or a failure application design. (Fail fast!)
+    Clear;
+  end;
 
   ObjectList.Free;
   inherited;
 end;
+
+procedure TManagedObjectLifeTimeManager.Clear;
+var
+  c1: Integer;
+begin
+  // WARNING: Clear will destroy all objects regardless of their reference count.
+  for c1 := ObjectList.Count-1 downto 0 do
+  begin
+    IManagedObject(ObjectList[c1]).FreeObject;
+  end;
+end;
+
+
 
 procedure TManagedObjectLifeTimeManager.Add(var Obj: IManagedObject);
 var
