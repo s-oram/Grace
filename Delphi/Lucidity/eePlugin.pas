@@ -680,14 +680,10 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
-
-
-
-
-
 procedure TeePlugin.DeleteKeyGroup(const aKeyGroupName: string);
 begin
   SampleMap.DeselectAllRegions;
+
   SampleMap.DeleteRegionsInKeyGroup(aKeyGroupName);
   KeyGroups.DeleteKeyGroup(aKeyGroupName);
 
@@ -1096,19 +1092,29 @@ begin
   inherited;
 
 
-
-  if IsNoteOn(Event) then
-  begin
-    KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
-    VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+  try
+    if IsNoteOn(Event) then
+    begin
+      KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
+      VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
+      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+    end;
+  except
+    Log.LogMessage('NoteOn Exception.');
+    raise;
   end;
 
-  if IsNoteOff(Event) then
-  begin
-    KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
-    VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+
+  try
+    if IsNoteOff(Event) then
+    begin
+      KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
+      VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
+      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+    end;
+  except
+    Log.LogMessage('NoteOff Exception.');
+    raise;
   end;
 
   if IsControlChange(Event) then
@@ -1199,6 +1205,8 @@ begin
       Log.LogMessage('KeyGroupPlayer Exception.');
       raise;
     end;
+    //<--- Normal Exit Point
+
 
     try
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);

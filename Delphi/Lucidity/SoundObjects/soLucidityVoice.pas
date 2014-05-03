@@ -643,20 +643,26 @@ begin
   vp := @self;
   Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceFinished, vp);
 
-  // CleanUp() clears references to other resouces and zeros some internal values.
-  // It should be called whenever the voice becomes inactive.
-  // NOTE: it's important to nil fSampleRegion interface references
-  // here. Lucidity uses interface reference count as a garbage collection device.
-  fKeyGroupID   := 0;
-  fKeyGroup     := nil;
-  fSampleRegion := nil;
-  OneShotSampleOsc.Kill;
-  LoopSampleOsc.Kill;
-  GrainStretchOsc.Kill;
-  LfoA.Kill;
-  LfoB.Kill;
 
-  if assigned(OnFinish) then OnFinish(self);
+  try
+    // CleanUp() clears references to other resouces and zeros some internal values.
+    // It should be called whenever the voice becomes inactive.
+    // NOTE: it's important to nil fSampleRegion interface references
+    // here. Lucidity uses interface reference count as a garbage collection device.
+    fKeyGroupID   := 0;
+    fKeyGroup     := nil;
+    fSampleRegion := nil;
+    OneShotSampleOsc.Kill;
+    LoopSampleOsc.Kill;
+    GrainStretchOsc.Kill;
+    LfoA.Kill;
+    LfoB.Kill;
+
+    if assigned(OnFinish) then OnFinish(self);
+  except
+    LogMain.LogException('TLucidityVoice.CleanUp');
+    raise;
+  end;
 end;
 
 procedure TLucidityVoice.GetVoiceState(out aIsActive, aHasBeenReleased, aHasBeenQuickReleased: boolean; out aAmpLevel: single);
