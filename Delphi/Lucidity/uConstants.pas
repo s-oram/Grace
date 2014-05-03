@@ -58,7 +58,8 @@ type
     Command_UpdateSampleDisplay      = Command + 10;
     Command_UpdateSampleInfo         = Command + 11;
     Command_UpdateScope              = Command + 12;
-    Actions                          = Command_UpdateScope + 1;
+    Command_DisposeKeyGroup          = Command + 13;
+    Actions                          = Command_DisposeKeyGroup + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
@@ -91,6 +92,8 @@ type
     MenuName : string;
     Menu     : Pointer;
   end;
+
+
 
 
 const

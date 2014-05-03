@@ -113,7 +113,8 @@ implementation
 
 uses
   SysUtils,
-  VamLib.Utils;
+  VamLib.Utils,
+  Lucidity.Types;
 
 { TSampleGroupManager }
 
@@ -258,6 +259,8 @@ begin
       Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.Audio);
     end;
 
+    Globals.KeyGroupLifeTimeManager.Add(kg);
+
     result := kg;
   finally
     ListLock.Release;
@@ -278,14 +281,21 @@ procedure TKeyGroupManager.DeleteKeyGroup(aName: string);
 var
   c1: Integer;
   kg : IKeyGroup;
+  kgID : TKeyGroupID;
 begin
   ListLock.Acquire;
   try
     for c1 := fList.Count-1 downto 0 do
     begin
       kg := (fList[c1] as IKeyGroup);
-      if kg.GetName = aName then fList.Remove(kg);
-      kg := nil;
+
+      if kg.GetName = aName then
+      begin
+        fList.Remove(kg);
+        kgID := kg.GetID;
+        Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
+        kg := nil;
+      end;
     end;
   finally
     ListLock.Release;
