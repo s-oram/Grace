@@ -111,7 +111,7 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := 0 to ActiveRegions.Count-1 do
+  for c1 := ActiveRegions.Count-1 downto 0 do
   begin
     kg := (ActiveRegions[c1] as IKeyGroup);
     (kg.GetObject as TKeyGroup).FastControlProcess;
@@ -124,7 +124,7 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := 0 to ActiveRegions.Count-1 do
+  for c1 := ActiveRegions.Count-1 downto 0 do
   begin
     kg := (ActiveRegions[c1] as IKeyGroup);
     (kg.GetObject as TKeyGroup).SlowControlProcess;
@@ -136,7 +136,7 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := 0 to ActiveRegions.Count-1 do
+  for c1 := ActiveRegions.Count-1 downto 0 do
   begin
     kg := (ActiveRegions[c1] as IKeyGroup);
     (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
