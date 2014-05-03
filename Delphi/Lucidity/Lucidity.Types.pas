@@ -5,6 +5,7 @@ interface
 uses
   Windows,
   uConstants,
+  VamLib.UniqueID,
   VamLib.MoreTypes,
   VamLib.Collections.Lists;
 
@@ -100,7 +101,7 @@ type
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
   end;
 
-  TKeyGroupID = cardinal;
+  TKeyGroupID = TUniqueID;
 
 
 

@@ -327,7 +327,7 @@ end;
 
 destructor TLucidityVoice.Destroy;
 begin
-  fKeyGroupID   := 0;
+  fKeyGroupID.Clear;
   fKeyGroup     := nil;
   fSampleRegion := nil;
 
@@ -649,7 +649,7 @@ begin
     // It should be called whenever the voice becomes inactive.
     // NOTE: it's important to nil fSampleRegion interface references
     // here. Lucidity uses interface reference count as a garbage collection device.
-    fKeyGroupID   := 0;
+    fKeyGroupID.Clear;
     fKeyGroup     := nil;
     fSampleRegion := nil;
     OneShotSampleOsc.Kill;

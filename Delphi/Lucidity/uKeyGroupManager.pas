@@ -250,15 +250,6 @@ begin
 
 
 
-    //==========================================================================
-    //TODO: There is a very small potential for a bug here. The KeyGroupID is
-    // a cardinal and will eventually wrap around if enough Key Groups are
-    // ever created. A very unlikely sceneraio but it is lazy programming
-    // to ignore it.
-    kg.SetID(KeyGroupIDCount);
-    inc(KeyGroupIDCount);
-    //==========================================================================
-
     kg.SetName(UniqueName);
     fList.Add(kg);
 

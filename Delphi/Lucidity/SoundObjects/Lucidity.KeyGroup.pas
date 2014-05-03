@@ -122,19 +122,15 @@ uses
   SysUtils, eeCustomGlobals,
   uLucidityEnums;
 
-var
-  RefKeyGroupID : cardinal;
-
 { TLucidityEngine }
 
 constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals; const aDebugTag : string);
 begin
-  KeyGroupID := RefKeyGroupID;
-  inc(RefKeyGroupID);
+  KeyGroupID.Init;
 
   DebugTag := aDebugTag;
 
-  Log.LogMessage('KeyGroup Created ID = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
+  Log.LogMessage('KeyGroup Created ID = (' + DebugTag + ')');
 
 
 
@@ -169,7 +165,7 @@ begin
   Globals.RemoveEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
   Globals.RemoveEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
 
-  Log.LogMessage('KeyGroup Destroyed ID = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
+  Log.LogMessage('KeyGroup Destroyed ID =  (' + DebugTag + ')');
   LogStackTrace;
 
   FSeq1Data.Free;
@@ -464,12 +460,6 @@ begin
   // voices if it's to fade out slowly. Perhaps key groups shouldn't become inactive
   // until the LevelMonitor is
 end;
-
-
-
-initialization
-  RefKeyGroupID := 0;
-finalization
 
 
 
