@@ -400,7 +400,7 @@ end;
 
 function TKeyGroup._AddRef: Integer;
 begin
-  inherited;
+  result := inherited;
   LogSpecial.LogMessage('KeyGroup INC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //Log.LogMessage('KeyGroup Add Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //LogStackTrace;
@@ -411,7 +411,7 @@ begin
   LogSpecial.LogMessage('KeyGroup DEC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //Log.LogMessage('KeyGroup Remove Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
   //LogStackTrace;
-  inherited;
+  result := inherited;
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
