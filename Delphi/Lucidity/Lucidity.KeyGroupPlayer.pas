@@ -6,6 +6,7 @@ interface
 
 uses
   Classes,
+  VamLib.Types,
   eeGlobals,
   eeCustomGlobals,
   soLevelMeter,
@@ -19,10 +20,12 @@ type
   TKeyGroupPlayer = class(TZeroObject)
   private
     ActiveRegions : TInterfaceList;
+    ActiveRegionsLock : TFixedCriticalSection;
   protected
+    Globals : TGlobals;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
-    constructor Create;
+    constructor Create(const aGlobals : TGlobals);
     destructor Destroy; override;
 
     procedure Clear;
@@ -37,32 +40,42 @@ implementation
 uses
   SysUtils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  Lucidity.Types,
   Lucidity.Interfaces,
   uConstants;
 
 { TKeyGroupPlayer }
 
-constructor TKeyGroupPlayer.Create;
+constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals);
 begin
+  Globals := aGlobals;
   ActiveRegions := TInterfaceList.Create;
+  ActiveRegionsLock := TFixedCriticalSection.Create;
 end;
 
 destructor TKeyGroupPlayer.Destroy;
 begin
-
+  ActiveRegionsLock.Free;
   ActiveRegions.Free;
   inherited;
 end;
 
 procedure TKeyGroupPlayer.Clear;
 begin
-  ActiveRegions.Clear;
+  ActiveRegionsLock.Acquire;
+  try
+    ActiveRegions.Clear;
+  finally
+    ActiveRegionsLock.Release;
+  end;
 end;
 
 procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);
 var
   pKG : pointer;
   kg : IKeyGroup;
+  ptr  : pointer;
+  kgID : TKeyGroupID;
 begin
   inherited;
 
@@ -71,12 +84,21 @@ begin
     LogMain.EnterMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Triggered');
     LogSpecial.Active := true;
 
-    pKG := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
-    kg := IKeyGroup(pKG);
-    if ActiveRegions.IndexOf(kg) = -1 then
-    begin
-      ActiveRegions.Add(kg);
+    ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
+    kgID := TKeyGroupID(ptr^);
+
+    kg := Globals.KeyGroupLifeTimeManager.Request(kgID);
+
+    ActiveRegionsLock.Acquire;
+    try
+      if (assigned(kg)) and (ActiveRegions.IndexOf(kg) = -1) then
+      begin
+        ActiveRegions.Add(kg);
+      end;
+    finally
+      ActiveRegionsLock.Release;
     end;
+
     kg := nil;
 
     LogMain.LogMessage('Active Region Count = ' + IntToStr(ActiveRegions.Count));
@@ -92,9 +114,15 @@ begin
 
     pKG := Data;
     kg := IKeyGroup(pKG);
-    if ActiveRegions.IndexOf(kg) <> -1 then
-    begin
-      ActiveRegions.Remove(kg);
+
+    ActiveRegionsLock.Acquire;
+    try
+      if ActiveRegions.IndexOf(kg) <> -1 then
+      begin
+        ActiveRegions.Remove(kg);
+      end;
+    finally
+      ActiveRegionsLock.Release;
     end;
     kg := nil;
 
@@ -111,10 +139,15 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := ActiveRegions.Count-1 downto 0 do
-  begin
-    kg := (ActiveRegions[c1] as IKeyGroup);
-    (kg.GetObject as TKeyGroup).FastControlProcess;
+  ActiveRegionsLock.Acquire;
+  try
+    for c1 := ActiveRegions.Count-1 downto 0 do
+    begin
+      kg := (ActiveRegions[c1] as IKeyGroup);
+      (kg.GetObject as TKeyGroup).FastControlProcess;
+    end;
+  finally
+    ActiveRegionsLock.Release;
   end;
 end;
 
@@ -124,10 +157,15 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := ActiveRegions.Count-1 downto 0 do
-  begin
-    kg := (ActiveRegions[c1] as IKeyGroup);
-    (kg.GetObject as TKeyGroup).SlowControlProcess;
+  ActiveRegionsLock.Acquire;
+  try
+    for c1 := ActiveRegions.Count-1 downto 0 do
+    begin
+      kg := (ActiveRegions[c1] as IKeyGroup);
+      (kg.GetObject as TKeyGroup).SlowControlProcess;
+    end;
+  finally
+    ActiveRegionsLock.Release;
   end;
 end;
 
@@ -136,10 +174,15 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  for c1 := ActiveRegions.Count-1 downto 0 do
-  begin
-    kg := (ActiveRegions[c1] as IKeyGroup);
-    (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
+  ActiveRegionsLock.Acquire;
+  try
+    for c1 := ActiveRegions.Count-1 downto 0 do
+    begin
+      kg := (ActiveRegions[c1] as IKeyGroup);
+      (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
+    end;
+  finally
+    ActiveRegionsLock.Release;
   end;
 end;
 

@@ -347,17 +347,20 @@ end;
 
 procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 var
-  pKG : pointer;
+  ptr  : pointer;
+  kgID : TKeyGroupID;
   pVoice : PLucidityVoice;
 begin
   inherited;
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    pKG    := TMsgData_Audio_VoiceTriggered(Data^).KeyGroup;
     pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
 
-    if IKeyGroup(pKG) = IKeyGroup(self) then
+    ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
+    kgID := TKeyGroupID(ptr^);
+
+    if kgID = KeyGroupID then
     begin
       ActiveVoices.Add(pVoice^)
     end;

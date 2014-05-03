@@ -330,7 +330,7 @@ begin
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
-  KeyGroupPlayer  := TKeyGroupPlayer.Create;
+  KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
 
   fSampleMap := TSampleMap.Create;

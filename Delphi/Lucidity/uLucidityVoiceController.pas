@@ -116,6 +116,7 @@ implementation
 
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  Lucidity.Types,
   eeProfilerV2,
   eeFunctions,
   eeCustomGlobals,
@@ -554,6 +555,7 @@ var
   aRegion : IRegion;
   aVoice : TLucidityVoice;
   KG : IKeyGroup;
+  kgID : TKeyGroupID;
   IsTriggered: boolean;
 
   TriggerMsg : TMsgData_Audio_VoiceTriggered;
@@ -596,8 +598,9 @@ begin
 
         if IsTriggered then
         begin
-          TriggerMsg.Voice    := @aVoice;
-          TriggerMsg.KeyGroup := Pointer(aRegion.GetKeyGroup);
+          kgID := aRegion.GetKeyGroup.GetID;
+          TriggerMsg.Voice      := @aVoice;
+          TriggerMsg.KeyGroupID := @kgID;
           Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
 
           if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);

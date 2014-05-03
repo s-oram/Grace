@@ -82,8 +82,8 @@ type
 
   PMsgData_Audio_VoiceTriggered = ^TMsgData_Audio_VoiceTriggered;
   TMsgData_Audio_VoiceTriggered = record
-    KeyGroup : Pointer;
-    Voice    : Pointer;
+    KeyGroupID : Pointer;
+    Voice      : Pointer;
   end;
 
   PMsgData_ShowMenuEvent = ^TMsgData_ShowMenu;
