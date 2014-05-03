@@ -397,16 +397,10 @@ end;
 function TKeyGroup._AddRef: Integer;
 begin
   result := inherited;
-  LogSpecial.LogMessage('KeyGroup INC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
-  //Log.LogMessage('KeyGroup Add Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
-  //LogStackTrace;
 end;
 
 function TKeyGroup._Release: Integer;
 begin
-  LogSpecial.LogMessage('KeyGroup DEC Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
-  //Log.LogMessage('KeyGroup Remove Reference ' + IntToStr(FRefCount) + ' = ' + IntToStr(KeyGroupID) + ' (' + DebugTag + ')');
-  //LogStackTrace;
   result := inherited;
 end;
 
