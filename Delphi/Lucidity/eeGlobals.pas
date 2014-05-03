@@ -7,6 +7,7 @@ uses
   ExtCtrls,
   VamLib.ManagedObject,
   uGuiState,
+  Lucidity.KeyGroupLifeTimeManager,
   Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 
@@ -24,7 +25,7 @@ type
     fSelectedLfo: integer;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
-    fKeyGroupLifeTimeManager: TManagedObjectLifeTimeManager;
+    fKeyGroupLifeTimeManager: TKeyGroupLifeTimeManager;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
@@ -63,12 +64,13 @@ type
 
     property GuiState : TGuiState read fGuiState;
 
-    property KeyGroupLifeTimeManager : TManagedObjectLifeTimeManager read fKeyGroupLifeTimeManager;
+    property KeyGroupLifeTimeManager : TKeyGroupLifeTimeManager read fKeyGroupLifeTimeManager;
   end;
 
 implementation
 
 uses
+  VamLib.ZeroObject,
   VamLib.Throttler,
   uConstants,
   eePluginDataDir,
@@ -88,7 +90,8 @@ var
 begin
   inherited;
 
-  fKeyGroupLifeTimeManager := TManagedObjectLifeTimeManager.Create;
+  fKeyGroupLifeTimeManager := TKeyGroupLifeTimeManager.Create;
+  MotherShip.RegisterZeroObject(fKeyGroupLifeTimeManager, TZeroObjectRank.Audio);
 
   fGuiState := TGuiState.Create;
 
