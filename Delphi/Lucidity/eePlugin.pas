@@ -121,7 +121,6 @@ type
 
     procedure GetModParModMinMax(const ParName : string; out ModMin, ModMax:single);
 
-
     procedure Suspend; override;
     procedure Resume; override;
 

@@ -5,6 +5,7 @@ interface
 uses
   SysUtils,
   ExtCtrls,
+  VamLib.ManagedObject,
   uGuiState,
   Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
@@ -23,6 +24,7 @@ type
     fSelectedLfo: integer;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
+    fKeyGroupLifeTimeManager: TManagedObjectLifeTimeManager;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
@@ -61,6 +63,7 @@ type
 
     property GuiState : TGuiState read fGuiState;
 
+    property KeyGroupLifeTimeManager : TManagedObjectLifeTimeManager read fKeyGroupLifeTimeManager;
   end;
 
 implementation
@@ -84,6 +87,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fKeyGroupLifeTimeManager := TManagedObjectLifeTimeManager.Create;
 
   fGuiState := TGuiState.Create;
 
@@ -164,6 +169,7 @@ end;
 
 destructor TGlobals.Destroy;
 begin
+  fKeyGroupLifeTimeManager.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
   VclTaskTimer.Free;
