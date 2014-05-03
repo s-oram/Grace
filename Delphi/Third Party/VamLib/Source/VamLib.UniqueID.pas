@@ -29,6 +29,8 @@ type
 
 
   TUniqueID = record
+  private
+  public
     Part1 : integer;
     Part2 : TDateTime;
 

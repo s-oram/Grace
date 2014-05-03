@@ -50,6 +50,7 @@ contains
   VamLib.Animation in 'Source\VamLib.Animation.pas',
   VamLib.UniqueID in 'Source\VamLib.UniqueID.pas',
   VamLib.HighSpeedTimer in 'Source\VamLib.HighSpeedTimer.pas',
-  VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas';
+  VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas',
+  VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas';
 
 end.

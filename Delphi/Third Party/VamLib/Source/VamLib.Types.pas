@@ -51,10 +51,9 @@ end;
 
 function TPureInterfacedObject.QueryInterface(const IID: TGUID; out Obj): HResult;
 begin
-  if GetInterface(IID, Obj) then
-    Result := S_OK
-  else
-    Result := E_NOINTERFACE;
+  if GetInterface(IID, Obj)
+    then Result := S_OK
+    else Result := E_NOINTERFACE;
 end;
 
 function TPureInterfacedObject._AddRef: Integer;

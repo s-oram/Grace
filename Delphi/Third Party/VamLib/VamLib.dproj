@@ -113,6 +113,7 @@
 			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
 			<DCCReference Include="Source\VamLib.HighSpeedTimer.pas"/>
 			<DCCReference Include="Source\VamLib.LoggingProxy.pas"/>
+			<DCCReference Include="Source\VamLib.ManagedObject.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
