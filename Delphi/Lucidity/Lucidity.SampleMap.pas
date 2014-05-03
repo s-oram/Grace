@@ -22,14 +22,6 @@ type
   TSampleMapInfo = class;
   ISampleMapInfo = interface;
   //===================================
-
-
-
-
-
-
-
-
   
 
   TRegionInterfaceList = class(TList<IRegion>);

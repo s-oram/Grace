@@ -160,7 +160,8 @@ uses
   LucidityGui.MenuButtonHandler in 'LucidityGui.MenuButtonHandler.pas',
   eeGuiStandardv2_MenuBuilder in 'EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas',
   eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
-  eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas';
+  eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas',
+  Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas';
 
 {$R *.res}
 

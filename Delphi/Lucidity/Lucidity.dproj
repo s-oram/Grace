@@ -597,6 +597,7 @@
 			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eePublishedVstParameters.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeTaskRunner.pas"/>
+			<DCCReference Include="Lucidity.KeyGroupLifeTimeManager.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
