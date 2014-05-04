@@ -524,19 +524,21 @@ begin
     else result := EmptyKeyGroup;
 end;
 
-procedure TeePlugin.Suspend;
-begin
-  inherited;
-  AudioPreviewPlayer.Kill;
-end;
-
 procedure TeePlugin.Resume;
 begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
+  Globals.AudioActions.IsProcessingActive := true;
 end;
 
-
+procedure TeePlugin.Suspend;
+begin
+  inherited;
+  AudioPreviewPlayer.Kill;
+  Globals.AudioActions.IsProcessingActive := false;
+  // run audio actions after stopping to catch any late additions.
+  Globals.AudioActions.Run;
+end;
 
 procedure TeePlugin.InitializeState;
 var
@@ -594,8 +596,6 @@ begin
     // signal to the GUI that the focus has changed.
     Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
-
-
 end;
 
 procedure TeePlugin.FocusKeyGroup(const aKeyGroupName: string);
@@ -1091,7 +1091,6 @@ var
 begin
   inherited;
 
-
   try
     if IsNoteOn(Event) then
     begin
@@ -1246,24 +1245,8 @@ end;
 
 procedure TeePlugin.ProcessEnd;
 begin
-
+  Globals.AudioActions.Run;
 end;
 
 
-
-
-
-
-
 end.
-
-
-
-
-
-
-
-
-
-
-

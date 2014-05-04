@@ -17,9 +17,11 @@ type
 
   TStoredActions = class
   private
+    fIsProcessingActive : boolean;
     ListLock : TFixedCriticalSection;
     Actions : TStoredActionList;
     function GetCount: integer;
+    procedure SetIsProcessingActive(const Value: boolean);
   public
     constructor Create;
     destructor Destroy; override;
@@ -29,6 +31,8 @@ type
     procedure Run;
 
     property Count : integer read GetCount;
+
+    property IsProcessingActive : boolean write SetIsProcessingActive;
   end;
 
 implementation
@@ -39,6 +43,7 @@ constructor TStoredActions.Create;
 begin
   ListLock := TFixedCriticalSection.Create;
   Actions := TStoredActionList.Create;
+  fIsProcessingActive := false;
 end;
 
 destructor TStoredActions.Destroy;
@@ -59,9 +64,17 @@ var
 begin
   ListLock.Acquire;
   try
-    NewAction.ID := ID;
-    NewAction.Action := Action;
-    Actions.Add(NewAction);
+    if fIsProcessingActive then
+    begin
+      // store the action for processing later.
+      NewAction.ID := ID;
+      NewAction.Action := Action;
+      Actions.Add(NewAction);
+    end else
+    begin
+      // currently not actively processing so run the action now.
+      Action();
+    end;
   finally
     ListLock.Release;
   end;
@@ -85,8 +98,14 @@ begin
   end;
 end;
 
-
-
-
+procedure TStoredActions.SetIsProcessingActive(const Value: boolean);
+begin
+  ListLock.Acquire;
+  try
+    fIsProcessingActive := true;
+  finally
+    ListLock.Release;
+  end;
+end;
 
 end.
