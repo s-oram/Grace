@@ -161,7 +161,8 @@ uses
   eeGuiStandardv2_MenuBuilder in 'EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas',
   eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
   eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas',
-  Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas';
+  Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas',
+  eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas';
 
 {$R *.res}
 

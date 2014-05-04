@@ -5,6 +5,7 @@ interface
 uses
   SysUtils,
   ExtCtrls,
+  eeStoredActionList,
   VamLib.ManagedObject,
   uGuiState,
   Lucidity.KeyGroupLifeTimeManager,
@@ -26,6 +27,7 @@ type
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
     fKeyGroupLifeTimeManager: TKeyGroupLifeTimeManager;
+    fAudioActions: TStoredActions;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
@@ -65,6 +67,8 @@ type
     property GuiState : TGuiState read fGuiState;
 
     property KeyGroupLifeTimeManager : TKeyGroupLifeTimeManager read fKeyGroupLifeTimeManager;
+
+    property AudioActions : TStoredActions read fAudioActions;
   end;
 
 implementation
@@ -89,6 +93,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fAudioActions := TStoredActions.Create;
 
   fKeyGroupLifeTimeManager := TKeyGroupLifeTimeManager.Create;
   MotherShip.RegisterZeroObject(fKeyGroupLifeTimeManager, TZeroObjectRank.Audio);
@@ -178,6 +184,7 @@ begin
   VclTaskTimer.Free;
   VclTaskRunner.Free;
   fGuiState.Free;
+  fAudioActions.Free;
   inherited;
 end;
 
