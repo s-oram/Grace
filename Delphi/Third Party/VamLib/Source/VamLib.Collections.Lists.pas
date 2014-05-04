@@ -162,9 +162,15 @@ uses
 
 { TSimpleList<T> }
 
+constructor TSimpleList<T>.Create;
+begin
+  fGrowBy := 1;
+end;
+
 destructor TSimpleList<T>.Destroy;
 begin
-  SetLength(Raw, 0);
+  Clear;
+  Capacity := 0;
   inherited;
 end;
 
@@ -173,11 +179,6 @@ begin
   fCapacity := 0;
   fCount    := 0;
   SetLength(Raw, 0);
-end;
-
-constructor TSimpleList<T>.Create;
-begin
-  fGrowBy := 1;
 end;
 
 function TSimpleList<T>.GetItem(Index: integer): T;
@@ -280,6 +281,7 @@ end;
 destructor TSimpleObjectList<T>.Destroy;
 begin
   Clear;
+  Capacity := 0;
   inherited;
 end;
 
@@ -301,10 +303,7 @@ begin
   begin
     for c1 := 0 to fCount-1 do FreeObjectAt(c1);
   end;
-
-  fCapacity := 0;
   fCount    := 0;
-  SetLength(Raw, 0);
 end;
 
 function TSimpleObjectList<T>.GetItem(Index: integer): T;
@@ -409,7 +408,7 @@ end;
 destructor TSimpleRecordList<T>.Destroy;
 begin
   Clear;
-  SetLength(Raw, 0);
+  Capacity := 0;
   inherited;
 end;
 
@@ -421,8 +420,6 @@ begin
   begin
     Finalize(Raw[c1]);
   end;
-
-  fCapacity := 0;
   fCount    := 0;
 end;
 
