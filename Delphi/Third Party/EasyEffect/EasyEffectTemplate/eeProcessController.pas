@@ -399,8 +399,6 @@ var
   SamplesProcessed      : integer;
   SamplesToProcess      :integer;
 begin
-
-
   NumEv := MidiInput.EventCount;
   CurEv := 0;
   SamplesProcessed := 0;
@@ -458,10 +456,9 @@ begin
         end;
       end;
     end;
-
-
-
   end;
+
+  Plugin.ProcessEnd;
 
 
 

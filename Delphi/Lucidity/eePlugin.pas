@@ -138,6 +138,7 @@ type
     procedure AudioProcess(Sampleframes:integer); override; // processes audio.
     procedure FastControlProcess; override;                 // processes fast modulation here. (high bandwidth modulation)
     procedure SlowControlProcess; override;                 // processes slow modulation here. (low bandwidth modulation
+    procedure ProcessEnd; // called once the current processing block as been finished.
 
     property PresetName;
 
@@ -1240,6 +1241,11 @@ begin
     raise;
     {$ENDIF}
   end;
+
+end;
+
+procedure TeePlugin.ProcessEnd;
+begin
 
 end;
 
