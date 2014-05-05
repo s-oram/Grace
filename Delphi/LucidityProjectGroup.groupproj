@@ -63,6 +63,9 @@
 			<Projects Include="ParName Unit Generator\ParNameUnitGen.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="ProcessKiller\ProcessKiller.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -251,14 +254,23 @@
 		<Target Name="ParNameUnitGen:Make">
 			<MSBuild Targets="Make" Projects="ParName Unit Generator\ParNameUnitGen.dproj"/>
 		</Target>
+		<Target Name="ProcessKiller">
+			<MSBuild Projects="ProcessKiller\ProcessKiller.dproj"/>
+		</Target>
+		<Target Name="ProcessKiller:Clean">
+			<MSBuild Targets="Clean" Projects="ProcessKiller\ProcessKiller.dproj"/>
+		</Target>
+		<Target Name="ProcessKiller:Make">
+			<MSBuild Targets="Make" Projects="ProcessKiller\ProcessKiller.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Lucidity;CodeGen;ComponentTester;AsmTester;ParNameUnitGen"/>
+			<CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Lucidity;CodeGen;ComponentTester;AsmTester;ParNameUnitGen;ProcessKiller"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Lucidity:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ParNameUnitGen:Clean"/>
+			<CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Lucidity:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ParNameUnitGen:Clean;ProcessKiller:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Lucidity:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ParNameUnitGen:Make"/>
+			<CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Lucidity:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ParNameUnitGen:Make;ProcessKiller:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
