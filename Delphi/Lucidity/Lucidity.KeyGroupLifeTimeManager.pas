@@ -83,7 +83,7 @@ begin
     begin
       if (KeyGroupList[c1] as IKeyGroup).GetID = KeyGroupID then
       begin
-        KeyGroupList[c1] := nil;
+        KeyGroupList.Delete(c1);
       end;
     end;
   finally
