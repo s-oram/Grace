@@ -87,6 +87,8 @@ type
     procedure RegionTriggerCheck(const Data1, Data2 : byte; const SampleMap : TSampleMap; const MonoVoicesOnly : boolean);
 
     function CalcPitchTransitionTime : single;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -214,6 +216,34 @@ begin
   inherited;
 end;
 
+procedure TLucidityVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  c1 : integer;
+  kgID : TKeyGroupID;
+begin
+  inherited;
+  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
+  begin
+    kgID := TKeyGroupID(Data^);
+
+    for c1 := ActiveVoices.Count-1 downto 0 do
+    begin
+      if ActiveVoices[c1].KeyGroupID = kgID then
+      begin
+        ActiveVoices[c1].Kill;
+      end;
+    end;
+
+    for c1 := ReleasedVoices.Count-1 downto 0 do
+    begin
+      if ReleasedVoices[c1].KeyGroupID = kgID then
+      begin
+        ReleasedVoices[c1].Kill;
+      end;
+    end;
+  end;
+end;
+
 procedure TLucidityVoiceController.EventHandle_SampleRateChanged(Sender: TObject);
 begin
   //TODO: I don't think kMinGlideTime should be used here for smoothing the MIDI input of these sources.
@@ -242,14 +272,17 @@ begin
   Index := TriggeredVoiceStack.IndexOf(aVoice);
   if Index <> -1 then TriggeredVoiceStack.Delete(Index);
 
+  // remove any inactive voices from the active voice lists...
+  for c1 := ActiveVoices.Count-1 downto 0 do
+  begin
+    if ActiveVoices[c1].IsActive = false
+      then ActiveVoices.Delete(c1);
+  end;
 
-  // remove any inactive voices from the released voices list
   for c1 := ReleasedVoices.Count-1 downto 0 do
   begin
-    if ReleasedVoices[c1].IsActive = false then
-    begin
-      ReleasedVoices.Delete(c1);
-    end;
+    if ReleasedVoices[c1].IsActive = false
+      then ReleasedVoices.Delete(c1);
   end;
 
 
@@ -546,6 +579,8 @@ begin
   assert(InRange(PitchBendAmount,-1,1));
   PitchBend_Target := PitchBendAmount;
 end;
+
+
 
 
 
