@@ -71,6 +71,7 @@ uses
   eeVstParameterEx,
   VamLib.Utils,
   VamLib.Threads,
+  Lucidity.Types,
   RedFox, RedFoxColor;
 
 {$R *.dfm}
@@ -192,10 +193,17 @@ begin
 end;
 
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  kgID : TKeyGroupID;
 begin
   if MsgID = TLucidMsgID.ModSlotChanged           then UpdateModulation;
   if MsgID = TLucidMsgID.ActiveModParIndexChanged then Handle_ActiveModParIndexChanged(Data);
   if MsgID = TLucidMsgID.ModAmountChanged         then UpdateModSelector_ModulationAmounts;
+
+  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
+  begin
+    MenuKeyGroup := nil;
+  end;
 end;
 
 procedure TModSystem2Frame.SetMotherShipReference(aMotherShip: IMothership);

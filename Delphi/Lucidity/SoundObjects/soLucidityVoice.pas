@@ -658,6 +658,9 @@ begin
     LfoA.Kill;
     LfoB.Kill;
 
+    StepSeqOne.SequenceData := nil;
+    StepSeqTwo.SequenceData := nil;
+
     if assigned(OnFinish) then OnFinish(self);
   except
     LogMain.LogException('TLucidityVoice.CleanUp');

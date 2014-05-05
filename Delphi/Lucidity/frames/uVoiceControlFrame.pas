@@ -148,9 +148,14 @@ begin
     NameB := PluginParToName(TPluginParameter.SampleResetClockSource);
     if NameA = NameB
       then ShowSamplResetMenuCallBack(PMenu^);
+  end;
 
 
 
+
+  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
+  begin
+    VoiceLevelMeter.LevelMonitor := nil;
   end;
 
 end;

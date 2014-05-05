@@ -1094,7 +1094,6 @@ begin
 end;
 
 
-
 procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);
 const
   OneOver127 = 1 / 127;

@@ -297,6 +297,8 @@ begin
         // Send out the dispose method to give other modules a chance to release
         // there references.
         Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
+        Globals.MotherShip.MsgMain(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
+        Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup);
 
         // Dispose the reference in the global key group manager.
         Globals.KeyGroupLifeTimeManager.Dispose(kgID);

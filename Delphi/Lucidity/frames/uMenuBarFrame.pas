@@ -182,7 +182,7 @@ end;
 
 procedure TMenuBarFrame.SampleFocusChanged;
 var
-  sg : IKeyGroup;
+  kg : IKeyGroup;
   Region : IRegion;
   Text : string;
   rd:TRegionDisplayResult;
@@ -195,17 +195,17 @@ begin
 
   if assigned(Region) then
   begin
-    sg := Region.GetKeyGroup;
+    kg := Region.GetKeyGroup;
   end else
   begin
-    sg := Plugin.FocusedKeyGroup;
+    kg := Plugin.FocusedKeyGroup;
   end;
 
   //sg := Plugin.FocusedEngine;
   //Region := Plugin.FocusedRegion;
 
-  if assigned(sg)
-    then Text := sg.GetName
+  if assigned(kg)
+    then Text := kg.GetName
     else Text := '---';
 
   if GroupMenuButton.Text <> Text then GroupMenuButton.Text := Text;

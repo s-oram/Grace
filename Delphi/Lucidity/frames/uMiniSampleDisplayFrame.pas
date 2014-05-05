@@ -429,7 +429,7 @@ var
   RegionCreateInfo : TRegionCreateInfo;
   aRegion : IRegion;
   CurRegion : IRegion;
-  SG : IKeyGroup;
+  kg : IKeyGroup;
   OwningSampleGroup : IKeyGroup;
   fn : string;
   XmlRegionCount : integer;
@@ -480,7 +480,7 @@ begin
     // - new region bounds should duplicate the old region bounds if it is replacing an older region.
     // - need some sort of response if the sample doesn't load.
 
-    SG := Plugin.FocusedKeyGroup;
+    kg := Plugin.FocusedKeyGroup;
     CurRegion := Plugin.FocusedRegion;
 
     if assigned(CurRegion) then

@@ -271,7 +271,6 @@ begin
   rx := nil;
   rs := '';
 
-
   kg := Plugin.FocusedKeyGroup;
   if not assigned(kg) then
   begin

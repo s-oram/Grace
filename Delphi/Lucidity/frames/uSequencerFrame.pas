@@ -148,7 +148,7 @@ begin
     GuiStandard_RegisterMenuButton(GuiStandard, StepCountSelector,   TPluginParameter.Seq2Length);
   end;
 
-  StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
+  //StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -157,9 +157,6 @@ var
   SeqLength : TStepSequencerLength;
   x : integer;
 begin
-
-
-
   if fSequencerIndex = 0
       then SeqLength := Command.GetParValue<TStepSequencerLength>(Plugin, TPluginParameter.Seq1Length)
       else SeqLength := Command.GetParValue<TStepSequencerLength>(Plugin, TPluginParameter.Seq2Length);
@@ -168,7 +165,6 @@ begin
 
   if StepSeqControl.SequenceLength <> x
     then StepSeqControl.SequenceLength := x;
-
 
   if Feedback^.IsVoiceActive then
   begin
@@ -194,6 +190,16 @@ begin
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
     StepSeqControl.Invalidate;
+  end;
+
+  if MsgID = TLucidMsgID.SampleFocusChanged then
+  begin
+    StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
+  end;
+
+  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
+  begin
+    StepSeqControl.SequenceData := nil;
   end;
 
 end;
