@@ -50,6 +50,7 @@ type
 implementation
 
 uses
+  Lucidity.Interfaces,
   Lucidity.PluginParameters,
   uGuiUtils,
   uLucidityEnums,
@@ -186,6 +187,8 @@ begin
 end;
 
 procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  kg : IKeyGroup;
 begin
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
@@ -194,7 +197,10 @@ begin
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
-    StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
+    kg := Plugin.FocusedKeyGroup;
+    if assigned(kg)
+      then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
+      else StepSeqControl.SequenceData := nil;
   end;
 
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then

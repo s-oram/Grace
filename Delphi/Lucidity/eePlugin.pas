@@ -84,6 +84,7 @@ type
     procedure SetVoiceMode(const Value: TVoiceMode);
     function GetPreviewVolume: single;
     procedure SetPreviewVolume(const Value: single);
+    function GetFocusedKeyGroup: IKeyGroup;
   protected
     DeltaOffset     : integer;
     GlobalModPoints : TGlobalModulationPoints;
@@ -160,7 +161,7 @@ type
     property IsPreviewEnabled : boolean read fIsPreviewEnabled write fIsPreviewEnabled;
 
     //== The GUI should access the current Engine/Region using these properties ===
-    property FocusedKeyGroup : IKeyGroup read fFocusedKeyGroup;
+    property FocusedKeyGroup : IKeyGroup read GetFocusedKeyGroup;
     property FocusedRegion   : IRegion   read GetFocusedRegion;
     function ActiveKeyGroup : IKeyGroup;
 
@@ -203,6 +204,7 @@ type
 implementation
 
 uses
+  VamGuiControlInterfaces,
   VamLib.ZeroObject,
   MadExcept, Windows,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
@@ -522,17 +524,23 @@ function TeePlugin.ActiveKeyGroup: IKeyGroup;
 var
   kg : IKeyGroup;
 begin
-  kg := FocusedKeyGroup;
+  kg := fFocusedKeyGroup;
   if assigned(kg)
     then result := kg
     else result := EmptyKeyGroup;
 end;
 
 procedure TeePlugin.Resume;
+var
+  sd : IStepSequenceDataObject;
+  LM : ILevelMonitor;
+  kg : IKeyGroup;
+  ch1, ch2 : single;
 begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
   Globals.AudioActions.IsProcessingActive := true;
+
 
 
   {
@@ -540,6 +548,39 @@ begin
   begin
     DeleteKeyGroup('Group 1');
   end);
+  }
+
+  {
+  kg := ActiveKeyGroup;
+
+
+  LM := (kg as ILevelMonitor);
+  sd := kg.GetSequenceData(0);
+  }
+  {
+  Globals.AudioActions.Add(0, procedure
+  begin
+
+  end);
+  }
+
+  {
+  DeleteKeyGroup('Group 1');
+
+  kg := nil;
+
+
+
+  LM.GetDbLevel(ch1, ch2);
+  LM := nil;
+
+
+  sd.SetStepValue(0,0.5);
+  sd := nil;
+
+
+
+  Globals.AudioActions.IsProcessingActive := true;
   }
 end;
 
@@ -694,14 +735,13 @@ end;
 
 procedure TeePlugin.DeleteKeyGroup(const aKeyGroupName: string);
 begin
+  if (assigned(fFocusedKeyGroup)) and (fFocusedKeyGroup.GetName = aKeyGroupName)
+    then fFocusedKeyGroup := nil;
+
   SampleMap.DeselectAllRegions;
 
   SampleMap.DeleteRegionsInKeyGroup(aKeyGroupName);
   KeyGroups.DeleteKeyGroup(aKeyGroupName);
-
-  // re-set focus
-  if assigned(FocusedKeyGroup) and (FocusedKeyGroup.GetName = aKeyGroupname)
-    then self.FocusFirstKeyGroup;
 
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
@@ -783,6 +823,18 @@ end;
 function TeePlugin.GetFilePreviewInfo: PFilePreviewInfo;
 begin
   result := @fFilePreviewInfo;
+end;
+
+function TeePlugin.GetFocusedKeyGroup: IKeyGroup;
+begin
+  if assigned(fFocusedKeyGroup) then
+  begin
+    result := fFocusedKeyGroup;
+  end else
+  begin
+    fFocusedKeyGroup := KeyGroups.FindFirstKeyGroup;
+    result := fFocusedKeyGroup;
+  end;
 end;
 
 function TeePlugin.GetFocusedRegion: IRegion;
