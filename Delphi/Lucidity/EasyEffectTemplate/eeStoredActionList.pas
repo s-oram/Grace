@@ -4,22 +4,22 @@ interface
 
 uses
   SysUtils,
+  Contnrs,
   VamLib.Types,
   VamLib.Collections.Lists;
 
 type
-  TStoredAction = record
+  TStoredAction = class
+  public
     ID     : cardinal;
     Action : TProc;
   end;
-
-  TStoredActionList = class(TSimpleRecordList<TStoredAction>);
 
   TStoredActions = class
   private
     fIsProcessingActive : boolean;
     ListLock : TFixedCriticalSection;
-    Actions : TStoredActionList;
+    Actions : TObjectList;
     function GetCount: integer;
     procedure SetIsProcessingActive(const Value: boolean);
   public
@@ -42,7 +42,8 @@ implementation
 constructor TStoredActions.Create;
 begin
   ListLock := TFixedCriticalSection.Create;
-  Actions := TStoredActionList.Create;
+  Actions := TObjectList.Create;
+  Actions.OwnsObjects := true;
   fIsProcessingActive := false;
 end;
 
@@ -67,6 +68,7 @@ begin
     if fIsProcessingActive then
     begin
       // store the action for processing later.
+      NewAction := TStoredAction.Create;
       NewAction.ID := ID;
       NewAction.Action := Action;
       Actions.Add(NewAction);
@@ -88,14 +90,11 @@ begin
   try
     for c1 := 0 to Actions.Count-1 do
     begin
-
-
-
-      if assigned(Actions[c1].Action) then
+      if assigned((Actions[c1] as TStoredAction).Action) then
       begin
         //run the action.
-        Actions[c1].Action();
-        Actions.Raw[c1].Action := nil;
+        (Actions[c1] as TStoredAction).Action();
+        (Actions[c1] as TStoredAction).Action := nil;
       end;
     end;
 
