@@ -534,10 +534,13 @@ begin
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
   Globals.AudioActions.IsProcessingActive := true;
 
+
+  {
   Globals.AudioActions.Add(0, procedure
   begin
     DeleteKeyGroup('Group 1');
   end);
+  }
 end;
 
 procedure TeePlugin.Suspend;
@@ -1099,6 +1102,14 @@ var
   pba : single;
 begin
   inherited;
+
+  if (IsNoteOn(Event)) and (Event.Data1 = 84) then
+  begin
+    Globals.AudioActions.Add(0, procedure
+    begin
+      DeleteKeyGroup('Group 1');
+    end);
+  end;
 
   try
     if IsNoteOn(Event) then
