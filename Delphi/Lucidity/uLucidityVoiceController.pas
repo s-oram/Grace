@@ -222,6 +222,7 @@ var
   kgID : TKeyGroupID;
 begin
   inherited;
+
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
     kgID := TKeyGroupID(Data^);

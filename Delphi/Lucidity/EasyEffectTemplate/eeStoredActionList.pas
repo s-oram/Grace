@@ -88,8 +88,15 @@ begin
   try
     for c1 := 0 to Actions.Count-1 do
     begin
-      //run the action.
-      Actions[c1].Action();
+
+
+
+      if assigned(Actions[c1].Action) then
+      begin
+        //run the action.
+        Actions[c1].Action();
+        Actions.Raw[c1].Action := nil;
+      end;
     end;
 
     Actions.Clear;

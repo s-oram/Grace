@@ -11,6 +11,18 @@ object Form2: TForm2
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
+  object ListBox1: TListBox
+    AlignWithMargins = True
+    Left = 3
+    Top = 3
+    Width = 629
+    Height = 294
+    Align = alClient
+    ItemHeight = 13
+    TabOrder = 0
+  end
 end

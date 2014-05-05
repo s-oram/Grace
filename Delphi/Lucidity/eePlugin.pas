@@ -416,6 +416,10 @@ begin
 
 
   //LogMemoryUsage('TPlugin.Create End');
+
+
+  
+
 end;
 
 destructor TeePlugin.Destroy;
@@ -529,6 +533,11 @@ begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
   Globals.AudioActions.IsProcessingActive := true;
+
+  Globals.AudioActions.Add(0, procedure
+  begin
+    DeleteKeyGroup('Group 1');
+  end);
 end;
 
 procedure TeePlugin.Suspend;
@@ -1184,42 +1193,11 @@ begin
   //ClearBuffer(Outputs[5], SampleFrames);
 
   try
-    try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
-    except
-      Log.LogMessage('AudioPreview Exception.');
-      raise;
-    end;
-
-    try
     VoiceController.AudioProcess(Outputs, SampleFrames);
-    except
-      Log.LogMessage('VoiceController Exception.');
-      raise;
-    end;
-
-    try
     KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
-    except
-      Log.LogMessage('KeyGroupPlayer Exception.');
-      raise;
-    end;
-    //<--- Normal Exit Point
-
-
-    try
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
-    except
-      Log.LogMessage('Signal Exception.');
-      raise;
-    end;
-
-    try
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
-    except
-      Log.LogMessage('Freq Exception.');
-      raise;
-    end;
 
     //Don't forget to increment inputs and outputs.
     for c1 := 0 to self.InputCount-1 do

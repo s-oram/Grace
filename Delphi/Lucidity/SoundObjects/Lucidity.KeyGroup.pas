@@ -187,11 +187,6 @@ begin
   self.VoiceParameters.AssignFrom(Source.VoiceParameters);
 end;
 
-
-
-
-
-
 procedure TKeyGroup.GetPatch(var Data: TPatchNode);
 //var
 //  ChildModule : TPatchNode;
@@ -199,7 +194,6 @@ begin
   //ChildModule := Data.NewChildNode('SampleMap');
   //SampleMap.GetPatchData(ChildModule);
 end;
-
 
 function TKeyGroup.GetTriggeredNoteCount: cardinal;
 begin
