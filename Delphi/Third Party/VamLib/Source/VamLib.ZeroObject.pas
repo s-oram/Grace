@@ -100,7 +100,7 @@ type
     procedure SetIsGuiOpen(const Value: boolean);
 
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
-    procedure DeregisterZeroObject(obj:IZeroObjectPtr);
+    procedure DeregisterZeroObject(const obj:IZeroObject);
 
     //procedure SendMessage(MsgID : cardinal); overload;
     //procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
@@ -171,7 +171,8 @@ type
     fIsGuiOpen: boolean;
     procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
-    procedure DeregisterZeroObject(obj:IZeroObjectPtr);
+
+
 
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
     procedure ClearMotherShipReferences;
@@ -181,6 +182,7 @@ type
     destructor Destroy; override;
 
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
+    procedure DeregisterZeroObject(const obj: IZeroObject);
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
@@ -218,14 +220,11 @@ uses
 { TZeroObject }
 
 destructor TZeroObject.Destroy;
-var
-  ptr : IZeroObjectPtr;
 begin
   // Important: Deregister from the mother ship..
   if (assigned(FMotherShip)) then
   begin
-    ptr := Pointer(IZeroObject(Self));
-    FMotherShip.DeregisterZeroObject(ptr);
+    FMotherShip.DeregisterZeroObject(self);
     FMotherShip := nil;
   end;
 
@@ -262,13 +261,10 @@ end;
 { TRefCountedZeroObject }
 
 destructor TRefCountedZeroObject.Destroy;
-var
-  ptr : IZeroObjectPtr;
 begin
   if (assigned(FMotherShip)) then
   begin
-    ptr := Pointer(IZeroObject(Self));
-    FMotherShip.DeregisterZeroObject(ptr);
+    FMotherShip.DeregisterZeroObject(self);
     FMotherShip := nil;
   end;
 
@@ -380,33 +376,38 @@ begin
 
 end;
 
-procedure TMotherShip.DeregisterZeroObject(obj: IZeroObjectPtr);
+procedure TMotherShip.DeregisterZeroObject(const obj: IZeroObject);
 var
+  ptr : Pointer;
   IsD : boolean;
 begin
-  IsD := false;
+  ptr := Pointer(obj); //Weak reference to zero object
+  obj.SetMotherShipReference(nil);
 
-  if MainObjects.IndexOf(obj) <> -1 then
+
+  if MainObjects.IndexOf(ptr) <> -1 then
   begin
-    MainObjects.Remove(obj);
+    MainObjects.Remove(ptr);
     IsD := true;
   end;
 
-  if AudioObjects.IndexOf(obj) <> -1 then
+  if AudioObjects.IndexOf(ptr) <> -1 then
   begin
-    AudioObjects.Remove(obj);
+    AudioObjects.Remove(ptr);
     IsD := true;
   end;
 
-  if VclObjects.IndexOf(obj) <> -1 then
+  if VclObjects.IndexOf(ptr) <> -1 then
   begin
-    VclObjects.Remove(obj);
+    VclObjects.Remove(ptr);
     IsD := true;
   end;
 
   if IsD = false
     then raise Exception.Create('ZeroObject faided to deregister itself.');
 end;
+
+
 
 procedure TMotherShip.SendMessage(MsgID: cardinal);
 begin

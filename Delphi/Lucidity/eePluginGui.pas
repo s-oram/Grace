@@ -242,13 +242,14 @@ end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);
 begin
-  if (assigned(FMotherShip))
-    then FMotherShip.DeregisterZeroObject(Pointer(IZeroObject(Self)));
+  if (assigned(FMotherShip)) then
+  begin
+    FMotherShip.DeregisterZeroObject(self);
+    FMotherShip := nil;
+  end;
 
   if assigned(GuiStandard)
     then GuiStandard.Free;
-
-
 
   DialogDisplayArea.Free;
   CurrentGuiState.Free;

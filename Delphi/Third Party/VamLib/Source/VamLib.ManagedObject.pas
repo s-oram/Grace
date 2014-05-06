@@ -271,14 +271,11 @@ end;
 { TManagedZeroObject }
 
 destructor TManagedZeroObject.Destroy;
-var
-  ptr : IZeroObjectPtr;
 begin
   // Important: Deregister from the mother ship..
   if (assigned(FMotherShip)) then
   begin
-    ptr := Pointer(IZeroObject(Self));
-    FMotherShip.DeregisterZeroObject(ptr);
+    FMotherShip.DeregisterZeroObject(self);
     FMotherShip := nil;
   end;
 
