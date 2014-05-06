@@ -561,7 +561,6 @@ begin
   Index3 := GetModParIndex(TPluginParameter.Filter1Par3);
   Index4 := GetModParIndex(TPluginParameter.Filter1Par4);
 
-  FilterOne.Init(0, ParValueData, @self.ParModData);
   FilterOne.Par1 := @ParValueData^[Index1].ModulatedParValue;
   FilterOne.Par2 := @ParValueData^[Index2].ModulatedParValue;
   FilterOne.Par3 := @ParValueData^[Index3].ModulatedParValue;
@@ -574,7 +573,6 @@ begin
   Index3 := GetModParIndex(TPluginParameter.Filter2Par3);
   Index4 := GetModParIndex(TPluginParameter.Filter2Par4);
 
-  FilterTwo.Init(1, ParValueData, @self.ParModData);
   FilterTwo.Par1 := @ParValueData^[Index1].ModulatedParValue;
   FilterTwo.Par2 := @ParValueData^[Index2].ModulatedParValue;
   FilterTwo.Par3 := @ParValueData^[Index3].ModulatedParValue;

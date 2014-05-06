@@ -49,20 +49,12 @@ type
 
     TestFilter : TTestFilter;
 
-    ModuleIndex  : integer; //TODO: Delete module index.
-
-    //TODO: delete this parameter stuff as well.
-    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
-    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
-
     DummyModValue : single; //TODO: Delete this.
 
     VoiceModPoints : PVoiceModulationPoints;
   public
     constructor Create(const aVoiceModPoints : PVoiceModulationPoints);
     destructor Destroy; override;
-
-    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
 
     property Par1 : PSynthPar read fPar1 write fPar1;
     property Par2 : PSynthPar read fPar2 write fPar2;
@@ -136,16 +128,6 @@ begin
   if Name ='Par1Mod' then exit(@DummyModValue);
   if Name ='Par2Mod' then exit(@DummyModValue);  if Name ='Par3Mod' then exit(@DummyModValue);  if Name ='Par4Mod' then exit(@DummyModValue);
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');  result := nil;end;
-
-procedure TLucidityFilter.Init(const aModuleIndex : integer; const aPars: PModulatedPars; const aModData: PParModulationData);
-begin
-  assert(ModuleIndex >= 0);
-  assert(ModuleIndex <= 1);
-
-  self.ModuleIndex   := aModuleIndex;
-  self.ParValueData  := aPars;
-  self.ParModData    := aModData;
-end;
 
 procedure TLucidityFilter.SetFilterType(const Value: TFilterType);
 begin
