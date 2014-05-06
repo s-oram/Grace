@@ -377,8 +377,7 @@ begin
   // The LFO 2 - Par 2 knob always causes a crash.
   // Something here becomes un-defined.
   kg := Plugin.ActiveKeyGroup;
-
-  if Supports(kg, ILevelMonitor, LM) then
+  if (assigned(kg)) and (Supports(kg, ILevelMonitor, LM)) then
   begin
     VoiceLevelMeter.LevelMonitor := LM;
     VoiceLevelMeter.Invalidate;

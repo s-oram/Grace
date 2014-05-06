@@ -29,6 +29,7 @@ type
 implementation
 
 uses
+  Lucidity.Interfaces,
   uConstants;
 
 { TModSelectorContextMenu }
@@ -78,12 +79,16 @@ var
   c1: Integer;
   ModSource : TModSource;
   ModVia    : TModSource;
+
+  kg : IKeyGroup;
 begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
   ModSlotIndex := aModSlotIndex;
 
-
-  ModSource := Plugin.ActiveKeyGroup.GetModConnections.GetModSource(ModSlotIndex);
-  ModVia    := Plugin.ActiveKeyGroup.GetModConnections.GetModVia(ModSlotIndex);
+  ModSource := kg.GetModConnections.GetModSource(ModSlotIndex);
+  ModVia    := kg.GetModConnections.GetModVia(ModSlotIndex);
 
   for c1 := 0 to ModSourceMenu.Items.Count-1
     do ModSourceMenu.Items[c1].Checked := false;
@@ -103,10 +108,7 @@ begin
     mi.Checked := true;
   end;
 
-
-
-
-  IsMute := Plugin.ActiveKeyGroup.GetModConnections.GetModMute(ModSlotIndex);
+  IsMute := kg.GetModConnections.GetModMute(ModSlotIndex);
   if IsMute then
   begin
     mi := Menu.Items.Find('Mute Modulation');
@@ -127,36 +129,46 @@ begin
       then mi.Visible := false;
   end;
 
-
-
-
-
-
   Menu.Popup(x, y);
-
-
 end;
 
 procedure TModSelectorContextMenu.Handle_ModSourceSelected(Sender: TObject; aSource: TModSource);
+var
+  kg : IKeyGroup;
 begin
-  Plugin.ActiveKeyGroup.GetModConnections.SetModSource(ModSlotIndex, aSource);
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  kg := Plugin.ActiveKeyGroup;
+  if assigned(kg) then
+  begin
+    kg.GetModConnections.SetModSource(ModSlotIndex, aSource);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  end;
 end;
 
 procedure TModSelectorContextMenu.Handle_ModViaSelected(Sender: TObject; aSource: TModSource);
+var
+  kg : IKeyGroup;
 begin
-  Plugin.ActiveKeyGroup.GetModConnections.SetModVia(ModSlotIndex, aSource);
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  kg := Plugin.ActiveKeyGroup;
+  if assigned(kg) then
+  begin
+    kg.GetModConnections.SetModVia(ModSlotIndex, aSource);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  end;
 end;
 
 procedure TModSelectorContextMenu.Handle_ToggleModulationMute(Sender: TObject);
 var
   IsMute : boolean;
+  kg : IKeyGroup;
 begin
-  IsMute := Plugin.ActiveKeyGroup.GetModConnections.GetModMute(ModSlotIndex);
-  IsMute := not IsMute;
-  Plugin.ActiveKeyGroup.GetModConnections.SetModMute(ModSlotIndex, IsMute);
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  kg := Plugin.ActiveKeyGroup;
+  if assigned(kg) then
+  begin
+    IsMute := kg.GetModConnections.GetModMute(ModSlotIndex);
+    IsMute := not IsMute;
+    kg.GetModConnections.SetModMute(ModSlotIndex, IsMute);
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  end;
 end;
 
 end.

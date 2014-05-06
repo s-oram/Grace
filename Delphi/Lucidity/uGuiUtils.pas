@@ -585,6 +585,7 @@ var
   c1: Integer;
 begin
   kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
 
   for c1 := 0 to kModSlotCount-1 do
   begin

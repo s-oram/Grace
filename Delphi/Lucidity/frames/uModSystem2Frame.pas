@@ -279,10 +279,12 @@ var
   kg : IKeyGroup;
   ModConnections : TModConnections;
 begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
   //=== update mod slot text ===
   for c1 := 0 to kModSlotCount-1 do
   begin
-    kg := Plugin.ActiveKeyGroup;
     ModConnections := kg.GetModConnections;
 
     ModSource := ModConnections.GetModSource(c1);
@@ -339,7 +341,12 @@ var
   c1 : integer;
   x1, x2 : single;
   ModAmount : single;
+  kg : IKeyGroup;
 begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
+
   if ActiveModParIndex = -1 then
   begin
     for c1 := 0 to kModSlotCount-1 do
@@ -351,7 +358,7 @@ begin
     for c1 := 0 to kModSlotCount-1 do
     begin
       x1 := 0.5;
-      ModAmount := Plugin.ActiveKeyGroup.GetModParModAmount(ActiveModParIndex, c1);
+      ModAmount := kg.GetModParModAmount(ActiveModParIndex, c1);
       ModAmount := ModAmount * 0.5;
       x2 := x1 + ModAmount;
       x2 := Clamp(x2, 0, 1);

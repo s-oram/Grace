@@ -830,7 +830,7 @@ begin
     else ModSlot := Plugin.Globals.SelectedModSlot;
 
   kg := Plugin.ActiveKeyGroup;
-
+  if not assigned(kg) then exit;
 
   //== Update min-max modulation amounts ==
   kg.GetModParModMinMax(TModParIndex.SampleStart, ModMin, ModMax);

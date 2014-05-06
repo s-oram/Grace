@@ -57,6 +57,8 @@ begin
   Plugin := aPlugin as TeePlugin;
 
   KeyGroup := Plugin.ActiveKeyGroup;
+  if not assigned(KeyGroup) then exit;
+
   Par := PluginParFromName(ParName);
 
 
@@ -262,14 +264,16 @@ begin
       for c1 := 0 to kgInfo.GetKeyGroupCount-1 do
       begin
         kg := kgInfo.GetKeyGroup(c1);
-        ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
+        if assigned(kg)
+          then ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
       end;
     end;
 
     psFocusedKeyGroup:
     begin
       kg :=  Plugin.ActiveKeyGroup;
-      ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
+      if assigned(kg)
+        then ApplyPluginParToKeyGroup(Plugin, kg, Par, ParValue);
     end;
 
     psKeyGroup:
@@ -465,8 +469,14 @@ begin
   assert(ModParIndex <> -1);
 
   kg :=  Plugin.ActiveKeyGroup;
-
-  kg.GetModParModMinMax(ModParIndex, ModMin, ModMax);
+  if assigned(kg) then
+  begin
+    kg.GetModParModMinMax(ModParIndex, ModMin, ModMax);
+  end else
+  begin
+    ModMin := 0;
+    ModMax := 0;
+  end;
 end;
 
 class function TPluginParameterController.GetParameterModAmount(
@@ -489,7 +499,9 @@ begin
   assert(ModParIndex <> -1);
 
   kg :=  Plugin.ActiveKeyGroup;
-  result := kg.GetModParModAmount(ModParIndex, ModSlot);
+  if assigned(kg)
+    then result := kg.GetModParModAmount(ModParIndex, ModSlot)
+    else result := 0;
 end;
 
 
@@ -533,7 +545,8 @@ begin
     psFocusedKeyGroup:
     begin
       kg :=  Plugin.ActiveKeyGroup;
-      kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
+      if assigned(kg)
+        then kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
     end;
 
     psKeyGroup:

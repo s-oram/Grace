@@ -82,7 +82,8 @@ type
   end;
 
 
-
+  // TODO : Key Groups info maintains a list of references, lets change
+  // that to a list of key group ids.
   IKeyGroupsInfo = interface
     ['{E1C9A4CE-11D3-4A19-8EC4-9FB50C1C93DD}']
     function GetKeyGroup(Index: integer): IKeyGroup;
