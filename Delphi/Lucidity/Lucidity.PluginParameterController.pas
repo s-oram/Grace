@@ -57,7 +57,7 @@ begin
   Plugin := aPlugin as TeePlugin;
 
   KeyGroup := Plugin.ActiveKeyGroup;
-  if not assigned(KeyGroup) then exit;
+  if not assigned(KeyGroup) then exit(0);
 
   Par := PluginParFromName(ParName);
 
