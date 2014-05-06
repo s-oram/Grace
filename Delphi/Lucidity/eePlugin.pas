@@ -512,10 +512,6 @@ begin
   result := TPluginParameterController.GetParameterInfo(self, ParName);
 end;
 
-
-
-
-
 procedure TeePlugin.EventHandle_SampleRateChanged(Sender: TObject);
 begin
   MidiAutomation.SampleRate := Globals.FastControlRate;
