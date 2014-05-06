@@ -496,6 +496,7 @@ var
   Index2 : integer;
   Index3 : integer;
   Index4 : integer;
+  Index5 : integer;
 begin
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
@@ -574,8 +575,39 @@ begin
 
 
 
+  //======== Amp Envelope =======
+  Index1 := GetModParIndex(TPluginParameter.AmpAttack);
+  Index2 := GetModParIndex(TPluginParameter.AmpHold);
+  Index3 := GetModParIndex(TPluginParameter.AmpDecay);
+  Index4 := GetModParIndex(TPluginParameter.AmpSustain);
+  Index5 := GetModParIndex(TPluginParameter.AmpRelease);
+
   AmpEnv.Init(0, ParValueData, @self.ParModData);
+
+  AmpEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  AmpEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  AmpEnv.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  AmpEnv.Par4 := @ParValueData^[Index4].ModulatedParValue;
+  AmpEnv.Par5 := @ParValueData^[Index5].ModulatedParValue;
+
+
+  //======== Modulation Envelope =======
+  Index1 := GetModParIndex(TPluginParameter.FilterAttack);
+  Index2 := GetModParIndex(TPluginParameter.FilterHold);
+  Index3 := GetModParIndex(TPluginParameter.FilterDecay);
+  Index4 := GetModParIndex(TPluginParameter.FilterSustain);
+  Index5 := GetModParIndex(TPluginParameter.FilterRelease);
+
   FilterEnv.Init(1, ParValueData, @self.ParModData);
+
+  FilterEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  FilterEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  FilterEnv.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  FilterEnv.Par4 := @ParValueData^[Index4].ModulatedParValue;
+  FilterEnv.Par5 := @ParValueData^[Index5].ModulatedParValue;
+
+
+
   //=============================================================
 
 
