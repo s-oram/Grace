@@ -37,10 +37,6 @@ type
   protected
     fADSR : TADSR;
 
-    ModuleIndex    : integer;
-    ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
-    ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
-
     procedure UpdateParameters;
 
     property AttackTime   :single read fAttackTime   write SetAttackTime;    // range is 0..1
@@ -52,7 +48,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure Init(const aModuleIndex : integer; const aPars : PModulatedPars; const aModData : PParModulationData);
+    //TODO: delete this old Mod Pointer stuff.
     function GetModPointer(const Name:string):PSingle;
 
     property Par1 : PSynthPar read fPar1 write fPar1;
@@ -110,16 +106,6 @@ end;
 function TLucidityADSR.GetModPointer(const Name: string): PSingle;
 begin
   result := fADSR.GetModPointer(Name);
-end;
-
-procedure TLucidityADSR.Init(const aModuleIndex: integer; const aPars: PModulatedPars; const aModData: PParModulationData);
-begin
-  assert(ModuleIndex >= 0);
-  assert(ModuleIndex <= 1);
-
-  ModuleIndex  := aModuleIndex;
-  ParValueData := aPars;
-  ParModData   := aModData;
 end;
 
 procedure TLucidityADSR.SetAttackTime(const Value: single);

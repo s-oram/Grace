@@ -582,8 +582,6 @@ begin
   Index4 := GetModParIndex(TPluginParameter.AmpSustain);
   Index5 := GetModParIndex(TPluginParameter.AmpRelease);
 
-  AmpEnv.Init(0, ParValueData, @self.ParModData);
-
   AmpEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
   AmpEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
   AmpEnv.Par3 := @ParValueData^[Index3].ModulatedParValue;
@@ -597,8 +595,6 @@ begin
   Index3 := GetModParIndex(TPluginParameter.FilterDecay);
   Index4 := GetModParIndex(TPluginParameter.FilterSustain);
   Index5 := GetModParIndex(TPluginParameter.FilterRelease);
-
-  FilterEnv.Init(1, ParValueData, @self.ParModData);
 
   FilterEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
   FilterEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
