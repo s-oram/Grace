@@ -141,16 +141,20 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
     destructor Destroy; override;
-
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
     class function NewInstance: TObject; override;
   end;
 
   // NOTE TRefCountedZeroObjects are reference counted.
-  TRefCountedZeroObject = class(TZeroObject)
+  TRefCountedZeroObject = class(TInterfacedObject, IZeroObject)
+  private
+    FMotherShip : IMotherShip;
   protected
-    function GetIsReferenceCounted: boolean; override;
+    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
+  public
+    destructor Destroy; override;
   end;
 
   // TMotherShip is not reference counted.
@@ -335,12 +339,30 @@ end;
 
 { TRefCountedZeroObject }
 
-function TRefCountedZeroObject.GetIsReferenceCounted: boolean;
+destructor TRefCountedZeroObject.Destroy;
+var
+  ptr : IZeroObjectPtr;
 begin
-  result := true;
+  if (assigned(FMotherShip)) then
+  begin
+    ptr := Pointer(IZeroObject(Self));
+    FMotherShip.DeregisterZeroObject(ptr);
+    FMotherShip := nil;
+  end;
+
+  inherited;
 end;
 
 
+procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+begin
+
+end;
+
+procedure TRefCountedZeroObject.SetMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := aMotherShip;
+end;
 
 { TMotherShip }
 

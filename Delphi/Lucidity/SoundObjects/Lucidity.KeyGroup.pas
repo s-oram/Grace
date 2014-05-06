@@ -60,9 +60,6 @@ type
     procedure SetID(ID:TKeyGroupID);
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
-
-    function _AddRef: Integer; override;
-    function _Release: Integer; override;
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -389,16 +386,6 @@ begin
   begin
     ActiveVoices[c1].SlowControlProcess;
   end;
-end;
-
-function TKeyGroup._AddRef: Integer;
-begin
-  result := inherited;
-end;
-
-function TKeyGroup._Release: Integer;
-begin
-  result := inherited;
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
