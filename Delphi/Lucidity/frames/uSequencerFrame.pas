@@ -192,7 +192,20 @@ var
 begin
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
+    kg := Plugin.FocusedKeyGroup;
+    if assigned(kg)
+      then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
+      else StepSeqControl.SequenceData := nil;
+
     StepSeqControl.Invalidate;
+  end;
+
+  if MsgID = TLucidMsgID.OnPostCreateFinished then
+  begin
+    kg := Plugin.FocusedKeyGroup;
+    if assigned(kg)
+      then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
+      else StepSeqControl.SequenceData := nil;
   end;
 
   if MsgID = TLucidMsgID.SampleFocusChanged then

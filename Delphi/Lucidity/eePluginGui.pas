@@ -626,6 +626,7 @@ begin
   Plugin.Globals.GuiState.LowerTabState := TabSelected;
   self.LowerTabState := TabSelected;
 
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.RefreshRequest_StepSeqDisplay);
 end;
 
 
