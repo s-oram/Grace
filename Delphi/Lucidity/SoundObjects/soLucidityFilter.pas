@@ -49,7 +49,9 @@ type
 
     TestFilter : TTestFilter;
 
-    ModuleIndex  : integer;
+    ModuleIndex  : integer; //TODO: Delete module index.
+
+    //TODO: delete this parameter stuff as well.
     ParValueData : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
     ParModData   : PParModulationData; // stores the summed modulation input for each parameter. (Most parameters will be zero)
 
