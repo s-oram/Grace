@@ -525,15 +525,10 @@ function TeePlugin.ActiveKeyGroup: IKeyGroup;
 var
   kg : IKeyGroup;
 begin
-  {
   kg := fFocusedKeyGroup;
   if assigned(kg)
     then result := kg
     else result := EmptyKeyGroup;
-  }
-
-  //result := EmptyKeyGroup;
-  result := nil;
 end;
 
 procedure TeePlugin.Resume;
