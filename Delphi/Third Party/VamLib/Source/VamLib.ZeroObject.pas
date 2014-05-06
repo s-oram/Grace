@@ -233,7 +233,8 @@ end;
 
 procedure TZeroObject.BeforeDestruction;
 begin
-
+  //if RefCount <> 0 then
+  //  Error(reInvalidPtr);
 end;
 
 destructor TZeroObject.Destroy;
