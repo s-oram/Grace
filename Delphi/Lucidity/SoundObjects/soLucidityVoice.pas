@@ -217,6 +217,7 @@ uses
   SmartInspectLogging,
   VamLib.LoggingProxy,
   {$ENDIF}
+  Lucidity.PluginParameters,
   eeCustomGlobals,
   eeProfiler,
   SysUtils, eePitch,
@@ -497,6 +498,10 @@ end;
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
 var
   CV : TModularVoltage;
+  Index1 : integer;
+  Index2 : integer;
+  Index3 : integer;
+  Index4 : integer;
 begin
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
@@ -523,13 +528,24 @@ begin
   StepSeqOne.SequenceData := aSampleGroup.GetSequenceData(0);
   StepSeqTwo.SequenceData := aSampleGroup.GetSequenceData(1);
 
-  LfoA.Par1 := @ParValueData^[TModParIndex.Lfo1Par1].ModulatedParValue;
-  LfoA.Par2 := @ParValueData^[TModParIndex.Lfo1Par2].ModulatedParValue;
-  LfoA.Par3 := @ParValueData^[TModParIndex.Lfo1Par3].ModulatedParValue;
 
-  LfoB.Par1 := @ParValueData^[TModParIndex.Lfo2Par1].ModulatedParValue;
-  LfoB.Par2 := @ParValueData^[TModParIndex.Lfo2Par2].ModulatedParValue;
-  LfoB.Par3 := @ParValueData^[TModParIndex.Lfo2Par3].ModulatedParValue;
+  //======== Lfo One =======
+  Index1 := GetModParIndex(TPluginParameter.Lfo1Par1);
+  Index2 := GetModParIndex(TPluginParameter.Lfo1Par2);
+  Index3 := GetModParIndex(TPluginParameter.Lfo1Par3);
+
+  LfoA.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  LfoA.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  LfoA.Par3 := @ParValueData^[Index3].ModulatedParValue;
+
+  //======== Lfo Two =======
+  Index1 := GetModParIndex(TPluginParameter.Lfo2Par1);
+  Index2 := GetModParIndex(TPluginParameter.Lfo2Par2);
+  Index3 := GetModParIndex(TPluginParameter.Lfo2Par3);
+
+  LfoB.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  LfoB.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  LfoB.Par3 := @ParValueData^[Index3].ModulatedParValue;
 
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
@@ -539,17 +555,32 @@ begin
 
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
 
+  //======== Filter One =======
+  Index1 := GetModParIndex(TPluginParameter.Filter1Par1);
+  Index2 := GetModParIndex(TPluginParameter.Filter1Par2);
+  Index3 := GetModParIndex(TPluginParameter.Filter1Par3);
+  Index4 := GetModParIndex(TPluginParameter.Filter1Par4);
+
   FilterOne.Init(0, ParValueData, @self.ParModData);
-  FilterOne.Par1 := @ParValueData^[TModParIndex.Filter1Par1].ModulatedParValue;
-  FilterOne.Par2 := @ParValueData^[TModParIndex.Filter1Par2].ModulatedParValue;
-  FilterOne.Par3 := @ParValueData^[TModParIndex.Filter1Par3].ModulatedParValue;
-  FilterOne.Par4 := @ParValueData^[TModParIndex.Filter1Par4].ModulatedParValue;
+  FilterOne.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  FilterOne.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  FilterOne.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  FilterOne.Par4 := @ParValueData^[Index4].ModulatedParValue;
+
+
+  //======== Filter Two =======
+  Index1 := GetModParIndex(TPluginParameter.Filter2Par1);
+  Index2 := GetModParIndex(TPluginParameter.Filter2Par2);
+  Index3 := GetModParIndex(TPluginParameter.Filter2Par3);
+  Index4 := GetModParIndex(TPluginParameter.Filter2Par4);
 
   FilterTwo.Init(1, ParValueData, @self.ParModData);
-  FilterTwo.Par1 := @ParValueData^[TModParIndex.Filter2Par1].ModulatedParValue;
-  FilterTwo.Par2 := @ParValueData^[TModParIndex.Filter2Par2].ModulatedParValue;
-  FilterTwo.Par3 := @ParValueData^[TModParIndex.Filter2Par3].ModulatedParValue;
-  FilterTwo.Par4 := @ParValueData^[TModParIndex.Filter2Par4].ModulatedParValue;
+  FilterTwo.Par1 := @ParValueData^[Index1].ModulatedParValue;
+  FilterTwo.Par2 := @ParValueData^[Index2].ModulatedParValue;
+  FilterTwo.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  FilterTwo.Par4 := @ParValueData^[Index4].ModulatedParValue;
+
+
 
   AmpEnv.Init(0, ParValueData, @self.ParModData);
   FilterEnv.Init(1, ParValueData, @self.ParModData);
