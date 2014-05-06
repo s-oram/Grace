@@ -43,6 +43,8 @@ type
     procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, MoxMax:single);
 
     function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
+
+    procedure GetDbLevel(out Ch1, Ch2 : single);
   end;
 
 

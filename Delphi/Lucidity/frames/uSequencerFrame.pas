@@ -148,8 +148,6 @@ begin
     GuiStandard_RegisterMenuButton(GuiStandard, ModeSelector,        TPluginParameter.Seq2Direction);
     GuiStandard_RegisterMenuButton(GuiStandard, StepCountSelector,   TPluginParameter.Seq2Length);
   end;
-
-  //StepSeqControl.SequenceData := Plugin.ActiveKeyGroup.GetSequenceData(fSequencerIndex);
 end;
 
 procedure TSequencerFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
@@ -190,6 +188,7 @@ procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointe
 var
   kg : IKeyGroup;
 begin
+  {
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
     kg := Plugin.FocusedKeyGroup;
@@ -220,7 +219,7 @@ begin
   begin
     StepSeqControl.SequenceData := nil;
   end;
-
+  }
 end;
 
 
