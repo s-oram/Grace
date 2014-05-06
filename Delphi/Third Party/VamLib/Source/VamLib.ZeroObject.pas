@@ -124,6 +124,7 @@ type
   // NOTE: TZeroObjects aren't reference counded;
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
+    RefCountLock : TFixedCriticalSection;
     FMotherShip : IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
@@ -253,6 +254,11 @@ begin
     FMotherShip := nil;
   end;
 
+  if assigned(RefCountLock) then
+  begin
+    FreeAndNil(RefCountLock);
+  end;
+
   inherited;
 end;
 
@@ -285,23 +291,41 @@ end;
 
 function TZeroObject._AddRef: Integer;
 begin
-  FRefCount := InterlockedIncrement(FRefCount);
+  if not assigned(RefCountLock)
+    then RefCountLock := TFixedCriticalSection.Create;
 
-  if IsReferenceCounted
-    then result := FRefCount
-    else result := -1;
+  RefCountLock.Acquire;
+  try
+    FRefCount := InterlockedIncrement(FRefCount);
+
+    if IsReferenceCounted
+      then result := FRefCount
+      else result := -1;
+  finally
+    RefCountLock.Release;
+  end;
 end;
 
 function TZeroObject._Release: Integer;
+var
+  CallDestroy : boolean;
 begin
-  FRefCount := InterlockedDecrement(FRefCount);
+  RefCountLock.Acquire;
+  try
+    FRefCount := InterlockedDecrement(FRefCount);
 
-  if IsReferenceCounted
-    then result := FRefCount
-    else result := -1;
+    if IsReferenceCounted
+      then result := FRefCount
+      else result := -1;
 
-  if (result = 0)
-    then Destroy;
+    if (result = 0)
+      then CallDestroy := true
+      else CallDestroy := false;
+  finally
+    RefCountLock.Release;
+    if CallDestroy
+      then Destroy;
+  end;
 end;
 
 procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
