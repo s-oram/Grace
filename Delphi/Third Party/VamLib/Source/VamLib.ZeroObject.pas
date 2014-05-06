@@ -99,7 +99,7 @@ type
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
     procedure SetIsGuiOpen(const Value: boolean);
 
-    procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
+    procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(obj:IZeroObjectPtr);
 
     //procedure SendMessage(MsgID : cardinal); overload;
@@ -180,7 +180,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
+    procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
@@ -349,7 +349,7 @@ end;
 
 
 
-procedure TMotherShip.RegisterZeroObject(obj: IZeroObject; const Rank : TZeroObjectRank);
+procedure TMotherShip.RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
 var
   ptr : Pointer;
 begin
