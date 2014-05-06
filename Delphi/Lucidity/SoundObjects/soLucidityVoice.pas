@@ -69,7 +69,6 @@ type
     fGrainStretchOsc: TLucidityGrainStretchOsc;
     fSamplePlaybackType: TSamplePlaybackType;
     fStepSeqTwo: TLucidyStepSequencer;
-    fOscVCA: TLucidityVCA;
     fOutputMixer: TOutputMixer;
     fLoopSampleOsc: TLoopSampleOsc;
     fWaveOsc      : TLucidityWaveOsc;
@@ -173,7 +172,7 @@ type
     property WaveOsc          : TLucidityWaveOsc         read fWaveOsc          write fWaveOsc;
     property AmpEnv           : TLucidityADSR            read fAmpEnv           write fAmpEnv;
     property FilterEnv        : TLucidityADSR            read fFilterEnv        write fFilterEnv;
-    property OscVCA           : TLucidityVCA             read fOscVCA           write fOscVCA;
+
     property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer;
     property FilterOne        : TLucidityFilter          read fFilterOne        write fFilterOne;
     property FilterTwo        : TLucidityFilter          read fFilterTwo        write fFilterTwo;
@@ -296,10 +295,6 @@ begin
   ModMatrix.SetModDestPointer(TModDest.Filter2_Par3, FilterTwo.GetModPointer('Par3Mod'));
   ModMatrix.SetModDestPointer(TModDest.Filter2_Par4, FilterTwo.GetModPointer('Par4Mod'));
 
-  OscVCA := TLucidityVCA.Create;
-  ModMatrix.SetModDestPointer(TModDest.VoiceAmplitude, OscVCA.GetModPointer('ModInput_Gain'));
-  ModMatrix.SetModDestPointer(TModDest.VoicePan, OscVCA.GetModPointer('ModInput_Gain')); //HACK: Delete asap!
-
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
   LfoOut := LfoA.GetModPointer('LfoOutput');
@@ -340,7 +335,6 @@ begin
   fWaveOsc.Free;
   FilterOne.Free;
   FilterTwo.Free;
-  OscVCA.Free;
   LfoA.Free;
   LfoB.Free;
   StepSeqOne.Free;
@@ -582,11 +576,6 @@ begin
 
   AmpEnv.Init(0, ParValueData, @self.ParModData);
   FilterEnv.Init(1, ParValueData, @self.ParModData);
-
-  OscVCA.Config^.GainPar := @ParValueData^[TModParIndex.OutputGain].ParValue;
-  OscVCA.Config^.GainMod := @ParModData[TModParIndex.OutputGain];
-  OscVCA.Config^.PanPar  := @ParValueData^[TModParIndex.OutputPan].ParValue;
-  OscVCA.Config^.PanMod  := @ParModData[TModParIndex.OutputPan];
   //=============================================================
 
 
@@ -758,8 +747,6 @@ begin
   ModMatrix.FastControlProcess;
 
   //=== Control rate step for all audio rate modules ===
-  //OscVCA.FastControlProcess(AmpEnv.Value);
-
   FilterOne.FastControlProcess;
   FilterTwo.FastControlProcess;
 
@@ -834,8 +821,6 @@ begin
 
     MixX1 := MixX1 * AmpEnv.Value;
     MixX2 := MixX2 * AmpEnv.Value;
-
-    //OscVCA.AudioRateStep(MixX1, MixX2);
 
     pxA^ := MixX1 * VoiceGainCh1;
     pxB^ := MixX2 * VoiceGainCh2;
