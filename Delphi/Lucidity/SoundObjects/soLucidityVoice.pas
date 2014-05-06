@@ -538,8 +538,19 @@ begin
   //--------------------------
 
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
+
   FilterOne.Init(0, ParValueData, @self.ParModData);
+  FilterOne.Par1 := @ParValueData^[TModParIndex.Filter1Par1].ModulatedParValue;
+  FilterOne.Par2 := @ParValueData^[TModParIndex.Filter1Par2].ModulatedParValue;
+  FilterOne.Par3 := @ParValueData^[TModParIndex.Filter1Par3].ModulatedParValue;
+  FilterOne.Par4 := @ParValueData^[TModParIndex.Filter1Par4].ModulatedParValue;
+
   FilterTwo.Init(1, ParValueData, @self.ParModData);
+  FilterTwo.Par1 := @ParValueData^[TModParIndex.Filter2Par1].ModulatedParValue;
+  FilterTwo.Par2 := @ParValueData^[TModParIndex.Filter2Par2].ModulatedParValue;
+  FilterTwo.Par3 := @ParValueData^[TModParIndex.Filter2Par3].ModulatedParValue;
+  FilterTwo.Par4 := @ParValueData^[TModParIndex.Filter2Par4].ModulatedParValue;
+
   AmpEnv.Init(0, ParValueData, @self.ParModData);
   FilterEnv.Init(1, ParValueData, @self.ParModData);
 
