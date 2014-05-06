@@ -124,26 +124,16 @@ type
   // NOTE: TZeroObjects aren't reference counded;
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
-    RefCountLock : TFixedCriticalSection;
     FMotherShip : IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
-    FRefCount: Integer;
-    function GetIsReferenceCounted: boolean; virtual;
-
     function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
     function _AddRef: Integer; virtual; stdcall;
     function _Release: Integer; virtual; stdcall;
 
-    property IsReferenceCounted : boolean read GetIsReferenceCounted;
-    property RefCount           : Integer read FRefCount;
-
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
   public
     destructor Destroy; override;
-    procedure AfterConstruction; override;
-    procedure BeforeDestruction; override;
-    class function NewInstance: TObject; override;
   end;
 
   // NOTE TRefCountedZeroObjects are reference counted.
@@ -227,41 +217,16 @@ uses
 
 { TZeroObject }
 
-procedure TZeroObject.AfterConstruction;
-begin
-  // Release the constructor's implicit refcount
-  InterlockedDecrement(FRefCount);
-
-  //VamLib.LoggingProxy.Log.LogMessage('ZO.Create = ' + self.ClassName);
-end;
-
-procedure TZeroObject.BeforeDestruction;
-begin
-  //if RefCount <> 0 then
-  //  Error(reInvalidPtr);
-end;
-
 destructor TZeroObject.Destroy;
 var
   ptr : IZeroObjectPtr;
 begin
-  //VamLib.LoggingProxy.Log.LogMessage('ZO.Destroy = ' +self.ClassName);
-
-  // TODO: instead of maintaining a reference to the mother ship, the zero object
-  // could use a multi-event to notify objects of it's destruction.
-  // IE. a NotifyOnFree() event.
-
   // Important: Deregister from the mother ship..
   if (assigned(FMotherShip)) then
   begin
     ptr := Pointer(IZeroObject(Self));
     FMotherShip.DeregisterZeroObject(ptr);
     FMotherShip := nil;
-  end;
-
-  if assigned(RefCountLock) then
-  begin
-    FreeAndNil(RefCountLock);
   end;
 
   inherited;
@@ -273,64 +238,21 @@ begin
   FMotherShip := aMotherShip;
 end;
 
-function TZeroObject.GetIsReferenceCounted: boolean;
-begin
-  result := false;
-end;
-
-class function TZeroObject.NewInstance: TObject;
-begin
-  // Set an implicit refcount so that refcounting
-  // during construction won't destroy the object.
-  Result := inherited NewInstance;
-  TZeroObject(Result).FRefCount := 1;
-end;
-
 function TZeroObject.QueryInterface(const IID: TGUID; out Obj): HResult;
 begin
-  if GetInterface(IID, Obj) then
-    Result := S_OK
-  else
-    Result := E_NOINTERFACE;
+  if GetInterface(IID, Obj)
+    then Result := S_OK
+    else Result := E_NOINTERFACE;
 end;
 
 function TZeroObject._AddRef: Integer;
 begin
-  if not assigned(RefCountLock)
-    then RefCountLock := TFixedCriticalSection.Create;
-
-  RefCountLock.Acquire;
-  try
-    FRefCount := InterlockedIncrement(FRefCount);
-
-    if IsReferenceCounted
-      then result := FRefCount
-      else result := -1;
-  finally
-    RefCountLock.Release;
-  end;
+  result := -1;
 end;
 
 function TZeroObject._Release: Integer;
-var
-  CallDestroy : boolean;
 begin
-  RefCountLock.Acquire;
-  try
-    FRefCount := InterlockedDecrement(FRefCount);
-
-    if IsReferenceCounted
-      then result := FRefCount
-      else result := -1;
-
-    if (result = 0)
-      then CallDestroy := true
-      else CallDestroy := false;
-  finally
-    RefCountLock.Release;
-    if CallDestroy
-      then Destroy;
-  end;
+  result := -1;
 end;
 
 procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
