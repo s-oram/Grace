@@ -855,7 +855,6 @@ begin
 
   FeedbackData.ActiveVoiceCount := VoiceController.GetActiveVoiceCount;
 
-
   // Get the current feedback data
   SG := ActiveKeyGroup;
   if assigned(SG) then
