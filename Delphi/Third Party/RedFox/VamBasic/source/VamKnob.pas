@@ -954,6 +954,4 @@ begin
   BackBuffer.BufferInterface.Line(MiddleX,MiddleY, EndX, EndY);
 end;
 
-
-
 end.

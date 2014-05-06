@@ -464,8 +464,7 @@ begin
   end;
   //==============
 
-  self.LowerTabState := TLowerTabOptions.TabMain;
-
+  TabPanel.Invalidate;
   //==============
 
   Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnPostCreateFinished);
@@ -600,6 +599,9 @@ begin
   else
     raise Exception.Create('Unexpect tab value.');
   end;
+
+
+
 
 end;
 

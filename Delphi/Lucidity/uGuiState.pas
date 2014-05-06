@@ -38,6 +38,8 @@ uses
 
 constructor TGuiState.Create;
 begin
+  fLowerTabState := TLowerTabOptions.TabMain; // shows the main tab by default.
+
   MouseOverRegionID := TGuidEx.EmptyGuid;
 
   fIsModDestAutoSelectEnabled := true;

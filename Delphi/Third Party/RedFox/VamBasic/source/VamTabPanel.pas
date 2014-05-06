@@ -106,6 +106,8 @@ constructor TVamTabPanel.Create(AOwner: TComponent);
 begin
   inherited;
 
+  MouseOverPadIndex := -1;
+
   fCornerRadius[0] := 0;
   fCornerRadius[1] := 0;
   fCornerRadius[2] := 0;
