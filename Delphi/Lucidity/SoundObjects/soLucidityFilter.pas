@@ -61,6 +61,7 @@ type
     property Par3 : PSynthPar read fPar3 write fPar3;
     property Par4 : PSynthPar read fPar4 write fPar4;
 
+    // TODO: delete this old mod pointer stuff.
     function GetModPointer(const Name:string):PSingle;
 
     procedure Reset;
