@@ -188,7 +188,6 @@ procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointe
 var
   kg : IKeyGroup;
 begin
-  {
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
     kg := Plugin.FocusedKeyGroup;
@@ -219,7 +218,6 @@ begin
   begin
     StepSeqControl.SequenceData := nil;
   end;
-  }
 end;
 
 

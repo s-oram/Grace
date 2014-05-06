@@ -343,6 +343,7 @@ begin
   Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
 
   EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty');
+  Globals.KeyGroupLifeTimeManager.Add(EmptyKeyGroup);
 
   //==== Look for key file ===
   if Globals.UserDataDir <> '' then
@@ -529,10 +530,9 @@ begin
   if assigned(kg)
     then result := kg
     else result := EmptyKeyGroup;
-
   }
-  //result := EmptyKeyGroup;
 
+  //result := EmptyKeyGroup;
   result := nil;
 end;
 
@@ -546,48 +546,6 @@ begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
   Globals.AudioActions.IsProcessingActive := true;
-
-
-
-  {
-  Globals.AudioActions.Add(0, procedure
-  begin
-    DeleteKeyGroup('Group 1');
-  end);
-  }
-
-  {
-  kg := ActiveKeyGroup;
-
-
-  LM := (kg as ILevelMonitor);
-  sd := kg.GetSequenceData(0);
-  }
-  {
-  Globals.AudioActions.Add(0, procedure
-  begin
-
-  end);
-  }
-
-  {
-  DeleteKeyGroup('Group 1');
-
-  kg := nil;
-
-
-
-  LM.GetDbLevel(ch1, ch2);
-  LM := nil;
-
-
-  sd.SetStepValue(0,0.5);
-  sd := nil;
-
-
-
-  Globals.AudioActions.IsProcessingActive := true;
-  }
 end;
 
 procedure TeePlugin.Suspend;

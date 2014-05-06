@@ -27,7 +27,7 @@ type
   IKeyGroup = Lucidity.Interfaces.IKeyGroup;
 
 type
-  TKeyGroup = class(TRefCountedZeroObject, IKeyGroup{, ILevelMonitor})
+  TKeyGroup = class(TRefCountedZeroObject, IKeyGroup, ILevelMonitor)
   private
     fTriggeredNoteCount : cardinal;
     fName     : string;
