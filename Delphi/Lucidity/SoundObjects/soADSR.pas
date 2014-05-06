@@ -173,10 +173,11 @@ end;
 
 procedure TADSR.QuickRelease(Time_ms: single);
 begin
-  assert(fStage <> esOff);
-
-  QuickReleaseCoefficient := CalcRcEnvelopeCoefficient(Time_ms, SampleRate);
-  fStage := esQuickRelease;
+  if fStage <> esOff then
+  begin
+    QuickReleaseCoefficient := CalcRcEnvelopeCoefficient(Time_ms, SampleRate);
+    fStage := esQuickRelease;
+  end;
 end;
 
 procedure TADSR.Kill;
