@@ -1108,14 +1108,6 @@ var
 begin
   inherited;
 
-  if (IsNoteOn(Event)) and (Event.Data1 = 84) then
-  begin
-    Globals.AudioActions.Add(0, procedure
-    begin
-      DeleteKeyGroup('Group 1');
-    end);
-  end;
-
   try
     if IsNoteOn(Event) then
     begin
