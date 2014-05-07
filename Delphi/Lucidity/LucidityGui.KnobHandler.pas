@@ -3,6 +3,8 @@ unit LucidityGui.KnobHandler;
 interface
 
 uses
+  Vcl.Menus,
+  Menu.CustomPopupMenu,
   VamLib.UniqueID,
   Contnrs,
   Controls,
@@ -12,14 +14,29 @@ uses
   eeGuiStandardv2;
 
 type
+  TKnobContextMenu = class(TCustomPopupMenu)
+  private
+    Menu : TPopUpMenu;
+  protected
+    procedure Handle_MidiLearn(Sender:TObject);
+    procedure Handle_MidiUnlearn(Sender:TObject);
+    procedure Handle_SetMidiCC(Sender:TObject);
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure Popup(const x, y : integer);
+  end;
+
   TKnobHandler = class(TRefCountedZeroObject, IStandardControlHandler)
   private
   protected
     ControlList : TObjectList;
-
+    ThrottleHandle : TUniqueID;
+    KnobContextMenu : TKnobContextMenu;
     Plugin : TeePlugin;
 
-    ThrottleHandle : TUniqueID;
+
 
     procedure UpdateAllControls;
     procedure UpdateModulation(const c : TObject);
@@ -36,6 +53,9 @@ type
     procedure Handle_ModAmountChanged(Sender: TObject);
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+
+
+    procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -60,11 +80,15 @@ begin
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
   ThrottleHandle.Init;
+
+  KnobContextMenu := TKnobContextMenu.Create;
+  KnobContextMenu.Initialize(aPlugin, nil);
 end;
 
 destructor TKnobHandler.Destroy;
 begin
   ControlList.Free;
+  KnobContextMenu.Free;
   inherited;
 end;
 
@@ -267,11 +291,26 @@ end;
 
 
 procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Knob : TVamKnob;
+  ParName  : string;
+  ParValue : single;
 begin
+  assert(Sender is TVamKnob);
+  Knob := Sender as TVamKnob;
+
+  ParName  := Knob.ParameterName;
+  ParValue := Knob.Pos;
+
   // TODO: need to have BeginEdit() called here for Publised VST parameter.
 
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
+
+  if (Button = TMouseButton.mbRight) then
+  begin
+    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, ParName);
+  end;
 end;
 
 procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -280,6 +319,9 @@ begin
 
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
+
+
+
 end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
@@ -328,11 +370,84 @@ begin
 end;
 
 
+procedure TKnobHandler.ShowControlContextMenu(const X, Y: integer; const ParName: string);
+begin
+  KnobContextMenu.Popup(x, y);
+end;
 
 
 
 
+{ TKnobContextMenu }
 
+constructor TKnobContextMenu.Create;
+begin
+  Menu := TPopUpMenu.Create(nil);
+end;
+
+destructor TKnobContextMenu.Destroy;
+begin
+  Menu.Free;
+  inherited;
+end;
+
+procedure TKnobContextMenu.Popup(const x, y: integer);
+var
+  mi     : TMenuItem;
+  miRefA : TMenuItem;
+  miMidiLearn : TMenuItem;
+begin
+  Menu.Items.Clear;
+
+    // Rebuild the context menu before showing it.
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'MIDI Learn';
+  mi.OnClick := Handle_MidiLearn;
+  Menu.Items.Add(mi);
+  miMidiLearn := mi;
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'MIDI Unlearn';
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Set MIDI CC...';
+  mi.OnClick := Handle_SetMidiCC;
+  Menu.Items.Add(mi);
+
+
+
+  {
+  //=== Update MIDI Learn menu item with current control midi binding. =====
+  ParIndex := Globals.VstParameters.FindParameterIndex(ControlLinks[LinkIndex].LinkedParameter);
+  MidiCC := Globals.VstMethods^.GetCurrentMidiBiding(ParIndex, ttVstParameter);
+
+  if MidiCC <> -1
+    then Text := 'MIDI Learn  [CC: ' + IntToStr(MidiCC) + ']'
+    else Text := 'MIDI Learn  [CC: --]';
+
+  miMidiLearn.Caption := Text;
+  }
+
+  //Show the controls context menu.
+  Menu.Popup(X, Y);
+
+end;
+
+procedure TKnobContextMenu.Handle_MidiLearn(Sender: TObject);
+begin
+
+end;
+
+procedure TKnobContextMenu.Handle_MidiUnlearn(Sender: TObject);
+begin
+
+end;
+
+procedure TKnobContextMenu.Handle_SetMidiCC(Sender: TObject);
+begin
+
+end;
 
 
 

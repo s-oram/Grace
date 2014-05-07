@@ -385,6 +385,10 @@ begin
   // of some decisions made in older code. It might be possible to have
   // these changes sent from the source of the changes.
 
+  // TODO: at the moment all messages are destined for the GUI.
+  // perhaps this method should promptly exit if the GUI isn't open.
+  // TODO: perhaps the messages here need to be thottled.
+
   assert(aPlugin is TeePlugin);
   Plugin := aPlugin as TeePlugin;
 
