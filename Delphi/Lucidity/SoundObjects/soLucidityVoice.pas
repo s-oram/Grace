@@ -469,12 +469,27 @@ procedure TLucidityVoice.UpdateOscPitch;
 var
   PitchOne: single;
   PitchTwo: single;
+  Index1 : integer;
+  Index2 : integer;
+  Par1 : single;
+  Par2 : single;
 begin
-  PitchOne := ParValueData^[TModParIndex.VoicePitchOne].ParValue + ParModData[TModParIndex.VoicePitchOne];
+  //=============================================================================
+  // TODO: This has been refactored to use the new parameter modulation system,
+  // but could be refactored again to be more streamlined.
+  Index1 := GetModParIndex(TPluginParameter.VoicePitchOne);
+  Index2 := GetModParIndex(TPluginParameter.VoicePitchTwo);
+
+  Par1 := ParValueData^[Index1].ModulatedParValue;
+  Par2 := ParValueData^[Index2].ModulatedParValue;
+
+  PitchOne := Par1;
   PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1;
 
-  PitchTwo := ParValueData^[TModParIndex.VoicePitchTwo].ParValue + ParModData[TModParIndex.VoicePitchTwo];
+  PitchTwo := Par2;
   PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1;
+
+  //=============================================================================
 
   OscPitchParameters^.PitchTracking  := self.PitchTracking;
 
@@ -736,14 +751,27 @@ end;
 procedure TLucidityVoice.FastControlProcess;
 var
   CV : TModularVoltage;
-  Par1 : single;
   PanX, VolX : single;
+
+  Index1 : integer;
+  Index2 : integer;
+  Par1 : single;
+  Par2 : single;
 begin
-  VolX := ParValueData^[TModParIndex.OutputGain].ModulatedParValue;
-  PanX := ParValueData^[TModParIndex.OutputPan].ModulatedParValue;
+  // TODO:LOW - this has been refactored but could be more streamlined.
+  Index1 := GetModParIndex(TPluginParameter.OutputGain);
+  Index2 := GetModParIndex(TPluginParameter.OutputPan);
+
+  Par1 := ParValueData^[Index1].ModulatedParValue;
+  Par2 := ParValueData^[Index2].ModulatedParValue;
+
+  VolX := Par1;
+  PanX := Par2;
 
   assert(InRange(VolX, 0, 1));
   assert(InRange(PanX, 0, 1));
+
+  //=========================================================================
 
   Calculate3dbPan(PanX, VoiceGainCh1, VoiceGainCh2);
 
@@ -780,7 +808,8 @@ begin
 
 
   //==========
-  Par1 := ParValueData^[TModParIndex.FilterOutputBlend].ModulatedParValue;
+  Index1 := GetModParIndex(TPluginParameter.FilterOutputBlend);
+  Par1 := ParValueData^[Index1].ModulatedParValue;
   assert(Par1 >= 0);
   assert(Par1 <= 1);
   FBOut1 := 1 - Par1;

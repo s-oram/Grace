@@ -96,6 +96,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   SysUtils;
 
 type
@@ -454,23 +455,48 @@ begin
 end;
 
 function TModMatrix.DoesParameterRequireFastModulation(ModParIndex: integer): boolean;
+var
+  Index : integer;
 begin
-  case ModParIndex of
-    TModParIndex.OutputGain,
-    TModParIndex.OutputPan,
-    TModParIndex.VoicePitchOne,
-    TModParIndex.VoicePitchTwo,
-    TModParIndex.Filter1Par1,
-    TModParIndex.Filter1Par2,
-    TModParIndex.Filter1Par3,
-    TModParIndex.Filter1Par4,
-    TModParIndex.Filter2Par1,
-    TModParIndex.Filter2Par2,
-    TModParIndex.Filter2Par3,
-    TModParIndex.Filter2Par4: result := true
-  else
-    result := false;
-  end;
+  Index := GetModParIndex(TPluginParameter.OutputGain);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.OutputPan);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.VoicePitchOne);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.VoicePitchTwo);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter1Par1);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter1Par2);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter1Par3);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter1Par4);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter2Par1);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter2Par2);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter2Par3);
+  if Index = ModParIndex then exit(true);
+
+  Index := GetModParIndex(TPluginParameter.Filter2Par4);
+  if Index = ModParIndex then exit(true);
+
+
+  // no match found.
+  result := false;
 end;
 
 

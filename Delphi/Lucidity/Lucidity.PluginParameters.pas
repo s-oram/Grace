@@ -134,13 +134,10 @@ function PluginParFromName(const Name : string):TPluginParameter;
 function IsModPar(const Par : TPluginParameter):boolean;
 function GetModParIndex(const Par : TPluginParameter):integer;
 
-
 // "Global Plugin Parameters" are members of the TeePlugin class.
 // They are appliced globally and effect all voices. Other non-global
 // parameters are generally applied to "Key Groups".
 function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
-
-
 
 function GetPluginParameterCount:integer;
 function IndexToPluginParameter(Index : integer):TPluginParameter;

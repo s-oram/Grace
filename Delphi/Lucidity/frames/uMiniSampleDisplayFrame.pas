@@ -827,6 +827,10 @@ var
   ModAmount : single;
   ModMin, ModMax : single;
   kg : IKeyGroup;
+  Index1 : integer;
+  Index2 : integer;
+  Index3 : integer;
+  Index4 : integer;
 begin
   if Plugin.Globals.IsMouseOverModSlot
     then ModSlot := Plugin.Globals.MouseOverModSlot
@@ -836,19 +840,24 @@ begin
   if not assigned(kg) then exit;
 
   //== Update min-max modulation amounts ==
-  kg.GetModParModMinMax(TModParIndex.SampleStart, ModMin, ModMax);
+  Index1 := GetModParIndex(TPluginParameter.SampleStart);
+  Index2 := GetModParIndex(TPluginParameter.SampleEnd);
+  Index3 := GetModParIndex(TPluginParameter.LoopStart);
+  Index4 := GetModParIndex(TPluginParameter.LoopEnd);
+
+  kg.GetModParModMinMax(Index1, ModMin, ModMax);
   SampleOverlay.SampleStartModMin := ModMin;
   SampleOverlay.SampleStartModMax := ModMax;
 
-  kg.GetModParModMinMax(TModParIndex.SampleEnd, ModMin, ModMax);
+  kg.GetModParModMinMax(Index2, ModMin, ModMax);
   SampleOverlay.SampleEndModMin := ModMin;
   SampleOverlay.SampleEndModMax := ModMax;
 
-  kg.GetModParModMinMax(TModParIndex.LoopStart, ModMin, ModMax);
+  kg.GetModParModMinMax(Index3, ModMin, ModMax);
   SampleOverlay.LoopStartModMin := ModMin;
   SampleOverlay.LoopStartModMax := ModMax;
 
-  kg.GetModParModMinMax(TModParIndex.LoopEnd, ModMin, ModMax);
+  kg.GetModParModMinMax(Index4, ModMin, ModMax);
   SampleOverlay.LoopEndModMin := ModMin;
   SampleOverlay.LoopEndModMax := ModMax;
 
@@ -857,16 +866,16 @@ begin
 
   if ModSlot <> -1 then
   begin
-    ModAmount := kg.GetModulatedParameters^[TModParIndex.SampleStart].ModAmount[ModSlot];
+    ModAmount := kg.GetModulatedParameters^[Index1].ModAmount[ModSlot];
     SampleOverlay.SampleStartMod := ModAmount;
 
-    ModAmount := kg.GetModulatedParameters^[TModParIndex.SampleEnd].ModAmount[ModSlot];
+    ModAmount := kg.GetModulatedParameters^[Index2].ModAmount[ModSlot];
     SampleOverlay.SampleEndMod := ModAmount;
 
-    ModAmount := kg.GetModulatedParameters^[TModParIndex.LoopStart].ModAmount[ModSlot];
+    ModAmount := kg.GetModulatedParameters^[Index3].ModAmount[ModSlot];
     SampleOverlay.LoopStartMod := ModAmount;
 
-    ModAmount := kg.GetModulatedParameters^[TModParIndex.LoopEnd].ModAmount[ModSlot];
+    ModAmount := kg.GetModulatedParameters^[Index4].ModAmount[ModSlot];
     SampleOverlay.LoopEndMod := ModAmount;
 
     SampleOverlay.IsModEditActive := true;
@@ -892,19 +901,19 @@ begin
   begin
     kg := Plugin.ActiveKeyGroup;
 
-    Index     := TModParIndex.SampleStart;
+    Index     := GetModParIndex(TPluginParameter.SampleStart);
     ModAmount := SampleOverlay.SampleStartMod;
     kg.SetModParModAmount(Index, ModSlot, ModAmount);
 
-    Index     := TModParIndex.SampleEnd;
+    Index     := GetModParIndex(TPluginParameter.SampleEnd);
     ModAmount := SampleOverlay.SampleEndMod;
     kg.SetModParModAmount(Index, ModSlot, ModAmount);
 
-    Index     := TModParIndex.LoopStart;
+    Index     := GetModParIndex(TPluginParameter.LoopStart);
     ModAmount := SampleOverlay.LoopStartMod;
     kg.SetModParModAmount(Index, ModSlot, ModAmount);
 
-    Index     := TModParIndex.LoopEnd;
+    Index     := GetModParIndex(TPluginParameter.LoopEnd);
     ModAmount := SampleOverlay.LoopEndMod;
     kg.SetModParModAmount(Index, ModSlot, ModAmount);
   end;
@@ -920,14 +929,16 @@ begin
 
   case Marker  of
     smNone:                  ActiveModParIndex := -1;
-    smSampleStartMarker:     ActiveModParIndex := TModParIndex.SampleStart;
-    smSampleEndMarker:       ActiveModParIndex := TModParIndex.SampleEnd;
-    smLoopStartMarker:       ActiveModParIndex := TModParIndex.LoopStart;
-    smLoopEndMarker:         ActiveModParIndex := TModParIndex.LoopEnd;
-    smSampleStartModMarker:  ActiveModParIndex := TModParIndex.SampleStart;
-    smSampleEndModMarker:    ActiveModParIndex := TModParIndex.SampleEnd;
-    smLoopStartModMarker:    ActiveModParIndex := TModParIndex.LoopStart;
-    smLoopEndModMarker:      ActiveModParIndex := TModParIndex.LoopEnd;
+    smSampleStartMarker:     ActiveModParIndex := GetModParIndex(TPluginParameter.SampleStart);
+    smSampleEndMarker:       ActiveModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
+    smLoopStartMarker:       ActiveModParIndex := GetModParIndex(TPluginParameter.LoopStart);
+    smLoopEndMarker:         ActiveModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
+    smSampleStartModMarker:  ActiveModParIndex := GetModParIndex(TPluginParameter.SampleStart);
+    smSampleEndModMarker:    ActiveModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
+    smLoopStartModMarker:    ActiveModParIndex := GetModParIndex(TPluginParameter.LoopStart);
+    smLoopEndModMarker:      ActiveModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
+  else
+    raise Exception.Create('Type not handled.');
   end;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);

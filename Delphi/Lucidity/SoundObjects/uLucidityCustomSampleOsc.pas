@@ -41,6 +41,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   VamLib.Utils;
 
 { TCustomSampleOsc }
@@ -72,22 +73,28 @@ var
   LoopX1, LoopX2 : single;
   SampleStart, SampleEnd : integer;
   LoopStart, LoopEnd : integer;
-
   SampleFrames : integer;
-
-
   PrevIndex, NextIndex, NearestIndex, FarIndex : integer;
-
   SampleStartMod, SampleEndMod, LoopStartMod, LoopEndMod : single;
+
+  Index1 : integer;
+  Index2 : integer;
+  Index3 : integer;
+  Index4 : integer;
 begin
   RegionProps := aSampleRegion.GetProperties;
 
   SampleFrames        := aSampleRegion.GetSample^.Properties.SampleFrames;
 
-  SampleStartMod := ParModData^[TModParIndex.SampleStart];
-  SampleEndMod   := ParModData^[TModParIndex.SampleEnd];
-  LoopStartMod   := ParModData^[TModParIndex.LoopStart];
-  LoopEndMod     := ParModData^[TModParIndex.LoopEnd];
+  Index1 := GetModParIndex(TPluginParameter.SampleStart);
+  Index2 := GetModParIndex(TPluginParameter.SampleEnd);
+  Index3 := GetModParIndex(TPluginParameter.LoopStart);
+  Index4 := GetModParIndex(TPluginParameter.LoopEnd);
+
+  SampleStartMod := ParModData^[Index1];
+  SampleEndMod   := ParModData^[Index2];
+  LoopStartMod   := ParModData^[Index3];
+  LoopEndMod     := ParModData^[Index4];
 
   if RegionProps^.SampleStart < RegionProps^.SampleEnd then
   begin
@@ -164,7 +171,7 @@ begin
 
 
 
-
+  //TODO: delete this comment.
   {
 
   if LoopX1 < SampleX1 then LoopX1 := SampleX1;

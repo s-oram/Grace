@@ -36,6 +36,7 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
   Lucidity.Types,
   uGuiUtils,
   SysUtils,
@@ -276,10 +277,10 @@ begin
   Tag := (Sender as TMenuItem).Tag;
 
   case Tag of
-    SampleStartTag : ModParIndex := TModParIndex.SampleStart;
-    SampleEndTag   : ModParIndex := TModParIndex.SampleEnd;
-    LoopStartTag   : ModParIndex := TModParIndex.LoopStart;
-    LoopEndTag     : ModParIndex := TModParIndex.LoopEnd;
+    SampleStartTag : ModParIndex := GetModParIndex(TPluginParameter.SampleStart);
+    SampleEndTag   : ModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
+    LoopStartTag   : ModParIndex := GetModParIndex(TPluginParameter.LoopStart);
+    LoopEndTag     : ModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
   else
     raise Exception.Create('Type not handled.');
   end;
