@@ -113,7 +113,6 @@ type
     procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
 
-
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
 
     procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
