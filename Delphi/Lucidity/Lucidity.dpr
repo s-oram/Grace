@@ -162,7 +162,8 @@ uses
   eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas',
   Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas',
   eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas',
-  eeMidiAutomation in 'EasyEffectTemplate\eeMidiAutomation.pas';
+  eeMidiAutomation in 'EasyEffectTemplate\eeMidiAutomation.pas',
+  eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas';
 
 {$R *.res}
 

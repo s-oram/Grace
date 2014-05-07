@@ -23,7 +23,6 @@ type
     fSampleRate: single;
     procedure SetSampleRate(const Value: single);
   protected
-
     InputSmoother : TMidiInputSmoother;
     LastTouched:TMidiBinding;
     InstanceLock : TFixedCriticalSection;
