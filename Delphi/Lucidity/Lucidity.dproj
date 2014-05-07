@@ -598,6 +598,7 @@
 			<DCCReference Include="EasyEffectTemplate\eeTaskRunner.pas"/>
 			<DCCReference Include="Lucidity.KeyGroupLifeTimeManager.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeStoredActionList.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeMidiAutomation.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

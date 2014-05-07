@@ -161,7 +161,8 @@ uses
   eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
   eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas',
   Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas',
-  eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas';
+  eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas',
+  eeMidiAutomation in 'EasyEffectTemplate\eeMidiAutomation.pas';
 
 {$R *.res}
 
