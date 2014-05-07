@@ -41,6 +41,7 @@ implementation
 
 constructor TStoredActions.Create;
 begin
+  // TODO: need a thread safe queue.
   ListLock := TFixedCriticalSection.Create;
   Actions := TObjectList.Create;
   Actions.OwnsObjects := true;

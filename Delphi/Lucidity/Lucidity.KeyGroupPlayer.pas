@@ -13,6 +13,7 @@ uses
   eeAudioBufferUtils,
   VamLib.MoreTypes,
   VamLib.ZeroObject,
+  Lucidity.Types,
   Lucidity.KeyGroup,
   soLucidityVoice;
 
@@ -20,7 +21,7 @@ type
   TKeyGroupPlayer = class(TZeroObject)
   private
     ActiveRegions : TInterfaceList;
-    ActiveRegionsLock : TFixedCriticalSection;
+    ActiveRegionsLock : TFakeCriticalSection;
   protected
     Globals : TGlobals;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
@@ -40,7 +41,7 @@ implementation
 uses
   SysUtils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  Lucidity.Types,
+
   Lucidity.Interfaces,
   uConstants;
 
@@ -50,7 +51,7 @@ constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals);
 begin
   Globals := aGlobals;
   ActiveRegions := TInterfaceList.Create;
-  ActiveRegionsLock := TFixedCriticalSection.Create;
+  ActiveRegionsLock := TFakeCriticalSection.Create;
 end;
 
 destructor TKeyGroupPlayer.Destroy;

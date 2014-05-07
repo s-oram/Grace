@@ -111,6 +111,19 @@ type
 
   TParChangeScope = (psGlobal, psFocusedKeyGroup, psKeyGroup);
 
+
+  // NOTE: On TFixedCriticalSection
+  // http://delphitools.info/2011/11/30/fixing-tcriticalsection/
+  TFakeCriticalSection = class
+  private
+  public
+    procedure Acquire;
+    procedure Release;
+    function TryEnter: Boolean;
+    procedure Enter; inline;
+    procedure Leave; inline;
+  end;
+
 implementation
 
 { TModulatedPar }
@@ -125,6 +138,34 @@ begin
   end;
 
   result := false;
+end;
+
+{ TFakeCriticalSection }
+
+procedure TFakeCriticalSection.Acquire;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Enter;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Leave;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Release;
+begin
+  // It's not called fake for nothing.
+end;
+
+function TFakeCriticalSection.TryEnter: Boolean;
+begin
+  // It's not called fake for nothing.
+ result := true;
 end;
 
 end.
