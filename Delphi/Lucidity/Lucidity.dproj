@@ -590,7 +590,6 @@
 			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2.pas"/>
 			<DCCReference Include="Lucidity.PluginParameterController.pas"/>
-			<DCCReference Include="Constants.ParNames.pas"/>
 			<DCCReference Include="LucidityGui.KnobHandler.pas"/>
 			<DCCReference Include="Lucidity.PluginParameters.pas"/>
 			<DCCReference Include="LucidityGui.MenuButtonHandler.pas"/>

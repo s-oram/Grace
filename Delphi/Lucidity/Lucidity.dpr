@@ -154,7 +154,6 @@ uses
   Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas',
   eeGuiStandardv2 in 'EasyEffectTemplate\eeGuiStandardv2.pas',
   Lucidity.PluginParameterController in 'Lucidity.PluginParameterController.pas',
-  Constants.ParNames in 'Constants.ParNames.pas',
   LucidityGui.KnobHandler in 'LucidityGui.KnobHandler.pas',
   Lucidity.PluginParameters in 'Lucidity.PluginParameters.pas',
   LucidityGui.MenuButtonHandler in 'LucidityGui.MenuButtonHandler.pas',
