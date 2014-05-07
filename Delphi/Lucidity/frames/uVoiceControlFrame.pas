@@ -159,6 +159,7 @@ begin
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
     VoiceLevelMeter.LevelMonitor := nil;
+    VoiceLevelMeter.Invalidate;
   end;
 
 end;
@@ -385,6 +386,9 @@ begin
     VoiceLevelMeter.LevelMonitor := LM;
     VoiceLevelMeter.Invalidate;
   end;
+
+  // TODO: need to see if the key group has any active voices. if it doesn't,
+  // set the voice level meter to -120 db and invalidate.
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;
