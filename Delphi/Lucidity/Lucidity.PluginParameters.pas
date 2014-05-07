@@ -117,14 +117,12 @@ type
   TModParHelper = class(TEnumHelper<TModulatedPluginParameter>)
   end;
 
-
   TPluginParameterInfo = record
   public
     DefaultValue : single;
   end;
 
 function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
-
 
 function IsValidPluginParName(const Name : string):boolean;
 
@@ -140,10 +138,10 @@ function GetModParIndex_Slow(const Par : TPluginParameter):integer;
 // "Global Plugin Parameters" are members of the TeePlugin class.
 // They are appliced globally and effect all voices. Other non-global
 // parameters are generally applied to "Key Groups".
-function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
+function IsGlobalPluginPar(const Par : TPluginParameter):boolean; inline;
 
-function GetPluginParameterCount:integer;
-function IndexToPluginParameter(Index : integer):TPluginParameter;
+function GetPluginParameterCount:integer; inline;
+function IndexToPluginParameter(Index : integer):TPluginParameter; inline;
 
 
 
