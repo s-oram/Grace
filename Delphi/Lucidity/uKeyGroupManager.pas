@@ -51,8 +51,6 @@ type
 
     Voices : PArrayOfLucidityVoice;
 
-    SGCreateCount : cardinal;
-
     KeyGroupIDCount : cardinal;
 
     function SampleGroup(const Name:string):IKeyGroup; overload;
@@ -135,8 +133,6 @@ begin
   Voices := aVoices;
 
   ListLock := TMutex.Create;
-
-  SGCreateCount := 0;
 
   KeyGroupIDCount := 1;
 end;
@@ -233,11 +229,9 @@ var
 begin
   ListLock.Acquire;
   try
-    inc(SGCreateCount);
-
     if aName <> ''
       then UniqueName := aName
-      else UniqueName := 'Group ' + IntToStr(SGCreateCount);
+      else UniqueName := 'Group 1';
 
     while IsKeyGroupNameUnique(UniqueName) = false
       do UniqueName := IncrementName(UniqueName, 1);
