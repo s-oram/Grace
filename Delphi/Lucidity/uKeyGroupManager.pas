@@ -67,6 +67,7 @@ type
     function GetInfo:IKeyGroupsInfo;
     function Count : integer;
 
+    // NOTE: Clear isn't thread-safe.
     procedure Clear;
 
     function NewKeyGroup:IKeyGroup; overload;
@@ -199,19 +200,12 @@ end;
 procedure TKeyGroupManager.Clear;
 var
   c1: Integer;
+  kgName : string;
 begin
-  //Blocking the audio thread here seems bad....
-  ListLock.Acquire;
-  try
-    for c1 := 0 to fList.Count-1 do
-    begin
-      fList[c1] := nil;
-    end;
-
-    fList.Clear;
-    SGCreateCount := 0;
-  finally
-    ListLock.Release;
+  for c1 := fList.Count-1 downto 0 do
+  begin
+    kgName := (fList[c1] as IKeyGroup).GetName;
+    DeleteKeyGroup(kgName);
   end;
 end;
 
