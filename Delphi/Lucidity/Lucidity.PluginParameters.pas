@@ -131,8 +131,11 @@ function IsValidPluginParName(const Name : string):boolean;
 function PluginParToName(const Par : TPluginParameter):string;
 function PluginParFromName(const Name : string):TPluginParameter;
 
-function IsModPar(const Par : TPluginParameter):boolean;
-function GetModParIndex(const Par : TPluginParameter):integer;
+function IsModPar(const Par : TPluginParameter):boolean; inline;
+function IsModPar_Slow(const Par : TPluginParameter):boolean;
+
+function GetModParIndex(const Par : TPluginParameter):integer; inline;
+function GetModParIndex_Slow(const Par : TPluginParameter):integer;
 
 // "Global Plugin Parameters" are members of the TeePlugin class.
 // They are appliced globally and effect all voices. Other non-global
@@ -142,6 +145,11 @@ function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
 function GetPluginParameterCount:integer;
 function IndexToPluginParameter(Index : integer):TPluginParameter;
 
+
+
+
+var
+  BufferedModParIndex : array of integer; //don't access this directly.
 
 implementation
 
@@ -175,6 +183,13 @@ begin
 end;
 
 function IsModPar(const Par : TPluginParameter):boolean;
+begin
+  if BufferedModParIndex[Ord(Par)] <> -1
+    then result := true
+    else result := false;
+end;
+
+function IsModPar_Slow(const Par : TPluginParameter):boolean;
 var
   s : string;
   c1 : integer;
@@ -194,6 +209,11 @@ begin
 end;
 
 function GetModParIndex(const Par : TPluginParameter):integer;
+begin
+  result := BufferedModParIndex[Ord(Par)];
+end;
+
+function GetModParIndex_Slow(const Par : TPluginParameter):integer;
 var
   s : string;
   c1 : integer;
@@ -307,5 +327,24 @@ begin
   assert(Index <= TPluginParameterHelper.GetEnumTypeCount);
   result := TPluginParameterHelper.ToEnum(Index);
 end;
+
+
+var
+  c1 : integer;
+  Par : TPluginParameter;
+
+initialization
+  SetLength(BufferedModParIndex, TPluginParameterHelper.GetEnumTypeCount);
+
+  for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
+  begin
+    Par := TPluginParameterHelper.ToEnum(c1);
+    if IsModPar_Slow(Par)
+      then BufferedModParIndex[c1] := GetModParIndex_Slow(Par)
+      else BufferedModParIndex[c1] := -1;
+  end;
+
+finalization
+  SetLength(BufferedModParIndex, 0);
 
 end.
