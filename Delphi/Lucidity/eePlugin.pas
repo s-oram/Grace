@@ -237,6 +237,7 @@ var
   c1 : integer;
   Par : TPluginParameter;
   ParValue : single;
+  IsDefaultPatchLoaded : boolean;
 begin
   inherited;
 
@@ -394,6 +395,7 @@ begin
 
   //==== temporarily don't load default patch. ====
 
+  IsDefaultPatchLoaded := false;
 
   // Now load default patch if it exists.
   if (PluginDataDir^.Exists) then
@@ -404,23 +406,20 @@ begin
     DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Factory') + IncludeTrailingPathDelimiter('Patches');
     fnB := DataDir + 'Default.lpg';
 
-    if FileExists(fnA)
-      then LoadProgramFromFile(fnA)
-    else
-    if FileExists(fnB)
-      then LoadProgramFromFile(fnB);
-
+    if FileExists(fnA) then
+    begin
+      LoadProgramFromFile(fnA);
+      IsDefaultPatchLoaded := true;
+    end else
+    if FileExists(fnB) then
+    begin
+      LoadProgramFromFile(fnB);
+      IsDefaultPatchLoaded := true;
+    end;
   end;
 
-
-  //Clear;
-
-
-
-  //LogMemoryUsage('TPlugin.Create End');
-
-
-  
+  if IsDefaultPatchLoaded = false
+    then InitializeState;
 
 end;
 
@@ -562,6 +561,8 @@ begin
   KeyGroups.Clear;
   SampleMap.Clear;
 
+  KeyGroups.NewKeyGroup;
+
   // Set all parameters to default values.
   for c1 := 0 to GetPluginParameterCount-1 do
   begin
@@ -572,7 +573,8 @@ begin
     SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
   end;
 
-  fFocusedKeyGroup := nil;
+  // finally.
+  FocusFirstKeyGroup;
 end;
 
 procedure TeePlugin.FocusFirstKeyGroup;
