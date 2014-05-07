@@ -11,9 +11,6 @@ uses
   uLucidityEnums,
   Messages, eePluginSettings;
 
-
-{$INCLUDE ParNames.inc}
-
 const
   kCompany = 'One Small Clue';
   kProduct = 'Lucidity';

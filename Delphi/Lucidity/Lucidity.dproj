@@ -602,7 +602,6 @@
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
-			<None Include="ParNames.inc"/>
 			<None Include="Defines.inc"/>
 			<None Include="FastMM4Options.inc"/>
 			<BuildConfiguration Include="ReleaseAsFull">
