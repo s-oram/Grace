@@ -199,10 +199,6 @@ begin
   Plugin.Globals.VstMethods^.EndParameterEdit      := self.EndEdit;
   Plugin.Globals.VstMethods^.GetParameterDisplay   := Plugin.GetParameterDisplay;
   Plugin.Globals.VstMethods^.GetParameterLabel     := Plugin.GetParameterLabel;
-  Plugin.Globals.VstMethods^.EnableMidiLearn       := Plugin.MidiAutomation.EnableMidiLearn;
-  Plugin.Globals.VstMethods^.SetMidiBinding        := Plugin.MidiAutomation.SetMidiBinding;
-  Plugin.Globals.VstMethods^.RemoveMidiBinding     := Plugin.MidiAutomation.RemoveBinding;
-  Plugin.Globals.VstMethods^.GetCurrentMidiBiding  := Plugin.MidiAutomation.GetCurrentBinding;
 
   ProcessControllerV2 := TProcessController.Create(Plugin);
   ProcessControllerV2.TimeInfoMethod := self.GetTimeInfo;

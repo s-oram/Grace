@@ -15,12 +15,14 @@ type
     property MidiCC  : integer read fMidiCC write fMidiCC;
   end;
 
-  TMidiAutomationEvent = procedure(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : TCustomMidiBinding);
+  TMidiAutomationEvent = procedure(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : TCustomMidiBinding) of object;
 
   TCustomMidiAutomation = class(TZeroObject)
   private
     fIsMidiLearnActive: boolean;
     fOnMidiAutomation: TMidiAutomationEvent;
+    fSampleRate: single;
+    procedure SetSampleRate(const Value: single);
   protected
     MidiLearnLock : TFixedCriticalSection;
     MidiLearnTarget : TCustomMidiBinding;
@@ -35,14 +37,14 @@ type
     procedure CancelMidiLearn;
 
     procedure AddBinding(const aBinding : TCustomMidiBinding);
-
+    procedure Clear;
     function BindingCount : integer;
 
-    procedure Clear;
-
     procedure ProcessMidiCC(Data1,Data2:byte);
+    procedure FastControlProcess; inline;
 
     property IsMidiLearnActive : boolean read fIsMidiLearnActive;
+    property SampleRate : single read fSampleRate write SetSampleRate;
 
     property OnMidiAutomation : TMidiAutomationEvent read fOnMidiAutomation write fOnMidiAutomation;
   end;
@@ -84,6 +86,16 @@ begin
   BindingList.Free;
   MidiLearnLock.Free;
   inherited;
+end;
+
+procedure TCustomMidiAutomation.FastControlProcess;
+begin
+
+end;
+
+procedure TCustomMidiAutomation.SetSampleRate(const Value: single);
+begin
+  fSampleRate := Value;
 end;
 
 procedure TCustomMidiAutomation.Clear;

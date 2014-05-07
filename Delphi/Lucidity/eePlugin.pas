@@ -27,7 +27,7 @@ uses
   uConstants, uLucidityXYPads, uLucidityVoiceController,
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat,
-  Classes, eePluginBase , eeMidiEvents, eeMidiAutomation,
+  Classes, eePluginBase , eeMidiEvents, eeMidiAutomationV2,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   B2.Filter.CriticallyDampedLowpass,
   uKeyGroupManager,
@@ -95,7 +95,6 @@ type
 
     procedure GetVstParameter(const Par:TVstParameter);
     procedure VstParameterChanged(const Par:TVstParameter);
-    procedure VstParameterChangedViaMidiAutomation(Index: integer; Value: single);
 
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
@@ -105,6 +104,8 @@ type
     procedure PostLoadProgram;
 
     procedure Clear;
+
+    procedure Event_MidiAutomation(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : TCustomMidiBinding);
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -317,18 +318,14 @@ begin
 
   DeltaOffset := 0;
 
-  if PluginDataDir^.Exists then
-  begin
-    DefaultMidiMapFileName := IncludeTrailingPathDelimiter(PluginDataDir^.MidiMapsDir) + 'Default Midi Map.xml';
-    MidiAutomation := TMidiAutomation.Create(DefaultMidiMapFileName);
-    MidiAutomation.AutoSaveMidiMapOnExit := true;
-    MidiAutomation.OnVstParameterAutomation := VstParameterChangedViaMidiAutomation;
-  end else
-  begin
-    MidiAutomation := TMidiAutomation.Create('');
-    MidiAutomation.AutoSaveMidiMapOnExit := false;
-    MidiAutomation.OnVstParameterAutomation := VstParameterChangedViaMidiAutomation;
-  end;
+  MidiAutomation := TMidiAutomation.Create;
+  MidiAutomation.OnMidiAutomation := Event_MidiAutomation;
+  // TODO: Load default MIDI map here!
+
+
+
+
+
 
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
   fXYPads.PadX1 := -0.5;
@@ -1023,12 +1020,6 @@ procedure TeePlugin.GetVstParameter(const Par:TVstParameter);
 begin
 end;
 
-procedure TeePlugin.VstParameterChangedViaMidiAutomation(Index: integer; Value: single);
-begin
-  // TODO: Need to be able to apply MIDI Automation value changes.
-  //Globals.VstParameters.Parameter[Index].ValueVST := Value;
-end;
-
 procedure TeePlugin.TriggerPreview(const fn: string);
 var
   errorMsg : string;
@@ -1101,6 +1092,11 @@ begin
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   VoiceController.NoteOff(MidiNote, MidiVelocity, SampleMap);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+end;
+
+procedure TeePlugin.Event_MidiAutomation(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: TCustomMidiBinding);
+begin
+
 end;
 
 

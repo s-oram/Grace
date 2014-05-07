@@ -20,10 +20,10 @@ type
     GetParameterLabel     : TGetParemeterLabelFunction;
     BeginParameterEdit    : TBeginParameterEdit;
     EndParameterEdit      : TEndParameterEdit;
-    EnableMidiLearn       : TEnableMidiLearn;
-    SetMidiBinding        : TSetMidiBinding;
-    RemoveMidiBinding     : TRemoveMidiBinding;
-    GetCurrentMidiBiding  : TGetCurrentMidiBinding;
+    EnableMidiLearn       : TEnableMidiLearn;   //TODO: This EnableMIDILearn isn't required anymore I believe.
+    SetMidiBinding        : TSetMidiBinding;      //TODO: This midi binding event isn't required anymore I believe.
+    RemoveMidiBinding     : TRemoveMidiBinding;     //TODO: This midi binding event isn't required anymore I believe.
+    GetCurrentMidiBiding  : TGetCurrentMidiBinding; //TODO: This midi binding event isn't required anymore I believe.
 
     procedure AssignFrom(const Source:TVstMethodReferences);
   end;
