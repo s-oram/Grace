@@ -28,6 +28,8 @@ type
     class function GetPluginParameterVstInfo(const aPlugin : TObject; const ParName : string):TVstParameterInfo; static; inline;
 
     class procedure ApplyPluginParToKeyGroup(const KeyGroup : IKeyGroup; const Par : TPluginParameter; const ParValue : single); static;
+
+    class procedure ResetKeyGroupParameters(const KeyGroup : IKeyGroup); static;
   end;
 
   // TODO: This class will contain all the code required to set/get the parameter values
@@ -406,6 +408,42 @@ begin
   end;
 
 end;
+
+
+class procedure TPluginParameterController.ResetKeyGroupParameters(const KeyGroup: IKeyGroup);
+var
+  c1, c2: Integer;
+  Par : TPluginParameter;
+  ParValue : single;
+  ModParIndex : integer;
+begin
+  assert(assigned(KeyGroup));
+
+  for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
+  begin
+    Par := TPluginParameterHelper.ToEnum(c1);
+
+    //=== set all parameters to their default value ==
+    if IsGlobalPluginPar(Par) = false then
+    begin
+      ParValue := GetPluginParInfo(Par).DefaultValue;
+      ApplyPluginParToKeyGroup(KeyGroup, Par, ParValue);
+    end;
+
+    //=== set all mod amount values to 0 ==
+    if IsModPar(Par) then
+    begin
+      ModParIndex := GetModParIndex(Par);
+      for c2 := 0 to kModSlotCount-1 do
+      begin
+        KeyGroup.SetModParModAmount(ModParIndex, c2, 0);
+      end;
+    end;
+
+    //=== set all modulation slots to default values?? ====
+  end;
+end;
+
 
 
 
