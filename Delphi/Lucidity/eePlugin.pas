@@ -1096,7 +1096,8 @@ end;
 
 procedure TeePlugin.Event_MidiAutomation(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: TCustomMidiBinding);
 begin
-
+  // TODO : Woot! we are getting midi events here.
+  // Need to respond to them!
 end;
 
 

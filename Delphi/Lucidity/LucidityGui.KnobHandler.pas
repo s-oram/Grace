@@ -11,12 +11,14 @@ uses
   Classes,
   eePlugin,
   VamLib.ZeroObject,
+  eeMidiAutomationV2,
   eeGuiStandardv2;
 
 type
   TKnobContextMenu = class(TCustomPopupMenu)
   private
     Menu : TPopUpMenu;
+    fTargetParameterName: string;
   protected
     procedure Handle_MidiLearn(Sender:TObject);
     procedure Handle_MidiUnlearn(Sender:TObject);
@@ -26,6 +28,8 @@ type
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
+
+    property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
   end;
 
   TKnobHandler = class(TRefCountedZeroObject, IStandardControlHandler)
@@ -372,6 +376,7 @@ end;
 
 procedure TKnobHandler.ShowControlContextMenu(const X, Y: integer; const ParName: string);
 begin
+  KnobContextMenu.TargetParameterName := ParName;
   KnobContextMenu.Popup(x, y);
 end;
 
@@ -435,18 +440,22 @@ begin
 end;
 
 procedure TKnobContextMenu.Handle_MidiLearn(Sender: TObject);
+var
+  TargetBinding : TMidiBinding;
 begin
-
+  TargetBinding := TMidiBinding.Create;
+  TargetBinding.ParName := TargetParameterName;
+  Plugin.MidiAutomation.ActivateMidiLearn(TargetBinding);
 end;
 
 procedure TKnobContextMenu.Handle_MidiUnlearn(Sender: TObject);
 begin
-
+  // TODO:
 end;
 
 procedure TKnobContextMenu.Handle_SetMidiCC(Sender: TObject);
 begin
-
+  // TODO:
 end;
 
 
