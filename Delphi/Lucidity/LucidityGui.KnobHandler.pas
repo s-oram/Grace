@@ -12,6 +12,7 @@ uses
   eePlugin,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
+  Effect.MidiAutomation,
   eeGuiStandardv2;
 
 type

@@ -600,6 +600,7 @@
 			<DCCReference Include="EasyEffectTemplate\eeStoredActionList.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeMidiAutomation.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeMidiAutomationV2.pas"/>
+			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

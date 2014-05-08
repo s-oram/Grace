@@ -27,7 +27,9 @@ uses
   uConstants, uLucidityXYPads, uLucidityVoiceController,
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat,
-  Classes, eePluginBase , eeMidiEvents, eeMidiAutomationV2,
+  Classes, eePluginBase , eeMidiEvents,
+  eeMidiAutomationV2,
+  Effect.MidiAutomation,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   B2.Filter.CriticallyDampedLowpass,
   uKeyGroupManager,
@@ -105,7 +107,8 @@ type
 
     procedure Clear;
 
-    procedure Event_MidiAutomation(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : TCustomMidiBinding);
+    procedure Event_MidiAutomation_Message(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
+    procedure Event_MidiAutomation_NewBinding(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -319,7 +322,8 @@ begin
   DeltaOffset := 0;
 
   MidiAutomation := TMidiAutomation.Create;
-  MidiAutomation.OnMidiAutomation := Event_MidiAutomation;
+  MidiAutomation.OnMidiMessage := Event_MidiAutomation_Message;
+  MidiAutomation.OnNewBinding  := Event_MidiAutomation_NewBinding;
   // TODO: Load default MIDI map here!
 
 
@@ -1094,11 +1098,22 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
 
-procedure TeePlugin.Event_MidiAutomation(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: TCustomMidiBinding);
+procedure TeePlugin.Event_MidiAutomation_Message(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
+const
+  OneOver127 = 1/127;
+var
+  mb : IMidiBinding;
 begin
-  // TODO : Woot! we are getting midi events here.
-  // Need to respond to them!
+  mb := Binding as IMidiBinding;
+  SetPluginParameter(mb.GetParName, MidiData2 * OneOver127);
 end;
+
+procedure TeePlugin.Event_MidiAutomation_NewBinding(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
+begin
+
+end;
+
+
 
 
 procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);

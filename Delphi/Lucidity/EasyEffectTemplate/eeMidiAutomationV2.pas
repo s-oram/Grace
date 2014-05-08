@@ -8,89 +8,102 @@ uses
   Classes, eeMidiInputSmoother;
 
 type
-  TCustomMidiBinding = class
+  ICustomMidiBinding = interface(IInterface)
+    ['{CFBF226A-5545-469C-9DE2-C9458256D358}']
+    function GetMidiCC : integer;
+    procedure SetMidiCC(const Value : integer);
+  end;
+
+  TCustomMidiBinding = class(TInterfacedObject, ICustomMidiBinding)
   strict private
     fMidiCC: integer;
+    function GetMidiCC : integer;
+    procedure SetMidiCC(const Value : integer);
   public
     property MidiCC  : integer read fMidiCC write fMidiCC;
   end;
 
-  TMidiAutomationEvent = procedure(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : TCustomMidiBinding) of object;
+  TMidiAutomationEvent = procedure(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding) of object;
 
   TCustomMidiAutomation = class(TZeroObject)
   private
-    fIsMidiLearnActive: boolean;
     fOnMidiAutomation: TMidiAutomationEvent;
     fSampleRate: single;
+    fOnNewBinding: TMidiAutomationEvent;
     procedure SetSampleRate(const Value: single);
+    function GetIsMidiLearnActive: boolean;
   protected
-    MidiLearnLock : TFixedCriticalSection;
-    MidiLearnTarget : TCustomMidiBinding;
-
-    BindingList : TObjectList;
+    MidiLearnTarget : ICustomMidiBinding;
+    BindingList : TInterfaceList;
   public
     constructor Create; virtual;
     destructor Destroy; override;
 
     // NOTE: ActivateMidiLearn() takes ownership of the TargetBinding object.
-    procedure ActivateMidiLearn(const TargetBinding : TCustomMidiBinding);
+    procedure ActivateMidiLearn(const TargetBinding : ICustomMidiBinding);
     procedure CancelMidiLearn;
 
-    procedure AddBinding(const aBinding : TCustomMidiBinding);
+    procedure AddBinding(const aBinding : ICustomMidiBinding);
     procedure Clear;
     function BindingCount : integer;
 
     procedure ProcessMidiCC(Data1,Data2:byte);
     procedure FastControlProcess; inline;
 
-    property IsMidiLearnActive : boolean read fIsMidiLearnActive;
+    property IsMidiLearnActive : boolean read GetIsMidiLearnActive;
     property SampleRate : single read fSampleRate write SetSampleRate;
 
-    property OnMidiAutomation : TMidiAutomationEvent read fOnMidiAutomation write fOnMidiAutomation;
+    property OnMidiMessage : TMidiAutomationEvent read fOnMidiAutomation write fOnMidiAutomation;
+    property OnNewBinding  : TMidiAutomationEvent read fOnNewBinding     write fOnNewBinding;
   end;
 
 
-
-  TMidiBinding = class(TCustomMidiBinding)
-  private
-    fParName: string;
-  public
-    property ParName : string read fParName write fParName;
-  end;
-
-  TMidiAutomation = class(TCustomMidiAutomation)
-  private
-  protected
-  public
-    constructor Create; override;
-    destructor Destroy; override;
-  end;
+  
 
 implementation
 
 uses
   SysUtils;
 
+{ TCustomMidiBinding }
+
+function TCustomMidiBinding.GetMidiCC: integer;
+begin
+  result := fMidiCC;
+end;
+
+procedure TCustomMidiBinding.SetMidiCC(const Value: integer);
+begin
+  fMidiCC := Value;
+end;
+
+
+
+
 { TCustomMidiAutomation }
 
 constructor TCustomMidiAutomation.Create;
 begin
-  BindingList := TObjectList.Create;
-  BindingList.OwnsObjects := true;
-
-  MidiLearnLock := TFixedCriticalSection.Create;
+  BindingList := TInterfaceList.Create;
 end;
 
 destructor TCustomMidiAutomation.Destroy;
 begin
   BindingList.Free;
-  MidiLearnLock.Free;
+
   inherited;
 end;
 
 procedure TCustomMidiAutomation.FastControlProcess;
 begin
 
+end;
+
+function TCustomMidiAutomation.GetIsMidiLearnActive: boolean;
+begin
+  if assigned(MidiLearnTarget)
+    then result := true
+    else result := false;
 end;
 
 procedure TCustomMidiAutomation.SetSampleRate(const Value: single);
@@ -103,7 +116,7 @@ begin
   BindingList.Clear;
 end;
 
-procedure TCustomMidiAutomation.AddBinding(const aBinding: TCustomMidiBinding);
+procedure TCustomMidiAutomation.AddBinding(const aBinding: ICustomMidiBinding);
 begin
 
 end;
@@ -113,84 +126,52 @@ begin
   result := BindingList.Count;
 end;
 
-procedure TCustomMidiAutomation.ActivateMidiLearn(const TargetBinding: TCustomMidiBinding);
+procedure TCustomMidiAutomation.ActivateMidiLearn(const TargetBinding: ICustomMidiBinding);
 begin
-  assert(assigned(TargetBinding));
-
-  MidiLearnLock.Acquire;
-  try
-    if assigned(MidiLearnTarget)
-      then FreeAndNil(MidiLearnTarget);
-
-    MidiLearnTarget := TargetBinding;
-
-    fIsMidiLearnActive := true;
-  finally
-    MidiLearnLock.Release;
-  end;
+  MidiLearnTarget := TargetBinding;
 end;
 
 procedure TCustomMidiAutomation.CancelMidiLearn;
 begin
-  MidiLearnLock.Acquire;
-  try
-    fIsMidiLearnActive := false;
-
-    if assigned(MidiLearnTarget)
-      then FreeAndNil(MidiLearnTarget);
-  finally
-    MidiLearnLock.Release;
-  end;
+  MidiLearnTarget := nil;
 end;
 
 procedure TCustomMidiAutomation.ProcessMidiCC(Data1, Data2: byte);
 var
   c1: Integer;
+  mb : ICustomMidiBinding;
 begin
   // Just check that OnMidiAutomation has been assigned. It should
   // be otherwise there is no use using the MIDI automation class.
-  assert(assigned(OnMidiAutomation));
+  assert(assigned(OnMidiMessage));
+  assert(assigned(OnNewBinding));
 
-  if (fIsMidiLearnActive) then
+
+  mb := MidiLearnTarget;
+  if assigned(mb) then
   begin
-    MidiLearnLock.Acquire;
-    try
-      fIsMidiLearnActive := false;
+    mb.SetMidiCC(Data1);
 
-      if assigned(MidiLearnTarget) then
-      begin
-        MidiLearnTarget.MidiCC := Data1;
-        BindingList.Add(MidiLearnTarget);
-        MidiLearnTarget := nil;
-      end;
-    finally
-      MidiLearnLock.Release;
-    end;
+    // Call the OnNewBinding() event to give the plugin
+    // a chance to update the binding with relevant information
+    // before it is 'learnt'.
+    OnNewBinding(self, Data1, Data2, mb);
+
+    BindingList.Add(mb);
+    MidiLearnTarget := nil;
+    mb := nil;
   end;
 
 
   for c1 := BindingList.Count-1 downto 0 do
   begin
-    if Data1 = (BindingList[c1] as TCustomMidiBinding).MidiCC then
+    if Data1 = (BindingList[c1] as ICustomMidiBinding).GetMidiCC then
     begin
-      OnMidiAutomation(self, Data1, Data2, (BindingList[c1] as TCustomMidiBinding));
+      OnMidiMessage(self, Data1, Data2, (BindingList[c1] as ICustomMidiBinding));
     end;
   end;
 
 end;
 
-{ TMidiAutomation }
-
-constructor TMidiAutomation.Create;
-begin
-  inherited;
-
-end;
-
-destructor TMidiAutomation.Destroy;
-begin
-
-  inherited;
-end;
 
 end.
