@@ -12,7 +12,6 @@ uses
   eePlugin,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
-  Effect.MidiAutomation,
   eeGuiStandardv2;
 
 type
@@ -41,8 +40,6 @@ type
     KnobContextMenu : TKnobContextMenu;
     Plugin : TeePlugin;
 
-
-
     procedure UpdateAllControls;
     procedure UpdateModulation(const c : TObject);
 
@@ -69,6 +66,7 @@ type
 implementation
 
 uses
+  Effect.MidiAutomation,
   SysUtils,
   VamLib.Throttler,
   Lucidity.PluginParameters,
@@ -402,6 +400,11 @@ var
   mi     : TMenuItem;
   miRefA : TMenuItem;
   miMidiLearn : TMenuItem;
+
+  MidiBinding : IMidiBinding;
+  MidiCC : integer;
+
+  Text : string;
 begin
   Menu.Items.Clear;
 
@@ -414,12 +417,30 @@ begin
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'MIDI Unlearn';
+  mi.OnClick := Handle_MidiUnlearn;
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Set MIDI CC...';
   mi.OnClick := Handle_SetMidiCC;
   Menu.Items.Add(mi);
+
+
+  MidiBinding := Plugin.MidiAutomation.FindBinding(TargetParameterName);
+
+  if assigned(MidiBinding)
+    then MidiCC := MidiBinding.GetMidiCC
+    else MidiCC := -1;
+
+  if MidiCC <> -1
+    then Text := 'MIDI Learn  [CC: ' + IntToStr(MidiCC) + ']'
+    else Text := 'MIDI Learn  [CC: --]';
+
+  miMidiLearn.Caption := Text;
+
+
+
+
 
 
 
@@ -451,7 +472,7 @@ end;
 
 procedure TKnobContextMenu.Handle_MidiUnlearn(Sender: TObject);
 begin
-  // TODO:
+  Plugin.MidiAutomation.ClearBinding(TargetParametername);
 end;
 
 procedure TKnobContextMenu.Handle_SetMidiCC(Sender: TObject);

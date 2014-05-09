@@ -32,12 +32,9 @@ type
 
     // TODO: write method to save/load automation to a XML node.
 
-    // TODO: write method to get MIDI learn CC for a parameter
+
     function FindBinding(const ParName : string):IMidiBinding;
     procedure ClearBinding(const ParName : string);
-
-
-    // TODO: write method to clear parameter for a MIDI cc.
   end;
 
 implementation
