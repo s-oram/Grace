@@ -1,6 +1,4 @@
 =============================================================================
-
-- save/load files need to have format information embedded.
 - copy protection finished
 - filters finished. 
 

@@ -25,7 +25,7 @@ type
   protected
     Plugin : TeePlugin;
 
-    // The "state" contains all data specific to Lucidity. Sample locations, patch info etc.
+    // The "state" contains all data specific to a Lucidity patch. Sample locations, patch info etc.
     // "State" contains the information that will be written out to a file when exporting patches.
     procedure ReadStateFromXML(var XML : TNativeXML);
     procedure WriteStateToXML(var XML : TNativeXML);
@@ -37,6 +37,9 @@ type
 
     procedure ReadMidiMapFromXML(var XML : TNativeXML);
     procedure WriteMidiMapToXML(var XML : TNativeXML);
+
+    procedure CheckPatchFormatVersion(var XML : TNativeXML);
+    procedure WritePatchFormatVersionToXML(var XML : TNativeXML);
 
     procedure NewRegion(const RegionLoadInfo : TRegionLoadInfo; const SampleGroup : IKeyGroup);
   public
@@ -186,6 +189,8 @@ begin
   XML := TNativeXML.Create(nil);
   try
     XML.LoadFromStream(ms);
+    CheckPatchFormatVersion(XML);
+
     // TODO: add Preset version info check. if the check is out of date will
     // need to update file format.
     ReadStateFromXML(XML);
@@ -203,6 +208,7 @@ begin
   XML := TNativeXML.CreateName('root');
   try
     WriteStateToXML(XML);
+    WritePatchFormatVersionToXML(XML);
     WritePresetInfoToXML(XML);
     WriteMidiMapToXML(XML);
     XML.SaveToStream(ms);
@@ -238,6 +244,7 @@ begin
   XML := TNativeXML.Create(nil);
   try
     XML.LoadFromFile(FileName);
+    CheckPatchFormatVersion(XML);
     MakeSampleFileNamesAbsolute(Xml.Root, FileName);
     ReadStateFromXML(XML);
   finally
@@ -405,6 +412,7 @@ var
 begin
   XML := TNativeXML.CreateName('root');
   try
+    WritePatchFormatVersionToXML(XML);
     WriteStateToXML(XML);
     MakeSampleFileNamesRelative(Xml.Root, FileName);
     XML.XmlFormat := xfReadable;
@@ -441,10 +449,8 @@ begin
   RegionList := TRegionInterfaceList.Create;
   AutoFree(@RegionList);
 
-  Xml.Clear;
-  RootNode := XML.Root;
-  RootNode.NodeNew('FileType').ValueUnicode := 'LucidityPatch';
-  RootNode.NodeNew('FileVersion').ValueUnicode := IntToStr(kCurrentFileVersion);
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
 
   GlobalParametersNode := RootNode.NodeNew('GlobalParameters');
   SaveObjectPropertyToXML(GlobalParametersNode, Plugin, 'VoiceMode');
@@ -600,15 +606,6 @@ begin
   AutoFree(@ModLinkState);
 
   RootNode := Xml.Root;
-
-  aNode := RootNode.FindNode('FileType');
-  if (not assigned(aNode)) or (aNode.ValueUnicode <> 'LucidityPatch') then raise ELucidityStateException.Create('File is not a Lucidity Patch file.');
-
-  aNode := RootNode.FindNode('FileVersion');
-  if (not assigned(aNode)) then raise ELucidityStateException.Create('File is not a valid Lucidity Patch file.');
-
-  FileVersion := DataIO_StrToInt(aNode.ValueUnicode, -1);
-  if FileVersion = -1 then raise ELucidityStateException.Create('File is not a valid Lucidity Patch file.');
 
   //=============================================================================
   // IMPORTANT: TODO:
@@ -914,6 +911,45 @@ begin
     then Plugin.MidiAutomation.ReadStateFromXML(aNode);
 end;
 
+
+procedure TLucidityStatemanager.WritePatchFormatVersionToXML(var XML: TNativeXML);
+var
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+begin
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  aNode := RootNode.NodeNew('PatchFileFormatVersion');
+  aNode.ValueUnicode := DataIO_IntToStr(1);
+
+  RootNode.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
+end;
+
+procedure TLucidityStatemanager.CheckPatchFormatVersion(var XML: TNativeXML);
+const
+  CurrentPatchFormatVersion : integer = 1;
+var
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+  PatchFormatVersion : integer;
+begin
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  aNode := RootNode.FindNode('PatchFileFormatVersion');
+  if assigned(aNode) then
+  begin
+    PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1);
+
+    if (PatchFormatVersion > 0) and (PatchFormatVersion < CurrentPatchFormatVersion) then
+    begin
+      // Update patch file!
+    end;
+
+  end;
+
+end;
 
 
 
