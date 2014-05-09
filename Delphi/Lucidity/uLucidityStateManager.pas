@@ -35,6 +35,9 @@ type
     procedure ReadPresetInfoFromXML(var XML : TNativeXML);
     procedure WritePresetInfoToXML(var XML : TNativeXML);
 
+    procedure ReadMidiMapFromXML(var XML : TNativeXML);
+    procedure WriteMidiMapToXML(var XML : TNativeXML);
+
     procedure NewRegion(const RegionLoadInfo : TRegionLoadInfo; const SampleGroup : IKeyGroup);
   public
     constructor Create(aPlugin : TeePlugin);
@@ -183,9 +186,11 @@ begin
   XML := TNativeXML.Create(nil);
   try
     XML.LoadFromStream(ms);
-    //XML.LoadFromBinaryStream(ms);
+    // TODO: add Preset version info check. if the check is out of date will
+    // need to update file format.
     ReadStateFromXML(XML);
     ReadPresetInfoFromXML(XML);
+    ReadMidiMapFromXML(XML);
   finally
     XML.Free;
   end;
@@ -199,8 +204,8 @@ begin
   try
     WriteStateToXML(XML);
     WritePresetInfoToXML(XML);
+    WriteMidiMapToXML(XML);
     XML.SaveToStream(ms);
-    //XML.SaveToBinaryStream(ms);
   finally
     XML.Free;
   end;
@@ -872,6 +877,7 @@ begin
   Plugin.PresetName := PresetName;
 end;
 
+
 procedure TLucidityStatemanager.WritePresetInfoToXML(var XML: TNativeXML);
 var
   RootNode : TXMLNode;
@@ -882,6 +888,34 @@ begin
   aNode := RootNode.NodeNew('PresetInfo');
   aNode.NodeNew('PresetName').ValueUnicode := Plugin.PresetName;
 end;
+
+procedure TLucidityStatemanager.WriteMidiMapToXML(var XML: TNativeXML);
+var
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+begin
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  aNode := RootNode.NodeNew('MidiMap');
+  Plugin.MidiAutomation.WriteStateToXML(aNode);
+end;
+
+procedure TLucidityStatemanager.ReadMidiMapFromXML(var XML: TNativeXML);
+var
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+begin
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  aNode := RootNode.FindNode('MidiMap');
+  if assigned(aNode)
+    then Plugin.MidiAutomation.ReadStateFromXML(aNode);
+end;
+
+
+
 
 
 
