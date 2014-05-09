@@ -1,15 +1,44 @@
 =============================================================================
 
-I think I need to write a multievent class 
+- save/load files need to have format information embedded.
+- copy protection finished
+- filters finished. 
 
-TNotifyMultiEvent
-TMouseMultiEvent
-etc
+- make LFO phases random. ?
+- switch between random and reset LFO phase on trigger. ? 
 
-Multiple control handlers need to be able to subscribe to control events.
-- the knob handler to read, set parameters
-- the info bar to respond when mousing over controls.
-- the scope to respond when mousing over controls.
+- maybe "Loop" should be a "Trigger" mode selector.
+-- Loop 
+-- Loop until release
+-- Loop Off
+-- One Shot
+-- Latch 
+-- Latch with Loop.
+
+Delete 50-50 filter blend mode.
+
+- Mousing over controls neeeds to show existing modulation depths. 
+
+- Delete all the old modulation code.
+
+- Sequencer label is in bold.
+
+- Modulation sources need to have uni-polar and bi-polar options.
+
+- add MIDI modulation sources.
+
+- holding alt while moving a start/end sample point should always adjust the
+  modulation depth.
+
+- re-jig voice stealing so that it always kills the oldest released voice.
+
+
+- may the small parameter display should be 'overlaid' over the sample display
+  so the LFO's can be split into two.
+
+
+
+
 
 
 
