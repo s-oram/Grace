@@ -118,7 +118,7 @@ end;
 
 procedure TCustomMidiAutomation.AddBinding(const aBinding: ICustomMidiBinding);
 begin
-
+  BindingList.Add(aBinding);
 end;
 
 function TCustomMidiAutomation.BindingCount: integer;

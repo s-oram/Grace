@@ -1109,8 +1109,13 @@ begin
 end;
 
 procedure TeePlugin.Event_MidiAutomation_NewBinding(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
+var
+  mb : IMidiBinding;
 begin
+  mb := Binding as IMidiBinding;
 
+  // remove any existing bindings with this parameter name.
+  MidiAutomation.ClearBinding(mb.GetParName);
 end;
 
 
