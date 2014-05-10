@@ -9,26 +9,13 @@ uses
   uConstants, uLucidityEnums;
 
 type
-  // NOTE: TModConnections stores all mod connections for the sampler.
-  TModLink = record
-    ModAmount : array[0..kModSlotCount-1] of single;
-  end;
-
-  TModLinkArray = TArray<TModLink>;
-
-
   PModConnections = ^TModConnections;
   TModConnections = class
   private
     fModSource : array[0..kModSlotCount-1] of TModSource;
     fModVia    : array[0..kModSlotCount-1] of TModSource;
     fModMute   : array[0..kModSlotCount-1] of boolean;
-
     fOnChanged: TNotifyEvent;
-
-    //TODO: Delete ModLinks. - it's not being used.
-    fModLinks: TModLinkArray;
-    property ModLinks  : TModLinkArray   read fModLinks  write fModLinks; //One for each modulated parameter
   public
     constructor Create;
     destructor Destroy; override;
@@ -56,8 +43,6 @@ uses
 
 constructor TModConnections.Create;
 begin
-  SetLength(fModLinks, kModulatedParameterCount);
-
   self.fModSource[0] := TModSource.AmpEnv;
   self.fModSource[1] := TModSource.FilterEnv;
   self.fModSource[2] := TModSource.Lfo1;
@@ -70,7 +55,6 @@ end;
 
 destructor TModConnections.Destroy;
 begin
-  SetLength(fModLinks, 0);
   inherited;
 end;
 
