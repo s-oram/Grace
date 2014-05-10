@@ -7,8 +7,8 @@ interface
 {$M+}
 
 uses
-  eePublishedVstParameters,
   Lucidity.PluginParameters,
+  eePublishedVstParameters,
   Lucidity.PluginParameterController,
   Lucidity.Types,
   VamLib.Utils,

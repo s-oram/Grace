@@ -17,11 +17,9 @@ type
   TModSourceValues = array of PSingle;
   TModDestValues   = array of PSingle;
 
-
   TModMatrix = class
   private
     fStepSeq1ClockSource: TClockSource;
-    fModCheck: single;
     fStepSeq2ClockSource: TClockSource;
 
     SourceNoneValue : single;
@@ -31,7 +29,6 @@ type
       TModLinkState = (Inactive, FastMod, SlowMod);
     var
     FakeDest, FakeSource : single;
-
 
     fModSourceValues : TModSourceValues;
     fModDestValues_OLD   : TModDestValues;
@@ -83,13 +80,8 @@ type
     procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
-    //===
-    property ModCheck : single read fModCheck write fModCheck; //WTF does this do?
-    //===
-
     property StepSeq1ClockSource : TClockSource read fStepSeq1ClockSource write fStepSeq1ClockSource;
     property StepSeq2ClockSource : TClockSource read fStepSeq2ClockSource write fStepSeq2ClockSource;
-
   end;
 
 implementation
@@ -406,7 +398,6 @@ begin
   if TotalModDepth = 0
     then result := false
     else result := true;
-
 end;
 
 function TModMatrix.DoesParameterRequireFastModulation(ModParIndex: integer): boolean;
