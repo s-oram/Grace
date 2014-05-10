@@ -40,8 +40,7 @@ type
     FilterChanged                    = 10;
     ModSlotChanged                   = 11;
     LfoChanged                       = 12;
-    ActiveModParIndexChanged         = 13;
-    ModAmountChanged                 = 14;
+    ModAmountChanged                 = 13;
     Command                          = ModAmountChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;
     Command_HideSampleMapEdit        = Command + 2;

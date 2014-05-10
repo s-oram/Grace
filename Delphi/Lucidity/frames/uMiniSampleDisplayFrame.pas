@@ -923,25 +923,25 @@ end;
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseOverMarkerChanged(Sender: TObject);
 var
   Marker : TSampleMarker;
-  ActiveModParIndex : integer;
+  ParName : string;
 begin
   Marker := (Sender as TLuciditySampleOverlay).MouseOverMarker;
 
   case Marker  of
-    smNone:                  ActiveModParIndex := -1;
-    smSampleStartMarker:     ActiveModParIndex := GetModParIndex(TPluginParameter.SampleStart);
-    smSampleEndMarker:       ActiveModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
-    smLoopStartMarker:       ActiveModParIndex := GetModParIndex(TPluginParameter.LoopStart);
-    smLoopEndMarker:         ActiveModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
-    smSampleStartModMarker:  ActiveModParIndex := GetModParIndex(TPluginParameter.SampleStart);
-    smSampleEndModMarker:    ActiveModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
-    smLoopStartModMarker:    ActiveModParIndex := GetModParIndex(TPluginParameter.LoopStart);
-    smLoopEndModMarker:      ActiveModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
+    smNone:                  ParName := '';
+    smSampleStartMarker:     ParName := PluginParToName(TPluginParameter.SampleStart);
+    smSampleEndMarker:       ParName := PluginParToName(TPluginParameter.SampleEnd);
+    smLoopStartMarker:       ParName := PluginParToName(TPluginParameter.LoopStart);
+    smLoopEndMarker:         ParName := PluginParToName(TPluginParameter.LoopEnd);
+    smSampleStartModMarker:  ParName := PluginParToName(TPluginParameter.SampleStart);
+    smSampleEndModMarker:    ParName := PluginParToName(TPluginParameter.SampleEnd);
+    smLoopStartModMarker:    ParName := PluginParToName(TPluginParameter.LoopStart);
+    smLoopEndModMarker:      ParName := PluginParToName(TPluginParameter.LoopEnd);
   else
     raise Exception.Create('Type not handled.');
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName);
 end;
 
 

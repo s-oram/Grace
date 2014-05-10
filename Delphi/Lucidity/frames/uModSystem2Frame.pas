@@ -17,12 +17,8 @@ type
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
   private
-    // ActiveModParIndex determines what modulation amounts the modulation
-    // selectors show.
-    ActiveModParIndex : integer;
-
     ModContextMenu : TModSelectorContextMenu;
-
+    ActiveParameter : string;
     MenuKeyGroup : IKeyGroup;
 
     ModSelectors : array[0..kModSlotCount-1] of TVamModSelector;
@@ -36,9 +32,6 @@ type
 
     procedure UpdateModulation;
     procedure UpdateModSelector_ModulationAmounts;
-
-
-    procedure Handle_ActiveModParIndexChanged(Data : Pointer);
 
     procedure Handle_ModSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MainSelectorMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -67,6 +60,7 @@ implementation
 
 uses
   OtlParallel,
+  Lucidity.PluginParameters,
   LucidityModConnections,
   eeVstParameterEx,
   VamLib.Utils,
@@ -90,7 +84,7 @@ begin
 
   ModContextMenu := TModSelectorContextMenu.Create;
 
-  ActiveModParIndex := -1;
+  ActiveParameter := '';
 
   for c1 := 0 to kModSlotCount-1 do
   begin
@@ -196,11 +190,19 @@ begin
 end;
 
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  s : string;
 begin
   if MsgID = TLucidMsgID.Command_UpdateGUI        then UpdateModulation;
   if MsgID = TLucidMsgID.ModSlotChanged           then UpdateModulation;
-  if MsgID = TLucidMsgID.ActiveModParIndexChanged then Handle_ActiveModParIndexChanged(Data);
   if MsgID = TLucidMsgID.ModAmountChanged         then UpdateModSelector_ModulationAmounts;
+
+  if MsgID = TLucidMsgID.OnActiveParameterChanged then
+  begin
+    s := string(Data^);
+    ActiveParameter := s;
+    UpdateModSelector_ModulationAmounts;
+  end;
 
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
@@ -338,41 +340,7 @@ begin
   UpdateModSelector_ModulationAmounts;
 end;
 
-procedure TModSystem2Frame.UpdateModSelector_ModulationAmounts;
-var
-  c1 : integer;
-  x1, x2 : single;
-  ModAmount : single;
-  kg : IKeyGroup;
-begin
-  kg := Plugin.ActiveKeyGroup;
-  if not assigned(kg) then exit;
 
-
-  if ActiveModParIndex = -1 then
-  begin
-    for c1 := 0 to kModSlotCount-1 do
-    begin
-      ModSelectors[c1].ShowModAmount := false;
-    end;
-  end else
-  begin
-    for c1 := 0 to kModSlotCount-1 do
-    begin
-      x1 := 0.5;
-      ModAmount := kg.GetModParModAmount(ActiveModParIndex, c1);
-      ModAmount := ModAmount * 0.5;
-      x2 := x1 + ModAmount;
-      x2 := Clamp(x2, 0, 1);
-      ModSelectors[c1].ModAmountX1   := x1;
-      ModSelectors[c1].ModAmountX2   := x2;
-
-      if abs(x1 - x2) <> 0
-        then ModSelectors[c1].ShowModAmount := true
-        else ModSelectors[c1].ShowModAmount := false;
-    end;
-  end;
-end;
 
 procedure TModSystem2Frame.Handle_ShowModContextMenu(Sender: TObject);
 var
@@ -417,15 +385,55 @@ begin
 end;
 
 
-procedure TModSystem2Frame.Handle_ActiveModParIndexChanged(Data: Pointer);
+
+procedure TModSystem2Frame.UpdateModSelector_ModulationAmounts;
+var
+  c1 : integer;
+  x1, x2 : single;
+  ModAmount : single;
+  kg : IKeyGroup;
+  New_ActiveModParIndex : integer;
+  Par : TPluginParameter;
 begin
-  ActiveModParIndex := Integer(Data^);
-  UpdateModSelector_ModulationAmounts
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
+  if ActiveParameter = '' then
+  begin
+    New_ActiveModParIndex := -1;
+  end else
+  begin
+    Par := PluginParFromName(ActiveParameter);
+    if IsModPar(Par)
+      then New_ActiveModParIndex := GetModParIndex(Par)
+      else New_ActiveModParIndex := -1;
+  end;
+
+
+  if New_ActiveModParIndex = -1 then
+  begin
+    for c1 := 0 to kModSlotCount-1 do
+    begin
+      ModSelectors[c1].ShowModAmount := false;
+    end;
+  end else
+  begin
+    for c1 := 0 to kModSlotCount-1 do
+    begin
+      x1 := 0.5;
+      ModAmount := kg.GetModParModAmount(New_ActiveModParIndex, c1);
+      ModAmount := ModAmount * 0.5;
+      x2 := x1 + ModAmount;
+      x2 := Clamp(x2, 0, 1);
+      ModSelectors[c1].ModAmountX1   := x1;
+      ModSelectors[c1].ModAmountX2   := x2;
+
+      if abs(x1 - x2) <> 0
+        then ModSelectors[c1].ShowModAmount := true
+        else ModSelectors[c1].ShowModAmount := false;
+    end;
+  end;
 end;
-
-
-
-
 
 
 
