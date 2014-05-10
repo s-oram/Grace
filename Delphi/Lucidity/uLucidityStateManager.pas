@@ -17,7 +17,7 @@ type
 
   TRegionLoadInfo = class;
 
-  TLucidityStatemanager = class
+  TLucidityStateManager = class
   strict private
     procedure SaveModulatedParametersToNode(ParentNode : TXmlNode; sg : TKeyGroup);
     procedure LoadModulatedParametersFromNode(ParentNode : TXmlNode; sg : TKeyGroup);
@@ -171,18 +171,18 @@ const
 
 { TLucidityStatemanager }
 
-constructor TLucidityStatemanager.Create(aPlugin: TeePlugin);
+constructor TLucidityStateManager.Create(aPlugin: TeePlugin);
 begin
   Plugin := aPlugin;
 end;
 
-destructor TLucidityStatemanager.Destroy;
+destructor TLucidityStateManager.Destroy;
 begin
 
   inherited;
 end;
 
-procedure TLucidityStatemanager.SetPreset(var ms: TMemoryStream);
+procedure TLucidityStateManager.SetPreset(var ms: TMemoryStream);
 var
   XML : TNativeXML;
 begin
@@ -201,7 +201,7 @@ begin
   end;
 end;
 
-procedure TLucidityStatemanager.GetPreset(var ms: TMemoryStream);
+procedure TLucidityStateManager.GetPreset(var ms: TMemoryStream);
 var
   XML : TNativeXML;
 begin
@@ -217,7 +217,7 @@ begin
   end;
 end;
 
-procedure TLucidityStatemanager.ImportProgram_Sfz(const FileName: string);
+procedure TLucidityStateManager.ImportProgram_Sfz(const FileName: string);
 var
   SfzImporter : TSfzImporter;
   XML : TNativeXML;
@@ -237,7 +237,7 @@ begin
   //ReadStateFromXML(XML);
 end;
 
-procedure TLucidityStatemanager.LoadPesetFromFile(const FileName: string);
+procedure TLucidityStateManager.LoadPesetFromFile(const FileName: string);
 var
   XML : TNativeXML;
 begin
@@ -252,7 +252,7 @@ begin
   end;
 end;
 
-procedure TLucidityStatemanager.SaveModulatedParametersToNode(ParentNode: TXmlNode; sg: TKeyGroup);
+procedure TLucidityStateManager.SaveModulatedParametersToNode(ParentNode: TXmlNode; sg: TKeyGroup);
 var
   c1 : integer;
   ModParNode   : TXmlNode;
@@ -330,7 +330,7 @@ begin
   }
 end;
 
-procedure TLucidityStatemanager.LoadModulatedParametersFromNode(ParentNode: TXmlNode; sg: TKeyGroup);
+procedure TLucidityStateManager.LoadModulatedParametersFromNode(ParentNode: TXmlNode; sg: TKeyGroup);
 var
   c1 : integer;
   ModParNodeList : TsdNodeList;
@@ -406,7 +406,7 @@ end;
 
 
 
-procedure TLucidityStatemanager.SavePesetToFile(const FileName: string);
+procedure TLucidityStateManager.SavePesetToFile(const FileName: string);
 var
   XML : TNativeXML;
 begin
@@ -422,7 +422,7 @@ begin
   end;
 end;
 
-procedure TLucidityStatemanager.WriteStateToXML(var XML: TNativeXML);
+procedure TLucidityStateManager.WriteStateToXML(var XML: TNativeXML);
 var
   c1 : integer;
   RootNode : TXMLNode;
@@ -556,7 +556,7 @@ begin
   end;
 end;
 
-procedure TLucidityStatemanager.ReadStateFromXML(var XML: TNativeXML);
+procedure TLucidityStateManager.ReadStateFromXML(var XML: TNativeXML);
 var
   c1, c2 : integer;
   RootNode : TXMLNode;
@@ -753,7 +753,7 @@ begin
 end;
 
 
-procedure TLucidityStatemanager.NewRegion(const RegionLoadInfo: TRegionLoadInfo; const SampleGroup: IKeyGroup);
+procedure TLucidityStateManager.NewRegion(const RegionLoadInfo: TRegionLoadInfo; const SampleGroup: IKeyGroup);
 var
   aRegion : TRegion;
 begin
