@@ -8,17 +8,11 @@ uses
   VamLib.ZeroObject;
 
 type
-  TModDisplayDetector = class(TZeroObject)
+  TActiveParameterDetector = class(TZeroObject)
   private
+    CurrentFocus_ParName : string; // this is a parameter name.
     Plugin : TeePlugin;
-    FCurrentMouseOverControl: TControl;
-    procedure SetCurrentMouseOverControl(const Value: TControl);
   protected
-    property CurrentMouseOverControl : TControl read FCurrentMouseOverControl write SetCurrentMouseOverControl;
-
-    procedure Handle_OnControlEnterMsg(Data : Pointer);
-    procedure Handle_OnControlLeaveMsg(Data : Pointer);
-
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create(aPlugin : TeePlugin);
@@ -34,89 +28,44 @@ uses
 
 { TModDisplayDetector }
 
-constructor TModDisplayDetector.Create(aPlugin : TeePlugin);
+constructor TActiveParameterDetector.Create(aPlugin : TeePlugin);
 begin
   Plugin := aPlugin;
+  CurrentFocus_ParName := '';
 end;
 
-destructor TModDisplayDetector.Destroy;
+destructor TActiveParameterDetector.Destroy;
 begin
 
   inherited;
 end;
 
-procedure TModDisplayDetector.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TActiveParameterDetector.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  s : string;
 begin
-  if MsgID = TLucidMsgID.OnControlEnter then self.Handle_OnControlEnterMsg(Data);
-  if MsgID = TLucidMsgID.OnControlLeave then self.Handle_OnControlLeaveMsg(Data);
-
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
-    // TODO: this functionality needs to
-    // mimic the Handle_OnControlEnterMsg() implementation.
+    s := string(Data^);
+    if s <> CurrentFocus_ParName then
+    begin
+      CurrentFocus_ParName := s;
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName);
+    end;
   end;
 
   if MsgID = TLucidMsgID.OnParControlLeave then
   begin
-    // TODO: this functionality needs to
-    // mimic the Handle_OnControlLeaveMsg() implementation.
+    s := string(Data^);
+    if s = CurrentFocus_ParName then
+    begin
+      CurrentFocus_ParName := '';
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName);
+    end;
   end;
 end;
 
-procedure TModDisplayDetector.Handle_OnControlEnterMsg(Data: Pointer);
-var
-  c : TControl;
-begin
-  if TObject(Data^).InheritsFrom(TControl) then
-  begin
-    c := TControl(Data^);
-    CurrentMouseOverControl := c;
-  end;
-end;
 
-procedure TModDisplayDetector.Handle_OnControlLeaveMsg(Data: Pointer);
-var
-  c : TControl;
-begin
-  if TObject(Data^).InheritsFrom(TControl) then
-  begin
-    c := TControl(Data^);
-
-    if c = CurrentMouseOverControl
-      then CurrentMouseOverControl := nil;
-  end;
-end;
-
-procedure TModDisplayDetector.SetCurrentMouseOverControl(const Value: TControl);
-//var
-  //ActiveModParIndex : integer;
-  //k : TVamKnob;
-  //Par : TVstParameterEx;
-begin
-  // TODO: I need to re-write this code so it's not using VST parameters.
-
-  {
-  FCurrentMouseOverControl := Value;
-
-  if FCurrentMouseOverControl = nil then
-  begin
-    ActiveModParIndex := -1;
-    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
-  end else
-  if FCurrentMouseOverControl.InheritsFrom(TVamKnob) then
-  begin
-    k := FCurrentMouseOverControl as TVamKnob;
-
-    Par := Plugin.Globals.VstParameters.Parameter[k.ParameterIndex] as TVstParameterEx;
-
-    if Par.HasModLink
-      then ActiveModParIndex := Par.ModLinkIndex
-      else ActiveModParIndex := -1;
-
-    Plugin.Globals.MotherShip.SendMessage(TLucidMsgID.ActiveModParIndexChanged, @ActiveModParIndex);
-  end;
-  }
-end;
 
 
 

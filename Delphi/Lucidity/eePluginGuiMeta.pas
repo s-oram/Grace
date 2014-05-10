@@ -20,7 +20,7 @@ type
     SystemWindow : hwnd;
 
     ScopeHandler : TScopeHandler;
-    ActiveModDetector : TModDisplayDetector;
+    ActiveModDetector : TActiveParameterDetector;
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy; override;
@@ -58,7 +58,7 @@ begin
     ScopeHandler.ScopeControl := c as TLucidityScope;
   end;
 
-  ActiveModDetector := TModDisplayDetector.Create(Plugin);
+  ActiveModDetector := TActiveParameterDetector.Create(Plugin);
   aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, TZeroObjectRank.VCL);
 end;
 
