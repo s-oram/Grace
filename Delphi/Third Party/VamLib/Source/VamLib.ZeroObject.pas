@@ -383,7 +383,7 @@ var
 begin
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(nil);
-
+  IsD := false;
 
   if MainObjects.IndexOf(ptr) <> -1 then
   begin

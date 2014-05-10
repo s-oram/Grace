@@ -561,11 +561,8 @@ var
   c1, c2 : integer;
   RootNode : TXMLNode;
   aNode : TXmlNode;
-  FileVersion : integer;
-
   sgIntF : IKeyGroup;
   sg     : TKeyGroup;
-
   SampleGroupNodeList : TsdNodeList;
   RegionNodeList : TsdNodeList;
   ModLinkNodeList : TsdNodeList;

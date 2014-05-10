@@ -234,16 +234,11 @@ const
 
 constructor TeePlugin.Create;
 var
-  kgObj : TKeyGroup;
-  DefaultMidiMapFileName : string;
+  //DefaultMidiMapFileName : string; //TODO:
   DataFileName : string;
   DataDir : string;
   fn : string;
   fnA, fnB : string;
-  ParName : string;
-  c1 : integer;
-  Par : TPluginParameter;
-  ParValue : single;
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
@@ -530,11 +525,6 @@ begin
 end;
 
 procedure TeePlugin.Resume;
-var
-  sd : IStepSequenceDataObject;
-  LM : ILevelMonitor;
-  kg : IKeyGroup;
-  ch1, ch2 : single;
 begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;

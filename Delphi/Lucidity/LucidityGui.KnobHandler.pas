@@ -298,13 +298,13 @@ procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; S
 var
   Knob : TVamKnob;
   ParName  : string;
-  ParValue : single;
+  //ParValue : single;
 begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
 
   ParName  := Knob.ParameterName;
-  ParValue := Knob.Pos;
+  //ParValue := Knob.Pos;
 
   // TODO: need to have BeginEdit() called here for Publised VST parameter.
 
@@ -399,12 +399,9 @@ end;
 procedure TKnobContextMenu.Popup(const x, y: integer);
 var
   mi     : TMenuItem;
-  miRefA : TMenuItem;
   miMidiLearn : TMenuItem;
-
   MidiBinding : IMidiBinding;
   MidiCC : integer;
-
   Text : string;
 begin
   Menu.Items.Clear;
@@ -478,8 +475,6 @@ end;
 
 procedure TKnobContextMenu.Handle_SetMidiCC(Sender: TObject);
 var
-  LinkIndex : integer;
-  ParIndex : integer;
   Value : string;
   MidiCC : integer;
   Error : boolean;
@@ -489,6 +484,8 @@ var
 begin
   assert(Sender is TMenuItem);
 
+  Error := false;
+
   Value := InputBox('Set MIDI CC', 'Choose a MIDI CC# (0-127)', '');
 
   if Value <> '' then
@@ -496,7 +493,6 @@ begin
     // 2: Check for valid MIDI CC index,
     try
       MidiCC := StrToInt(Value);
-      Error := false;
     except
       //Catch all exceptions. Assume an invalid integer value was entered.
       Error := true;

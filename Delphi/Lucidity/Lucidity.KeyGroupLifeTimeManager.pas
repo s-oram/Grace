@@ -14,6 +14,7 @@ type
   private
     KeyGroupList : TInterfaceList;
     ListLock : TFixedCriticalSection;
+  protected
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
     constructor Create;
@@ -94,19 +95,8 @@ end;
 
 
 procedure TKeyGroupLifeTimeManager.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-var
-  kgID : TKeyGroupID;
 begin
   inherited;
-
-  // ignore this dispose method.
-  {
-  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
-  begin
-    kgID := TKeyGroupID(Data^);
-    Dispose(kgID);
-  end;
-  }
 end;
 
 end.

@@ -196,8 +196,6 @@ begin
 end;
 
 procedure TModSystem2Frame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
-var
-  kgID : TKeyGroupID;
 begin
   if MsgID = TLucidMsgID.ModSlotChanged           then UpdateModulation;
   if MsgID = TLucidMsgID.ActiveModParIndexChanged then Handle_ActiveModParIndexChanged(Data);

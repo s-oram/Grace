@@ -180,7 +180,7 @@ var
   px1 : single;
   px2 : single;
   px3 : single;
-  px4 : single;
+  //px4 : single;
 
   FreqMultFactor : single;
 begin
