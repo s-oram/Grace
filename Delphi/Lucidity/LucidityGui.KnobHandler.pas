@@ -279,7 +279,7 @@ begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
   ParName  := Knob.ParameterName;
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
 end;
 
 procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
@@ -290,7 +290,7 @@ begin
   assert(Sender is TVamKnob);
   Knob := Sender as TVamKnob;
   ParName  := Knob.ParameterName;
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
 end;
 
 
@@ -370,6 +370,12 @@ begin
   begin
     Plugin.SetPluginParameterModAmount(TParChangeScope.psFocusedKeyGroup, ParName, ModIndex, ModAmountValue);
   end;
+
+  Throttle(ThrottleHandle, 25,
+  procedure
+  begin
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged);
+  end);
 
 end;
 
