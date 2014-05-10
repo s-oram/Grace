@@ -55,7 +55,6 @@ type
     ModSlotSourcePointers : array[0..kModSlotCount-1] of psingle;
     ModSlotViaPointers    : array[0..kModSlotCount-1] of psingle;
 
-    function GetModLinkState(aModLink : PModLink_OLD):TModLinkState;
     function AreModSourceValuesInRange:boolean;
 
     function IsParameterModulated(ModParIndex : integer):boolean;
@@ -310,50 +309,6 @@ begin
     Index := NoModulationIndexes[c1];
     ParValueData^[Index].ModulatedParValue := ParValueData^[Index].ParValue;
   end;
-end;
-
-function TModMatrix.GetModLinkState(aModLink: PModLink_OLD): TModLinkState;
-begin
-  if (aModLink^.Source = TModSource.None) or (aModLink^.Dest = TModDest.None) then
-  begin
-    exit(TModLinkState.Inactive);
-  end;
-
-  case aModLink^.Dest of
-    TModDest.VoiceAmplitude,
-    TModDest.VoicePan,
-    TModDest.Filter1_Par1,
-    TModDest.Filter1_Par2,
-    TModDest.Filter1_Par3,
-    TModDest.Filter1_Par4,
-    TModDest.Filter2_Par1,
-    TModDest.Filter2_Par2,
-    TModDest.Filter2_Par3,
-    TModDest.Filter2_Par4:
-    begin
-      exit(TModLinkState.FastMod);
-    end;
-
-    TModDest.ModOutA,
-    TModDest.ModOutB,
-    TModDest.SampleStart,
-    TModDest.SampleEnd,
-    TModDest.LoopStart,
-    TModDest.LoopEnd,
-    TModDest.Lfo1_Rate,
-    TModDest.Lfo1_ParB,
-    TModDest.Lfo2_Rate,
-    TModDest.Lfo2_ParB:
-    begin
-      exit(TModLinkState.SlowMod);
-    end;
-
-  else
-    raise Exception.Create('Mod link dest not handled. (error: 129)');
-  end;
-
-
-
 end;
 
 function TModMatrix.AreModSourceValuesInRange: boolean;

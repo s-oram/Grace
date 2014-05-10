@@ -99,31 +99,6 @@ type
   end;
 
 
-  TModLinkLoadInfo = class
-  strict private
-    fVia: TModSource;
-    fSource: TModSource;
-    fDest: TModDest;
-    fAmount: single;
-    fOffset: single;
-  private
-    fUniqueID: string;
-  public
-    procedure Clear;
-    procedure AssignFrom(const aSource:TModLink_OLD);
-    procedure AssignTo(var aDest: TModLink_OLD);
-  published
-    procedure SanitiseData; // call after reading data from a save file.
-
-    property UniqueID : string     read  fUniqueID write fUniqueID;
-    property Source   : TModSource read fSource    write fSource;
-    property Dest     : TModDest   read fDest      write fDest;
-    property Via      : TModSource read fVia       write fVia;
-    property Amount   : single     read fAmount    write fAmount;
-    property Offset   : single     read fOffset    write fOffset;
-  end;
-
-
   TModLinkSaveObject = class
   private
     fModVia: TModSource;
@@ -864,49 +839,6 @@ begin
   aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
 
   Plugin.SampleMap.AddRegion(aRegion);
-end;
-
-
-
-
-
-
-{ TModLinkLoadInfo }
-
-procedure TModLinkLoadInfo.AssignFrom(const aSource: TModLink_OLD);
-begin
-  self.UniqueID := aSource.UniqueID;
-  self.Source   := aSource.Source;
-  self.Dest     := aSource.Dest;
-  self.Via      := aSource.Via;
-  self.Amount   := aSource.Amount;
-  self.Offset   := aSource.Offset;
-end;
-
-procedure TModLinkLoadInfo.AssignTo(var aDest: TModLink_OLD);
-begin
-  aDest.UniqueID := self.UniqueID;
-  aDest.Source   := self.Source;
-  aDest.Dest     := self.Dest;
-  aDest.Via      := self.Via;
-  aDest.Amount   := self.Amount;
-  aDest.Offset   := self.Offset;
-end;
-
-procedure TModLinkLoadInfo.Clear;
-begin
-  self.UniqueID := '';
-  self.Source   := TModSource.None;
-  self.Via      := TModSource.None;
-  self.Dest     := TModDest.None;
-  self.Amount   := 0;
-  self.Offset   := 0;
-end;
-
-procedure TModLinkLoadInfo.SanitiseData;
-begin
-  Clamp(self.fAmount, -1, 1);
-  Clamp(self.fOffset, -1, 1);
 end;
 
 { TRegionLoadInfo }

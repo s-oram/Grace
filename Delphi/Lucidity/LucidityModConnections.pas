@@ -47,20 +47,6 @@ type
 
 
 
-  // NOTE: TModConnections stores all mod connections for the sampler.
-  PModLink_OLD = ^TModLink_OLD;
-  TModLink_OLD = record
-    UniqueID : string; //NOTE: I'm not entirely sure this UniqueID is a good idea.
-    Source   : TModSource;
-    Dest     : TModDest;
-    Via      : TModSource;
-    Amount   : single; //range -1..1
-    Offset   : single; //range -0.5..0.5
-    procedure AssignFrom(const aSource:TModLink_OLD);
-  end;
-
-
-
 implementation
 
 uses
@@ -119,18 +105,6 @@ procedure TModConnections.SetModVia(const ModSlotIndex: integer; aVia: TModSourc
 begin
   fModVia[ModSlotIndex] := aVia;
   if assigned(OnChanged) then OnChanged(self);
-end;
-
-{ TModLink_OLD }
-
-procedure TModLink_OLD.AssignFrom(const aSource: TModLink_OLD);
-begin
-  self.Source   := aSource.Source;
-  self.Dest     := aSource.Dest;
-  self.Via      := aSource.Via;
-  self.Amount   := aSource.Amount;
-  self.Offset   := aSource.Offset;
-  self.UniqueID := aSource.UniqueID;
 end;
 
 
