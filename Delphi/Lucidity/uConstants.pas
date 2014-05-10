@@ -66,7 +66,7 @@ type
     OnControlLeave                   = Actions + 6; //TODO: deprecated. replace by OnParControlLeave
     OnParControlEnter                = Actions + 7;
     OnParControlLeave                = Actions + 8;
-    OnParControlChanged              = Actions + 9;
+    OnParControlChanged              = Actions + 9; // a parameter has changed it's value. Normally called by the GUI so the GUI can respond to knob changes.
     OnPostCreateFinished             = Actions + 10;
     OnLfoSelectorEnter               = Actions + 11;
     OnLfoSelectorLeave               = Actions + 12;

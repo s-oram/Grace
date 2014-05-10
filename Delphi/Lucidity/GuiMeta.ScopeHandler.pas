@@ -33,7 +33,9 @@ type
     Globals : TGlobals;
 
     IsParFocusActive : boolean;
-    CurrentParFocus : TPluginParameter;
+
+    //CurrentParFocus : TPluginParameter;
+    CurrentParFocus : string; // this is a parameter name.
 
     // This LFO Selector business is working in conjunction with the IsParFocus
     // and CurrentParFocus variables above to create a very hacky state machine.
@@ -74,8 +76,15 @@ uses
   VamSliderSwitch;
 
 
-function FindScopeFocus_NEW(const Par : TPluginParameter):TScopeFocus;
+function FindScopeFocus_NEW(const ParName : string):TScopeFocus;
+var
+  Par : TPluginParameter;
 begin
+  if ParName = ''
+    then exit(TScopeFocus.None);
+
+  Par := PluginParFromName(ParName);
+
   case Par of
     TPluginParameter.VoiceMode:                 result := TScopeFocus.None;
     TPluginParameter.VoiceGlide:                result := TScopeFocus.None;
@@ -228,36 +237,28 @@ end;
 
 
 procedure TScopeHandler.ParameterEnter(const ParName: string);
-var
-  Par : TPluginParameter;
 begin
-  Par := PluginParFromName(ParName);
-  if (Par <> CurrentParFocus) or (IsParFocusActive = false) then
+  if (ParName <> CurrentParFocus) or (IsParFocusActive = false) then
   begin
     IsParFocusActive := true;
-    CurrentParFocus := Par;
+    CurrentParFocus := ParName;
     UpdateScope;
   end;
 end;
 
 procedure TScopeHandler.ParameterLeave(const ParName: string);
-var
-  Par : TPluginParameter;
 begin
-  Par := PluginParFromName(ParName);
-  if Par = CurrentParFocus then
+  if ParName = CurrentParFocus then
   begin
+    CurrentParFocus := '';
     IsParFocusActive := false;
     UpdateScope;
   end;
 end;
 
 procedure TScopeHandler.ParameterChanged(const ParName: string);
-var
-  Par : TPluginParameter;
 begin
-  Par := PluginParFromName(ParName);
-  if Par = CurrentParFocus then
+  if ParName = CurrentParFocus then
   begin
     UpdateScope;
   end;
