@@ -31,7 +31,6 @@ type
     FakeDest, FakeSource : single;
 
     fModSourceValues : TModSourceValues;
-    fModDestValues_OLD   : TModDestValues;
 
     ModSourceCount : integer;
     ModDestCount   : integer;
@@ -69,13 +68,12 @@ type
     //==========================================================================
     // NOTE: These methods are here for debugging purposes.
     property ModSourceValues : TModSourceValues read fModSourceValues;
-    property ModDestValues_OLD   : TModDestValues   read fModDestValues_OLD;   //TODO: Delete
     //==========================================================================
 
     procedure ZeroAllValues;
 
     procedure SetModSourcePointer(const aModSource : TModSource; const Source:PSingle);
-    procedure SetModDestPointer(const aModDest : TModDest; const Dest:PSingle);
+    //procedure SetModDestPointer(const aModDest : TModDest; const Dest:PSingle);
 
     procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
@@ -181,7 +179,6 @@ begin
   ModDestCount   := TModDestHelper.GetEnumTypeCount;
 
   SetLength(fModSourceValues, TModSourceHelper.GetEnumTypeCount);
-  SetLength(fModDestValues_OLD, TModDestHelper.GetEnumTypeCount);
 
   // NOTE:
   // Point all the mod source/dest pointers to a fake location. This is a convient
@@ -194,17 +191,11 @@ begin
   begin
     fModSourceValues[c1] := @FakeSource;
   end;
-
-  for c1 := 0 to ModDestCount-1 do
-  begin
-    fModDestValues_OLD[c1] := @FakeDest;
-  end;
 end;
 
 destructor TModMatrix.Destroy;
 begin
   SetLength(fModSourceValues, 0);
-  SetLength(fModDestValues_OLD, 0);
 
   inherited;
 end;
@@ -225,11 +216,6 @@ begin
 
 end;
 
-procedure TModMatrix.SetModDestPointer(const aModDest: TModDest; const Dest: PSingle);
-begin
-  fModDestValues_OLD[Integer(aModDest)] := Dest;
-end;
-
 procedure TModMatrix.SetModSourcePointer(const aModSource: TModSource; const Source: PSingle);
 begin
   fModSourceValues[Integer(aModSource)] := Source;
@@ -242,11 +228,6 @@ begin
   for c1 := 0 to ModSourceCount-1 do
   begin
     fModSourceValues[c1]^ := 0;
-  end;
-
-  for c1 := 0 to ModDestCount-1 do
-  begin
-    fModDestValues_OLD[c1]^ := 0;
   end;
 end;
 

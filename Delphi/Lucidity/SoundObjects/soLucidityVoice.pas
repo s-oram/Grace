@@ -261,11 +261,6 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend, @GlobalModPoints^.Source_MidiPitchbend);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Modwheel, @GlobalModPoints^.Source_MidiModwheel);
 
-  ModMatrix.SetModDestPointer(TModDest.SampleStart, @ModPoints.SampleStart);
-  ModMatrix.SetModDestPointer(TModDest.SampleEnd, @ModPoints.SampleEnd);
-  ModMatrix.SetModDestPointer(TModDest.LoopStart, @ModPoints.LoopStart);
-  ModMatrix.SetModDestPointer(TModDest.LoopEnd, @ModPoints.LoopEnd);
-
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
 
   OneShotSampleOsc := TOneShotSampleOsc.Create(@ModPoints, VoiceClockManager);
@@ -284,16 +279,7 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.FilterEnv, FilterEnv.GetModPointer('EnvOut'));
 
   FilterOne := TLucidityFilter.Create(@ModPoints);
-  ModMatrix.SetModDestPointer(TModDest.Filter1_Par1, FilterOne.GetModPointer('Par1Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter1_Par2, FilterOne.GetModPointer('Par2Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter1_Par3, FilterOne.GetModPointer('Par3Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter1_Par4, FilterOne.GetModPointer('Par4Mod'));
-
   FilterTwo := TLucidityFilter.Create(@ModPoints);
-  ModMatrix.SetModDestPointer(TModDest.Filter2_Par1, FilterTwo.GetModPointer('Par1Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter2_Par2, FilterTwo.GetModPointer('Par2Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter2_Par3, FilterTwo.GetModPointer('Par3Mod'));
-  ModMatrix.SetModDestPointer(TModDest.Filter2_Par4, FilterTwo.GetModPointer('Par4Mod'));
 
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
@@ -309,8 +295,6 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.StepSeq2, StepSeqTwo.GetModPointer('StepSeqOutput'));
 
   OutputMixer := TOutputMixer.Create;
-  ModMatrix.SetModDestPointer(TModDest.ModOutA, OutputMixer.GetModPointer('ModOutA'));
-  ModMatrix.SetModDestPointer(TModDest.ModOutB, OutputMixer.GetModPointer('ModOutB'));
   OutputMixer.VoiceMixMain := 1;
 
   LevelMonitor := TLevelMonitor.Create;
