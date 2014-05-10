@@ -15,11 +15,9 @@
 
 Delete 50-50 filter blend mode.
 
-- Mousing over controls neeeds to show existing modulation depths. 
-
 - Delete all the old modulation code.
 
-- Sequencer label is in bold.
+
 
 - Modulation sources need to have uni-polar and bi-polar options.
 

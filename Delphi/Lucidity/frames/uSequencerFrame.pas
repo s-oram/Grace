@@ -121,6 +121,7 @@ begin
   StepCountSelector.ColorTextB := kColor_LcdDark5;
 
   SequencerLabel.Font.Color := GetTColor(kColor_LcdDark5);
+  SequencerLabel.Font.Style := [];
 end;
 
 procedure TSequencerFrame.SeqBackPanelResize(Sender: TObject);
