@@ -56,7 +56,8 @@ type
     Command_UpdateSampleInfo         = Command + 11;
     Command_UpdateScope              = Command + 12;
     Command_DisposeKeyGroup          = Command + 13;
-    Actions                          = Command_DisposeKeyGroup + 1;
+    Command_UpdateGUI                = Command + 14; // All GUI elements should be updated.
+    Actions                          = Command_UpdateGUI + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;

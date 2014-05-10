@@ -8,6 +8,9 @@ type
 function AutoFree(const aObject: PObject): IUnknown;
 
 
+function SmallestValue(const x1, x2 : integer):integer;
+
+
 // a couple of methods to help with removing the 'combining signed and unsigned' types...
 function CastToInteger(Value : cardinal):integer;
 function CastToCardinal(Value : integer):cardinal;
@@ -447,6 +450,14 @@ begin
     s := s + Char(x);
   end;
   result := s;
+end;
+
+
+function SmallestValue(const x1, x2 : integer):integer;
+begin
+  if x1 < x2
+    then result := x1
+    else result := x2;
 end;
 
 

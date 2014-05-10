@@ -861,6 +861,8 @@ begin
     StateManager.Free;
   end;
 
+  PostLoadProgram;
+
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);
@@ -943,14 +945,12 @@ procedure TeePlugin.PostLoadProgram;
 var
   aRegionID : TGUID;
 begin
-
   if KeyGroups.GetInfo.GetKeyGroupCount = 0 then
   begin
     KeyGroups.NewKeyGroup;
   end;
 
   FocusFirstKeyGroup;
-
 
   // select the first region after loading a program.
   if (FocusedRegion = nil) and (SampleMap.RegionCount > 0) then
@@ -968,6 +968,7 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
   // this one call here perhaps.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI);
 end;
 
 

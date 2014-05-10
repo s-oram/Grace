@@ -123,6 +123,20 @@ type
     property Offset   : single     read fOffset    write fOffset;
   end;
 
+
+  TModLinkSaveObject = class
+  private
+    fModVia: TModSource;
+    fModSource: TModSource;
+    fIsModMute: boolean;
+  public
+    procedure Clear;
+  published
+    property ModSource : TModSource read fModSource write fModSource;
+    property ModVia    : TModSource read fModVia    write fModVia;
+    property IsModMute : boolean    read fIsModMute write fIsModMute;
+  end;
+
   {$M+}
 
   TModParSaveObject = class
@@ -430,6 +444,8 @@ var
   SampleGroupNode : TXmlNode;
   VoiceParNode : TXmlNode;
 
+
+
   RegionNode : TXmlNode;
   RegionPropertiesNode : TXmlNode;
   SamplePropertiesNode : TXmlNode;
@@ -439,11 +455,15 @@ var
   RegionList : TRegionInterfaceList;
   c2: Integer;
   c3: Integer;
-  ModLinkState : TModLinkLoadInfo;
+
+  ModLinkState : TModLinkSaveObject;
+  ModConnections : TModConnections;
+  ModConnectionsNode : TXmlNode;
+  ModLinkNode        : TXmlNode;
 
   SeqData : IStepSequenceDataObject;
 begin
-  ModLinkState := TModLinkLoadInfo.Create;
+  ModLinkState := TModLinkSaveObject.Create;
   AutoFree(@ModLinkState);
 
   RegionList := TRegionInterfaceList.Create;
@@ -551,7 +571,24 @@ begin
     end;
 
 
-    //TODO: save mod slot values...
+
+    //==== save mod slot values =====
+    ModConnections := sg.ModConnections;
+    ModConnectionsNode := SampleGroupNode.NodeNew('ModConnections');
+
+    for c3 := 0 to kModSlotCount-1 do
+    begin
+      ModLinkState.ModSource := ModConnections.GetModSource(c3);
+      ModLinkState.ModVia    := ModConnections.GetModVia(c3);
+      ModLinkState.IsModMute := ModConnections.GetModMute(c3);
+
+      ModLinkNode := ModConnectionsNode.NodeNew('ModLink');
+
+      SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'ModSource');
+      SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'ModVia');
+      SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'IsModMute');
+    end;
+
 
   end;
 end;
@@ -577,10 +614,15 @@ var
   StepSeqNode : TXmlNode;
 
   RegionLoadInfo : TRegionLoadInfo;
-  ModLinkState : TModLinkLoadInfo;
   c3: Integer;
 
   StepValue : single;
+
+  ModLinkState : TModLinkSaveObject;
+  ModConnections : TModConnections;
+  ModConnectionsNode : TXmlNode;
+  ModLinkNode        : TXmlNode;
+  ModLinkNodes       : TsdNodeList;
 
   SeqData : IStepSequenceDataObject;
 begin
@@ -596,10 +638,13 @@ begin
   ModLinkNodeList := TsdNodeList.Create;
   AutoFree(@ModLinkNodeList);
 
+  ModLinkNodes := TsdNodeList.Create;
+  AutoFree(@ModLinkNodes);
+
   StepValuesNodeList := TsdNodeList.Create;
   AutoFree(@StepValuesNodeList);
 
-  ModLinkState := TModLinkLoadInfo.Create;
+  ModLinkState := TModLinkSaveObject.Create;
   AutoFree(@ModLinkState);
 
   RootNode := Xml.Root;
@@ -743,6 +788,29 @@ begin
       end;
     end;
 
+
+
+    //===== restore mod slot values =====
+    ModConnections := sg.ModConnections;
+    ModConnectionsNode := SampleGroupNode.FindNode('ModConnections');
+    if assigned(ModConnectionsNode) then
+    begin
+      ModConnectionsNode.FindNodes('ModLink', ModLinkNodes);
+
+      for c3 := 0 to SmallestValue(kModSlotCount, ModLinkNodes.Count)-1 do
+      begin
+        ModLinkNode := ModLinkNodes[c3];
+        ModLinkState.Clear;
+
+        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'ModSource');
+        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'ModVia');
+        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'IsModMute');
+
+        ModConnections.SetModSource(c3, ModLinkState.ModSource);
+        ModConnections.SetModVia(c3, ModLinkState.ModVia);
+        ModConnections.SetModMute(c3, ModLinkState.IsModMute);
+      end;
+    end;
 
   end;
 
@@ -951,6 +1019,15 @@ end;
 
 
 
+
+{ TModLinkSaveObject }
+
+procedure TModLinkSaveObject.Clear;
+begin
+  self.fModSource := TModSource.None;
+  self.fModVia    := TModSource.None;
+  self.IsModMute  := false;
+end;
 
 end.
 
