@@ -15,19 +15,11 @@
 
 Delete 50-50 filter blend mode.
 
-- Delete all the old modulation code.
-
-
-
 - Modulation sources need to have uni-polar and bi-polar options.
 
 - add MIDI modulation sources.
 
-- holding alt while moving a start/end sample point should always adjust the
-  modulation depth.
-
 - re-jig voice stealing so that it always kills the oldest released voice.
-
 
 - may the small parameter display should be 'overlaid' over the sample display
   so the LFO's can be split into two.

@@ -445,9 +445,11 @@ end;
 procedure TLuciditySampleOverlay.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   CurrentSamplePos : single;
+  ResetModAmount : boolean;
 begin
   inherited;
 
+  ResetModAmount := false;
   IsZooming := false;
 
   if (Button = mbLeft) and (SampleIsValid) then
@@ -456,9 +458,28 @@ begin
 
     if (IsModEditActive) then
     begin
-      if (ssAlt in Shift)
-        then GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts)
-        else GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToMarkers);
+      if (ssAlt in Shift) then
+      begin
+        GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts);
+        case GrabbedMode of
+          smSampleStartMarker: ResetModAmount := true;
+          smSampleEndMarker:   ResetModAmount := true;
+          smLoopStartMarker:   ResetModAmount := true;
+          smLoopEndMarker:     ResetModAmount := true;
+        end;
+
+        case GrabbedMode of
+          smSampleStartMarker: GrabbedMode  := smSampleStartModMarker;
+          smSampleEndMarker:   GrabbedMode  := smSampleEndModMarker;
+          smLoopStartMarker:   GrabbedMode  := smLoopStartModMarker;
+          smLoopEndMarker:     GrabbedMode  := smLoopEndModMarker;
+        end;
+      end else
+      begin
+        GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToMarkers);
+      end;
+
+
     end else
     begin
       GrabbedMode := IsNearMarker(X, Y, msMarkersOnly);
@@ -476,25 +497,33 @@ begin
       smSampleStartModMarker:
       begin
         ReferenceX := x;
-        ReferenceModAmount := SampleStartMod;
+        if ResetModAmount
+          then ReferenceModAmount := 0
+          else ReferenceModAmount := SampleStartMod;
       end;
 
       smSampleEndModMarker:
       begin
         ReferenceX := x;
-        ReferenceModAmount := SampleEndMod;
+        if ResetModAmount
+          then ReferenceModAmount := 0
+          else ReferenceModAmount := SampleEndMod;
       end;
 
       smLoopStartModMarker:
       begin
         ReferenceX := x;
-        ReferenceModAmount := LoopStartMod;
+        if ResetModAmount
+          then ReferenceModAmount := 0
+          else ReferenceModAmount := LoopStartMod;
       end;
 
       smLoopEndModMarker:
       begin
         ReferenceX := x;
-        ReferenceModAmount := LoopEndMod;
+        if ResetModAmount
+          then ReferenceModAmount := 0
+          else ReferenceModAmount := LoopEndMod;
       end;
 
     else
