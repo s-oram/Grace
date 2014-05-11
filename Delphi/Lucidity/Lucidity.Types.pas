@@ -57,6 +57,8 @@ type
   TParModulationData = record
   public
     Raw : array[0..kModulatedParameterCount-1] of single;
+    function GetModulatedParameterValue(const Par : TPluginParameter) : single; inline;
+    function GetMouulatedParameterPointer(const Par : TPluginParameter) : PSingle; inline;
   end;
 
 
@@ -174,6 +176,20 @@ function TFakeCriticalSection.TryEnter: Boolean;
 begin
   // It's not called fake for nothing.
  result := true;
+end;
+
+{ TParModulationData }
+
+function TParModulationData.GetModulatedParameterValue(const Par: TPluginParameter): single;
+begin
+  // TODO: check asm for stack juggling.
+  result := Raw[GetModParIndex(Par)];
+end;
+
+function TParModulationData.GetMouulatedParameterPointer(const Par: TPluginParameter): PSingle;
+begin
+  // TODO: check asm for stack juggling.
+  result := @Raw[GetModParIndex(Par)];
 end;
 
 end.

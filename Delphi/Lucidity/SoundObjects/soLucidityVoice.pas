@@ -768,8 +768,8 @@ begin
   Par1 := ParModData.Raw[Index1];
   Par2 := ParModData.Raw[Index2];
 
-  VolX := Par1;
-  PanX := Par2;
+  VolX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputGain);
+  PanX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputPan);
 
   assert(InRange(VolX, 0, 1));
   assert(InRange(PanX, 0, 1));
