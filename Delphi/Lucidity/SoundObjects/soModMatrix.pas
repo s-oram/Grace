@@ -237,6 +237,9 @@ var
   c1 : integer;
   Index : integer;
   pv, combinedModValues : single;
+
+
+
 begin
   {$IFDEF StrictDebugChecks}
   AreModSourceValuesInRange; //Expensive!!
@@ -252,10 +255,11 @@ begin
   for c1 := 0 to FastModulationCount-1 do
   begin
     Index := FastModulationIndexes[c1];
-    ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     pv := ParValueData^[Index].ParValue;
-    combinedModValues := ParModData^[Index];
+    CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
+
+    ParModData^[Index] := Clamp(pv + CombinedModValues, 0, 1);
     ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 end;
@@ -270,16 +274,18 @@ begin
   for c1 := 0 to SlowModulationCount-1 do
   begin
     Index := SlowModulationIndexes[c1];
-    ParModData^[Index] := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     pv := ParValueData^[Index].ParValue;
-    combinedModValues := ParModData^[Index];
+    CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
+
+    ParModData^[Index] := Clamp(pv + CombinedModValues, 0, 1);
     ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 
   for c1 := 0 to NoModulationCount-1 do
   begin
     Index := NoModulationIndexes[c1];
+    ParModData^[Index] := ParValueData^[Index].ParValue;
     ParValueData^[Index].ModulatedParValue := ParValueData^[Index].ParValue;
   end;
 end;
