@@ -7,8 +7,7 @@ type
 
 function AutoFree(const aObject: PObject): IUnknown;
 
-
-function SmallestValue(const x1, x2 : integer):integer;
+function LowestValue(const x1, x2 : integer):integer;
 
 
 // a couple of methods to help with removing the 'combining signed and unsigned' types...
@@ -453,7 +452,7 @@ begin
 end;
 
 
-function SmallestValue(const x1, x2 : integer):integer;
+function LowestValue(const x1, x2 : integer):integer;
 begin
   if x1 < x2
     then result := x1

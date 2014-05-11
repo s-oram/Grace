@@ -403,10 +403,18 @@ begin
   ClearBuffer(pxA, SampleFrames);
   ClearBuffer(pxB, SampleFrames);
 
+
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     ActiveVoices[c1].AudioProcess(pxA, pxB, SampleFrames);
   end;
+
+  {
+  if ActiveVoices.Count > 0 then
+  begin
+    ActiveVoices[0].AudioProcess(pxA, pxB, SampleFrames);
+  end;
+  }
 
   LevelMonitor.Process(pxA, pxB, SampleFrames);
 

@@ -772,7 +772,7 @@ begin
     begin
       ModConnectionsNode.FindNodes('ModLink', ModLinkNodes);
 
-      for c3 := 0 to SmallestValue(kModSlotCount, ModLinkNodes.Count)-1 do
+      for c3 := 0 to LowestValue(kModSlotCount, ModLinkNodes.Count)-1 do
       begin
         ModLinkNode := ModLinkNodes[c3];
         ModLinkState.Clear;

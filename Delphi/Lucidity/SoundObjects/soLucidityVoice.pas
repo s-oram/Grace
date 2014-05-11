@@ -106,6 +106,8 @@ type
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
 
+    TestToggle : single;
+
     ModPoints           : TVoiceModulationPoints;
     ModConnections      : PModConnections;    // Info about what the modulation sources are.
     ParValueData        : PModulatedPars;     // Raw parameter values. The values are identical for all voices in the voice group.
@@ -261,7 +263,10 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend, @GlobalModPoints^.Source_MidiPitchbend);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Modwheel, @GlobalModPoints^.Source_MidiModwheel);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity, @ModPoints.MidiVelocity);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @ModPoints.MidiToggle);
+  //ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @ModPoints.MidiToggle);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @TestToggle);
+
+
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
 
@@ -499,6 +504,8 @@ var
   Index4 : integer;
   Index5 : integer;
 begin
+  LogMain.LogMessage('Trigger: Note = ' + IntToStr(MidiNote) );
+
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
   //assert(MidiNote >= 0);
@@ -624,10 +631,14 @@ begin
   end;
 
   ModPoints.MidiVelocity := MidiVelocity / 127;
-
+  {
   if Odd(GlobalModPoints.Source_TriggeredNoteCount)
     then ModPoints.MidiToggle := -1
     else ModPoints.MidiToggle := 1;
+  }
+  if Odd(GlobalModPoints.Source_TriggeredNoteCount)
+    then TestToggle := -1
+    else TestToggle := 1;
 
   // call StepReset on all modulation sources.
   LfoA.StepResetA;
@@ -756,6 +767,9 @@ begin
 
   Par1 := ParValueData^[Index1].ModulatedParValue;
   Par2 := ParValueData^[Index2].ModulatedParValue;
+
+  Par1 := ParModData[Index1];
+  Par2 := ParModData[Index2];
 
   VolX := Par1;
   PanX := Par2;

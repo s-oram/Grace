@@ -39,9 +39,9 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   SysUtils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-
   Lucidity.Interfaces,
   uConstants;
 
@@ -83,9 +83,6 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    LogMain.EnterMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Triggered');
-    LogSpecial.Active := true;
-
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 
@@ -102,18 +99,10 @@ begin
     end;
 
     kg := nil;
-
-    LogMain.LogMessage('Active Region Count = ' + IntToStr(ActiveRegions.Count));
-
-    LogSpecial.Active := false;
-    LogMain.LeaveMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Triggered');
   end;
 
   if MsgID = TLucidMsgID.Audio_KeyGroupInactive then
   begin
-    LogMain.EnterMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Inactive');
-    LogSpecial.Active := true;
-
     pKG := Data;
     kg := IKeyGroup(pKG);
 
@@ -127,11 +116,6 @@ begin
       ActiveRegionsLock.Release;
     end;
     kg := nil;
-
-    LogMain.LogMessage('Active Region Count = ' + IntToStr(ActiveRegions.Count));
-
-    LogSpecial.Active := false;
-    LogMain.LeaveMethod('TKeyGroupPlayer.ProcessZeroObjectMessage.Inactive');
   end;
 
 
@@ -195,15 +179,10 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  ActiveRegionsLock.Acquire;
-  try
-    for c1 := ActiveRegions.Count-1 downto 0 do
-    begin
-      kg := (ActiveRegions[c1] as IKeyGroup);
-      (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
-    end;
-  finally
-    ActiveRegionsLock.Release;
+  for c1 := ActiveRegions.Count-1 downto 0 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).AudioProcess(Outputs, SampleFrames);
   end;
 end;
 

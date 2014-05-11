@@ -23,6 +23,7 @@ type
 
     // The above Parameter value with the modulation applied.
     // range should be 0..1
+    // TODO: Is there ever a reson that this ModulatedParValue should be used?
     ModulatedParValue : single;
 
     //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
