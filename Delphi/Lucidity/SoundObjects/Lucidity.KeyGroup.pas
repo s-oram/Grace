@@ -134,8 +134,9 @@ begin
   // TODO: The key group shouldn't know about "aVoices". But as my code is currently written the voiceParameter wrapper class is owned by
   // the key group and the voice parameter wrapper does need to know about the voices.
 
-  Globals := aGlobals;
   GlobalModPoints := aGlobalModPoints;
+
+  Globals := aGlobals;
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
   Globals.AddEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
 

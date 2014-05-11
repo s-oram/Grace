@@ -128,6 +128,7 @@ begin
   fList := TInterfaceList.Create;
 
   Globals         := aGlobals;
+
   GlobalModPoints := aGlobalModPoints;
 
   Voices := aVoices;
@@ -219,7 +220,10 @@ begin
   result := true;
 end;
 
-
+function TKeyGroupManager.NewKeyGroup: IKeyGroup;
+begin
+ result := NewKeyGroup('');
+end;
 
 function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
 var
@@ -238,8 +242,6 @@ begin
 
     kg := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'New KG - ' + aName + ' ' + RandomString(4));
 
-
-
     kg.SetName(UniqueName);
     fList.Add(kg);
 
@@ -255,16 +257,6 @@ begin
     ListLock.Release;
   end;
 end;
-
-function TKeyGroupManager.NewKeyGroup: IKeyGroup;
-begin
- result := NewKeyGroup('');
-end;
-
-
-
-
-
 
 procedure TKeyGroupManager.DeleteKeyGroup(aName: string);
 var

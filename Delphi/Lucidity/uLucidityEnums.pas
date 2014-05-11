@@ -87,6 +87,8 @@ type
     Midi_Note,
     Midi_PitchBend,
     Midi_ModWheel,
+    Midi_Velocity,
+    Midi_Toggle,
     AmpEnv,
     FilterEnv,
     Lfo1,
@@ -94,6 +96,13 @@ type
     StepSeq1,
     StepSeq2
   );
+
+  {
+  MIDI sources
+  - MIDI note toggle. first note 0, second note 1.
+  - Midi CC
+  }
+
 
   TModSourceHelper = class(TEnumHelper<TModSource>)
   public
@@ -318,6 +327,8 @@ begin
     TModSource.Midi_Note:      result := 'MIDI Note';
     TModSource.Midi_PitchBend: result := 'MIDI Pitchbend';
     TModSource.Midi_ModWheel:  result := 'MIDI Modwheel';
+    TModSource.Midi_Velocity:  result := 'MIDI Velocity';
+    TModSource.Midi_Toggle:    result := 'MIDI Note Toggle';
     TModSource.AmpEnv:         result := 'Amp Envelope';
     TModSource.FilterEnv:      result := 'Filter Envelope';
     TModSource.Lfo1:           result := 'LFO 1';
@@ -336,6 +347,8 @@ begin
     TModSource.Midi_Note:      result := 'Note';
     TModSource.Midi_PitchBend: result := 'P.Bend';
     TModSource.Midi_ModWheel:  result := 'Modwheel';
+    TModSource.Midi_Velocity:  result := 'Velocity';
+    TModSource.Midi_Toggle:    result := 'Toggle';
     TModSource.AmpEnv:         result := 'Amp Env';
     TModSource.FilterEnv:      result := 'Filter Env';
     TModSource.Lfo1:           result := 'LFO 1';

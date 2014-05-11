@@ -243,6 +243,8 @@ var
 begin
   inherited;
 
+  GlobalModPoints.Source_TriggeredNoteCount := 0;
+
   fIsPreviewEnabled := true;
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, EventHandle_SampleRateChanged);
@@ -257,17 +259,11 @@ begin
     else LogMain.LogText('Data Directory NOT Found!', '');
   {$ENDIF}
 
-
-
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.Audio);
 
-
-
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
   Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.Audio);
-
-
 
 
   // TODO: Should do some data directory validation here.
@@ -275,8 +271,6 @@ begin
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
   Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.Audio); // or this could be TZeroObjectRank.Main? dunno.
-
-
 
 
   if (PluginDataDir^.Exists) then
@@ -301,18 +295,12 @@ begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
-
   end;
-
-
 
   PreviewInfo^.Clear;
 
-
-
   AudioPreviewPlayer := TAudioFilePreviewPlayer.Create;
   KeyStateTracker    := TKeyStateTracker.Create;
-
 
   DeltaOffset := 0;
 
@@ -320,10 +308,6 @@ begin
   MidiAutomation.OnMidiMessage := Event_MidiAutomation_Message;
   MidiAutomation.OnNewBinding  := Event_MidiAutomation_NewBinding;
   // TODO: Load default MIDI map here!
-
-
-
-
 
 
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
@@ -1126,6 +1110,8 @@ begin
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
       VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+
+      inc(GlobalModPoints.Source_TriggeredNoteCount);
     end;
   except
     Log.LogMessage('NoteOn Exception.');
@@ -1173,7 +1159,7 @@ end;
 procedure TeePlugin.FastControlProcess;
 begin
   try
-    XYPads.ControlRateProcess;
+    XYPads.ControlRateProcess; //TODO: probably can delete the xy pads class.
     MidiAutomation.FastControlProcess;
     VoiceController.FastControlProcess;
     KeyGroupPlayer.FastControlProcess;

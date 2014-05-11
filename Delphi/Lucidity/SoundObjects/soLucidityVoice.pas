@@ -260,6 +260,8 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.Midi_Note, @ModPoints.MidiNote);
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend, @GlobalModPoints^.Source_MidiPitchbend);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Modwheel, @GlobalModPoints^.Source_MidiModwheel);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity, @ModPoints.MidiVelocity);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @ModPoints.MidiToggle);
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
 
@@ -620,6 +622,12 @@ begin
     ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
   end;
+
+  ModPoints.MidiVelocity := MidiVelocity / 127;
+
+  if Odd(GlobalModPoints.Source_TriggeredNoteCount)
+    then ModPoints.MidiToggle := -1
+    else ModPoints.MidiToggle := 1;
 
   // call StepReset on all modulation sources.
   LfoA.StepResetA;
