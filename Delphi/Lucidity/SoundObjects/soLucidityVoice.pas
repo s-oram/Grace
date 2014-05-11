@@ -460,25 +460,20 @@ procedure TLucidityVoice.UpdateOscPitch;
 var
   PitchOne: single;
   PitchTwo: single;
-  Index1 : integer;
-  Index2 : integer;
   Par1 : single;
   Par2 : single;
 begin
   //=============================================================================
   // TODO: This has been refactored to use the new parameter modulation system,
   // but could be refactored again to be more streamlined.
-  Index1 := GetModParIndex(TPluginParameter.VoicePitchOne);
-  Index2 := GetModParIndex(TPluginParameter.VoicePitchTwo);
-
-  Par1 := ParValueData^[Index1].ModulatedParValue;
-  Par2 := ParValueData^[Index2].ModulatedParValue;
+  Par1 := ParModData.GetModulatedParameterValue(TPluginParameter.VoicePitchOne);
+  Par2 := ParModData.GetModulatedParameterValue(TPluginParameter.VoicePitchTwo);
 
   PitchOne := Par1;
-  PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1;
+  PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
 
   PitchTwo := Par2;
-  PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1;
+  PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
 
   //=============================================================================
 
@@ -715,19 +710,8 @@ procedure TLucidityVoice.FastControlProcess;
 var
   CV : TModularVoltage;
   PanX, VolX : single;
-
-  Index1 : integer;
-  Index2 : integer;
   Par1 : single;
-  Par2 : single;
 begin
-  // TODO:LOW - this has been refactored but could be more streamlined.
-  Index1 := GetModParIndex(TPluginParameter.OutputGain);
-  Index2 := GetModParIndex(TPluginParameter.OutputPan);
-
-  Par1 := ParModData.Raw[Index1];
-  Par2 := ParModData.Raw[Index2];
-
   VolX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputGain);
   PanX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputPan);
 
@@ -771,8 +755,7 @@ begin
 
 
   //==========
-  Index1 := GetModParIndex(TPluginParameter.FilterOutputBlend);
-  Par1 := ParValueData^[Index1].ModulatedParValue;
+  Par1 := ParModData.GetModulatedParameterValue(TPluginParameter.FilterOutputBlend);
   assert(Par1 >= 0);
   assert(Par1 <= 1);
   FBOut1 := 1 - Par1;

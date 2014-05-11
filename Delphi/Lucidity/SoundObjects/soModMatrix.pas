@@ -260,7 +260,6 @@ begin
     CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     ParModData^.Raw[Index] := Clamp(pv + CombinedModValues, 0, 1);
-    ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 end;
 
@@ -279,14 +278,12 @@ begin
     CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     ParModData^.Raw[Index] := Clamp(pv + CombinedModValues, 0, 1);
-    ParValueData^[Index].ModulatedParValue := Clamp(pv + CombinedModValues, 0, 1);
   end;
 
   for c1 := 0 to NoModulationCount-1 do
   begin
     Index := NoModulationIndexes[c1];
     ParModData^.Raw[Index] := ParValueData^[Index].ParValue;
-    ParValueData^[Index].ModulatedParValue := ParValueData^[Index].ParValue;
   end;
 end;
 

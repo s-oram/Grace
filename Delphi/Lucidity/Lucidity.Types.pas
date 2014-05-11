@@ -22,11 +22,6 @@ type
     //Holds the actual parameter value. Range should be 0..1
     ParValue  : single;
 
-    // The above Parameter value with the modulation applied.
-    // range should be 0..1
-    // TODO: Is there ever a reson that this ModulatedParValue should be used?
-    ModulatedParValue : single;
-
     //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
     ModAmount : array[0..kModSlotCount-1] of single;
 
