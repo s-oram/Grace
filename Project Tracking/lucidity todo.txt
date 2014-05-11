@@ -19,13 +19,8 @@ Delete 50-50 filter blend mode.
 
 - add MIDI modulation sources.
 
-- re-jig voice stealing so that it always kills the oldest released voice.
-
 - may the small parameter display should be 'overlaid' over the sample display
   so the LFO's can be split into two.
-
-
-
 
 
 

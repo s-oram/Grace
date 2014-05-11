@@ -329,72 +329,12 @@ begin
 end;
 
 procedure TLucidityVoiceController.CullVoice(const TriggerNote: byte);
-var
-  c1: Integer;
-  AgeModifier : integer;
-  DistanceModifier : integer;
-  LowNote : integer;
-  HighNote : integer;
-  LowIndex : integer;
-  HighIndex : integer;
-
-  LowScore      : integer;
-  LowScoreIndex : integer;
 begin
-  if ReleasedVoices.Count = 1 then
+  if ReleasedVoices.Count > 0 then
   begin
     ReleasedVoices[0].QuickRelease;
     ReleasedVoices.Delete(0);
-    exit;//===============================>> exit >>=================>>
   end;
-
-  for c1 := 0 to ReleasedVoices.Count-1 do
-  begin
-    AgeModifier := c1;
-    DistanceModifier := abs(ReleasedVoices[c1].TriggerNote - TriggerNote);
-
-    ReleaseScores[c1].VoiceIndex := c1;
-    ReleaseScores[c1].ReleaseScore := AgeModifier + DistanceModifier;
-  end;
-
-
-  LowNote  := ReleasedVoices[0].TriggerNote;
-  HighNote := ReleasedVoices[0].TriggerNote;
-  LowIndex := 0;
-  HighIndex := 0;
-
-  for c1 := 1 to ReleasedVoices.Count-1 do
-  begin
-    if ReleasedVoices[c1].TriggerNote < LowNote then
-    begin
-      LowNote := ReleasedVoices[c1].TriggerNote;
-      LowIndex := c1;
-    end;
-
-    if ReleasedVoices[c1].TriggerNote > HighNote then
-    begin
-      HighNote := ReleasedVoices[c1].TriggerNote;
-      HighIndex := c1;
-    end;
-  end;
-
-  ReleaseScores[LowIndex].ReleaseScore  := ReleaseScores[LowIndex].ReleaseScore + 24;
-  ReleaseScores[HighIndex].ReleaseScore := ReleaseScores[HighIndex].ReleaseScore + 24;
-
-  LowScore := ReleaseScores[0].ReleaseScore;
-  LowScoreIndex := 0;
-
-  for c1 := 1 to ReleasedVoices.Count-1 do
-  begin
-    if ReleaseScores[c1].ReleaseScore < LowScore then
-    begin
-      LowScore := ReleaseScores[c1].ReleaseScore;
-      LowScoreIndex := c1;
-    end;
-  end;
-
-  ReleasedVoices[LowScoreIndex].QuickRelease;
-  ReleasedVoices.Delete(LowScoreIndex);
 end;
 
 procedure TLucidityVoiceController.SetVoiceGlide(const Value: single);
