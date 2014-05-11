@@ -91,10 +91,10 @@ begin
   Index3 := GetModParIndex(TPluginParameter.LoopStart);
   Index4 := GetModParIndex(TPluginParameter.LoopEnd);
 
-  SampleStartMod := ParModData^[Index1];
-  SampleEndMod   := ParModData^[Index2];
-  LoopStartMod   := ParModData^[Index3];
-  LoopEndMod     := ParModData^[Index4];
+  SampleStartMod := ParModData^.Raw[Index1];
+  SampleEndMod   := ParModData^.Raw[Index2];
+  LoopStartMod   := ParModData^.Raw[Index3];
+  LoopEndMod     := ParModData^.Raw[Index4];
 
   if RegionProps^.SampleStart < RegionProps^.SampleEnd then
   begin

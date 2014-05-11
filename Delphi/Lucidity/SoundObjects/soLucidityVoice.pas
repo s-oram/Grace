@@ -765,11 +765,8 @@ begin
   Index1 := GetModParIndex(TPluginParameter.OutputGain);
   Index2 := GetModParIndex(TPluginParameter.OutputPan);
 
-  Par1 := ParValueData^[Index1].ModulatedParValue;
-  Par2 := ParValueData^[Index2].ModulatedParValue;
-
-  Par1 := ParModData[Index1];
-  Par2 := ParModData[Index2];
+  Par1 := ParModData.Raw[Index1];
+  Par2 := ParModData.Raw[Index2];
 
   VolX := Par1;
   PanX := Par2;

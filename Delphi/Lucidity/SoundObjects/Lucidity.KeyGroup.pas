@@ -409,13 +409,6 @@ begin
     ActiveVoices[c1].AudioProcess(pxA, pxB, SampleFrames);
   end;
 
-  {
-  if ActiveVoices.Count > 0 then
-  begin
-    ActiveVoices[0].AudioProcess(pxA, pxB, SampleFrames);
-  end;
-  }
-
   LevelMonitor.Process(pxA, pxB, SampleFrames);
 
   pOutA := Outputs[0];

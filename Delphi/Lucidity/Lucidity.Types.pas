@@ -3,6 +3,7 @@ unit Lucidity.Types;
 interface
 
 uses
+  Lucidity.PluginParameters,
   Windows,
   uConstants,
   VamLib.UniqueID,
@@ -53,7 +54,13 @@ type
   // NOTE: TParModulationData is a structure intended to hold summed modulation amounts
   // for all parameters.
   PParModulationData = ^TParModulationData;
-  TParModulationData = array[0..kModulatedParameterCount-1] of single;
+  TParModulationData = record
+  public
+    Raw : array[0..kModulatedParameterCount-1] of single;
+  end;
+
+
+
 
 
   // NOTE: PSynthPar is intended for usage in
