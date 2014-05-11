@@ -498,11 +498,6 @@ end;
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
 var
   CV : TModularVoltage;
-  Index1 : integer;
-  Index2 : integer;
-  Index3 : integer;
-  Index4 : integer;
-  Index5 : integer;
 begin
   LogMain.LogMessage('Trigger: Note = ' + IntToStr(MidiNote) );
 
@@ -533,22 +528,14 @@ begin
 
 
   //======== Lfo One =======
-  Index1 := GetModParIndex(TPluginParameter.Lfo1Par1);
-  Index2 := GetModParIndex(TPluginParameter.Lfo1Par2);
-  Index3 := GetModParIndex(TPluginParameter.Lfo1Par3);
-
-  LfoA.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  LfoA.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  LfoA.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  LfoA.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par1);
+  LfoA.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par2);
+  LfoA.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par3);
 
   //======== Lfo Two =======
-  Index1 := GetModParIndex(TPluginParameter.Lfo2Par1);
-  Index2 := GetModParIndex(TPluginParameter.Lfo2Par2);
-  Index3 := GetModParIndex(TPluginParameter.Lfo2Par3);
-
-  LfoB.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  LfoB.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  LfoB.Par3 := @ParValueData^[Index3].ModulatedParValue;
+  LfoB.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par1);
+  LfoB.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par2);
+  LfoB.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par3);
 
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
@@ -559,57 +546,30 @@ begin
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
 
   //======== Filter One =======
-  Index1 := GetModParIndex(TPluginParameter.Filter1Par1);
-  Index2 := GetModParIndex(TPluginParameter.Filter1Par2);
-  Index3 := GetModParIndex(TPluginParameter.Filter1Par3);
-  Index4 := GetModParIndex(TPluginParameter.Filter1Par4);
-
-  FilterOne.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  FilterOne.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  FilterOne.Par3 := @ParValueData^[Index3].ModulatedParValue;
-  FilterOne.Par4 := @ParValueData^[Index4].ModulatedParValue;
-
+  FilterOne.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par1);
+  FilterOne.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par2);
+  FilterOne.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par3);
+  FilterOne.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par4);
 
   //======== Filter Two =======
-  Index1 := GetModParIndex(TPluginParameter.Filter2Par1);
-  Index2 := GetModParIndex(TPluginParameter.Filter2Par2);
-  Index3 := GetModParIndex(TPluginParameter.Filter2Par3);
-  Index4 := GetModParIndex(TPluginParameter.Filter2Par4);
-
-  FilterTwo.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  FilterTwo.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  FilterTwo.Par3 := @ParValueData^[Index3].ModulatedParValue;
-  FilterTwo.Par4 := @ParValueData^[Index4].ModulatedParValue;
-
-
+  FilterTwo.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par1);
+  FilterTwo.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par2);
+  FilterTwo.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par3);
+  FilterTwo.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par4);
 
   //======== Amp Envelope =======
-  Index1 := GetModParIndex(TPluginParameter.AmpAttack);
-  Index2 := GetModParIndex(TPluginParameter.AmpHold);
-  Index3 := GetModParIndex(TPluginParameter.AmpDecay);
-  Index4 := GetModParIndex(TPluginParameter.AmpSustain);
-  Index5 := GetModParIndex(TPluginParameter.AmpRelease);
-
-  AmpEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  AmpEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  AmpEnv.Par3 := @ParValueData^[Index3].ModulatedParValue;
-  AmpEnv.Par4 := @ParValueData^[Index4].ModulatedParValue;
-  AmpEnv.Par5 := @ParValueData^[Index5].ModulatedParValue;
-
+  AmpEnv.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpAttack);
+  AmpEnv.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpHold);
+  AmpEnv.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpDecay);
+  AmpEnv.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpSustain);
+  AmpEnv.Par5 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpRelease);
 
   //======== Modulation Envelope =======
-  Index1 := GetModParIndex(TPluginParameter.FilterAttack);
-  Index2 := GetModParIndex(TPluginParameter.FilterHold);
-  Index3 := GetModParIndex(TPluginParameter.FilterDecay);
-  Index4 := GetModParIndex(TPluginParameter.FilterSustain);
-  Index5 := GetModParIndex(TPluginParameter.FilterRelease);
-
-  FilterEnv.Par1 := @ParValueData^[Index1].ModulatedParValue;
-  FilterEnv.Par2 := @ParValueData^[Index2].ModulatedParValue;
-  FilterEnv.Par3 := @ParValueData^[Index3].ModulatedParValue;
-  FilterEnv.Par4 := @ParValueData^[Index4].ModulatedParValue;
-  FilterEnv.Par5 := @ParValueData^[Index5].ModulatedParValue;
-
+  FilterEnv.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpAttack);
+  FilterEnv.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpHold);
+  FilterEnv.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpDecay);
+  FilterEnv.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpSustain);
+  FilterEnv.Par5 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpRelease);
 
 
   //=============================================================
