@@ -257,6 +257,7 @@ begin
 
   ModMatrix.SetModSourcePointer(TModSource.Midi_Note, @ModPoints.MidiNote);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity, @ModPoints.MidiVelocity);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Unipolar, @GlobalModPoints^.Source_MidiPitchbend_Unipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Bipolar, @GlobalModPoints^.Source_MidiPitchbend_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Unipolar, @GlobalModPoints^.Source_MidiModWheel_Unipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Bipolar, @GlobalModPoints^.Source_MidiModWheel_Bipolar);
@@ -276,10 +277,12 @@ begin
   fWaveOsc   := TLucidityWaveOsc.Create;
 
   AmpEnv := TLucidityADSR.Create;
-  ModMatrix.SetModSourcePointer(TModSource.AmpEnv, AmpEnv.GetModPointer('EnvOut'));
+  ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Unipolar, AmpEnv.GetModPointer('EnvOut_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Bipolar, AmpEnv.GetModPointer('EnvOut_Bi'));
 
   FilterEnv := TLucidityADSR.Create;
-  ModMatrix.SetModSourcePointer(TModSource.FilterEnv, FilterEnv.GetModPointer('EnvOut'));
+  ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Unipolar, FilterEnv.GetModPointer('EnvOut_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Bipolar, FilterEnv.GetModPointer('EnvOut_Bi'));
 
   FilterOne := TLucidityFilter.Create(@ModPoints);
   FilterTwo := TLucidityFilter.Create(@ModPoints);

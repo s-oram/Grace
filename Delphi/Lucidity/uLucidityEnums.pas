@@ -86,13 +86,16 @@ type
     None,
     Midi_Note,
     Midi_Velocity,
+    Midi_PitchBend_Unipolar,
     Midi_PitchBend_Bipolar,
     Midi_ModWheel_Unipolar,
     Midi_ModWheel_Bipolar,
     Midi_Toggle_Unipolar,
     Midi_Toggle_Bipolar,
-    AmpEnv,
-    FilterEnv,
+    AmpEnv_Unipolar,
+    AmpEnv_Bipolar,
+    FilterEnv_Unipolar,
+    FilterEnv_Bipolar,
     Lfo1_Unipolar,
     Lfo1_Bipolar,
     Lfo2_Unipolar,
@@ -335,19 +338,24 @@ begin
     TModSource.None:                    result := 'None';
     TModSource.Midi_Note:               result := 'MIDI Note' + UnipolarStr;
     TModSource.Midi_Velocity:           result := 'MIDI Velocity'  + UnipolarStr;
+    TModSource.Midi_PitchBend_Unipolar: result := 'MIDI Pitchbend' + UnipolarStr;
     TModSource.Midi_PitchBend_Bipolar:  result := 'MIDI Pitchbend' + BipolarStr;
     TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel'  + UnipolarStr;
     TModSource.Midi_ModWheel_Bipolar:   result := 'MIDI Modwheel'  + BipolarStr;
     TModSource.Midi_Toggle_Unipolar:    result := 'MIDI Toggle' + UnipolarStr;
     TModSource.Midi_Toggle_Bipolar:     result := 'MIDI Toggle' + BipolarStr;
-    TModSource.AmpEnv:                  result := 'Amp Envelope';
-    TModSource.FilterEnv:               result := 'Filter Envelope';
+    TModSource.AmpEnv_Unipolar:         result := 'Amp Envelope' + UnipolarStr;
+    TModSource.AmpEnv_Bipolar:          result := 'Amp Envelope' + BipolarStr;
+    TModSource.FilterEnv_Unipolar:      result := 'Filter Envelope' + UnipolarStr;
+    TModSource.FilterEnv_Bipolar:       result := 'Filter Envelope' + BipolarStr;
     TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
     TModSource.Lfo1_BiPolar:            result := 'LFO 1' + BipolarStr;
     TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
     TModSource.Lfo2_BiPolar:            result := 'LFO 2' + BipolarStr;
-    TModSource.StepSeq1_Unipolar:                result := 'Step Sequencer 1';
-    TModSource.StepSeq2_Unipolar:                result := 'Step Sequencer 2';
+    TModSource.StepSeq1_Unipolar:       result := 'Step Sequencer 1' + UnipolarStr;
+    TModSource.StepSeq1_Bipolar:        result := 'Step Sequencer 1' + BipolarStr;
+    TModSource.StepSeq2_Unipolar:       result := 'Step Sequencer 2' + UnipolarStr;
+    TModSource.StepSeq2_Bipolar:        result := 'Step Sequencer 2' + BipolarStr;
   else
     result := inherited;
   end;
@@ -362,19 +370,24 @@ begin
     TModSource.None:                    result := '-';
     TModSource.Midi_Note:               result := 'Note';
     TModSource.Midi_Velocity:           result := 'Velocity';
-    TModSource.Midi_PitchBend_Bipolar:  result := 'Pitchbend';
+    TModSource.Midi_PitchBend_Unipolar: result := 'Pitchbend' + UnipolarStr;
+    TModSource.Midi_PitchBend_Bipolar:  result := 'Pitchbend' + BipolarStr;
     TModSource.Midi_ModWheel_Unipolar:  result := 'Modwheel'  + UnipolarStr;
     TModSource.Midi_ModWheel_Bipolar:   result := 'Modwheel'  + BipolarStr;
     TModSource.Midi_Toggle_Unipolar:    result := 'Toggle' + UnipolarStr;
     TModSource.Midi_Toggle_Bipolar:     result := 'Toggle' + BipolarStr;
-    TModSource.AmpEnv:                  result := 'Amp Env';
-    TModSource.FilterEnv:               result := 'Filter Env';
+    TModSource.AmpEnv_Unipolar:         result := 'Amp Env' + UnipolarStr;
+    TModSource.AmpEnv_Bipolar:          result := 'Amp Env' + BipolarStr;
+    TModSource.FilterEnv_Unipolar:      result := 'Filter Env' + UnipolarStr;
+    TModSource.FilterEnv_Bipolar:       result := 'Filter Env' + BipolarStr;
     TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
     TModSource.Lfo1_BiPolar:            result := 'LFO 1' + BipolarStr;
     TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
     TModSource.Lfo2_BiPolar:            result := 'LFO 2' + BipolarStr;
-    TModSource.StepSeq1_Unipolar:                result := 'Seq 1';
-    TModSource.StepSeq2_Unipolar:                result := 'Seq 2';
+    TModSource.StepSeq1_Unipolar:       result := 'Seq 1' + UnipolarStr;
+    TModSource.StepSeq1_Bipolar:        result := 'Seq 1' + BipolarStr;
+    TModSource.StepSeq2_Unipolar:       result := 'Seq 2' + UnipolarStr;
+    TModSource.StepSeq2_Bipolar:        result := 'Seq 2' + BipolarStr;
   else
     result := inherited;
   end;

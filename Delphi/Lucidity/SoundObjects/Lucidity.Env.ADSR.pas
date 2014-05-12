@@ -37,6 +37,9 @@ type
   protected
     fADSR : TADSR;
 
+    ModOutput_Unipolar : single;
+    ModOutput_Bipolar : single;
+
     procedure UpdateParameters;
 
     property AttackTime   :single read fAttackTime   write SetAttackTime;    // range is 0..1
@@ -105,7 +108,11 @@ end;
 
 function TLucidityADSR.GetModPointer(const Name: string): PSingle;
 begin
-  result := fADSR.GetModPointer(Name);
+  if Name = 'EnvOut_Uni' then exit(@ModOutput_Unipolar);
+  if Name = 'EnvOut_Bi' then exit(@ModOutput_Bipolar);
+
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
+  result := nil;
 end;
 
 procedure TLucidityADSR.SetAttackTime(const Value: single);
@@ -204,11 +211,17 @@ procedure TLucidityADSR.StepResetA;
 begin
   UpdateParameters;
   fADSR.StepReset;
+
+  ModOutput_Unipolar := 0;
+  ModOutput_Bipolar  := -1;
 end;
 
 procedure TLucidityADSR.FastControlProcess;
 begin
   fADSR.Step;
+
+  ModOutput_Unipolar := fAdsr.Value;
+  ModOutput_Bipolar  := fAdsr.Value * 2 - 1;
 end;
 
 procedure TLucidityADSR.SlowControlProcess;
