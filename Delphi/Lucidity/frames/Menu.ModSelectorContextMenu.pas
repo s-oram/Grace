@@ -7,18 +7,22 @@ uses
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
 type
+  TModSourceMenu = TEnumMenu<TModSource>;
+
   TModSelectorContextMenu = class(TCustomPopupMenu)
   private
   protected
     Menu : TPopUpMenu;
-    ModSourceMenu : TEnumMenu<TModSource>;
-    ModViaMenu    : TEnumMenu<TModSource>;
+    ModSourceMenu : TModSourceMenu;
+    ModViaMenu    : TModSourceMenu;
     ModSlotIndex  : integer;
 
     procedure Handle_ModSourceSelected(Sender : TObject; aSource : TModSource);
     procedure Handle_ModViaSelected(Sender : TObject; aSource : TModSource);
 
     procedure Handle_ToggleModulationMute(Sender : TObject);
+
+    procedure Init;
   public
     constructor Create;
     destructor Destroy; override;
@@ -29,15 +33,96 @@ type
 implementation
 
 uses
+  SysUtils,
   Lucidity.Interfaces,
   uConstants;
+
+
+procedure SortModMenu(const aMenu : TModSourceMenu);
+  procedure MoveItemToMenu(const DestMenu : TMenuItem; const SourceMenu : TModSourceMenu; const Item : TModSource);
+  var
+    mi : TMenuItem;
+  begin
+    mi := SourceMenu.FindMenuItemByEnum(Item);
+    SourceMenu.Items.Remove(mi);
+    DestMenu.Add(mi);
+    // Check the parent menu so the user can find the current checked item even
+    // when buried in a child menu.
+    if mi.Checked
+      then DestMenu.Checked := true;
+  end;
+var
+  UnipolarMenu : TMenuItem;
+  BipolarMenu  : TMenuItem;
+  SpacerMI : TMenuItem;
+  mi : TMenuItem;
+begin
+  UnipolarMenu := TMenuItem.Create(aMenu.Menu);
+  BipolarMenu  := TMenuItem.Create(aMenu.Menu);
+
+  UnipolarMenu.Caption := 'Unipolar';
+  BipolarMenu.Caption := 'Bipolar';
+
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Note_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Velocity_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_PitchBend_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_ModWheel_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Toggle_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.AmpEnv_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.FilterEnv_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Lfo1_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Lfo2_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq1_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq2_Unipolar);
+
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Note_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Velocity_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_PitchBend_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_ModWheel_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Toggle_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.AmpEnv_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.FilterEnv_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Lfo1_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Lfo2_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq1_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq2_Bipolar);
+
+  aMenu.Items.Add(UnipolarMenu);
+  aMenu.Items.Add(BipolarMenu);
+
+  SpacerMI := TMenuItem.Create(aMenu.Menu);
+  SpacerMI.Caption := '-';
+  aMenu.Items.Add(SpacerMI);
+
+  mi := aMenu.Items[0];
+  aMenu.Items.Remove(mi);
+  aMenu.Items.Add(mi);
+
+
+end;
 
 { TModSelectorContextMenu }
 
 constructor TModSelectorContextMenu.Create;
+begin
+end;
+
+destructor TModSelectorContextMenu.Destroy;
+begin
+  ModSourceMenu.Free;
+  ModViaMenu.Free;
+  Menu.Free;
+  inherited;
+end;
+
+procedure TModSelectorContextMenu.Init;
 var
   mi : TMenuItem;
 begin
+  if assigned(ModSourceMenu) then FreeAndNil(ModSourceMenu);
+  if assigned(ModViaMenu)    then FreeAndNil(ModViaMenu);
+  if assigned(Menu)          then FreeAndNil(Menu);
+
   ModSourceMenu := TEnumMenu<TModSource>.Create(TModSourceHelper);
   ModSourceMenu.Items.Caption := 'Mod Source';
   ModSourceMenu.OnItemSelected := Handle_ModSourceSelected;
@@ -46,11 +131,9 @@ begin
   ModViaMenu.Items.Caption := 'Mod Via';
   ModViaMenu.OnItemSelected := Handle_ModViaSelected;
 
-
   Menu := TPopUpMenu.Create(nil);
   Menu.Items.Add(ModSourceMenu.Items);
   Menu.Items.Add(ModViaMenu.Items);
-
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Mute Modulation';
@@ -61,16 +144,8 @@ begin
   mi.Caption := 'Un-mute Modulation';
   mi.OnClick := self.Handle_ToggleModulationMute;
   Menu.Items.Add(mi);
-
 end;
 
-destructor TModSelectorContextMenu.Destroy;
-begin
-  ModSourceMenu.Free;
-  ModViaMenu.Free;
-  Menu.Free;
-  inherited;
-end;
 
 procedure TModSelectorContextMenu.Popup(const aModSlotIndex : integer; const x, y: integer);
 var
@@ -84,6 +159,9 @@ var
 begin
   kg := Plugin.ActiveKeyGroup;
   if not assigned(kg) then exit;
+
+
+  Init; // important! initialise the menu
 
   ModSlotIndex := aModSlotIndex;
 
@@ -102,11 +180,17 @@ begin
     mi.Checked := true;
   end;
 
+
+
   mi :=  ModViaMenu.FindMenuItemByEnum(ModVia);
   if assigned(mi) then
   begin
     mi.Checked := true;
   end;
+
+
+  SortModMenu(ModSourceMenu);
+  SortModMenu(ModViaMenu);
 
   IsMute := kg.GetModConnections.GetModMute(ModSlotIndex);
   if IsMute then
@@ -170,5 +254,6 @@ begin
     Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
   end;
 end;
+
 
 end.

@@ -333,8 +333,8 @@ end;
 
 class function TModSourceHelper.ToFullGuiString(aEnum: TModSource): string;
 const
-  UnipolarStr = ' +';
-  BipolarStr  = ' +/-';
+  UnipolarStr = '';
+  BipolarStr  = '';
 begin
   case aEnum of
     TModSource.None:                    result := 'None';
@@ -367,33 +367,34 @@ end;
 
 class function TModSourceHelper.ToShortGuiString(aEnum: TModSource): string;
 const
-  UnipolarStr = ' +';
-  BipolarStr  = ' +/-';
+  UnipolarStr = '+';
+  //BipolarStr  = '±';
+  BipolarStr  = '+/-';
 begin
   case aEnum of
     TModSource.None:                    result := '-';
-    TModSource.Midi_Note_Unipolar:      result := 'Note' + UnipolarStr;
-    TModSource.Midi_Note_Bipolar:       result := 'Note' + BipolarStr;
-    TModSource.Midi_Velocity_Unipolar:  result := 'Velocity'  + UnipolarStr;
-    TModSource.Midi_Velocity_Bipolar:   result := 'Velocity'  + BipolarStr;
-    TModSource.Midi_PitchBend_Unipolar: result := 'Pitchbend' + UnipolarStr;
-    TModSource.Midi_PitchBend_Bipolar:  result := 'Pitchbend' + BipolarStr;
-    TModSource.Midi_ModWheel_Unipolar:  result := 'Modwheel'  + UnipolarStr;
-    TModSource.Midi_ModWheel_Bipolar:   result := 'Modwheel'  + BipolarStr;
-    TModSource.Midi_Toggle_Unipolar:    result := 'Toggle' + UnipolarStr;
-    TModSource.Midi_Toggle_Bipolar:     result := 'Toggle' + BipolarStr;
+    TModSource.Midi_Note_Unipolar:      result := 'Note'    + UnipolarStr;
+    TModSource.Midi_Note_Bipolar:       result := 'Note'    + BipolarStr;
+    TModSource.Midi_Velocity_Unipolar:  result := 'Vel'     + UnipolarStr;
+    TModSource.Midi_Velocity_Bipolar:   result := 'Vel'     + BipolarStr;
+    TModSource.Midi_PitchBend_Unipolar: result := 'P.Bend'  + UnipolarStr;
+    TModSource.Midi_PitchBend_Bipolar:  result := 'P.Bend'  + BipolarStr;
+    TModSource.Midi_ModWheel_Unipolar:  result := 'Mod Whl' + UnipolarStr;
+    TModSource.Midi_ModWheel_Bipolar:   result := 'Mod Whl' + BipolarStr;
+    TModSource.Midi_Toggle_Unipolar:    result := 'Toggle'  + UnipolarStr;
+    TModSource.Midi_Toggle_Bipolar:     result := 'Toggle'  + BipolarStr;
     TModSource.AmpEnv_Unipolar:         result := 'Amp Env' + UnipolarStr;
     TModSource.AmpEnv_Bipolar:          result := 'Amp Env' + BipolarStr;
-    TModSource.FilterEnv_Unipolar:      result := 'Filter Env' + UnipolarStr;
-    TModSource.FilterEnv_Bipolar:       result := 'Filter Env' + BipolarStr;
-    TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
-    TModSource.Lfo1_BiPolar:            result := 'LFO 1' + BipolarStr;
-    TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
-    TModSource.Lfo2_BiPolar:            result := 'LFO 2' + BipolarStr;
-    TModSource.StepSeq1_Unipolar:       result := 'Seq 1' + UnipolarStr;
-    TModSource.StepSeq1_Bipolar:        result := 'Seq 1' + BipolarStr;
-    TModSource.StepSeq2_Unipolar:       result := 'Seq 2' + UnipolarStr;
-    TModSource.StepSeq2_Bipolar:        result := 'Seq 2' + BipolarStr;
+    TModSource.FilterEnv_Unipolar:      result := 'Mod Env' + UnipolarStr;
+    TModSource.FilterEnv_Bipolar:       result := 'Mod Env' + BipolarStr;
+    TModSource.Lfo1_UniPolar:           result := 'LFO1'    + UnipolarStr;
+    TModSource.Lfo1_BiPolar:            result := 'LFO1'    + BipolarStr;
+    TModSource.Lfo2_UniPolar:           result := 'LFO2'    + UnipolarStr;
+    TModSource.Lfo2_BiPolar:            result := 'LFO2'    + BipolarStr;
+    TModSource.StepSeq1_Unipolar:       result := 'Seq1'    + UnipolarStr;
+    TModSource.StepSeq1_Bipolar:        result := 'Seq1'    + BipolarStr;
+    TModSource.StepSeq2_Unipolar:       result := 'Seq2'    + UnipolarStr;
+    TModSource.StepSeq2_Bipolar:        result := 'Seq2'    + BipolarStr;
   else
     result := inherited;
   end;
