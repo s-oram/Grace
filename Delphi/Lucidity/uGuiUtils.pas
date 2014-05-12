@@ -72,10 +72,24 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
+
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
-    class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
-    class procedure ClearAllModulationForParameter(const Plugin : TeePlugin; const ModParIndex : integer); static;
+
+    class procedure ClearCurrentModulationForParameter(const Plugin : TeePlugin; const ParName :string); static;
+    class procedure ClearAllModulationForParameter(const Plugin : TeePlugin; const ParName : string); static;
+    class procedure ClearModulationForParameter(const Plugin : TeePlugin; const ParName : string; const ModSlot : integer); static;
+
+    class function IsParameterModulated(const Plugin : TeePlugin; const ParName : string):boolean; overload; static;
+    class function IsParameterModulated(const Plugin : TeePlugin; const ParName : string; const ModSlot : integer):boolean; overload; static;
+
+    class function GetModSlotSource(const Plugin : TeePlugin; const ModSlot : integer):string; static;
+
+    // TODO: delete these old parameters.
+    class procedure ClearCurrentModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
+    class procedure ClearAllModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
+
+
 
     class function GetParValue(const Plugin : TeePlugin; const Par : TPluginParameter):single; overload; static;
     class function GetParValue<TEnum>(const Plugin : TeePlugin; const Par : TPluginParameter):TEnum; overload; static;
@@ -579,7 +593,7 @@ begin
 end;
 
 
-class procedure Command.ClearAllModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
+class procedure Command.ClearAllModulationForParameter_OLD(const Plugin: TeePlugin; const ModParIndex: integer);
 var
   kg : IKeyGroup;
   c1: Integer;
@@ -595,7 +609,105 @@ begin
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
 end;
 
-class procedure Command.ClearCurrentModulationForParameter(const Plugin: TeePlugin; const ModParIndex: integer);
+class function Command.IsParameterModulated(const Plugin: TeePlugin; const ParName: string): boolean;
+var
+  kg : IKeyGroup;
+  c1: Integer;
+  ModParIndex : integer;
+  Par : TPluginParameter;
+  ModAmount : single;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit(false);
+
+  Par := PluginParFromName(ParName);
+  ModParIndex := GetModParIndex(Par);
+  if ModParIndex = -1 then exit(false);
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    ModAmount := kg.GetModParModAmount(ModParIndex, c1);
+    if ModAmount <> 0
+      then exit(true);
+  end;
+
+  // === no modulation if we've made it this far..
+
+  result := false;
+end;
+
+class function Command.IsParameterModulated(const Plugin: TeePlugin; const ParName: string; const ModSlot: integer): boolean;
+var
+  kg : IKeyGroup;
+  ModParIndex : integer;
+  Par : TPluginParameter;
+  ModAmount : single;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit(false);
+
+  Par := PluginParFromName(ParName);
+  ModParIndex := GetModParIndex(Par);
+  if ModParIndex = -1 then exit(false);
+
+  ModAmount := kg.GetModParModAmount(ModParIndex, ModSlot);
+    if ModAmount <> 0
+      then result := true
+      else result := false;
+end;
+
+
+
+
+
+
+
+class procedure Command.ClearAllModulationForParameter(const Plugin: TeePlugin; const ParName: string);
+var
+  kg : IKeyGroup;
+  c1: Integer;
+  ModParIndex : integer;
+  Par : TPluginParameter;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
+  Par := PluginParFromName(ParName);
+  ModParIndex := GetModParIndex(Par);
+  if ModParIndex = -1 then exit;
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    kg.SetModParModAmount(ModParIndex, c1, 0);
+  end;
+
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
+end;
+
+class procedure Command.ClearCurrentModulationForParameter(const Plugin: TeePlugin; const ParName: string);
+var
+  kg : IKeyGroup;
+  CurrentModSlot: Integer;
+  ModParIndex : integer;
+  Par : TPluginParameter;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
+  Par := PluginParFromName(ParName);
+  ModParIndex := GetModParIndex(Par);
+  if ModParIndex = -1 then exit;
+
+  CurrentModSlot := Plugin.Globals.SelectedModSlot;
+  if CurrentModSlot = -1 then exit;
+
+  kg.SetModParModAmount(ModParIndex, CurrentModSlot, 0);
+
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
+end;
+
+
+class procedure Command.ClearCurrentModulationForParameter_OLD(const Plugin: TeePlugin; const ModParIndex: integer);
 var
   ModSlot : integer;
   kg : IKeyGroup;
@@ -610,6 +722,45 @@ begin
 
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
 end;
+
+class procedure Command.ClearModulationForParameter(const Plugin: TeePlugin; const ParName: string; const ModSlot: integer);
+var
+  kg : IKeyGroup;
+  ModParIndex : integer;
+  Par : TPluginParameter;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit;
+
+  Par := PluginParFromName(ParName);
+  ModParIndex := GetModParIndex(Par);
+  if ModParIndex = -1 then exit;
+
+  kg.SetModParModAmount(ModParIndex, ModSlot, 0);
+
+  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
+end;
+
+
+class function Command.GetModSlotSource(const Plugin: TeePlugin; const ModSlot: integer): string;
+var
+  kg : IKeyGroup;
+  ModConnections : TModConnections;
+  ModSource : TModSource;
+  ModSourceText : string;
+begin
+  kg := Plugin.ActiveKeyGroup;
+  if not assigned(kg) then exit('');
+
+  ModConnections := kg.GetModConnections;
+
+  ModSource := ModConnections.GetModSource(ModSlot);
+  ModSourceText := TModSourceHelper.ToFullGuiString(ModSource);
+
+  result := ModSourceText;
+end;
+
+
 
 class function Command.GetParValue(const Plugin: TeePlugin; const Par: TPluginParameter): single;
 var

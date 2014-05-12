@@ -20,6 +20,9 @@ type
     Menu : TPopUpMenu;
     fTargetParameterName: string;
   protected
+    procedure Handle_RemoveCurrentModulation(Sender:TObject);
+    procedure Handle_RemoveAllModulation(Sender:TObject);
+    procedure Handle_RemoveModulationFromModSlot(Sender : TObject);
     procedure Handle_MidiLearn(Sender:TObject);
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
@@ -404,13 +407,60 @@ end;
 
 procedure TKnobContextMenu.Popup(const x, y: integer);
 var
-  mi     : TMenuItem;
+  c1 : integer;
+  mi : TMenuItem;
   miMidiLearn : TMenuItem;
   MidiBinding : IMidiBinding;
   MidiCC : integer;
   Text : string;
+  ModSlotInfo : string;
 begin
   Menu.Items.Clear;
+
+
+
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Remove Current Modulation';
+  mi.OnClick := Handle_RemoveCurrentModulation;
+  if (Plugin.Globals.SelectedModSlot <> -1) and (Command.IsParameterModulated(Plugin, TargetParameterName))
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Remove All Modulation';
+  mi.OnClick := Handle_RemoveAllModulation;
+  if (Command.IsParameterModulated(Plugin, TargetParameterName))
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  Menu.Items.Add(mi);
+
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    if Command.IsParameterModulated(Plugin, TargetParameterName, c1) then
+    begin
+      ModSlotInfo := 'Mod Slot ' + IntToStr(c1+1) + ' - ';
+      mi := TMenuItem.Create(Menu);
+      mi.Caption := 'Remove Modulation: ' + ModSlotInfo + Command.GetModSlotSource(Plugin, c1);
+      mi.Tag := c1;
+      mi.OnClick := Handle_RemoveModulationFromModSlot;
+      Menu.Items.Add(mi);
+    end;
+  end;
+
+
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+
+
 
     // Rebuild the context menu before showing it.
   mi := TMenuItem.Create(Menu);
@@ -485,7 +535,6 @@ var
   MidiCC : integer;
   Error : boolean;
   ErrorMessage : string;
-
   MidiBinding : IMidiBinding;
 begin
   assert(Sender is TMenuItem);
@@ -537,6 +586,22 @@ begin
   end;
 end;
 
+procedure TKnobContextMenu.Handle_RemoveAllModulation(Sender: TObject);
+begin
+  Command.ClearAllModulationForParameter(Plugin, TargetParameterName);
+end;
 
+procedure TKnobContextMenu.Handle_RemoveCurrentModulation(Sender: TObject);
+begin
+  Command.ClearCurrentModulationForParameter(Plugin, TargetParameterName);
+end;
+
+procedure TKnobContextMenu.Handle_RemoveModulationFromModSlot(Sender: TObject);
+var
+  Tag : integer;
+begin
+  Tag := (Sender as TMenuItem).Tag;
+  Command.ClearModulationForParameter(Plugin, TargetParameterName, Tag);
+end;
 
 end.

@@ -303,12 +303,12 @@ begin
 
   if Caption = Caption_ClearCurrentModulation then
   begin
-    Command.ClearCurrentModulationForParameter(Plugin, ModParIndex);
+    Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
   end;
 
   if Caption = Caption_ClearAllModulation then
   begin
-    Command.ClearAllModulationForParameter(Plugin, ModParIndex);
+    Command.ClearAllModulationForParameter_OLD(Plugin, ModParIndex);
   end;
 
 
