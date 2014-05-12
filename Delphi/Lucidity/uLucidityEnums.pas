@@ -84,8 +84,10 @@ type
 
   TModSource = (
     None,
-    Midi_Note,
-    Midi_Velocity,
+    Midi_Note_Unipolar,
+    Midi_Note_Bipolar,
+    Midi_Velocity_Unipolar,
+    Midi_Velocity_Bipolar,
     Midi_PitchBend_Unipolar,
     Midi_PitchBend_Bipolar,
     Midi_ModWheel_Unipolar,
@@ -336,8 +338,10 @@ const
 begin
   case aEnum of
     TModSource.None:                    result := 'None';
-    TModSource.Midi_Note:               result := 'MIDI Note' + UnipolarStr;
-    TModSource.Midi_Velocity:           result := 'MIDI Velocity'  + UnipolarStr;
+    TModSource.Midi_Note_Unipolar:      result := 'MIDI Note' + UnipolarStr;
+    TModSource.Midi_Note_Bipolar:       result := 'MIDI Note' + BipolarStr;
+    TModSource.Midi_Velocity_Unipolar:  result := 'MIDI Velocity'  + UnipolarStr;
+    TModSource.Midi_Velocity_Bipolar:   result := 'MIDI Velocity'  + BipolarStr;
     TModSource.Midi_PitchBend_Unipolar: result := 'MIDI Pitchbend' + UnipolarStr;
     TModSource.Midi_PitchBend_Bipolar:  result := 'MIDI Pitchbend' + BipolarStr;
     TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel'  + UnipolarStr;
@@ -368,8 +372,10 @@ const
 begin
   case aEnum of
     TModSource.None:                    result := '-';
-    TModSource.Midi_Note:               result := 'Note';
-    TModSource.Midi_Velocity:           result := 'Velocity';
+    TModSource.Midi_Note_Unipolar:      result := 'Note' + UnipolarStr;
+    TModSource.Midi_Note_Bipolar:       result := 'Note' + BipolarStr;
+    TModSource.Midi_Velocity_Unipolar:  result := 'Velocity'  + UnipolarStr;
+    TModSource.Midi_Velocity_Bipolar:   result := 'Velocity'  + BipolarStr;
     TModSource.Midi_PitchBend_Unipolar: result := 'Pitchbend' + UnipolarStr;
     TModSource.Midi_PitchBend_Bipolar:  result := 'Pitchbend' + BipolarStr;
     TModSource.Midi_ModWheel_Unipolar:  result := 'Modwheel'  + UnipolarStr;

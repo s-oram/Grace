@@ -298,7 +298,7 @@ begin
   begin
     //TODO: currently TModSource.Midi_Note is out of range. this check
     // will need to be updated once the Midi_note range is updated.
-    if TModSourceHelper.ToEnum(c1) <> TModsource.Midi_Note then
+    if TModSourceHelper.ToEnum(c1) <> TModsource.Midi_Note_Unipolar then
     begin
       x := fModSourceValues[c1]^;
       if InRange(x, 0, 1) = false then

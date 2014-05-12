@@ -247,7 +247,7 @@ begin
   HasBeenQuickReleased := false;
   AmpLevel := 0;
 
-  ModPoints.MidiNote := 0;
+  ModPoints.MidiNote_Unipolar := 0;
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
   Globals.AddEventListener(TPluginEvent.TempoChanged,      TempoChanged);
@@ -255,8 +255,10 @@ begin
 
   ModMatrix := TModMatrix.Create;
 
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Note, @ModPoints.MidiNote);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity, @ModPoints.MidiVelocity);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Note_Unipolar, @ModPoints.MidiNote_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Note_Bipolar, @ModPoints.MidiNote_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity_Unipolar, @ModPoints.MidiVelocity_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity_Bipolar, @ModPoints.MidiVelocity_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Unipolar, @GlobalModPoints^.Source_MidiPitchbend_Unipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Bipolar, @GlobalModPoints^.Source_MidiPitchbend_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Unipolar, @GlobalModPoints^.Source_MidiModWheel_Unipolar);
@@ -578,16 +580,20 @@ begin
     // NOTE: The goal of MIDI Note as a mod source is something similar to 1 volt per octave
     // pitch scaling in modular synths. I want filters to be able to track the keyboard.
     CV := MidiNote / 12;
-    ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
+    ModPoints.MidiNote_Bipolar := ModPoints.MidiNote_Unipolar * 2 - 1;
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(MidiNote - 36);
   end else
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
-    ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
+    ModPoints.MidiNote_Bipolar := ModPoints.MidiNote_Unipolar * 2 - 1;
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
   end;
 
-  ModPoints.MidiVelocity := MidiVelocity / 127;
+  ModPoints.MidiVelocity_Unipolar := MidiVelocity / 127;
+  ModPoints.MidiVelocity_Bipolar  := MidiVelocity / 127 * 2 - 1;
+
   if Odd(GlobalModPoints.Source_TriggeredNoteCount) then
   begin
     ModPoints.MidiToggle_Bipolar  := -1;
@@ -737,7 +743,7 @@ begin
   end else
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
-    ModPoints.MidiNote := ModularVoltageToAudioRange(cv);
+    ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
   end;
 
