@@ -85,16 +85,22 @@ type
   TModSource = (
     None,
     Midi_Note,
-    Midi_PitchBend,
-    Midi_ModWheel,
     Midi_Velocity,
-    Midi_Toggle,
+    Midi_PitchBend_Bipolar,
+    Midi_ModWheel_Unipolar,
+    Midi_ModWheel_Bipolar,
+    Midi_Toggle_Unipolar,
+    Midi_Toggle_Bipolar,
     AmpEnv,
     FilterEnv,
-    Lfo1,
-    Lfo2,
-    StepSeq1,
-    StepSeq2
+    Lfo1_Unipolar,
+    Lfo1_Bipolar,
+    Lfo2_Unipolar,
+    Lfo2_Bipolar,
+    StepSeq1_Unipolar,
+    StepSeq1_Bipolar,
+    StepSeq2_Unipolar,
+    StepSeq2_Bipolar
   );
 
   {
@@ -321,40 +327,54 @@ end;
 { TModSourceHelper }
 
 class function TModSourceHelper.ToFullGuiString(aEnum: TModSource): string;
+const
+  UnipolarStr = ' +';
+  BipolarStr  = ' +/-';
 begin
   case aEnum of
-    TModSource.None:           result := 'None';
-    TModSource.Midi_Note:      result := 'MIDI Note';
-    TModSource.Midi_PitchBend: result := 'MIDI Pitchbend';
-    TModSource.Midi_ModWheel:  result := 'MIDI Modwheel';
-    TModSource.Midi_Velocity:  result := 'MIDI Velocity';
-    TModSource.Midi_Toggle:    result := 'MIDI Note Toggle';
-    TModSource.AmpEnv:         result := 'Amp Envelope';
-    TModSource.FilterEnv:      result := 'Filter Envelope';
-    TModSource.Lfo1:           result := 'LFO 1';
-    TModSource.Lfo2:           result := 'LFO 2';
-    TModSource.StepSeq1:       result := 'Step Sequencer 1';
-    TModSource.StepSeq2:       result := 'Step Sequencer 2';
+    TModSource.None:                    result := 'None';
+    TModSource.Midi_Note:               result := 'MIDI Note' + UnipolarStr;
+    TModSource.Midi_Velocity:           result := 'MIDI Velocity'  + UnipolarStr;
+    TModSource.Midi_PitchBend_Bipolar:  result := 'MIDI Pitchbend' + BipolarStr;
+    TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel'  + UnipolarStr;
+    TModSource.Midi_ModWheel_Bipolar:   result := 'MIDI Modwheel'  + BipolarStr;
+    TModSource.Midi_Toggle_Unipolar:    result := 'MIDI Toggle' + UnipolarStr;
+    TModSource.Midi_Toggle_Bipolar:     result := 'MIDI Toggle' + BipolarStr;
+    TModSource.AmpEnv:                  result := 'Amp Envelope';
+    TModSource.FilterEnv:               result := 'Filter Envelope';
+    TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
+    TModSource.Lfo1_BiPolar:            result := 'LFO 1' + BipolarStr;
+    TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
+    TModSource.Lfo2_BiPolar:            result := 'LFO 2' + BipolarStr;
+    TModSource.StepSeq1_Unipolar:                result := 'Step Sequencer 1';
+    TModSource.StepSeq2_Unipolar:                result := 'Step Sequencer 2';
   else
     result := inherited;
   end;
 end;
 
 class function TModSourceHelper.ToShortGuiString(aEnum: TModSource): string;
+const
+  UnipolarStr = ' +';
+  BipolarStr  = ' +/-';
 begin
   case aEnum of
-    TModSource.None:           result := '-';
-    TModSource.Midi_Note:      result := 'Note';
-    TModSource.Midi_PitchBend: result := 'P.Bend';
-    TModSource.Midi_ModWheel:  result := 'Modwheel';
-    TModSource.Midi_Velocity:  result := 'Velocity';
-    TModSource.Midi_Toggle:    result := 'Toggle';
-    TModSource.AmpEnv:         result := 'Amp Env';
-    TModSource.FilterEnv:      result := 'Filter Env';
-    TModSource.Lfo1:           result := 'LFO 1';
-    TModSource.Lfo2:           result := 'LFO 2';
-    TModSource.StepSeq1:       result := 'Seq 1';
-    TModSource.StepSeq2:       result := 'Seq 2';
+    TModSource.None:                    result := '-';
+    TModSource.Midi_Note:               result := 'Note';
+    TModSource.Midi_Velocity:           result := 'Velocity';
+    TModSource.Midi_PitchBend_Bipolar:  result := 'Pitchbend';
+    TModSource.Midi_ModWheel_Unipolar:  result := 'Modwheel'  + UnipolarStr;
+    TModSource.Midi_ModWheel_Bipolar:   result := 'Modwheel'  + BipolarStr;
+    TModSource.Midi_Toggle_Unipolar:    result := 'Toggle' + UnipolarStr;
+    TModSource.Midi_Toggle_Bipolar:     result := 'Toggle' + BipolarStr;
+    TModSource.AmpEnv:                  result := 'Amp Env';
+    TModSource.FilterEnv:               result := 'Filter Env';
+    TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
+    TModSource.Lfo1_BiPolar:            result := 'LFO 1' + BipolarStr;
+    TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
+    TModSource.Lfo2_BiPolar:            result := 'LFO 2' + BipolarStr;
+    TModSource.StepSeq1_Unipolar:                result := 'Seq 1';
+    TModSource.StepSeq2_Unipolar:                result := 'Seq 2';
   else
     result := inherited;
   end;

@@ -127,8 +127,10 @@ type
     Source_TriggeredNoteCount : cardinal;
     Source_MonophonicMidiNote : single;
     Source_MidiPitchBendST    : single; //Range is in semitones. Should it be CV?
-    Source_MidiPitchbend      : single; //range 0..1
-    Source_MidiModWheel       : single; //range 0..1
+    Source_MidiPitchbend_Unipolar : single; //range 0..1
+    Source_MidiPitchbend_Bipolar  : single; //range -1..1
+    Source_MidiModWheel_Unipolar  : single; //range 0..1
+    Source_MidiModWheel_Bipolar   : single; //range -1..1
     Source_PadX1              : single;
     Source_PadY1              : single;
     Source_PadX2              : single;
@@ -145,7 +147,8 @@ type
     // Modulation Input Points
     MidiNote                : single; //MIDI note. 0 = c2.
     MidiVelocity            : single; // range 0..1
-    MidiToggle              : single; // range 0 or 1.
+    MidiToggle_Unipolar     : single; // range 0 or 1.
+    MidiToggle_Bipolar      : single; // range -1 or 1.
     KeyFollowFreqMultiplier : single;
     SampleStart             : single;
     SampleEnd               : single;

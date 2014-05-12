@@ -42,7 +42,8 @@ type
 
     // Mod Data...
     ModClockInput : single;
-    ModSeqOutput  : single;
+    ModSeqOutput_Unipolar : single;
+    ModSeqOutput_Bipolar : single;
 
     TargetOutput : single;
 
@@ -91,7 +92,8 @@ begin
 
   fStepSeqClock := TSequencerClock.Div_1;
 
-  ModSeqOutput := 0;
+  ModSeqOutput_Unipolar := 0;
+  ModSeqOutput_Bipolar  := -1;
   TargetOutput := 0;
 
   SmoothingFilter := TCriticallyDampedLowpass.Create;
@@ -117,7 +119,8 @@ end;
 function TLucidyStepSequencer.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'ClockInput'    then Exit(@ModClockInput);
-  if Name = 'StepSeqOutput' then Exit(@ModSeqOutput);
+  if Name = 'StepSeqOutput_Uni' then Exit(@ModSeqOutput_Unipolar);
+  if Name = 'StepSeqOutput_Bi' then Exit(@ModSeqOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
@@ -185,8 +188,8 @@ begin
 
     TargetOutput := CurrentStepValues[fCurrentStep];
     SmoothingFilter.Reset(TargetOutput);
-    ModSeqOutput := TargetOutput;
-
+    ModSeqOutput_Unipolar := TargetOutput;
+    ModSeqOutput_Bipolar := TargetOutput * 2 - 1;
   end else
   begin
     x := StepSequencerLengthToInteger(StepCount);
@@ -195,7 +198,8 @@ begin
 
     TargetOutput  := CurrentStepValues[fCurrentStep];
     SmoothingFilter.Reset(TargetOutput);
-    ModSeqOutput := TargetOutput;
+    ModSeqOutput_Unipolar := TargetOutput;
+    ModSeqOutput_Bipolar  := TargetOutput * 2 - 1;
   end;
 
   //TODO: add a filter for the step sequencer and reset the filter output here.
@@ -262,6 +266,8 @@ begin
 end;
 
 procedure TLucidyStepSequencer.Step;
+var
+  x : single;
 begin
   if (UseInternalCounter) then
   begin
@@ -274,7 +280,10 @@ begin
   end;
 
 
-  ModSeqOutput := SmoothingFilter.Step(TargetOutput);
+  x := SmoothingFilter.Step(TargetOutput);
+
+  ModSeqOutput_Unipolar := x;
+  ModSeqOutput_Bipolar  := x * 2 - 1;
 
 end;
 

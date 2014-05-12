@@ -7,6 +7,7 @@ interface
 {$SCOPEDENUMS ON}
 
 uses
+  VamLib.Utils,
   eeDsp,
   B2.Filter.CriticallyDampedLowpass,
   VamLib.MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
@@ -43,7 +44,8 @@ type
     IsActive : boolean;
     VoiceClockManager : TLucidityVoiceClockManager;
     FModuleIndex  : integer;
-    LfoOutput     : single;
+    LfoOutput_Unipolar : single;
+    LfoOutput_Bipolar  : single;
 
     ActiveLfo     : TActiveLfo;
 
@@ -52,7 +54,7 @@ type
     SlopeGen      : TSlopeGen;
     RangeMult     : integer;
 
-    procedure UpdateLfoParameters;
+    procedure UpdateLfoParameters; inline;
   public
     constructor Create(const aModuleIndex : integer; const aVoiceClockManager : TLucidityVoiceClockManager);
     destructor Destroy; override;
@@ -81,21 +83,19 @@ type
     procedure SlowControlProcess;
   end;
 
-
-
+function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
+function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
 
 implementation
 
 uses
   eePitch,
-  VamLib.Utils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
 
 
 function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
-
   function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
   var
     LfoFreq : single;
@@ -200,7 +200,8 @@ end;
 
 function TLucidityLfo.GetModPointer(const Name: string): PSingle;
 begin
-  if Name = 'LfoOutput' then Exit(@LfoOutput);
+  if Name = 'LfoOutput_Uni' then Exit(@LfoOutput_Unipolar);
+  if Name = 'LfoOutput_Bi' then Exit(@LfoOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
@@ -308,12 +309,14 @@ begin
   UpdateLfoParameters;
 
   case ActiveLFO of
-    TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step;
-    TActiveLFO.Random:    LfoOutput := RandomLfo.Step;
-    TActiveLFO.Slope:     LfoOutput := 0;
+    TActiveLFO.WaveTable: LfoOutput_Unipolar := WaveTableLfo.Step;
+    TActiveLFO.Random:    LfoOutput_Unipolar := RandomLfo.Step;
+    TActiveLFO.Slope:     LfoOutput_Unipolar := 0;
   else
     raise Exception.Create('Type not handled');
   end;
+
+  LfoOutput_Bipolar := LfoOutput_Unipolar * 2 - 1;
 end;
 
 procedure TLucidityLfo.StepResetB;
@@ -381,9 +384,9 @@ var
   IsCycleEnd : boolean;
 begin
   case ActiveLFO of
-    TActiveLFO.WaveTable: LfoOutput := WaveTableLfo.Step(IsCycleEnd);
-    TActiveLFO.Random:    LfoOutput := RandomLfo.Step(IsCycleEnd);
-    TActiveLFO.Slope:     LfoOutput := SlopeGen.Step(IsCycleEnd);
+    TActiveLFO.WaveTable: LfoOutput_Unipolar := WaveTableLfo.Step(IsCycleEnd);
+    TActiveLFO.Random:    LfoOutput_Unipolar := RandomLfo.Step(IsCycleEnd);
+    TActiveLFO.Slope:     LfoOutput_Unipolar := SlopeGen.Step(IsCycleEnd);
   else
     raise Exception.Create('Type not handled');
   end;
@@ -405,6 +408,8 @@ begin
       then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
       else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
   end;
+
+  LfoOutput_Bipolar := LfoOutput_Unipolar * 2 - 1;
 end;
 
 procedure TLucidityLfo.SlowControlProcess;

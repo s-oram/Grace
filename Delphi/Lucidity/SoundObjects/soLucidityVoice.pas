@@ -94,8 +94,6 @@ type
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
-    LfoOut : Psingle;
-
     SampleGainCh1 : single;
     SampleGainCh2 : single;
     VoiceGainCh1 : single;
@@ -105,8 +103,6 @@ type
 
     Globals : TGlobals;
     GlobalModPoints : PGlobalModulationPoints;
-
-    TestToggle : single;
 
     ModPoints           : TVoiceModulationPoints;
     ModConnections      : PModConnections;    // Info about what the modulation sources are.
@@ -175,7 +171,7 @@ type
     property AmpEnv           : TLucidityADSR            read fAmpEnv           write fAmpEnv;
     property FilterEnv        : TLucidityADSR            read fFilterEnv        write fFilterEnv;
 
-    property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer;
+    property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer; //TODO: delete the output mixer.
     property FilterOne        : TLucidityFilter          read fFilterOne        write fFilterOne;
     property FilterTwo        : TLucidityFilter          read fFilterTwo        write fFilterTwo;
     property LfoA             : TLucidityLfo             read fLucidityLfoA     write fLucidityLfoA;
@@ -260,12 +256,12 @@ begin
   ModMatrix := TModMatrix.Create;
 
   ModMatrix.SetModSourcePointer(TModSource.Midi_Note, @ModPoints.MidiNote);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend, @GlobalModPoints^.Source_MidiPitchbend);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Modwheel, @GlobalModPoints^.Source_MidiModwheel);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity, @ModPoints.MidiVelocity);
-  //ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @ModPoints.MidiToggle);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle, @TestToggle);
-
+  ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Bipolar, @GlobalModPoints^.Source_MidiPitchbend_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Unipolar, @GlobalModPoints^.Source_MidiModWheel_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Bipolar, @GlobalModPoints^.Source_MidiModWheel_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Bipolar, @ModPoints.MidiToggle_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Unipolar, @ModPoints.MidiToggle_Unipolar);
 
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
@@ -289,17 +285,20 @@ begin
   FilterTwo := TLucidityFilter.Create(@ModPoints);
 
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
-  ModMatrix.SetModSourcePointer(TModSource.Lfo1, LfoA.GetModPointer('LfoOutput'));
-  LfoOut := LfoA.GetModPointer('LfoOutput');
+  ModMatrix.SetModSourcePointer(TModSource.Lfo1_UniPolar, LfoA.GetModPointer('LfoOutput_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.Lfo1_BiPolar,  LfoA.GetModPointer('LfoOutput_Bi'));
 
   LfoB := TLucidityLfo.Create(1, VoiceClockManager);
-  ModMatrix.SetModSourcePointer(TModSource.Lfo2, LfoB.GetModPointer('LfoOutput'));
+  ModMatrix.SetModSourcePointer(TModSource.Lfo2_UniPolar, LfoB.GetModPointer('LfoOutput_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.Lfo2_BiPolar,  LfoB.GetModPointer('LfoOutput_Bi'));
 
   StepSeqOne := TLucidyStepSequencer.Create(VoiceClockManager);
-  ModMatrix.SetModSourcePointer(TModSource.StepSeq1, StepSeqOne.GetModPointer('StepSeqOutput'));
+  ModMatrix.SetModSourcePointer(TModSource.StepSeq1_Unipolar, StepSeqOne.GetModPointer('StepSeqOutput_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.StepSeq1_Bipolar, StepSeqOne.GetModPointer('StepSeqOutput_Bi'));
 
   StepSeqTwo := TLucidyStepSequencer.Create(VoiceClockManager);
-  ModMatrix.SetModSourcePointer(TModSource.StepSeq2, StepSeqTwo.GetModPointer('StepSeqOutput'));
+  ModMatrix.SetModSourcePointer(TModSource.StepSeq2_Unipolar, StepSeqTwo.GetModPointer('StepSeqOutput_Uni'));
+  ModMatrix.SetModSourcePointer(TModSource.StepSeq2_Bipolar, StepSeqTwo.GetModPointer('StepSeqOutput_Bi'));
 
   OutputMixer := TOutputMixer.Create;
   OutputMixer.VoiceMixMain := 1;
@@ -586,14 +585,15 @@ begin
   end;
 
   ModPoints.MidiVelocity := MidiVelocity / 127;
-  {
-  if Odd(GlobalModPoints.Source_TriggeredNoteCount)
-    then ModPoints.MidiToggle := -1
-    else ModPoints.MidiToggle := 1;
-  }
-  if Odd(GlobalModPoints.Source_TriggeredNoteCount)
-    then TestToggle := -1
-    else TestToggle := 1;
+  if Odd(GlobalModPoints.Source_TriggeredNoteCount) then
+  begin
+    ModPoints.MidiToggle_Bipolar  := -1;
+    ModPoints.MidiToggle_Unipolar := 0;
+  end else
+  begin
+    ModPoints.MidiToggle_Bipolar  := 1;
+    ModPoints.MidiToggle_Unipolar := 1;
+  end;
 
   // call StepReset on all modulation sources.
   LfoA.StepResetA;

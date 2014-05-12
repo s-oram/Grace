@@ -45,11 +45,11 @@ constructor TModConnections.Create;
 begin
   self.fModSource[0] := TModSource.AmpEnv;
   self.fModSource[1] := TModSource.FilterEnv;
-  self.fModSource[2] := TModSource.Lfo1;
-  self.fModSource[3] := TModSource.Lfo2;
-  self.fModSource[4] := TModSource.StepSeq1;
-  self.fModSource[5] := TModSource.StepSeq2;
-  self.fModSource[6] := TModSource.Midi_ModWheel;
+  self.fModSource[2] := TModSource.Lfo1_UniPolar;
+  self.fModSource[3] := TModSource.Lfo2_UniPolar;
+  self.fModSource[4] := TModSource.StepSeq1_Unipolar;
+  self.fModSource[5] := TModSource.StepSeq2_Unipolar;
+  self.fModSource[6] := TModSource.Midi_ModWheel_Unipolar;
   //self.ModSource[7] := TModSource.Midi_Velocity; //TODO Add velocity as a mod source.
 end;
 

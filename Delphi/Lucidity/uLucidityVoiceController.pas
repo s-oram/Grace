@@ -320,7 +320,9 @@ end;
 procedure TLucidityVoiceController.Modwheel(const Value: single);
 begin
   assert(InRange(Value, 0,1));
-  GlobalModPoints^.Source_MidiModWheel := Value;
+  GlobalModPoints^.Source_MidiModWheel_Unipolar := Value;
+  GlobalModPoints^.Source_MidiModWheel_Bipolar  := Value * 2 - 1;
+
 end;
 
 function TLucidityVoiceController.GetActiveVoiceCount: integer;
@@ -609,9 +611,14 @@ begin
   if PitchBend_Current <> PitchBend_Target then
   begin
     PitchBend_Current := PitchBend_Filter.Step(PitchBend_Target);
+    assert(PitchBend_Current >= -1);
+    assert(PitchBend_Current <= 1);
+
     GlobalModPoints.Source_MidiPitchBendST := PitchBend_Current  * 12; // Multiple by 12 to have +/-12 semitones pitch shift.
-    GlobalModPoints.Source_MidiPitchbend   := PitchBend_Current * 0.5 + 0.5; //convert to standard 0..1 parmodulation input range.
-    assert(InRange(GlobalModPoints.Source_MidiPitchbend, 0, 1));
+    GlobalModPoints.Source_MidiPitchbend_Unipolar := PitchBend_Current * 0.5 + 0.5; //convert to standard 0..1 parmodulation input range.
+    GlobalModPoints.Source_MidiPitchbend_Bipolar  := PitchBend_Current;
+
+    assert(InRange(GlobalModPoints.Source_MidiPitchbend_Unipolar, 0, 1));
   end;
 
 end;
