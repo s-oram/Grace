@@ -694,8 +694,7 @@ begin
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
     begin
-      v^.OneShotSampleOsc.LoopMode := Value;
-      v^.LoopSampleOsc.LoopMode    := Value;
+      v^.LoopMode := Value;
     end
   );
 end;
@@ -920,11 +919,10 @@ begin
   aVoice.GrainStretchOsc.GrainRate       := GrainRate;
   aVoice.GrainStretchOsc.GrainPosition   := GrainPosition;
 
-  aVoice.OneShotSampleOsc.LoopBounds       := SamplerLoopBounds;
-  aVoice.LoopSampleOsc.LoopBounds          := SamplerLoopBounds;
+  aVoice.OneShotSampleOsc.LoopBounds     := SamplerLoopBounds;
+  aVoice.LoopSampleOsc.LoopBounds        := SamplerLoopBounds;
 
-  aVoice.OneShotSampleOsc.LoopMode       := SamplerLoopMode;
-  aVoice.LoopSampleOsc.LoopMode          := SamplerLoopMode;
+  aVoice.LoopMode                        := SamplerLoopMode;
 
   aVoice.OutputMixer.VoiceMixAuxA        := MixAuxA;
   aVoice.OutputMixer.VoiceMixAuxB        := MixAuxB;

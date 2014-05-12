@@ -85,12 +85,14 @@ type
     fLevelMonitor: TLevelMonitor;
     fKeyGroupID: TKeyGroupID;
     fKeyGroup : IKeyGroup;
+    fLoopMode: TSamplerLoopMode;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
     procedure SetVoiceGlide(const Value: single);
     procedure SetPitchTracking(const Value: TPitchTracking);
     procedure SetFilterRouting(const Value: TFilterRouting);
+    procedure SetLoopMode(const Value: TSamplerLoopMode);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
@@ -184,6 +186,7 @@ type
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
     //===== Parameters ======
+    property LoopMode           : TSamplerLoopMode    read fLoopMode           write SetLoopMode;
     property SamplePlaybackType : TSamplePlaybackType read fSamplePlaybackType write SetSamplePlaybackType;
     property PitchTracking      : TPitchTracking      read fPitchTracking      write SetPitchTracking;
     property VoiceMode          : TVoiceMode          read fVoiceMode          write fVoiceMode;
@@ -415,6 +418,13 @@ begin
   end;
 end;
 
+procedure TLucidityVoice.SetLoopMode(const Value: TSamplerLoopMode);
+begin
+  fLoopMode := Value;
+
+  OneShotSampleOsc.LoopMode := Value;
+end;
+
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);
 begin
   fPitchTracking := Value;
@@ -498,8 +508,6 @@ procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSamp
 var
   CV : TModularVoltage;
 begin
-  LogMain.LogMessage('Trigger: Note = ' + IntToStr(MidiNote) );
-
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
   //assert(MidiNote >= 0);
@@ -702,7 +710,6 @@ begin
 
     if assigned(OnFinish) then OnFinish(self);
   except
-    LogMain.LogException('TLucidityVoice.CleanUp');
     raise;
   end;
 end;

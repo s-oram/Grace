@@ -168,34 +168,6 @@ begin
   SampleBounds^.SampleEnd   := SampleEnd;
   SampleBounds^.LoopStart   := LoopStart;
   SampleBounds^.LoopEnd     := LoopEnd;
-
-
-
-  //TODO: delete this comment.
-  {
-
-  if LoopX1 < SampleX1 then LoopX1 := SampleX1;
-  if LoopX2 > SampleX2 then LoopX2 := SampleX2;
-
-  Clamp(SampleX1, 0, SampleFrames-1);
-  Clamp(SampleX2, 0, SampleFrames-1);
-  Clamp(LoopX1,   0, SampleFrames-1);
-  Clamp(LoopX2,   0, SampleFrames-1);
-
-
-  SampleX1 := aSampleRegion.GetZeroCrossings.FindNearestZeroCrossingIndex(round(SampleX1));
-  SampleX2 := aSampleRegion.GetZeroCrossings.FindNearestZeroCrossingIndex(round(SampleX2));
-
-  LoopX1 := aSampleRegion.GetZeroCrossings.FindNearestZeroCrossingIndex(round(LoopX1));
-  LoopX2 := aSampleRegion.GetZeroCrossings.FindNearestZeroCrossingIndex(round(LoopX2));
-
-  SampleBounds^.AbsoluteSampleStart := 0;
-  SampleBounds^.AbsoluteSampleEnd   := SampleFrames-1;
-  SampleBounds^.SampleStart := round(SampleX1);
-  SampleBounds^.SampleEnd   := round(SampleX2);
-  SampleBounds^.LoopStart   := round(LoopX1);
-  SampleBounds^.LoopEnd     := round(LoopX2);
-  }
 end;
 
 procedure TCustomSampleOsc.Init(const aPars: PModulatedPars; const aModData: PParModulationData);
