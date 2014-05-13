@@ -61,6 +61,18 @@ function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
 function IncrementName(Name:string; MinDigits:integer = 2):string;
 function RandomString(const CharacterCount : integer):string;
 
+
+
+
+//==============================================================
+//    Variable Handling
+//==============================================================
+
+ // x := StaggeredExpand(0.5, 100,200,400,800);
+ // InputValue range is 0..1.
+ // The x1..x4 values are the min-max scaling values.
+function StaggeredExpand(InputValue, x1, x2, x3, x4 : single):single;
+
 implementation
 
 uses
@@ -457,6 +469,28 @@ begin
   if x1 < x2
     then result := x1
     else result := x2;
+end;
+
+function StaggeredExpand(InputValue, x1, x2, x3, x4 : single):single;
+var
+  Index : integer;
+begin
+  assert(InputValue >= 0);
+  assert(InputValue <= 1);
+
+  Index := floor(InputValue * 3);
+
+  case Index of
+  0: result := x1 + (InputValue - 0/3) * 3 * (x2 - x1);
+  1: result := x2 + (InputValue - 1/3) * 3 * (x3 - x2);
+  2: result := x3 + (InputValue - 2/3) * 3 * (x4 - x3);
+  3: result := x4;
+  else
+    raise Exception.Create('Unexpected Index Value.');
+  end;
+
+  assert(result >= x1);
+  assert(result <= x4);
 end;
 
 

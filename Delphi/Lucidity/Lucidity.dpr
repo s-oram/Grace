@@ -164,7 +164,8 @@ uses
   eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas',
   eeMidiAutomation in 'EasyEffectTemplate\eeMidiAutomation.pas',
   eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas',
-  Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas';
+  Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',
+  Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas';
 
 {$R *.res}
 
