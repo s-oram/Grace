@@ -7,6 +7,7 @@ interface
 {$M+}
 
 uses
+  Lucidity.MidiInputProcessor,
   Lucidity.PluginParameters,
   eePublishedVstParameters,
   Lucidity.PluginParameterController,
@@ -90,8 +91,11 @@ type
   protected
     DeltaOffset     : integer;
     GlobalModPoints : TGlobalModulationPoints;
+
+    MidiInputProcessor : TMidiInputProcessor;
     VoiceController : TLucidityVoiceController;
     KeyGroupPlayer  : TKeyGroupPlayer;
+
 
     EmptyKeyGroup : IKeyGroup;
 
@@ -313,6 +317,9 @@ begin
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
   fXYPads.PadX1 := -0.5;
 
+  MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
+  Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.Audio);
+
   VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
@@ -422,7 +429,8 @@ begin
   EmptyKeyGroup    := nil;
 
   MidiAutomation.Free;
-  VoiceController.Free;  //here.
+  VoiceController.Free;
+  MidiInputProcessor.Free;
   KeyGroupPlayer.Free;
   fKeyGroups.Free;
   fSampleMap.Free;
@@ -857,11 +865,13 @@ end;
 procedure TeePlugin.SetVoiceGlide(const Value: single);
 begin
   VoiceController.VoiceGlide := Value;
+  MidiInputProcessor.VoiceGlide := Value;
 end;
 
 procedure TeePlugin.SetVoiceMode(const Value: TVoiceMode);
 begin
   VoiceController.VoiceMode := Value;
+  MidiInputProcessor.VoiceMode := Value;
 end;
 
 procedure TeePlugin.LoadProgramFromFile(const FileName: string);
@@ -987,12 +997,14 @@ end;
 
 function TeePlugin.GetVoiceGlide: single;
 begin
-  result := VoiceController.VoiceGlide;
+  result :=  MidiInputProcessor.VoiceGlide;
+  //result := VoiceController.VoiceGlide;
 end;
 
 function TeePlugin.GetVoiceMode: TVoiceMode;
 begin
-  result := VoiceController.VoiceMode;
+  result :=  MidiInputProcessor.VoiceMode;
+  //result := VoiceController.VoiceMode;
 end;
 
 procedure TeePlugin.GetVstParameter(const Par:TVstParameter);
@@ -1060,6 +1072,7 @@ begin
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
   VoiceController.NoteOn(MidiNote, MidiVelocity, SampleMap);
+  MidiInputProcessor.NoteOn(MidiNote, MidiVelocity);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
 
@@ -1070,6 +1083,7 @@ begin
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   VoiceController.NoteOff(MidiNote, MidiVelocity, SampleMap);
+  MidiInputProcessor.NoteOff(MidiNote, MidiVelocity);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
 
@@ -1109,6 +1123,7 @@ begin
     begin
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
       VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
+      MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 
       inc(GlobalModPoints.Source_TriggeredNoteCount);
@@ -1124,6 +1139,7 @@ begin
     begin
       KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
       VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
+      MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
     end;
   except
@@ -1139,6 +1155,7 @@ begin
   if IsModWheel(Event) then
   begin
     VoiceController.Modwheel(Event.Data2 * OneOver127);
+    MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
   end;
 
 
@@ -1147,6 +1164,7 @@ begin
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
     VoiceController.PitchBend(pba);
+    MidiInputProcessor.PitchBend(pba);
   end;
 
 
@@ -1162,6 +1180,7 @@ begin
     XYPads.ControlRateProcess; //TODO: probably can delete the xy pads class.
     MidiAutomation.FastControlProcess;
     VoiceController.FastControlProcess;
+    MidiInputProcessor.FastControlProcess;
     KeyGroupPlayer.FastControlProcess;
   except
     {$IFDEF MadExcept}
