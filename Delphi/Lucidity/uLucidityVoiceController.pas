@@ -133,8 +133,6 @@ const
 
 function TLucidityVoiceController.CalcPitchTransitionTime: single;
 begin
-  //TODO: We need better glide time scaling.
-  //result := kMinGlideTime + VoiceGlide * 5000;
   result := StaggeredExpand(fVoiceGlide * fVoiceGlide, kMinGlideTime, 750, 1500, 4000);
 end;
 
