@@ -67,7 +67,6 @@ uses
   soLucidityVoiceParameterWrapper in 'SoundObjects\soLucidityVoiceParameterWrapper.pas',
   uMenuBarFrame in 'frames\uMenuBarFrame.pas' {MenuBarFrame: TFrame},
   uKeyGroupManager in 'uKeyGroupManager.pas',
-  uLucidityVoiceController in 'uLucidityVoiceController.pas',
   Menu.KeyGroupsMenu in 'frames\Menu.KeyGroupsMenu.pas',
   uRegionInfoFrame in 'frames\uRegionInfoFrame.pas' {RegionInfoFrame: TFrame},
   Menu.SamplesMenu in 'frames\Menu.SamplesMenu.pas',
