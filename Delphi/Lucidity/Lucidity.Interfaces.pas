@@ -13,7 +13,8 @@ uses
   uSampleZeroCrossings;
 
 type
-  IVoiceController = interface
+  // TODO: Delete IVoiceController.
+  IVoiceController = interface(IInterface)
     ['{33599814-7B6A-42F6-83AB-99BB3833321C}']
   end;
 
@@ -48,7 +49,7 @@ type
   end;
 
 
-  IRegion = interface
+  IRegion = interface(IInterface)
     ['{2A1E25FA-DF90-46CE-BA90-EB69EDAE57F4}']
     function GetObject:TObject;
     function GetProperties    : PRegionProperties;

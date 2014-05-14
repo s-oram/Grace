@@ -226,6 +226,9 @@ type
   end;
 
 
+  // TODO: TSamplerLoopMode : Perhaps this should be renamed to KeyGroupTriggerMode. It probably should be made a member
+  // of the Key group level parameters.
+
   //no_loop: no looping will be performed. Sample will play straight from start to end, or until note off, whatever reaches first.
   //one_shot: sample will play from start to end, ignoring note off.
   //This mode is engaged automatically if the count opcode is defined.

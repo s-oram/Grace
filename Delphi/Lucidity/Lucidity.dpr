@@ -165,7 +165,8 @@ uses
   eeMidiAutomation in 'EasyEffectTemplate\eeMidiAutomation.pas',
   eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas',
   Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',
-  Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas';
+  Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',
+  Lucidity.VoiceController in 'Lucidity.VoiceController.pas';
 
 {$R *.res}
 

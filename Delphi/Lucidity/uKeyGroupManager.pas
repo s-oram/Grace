@@ -59,7 +59,7 @@ type
 
     function IsKeyGroupNameUnique(const aName : string) : boolean;
   public
-    constructor Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+    constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
 
     function GetInfo:IKeyGroupsInfo;
@@ -74,6 +74,7 @@ type
     function FindSampleGroup(aName : string):IKeyGroup; overload;
     procedure DeleteKeyGroup(aName : string);
 
+    procedure FindKeyGroups(var DestList : TInterfaceList);
 
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
@@ -123,7 +124,7 @@ begin
   result := fList.Count;
 end;
 
-constructor TKeyGroupManager.Create(const aVoices:PArrayOfLucidityVoice; const aVoiceController:IVoiceController; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+constructor TKeyGroupManager.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 begin
   fList := TInterfaceList.Create;
 
@@ -401,6 +402,25 @@ function TKeyGroupsInfo.GetKeyGroupCount: integer;
 begin
   result := GroupsList.Count;
 end;
+
+procedure TKeyGroupManager.FindKeyGroups(var DestList: TInterfaceList);
+var
+  c1: Integer;
+begin
+  assert(assigned(DestList));
+
+  ListLock.Acquire;
+  try
+    for c1 := fList.Count-1 downto 0 do
+    begin
+      DestList.Add(fList[c1]);
+    end;
+  finally
+    ListLock.Release;
+  end;
+end;
+
+
 
 
 

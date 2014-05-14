@@ -356,3 +356,8 @@ either way. It's possible the user config should only contain overrides.
 - This would be a good system to have and could be incorporated into Poise.
 
 =============================================================================
+
+
+* Possible effects
+  multiband compressor, bit crusher, multiband EQ, chorus, delay, reverb, distortion, phaser, plate reverb, destroyer, flanger, space pan, limiter, sub generator, EQ 10 bands, analog delay, pitch shift chorus, vocal filter, analog chorus, leslie
+

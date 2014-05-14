@@ -9,6 +9,7 @@ interface
 uses
   Lucidity.MidiInputProcessor,
   Lucidity.PluginParameters,
+  Lucidity.VoiceController,
   eePublishedVstParameters,
   Lucidity.PluginParameterController,
   Lucidity.Types,
@@ -25,7 +26,7 @@ uses
   eeMidiInputSmoother,
   uLucidityEnums, uLucidityData,
   Math, VamLib.MoreTypes, VamKeyStateTracker,
-  uConstants, uLucidityXYPads, uLucidityVoiceController,
+  uConstants, uLucidityXYPads,
   SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
   eeSampleInt, eeSampleFloat,
   Classes, eePluginBase , eeMidiEvents,
@@ -93,9 +94,10 @@ type
     GlobalModPoints : TGlobalModulationPoints;
 
     MidiInputProcessor : TMidiInputProcessor;
-    VoiceController : TLucidityVoiceController;
+    VoiceController     : TVoiceController;
     KeyGroupPlayer  : TKeyGroupPlayer;
 
+    Voices : TArrayOfLucidityVoice;
 
     EmptyKeyGroup : IKeyGroup;
 
@@ -239,6 +241,7 @@ const
 constructor TeePlugin.Create;
 var
   //DefaultMidiMapFileName : string; //TODO:
+  c1 : integer;
   DataFileName : string;
   DataDir : string;
   fn : string;
@@ -262,6 +265,22 @@ begin
     then LogMain.LogText('Data Directory Found', PluginDataDir^.Path)
     else LogMain.LogText('Data Directory NOT Found!', '');
   {$ENDIF}
+
+
+  //========= Create the Voices =================
+  SetLength(Voices, kMaxVoiceCount);
+  for c1 := 0 to kMaxVoiceCount-1 do
+  begin
+    Voices[c1] := TLucidityVoice.Create('VoiceClass', @GlobalModPoints, Globals);
+    Voices[c1].VoiceID := c1;
+
+    // TODO: OnFinish handling will need to be
+    // replaced with a mother ship message.
+    //Voices[c1].OnFinish := EventHandle_VoiceFinished;
+  end;
+  //=============================================
+
+
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.Audio);
@@ -320,19 +339,21 @@ begin
   MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.Audio);
 
-  VoiceController := TLucidityVoiceController.Create(@GlobalModPoints, Globals);
+  VoiceController := TVoiceController.Create(Globals, @Voices);
   Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
   KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
 
   fSampleMap := TSampleMap.Create;
+  Globals.SampleMapReference := fSampleMap;
   Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.Audio);
 
-  fKeyGroups := TKeyGroupManager.Create(VoiceController.GetVoiceArray, VoiceController, @GlobalModPoints, Globals);
+  fKeyGroups := TKeyGroupManager.Create(@Voices, @GlobalModPoints, Globals);
+  Globals.KeyGroupsReference := fKeyGroups;
   Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
 
-  EmptyKeyGroup := TKeyGroup.Create(VoiceController.GetVoiceArray, @GlobalModPoints, Globals, 'Empty');
+  EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
   Globals.KeyGroupLifeTimeManager.Add(EmptyKeyGroup);
 
   //==== Look for key file ===
@@ -415,6 +436,7 @@ end;
 
 destructor TeePlugin.Destroy;
 var
+  c1 : integer;
   fn : string;
 begin
   Log.LogMessage('TPlugin.Destroy - Begin');
@@ -441,6 +463,16 @@ begin
   fSignalRecorder.Free;
   fFreqAnalyzer.Free;
   TProfiler.Close;
+
+
+  //===== free all the voices ===================
+  for c1 := 0 to kMaxVoiceCount-1 do
+  begin
+    Voices[c1].Free;
+  end;
+  SetLength(Voices, 0);
+  //=============================================
+
 
   Log.LogMessage('==== TPlugin.Destroy - End ====');
 
@@ -864,13 +896,11 @@ end;
 
 procedure TeePlugin.SetVoiceGlide(const Value: single);
 begin
-  VoiceController.VoiceGlide := Value;
   MidiInputProcessor.VoiceGlide := Value;
 end;
 
 procedure TeePlugin.SetVoiceMode(const Value: TVoiceMode);
 begin
-  VoiceController.VoiceMode := Value;
   MidiInputProcessor.VoiceMode := Value;
 end;
 
@@ -1071,7 +1101,6 @@ begin
   assert(InRange(MidiVelocity, 0,127));
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
-  VoiceController.NoteOn(MidiNote, MidiVelocity, SampleMap);
   MidiInputProcessor.NoteOn(MidiNote, MidiVelocity);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
@@ -1082,7 +1111,6 @@ begin
   assert(InRange(MidiVelocity, 0,127));
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
-  VoiceController.NoteOff(MidiNote, MidiVelocity, SampleMap);
   MidiInputProcessor.NoteOff(MidiNote, MidiVelocity);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 end;
@@ -1122,7 +1150,6 @@ begin
     if IsNoteOn(Event) then
     begin
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
-      VoiceController.NoteOn(Event.Data1, Event.Data2, SampleMap);
       MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 
@@ -1138,7 +1165,6 @@ begin
     if IsNoteOff(Event) then
     begin
       KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
-      VoiceController.NoteOff(Event.Data1, Event.Data2, SampleMap);
       MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
     end;
@@ -1154,7 +1180,6 @@ begin
 
   if IsModWheel(Event) then
   begin
-    VoiceController.Modwheel(Event.Data2 * OneOver127);
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
   end;
 
@@ -1163,7 +1188,6 @@ begin
   begin
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
-    VoiceController.PitchBend(pba);
     MidiInputProcessor.PitchBend(pba);
   end;
 
@@ -1179,7 +1203,6 @@ begin
   try
     XYPads.ControlRateProcess; //TODO: probably can delete the xy pads class.
     MidiAutomation.FastControlProcess;
-    VoiceController.FastControlProcess;
     MidiInputProcessor.FastControlProcess;
     KeyGroupPlayer.FastControlProcess;
   except
@@ -1194,7 +1217,6 @@ end;
 procedure TeePlugin.SlowControlProcess;
 begin
   try
-    VoiceController.SlowControlProcess;
     KeyGroupPlayer.SlowControlProcess;
   except
     {$IFDEF MadExcept}
@@ -1219,7 +1241,6 @@ begin
 
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
-    VoiceController.AudioProcess(Outputs, SampleFrames);
     KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
     SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
     FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);

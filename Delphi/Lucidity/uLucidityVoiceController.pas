@@ -1,3 +1,6 @@
+// TODO: replace this voice controller with a new voice controller.
+//     Lucidity.VoiceController.pas
+
 unit uLucidityVoiceController;
 
 interface
@@ -44,8 +47,8 @@ type
     ReleaseScore : integer;
   end;
 
-  PLucidityVoiceController = ^TLucidityVoiceController;
-  TLucidityVoiceController = class(TZeroObject, IVoiceController)
+  PLucidityVoiceController_OLD = ^TLucidityVoiceController_OLD;
+  TLucidityVoiceController_OLD = class(TZeroObject, IVoiceController)
   private
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
@@ -131,12 +134,12 @@ const
 
 { TLucidityVoiceController }
 
-function TLucidityVoiceController.CalcPitchTransitionTime: single;
+function TLucidityVoiceController_OLD.CalcPitchTransitionTime: single;
 begin
   result := StaggeredExpand(fVoiceGlide * fVoiceGlide, kMinGlideTime, 750, 1500, 4000);
 end;
 
-constructor TLucidityVoiceController.Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
+constructor TLucidityVoiceController_OLD.Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
 var
   c1 : integer;
 begin
@@ -188,7 +191,7 @@ begin
   ModWheel_Target  := 0;
 end;
 
-destructor TLucidityVoiceController.Destroy;
+destructor TLucidityVoiceController_OLD.Destroy;
 var
   c1 : integer;
 begin
@@ -214,7 +217,7 @@ begin
   inherited;
 end;
 
-procedure TLucidityVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TLucidityVoiceController_OLD.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 var
   c1 : integer;
   kgID : TKeyGroupID;
@@ -243,7 +246,7 @@ begin
   end;
 end;
 
-procedure TLucidityVoiceController.EventHandle_SampleRateChanged(Sender: TObject);
+procedure TLucidityVoiceController_OLD.EventHandle_SampleRateChanged(Sender: TObject);
 begin
   //TODO: I don't think kMinGlideTime should be used here for smoothing the MIDI input of these sources.
   MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
@@ -251,12 +254,12 @@ begin
   ModWheel_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
 end;
 
-procedure TLucidityVoiceController.EventHandle_TempoChanged(Sender: TObject);
+procedure TLucidityVoiceController_OLD.EventHandle_TempoChanged(Sender: TObject);
 begin
 
 end;
 
-procedure TLucidityVoiceController.EventHandle_VoiceFinished(Sender: TObject);
+procedure TLucidityVoiceController_OLD.EventHandle_VoiceFinished(Sender: TObject);
 var
   Index : integer;
   aVoice : TLucidityVoice;
@@ -288,12 +291,12 @@ begin
 
 end;
 
-function TLucidityVoiceController.FindVoiceToTrigger: TLucidityVoice;
+function TLucidityVoiceController_OLD.FindVoiceToTrigger: TLucidityVoice;
 begin
   result := VoiceControl.GetInactiveVoice as TLucidityVoice;
 end;
 
-function TLucidityVoiceController.GetLastTriggeredVoice: TLucidityVoice;
+function TLucidityVoiceController_OLD.GetLastTriggeredVoice: TLucidityVoice;
 var
   c1: Integer;
 begin
@@ -310,12 +313,12 @@ begin
   result := nil;
 end;
 
-function TLucidityVoiceController.GetVoiceArray: PArrayOfLucidityVoice;
+function TLucidityVoiceController_OLD.GetVoiceArray: PArrayOfLucidityVoice;
 begin
   result := @Voices;
 end;
 
-procedure TLucidityVoiceController.Modwheel(const Value: single);
+procedure TLucidityVoiceController_OLD.Modwheel(const Value: single);
 begin
   assert(InRange(Value, 0,1));
   GlobalModPoints^.Source_MidiModWheel_Unipolar := Value;
@@ -323,12 +326,12 @@ begin
 
 end;
 
-function TLucidityVoiceController.GetActiveVoiceCount: integer;
+function TLucidityVoiceController_OLD.GetActiveVoiceCount: integer;
 begin
   result := ActiveVoices.Count;
 end;
 
-procedure TLucidityVoiceController.CullVoice(const TriggerNote: byte);
+procedure TLucidityVoiceController_OLD.CullVoice(const TriggerNote: byte);
 begin
   if ReleasedVoices.Count > 0 then
   begin
@@ -337,12 +340,12 @@ begin
   end;
 end;
 
-procedure TLucidityVoiceController.SetVoiceGlide(const Value: single);
+procedure TLucidityVoiceController_OLD.SetVoiceGlide(const Value: single);
 begin
   fVoiceGlide := Value;
 end;
 
-procedure TLucidityVoiceController.SetVoiceMode(const Value: TVoiceMode);
+procedure TLucidityVoiceController_OLD.SetVoiceMode(const Value: TVoiceMode);
 var
   c1 : integer;
 begin
@@ -360,7 +363,7 @@ begin
 end;
 
 
-procedure TLucidityVoiceController.NoteOn(const Data1, Data2: byte; const SampleMap: TSampleMap);
+procedure TLucidityVoiceController_OLD.NoteOn(const Data1, Data2: byte; const SampleMap: TSampleMap);
 var
   AVC : integer;
   c1: Integer;
@@ -452,7 +455,7 @@ begin
 
 end;
 
-procedure TLucidityVoiceController.NoteOff(const Data1, Data2: byte; const SampleMap: TSampleMap);
+procedure TLucidityVoiceController_OLD.NoteOff(const Data1, Data2: byte; const SampleMap: TSampleMap);
 var
   c1 : integer;
   IsActive, HasBeenReleased, HasBeenQuickReleased : boolean;
@@ -515,7 +518,7 @@ begin
 
 end;
 
-procedure TLucidityVoiceController.PitchBend(const PitchBendAmount: single);
+procedure TLucidityVoiceController_OLD.PitchBend(const PitchBendAmount: single);
 begin
   assert(InRange(PitchBendAmount,-1,1));
   PitchBend_Target := PitchBendAmount;
@@ -525,7 +528,7 @@ end;
 
 
 
-procedure TLucidityVoiceController.RegionTriggerCheck(const Data1, Data2: byte; const SampleMap: TSampleMap; const MonoVoicesOnly : boolean);
+procedure TLucidityVoiceController_OLD.RegionTriggerCheck(const Data1, Data2: byte; const SampleMap: TSampleMap; const MonoVoicesOnly : boolean);
 var
   c1: Integer;
   aRegion : IRegion;
@@ -598,7 +601,7 @@ end;
 
 
 
-procedure TLucidityVoiceController.FastControlProcess;
+procedure TLucidityVoiceController_OLD.FastControlProcess;
 begin
   if MidiNote_Current <> MidiNote_Target then
   begin
@@ -621,14 +624,14 @@ begin
 
 end;
 
-procedure TLucidityVoiceController.SlowControlProcess;
+procedure TLucidityVoiceController_OLD.SlowControlProcess;
 begin
 end;
 
 
 
 
-procedure TLucidityVoiceController.AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames: integer);
+procedure TLucidityVoiceController_OLD.AudioProcess(const Outputs:TArrayOfPSingle; const SampleFrames: integer);
 begin
 end;
 

@@ -76,6 +76,18 @@ type
     Audio_VoiceTriggered             = AudioMsg + 1;
     Audio_VoiceFinished              = AudioMsg + 2;
     Audio_KeyGroupInactive           = AudioMsg + 3;
+    Audio_PolyNoteTrigger            = AudioMsg + 4;
+    Audio_PolyNoteRelease            = AudioMsg + 5;
+    Audio_MonoNoteTrigger            = AudioMsg + 6;
+    Audio_MonoNoteRelease            = AudioMsg + 7;
+    Audio_LegatoNoteTrigger          = AudioMsg + 8;
+    Audio_LegatoNoteRelease          = AudioMsg + 9;
+  end;
+
+  PMsgData_NoteEvent = ^TMsgData_NoteEvent;
+  TMsgData_NoteEvent = record
+    Data1 : byte; // normally a MIDI Note number.
+    Data2 : byte; // normally a MIDI Velocity amount.
   end;
 
   PMsgData_Audio_VoiceTriggered = ^TMsgData_Audio_VoiceTriggered;

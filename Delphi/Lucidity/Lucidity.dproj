@@ -602,6 +602,7 @@
 			<DCCReference Include="EasyEffectTemplate\eeMidiAutomationV2.pas"/>
 			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>
 			<DCCReference Include="Lucidity.MidiInputProcessor.pas"/>
+			<DCCReference Include="Lucidity.VoiceController.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

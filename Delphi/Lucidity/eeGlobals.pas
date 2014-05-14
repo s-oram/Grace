@@ -28,6 +28,8 @@ type
     fGuiState: TGuiState;
     fKeyGroupLifeTimeManager: TKeyGroupLifeTimeManager;
     fAudioActions: TStoredActions;
+    fSampleMapReference: TObject;
+    fKeyGroupsReference: TObject;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
@@ -69,6 +71,13 @@ type
     property KeyGroupLifeTimeManager : TKeyGroupLifeTimeManager read fKeyGroupLifeTimeManager;
 
     property AudioActions : TStoredActions read fAudioActions;
+
+
+
+    //=== some object references =====
+    property SampleMapReference : TObject read fSampleMapReference write fSampleMapReference;
+    property KeyGroupsReference : TObject read fKeyGroupsReference write fKeyGroupsReference;
+    //================================
   end;
 
 implementation

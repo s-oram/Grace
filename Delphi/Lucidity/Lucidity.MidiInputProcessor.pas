@@ -130,6 +130,8 @@ begin
 end;
 
 procedure TMidiInputProcessor.NoteOn(const Data1, Data2: byte);
+var
+  NoteMsgData : TMsgData_NoteEvent;
 begin
   case VoiceMode of
     TVoiceMode.Poly:
@@ -139,7 +141,9 @@ begin
       MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
       GlobalModPoints.Source_MonophonicMidiNote := Data1;
 
-      // TODO: trigger new voices here.
+      NoteMsgData.Data1 := Data1;
+      NoteMsgData.Data2 := Data2;
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteTrigger, @NoteMsgData);
     end;
 
     TVoiceMode.Mono:
@@ -149,7 +153,9 @@ begin
 
       NoteStack.AddNote(Data1, Data2);
 
-      // TODO: trigger new voices here.
+      NoteMsgData.Data1 := Data1;
+      NoteMsgData.Data2 := Data2;
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
     end;
 
     TVoiceMode.Legato:
@@ -160,7 +166,9 @@ begin
         MidiNote_Target  := Data1;
         MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
 
-        // TODO: trigger new voices here.
+        NoteMsgData.Data1 := Data1;
+        NoteMsgData.Data2 := Data2;
+        Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteTrigger, @NoteMsgData);
       end else
       begin
         MidiNote_Filter.SetTransitionTime(CalcPitchTransitionTime(VoiceGlide), Globals.FastControlRate);
@@ -178,11 +186,14 @@ end;
 procedure TMidiInputProcessor.NoteOff(const Data1, Data2: byte);
 var
   ActiveNoteChanged : boolean;
+  NoteMsgData : TMsgData_NoteEvent;
 begin
   case VoiceMode of
     TVoiceMode.Poly:
     begin
-      // TODO: Release voices here...
+      NoteMsgData.Data1 := Data1;
+      NoteMsgData.Data2 := Data2;
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteRelease, @NoteMsgData);
     end;
 
     TVoiceMode.Mono:
@@ -195,9 +206,16 @@ begin
         if NoteStack.Count > 0 then
         begin
           MidiNote_Target  := NoteStack.LastNote^.Data1;
-        end;
 
-        // TODO: Release voices here...
+          NoteMsgData.Data1 := NoteStack.LastNote^.Data1;
+          NoteMsgData.Data2 := NoteStack.LastNote^.Data2;
+          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
+        end else
+        begin
+          NoteMsgData.Data1 := Data1;
+          NoteMsgData.Data2 := Data2;
+          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteRelease, @NoteMsgData);
+        end;
       end;
     end;
 
@@ -211,9 +229,16 @@ begin
         if NoteStack.Count > 0 then
         begin
           MidiNote_Target  := NoteStack.LastNote^.Data1;
-        end;
 
-        // TODO: Release voices here...
+          NoteMsgData.Data1 := NoteStack.LastNote^.Data1;
+          NoteMsgData.Data2 := NoteStack.LastNote^.Data2;
+          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteTrigger, @NoteMsgData);
+        end else
+        begin
+          NoteMsgData.Data1 := Data1;
+          NoteMsgData.Data2 := Data2;
+          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteRelease, @NoteMsgData);
+        end;
       end;
     end;
 
