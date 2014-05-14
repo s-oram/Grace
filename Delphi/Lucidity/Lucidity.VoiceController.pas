@@ -20,6 +20,12 @@ type
     Globals : TGlobals;
     Voices  : PArrayOfLucidityVoice;
 
+    FirstNoteLatch_TriggerRequired : boolean;
+    FirstNoteLatch_Data1 : byte;
+    FirstNoteLatch_Data2 : byte;
+
+    Latch_ReleaseAllOnNoteUp : boolean;
+
     // TODO: it might be better to use list classes that don't assign/free memory as objects
     // are added and removed.
     InactiveVoices      : TLucidityVoiceList;
@@ -30,15 +36,15 @@ type
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
 
-    // the voice modes have slightly different trigger methods.
-    // I should probably try to combine these.
     procedure PolyTrigger(const Data1, Data2 : byte);
     procedure PolyRelease(const Data1, Data2 : byte);
 
     procedure MonoTrigger(const Data1, Data2 : byte);
     procedure MonoRelease(const Data1, Data2 : byte);
-    //procedure LegatoTrigger(const Data1, Data2 : byte);
-    // All voice modes share the same release code.
+
+    procedure LatchTrigger(const Data1, Data2 : byte; const NoteStackCount : integer);
+    procedure LatchRelease(const Data1, Data2 : byte; const NoteStackCount : integer);
+
 
     procedure ProcessTriggerQueue(const TriggerQueue : TObjectList; const MidiData1, MidiData2 : byte; const TriggerVoiceMode : TVoiceMode);
 
@@ -98,6 +104,8 @@ begin
     InactiveVoices.Add(aVoices^[c1])
   end;
 
+  Latch_ReleaseAllOnNoteUp := false;
+  FirstNoteLatch_TriggerRequired := false;
 end;
 
 destructor TVoiceController.Destroy;
@@ -122,9 +130,13 @@ begin
 end;
 
 
+
+
+
 procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 var
   pVoice : PLucidityVoice;
+  c1: Integer;
 begin
   inherited;
 
@@ -160,6 +172,36 @@ begin
     MonoRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
+  if MsgID = TLucidMsgID.Audio_LatchNoteTrigger then
+  begin
+    LatchTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
+  end;
+
+  if MsgID = TLucidMsgID.Audio_LatchNoteRelease then
+  begin
+    LatchRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
+  end;
+
+  if MsgID = TLucidMsgID.AudioCommand_QuickReleaseAllNotes then
+  begin
+    for c1 := ReleasedVoices.Count-1 downto 0 do
+    begin
+      ReleasedVoices[c1].QuickRelease;
+    end;
+
+    for c1 := ActiveVoices.Count-1 downto 0 do
+    begin
+      ActiveVoices[c1].QuickRelease;
+      // WARNING:
+      // On first glance it would make sense to add the released voices to the
+      // the ReleasedVoices list, but the  AudioCommand_QuickReleaseAllNotes
+      // can be sent from the GUI thread.
+      // By leaving the voice in the current list, we can postpone the lists
+      // being modified until the voice 'clean-up' method is fired when the voice
+      // is finished.
+    end;
+  end;
+
 
   if MsgID = TLucidMsgID.Audio_VoiceFinished then
   begin
@@ -177,21 +219,178 @@ begin
     if InactiveVoices.IndexOf(pVoice^) = -1
       then InactiveVoices.Add(pVoice^);
   end;
+end;
+
+
+procedure TVoiceController.LatchTrigger(const Data1, Data2: byte; const NoteStackCount : integer);
+var
+  c1: Integer;
+  IsLatchedVoiceActive : boolean;
+  TriggerQueue : TObjectList;
+  TriggerItem  : TRegionTriggerItem;
+  kg : IKeyGroup;
+  rg : IRegion;
+  SampleMap : TSampleMap;
+  aVoice : TLucidityVoice;
+begin
+  SampleMap := (Globals.SampleMapReference as TSampleMap);
+
+  TriggerQueue := TObjectList.Create;
+  TriggerQueue.OwnsObjects := true;
+  AutoFree(@TriggerQueue);
+
+  if NoteStackCount = 1 then
+  begin
+    IsLatchedVoiceActive := false;
+
+    // Find if the triggered voice is already active...
+    for c1 := ActiveVoices.Count-1 downto 0 do
+    begin
+      if ActiveVoices[c1].TriggerNote = Data1 then
+      begin
+        IsLatchedVoiceActive := true;
+        Break; //========>>
+      end;
+    end;
+    //========================================================
+
+    if IsLatchedVoiceActive = true then
+    begin
+      Latch_ReleaseAllOnNoteUp := true;
+      FirstNoteLatch_TriggerRequired := true;
+      FirstNoteLatch_Data1 := Data1;
+      FirstNoteLatch_Data2 := Data2;
+    end else
+    // if IsLatchedVoiceActive = false then
+    begin
+      Latch_ReleaseAllOnNoteUp := false;
+      FirstNoteLatch_TriggerRequired := false;
+
+      // release all voices now.
+      for c1 := ActiveVoices.Count-1 downto 0 do
+      begin
+        aVoice := ActiveVoices[c1];
+        ActiveVoices.Remove(aVoice);
+        ReleasedVoices.Add(aVoice);
+        aVoice.Release;
+      end;
+
+      // Trigger new voices now.
+      for c1 := SampleMap.RegionCount-1 downto 0 do
+      begin
+        rg := SampleMap.Regions[c1];
+        kg := rg.GetKeyGroup;
+        if IsNoteInsideRegion(rg, Data1, Data2) then
+        begin
+          // Add this region to the region trigger queue.
+          TriggerItem := TRegionTriggerItem.Create;
+          TriggerItem.RegionIntf := rg;
+          TriggerItem.KeyGroup   := kg;
+          TriggerQueue.Add(TriggerItem);
+        end;
+        if TriggerQueue.Count > 0 then
+        begin
+          ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Latch);
+          TriggerQueue.Clear;
+        end;
+      end;
+    end;
+  end;
+
+  if NoteStackCount > 1 then
+  begin
+    if (FirstNoteLatch_TriggerRequired) then
+    begin
+      Latch_ReleaseAllOnNoteUp := false;
+      FirstNoteLatch_TriggerRequired := false;
+
+      // release all voices now.
+      for c1 := ActiveVoices.Count-1 downto 0 do
+      begin
+        aVoice := ActiveVoices[c1];
+        ActiveVoices.Remove(aVoice);
+        ReleasedVoices.Add(aVoice);
+        aVoice.Release;
+      end;
+
+      // trigger the first note.
+      for c1 := SampleMap.RegionCount-1 downto 0 do
+      begin
+        rg := SampleMap.Regions[c1];
+        kg := rg.GetKeyGroup;
+        if IsNoteInsideRegion(rg, FirstNoteLatch_Data1, FirstNoteLatch_Data2) then
+        begin
+          // Add this region to the region trigger queue.
+          TriggerItem := TRegionTriggerItem.Create;
+          TriggerItem.RegionIntf := rg;
+          TriggerItem.KeyGroup   := kg;
+          TriggerQueue.Add(TriggerItem);
+        end;
+      end;
+      if TriggerQueue.Count > 0 then
+      begin
+        ProcessTriggerQueue(TriggerQueue, FirstNoteLatch_Data1, FirstNoteLatch_Data1, TVoiceMode.Latch);
+        TriggerQueue.Clear;
+      end;
+    end;
+
+    // Trigger additional latched notes here.
+    for c1 := SampleMap.RegionCount-1 downto 0 do
+    begin
+      rg := SampleMap.Regions[c1];
+      kg := rg.GetKeyGroup;
+      if IsNoteInsideRegion(rg, Data1, Data2) then
+      begin
+        // Add this region to the region trigger queue.
+        TriggerItem := TRegionTriggerItem.Create;
+        TriggerItem.RegionIntf := rg;
+        TriggerItem.KeyGroup   := kg;
+        TriggerQueue.Add(TriggerItem);
+      end;
+      if TriggerQueue.Count > 0 then
+      begin
+        ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Latch);
+        TriggerQueue.Clear;
+      end;
+    end;
+
+  end;
+
+
 
 
 end;
 
-procedure TVoiceController.PolyTrigger(const Data1, Data2: byte);
+procedure TVoiceController.LatchRelease(const Data1, Data2: byte; const NoteStackCount : integer);
 var
   c1: Integer;
-  c2: Integer;
+  aVoice : TLucidityVoice;
+begin
+  if (NoteStackCount = 0) and (Latch_ReleaseAllOnNoteUp) then
+  begin
+    Latch_ReleaseAllOnNoteUp := false;
+
+    // release all voices now.
+    for c1 := ActiveVoices.Count-1 downto 0 do
+    begin
+      aVoice := ActiveVoices[c1];
+      ActiveVoices.Remove(aVoice);
+      ReleasedVoices.Add(aVoice);
+      aVoice.Release;
+    end;
+  end;
+end;
+
+
+procedure TVoiceController.PolyTrigger(const Data1, Data2: byte);
+var
+  c1, c2: Integer;
   SampleMap : TSampleMap;
   KeyGroups : TKeyGroupManager;
   KeyGroupList : TInterfaceList;
   kg : IKeyGroup;
   rg : IRegion;
   RegionList : TRegionInterfaceList;
-  //KeyGroupLoopMode :  TSamplerLoopMode;
   TriggerQueue : TObjectList;
   TriggerItem  : TRegionTriggerItem;
 begin
@@ -216,10 +415,10 @@ begin
   begin
     kg := KeyGroupList[c1] as IKeyGroup;
 
-    // TODO: need to add latching code here.
-    //KeyGroupLoopMode := (kg.GetObject as TKeyGroup).VoiceParameters.SamplerLoopMode;
-    //if KeyGroupLoopMode = TSamplerLoopMode.Latch then
-
+    // TODO: At the moment, the samples regions are triggered one key group at a time.
+    // I'm not sure if it's actually necessary any more. I originally chose to do it
+    // like this as an allowence for latching. But the 'latch' mode has been changed
+    // slightly since then.
 
     RegionList.Clear;
     SampleMap.FindRegionsByKeyGroup(kg.GetName, RegionList);
@@ -250,7 +449,7 @@ begin
   begin
     aVoice := ActiveVoices[c1];
 
-    if (aVoice.TriggerNote = Data1) and (aVoice.LoopMode <> TSamplerLoopMode.OneShot) then
+    if (aVoice.TriggerNote = Data1) and (aVoice.LoopMode <> TKeyGroupTriggerMode.OneShot) then
     begin
       ActiveVoices.Remove(aVoice);
       ReleasedVoices.Add(aVoice);
@@ -306,9 +505,10 @@ begin
   begin
     kg := KeyGroupList[c1] as IKeyGroup;
 
-    // TODO: need to add latching code here.
-    //KeyGroupLoopMode := (kg.GetObject as TKeyGroup).VoiceParameters.SamplerLoopMode;
-    //if KeyGroupLoopMode = TSamplerLoopMode.Latch then
+    // TODO: At the moment, the samples regions are triggered one key group at a time.
+    // I'm not sure if it's actually necessary any more. I originally chose to do it
+    // like this as an allowence for latching. But the 'latch' mode has been changed
+    // slightly since then.
 
 
     RegionList.Clear;
@@ -344,7 +544,7 @@ begin
   begin
     aVoice := ActiveVoices[c1];
 
-    if (aVoice.LoopMode <> TSamplerLoopMode.OneShot) then
+    if (aVoice.LoopMode <> TKeyGroupTriggerMode.OneShot) then
     begin
       ActiveVoices.Remove(aVoice);
       ReleasedVoices.Add(aVoice);

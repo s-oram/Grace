@@ -177,6 +177,15 @@ begin
 
       NoteStack.AddNote(Data1, Data2);
     end;
+
+    TVoiceMode.Latch:
+    begin
+      NoteStack.AddNote(Data1, Data2);
+      NoteMsgData.Data1 := Data1;
+      NoteMsgData.Data2 := Data2;
+      NoteMsgData.NoteStackCount := NoteStack.Count;
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LatchNoteTrigger, @NoteMsgData);
+    end;
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -242,6 +251,14 @@ begin
       end;
     end;
 
+    TVoiceMode.Latch:
+    begin
+      NoteStack.RemoveNote(Data1);
+      NoteMsgData.Data1 := Data1;
+      NoteMsgData.Data2 := Data2;
+      NoteMsgData.NoteStackCount := NoteStack.Count;
+      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LatchNoteRelease, @NoteMsgData);
+    end;
   else
     raise Exception.Create('Type not handled.');
   end;

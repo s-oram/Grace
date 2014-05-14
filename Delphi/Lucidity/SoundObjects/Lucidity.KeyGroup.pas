@@ -12,6 +12,7 @@ uses
   LucidityGui.VectorSequence,
   Lucidity.Interfaces, LucidityModConnections,
   VamLib.MoreTypes, eeGlobals,
+  uLucidityEnums,
   eeVoiceLogic, eeVstParameter,
   eeVstParameterList, eePatchObject,
   uConstants,
@@ -50,6 +51,8 @@ type
 
     procedure GetDbLevel(out Ch1, Ch2 : single);
     property LevelMonitor : TLevelMonitor read fLevelMonitor write fLevelMonitor;
+
+    function GetTriggerMode : TKeyGroupTriggerMode;
   protected
     DebugTag : string;
     ActiveVoices : TLucidityVoiceList;
@@ -91,6 +94,9 @@ type
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
 
+    // NOTE: Now that key groups maintain a list of active voices, it might be
+    // possible to get rid of the Voice Parameters wrapper and apply changes
+    // directly to said voices...
     property VoiceParameters : TLucidityVoiceParameterWrapper read fVoiceParameters;
     property ModConnections  : TModConnections                read fModConnections;
 
@@ -116,8 +122,8 @@ uses
   uLucidityExtra,
   VamLib.LoggingProxy,
   eeAudioBufferUtils,
-  SysUtils, eeCustomGlobals,
-  uLucidityEnums;
+  SysUtils, eeCustomGlobals;
+
 
 { TLucidityEngine }
 
@@ -196,6 +202,11 @@ end;
 function TKeyGroup.GetTriggeredNoteCount: cardinal;
 begin
   result := fTriggeredNoteCount;
+end;
+
+function TKeyGroup.GetTriggerMode: TKeyGroupTriggerMode;
+begin
+  result := VoiceParameters.SamplerLoopMode;
 end;
 
 function TKeyGroup.GetSequenceData(SeqIndex: integer): IStepSequenceDataObject;

@@ -436,7 +436,8 @@ begin
 
   vm :=  Command.GetParValue<TVoiceMode>(Plugin, TPluginParameter.VoiceMode);
   case vm of
-    TVoiceMode.Poly:
+    TVoiceMode.Poly,
+    TVoiceMode.Latch:
     begin
       GlideKnob.IsKnobEnabled := false;
       GlideLabel.Visible := false;

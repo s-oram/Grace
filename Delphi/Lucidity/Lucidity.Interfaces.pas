@@ -5,6 +5,7 @@ interface
 uses
   eeSampleFloat,
   uConstants,
+  uLucidityEnums,
   VamSampleDisplayBackBuffer,
   VamSamplePeakBuffer,
   Lucidity.Types,
@@ -46,6 +47,9 @@ type
     function GetSequenceData(SeqIndex : integer):IStepSequenceDataObject;
 
     procedure GetDbLevel(out Ch1, Ch2 : single);
+
+
+    function GetTriggerMode : TKeyGroupTriggerMode;
   end;
 
 

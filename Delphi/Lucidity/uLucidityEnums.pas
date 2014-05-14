@@ -197,7 +197,7 @@ type
     class function ToShortGuiString(aEnum : TSequencerClock):string; override;
   end;
 
-  TVoiceMode = (Poly, Mono, Legato);
+  TVoiceMode = (Poly, Mono, Legato, Latch);
   TVoiceModeHelper = class(TEnumHelper<TVoiceMode>)
   public
   end;
@@ -234,11 +234,11 @@ type
   //This mode is engaged automatically if the count opcode is defined.
   //loop_continuous: once the player reaches sample loop point, the loop will play until note expiration.
   //loop_sustain: the player will play the loop while the note is held, by keeping it depressed or by using the sustain pedal (CC64). The rest of the sample will play after note release.
-  TSamplerLoopMode = (LoopOff, LoopSustain, LoopRelease, OneShot);
-  TSamplerLoopModeHelper = class(TEnumHelper<TSamplerLoopMode>)
+  TKeyGroupTriggerMode = (LoopSustain, LoopRelease, LoopOff, OneShot);
+  TKeyGroupTriggerModeHelper = class(TEnumHelper<TKeyGroupTriggerMode>)
   public
-    class function ToFullGuiString(aEnum : TSamplerLoopMode):string; override;
-    class function ToShortGuiString(aEnum : TSamplerLoopMode):string; override;
+    class function ToFullGuiString(aEnum : TKeyGroupTriggerMode):string; override;
+    class function ToShortGuiString(aEnum : TKeyGroupTriggerMode):string; override;
   end;
 
   //TOneShotSamplerLoopMode
@@ -739,27 +739,27 @@ end;
 
 
 
-{ TSamplerLoopModeHelper }
+{ TKeyGroupTriggerModeHelper }
 
-class function TSamplerLoopModeHelper.ToFullGuiString(aEnum: TSamplerLoopMode): string;
+class function TKeyGroupTriggerModeHelper.ToFullGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TSamplerLoopMode.LoopOff:         result := 'Loop Off';
-    TSamplerLoopMode.LoopSustain:     result := 'Loop Sustain';
-    TSamplerLoopMode.LoopRelease:     result := 'Loop Until Release';
-    TSamplerLoopMode.OneShot:         result := 'One Shot';
+    TKeyGroupTriggerMode.LoopOff:         result := 'Loop Off';
+    TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Sustain';
+    TKeyGroupTriggerMode.LoopRelease:     result := 'Loop Until Release';
+    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else
     raise Exception.Create('Type not handled.');
   end;
 end;
 
-class function TSamplerLoopModeHelper.ToShortGuiString(aEnum: TSamplerLoopMode): string;
+class function TKeyGroupTriggerModeHelper.ToShortGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TSamplerLoopMode.LoopOff:         result := 'Off';
-    TSamplerLoopMode.LoopSustain:     result := 'Loop';
-    TSamplerLoopMode.LoopRelease:     result := 'Loop Rls';
-    TSamplerLoopMode.OneShot:         result := 'One Shot';
+    TKeyGroupTriggerMode.LoopOff:         result := 'Off';
+    TKeyGroupTriggerMode.LoopSustain:     result := 'Loop';
+    TKeyGroupTriggerMode.LoopRelease:     result := 'Loop Rls';
+    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else
     raise Exception.Create('Type not handled.');
   end;

@@ -71,7 +71,7 @@ type
     fVoiceGlide: single;
     fFilter1Par4: single;
     fFilter2Par4: single;
-    fSamplerLoopMode: TSamplerLoopMode;
+    fSamplerLoopMode: TKeyGroupTriggerMode;
     fPitchTracking: TPitchTracking;
     fLfoBPar3: single;
     fLfoAPar3: single;
@@ -130,7 +130,7 @@ type
     procedure SetVoiceGlide(const Value: single);
     procedure SetFilter1Par4(const Value: single);
     procedure SetFilter2Par4(const Value: single);
-    procedure SetSamplerLoopMode(const Value: TSamplerLoopMode);
+    procedure SetSamplerLoopMode(const Value: TKeyGroupTriggerMode);
     procedure SetPitchTracking(const Value: TPitchTracking);
     procedure SetLfoAPar3(const Value: single);
     procedure SetLfoBPar3(const Value: single);
@@ -180,7 +180,7 @@ type
     property GrainPosition            : single                             read fGrainPosition           write SetGrainPosition;
 
     property SamplerLoopBounds        : TSamplerLoopBounds                 read fSamplerLoopBounds       write SetSampleLoopBounds;
-    property SamplerLoopMode          : TSamplerLoopMode                   read fSamplerLoopMode         write SetSamplerLoopMode;
+    property SamplerLoopMode          : TKeyGroupTriggerMode                   read fSamplerLoopMode         write SetSamplerLoopMode;
 
     property MixAuxA                  : single                             read fMixAuxA                 write SetMixAuxA;
     property MixAuxB                  : single                             read fMixAuxB                 write SetMixAuxB;
@@ -687,7 +687,7 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetSamplerLoopMode(const Value: TSamplerLoopMode);
+procedure TLucidityVoiceParameterWrapper.SetSamplerLoopMode(const Value: TKeyGroupTriggerMode);
 begin
   fSamplerLoopMode := Value;
 

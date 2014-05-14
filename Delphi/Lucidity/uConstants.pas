@@ -72,22 +72,26 @@ type
     OnLfoSelectorLeave               = Actions + 13;
     OnShowMenu                       = Actions + 14;  //TMsgData_ShowMenu
     //----- Audio Messages---------------
-    AudioMsg                         = OnShowMenu + 1;
-    Audio_VoiceTriggered             = AudioMsg + 1;
-    Audio_VoiceFinished              = AudioMsg + 2;
-    Audio_KeyGroupInactive           = AudioMsg + 3;
-    Audio_PolyNoteTrigger            = AudioMsg + 4;
-    Audio_PolyNoteRelease            = AudioMsg + 5;
-    Audio_MonoNoteTrigger            = AudioMsg + 6;
-    Audio_MonoNoteRelease            = AudioMsg + 7;
-    Audio_LegatoNoteTrigger          = AudioMsg + 8;
-    Audio_LegatoNoteRelease          = AudioMsg + 9;
+    AudioMsg                          = OnShowMenu + 1;
+    Audio_VoiceTriggered              = AudioMsg + 1;
+    Audio_VoiceFinished               = AudioMsg + 2;
+    Audio_KeyGroupInactive            = AudioMsg + 3;
+    Audio_PolyNoteTrigger             = AudioMsg + 4;
+    Audio_PolyNoteRelease             = AudioMsg + 5;
+    Audio_MonoNoteTrigger             = AudioMsg + 6;
+    Audio_MonoNoteRelease             = AudioMsg + 7;
+    Audio_LegatoNoteTrigger           = AudioMsg + 8;
+    Audio_LegatoNoteRelease           = AudioMsg + 9;
+    Audio_LatchNoteTrigger           = AudioMsg + 10;
+    Audio_LatchNoteRelease           = AudioMsg + 11;
+    AudioCommand_QuickReleaseAllNotes = AudioMsg + 12;
   end;
 
   PMsgData_NoteEvent = ^TMsgData_NoteEvent;
   TMsgData_NoteEvent = record
     Data1 : byte; // normally a MIDI Note number.
     Data2 : byte; // normally a MIDI Velocity amount.
+    NoteStackCount : integer;
   end;
 
   PMsgData_Audio_VoiceTriggered = ^TMsgData_Audio_VoiceTriggered;

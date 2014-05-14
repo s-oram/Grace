@@ -85,14 +85,14 @@ type
     fLevelMonitor: TLevelMonitor;
     fKeyGroupID: TKeyGroupID;
     fKeyGroup : IKeyGroup;
-    fLoopMode: TSamplerLoopMode;
+    fLoopMode: TKeyGroupTriggerMode;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
     procedure SetVoiceGlide(const Value: single);
     procedure SetPitchTracking(const Value: TPitchTracking);
     procedure SetFilterRouting(const Value: TFilterRouting);
-    procedure SetLoopMode(const Value: TSamplerLoopMode);
+    procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
@@ -120,7 +120,7 @@ type
     // it might be better to use a SampleRegionID similar to the KeyGroupID.
     fSampleRegion : IRegion;
 
-    fIsActive, HasBeenReleased, HasBeenQuickReleased : boolean;
+    fIsActive, fHasBeenReleased, fHasBeenQuickReleased : boolean;
     AmpLevel : single;
 
     FRInput     : single;
@@ -163,6 +163,7 @@ type
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
     property IsActive    : boolean read fIsActive;
+    property HasBeenReleased : boolean read fHasBeenReleased;
     property TriggerNote : byte    read fTriggerNote;
 
     //==== Sound modules ====
@@ -186,14 +187,16 @@ type
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
     //===== Parameters ======
-    property LoopMode           : TSamplerLoopMode    read fLoopMode           write SetLoopMode;
+    property LoopMode           : TKeyGroupTriggerMode    read fLoopMode           write SetLoopMode;
     property SamplePlaybackType : TSamplePlaybackType read fSamplePlaybackType write SetSamplePlaybackType;
     property PitchTracking      : TPitchTracking      read fPitchTracking      write SetPitchTracking;
-    property VoiceMode          : TVoiceMode          read fVoiceMode          write fVoiceMode;
     property VoiceGlide         : single              read fVoiceGlide         write SetVoiceGlide; //range 0..1.
     property SampleReset        : TClockSource        read fSampleReset        write SetSampleReset;
-
     property FilterRouting      : TFilterRouting      read fFilterRouting      write SetFilterRouting;
+
+    // TODO: NOTE: It's a bit strange that 'VoiceMode' is a member of the voice class and is set per voice.
+    // It's a global property and applies to all key groups. It should be represented as such probably.
+    property VoiceMode          : TVoiceMode          read fVoiceMode          write fVoiceMode;
 
     property LinkedSampleRegion : IRegion read fSampleRegion;
 
@@ -246,8 +249,8 @@ begin
 
   fTriggerNote := 0;
   fIsActive := false;
-  HasBeenReleased := false;
-  HasBeenQuickReleased := false;
+  fHasBeenReleased := false;
+  fHasBeenQuickReleased := false;
   AmpLevel := 0;
 
   ModPoints.MidiNote_Unipolar := 0;
@@ -418,7 +421,7 @@ begin
   end;
 end;
 
-procedure TLucidityVoice.SetLoopMode(const Value: TSamplerLoopMode);
+procedure TLucidityVoice.SetLoopMode(const Value: TKeyGroupTriggerMode);
 begin
   fLoopMode := Value;
 
@@ -495,7 +498,7 @@ begin
 
   OscPitchParameters^.RegionRootNote := SampleRegion.GetProperties^.RootNote;
 
-  if VoiceMode = TVoiceMode.Poly
+  if (VoiceMode = TVoiceMode.Poly) or (VoiceMode = TVoiceMode.Latch)
         then OscPitchParameters^.PlaybackNote := fTriggerNote
         else OscPitchParameters^.PlaybackNote := GlobalModPoints.Source_MonophonicMidiNote;
 
@@ -517,8 +520,8 @@ begin
 
   fIsActive := true;
   fTriggerNote := MidiNote;
-  HasBeenReleased := false;
-  HasBeenQuickReleased := false;
+  fHasBeenReleased := false;
+  fHasBeenQuickReleased := false;
   AmpLevel := 0;
 
   //=== Pre-trigger setup ======================================================
@@ -583,7 +586,7 @@ begin
 
 
   // set some modulation source values...
-  if VoiceMode = TVoiceMode.Poly then
+  if (VoiceMode = TVoiceMode.Poly) or (VoiceMode = TVoiceMode.Latch) then
   begin
     // NOTE: The goal of MIDI Note as a mod source is something similar to 1 volt per octave
     // pitch scaling in modular synths. I want filters to be able to track the keyboard.
@@ -646,9 +649,9 @@ end;
 
 procedure TLucidityVoice.Release;
 begin
-  if HasBeenReleased = false then
+  if fHasBeenReleased = false then
   begin
-    HasBeenReleased := true;
+    fHasBeenReleased := true;
 
     OneShotSampleOsc.Release;
     AmpEnv.Release;
@@ -660,11 +663,11 @@ end;
 
 procedure TLucidityVoice.QuickRelease;
 begin
-  if HasBeenQuickReleased = false then
+  if fHasBeenQuickReleased = false then
   begin
     AmpEnv.QuickRelease(35);
-    HasBeenReleased      := true;
-    HasBeenQuickReleased := true;
+    fHasBeenReleased      := true;
+    fHasBeenQuickReleased := true;
   end;
 end;
 
@@ -674,8 +677,8 @@ begin
   FilterEnv.Kill;
 
   fIsActive := false;
-  HasBeenReleased := false;
-  HasBeenQuickReleased := false;
+  fHasBeenReleased := false;
+  fHasBeenQuickReleased := false;
   AmpLevel := 0;
 
   // Important: Clear voice resources...
@@ -717,8 +720,8 @@ end;
 procedure TLucidityVoice.GetVoiceState(out aIsActive, aHasBeenReleased, aHasBeenQuickReleased: boolean; out aAmpLevel: single);
 begin
   aIsActive := fIsActive;
-  aHasBeenReleased := HasBeenReleased;
-  aHasBeenQuickReleased := HasBeenQuickReleased;
+  aHasBeenReleased := fHasBeenReleased;
+  aHasBeenQuickReleased := fHasBeenQuickReleased;
   aAmpLevel := AmpLevel;
 end;
 
@@ -743,7 +746,7 @@ begin
   VoiceGainCh1 := VoiceGainCh1 * Volx;
   VoiceGainCh2 := VoiceGainCh2 * Volx;
 
-  if VoiceMode = TVoiceMode.Poly then
+  if (VoiceMode = TVoiceMode.Poly) or (VoiceMode = TVoiceMode.Latch) then
   begin
     // NOTE: The goal of MIDI Note as a mod source is something similar to 1 volt per octave
     // pitch scaling in modular synths. I want filters to be able to track the keyboard.

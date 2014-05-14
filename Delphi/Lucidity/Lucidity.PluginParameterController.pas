@@ -93,7 +93,7 @@ begin
       TPluginParameter.SamplePlaybackType:     result := TSamplePlaybackTypeHelper.ToSingle(VoicePar.SamplePlaybackType);
       TPluginParameter.SampleResetClockSource: result := TClockSourceHelper.ToSingle(VoicePar.SampleReset);
       TPluginParameter.SamplerLoopBounds:      result := TSamplerLoopBoundsHelper.ToSingle(VoicePar.SamplerLoopBounds);
-      TPluginParameter.SamplerLoopMode:        result := TSamplerLoopModeHelper.ToSingle(VoicePar.SamplerLoopMode);
+      TPluginParameter.SamplerLoopMode:        result := TKeyGroupTriggerModeHelper.ToSingle(VoicePar.SamplerLoopMode);
       TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.AmpVelocityDepth);
       TPluginParameter.FilterVelocity:         result := TEnvVelocityDepthHelper.ToSingle(VoicePar.FilterVelocityDepth);
       TPluginParameter.FilterRouting:          result := TFilterRoutingHelper.ToSingle(VoicePar.FilterRouting);
@@ -222,7 +222,7 @@ begin
       TPluginParameter.SamplePlaybackType:     VoicePar.SamplePlaybackType  := TSamplePlaybackTypeHelper.ToEnum(ParValue);
       TPluginParameter.SampleResetClockSource: VoicePar.SampleReset         := TClockSourceHelper.ToEnum(ParValue);
       TPluginParameter.SamplerLoopBounds:      VoicePar.SamplerLoopBounds   := TSamplerLoopBoundsHelper.ToEnum(ParValue);
-      TPluginParameter.SamplerLoopMode:        VoicePar.SamplerLoopMode     := TSamplerLoopModeHelper.ToEnum(ParValue);
+      TPluginParameter.SamplerLoopMode:        VoicePar.SamplerLoopMode     := TKeyGroupTriggerModeHelper.ToEnum(ParValue);
       TPluginParameter.AmpVelocity:            VoicePar.AmpVelocityDepth    := TEnvVelocityDepthHelper.ToEnum(ParValue);
       TPluginParameter.FilterVelocity:         VoicePar.FilterVelocityDepth := TEnvVelocityDepthHelper.ToEnum(ParValue);
       TPluginParameter.FilterRouting:          VoicePar.FilterRouting       := TFilterRoutingHelper.ToEnum(ParValue);
@@ -409,8 +409,9 @@ begin
     TPluginParameter.Lfo2FreqMode:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
     TPluginParameter.Lfo1Range:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
     TPluginParameter.Lfo2Range:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
+    TPluginParameter.SamplerLoopMode:    Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
+    TPluginParameter.VoiceMode:          Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
   end;
-
 end;
 
 

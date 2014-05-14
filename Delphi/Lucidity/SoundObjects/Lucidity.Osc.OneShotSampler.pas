@@ -34,9 +34,9 @@ type
     fLoopBounds: TSamplerLoopBounds;
     fOnFinished: TNotifyEvent;
     fPitchShift: single;
-    fLoopMode: TSamplerLoopMode;
+    fLoopMode: TKeyGroupTriggerMode;
     procedure SetLoopBounds(const Value: TSamplerLoopBounds);
-    procedure SetLoopMode(const Value: TSamplerLoopMode);
+    procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
   protected
     PitchParameters : TSampleOscPitchPar;
     ModPoints : TLuciditySampleOscModulationPoints;
@@ -90,7 +90,7 @@ type
     property PitchShift : single read fPitchShift write fPitchShift; //SemiTones.
 
     property LoopBounds    : TSamplerLoopBounds  read fLoopBounds         write SetLoopBounds;
-    property LoopMode      : TSamplerLoopMode    read fLoopMode           write SetLoopMode;
+    property LoopMode      : TKeyGroupTriggerMode    read fLoopMode           write SetLoopMode;
 
 
     //== For GUI Feedback ==
@@ -151,7 +151,7 @@ begin
   fLoopBounds := Value;
 end;
 
-procedure TOneShotSampleOsc.SetLoopMode(const Value: TSamplerLoopMode);
+procedure TOneShotSampleOsc.SetLoopMode(const Value: TKeyGroupTriggerMode);
 begin
   fLoopMode := Value;
 end;
@@ -246,7 +246,7 @@ procedure TOneShotSampleOsc.Release;
 begin
   HasBeenReleased := true;
 
-  if (LoopMode = TSamplerLoopMode.LoopRelease) then
+  if (LoopMode = TKeyGroupTriggerMode.LoopRelease) then
   begin
     CurrentSampleBounds.PlaybackEnd := CurrentSampleBounds.SampleEnd;
   end;
@@ -271,9 +271,9 @@ begin
       CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.SampleStart;
 
       if  (LoopBounds = TSamplerLoopBounds.LoopSample)
-       or (LoopMode = TSamplerLoopMode.LoopOff)
-       or (LoopMode = TSamplerLoopMode.OneShot)
-       or ((HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease))
+       or (LoopMode = TKeyGroupTriggerMode.LoopOff)
+       or (LoopMode = TKeyGroupTriggerMode.OneShot)
+       or ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopRelease))
        then
       begin
         CurrentSampleBounds.PlaybackLoopStart := CurrentSampleBounds.SampleStart;
@@ -302,7 +302,7 @@ begin
           CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.LoopStart;
           CurrentSampleBounds.PlaybackLoopStart   := CurrentSampleBounds.LoopStart;
 
-          if ((HasBeenReleased) and (LoopMode = TSamplerLoopMode.LoopRelease))
+          if ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopRelease))
             then CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.SampleEnd
             else CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.LoopEnd;
         end;
@@ -397,7 +397,7 @@ begin
   if (PhaseCounter >= CurrentSampleBounds.PlaybackEnd) then
   begin
     case LoopMode of
-      TSamplerLoopMode.LoopOff:
+      TKeyGroupTriggerMode.LoopOff:
       begin
         if (IsFinishCalledNeeded) then
         begin
@@ -406,7 +406,7 @@ begin
         end;
       end;
 
-      TSamplerLoopMode.LoopSustain:
+      TKeyGroupTriggerMode.LoopSustain:
       begin
         StepInFilter.Trigger;
         LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
@@ -415,7 +415,7 @@ begin
         VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
       end;
 
-      TSamplerLoopMode.LoopRelease:
+      TKeyGroupTriggerMode.LoopRelease:
       begin
         if HasBeenReleased = false then
         begin
@@ -432,7 +432,7 @@ begin
         end;
       end;
 
-      TSamplerLoopMode.OneShot:
+      TKeyGroupTriggerMode.OneShot:
       begin
         if (IsFinishCalledNeeded) then
         begin

@@ -837,7 +837,7 @@ begin
     TPluginParameter.SamplePlaybackType:     result := TSamplePlaybackTypeHelper;
     TPluginParameter.SampleResetClockSource: result := TClockSourceHelper;
     TPluginParameter.SamplerLoopBounds:      result := TSamplerLoopBoundsHelper;
-    TPluginParameter.SamplerLoopMode:        result := TSamplerLoopModeHelper;
+    TPluginParameter.SamplerLoopMode:        result := TKeyGroupTriggerModeHelper;
     TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper;
     TPluginParameter.FilterVelocity:         result := TEnvVelocityDepthHelper;
     TPluginParameter.FilterRouting:          result := TFilterRoutingHelper;

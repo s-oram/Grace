@@ -21,9 +21,9 @@ type
   private
     fLoopBounds: TSamplerLoopBounds;
     fOnFinished: TNotifyEvent;
-    fLoopMode: TSamplerLoopMode;
+    fLoopMode: TKeyGroupTriggerMode;
     procedure SetLoopBounds(const Value: TSamplerLoopBounds);
-    procedure SetLoopMode(const Value: TSamplerLoopMode);
+    procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
   protected
     PhaseCounter : TCounter;
     TriggerNote : byte;
@@ -63,7 +63,7 @@ type
 
     //== Parameters ===
     property LoopBounds : TSamplerLoopBounds read fLoopBounds write SetLoopBounds;
-    property LoopMode   : TSamplerLoopMode   read fLoopMode   write SetLoopMode;
+    property LoopMode   : TKeyGroupTriggerMode   read fLoopMode   write SetLoopMode;
 
     //== For GUI Feedback ==
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
@@ -120,7 +120,7 @@ begin
   fLoopBounds := Value;
 end;
 
-procedure TLoopSampleOsc.SetLoopMode(const Value: TSamplerLoopMode);
+procedure TLoopSampleOsc.SetLoopMode(const Value: TKeyGroupTriggerMode);
 begin
   fLoopMode := Value;
 end;
