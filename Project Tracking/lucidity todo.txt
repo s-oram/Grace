@@ -5,16 +5,6 @@
 - make LFO phases random. ?
 - switch between random and reset LFO phase on trigger. ? 
 
-
--- Look at re-writing the Voice Controller class.... simplify it if possible.
-- maybe "Loop" should be a "Trigger" mode selector.
--- Loop 
--- Loop until release
--- Loop Off
--- One Shot
--- Latch 
--- Latch with Loop.
-
 Delete 50-50 filter blend mode.
 
 - may the small parameter display should be 'overlaid' over the sample display
@@ -25,9 +15,6 @@ Delete 50-50 filter blend mode.
    to map a custom CC to a mod slot. 
 
 Bug : sample display doesn't update when changing Loop Bounds.
-
-Changing loop mode should kill all existing voices.
-
 
 
 =============================================================================
