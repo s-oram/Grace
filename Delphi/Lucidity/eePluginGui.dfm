@@ -79,7 +79,7 @@ object PluginGui: TPluginGui
         end
         object SampleMapDiv: TVamDiv
           Left = 48
-          Top = 164
+          Top = 244
           Width = 521
           Height = 80
           Margins.Left = 0
@@ -92,7 +92,7 @@ object PluginGui: TPluginGui
         end
         object VoiceControlDiv: TVamDiv
           Left = 48
-          Top = 260
+          Top = 348
           Width = 521
           Height = 80
           Opacity = 255
@@ -100,8 +100,8 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object TabPanel: TVamTabPanel
-          Left = 48
-          Top = 592
+          Left = 56
+          Top = 448
           Width = 513
           Height = 89
           Opacity = 255
@@ -130,9 +130,22 @@ object PluginGui: TPluginGui
         end
         object ModSystem2Div: TVamDiv
           Left = 48
-          Top = 512
+          Top = 568
           Width = 521
           Height = 49
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          HitTest = True
+          Visible = True
+        end
+        object ZoomSampleDiv: TVamDiv
+          Left = 48
+          Top = 156
+          Width = 521
+          Height = 37
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0

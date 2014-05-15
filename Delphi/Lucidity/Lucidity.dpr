@@ -165,7 +165,8 @@ uses
   eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas',
   Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',
   Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',
-  Lucidity.VoiceController in 'Lucidity.VoiceController.pas';
+  Lucidity.VoiceController in 'Lucidity.VoiceController.pas',
+  uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame};
 
 {$R *.res}
 
