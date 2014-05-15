@@ -3,10 +3,6 @@ Check state of other two plugins. Are 64 bit builds out? Are they available. do 
 - contact existing owners.. let them know they will be given copies of 
 
 
-
-
-
-
 ======================
 
 Annoucing Lucidity
@@ -107,6 +103,17 @@ Send pre-release copies to
 Check out for website layout.
 http://www.sublimetext.com/
 
+
+
+<Big splash caption>
+One Small Clue builds musical instruments for computer music production. 
+-- Show image of a night club DJ/performer!
+
+
+
+Look at videos for marketing.
+- Softube - console 1 in 60 seconds
+- the mangle.
 
 
 
