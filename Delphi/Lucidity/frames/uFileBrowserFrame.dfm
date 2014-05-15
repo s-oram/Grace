@@ -107,7 +107,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Visible = True
           end
         end
-        object VamDiv1: TVamDiv
+        object PreviewControlDiv: TVamDiv
           Left = 223
           Top = 4
           Width = 70
@@ -116,9 +116,9 @@ object FileBrowserFrame: TFileBrowserFrame
           HitTest = True
           Align = alRight
           Visible = True
-          object LfoShapeTextBox1: TVamLabel
+          object PreviewControlLabel: TVamLabel
             Left = 0
-            Top = 40
+            Top = 76
             Width = 70
             Height = 20
             Opacity = 255
@@ -132,13 +132,14 @@ object FileBrowserFrame: TFileBrowserFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = [fsBold]
-            Align = alTop
+            Align = alBottom
             Visible = True
+            OnClick = PreviewControlLabelClick
           end
           object PreviewVolumeKnob: TVamKnob
             AlignWithMargins = True
             Left = 27
-            Top = 6
+            Top = 29
             Width = 40
             Height = 32
             Margins.Left = 27
@@ -158,12 +159,11 @@ object FileBrowserFrame: TFileBrowserFrame
             IsKnobEnabled = True
             VisibleSteps = 0
             ParameterIndex = 0
-            Align = alTop
             Visible = True
           end
           object PreviewOnOffButton: TVamButton
-            Left = 7
-            Top = 13
+            Left = 6
+            Top = 26
             Width = 20
             Height = 20
             Opacity = 255

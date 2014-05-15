@@ -24,9 +24,9 @@ type
     PreviewInfo3: TVamLabel;
     PreviewInfo1: TVamLabel;
     PreviewInfo2: TVamLabel;
-    VamDiv1: TVamDiv;
+    PreviewControlDiv: TVamDiv;
     PreviewVolumeKnob: TVamKnob;
-    LfoShapeTextBox1: TVamLabel;
+    PreviewControlLabel: TVamLabel;
     PreviewOnOffButton: TVamButton;
     InsidePanel: TVamPanel;
     procedure FileTreeViewScrollXChange(Sender: TObject);
@@ -35,6 +35,7 @@ type
     procedure FileTreeViewNodeRightClicked(Sender: TObject; Node: TVamTreeViewNode);
     procedure FileTreeViewTreeRightClicked(Sender: TObject);
     procedure PreviewOnOffButtonChanged(Sender: TObject);
+    procedure PreviewControlLabelClick(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -48,6 +49,9 @@ type
 
     MainContextMenu : TFileTreeViewMainContextMenu;
     NodeContextMenu : TFileTreeViewNodeContextMenu;
+
+
+    PreviewInfo_ShowVolume : boolean;
 
     procedure EventHandle_NodeFocusChanged(Sender : TObject);
     procedure EventHandle_FilterNodes(Sender : TObject; const RootDir : string; var FolderNodes, FileNodes : TStringList);
@@ -73,6 +77,7 @@ type
 implementation
 
 uses
+  VamLayoutWizard,
   uGuiUtils,
   Lucidity.PluginParameters,
   eeFunctions, uLucidityExtra,
@@ -91,6 +96,8 @@ begin
 
   MainContextMenu := TFileTreeViewMainContextMenu.Create;
   NodeContextMenu := TFileTreeViewNodeContextMenu.Create;
+
+  PreviewInfo_ShowVolume := false;
 end;
 
 destructor TFileBrowserFrame.Destroy;
@@ -108,10 +115,37 @@ begin
 end;
 
 procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  CurrentFocus_ParName : string;
+  b : boolean;
 begin
   if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
-  if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged
+  if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged;
+
+
+  if (MsgID = TLucidMsgID.OnActiveParameterChanged) then
+  begin
+    CurrentFocus_ParName := string(Data^);
+    if CurrentFocus_ParName = PluginParToName(TPluginParameter.PreviewVolume)
+      then b := true
+      else b := false;
+
+    if PreviewInfo_ShowVolume <> b then
+    begin
+      PreviewInfo_ShowVolume := b;
+      PreviewInfoChanged;
+    end;
+  end;
+
+  if (PreviewInfo_ShowVolume) and (MsgID = TLucidMsgID.Command_UpdateScope) then
+  begin
+    // This is called here to update the preview volume text.
+    PreviewInfoChanged;
+  end;
+
+
+
 end;
 
 
@@ -134,11 +168,19 @@ begin
   LowerPanel.Height := 60 + LowerPanel.Padding.Top + LowerPanel.Padding.Bottom;
   //LowerPanel.Height := 94 + LowerPanel.Padding.Top + LowerPanel.Padding.Bottom;
 
+  PreviewControlDiv.Width := 80;
+
+  PreviewVolumeKnob.Top := 0;
+  PreviewVolumeKnob.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight);
+  PreviewVolumeKnob.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-7,4);
+
+
+
 
   //==== Parameters ====
   GuiStandard_RegisterControl(aGuiStandard, PreviewVolumeKnob,         TPluginParameter.PreviewVolume);
 
-  PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
+
 
   // TODO: NOTE: Setting the color here doesn't work correctly in Win64.
   //ScrollBox.Color_Border     := GetRedFoxColor(kPanelVeryDark);
@@ -160,6 +202,8 @@ begin
   PreviewOnOffButton.ColorOffB    := kColor_ToggleButtonOffMouseOver;
   PreviewOnOffButton.ImageOn      := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
   PreviewOnOffButton.ImageOff     := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
+
+  PreviewOnOffButton.Layout.Anchor(PreviewVolumeKnob).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
 
   //======================================
   RefreshFileBrowser; //Update some GUI controls...
@@ -266,7 +310,11 @@ end;
 
 
 
+
+
 procedure TFileBrowserFrame.PreviewInfoChanged;
+var
+  Text : string;
 begin
   if not assigned(Plugin) then exit;
 
@@ -291,6 +339,24 @@ begin
     PreviewInfo2.Text := '';
     PreviewInfo3.Text := '';
   end;
+
+
+  if PreviewInfo_ShowVolume = false then
+  begin
+    if Plugin.IsPreviewEnabled
+      then PreviewControlLabel.Text := 'PREVIEW ON'
+      else PreviewControlLabel.Text := 'PREVIEW OFF';
+  end else
+  begin
+    Text := 'VOLUME ' + IntToStr(round(Plugin.PreviewVolume * 100)) + '%';
+    PreviewControlLabel.Text := Text;
+  end;
+
+
+  if PreviewOnOffButton.IsOn <> Plugin.IsPreviewEnabled
+    then PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
+
+
 
 end;
 
@@ -455,6 +521,16 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.IsPreviewEnabled := (Sender as TVamButton).IsOn;
+  PreviewInfoChanged;
+end;
+
+procedure TFileBrowserFrame.PreviewControlLabelClick(Sender: TObject);
+begin
+  if not assigned(Plugin) then exit;
+
+  // Toggle the preview enabled state.
+  Plugin.IsPreviewEnabled := not Plugin.IsPreviewEnabled;
+  PreviewInfoChanged;
 end;
 
 procedure TFileBrowserFrame.RefreshFileBrowser;

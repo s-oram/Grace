@@ -65,7 +65,7 @@ type
     OnControlLeave                   = Actions + 6; //TODO: deprecated. replace by OnParControlLeave
     OnParControlEnter                = Actions + 7;
     OnParControlLeave                = Actions + 8;
-    OnParControlChanged              = Actions + 9;  // a parameter has changed it's value. Normally called by the GUI so the GUI can respond to knob changes.
+    OnParControlChanged              = Actions + 9;
     OnActiveParameterChanged         = Actions + 10; // The active GUI parameter has changed. The active GUI parameter is the parameter that the mouse is currently over or otherwise focused on somehow.
     OnPostCreateFinished             = Actions + 11;
     OnLfoSelectorEnter               = Actions + 12;
