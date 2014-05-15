@@ -400,6 +400,7 @@ begin
       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
     end;
+    TPluginParameter.SamplerLoopBounds:  Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateSampleInfo);
     TPluginParameter.SamplePlaybackType: Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged);
     TPluginParameter.Filter1Type:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
     TPluginParameter.Filter2Type:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
