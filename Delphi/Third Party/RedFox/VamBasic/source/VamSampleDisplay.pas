@@ -183,6 +183,13 @@ begin
 
     BackBuffer.BufferInterface.CopyImage(BackBufferController.BackBuffer.AsImage,0,0);
   end;
+
+  {
+  BackBuffer.BufferInterface.NoFill;
+  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(clRed);
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.Rectangle(0,0, Width-1, Height-1);
+  }
 end;
 
 end.

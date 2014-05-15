@@ -2,20 +2,20 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
   Left = 0
   Top = 0
   Width = 833
-  Height = 302
+  Height = 408
   TabOrder = 0
   object Panel: TRedFoxContainer
     Left = 0
     Top = 0
     Width = 833
-    Height = 302
+    Height = 408
     Color = '$FFEEEEEE'
     Align = alClient
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
       Width = 833
-      Height = 302
+      Height = 408
       Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
@@ -28,10 +28,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
       Padding.Bottom = 3
       object InsidePanel: TVamPanel
         AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 827
-        Height = 296
+        Left = 16
+        Top = 80
+        Width = 790
+        Height = 251
         Margins.Left = 0
         Margins.Top = 0
         Margins.Right = 0
@@ -44,7 +44,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
         CornerRadius3 = 3.000000000000000000
         CornerRadius4 = 3.000000000000000000
         Transparent = False
-        Align = alClient
         Visible = True
         OnResize = InsidePanelResize
         Padding.Left = 4
@@ -55,8 +54,8 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           AlignWithMargins = True
           Left = 4
           Top = 4
-          Width = 819
-          Height = 241
+          Width = 782
+          Height = 196
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -70,8 +69,8 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
         end
         object SampleInfoBox: TVamDiv
           Left = 4
-          Top = 245
-          Width = 819
+          Top = 200
+          Width = 782
           Height = 47
           Opacity = 255
           HitTest = True
@@ -81,7 +80,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             AlignWithMargins = True
             Left = 0
             Top = 0
-            Width = 819
+            Width = 782
             Height = 27
             Margins.Left = 0
             Margins.Top = 0
@@ -113,7 +112,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             end
             object SampleBeatsKnob: TVamCompoundNumericKnob
               Tag = 4
-              Left = 751
+              Left = 714
               Top = 0
               Width = 68
               Height = 27
@@ -146,7 +145,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             object SampleVolumeKnob: TVamCompoundNumericKnob
               Tag = 1
               AlignWithMargins = True
-              Left = 415
+              Left = 378
               Top = 0
               Width = 78
               Height = 27
@@ -184,7 +183,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             object SamplePanKnob: TVamCompoundNumericKnob
               Tag = 2
               AlignWithMargins = True
-              Left = 503
+              Left = 466
               Top = 0
               Width = 62
               Height = 27
@@ -222,7 +221,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             object SampleFineKnob: TVamCompoundNumericKnob
               Tag = 6
               AlignWithMargins = True
-              Left = 663
+              Left = 626
               Top = 0
               Width = 78
               Height = 27
@@ -259,7 +258,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             object SampleTuneKnob: TVamCompoundNumericKnob
               Tag = 5
               AlignWithMargins = True
-              Left = 575
+              Left = 538
               Top = 0
               Width = 78
               Height = 27
@@ -295,6 +294,291 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Visible = True
             end
           end
+        end
+      end
+      object ZoomScrollBar: TVamScrollBar
+        Left = 3
+        Top = 350
+        Width = 827
+        Height = 33
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Opacity = 255
+        Text = 'ZoomScrollBar'
+        HitTest = True
+        IndexSize = 0.250000000000000000
+        Color_Border = '$FF000000'
+        Color_Background = '$FF888888'
+        Color_Foreground = '$FFCCCCCC'
+        SliderStyle = RoundCorners
+        SliderType = stHorizontal
+        OnChanged = ZoomScrollBarChanged
+        Align = alBottom
+        Visible = True
+      end
+      object ZoomControlsDiv: TVamDiv
+        AlignWithMargins = True
+        Left = 3
+        Top = 383
+        Width = 827
+        Height = 22
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Opacity = 255
+        HitTest = True
+        Align = alBottom
+        Visible = True
+        object ZoomOutButton: TVamTextBox
+          Tag = 2
+          AlignWithMargins = True
+          Left = 68
+          Top = 0
+          Width = 22
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = '-'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomInButton: TVamTextBox
+          Tag = 1
+          AlignWithMargins = True
+          Left = 42
+          Top = 0
+          Width = 22
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = '+'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomApplyButton: TVamTextBox
+          Tag = 10
+          AlignWithMargins = True
+          Left = 514
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Apply'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomLoopStartButton: TVamTextBox
+          Tag = 5
+          AlignWithMargins = True
+          Left = 346
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Loop Start'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomSampleEndButton: TVamTextBox
+          Tag = 4
+          AlignWithMargins = True
+          Left = 262
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Sample End'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomSampleStartButton: TVamTextBox
+          Tag = 3
+          AlignWithMargins = True
+          Left = 178
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Sample Start'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object VamLabel2: TVamLabel
+          AlignWithMargins = True
+          Left = 0
+          Top = 0
+          Width = 41
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 1
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'ZOOM'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Align = alLeft
+          Visible = True
+        end
+        object Zoom100Button: TVamTextBox
+          Tag = 8
+          AlignWithMargins = True
+          Left = 94
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = '100%'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
+        end
+        object ZoomLoopEndButton: TVamTextBox
+          Tag = 6
+          AlignWithMargins = True
+          Left = 430
+          Top = 0
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 4
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Loop End'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alLeft
+          Visible = True
         end
       end
     end

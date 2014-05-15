@@ -27,14 +27,10 @@ type
 
   TFlexSampleImageRenderer = class
   private
-    function CalcDestBounds(const ChannelIndex, ChannelCount : integer; const ImageWidth, ImageHeight : cardinal):TRectF;
+    class function CalcDestBounds(const ChannelIndex, ChannelCount : integer; const ImageWidth, ImageHeight : cardinal):TRectF; static;
   protected
-
   public
-    constructor Create;
-    destructor Destroy; override;
-
-    function RenderSample(const aSampleRegion : IRegion; const Par:TFlexRenderPar):IInterfacedBitmap;
+    class function RenderSample(const aSampleRegion : IRegion; const Par:TFlexRenderPar):IInterfacedBitmap; static;
   end;
 
 
@@ -272,20 +268,8 @@ end;
 
 { TFlexSampleImageRenderer }
 
-constructor TFlexSampleImageRenderer.Create;
-begin
 
-end;
-
-destructor TFlexSampleImageRenderer.Destroy;
-begin
-
-  inherited;
-end;
-
-
-
-function TFlexSampleImageRenderer.CalcDestBounds(const ChannelIndex, ChannelCount: integer; const ImageWidth, ImageHeight: cardinal): TRectF;
+class function TFlexSampleImageRenderer.CalcDestBounds(const ChannelIndex, ChannelCount: integer; const ImageWidth, ImageHeight: cardinal): TRectF;
 var
   r : TRectF;
 begin
@@ -309,7 +293,7 @@ begin
   result := r;
 end;
 
-function TFlexSampleImageRenderer.RenderSample(const aSampleRegion: IRegion; const Par: TFlexRenderPar): IInterfacedBitmap;
+class function TFlexSampleImageRenderer.RenderSample(const aSampleRegion: IRegion; const Par: TFlexRenderPar): IInterfacedBitmap;
   procedure DrawSample_UsingPeaks(SampleData : TSampleDisplayInfo; const Wrapper : TRedfoxBitmapWrapper);
   var
     DestBounds : TRectF;

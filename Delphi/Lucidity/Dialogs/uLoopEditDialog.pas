@@ -631,7 +631,6 @@ var
   TargetSampleFrame : integer;
   SampleFrames : integer;
   DisplayPixelWidth : integer;
-
   ZoomPos : TZoomPos;
 begin
   if not assigned(Plugin)         then exit;

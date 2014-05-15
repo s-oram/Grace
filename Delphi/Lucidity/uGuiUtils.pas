@@ -95,11 +95,17 @@ type
     class function GetParValue<TEnum>(const Plugin : TeePlugin; const Par : TPluginParameter):TEnum; overload; static;
   end;
 
+  GuiSetup = record
+    class procedure StyleButton_CommandButton(const Button : TVamTextBox); static;
+    class procedure StyleButton_CommandButton_Bright(const Button : TVamTextBox); static;
+  end;
+
 
 
 implementation
 
 uses
+  RedFoxColor,
   VamGuiControlInterfaces,
   eeDsp,
   eeSampleFloat,
@@ -860,5 +866,33 @@ begin
   end;
 end;
 
+
+{ GuiSetup }
+
+class procedure GuiSetup.StyleButton_CommandButton(const Button: TVamTextBox);
+// http://www.colorhexa.com/ccccca-to-d3e0f7
+begin
+  Button.Color           :=  '$ffD0D6E1';
+  //Button.ColorMouseOver  :=  '$ffD3E0F7';
+  Button.ColorMouseOver  :=  '$ffE3EEFF';
+
+  Button.ColorBorder     :=  '$ff000000';
+  Button.Font.Color      := GetRedFoxColor('$ff242B39');
+
+  Button.ShowBorder := true;
+end;
+
+class procedure GuiSetup.StyleButton_CommandButton_Bright(const Button: TVamTextBox);
+// http://www.colorhexa.com/ccccca-to-d3e0f7
+begin
+  Button.Color           :=  '$ffD0D6E1';
+  //Button.ColorMouseOver  :=  '$ffD3E0F7';
+  Button.ColorMouseOver  :=  '$ffE3EEFF';
+
+  Button.ColorBorder     :=  '$ff000000';
+  Button.Font.Color      := GetRedFoxColor('$ff242B39');
+
+  Button.ShowBorder := true;
+end;
 
 end.

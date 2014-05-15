@@ -8,6 +8,8 @@ type
 function AutoFree(const aObject: PObject): IUnknown;
 
 function LowestValue(const x1, x2 : integer):integer;
+function HighestValue(const x1, x2 : integer):integer; overload;
+function HighestValue(const x1, x2 : single):single; overload;
 
 
 // a couple of methods to help with removing the 'combining signed and unsigned' types...
@@ -467,6 +469,20 @@ end;
 function LowestValue(const x1, x2 : integer):integer;
 begin
   if x1 < x2
+    then result := x1
+    else result := x2;
+end;
+
+function HighestValue(const x1, x2 : integer):integer; overload;
+begin
+  if x1 > x2
+    then result := x1
+    else result := x2;
+end;
+
+function HighestValue(const x1, x2 : single):single; overload;
+begin
+  if x1 > x2
     then result := x1
     else result := x2;
 end;

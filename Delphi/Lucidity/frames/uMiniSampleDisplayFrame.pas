@@ -2,6 +2,10 @@ unit uMiniSampleDisplayFrame;
 
 interface
 
+{$INCLUDE Defines.inc}
+
+{$SCOPEDENUMS ON}
+
 uses
   eeGuiStandardv2,
   VamLib.UniqueID,
@@ -10,14 +14,20 @@ uses
   Lucidity.Types,
   Lucidity.Interfaces,
   Lucidity.SampleMap, Menu.SampleDisplayMenu,
+  Lucidity.FlexSampleRenderer,
   eePlugin, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamSampleDisplay, Vcl.Menus,
   RedFoxGraphicControl, VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel,
-  VamCompoundNumericKnob;
+  VamCompoundNumericKnob, VamScrollBar, VamTextBox;
 
 type
+  TUsageContext = (General, SampleZoom);
+
+  TDialogSampleMarker = (SampleStart, SampleEnd, LoopStart, LoopEnd);
+
+
   TSampleDisplayFrameInfo = record
     Region     : IRegion;
     Info : TSampleDisplayInfo;
@@ -37,10 +47,22 @@ type
     SampleNameLabel: TVamLabel;
     SampleFineKnob: TVamCompoundNumericKnob;
     SampleTuneKnob: TVamCompoundNumericKnob;
+    ZoomScrollBar: TVamScrollBar;
+    ZoomControlsDiv: TVamDiv;
+    ZoomOutButton: TVamTextBox;
+    ZoomInButton: TVamTextBox;
+    ZoomApplyButton: TVamTextBox;
+    ZoomLoopStartButton: TVamTextBox;
+    ZoomSampleEndButton: TVamTextBox;
+    ZoomSampleStartButton: TVamTextBox;
+    VamLabel2: TVamLabel;
+    Zoom100Button: TVamTextBox;
+    ZoomLoopEndButton: TVamTextBox;
     procedure SampleKnobChanged(Sender: TObject);
     procedure SampleDisplayResize(Sender: TObject);
     procedure InfoDivResize(Sender: TObject);
     procedure InsidePanelResize(Sender: TObject);
+    procedure ZoomScrollBarChanged(Sender: TObject);
   private
     UpdateSampleDisplayThottleToken : TUniqueID;
 
@@ -56,8 +78,13 @@ type
     procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
   private
     FMotherShip : IMothership;
+    fSampleDisplayContext: TUsageContext;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure SetSampleDisplayContext(const Value: TUsageContext);
+
+    procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
   protected
     CurrentSample : TSampleDisplayFrameInfo;
 
@@ -89,6 +116,8 @@ type
 
     property Plugin:TeePlugin read fPlugin write SetPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard write SetGuiStandard;
+
+    procedure UpdateZoomSlider;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -101,15 +130,20 @@ type
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property SampleOverlay : TLuciditySampleOverlay read fSampleOverlay;
+
+
+
+    property UsageContext : TUsageContext read fSampleDisplayContext write SetSampleDisplayContext;
   end;
 
 implementation
 
 uses
+  VamLib.Utils,
+  VamLib.Graphics,
   Lucidity.PluginParameters,
   VamLib.Throttler,
   eeDsp,
-  VamLib.Graphics,
   eeVstXml, eeVstParameter, uLucidityEnums,
   GuidEx, RedFoxColor, uLucidityExtra,
   uGuiUtils, VamLayoutWizard,
@@ -154,6 +188,18 @@ begin
   StoredImage := TSampleImageBuffer.Create;
 
   SampleRenderer := TSampleImageRenderer.Create;
+
+  Zoom100Button.OnMouseDown         := ZoomButtonMouseDown;
+  ZoomSampleStartButton.OnMouseDown := ZoomButtonMouseDown;
+  ZoomSampleEndButton.OnMouseDown   := ZoomButtonMouseDown;
+  ZoomLoopStartButton.OnMouseDown   := ZoomButtonMouseDown;
+  ZoomLoopEndButton.OnMouseDown     := ZoomButtonMouseDown;
+  ZoomOutButton.OnMouseDown         := ZoomButtonMouseDown;
+  ZoomInButton.OnMouseDown          := ZoomButtonMouseDown;
+  ZoomApplyButton.OnMouseDown       := ZoomButtonMouseDown;
+
+
+  ZoomScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
 end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
@@ -178,12 +224,16 @@ begin
 end;
 
 procedure TMiniSampleDisplayFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
+const
+  kZoomButtonWidth = 74;
 begin
-  SampleInfoBox.Height := 25;
-  InfoDiv.Align := alClient;
-
   Plugin := aPlugin;
   GuiStandard := aGuiStandard;
+
+  UsageContext := TUsageContext.General;
+
+  SampleInfoBox.Height := 25;
+  InfoDiv.Align := alClient;
 
   SampleDisplayMenu.Initialize(aPlugin);
 
@@ -223,9 +273,30 @@ begin
   //SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
 
 
+
+  GuiSetup.StyleButton_CommandButton(Zoom100Button);
+  GuiSetup.StyleButton_CommandButton(ZoomSampleStartButton);
+  GuiSetup.StyleButton_CommandButton(ZoomSampleEndButton);
+  GuiSetup.StyleButton_CommandButton(ZoomLoopStartButton);
+  GuiSetup.StyleButton_CommandButton(ZoomLoopEndButton);
+  GuiSetup.StyleButton_CommandButton(ZoomOutButton);
+  GuiSetup.StyleButton_CommandButton(ZoomInButton);
+  GuiSetup.StyleButton_CommandButton(ZoomInButton);
+  GuiSetup.StyleButton_CommandButton_Bright(ZoomApplyButton);
+
+  Zoom100Button.Width := kZoomButtonWidth;
+  ZoomSampleStartButton.Width := kZoomButtonWidth;
+  ZoomSampleEndButton.Width := kZoomButtonWidth;
+  ZoomLoopStartButton.Width := kZoomButtonWidth;
+  ZoomLoopEndButton.Width := kZoomButtonWidth;
+  ZoomApplyButton.Align := TAlign.alClient;
+
+
+
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
   UpdateModulation;
+  UpdateSampleDisplay;
 end;
 
 procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -297,25 +368,44 @@ end;
 
 procedure TMiniSampleDisplayFrame.InternalUpdateSampleDisplay(const Region: IRegion; const NoRegionMessage: string);
 var
+  aOffset, aZoom : single;
   xSampleImage : IInterfacedBitmap;
   Par:TSampleRenderParameters;
+  FlexPar:TFlexRenderPar;
 begin
   CurrentSample.Region := Region;
 
   if (assigned(Region)) then
   begin
-    if Region.GetSample^.Properties.IsValid then
+    if (Region.GetSample^.Properties.IsValid) and (UsageContext = TUsageContext.SampleZoom) then
+    begin
+      FlexPar.BackgroundColor := kColor_LcdDark1;
+      FlexPar.LineColor       := kColor_SampleDisplayLine;
+      FlexPar.ImageWidth      := SampleDisplay.ClientRect.Width;
+      FlexPar.ImageHeight     := SampleDisplay.ClientRect.Height;
+      FlexPar.Zoom            := Zoom;
+      FlexPar.Offset          := Offset;
+      FlexPar.VertGain        := DecibelsToLinear(Region.GetProperties^.SampleVolume);
+
+      xSampleImage := TFlexSampleImageRenderer.RenderSample(Region, FlexPar);
+      SampleDisplay.DrawSample(xSampleImage);
+
+      SampleOverlay.SetZoomOffset(Zoom, Offset);
+    end else
+    if (Region.GetSample^.Properties.IsValid) and (UsageContext = TUsageContext.General) then
     begin
       Par.BackgroundColor := kColor_LcdDark1;
       Par.LineColor       := kColor_SampleDisplayLine;
-      Par.ImageWidth      := kSampleImageWidth;
-      Par.ImageHeight     := kSampleImageHeight;
       Par.Zoom            := 0;
       Par.Offset          := 0;
+      Par.ImageWidth      := kSampleImageWidth;
+      Par.ImageHeight     := kSampleImageHeight;
       Par.VertGain        := DecibelsToLinear(Region.GetProperties^.SampleVolume);
 
       xSampleImage := SampleRenderer.RenderSample(Par, Region, Region.GetPeakBuffer);
       SampleDisplay.DrawSample(xSampleImage);
+
+      SampleOverlay.SetZoomOffset(0, 0);
 
 
 
@@ -651,6 +741,7 @@ end;
 procedure TMiniSampleDisplayFrame.SampleDisplayResize(Sender: TObject);
 begin
   self.UpdateControlVisibility;
+  UpdateSampleDisplay;
   UpdateSampleDisplayInfo;
 end;
 
@@ -946,11 +1037,212 @@ end;
 
 
 
+procedure TMiniSampleDisplayFrame.SetSampleDisplayContext(const Value: TUsageContext);
+begin
+  fSampleDisplayContext := Value;
+
+  SampleDisplay.Align := TAlign.alClient;
+  InsidePanel.AlignWithMargins := true;
+
+
+
+  case Value of
+    TUsageContext.General:
+    begin
+      InsidePanel.Align := TAlign.alClient;
+      InsidePanel.Margins.Bottom := 0;
+      InsidePanel.CornerRadius3 := 3;
+      InsidePanel.CornerRadius4 := 3;
+
+      ZoomScrollBar.Visible := false;
+      ZoomControlsDiv.Visible := false;
+    end;
+
+    TUsageContext.SampleZoom:
+    begin
+      InsidePanel.Align := TAlign.alClient;
+      InsidePanel.CornerRadius3 := 0;
+      InsidePanel.CornerRadius4 := 0;
+
+      ZoomControlsDiv.Align := TAlign.alBottom;
+      ZoomControlsDiv.Visible := true;
+
+
+      ZoomScrollBar.Align := TAlign.alBottom;
+      ZoomScrollBar.AlignWithMargins := true;
+      ZoomScrollBar.Margins.Bottom := 4;
+      ZoomScrollBar.Height := 22;
+      ZoomScrollBar.Top := 0;
+      ZoomScrollBar.Visible := true;
+      ZoomScrollBar.BringToFront;
+
+
+      UpdateZoomSlider;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  UpdateSampleDisplay;
+end;
+
+
+procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Tag : integer;
+  xZoom, xOffset : double;
+  SampleFrames, DisplayPixelWidth : integer;
+  IndexA, IndexB : single;
+begin
+  if not CurrentSample.Info.IsValid then exit;
+  if not assigned(CurrentSample.Region) then exit;
+
+  Tag := (Sender as TVamTextBox).Tag;
+
+  if Button = mbLeft then
+  begin
+    SampleFrames      := CurrentSample.Info.SampleFrames;
+    DisplayPixelWidth := SampleDisplay.Width;
+
+    if Tag = 1 then
+    begin
+      //Zoom in.
+      xZoom   := Zoom + ((1 - Zoom) * 0.25);
+      xOffset := Offset;
+
+      assert(xZoom >= 0);
+      assert(xZoom <= 1);
+      assert(xOffset >= 0);
+      assert(xOffset <= 1);
+
+      Zoom := xZoom;
+      Offset := xOffset;
+      UpdateSampleDisplay;
+
+
+      //CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
+      //SampleZoomControl.IndexA := IndexA;
+      //SampleZoomControl.IndexB := IndexB;
+      //SampleZoomControl.Invalidate;
+    end;
+
+    if Tag = 2 then
+    begin
+      //Zoom out.
+      xZoom   := Zoom - ((1 - Zoom) * 0.5);
+      if xZoom <= 0.15 then xZoom := 0;
+      xOffset := Offset;
+
+      assert(xZoom >= 0);
+      assert(xZoom <= 1);
+      assert(xOffset >= 0);
+      assert(xOffset <= 1);
+
+      Zoom := xZoom;
+      Offset := xOffset;
+      UpdateSampleDisplay;
+
+      //CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
+      //SampleZoomControl.IndexA := IndexA;
+      //SampleZoomControl.IndexB := IndexB;
+      //SampleZoomControl.Invalidate;
+    end;
+
+
+    if Tag = 3 then ZoomToSampleMarker(self, TDialogSampleMarker.SampleStart);
+    if Tag = 4 then ZoomToSampleMarker(self, TDialogSampleMarker.SampleEnd);
+    if Tag = 5 then ZoomToSampleMarker(self, TDialogSampleMarker.LoopStart);
+    if Tag = 6 then ZoomToSampleMarker(self, TDialogSampleMarker.LoopEnd);
+    //if Tag = 7 then ZoomMarkerMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+
+    if Tag = 8 then
+    begin
+      Zoom := 0;
+      UpdateSampleDisplay;
+
+      //CalcZoomBounds(0, 0, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
+      //SampleZoomControl.IndexA := IndexA;
+      //SampleZoomControl.IndexB := IndexB;
+      //SampleZoomControl.Invalidate;
+    end;
+
+
+    if Tag = 10 then
+    begin
+      // TODO:
+      /// Close the Zoom context here.
+    end;
+
+    // Finally....
+    UpdateZoomSlider;
+  end;
+
+end;
 
 
 
 
 
+procedure TMiniSampleDisplayFrame.ZoomToSampleMarker(Sender: TObject; Marker: TDialogSampleMarker);
+var
+  CurRegion : IRegion;
+  TargetSampleFrame : integer;
+  SampleFrames : integer;
+  DisplayPixelWidth : integer;
+  ZoomPos : TZoomPos;
+begin
+  if not assigned(Plugin)         then exit;
 
+  CurRegion := Plugin.FocusedRegion;
+  if CurRegion = nil then exit;
+
+  // Safty check: Check the current sample is loaded and is valid.
+  assert(CurRegion.GetSample^.Properties.IsValid);
+
+  case Marker of
+    TDialogSampleMarker.SampleStart: TargetSampleFrame := CurRegion.GetProperties^.SampleStart;
+    TDialogSampleMarker.SampleEnd:   TargetSampleFrame := CurRegion.GetProperties^.SampleEnd;
+    TDialogSampleMarker.LoopStart:   TargetSampleFrame := CurRegion.GetProperties^.LoopStart;
+    TDialogSampleMarker.LoopEnd:     TargetSampleFrame := CurRegion.GetProperties^.LoopEnd;
+  else
+    raise Exception.Create('Marker type not handled.');
+  end;
+
+  SampleFrames := CurRegion.GetSample^.Properties.SampleFrames;
+  DisplayPixelWidth := SampleDisplay.Width;
+
+  ZoomPos := CalcZoomPos(SampleFrames, DisplayPixelWidth, TargetSampleFrame);
+
+
+  //== Set a bunch of zoom/offset values ==
+  Zoom   := ZoomPos.Zoom;
+  Offset := ZoomPos.Offset;
+  UpdateSampleDisplay;
+
+  //Debounce(SampleUpdateDebounceID, 25, deLeading, UpdateSampleDisplay);
+  //SampleZoomControl.IndexA := ZoomPos.IndexA;
+  //SampleZoomControl.IndexB := ZoomPos.IndexB;
+  //SampleZoomControl.Invalidate;
+end;
+
+procedure TMiniSampleDisplayFrame.UpdateZoomSlider;
+var
+  ZoomSize : single;
+begin
+  ZoomSize := 1 - (Zoom * 0.9);
+  ZoomScrollBar.IndexSize := ZoomSize;
+  ZoomScrollBar.IndexPos  := Offset;
+end;
+
+procedure TMiniSampleDisplayFrame.ZoomScrollBarChanged(Sender: TObject);
+begin
+  Offset := (Sender as TVamScrollBar).IndexPos;
+
+  Throttle(UpdateSampleDisplayThottleToken, 25, procedure
+  begin
+    UpdateSampleDisplay;
+  end);
+end;
 
 end.

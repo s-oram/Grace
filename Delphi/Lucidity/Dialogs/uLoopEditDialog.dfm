@@ -58,7 +58,7 @@ object LoopEditForm: TLoopEditForm
       object HeadControlsContainer: TVamDiv
         AlignWithMargins = True
         Left = 3
-        Top = 375
+        Top = 326
         Width = 683
         Height = 22
         Margins.Left = 0
@@ -346,7 +346,7 @@ object LoopEditForm: TLoopEditForm
       end
       object SampleZoomContainer: TVamPanel
         Left = 3
-        Top = 326
+        Top = 351
         Width = 683
         Height = 49
         Opacity = 255
