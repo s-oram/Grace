@@ -349,8 +349,8 @@ begin
 
 
 
+  // TODO:MED Delete this AddWindowsMessageLister(). It's been superceded by the ZeroObject stuff.
   Plugin.Globals.AddWindowsMessageListener(self.Handle);
-
 
 
   //====== Register frames as zero objects =====================================
@@ -361,6 +361,7 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(SequencerFrame, TZeroObjectRank.VCL);
+  Plugin.Globals.MotherShip.RegisterZeroObject(VoiceSetupFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame, TZeroObjectRank.VCL);
 
 
@@ -373,6 +374,7 @@ begin
     ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+    VoiceSetupFrame.InitializeFrame(Plugin, GuiStandard);
     VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
   except
   end;
@@ -508,6 +510,7 @@ begin
   MiniSampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
+  //VoiceSetupFrame.UpdateGui(); NOTE: I've not added an UpdateGUI() method as I'm not sure if it's needed.
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
   GuiStandard.UpdateControls;

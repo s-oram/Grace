@@ -16,8 +16,6 @@ object VoiceSetupFrame: TVoiceSetupFrame
     Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
-    ExplicitWidth = 320
-    ExplicitHeight = 238
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
@@ -29,8 +27,6 @@ object VoiceSetupFrame: TVoiceSetupFrame
       Transparent = False
       Align = alClient
       Visible = True
-      ExplicitLeft = 208
-      ExplicitTop = 64
     end
   end
 end
