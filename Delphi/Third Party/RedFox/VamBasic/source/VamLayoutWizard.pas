@@ -77,6 +77,7 @@ type
 
 
 function WidthOfControls(const ControlA, ControlB : TControl):integer;
+function HeightOfControls(const ControlA, ControlB : TControl):integer;
 
 implementation
 
@@ -92,6 +93,16 @@ begin
   MaxX := Max(ControlA.Left + ControlA.Width, ControlB.Left + ControlB.Width);
 
   result := MaxX - MinX;
+end;
+
+function HeightOfControls(const ControlA, ControlB : TControl):integer;
+var
+  MinY, MaxY : integer;
+begin
+  MinY := Min(ControlA.Top, ControlB.Top);
+  MaxY := Max(ControlA.Top + ControlA.Height, ControlB.Top + ControlB.Height);
+
+  result := MaxY - MinY;
 end;
 
 
