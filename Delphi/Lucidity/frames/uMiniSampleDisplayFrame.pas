@@ -368,7 +368,7 @@ end;
 
 procedure TMiniSampleDisplayFrame.InternalUpdateSampleDisplay(const Region: IRegion; const NoRegionMessage: string);
 var
-  aOffset, aZoom : single;
+  //aOffset, aZoom : single;
   xSampleImage : IInterfacedBitmap;
   Par:TSampleRenderParameters;
   FlexPar:TFlexRenderPar;
@@ -1097,7 +1097,7 @@ procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: T
 var
   Tag : integer;
   xZoom, xOffset : double;
-  SampleFrames, DisplayPixelWidth : integer;
+  //SampleFrames, DisplayPixelWidth : integer;
   //IndexA, IndexB : single;
 begin
   if not CurrentSample.Info.IsValid then exit;
@@ -1107,8 +1107,8 @@ begin
 
   if Button = mbLeft then
   begin
-    SampleFrames      := CurrentSample.Info.SampleFrames;
-    DisplayPixelWidth := SampleDisplay.Width;
+    //SampleFrames      := CurrentSample.Info.SampleFrames;
+    //DisplayPixelWidth := SampleDisplay.Width;
 
     if Tag = 1 then
     begin

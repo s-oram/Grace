@@ -136,7 +136,7 @@ procedure TZoomSampleDisplayFrame.UpdateSampleDisplay;
 var
   CurRegion : IRegion;
   xSampleImage : IInterfacedBitmap;
-  Par:TSampleRenderParameters;
+  //Par:TSampleRenderParameters;
   FlexPar:TFlexRenderPar;
 begin
   if not assigned(Plugin) then exit;
