@@ -1175,8 +1175,12 @@ begin
 
     if Tag = 10 then
     begin
-      // TODO:
-      /// Close the Zoom context here.
+      // Hide the sample zoom controls here.
+      if Plugin.Globals.GuiState.MainGuiLayout = TMainGuiLayout.SampleZoom then
+      begin
+        Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+      end;
     end;
 
     // Finally....
