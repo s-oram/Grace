@@ -16,6 +16,8 @@ Delete 50-50 filter blend mode.
 
 Bug : sample display doesn't update when changing Loop Bounds.
 
+Need midi learn options for sample/loop start/end
+
 
 =============================================================================
 Init Program command for Andy
@@ -348,3 +350,15 @@ either way. It's possible the user config should only contain overrides.
 * Possible effects
   multiband compressor, bit crusher, multiband EQ, chorus, delay, reverb, distortion, phaser, plate reverb, destroyer, flanger, space pan, limiter, sub generator, EQ 10 bands, analog delay, pitch shift chorus, vocal filter, analog chorus, leslie
 
+
+
+
+
+** MIDI Learn / Macro Knob Edit Page **
+
+Page is a way to edit the midi controllers and macro knobs to parameters
+
+- Parameter Source (MIDI CC or Macro Control)
+- Destination Parameter (Filter 1 Parameter 1 etc)
+- Scope - (Global/All Key Groups, Focused Key Group, Named Key Group)
+- Mapping - maps the source control range to the destination parameter.

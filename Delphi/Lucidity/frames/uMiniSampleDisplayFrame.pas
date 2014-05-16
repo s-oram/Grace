@@ -76,6 +76,7 @@ type
     procedure SetPlugin(const Value: TeePlugin);
 
     procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
+    procedure SampleOverlay_MarkerChanged(Sender:TObject; Marker:TSampleMarker; NewPosition : integer);
   private
     FMotherShip : IMothership;
     fSampleDisplayContext: TUsageContext;
@@ -173,6 +174,7 @@ begin
   fSampleOverlay.OnSampleMarkerChanged := SampleMarkerChanged;
   fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
   fSampleOverlay.OnMouseOverMakerChanged := SampleOverlayMouseOverMarkerChanged;
+  fSampleOverlay.OnSampleMarkerChanged := SampleOverlay_MarkerChanged;
 
   fSampleOverlay.OnOleDragDrop  := SampleDisplayOleDragDrop;
   fSampleOverlay.OnOleDragOver  := SampleDisplayOleDragOver;
@@ -1253,5 +1255,26 @@ begin
     UpdateSampleDisplay;
   end);
 end;
+
+procedure TMiniSampleDisplayFrame.SampleOverlay_MarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
+var
+  CurRegion : IRegion;
+begin
+  if not assigned(Plugin) then exit;
+
+  CurRegion := Plugin.FocusedRegion;
+
+  case Marker of
+    smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
+    smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
+    smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
+    smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
+  end;
+
+  GuiEvent_SampleMakersChanged;
+  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+end;
+
+
 
 end.
