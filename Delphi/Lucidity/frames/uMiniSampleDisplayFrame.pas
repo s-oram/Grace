@@ -749,9 +749,9 @@ procedure TMiniSampleDisplayFrame.SampleOverlayDblClicked(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.SampleZoom then
   begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
   end else
   begin

@@ -262,8 +262,8 @@ end;
 procedure TMainMenu.EventHandle_EditSamplePoints(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  // TODO:LOW: is this method being used? Maybe it will soon be redundant if not already.
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
+  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 end;
 
 procedure TMainMenu.EventHandle_ImportSFZ(Sender: TObject);

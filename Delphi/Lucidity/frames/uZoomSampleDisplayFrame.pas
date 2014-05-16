@@ -3,6 +3,7 @@ unit uZoomSampleDisplayFrame;
 interface
 
 uses
+  Math,
   LuciditySampleOverlay,
   Lucidity.SampleImageRenderer,
   Lucidity.FlexSampleRenderer,

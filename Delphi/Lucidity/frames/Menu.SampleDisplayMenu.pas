@@ -249,7 +249,8 @@ end;
 procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
+  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 end;
 
 procedure TSampleDisplayMenu.EventHandle_NormaliseSample(Sender: TObject);

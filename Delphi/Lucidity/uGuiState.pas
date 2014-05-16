@@ -9,7 +9,7 @@ type
   TGuiState = class
   private
     fLowerTabState: TLowerTabOptions;
-    fIsSampleMapVisible: boolean;
+
     fMouseOverRegionID: TGUID;
     fCurrentModDestTarget: TModDest;
     fFocusedControl: TControl;
@@ -19,9 +19,6 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    //property IsSampleMapVisible : boolean          read fIsSampleMapVisible write fIsSampleMapVisible;
-    property LowerTabState      : TLowerTabOptions read fLowerTabState      write fLowerTabState;
-
     property MouseOverRegionID : TGUID read fMouseOverRegionID write fMouseOverRegionID;
 
     property ModDestTarget : TModDest read fCurrentModDestTarget write fCurrentModDestTarget;
@@ -30,6 +27,7 @@ type
     property FocusedControl : TControl read fFocusedControl write fFocusedControl;
 
     property MainGuiLayout : TMainGuiLayout read fMainGuiLayout write fMainGuiLayout;
+    property LowerTabState      : TLowerTabOptions read fLowerTabState      write fLowerTabState;
   end;
 
 implementation

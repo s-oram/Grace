@@ -47,7 +47,6 @@ type
     TabPanel: TVamTabPanel;
     SidePanel: TVamDiv;
     ModSystem2Div: TVamDiv;
-    ZoomSampleDiv: TVamDiv;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LowerTabsChanged(Sender: TObject);
@@ -71,7 +70,6 @@ type
     DropFileTarget : TRedFoxDropFileTarget;
 
     MenuBarFrame           : TMenuBarFrame;
-    ZoomSampleDisplayFrame : TZoomSampleDisplayFrame;
     MiniSampleDisplayFrame : TMiniSampleDisplayFrame;
     SampleMapFrame         : TSampleMapFrame;
     FileBrowserFrame       : TFileBrowserFrame;
@@ -167,8 +165,6 @@ begin
 
   CurrentGuiState := TGuiState.Create;
 
-  ZoomSampleDiv.Visible := false;
-
   //====== Initialize all frames ==============
   MenuBarFrame := TMenuBarFrame.Create(self.Owner);
   MenuBarFrame.BackgroundPanel.Parent := MainMenuBar;
@@ -179,17 +175,6 @@ begin
   SampleMapFrame.BackgroundPanel.Parent := SampleMapDiv;
   SampleMapFrame.BackgroundPanel.Align  := TAlign.alClient;
   SampleMapFrame.BackgroundPanel.Visible  := true;
-
-  ZoomSampleDisplayFrame := TZoomSampleDisplayFrame.Create(self.Owner);
-  ZoomSampleDisplayFrame.BackgroundPanel.Parent := ZoomSampleDiv;
-  ZoomSampleDisplayFrame.BackgroundPanel.Align := alClient;
-  ZoomSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
-  ZoomSampleDisplayFrame.BackgroundPanel.Margins.SetBounds(0,0,0,0);
-  ZoomSampleDisplayFrame.BackgroundPanel.CornerRadius1 := 3;
-  ZoomSampleDisplayFrame.BackgroundPanel.CornerRadius2 := 3;
-  ZoomSampleDisplayFrame.BackgroundPanel.CornerRadius3 := 3;
-  ZoomSampleDisplayFrame.BackgroundPanel.CornerRadius4 := 3;
-  ZoomSampleDisplayFrame.Visible := false;
 
   MiniSampleDisplayFrame := TMiniSampleDisplayFrame.Create(self.Owner);
   MiniSampleDisplayFrame.BackgroundPanel.Parent := MainTop;
@@ -273,7 +258,6 @@ begin
   FreeAndNil(MenuBarFrame);
   FreeAndNil(SampleMapFrame);
   FreeAndNil(MiniSampleDisplayFrame);
-  FreeAndNil(ZoomSampleDisplayFrame);
   FreeAndNil(FileBrowserFrame);
   FreeAndNil(VoiceControlFrame);
   FreeAndNil(ModControlFrame);
@@ -368,7 +352,6 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(MiniSampleDisplayFrame, TZeroObjectRank.VCL);
-  Plugin.Globals.MotherShip.RegisterZeroObject(ZoomSampleDisplayFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(SampleMapFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(VoiceControlFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(ModControlFrame, TZeroObjectRank.VCL);
@@ -379,7 +362,6 @@ begin
   try
     // Initalize all the frame controls...
     MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-    ZoomSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
     FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
     MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
     SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
@@ -567,8 +549,6 @@ begin
   if MsgID = TLucidMsgID.Command_HideSampleMapEdit then HideSampleMapEdit;
 
   if MsgID = TLucidMsgID.Command_ShowAboutDialog then ShowAboutDialog;
-  if MsgID = TLucidMsgID.Command_ShowLoopEditFrame then ShowLoopEditFrame;
-
   if MsgID = TLucidMsgID.Command_CloseCurrentDialog then CloseCurrentDialog;
 
   if MsgID = TLucidMsgID.GUILayoutChanged then UpdateLayout;
@@ -878,7 +858,6 @@ begin
   SampleMapFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   MiniSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   MiniSampleDisplayFrame.InsidePanel.Padding.SetBounds(4,4,4,4);
-  ZoomSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   AboutFrame.BackgroundPanel.Padding.SetBounds(16,16,16,16);
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
@@ -928,7 +907,6 @@ begin
   SampleMapDiv.Width    := WorkAreaWidth;
   MainTop.Width         := WorkAreaWidth;
   VoiceControlDiv.Width := WorkAreaWidth;
-  ZoomSampleDiv.Width   := WorkAreaWidth;
   TabPanel.Width        := WorkAreaWidth;
   ModSystem2Div.Width   := WorkAreaWidth;
 
@@ -936,7 +914,6 @@ begin
   MainMenuBar.Height     := 28;
   MainTop.Height         := 208;
   VoiceControlDiv.Height := 80;
-  ZoomSampleDiv.Height   := 80 + 208 + 2;
   TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
 
@@ -954,7 +931,6 @@ begin
       MainTop.Height         := 208;
 
       MainTop.Visible := true;
-      ZoomSampleDiv.Visible := false;
 
       SampleMapDiv.Visible    := false;
       VoiceControlDiv.Visible := true;
@@ -977,7 +953,6 @@ begin
       MainTop.Height := 208 + 80 + 2 + 70 + 2;
 
       MainTop.Visible := true;
-      ZoomSampleDiv.Visible := false;
       SampleMapDiv.Visible    := false;
       VoiceControlDiv.Visible := false;
       TabPanel.Visible        := true;
@@ -994,7 +969,9 @@ begin
     TMainGuiLayout.MapEdit:
     begin
       //==========================================================================
-      // This is code to show the Sample Map - DO NOT DELETE!
+      MiniSampleDisplayFrame.UsageContext := TUsageContext.General;
+      MainTop.Height         := 208;
+
       SampleMapDiv.Visible    := true;
       VoiceControlDiv.Visible := false;
       TabPanel.Visible        := false;

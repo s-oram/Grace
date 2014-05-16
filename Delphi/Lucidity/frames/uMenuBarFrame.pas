@@ -237,7 +237,8 @@ end;
 procedure TMenuBarFrame.SampleEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_ShowLoopEditFrame);
+  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 end;
 
 procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);

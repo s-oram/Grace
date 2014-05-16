@@ -46,7 +46,7 @@ type
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
-    Command_ShowLoopEditFrame        = Command + 4;
+    //Command_ShowLoopEditFrame        = Command + 4;
     Command_CloseCurrentDialog       = Command + 5;
     Command_UpdateControlVisibility  = Command + 6; //something has changed, check to see if any controls need to be visible/invisible.
     Command_UpdateModMatrix          = Command + 7;
