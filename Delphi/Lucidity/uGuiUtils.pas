@@ -98,6 +98,7 @@ type
   GuiSetup = record
     class procedure StyleButton_CommandButton(const Button : TVamTextBox); static;
     class procedure StyleButton_CommandButton_Bright(const Button : TVamTextBox); static;
+    class procedure StyleButton_SelectorButton(const Button : TVamTextBox); static;
   end;
 
 
@@ -898,6 +899,13 @@ begin
   Button.Font.Color      := GetRedFoxColor('$ff242B39');
 
   Button.ShowBorder := true;
+end;
+
+class procedure GuiSetup.StyleButton_SelectorButton(const Button: TVamTextBox);
+begin
+  Button.Color          := kColor_LcdDark1;
+  Button.ColorMouseOver := kColor_ButtonMouseOver;
+  Button.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
 end;
 
 end.

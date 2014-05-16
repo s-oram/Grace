@@ -113,18 +113,8 @@ begin
   SamplesMenu.Initialize(aPlugin, aDialogDisplayArea);
   MainMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-
-  GroupMenuButton.Color          := kColor_LcdDark1;
-  GroupMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
-  GroupMenuButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-
-  SampleMenuButton.Color          := kColor_LcdDark1;
-  SampleMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
-  SampleMenuButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-
-
-
-
+  GuiSetup.StyleButton_SelectorButton(GroupMenuButton);
+  GuiSetup.StyleButton_SelectorButton(SampleMenuButton);
 
   GuiSetup.StyleButton_CommandButton(MainMenuButton);
   MainMenuButton.Width := 86;
