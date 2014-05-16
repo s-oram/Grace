@@ -21,6 +21,10 @@ type
     FTextPadding: TPadding;
     fShowBorder: boolean;
     fParameterName: string;
+    fImageOverlayVertAlign: TRedFoxAlign;
+    fImageOverlayHorzAlign: TRedFoxAlign;
+    fImageOverlayOffsetY: integer;
+    fImageOverlayOffsetX: integer;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -66,6 +70,10 @@ type
     property Font;
 
     property ImageOverlay:TBitmap read fImageOverlay write SetImageOverlay;
+    property ImageOverlayVertAlign : TRedFoxAlign read fImageOverlayVertAlign write fImageOverlayVertAlign;
+    property ImageOverlayHorzAlign : TRedFoxAlign read fImageOverlayHorzAlign write fImageOverlayHorzAlign;
+    property ImageOverlayOffsetX   : integer      read fImageOverlayOffsetX   write fImageOverlayOffsetX;
+    property ImageOverlayOffsetY   : integer      read fImageOverlayOffsetY   write fImageOverlayOffsetY;
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -89,6 +97,12 @@ begin
   FTextPadding := TPadding.Create(Self);
   FTextPadding.SetBounds(0,0,0,0);
   fTextPadding.OnChange := EventHandle_TextPaddingChange;
+
+  ImageOverlayOffsetX := 0;
+  ImageOverlayOffsetY := 0;
+
+  ImageOverlayVertAlign := TRedFoxAlign.AlignCenter;
+  ImageOverlayHorzAlign := TRedFoxAlign.AlignCenter;
 end;
 
 destructor TVamTextBox.Destroy;
@@ -231,6 +245,9 @@ var
   TextBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
+  DstWidth : integer;
+  DstHeight : integer;
+  OverlayDestX, OverlayDestY : integer;
 begin
   inherited;
 
@@ -275,9 +292,30 @@ begin
     SrcRect.Top    := 0;
     SrcRect.Bottom := ImageOverlay.Height;
 
-    DstRect.Left   := (Width - SrcRect.Width)   div 2;
+
+    DstWidth  := (Width - SrcRect.Width);
+    DstHeight := (Height - SrcRect.Height);
+
+
+    case ImageOverlayVertAlign of
+      AlignNear:   OverlayDestY := 0;
+      AlignCenter: OverlayDestY := (Height - SrcRect.Height) div 2;
+      AlignFar:    OverlayDestY := (Height - SrcRect.Height);
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+    case ImageOverlayHorzAlign of
+      AlignNear:   OverlayDestX := 0;
+      AlignCenter: OverlayDestX := (Width - SrcRect.Width) div 2;
+      AlignFar:    OverlayDestX := (Width - SrcRect.Width);
+    else
+      raise Exception.Create('Type not handled.');
+    end;
+
+    DstRect.Left   := OverlayDestX + ImageOverlayOffsetX;
     DstRect.Right  := DstRect.Left + SrcRect.Width;
-    DstRect.Top    := (Height - SrcRect.Height) div 2;
+    DstRect.Top    := OverlayDestY + ImageOverlayOffsetY;
     DstRect.Bottom := DstRect.Top + SrcRect.Height;
 
     BackBuffer.TransformImage(ImageOverlay, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);

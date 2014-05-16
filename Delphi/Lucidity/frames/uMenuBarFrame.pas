@@ -129,8 +129,10 @@ begin
   MapEditButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   MapEditButton.AlignWithMargins := true;
   MapEditButton.Margins.SetBounds(4,0,0,0);
-  MapEditButton.Width := 20;
-  MapEditButton.Text  := '';
+  MapEditButton.Width := 100;
+  MapEditButton.Text  := 'SAMPLE MAP';
+  MapEditButton.TextPadding.Left := 20;
+
   MapEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_ProgramIcon');
 
 
