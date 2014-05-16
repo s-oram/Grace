@@ -245,7 +245,6 @@ const
   kContainerWidth  = 600;
   kContainerHeight = 322;
 var
-  ParIndex : integer;
   FilterKnobWidth : integer;
   FilterKnobHeight : integer;
   kw, kh : integer;

@@ -245,8 +245,6 @@ var
   TextBounds : TRect;
   SrcRect : TRect;
   DstRect : TRect;
-  DstWidth : integer;
-  DstHeight : integer;
   OverlayDestX, OverlayDestY : integer;
 begin
   inherited;
@@ -291,11 +289,6 @@ begin
     SrcRect.Width  := ImageOverlay.Width;
     SrcRect.Top    := 0;
     SrcRect.Bottom := ImageOverlay.Height;
-
-
-    DstWidth  := (Width - SrcRect.Width);
-    DstHeight := (Height - SrcRect.Height);
-
 
     case ImageOverlayVertAlign of
       AlignNear:   OverlayDestY := 0;
