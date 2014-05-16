@@ -97,6 +97,7 @@ type
     procedure Draw_ReplaceMessage;
     procedure Draw_ModPointAreas;
     procedure Draw_ModPointAmounts;
+    procedure Draw_SamplePointLine(const xPos : single; const aColor : TRedFoxColor);
 
     function IsNearMarker(const PixelPosX, PixelPosY : integer; SelectPreference:TSampleMarkerSelect):TSampleMarker;
   public
@@ -1036,11 +1037,21 @@ begin
           self.Draw_PlayBackPosition(x1);
 
           //== draw the modulated loop points ==
-          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopStart, SampleFrames, Width, Zoom, Offset);
-          self.Draw_ModLoopPoint(x1); // TODO: currently disable. Think about re-enabling.
+          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.RealTime_ModSampleStart, SampleFrames, Width, Zoom, Offset);
+          Draw_SamplePointLine(x1, kSampleStart);
 
-          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.ModLoopEnd, SampleFrames, Width, Zoom, Offset);
-          self.Draw_ModLoopPoint(x1-1); // TODO: currently disable. Think about re-enabling.
+          x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.RealTime_ModSampleEnd, SampleFrames, Width, Zoom, Offset);
+          Draw_SamplePointLine(x1-1, kSampleEnd);
+
+          if ShowLoopPoints then
+          begin
+            //== draw the modulated loop points ==
+            x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.RealTime_ModLoopStart, SampleFrames, Width, Zoom, Offset);
+            Draw_SamplePointLine(x1, kLoopPoint);
+
+            x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(FeedbackData^.SampleBounds.RealTime_ModLoopEnd, SampleFrames, Width, Zoom, Offset);
+            Draw_SamplePointLine(x1-1, kLoopPoint);
+          end;
         end;
       end;
     end;
@@ -1422,6 +1433,8 @@ procedure TLuciditySampleOverlay.Draw_ModLoopPoint(const xPos: single);
 var
   x1, y1, y2 : single;
 begin
+  // TODO:MED: Delete this method.
+
   BackBuffer.BufferInterface.LineColor := GetRedFoxColor(kLoopPoint).AsAggRgba8;
   BackBuffer.BufferInterface.NoFill;
   x1 := round(xPos) + 0.5;
@@ -1430,6 +1443,21 @@ begin
 
   BackBuffer.BufferInterface.Line(X1, Y1, x1, Y2);
 end;
+
+procedure TLuciditySampleOverlay.Draw_SamplePointLine(const xPos: single; const aColor: TRedFoxColor);
+var
+  x1, y1, y2 : single;
+begin
+  BackBuffer.BufferInterface.LineColor := aColor;
+  BackBuffer.BufferInterface.NoFill;
+  x1 := round(xPos) + 0.5;
+  y1 := 0;
+  y2 := self.Height;
+
+  BackBuffer.BufferInterface.Line(X1, Y1, x1, Y2);
+end;
+
+
 
 procedure TLuciditySampleOverlay.Draw_ZoomSelection(const x1, x2: integer);
 begin

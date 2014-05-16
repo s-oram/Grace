@@ -27,8 +27,10 @@ type
     HighlightEnd   : integer;
 
     //Modulated Positions
-    ModLoopStart : integer;
-    ModLoopEnd   : integer;
+    RealTime_ModSampleStart : integer;
+    RealTime_ModSampleEnd   : integer;
+    RealTime_ModLoopStart : integer;
+    RealTime_ModLoopEnd   : integer;
 
     // Playback Position
     PlaybackPos : integer;

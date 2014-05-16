@@ -521,22 +521,24 @@ begin
   self.Event_UpdateSampleBounds(self, self.CurRegion, @SampleBounds);
 
 
+  FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.SampleStart;
+  FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.SampleEnd;
+  FeedBackData.SampleBounds.RealTime_ModSampleStart := SampleBounds.SampleStart;
+  FeedBackData.SampleBounds.RealTime_ModSampleEnd   := SampleBounds.SampleEnd;
+  FeedBackData.SampleBounds.RealTime_ModLoopStart   := SampleBounds.LoopStart;
+  FeedBackData.SampleBounds.RealTime_ModLoopEnd     := SampleBounds.LoopEnd;
 
   case LoopBounds of
     TSamplerLoopBounds.LoopSample:
     begin
       FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.SampleStart;
       FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.SampleEnd;
-      FeedBackData.SampleBounds.ModLoopStart   := SampleBounds.SampleStart;
-      FeedBackData.SampleBounds.ModLoopEnd     := SampleBounds.SampleEnd;
     end;
 
     TSamplerLoopBounds.LoopPoints:
     begin
       FeedBackData.SampleBounds.PlaybackStart  := CurrentSampleBounds.LoopStart;
       FeedBackData.SampleBounds.PlaybackEnd    := CurrentSampleBounds.LoopEnd;
-      FeedBackData.SampleBounds.ModLoopStart   := SampleBounds.LoopStart;
-      FeedBackData.SampleBounds.ModLoopEnd     := SampleBounds.LoopEnd;
     end
   else
     raise Exception.Create('Loop type not handled.');
