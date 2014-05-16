@@ -531,20 +531,21 @@ begin
 
 
   //=== colors ===
-  AmpVelocityButton.Font.Color    := GetRedFoxColor(kColor_LcdDark5);
-  FilterVelocityButton.Font.Color := GetRedFoxColor(kColor_LcdDark5);
-  FilterRoutingButton.Font.Color  := GetRedFoxColor(kColor_LcdDark5);
-  Filter1TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
-  Filter2TypeTextBox.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
-  LfoShapeSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  LfoFreqModeSelector.Font.Color   := GetRedFoxColor(kColor_LcdDark5);
-  LfoRangeSelector.Font.Color       := GetRedFoxColor(kColor_LcdDark5);
-  Seq1ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  Seq1DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
-  Seq1StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  Seq2ClockTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  Seq2DirectionTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
-  Seq2StepsTextBox.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+  GuiSetup.StyleButton_SelectorButton(AmpVelocityButton);
+  GuiSetup.StyleButton_SelectorButton(FilterVelocityButton);
+  GuiSetup.StyleButton_SelectorButton(FilterRoutingButton);
+  GuiSetup.StyleButton_SelectorButton(Filter1TypeTextBox);
+  GuiSetup.StyleButton_SelectorButton(Filter2TypeTextBox);
+  GuiSetup.StyleButton_SelectorButton(LfoShapeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoFreqModeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoRangeSelector);
+  GuiSetup.StyleButton_SelectorButton(Seq1ClockTextBox);
+  GuiSetup.StyleButton_SelectorButton(Seq1DirectionTextBox);
+  GuiSetup.StyleButton_SelectorButton(Seq1StepsTextBox);
+  GuiSetup.StyleButton_SelectorButton(Seq2ClockTextBox);
+  GuiSetup.StyleButton_SelectorButton(Seq2DirectionTextBox);
+  GuiSetup.StyleButton_SelectorButton(Seq2StepsTextBox);
+
   Scope.Font.Color                := GetRedFoxColor(kColor_LcdDark5);
 
   Filter1KeyTrackKnob.Padding.Left  := 4;
@@ -563,41 +564,8 @@ begin
   Filter2KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
   Filter2KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
 
-
-  AmpVelocityButton.Color    := kColor_LcdDark1;
-  FilterVelocityButton.Color := kColor_LcdDark1;
-  FilterRoutingButton.Color  := kColor_LcdDark1;
-  Filter1TypeTextBox.Color   := kColor_LcdDark1;
-  Filter2TypeTextBox.Color   := kColor_LcdDark1;
-  LfoShapeSelector.Color     := kColor_LcdDark1;
-  LfoFreqModeSelector.Color  := kColor_LcdDark1;
-  LfoRangeSelector.Color     := kColor_LcdDark1;
-  Seq1ClockTextBox.Color     := kColor_LcdDark1;
-  Seq1DirectionTextBox.Color := kColor_LcdDark1;
-  Seq1StepsTextBox.Color     := kColor_LcdDark1;
-  Seq2ClockTextBox.Color     := kColor_LcdDark1;
-  Seq2DirectionTextBox.Color := kColor_LcdDark1;
-  Seq2StepsTextBox.Color     := kColor_LcdDark1;
-
-  AmpVelocityButton.ColorMouseOver    := kColor_ButtonMouseOver;
-  FilterVelocityButton.ColorMouseOver := kColor_ButtonMouseOver;
-  FilterRoutingButton.ColorMouseOver  := kColor_ButtonMouseOver;
-  Filter1TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
-  Filter2TypeTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
-  LfoShapeSelector.ColorMouseOver     := kColor_ButtonMouseOver;
-  LfoFreqModeSelector.ColorMouseOver  := kColor_ButtonMouseOver;
-  LfoRangeSelector.ColorMouseOver     := kColor_ButtonMouseOver;
-  Seq1ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-  Seq1DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
-  Seq1StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-  Seq2ClockTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-  Seq2DirectionTextBox.ColorMouseOver := kColor_ButtonMouseOver;
-  Seq2StepsTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-
   Scope.ColorBackground := kColor_LcdDark1;
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
-
-
 
   LfoSelector.BackgroundImage := Plugin.Globals.SkinImageLoader.GetImage('Switch_Background');
   LfoSelector.IndexImage      := Plugin.Globals.SkinImageLoader.GetImage('Switch_Index');

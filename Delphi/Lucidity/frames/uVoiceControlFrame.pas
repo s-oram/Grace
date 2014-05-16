@@ -226,33 +226,15 @@ begin
 
 
   //=== skinning setup ====
-  PitchTrackTextBox.Font.Color         := GetRedFoxColor(kColor_LcdDark5);
-  SamplePlaybackTypeTextBox.Font.Color := GetRedFoxColor(kColor_LcdDark5);
-  ResetTextBox.Font.Color              := GetRedFoxColor(kColor_LcdDark5);
-  VoiceModeTextBox.Font.Color          := GetRedFoxColor(kColor_LcdDark5);
-  GrainLoopTextBox.Font.Color          := GetRedFoxColor(kColor_LcdDark5);
-  SamplerLoopModeTextBox.Font.Color    := GetRedFoxColor(kColor_LcdDark5);
-  SamplerLoopBoundsTextBox.Font.Color  := GetRedFoxColor(kColor_LcdDark5);
-
-  PitchTrackTextBox.Color              := kColor_LcdDark1;
-  SamplePlaybackTypeTextBox.Color      := kColor_LcdDark1;
-  ResetTextBox.Color                   := kColor_LcdDark1;
-  VoiceModeTextBox.Color               := kColor_LcdDark1;
-  GrainLoopTextBox.Color               := kColor_LcdDark1;
-  SamplerLoopModeTextBox.Color         := kColor_LcdDark1;
-  SamplerLoopBoundsTextBox.Color       := kColor_LcdDark1;
-
-  PitchTrackTextBox.ColorMouseOver  := kColor_ButtonMouseOver;
-  SamplePlaybackTypeTextBox.ColorMouseOver  := kColor_ButtonMouseOver;
-  ResetTextBox.ColorMouseOver               := kColor_ButtonMouseOver;
-  VoiceModeTextBox.ColorMouseOver           := kColor_ButtonMouseOver;
-  GrainLoopTextBox.ColorMouseOver           := kColor_ButtonMouseOver;
-  SamplerLoopModeTextBox.ColorMouseOver     := kColor_ButtonMouseOver;
-  SamplerLoopBoundsTextBox.ColorMouseOver   := kColor_ButtonMouseOver;
-
+  GuiSetup.StyleButton_SelectorButton(PitchTrackTextBox);
+  GuiSetup.StyleButton_SelectorButton(SamplePlaybackTypeTextBox);
+  GuiSetup.StyleButton_SelectorButton(ResetTextBox);
+  GuiSetup.StyleButton_SelectorButton(VoiceModeTextBox);
+  GuiSetup.StyleButton_SelectorButton(GrainLoopTextBox);
+  GuiSetup.StyleButton_SelectorButton(SamplerLoopModeTextBox);
+  GuiSetup.StyleButton_SelectorButton(SamplerLoopBoundsTextBox);
 
   //=====    Main Voice Controls    =======================
-
   VoiceControlsContainer.Align := alClient;
   VoiceControlsContainer.AlignWithMargins := true;
   VoiceControlsContainer.Margins.SetBounds(0,0,0,0);
