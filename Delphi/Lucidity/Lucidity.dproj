@@ -527,9 +527,6 @@
 			<DCCReference Include="Dialogs\uAboutDialog.pas">
 				<Form>AboutDialogForm</Form>
 			</DCCReference>
-			<DCCReference Include="Dialogs\uLoopEditDialog.pas">
-				<Form>LoopEditForm</Form>
-			</DCCReference>
 			<DCCReference Include="eeGlobals.pas"/>
 			<DCCReference Include="eeLogging.pas"/>
 			<DCCReference Include="SoundObjects\soNoteStack.pas"/>

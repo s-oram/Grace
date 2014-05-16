@@ -99,7 +99,6 @@ uses
   uDialogDisplayArea in 'frames\uDialogDisplayArea.pas',
   Menu.CustomPopupMenu in 'frames\Menu.CustomPopupMenu.pas',
   uAboutDialog in 'Dialogs\uAboutDialog.pas' {AboutDialogForm},
-  uLoopEditDialog in 'Dialogs\uLoopEditDialog.pas' {LoopEditForm},
   eeGlobals in 'eeGlobals.pas',
   eeLogging in 'eeLogging.pas',
   soNoteStack in 'SoundObjects\soNoteStack.pas',

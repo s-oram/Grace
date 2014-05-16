@@ -86,7 +86,6 @@ type
     procedure ShowSampleMapEdit;
     procedure HideSampleMapEdit;
     procedure ShowAboutDialog;
-    procedure ShowLoopEditFrame;
     procedure CloseCurrentDialog;
 
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
@@ -119,7 +118,6 @@ uses
   VamLayoutWizard,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eePluginDataDir,
-  uLoopEditDialog,
   Lucidity.KeyGroup,
   GuidEx,
   eeGuiSetup,
@@ -709,22 +707,6 @@ begin
       end;
     end;
   end;
-end;
-
-procedure TPluginGui.ShowLoopEditFrame;
-var
-  LoopEditDialog : ILoopEditDialog;
-  CloseCallback : TProc;
-begin
-  LoopEditDialog := TLoopEditDialog.Create;
-  LoopEditDialog.Setup(DialogDisplayArea.GetDisplayArea, Plugin, GuiStandard);
-
-  CloseCallback := procedure
-  begin
-    LoopEditDialog := nil;
-  end;
-
-  DialogDisplayArea.Show(true, CloseCallback);
 end;
 
 procedure TPluginGui.ShowAboutDialog;
