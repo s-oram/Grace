@@ -9,7 +9,6 @@ type
   TGuiState = class
   private
     fLowerTabState: TLowerTabOptions;
-
     fMouseOverRegionID: TGUID;
     fCurrentModDestTarget: TModDest;
     fFocusedControl: TControl;
@@ -27,7 +26,7 @@ type
     property FocusedControl : TControl read fFocusedControl write fFocusedControl;
 
     property MainGuiLayout : TMainGuiLayout read fMainGuiLayout write fMainGuiLayout;
-    property LowerTabState      : TLowerTabOptions read fLowerTabState      write fLowerTabState;
+    property LowerTabState : TLowerTabOptions read fLowerTabState      write fLowerTabState;
   end;
 
 implementation

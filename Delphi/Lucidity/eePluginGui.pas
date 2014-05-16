@@ -53,7 +53,7 @@ type
     procedure FormResize(Sender: TObject);
   private
     fPlugin: TeePlugin;
-    fLowerTabState: TLowerTabOptions;
+    fLowerTabState: TLowerTabOptions; //TODO:MED I think this can be deleted.
     fCurrentGuiState: TGuiState;
     fPluginHotkeys: TPluginHotkeys;
     fPluginKeyHook: TPluginKeyHook;
@@ -558,14 +558,21 @@ begin
   fLowerTabState := Value;
 
   case Value of
-    TLowerTabOptions.TabSeq1: TabPanel.TabIndex := 0;
-    TLowerTabOptions.TabSeq2: TabPanel.TabIndex := 1;
-    TLowerTabOptions.TabMain: TabPanel.TabIndex := 2;
+    TLowerTabOptions.TabMain:  TabPanel.TabIndex := 0;
+    TLowerTabOptions.TabSeq1:  TabPanel.TabIndex := 1;
+    TLowerTabOptions.TabSeq2:  TabPanel.TabIndex := 2;
+    TLowerTabOptions.TabSetup: TabPanel.TabIndex := 3;
   else
     raise Exception.Create('Unexpect tab value.');
   end;
 
   case Value of
+    TLowerTabOptions.TabMain:
+    begin
+      SequencerFrame.BackgroundPanel.Visible  := false;
+      ModControlFrame.BackgroundPanel.Visible := true;
+    end;
+
     TLowerTabOptions.TabSeq1:
     begin
       SequencerFrame.SequencerIndex := 0;
@@ -580,12 +587,12 @@ begin
       ModControlFrame.BackgroundPanel.Visible := false;
     end;
 
-    TLowerTabOptions.TabMain:
+    TLowerTabOptions.TabSetup:
     begin
       SequencerFrame.BackgroundPanel.Visible  := false;
-      ModControlFrame.BackgroundPanel.Visible := true;
-
-    end;
+      ModControlFrame.BackgroundPanel.Visible := false;
+      // TODO:HIGH add new setup panel.
+    end
   else
     raise Exception.Create('Unexpect tab value.');
   end;
@@ -608,9 +615,10 @@ begin
 
   case TabPanel.TabIndex of
     -1: TabSelected := TLowerTabOptions.TabMain;
-    0: TabSelected := TLowerTabOptions.TabSeq1;
-    1: TabSelected := TLowerTabOptions.TabSeq2;
-    2: TabSelected := TLowerTabOptions.TabMain;
+    0: TabSelected := TLowerTabOptions.TabMain;
+    1: TabSelected := TLowerTabOptions.TabSeq1;
+    2: TabSelected := TLowerTabOptions.TabSeq2;
+    3: TabSelected := TLowerTabOptions.TabSetup;
   else
     raise Exception.Create('Error Message');
   end;

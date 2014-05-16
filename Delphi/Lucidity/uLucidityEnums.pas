@@ -261,7 +261,7 @@ type
     class function ToShortGuiString(aEnum : TEnvVelocityDepth):string; override;
   end;
 
-  TLowerTabOptions = (TabSeq1, TabSeq2, TabMain);
+  TLowerTabOptions = (TabMain, TabSeq1, TabSeq2, TabSetup);
 
   TKeyCommand = (
     ContextUp,
@@ -280,33 +280,6 @@ type
 
 
   TMainGuiLayout = (Default, SampleZoom, MapEdit);
-
-
-//TFilterType
-//TStepSequencerLength
-//TStepSequencerDirection
-//TLfoShape
-//TLfoMode
-//TModEnvMode
-//TModSource
-//TModDest
-//TClockSource
-//TSequencerClock
-//TVoiceMode
-//TSamplePlaybackType
-//TOneShotSamplerLoopMode
-//TGrainStretchLoopMode
-//TEnvVelocityDepth
-//TLowerTabOptions
-//TKeyCommand
-
-
-
-
-
-
-
-
 
 
 implementation
