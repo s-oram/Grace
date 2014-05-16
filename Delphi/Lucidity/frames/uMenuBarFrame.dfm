@@ -106,7 +106,7 @@ object MenuBarFrame: TMenuBarFrame
           Margins.Right = 0
           Margins.Bottom = 0
           Opacity = 255
-          Text = 'MENU'
+          Text = 'Menu'
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
@@ -150,7 +150,6 @@ object MenuBarFrame: TMenuBarFrame
           Align = alLeft
           Visible = True
           OnClick = MapEditButtonClick
-          ExplicitLeft = 97
         end
       end
     end

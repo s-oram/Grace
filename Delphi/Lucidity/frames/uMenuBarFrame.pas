@@ -113,9 +113,6 @@ begin
   SamplesMenu.Initialize(aPlugin, aDialogDisplayArea);
   MainMenu.Initialize(aPlugin, aDialogDisplayArea);
 
-  MainMenuButton.Color          := kColor_LcdDark1;
-  MainMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
-  MainMenuButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
 
   GroupMenuButton.Color          := kColor_LcdDark1;
   GroupMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
@@ -125,14 +122,20 @@ begin
   SampleMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
   SampleMenuButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
 
-  MapEditButton.Color          := kColor_LcdDark1;
-  MapEditButton.ColorMouseOver := kColor_ButtonMouseOver;
-  MapEditButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+
+
+
+
+  GuiSetup.StyleButton_CommandButton(MainMenuButton);
+  MainMenuButton.Width := 86;
+
+  GuiSetup.StyleButton_CommandButton(MapEditButton);
+
   MapEditButton.AlignWithMargins := true;
   MapEditButton.Margins.SetBounds(4,0,0,0);
-  MapEditButton.Width := 90;
-  MapEditButton.Text  := 'SAMPLE MAP';
-  MapEditButton.TextPadding.Left := 18;
+  MapEditButton.Width := 86;
+  MapEditButton.Text  := 'Sample Map';
+  MapEditButton.TextPadding.Left := 14;
 
   MapEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_ProgramIcon');
   MapEditButton.ImageOverlayHorzAlign := TRedFoxAlign.AlignNear;
