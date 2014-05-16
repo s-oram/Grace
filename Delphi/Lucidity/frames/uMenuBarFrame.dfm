@@ -125,7 +125,7 @@ object MenuBarFrame: TMenuBarFrame
         end
         object MapEditButton: TVamTextBox
           AlignWithMargins = True
-          Left = 97
+          Left = 66
           Top = 0
           Width = 36
           Height = 37
@@ -150,34 +150,7 @@ object MenuBarFrame: TMenuBarFrame
           Align = alLeft
           Visible = True
           OnClick = MapEditButtonClick
-        end
-        object SampleEditButton: TVamTextBox
-          AlignWithMargins = True
-          Left = 66
-          Top = 0
-          Width = 31
-          Height = 37
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
-          Opacity = 255
-          Text = 'S'
-          HitTest = True
-          Color = '$FF3E3E3E'
-          ColorMouseOver = '$FF3E3E3E'
-          ColorBorder = '$00000000'
-          ShowBorder = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Align = alLeft
-          Visible = True
-          OnClick = SampleEditButtonClick
+          ExplicitLeft = 97
         end
       end
     end

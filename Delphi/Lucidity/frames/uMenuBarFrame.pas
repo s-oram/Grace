@@ -20,7 +20,6 @@ type
     GroupMenuButton: TVamTextBox;
     MainMenuButton: TVamTextBox;
     MapEditButton: TVamTextBox;
-    SampleEditButton: TVamTextBox;
     procedure SampleMapButtonClick(Sender: TObject);
     procedure GroupMenuButtonClick(Sender: TObject);
     procedure SampleMenuButtonClick(Sender: TObject);
@@ -83,9 +82,7 @@ begin
 
   MainMenu := TMainMenu.Create;
 
-
   AddDisplayClass(MainMenuButton, dcGUIMenuButton);
-  AddDisplayClass(SampleEditButton, dcGUIMenuButton);
   AddDisplayClass(MapEditButton, dcGUIMenuButton);
   AddDisplayClass(GroupMenuButton, dcGUIMenuButton);
   AddDisplayClass(SampleMenuButton, dcGUIMenuButton);
@@ -126,15 +123,6 @@ begin
   SampleMenuButton.Color          := kColor_LcdDark1;
   SampleMenuButton.ColorMouseOver := kColor_ButtonMouseOver;
   SampleMenuButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-
-  SampleEditButton.Color          := kColor_LcdDark1;
-  SampleEditButton.ColorMouseOver := kColor_ButtonMouseOver;
-  SampleEditButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
-  SampleEditButton.AlignWithMargins := true;
-  SampleEditButton.Margins.SetBounds(4,0,0,0);
-  SampleEditButton.Width := 20;
-  SampleEditButton.Text  := '';
-  SampleEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_SampleEditIcon');
 
   MapEditButton.Color          := kColor_LcdDark1;
   MapEditButton.ColorMouseOver := kColor_ButtonMouseOver;
