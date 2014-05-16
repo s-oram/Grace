@@ -11,6 +11,7 @@ uses
   LucidityGui.MenuButtonHandler,
   Lucidity.Interfaces,
   VamLib.ZeroObject,
+  uVoiceSetupFrame,
   uSequencerFrame,
   OtlComm, uModSystem2Frame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea,
@@ -78,6 +79,7 @@ type
     AboutFrame             : TAboutFrame;
     ModSystem2Frame        : TModSystem2Frame;
     SequencerFrame         : TSequencerFrame;
+    VoiceSetupFrame        : TVoiceSetupFrame;
 
     FeedbackData : TGuiFeedBackData;
 
@@ -225,6 +227,10 @@ begin
   SequencerFrame.BackgroundPanel.Visible := true;
   SequencerFrame.BackgroundPanel.Parent := TabPanel;
 
+  VoiceSetupFrame := TVoiceSetupFrame.Create(self.Owner);
+  VoiceSetupFrame.BackgroundPanel.Visible := true;
+  VoiceSetupFrame.BackgroundPanel.Parent := TabPanel;
+
   //======= Build the GUI =======
 
   DropFileTarget := TRedFoxDropFileTarget.Create(RedFoxContainer);
@@ -262,6 +268,7 @@ begin
   FreeAndNil(ModSystem2Frame);
   FreeAndNil(SequencerFrame);
   FreeAndNil(AboutFrame);
+  FreeAndNil(VoiceSetupFrame);
 
   DropFileTarget.Free;
   FeedBackData.Free;
@@ -571,6 +578,7 @@ begin
     begin
       SequencerFrame.BackgroundPanel.Visible  := false;
       ModControlFrame.BackgroundPanel.Visible := true;
+      VoiceSetupFrame.BackgroundPanel.Visible := false;
     end;
 
     TLowerTabOptions.TabSeq1:
@@ -578,6 +586,7 @@ begin
       SequencerFrame.SequencerIndex := 0;
       SequencerFrame.BackgroundPanel.Visible  := true;
       ModControlFrame.BackgroundPanel.Visible := false;
+      VoiceSetupFrame.BackgroundPanel.Visible := false;
     end;
 
     TLowerTabOptions.TabSeq2:
@@ -585,13 +594,14 @@ begin
       SequencerFrame.SequencerIndex := 1;
       SequencerFrame.BackgroundPanel.Visible  := true;
       ModControlFrame.BackgroundPanel.Visible := false;
+      VoiceSetupFrame.BackgroundPanel.Visible := false;
     end;
 
     TLowerTabOptions.TabSetup:
     begin
       SequencerFrame.BackgroundPanel.Visible  := false;
       ModControlFrame.BackgroundPanel.Visible := false;
-      // TODO:HIGH add new setup panel.
+      VoiceSetupFrame.BackgroundPanel.Visible := true;
     end
   else
     raise Exception.Create('Unexpect tab value.');
@@ -770,6 +780,7 @@ begin
   MiniSampleDisplayFrame.BackgroundPanel.Color := kPanelLight;
   ModControlFrame.BackgroundPanel.Color        := kPanelLight;
   SequencerFrame.BackgroundPanel.Color         := kPanelLight;
+  VoiceSetupFrame.BackgroundPanel.Color        := kPanelLight;
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
   ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
 
@@ -818,6 +829,7 @@ begin
   ClearPadding(VoiceControlFrame.BackgroundPanel);
   ClearPadding(ModControlFrame.BackgroundPanel);
   ClearPadding(SequencerFrame.BackgroundPanel);
+  ClearPadding(VoiceSetupFrame.BackgroundPanel);
   ClearPadding(ModSystem2Frame.BackgroundPanel);
 
 
@@ -868,11 +880,15 @@ begin
   SequencerFrame.BackgroundPanel.CornerRadius3 := 0;
   SequencerFrame.BackgroundPanel.CornerRadius4 := 0;
 
+  VoiceSetupFrame.BackgroundPanel.CornerRadius1 := 3;
+  VoiceSetupFrame.BackgroundPanel.CornerRadius2 := 3;
+  VoiceSetupFrame.BackgroundPanel.CornerRadius3 := 0;
+  VoiceSetupFrame.BackgroundPanel.CornerRadius4 := 0;
+
   TabPanel.CornerRadius1 := 0;
   TabPanel.CornerRadius2 := 0;
   TabPanel.CornerRadius3 := 3;
   TabPanel.CornerRadius4 := 3;
-
 
   //============== Set main panels to correct dimensions ================================
 
