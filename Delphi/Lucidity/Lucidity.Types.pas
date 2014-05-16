@@ -51,7 +51,12 @@ type
   PParModulationData = ^TParModulationData;
   TParModulationData = record
   public
+    // Raw[] contains the parameter value + the applied modulation value. It's
+    // "Raw" because the array is addressed with a index, not a TPluginParameter value.
     Raw : array[0..kModulatedParameterCount-1] of single;
+    // The combined modulation for a parameter. This shouldn't be needed in most places.
+    // It might be better to try and remove it. Maybe there will be a slight  CPU bonus.
+    SummedModulation : array[0..kModulatedParameterCount-1] of single;
     function GetModulatedParameterValue(const Par : TPluginParameter) : single; inline;
     function GetModulatedParameterPointer(const Par : TPluginParameter) : PSingle; inline;
   end;
