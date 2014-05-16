@@ -14,20 +14,13 @@ Delete 50-50 filter blend mode.
 -- it would be great to have a 'MIDI CC' source which would allow the user
    to map a custom CC to a mod slot. 
 
-Bug : sample display doesn't update when changing Loop Bounds.
-
 Need midi learn options for sample/loop start/end
-
+- MIDI learn can't be applied directly because samples belong to regions. 
+  MIDI learn can only focus on key groups.
+  -- Instead I'll need to add some "Marco Knobs". The Macro Knobs can
+     then be applied to the relevent parameter.
 
 =============================================================================
-Init Program command for Andy
-
-=============================================================================
-
-Sample map resize horizontal snapping should snap to octave boundaries. Not snap to
-octave multiples of the sample width.
-
-
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
 - zones can be duplicated by holding ALT while dragging a sample zone in the key zone editor. (I'll make this a command in the context menu.)
 - thunderlink://messageid=C96432EDCAD443F880A0337122247144@YannHP
