@@ -538,14 +538,14 @@ begin
 
 
   //======== Lfo One =======
-  LfoA.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par1);
-  LfoA.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par2);
-  LfoA.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo1Par3);
+  LfoA.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo1Par1);
+  LfoA.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo1Par2);
+  LfoA.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo1Par3);
 
   //======== Lfo Two =======
-  LfoB.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par1);
-  LfoB.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par2);
-  LfoB.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Lfo2Par3);
+  LfoB.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo2Par1);
+  LfoB.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo2Par2);
+  LfoB.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo2Par3);
 
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
@@ -556,30 +556,30 @@ begin
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
 
   //======== Filter One =======
-  FilterOne.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par1);
-  FilterOne.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par2);
-  FilterOne.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par3);
-  FilterOne.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter1Par4);
+  FilterOne.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter1Par1);
+  FilterOne.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter1Par2);
+  FilterOne.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter1Par3);
+  FilterOne.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter1Par4);
 
   //======== Filter Two =======
-  FilterTwo.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par1);
-  FilterTwo.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par2);
-  FilterTwo.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par3);
-  FilterTwo.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.Filter2Par4);
+  FilterTwo.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter2Par1);
+  FilterTwo.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter2Par2);
+  FilterTwo.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter2Par3);
+  FilterTwo.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.Filter2Par4);
 
   //======== Amp Envelope =======
-  AmpEnv.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpAttack);
-  AmpEnv.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpHold);
-  AmpEnv.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpDecay);
-  AmpEnv.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpSustain);
-  AmpEnv.Par5 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpRelease);
+  AmpEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpAttack);
+  AmpEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpHold);
+  AmpEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpDecay);
+  AmpEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpSustain);
+  AmpEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
 
   //======== Modulation Envelope =======
-  FilterEnv.Par1 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpAttack);
-  FilterEnv.Par2 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpHold);
-  FilterEnv.Par3 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpDecay);
-  FilterEnv.Par4 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpSustain);
-  FilterEnv.Par5 := ParModData.GetMouulatedParameterPointer(TPluginParameter.AmpRelease);
+  FilterEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpAttack);
+  FilterEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpHold);
+  FilterEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpDecay);
+  FilterEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpSustain);
+  FilterEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
 
 
   //=============================================================

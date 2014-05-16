@@ -53,7 +53,7 @@ type
   public
     Raw : array[0..kModulatedParameterCount-1] of single;
     function GetModulatedParameterValue(const Par : TPluginParameter) : single; inline;
-    function GetMouulatedParameterPointer(const Par : TPluginParameter) : PSingle; inline;
+    function GetModulatedParameterPointer(const Par : TPluginParameter) : PSingle; inline;
   end;
 
 
@@ -181,7 +181,7 @@ begin
   result := Raw[GetModParIndex(Par)];
 end;
 
-function TParModulationData.GetMouulatedParameterPointer(const Par: TPluginParameter): PSingle;
+function TParModulationData.GetModulatedParameterPointer(const Par: TPluginParameter): PSingle;
 begin
   // TODO: check asm for stack juggling.
   result := @Raw[GetModParIndex(Par)];

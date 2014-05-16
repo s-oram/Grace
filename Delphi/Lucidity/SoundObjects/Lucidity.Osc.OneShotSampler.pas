@@ -508,9 +508,6 @@ begin
   end;
 
 
-
-
-
   FeedBackData.SampleBounds.LoopStart      := CurrentSampleBounds.LoopStart;
   FeedBackData.SampleBounds.LoopEnd        := CurrentSampleBounds.LoopEnd;
 
