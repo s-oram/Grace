@@ -58,10 +58,11 @@ implementation
 {$R *.dfm}
 
 uses
+  RedFox,
+  RedFoxColor,
   uLucidityEnums,
   VamQuery,
   uGuiUtils,
-  RedFoxColor,
   uConstants,
   Lucidity.SampleMap,
   Lucidity.Interfaces;
@@ -129,11 +130,13 @@ begin
   MapEditButton.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   MapEditButton.AlignWithMargins := true;
   MapEditButton.Margins.SetBounds(4,0,0,0);
-  MapEditButton.Width := 100;
+  MapEditButton.Width := 90;
   MapEditButton.Text  := 'SAMPLE MAP';
-  MapEditButton.TextPadding.Left := 20;
+  MapEditButton.TextPadding.Left := 18;
 
   MapEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_ProgramIcon');
+  MapEditButton.ImageOverlayHorzAlign := TRedFoxAlign.AlignNear;
+  MapEditButton.ImageOverlayOffsetX := 2;
 
 
   //===

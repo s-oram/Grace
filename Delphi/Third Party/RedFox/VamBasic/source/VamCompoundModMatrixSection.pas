@@ -118,11 +118,8 @@ type
 { TVamCompoundModMatrixSection }
 
 constructor TVamCompoundModMatrixSection.Create(AOwner: TComponent);
-var
-  c : TRedFoxColor;
 begin
   inherited;
-
 
   //This is a compound component. the contained
   // child controls do all the drawing..
