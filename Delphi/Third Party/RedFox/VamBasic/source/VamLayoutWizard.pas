@@ -33,6 +33,8 @@ type
 
     function SetSize(const aWidth, aHeight : integer):IVamLayoutWizard;
     function SetPos(const aLeft, aTop : integer):IVamLayoutWizard;
+
+    function AlignWithinParent(const HorzAlign, VertAlign : TRedFoxAlign):IVamLayoutWizard;
   end;
 
   // TVamLayoutWizard provides methods to help position controls at run time.
@@ -73,6 +75,8 @@ type
     function SetSize(const aWidth, aHeight : integer):IVamLayoutWizard;
     function SetPos(const aLeft, aTop : integer):IVamLayoutWizard; overload;
     function SetPos(const aLeft, aTop : integer; AlignPoint : TAlignPoint):IVamLayoutWizard; overload;
+
+    function AlignWithinParent(const HorzAlign, VertAlign : TRedFoxAlign):IVamLayoutWizard;
   end;
 
 
@@ -328,6 +332,37 @@ function TVamLayoutWizard.SetPos(const aLeft, aTop: integer): IVamLayoutWizard;
 begin
   fTarget.Left := aLeft;
   fTarget.Top  := aTop;
+  result := self;
+end;
+
+function TVamLayoutWizard.AlignWithinParent(const HorzAlign, VertAlign: TRedFoxAlign): IVamLayoutWizard;
+var
+  Parent : TControl;
+  XPos, YPos : integer;
+begin
+  Parent := fTarget.Parent;
+  if not assigned(Parent) then exit;
+
+  case HorzAlign of
+    AlignNear:   XPos := 0;
+    AlignCenter: XPos := (Parent.Width - fTarget.Width) div 2;
+    AlignFar:    XPos := (Parent.Width - fTarget.Width);
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+  case VertAlign of
+    AlignNear:   YPos := 0;
+    AlignCenter: YPos := (Parent.Height - fTarget.Height) div 2;
+    AlignFar:    YPos := (Parent.Height - fTarget.Height);
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  fTarget.Left := XPos;
+  fTarget.Top  := YPos;
+
   result := self;
 end;
 

@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
-  VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv;
+  VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv, VamXYPad;
 
 type
   TVoiceSetupFrame = class(TFrame, IZeroObject)
@@ -14,22 +14,15 @@ type
     BackgroundPanel: TVamPanel;
     MacroKnobDiv: TVamDiv;
     MacroDivLabel: TVamLabel;
-    MacroKnobLabel3: TVamLabel;
-    MacroKnobLabel2: TVamLabel;
-    MacroKnobLabel1: TVamLabel;
-    MacroKnob1: TVamKnob;
-    MacroKnob2: TVamKnob;
-    MacroKnob3: TVamKnob;
-    MacroKnob4: TVamKnob;
-    MacroKnobLabel4: TVamLabel;
-    MacroKnob5: TVamKnob;
-    MacroKnobLabel5: TVamLabel;
-    MacroKnobLabel6: TVamLabel;
-    MacroKnob6: TVamKnob;
-    MacroKnob7: TVamKnob;
-    MacroKnobLabel7: TVamLabel;
-    MacroKnobLabel8: TVamLabel;
-    MacroKnob8: TVamKnob;
+    XYPad1: TVamXYPad;
+    XYPad2: TVamXYPad;
+    XYPad3: TVamXYPad;
+    XYPad4: TVamXYPad;
+    PadLabel1: TVamLabel;
+    PadLabel2: TVamLabel;
+    PadLabel3: TVamLabel;
+    PadLabel4: TVamLabel;
+    procedure BackgroundPanelResize(Sender: TObject);
   private
   private
     FMotherShip : IMothership;
@@ -47,6 +40,7 @@ type
 implementation
 
 uses
+  RedFox,
   VamLayoutWizard,
   uConstants;
 
@@ -77,38 +71,36 @@ begin
 end;
 
 procedure TVoiceSetupFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: eeGuiStandardv2.TGuiStandard);
+const
+  PadWidth = 120;
+  PadHeight = 120;
+  PadXOffset = 24;
 begin
   Plugin := aPlugin;
 
-  MacroKnob1.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).SetPos(0, TGuiConst.SectionLabelHeight);
-  MacroKnob2.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob1).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  MacroKnob3.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob2).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  MacroKnob4.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob3).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  XYPad1.Layout.SetSize(PadWidth, PadHeight).SetPos(0, TGuiConst.SectionLabelHeight + 8);
+  XYPad2.Layout.SetSize(PadWidth, PadHeight).Anchor(XYPad1).SnapToEdge(TControlFeature.RightEdge).Move(PadXOffset,0);
+  XYPad3.Layout.SetSize(PadWidth, PadHeight).Anchor(XYPad2).SnapToEdge(TControlFeature.RightEdge).Move(PadXOffset,0);
+  XYPad4.Layout.SetSize(PadWidth, PadHeight).Anchor(XYPad3).SnapToEdge(TControlFeature.RightEdge).Move(PadXOffset,0);
 
-  MacroKnob5.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob1).SnapToEdge(TControlFeature.BottomEdge).Move(0,28);
-  MacroKnob6.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob5).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  MacroKnob7.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob6).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  MacroKnob8.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight).Anchor(MacroKnob7).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  PadLabel1.Layout.Anchor(XYPad1).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
+  PadLabel2.Layout.Anchor(XYPad2).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
+  PadLabel3.Layout.Anchor(XYPad3).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
+  PadLabel4.Layout.Anchor(XYPad4).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
 
-  MacroKnobLabel1.Layout.Anchor(MacroKnob1).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel2.Layout.Anchor(MacroKnob2).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel3.Layout.Anchor(MacroKnob3).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel4.Layout.Anchor(MacroKnob4).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel5.Layout.Anchor(MacroKnob5).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel6.Layout.Anchor(MacroKnob6).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel7.Layout.Anchor(MacroKnob7).SnapToEdge(TControlFeature.BottomEdge);
-  MacroKnobLabel8.Layout.Anchor(MacroKnob8).SnapToEdge(TControlFeature.BottomEdge);
+  MacroKnobDiv.Width  := WidthOfControls(XYPad1, XYPad4);
+  MacroKnobDiv.Height := HeightOfControls(MacroDivLabel, PadLabel1);
 
-
-  MacroKnobDiv.Width := WidthOfControls(MacroKnob1, MacroKnob4);
-  MacroKnobDiv.Height := HeightOfControls(MacroDivLabel, MacroKnobLabel8);
-  MacroKnobDiv.Top := 16;
-  MacroKnobDiv.Left := 300;
-
-
+  PadLabel1.Text := 'XY Pad 1';
+  PadLabel2.Text := 'XY Pad 2';
+  PadLabel3.Text := 'XY Pad 3';
+  PadLabel4.Text := 'XY Pad 4';
 end;
 
-
+procedure TVoiceSetupFrame.BackgroundPanelResize(Sender: TObject);
+begin
+  MacroKnobDiv.Layout.AlignWithinParent(TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignNear).Move(0,8);
+end;
 
 
 procedure TVoiceSetupFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);

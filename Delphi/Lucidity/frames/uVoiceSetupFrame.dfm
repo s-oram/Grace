@@ -27,11 +27,12 @@ object VoiceSetupFrame: TVoiceSetupFrame
       Transparent = False
       Align = alClient
       Visible = True
+      OnResize = BackgroundPanelResize
       object MacroKnobDiv: TVamDiv
         AlignWithMargins = True
-        Left = 83
-        Top = 139
-        Width = 454
+        Left = 120
+        Top = 355
+        Width = 817
         Height = 206
         Margins.Left = 0
         Margins.Top = 0
@@ -43,7 +44,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
         object MacroDivLabel: TVamLabel
           Left = 0
           Top = 0
-          Width = 454
+          Width = 817
           Height = 18
           Opacity = 255
           Text = 'MACRO CONTROLS'
@@ -59,157 +60,82 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Align = alTop
           Visible = True
         end
-        object MacroKnobLabel3: TVamLabel
-          Left = 61
-          Top = 48
-          Width = 32
-          Height = 16
+        object XYPad1: TVamXYPad
+          Left = 32
+          Top = 32
+          Width = 100
+          Height = 100
           Opacity = 255
-          Text = 'P3'
+          Text = 'XYPad1'
           HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
           Visible = True
         end
-        object MacroKnobLabel2: TVamLabel
-          Left = 31
-          Top = 48
-          Width = 32
-          Height = 16
+        object XYPad2: TVamXYPad
+          Left = 200
+          Top = 32
+          Width = 100
+          Height = 100
           Opacity = 255
-          Text = 'P2'
+          Text = 'XYPad2'
           HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
           Visible = True
         end
-        object MacroKnobLabel1: TVamLabel
-          Left = 0
-          Top = 48
-          Width = 32
-          Height = 16
+        object XYPad3: TVamXYPad
+          Left = 384
+          Top = 32
+          Width = 100
+          Height = 100
           Opacity = 255
-          Text = 'P1'
+          Text = 'XYPad3'
           HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
           Visible = True
         end
-        object MacroKnob1: TVamKnob
-          Left = 0
-          Top = 18
-          Width = 32
-          Height = 32
+        object XYPad4: TVamXYPad
+          Left = 555
+          Top = 32
+          Width = 100
+          Height = 100
           Opacity = 255
-          DisplayClass = 'BiPolarKnob'
+          Text = 'XYPad4'
           HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          Pos = 0.500000000000000000
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
           Visible = True
         end
-        object MacroKnob2: TVamKnob
-          Left = 31
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnob3: TVamKnob
-          Left = 61
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnob4: TVamKnob
-          Left = 95
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnobLabel4: TVamLabel
-          Left = 95
-          Top = 48
-          Width = 32
+        object PadLabel1: TVamLabel
+          Left = 32
+          Top = 138
+          Width = 100
           Height = 16
           Opacity = 255
           Text = 'P4'
@@ -224,134 +150,10 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object MacroKnob5: TVamKnob
-          Left = 136
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          Pos = 0.500000000000000000
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnobLabel5: TVamLabel
-          Left = 136
-          Top = 48
-          Width = 32
-          Height = 16
-          Opacity = 255
-          Text = 'P1'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MacroKnobLabel6: TVamLabel
-          Left = 167
-          Top = 48
-          Width = 32
-          Height = 16
-          Opacity = 255
-          Text = 'P2'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MacroKnob6: TVamKnob
-          Left = 167
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnob7: TVamKnob
-          Left = 197
-          Top = 18
-          Width = 32
-          Height = 32
-          Opacity = 255
-          DisplayClass = 'BiPolarKnob'
-          HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
-          Visible = True
-        end
-        object MacroKnobLabel7: TVamLabel
-          Left = 197
-          Top = 48
-          Width = 32
-          Height = 16
-          Opacity = 255
-          Text = 'P3'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          Visible = True
-        end
-        object MacroKnobLabel8: TVamLabel
-          Left = 235
-          Top = 48
-          Width = 32
+        object PadLabel2: TVamLabel
+          Left = 200
+          Top = 138
+          Width = 100
           Height = 16
           Opacity = 255
           Text = 'P4'
@@ -366,27 +168,40 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object MacroKnob8: TVamKnob
-          Left = 235
-          Top = 18
-          Width = 32
-          Height = 32
+        object PadLabel3: TVamLabel
+          Left = 384
+          Top = 138
+          Width = 100
+          Height = 16
           Opacity = 255
-          DisplayClass = 'BiPolarKnob'
+          Text = 'P4'
           HitTest = True
-          ModLineDist = 17.000000000000000000
-          ModLineWidth = 3.000000000000000000
-          ModLineColor = '$FFFF0000'
-          ModLineOffColor = '$FFC0C0C0'
-          IndicatorSize = 2.500000000000000000
-          IndicatorDist = 9.000000000000000000
-          IsBipolarKnob = False
-          KnobMode = PositionEdit
-          IsKnobEnabled = True
-          VisibleSteps = 0
-          MinModDepth = -0.300000011920929000
-          MaxModDepth = 0.500000000000000000
-          ParameterIndex = 0
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object PadLabel4: TVamLabel
+          Left = 555
+          Top = 138
+          Width = 100
+          Height = 16
+          Opacity = 255
+          Text = 'P4'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
           Visible = True
         end
       end
