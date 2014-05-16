@@ -287,6 +287,8 @@ var
   rs : string;
   kg : IKeyGroup;
   SelectedRegionCount : integer;
+
+  IsSampleMapVisible : boolean;
 begin
   rx := nil;
   rs := '';
@@ -301,8 +303,11 @@ begin
     exit; //================exit>>==================>>
   end;
 
+  if Plugin.Globals.GuiState.MainGuiLayout = TMainGuiLayout.MapEdit
+    then IsSampleMapVisible := true
+    else IsSampleMapVisible := false;
 
-  if (Plugin.Globals.GuiState.IsSampleMapVisible = false) then
+  if (IsSampleMapVisible = false) then
   begin
     rx := Plugin.FocusedRegion;
     rs := '';

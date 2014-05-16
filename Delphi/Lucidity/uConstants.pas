@@ -41,9 +41,10 @@ type
     ModSlotChanged                   = 11;
     LfoChanged                       = 12;
     ModAmountChanged                 = 13;
-    Command                          = ModAmountChanged + 1;
-    Command_ShowSampleMapEdit        = Command + 1;
-    Command_HideSampleMapEdit        = Command + 2;
+    GUILayoutChanged                 = 14;
+    Command                          = GUILayoutChanged + 1;
+    Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
+    Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
     Command_ShowLoopEditFrame        = Command + 4;
     Command_CloseCurrentDialog       = Command + 5;

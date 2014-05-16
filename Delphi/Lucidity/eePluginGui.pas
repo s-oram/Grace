@@ -92,7 +92,7 @@ type
     procedure CloseCurrentDialog;
 
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
-    property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState;
+    property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState; // TODO:MED: I'm not sure if the GUI needs a copy of the Current GUI state object anymore.
 
     procedure HotkeyEvent(Sender : TObject; const CommandID : string);
 
@@ -512,8 +512,6 @@ begin
     PluginKeyHook.RefreshKeyHookTarget;
   end;
 
-  if CurrentGuiState.IsSampleMapVisible <> Plugin.Globals.GuiState.IsSampleMapVisible then UpdateLayout;
-
   rd := FindRegionToDisplay(Plugin);
   FeedbackData.FocusedRegion := rd.Region;
 
@@ -573,14 +571,7 @@ begin
 
   if MsgID = TLucidMsgID.Command_CloseCurrentDialog then CloseCurrentDialog;
 
-
-
-
-
-
-
-
-
+  if MsgID = TLucidMsgID.GUILayoutChanged then UpdateLayout;
 end;
 
 
@@ -698,7 +689,9 @@ procedure TPluginGui.ShowSampleMapEdit;
 begin
   if not assigned(Plugin) then exit;
 
-  Plugin.Globals.GuiState.IsSampleMapVisible := true;
+
+  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 
   // NOTE: Logically it feels like SampleMapFrame.UpdateRootNoteKeys
   // should be called after UpdateLayout. But there is a noticable
@@ -709,8 +702,6 @@ begin
   // nested BeginUpdate/EndUpdate setup. IE. A control doesn't
   // update if any of it's parent controls are in an update stage.
   SampleMapFrame.UpdateRootNoteKeys;
-
-  UpdateLayout;
 end;
 
 procedure TPluginGui.HideSampleMapEdit;
@@ -719,8 +710,9 @@ var
   aRegion : IRegion;
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.GuiState.IsSampleMapVisible := false;
-  UpdateLayout;
+
+  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 
   if (Plugin.FocusedRegion = nil) and (Plugin.SampleMap.RegionCount > 0) then
   begin
@@ -790,7 +782,6 @@ procedure TPluginGui.UpdateLayout;
     result := aDiv.Top + aDiv.Height;
   end;
 var
-  IsSampleMapVisible : boolean;
   WorkAreaWidth : integer;
   Erector : TControlErector;
 begin
@@ -921,15 +912,6 @@ begin
   //============================================================================
   //============== Dynamic GUI Setup ================================
   //============================================================================
-
-
-
-  //== Setup ==
-  CurrentGuiState.IsSampleMapVisible := Plugin.Globals.GuiState.IsSampleMapVisible;
-  IsSampleMapVisible := CurrentGuiState.IsSampleMapVisible;
-  //===================
-
-
   MainWorkArea.Width := 600 + MainWorkArea.Padding.Left + MainWorkArea.Padding.right;
   WorkAreaWidth := MainWorkArea.Width - MainWorkArea.Padding.Left - MainWorkArea.Padding.Right;
 
@@ -963,77 +945,70 @@ begin
   //SampleMapDiv.Height    := 258;
   SampleMapDiv.Height    := 406;
 
-  if IsSampleMapVisible = true then
-  begin
-    MiniSampleDisplayFrame.UsageContext := TUsageContext.SampleZoom;
-    MainTop.Height := 208 + 80 + 2 + 70 + 2;
 
 
-    MainTop.Visible := true;
-    ZoomSampleDiv.Visible := false;
-    SampleMapDiv.Visible    := false;
-    VoiceControlDiv.Visible := false;
-    TabPanel.Visible        := true;
-    ModSystem2Div.Visible := false;
+  case Plugin.Globals.GuiState.MainGuiLayout of
+    TMainGuiLayout.Default:
+    begin
+      MiniSampleDisplayFrame.UsageContext := TUsageContext.General;
+      MainTop.Height         := 208;
 
-    MainMenuBar.Top := 1;
-    MainMenuBar.Left := 1;
+      MainTop.Visible := true;
+      ZoomSampleDiv.Visible := false;
 
-    MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-    TabPanel.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-    ModSystem2Div.Layout.Anchor(TabPanel).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      SampleMapDiv.Visible    := false;
+      VoiceControlDiv.Visible := true;
+      TabPanel.Visible        := true;
+      ModSystem2Div.Visible   := true;
 
-
-
-    //Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
-    ///Erector.Init(MainTop, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    // Erector.Init(VoiceControlDiv, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(TabPanel, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
-
-    //==========================================================================
-    // This is code to show the Sample Map - DO NOT DELETE!
-    {
-    SampleMapDiv.Visible    := true;
-    VoiceControlDiv.Visible := false;
-    TabPanel.Visible        := false;
-    ModSystem2Div.Visible   := false;
+      MainMenuBar.Top := 1;
+      MainMenuBar.Left := 1;
 
 
-    MainMenuBar.Top := 1;
-    MainMenuBar.Left := 1;
-    Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(MainTop, SampleMapDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    }
-    //==========================================================================
-  end else
-  begin
-    MiniSampleDisplayFrame.UsageContext := TUsageContext.General;
-    MainTop.Height         := 208;
+      MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      VoiceControlDiv.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      TabPanel.Layout.Anchor(VoiceControlDiv).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      ModSystem2Div.Layout.Anchor(TabPanel).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+    end;
 
-    MainTop.Visible := true;
-    ZoomSampleDiv.Visible := false;
+    TMainGuiLayout.SampleZoom:
+    begin
+      MiniSampleDisplayFrame.UsageContext := TUsageContext.SampleZoom;
+      MainTop.Height := 208 + 80 + 2 + 70 + 2;
 
-    SampleMapDiv.Visible    := false;
-    VoiceControlDiv.Visible := true;
-    TabPanel.Visible        := true;
-    ModSystem2Div.Visible   := true;
+      MainTop.Visible := true;
+      ZoomSampleDiv.Visible := false;
+      SampleMapDiv.Visible    := false;
+      VoiceControlDiv.Visible := false;
+      TabPanel.Visible        := true;
+      ModSystem2Div.Visible := false;
 
-    MainMenuBar.Top := 1;
-    MainMenuBar.Left := 1;
+      MainMenuBar.Top := 1;
+      MainMenuBar.Left := 1;
+
+      MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      TabPanel.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      ModSystem2Div.Layout.Anchor(TabPanel).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+    end;
+
+    TMainGuiLayout.MapEdit:
+    begin
+      //==========================================================================
+      // This is code to show the Sample Map - DO NOT DELETE!
+      SampleMapDiv.Visible    := true;
+      VoiceControlDiv.Visible := false;
+      TabPanel.Visible        := false;
+      ModSystem2Div.Visible   := false;
 
 
-    MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-    VoiceControlDiv.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-    TabPanel.Layout.Anchor(VoiceControlDiv).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-    ModSystem2Div.Layout.Anchor(TabPanel).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-
-
-    {
-    Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(MainTop, VoiceControlDiv).SnapToEdge(cfBottomEdge).Move(0,2);
-    //Erector.Init(VoiceControlDiv, TabPanel).SnapToEdge(cfBottomEdge).Move(0,2);
-    Erector.Init(TabPanel, ModSystem2Div).SnapToEdge(cfBottomEdge).Move(0,2);
-    }
+      MainMenuBar.Top := 1;
+      MainMenuBar.Left := 1;
+      Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
+      Erector.Init(MainTop, SampleMapDiv).SnapToEdge(cfBottomEdge).Move(0,2);
+      //==========================================================================
+    end;
+  else
+    raise Exception.Create('Type not handled.');
   end;
 
   MainWorkArea.Repaint;

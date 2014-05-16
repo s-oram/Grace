@@ -14,11 +14,12 @@ type
     fCurrentModDestTarget: TModDest;
     fFocusedControl: TControl;
     fIsModDestAutoSelectEnabled: boolean;
+    fMainGuiLayout: TMainGuiLayout;
   public
     constructor Create;
     destructor Destroy; override;
 
-    property IsSampleMapVisible : boolean          read fIsSampleMapVisible write fIsSampleMapVisible;
+    //property IsSampleMapVisible : boolean          read fIsSampleMapVisible write fIsSampleMapVisible;
     property LowerTabState      : TLowerTabOptions read fLowerTabState      write fLowerTabState;
 
     property MouseOverRegionID : TGUID read fMouseOverRegionID write fMouseOverRegionID;
@@ -27,6 +28,8 @@ type
     property IsModDestAutoSelectEnabled : boolean read fIsModDestAutoSelectEnabled write fIsModDestAutoSelectEnabled;
 
     property FocusedControl : TControl read fFocusedControl write fFocusedControl;
+
+    property MainGuiLayout : TMainGuiLayout read fMainGuiLayout write fMainGuiLayout;
   end;
 
 implementation
@@ -43,6 +46,7 @@ begin
   MouseOverRegionID := TGuidEx.EmptyGuid;
 
   fIsModDestAutoSelectEnabled := true;
+  fMainGuiLayout := TMainGuiLayout.Default;
 end;
 
 destructor TGuiState.Destroy;

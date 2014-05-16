@@ -276,10 +276,10 @@ type
   );
   TKeyCommandHelper = class(TEnumHelper<TKeyCommand>);
 
-
-
-
   TProgramFormat = (Lucidity, Sfz);
+
+
+  TMainGuiLayout = (Default, SampleZoom, MapEdit);
 
 
 //TFilterType

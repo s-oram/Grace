@@ -59,6 +59,7 @@ implementation
 {$R *.dfm}
 
 uses
+  uLucidityEnums,
   VamQuery,
   uGuiUtils,
   RedFoxColor,
@@ -162,7 +163,15 @@ procedure TMenuBarFrame.SampleMapButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  Plugin.Globals.GuiState.IsSampleMapVisible := not(Plugin.Globals.GuiState.IsSampleMapVisible);
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
 end;
 
 procedure TMenuBarFrame.SampleMenuButtonClick(Sender: TObject);
@@ -235,9 +244,15 @@ procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.Globals.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_ShowSampleMapEdit);
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
 end;
 
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);

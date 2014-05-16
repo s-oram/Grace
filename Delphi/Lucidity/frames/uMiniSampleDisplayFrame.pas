@@ -749,10 +749,15 @@ procedure TMiniSampleDisplayFrame.SampleOverlayDblClicked(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.Globals.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
-
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -1093,7 +1098,7 @@ var
   Tag : integer;
   xZoom, xOffset : double;
   SampleFrames, DisplayPixelWidth : integer;
-  IndexA, IndexB : single;
+  //IndexA, IndexB : single;
 begin
   if not CurrentSample.Info.IsValid then exit;
   if not assigned(CurrentSample.Region) then exit;

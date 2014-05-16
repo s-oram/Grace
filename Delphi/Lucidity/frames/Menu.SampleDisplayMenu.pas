@@ -36,6 +36,7 @@ type
 implementation
 
 uses
+  uLucidityEnums,
   Lucidity.PluginParameters,
   Lucidity.Types,
   uGuiUtils,
@@ -229,10 +230,20 @@ procedure TSampleDisplayMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.Globals.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
-
+  //============================================================================
+  // TODO:LOW: This bit of code to toggle the sample map state has been
+  // copied and pasted in a few places. It might be worth pulling it out
+  // to a sub-routine.
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
+  //============================================================================
 end;
 
 procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);

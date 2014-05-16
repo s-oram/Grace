@@ -248,18 +248,23 @@ procedure TMainMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
 
-  if Plugin.Globals.GuiState.IsSampleMapVisible
-    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit)
-    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowSampleMapEdit);
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
 end;
 
 procedure TMainMenu.EventHandle_EditSamplePoints(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
+  // TODO:LOW: is this method being used? Maybe it will soon be redundant if not already.
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowLoopEditFrame);
 end;
-
-
 
 procedure TMainMenu.EventHandle_ImportSFZ(Sender: TObject);
 var
