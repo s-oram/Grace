@@ -61,6 +61,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Visible = True
         end
         object XYPad1: TVamXYPad
+          Tag = 1
           Left = 32
           Top = 32
           Width = 100
@@ -77,8 +78,10 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnChanged = XYPadChanged
         end
         object XYPad2: TVamXYPad
+          Tag = 2
           Left = 200
           Top = 32
           Width = 100
@@ -95,8 +98,10 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnChanged = XYPadChanged
         end
         object XYPad3: TVamXYPad
+          Tag = 3
           Left = 384
           Top = 32
           Width = 100
@@ -113,8 +118,10 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnChanged = XYPadChanged
         end
         object XYPad4: TVamXYPad
+          Tag = 4
           Left = 555
           Top = 32
           Width = 100
@@ -131,6 +138,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnChanged = XYPadChanged
         end
         object PadLabel1: TVamLabel
           Left = 32

@@ -510,7 +510,7 @@ begin
   MiniSampleDisplayFrame.UpdateGui(Sender, @FeedbackData);
   ModControlFrame.UpdateGui(Sender, @FeedbackData);
   SequencerFrame.UpdateGui(Sender, @FeedbackData);
-  //VoiceSetupFrame.UpdateGui(); NOTE: I've not added an UpdateGUI() method as I'm not sure if it's needed.
+  VoiceSetupFrame.UpdateGui(Sender, @FeedbackData);
   VoiceControlFrame.UpdateGui(Sender, @FeedbackData);
 
   GuiStandard.UpdateControls;

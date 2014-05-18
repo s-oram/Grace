@@ -24,6 +24,7 @@ type
     PadLabel3: TVamLabel;
     PadLabel4: TVamLabel;
     procedure BackgroundPanelResize(Sender: TObject);
+    procedure XYPadChanged(Sender: TObject);
   private
   private
     FMotherShip : IMothership;
@@ -113,10 +114,62 @@ end;
 
 procedure TVoiceSetupFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
+  assert(assigned(Plugin));
+
+  if XYPad1.PosX <> Plugin.XYPads.PadX1 then XYPad1.PosX := Plugin.XYPads.PadX1;
+  if XYPad2.PosX <> Plugin.XYPads.PadX2 then XYPad2.PosX := Plugin.XYPads.PadX2;
+  if XYPad3.PosX <> Plugin.XYPads.PadX3 then XYPad3.PosX := Plugin.XYPads.PadX3;
+  if XYPad4.PosX <> Plugin.XYPads.PadX4 then XYPad4.PosX := Plugin.XYPads.PadX4;
+
+  if XYPad1.PosY <> Plugin.XYPads.PadY1 then XYPad1.PosY := Plugin.XYPads.PadY1;
+  if XYPad2.PosY <> Plugin.XYPads.PadY2 then XYPad2.PosY := Plugin.XYPads.PadY2;
+  if XYPad3.PosY <> Plugin.XYPads.PadY3 then XYPad3.PosY := Plugin.XYPads.PadY3;
+  if XYPad4.PosY <> Plugin.XYPads.PadY4 then XYPad4.PosY := Plugin.XYPads.PadY4;
+
+
 
 end;
 
 
 
+
+procedure TVoiceSetupFrame.XYPadChanged(Sender: TObject);
+var
+  Tag : integer;
+  PadX, PadY : single;
+begin
+  Tag := (Sender as TVamXYPad).Tag;
+
+  PadX := (Sender as TVamXYPad).PosX;
+  PadY := (Sender as TVamXYPad).PosY;
+
+  case Tag of
+    1:
+    begin
+      Plugin.XYPads.PadX1 := PadX;
+      Plugin.XYPads.PadY1 := PadY;
+    end;
+
+    2:
+    begin
+      Plugin.XYPads.PadX2 := PadX;
+      Plugin.XYPads.PadY2 := PadY;
+    end;
+
+    3:
+    begin
+      Plugin.XYPads.PadX3 := PadX;
+      Plugin.XYPads.PadY3 := PadY;
+    end;
+
+    4:
+    begin
+      Plugin.XYPads.PadX4 := PadX;
+      Plugin.XYPads.PadY4 := PadY;
+    end;
+  else
+    raise Exception.Create('Index not handled.');
+  end;
+end;
 
 end.
