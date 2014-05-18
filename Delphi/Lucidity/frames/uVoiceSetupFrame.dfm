@@ -30,8 +30,8 @@ object VoiceSetupFrame: TVoiceSetupFrame
       OnResize = BackgroundPanelResize
       object MacroKnobDiv: TVamDiv
         AlignWithMargins = True
-        Left = 120
-        Top = 355
+        Left = 112
+        Top = 115
         Width = 817
         Height = 206
         Margins.Left = 0

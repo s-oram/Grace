@@ -1201,7 +1201,7 @@ end;
 procedure TeePlugin.FastControlProcess;
 begin
   try
-    XYPads.ControlRateProcess; //TODO: probably can delete the xy pads class.
+    XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     MidiInputProcessor.FastControlProcess;
     KeyGroupPlayer.FastControlProcess;

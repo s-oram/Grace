@@ -59,7 +59,6 @@ type
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
 
-
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
   public
     constructor Create(const aPlugin : TeePlugin);
@@ -121,8 +120,6 @@ begin
       UpdateModulation(ControlList[c1]);
     end;
   end;
-
-
 
 end;
 
@@ -326,9 +323,6 @@ begin
 
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
-
-
-
 end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
