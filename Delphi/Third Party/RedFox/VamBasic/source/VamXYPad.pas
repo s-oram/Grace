@@ -5,14 +5,14 @@ interface
 uses
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
-  VamGraphicControl, VamWinControl;
+  VamGraphicControl, VamWinControl, VamGuiControlInterfaces;
 
 const
   kPuckPadding = 3;
   kPuckSize    = 20;
 
 type
-  TVamXYPad = class(TVamWinControl)
+  TVamXYPad = class(TVamWinControl, IXYPadControl)
   private
     fOnChanged: TNotifyEvent;
     fPosX: single;

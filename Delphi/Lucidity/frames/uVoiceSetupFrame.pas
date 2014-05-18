@@ -3,6 +3,7 @@ unit uVoiceSetupFrame;
 interface
 
 uses
+  uGuiFeedbackData,
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
@@ -35,6 +36,8 @@ type
     destructor Destroy; override;
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
+
+    procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
   end;
 
 implementation
@@ -107,6 +110,13 @@ procedure TVoiceSetupFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Point
 begin
 
 end;
+
+procedure TVoiceSetupFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
+begin
+
+end;
+
+
 
 
 end.

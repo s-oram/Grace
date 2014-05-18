@@ -34,6 +34,11 @@ type
     procedure SetOnModAmountChanged(Handler:TNotifyEvent);
   end;
 
+  IXYPadControl = interface(IInterface)
+    ['{2230D1CD-7C5E-48E4-8BE1-5CD37F5A8431}']
+    //TODO:LOW
+  end;
+
 
   // The IMenuControl is for mode button type menus. The button will
   // show one value as text. (Ie. SQUARE or SAW.)
