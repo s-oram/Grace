@@ -609,6 +609,7 @@
 				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
+			<DCCReference Include="frames\Menu.XYPadContextMenu.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

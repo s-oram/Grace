@@ -456,7 +456,7 @@ begin
 
 
 
-    // Rebuild the context menu before showing it.
+  // Rebuild the context menu before showing it.
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'MIDI Learn';
   mi.OnClick := Handle_MidiLearn;

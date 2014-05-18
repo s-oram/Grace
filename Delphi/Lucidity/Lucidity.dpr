@@ -166,7 +166,8 @@ uses
   Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',
   Lucidity.VoiceController in 'Lucidity.VoiceController.pas',
   uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame},
-  uVoiceSetupFrame in 'frames\uVoiceSetupFrame.pas' {VoiceSetupFrame: TFrame};
+  uVoiceSetupFrame in 'frames\uVoiceSetupFrame.pas' {VoiceSetupFrame: TFrame},
+  Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas';
 
 {$R *.res}
 
