@@ -71,6 +71,7 @@ type
     //==========================================================================
 
     procedure ZeroAllValues;
+    procedure ZeroLocalValues;
 
     procedure SetModSourcePointer(const aModSource : TModSource; const Source:PSingle);
     //procedure SetModDestPointer(const aModDest : TModDest; const Dest:PSingle);
@@ -232,14 +233,16 @@ begin
 end;
 
 
+procedure TModMatrix.ZeroLocalValues;
+begin
+
+end;
+
 procedure TModMatrix.FastControlProcess;
 var
   c1 : integer;
   Index : integer;
   pv, combinedModValues : single;
-
-
-
 begin
   {$IFDEF StrictDebugChecks}
   AreModSourceValuesInRange; //Expensive!!

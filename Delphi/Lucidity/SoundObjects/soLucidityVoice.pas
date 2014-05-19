@@ -573,6 +573,7 @@ begin
   // But I'm not sure if this is actually needed... will have to look more
   // closely.
   //ModMatrix.ZeroAllValues;
+  //ModMatrix
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
   //--------------------------
