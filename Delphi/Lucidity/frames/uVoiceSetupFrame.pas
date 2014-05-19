@@ -3,7 +3,7 @@ unit uVoiceSetupFrame;
 interface
 
 uses
-  uGuiFeedbackData,
+  uGuiFeedbackData, Menu.XYPadContextMenu,
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
@@ -25,6 +25,7 @@ type
     PadLabel4: TVamLabel;
     procedure BackgroundPanelResize(Sender: TObject);
     procedure XYPadChanged(Sender: TObject);
+    procedure XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
   private
     FMotherShip : IMothership;
@@ -32,6 +33,7 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
   protected
     Plugin : TeePlugin;
+    PadContextMenu : TXYPadContextMenu;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -55,7 +57,7 @@ uses
 constructor TVoiceSetupFrame.Create(AOwner: TComponent);
 begin
   inherited;
-
+  PadContextMenu := TXYPadContextMenu.Create;
 end;
 
 destructor TVoiceSetupFrame.Destroy;
@@ -65,6 +67,8 @@ begin
     FMotherShip.DeregisterZeroObject(self);
     FMotherShip := nil;
   end;
+
+  PadContextMenu.Free;
 
   inherited;
 end;
@@ -81,6 +85,8 @@ const
   PadXOffset = 24;
 begin
   Plugin := aPlugin;
+
+  PadContextMenu.Plugin := aPlugin;
 
   XYPad1.Layout.SetSize(PadWidth, PadHeight).SetPos(0, TGuiConst.SectionLabelHeight + 8);
   XYPad2.Layout.SetSize(PadWidth, PadHeight).Anchor(XYPad1).SnapToEdge(TControlFeature.RightEdge).Move(PadXOffset,0);
@@ -125,12 +131,7 @@ begin
   if XYPad2.PosY <> Plugin.XYPads.PadY2 then XYPad2.PosY := Plugin.XYPads.PadY2;
   if XYPad3.PosY <> Plugin.XYPads.PadY3 then XYPad3.PosY := Plugin.XYPads.PadY3;
   if XYPad4.PosY <> Plugin.XYPads.PadY4 then XYPad4.PosY := Plugin.XYPads.PadY4;
-
-
-
 end;
-
-
 
 
 procedure TVoiceSetupFrame.XYPadChanged(Sender: TObject);
@@ -170,6 +171,19 @@ begin
   else
     raise Exception.Create('Index not handled.');
   end;
+end;
+
+procedure TVoiceSetupFrame.XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Tag : integer;
+begin
+  if Button = TMouseButton.mbRight then
+  begin
+    Tag := (Sender as TVamXYPad).Tag;
+    PadContextMenu.TargetXYPadIndex := Tag - 1; //NOTE: The (Tag-1) is because the pads are numbered 1 to 4.
+    PadContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
+
 end;
 
 end.

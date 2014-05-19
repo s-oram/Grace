@@ -78,6 +78,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnMouseDown = XYPadMouseDown
           OnChanged = XYPadChanged
         end
         object XYPad2: TVamXYPad
@@ -98,6 +99,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnMouseDown = XYPadMouseDown
           OnChanged = XYPadChanged
         end
         object XYPad3: TVamXYPad
@@ -118,6 +120,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnMouseDown = XYPadMouseDown
           OnChanged = XYPadChanged
         end
         object XYPad4: TVamXYPad
@@ -138,6 +141,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           PadX_VstParameterIndex = 0
           PadY_VstParameterIndex = 0
           Visible = True
+          OnMouseDown = XYPadMouseDown
           OnChanged = XYPadChanged
         end
         object PadLabel1: TVamLabel
