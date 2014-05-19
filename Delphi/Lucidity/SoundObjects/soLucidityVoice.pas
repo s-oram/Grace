@@ -567,13 +567,7 @@ begin
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
   ModMatrix.UpdateModConnections;
-  // TODO:HIGH
-  // ZeroAllValues isn't appropiate as global values will be zero'd out.
-  // This should be Zero all **LOCAL** values..
-  // But I'm not sure if this is actually needed... will have to look more
-  // closely.
-  //ModMatrix.ZeroAllValues;
-  //ModMatrix
+  ModMatrix.ZeroLocalValues;
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
   //--------------------------

@@ -235,7 +235,20 @@ end;
 
 procedure TModMatrix.ZeroLocalValues;
 begin
+  // Zero all local values. Other values are supplied by external modulation sources.
+  fModSourceValues[Integer(TModSource.AmpEnv_Unipolar)]^    := 0;
+  fModSourceValues[Integer(TModSource.FilterEnv_Unipolar)]^ := 0;
+  fModSourceValues[Integer(TModSource.Lfo1_Unipolar)]^      := 0;
+  fModSourceValues[Integer(TModSource.Lfo2_Unipolar)]^      := 0;
+  fModSourceValues[Integer(TModSource.StepSeq1_Unipolar)]^  := 0;
+  fModSourceValues[Integer(TModSource.StepSeq2_Unipolar)]^  := 0;
 
+  fModSourceValues[Integer(TModSource.AmpEnv_Bipolar)]^    := 0;
+  fModSourceValues[Integer(TModSource.FilterEnv_Bipolar)]^ := 0;
+  fModSourceValues[Integer(TModSource.Lfo1_Bipolar)]^      := 0;
+  fModSourceValues[Integer(TModSource.Lfo2_Bipolar)]^      := 0;
+  fModSourceValues[Integer(TModSource.StepSeq1_Bipolar)]^  := 0;
+  fModSourceValues[Integer(TModSource.StepSeq2_Bipolar)]^  := 0;
 end;
 
 procedure TModMatrix.FastControlProcess;
