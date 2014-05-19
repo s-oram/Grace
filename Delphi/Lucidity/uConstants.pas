@@ -148,14 +148,24 @@ type
     Source_MidiPitchbend_Bipolar  : single; //range -1..1
     Source_MidiModWheel_Unipolar  : single; //range 0..1
     Source_MidiModWheel_Bipolar   : single; //range -1..1
-    Source_PadX1              : single;
-    Source_PadY1              : single;
-    Source_PadX2              : single;
-    Source_PadY2              : single;
-    Source_PadX3              : single;
-    Source_PadY3              : single;
-    Source_PadX4              : single;
-    Source_PadY4              : single;
+    //Unipolar sources...
+    Source_PadX1_Unipolar     : single;
+    Source_PadY1_Unipolar     : single;
+    Source_PadX2_Unipolar     : single;
+    Source_PadY2_Unipolar     : single;
+    Source_PadX3_Unipolar     : single;
+    Source_PadY3_Unipolar     : single;
+    Source_PadX4_Unipolar     : single;
+    Source_PadY4_Unipolar     : single;
+    //bipolar sources...
+    Source_PadX1_Bipolar      : single;
+    Source_PadY1_Bipolar      : single;
+    Source_PadX2_Bipolar      : single;
+    Source_PadY2_Bipolar      : single;
+    Source_PadX3_Bipolar      : single;
+    Source_PadY3_Bipolar      : single;
+    Source_PadX4_Bipolar      : single;
+    Source_PadY4_Bipolar      : single;
   end;
 
   // Per voice modulation points. All modulation values are in audio range.

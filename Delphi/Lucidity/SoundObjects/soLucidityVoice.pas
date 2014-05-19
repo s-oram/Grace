@@ -272,6 +272,23 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Bipolar, @ModPoints.MidiToggle_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Unipolar, @ModPoints.MidiToggle_Unipolar);
 
+  ModMatrix.SetModSourcePointer(TModSource.PadX1_Unipolar, @GlobalModPoints^.Source_PadX1_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY1_Unipolar, @GlobalModPoints^.Source_PadY1_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX2_Unipolar, @GlobalModPoints^.Source_PadX2_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY2_Unipolar, @GlobalModPoints^.Source_PadY2_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX3_Unipolar, @GlobalModPoints^.Source_PadX3_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY3_Unipolar, @GlobalModPoints^.Source_PadY3_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX4_Unipolar, @GlobalModPoints^.Source_PadX4_Unipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY4_Unipolar, @GlobalModPoints^.Source_PadY4_Unipolar);
+
+  ModMatrix.SetModSourcePointer(TModSource.PadX1_Bipolar, @GlobalModPoints^.Source_PadX1_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY1_Bipolar, @GlobalModPoints^.Source_PadY1_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX2_Bipolar, @GlobalModPoints^.Source_PadX2_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY2_Bipolar, @GlobalModPoints^.Source_PadY2_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX3_Bipolar, @GlobalModPoints^.Source_PadX3_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY3_Bipolar, @GlobalModPoints^.Source_PadY3_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadX4_Bipolar, @GlobalModPoints^.Source_PadX4_Bipolar);
+  ModMatrix.SetModSourcePointer(TModSource.PadY4_Bipolar, @GlobalModPoints^.Source_PadY4_Bipolar);
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
 
@@ -550,7 +567,14 @@ begin
   //-- IMPORTANT: Do first. --
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
   ModMatrix.UpdateModConnections;
-  ModMatrix.ZeroAllValues;
+  // TODO:HIGH
+  // ZeroAllValues isn't appropiate as global values will be zero'd out.
+  // This should be Zero all **LOCAL** values..
+  // But I'm not sure if this is actually needed... will have to look more
+  // closely.
+  //ModMatrix.ZeroAllValues;
+  ModMatrix.FastControlProcess;
+  ModMatrix.SlowControlProcess;
   //--------------------------
 
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);

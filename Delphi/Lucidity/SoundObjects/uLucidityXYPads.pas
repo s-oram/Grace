@@ -147,14 +147,23 @@ end;
 
 procedure TLucidityXYPads.ControlRateProcess;
 begin
-  GlobalModPoints^.Source_PadX1 := SmoothParameterChange(GlobalModPoints^.Source_PadX1, fPadX1, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadY1 := SmoothParameterChange(GlobalModPoints^.Source_PadY1, fPadY1, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadX2 := SmoothParameterChange(GlobalModPoints^.Source_PadX2, fPadX2, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadY2 := SmoothParameterChange(GlobalModPoints^.Source_PadY2, fPadY2, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadX3 := SmoothParameterChange(GlobalModPoints^.Source_PadX3, fPadX3, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadY3 := SmoothParameterChange(GlobalModPoints^.Source_PadY3, fPadY3, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadX4 := SmoothParameterChange(GlobalModPoints^.Source_PadX4, fPadX4, SmoothingCoefficient);
-  GlobalModPoints^.Source_PadY4 := SmoothParameterChange(GlobalModPoints^.Source_PadY4, fPadY4, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadX1_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX1_Unipolar, fPadX1, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadY1_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY1_Unipolar, fPadY1, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadX2_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX2_Unipolar, fPadX2, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadY2_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY2_Unipolar, fPadY2, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadX3_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX3_Unipolar, fPadX3, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadY3_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY3_Unipolar, fPadY3, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadX4_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX4_Unipolar, fPadX4, SmoothingCoefficient);
+  GlobalModPoints^.Source_PadY4_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY4_Unipolar, fPadY4, SmoothingCoefficient);
+
+  GlobalModPoints^.Source_PadX1_Bipolar := GlobalModPoints^.Source_PadX1_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadY1_Bipolar := GlobalModPoints^.Source_PadY1_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadX2_Bipolar := GlobalModPoints^.Source_PadX2_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadY2_Bipolar := GlobalModPoints^.Source_PadY2_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadX3_Bipolar := GlobalModPoints^.Source_PadX3_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadY3_Bipolar := GlobalModPoints^.Source_PadY3_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadX4_Bipolar := GlobalModPoints^.Source_PadX4_Unipolar * 2 - 1;
+  GlobalModPoints^.Source_PadY4_Bipolar := GlobalModPoints^.Source_PadY4_Unipolar * 2 - 1;
 end;
 
 

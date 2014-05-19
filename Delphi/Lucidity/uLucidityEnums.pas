@@ -82,6 +82,10 @@ type
     class function ToShortGuiString(aEnum : TModEnvMode):string; override;
   end;
 
+
+  // TODO:HIGH rather than duplicate all mod sources as bipolar and unipolar sources,
+  // i think the bi/uni state should be computed within the mod matrix class.
+  // NOTE: This might need to be decided before the plugin is released.
   TModSource = (
     None,
     //Unipolar sources...
