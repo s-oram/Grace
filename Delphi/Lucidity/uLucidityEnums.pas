@@ -84,28 +84,46 @@ type
 
   TModSource = (
     None,
+    //Unipolar sources...
     Midi_Note_Unipolar,
-    Midi_Note_Bipolar,
     Midi_Velocity_Unipolar,
-    Midi_Velocity_Bipolar,
     Midi_PitchBend_Unipolar,
-    Midi_PitchBend_Bipolar,
     Midi_ModWheel_Unipolar,
-    Midi_ModWheel_Bipolar,
     Midi_Toggle_Unipolar,
-    Midi_Toggle_Bipolar,
     AmpEnv_Unipolar,
-    AmpEnv_Bipolar,
     FilterEnv_Unipolar,
-    FilterEnv_Bipolar,
     Lfo1_Unipolar,
-    Lfo1_Bipolar,
     Lfo2_Unipolar,
-    Lfo2_Bipolar,
     StepSeq1_Unipolar,
-    StepSeq1_Bipolar,
     StepSeq2_Unipolar,
-    StepSeq2_Bipolar
+    PadX1_Unipolar,
+    PadY1_Unipolar,
+    PadX2_Unipolar,
+    PadY2_Unipolar,
+    PadX3_Unipolar,
+    PadY3_Unipolar,
+    PadX4_Unipolar,
+    PadY4_Unipolar,
+    //bipolar sources...
+    Midi_Note_Bipolar,
+    Midi_Velocity_Bipolar,
+    Midi_PitchBend_Bipolar,
+    Midi_ModWheel_Bipolar,
+    Midi_Toggle_Bipolar,
+    AmpEnv_Bipolar,
+    FilterEnv_Bipolar,
+    Lfo1_Bipolar,
+    Lfo2_Bipolar,
+    StepSeq1_Bipolar,
+    StepSeq2_Bipolar,
+    PadX1_Bipolar,
+    PadY1_Bipolar,
+    PadX2_Bipolar,
+    PadY2_Bipolar,
+    PadX3_Bipolar,
+    PadY3_Bipolar,
+    PadX4_Bipolar,
+    PadY4_Bipolar
   );
 
   {
@@ -336,6 +354,24 @@ begin
     TModSource.StepSeq1_Bipolar:        result := 'Step Sequencer 1' + BipolarStr;
     TModSource.StepSeq2_Unipolar:       result := 'Step Sequencer 2' + UnipolarStr;
     TModSource.StepSeq2_Bipolar:        result := 'Step Sequencer 2' + BipolarStr;
+    // unipolar sources...
+    TModSource.PadX1_Unipolar:          result := 'Pad X1' + UnipolarStr;
+    TModSource.PadY1_Unipolar:          result := 'Pad Y1' + UnipolarStr;
+    TModSource.PadX2_Unipolar:          result := 'Pad X2' + UnipolarStr;
+    TModSource.PadY2_Unipolar:          result := 'Pad Y2' + UnipolarStr;
+    TModSource.PadX3_Unipolar:          result := 'Pad X3' + UnipolarStr;
+    TModSource.PadY3_Unipolar:          result := 'Pad Y3' + UnipolarStr;
+    TModSource.PadX4_Unipolar:          result := 'Pad X4' + UnipolarStr;
+    TModSource.PadY4_Unipolar:          result := 'Pad Y4' + UnipolarStr;
+    // bipolar sources...
+    TModSource.PadX1_Bipolar:          result := 'Pad X1' + BipolarStr;
+    TModSource.PadY1_Bipolar:          result := 'Pad Y1' + BipolarStr;
+    TModSource.PadX2_Bipolar:          result := 'Pad X2' + BipolarStr;
+    TModSource.PadY2_Bipolar:          result := 'Pad Y2' + BipolarStr;
+    TModSource.PadX3_Bipolar:          result := 'Pad X3' + BipolarStr;
+    TModSource.PadY3_Bipolar:          result := 'Pad Y3' + BipolarStr;
+    TModSource.PadX4_Bipolar:          result := 'Pad X4' + BipolarStr;
+    TModSource.PadY4_Bipolar:          result := 'Pad Y4' + BipolarStr;
   else
     result := inherited;
   end;
@@ -371,6 +407,25 @@ begin
     TModSource.StepSeq1_Bipolar:        result := 'Seq1'    + BipolarStr;
     TModSource.StepSeq2_Unipolar:       result := 'Seq2'    + UnipolarStr;
     TModSource.StepSeq2_Bipolar:        result := 'Seq2'    + BipolarStr;
+
+    // unipolar sources...
+    TModSource.PadX1_Unipolar:          result := 'Pad X1' + UnipolarStr;
+    TModSource.PadY1_Unipolar:          result := 'Pad Y1' + UnipolarStr;
+    TModSource.PadX2_Unipolar:          result := 'Pad X2' + UnipolarStr;
+    TModSource.PadY2_Unipolar:          result := 'Pad Y2' + UnipolarStr;
+    TModSource.PadX3_Unipolar:          result := 'Pad X3' + UnipolarStr;
+    TModSource.PadY3_Unipolar:          result := 'Pad Y3' + UnipolarStr;
+    TModSource.PadX4_Unipolar:          result := 'Pad X4' + UnipolarStr;
+    TModSource.PadY4_Unipolar:          result := 'Pad Y4' + UnipolarStr;
+    // bipolar sources...
+    TModSource.PadX1_Bipolar:          result := 'Pad X1' + BipolarStr;
+    TModSource.PadY1_Bipolar:          result := 'Pad Y1' + BipolarStr;
+    TModSource.PadX2_Bipolar:          result := 'Pad X2' + BipolarStr;
+    TModSource.PadY2_Bipolar:          result := 'Pad Y2' + BipolarStr;
+    TModSource.PadX3_Bipolar:          result := 'Pad X3' + BipolarStr;
+    TModSource.PadY3_Bipolar:          result := 'Pad Y3' + BipolarStr;
+    TModSource.PadX4_Bipolar:          result := 'Pad X4' + BipolarStr;
+    TModSource.PadY4_Bipolar:          result := 'Pad Y4' + BipolarStr;
   else
     result := inherited;
   end;

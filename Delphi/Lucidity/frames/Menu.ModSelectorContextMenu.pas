@@ -75,6 +75,16 @@ begin
   MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq1_Unipolar);
   MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq2_Unipolar);
 
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX1_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY1_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX2_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY2_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX3_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY3_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX4_Unipolar);
+  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY4_Unipolar);
+
+
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Note_Bipolar);
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Velocity_Bipolar);
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_PitchBend_Bipolar);
@@ -87,6 +97,15 @@ begin
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq1_Bipolar);
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq2_Bipolar);
 
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX1_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY1_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX2_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY2_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX3_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY3_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX4_Bipolar);
+  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY4_Bipolar);
+
   aMenu.Items.Add(UnipolarMenu);
   aMenu.Items.Add(BipolarMenu);
 
@@ -97,8 +116,6 @@ begin
   mi := aMenu.Items[0];
   aMenu.Items.Remove(mi);
   aMenu.Items.Add(mi);
-
-
 end;
 
 { TModSelectorContextMenu }
