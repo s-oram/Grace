@@ -73,6 +73,14 @@ begin
       TPluginParameter.VoiceGlide:    result := Plugin.VoiceGlide;
       TPluginParameter.PreviewVolume: result := Plugin.PreviewVolume;
       TPluginParameter.Preview:       result := BooleanToFloat(Plugin.IsPreviewEnabled);
+      TPluginParameter.PadX1:         result := Plugin.XYPads.PadX1;
+      TPluginParameter.PadY1:         result := Plugin.XYPads.PadY1;
+      TPluginParameter.PadX2:         result := Plugin.XYPads.PadX2;
+      TPluginParameter.PadY2:         result := Plugin.XYPads.PadY2;
+      TPluginParameter.PadX3:         result := Plugin.XYPads.PadX3;
+      TPluginParameter.PadY3:         result := Plugin.XYPads.PadY3;
+      TPluginParameter.PadX4:         result := Plugin.XYPads.PadX4;
+      TPluginParameter.PadY4:         result := Plugin.XYPads.PadY4;
     else
       raise Exception.Create('Type not handled.');
     end;
@@ -149,6 +157,14 @@ begin
       TPluginParameter.VoiceGlide:    Plugin.VoiceGlide := ParValue;
       TPluginParameter.PreviewVolume: Plugin.PreviewVolume := ParValue;
       TPluginParameter.Preview:       Plugin.IsPreviewEnabled := FloatToBoolean(ParValue);
+      TPluginParameter.PadX1:         Plugin.XYPads.PadX1 := ParValue;
+      TPluginParameter.PadY1:         Plugin.XYPads.PadY1 := ParValue;
+      TPluginParameter.PadX2:         Plugin.XYPads.PadX2 := ParValue;
+      TPluginParameter.PadY2:         Plugin.XYPads.PadY2 := ParValue;
+      TPluginParameter.PadX3:         Plugin.XYPads.PadX3 := ParValue;
+      TPluginParameter.PadY3:         Plugin.XYPads.PadY3 := ParValue;
+      TPluginParameter.PadX4:         Plugin.XYPads.PadX4 := ParValue;
+      TPluginParameter.PadY4:         Plugin.XYPads.PadY4 := ParValue;
       else
         raise Exception.Create('Type not handed.');
     end;

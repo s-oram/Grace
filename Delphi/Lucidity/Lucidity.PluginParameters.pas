@@ -69,7 +69,15 @@ type
     Seq2Direction,
     Seq2Length,
     PreviewVolume,
-    Preview
+    Preview,
+    PadX1,
+    PadY1,
+    PadX2,
+    PadY2,
+    PadX3,
+    PadY3,
+    PadX4,
+    PadY4
   );
 
   TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
@@ -238,6 +246,14 @@ begin
     TPluginParameter.VoiceGlide:    result := true;
     TPluginParameter.PreviewVolume: result := true;
     TPluginParameter.Preview:       result := true;
+    TPluginParameter.PadX1:         result := true;
+    TPluginParameter.PadY1:         result := true;
+    TPluginParameter.PadX2:         result := true;
+    TPluginParameter.PadY2:         result := true;
+    TPluginParameter.PadX3:         result := true;
+    TPluginParameter.PadY3:         result := true;
+    TPluginParameter.PadX4:         result := true;
+    TPluginParameter.PadY4:         result := true;
   else
     result := false;
   end;
@@ -311,6 +327,14 @@ begin
     TPluginParameter.Seq2Length:               result.DefaultValue := TStepSequencerLengthHelper.ToSingle(TStepSequencerLength.Eight);
     TPluginParameter.PreviewVolume:            result.DefaultValue := 0.5;
     TPluginParameter.Preview:                  result.DefaultValue := 0.5;
+    TPluginParameter.PadX1:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadY1:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadX2:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadY2:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadX3:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadY3:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadX4:                    result.DefaultValue := 0.5;
+    TPluginParameter.PadY4:                    result.DefaultValue := 0.5;
   end;
 end;
 
