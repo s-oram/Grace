@@ -40,7 +40,6 @@ type
     MainTop: TVamDiv;
     MainMenuBar: TVamDiv;
     SampleMapDiv: TVamDiv;
-    MainPanel: TVamDiv;
     SideWorkArea: TVamDiv;
     TitlePanel: TVamPanel;
     VamLabel1: TVamLabel;
@@ -48,6 +47,7 @@ type
     TabPanel: TVamTabPanel;
     SidePanel: TVamDiv;
     ModSystem2Div: TVamDiv;
+    MainPanel: TVamPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LowerTabsChanged(Sender: TObject);
@@ -142,6 +142,8 @@ procedure TPluginGui.FormCreate(Sender: TObject);
 const
   kScrollPanelWidth = 635;
 begin
+  MainPanel.AlignWithMargins := false;
+
   DialogDisplayArea := TDialogDisplayArea.Create;
   DialogDisplayArea.OnShowDialogArea := DoShowDialogArea;
   DialogDisplayArea.OnHideDialogArea := DoHideDialogArea;

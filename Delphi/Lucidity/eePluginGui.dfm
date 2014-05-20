@@ -28,25 +28,95 @@ object PluginGui: TPluginGui
     Padding.Top = 2
     Padding.Right = 2
     Padding.Bottom = 2
-    object MainPanel: TVamDiv
+    object MainPanel: TVamPanel
       AlignWithMargins = True
-      Left = 2
-      Top = 2
-      Width = 983
-      Height = 796
-      Margins.Left = 0
-      Margins.Top = 0
-      Margins.Right = 2
-      Margins.Bottom = 2
+      Left = 10
+      Top = 10
+      Width = 969
+      Height = 782
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Opacity = 255
+      Text = 'MainPanel'
       HitTest = True
+      Color = '$FF000000'
+      Transparent = False
       Align = alClient
       Visible = True
+      object SideWorkArea: TVamDiv
+        Left = 0
+        Top = 0
+        Width = 289
+        Height = 782
+        Opacity = 255
+        HitTest = True
+        Align = alClient
+        Visible = True
+        object TitlePanel: TVamPanel
+          AlignWithMargins = True
+          Left = 0
+          Top = 0
+          Width = 289
+          Height = 49
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Opacity = 255
+          HitTest = True
+          Color = '$FFCCCCCC'
+          CornerRadius1 = 4.000000000000000000
+          CornerRadius2 = 4.000000000000000000
+          CornerRadius3 = 4.000000000000000000
+          CornerRadius4 = 4.000000000000000000
+          Transparent = False
+          Align = alTop
+          Visible = True
+          object VamLabel1: TVamLabel
+            Left = 0
+            Top = 0
+            Width = 289
+            Height = 49
+            Opacity = 255
+            Text = 'LUCIDITY'
+            HitTest = True
+            AutoSize = False
+            TextAlign = AlignCenter
+            TextVAlign = AlignCenter
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            Align = alClient
+            Visible = True
+          end
+        end
+        object SidePanel: TVamDiv
+          AlignWithMargins = True
+          Left = 24
+          Top = 72
+          Width = 155
+          Height = 480
+          Margins.Left = 2
+          Margins.Top = 0
+          Margins.Right = 2
+          Margins.Bottom = 2
+          Opacity = 255
+          HitTest = True
+          Visible = True
+          Padding.Left = 4
+          Padding.Top = 4
+          Padding.Right = 4
+          Padding.Bottom = 4
+        end
+      end
       object MainWorkArea: TVamDiv
-        Left = 303
+        Left = 289
         Top = 0
         Width = 680
-        Height = 796
+        Height = 782
         Opacity = 255
         HitTest = True
         Align = alRight
@@ -141,73 +211,6 @@ object PluginGui: TPluginGui
           Opacity = 255
           HitTest = True
           Visible = True
-        end
-      end
-      object SideWorkArea: TVamDiv
-        Left = 0
-        Top = 0
-        Width = 303
-        Height = 796
-        Opacity = 255
-        HitTest = True
-        Align = alClient
-        Visible = True
-        object TitlePanel: TVamPanel
-          AlignWithMargins = True
-          Left = 0
-          Top = 0
-          Width = 303
-          Height = 49
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Opacity = 255
-          HitTest = True
-          Color = '$FFCCCCCC'
-          CornerRadius1 = 4.000000000000000000
-          CornerRadius2 = 4.000000000000000000
-          CornerRadius3 = 4.000000000000000000
-          CornerRadius4 = 4.000000000000000000
-          Transparent = False
-          Align = alTop
-          Visible = True
-          object VamLabel1: TVamLabel
-            Left = 0
-            Top = 0
-            Width = 303
-            Height = 49
-            Opacity = 255
-            Text = 'LUCIDITY'
-            HitTest = True
-            AutoSize = False
-            TextAlign = AlignCenter
-            TextVAlign = AlignCenter
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -19
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            Align = alClient
-            Visible = True
-          end
-        end
-        object SidePanel: TVamDiv
-          AlignWithMargins = True
-          Left = 24
-          Top = 72
-          Width = 155
-          Height = 480
-          Margins.Left = 2
-          Margins.Top = 0
-          Margins.Right = 2
-          Margins.Bottom = 2
-          Opacity = 255
-          HitTest = True
-          Visible = True
-          Padding.Left = 4
-          Padding.Top = 4
-          Padding.Right = 4
-          Padding.Bottom = 4
         end
       end
     end
