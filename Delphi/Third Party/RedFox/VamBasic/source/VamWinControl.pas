@@ -118,6 +118,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   SysUtils;
 
 { TVamWinControl }

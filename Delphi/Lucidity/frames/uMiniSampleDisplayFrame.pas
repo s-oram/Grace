@@ -1054,6 +1054,8 @@ begin
 
       ZoomScrollBar.Visible := false;
       ZoomControlsDiv.Visible := false;
+
+      SampleOverlay.BringToFront;
     end;
 
     TUsageContext.SampleZoom:
@@ -1074,8 +1076,9 @@ begin
       ZoomScrollBar.Visible := true;
       ZoomScrollBar.BringToFront;
 
-
       UpdateZoomSlider;
+
+      SampleOverlay.BringToFront;
     end;
   else
     raise Exception.Create('Type not handled.');

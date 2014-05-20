@@ -142,19 +142,6 @@ object PluginGui: TPluginGui
           HitTest = True
           Visible = True
         end
-        object ZoomSampleDiv: TVamDiv
-          Left = 48
-          Top = 156
-          Width = 521
-          Height = 37
-          Margins.Left = 0
-          Margins.Top = 0
-          Margins.Right = 0
-          Margins.Bottom = 0
-          Opacity = 255
-          HitTest = True
-          Visible = True
-        end
       end
       object SideWorkArea: TVamDiv
         Left = 0
