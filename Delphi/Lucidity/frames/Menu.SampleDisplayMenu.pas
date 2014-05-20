@@ -17,7 +17,7 @@ type
     MouseDownSamplePos : integer;
 
     procedure EventHandle_NormaliseSample(Sender : TObject);
-    procedure EventHandle_EditSamplePoints(Sender : TObject);
+    procedure EventHandle_ZoomSample(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ShowInWindowsExplorer(Sender : TObject);
     procedure EventHandle_ModulationCommand(Sender : TObject);
@@ -91,8 +91,13 @@ begin
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Edit Sample Points...';
-  mi.OnClick := EventHandle_EditSamplePoints;
+  mi.Caption := 'Zoom';
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Show in Windows Exporer...';
+  mi.OnClick := EventHandle_ShowInWindowsExplorer;
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
@@ -100,11 +105,6 @@ begin
   mi.OnClick := EventHandle_EditSampleMap;
   Menu.Items.Add(mi);
 
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Show in Windows Exporer...';
-  mi.OnClick := EventHandle_ShowInWindowsExplorer;
-  Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
@@ -232,11 +232,10 @@ begin
   Command.ToggleSampleMapVisibility(Plugin);
 end;
 
-procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);
+procedure TSampleDisplayMenu.EventHandle_ZoomSample(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  Command.ToggleSampleZoom(Plugin);
 end;
 
 procedure TSampleDisplayMenu.EventHandle_NormaliseSample(Sender: TObject);

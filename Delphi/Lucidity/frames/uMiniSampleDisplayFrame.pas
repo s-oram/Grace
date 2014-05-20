@@ -93,7 +93,7 @@ type
     fSampleOverlay : TLuciditySampleOverlay;
 
     SampleOverlayClickPos : TPoint;
-    SampleDisplayMenu : TSampleDisplayMenu;
+    SampleDisplayMenu : TSampleDisplayMenu; //TODO:LOW rename this variable to SampleContextMenu
 
     StoredImage : ISampleImageBuffer;
     SampleRenderer : TSampleImageRenderer;
