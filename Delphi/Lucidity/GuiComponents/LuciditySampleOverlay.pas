@@ -99,7 +99,7 @@ type
     procedure Draw_ModPointAmounts;
     procedure Draw_SamplePointLine(const xPos : single; const aColor : TRedFoxColor);
 
-    function IsNearMarker(const PixelPosX, PixelPosY : integer; SelectPreference:TSampleMarkerSelect):TSampleMarker;
+    function IsNearMarker(const PixelPosX : integer; SelectPreference:TSampleMarkerSelect):TSampleMarker;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -221,7 +221,7 @@ begin
   FeedbackData := aFeedbackData;
 end;
 
-function TLuciditySampleOverlay.IsNearMarker(const PixelPosX, PixelPosY: integer; SelectPreference:TSampleMarkerSelect): TSampleMarker;
+function TLuciditySampleOverlay.IsNearMarker(const PixelPosX: integer; SelectPreference:TSampleMarkerSelect): TSampleMarker;
 const
   kTolarance = 6;
   kMarkerOffset = 3;
@@ -240,12 +240,10 @@ begin
   // default result.
   result := smNone;
 
-
   assert(InRange(SampleStartMod, -1, 1));
   assert(InRange(SampleEndMod, -1, 1));
   assert(InRange(LoopStartMod, -1, 1));
   assert(InRange(LoopEndMod, -1, 1));
-
 
   // Sample Start
   PixPos := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
@@ -348,77 +346,6 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-
-
-
-
-
-
-  {
-  if SelectPreference <> msMarkersOnly then
-  begin
-    assert(InRange(SampleStartMod, -1, 1));
-    assert(InRange(SampleEndMod, -1, 1));
-    assert(InRange(LoopStartMod, -1, 1));
-    assert(InRange(LoopEndMod, -1, 1));
-
-    spos := SampleStart + SampleStartMod * SampleFrames;
-    PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
-
-    spos := SampleEnd + SampleEndMod * SampleFrames;
-    PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
-
-    spos := LoopStart + LoopStartMod * SampleFrames;
-    PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
-
-    spos := LoopEnd + LoopEndMod * SampleFrames;
-    PixLoopEndMarker     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(spos, SampleFrames, Width, Zoom, Offset);
-
-    if PixelPosY >= Height - kMarkerTabHeight then
-    begin
-      // Give preference to selecting the sample start/end area if
-      // the mouse is in the lower part of the sample area....
-      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartModMarker);
-      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndModMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartModMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndModMarker);
-    end else
-    begin
-      //....else give preference to grabbing the loop start/end markers.
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartModMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndModMarker);
-      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartModMarker);
-      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndModMarker);
-    end;
-  end;
-
-
-  if result = smNone then
-  begin
-    PixSampleStartMarker := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleStart, SampleFrames, Width, Zoom, Offset);
-    PixSampleEndMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(SampleEnd, SampleFrames, Width, Zoom, Offset);
-    PixLoopStartMarker   := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopStart, SampleFrames, Width, Zoom, Offset);
-    PixLoopEndMarker     := VamSampleDisplayBackBuffer.SamplePosToPixelPos(LoopEnd, SampleFrames, Width, Zoom, Offset);
-
-    if PixelPosY >= Height - kMarkerTabHeight then
-    begin
-      // Give preference to selecting the sample start/end area if
-      // the mouse is in the lower part of the sample area....
-      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
-      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
-    end else
-    begin
-      //....else give preference to grabbing the loop start/end markers.
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopStartMarker + kMarkerOffset, kTolarance)) then exit(smLoopStartMarker);
-      if (ShowLoopPoints) and (LoopStart <> -1) and (IsNear(PixelPosX, PixLoopEndMarker - kMarkerOffset, kTolarance))   then exit(smLoopEndMarker);
-      if IsNear(PixelPosX, PixSampleStartMarker + kMarkerOffset , kTolarance) then exit(smSampleStartMarker);
-      if IsNear(PixelPosX, PixSampleEndMarker - kMarkerOffset, kTolarance)    then exit(smSampleEndMarker);
-    end;
-  end;
-  }
-
 end;
 
 
@@ -461,7 +388,7 @@ begin
     begin
       if (ssAlt in Shift) then
       begin
-        GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToModAmounts);
+        GrabbedMode := IsNearMarker(X, msWithPreferenceToModAmounts);
         case GrabbedMode of
           smSampleStartMarker: ResetModAmount := true;
           smSampleEndMarker:   ResetModAmount := true;
@@ -477,13 +404,11 @@ begin
         end;
       end else
       begin
-        GrabbedMode := IsNearMarker(X, Y, msWithPreferenceToMarkers);
+        GrabbedMode := IsNearMarker(X, msWithPreferenceToMarkers);
       end;
-
-
     end else
     begin
-      GrabbedMode := IsNearMarker(X, Y, msMarkersOnly);
+      GrabbedMode := IsNearMarker(X, msMarkersOnly);
     end;
 
     CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
@@ -560,8 +485,8 @@ begin
   if (IsGrabbed = false) and (SampleIsValid) then
   begin
     if (IsModEditActive)
-      then Marker := IsNearMarker(X, Y, msWithPreferenceToMarkers)
-      else Marker := IsNearMarker(X, Y, msMarkersOnly);
+      then Marker := IsNearMarker(X, msWithPreferenceToMarkers)
+      else Marker := IsNearMarker(X, msMarkersOnly);
 
     case Marker of
       smNone:                  Cursor := crDefault;
