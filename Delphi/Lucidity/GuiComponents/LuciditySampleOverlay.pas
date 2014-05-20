@@ -72,6 +72,8 @@ type
     fMouseOverMarkerVertOffset : integer;
 
     IsZooming : boolean;
+    ShowZoomHighlight : boolean;
+    IsZoomActive : boolean;
     ZoomDragx1 : integer;
     ZoomDragx2 : integer;
 
@@ -172,7 +174,7 @@ const
   kSampleStart = '$FF0F952A';
   kSampleEnd   = '$FFD11F1F';
   kLoopPoint   = '$FF66DDFA';
-  kZoomSelectionColor = '$FFFFFF55';
+  kZoomSelectionColor = '$FFF8A232';
   kMarkerTabHeight = 10;
 
 
@@ -341,20 +343,14 @@ begin
       if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
       if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
     end;
-
   else
     raise Exception.Create('Type not handled.');
   end;
-
 end;
-
-
-
 
 procedure TLuciditySampleOverlay.MouseEnter;
 begin
   inherited;
-
 end;
 
 procedure TLuciditySampleOverlay.MouseLeave;
@@ -456,15 +452,18 @@ begin
       raise Exception.Create('Unexpected Grabbed mode.');
     end;
 
-    //TODO: Zooming is currently disabled. Leave for now.
-    {
-    if GrabbedMode = smNone then
+
+    if (GrabbedMode = smNone) then
     begin
+      if ssCtrl in Shift
+        then IsZoomActive := true
+        else IsZoomActive := false;
       IsZooming := true;
+      ShowZoomHighlight := true;
       ZoomDragX1 := X;
       ZoomDragX2 := X;
     end;
-    }
+
 
     Invalidate;
 
@@ -522,6 +521,10 @@ begin
   begin
     if (IsZooming) then
     begin
+      if ssCtrl in Shift
+        then IsZoomActive := true
+        else IsZoomActive := false;
+
       if X <> ZoomDragX2 then
       begin
         ZoomDragX2 := x;
@@ -691,7 +694,11 @@ begin
       if (GrabbedMode = smLoopEndMarker)     then OnSampleMarkerChanged(Self, smLoopEndMarker, LoopEnd);
     end;
 
-    if (IsZooming) and (ZoomDragx1 <> ZoomDragx2) then
+    if ssCtrl in Shift
+        then IsZoomActive := true
+        else IsZoomActive := false;
+
+    if (IsZooming) and (ZoomDragx1 <> ZoomDragx2) and (IsZoomActive) then
     begin
       //TODO: Need to check for max zoom, if so do don't try to zoom in any further.
       if assigned(OnZoomChanged) then
@@ -723,9 +730,10 @@ begin
     end;
 
     // Important. Do this last.
-    IsGrabbed   := false;
-    GrabbedMode := smNone;
-    IsZooming   := false;
+    IsGrabbed    := false;
+    GrabbedMode  := smNone;
+    IsZooming    := false;
+    IsZoomActive := false;
   end;
 end;
 
@@ -1385,23 +1393,31 @@ end;
 
 
 procedure TLuciditySampleOverlay.Draw_ZoomSelection(const x1, x2: integer);
+var
+  Msg : string;
 begin
-
   BackBuffer.BufferInterface.NoLine;
-  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kZoomSelectionColor, 40);
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kZoomSelectionColor, 60);
 
   if x1 <> x2 then
   begin
     backBuffer.BufferInterface.Rectangle(x1, 0, x2, Height);
   end;
 
-  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(kZoomSelectionColor);
+  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(kZoomSelectionColor, 200);
   BackBuffer.BufferInterface.NoFill;
 
 
 
   BackBuffer.BufferInterface.Line(X1+0.5, 0, x1+0.5, Height);
   BackBuffer.BufferInterface.Line(X2+0.5, 0, x2+0.5, Height);
+
+
+  if IsZoomActive
+    then Msg := 'Zoom'
+    else Msg := 'CTRL To Zoom';
+
+  BackBuffer.TextOut(x2 + 4, 4, Msg, Font, kZoomSelectionColor);
 end;
 
 procedure TLuciditySampleOverlay.Draw_ReplaceMessage;

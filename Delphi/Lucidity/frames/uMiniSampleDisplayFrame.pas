@@ -77,6 +77,7 @@ type
 
     procedure Handle_SampleOverlay_ModAmountsChanged(Sender:TObject);
     procedure SampleOverlay_MarkerChanged(Sender:TObject; Marker:TSampleMarker; NewPosition : integer);
+    procedure SampleOverlay_ZoomChanged(Sender : TObject; Zoom, Offset : single);
   private
     FMotherShip : IMothership;
     fSampleDisplayContext: TUsageContext;
@@ -175,6 +176,7 @@ begin
   fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
   fSampleOverlay.OnMouseOverMakerChanged := SampleOverlayMouseOverMarkerChanged;
   fSampleOverlay.OnSampleMarkerChanged := SampleOverlay_MarkerChanged;
+  fSampleOverlay.OnZoomChanged         := SampleOverlay_ZoomChanged;
 
   fSampleOverlay.OnOleDragDrop  := SampleDisplayOleDragDrop;
   fSampleOverlay.OnOleDragOver  := SampleDisplayOleDragOver;
@@ -1056,6 +1058,9 @@ begin
       ZoomControlsDiv.Visible := false;
 
       SampleOverlay.BringToFront;
+
+      Zoom := 0;
+      //Offset
     end;
 
     TUsageContext.SampleZoom:
@@ -1269,6 +1274,13 @@ begin
   Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
 end;
 
-
+procedure TMiniSampleDisplayFrame.SampleOverlay_ZoomChanged(Sender: TObject; Zoom, Offset: single);
+begin
+  Command.ShowSampleZoom(Plugin);
+  self.Zoom := Zoom;
+  self.Offset := Offset;
+  UpdateSampleDisplay;
+  UpdateZoomSlider;
+end;
 
 end.
