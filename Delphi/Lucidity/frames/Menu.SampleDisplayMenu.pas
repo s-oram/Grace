@@ -8,7 +8,7 @@ uses
 
 
 type
-  TSampleDisplayMenu = class
+  TSampleContextMenu = class
   private
     fLoopPointsVisible: boolean;
   protected
@@ -57,23 +57,23 @@ const
 
 { TSampleDisplayMenu }
 
-constructor TSampleDisplayMenu.Create;
+constructor TSampleContextMenu.Create;
 begin
   Menu := TPopupMenu.Create(nil);
 end;
 
-destructor TSampleDisplayMenu.Destroy;
+destructor TSampleContextMenu.Destroy;
 begin
   Menu.Free;
   inherited;
 end;
 
-procedure TSampleDisplayMenu.Initialize(aPlugin: TeePlugin);
+procedure TSampleContextMenu.Initialize(aPlugin: TeePlugin);
 begin
   Plugin := aPlugin;
 end;
 
-procedure TSampleDisplayMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer);
+procedure TSampleContextMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer);
 var
   mi : TMenuItem;
   Childmi : TMenuItem;
@@ -226,25 +226,25 @@ begin
   Menu.Popup(x, y);
 end;
 
-procedure TSampleDisplayMenu.EventHandle_EditSampleMap(Sender: TObject);
+procedure TSampleContextMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
   Command.ToggleSampleMapVisibility(Plugin);
 end;
 
-procedure TSampleDisplayMenu.EventHandle_ZoomSample(Sender: TObject);
+procedure TSampleContextMenu.EventHandle_ZoomSample(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
   Command.ToggleSampleZoom(Plugin);
 end;
 
-procedure TSampleDisplayMenu.EventHandle_NormaliseSample(Sender: TObject);
+procedure TSampleContextMenu.EventHandle_NormaliseSample(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
   Command.NormaliseSamples(Plugin);
 end;
 
-procedure TSampleDisplayMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);
+procedure TSampleContextMenu.EventHandle_ShowInWindowsExplorer(Sender: TObject);
 var
   Region : IRegion;
   fn : string;
@@ -264,7 +264,7 @@ begin
   end;
 end;
 
-procedure TSampleDisplayMenu.EventHandle_ModulationCommand(Sender: TObject);
+procedure TSampleContextMenu.EventHandle_ModulationCommand(Sender: TObject);
 var
   Tag : integer;
   ModParIndex : integer;

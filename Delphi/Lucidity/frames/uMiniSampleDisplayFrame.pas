@@ -94,7 +94,7 @@ type
     fSampleOverlay : TLuciditySampleOverlay;
 
     SampleOverlayClickPos : TPoint;
-    SampleDisplayMenu : TSampleDisplayMenu; //TODO:LOW rename this variable to SampleContextMenu
+    SampleContextMenu : TSampleContextMenu;
 
     StoredImage : ISampleImageBuffer;
     SampleRenderer : TSampleImageRenderer;
@@ -186,7 +186,7 @@ begin
 
   CurrentSample.Info.IsValid := false;
 
-  SampleDisplayMenu := TSampleDisplayMenu.Create;
+  SampleContextMenu := TSampleContextMenu.Create;
 
 
   StoredImage := TSampleImageBuffer.Create;
@@ -214,7 +214,7 @@ begin
     FMotherShip := nil;
   end;
 
-  SampleDisplayMenu.Free;
+  SampleContextMenu.Free;
   SampleRenderer.Free;
 
   CurrentSample.Region := nil;
@@ -239,7 +239,7 @@ begin
   SampleInfoBox.Height := 25;
   InfoDiv.Align := alClient;
 
-  SampleDisplayMenu.Initialize(aPlugin);
+  SampleContextMenu.Initialize(aPlugin);
 
   SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
@@ -765,10 +765,10 @@ begin
 
   if (Button = mbRight) and (CurrentSample.Info.IsValid) then
   begin
-    SampleDisplayMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
+    SampleContextMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
 
     MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
-    SampleDisplayMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
+    SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
   end;
 end;
 
