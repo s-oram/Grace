@@ -442,6 +442,7 @@ begin
   OffscreenBuffer.BufferInterface.ClipBox(aRegion.Left, aRegion.Top, aRegion.Right, aRegion.Bottom);
 
   //TODO:HIGH this bit of code is causing problems in combination with begin/end update.
+  // Perhaps it should only clear the background here at Design time.
   {
   OffscreenBuffer.BufferInterface.LineWidth := 0;
   OffscreenBuffer.BufferInterface.NoLine;
