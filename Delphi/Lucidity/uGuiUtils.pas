@@ -98,6 +98,8 @@ type
     class procedure ToggleSampleMapVisibility(const Plugin : TeePlugin); static;
     class procedure ShowSampleZoom(const Plugin : TeePlugin); static;
 
+    class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
+
   end;
 
   GuiSetup = record
@@ -764,11 +766,12 @@ begin
       else result := false;
 end;
 
-
-
-
-
-
+class function Command.AreSampleZoomControlsVisible(const Plugin: TeePlugin): boolean;
+begin
+  if Plugin.Globals.GuiState.MainGuiLayout = TMainGuiLayout.SampleZoom
+    then result := true
+    else result := false;
+end;
 
 class procedure Command.ClearAllModulationForParameter(const Plugin: TeePlugin; const ParName: string);
 var

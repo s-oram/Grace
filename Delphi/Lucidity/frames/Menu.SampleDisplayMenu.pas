@@ -90,19 +90,26 @@ begin
   mi.OnClick := EventHandle_NormaliseSample;
   Menu.Items.Add(mi);
 
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Zoom';
-  mi.OnClick := EventHandle_ZoomSample;
-  Menu.Items.Add(mi);
+
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Show in Windows Exporer...';
   mi.OnClick := EventHandle_ShowInWindowsExplorer;
   Menu.Items.Add(mi);
 
+  {
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Edit Sample Map...';
   mi.OnClick := EventHandle_EditSampleMap;
+  Menu.Items.Add(mi);
+  }
+
+
+  mi := TMenuItem.Create(Menu);
+  if Command.AreSampleZoomControlsVisible(Plugin)
+    then mi.Caption := 'Hide Zoom Controls'
+    else mi.Caption := 'Show Zoom Controls';
+  mi.OnClick := EventHandle_ZoomSample;
   Menu.Items.Add(mi);
 
 
