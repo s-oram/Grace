@@ -25,11 +25,12 @@ object Form1: TForm1
   end
   object Button1: TButton
     Left = 25
-    Top = 463
+    Top = 461
     Width = 139
     Height = 25
     Caption = 'Button1'
     TabOrder = 0
+    OnClick = Button1Click
   end
   object RedFoxContainer1: TRedFoxContainer
     Left = 25
@@ -37,6 +38,34 @@ object Form1: TForm1
     Width = 849
     Height = 425
     Color = '$FFCCCCCC'
+    object VamPanel1: TVamPanel
+      Left = 56
+      Top = 80
+      Width = 345
+      Height = 225
+      Opacity = 255
+      Text = 'VamPanel1'
+      HitTest = True
+      Color = '$FFCCCCCC'
+      Transparent = False
+      Visible = True
+      object VamScrollBar1: TVamScrollBar
+        Left = 32
+        Top = 16
+        Width = 33
+        Height = 185
+        Opacity = 255
+        Text = 'VamScrollBar1'
+        HitTest = True
+        IndexSize = 0.250000000000000000
+        Color_Border = '$FF000000'
+        Color_Background = '$FF888888'
+        Color_Foreground = '$FFCCCCCC'
+        SliderStyle = SquareCorners
+        SliderType = stVertical
+        Visible = True
+      end
+    end
   end
   object Button2: TButton
     Left = 23
@@ -69,6 +98,7 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 6
+    OnClick = Button5Click
   end
   object Memo1: TMemo
     Left = 592

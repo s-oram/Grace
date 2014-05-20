@@ -9,9 +9,7 @@ uses
 type
   TVamGraphicControl = class(TRedFoxGraphicControl, IVamVisibleControl, IVamLayoutWizard)
   private
-    fUpdatingCount : integer;
     fLayout: TVamLayoutWizard;
-    function GetIsUpdating: boolean;
   protected
     function GetObject : TObject;
   public
@@ -21,15 +19,8 @@ type
     // AlignToParent() resizes the control to the same size as the containing parent control.
     procedure AlignToParent(const UsingMargins : boolean = false);
 
-    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
-    // always be followed by a EndUpdate() call.
-    procedure BeginUpdate;
-    procedure EndUpdate;
-    property IsUpdating : boolean read GetIsUpdating;
-
     // Resize calls SetBounds() then fires the OnResize() event.
     procedure Resize(aLeft, aTop, aWidth, aHeight: Integer); reintroduce;
-
 
     //TODO: These methods need to be made private and should be accessed via the interface.
     procedure OleDragOver(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData); virtual;
@@ -53,7 +44,6 @@ uses
 constructor TVamGraphicControl.Create(AOwner: TComponent);
 begin
   inherited;
-  fUpdatingCount := 0;
   fLayout := TVamLayoutWizard.Create(self);
 end;
 
@@ -85,25 +75,6 @@ begin
   finally
     EndUpdate;
   end;
-end;
-
-procedure TVamGraphicControl.BeginUpdate;
-begin
-  inc(fUpdatingCount);
-end;
-
-procedure TVamGraphicControl.EndUpdate;
-begin
-  dec(fUpdatingCount);
-  if fUpdatingCount = 0 then self.Invalidate;
-  if fUpdatingCount < 0 then raise Exception.Create('Begin/End Update mismatch.');
-end;
-
-function TVamGraphicControl.GetIsUpdating: boolean;
-begin
-  if fUpdatingCount > 0
-    then result := true
-    else result := false;
 end;
 
 function TVamGraphicControl.GetObject: TObject;

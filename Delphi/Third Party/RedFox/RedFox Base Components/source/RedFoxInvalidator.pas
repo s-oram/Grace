@@ -105,23 +105,22 @@ procedure TRedFoxInvalidator.DoInvalidate(Target: TObject);
 var
   aVisibleControl : IRedFoxVisibleControl;
 begin
-  if (Supports(Target, IRedFoxVisibleControl, aVisibleControl)) and (aVisibleControl.GetIsShowing)  then
+  if (Supports(Target, IRedFoxVisibleControl, aVisibleControl))  then
   begin
-    aVisibleControl.MarkAsInvalidateRequired;
+    if (aVisibleControl.GetIsShowing) and (not aVisibleControl.IsUpdating) and (not aVisibleControl.AreParentsUpdating) then
+    begin
+      aVisibleControl.MarkAsInvalidateRequired;
+
+      if Target is TWinControl then
+      begin
+        (Target as TWinControl).Perform(CM_INVALIDATE, 0, 0);
+      end else
+      if Target is TControl then
+      begin
+        TControlHack(Target).InvalidateHack;
+      end;
+    end;
   end;
-
-  if Target is TWinControl then
-  begin
-    (Target as TWinControl).Perform(CM_INVALIDATE, 0, 0);
-  end else
-  if Target is TControl then
-  begin
-    TControlHack(Target).InvalidateHack;
-  end;
-
-
-
-
 end;
 
 procedure TRedFoxInvalidator.HandleTimerEvent(Sender: Tobject);

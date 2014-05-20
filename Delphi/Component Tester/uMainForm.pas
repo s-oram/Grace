@@ -42,7 +42,11 @@ type
     Button4: TButton;
     Button5: TButton;
     VamArrows1: TVamArrows;
+    VamPanel1: TVamPanel;
+    VamScrollBar1: TVamScrollBar;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
@@ -78,6 +82,18 @@ type
 
 var
   GlobalDict : TProcDictionary;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  //
+  VamPanel1.BeginUpdate;
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+  //
+  VamPanel1.EndUpdate;
+end;
 
 procedure TForm1.UpdateLabel;
 begin

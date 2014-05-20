@@ -357,6 +357,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -385,6 +389,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -413,6 +421,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -441,6 +453,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -469,6 +485,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -497,6 +517,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -549,6 +573,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end
@@ -577,6 +605,10 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
         end

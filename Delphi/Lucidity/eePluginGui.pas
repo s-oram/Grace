@@ -560,6 +560,14 @@ begin
   if MsgID = TLucidMsgID.Command_CloseCurrentDialog then CloseCurrentDialog;
 
   if MsgID = TLucidMsgID.GUILayoutChanged then UpdateLayout;
+
+  if MsgID = TLucidMsgID.Command_BeginGuiUpdate
+    then MainPanel.BeginUpdate;
+
+  if MsgID = TLucidMsgID.Command_EndGuiUpdate
+    then MainPanel.EndUpdate;
+
+
 end;
 
 
@@ -961,6 +969,7 @@ begin
       MiniSampleDisplayFrame.UsageContext := TUsageContext.SampleZoom;
       MainTop.Height := 208 + 80 + 2 + 70 + 2;
 
+
       MainTop.Visible := true;
       SampleMapDiv.Visible    := false;
       VoiceControlDiv.Visible := false;
@@ -997,7 +1006,6 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-  MainWorkArea.Repaint;
 end;
 
 

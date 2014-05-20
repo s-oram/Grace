@@ -18,7 +18,6 @@ type
     fOnOleDragDrop: TOleDragEvent;
     fOnOleDragOver: TOleDragEvent;
     fOnOleDragLeave: TOleDragLeaveEvent;
-    fUpdatingCount : integer;
     fLayout: TVamLayoutWizard;
     fOnShowContextMenu: TShowContextMenuEvent;
 
@@ -30,7 +29,6 @@ type
     fMouseMoveMultiEvent  : TMouseMoveMultiEvent;
 
     function GetIsControlGrabbed: boolean;
-    function GetIsUpdating: boolean;
 
     procedure WMMouseWheel(var Message : TWMMouseWheel); message WM_MouseWheel;
     procedure WMHScroll(var Message: TWMHScroll); message WM_HSCROLL;
@@ -88,11 +86,7 @@ type
     // Resize calls SetBounds() then fires the OnResize() event.
     procedure Resize(aLeft, aTop, aWidth, aHeight: Integer); reintroduce;
 
-    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
-    // always be followed by a EndUpdate() call.
-    procedure BeginUpdate;
-    procedure EndUpdate;
-    property IsUpdating : boolean read GetIsUpdating;
+  public
 
     property Layout : TVamLayoutWizard read fLayout implements IVamLayoutWizard;
 
@@ -126,7 +120,6 @@ uses
 constructor TVamWinControl.Create(AOwner: TComponent);
 begin
   inherited;
-  fUpdatingCount := 0;
   fLayout := TVamLayoutWizard.Create(self);
 
   fChangedMultiEvent    := TNotifyMultiEvent.Create;
@@ -175,18 +168,6 @@ begin
   end;
 end;
 
-procedure TVamWinControl.BeginUpdate;
-begin
-  inc(fUpdatingCount);
-end;
-
-procedure TVamWinControl.EndUpdate;
-begin
-  dec(fUpdatingCount);
-  if fUpdatingCount = 0 then self.Invalidate;
-  if fUpdatingCount < 0 then raise Exception.Create('Begin/End Update mismatch.');
-end;
-
 function TVamWinControl.GetFont: TFont;
 begin
   result := inherited Font;
@@ -195,13 +176,6 @@ end;
 function TVamWinControl.GetIsControlGrabbed: boolean;
 begin
   result := (fIsGrabbedByLeft) or (fIsGrabbedByRight);
-end;
-
-function TVamWinControl.GetIsUpdating: boolean;
-begin
-  if fUpdatingCount > 0
-    then result := true
-    else result := false;
 end;
 
 function TVamWinControl.GetObject: TObject;
@@ -410,6 +384,11 @@ begin
 
   if assigned(OnMouseWheelUp) then OnMouseWheelUp(self, Shift, MousePos, Handled);
 end;
+
+
+
+
+
 
 
 

@@ -1271,16 +1271,21 @@ begin
   end;
 
   GuiEvent_SampleMakersChanged;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleMarkersChanged);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlay_ZoomChanged(Sender: TObject; Zoom, Offset: single);
 begin
-  Command.ShowSampleZoom(Plugin);
-  self.Zoom := Zoom;
-  self.Offset := Offset;
-  UpdateSampleDisplay;
-  UpdateZoomSlider;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+  try
+    Command.ShowSampleZoom(Plugin);
+    self.Zoom := Zoom;
+    self.Offset := Offset;
+    UpdateSampleDisplay;
+    UpdateZoomSlider;
+  finally
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+  end;
 end;
 
 end.

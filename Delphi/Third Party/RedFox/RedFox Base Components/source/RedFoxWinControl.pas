@@ -70,7 +70,15 @@ type
     // buffer. It shouldn't have it's Paint() method called either.
     property Transparent : boolean read fTransparent write SetTransparent;
 
-
+  protected
+    fUpdatingCount : integer;
+  public
+    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
+    // always be followed by a EndUpdate() call.
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    function IsUpdating: boolean;
+    function AreParentsUpdating : boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -98,6 +106,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   AggPixelFormat,
   VamLib.Utils,
   SysUtils, Graphics,
@@ -112,6 +121,7 @@ uses
 constructor TRedFoxWinControl.Create(AOwner: TComponent);
 begin
   inherited;
+  fUpdatingCount := 0;
   fOpacity := 255;
   fHitTest := true;
   ControlStyle := ControlStyle + [csAcceptsControls] + [csOpaque];
@@ -192,10 +202,6 @@ begin
   //      bmMultiply, bmScreen, bmOverlay, bmDarken, bmLighten, bmColorDodge,
   //      bmColorBurn, bmHardLight, bmSoftLight, bmDifference, bmExclusion,
   //      bmContrast, bmInvert, bmInvertRgb, bmAlpha);
-
-
-
-
 end;
 
 procedure TRedFoxWinControl.PaintWindow(DC: HDC);
@@ -359,7 +365,12 @@ end;
 procedure TRedFoxWinControl.Invalidate;
 begin
   fIsBackBufferDirty := true;
-  LaggyInvalidate(self);
+
+  if (IsUpdating = false) and (AreParentsUpdating = false) then
+  begin
+    //Log.LogMessage(self.Name + ' (' + self.ClassName + ') Invalidate');
+    LaggyInvalidate(self);
+  end;
 end;
 
 procedure TRedFoxWinControl.MarkAsInvalidateRequired;
@@ -416,7 +427,8 @@ begin
   if CastToCardinal(y2-y1) > BackBuffer.Height
     then BackBuffer.Height := CastToCardinal(y2-y1);
 
-  if IsBackBufferDirty then
+  // TODO:HIGH: Is the check for the AreParentsUpdating required?
+  if (not IsUpdating) and (not AreParentsUpdating) and (IsBackBufferDirty) then
   begin
     fIsBackBufferDirty := false;
     Paint;
@@ -471,7 +483,45 @@ begin
 
 end;
 
+function TRedFoxWinControl.AreParentsUpdating: boolean;
+var
+  p : TRedFoxWinControl;
+begin
+  if (assigned(Parent)) and (Parent is TRedFoxWinControl)
+    then p := (Parent as TRedFoxWinControl)
+    else p := nil;
 
+  while assigned(p) do
+  begin
+    if p.IsUpdating then exit(true);
+
+    if (assigned(p.Parent)) and (p.Parent is TRedFoxWinControl)
+      then p := (p.Parent as TRedFoxWinControl)
+      else p := nil;
+  end;
+
+  // if we've made it this far, no updating parent has been found.
+  result := false;
+end;
+
+procedure TRedFoxWinControl.BeginUpdate;
+begin
+  inc(fUpdatingCount);
+end;
+
+procedure TRedFoxWinControl.EndUpdate;
+begin
+  dec(fUpdatingCount);
+  if fUpdatingCount = 0 then self.Invalidate;
+  if fUpdatingCount < 0 then raise Exception.Create('Begin/End Update mismatch.');
+end;
+
+function TRedFoxWinControl.IsUpdating: boolean;
+begin
+  if fUpdatingCount > 0
+    then result := true
+    else result := false;
+end;
 
 
 

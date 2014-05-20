@@ -58,14 +58,15 @@ type
     // write to fix something that seems to be close to working now.
     procedure MarkAsInvalidateRequired;
 
-
-
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    function IsUpdating: boolean;
+    function AreParentsUpdating : boolean;
   end;
 
 
   TRedFoxContainer = class(TWinControl, IRedFoxVisibleControl)
   private
-    fUpdatingCount : integer;
     fColor: TRedFoxColor;
     fOffscreenBuffer: TRedFoxImageBuffer;
     fIsTopMostContainer : boolean;
@@ -75,7 +76,6 @@ type
     procedure SetColor(const Value: TRedFoxColorString);
     procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
     procedure WMEraseBkgnd(var Message: TWmEraseBkgnd);message WM_ERASEBKGND;
-    function GetIsUpdating: boolean;
     function GetIsSubComponent: boolean;
     function GetIsBackBufferDirty : boolean;
     procedure MarkAsInvalidateRequired;
@@ -105,6 +105,16 @@ type
     function IsPaintRequiredForControl(const aControl:TControl; aRegion:TRect):boolean;
     procedure PaintControl(const aControl:TControl; aRegion:TRect);
     procedure BlitRegionToBackBuffer(aRegion:TRect);
+
+  protected
+    fUpdatingCount : integer;
+  public
+    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
+    // always be followed by a EndUpdate() call.
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    function IsUpdating: boolean;
+    function AreParentsUpdating : boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -121,8 +131,6 @@ type
     // to blit all controls in the region to it's back buffer.
     procedure InvalidateRegion(aRegion:TRect);
 
-
-
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
 
     property OffscreenBuffer : TRedFoxImageBuffer read fOffscreenBuffer write fOffscreenBuffer;
@@ -130,15 +138,7 @@ type
     // AlignToParent() resizes the control to the same size as the containing parent control.
     procedure AlignToParent(const UsingMargins : boolean = false);
 
-    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
-    // always be followed by a EndUpdate() call.
-    procedure BeginUpdate;
-    procedure EndUpdate;
-    property IsUpdating : boolean read GetIsUpdating;
-
     property IsSubComponent : boolean read fIsSubComponent write fIsSubComponent;
-
-
   published
     property Color : TRedFoxColorString read GetColor write SetColor;
 
@@ -192,11 +192,10 @@ uses
 constructor TRedFoxContainer.Create(AOwner: TComponent);
 begin
   inherited;
+  fUpdatingCount := 0;
   ControlStyle := ControlStyle + [csAcceptsControls] + [csOpaque];
   DoubleBuffered := true;
-
   OffscreenBuffer := TRedFoxImageBuffer.Create;
-
   fColor.SetColor(255,238,238,238);
 end;
 
@@ -264,6 +263,27 @@ begin
   end;
 end;
 
+function TRedFoxContainer.AreParentsUpdating: boolean;
+var
+  p : TRedFoxWinControl;
+begin
+  if (assigned(Parent)) and (Parent is TRedFoxWinControl)
+    then p := (Parent as TRedFoxWinControl)
+    else p := nil;
+
+  while assigned(p) do
+  begin
+    if p.IsUpdating then exit(true);
+
+    if (assigned(p.Parent)) and (p.Parent is TRedFoxWinControl)
+      then p := (p.Parent as TRedFoxWinControl)
+      else p := nil;
+  end;
+
+  // if we've made it this far, no updating parent has been found.
+  result := false;
+end;
+
 procedure TRedFoxContainer.BeginUpdate;
 begin
   inc(fUpdatingCount);
@@ -276,7 +296,7 @@ begin
   if fUpdatingCount < 0 then raise Exception.Create('Begin/End Update mismatch.');
 end;
 
-function TRedFoxContainer.GetIsUpdating: boolean;
+function TRedFoxContainer.IsUpdating: boolean;
 begin
   if fUpdatingCount > 0
     then result := true
@@ -421,11 +441,14 @@ var
 begin
   OffscreenBuffer.BufferInterface.ClipBox(aRegion.Left, aRegion.Top, aRegion.Right, aRegion.Bottom);
 
+  //TODO:HIGH this bit of code is causing problems in combination with begin/end update.
+  {
   OffscreenBuffer.BufferInterface.LineWidth := 0;
   OffscreenBuffer.BufferInterface.NoLine;
   OffscreenBuffer.BufferInterface.SetFillColor(fColor.R, fColor.G, fColor.B, 255);
+  OffscreenBuffer.BufferInterface.FillColor := GetRedFoxColor(clPurple);
   OffscreenBuffer.BufferInterface.Rectangle(aRegion.Left, aRegion.Top, aRegion.Right, aRegion.Bottom);
-
+  }
   for c1 := 0 to ControlCount-1 do PaintControl(Controls[c1], aRegion);
 end;
 
@@ -447,6 +470,10 @@ begin
   // dirty in the clipped region to require the area to be repainted.
   if (Supports(aControl, IRedFoxVisibleControl, aVisibleControl)) and (aVisibleControl.GetIsShowing) and (aControl.Width > 0) and (aControl.Height > 0) then
   begin
+    //TODO:HIGH not sure if these checks are required..
+    if (aVisibleControl.IsUpdating) or (aVisibleControl.AreParentsUpdating)
+      then exit(false); // no update required... exit now...
+
     ControlBounds := aVisibleControl.GetAbsoluteBoundsRect;
 
     ClippedRegion := aRegion;
@@ -486,6 +513,8 @@ end;
 
 
 
+
+
 procedure TRedFoxContainer.MarkAsInvalidateRequired;
 begin
   //do nothin.
@@ -508,7 +537,7 @@ begin
     ClippedRegion := aRegion;
     ClippedRegion.Intersect(ControlBounds);
 
-    if not ClippedRegion.IsEmpty then
+    if (not ClippedRegion.IsEmpty) {and (not aVisibleControl.IsUpdating) and (not aVisibleControl.AreParentsUpdating)} then
     begin
       OffscreenBuffer.BufferInterface.ClipBox(ClippedRegion.Left, ClippedRegion.Top, ClippedRegion.Right, ClippedRegion.Bottom);
 
@@ -519,7 +548,7 @@ begin
         then aVisibleControl.OffscreenUpdate(TempRect.Left, TempRect.Top, TempRect.Right, TempRect.Bottom);
 
       // Only TWinControl descendents can contain child controls.
-      if (aVisibleControl.GetObject is TWinControl) then
+      if (aVisibleControl.GetObject is TWinControl) and (not aVisibleControl.IsUpdating) then
       begin
         aWinControl := (aVisibleControl.GetObject as TWinControl);
         for c1 := 0 to aWinControl.ControlCount-1 do PaintControl(aWinControl.Controls[c1], ClippedRegion);

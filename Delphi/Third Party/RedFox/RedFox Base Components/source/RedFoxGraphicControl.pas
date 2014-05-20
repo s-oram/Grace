@@ -60,6 +60,15 @@ type
     // A transparent control will not be rendered to the Redfox containers back
     // buffer. It shouldn't have it's Paint() method called either.
     property Transparent : boolean read fTransparent write SetTransparent;
+  protected
+    fUpdatingCount : integer;
+  public
+    // BeginUpdate() / EndUpdate() calls can be nested. A BeginUpdate() call must
+    // always be followed by a EndUpdate() call.
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    function IsUpdating: boolean;
+    function AreParentsUpdating : boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -96,6 +105,7 @@ uses
 constructor TRedFoxGraphicControl.Create(AOwner: TComponent);
 begin
   inherited;
+  fUpdatingCount := 0;
   fOpacity := 255;
   ControlStyle := ControlStyle + [csOpaque];
   BackBuffer := TRedFoxImageBuffer.Create;
@@ -248,7 +258,19 @@ end;
 procedure TRedFoxGraphicControl.Invalidate;
 begin
   fIsBackBufferDirty := true;
-  LaggyInvalidate(self);
+
+  if (IsUpdating = false) and (AreParentsUpdating = false) then
+  begin
+    //Log.LogMessage(self.Name + ' (' + self.ClassName + ') Invalidate');
+    LaggyInvalidate(self);
+  end;
+end;
+
+function TRedFoxGraphicControl.IsUpdating: boolean;
+begin
+  if fUpdatingCount > 0
+    then result := true
+    else result := false;
 end;
 
 procedure TRedFoxGraphicControl.MarkAsInvalidateRequired;
@@ -331,6 +353,41 @@ begin
     RedFox_AlphaBlit(TP.OffscreenBuffer.RedFoxInterface, BackBuffer.RedFoxInterface, x1, y1, x2, y2, DestX, DestY, Opacity);
   end;
 end;
+
+function TRedFoxGraphicControl.AreParentsUpdating: boolean;
+var
+  p : TRedFoxWinControl;
+begin
+  if (assigned(Parent)) and (Parent is TRedFoxWinControl)
+    then p := (Parent as TRedFoxWinControl)
+    else p := nil;
+
+  while assigned(p) do
+  begin
+    if p.IsUpdating then exit(true);
+
+    if (assigned(p.Parent)) and (p.Parent is TRedFoxWinControl)
+      then p := (p.Parent as TRedFoxWinControl)
+      else p := nil;
+  end;
+
+  // if we've made it this far, no updating parent has been found.
+  result := false;
+end;
+
+procedure TRedFoxGraphicControl.BeginUpdate;
+begin
+  inc(fUpdatingCount);
+end;
+
+procedure TRedFoxGraphicControl.EndUpdate;
+begin
+  dec(fUpdatingCount);
+  if fUpdatingCount = 0 then self.Invalidate;
+  if fUpdatingCount < 0 then raise Exception.Create('Begin/End Update mismatch.');
+end;
+
+
 
 procedure TRedFoxGraphicControl.CMHitTest(var Message: TCMHitTest);
 begin
