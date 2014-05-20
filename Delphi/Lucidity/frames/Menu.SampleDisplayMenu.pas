@@ -229,21 +229,7 @@ end;
 procedure TSampleDisplayMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-
-  //============================================================================
-  // TODO:LOW: This bit of code to toggle the sample map state has been
-  // copied and pasted in a few places. It might be worth pulling it out
-  // to a sub-routine.
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end else
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end;
-  //============================================================================
+  Command.ToggleSampleMapVisibility(Plugin);
 end;
 
 procedure TSampleDisplayMenu.EventHandle_EditSamplePoints(Sender: TObject);

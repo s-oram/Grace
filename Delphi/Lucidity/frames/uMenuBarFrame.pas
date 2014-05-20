@@ -148,16 +148,7 @@ end;
 procedure TMenuBarFrame.SampleMapButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end else
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end;
+  Command.ToggleSampleMapVisibility(Plugin);
 end;
 
 procedure TMenuBarFrame.SampleMenuButtonClick(Sender: TObject);
@@ -222,6 +213,7 @@ end;
 
 procedure TMenuBarFrame.SampleEditButtonClick(Sender: TObject);
 begin
+  //TODO:MED I don't think this method is needed anymore.
   if not assigned(Plugin) then exit;
   Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
@@ -230,16 +222,7 @@ end;
 procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end else
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end;
+  Command.ToggleSampleMapVisibility(Plugin);
 end;
 
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);

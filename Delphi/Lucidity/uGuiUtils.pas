@@ -89,12 +89,13 @@ type
     class procedure ClearCurrentModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
     class procedure ClearAllModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
 
-
-
     class function GetParValue(const Plugin : TeePlugin; const Par : TPluginParameter):single; overload; static;
     class function GetParValue<TEnum>(const Plugin : TeePlugin; const Par : TPluginParameter):TEnum; overload; static;
 
     class procedure SetMidiCCForParameter(const Plugin : TeePlugin; const TargetParameterName : string); static;
+
+    class procedure ToggleSampleZoom(const Plugin : TeePlugin); static;
+    class procedure ToggleSampleMapVisibility(const Plugin : TeePlugin); static;
   end;
 
   GuiSetup = record
@@ -660,6 +661,32 @@ begin
   if (Error = true) then
   begin
     ShowMessage('Error: ' + ErrorMessage);
+  end;
+end;
+
+class procedure Command.ToggleSampleMapVisibility(const Plugin: TeePlugin);
+begin
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end;
+end;
+
+class procedure Command.ToggleSampleZoom(const Plugin: TeePlugin);
+begin
+  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.SampleZoom then
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+  end else
+  begin
+    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
   end;
 end;
 

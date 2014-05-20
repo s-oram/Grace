@@ -750,16 +750,7 @@ end;
 procedure TMiniSampleDisplayFrame.SampleOverlayDblClicked(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.SampleZoom then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end else
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end;
+  Command.ToggleSampleZoom(Plugin);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

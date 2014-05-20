@@ -247,16 +247,7 @@ end;
 procedure TMainMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
-
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.MapEdit then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end else
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-  end;
+  Command.ToggleSampleMapVisibility(Plugin);
 end;
 
 procedure TMainMenu.EventHandle_EditSamplePoints(Sender: TObject);

@@ -10,15 +10,13 @@ Delete 50-50 filter blend mode.
 - may the small parameter display should be 'overlaid' over the sample display
   so the LFO's can be split into two.
 
- - add MIDI modulation sources.
--- it would be great to have a 'MIDI CC' source which would allow the user
-   to map a custom CC to a mod slot. 
+Finish sample zooming controls
+- remove the 'Edit Sample Points...' command. Replace with Zoom...
+- dragging across a sample should show a highlight, Ctrl+Drag = Zoom
+  "Ctrl to Zoom"
 
-Need midi learn options for sample/loop start/end
-- MIDI learn can't be applied directly because samples belong to regions. 
-  MIDI learn can only focus on key groups.
-  -- Instead I'll need to add some "Marco Knobs". The Macro Knobs can
-     then be applied to the relevent parameter.
+
+
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
