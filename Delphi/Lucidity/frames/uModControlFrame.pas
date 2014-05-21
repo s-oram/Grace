@@ -151,7 +151,7 @@ type
 
     StepSequenceMenu : TStepSequenceMenu;
 
-    Scope : TLucidityScope;
+
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -216,13 +216,7 @@ begin
   KnobList.Add(FilterBlendKnob);
 
 
-  Scope := TLucidityScope.Create(AOwner);
-  Scope.Visible := true;
-  Scope.Parent := BackgroundPanel;
-  Scope.Name := 'Scope';
-
-  Scope.Font.Name := 'Tahoma';
-  Scope.Font.Style := [];
+  
 
 
 end;
@@ -254,11 +248,6 @@ begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
-
-  //TODO: This should be tied to the active voice group, or the active voice.
-  // not the global scope.
-  Scope.SignalRecorder := Plugin.SignalRecorder;
-  Scope.FreqAnalyzer   := Plugin.FreqAnalyzer;
 
   StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
 
@@ -337,7 +326,6 @@ begin
   AmpEnvContainer.Height := RowHeight;
   AmpEnvContainer.Layout.SetPos(16, 8);
 
-  Scope.Layout.SetPos(232,12).SetSize(177,90);
 
   //======= row 2 =======
   //Row2.Height := 82;
@@ -545,7 +533,7 @@ begin
   GuiSetup.StyleButton_SelectorButton(Seq2DirectionTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq2StepsTextBox);
 
-  Scope.Font.Color                := GetRedFoxColor(kColor_LcdDark5);
+
 
   Filter1KeyTrackKnob.Padding.Left  := 4;
   Filter1KeyTrackKnob.Padding.Right := 4;
@@ -563,8 +551,7 @@ begin
   Filter2KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
   Filter2KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
 
-  Scope.ColorBackground := kColor_LcdDark1;
-  Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
+
 
   LfoSelector.BackgroundImage := Plugin.Globals.SkinImageLoader.GetImage('Switch_Background');
   LfoSelector.IndexImage      := Plugin.Globals.SkinImageLoader.GetImage('Switch_Index');
@@ -583,10 +570,9 @@ begin
 
 
 
+  //TODO:MED Delete this timer.
   Timer1.Enabled := true;
   Timer1.Interval := 25;
-
-
 
 
   //== finally, call the message handlers to ensure everything is up to date ===
@@ -714,7 +700,7 @@ end;
 
 procedure TModControlFrame.Timer1Timer(Sender: TObject);
 begin
-  Scope.Invalidate;
+  //TODO:MED delete this timer.
 end;
 
 procedure TModControlFrame.UpdateLfo;

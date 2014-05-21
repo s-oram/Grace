@@ -102,6 +102,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -130,6 +134,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -158,6 +166,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -373,6 +385,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -401,6 +417,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -429,6 +449,10 @@ object ModControlFrame: TModControlFrame
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              ImageOverlayVertAlign = AlignCenter
+              ImageOverlayHorzAlign = AlignCenter
+              ImageOverlayOffsetX = 0
+              ImageOverlayOffsetY = 0
               Align = alTop
               Visible = True
             end
@@ -542,6 +566,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object Filter2Par1Knob: TVamKnob
@@ -949,6 +977,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
       end
@@ -1040,6 +1072,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object LfoKnob1: TVamKnob
@@ -1223,6 +1259,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object LfoRangeSelector: TVamTextBox
@@ -1245,6 +1285,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
       end
@@ -1505,6 +1549,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
       end
@@ -1614,6 +1662,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object Filter1Par1Knob: TVamKnob
@@ -1851,6 +1903,10 @@ object ModControlFrame: TModControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
       end

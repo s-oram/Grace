@@ -15,12 +15,13 @@ uses
   Lucidity.Interfaces,
   Lucidity.SampleMap, Menu.SampleDisplayMenu,
   Lucidity.FlexSampleRenderer,
+  LucidityGui.Scope,
   eePlugin, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamSampleDisplay, Vcl.Menus,
   RedFoxGraphicControl, VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel,
-  VamCompoundNumericKnob, VamScrollBar, VamTextBox;
+  VamCompoundNumericKnob, VamScrollBar, VamTextBox, Vcl.ExtCtrls;
 
 type
   TUsageContext = (General, SampleZoom);
@@ -58,11 +59,13 @@ type
     VamLabel2: TVamLabel;
     Zoom100Button: TVamTextBox;
     ZoomLoopEndButton: TVamTextBox;
+    Timer1: TTimer;
     procedure SampleKnobChanged(Sender: TObject);
     procedure SampleDisplayResize(Sender: TObject);
     procedure InfoDivResize(Sender: TObject);
     procedure InsidePanelResize(Sender: TObject);
     procedure ZoomScrollBarChanged(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     UpdateSampleDisplayThottleToken : TUniqueID;
 
@@ -98,6 +101,8 @@ type
 
     StoredImage : ISampleImageBuffer;
     SampleRenderer : TSampleImageRenderer;
+
+    Scope : TLucidityScope;
 
     procedure InternalUpdateSampleDisplay(const Region : IRegion; const NoRegionMessage : string);
     procedure InternalUpdateSampleInfo(const Region : IRegion; const NoRegionMessage : string);
@@ -204,6 +209,18 @@ begin
 
 
   ZoomScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
+
+
+  Scope := TLucidityScope.Create(AOwner);
+  Scope.Visible := true;
+  Scope.Parent := InsidePanel;
+  Scope.HitTest := false;
+  Scope.BringToFront;
+  Scope.Name := 'Scope';
+
+
+  Scope.Font.Name := 'Tahoma';
+  Scope.Font.Style := [];
 end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
@@ -233,6 +250,15 @@ const
 begin
   Plugin := aPlugin;
   GuiStandard := aGuiStandard;
+
+
+  //TODO: This should be tied to the active voice group, or the active voice.
+  // not the global scope.
+  Scope.SignalRecorder  := Plugin.SignalRecorder;
+  Scope.FreqAnalyzer    := Plugin.FreqAnalyzer;
+  Scope.Font.Color      := GetRedFoxColor(kColor_LcdDark5);
+  Scope.ColorBackground := kColor_LcdDark1;
+  Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
 
   UsageContext := TUsageContext.General;
 
@@ -296,6 +322,9 @@ begin
   ZoomApplyButton.Align := TAlign.alClient;
 
 
+
+  Timer1.Enabled := true;
+  Timer1.Interval := 25;
 
   //== finally, call the message handlers to ensure everything is up to date ===
   UpdateControlVisibility;
@@ -910,6 +939,10 @@ end;
 procedure TMiniSampleDisplayFrame.InsidePanelResize(Sender: TObject);
 begin
   //
+  Scope.Top := 0;
+  Scope.Left := 0;
+  Scope.Width := InsidePanel.Width;
+  Scope.Height := InsidePanel.Height;
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateModulation;
@@ -1089,10 +1122,19 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
+  //Scope.Layout.
+  Scope.BringToFront;
+
 
   UpdateSampleDisplay;
 end;
 
+
+procedure TMiniSampleDisplayFrame.Timer1Timer(Sender: TObject);
+begin
+  //TODO:MED delete this timer.
+  Scope.Invalidate;
+end;
 
 procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
