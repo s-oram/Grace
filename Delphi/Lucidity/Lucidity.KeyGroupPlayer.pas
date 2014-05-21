@@ -21,7 +21,6 @@ type
   TKeyGroupPlayer = class(TZeroObject)
   private
     ActiveRegions : TInterfaceList;
-    ActiveRegionsLock : TFakeCriticalSection;
   protected
     Globals : TGlobals;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
@@ -51,24 +50,17 @@ constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals);
 begin
   Globals := aGlobals;
   ActiveRegions := TInterfaceList.Create;
-  ActiveRegionsLock := TFakeCriticalSection.Create;
 end;
 
 destructor TKeyGroupPlayer.Destroy;
 begin
-  ActiveRegionsLock.Free;
   ActiveRegions.Free;
   inherited;
 end;
 
 procedure TKeyGroupPlayer.Clear;
 begin
-  ActiveRegionsLock.Acquire;
-  try
-    ActiveRegions.Clear;
-  finally
-    ActiveRegionsLock.Release;
-  end;
+  ActiveRegions.Clear;
 end;
 
 procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);
@@ -88,14 +80,9 @@ begin
 
     kg := Globals.KeyGroupLifeTimeManager.Request(kgID);
 
-    ActiveRegionsLock.Acquire;
-    try
-      if (assigned(kg)) and (ActiveRegions.IndexOf(kg) = -1) then
-      begin
-        ActiveRegions.Add(kg);
-      end;
-    finally
-      ActiveRegionsLock.Release;
+    if (assigned(kg)) and (ActiveRegions.IndexOf(kg) = -1) then
+    begin
+      ActiveRegions.Add(kg);
     end;
 
     kg := nil;
@@ -106,15 +93,11 @@ begin
     pKG := Data;
     kg := IKeyGroup(pKG);
 
-    ActiveRegionsLock.Acquire;
-    try
-      if ActiveRegions.IndexOf(kg) <> -1 then
-      begin
-        ActiveRegions.Remove(kg);
-      end;
-    finally
-      ActiveRegionsLock.Release;
+    if ActiveRegions.IndexOf(kg) <> -1 then
+    begin
+      ActiveRegions.Remove(kg);
     end;
+
     kg := nil;
   end;
 
@@ -123,17 +106,12 @@ begin
   begin
     kgID := TKeyGroupID(Data^);
 
-    ActiveRegionsLock.Acquire;
-    try
-      for c1 := ActiveRegions.Count-1 downto 0 do
+    for c1 := ActiveRegions.Count-1 downto 0 do
+    begin
+      if (ActiveRegions[c1] as IKeyGroup).GetID = kgID then
       begin
-        if (ActiveRegions[c1] as IKeyGroup).GetID = kgID then
-        begin
-          ActiveRegions.Delete(c1);
-        end;
+        ActiveRegions.Delete(c1);
       end;
-    finally
-      ActiveRegionsLock.Release;
     end;
   end;
 end;
@@ -144,15 +122,10 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  ActiveRegionsLock.Acquire;
-  try
-    for c1 := ActiveRegions.Count-1 downto 0 do
-    begin
-      kg := (ActiveRegions[c1] as IKeyGroup);
-      (kg.GetObject as TKeyGroup).FastControlProcess;
-    end;
-  finally
-    ActiveRegionsLock.Release;
+  for c1 := ActiveRegions.Count-1 downto 0 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).FastControlProcess;
   end;
 end;
 
@@ -162,15 +135,10 @@ var
   c1: Integer;
   kg : IKeyGroup;
 begin
-  ActiveRegionsLock.Acquire;
-  try
-    for c1 := ActiveRegions.Count-1 downto 0 do
-    begin
-      kg := (ActiveRegions[c1] as IKeyGroup);
-      (kg.GetObject as TKeyGroup).SlowControlProcess;
-    end;
-  finally
-    ActiveRegionsLock.Release;
+  for c1 := ActiveRegions.Count-1 downto 0 do
+  begin
+    kg := (ActiveRegions[c1] as IKeyGroup);
+    (kg.GetObject as TKeyGroup).SlowControlProcess;
   end;
 end;
 
