@@ -488,7 +488,8 @@ begin
 
   LfoValues.UpdateRandomValues;
 
-  BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+  //BackBuffer.BufferInterface.ClearAll(0,0,0,0);
+  BackBuffer.BufferInterface.ClearAll(fColorBackground.WithAlpha(0));
 
   //=== Paint the background ==
   x1 := 0;
@@ -496,20 +497,8 @@ begin
   x2 := Width;
   y2 := Height;
 
-  BackBuffer.BufferInterface.NoLine;
-  BackBuffer.BufferInterface.FillColor := fColorBackground;
 
-  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
-  BackBuffer.BufferInterface.LineWidth := 1.5;
-
-
-  //=== draw the lower text ====
-  //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
-  TextBounds := Rect(0,Height-20, Width, Height);
-  BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
-
-
-
+  {
   if not (csDesigning in Self.ComponentState) and (assigned(SignalRecorder))then
   begin
     SignalDisplay.ProcessSignal(BackBuffer, ScopeRect, SignalRecorder);
@@ -519,10 +508,21 @@ begin
     BackBuffer.BufferInterface.NoLine;
     BackBuffer.BufferInterface.Rectangle(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom);
   end;
-
+  }
 
   if DiagramBufferAlpha > 0 then
   begin
+    BackBuffer.BufferInterface.NoLine;
+    BackBuffer.BufferInterface.FillColor := fColorBackground.WithAlpha(DiagramBufferAlpha div 3);
+
+    BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 3);
+    BackBuffer.BufferInterface.LineWidth := 2.5;
+
+    //=== draw the lower text ====
+    //TODO:MED: see if text draw can be improved by incorporating RedFoxTextBuffer.
+    TextBounds := Rect(0,Height-20, Width, Height);
+    BackBuffer.DrawText(Text, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
     case ScopeMode of
       TScopeDisplayMode.ADSR:        Draw_ADSR;
       TScopeDisplayMode.LFO:         Draw_Lfo;
@@ -1252,8 +1252,8 @@ var
 begin
   BackBuffer.BufferInterface.LineColor := Color; //fColorForeground;
   BackBuffer.BufferInterface.NoFill;
-  BackBuffer.BufferInterface.LineWidth := 1.5;
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+  BackBuffer.BufferInterface.LineWidth := 2.2;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcRound;
 
   SectionWidth := ScopeRect.Width / 5;
 
