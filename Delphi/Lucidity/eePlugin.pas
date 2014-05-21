@@ -196,6 +196,7 @@ type
     function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
+    function ActiveVoiceCount : integer;
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
@@ -1226,6 +1227,11 @@ begin
     {$ENDIF}
   end;
 
+end;
+
+function TeePlugin.ActiveVoiceCount: integer;
+begin
+  result := VoiceController.GetActiveVoiceCount;
 end;
 
 procedure TeePlugin.AudioProcess(Sampleframes: integer);

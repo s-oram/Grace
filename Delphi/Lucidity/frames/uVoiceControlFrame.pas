@@ -153,15 +153,11 @@ begin
       then ShowSamplResetMenuCallBack(PMenu^);
   end;
 
-
-
-
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
     VoiceLevelMeter.LevelMonitor := nil;
     VoiceLevelMeter.Invalidate;
   end;
-
 end;
 
 
@@ -359,18 +355,19 @@ var
   kg : IKeyGroup;
   LM : ILevelMonitor;
 begin
-  // NOTE: TODO: there is something funky going on.
-  // The LFO 2 - Par 2 knob always causes a crash.
-  // Something here becomes un-defined.
   kg := Plugin.ActiveKeyGroup;
-  if (assigned(kg)) and (Supports(kg, ILevelMonitor, LM)) then
+  if (Plugin.ActiveVoiceCount > 0) and (assigned(kg)) and (Supports(kg, ILevelMonitor, LM)) then
   begin
     VoiceLevelMeter.LevelMonitor := LM;
     VoiceLevelMeter.Invalidate;
+  end else
+  begin
+    if assigned(VoiceLevelMeter.LevelMonitor) then
+    begin
+      VoiceLevelMeter.LevelMonitor := nil;
+      VoiceLevelMeter.Invalidate;
+    end;
   end;
-
-  // TODO: need to see if the key group has any active voices. if it doesn't,
-  // set the voice level meter to -120 db and invalidate.
 end;
 
 procedure TVoiceControlFrame.UpdateControlVisibility;

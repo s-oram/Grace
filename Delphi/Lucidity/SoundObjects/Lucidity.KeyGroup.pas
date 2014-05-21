@@ -411,9 +411,9 @@ begin
   pxA := @VoiceBufferA[0];
   pxB := @VoiceBufferB[0];
 
+  //TODO:LOW: clearing both buffers at once could be an optimisation...
   ClearBuffer(pxA, SampleFrames);
   ClearBuffer(pxB, SampleFrames);
-
 
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
@@ -445,11 +445,6 @@ begin
     end;
   end;
 
-
-
-  // NOTE: LevelMonitor needs it's process method called when there are no active
-  // voices if it's to fade out slowly. Perhaps key groups shouldn't become inactive
-  // until the LevelMonitor is
 end;
 
 

@@ -10,11 +10,6 @@ Delete 50-50 filter blend mode.
 - may the small parameter display should be 'overlaid' over the sample display
   so the LFO's can be split into two.
 
-Finish sample zooming controls
-- remove the 'Edit Sample Points...' command. Replace with Zoom...
-- dragging across a sample should show a highlight, Ctrl+Drag = Zoom
-  "Ctrl to Zoom"
-
 
 
 
@@ -24,10 +19,6 @@ Finish sample zooming controls
 - thunderlink://messageid=C96432EDCAD443F880A0337122247144@YannHP
 
 key zone context menu needs a 'Move Key Zone to New Key Group'
-
-
-
-
 
 * Lucidity Notes from Yann
 I noticed a couple of quirks, bugs & strange behaviour, so i wanted to report it :

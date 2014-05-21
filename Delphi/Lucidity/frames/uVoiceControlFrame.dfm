@@ -179,6 +179,10 @@ object VoiceControlFrame: TVoiceControlFrame
             Font.Height = -11
             Font.Name = 'Tahoma'
             Font.Style = []
+            ImageOverlayVertAlign = AlignCenter
+            ImageOverlayHorzAlign = AlignCenter
+            ImageOverlayOffsetX = 0
+            ImageOverlayOffsetY = 0
             Visible = True
           end
           object GrainLengthKnob: TVamKnob
@@ -437,6 +441,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object ResetLabel: TVamLabel
@@ -477,6 +485,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object VoicePitch1Knob: TVamKnob
@@ -581,6 +593,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object SamplerLoopBoundsLabel: TVamLabel
@@ -621,6 +637,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object VoiceModeLabel: TVamLabel
@@ -720,6 +740,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object PitchTrackTextBox: TVamTextBox
@@ -742,6 +766,10 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Visible = True
         end
         object PitchTrackLabel: TVamLabel

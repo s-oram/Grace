@@ -45,7 +45,6 @@ type
     procedure LatchTrigger(const Data1, Data2 : byte; const NoteStackCount : integer);
     procedure LatchRelease(const Data1, Data2 : byte; const NoteStackCount : integer);
 
-
     procedure ProcessTriggerQueue(const TriggerQueue : TObjectList; const MidiData1, MidiData2 : byte; const TriggerVoiceMode : TVoiceMode);
 
     function FindVoiceToTrigger:TLucidityVoice;
