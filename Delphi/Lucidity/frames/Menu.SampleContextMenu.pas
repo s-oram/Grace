@@ -81,8 +81,38 @@ var
 begin
   Menu.Items.Clear;
 
-
   MouseDownSamplePos := aMouseDownSamplePos;
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom In';
+  mi.Tag := 1;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom Out';
+  mi.Tag := 2;
+  if Command.AreSampleZoomControlsVisible(Plugin)
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom Out Full';
+  mi.Tag := 3;
+  if Command.AreSampleZoomControlsVisible(Plugin)
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+
+  //=== spacer ====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=====================
 
 
   mi := TMenuItem.Create(Menu);
@@ -105,12 +135,7 @@ begin
   }
 
 
-  mi := TMenuItem.Create(Menu);
-  if Command.AreSampleZoomControlsVisible(Plugin)
-    then mi.Caption := 'Hide Zoom Controls'
-    else mi.Caption := 'Show Zoom Controls';
-  mi.OnClick := EventHandle_ZoomSample;
-  Menu.Items.Add(mi);
+
 
 
   mi := TMenuItem.Create(Menu);
@@ -240,9 +265,20 @@ begin
 end;
 
 procedure TSampleContextMenu.EventHandle_ZoomSample(Sender: TObject);
+var
+  Tag : integer;
 begin
-  if not assigned(Plugin) then exit;
-  Command.ToggleSampleZoom(Plugin);
+  Tag := (Sender as TMenuItem).Tag;
+
+  case Tag of
+    1:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomIn, @MouseDownSamplePos);
+    2:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOut, @MouseDownSamplePos);
+    3:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOutFull, @MouseDownSamplePos);
+  else
+    raise Exception.Create('Index not handled.');
+  end;
+
+
 end;
 
 procedure TSampleContextMenu.EventHandle_NormaliseSample(Sender: TObject);

@@ -334,6 +334,9 @@ begin
 end;
 
 procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  SamplePos : integer;
+  zx : single;
 begin
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
@@ -347,6 +350,65 @@ begin
 
   if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := true;
   if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := false;
+
+  if MsgID = TLucidMsgID.Command_Sample_ZoomIn then
+  begin
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+    try
+      SamplePos := Integer(Data^);
+
+      if not Command.AreSampleZoomControlsVisible(Plugin)
+        then Command.ToggleSampleZoom(Plugin);
+
+      //Zoom In!
+      zx := Zoom  + 0.2;
+      Zoom := Clamp(zx, 0, 1);
+
+      // Update the offset.
+      zx := SamplePos / CurrentSample.Info.SampleFrames;
+      Offset := Clamp(zx, 0, 1);
+
+      // Update the GUI.
+      UpdateSampleDisplay;
+      UpdateZoomSlider;
+    finally
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+    end;
+  end;
+
+  if MsgID = TLucidMsgID.Command_Sample_ZoomOut then
+  begin
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+    try
+      SamplePos := Integer(Data^);
+      //Zoom In!
+      zx := Zoom  - 0.2;
+      Zoom := Clamp(zx, 0, 1);
+
+      // Update the offset.
+      zx := SamplePos / CurrentSample.Info.SampleFrames;
+      Offset := Clamp(zx, 0, 1);
+
+      if Zoom > 0 then
+      begin
+        // Update the GUI.
+        UpdateSampleDisplay;
+        UpdateZoomSlider;
+      end else
+      begin
+        Command.ToggleSampleZoom(Plugin);
+      end;
+    finally
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+    end;
+  end;
+
+  if MsgID = TLucidMsgID.Command_Sample_ZoomOutFull then
+  begin
+    if Command.AreSampleZoomControlsVisible(Plugin)
+      then Command.ToggleSampleZoom(Plugin);
+  end;
+
 end;
 
 procedure TMiniSampleDisplayFrame.SetPlugin(const Value: TeePlugin);
@@ -873,15 +935,9 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayZoomChanged(Sender: TObject; aZoom, aOffset: single);
 begin
-  //SampleDisplay.Zoom   := Zoom;
-  //SampleDisplay.Offset := Zoom;
-  //SampleOverlay.SetZoomOffset(Zoom, Offset);
-
   Zoom   := aZoom;
   Offset := aOffset;
-
   UpdateSampleDisplayInfo;
-
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateControlVisibility;

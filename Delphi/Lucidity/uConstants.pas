@@ -59,7 +59,10 @@ type
     Command_UpdateGUI                = Command + 14; // All GUI elements should be updated.
     Command_BeginGuiUpdate           = Command + 15;
     Command_EndGuiUpdate             = Command + 16;
-    Actions                          = Command_EndGuiUpdate + 1;
+    Command_Sample_ZoomIn            = Command + 17;
+    Command_Sample_ZoomOut           = Command + 18;
+    Command_Sample_ZoomOutFull       = Command + 19;
+    Actions                          = Command_Sample_ZoomOutFull + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
