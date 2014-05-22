@@ -7,12 +7,15 @@
 
 Delete 50-50 filter blend mode.
 
-- Bug: can't edit sample modulation amounts correctly when sample is zoomed!
-
 Add VST Parameters
 
 The Scope needs some sort of debouncer/throttle handler for stop the scope from flickering between
 modes as the user mouses around.
+
+The sample display menu needs to have 
+- Zoom In (2x)
+- Zoom Out (2x)
+- Zoom Out (Full).
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
