@@ -589,11 +589,10 @@ begin
       end;
     end;
 
-
     if (GrabbedMode = smSampleStartModMarker) then
     begin
       xDist := x - ReferenceX;
-      ModAmount := xDist / Width;
+      ModAmount := xDist / (Width / (1-Zoom));
 
       if ModAmount <> 0 then
       begin
@@ -607,7 +606,7 @@ begin
     if (GrabbedMode = smSampleEndModMarker) then
     begin
       xDist := x - ReferenceX;
-      ModAmount := xDist / Width;
+      ModAmount := xDist / (Width / (1-Zoom));
 
       if ModAmount <> 0 then
       begin
@@ -621,7 +620,7 @@ begin
     if (GrabbedMode = smLoopStartModMarker) then
     begin
       xDist := x - ReferenceX;
-      ModAmount := xDist / Width;
+      ModAmount := xDist / (Width / (1-Zoom));
 
       if ModAmount <> 0 then
       begin
@@ -635,7 +634,7 @@ begin
     if (GrabbedMode = smLoopEndModMarker) then
     begin
       xDist := x - ReferenceX;
-      ModAmount := xDist / Width;
+      ModAmount := xDist / (Width / (1-Zoom));
 
       if ModAmount <> 0 then
       begin
