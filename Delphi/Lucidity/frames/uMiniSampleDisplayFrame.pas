@@ -13,7 +13,7 @@ uses
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.Types,
   Lucidity.Interfaces,
-  Lucidity.SampleMap, Menu.SampleDisplayMenu,
+  Lucidity.SampleMap, Menu.SampleContextMenu,
   Lucidity.FlexSampleRenderer,
   LucidityGui.Scope,
   eePlugin, uGuiFeedbackData, LuciditySampleOverlay,

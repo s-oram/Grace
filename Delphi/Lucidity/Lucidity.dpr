@@ -73,7 +73,7 @@ uses
   eePluginEx in 'eePluginEx.pas',
   uKeyStateTrackerOverlay in 'GuiComponents\uKeyStateTrackerOverlay.pas',
   uLucidityData in 'uLucidityData.pas',
-  Menu.SampleDisplayMenu in 'frames\Menu.SampleDisplayMenu.pas',
+  Menu.SampleContextMenu in 'frames\Menu.SampleContextMenu.pas',
   uLucidityPopUpMenu in 'frames\uLucidityPopUpMenu.pas',
   uOutputMixer in 'SoundObjects\uOutputMixer.pas',
   Lucidity.Osc.LoopSampler in 'SoundObjects\Lucidity.Osc.LoopSampler.pas',

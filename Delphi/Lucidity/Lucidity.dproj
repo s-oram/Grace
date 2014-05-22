@@ -496,7 +496,7 @@
 			<DCCReference Include="eePluginEx.pas"/>
 			<DCCReference Include="GuiComponents\uKeyStateTrackerOverlay.pas"/>
 			<DCCReference Include="uLucidityData.pas"/>
-			<DCCReference Include="frames\Menu.SampleDisplayMenu.pas"/>
+			<DCCReference Include="frames\Menu.SampleContextMenu.pas"/>
 			<DCCReference Include="frames\uLucidityPopUpMenu.pas"/>
 			<DCCReference Include="SoundObjects\uOutputMixer.pas"/>
 			<DCCReference Include="SoundObjects\Lucidity.Osc.LoopSampler.pas"/>
