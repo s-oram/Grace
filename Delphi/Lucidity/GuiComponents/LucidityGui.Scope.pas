@@ -204,21 +204,31 @@ var
   x1,y1,x2,y2 : single;
   Width : integer;
   Height : integer;
-
+  Path: TAggPathStorage;
   OldClipBox : TRectDouble;
-
 begin
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+
   OldClipBox := Canvas.ClipBox;
   Canvas.ClipBox(Bounds.Left, Bounds.Top, Bounds.Right, Bounds.Bottom);
 
   Width := Bounds.Width;
   Height := Bounds.Height;
 
+
+  x1 := Bounds.Left;
+  y1 := Bounds.Top + (Bounds.Height);
+  Path.MoveTo(x1, y1);
+
+
   tx := 0;
   ty := aFunction(tx) * 0.5 + 0.5;
 
   x1 := Bounds.Left;
   y1 := Bounds.Bottom - (Height * ty);
+
+  Path.LineTo(x1, y1);
 
   for c1 := 1 to Steps-1 do
   begin
@@ -228,11 +238,16 @@ begin
     x2 := Bounds.Left   + (tx * Width);
     y2 := Bounds.Bottom - (ty * Height);
 
-    Canvas.Line(x1, y1, x2, y2);
-
-    x1 := x2;
-    y1 := y2;
+    Path.LineTo(x2, y2);
   end;
+
+  x1 := Bounds.Right;
+  y1 := Bounds.Top + (Bounds.Height);
+  Path.LineTo(x1, y1);
+
+  Canvas.ResetPath;
+  Canvas.AddPath(Path);
+  Canvas.DrawPath;
 
   //Reset the clip box.
   Canvas.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
@@ -579,10 +594,13 @@ begin
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
 
-  DiagramBuffer.BufferInterface.LineColor := fColorForeground;
-  DiagramBuffer.BufferInterface.NoFill;
-  DiagramBuffer.BufferInterface.LineWidth := 1.5;
-  DiagramBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
+  DiagramBuffer.BufferInterface.FillColor := fColorForeground;
+  DiagramBuffer.BufferInterface.NoLine;
+
+  //DiagramBuffer.BufferInterface.LineColor := fColorForeground;
+  //DiagramBuffer.BufferInterface.NoFill;
+  //DiagramBuffer.BufferInterface.LineWidth := 1.5;
+  //DiagramBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
   case LfoValues.Shape of
     TLfoShape.SawUp:    TLfoDrawingRoutines.Draw_Lfo_SawUp(DiagramBuffer, ScopeRect, LfoValues);
