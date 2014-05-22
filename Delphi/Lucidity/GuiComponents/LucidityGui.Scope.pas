@@ -1492,8 +1492,7 @@ begin
   Path.LineTo(x4,y4);
 
   BackBuffer.BufferInterface.FillColor := Color.WithAlpha(220);
-  //BackBuffer.BufferInterface.LineColor := Color;
-  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.LineColor := Color;
   BackBuffer.BufferInterface.LineWidth := 1.5;
   BackBuffer.BufferInterface.LineCap   := TAggLineCap.lcRound;
 
