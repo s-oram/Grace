@@ -31,6 +31,8 @@ type
 implementation
 
 uses
+  VamLib.Utils,
+  AggPathStorage,
   RedFox2D;
 
 { TFreqDisplay }
@@ -52,16 +54,53 @@ procedure TFreqDisplay.ProcessSignal(Dest: TRedFoxImageBuffer; const DestRect: T
 var
   MData : PSingle;
   MFrames : integer;
+  Magnitude : single;
   c1: Integer;
   dx1, dx2, dy1, dy2 : single;
+  Path: TAggPathStorage;
 begin
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+
   Dest.BufferInterface.ClearAll(255,255,255,0);
   Dest.BufferInterface.LineColor := LineColor;
-  Dest.BufferInterface.NoFill;
+  Dest.BufferInterface.FillColor := LineColor.WithAlpha(220);
   Dest.BufferInterface.LineWidth := 1;
 
   Source.GetAnalysisData(MData, MFrames);
 
+
+
+
+
+  dx1 := DestRect.Left - 5;
+  dy1 := DestRect.Top + DestRect.Height;
+
+  Path.MoveTo(dx1, dy1);
+
+  for c1 := 0 to MFrames-1 do
+  begin
+    Magnitude := MData^;
+    Magnitude := Clamp(Magnitude, 0, 1);
+    dx2 := DestRect.Left + (c1 / (MFrames-1)) * DestRect.Width;
+    dy2 := DestRect.Top  + (1 - Magnitude) * DestRect.Height;
+    Path.LineTo(dx2, dy2);
+    inc(MData);
+  end;
+
+
+  dx1 := DestRect.Right + 5;
+  dy1 := DestRect.Top + DestRect.Height;
+
+  Path.LineTo(dx1, dy1);
+
+
+  Dest.BufferInterface.ResetPath;
+  Dest.BufferInterface.AddPath(Path);
+  Dest.BufferInterface.DrawPath;
+
+
+  {
   dx1 := DestRect.Left;
   dy1 := DestRect.Height;
 
@@ -77,7 +116,7 @@ begin
 
     inc(MData);
   end;
-
+  }
 end;
 
 
