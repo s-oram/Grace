@@ -312,7 +312,8 @@ begin
   //======= row 1 =======
   Filter1Container.Width  := (4 * FilterKnobWidth);
   Filter1Container.Height := RowHeight;
-  Filter1Container.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
+  Filter1Container.Layout.SetPos(16,8);
+  //Filter1Container.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
       Filter1TypeTextBox.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight).snapToParentEdge(TControlFeature.BottomEdge);
 
       Filter1KeyTrackKnob.Layout.SetSize(FilterKnobWidth * 2, TGuiConst.SelectorButtonHeight);
@@ -321,10 +322,14 @@ begin
       Filter1TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
       Filter1KeyTrackKnob.Layout.AdjustBounds(-4,0,-4,0);
 
+  LfoAContainer.Width := (FilterKnobWidth + 32 + 32 + 8);
+  LfoAContainer.Height := RowHeight;
+  LfoAContainer.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
+
 
   AmpEnvContainer.Width := (5 * FilterKnobWidth);
   AmpEnvContainer.Height := RowHeight;
-  AmpEnvContainer.Layout.SetPos(16, 8);
+  AmpEnvContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.LeftEdge).Move(-16,0);
 
 
   //======= row 2 =======
@@ -347,14 +352,12 @@ begin
   FilterEnvContainer.Height := RowHeight;
   FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
-  LfoAContainer.Width := (FilterKnobWidth + 32 + 32 + 8);
-  LfoAContainer.Height := RowHeight;
-  LfoAContainer.Layout.Anchor(FilterEnvContainer).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
+
 
 
   FilterBlendContainer.Width := (FilterKnobWidth);
   FilterBlendContainer.Height := RowHeight;
-  FilterBlendContainer.Layout.Anchor(FilterTwoContainer).SnapToEdge(TControlFeature.LeftEdge).Move(-16,0);
+  FilterBlendContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
 
 

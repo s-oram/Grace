@@ -74,7 +74,7 @@ type
 
     function SetSize(const aWidth, aHeight : integer):IVamLayoutWizard;
     function SetPos(const aLeft, aTop : integer):IVamLayoutWizard; overload;
-    function SetPos(const aLeft, aTop : integer; AlignPoint : TAlignPoint):IVamLayoutWizard; overload;
+    function SetPos(const XPos, YPos : integer; AlignPoint : TAlignPoint):IVamLayoutWizard; overload;
 
     function AlignWithinParent(const HorzAlign, VertAlign : TRedFoxAlign):IVamLayoutWizard;
   end;
@@ -286,34 +286,41 @@ begin
   result := self;
 end;
 
-function TVamLayoutWizard.SetPos(const aLeft, aTop: integer; AlignPoint: TAlignPoint): IVamLayoutWizard;
+function TVamLayoutWizard.SetPos(const aLeft, aTop: integer): IVamLayoutWizard;
+begin
+  fTarget.Left := aLeft;
+  fTarget.Top  := aTop;
+  result := self;
+end;
+
+function TVamLayoutWizard.SetPos(const XPos, YPos: integer; AlignPoint: TAlignPoint): IVamLayoutWizard;
 begin
   case AlignPoint of
     TAlignPoint.TopLeft:
     begin
-      fTarget.Left := aLeft;
-      fTarget.Top  := aTop;
+      fTarget.Left := XPos;
+      fTarget.Top  := YPos;
       result := self;
     end;
 
     TAlignPoint.TopRight:
     begin
-      fTarget.Left := aLeft - fTarget.Width;
-      fTarget.Top  := aTop;
+      fTarget.Left := XPos - fTarget.Width;
+      fTarget.Top  := YPos;
       result := self;
     end;
 
     TAlignPoint.BottomLeft:
     begin
-      fTarget.Left := aLeft;
-      fTarget.Top  := aTop - fTarget.Height;
+      fTarget.Left := XPos;
+      fTarget.Top  := YPos - fTarget.Height;
       result := self;
     end;
 
     TAlignPoint.BottomRight:
     begin
-      fTarget.Left := aLeft - fTarget.Width;
-      fTarget.Top  := aTop  - fTarget.Height;
+      fTarget.Left := XPos - fTarget.Width;
+      fTarget.Top  := YPos  - fTarget.Height;
       result := self;
     end;
   else
@@ -325,13 +332,6 @@ function TVamLayoutWizard.SetSize(const aWidth, aHeight: integer): IVamLayoutWiz
 begin
   fTarget.Width  := aWidth;
   fTarget.Height := aHeight;
-  result := self;
-end;
-
-function TVamLayoutWizard.SetPos(const aLeft, aTop: integer): IVamLayoutWizard;
-begin
-  fTarget.Left := aLeft;
-  fTarget.Top  := aTop;
   result := self;
 end;
 
