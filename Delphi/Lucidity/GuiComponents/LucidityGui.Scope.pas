@@ -217,8 +217,8 @@ begin
   Height := Bounds.Height;
 
 
-  x1 := Bounds.Left;
-  y1 := Bounds.Top + (Bounds.Height);
+  x1 := Bounds.Left - 5;
+  y1 := Bounds.Top + (Bounds.Height div 2);
   Path.MoveTo(x1, y1);
 
 
@@ -241,8 +241,8 @@ begin
     Path.LineTo(x2, y2);
   end;
 
-  x1 := Bounds.Right;
-  y1 := Bounds.Top + (Bounds.Height);
+  x1 := Bounds.Right + 5;
+  y1 := Bounds.Top + (Bounds.Height div 2);
   Path.LineTo(x1, y1);
 
   Canvas.ResetPath;
@@ -479,7 +479,7 @@ begin
     Animation := TByteAnimation.Create;
     Animation.RunTime := 250;
     Animation.StartValue := DiagramBufferAlpha;
-    Animation.EndValue   := 160; //<-- Maximum visible diagram alpha value. probably should be a constant.
+    Animation.EndValue   := 220; //<-- Maximum visible diagram alpha value. probably should be a constant.
     Animation.ApplyMethod := procedure(CurrentValue : byte)
     begin
       DiagramBufferAlpha := CurrentValue;
@@ -594,8 +594,10 @@ begin
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
 
-  DiagramBuffer.BufferInterface.FillColor := fColorForeground;
-  DiagramBuffer.BufferInterface.NoLine;
+  DiagramBuffer.BufferInterface.FillColor := fColorForeground.WithAlpha(220);
+  DiagramBuffer.BufferInterface.LineColor := fColorForeground;
+  DiagramBuffer.BufferInterface.LineWidth := 1.5;
+  DiagramBuffer.BufferInterface.LineCap   := TAggLineCap.lcRound;
 
   //DiagramBuffer.BufferInterface.LineColor := fColorForeground;
   //DiagramBuffer.BufferInterface.NoFill;
@@ -1352,8 +1354,19 @@ begin
   y4 := ScopeRect.Bottom;
   Path.LineTo(x4,y4);
 
+  BackBuffer.BufferInterface.FillColor := Color.WithAlpha(220);
+  //BackBuffer.BufferInterface.LineColor := Color;
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.LineWidth := 1.5;
+  BackBuffer.BufferInterface.LineCap   := TAggLineCap.lcRound;
+
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 
 
+
+  {
   BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := Color;
   BackBuffer.BufferInterface.LineWidth := 3.2;
@@ -1361,6 +1374,7 @@ begin
   BackBuffer.BufferInterface.ResetPath;
   BackBuffer.BufferInterface.AddPath(Path);
   BackBuffer.BufferInterface.DrawPath;
+  }
 end;
 
 end.
