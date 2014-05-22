@@ -259,6 +259,7 @@ begin
   Scope.Font.Color      := GetRedFoxColor(kColor_LcdDark5);
   Scope.ColorBackground := kColor_LcdDark1;
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
+  Scope.ColorForeground := '$FFCCDFFF';
 
   UsageContext := TUsageContext.General;
 
@@ -938,11 +939,10 @@ end;
 
 procedure TMiniSampleDisplayFrame.InsidePanelResize(Sender: TObject);
 begin
-  //
-  Scope.Top := 0;
-  Scope.Left := 0;
-  Scope.Width := InsidePanel.Width;
-  Scope.Height := InsidePanel.Height;
+  Scope.Top := 4;
+  Scope.Left := 4;
+  Scope.Width := InsidePanel.Width-8;
+  Scope.Height := InsidePanel.Height-8;
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateModulation;

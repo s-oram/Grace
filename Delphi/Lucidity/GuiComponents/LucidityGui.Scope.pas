@@ -3,6 +3,7 @@ unit LucidityGui.Scope;
 interface
 
 uses
+  AggPathStorage,
   VamLib.UniqueID,
   VamLib.Animation,
   //=================================================
@@ -90,6 +91,8 @@ type
     SignalDisplay : TSignalDisplay;
     FreqDisplay   : TFreqDisplay;
 
+
+
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
     fColorForeground : TRedFoxColor;
@@ -113,6 +116,9 @@ type
     LfoValues         : TScopeLfoValues;
     FilterValues      : TScopeFilterValues;
     FilterBlendValues : TScopeFilterBlendValues;
+
+
+
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -327,6 +333,8 @@ begin
 
 
   DiagramBuffer := TRedFoxImageBuffer.Create;
+
+
 end;
 
 destructor TLucidityScope.Destroy;
@@ -419,6 +427,7 @@ begin
 
   if fScopeMode = TScopeDisplayMode.DisplayOff then
   begin
+    //TODO:MED this animation for the realtime audio signal probably isn't needed any more.
     Animation := TByteAnimation.Create;
     Animation.RunTime := 500;
     Animation.StartValue := SignalOpacity;
@@ -455,7 +464,7 @@ begin
     Animation := TByteAnimation.Create;
     Animation.RunTime := 250;
     Animation.StartValue := DiagramBufferAlpha;
-    Animation.EndValue   := 255;
+    Animation.EndValue   := 160; //<-- Maximum visible diagram alpha value. probably should be a constant.
     Animation.ApplyMethod := procedure(CurrentValue : byte)
     begin
       DiagramBufferAlpha := CurrentValue;
@@ -568,6 +577,7 @@ end;
 procedure TLucidityScope.Draw_Lfo;
 begin
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
+
 
   DiagramBuffer.BufferInterface.LineColor := fColorForeground;
   DiagramBuffer.BufferInterface.NoFill;
@@ -1249,11 +1259,11 @@ var
   x3, y3 : single;
   x4, y4 : single;
   SectionWidth : single;
+
+  Path: TAggPathStorage;
 begin
-  BackBuffer.BufferInterface.LineColor := Color; //fColorForeground;
-  BackBuffer.BufferInterface.NoFill;
-  BackBuffer.BufferInterface.LineWidth := 2.2;
-  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcRound;
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
 
   SectionWidth := ScopeRect.Width / 5;
 
@@ -1262,25 +1272,25 @@ begin
   y1 := ScopeRect.Bottom;
   x4 := x1 + SectionWidth * (AdsrValues.Attack + kMinStageTime);
   y4 := ScopeRect.Top;
+  Path.MoveTo(x1, y1);
 
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
   x2 := x1 + (x4 - x1) * 1/3;
   y2 := y1 + (y4 - y1) * 2.5/3;
   x3 := x1 + (x4 - x1) * 2/3;
   y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+  Path.Curve4(x2, y2, x3, y3, x4, y4);
 
   //== Draw Hold Stage ==
   x1 := x4;
   y1 := y4;
   x4 := x1 + SectionWidth * AdsrValues.Hold * 0.5;
   y4 := ScopeRect.Top;
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+
   x2 := x1 + (x4 - x1) * 1/3;
   y2 := y1 + (y4 - y1) * 2.5/3;
   x3 := x1 + (x4 - x1) * 2/3;
   y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+  Path.Curve4(x2, y2, x3, y3, x4, y4);
 
 
   //== Draw Decay Stage ==
@@ -1288,19 +1298,19 @@ begin
   y1 := y4;
   x4 := x1 + SectionWidth * (AdsrValues.Decay + kMinStageTime);
   y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+
   x2 := x1 + (x4 - x1) * 1/3;
   y2 := y1 + (y4 - y1) * 2.5/3;
   x3 := x1 + (x4 - x1) * 2/3;
   y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+  Path.Curve4(x2, y2, x3, y3, x4, y4);
 
   //== Draw Sustain Stage ==
   x1 := x4;
   y1 := y4;
   x4 := x1 + SectionWidth * ((1 - AdsrValues.Attack) + (1 - AdsrValues.Decay) + (1 - AdsrValues.Hold * 0.5));
   y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
-  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  Path.LineTo(x4,y4);
 
 
 
@@ -1309,12 +1319,12 @@ begin
   y1 := y4;
   x4 := x1 + SectionWidth * (AdsrValues.Release + kMinStageTime);
   y4 := ScopeRect.Bottom;
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+
   x2 := x1 + (x4 - x1) * 1/3;
   y2 := y1 + (y4 - y1) * 2.5/3;
   x3 := x1 + (x4 - x1) * 2/3;
   y3 := y1 + (y4 - y1) * 3/3;
-  BackBuffer.BufferInterface.Curve(x1, y1, x2, y2, x3, y3, x4, y4);
+  Path.Curve4(x2, y2, x3, y3, x4, y4);
 
 
   //== Draw Off Stage ==
@@ -1322,7 +1332,17 @@ begin
   y1 := y4;
   x4 := ScopeRect.Right;
   y4 := ScopeRect.Bottom;
-  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  Path.LineTo(x4,y4);
+
+
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := Color;
+  BackBuffer.BufferInterface.LineWidth := 3.2;
+  BackBuffer.BufferInterface.LineCap := TAggLineCap.lcRound;
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 end;
 
 end.
