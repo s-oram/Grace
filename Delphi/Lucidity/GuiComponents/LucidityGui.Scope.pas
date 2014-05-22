@@ -599,9 +599,13 @@ begin
 end;
 
 procedure TLucidityScope.Draw_Lfo;
+var
+  OldClipBox : TRectDouble;
 begin
-  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
+  OldClipBox := DiagramBuffer.BufferInterface.ClipBox;
+  DiagramBuffer.BufferInterface.ClipBox(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom);
 
+  DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
   DiagramBuffer.BufferInterface.FillColor := fColorForeground.WithAlpha(220);
   DiagramBuffer.BufferInterface.LineColor := fColorForeground;
@@ -626,6 +630,8 @@ begin
     TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(DiagramBuffer, ScopeRect, LfoValues);
   end;
 
+
+  DiagramBuffer.BufferInterface.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
 end;
 
 { TLfoDrawingRoutines }
@@ -826,6 +832,7 @@ class procedure TLfoDrawingRoutines.Draw_Lfo_RandomStepped(BackBuffer: TRedFoxIm
 const
   kMinStageTime : single = 0.1;
 var
+  Path: TAggPathStorage;
   x1, y1 : single;
   x2, y2 : single;
   SectionWidth : single;
@@ -836,13 +843,22 @@ var
   Dist : single;
   yFrac : single;
 begin
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+
   RandomSeed := 0;
   SectionWidth := 30;
+
+  x1 := ScopeRect.Left-5;
+  y1 := ScopeRect.Top + ScopeRect.Height div 2;
+  Path.MoveTo(x1, y1);
 
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
   y2 := y1;
   //x2 := x1;
+
+  Path.LineTo(x1, y1);
 
   while x1 <= ScopeRect.Right-2 do
   begin
@@ -867,18 +883,33 @@ begin
       y2 := Clamp(y2, ScopeRect.Top, ScopeRect.Bottom);
     end;
 
-    BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
-    BackBuffer.BufferInterface.Line(x1, y2, x2, y2);
+
+
+    //BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
+    //BackBuffer.BufferInterface.Line(x1, y2, x2, y2);
+
+    Path.LineTo(x1, y2);
+    Path.LineTo(x2, y2);
 
     x1 := x2;
     y1 := y2;
   end;
+
+
+  x1 := ScopeRect.Right+50;
+  y1 := ScopeRect.Top + ScopeRect.Height div 2;
+  Path.LineTo(x1, y1);
+
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 end;
 
 class procedure TLfoDrawingRoutines.Draw_Lfo_RandomSmooth(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
 const
   kMinStageTime : single = 0.1;
 var
+  Path: TAggPathStorage;
   x1, y1 : single;
   x2, y2 : single;
   cx1, cy1 : single;
@@ -891,13 +922,25 @@ var
   Dist : single;
   yFrac : single;
 begin
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+
   RandomSeed := 0;
   SectionWidth := 30;
+
+
+  x1 := ScopeRect.Left-5;
+  y1 := ScopeRect.Top + ScopeRect.Height div 2;
+  Path.MoveTo(x1, y1);
 
   x1 := ScopeRect.Left;
   y1 := ScopeRect.Bottom - (ScopeRect.Height * LfoValues.FakeRandom(RandomSeed));
   y2 := y1;
   //x2 := x1;
+
+  Path.LineTo(x1, y1);
+
+
 
   while x1 <= ScopeRect.Right-2 do
   begin
@@ -928,12 +971,21 @@ begin
     cx2 := x2 - (Dist * 0.5);
     cy2 := y2;
 
-    BackBuffer.BufferInterface.Curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
+
+    //BackBuffer.BufferInterface.Curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
+    Path.Curve4(cx1, cy1, cx2, cy2, x2, y2);
 
     x1 := x2;
     y1 := y2;
   end;
 
+  x1 := ScopeRect.Right+50;
+  y1 := ScopeRect.Top + ScopeRect.Height div 2;
+  Path.LineTo(x1, y1);
+
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 end;
 
 
@@ -996,11 +1048,6 @@ end;
 
 class procedure TFilterBlendDrawingRoutines.Draw_Background(const BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; const ForegroundColor, BackgroundColor: TRedFoxColor);
 begin
-  ScopeRect.Left := ScopeRect.Left;
-  ScopeRect.Top := ScopeRect.Top;
-  ScopeRect.Right := ScopeRect.Right;
-  ScopeRect.Bottom := ScopeRect.Bottom;
-
   BackBuffer.BufferInterface.FillColor := BackgroundColor;
   BackBuffer.BufferInterface.LineColor := ForegroundColor;
   BackBuffer.BufferInterface.LineWidth := 2;
