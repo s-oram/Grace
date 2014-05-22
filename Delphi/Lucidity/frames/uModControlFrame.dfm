@@ -986,8 +986,8 @@ object ModControlFrame: TModControlFrame
       end
       object LfoAContainer: TVamDiv
         AlignWithMargins = True
-        Left = 184
-        Top = 474
+        Left = 586
+        Top = 25
         Width = 145
         Height = 143
         Margins.Left = 0
@@ -997,13 +997,13 @@ object ModControlFrame: TModControlFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object LfoContainerLabel: TVamLabel
+        object LfoAContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 145
           Height = 18
           Opacity = 255
-          Text = 'LFO'
+          Text = 'LFO ONE'
           HitTest = True
           AutoSize = False
           TextAlign = AlignCenter
@@ -1016,7 +1016,7 @@ object ModControlFrame: TModControlFrame
           Align = alTop
           Visible = True
         end
-        object LfoLabel2: TVamLabel
+        object LfoALabel2: TVamLabel
           Left = 45
           Top = 57
           Width = 40
@@ -1034,7 +1034,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object LfoLabel1: TVamLabel
+        object LfoALabel1: TVamLabel
           Left = 7
           Top = 51
           Width = 32
@@ -1052,7 +1052,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object LfoShapeSelector: TVamTextBox
+        object LfoAShapeSelector: TVamTextBox
           Left = 0
           Top = 65
           Width = 40
@@ -1078,7 +1078,7 @@ object ModControlFrame: TModControlFrame
           ImageOverlayOffsetY = 0
           Visible = True
         end
-        object LfoKnob1: TVamKnob
+        object LfoAKnob1: TVamKnob
           Left = 0
           Top = 17
           Width = 40
@@ -1101,13 +1101,13 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object LfoKnob2: TVamKnob
+        object LfoAKnob2: TVamKnob
           Left = 36
           Top = 19
           Width = 40
           Height = 32
           Opacity = 255
-          DisplayClass = 'SmallUnipolarKnob'
+          DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
@@ -1124,13 +1124,13 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object LfoKnob3: TVamKnob
+        object LfoAKnob3: TVamKnob
           Left = 91
           Top = 24
           Width = 40
           Height = 32
           Opacity = 255
-          DisplayClass = 'SmallUnipolarKnob'
+          DisplayClass = 'UniPolarKnob'
           HitTest = True
           ModLineDist = 17.000000000000000000
           ModLineWidth = 3.000000000000000000
@@ -1147,7 +1147,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object LfoLabel3: TVamLabel
+        object LfoALabel3: TVamLabel
           Left = 91
           Top = 61
           Width = 40
@@ -1165,81 +1165,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object LfoSelectButton1: TVamButton
-          Left = 52
-          Top = 79
-          Width = 20
-          Height = 20
-          Opacity = 255
-          Text = 'A'
-          HitTest = True
-          ShowBorder = True
-          Color_Border = '$FF242B39'
-          ColorOnA = '$FF7AA3E9'
-          ColorOnB = '$FF7AA3E9'
-          ColorOffA = '$FFD4DCE8'
-          ColorOffB = '$FFD4DCE8'
-          ButtonState = bsOff
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          OnChanged = LfoSelectButton1Changed
-          Visible = True
-          OnMouseEnter = LfoSelectorMouseEnter
-          OnMouseLeave = LfoSelectorMouseLeave
-        end
-        object LfoSelectButton2: TVamButton
-          Tag = 1
-          Left = 78
-          Top = 79
-          Width = 20
-          Height = 20
-          Opacity = 255
-          Text = 'B'
-          HitTest = True
-          ShowBorder = True
-          Color_Border = '$FF242B39'
-          ColorOnA = '$FF7AA3E9'
-          ColorOnB = '$FF7AA3E9'
-          ColorOffA = '$FFD4DCE8'
-          ColorOffB = '$FFD4DCE8'
-          ButtonState = bsOff
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          OnChanged = LfoSelectButton1Changed
-          Visible = True
-          OnMouseEnter = LfoSelectorMouseEnter
-          OnMouseLeave = LfoSelectorMouseLeave
-          OnMouseUp = LfoSelectButton2MouseUp
-        end
-        object LfoSelector: TVamSliderSwitch
-          Left = 103
-          Top = 79
-          Width = 38
-          Height = 22
-          Opacity = 255
-          Text = 'LfoSelector'
-          HitTest = True
-          ColorBackground = '$FF666666'
-          ColorIndex = '$FFCCCCFF'
-          Enabled = False
-          SwitchSteps = 2
-          SwitchPos = 0
-          OnChanged = LfoSelectorChanged
-          Visible = True
-          OnMouseEnter = LfoSelectorMouseEnter
-          OnMouseLeave = LfoSelectorMouseLeave
-        end
-        object LfoFreqModeSelector: TVamTextBox
+        object LfoAFreqModeSelector: TVamTextBox
           Left = 3
           Top = 87
           Width = 40
@@ -1265,7 +1191,7 @@ object ModControlFrame: TModControlFrame
           ImageOverlayOffsetY = 0
           Visible = True
         end
-        object LfoRangeSelector: TVamTextBox
+        object LfoARangeSelector: TVamTextBox
           Left = 3
           Top = 109
           Width = 40
@@ -1886,6 +1812,240 @@ object ModControlFrame: TModControlFrame
         object FilterRoutingButton: TVamTextBox
           Left = 3
           Top = 73
+          Width = 40
+          Height = 16
+          Opacity = 255
+          DisplayClass = 'MenuButton'
+          Text = '---'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
+          Visible = True
+        end
+      end
+      object LfoBContainer: TVamDiv
+        AlignWithMargins = True
+        Left = 586
+        Top = 183
+        Width = 145
+        Height = 143
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Opacity = 255
+        HitTest = True
+        Visible = True
+        object LfoBContainerLabel: TVamLabel
+          Left = 0
+          Top = 0
+          Width = 145
+          Height = 18
+          Opacity = 255
+          Text = 'LFO TWO'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Align = alTop
+          Visible = True
+        end
+        object LfoBLabel2: TVamLabel
+          Left = 45
+          Top = 57
+          Width = 40
+          Height = 16
+          Opacity = 255
+          Text = 'DEPTH'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object LfoBLabel1: TVamLabel
+          Left = 7
+          Top = 51
+          Width = 32
+          Height = 16
+          Opacity = 255
+          Text = 'RATE'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object LfoBShapeSelector: TVamTextBox
+          Left = 0
+          Top = 65
+          Width = 40
+          Height = 16
+          Opacity = 255
+          DisplayClass = 'MenuButton'
+          Text = '---'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
+          Visible = True
+        end
+        object LfoBKnob1: TVamKnob
+          Left = 0
+          Top = 17
+          Width = 40
+          Height = 32
+          Opacity = 255
+          DisplayClass = 'UniPolarKnob'
+          HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineWidth = 3.000000000000000000
+          ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          IsBipolarKnob = False
+          KnobMode = PositionEdit
+          IsKnobEnabled = True
+          VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
+          Visible = True
+        end
+        object LfoBKnob2: TVamKnob
+          Left = 36
+          Top = 19
+          Width = 40
+          Height = 32
+          Opacity = 255
+          DisplayClass = 'UniPolarKnob'
+          HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineWidth = 3.000000000000000000
+          ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          IsBipolarKnob = False
+          KnobMode = PositionEdit
+          IsKnobEnabled = True
+          VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
+          Visible = True
+        end
+        object LfoBKnob3: TVamKnob
+          Left = 91
+          Top = 24
+          Width = 40
+          Height = 32
+          Opacity = 255
+          DisplayClass = 'UniPolarKnob'
+          HitTest = True
+          ModLineDist = 17.000000000000000000
+          ModLineWidth = 3.000000000000000000
+          ModLineColor = '$FFFF0000'
+          ModLineOffColor = '$FFC0C0C0'
+          IndicatorSize = 2.500000000000000000
+          IndicatorDist = 9.000000000000000000
+          IsBipolarKnob = False
+          KnobMode = PositionEdit
+          IsKnobEnabled = True
+          VisibleSteps = 0
+          MinModDepth = -0.300000011920929000
+          MaxModDepth = 0.500000000000000000
+          ParameterIndex = 0
+          Visible = True
+        end
+        object LfoBLabel3: TVamLabel
+          Left = 91
+          Top = 61
+          Width = 40
+          Height = 16
+          Opacity = 255
+          Text = 'DEPTH'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object LfoBFreqModeSelector: TVamTextBox
+          Left = 3
+          Top = 87
+          Width = 40
+          Height = 16
+          Opacity = 255
+          DisplayClass = 'MenuButton'
+          Text = '---'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
+          Visible = True
+        end
+        object LfoBRangeSelector: TVamTextBox
+          Left = 3
+          Top = 109
           Width = 40
           Height = 16
           Opacity = 255

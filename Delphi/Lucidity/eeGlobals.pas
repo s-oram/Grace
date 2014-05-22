@@ -23,7 +23,6 @@ type
     fSelectedModSlot: integer;
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
-    fSelectedLfo: integer;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
     fKeyGroupLifeTimeManager: TKeyGroupLifeTimeManager;
@@ -31,7 +30,6 @@ type
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
     procedure SetSelectedModSlot(const Value: integer);
-    procedure SetSelectedLfo(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
   protected
@@ -61,8 +59,6 @@ type
     property SelectedModSlot    : integer read fSelectedModSlot    write SetSelectedModSlot;
     property IsMouseOverModSlot : boolean read fIsMouseOverModSlot write fIsMouseOverModSlot;
     property MouseOverModSlot   : integer read fMouseOverModSlot   write fMouseOverModSlot; //valid range is -1..7, same as SelectedModSlot.
-
-    property SelectedLfo        : integer read fSelectedLfo        write SetSelectedLfo;
 
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
@@ -237,17 +233,6 @@ begin
     VclTaskRunner.Clear;
 
     MotherShip.SetIsGuiOpen(false);
-  end;
-end;
-
-procedure TGlobals.SetSelectedLfo(const Value: integer);
-begin
-  assert((Value >= 0) and (Value <= 1));
-
-  if Value <> fSelectedLfo then
-  begin
-    fSelectedLfo := Value;
-    MotherShip.SendMessageUsingGuiThread(TLucidMsgID.LfoChanged);
   end;
 end;
 

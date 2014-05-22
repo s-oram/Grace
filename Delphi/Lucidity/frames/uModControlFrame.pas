@@ -79,12 +79,12 @@ type
     FilterEnvHoldKnob: TVamKnob;
     FilterVelocityButton: TVamTextBox;
     LfoAContainer: TVamDiv;
-    LfoContainerLabel: TVamLabel;
-    LfoLabel2: TVamLabel;
-    LfoLabel1: TVamLabel;
-    LfoShapeSelector: TVamTextBox;
-    LfoKnob1: TVamKnob;
-    LfoKnob2: TVamKnob;
+    LfoAContainerLabel: TVamLabel;
+    LfoALabel2: TVamLabel;
+    LfoALabel1: TVamLabel;
+    LfoAShapeSelector: TVamTextBox;
+    LfoAKnob1: TVamKnob;
+    LfoAKnob2: TVamKnob;
     AmpEnvContainer: TVamDiv;
     VamLabel5: TVamLabel;
     AmpEnvReleaseLabel: TVamLabel;
@@ -113,29 +113,31 @@ type
     VamLabel13: TVamLabel;
     FilterBlendLabel: TVamLabel;
     FilterBlendKnob: TVamKnob;
-    LfoKnob3: TVamKnob;
-    LfoLabel3: TVamLabel;
-    LfoSelectButton1: TVamButton;
-    LfoSelectButton2: TVamButton;
+    LfoAKnob3: TVamKnob;
+    LfoALabel3: TVamLabel;
     Timer1: TTimer;
-    LfoSelector: TVamSliderSwitch;
     Filter1KeyTrackKnob: TVamCompoundNumericKnob;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
-    LfoFreqModeSelector: TVamTextBox;
+    LfoAFreqModeSelector: TVamTextBox;
     FilterRoutingButton: TVamTextBox;
-    LfoRangeSelector: TVamTextBox;
+    LfoARangeSelector: TVamTextBox;
+    LfoBContainer: TVamDiv;
+    LfoBContainerLabel: TVamLabel;
+    LfoBLabel2: TVamLabel;
+    LfoBLabel1: TVamLabel;
+    LfoBShapeSelector: TVamTextBox;
+    LfoBKnob1: TVamKnob;
+    LfoBKnob2: TVamKnob;
+    LfoBKnob3: TVamKnob;
+    LfoBLabel3: TVamLabel;
+    LfoBFreqModeSelector: TVamTextBox;
+    LfoBRangeSelector: TVamTextBox;
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
-    procedure LfoSelectButton1Changed(Sender: TObject);
-    procedure LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure Timer1Timer(Sender: TObject);
-    procedure LfoSelectorChanged(Sender: TObject);
-    procedure LfoSelectorMouseEnter(Sender: TObject);
-    procedure LfoSelectorMouseLeave(Sender: TObject);
   private
     fPlugin: TeePlugin;
-    KnobList : TObjectList;
+    KnobList : TObjectList; //TODO:MED is this knob list being used?
     procedure UpdateControlVisibility;
     procedure UpdateLfo; //called when the mod slot changes...
   private
@@ -210,10 +212,32 @@ begin
   KnobList.Add(Filter2Par2Knob);
   KnobList.Add(Filter2Par3Knob);
   KnobList.Add(Filter2Par4Knob);
-  KnobList.Add(LfoKnob1);
-  KnobList.Add(LfoKnob2);
-  KnobList.Add(LfoKnob3);
+  KnobList.Add(LfoAKnob1);
+  KnobList.Add(LfoAKnob2);
+  KnobList.Add(LfoAKnob3);
+  KnobList.Add(LfoBKnob1);
+  KnobList.Add(LfoBKnob2);
+  KnobList.Add(LfoBKnob3);
   KnobList.Add(FilterBlendKnob);
+
+
+
+  LfoAKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo1Par1);
+  LfoAKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo1Par2);
+  LfoAKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo1Par3);
+
+  LfoAShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Shape);
+  LfoAFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo1FreqMode);
+  LfoARangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Range);
+
+
+  LfoBKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo2Par1);
+  LfoBKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo2Par2);
+  LfoBKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo2Par3);
+
+  LfoBShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Shape);
+  LfoBFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
+  LfoBRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Range);
 
 
   
@@ -274,9 +298,12 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, Filter2Par4Knob,                 TPluginParameter.Filter2Par4);
   GuiStandard_RegisterControl(aGuiStandard, Filter1KeyTrackKnob,             TPluginParameter.Filter1KeyFollow);
   GuiStandard_RegisterControl(aGuiStandard, Filter2KeyTrackKnob,             TPluginParameter.Filter2KeyFollow);
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob1,                        TPluginParameter.Lfo1Par1);
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob2,                        TPluginParameter.Lfo1Par2);
-  GuiStandard_RegisterControl(aGuiStandard, LfoKnob3,                        TPluginParameter.Lfo1Par3);
+  GuiStandard_RegisterControl(aGuiStandard, LfoAKnob1,                       TPluginParameter.Lfo1Par1);
+  GuiStandard_RegisterControl(aGuiStandard, LfoAKnob2,                       TPluginParameter.Lfo1Par2);
+  GuiStandard_RegisterControl(aGuiStandard, LfoAKnob3,                       TPluginParameter.Lfo1Par3);
+  GuiStandard_RegisterControl(aGuiStandard, LfoBKnob1,                       TPluginParameter.Lfo2Par1);
+  GuiStandard_RegisterControl(aGuiStandard, LfoBKnob2,                       TPluginParameter.Lfo2Par2);
+  GuiStandard_RegisterControl(aGuiStandard, LfoBKnob3,                       TPluginParameter.Lfo2Par3);
 
   GuiStandard_RegisterMenuButton(aGuiStandard, FilterRoutingButton,    TPluginParameter.FilterRouting);
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter1TypeTextBox,     TPluginParameter.Filter1Type);
@@ -290,15 +317,12 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq2DirectionTextBox,   TPluginParameter.Seq2Direction);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq2StepsTextBox,       TPluginParameter.Seq2Length);
 
-  GuiStandard_RegisterMenuButton(aGuiStandard, LfoShapeSelector,       TPluginParameter.Lfo1Shape);
-  GuiStandard_RegisterMenuButton(aGuiStandard, LfoFreqModeSelector,    TPluginParameter.Lfo1FreqMode);
-  GuiStandard_RegisterMenuButton(aGuiStandard, LfoRangeSelector,       TPluginParameter.Lfo1Range);
-
-
-
-
-  //============================================================================
-  AddDisplayClass(LfoSelector,      LfoControlDisplayClass);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoAShapeSelector,       TPluginParameter.Lfo1Shape);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoAFreqModeSelector,    TPluginParameter.Lfo1FreqMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoARangeSelector,       TPluginParameter.Lfo1Range);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoBShapeSelector,       TPluginParameter.Lfo2Shape);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoBFreqModeSelector,    TPluginParameter.Lfo2FreqMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LfoBRangeSelector,       TPluginParameter.Lfo2Range);
 
 
   //============================================================================
@@ -322,7 +346,7 @@ begin
       Filter1TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
       Filter1KeyTrackKnob.Layout.AdjustBounds(-4,0,-4,0);
 
-  LfoAContainer.Width := (FilterKnobWidth + 32 + 32 + 8);
+  LfoAContainer.Width := (FilterKnobWidth * 3);
   LfoAContainer.Height := RowHeight;
   LfoAContainer.Layout.SetPos(kContainerWidth - 16, 8, TAlignPoint.TopRight);
 
@@ -352,14 +376,14 @@ begin
   FilterEnvContainer.Height := RowHeight;
   FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
-
-
-
   FilterBlendContainer.Width := (FilterKnobWidth);
   FilterBlendContainer.Height := RowHeight;
   FilterBlendContainer.Layout.Anchor(Filter1Container).SnapToEdge(TControlFeature.RightEdge).Move(16,0);
 
 
+  LfoBContainer.Width := (FilterKnobWidth * 3);
+  LfoBContainer.Height := RowHeight;
+  LfoBContainer.Layout.Anchor(LfoAContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
 
 
@@ -471,40 +495,58 @@ begin
 
 
   //==== LFO 1 ========================================
-  LfoContainerLabel.Align  := alNone;
-  LfoContainerLabel.Width  := kw * 2;
-  LfoContainerLabel.Height := TGuiConst.SectionLabelHeight;
-  LfoContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
-  LfoContainerLabel.Layout.SetPos(12, 0);
+  LfoAContainerLabel.Align  := alTop;
+  LfoAContainerLabel.Height := TGuiConst.SectionLabelHeight;
+  LfoAContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
+  LfoAContainerLabel.Layout.SetPos(12, 0);
 
-  LfoSelectButton2.Layout.SetSize(18,18);
-  LfoSelectButton2.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-6,0);
-  LfoSelectButton2.Top := 0;
+  LfoAKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  LfoAKnob2.Layout.SetSize(kw, kh).Anchor(LfoAKnob1).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
+  LfoAKnob3.Layout.SetSize(kw, kh).Anchor(LfoAKnob2).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
 
-  LfoSelector.Layout.SetSize(30,18);
-  LfoSelector.Layout.Anchor(LfoSelectButton2).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
+  LfoALabel1.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoAKnob1).SnapToEdge(TControlFeature.BottomEdge);
+  LfoALabel2.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoAKnob2).SnapToEdge(TControlFeature.BottomEdge);
+  LfoALabel3.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoAKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
-  LfoSelectButton1.Layout.SetSize(18,18).Anchor(LfoSelector).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
+  // NOTE: The LFO Shape selector is wider than the others, but might be reduced if I add "Global/Reset/Free" lfo mode selector button.
+  //LfoAShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoAShapeSelector.Layout.SetSize(54, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+
+  LfoAFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
+  LfoAFreqModeSelector.Layout.Anchor(LfoAShapeSelector).SnapToEdge(TControlFeature.RightEdge);
+  LfoARangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoAFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
+
+  LfoAShapeSelector.Layout.AdjustBounds(0,0,-2,0);
+  LfoAFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
+  LfoARangeSelector.Layout.AdjustBounds(-2,0,0,0);
+  //==================================================
 
 
-  LfoKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
-  LfoKnob2.Layout.SetSize(32, 32).Anchor(LfoKnob1).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
-  LfoKnob3.Layout.SetSize(32, 32).Anchor(LfoKnob2).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
+  //==== LFO B ========================================
+  LfoBContainerLabel.Align  := alTop;
+  LfoBContainerLabel.Height := TGuiConst.SectionLabelHeight;
+  LfoBContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
+  LfoBContainerLabel.Layout.SetPos(12, 0);
 
-  LfoLabel1.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoKnob1).SnapToEdge(TControlFeature.BottomEdge);
-  LfoLabel2.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob2).SnapToEdge(TControlFeature.BottomEdge);
-  LfoLabel3.Layout.SetSize(32, TGuiConst.KnobLabelHeight).Anchor(LfoKnob3).SnapToEdge(TControlFeature.BottomEdge);
+  LfoBKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
+  LfoBKnob2.Layout.SetSize(kw, kh).Anchor(LfoBKnob1).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
+  LfoBKnob3.Layout.SetSize(kw, kh).Anchor(LfoBKnob2).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge);
 
-  //LfoShapeTextBox1.Layout.SetSize(68, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoBLabel1.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoBKnob1).SnapToEdge(TControlFeature.BottomEdge);
+  LfoBLabel2.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoBKnob2).SnapToEdge(TControlFeature.BottomEdge);
+  LfoBLabel3.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(LfoBKnob3).SnapToEdge(TControlFeature.BottomEdge);
 
-  LfoFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
-  LfoFreqModeSelector.Layout.Anchor(LfoShapeSelector).SnapToEdge(TControlFeature.RightEdge);
-  LfoRangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
+  // NOTE: The LFO Shape selector is wider than the others, but might be reduced if I add "Global/Reset/Free" lfo mode selector button.
+  //LfoBShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoBShapeSelector.Layout.SetSize(54, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
 
-  LfoShapeSelector.Layout.AdjustBounds(0,0,-2,0);
-  LfoFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
-  LfoRangeSelector.Layout.AdjustBounds(-2,0,0,0);
+  LfoBFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
+  LfoBFreqModeSelector.Layout.Anchor(LfoBShapeSelector).SnapToEdge(TControlFeature.RightEdge);
+  LfoBRangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoBFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
+
+  LfoBShapeSelector.Layout.AdjustBounds(0,0,-2,0);
+  LfoBFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
+  LfoBRangeSelector.Layout.AdjustBounds(-2,0,0,0);
   //==================================================
 
 
@@ -526,17 +568,18 @@ begin
   GuiSetup.StyleButton_SelectorButton(FilterRoutingButton);
   GuiSetup.StyleButton_SelectorButton(Filter1TypeTextBox);
   GuiSetup.StyleButton_SelectorButton(Filter2TypeTextBox);
-  GuiSetup.StyleButton_SelectorButton(LfoShapeSelector);
-  GuiSetup.StyleButton_SelectorButton(LfoFreqModeSelector);
-  GuiSetup.StyleButton_SelectorButton(LfoRangeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoAShapeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoAFreqModeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoARangeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoBShapeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoBFreqModeSelector);
+  GuiSetup.StyleButton_SelectorButton(LfoBRangeSelector);
   GuiSetup.StyleButton_SelectorButton(Seq1ClockTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq1DirectionTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq1StepsTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq2ClockTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq2DirectionTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq2StepsTextBox);
-
-
 
   Filter1KeyTrackKnob.Padding.Left  := 4;
   Filter1KeyTrackKnob.Padding.Right := 4;
@@ -553,24 +596,6 @@ begin
   Filter2KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
   Filter2KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
   Filter2KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
-
-
-
-  LfoSelector.BackgroundImage := Plugin.Globals.SkinImageLoader.GetImage('Switch_Background');
-  LfoSelector.IndexImage      := Plugin.Globals.SkinImageLoader.GetImage('Switch_Index');
-
-  LfoSelectButton1.Color_Border := '$00000000';
-  LfoSelectButton1.ColorOnA     := '$00000000';
-  LfoSelectButton1.ColorOnB     := '$66000000';
-  LfoSelectButton1.ColorOffA    := '$00000000';
-  LfoSelectButton1.ColorOffB    := '$66000000';
-
-  LfoSelectButton2.Color_Border := '$00000000';
-  LfoSelectButton2.ColorOnA     := '$00000000';
-  LfoSelectButton2.ColorOnB     := '$66000000';
-  LfoSelectButton2.ColorOffA    := '$00000000';
-  LfoSelectButton2.ColorOffB    := '$66000000';
-
 
 
   //TODO:MED Delete this timer.
@@ -710,42 +735,11 @@ procedure TModControlFrame.UpdateLfo;
 var
   CurrentLfoShape : TLfoShape;
 begin
-  assert((Plugin.Globals.SelectedLfo = 0) or (Plugin.Globals.SelectedLfo = 1));
+  // TODO:LOW: there's duplicated code here. It might be better to refactor that away.
 
 
-  if Plugin.Globals.SelectedLfo = 0 then
-  begin
-    LfoSelectButton1.IsOn := true;
-    LfoSelectButton2.IsOn := false;
-    LfoSelector.SwitchPos := 0;
-
-    LfoKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo1Par1);
-    LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo1Par2);
-    LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo1Par3);
-
-    LfoShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Shape);
-    LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo1FreqMode);
-    LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Range);
-
-    CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo1Shape);
-  end else
-  //if Plugin.Globals.SelectedLfo = 1 then
-  begin
-    LfoSelectButton1.IsOn := false;
-    LfoSelectButton2.IsOn := true;
-    LfoSelector.SwitchPos := 1;
-
-    LfoKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo2Par1);
-    LfoKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo2Par2);
-    LfoKnob3.ParameterName := PluginParToName(TPluginParameter.Lfo2Par3);
-
-    LfoShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Shape);
-    LfoFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
-    LfoRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Range);
-
-    CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo2Shape);
-  end;
-
+  //==== LFO 1 ===================
+  CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo1Shape);
 
 
   case CurrentLfoShape of
@@ -755,99 +749,92 @@ begin
     TLfoShape.Triangle,
     TLfoShape.Sine:
     begin
-      LfoLabel1.Text := 'RATE';
-      LfoLabel2.Text := 'PH';
-      LfoLabel3.Text := 'SYM';
+      LfoALabel1.Text := 'RATE';
+      LfoALabel2.Text := 'PH';
+      LfoALabel3.Text := 'SYM';
     end;
 
     TLfoShape.RandomStepped,
     TLfoShape.RandomSmooth:
     begin
-      LfoLabel1.Text := 'RATE';
-      LfoLabel2.Text := '%';
-      LfoLabel3.Text := 'FLUX';
+      LfoALabel1.Text := 'RATE';
+      LfoALabel2.Text := '%';
+      LfoALabel3.Text := 'FLUX';
     end;
 
     TLfoShape.AttackDecay:
     begin
-      LfoLabel1.Text := 'CURVE';
-      LfoLabel2.Text := 'A';
-      LfoLabel3.Text := 'D';
+      LfoALabel1.Text := 'CURVE';
+      LfoALabel2.Text := 'A';
+      LfoALabel3.Text := 'D';
     end;
 
     TLfoShape.AttackRelease:
     begin
-      LfoLabel1.Text := 'CURVE';
-      LfoLabel2.Text := 'A';
-      LfoLabel3.Text := 'R';
+      LfoALabel1.Text := 'CURVE';
+      LfoALabel2.Text := 'A';
+      LfoALabel3.Text := 'R';
     end;
 
     TLfoShape.Cycle:
     begin
-      LfoLabel1.Text := 'CURVE';
-      LfoLabel2.Text := 'A';
-      LfoLabel3.Text := 'D';
+      LfoALabel1.Text := 'CURVE';
+      LfoALabel2.Text := 'A';
+      LfoALabel3.Text := 'D';
     end;
   else
     raise Exception.Create('Type not handled.');
   end;
 
 
-end;
 
-procedure TModControlFrame.LfoSelectButton1Changed(Sender: TObject);
-var
-  Index : integer;
-begin
-  Index := (Sender as TWinControl).Tag;
-  Plugin.Globals.SelectedLfo := Index;
-  UpdateLfo;
-
-  //TODO: I'm not sure if this message here is entirely necessary.
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
-end;
+  //==== LFO 2 ===================
+  CurrentLfoShape := Command.GetParValue<TLfoShape>(Plugin, TPluginParameter.Lfo2Shape);
 
 
+  case CurrentLfoShape of
+    TLfoShape.SawUp,
+    TLfoShape.SawDown,
+    TLfoShape.Square,
+    TLfoShape.Triangle,
+    TLfoShape.Sine:
+    begin
+      LfoBLabel1.Text := 'RATE';
+      LfoBLabel2.Text := 'PH';
+      LfoBLabel3.Text := 'SYM';
+    end;
 
+    TLfoShape.RandomStepped,
+    TLfoShape.RandomSmooth:
+    begin
+      LfoBLabel1.Text := 'RATE';
+      LfoBLabel2.Text := '%';
+      LfoBLabel3.Text := 'FLUX';
+    end;
 
-procedure TModControlFrame.LfoSelectButton2MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  Index : integer;
-begin
-  Index := (Sender as TWinControl).Tag;
-  Plugin.Globals.SelectedLfo := Index;
-  UpdateLfo;
+    TLfoShape.AttackDecay:
+    begin
+      LfoBLabel1.Text := 'CURVE';
+      LfoBLabel2.Text := 'A';
+      LfoBLabel3.Text := 'D';
+    end;
 
-  //TODO: I'm not sure if this message here is entirely necessary.
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
-end;
+    TLfoShape.AttackRelease:
+    begin
+      LfoBLabel1.Text := 'CURVE';
+      LfoBLabel2.Text := 'A';
+      LfoBLabel3.Text := 'R';
+    end;
 
-
-procedure TModControlFrame.LfoSelectorChanged(Sender: TObject);
-var
-  Index : integer;
-begin
-  Index := (Sender as TVamSliderSwitch).SwitchPos;
-  assert(Index >= 0);
-  assert(Index <= 1);
-  Plugin.Globals.SelectedLfo := Index;
-  UpdateLfo;
-
-  //TODO: I'm not sure if this message here is entirely necessary.
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.ModSlotChanged);
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.Command_UpdateScope);
-end;
-
-procedure TModControlFrame.LfoSelectorMouseEnter(Sender: TObject);
-begin
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnLfoSelectorEnter);
-end;
-
-procedure TModControlFrame.LfoSelectorMouseLeave(Sender: TObject);
-begin
-  Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnLfoSelectorLeave);
+    TLfoShape.Cycle:
+    begin
+      LfoBLabel1.Text := 'CURVE';
+      LfoBLabel2.Text := 'A';
+      LfoBLabel3.Text := 'D';
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 end.

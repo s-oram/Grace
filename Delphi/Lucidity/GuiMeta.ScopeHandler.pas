@@ -271,12 +271,16 @@ var
 begin
   if IsLfoSelectorOverride then
   begin
+    //TODO:HIGH scope focus needs to change because we now have two lfo control sets!
+    {
     case Plugin.Globals.SelectedLfo of
       0: ScopeFocus := TScopeFocus.Lfo1;
       1: ScopeFocus := TScopeFocus.Lfo2;
     else
       raise Exception.Create('Type not handled.');
     end;
+    }
+    ScopeFocus := TScopeFocus.Lfo1;
   end else
   if IsParFocusActive then
   begin

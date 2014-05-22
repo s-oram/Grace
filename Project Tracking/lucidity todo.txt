@@ -7,11 +7,12 @@
 
 Delete 50-50 filter blend mode.
 
-- may the small parameter display should be 'overlaid' over the sample display
-  so the LFO's can be split into two.
+- Bug: can't edit sample modulation amounts correctly when sample is zoomed!
 
+Add VST Parameters
 
-
+The Scope needs some sort of debouncer/throttle handler for stop the scope from flickering between
+modes as the user mouses around.
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 

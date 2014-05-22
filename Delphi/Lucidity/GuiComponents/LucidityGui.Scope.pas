@@ -348,8 +348,8 @@ begin
 
     Path.LineTo(dx2, dy2);
 
-    dx1 := dx2;
-    dy1 := dy2;
+    //dx1 := dx2;
+    //dy1 := dy2;
   end;
 end;
 
@@ -812,8 +812,8 @@ begin
 
 
   //== Draw Off Stage ==
-  x1 := x4;
-  y1 := y4;
+  //x1 := x4;
+  //y1 := y4;
   x4 := ScopeRect.Right;
   y4 := ScopeRect.Bottom;
 
@@ -1464,7 +1464,7 @@ begin
 
   //== Draw Sustain Stage ==
   x1 := x4;
-  y1 := y4;
+  //y1 := y4;
   x4 := x1 + SectionWidth * ((1 - AdsrValues.Attack) + (1 - AdsrValues.Decay) + (1 - AdsrValues.Hold * 0.5));
   y4 := ScopeRect.Top + ScopeRect.Height * (1 - AdsrValues.Sustain);
   Path.LineTo(x4,y4);
@@ -1485,8 +1485,8 @@ begin
 
 
   //== Draw Off Stage ==
-  x1 := x4;
-  y1 := y4;
+  //x1 := x4;
+  //y1 := y4;
   x4 := ScopeRect.Right;
   y4 := ScopeRect.Bottom;
   Path.LineTo(x4,y4);
