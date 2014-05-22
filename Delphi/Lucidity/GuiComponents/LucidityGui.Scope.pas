@@ -323,6 +323,36 @@ begin
   end;
 end;
 
+procedure AddEnvCurveToPath(Path: TAggPathStorage; const x1, y1, x2, y2, CurveAmount : single);
+var
+  Steps : integer;
+  Dist  : single;
+  c1: Integer;
+  dx1, dx2, dy1, dy2 : single;
+  EnvPhase : single;
+begin
+  assert(x2 > x1);
+  Steps := ceil(x2 - x1);
+  Dist  := x2 - x1;
+
+  dx1 := x1;
+  dy1 := y1;
+
+  Path.LineTo(dx1, dy1);
+
+  for c1 := 1 to Steps-1 do
+  begin
+    EnvPhase := c1 / (Steps-1);
+    dx2 := x1 + (EnvPhase * Dist);
+    dy2 := EnvCurve(y1, y2, EnvPhase, CurveAmount);
+
+    Path.LineTo(dx2, dy2);
+
+    dx1 := dx2;
+    dy1 := dy2;
+  end;
+end;
+
 
 
 
@@ -751,10 +781,17 @@ var
   //x3, y3 : single;
   x4, y4 : single;
   SectionWidth : single;
-var
   CurveAmount : single;
+  Path: TAggPathStorage;
 begin
   SectionWidth := ScopeRect.Width / 2.3;
+
+  //== pre-amble ==
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+  x1 := ScopeRect.Left-5;
+  y1 := ScopeRect.Top + ScopeRect.Height;
+  Path.MoveTo(x1, y1);
 
 
   CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
@@ -764,17 +801,14 @@ begin
   y1 := ScopeRect.Bottom;
   x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
   y4 := ScopeRect.Top;
-
-  DrawEnvCurve(BackBuffer, x1,y1, x4,y4, CurveAmount);
-
+  AddEnvCurveToPath(Path, x1,y1, x4,y4, CurveAmount);
 
   //== Draw Release Stage ==
   x1 := x4;
   y1 := y4;
   x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
   y4 := ScopeRect.Bottom;
-
-  DrawEnvCurve(BackBuffer, x1,y1, x4,y4, 1-CurveAmount);
+  AddEnvCurveToPath(Path, x1,y1, x4,y4, 1-CurveAmount);
 
 
   //== Draw Off Stage ==
@@ -782,7 +816,20 @@ begin
   y1 := y4;
   x4 := ScopeRect.Right;
   y4 := ScopeRect.Bottom;
-  BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+
+  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
+  Path.LineTo(x4,y4);
+
+
+
+  //== post-amble ==
+  x1 := ScopeRect.Right + 5;
+  y1 := ScopeRect.Top + ScopeRect.Height;
+  Path.LineTo(x1, y1);
+
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 end;
 
 
@@ -795,10 +842,17 @@ var
   //x3, y3 : single;
   x4, y4 : single;
   SectionWidth : single;
-var
   CurveAmount : single;
+  Path: TAggPathStorage;
 begin
   SectionWidth := ScopeRect.Width / 2.3;
+
+  //== pre-amble ==
+  Path := TAggPathStorage.Create;
+  AutoFree(@Path);
+  x1 := ScopeRect.Left-5;
+  y1 := ScopeRect.Top + ScopeRect.Height;
+  Path.MoveTo(x1, y1);
 
 
   CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
@@ -811,20 +865,28 @@ begin
     //== Draw Attack Stage ==
     x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
     y4 := ScopeRect.Top;
-    DrawEnvCurve(BackBuffer, x1,y1, x4,y4, CurveAmount);
+    AddEnvCurveToPath(Path, x1,y1, x4,y4, CurveAmount);
 
     //== Draw Release Stage ==
     x1 := x4;
     y1 := y4;
     x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
     y4 := ScopeRect.Bottom;
-
-    DrawEnvCurve(BackBuffer, x1,y1, x4,y4, 1-CurveAmount);
+    AddEnvCurveToPath(Path, x1,y1, x4,y4, 1-CurveAmount);
 
     x1 := x4;
     y1 := y4;
   end;
 
+
+  //== post-amble ==
+  x1 := ScopeRect.Right + 5;
+  y1 := ScopeRect.Top + ScopeRect.Height;
+  Path.LineTo(x1, y1);
+
+  BackBuffer.BufferInterface.ResetPath;
+  BackBuffer.BufferInterface.AddPath(Path);
+  BackBuffer.BufferInterface.DrawPath;
 end;
 
 
