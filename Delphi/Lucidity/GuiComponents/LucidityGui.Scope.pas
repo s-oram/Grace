@@ -160,17 +160,19 @@ type
     class procedure Draw_Lfo_Cycle(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; LfoValues : TScopeLfoValues);
   end;
 
+  // TODO:LOW all these methods arguments could have const qualifiers added.
   TFilterBlendDrawingRoutines = class
   private
+    class procedure Draw_Background(const BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; const ForegroundColor, BackgroundColor:TRedFoxColor);
     class procedure Draw_SignalTriangleRight(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
     class procedure Draw_SignalTriangleDown(BackBuffer:TRedFoxImageBuffer; TargetPointX, TargetPointY : single);
     class procedure Draw_Boxes(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
     class procedure Draw_InputOutputLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Color:TRedFoxColor; FR : TFilterRouting; const Box1, Box2, Box3 : TRect);
     class procedure Draw_BlendAmountLines(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; Color:TRedFoxColor; out Box1, Box2, Box3 : TRect);
   public
-    class procedure Draw_Serial(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor:TRedFoxColor);
-    class procedure Draw_Parallel(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor:TRedFoxColor);
-    class procedure Draw_FiftyFifty(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor:TRedFoxColor);
+    class procedure Draw_Serial(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor, BackgroundColor:TRedFoxColor);
+    class procedure Draw_Parallel(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor, BackgroundColor:TRedFoxColor);
+    class procedure Draw_FiftyFifty(BackBuffer:TRedFoxImageBuffer; ScopeRect : TRect; Font : TFont; const BlendAmt : single; ForegroundColor, BackgroundColor:TRedFoxColor);
   end;
 
   TAdsrDrawingRoutines = class
@@ -577,13 +579,20 @@ begin
 end;
 
 procedure TLucidityScope.Draw_FilterBlend;
+var
+  RoutingRect : TRect;
 begin
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
+  RoutingRect.Left  := ScopeRect.Left  + 100;
+  RoutingRect.Right := ScopeRect.Right - 100;
+  RoutingRect.Top    := ScopeRect.Top    + 20;
+  RoutingRect.Bottom := ScopeRect.Bottom - 20;
+
   case FilterBlendValues.FilterRouting of
-    TFilterRouting.Serial:     TFilterBlendDrawingRoutines.Draw_Serial(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
-    TFilterRouting.Parallel:   TFilterBlendDrawingRoutines.Draw_Parallel(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
-    TFilterRouting.FiftyFifty: TFilterBlendDrawingRoutines.Draw_FiftyFifty(DiagramBuffer, ScopeRect, Font, FilterBlendValues.BlendAmt, fColorForeground);
+    TFilterRouting.Serial:     TFilterBlendDrawingRoutines.Draw_Serial(DiagramBuffer, RoutingRect, Font, FilterBlendValues.BlendAmt, fColorForeground, fColorBackground);
+    TFilterRouting.Parallel:   TFilterBlendDrawingRoutines.Draw_Parallel(DiagramBuffer, RoutingRect, Font, FilterBlendValues.BlendAmt, fColorForeground, fColorBackground);
+    TFilterRouting.FiftyFifty: TFilterBlendDrawingRoutines.Draw_FiftyFifty(DiagramBuffer, RoutingRect, Font, FilterBlendValues.BlendAmt, fColorForeground, fColorBackground);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -985,6 +994,19 @@ begin
   BackBuffer.BufferInterface.Polygon(@TriPoints[0], 3);
 end;
 
+class procedure TFilterBlendDrawingRoutines.Draw_Background(const BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; const ForegroundColor, BackgroundColor: TRedFoxColor);
+begin
+  ScopeRect.Left := ScopeRect.Left;
+  ScopeRect.Top := ScopeRect.Top;
+  ScopeRect.Right := ScopeRect.Right;
+  ScopeRect.Bottom := ScopeRect.Bottom;
+
+  BackBuffer.BufferInterface.FillColor := BackgroundColor;
+  BackBuffer.BufferInterface.LineColor := ForegroundColor;
+  BackBuffer.BufferInterface.LineWidth := 2;
+  BackBuffer.BufferInterface.RoundedRect(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
+end;
+
 class procedure TFilterBlendDrawingRoutines.Draw_BlendAmountLines(BackBuffer: TRedFoxImageBuffer;
   ScopeRect: TRect; Font: TFont; const BlendAmt: single; Color: TRedFoxColor; out Box1, Box2, Box3: TRect);
 var
@@ -1227,10 +1249,12 @@ end;
 
 
 
-class procedure TFilterBlendDrawingRoutines.Draw_FiftyFifty(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor:TRedFoxColor);
+class procedure TFilterBlendDrawingRoutines.Draw_FiftyFifty(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor, BackgroundColor:TRedFoxColor);
 var
   Box1, Box2, Box3 : TRect;
 begin
+  Draw_Background(BackBuffer, ScopeRect, ForegroundColor, BackgroundColor);
+
   BackBuffer.UpdateFont(Font);
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
@@ -1240,10 +1264,12 @@ begin
   Draw_BlendAmountLines(BackBuffer, ScopeRect, Font, BlendAmt, ForegroundColor, Box1, Box2, Box3);
 end;
 
-class procedure TFilterBlendDrawingRoutines.Draw_Parallel(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor:TRedFoxColor);
+class procedure TFilterBlendDrawingRoutines.Draw_Parallel(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor, BackgroundColor:TRedFoxColor);
 var
   Box1, Box2, Box3 : TRect;
 begin
+  Draw_Background(BackBuffer, ScopeRect, ForegroundColor, BackgroundColor);
+
   BackBuffer.UpdateFont(Font);
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
@@ -1253,10 +1279,12 @@ begin
   Draw_BlendAmountLines(BackBuffer, ScopeRect, Font, BlendAmt, ForegroundColor, Box1, Box2, Box3);
 end;
 
-class procedure TFilterBlendDrawingRoutines.Draw_Serial(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor:TRedFoxColor);
+class procedure TFilterBlendDrawingRoutines.Draw_Serial(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; Font : TFont; const BlendAmt: single; ForegroundColor, BackgroundColor:TRedFoxColor);
 var
   Box1, Box2, Box3 : TRect;
 begin
+  Draw_Background(BackBuffer, ScopeRect, ForegroundColor, BackgroundColor);
+
   BackBuffer.UpdateFont(Font);
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
