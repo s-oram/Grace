@@ -164,29 +164,6 @@ object SampleMapFrame: TSampleMapFrame
           Opacity = 255
           HitTest = True
           Visible = True
-          object SampleNameLabel: TVamLabel
-            Left = 0
-            Top = 0
-            Width = 169
-            Height = 30
-            Margins.Left = 0
-            Margins.Top = 0
-            Margins.Right = 8
-            Margins.Bottom = 0
-            Opacity = 255
-            Text = 'Awesome Sample.wav'
-            HitTest = True
-            AutoSize = False
-            TextAlign = AlignNear
-            TextVAlign = AlignCenter
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            Align = alLeft
-            Visible = True
-          end
           object RootNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
             Left = 554

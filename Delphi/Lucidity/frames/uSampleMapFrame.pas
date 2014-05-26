@@ -23,7 +23,6 @@ type
     SampleMapKeys: TVamSamplerKeys;
     SampleMap: TVamSampleMap;
     RegionInfoBox: TVamDiv;
-    SampleNameLabel: TVamLabel;
     InsidePanel: TVamPanel;
     UpperPanelArea: TVamPanel;
     RootNoteKnob: TVamCompoundNumericKnob;
@@ -183,11 +182,7 @@ begin
 
   RegionInfoBox.Align := alClient;
 
-  SampleNameLabel.Align := alClient;
-
   SampleMapRegionInfoChanged(self);
-
-  SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
   LowVelKnob.Color_Label   := GetRedFoxColor(kColor_LcdDark4);
   LowVelKnob.Color_Numeric := GetRedFoxColor(kColor_LcdDark5);
@@ -920,7 +915,6 @@ end;
 
 procedure TSampleMapFrame.UpdateRegionInfoControls(const SampleName, LowNote, HighNote, LowVel, HighVel, RootNote: string);
 begin
-  SampleNameLabel.Text        := SampleName;
   LowNoteKnob.KnobCustomText  := LowNote;
   HighNoteKnob.KnobCustomText := HighNote;
   LowVelKnob.KnobCustomText   := LowVel;
@@ -930,7 +924,6 @@ end;
 
 procedure TSampleMapFrame.UpdateRegionInfoControls(const SampleName: string; const LowNote, HighNote, LowVel, HighVel, RootNote: integer);
 begin
-  SampleNameLabel.Text        := SampleName;
   LowNoteKnob.KnobCustomText  := MidiNoteToName(LowNote);
   HighNoteKnob.KnobCustomText := MidiNoteToName(HighNote);
   LowVelKnob.KnobCustomText   := IntToStr(LowVel);
