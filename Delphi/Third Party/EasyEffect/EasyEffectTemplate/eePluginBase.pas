@@ -125,6 +125,7 @@ type
     property OnPresetNameChanged : TNotifyEvent read fOnPresetNameChanged write fOnPresetNameChanged;
 
 
+    //TODO: This is the class that will get replaced by the new VST Parameter system.
     property PublishedVstParameters : TPublishedVstParameterController read fPublishedVstParameters;
   end;
 
