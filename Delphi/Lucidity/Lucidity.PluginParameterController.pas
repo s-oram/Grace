@@ -103,7 +103,7 @@ begin
       TPluginParameter.SamplerLoopBounds:      result := TSamplerLoopBoundsHelper.ToSingle(VoicePar.SamplerLoopBounds);
       TPluginParameter.SamplerLoopMode:        result := TKeyGroupTriggerModeHelper.ToSingle(VoicePar.SamplerLoopMode);
       TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.AmpVelocityDepth);
-      TPluginParameter.ModVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.FilterVelocityDepth);
+      TPluginParameter.ModVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.ModVelocityDepth);
       TPluginParameter.FilterRouting:          result := TFilterRoutingHelper.ToSingle(VoicePar.FilterRouting);
       TPluginParameter.Filter1Type:            result := TFilterTypeHelper.ToSingle(VoicePar.Filter1Type);
       TPluginParameter.Filter2Type:            result := TFilterTypeHelper.ToSingle(VoicePar.Filter2Type);
@@ -240,7 +240,7 @@ begin
       TPluginParameter.SamplerLoopBounds:      VoicePar.SamplerLoopBounds   := TSamplerLoopBoundsHelper.ToEnum(ParValue);
       TPluginParameter.SamplerLoopMode:        VoicePar.SamplerLoopMode     := TKeyGroupTriggerModeHelper.ToEnum(ParValue);
       TPluginParameter.AmpVelocity:            VoicePar.AmpVelocityDepth    := TEnvVelocityDepthHelper.ToEnum(ParValue);
-      TPluginParameter.ModVelocity:            VoicePar.FilterVelocityDepth := TEnvVelocityDepthHelper.ToEnum(ParValue);
+      TPluginParameter.ModVelocity:            VoicePar.ModVelocityDepth    := TEnvVelocityDepthHelper.ToEnum(ParValue);
       TPluginParameter.FilterRouting:          VoicePar.FilterRouting       := TFilterRoutingHelper.ToEnum(ParValue);
       TPluginParameter.Filter1Type:            VoicePar.Filter1Type         := TFilterTypeHelper.ToEnum(ParValue);
       TPluginParameter.Filter2Type:            VoicePar.Filter2Type         := TFilterTypeHelper.ToEnum(ParValue);

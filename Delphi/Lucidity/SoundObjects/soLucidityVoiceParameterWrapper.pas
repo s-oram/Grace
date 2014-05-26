@@ -42,11 +42,11 @@ type
     fFilter2Par1: single;
     fFilter2Par2: single;
     fFilter2Par3: single;
-    fFilterAttack: single;
-    fFilterHold: single;
-    fFilterDecay: single;
-    fFilterSustain: single;
-    fFilterRelease: single;
+    fModAttack: single;
+    fModHold: single;
+    fModDecay: single;
+    fModSustain: single;
+    fModRelease: single;
     fLfoRate1: single;
     fLfoRate2: single;
     fSeq1Clock: TSequencerClock;
@@ -66,7 +66,7 @@ type
     fLfoAPar2: single;
     fLfoBPar2: single;
     fAmpVelocityDepth: TEnvVelocityDepth;
-    fFilterVelocityDepth: TEnvVelocityDepth;
+    fModVelocityDepth: TEnvVelocityDepth;
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
     fFilter1Par4: single;
@@ -92,11 +92,11 @@ type
     procedure SetFilter2Par2(const Value: single);
     procedure SetFilter2Par3(const Value: single);
     procedure SetFilter2Type(const Value: TFilterType);
-    procedure SetFilterAttack(const Value: single);
-    procedure SetFilterDecay(const Value: single);
-    procedure SetFilterHold(const Value: single);
-    procedure SetFilterRelease(const Value: single);
-    procedure SetFilterSustain(const Value: single);
+    procedure SetModAttack(const Value: single);
+    procedure SetModDecay(const Value: single);
+    procedure SetModHold(const Value: single);
+    procedure SetModRelease(const Value: single);
+    procedure SetModSustain(const Value: single);
     procedure SetGrainLength(const Value: single);
     procedure SetGrainLoop(const Value: TGrainStretchLoopMode);
     procedure SetGrainPosition(const Value: single);
@@ -125,7 +125,7 @@ type
     procedure SetLfoAPar2(const Value: single);
     procedure SetLfoBPar2(const Value: single);
     procedure SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
-    procedure SetFilterVelocityDepth(const Value: TEnvVelocityDepth);
+    procedure SetModVelocityDepth(const Value: TEnvVelocityDepth);
     procedure SetVoiceMode(const Value: TVoiceMode);
     procedure SetVoiceGlide(const Value: single);
     procedure SetFilter1Par4(const Value: single);
@@ -203,12 +203,12 @@ type
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write SetAmpVelocityDepth;
 
     //TODO:HIGH refactor these to ModAttack...
-    property FilterAttack             : single                             read fFilterAttack            write SetFilterAttack;
-    property FilterHold               : single                             read fFilterHold              write SetFilterHold;
-    property FilterDecay              : single                             read fFilterDecay             write SetFilterDecay;
-    property FilterSustain            : single                             read fFilterSustain           write SetFilterSustain;
-    property FilterRelease            : single                             read fFilterRelease           write SetFilterRelease;
-    property FilterVelocityDepth      : TEnvVelocityDepth                  read fFilterVelocityDepth     write SetFilterVelocityDepth;
+    property ModAttack                : single                             read fModAttack               write SetModAttack;
+    property ModHold                  : single                             read fModHold                 write SetModHold;
+    property ModDecay                 : single                             read fModDecay                write SetModDecay;
+    property ModSustain               : single                             read fModSustain              write SetModSustain;
+    property ModRelease               : single                             read fModRelease              write SetModRelease;
+    property ModVelocityDepth         : TEnvVelocityDepth                  read fModVelocityDepth        write SetModVelocityDepth;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write SetLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
     property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write SetLfoFreqMode1;
@@ -398,24 +398,24 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterAttack(const Value: single);
+procedure TLucidityVoiceParameterWrapper.SetModAttack(const Value: single);
 begin
-  fFilterAttack := Value;
+  fModAttack := Value;
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterDecay(const Value: single);
+procedure TLucidityVoiceParameterWrapper.SetModDecay(const Value: single);
 begin
-  fFilterDecay := Value;
+  fModDecay := Value;
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterHold(const Value: single);
+procedure TLucidityVoiceParameterWrapper.SetModHold(const Value: single);
 begin
-  fFilterHold := Value;
+  fModHold := Value;
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterRelease(const Value: single);
+procedure TLucidityVoiceParameterWrapper.SetModRelease(const Value: single);
 begin
-  fFilterRelease := Value;
+  fModRelease := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterRouting(const Value: TFilterRouting);
@@ -430,14 +430,14 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterSustain(const Value: single);
+procedure TLucidityVoiceParameterWrapper.SetModSustain(const Value: single);
 begin
-  fFilterSustain := Value;
+  fModSustain := Value;
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilterVelocityDepth(const Value: TEnvVelocityDepth);
+procedure TLucidityVoiceParameterWrapper.SetModVelocityDepth(const Value: TEnvVelocityDepth);
 begin
-  fFilterVelocityDepth := Value;
+  fModVelocityDepth := Value;
 
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
@@ -882,12 +882,12 @@ begin
   Self.Filter2Par3              := Source.Filter2Par3;
   Self.Filter2Par4              := Source.Filter2Par4;
   Self.AmpVelocityDepth         := Source.AmpVelocityDepth;
-  Self.FilterAttack             := Source.FilterAttack;
-  Self.FilterHold               := Source.FilterHold;
-  Self.FilterDecay              := Source.FilterDecay;
-  Self.FilterSustain            := Source.FilterSustain;
-  Self.FilterRelease            := Source.FilterRelease;
-  Self.FilterVelocityDepth      := Source.FilterVelocityDepth;
+  Self.ModAttack             := Source.ModAttack;
+  Self.ModHold               := Source.ModHold;
+  Self.ModDecay              := Source.ModDecay;
+  Self.ModSustain            := Source.ModSustain;
+  Self.ModRelease            := Source.ModRelease;
+  Self.ModVelocityDepth      := Source.ModVelocityDepth;
   Self.LfoShape1                := Source.LfoShape1;
   Self.LfoShape2                := Source.LfoShape2;
   Self.LfoFreqMode1             := Source.LfoFreqMode1;
@@ -940,7 +940,7 @@ begin
   aVoice.FilterOne.KeyFollow             := Filter1KeyFollow;
   aVoice.FilterTwo.KeyFollow             := Filter2KeyFollow;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
-  aVoice.FilterEnv.VelocityDepth         := FilterVelocityDepth;
+  aVoice.FilterEnv.VelocityDepth         := ModVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.LfoA.FreqMode                   := LfoFreqMode1;
