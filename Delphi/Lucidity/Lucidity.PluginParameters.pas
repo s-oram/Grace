@@ -30,12 +30,12 @@ type
     AmpSustain,
     AmpRelease,
     AmpVelocity,
-    FilterAttack,
-    FilterHold,
-    FilterDecay,
-    FilterSustain,
-    FilterRelease,
-    FilterVelocity,
+    ModAttack,
+    ModHold,
+    ModDecay,
+    ModSustain,
+    ModRelease,
+    ModVelocity,
     FilterRouting,
     FilterOutputBlend,
     Filter1Type,
@@ -285,12 +285,12 @@ begin
     TPluginParameter.AmpSustain:               result.DefaultValue := 0.3;
     TPluginParameter.AmpRelease:               result.DefaultValue := 0.3;
     TPluginParameter.AmpVelocity:              result.DefaultValue := 0.2;
-    TPluginParameter.FilterAttack:             result.DefaultValue := 0;
-    TPluginParameter.FilterHold:               result.DefaultValue := 0;
-    TPluginParameter.FilterDecay:              result.DefaultValue := 0.3;
-    TPluginParameter.FilterSustain:            result.DefaultValue := 0.3;
-    TPluginParameter.FilterRelease:            result.DefaultValue := 0.3;
-    TPluginParameter.FilterVelocity:           result.DefaultValue := 0.2;
+    TPluginParameter.ModAttack:             result.DefaultValue := 0;
+    TPluginParameter.ModHold:               result.DefaultValue := 0;
+    TPluginParameter.ModDecay:              result.DefaultValue := 0.3;
+    TPluginParameter.ModSustain:            result.DefaultValue := 0.3;
+    TPluginParameter.ModRelease:            result.DefaultValue := 0.3;
+    TPluginParameter.ModVelocity:           result.DefaultValue := 0.2;
     TPluginParameter.FilterRouting:            result.DefaultValue := 0;
     TPluginParameter.FilterOutputBlend:        result.DefaultValue := 1;
     TPluginParameter.Filter1Type:              result.DefaultValue := 0;

@@ -280,11 +280,11 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob,               TPluginParameter.AmpSustain);
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob,               TPluginParameter.AmpRelease);
 
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvAttackKnob,             TPluginParameter.FilterAttack);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvHoldKnob,               TPluginParameter.FilterHold);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvDecayKnob,              TPluginParameter.FilterDecay);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvSustainKnob,            TPluginParameter.FilterSustain);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvReleaseKnob,            TPluginParameter.FilterRelease);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvAttackKnob,             TPluginParameter.ModAttack);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvHoldKnob,               TPluginParameter.ModHold);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvDecayKnob,              TPluginParameter.ModDecay);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvSustainKnob,            TPluginParameter.ModSustain);
+  GuiStandard_RegisterControl(aGuiStandard, FilterEnvReleaseKnob,            TPluginParameter.ModRelease);
 
   GuiStandard_RegisterControl(aGuiStandard, FilterBlendKnob,                 TPluginParameter.FilterOutputBlend);
   GuiStandard_RegisterControl(aGuiStandard, Filter1Par1Knob,                 TPluginParameter.Filter1Par1);
@@ -308,7 +308,7 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter1TypeTextBox,     TPluginParameter.Filter1Type);
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter2TypeTextBox,     TPluginParameter.Filter2Type);
   GuiStandard_RegisterMenuButton(aGuiStandard, AmpVelocityButton,      TPluginParameter.AmpVelocity);
-  GuiStandard_RegisterMenuButton(aGuiStandard, FilterVelocityButton,   TPluginParameter.FilterVelocity);
+  GuiStandard_RegisterMenuButton(aGuiStandard, FilterVelocityButton,   TPluginParameter.ModVelocity);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1ClockTextBox,       TPluginParameter.Seq1Clock);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1DirectionTextBox,   TPluginParameter.Seq1Direction);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1StepsTextBox,       TPluginParameter.Seq1Length);

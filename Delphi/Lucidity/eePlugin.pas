@@ -272,12 +272,12 @@ begin
   PublishPluginParameterAsVstParameter(TPluginParameter.AmpSustain);
   PublishPluginParameterAsVstParameter(TPluginParameter.AmpRelease);
   PublishPluginParameterAsVstParameter(TPluginParameter.AmpVelocity);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterAttack);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterHold);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterDecay);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterSustain);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterRelease);
-  PublishPluginParameterAsVstParameter(TPluginParameter.FilterVelocity);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModAttack);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModHold);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModDecay);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModSustain);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModRelease);
+  PublishPluginParameterAsVstParameter(TPluginParameter.ModVelocity);
   PublishPluginParameterAsVstParameter(TPluginParameter.FilterRouting);
   PublishPluginParameterAsVstParameter(TPluginParameter.FilterOutputBlend);
   PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Type);

@@ -107,12 +107,12 @@ begin
     TPluginParameter.AmpSustain:  result := TScopeFocus.AmpEnv;
     TPluginParameter.AmpRelease:  result := TScopeFocus.AmpEnv;
     TPluginParameter.AmpVelocity: result := TScopeFocus.AmpEnv;
-    TPluginParameter.FilterAttack:    result := TScopeFocus.ModEnv;
-    TPluginParameter.FilterHold:      result := TScopeFocus.ModEnv;
-    TPluginParameter.FilterDecay:     result := TScopeFocus.ModEnv;
-    TPluginParameter.FilterSustain:   result := TScopeFocus.ModEnv;
-    TPluginParameter.FilterRelease:   result := TScopeFocus.ModEnv;
-    TPluginParameter.FilterVelocity:  result := TScopeFocus.ModEnv;
+    TPluginParameter.ModAttack:    result := TScopeFocus.ModEnv;
+    TPluginParameter.ModHold:      result := TScopeFocus.ModEnv;
+    TPluginParameter.ModDecay:     result := TScopeFocus.ModEnv;
+    TPluginParameter.ModSustain:   result := TScopeFocus.ModEnv;
+    TPluginParameter.ModRelease:   result := TScopeFocus.ModEnv;
+    TPluginParameter.ModVelocity:  result := TScopeFocus.ModEnv;
     TPluginParameter.FilterRouting:     result := TScopeFocus.FilterBlend;
     TPluginParameter.FilterOutputBlend: result := TScopeFocus.FilterBlend;
     TPluginParameter.Filter1Type:       result := TScopeFocus.Filter1;
@@ -312,11 +312,11 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
 
-      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterAttack));
-      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterHold));
-      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterDecay));
-      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterSustain));
-      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterRelease));
+      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModAttack));
+      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModHold));
+      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModDecay));
+      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModSustain));
+      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModRelease));
     end;
 
     TScopeFocus.Lfo1:
