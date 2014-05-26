@@ -152,9 +152,6 @@ function GetPluginParameterCount:integer; inline;
 function IndexToPluginParameter(Index : integer):TPluginParameter; inline;
 
 
-function IsPublishedVstParameter(const Par : TPluginParameter):boolean;
-
-
 var
   BufferedModParIndex : array of integer; //don't access this directly.
 
@@ -351,85 +348,6 @@ begin
   assert(Index <= TPluginParameterHelper.GetEnumTypeCount);
   result := TPluginParameterHelper.ToEnum(Index);
 end;
-
-
-function IsPublishedVstParameter(const Par : TPluginParameter):boolean;
-begin
-  case Par of
-    TPluginParameter.VoiceMode: ;
-    TPluginParameter.VoiceGlide: ;
-    TPluginParameter.PitchTracking: ;
-    TPluginParameter.SamplePlaybackType: ;
-    TPluginParameter.SampleResetClockSource: ;
-    TPluginParameter.SamplerLoopBounds: ;
-    TPluginParameter.SamplerLoopMode: ;
-    TPluginParameter.OutputGain: ;
-    TPluginParameter.OutputPan: ;
-    TPluginParameter.VoicePitchOne: ;
-    TPluginParameter.VoicePitchTwo: ;
-    TPluginParameter.SampleStart: ;
-    TPluginParameter.SampleEnd: ;
-    TPluginParameter.LoopStart: ;
-    TPluginParameter.LoopEnd: ;
-    TPluginParameter.AmpAttack: ;
-    TPluginParameter.AmpHold: ;
-    TPluginParameter.AmpDecay: ;
-    TPluginParameter.AmpSustain: ;
-    TPluginParameter.AmpRelease: ;
-    TPluginParameter.AmpVelocity: ;
-    TPluginParameter.FilterAttack: ;
-    TPluginParameter.FilterHold: ;
-    TPluginParameter.FilterDecay: ;
-    TPluginParameter.FilterSustain: ;
-    TPluginParameter.FilterRelease: ;
-    TPluginParameter.FilterVelocity: ;
-    TPluginParameter.FilterRouting: ;
-    TPluginParameter.FilterOutputBlend: ;
-    TPluginParameter.Filter1Type: ;
-    TPluginParameter.Filter2Type: ;
-    TPluginParameter.Filter1KeyFollow: ;
-    TPluginParameter.Filter2KeyFollow: ;
-    TPluginParameter.Filter1Par1: ;
-    TPluginParameter.Filter1Par2: ;
-    TPluginParameter.Filter1Par3: ;
-    TPluginParameter.Filter1Par4: ;
-    TPluginParameter.Filter2Par1: ;
-    TPluginParameter.Filter2Par2: ;
-    TPluginParameter.Filter2Par3: ;
-    TPluginParameter.Filter2Par4: ;
-    TPluginParameter.Lfo1Shape: ;
-    TPluginParameter.Lfo2Shape: ;
-    TPluginParameter.Lfo1FreqMode: ;
-    TPluginParameter.Lfo2FreqMode: ;
-    TPluginParameter.Lfo1Range: ;
-    TPluginParameter.Lfo2Range: ;
-    TPluginParameter.Lfo1Par1: ;
-    TPluginParameter.Lfo1Par2: ;
-    TPluginParameter.Lfo1Par3: ;
-    TPluginParameter.Lfo2Par1: ;
-    TPluginParameter.Lfo2Par2: ;
-    TPluginParameter.Lfo2Par3: ;
-    TPluginParameter.Seq1Clock: ;
-    TPluginParameter.Seq1Direction: ;
-    TPluginParameter.Seq1Length: ;
-    TPluginParameter.Seq2Clock: ;
-    TPluginParameter.Seq2Direction: ;
-    TPluginParameter.Seq2Length: ;
-    TPluginParameter.PreviewVolume: ;
-    TPluginParameter.Preview: ;
-    TPluginParameter.PadX1: ;
-    TPluginParameter.PadY1: ;
-    TPluginParameter.PadX2: ;
-    TPluginParameter.PadY2: ;
-    TPluginParameter.PadX3: ;
-    TPluginParameter.PadY3: ;
-    TPluginParameter.PadX4: ;
-    TPluginParameter.PadY4: ;
-  else
-    raise Exception.Create('Type not handled.');
-  end;
-end;
-
 
 
 var

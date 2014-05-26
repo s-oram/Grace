@@ -17,7 +17,6 @@ type
     procedure OpenKeyFile(Sender : TObject);
     procedure ShowAboutBox(Sender : TObject);
 
-    procedure EventHandle_EditSamplePoints(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ImportSFZ(Sender : TObject);
   public
@@ -182,16 +181,9 @@ begin
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Edit Sample Points...';
-  mi.OnClick := EventHandle_EditSamplePoints;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
   mi.Caption := 'Edit Sample Map...';
   mi.OnClick := EventHandle_EditSampleMap;
   Menu.Items.Add(mi);
-
-
 
 
   // insert a spacer...
@@ -248,13 +240,6 @@ procedure TMainMenu.EventHandle_EditSampleMap(Sender: TObject);
 begin
   if not assigned(Plugin) then exit;
   Command.ToggleSampleMapVisibility(Plugin);
-end;
-
-procedure TMainMenu.EventHandle_EditSamplePoints(Sender: TObject);
-begin
-  if not assigned(Plugin) then exit;
-  Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 end;
 
 procedure TMainMenu.EventHandle_ImportSFZ(Sender: TObject);
