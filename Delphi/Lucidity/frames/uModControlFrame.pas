@@ -170,7 +170,7 @@ uses
   VamQuery,
   RedFox,
   MadExcept,
-  VamLayoutWizard, eeVstParameter,
+  VamLayoutWizard,
   RedFoxColor, uLucidityEnums,
   uConstants, uGuiUtils,
   Lucidity.KeyGroup,

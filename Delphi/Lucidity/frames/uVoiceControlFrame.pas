@@ -94,7 +94,6 @@ implementation
 uses
   Lucidity.PluginParameters,
   VamGuiControlInterfaces,
-  eeVstParameter,
   eeGuiHelpers,
   Lucidity.SampleMap,
   VamLayoutWizard,

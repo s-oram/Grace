@@ -119,8 +119,6 @@ uses
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
   uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
   eePlugin in 'eePlugin.pas',
-  eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
-  eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas',
   LucidityUtils in 'LucidityUtils.pas',
   Lucidity.Types in 'Lucidity.Types.pas',
   SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',

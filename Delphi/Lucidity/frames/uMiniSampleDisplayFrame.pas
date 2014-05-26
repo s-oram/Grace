@@ -151,7 +151,7 @@ uses
   Lucidity.PluginParameters,
   VamLib.Throttler,
   eeDsp,
-  eeVstXml, eeVstParameter, uLucidityEnums,
+  eeVstXml, uLucidityEnums,
   GuidEx, RedFoxColor, uLucidityExtra,
   uGuiUtils, VamLayoutWizard,
   uConstants, Lucidity.KeyGroup;
