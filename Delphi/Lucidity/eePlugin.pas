@@ -115,6 +115,8 @@ type
 
     procedure Event_MidiAutomation_Message(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
     procedure Event_MidiAutomation_NewBinding(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
+
+    procedure PublishPluginParameterAsVstParameter(const Par : TPluginParameter);
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -202,9 +204,6 @@ type
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
     property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
 
-
-
-
   published
     // Global parameters. These properties are for the benefit of the statemanager.
     property VoiceMode  : TVoiceMode read GetVoiceMode    write SetVoiceMode;
@@ -250,6 +249,79 @@ var
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
+
+
+  PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);
+  PublishPluginParameterAsVstParameter(TPluginParameter.VoiceGlide);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PitchTracking);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.SamplePlaybackType);
+  PublishPluginParameterAsVstParameter(TPluginParameter.SampleResetClockSource);
+  PublishPluginParameterAsVstParameter(TPluginParameter.SamplerLoopBounds);
+  PublishPluginParameterAsVstParameter(TPluginParameter.SamplerLoopMode);
+  PublishPluginParameterAsVstParameter(TPluginParameter.OutputGain);
+  PublishPluginParameterAsVstParameter(TPluginParameter.OutputPan);
+  PublishPluginParameterAsVstParameter(TPluginParameter.VoicePitchOne);
+  PublishPluginParameterAsVstParameter(TPluginParameter.VoicePitchTwo);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.SampleStart);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.SampleEnd);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.LoopStart);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.LoopEnd);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpAttack);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpHold);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpDecay);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpSustain);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpRelease);
+  PublishPluginParameterAsVstParameter(TPluginParameter.AmpVelocity);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterAttack);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterHold);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterDecay);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterSustain);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterRelease);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterVelocity);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterRouting);
+  PublishPluginParameterAsVstParameter(TPluginParameter.FilterOutputBlend);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Type);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2Type);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1KeyFollow);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2KeyFollow);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Par1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Par2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Par3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter1Par4);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2Par1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2Par2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2Par3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Filter2Par4);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Shape);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Shape);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1FreqMode);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2FreqMode);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Range);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Range);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Par1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Par2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Par3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq1Clock);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq1Direction);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq1Length);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Clock);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Direction);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Length);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PreviewVolume);
+  PublishPluginParameterAsVstParameter(TPluginParameter.Preview);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadX1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadY1);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadX2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadY2);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadX3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadY3);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadX4);
+  PublishPluginParameterAsVstParameter(TPluginParameter.PadY4);
+
+
 
   GlobalModPoints.Source_TriggeredNoteCount := 0;
 
@@ -488,8 +560,13 @@ begin
   SampleMap.Clear;
 end;
 
-
-
+procedure TeePlugin.PublishPluginParameterAsVstParameter(const Par: TPluginParameter);
+var
+  pn : string;
+begin
+  pn := PluginParToName(Par);
+  PublishedVstParameters.AddParameter(pn);
+end;
 
 
 function TeePlugin.GetPluginParameter(const ParName: string): single;
@@ -1196,6 +1273,7 @@ begin
 
 
 end;
+
 
 
 

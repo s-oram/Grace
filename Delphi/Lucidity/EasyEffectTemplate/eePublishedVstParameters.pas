@@ -3,6 +3,7 @@ unit eePublishedVstParameters;
 interface
 
 uses
+  Contnrs,
   VamLib.Collections.Lists;
 
 type
@@ -13,17 +14,14 @@ type
     Units   : string;
   end;
 
-  TVstParameter = record
+  TVstParameter = class
   public
     PluginParameterName : string;
   end;
 
-  TVstParameterList = class(TSimpleList<TVstParameter>)
-  end;
-
   TPublishedVstParameterController = class
   private
-    VstParameterList : TVstParameterList;
+    VstParameterList : TObjectList;
     function GetCount: integer;
   public
     constructor Create;
@@ -44,7 +42,8 @@ implementation
 
 constructor TPublishedVstParameterController.Create;
 begin
-  VstParameterList := TVstParameterList.Create;
+  VstParameterList := TObjectList.Create;
+  VstParameterList.OwnsObjects := true;
 
 end;
 
@@ -62,10 +61,12 @@ end;
 function TPublishedVstParameterController.FindParameterIndex(const PluginParameterName: string): integer;
 var
   c1: Integer;
+  VstPar : TVstParameter;
 begin
   for c1 := 0 to VstParameterList.Count-1 do
   begin
-    if PluginParameterName = VstParameterList[c1].PluginParameterName
+    VstPar := VstParameterList[c1] as TVstParameter;
+    if PluginParameterName = VstPar.PluginParameterName
       then exit(c1);
   end;
 
@@ -75,14 +76,16 @@ end;
 
 function TPublishedVstParameterController.FindParameterName(const Index: integer): string;
 begin
-  result := VstParameterList[Index].PluginParameterName;
+  result := (VstParameterList[Index] as TVstParameter).PluginParameterName;
 end;
 
 procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string);
 var
-  VstParameter : TVstParameter;
+  VstPar : TVstParameter;
 begin
-  VstParameter.PluginParameterName := PluginParameterName;
+  VstPar := TVstParameter.Create;
+  VstPar.PluginParameterName := PluginParameterName;
+  VstParameterList.Add(VstPar);
 end;
 
 

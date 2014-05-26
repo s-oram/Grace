@@ -49,7 +49,6 @@ type
     function GetPluginParameter(const ParName : string):single; virtual; abstract;
     procedure SetPluginParameter(const ParName : string; const ParValue : single); virtual; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
-
   public
     Inputs  : TArrayOfPSingle;
     Outputs : TArrayOfPSingle;
@@ -124,8 +123,6 @@ type
 
     property OnPresetNameChanged : TNotifyEvent read fOnPresetNameChanged write fOnPresetNameChanged;
 
-
-    //TODO: This is the class that will get replaced by the new VST Parameter system.
     property PublishedVstParameters : TPublishedVstParameterController read fPublishedVstParameters;
   end;
 
