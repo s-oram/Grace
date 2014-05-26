@@ -408,7 +408,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Margins.Right = 0
           Margins.Bottom = 0
           Opacity = 255
-          Text = 'Hide'
+          Text = 'Close'
           HitTest = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
