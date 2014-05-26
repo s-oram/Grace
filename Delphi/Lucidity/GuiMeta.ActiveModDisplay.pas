@@ -22,7 +22,6 @@ type
 implementation
 
 uses
-  eeVstParameterEx,
   VamKnob,
   uConstants;
 

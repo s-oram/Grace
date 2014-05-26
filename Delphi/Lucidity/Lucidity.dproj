@@ -552,7 +552,6 @@
 			<DCCReference Include="eePlugin.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas"/>
-			<DCCReference Include="eeVstParameterEx.pas"/>
 			<DCCReference Include="LucidityUtils.pas"/>
 			<DCCReference Include="Lucidity.Types.pas"/>
 			<DCCReference Include="frames\SampleMapFrame.Extra.pas"/>

@@ -169,7 +169,6 @@ implementation
 uses
   VamQuery,
   RedFox,
-  eeVstParameterEx,
   MadExcept,
   VamLayoutWizard, eeVstParameter,
   RedFoxColor, uLucidityEnums,

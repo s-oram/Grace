@@ -27,7 +27,7 @@ uses
   uLucidityEnums, uLucidityData,
   Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads,
-  SyncObjs, eePatchObject, eeVstParameter, eeVstParameterList,
+  SyncObjs, eePatchObject,
   eeSampleInt, eeSampleFloat,
   Classes, eePluginBase , eeMidiEvents,
   eeMidiAutomationV2,

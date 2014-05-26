@@ -62,7 +62,6 @@ uses
   OtlParallel,
   Lucidity.PluginParameters,
   LucidityModConnections,
-  eeVstParameterEx,
   VamLib.Utils,
   VamLib.Threads,
   Lucidity.Types,

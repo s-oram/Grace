@@ -120,7 +120,6 @@ uses
   eeSampleFloat,
   uConstants,
   LucidityModConnections,
-  eeVstParameterEx,
   GuidEx,
   Lucidity.Globals,
   Lucidity.KeyGroup,

@@ -121,7 +121,6 @@ uses
   eePlugin in 'eePlugin.pas',
   eeVstParameter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameter.pas',
   eeVstParameterList in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstParameterList.pas',
-  eeVstParameterEx in 'eeVstParameterEx.pas',
   LucidityUtils in 'LucidityUtils.pas',
   Lucidity.Types in 'Lucidity.Types.pas',
   SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',
