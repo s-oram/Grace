@@ -310,8 +310,8 @@ begin
   PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Clock);
   PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Direction);
   PublishPluginParameterAsVstParameter(TPluginParameter.Seq2Length);
-  PublishPluginParameterAsVstParameter(TPluginParameter.PreviewVolume);
-  PublishPluginParameterAsVstParameter(TPluginParameter.Preview);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.PreviewVolume);
+  //PublishPluginParameterAsVstParameter(TPluginParameter.Preview);
   PublishPluginParameterAsVstParameter(TPluginParameter.PadX1);
   PublishPluginParameterAsVstParameter(TPluginParameter.PadY1);
   PublishPluginParameterAsVstParameter(TPluginParameter.PadX2);

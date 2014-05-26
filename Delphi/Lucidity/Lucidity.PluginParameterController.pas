@@ -385,11 +385,168 @@ begin
 end;
 
 class function TPluginParameterController.GetPluginParameterVstInfo(const aPlugin: TObject; const ParName: string): TVstParameterInfo;
+var
+  Par : TPluginParameter;
 begin
   result.Name := ParName;
   result.ShortName := ParName;
   result.Display := '';
   result.Units   := '';
+
+  Par := PluginParFromName(ParName);
+
+
+  //  Parameter Name...
+  case Par of
+    TPluginParameter.VoiceMode:               result.Name := 'Voice Mode';
+    TPluginParameter.VoiceGlide:              result.Name := 'Voice Glide';
+    TPluginParameter.PitchTracking:           result.Name := 'Pitch Tracking';
+    //TPluginParameter.SamplePlaybackType:      result.Name := '';
+    TPluginParameter.SampleResetClockSource:  result.Name := 'Sample Reset';
+    TPluginParameter.SamplerLoopBounds:       result.Name := 'Sample Loop Bounds';
+    TPluginParameter.SamplerLoopMode:         result.Name := 'Sample Loop Mode';
+    TPluginParameter.OutputGain:              result.Name := 'Voice Gain';
+    TPluginParameter.OutputPan:               result.Name := 'Voice Pan';
+    TPluginParameter.VoicePitchOne:           result.Name := 'Voice Tune';
+    TPluginParameter.VoicePitchTwo:           result.Name := 'Voice Pan';
+    //TPluginParameter.SampleStart:             result.Name := 'Sample Start';
+    //TPluginParameter.SampleEnd:               result.Name := '';
+    //TPluginParameter.LoopStart:               result.Name := '';
+    //TPluginParameter.LoopEnd:                 result.Name := '';
+    TPluginParameter.AmpAttack:               result.Name := 'Amp Attack';
+    TPluginParameter.AmpHold:                 result.Name := 'Amp Hold';
+    TPluginParameter.AmpDecay:                result.Name := 'Amp Decay';
+    TPluginParameter.AmpSustain:              result.Name := 'Amp Sustain';
+    TPluginParameter.AmpRelease:              result.Name := 'Amp Release';
+    TPluginParameter.AmpVelocity:             result.Name := 'Amp Velocity';
+    TPluginParameter.FilterAttack:            result.Name := 'Mod Attack';
+    TPluginParameter.FilterHold:              result.Name := 'Mod Hold';
+    TPluginParameter.FilterDecay:             result.Name := 'Mod Decay';
+    TPluginParameter.FilterSustain:           result.Name := 'Mod Sustain';
+    TPluginParameter.FilterRelease:           result.Name := 'Mod Release';
+    TPluginParameter.FilterVelocity:          result.Name := 'Mod Velocity';
+    TPluginParameter.FilterRouting:           result.Name := 'FilterRouting';
+    TPluginParameter.FilterOutputBlend:       result.Name := 'FilterOutput Blend';
+    TPluginParameter.Filter1Type:             result.Name := 'Filter1 Type';
+    TPluginParameter.Filter2Type:             result.Name := 'Filter2 Type';
+    TPluginParameter.Filter1KeyFollow:        result.Name := 'Filter1 Keyfollow';
+    TPluginParameter.Filter2KeyFollow:        result.Name := 'Filter2 Keyfollow';
+    TPluginParameter.Filter1Par1:             result.Name := 'Filter1 Par1';
+    TPluginParameter.Filter1Par2:             result.Name := 'Filter1 Par2';
+    TPluginParameter.Filter1Par3:             result.Name := 'Filter1 Par3';
+    TPluginParameter.Filter1Par4:             result.Name := 'Filter1 Par4';
+    TPluginParameter.Filter2Par1:             result.Name := 'Filter2 Par1';
+    TPluginParameter.Filter2Par2:             result.Name := 'Filter2 Par2';
+    TPluginParameter.Filter2Par3:             result.Name := 'Filter2 Par3';
+    TPluginParameter.Filter2Par4:             result.Name := 'Filter2 Par4';
+    TPluginParameter.Lfo1Shape:               result.Name := 'Lfo1 Shape';
+    TPluginParameter.Lfo2Shape:               result.Name := 'Lfo2 Shape';
+    TPluginParameter.Lfo1FreqMode:            result.Name := 'Lfo1 Freq Mode';
+    TPluginParameter.Lfo2FreqMode:            result.Name := 'Lfo2 Freq Mode';
+    TPluginParameter.Lfo1Range:               result.Name := 'Lfo1 Range';
+    TPluginParameter.Lfo2Range:               result.Name := 'Lfo2 Range';
+    TPluginParameter.Lfo1Par1:                result.Name := 'Lfo1 Par1';
+    TPluginParameter.Lfo1Par2:                result.Name := 'Lfo1 Par2';
+    TPluginParameter.Lfo1Par3:                result.Name := 'Lfo1 Par3';
+    TPluginParameter.Lfo2Par1:                result.Name := 'Lfo2 Par1';
+    TPluginParameter.Lfo2Par2:                result.Name := 'Lfo2 Par2';
+    TPluginParameter.Lfo2Par3:                result.Name := 'Lfo2 Par3';
+    TPluginParameter.Seq1Clock:               result.Name := 'Seq1 Clock';
+    TPluginParameter.Seq1Direction:           result.Name := 'Seq1 Direction';
+    TPluginParameter.Seq1Length:              result.Name := 'Seq1 Length';
+    TPluginParameter.Seq2Clock:               result.Name := 'Seq2 Clock';
+    TPluginParameter.Seq2Direction:           result.Name := 'Seq2 Direction';
+    TPluginParameter.Seq2Length:              result.Name := 'Seq2 Length';
+    TPluginParameter.PreviewVolume:           result.Name := '';
+    TPluginParameter.Preview:                 result.Name := '';
+    TPluginParameter.PadX1:                   result.ShortName := 'Pad X1';
+    TPluginParameter.PadY1:                   result.ShortName := 'Pad Y1';
+    TPluginParameter.PadX2:                   result.ShortName := 'Pad X2';
+    TPluginParameter.PadY2:                   result.ShortName := 'Pad Y2';
+    TPluginParameter.PadX3:                   result.ShortName := 'Pad X3';
+    TPluginParameter.PadY3:                   result.ShortName := 'Pad Y3';
+    TPluginParameter.PadX4:                   result.ShortName := 'Pad X4';
+    TPluginParameter.PadY4:                   result.ShortName := 'Pad Y4';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+
+  // Short Parameter Name... (I think this needs to be 8 charactors or less.
+  case Par of
+    TPluginParameter.VoiceMode:               result.ShortName := 'Voice Md';
+    TPluginParameter.VoiceGlide:              result.ShortName := 'Voice Gd';
+    TPluginParameter.PitchTracking:           result.ShortName := 'Pitch Tk';
+    TPluginParameter.SamplePlaybackType:      result.ShortName := '';
+    TPluginParameter.SampleResetClockSource:  result.ShortName := 'Smp Rst';
+    TPluginParameter.SamplerLoopBounds:       result.ShortName := 'SmpLpBnd';
+    TPluginParameter.SamplerLoopMode:         result.ShortName := 'SmpLpMd';
+    TPluginParameter.OutputGain:              result.ShortName := 'Out Gain';
+    TPluginParameter.OutputPan:               result.ShortName := 'Out Pan';
+    TPluginParameter.VoicePitchOne:           result.ShortName := 'Tune';
+    TPluginParameter.VoicePitchTwo:           result.ShortName := 'Fine';
+    TPluginParameter.SampleStart:             result.ShortName := 'Smp Strt';
+    TPluginParameter.SampleEnd:               result.ShortName := 'Smp End';
+    TPluginParameter.LoopStart:               result.ShortName := 'Lp Strt';
+    TPluginParameter.LoopEnd:                 result.ShortName := 'Lp End';
+    TPluginParameter.AmpAttack:               result.ShortName := 'Amp A';
+    TPluginParameter.AmpHold:                 result.ShortName := 'Amp H';
+    TPluginParameter.AmpDecay:                result.ShortName := 'Amp D';
+    TPluginParameter.AmpSustain:              result.ShortName := 'Amp S';
+    TPluginParameter.AmpRelease:              result.ShortName := 'Amp R';
+    TPluginParameter.AmpVelocity:             result.ShortName := 'Amp Vel';
+    TPluginParameter.FilterAttack:            result.ShortName := 'Mod A';
+    TPluginParameter.FilterHold:              result.ShortName := 'Mod H';
+    TPluginParameter.FilterDecay:             result.ShortName := 'Mod D';
+    TPluginParameter.FilterSustain:           result.ShortName := 'Mod S';
+    TPluginParameter.FilterRelease:           result.ShortName := 'Mod R';
+    TPluginParameter.FilterVelocity:          result.ShortName := 'Mod Vel';
+    TPluginParameter.FilterRouting:           result.ShortName := 'Flt Rout';
+    TPluginParameter.FilterOutputBlend:       result.ShortName := 'Flt Blnd';
+    TPluginParameter.Filter1Type:             result.ShortName := 'Flt1 Typ';
+    TPluginParameter.Filter2Type:             result.ShortName := 'Flt2 Typ';
+    TPluginParameter.Filter1KeyFollow:        result.ShortName := 'Flt1 Key';
+    TPluginParameter.Filter2KeyFollow:        result.ShortName := 'Flt2 Key';
+    TPluginParameter.Filter1Par1:             result.ShortName := 'Flt1 P1';
+    TPluginParameter.Filter1Par2:             result.ShortName := 'Flt1 P2';
+    TPluginParameter.Filter1Par3:             result.ShortName := 'Flt1 P3';
+    TPluginParameter.Filter1Par4:             result.ShortName := 'Flt1 P4';
+    TPluginParameter.Filter2Par1:             result.ShortName := 'Flt2 P1';
+    TPluginParameter.Filter2Par2:             result.ShortName := 'Flt2 P2';
+    TPluginParameter.Filter2Par3:             result.ShortName := 'Flt2 P3';
+    TPluginParameter.Filter2Par4:             result.ShortName := 'Flt2 P4';
+    TPluginParameter.Lfo1Shape:               result.ShortName := 'Lfo1 Shp';
+    TPluginParameter.Lfo2Shape:               result.ShortName := 'Lfo2 Shp';
+    TPluginParameter.Lfo1FreqMode:            result.ShortName := 'Lfo1Mode';
+    TPluginParameter.Lfo2FreqMode:            result.ShortName := 'Lfo2Mode';
+    TPluginParameter.Lfo1Range:               result.ShortName := 'Lfo1 Rng';
+    TPluginParameter.Lfo2Range:               result.ShortName := 'Lfo2 Rng';
+    TPluginParameter.Lfo1Par1:                result.ShortName := 'Lfo1 P1';
+    TPluginParameter.Lfo1Par2:                result.ShortName := 'Lfo1 P2';
+    TPluginParameter.Lfo1Par3:                result.ShortName := 'Lfo1 P3';
+    TPluginParameter.Lfo2Par1:                result.ShortName := 'Lfo2 P1';
+    TPluginParameter.Lfo2Par2:                result.ShortName := 'Lfo2 P2';
+    TPluginParameter.Lfo2Par3:                result.ShortName := 'Lfo2 P3';
+    TPluginParameter.Seq1Clock:               result.ShortName := 'Seq1 Clk';
+    TPluginParameter.Seq1Direction:           result.ShortName := 'Seq1 Dir';
+    TPluginParameter.Seq1Length:              result.ShortName := 'Seq1 Len';
+    TPluginParameter.Seq2Clock:               result.ShortName := 'Seq2 Clk';
+    TPluginParameter.Seq2Direction:           result.ShortName := 'Seq2 Dir';
+    TPluginParameter.Seq2Length:              result.ShortName := 'Seq2 Len';
+    TPluginParameter.PreviewVolume:           result.ShortName := '';
+    TPluginParameter.Preview:                 result.ShortName := '';
+    TPluginParameter.PadX1:                   result.ShortName := 'Pad X1';
+    TPluginParameter.PadY1:                   result.ShortName := 'Pad Y1';
+    TPluginParameter.PadX2:                   result.ShortName := 'Pad X2';
+    TPluginParameter.PadY2:                   result.ShortName := 'Pad Y2';
+    TPluginParameter.PadX3:                   result.ShortName := 'Pad X3';
+    TPluginParameter.PadY3:                   result.ShortName := 'Pad Y3';
+    TPluginParameter.PadX4:                   result.ShortName := 'Pad X4';
+    TPluginParameter.PadY4:                   result.ShortName := 'Pad Y4';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
 end;
 
 class procedure TPluginParameterController.SendMessages(const aPlugin: TObject; const Par: TPluginParameter; const ParValue: single);

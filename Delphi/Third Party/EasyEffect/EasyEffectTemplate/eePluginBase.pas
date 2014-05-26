@@ -224,7 +224,10 @@ var
   ParName : string;
 begin
   ParName := PublishedVstParameters.FindParameterName(Index);
-  result := self.GetPluginParameterVstInfo(ParName).Name;
+  //TODO: It would be good to ge the name of the host here.
+  // Then check if the host supports longer parameter names. If so, return
+  // a longer version of the parameter name.
+  result := self.GetPluginParameterVstInfo(ParName).ShortName;
 end;
 
 function TeePluginBase.GetParameterDisplay(Index: integer): string;
