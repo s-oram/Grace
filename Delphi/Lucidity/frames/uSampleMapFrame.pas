@@ -13,7 +13,7 @@ uses
   VamSamplerKeys, VamScrollBox, Vcl.Menus, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel, VamVisibleControl,
   VamNumericKnob,
-  VamCompoundNumericKnob;
+  VamCompoundNumericKnob, VamTextBox;
 
 type
   TSampleMapFrame = class(TFrame, IZeroObject)
@@ -22,14 +22,15 @@ type
     ScrollBox: TVamScrollBox;
     SampleMapKeys: TVamSamplerKeys;
     SampleMap: TVamSampleMap;
-    RegionInfoBox: TVamDiv;
     InsidePanel: TVamPanel;
     UpperPanelArea: TVamPanel;
-    RootNoteKnob: TVamCompoundNumericKnob;
-    LowVelKnob: TVamCompoundNumericKnob;
-    HighVelKnob: TVamCompoundNumericKnob;
+    RegionInfoBox: TVamPanel;
     LowNoteKnob: TVamCompoundNumericKnob;
     HighNoteKnob: TVamCompoundNumericKnob;
+    LowVelKnob: TVamCompoundNumericKnob;
+    HighVelKnob: TVamCompoundNumericKnob;
+    RootNoteKnob: TVamCompoundNumericKnob;
+    CloseSampleMapButton: TVamTextBox;
     procedure ScrollBoxScroll(Sender: TObject; Kind: TScrollEventKind; ScrollPos: Single);
     procedure SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
     procedure SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -59,6 +60,7 @@ type
     procedure SampleMapShowReplaceRegionMessage(Sender: TObject;
       Value: Boolean);
     procedure SampleMapDblClick(Sender: TObject);
+    procedure CloseSampleMapButtonClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -105,6 +107,7 @@ type
 implementation
 
 uses
+  uGuiUtils,
   VamLib.Throttler,
   VamLib.Animation,
   VamLib.Threads,
@@ -178,9 +181,26 @@ begin
 
   SampleMapMenu.Initialize(aPlugin);
 
-  UpperPanelArea.Height := 28;
+  UpperPanelArea.Height := 24;
 
-  RegionInfoBox.Align := alClient;
+  RegionInfoBox.AlignWithMargins := true;
+  RegionInfoBox.Margins.SetBounds(0,0,0,0);
+  RegionInfoBox.Align := alLeft;
+  RegionInfoBox.Width := 412;
+  RegionInfoBox.Color := kColor_LcdDark1;
+  RegionInfoBox.CornerRadius1 := 3;
+  RegionInfoBox.CornerRadius2 := 3;
+  RegionInfoBox.CornerRadius3 := 3;
+  RegionInfoBox.CornerRadius4 := 3;
+  RegionInfoBox.Padding.SetBounds(10,2,10,2);
+
+  CloseSampleMapButton.AlignWithMargins := true;
+  CloseSampleMapButton.Margins.SetBounds(0,0,0,0);
+  CloseSampleMapButton.Align := alRight;
+  CloseSampleMapButton.Width := 80;
+  GuiSetup.StyleButton_CommandButton_Bright(CloseSampleMapButton);
+
+
 
   SampleMapRegionInfoChanged(self);
 
@@ -239,7 +259,8 @@ begin
   RootNoteKnob.OnRotaryStepUp   := Handle_KnobStepUp;
   RootNoteKnob.OnRotaryStepDown := Handle_KnobStepDown;
 
-  UpperPanelArea.Color := kColor_LcdDark1;
+  //UpperPanelArea.Color := kColor_LcdDark1;
+  UpperPanelArea.Color := kPanelLight;
 
 end;
 
@@ -1003,6 +1024,11 @@ begin
   end);
 end;
 
+
+procedure TSampleMapFrame.CloseSampleMapButtonClick(Sender: TObject);
+begin
+  Command.ToggleSampleMapVisibility(Plugin);
+end;
 
 
 

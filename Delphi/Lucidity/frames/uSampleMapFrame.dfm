@@ -152,105 +152,23 @@ object SampleMapFrame: TSampleMapFrame
         Transparent = False
         Align = alBottom
         Visible = True
-        Padding.Left = 4
-        Padding.Top = 4
-        Padding.Right = 4
-        Padding.Bottom = 4
-        object RegionInfoBox: TVamDiv
-          Left = 2
-          Top = 31
-          Width = 618
-          Height = 30
+        object RegionInfoBox: TVamPanel
+          Left = 25
+          Top = 19
+          Width = 496
+          Height = 28
           Opacity = 255
+          Text = 'RegionInfoBox'
           HitTest = True
+          Color = '$FFCCCCCC'
+          Transparent = False
           Visible = True
-          object RootNoteKnob: TVamCompoundNumericKnob
-            AlignWithMargins = True
-            Left = 554
-            Top = 3
-            Width = 61
-            Height = 24
-            Opacity = 255
-            Text = 'Root'
-            HitTest = True
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            Color_Background = '$00000000'
-            Color_Label = clGray
-            Color_Numeric = clBlack
-            Color_Arrows1 = '$cc000000'
-            Color_Arrows2 = '$FF000000'
-            KnobMin = 0
-            KnobMax = 127
-            KnobNumericStyle = nsInteger
-            KnobDecimalPlaces = 2
-            KnobSensitivity = 0.300000011920929000
-            Align = alRight
-            Visible = True
-          end
-          object LowVelKnob: TVamCompoundNumericKnob
-            AlignWithMargins = True
-            Left = 420
-            Top = 3
-            Width = 61
-            Height = 24
-            Opacity = 255
-            Text = 'Low Vel'
-            HitTest = True
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            Color_Background = '$00000000'
-            Color_Label = clGray
-            Color_Numeric = clBlack
-            Color_Arrows1 = '$cc000000'
-            Color_Arrows2 = '$FF000000'
-            KnobMin = 0
-            KnobMax = 127
-            KnobNumericStyle = nsInteger
-            KnobDecimalPlaces = 2
-            KnobSensitivity = 0.300000011920929000
-            Align = alRight
-            Visible = True
-          end
-          object HighVelKnob: TVamCompoundNumericKnob
-            AlignWithMargins = True
-            Left = 487
-            Top = 3
-            Width = 61
-            Height = 24
-            Opacity = 255
-            Text = 'High Vel'
-            HitTest = True
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            Color_Background = '$00000000'
-            Color_Label = clGray
-            Color_Numeric = clBlack
-            Color_Arrows1 = '$cc000000'
-            Color_Arrows2 = '$FF000000'
-            KnobMin = 0
-            KnobMax = 127
-            KnobNumericStyle = nsInteger
-            KnobDecimalPlaces = 2
-            KnobSensitivity = 0.300000011920929000
-            Align = alRight
-            Visible = True
-          end
           object LowNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 286
+            Left = 365
             Top = 3
             Width = 61
-            Height = 24
+            Height = 22
             Opacity = 255
             Text = 'Low Note'
             HitTest = True
@@ -271,13 +189,14 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 438
           end
           object HighNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 353
+            Left = 231
             Top = 3
             Width = 61
-            Height = 24
+            Height = 22
             Opacity = 255
             Text = 'High Note'
             HitTest = True
@@ -298,7 +217,124 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 304
           end
+          object LowVelKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 164
+            Top = 3
+            Width = 61
+            Height = 22
+            Opacity = 255
+            Text = 'Low Vel'
+            HitTest = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Color_Background = '$00000000'
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
+            KnobDecimalPlaces = 2
+            KnobSensitivity = 0.300000011920929000
+            Align = alRight
+            Visible = True
+            ExplicitLeft = 237
+          end
+          object HighVelKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 298
+            Top = 3
+            Width = 61
+            Height = 22
+            Opacity = 255
+            Text = 'High Vel'
+            HitTest = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Color_Background = '$00000000'
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
+            KnobDecimalPlaces = 2
+            KnobSensitivity = 0.300000011920929000
+            Align = alRight
+            Visible = True
+            ExplicitLeft = 371
+          end
+          object RootNoteKnob: TVamCompoundNumericKnob
+            AlignWithMargins = True
+            Left = 432
+            Top = 3
+            Width = 61
+            Height = 22
+            Opacity = 255
+            Text = 'Root'
+            HitTest = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Color_Background = '$00000000'
+            Color_Label = clGray
+            Color_Numeric = clBlack
+            Color_Arrows1 = '$cc000000'
+            Color_Arrows2 = '$FF000000'
+            KnobMin = 0
+            KnobMax = 127
+            KnobNumericStyle = nsInteger
+            KnobDecimalPlaces = 2
+            KnobSensitivity = 0.300000011920929000
+            Align = alRight
+            Visible = True
+            ExplicitLeft = 505
+          end
+        end
+        object CloseSampleMapButton: TVamTextBox
+          Tag = 10
+          AlignWithMargins = True
+          Left = 548
+          Top = 16
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Close'
+          HitTest = True
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
+          Visible = True
+          OnClick = CloseSampleMapButtonClick
         end
       end
     end
