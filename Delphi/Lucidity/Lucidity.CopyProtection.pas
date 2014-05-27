@@ -46,7 +46,7 @@ function IsKeyValid_ChecksumOnly(const Key : TLucidityKey):boolean; overload;
 implementation
 
 uses
-  uAutoFree,
+  VamLib.Utils,
   eeHashes,
   EncdDecd,
   SysUtils,
