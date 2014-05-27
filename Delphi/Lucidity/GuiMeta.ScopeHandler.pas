@@ -37,13 +37,6 @@ type
     //CurrentParFocus : TPluginParameter;
     CurrentParFocus : string; // this is a parameter name.
 
-    // This LFO Selector business is working in conjunction with the IsParFocus
-    // and CurrentParFocus variables above to create a very hacky state machine.
-    // If this code becomes critically important it will need to be rewritten to
-    // be a bit more robust. It should be ok as currently used.
-    IsLfoSelectorOverride : boolean;
-    LfoSelectorCount      : integer;
-
     FocusedControl : TControl;
     ScopeFocus : TScopeFocus;
 
@@ -101,18 +94,18 @@ begin
     TPluginParameter.SampleEnd:                 result := TScopeFocus.None;
     TPluginParameter.LoopStart:                 result := TScopeFocus.None;
     TPluginParameter.LoopEnd:                   result := TScopeFocus.None;
-    TPluginParameter.AmpAttack:   result := TScopeFocus.AmpEnv;
-    TPluginParameter.AmpHold:     result := TScopeFocus.AmpEnv;
-    TPluginParameter.AmpDecay:    result := TScopeFocus.AmpEnv;
-    TPluginParameter.AmpSustain:  result := TScopeFocus.AmpEnv;
-    TPluginParameter.AmpRelease:  result := TScopeFocus.AmpEnv;
-    TPluginParameter.AmpVelocity: result := TScopeFocus.AmpEnv;
-    TPluginParameter.ModAttack:    result := TScopeFocus.ModEnv;
-    TPluginParameter.ModHold:      result := TScopeFocus.ModEnv;
-    TPluginParameter.ModDecay:     result := TScopeFocus.ModEnv;
-    TPluginParameter.ModSustain:   result := TScopeFocus.ModEnv;
-    TPluginParameter.ModRelease:   result := TScopeFocus.ModEnv;
-    TPluginParameter.ModVelocity:  result := TScopeFocus.ModEnv;
+    TPluginParameter.AmpAttack:         result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpHold:           result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpDecay:          result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpSustain:        result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpRelease:        result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpVelocity:       result := TScopeFocus.AmpEnv;
+    TPluginParameter.ModAttack:         result := TScopeFocus.ModEnv;
+    TPluginParameter.ModHold:           result := TScopeFocus.ModEnv;
+    TPluginParameter.ModDecay:          result := TScopeFocus.ModEnv;
+    TPluginParameter.ModSustain:        result := TScopeFocus.ModEnv;
+    TPluginParameter.ModRelease:        result := TScopeFocus.ModEnv;
+    TPluginParameter.ModVelocity:       result := TScopeFocus.ModEnv;
     TPluginParameter.FilterRouting:     result := TScopeFocus.FilterBlend;
     TPluginParameter.FilterOutputBlend: result := TScopeFocus.FilterBlend;
     TPluginParameter.Filter1Type:       result := TScopeFocus.Filter1;
@@ -159,7 +152,6 @@ begin
   Plugin  := aPlugin;
   Globals := Plugin.Globals;
   IsParFocusActive := false;
-  LfoSelectorCount := 0;
 end;
 
 destructor TScopeHandler.Destroy;
@@ -190,9 +182,6 @@ begin
   begin
     s := string(Data^);
     ParameterEnter(s);
-
-    IsLfoSelectorOverride := false;
-    LfoSelectorCount := 0;
   end;
 
   if MsgID = TLucidMsgID.OnParControlLeave then
@@ -206,32 +195,6 @@ begin
     s := string(Data^);
     ParameterChanged(s);
   end;
-
-  if MsgID = TLucidMsgID.OnLfoSelectorEnter then
-  begin
-    if LfoSelectorCount < 0
-      then LfoSelectorCount := 0;
-
-    IsLfoSelectorOverride := true;
-    inc(LfoSelectorCount);
-
-    UpdateScope;
-  end;
-
-  if MsgID = TLucidMsgID.OnLfoSelectorLeave then
-  begin
-    dec(LfoSelectorCount);
-
-    if LfoSelectorCount <= 0 then
-    begin
-      LfoSelectorCount := 0;
-      IsLfoSelectorOverride := false;
-    end;
-
-    UpdateScope;
-  end;
-
-
 
 end;
 
@@ -269,19 +232,6 @@ var
   ScopeFocus : TScopeFocus;
   ParValue : single;
 begin
-  if IsLfoSelectorOverride then
-  begin
-    //TODO:HIGH scope focus needs to change because we now have two lfo control sets!
-    {
-    case Plugin.Globals.SelectedLfo of
-      0: ScopeFocus := TScopeFocus.Lfo1;
-      1: ScopeFocus := TScopeFocus.Lfo2;
-    else
-      raise Exception.Create('Type not handled.');
-    end;
-    }
-    ScopeFocus := TScopeFocus.Lfo1;
-  end else
   if IsParFocusActive then
   begin
     ScopeFocus := FindScopeFocus_New(CurrentParFocus);

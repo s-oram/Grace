@@ -74,9 +74,7 @@ type
     OnParControlChanged              = Actions + 9;
     OnActiveParameterChanged         = Actions + 10; // The active GUI parameter has changed. The active GUI parameter is the parameter that the mouse is currently over or otherwise focused on somehow.
     OnPostCreateFinished             = Actions + 11;
-    OnLfoSelectorEnter               = Actions + 12;
-    OnLfoSelectorLeave               = Actions + 13;
-    OnShowMenu                       = Actions + 14;  //TMsgData_ShowMenu
+    OnShowMenu                       = Actions + 12;  //TMsgData_ShowMenu
     //----- Audio Messages---------------
     AudioMsg                          = OnShowMenu + 1;
     Audio_VoiceTriggered              = AudioMsg + 1;
