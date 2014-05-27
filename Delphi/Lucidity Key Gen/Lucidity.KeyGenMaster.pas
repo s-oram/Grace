@@ -37,8 +37,6 @@ const
   );
 
 
-
-
 procedure SaveKeyToFile(const FileName : string; const Key:TLucidityKey);
 function IsKeyValid_FullCheck(const Key : TLucidityKey):boolean;
 
