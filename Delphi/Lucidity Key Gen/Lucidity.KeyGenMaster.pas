@@ -3,7 +3,8 @@ unit Lucidity.KeyGenMaster;
 interface
 
 uses
-  Classes;
+  Classes,
+  Lucidity.CopyProtection;
 
 const
   KeySaltCount = 25;
@@ -36,22 +37,7 @@ const
   );
 
 
-type
-  TLucidityKey = record
-  private
-  public
-    UserName  : string;
-    UserEmail : string;
-    Sections  : array[0..KeySaltCount-1] of string;
-    DataCheck : string; //Checksum
-    procedure AssignFrom(const Source : TLucidityKey);
-    procedure Clear;
-    function LoadFromFile(const FileName: string):boolean;
-  end;
 
-function ExtractKeyFromFileContents(FileContents, KeyData : TStringList):boolean;
-
-function IsKeyValid_ChecksumOnly(const Key : TLucidityKey):boolean;
 
 procedure SaveKeyToFile(const FileName : string; const Key:TLucidityKey);
 function IsKeyValid_FullCheck(const Key : TLucidityKey):boolean;
@@ -73,122 +59,6 @@ function GetKeyCheckRawString(const KeyCheckIndex : integer; const UserName, Use
 begin
   result := KeySalts[KeyCheckIndex] + UserName + KeySalts[KeyCheckIndex] + UserEmail + KeySalts[KeyCheckIndex];
 end;
-
-function IsKeyValid_ChecksumOnly(const Key : TLucidityKey):boolean; overload;
-var
-  c1 : integer;
-  TestData, TestResult : string;
-begin
-  TestData := Key.UserName + Key.UserEmail;
-
-  for c1 := 0 to KeySaltCount-1 do
-  begin
-    TestData := TestData + Key.Sections[c1];
-  end;
-
-  TestResult := Key.DataCheck;
-
-  if SameText(md5(TestData), TestResult)
-    then result := true
-    else result := false;
-end;
-
-
-function ExtractKeyFromFileContents(FileContents, KeyData: TStringList): boolean;
-var
-  KeyStartIndex, KeyEndIndex : integer;
-  c1: Integer;
-  s : string;
-  KeyLineCount : integer;
-begin
-  assert(assigned(FileContents));
-  assert(assigned(KeyData));
-
-  KeyStartIndex := FileContents.IndexOf('BEGINKEY>>>>');
-  KeyEndIndex := FileContents.IndexOf('<<<<ENDKEY');
-
-  if (KeyStartIndex = -1) or (KeyEndIndex = -1)
-    then exit(false);
-
-  for c1 := KeyStartIndex+1 to KeyEndIndex-1 do
-  begin
-    s := FileContents[c1];
-    KeyData.Add(s);
-  end;
-
-  KeyLineCount := KeyEndIndex - KeyStartIndex - 1;
-
-  if KeyLineCount = 28
-    then result := true
-    else result := false;
-end;
-
-{ TLucidityKey }
-
-procedure TLucidityKey.AssignFrom(const Source: TLucidityKey);
-var
-  c1 : integer;
-begin
-  self.UserName := Source.UserName;
-  self.UserEmail := Source.UserEmail;
-
-  for c1 := 0 to KeySaltCount-1 do
-  begin
-    Self.Sections[c1] := Source.Sections[c1];
-  end;
-
-  self.DataCheck := Source.DataCheck;
-end;
-
-procedure TLucidityKey.Clear;
-var
-  c1: Integer;
-begin
-  self.UserName := '';
-  self.UserEmail := '';
-
-  for c1 := 0 to KeySaltCount-1 do
-  begin
-    Sections[c1] := '';
-  end;
-
-  DataCheck := '';
-end;
-
-function TLucidityKey.LoadFromFile(const FileName: string):boolean;
-var
-  FileData : TStringList;
-  KeyData  : TStringList;
-  c1: Integer;
-begin
-  FileData := TStringList.Create;
-  AutoFree(@FileData);
-
-  KeyData := TStringList.Create;
-  AutoFree(@KeyData);
-
-  Clear;
-
-  FileData.Clear;
-  FileData.LoadFromFile(FileName);
-
-  if ExtractKeyFromFileContents(FileData, KeyData) = false
-    then exit(false);
-
-
-  self.UserName := KeyData[0];
-  self.UserName := KeyData[1];
-  for c1 := 0 to KeySaltCount-1 do
-  begin
-    Self.Sections[c1] := KeyData[2 + c1];
-  end;
-  self.DataCheck := KeyData[27];
-
-  if IsKeyValid_ChecksumOnly(self)
-    then result := true
-    else result := false;
-end;
-
 
 procedure SaveKeyToFile(const FileName : string; const Key:TLucidityKey);
 var
@@ -274,6 +144,9 @@ begin
   // if we make it this far, the key is valid.
   result := true;
 end;
+
+
+
 
 
 end.
