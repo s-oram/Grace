@@ -89,6 +89,7 @@
 			</DCCReference>
 			<DCCReference Include="Lucidity.KeyGen.pas"/>
 			<DCCReference Include="..\Lucidity\Lucidity.CopyProtection.pas"/>
+			<DCCReference Include="Lucidity.KeyGenMaster.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

@@ -3,7 +3,7 @@ unit uMainForm;
 interface
 
 uses
-  Lucidity.CopyProtection, Lucidity.KeyGen,
+  Lucidity.CopyProtection, Lucidity.KeyGenMaster,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
 
@@ -69,20 +69,18 @@ begin
 end;
 
 procedure TMainForm.UpdateMemo;
+var
+  c1: Integer;
 begin
   Memo1.Clear;
 
   Memo1.Lines.Add('BEGINKEY>>>>');
   Memo1.Lines.Add(Key.UserName);
   Memo1.Lines.Add(Key.UserEmail);
-  Memo1.Lines.Add(Key.Sections[0]);
-  Memo1.Lines.Add(Key.Sections[1]);
-  Memo1.Lines.Add(Key.Sections[2]);
-  Memo1.Lines.Add(Key.Sections[3]);
-  Memo1.Lines.Add(Key.Sections[4]);
-  Memo1.Lines.Add(Key.Sections[5]);
-  Memo1.Lines.Add(Key.Sections[6]);
-  Memo1.Lines.Add(Key.Sections[7]);
+  for c1 := 0 to KeySaltCount-1 do
+  begin
+    Memo1.Lines.Add(Key.Sections[c1]);
+  end;
   Memo1.Lines.Add(Key.DataCheck);
   Memo1.Lines.Add('<<<<ENDKEY');
 end;
@@ -105,6 +103,10 @@ begin
   Key := CreateLucidityKey(NameInput.Text, EmailInput.Text);
 
   UpdateMemo;
+
+  if IsKeyValid_FullCheck(Key)
+      then KeyInfoText.Caption := 'Key Is Valid (Full Check)'
+      else KeyInfoText.Caption := 'Key Is Invalid';
 end;
 
 procedure TMainForm.ExportKeyButtonClick(Sender: TObject);
@@ -140,9 +142,8 @@ begin
 
     Key.LoadFromFile(FileOpenDialog1.FileName);
 
-
-    NameInput.Text  := GetUserNameFromKey(Key);
-    EmailInput.Text := GetUserEmailFromKey(Key);
+    NameInput.Text  := Key.UserName;
+    EmailInput.Text := Key.UserEmail;
 
     UpdateMemo;
 
