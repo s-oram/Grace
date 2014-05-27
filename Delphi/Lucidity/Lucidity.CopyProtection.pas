@@ -46,6 +46,8 @@ type
     procedure AssignFrom(const Source : TLucidityKey);
     procedure Clear;
     function LoadFromFile(const FileName: string):boolean;
+
+    function IsKeyChecksumValid:boolean;
   end;
 
 
@@ -142,6 +144,11 @@ begin
   DataCheck := '';
 end;
 
+function TLucidityKey.IsKeyChecksumValid: boolean;
+begin
+  result := IsKeyValid_ChecksumOnly(self);
+end;
+
 function TLucidityKey.LoadFromFile(const FileName: string):boolean;
 var
   FileData : TStringList;
@@ -163,8 +170,8 @@ begin
     then exit(false);
 
 
-  self.UserName := KeyData[0];
-  self.UserName := KeyData[1];
+  self.UserName  := KeyData[0];
+  self.UserEmail := KeyData[1];
   for c1 := 0 to KeySaltCount-1 do
   begin
     Self.Sections[c1] := KeyData[2 + c1];
