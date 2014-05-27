@@ -122,7 +122,7 @@ begin
       TPluginParameter.Seq2Direction:          result := TStepSequencerDirectionHelper.ToSingle(VoicePar.Seq2Direction);
       TPluginParameter.Seq2Length:             result := TStepSequencerLengthHelper.ToSingle(VoicePar.StepSeq2Length);
     else
-      raise Exception.Create('Type not handled.');
+      raise Exception.Create('Type not handled. (ParName = ' + ParName + ')');
     end;
   end;
 end;
