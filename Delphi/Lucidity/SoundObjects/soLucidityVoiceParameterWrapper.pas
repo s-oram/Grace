@@ -202,7 +202,6 @@ type
     property Filter2Par4              : single                             read fFilter2Par4             write SetFilter2Par4;
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write SetAmpVelocityDepth;
 
-    //TODO:HIGH refactor these to ModAttack...
     property ModAttack                : single                             read fModAttack               write SetModAttack;
     property ModHold                  : single                             read fModHold                 write SetModHold;
     property ModDecay                 : single                             read fModDecay                write SetModDecay;

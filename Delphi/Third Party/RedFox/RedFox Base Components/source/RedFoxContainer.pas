@@ -440,16 +440,6 @@ var
   c1: Integer;
 begin
   OffscreenBuffer.BufferInterface.ClipBox(aRegion.Left, aRegion.Top, aRegion.Right, aRegion.Bottom);
-
-  //TODO:HIGH this bit of code is causing problems in combination with begin/end update.
-  // Perhaps it should only clear the background here at Design time.
-  {
-  OffscreenBuffer.BufferInterface.LineWidth := 0;
-  OffscreenBuffer.BufferInterface.NoLine;
-  OffscreenBuffer.BufferInterface.SetFillColor(fColor.R, fColor.G, fColor.B, 255);
-  OffscreenBuffer.BufferInterface.FillColor := GetRedFoxColor(clPurple);
-  OffscreenBuffer.BufferInterface.Rectangle(aRegion.Left, aRegion.Top, aRegion.Right, aRegion.Bottom);
-  }
   for c1 := 0 to ControlCount-1 do PaintControl(Controls[c1], aRegion);
 end;
 
@@ -471,7 +461,7 @@ begin
   // dirty in the clipped region to require the area to be repainted.
   if (Supports(aControl, IRedFoxVisibleControl, aVisibleControl)) and (aVisibleControl.GetIsShowing) and (aControl.Width > 0) and (aControl.Height > 0) then
   begin
-    //TODO:HIGH not sure if these checks are required..
+    //NOTE I'm not sure if these checks are required..
     if (aVisibleControl.IsUpdating) or (aVisibleControl.AreParentsUpdating)
       then exit(false); // no update required... exit now...
 

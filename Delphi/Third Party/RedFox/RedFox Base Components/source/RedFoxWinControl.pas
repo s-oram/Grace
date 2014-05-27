@@ -427,7 +427,7 @@ begin
   if CastToCardinal(y2-y1) > BackBuffer.Height
     then BackBuffer.Height := CastToCardinal(y2-y1);
 
-  // TODO:HIGH: Is the check for the AreParentsUpdating required?
+  // NOTE Is the check for the AreParentsUpdating required?
   if (not IsUpdating) and (not AreParentsUpdating) and (IsBackBufferDirty) then
   begin
     fIsBackBufferDirty := false;
