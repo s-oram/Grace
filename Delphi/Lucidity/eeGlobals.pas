@@ -2,6 +2,8 @@ unit eeGlobals;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   SysUtils,
   ExtCtrls,

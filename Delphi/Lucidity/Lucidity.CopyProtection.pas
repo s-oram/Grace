@@ -2,37 +2,39 @@ unit Lucidity.CopyProtection;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   Classes;
 
 const
   KeySaltCount = 25;
-  KeySalt1 = 'fQK8g4t97GLTWwp_IPjymy6MVKpd3H5G';
-  KeySalt2 = 'f9SnzEcqi4sYuE9GLTWwpIUp5Z45kP5S6LjDQu';
-  KeySalt3 = 'yGOThXI6D5L0uE9duATLydZBF3VnLLX1T0H';
-  KeySalt4 = 'FW1kxT3oTGqdjcXRNzBWO4OATLydZCFPbNkwjD';
-  KeySalt5 = 'wXG7rNtGcWNC1OZUtuV_jEnkrrHWqGXD';
-  KeySalt6 = 'ZaKV_jJizx0OZEVbZHw56lurHWqsvr58KhYA';
-  KeySalt7 = 'l6gpzsZI04EUvaxFpMVosSs_R8nctHz9';
-  KeySalt8 = '5lk88c9k3DK9GnTTcOgLBr79t8nk9HebAd';
-  KeySalt9 = 'vQ4BRPiQrrtc2LKnyYh7UrQji5bMoCA_';
-  KeySalt10 = '8ZfAxhGFPFsF3U3yYh7UrQji5bzw9Hd6C0Cn0SkOOd1';
-  KeySalt11 = 'AF1qmVA9S5Wh0SYc49h69huT_IRXURSW';
-  KeySalt12 = 'cYVvu6lJvT_Iq3tuNmy9Z3oxT2T_IG6eq3WgeL';
-  KeySalt13 = 'IYZkTza3xsXvSbyzBNI74eP2fsQwZOCM';
-  KeySalt14 = 'S2yDItKivoFBuS_sszCAIK0zBNI7Fvc837oxE';
-  KeySalt15 = '0PYG110ij9JES1Q7PsPkT0duGFHACzSf';
-  KeySalt16 = 'QbyHpxLXBXnlbSl1hxPkT0d1HV62Jfbmw7na6';
-  KeySalt17 = 'kt1OD7k2AxTFcnrqAO_v4fOt5mKZvxtP';
-  KeySalt18 = '5WDIxdIugdB6z4epr4juOOzWvGSnt5mKZe1_n';
-  KeySalt19 = 'hSQdZRrcXrJ2ZL5EJd1ZF3Q3UEkUw7v5';
-  KeySalt20 = 'THySTeddq2SoZL5EJd1ZF3Q3UU8oulNG1jCMOqQIrvHBt';
-  KeySalt21 = 'sIu4nt2dq54zh0mjJxlGMRMBZL5EJd1ZF3Q3U7Fqed6n';
-  KeySalt22 = 'fqBNNVa7DernVuhlUwdDlWRTVnja77ejrva0';
-  KeySalt23 = 'MNvJRJOjMuhlU8R_A0pJ_9k6c3d59Acl';
-  KeySalt24 = 'ZOZX4DJV8JmnnObzSuhlUuhl6c3hlUoIicH9LfZwC';
-  KeySalt25 = 'Wd0U6c3dLpZUVUvE8NupniaEzuH6c3J1IFpuLm';
 
+  {$IFDEF KeySalt1}  KeySalt1 = 'fQK8g4t97GLTWwp_IPjymy6MVKpd3H5G';                {$ENDIF}
+  {$IFDEF KeySalt2}  KeySalt2 = 'f9SnzEcqi4sYuE9GLTWwpIUp5Z45kP5S6LjDQu';          {$ENDIF}
+  {$IFDEF KeySalt3}  KeySalt3 = 'yGOThXI6D5L0uE9duATLydZBF3VnLLX1T0H';             {$ENDIF}
+  {$IFDEF KeySalt4}  KeySalt4 = 'FW1kxT3oTGqdjcXRNzBWO4OATLydZCFPbNkwjD';          {$ENDIF}
+  {$IFDEF KeySalt5}  KeySalt5 = 'wXG7rNtGcWNC1OZUtuV_jEnkrrHWqGXD';                {$ENDIF}
+  {$IFDEF KeySalt6}  KeySalt6 = 'ZaKV_jJizx0OZEVbZHw56lurHWqsvr58KhYA';            {$ENDIF}
+  {$IFDEF KeySalt7}  KeySalt7 = 'l6gpzsZI04EUvaxFpMVosSs_R8nctHz9';                {$ENDIF}
+  {$IFDEF KeySalt8}  KeySalt8 = '5lk88c9k3DK9GnTTcOgLBr79t8nk9HebAd';              {$ENDIF}
+  {$IFDEF KeySalt9}  KeySalt9 = 'vQ4BRPiQrrtc2LKnyYh7UrQji5bMoCA_';                {$ENDIF}
+  {$IFDEF KeySalt10} KeySalt10 = '8ZfAxhGFPFsF3U3yYh7UrQji5bzw9Hd6C0Cn0SkOOd1';    {$ENDIF}
+  {$IFDEF KeySalt11} KeySalt11 = 'AF1qmVA9S5Wh0SYc49h69huT_IRXURSW';               {$ENDIF}
+  {$IFDEF KeySalt12} KeySalt12 = 'cYVvu6lJvT_Iq3tuNmy9Z3oxT2T_IG6eq3WgeL';         {$ENDIF}
+  {$IFDEF KeySalt13} KeySalt13 = 'IYZkTza3xsXvSbyzBNI74eP2fsQwZOCM';               {$ENDIF}
+  {$IFDEF KeySalt14} KeySalt14 = 'S2yDItKivoFBuS_sszCAIK0zBNI7Fvc837oxE';          {$ENDIF}
+  {$IFDEF KeySalt15} KeySalt15 = '0PYG110ij9JES1Q7PsPkT0duGFHACzSf';               {$ENDIF}
+  {$IFDEF KeySalt16} KeySalt16 = 'QbyHpxLXBXnlbSl1hxPkT0d1HV62Jfbmw7na6';          {$ENDIF}
+  {$IFDEF KeySalt17} KeySalt17 = 'kt1OD7k2AxTFcnrqAO_v4fOt5mKZvxtP';               {$ENDIF}
+  {$IFDEF KeySalt18} KeySalt18 = '5WDIxdIugdB6z4epr4juOOzWvGSnt5mKZe1_n';          {$ENDIF}
+  {$IFDEF KeySalt19} KeySalt19 = 'hSQdZRrcXrJ2ZL5EJd1ZF3Q3UEkUw7v5';               {$ENDIF}
+  {$IFDEF KeySalt20} KeySalt20 = 'THySTeddq2SoZL5EJd1ZF3Q3UU8oulNG1jCMOqQIrvHBt';  {$ENDIF}
+  {$IFDEF KeySalt21} KeySalt21 = 'sIu4nt2dq54zh0mjJxlGMRMBZL5EJd1ZF3Q3U7Fqed6n';   {$ENDIF}
+  {$IFDEF KeySalt22} KeySalt22 = 'fqBNNVa7DernVuhlUwdDlWRTVnja77ejrva0';           {$ENDIF}
+  {$IFDEF KeySalt23} KeySalt23 = 'MNvJRJOjMuhlU8R_A0pJ_9k6c3d59Acl';               {$ENDIF}
+  {$IFDEF KeySalt24} KeySalt24 = 'ZOZX4DJV8JmnnObzSuhlUuhl6c3hlUoIicH9LfZwC';      {$ENDIF}
+  {$IFDEF KeySalt25} KeySalt25 = 'Wd0U6c3dLpZUVUvE8NupniaEzuH6c3J1IFpuLm';         {$ENDIF}
 
 
 type
