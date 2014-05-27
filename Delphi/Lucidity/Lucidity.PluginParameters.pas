@@ -83,7 +83,6 @@ type
   TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
   end;
 
-
   TModulatedPluginParameter = (
     OutputGain,
     OutputPan,
@@ -99,12 +98,12 @@ type
     AmpSustain,
     AmpRelease,
     AmpVelocity,
-    FilterAttack,
-    FilterHold,
-    FilterDecay,
-    FilterSustain,
-    FilterRelease,
-    FilterVelocity,
+    ModAttack,
+    ModHold,
+    ModDecay,
+    ModSustain,
+    ModRelease,
+    ModVelocity,
     FilterOutputBlend,
     Filter1Par1,
     Filter1Par2,
