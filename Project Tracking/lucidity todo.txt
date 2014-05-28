@@ -1,4 +1,7 @@
 =============================================================================
+- There are clicks and pops. something is taking too long.
+
+- think about project directories
 - sample map icon needs to be replaced.
 - SETUP needs to be renamed to XY PADS 
 

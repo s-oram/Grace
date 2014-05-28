@@ -737,7 +737,7 @@ object ModControlFrame: TModControlFrame
           Width = 161
           Height = 18
           Opacity = 255
-          Text = 'FILTER ENV'
+          Text = 'MOD ENV'
           HitTest = True
           AutoSize = False
           TextAlign = AlignCenter
