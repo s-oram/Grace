@@ -8,8 +8,8 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
-			<Platform Condition="'$(Platform)'==''">Win64</Platform>
+			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -297,10 +297,12 @@
 			<CfgDependentOn>BuildOptionSets\DebugOptions.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<Manifest_File>None</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<DCC_TypedAtParameter>true</DCC_TypedAtParameter>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
@@ -311,7 +313,6 @@
 			<DCC_MapFile>3</DCC_MapFile>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_8_Win32)'!=''">
-			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<DCC_MapFile>3</DCC_MapFile>
 			<Debugger_HostApplication>D:\Audio\Apps\energyXT\sa 1.4 b16\energyxt.exe</Debugger_HostApplication>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>

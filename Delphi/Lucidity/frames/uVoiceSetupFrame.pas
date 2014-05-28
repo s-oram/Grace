@@ -2,6 +2,8 @@ unit uVoiceSetupFrame;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   uGuiFeedbackData, Menu.XYPadContextMenu,
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
@@ -98,8 +100,8 @@ begin
   PadLabel3.Layout.Anchor(XYPad3).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
   PadLabel4.Layout.Anchor(XYPad4).SnapToEdge(TControlFeature.BottomEdge).Move(0,4);
 
-  MacroKnobDiv.Width  := WidthOfControls(XYPad1, XYPad4);
-  MacroKnobDiv.Height := HeightOfControls(MacroDivLabel, PadLabel1);
+  XYPadsContainer.Width  := WidthOfControls(XYPad1, XYPad4);
+  XYPadsContainer.Height := HeightOfControls(XYPadsContainerLabel, PadLabel1);
 
   PadLabel1.Text := 'XY Pad 1';
   PadLabel2.Text := 'XY Pad 2';
@@ -109,7 +111,7 @@ end;
 
 procedure TVoiceSetupFrame.BackgroundPanelResize(Sender: TObject);
 begin
-  MacroKnobDiv.Layout.AlignWithinParent(TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignNear).Move(0,8);
+  XYPadsContainer.Layout.AlignWithinParent(TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignNear).Move(0,8);
 end;
 
 

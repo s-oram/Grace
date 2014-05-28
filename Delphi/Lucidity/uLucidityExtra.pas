@@ -2,6 +2,8 @@ unit uLucidityExtra;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 
 function IsLucidityProgramFile(const FileName : string): boolean;
 function IsSupportedProgramFormat(const FileName : string): boolean;

@@ -59,7 +59,6 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Font.Style = [fsBold]
           Align = alTop
           Visible = True
-          ExplicitTop = 8
         end
         object XYPad1: TVamXYPad
           Tag = 1
