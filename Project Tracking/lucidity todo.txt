@@ -1,13 +1,18 @@
 =============================================================================
-- filters finished. 
-
-- make LFO phases random. ?
-- switch between random and reset LFO phase on trigger. ? 
-
-Delete 50-50 filter blend mode.
+- sample map icon needs to be replaced.
+- SETUP needs to be renamed to XY PADS 
 
 The Scope needs some sort of debouncer/throttle handler for stop the scope from flickering between
 modes as the user mouses around.
+
+- look at more mouse wheel support!
+
+- filters finished. 
+
+Delete 50-50 filter blend mode.
+
+- make LFO phases random. ?
+- switch between random and reset LFO phase on trigger. ? 
 
 Right Click and Hold for sample zoom with mouse
 - Left/Right moves the offset.

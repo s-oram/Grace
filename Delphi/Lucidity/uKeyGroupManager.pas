@@ -115,7 +115,8 @@ implementation
 uses
   SysUtils,
   VamLib.Utils,
-  Lucidity.Types;
+  Lucidity.Types,
+  Lucidity.PluginParameterController;
 
 { TSampleGroupManager }
 
@@ -223,7 +224,7 @@ end;
 
 function TKeyGroupManager.NewKeyGroup: IKeyGroup;
 begin
- result := NewKeyGroup('');
+  result := NewKeyGroup('');
 end;
 
 function TKeyGroupManager.NewKeyGroup(aName: string): IKeyGroup;
@@ -242,6 +243,7 @@ begin
       do UniqueName := IncrementName(UniqueName, 1);
 
     kg := TKeyGroup.Create(Voices, GlobalModPoints, Globals, 'New KG - ' + aName + ' ' + RandomString(4));
+    TPluginParameterController.ResetKeyGroupParameters(kg);
 
     kg.SetName(UniqueName);
     fList.Add(kg);

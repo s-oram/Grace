@@ -665,7 +665,6 @@ begin
     Par := IndexToPluginParameter(c1);
     ParName  := PluginParToName(Par);
     ParValue := GetPluginParInfo(Par).DefaultValue;
-
     SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
   end;
 
