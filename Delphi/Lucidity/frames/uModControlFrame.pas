@@ -55,7 +55,7 @@ type
     Seq2DirectionTextBox: TVamTextBox;
     Seq2StepsTextBox: TVamTextBox;
     FilterTwoContainer: TVamDiv;
-    VamLabel16: TVamLabel;
+    FilterTwoContainerLabel: TVamLabel;
     Filter2P1Label: TVamLabel;
     Filter2P2Label: TVamLabel;
     Filter2P3Label: TVamLabel;
@@ -65,19 +65,19 @@ type
     Filter2Par3Knob: TVamKnob;
     Filter2Par4Knob: TVamKnob;
     Filter2P4Label: TVamLabel;
-    FilterEnvContainer: TVamDiv;
-    VamLabel8: TVamLabel;
-    FilterEnvReleaseLabel: TVamLabel;
-    FilterEnvSustainLabel: TVamLabel;
-    FilterEnvDecayLabel: TVamLabel;
-    FilterEnvAttackLabel: TVamLabel;
-    FilterEnvHoldLabel: TVamLabel;
-    FilterEnvAttackKnob: TVamKnob;
-    FilterEnvDecayKnob: TVamKnob;
-    FilterEnvSustainKnob: TVamKnob;
-    FilterEnvReleaseKnob: TVamKnob;
-    FilterEnvHoldKnob: TVamKnob;
-    FilterVelocityButton: TVamTextBox;
+    ModEnvContainer: TVamDiv;
+    ModEnvContainerLabel: TVamLabel;
+    ModEnvReleaseLabel: TVamLabel;
+    ModEnvSustainLabel: TVamLabel;
+    ModEnvDecayLabel: TVamLabel;
+    ModEnvAttackLabel: TVamLabel;
+    ModEnvHoldLabel: TVamLabel;
+    ModEnvAttackKnob: TVamKnob;
+    ModEnvDecayKnob: TVamKnob;
+    ModEnvSustainKnob: TVamKnob;
+    ModEnvReleaseKnob: TVamKnob;
+    ModEnvHoldKnob: TVamKnob;
+    ModEnvVelocityButton: TVamTextBox;
     LfoAContainer: TVamDiv;
     LfoAContainerLabel: TVamLabel;
     LfoALabel2: TVamLabel;
@@ -86,7 +86,7 @@ type
     LfoAKnob1: TVamKnob;
     LfoAKnob2: TVamKnob;
     AmpEnvContainer: TVamDiv;
-    VamLabel5: TVamLabel;
+    AmpEnvContainerLabel: TVamLabel;
     AmpEnvReleaseLabel: TVamLabel;
     AmpEnvSustainLabel: TVamLabel;
     AmpEnvDecayLabel: TVamLabel;
@@ -99,7 +99,7 @@ type
     AmpEnvHoldKnob: TVamKnob;
     AmpVelocityButton: TVamTextBox;
     Filter1Container: TVamDiv;
-    VamLabel11: TVamLabel;
+    FilterOneContainerLabel: TVamLabel;
     Filter1P3Label: TVamLabel;
     Filter1P2Label: TVamLabel;
     Filter1P1Label: TVamLabel;
@@ -110,7 +110,7 @@ type
     Filter1Par4Knob: TVamKnob;
     Filter1P4Label: TVamLabel;
     FilterBlendContainer: TVamDiv;
-    VamLabel13: TVamLabel;
+    FilterBlendContainerLabel: TVamLabel;
     FilterBlendLabel: TVamLabel;
     FilterBlendKnob: TVamKnob;
     LfoAKnob3: TVamKnob;
@@ -198,11 +198,11 @@ begin
   KnobList.Add(AmpEnvDecayKnob);
   KnobList.Add(AmpEnvSustainKnob);
   KnobList.Add(AmpEnvReleaseKnob);
-  KnobList.Add(FilterEnvAttackKnob);
-  KnobList.Add(FilterEnvHoldKnob);
-  KnobList.Add(FilterEnvDecayKnob);
-  KnobList.Add(FilterEnvSustainKnob);
-  KnobList.Add(FilterEnvReleaseKnob);
+  KnobList.Add(ModEnvAttackKnob);
+  KnobList.Add(ModEnvHoldKnob);
+  KnobList.Add(ModEnvDecayKnob);
+  KnobList.Add(ModEnvSustainKnob);
+  KnobList.Add(ModEnvReleaseKnob);
   KnobList.Add(Filter1Par1Knob);
   KnobList.Add(Filter1Par2Knob);
   KnobList.Add(Filter1Par3Knob);
@@ -280,11 +280,11 @@ begin
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvSustainKnob,               TPluginParameter.AmpSustain);
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvReleaseKnob,               TPluginParameter.AmpRelease);
 
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvAttackKnob,             TPluginParameter.ModAttack);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvHoldKnob,               TPluginParameter.ModHold);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvDecayKnob,              TPluginParameter.ModDecay);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvSustainKnob,            TPluginParameter.ModSustain);
-  GuiStandard_RegisterControl(aGuiStandard, FilterEnvReleaseKnob,            TPluginParameter.ModRelease);
+  GuiStandard_RegisterControl(aGuiStandard, ModEnvAttackKnob,                TPluginParameter.ModAttack);
+  GuiStandard_RegisterControl(aGuiStandard, ModEnvHoldKnob,                  TPluginParameter.ModHold);
+  GuiStandard_RegisterControl(aGuiStandard, ModEnvDecayKnob,                 TPluginParameter.ModDecay);
+  GuiStandard_RegisterControl(aGuiStandard, ModEnvSustainKnob,               TPluginParameter.ModSustain);
+  GuiStandard_RegisterControl(aGuiStandard, ModEnvReleaseKnob,               TPluginParameter.ModRelease);
 
   GuiStandard_RegisterControl(aGuiStandard, FilterBlendKnob,                 TPluginParameter.FilterOutputBlend);
   GuiStandard_RegisterControl(aGuiStandard, Filter1Par1Knob,                 TPluginParameter.Filter1Par1);
@@ -308,7 +308,7 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter1TypeTextBox,     TPluginParameter.Filter1Type);
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter2TypeTextBox,     TPluginParameter.Filter2Type);
   GuiStandard_RegisterMenuButton(aGuiStandard, AmpVelocityButton,      TPluginParameter.AmpVelocity);
-  GuiStandard_RegisterMenuButton(aGuiStandard, FilterVelocityButton,   TPluginParameter.ModVelocity);
+  GuiStandard_RegisterMenuButton(aGuiStandard, ModEnvVelocityButton,   TPluginParameter.ModVelocity);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1ClockTextBox,       TPluginParameter.Seq1Clock);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1DirectionTextBox,   TPluginParameter.Seq1Direction);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1StepsTextBox,       TPluginParameter.Seq1Length);
@@ -371,9 +371,9 @@ begin
       Filter2TypeTextBox.Layout.AdjustBounds(-4,0,-4,0);
       Filter2KeyTrackKnob.Layout.AdjustBounds(-4,0,-4,0);
 
-  FilterEnvContainer.Width := (5 * FilterKnobWidth);
-  FilterEnvContainer.Height := RowHeight;
-  FilterEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
+  ModEnvContainer.Width := (5 * FilterKnobWidth);
+  ModEnvContainer.Height := RowHeight;
+  ModEnvContainer.Layout.Anchor(AmpEnvContainer).SnapToEdge(TControlFeature.BottomEdge).Move(0,16);
 
   FilterBlendContainer.Width := (FilterKnobWidth);
   FilterBlendContainer.Height := RowHeight;
@@ -473,20 +473,20 @@ begin
   kh := TGuiConst.KnobHeight;
   KnobTop := TGuiConst.SectionLabelHeight;
 
-  FilterEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0,KnobTop);
-  FilterEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, KnobTop);
-  FilterEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, KnobTop);
-  FilterEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, KnobTop);
-  FilterEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, KnobTop);
+  ModEnvAttackKnob.Layout.SetSize(kw, kh).SetPos(0,KnobTop);
+  ModEnvHoldKnob.Layout.SetSize(kw, kh).SetPos(1 * kw, KnobTop);
+  ModEnvDecayKnob.Layout.SetSize(kw, kh).SetPos(2 * kw, KnobTop);
+  ModEnvSustainKnob.Layout.SetSize(kw, kh).SetPos(3 * kw, KnobTop);
+  ModEnvReleaseKnob.Layout.SetSize(kw, kh).SetPos(4 * kw, KnobTop);
 
-  FilterEnvAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvHoldLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
-  FilterEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(FilterEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvAttackLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvAttackKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvHoldLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvHoldKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvDecayLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvDecayKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
 
-  FilterVelocityButton.Layout.Anchor(FilterEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  FilterVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+  ModEnvVelocityButton.Layout.Anchor(ModEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
   //==================================================
 
 
@@ -563,7 +563,7 @@ begin
 
   //=== colors ===
   GuiSetup.StyleButton_SelectorButton(AmpVelocityButton);
-  GuiSetup.StyleButton_SelectorButton(FilterVelocityButton);
+  GuiSetup.StyleButton_SelectorButton(ModEnvVelocityButton);
   GuiSetup.StyleButton_SelectorButton(FilterRoutingButton);
   GuiSetup.StyleButton_SelectorButton(Filter1TypeTextBox);
   GuiSetup.StyleButton_SelectorButton(Filter2TypeTextBox);

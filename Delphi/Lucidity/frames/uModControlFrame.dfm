@@ -472,7 +472,7 @@ object ModControlFrame: TModControlFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object VamLabel16: TVamLabel
+        object FilterTwoContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 175
@@ -718,7 +718,7 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
       end
-      object FilterEnvContainer: TVamDiv
+      object ModEnvContainer: TVamDiv
         AlignWithMargins = True
         Left = 268
         Top = 194
@@ -731,7 +731,7 @@ object ModControlFrame: TModControlFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object VamLabel8: TVamLabel
+        object ModEnvContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 161
@@ -750,7 +750,7 @@ object ModControlFrame: TModControlFrame
           Align = alTop
           Visible = True
         end
-        object FilterEnvReleaseLabel: TVamLabel
+        object ModEnvReleaseLabel: TVamLabel
           Left = 122
           Top = 48
           Width = 32
@@ -768,7 +768,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object FilterEnvSustainLabel: TVamLabel
+        object ModEnvSustainLabel: TVamLabel
           Left = 91
           Top = 48
           Width = 32
@@ -786,7 +786,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object FilterEnvDecayLabel: TVamLabel
+        object ModEnvDecayLabel: TVamLabel
           Left = 61
           Top = 48
           Width = 32
@@ -804,7 +804,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object FilterEnvAttackLabel: TVamLabel
+        object ModEnvAttackLabel: TVamLabel
           Left = 0
           Top = 48
           Width = 32
@@ -822,7 +822,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object FilterEnvHoldLabel: TVamLabel
+        object ModEnvHoldLabel: TVamLabel
           Left = 31
           Top = 48
           Width = 32
@@ -840,7 +840,7 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object FilterEnvAttackKnob: TVamKnob
+        object ModEnvAttackKnob: TVamKnob
           Left = 0
           Top = 18
           Width = 32
@@ -864,7 +864,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object FilterEnvDecayKnob: TVamKnob
+        object ModEnvDecayKnob: TVamKnob
           Left = 61
           Top = 18
           Width = 32
@@ -887,7 +887,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object FilterEnvSustainKnob: TVamKnob
+        object ModEnvSustainKnob: TVamKnob
           Left = 91
           Top = 18
           Width = 32
@@ -910,7 +910,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object FilterEnvReleaseKnob: TVamKnob
+        object ModEnvReleaseKnob: TVamKnob
           Left = 122
           Top = 18
           Width = 32
@@ -933,7 +933,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object FilterEnvHoldKnob: TVamKnob
+        object ModEnvHoldKnob: TVamKnob
           Left = 31
           Top = 18
           Width = 32
@@ -957,7 +957,7 @@ object ModControlFrame: TModControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object FilterVelocityButton: TVamTextBox
+        object ModEnvVelocityButton: TVamTextBox
           Left = 38
           Top = 70
           Width = 40
@@ -1231,7 +1231,7 @@ object ModControlFrame: TModControlFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object VamLabel5: TVamLabel
+        object AmpEnvContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 161
@@ -1495,7 +1495,7 @@ object ModControlFrame: TModControlFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object VamLabel11: TVamLabel
+        object FilterOneContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 224
@@ -1749,7 +1749,7 @@ object ModControlFrame: TModControlFrame
         Text = 'FilterBlendContainer'
         HitTest = True
         Visible = True
-        object VamLabel13: TVamLabel
+        object FilterBlendContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 101
