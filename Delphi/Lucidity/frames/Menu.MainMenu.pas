@@ -192,23 +192,8 @@ begin
   mi.Caption := '-';
   Menu.Items.Add(mi);
 
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'About...';
-  mi.OnClick := ShowAboutBox;
-  Menu.Items.Add(mi);
-
-
-
-
-
-
   if Plugin.Globals.KeyData.IsKeyChecksumValid = false then
   begin
-    // insert a spacer...
-    mi := TMenuItem.Create(Menu);
-    mi.Caption := '-';
-    Menu.Items.Add(mi);
-
     // insert the register option...
     mi := TMenuItem.Create(Menu);
     mi.Caption := 'Open Registration Key File...';
@@ -216,7 +201,22 @@ begin
     Menu.Items.Add(mi);
   end;
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'About...';
+  mi.OnClick := ShowAboutBox;
+  Menu.Items.Add(mi);
 
+  //NOTE: Not sure if I want to inlude a 'Registered To...' item. hmmm.
+  {
+  if Plugin.Globals.KeyData.IsKeyChecksumValid = true then
+  begin
+    // insert the register option...
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Registered to ' + Plugin.Globals.KeyData.UserName;
+    mi.Enabled := false;
+    Menu.Items.Add(mi);
+  end;
+  }
 
   Menu.Popup(x, y);
 end;
