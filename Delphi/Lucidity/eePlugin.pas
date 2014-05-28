@@ -34,7 +34,7 @@ uses
   Effect.MidiAutomation,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   B2.Filter.CriticallyDampedLowpass,
-  uKeyGroupManager,
+  Lucidity.KeyGroupManager,
   eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,
   soLevelMeter,

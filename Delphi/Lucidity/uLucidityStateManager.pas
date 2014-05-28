@@ -152,7 +152,7 @@ uses
   eeSaveLoadFunctions,
   eeEnumHelper,
   Lucidity.SampleMap,
-  eeFunctions, uKeyGroupManager,
+  eeFunctions, Lucidity.KeyGroupManager,
   Lucidity.Sfz;
 
 const

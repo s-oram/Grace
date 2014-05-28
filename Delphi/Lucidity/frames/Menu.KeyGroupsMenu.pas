@@ -27,7 +27,8 @@ implementation
 
 uses
   Lucidity.SampleMap, SysUtils,
-  eePluginEx, uKeyGroupManager,
+  eePluginEx,
+  Lucidity.KeyGroupManager,
   uConstants, Lucidity.Interfaces,
   uAutoFree;
 

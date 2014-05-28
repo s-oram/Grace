@@ -45,7 +45,8 @@ implementation
 
 uses
   SysUtils, Classes,
-  uKeyGroupManager, Lucidity.SampleMap,
+  Lucidity.KeyGroupManager,
+  Lucidity.SampleMap,
   uConstants, Lucidity.Interfaces,
   uAutoFree;
 

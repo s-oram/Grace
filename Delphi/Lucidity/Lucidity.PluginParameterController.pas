@@ -2,6 +2,8 @@ unit Lucidity.PluginParameterController;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   VamLib.Utils,
   eePublishedVstParameters,
@@ -38,7 +40,7 @@ type
 implementation
 
 uses
-  uKeyGroupManager,
+  Lucidity.KeyGroupManager,
   uConstants,
   SysUtils,
   soLucidityVoiceParameterWrapper,

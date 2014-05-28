@@ -487,7 +487,7 @@
 				<Form>MenuBarFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="uKeyGroupManager.pas"/>
+			<DCCReference Include="Lucidity.KeyGroupManager.pas"/>
 			<DCCReference Include="frames\Menu.KeyGroupsMenu.pas"/>
 			<DCCReference Include="frames\uRegionInfoFrame.pas">
 				<Form>RegionInfoFrame</Form>

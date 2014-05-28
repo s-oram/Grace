@@ -66,7 +66,7 @@ uses
   uLucidityXYPads in 'SoundObjects\uLucidityXYPads.pas',
   soLucidityVoiceParameterWrapper in 'SoundObjects\soLucidityVoiceParameterWrapper.pas',
   uMenuBarFrame in 'frames\uMenuBarFrame.pas' {MenuBarFrame: TFrame},
-  uKeyGroupManager in 'uKeyGroupManager.pas',
+  Lucidity.KeyGroupManager in 'Lucidity.KeyGroupManager.pas',
   Menu.KeyGroupsMenu in 'frames\Menu.KeyGroupsMenu.pas',
   uRegionInfoFrame in 'frames\uRegionInfoFrame.pas' {RegionInfoFrame: TFrame},
   Menu.SamplesMenu in 'frames\Menu.SamplesMenu.pas',

@@ -12,8 +12,6 @@ function IsSupportedAudioFormat(const FileName : string): boolean;
 procedure SendMsg_StartProfiling;
 procedure SendMsg_StopProfiling;
 
-
-
 procedure SetUpLogging;
 
 procedure LogMemoryUsage(const LogTag : string = '');

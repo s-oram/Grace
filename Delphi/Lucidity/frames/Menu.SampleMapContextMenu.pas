@@ -37,7 +37,7 @@ uses
   uAutoFree,
   uGuiUtils,
   Dialogs,
-  uKeyGroupManager,
+  Lucidity.KeyGroupManager,
   uConstants;
 
 { TSampleMapContextMenu }

@@ -69,7 +69,7 @@ implementation
 uses
   SysUtils,
   VamLib.Utils,
-  uKeyGroupManager,
+  Lucidity.KeyGroupManager,
   Lucidity.Types,
   Lucidity.Interfaces,
   Lucidity.KeyGroup,
