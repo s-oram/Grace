@@ -24,6 +24,7 @@ type
   IAboutDialog = interface
     ['{3B1C6F01-C788-4394-9AE3-C8FEBFA12711}']
     procedure Setup(ParentContainer : TWinControl);
+    function AboutText: TStrings;
   end;
 
   TAboutDialog = class(TInterfacedObject, IAboutDialog)
@@ -31,10 +32,15 @@ type
     Form : TAboutDialogForm;
 
     procedure LoadAboutText(const Text : TStrings);
+
+    function AboutText: TStrings;
   public
     constructor Create;
     destructor Destroy; override;
     procedure Setup(ParentContainer : TWinControl);
+
+
+
   end;
 
 
@@ -64,7 +70,7 @@ end;
 
 procedure TAboutDialog.LoadAboutText(const Text: TStrings);
 begin
-  Text.Add('Lucidity Vst Sampler');
+  Text.Add('Lucidity Vst Sampler By One Small Clue');
   Text.Add('Version ' + GetBuildInfoAsString);
 end;
 
@@ -103,6 +109,13 @@ begin
 
   Form.BackgroundPanel.Visible := true;
 end;
+
+function TAboutDialog.AboutText: TStrings;
+begin
+  result := Form.TextBox.Text;
+end;
+
+
 
 
 end.

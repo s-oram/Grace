@@ -225,9 +225,15 @@ procedure TMainMenu.ShowAboutBox(Sender: TObject);
 var
   AboutDialog : IAboutDialog;
   CloseCallback : TProc;
+  s : string;
 begin
   AboutDialog := TAboutDialog.Create;
   AboutDialog.Setup(DialogDisplay.GetDisplayArea);
+
+  if Plugin.Globals.KeyData.IsKeyChecksumValid = true
+    then s := 'Registered to ' + Plugin.Globals.KeyData.UserName
+    else s := 'UNREGISTERED';
+  AboutDialog.AboutText.Add(s);
 
   CloseCallback := procedure
   begin

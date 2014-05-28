@@ -1,8 +1,4 @@
 =============================================================================
-- copy protection finished
-
-- need to finish about box!
-
 - filters finished. 
 
 - make LFO phases random. ?

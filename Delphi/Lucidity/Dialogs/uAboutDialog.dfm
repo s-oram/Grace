@@ -28,6 +28,7 @@ object AboutDialogForm: TAboutDialogForm
       Top = 0
       Width = 771
       Height = 647
+      Opacity = 255
       Text = 'BackgroundPanel'
       HitTest = True
       Color = '$FFEFFEEE'
@@ -43,6 +44,7 @@ object AboutDialogForm: TAboutDialogForm
         Top = 16
         Width = 739
         Height = 615
+        Opacity = 255
         Text = 'VamDiv1'
         HitTest = True
         Align = alClient
@@ -58,6 +60,7 @@ object AboutDialogForm: TAboutDialogForm
           Margins.Right = 0
           Margins.Bottom = 16
           ParentCustomHint = False
+          Opacity = 255
           Text = 'LUCIDITY'
           HitTest = True
           AutoSize = False
@@ -76,6 +79,7 @@ object AboutDialogForm: TAboutDialogForm
           Top = 45
           Width = 739
           Height = 570
+          Opacity = 255
           Text.Strings = (
             'Lucidity VST Sampler Testing Text')
           HitTest = True
