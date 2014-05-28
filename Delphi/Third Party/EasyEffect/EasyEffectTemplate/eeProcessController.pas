@@ -288,10 +288,7 @@ begin
 
 
   {$IFDEF CpuMonitor}
-    if CpuMonitor.StopProcessingReplacingTimer then
-    begin
-      //
-    end;
+    CpuMonitor.StopProcessingReplacingTimer;
     Plugin.Globals.CpuUsage^.ProcessReplacingTime := CpuMonitor.ProcessReplacingTime;
     Plugin.Globals.CpuUsage^.ProcessReplacingLoad := CpuMonitor.ProcessReplacingLoad;
   {$ENDIF}

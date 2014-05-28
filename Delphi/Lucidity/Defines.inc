@@ -3,7 +3,7 @@
 {.$DEFINE Demo}
 {$DEFINE Beta}
 
-{.$DEFINE CpuMonitor}
+{$DEFINE CpuMonitor}
 {$DEFINE OverSampleEnabled}
 
 {.$DEFINE HasAudioIns}
