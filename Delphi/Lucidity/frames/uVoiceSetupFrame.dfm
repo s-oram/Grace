@@ -28,7 +28,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
       Align = alClient
       Visible = True
       OnResize = BackgroundPanelResize
-      object MacroKnobDiv: TVamDiv
+      object XYPadsContainer: TVamDiv
         AlignWithMargins = True
         Left = 112
         Top = 115
@@ -41,13 +41,13 @@ object VoiceSetupFrame: TVoiceSetupFrame
         Opacity = 255
         HitTest = True
         Visible = True
-        object MacroDivLabel: TVamLabel
+        object XYPadsContainerLabel: TVamLabel
           Left = 0
           Top = 0
           Width = 817
           Height = 18
           Opacity = 255
-          Text = 'MACRO CONTROLS'
+          Text = 'XY PADS'
           HitTest = True
           AutoSize = False
           TextAlign = AlignCenter
@@ -59,6 +59,7 @@ object VoiceSetupFrame: TVoiceSetupFrame
           Font.Style = [fsBold]
           Align = alTop
           Visible = True
+          ExplicitTop = 8
         end
         object XYPad1: TVamXYPad
           Tag = 1

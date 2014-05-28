@@ -13,8 +13,8 @@ type
   TVoiceSetupFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
-    MacroKnobDiv: TVamDiv;
-    MacroDivLabel: TVamLabel;
+    XYPadsContainer: TVamDiv;
+    XYPadsContainerLabel: TVamLabel;
     XYPad1: TVamXYPad;
     XYPad2: TVamXYPad;
     XYPad3: TVamXYPad;

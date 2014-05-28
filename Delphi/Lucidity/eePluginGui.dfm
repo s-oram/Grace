@@ -195,7 +195,7 @@ object PluginGui: TPluginGui
             'MAIN'
             'SEQUENCER ONE'
             'SEQUENCER TWO'
-            'SETUP')
+            'XY PADS')
           OnChanged = LowerTabsChanged
           Visible = True
         end

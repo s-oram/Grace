@@ -3,7 +3,6 @@
 
 - think about project directories
 - sample map icon needs to be replaced.
-- SETUP needs to be renamed to XY PADS 
 
 The Scope needs some sort of debouncer/throttle handler for stop the scope from flickering between
 modes as the user mouses around.
@@ -22,6 +21,8 @@ Right Click and Hold for sample zoom with mouse
 - Up/Down zooms in/out
 
 - would be good to figure out the text drawing and use a higher quality text drawing routine!
+
+- ctrl+click to reset pads to their default values.
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
