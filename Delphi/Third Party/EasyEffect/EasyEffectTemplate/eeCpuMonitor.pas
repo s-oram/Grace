@@ -19,6 +19,7 @@ type
     function GetProcessReplacingTime: double;
   protected
     ProcessReplacingData : TTimerData;
+    VstEventData : TTimerData;
 
     procedure CalculateCpuTimeAndLoad(const TimerData : PTimerData);
   public
@@ -47,6 +48,14 @@ uses
 constructor TCpuMonitor.Create;
 begin
   ProcessReplacingData.ProcessTime := 0;
+
+  VstEventData.ProcessTime := 0;
+  // Sampleframes and samplerate values aren't set by the plugin when
+  // processing VST Events. However we'll use these values as a standin
+  // when calculating the load, because the loading is what's important. We
+  // don't want to overload the host process method.
+  VstEventData.SampleFrames := 64;
+  VstEventData.SampleRate   := 44100;
 end;
 
 destructor TCpuMonitor.Destroy;
@@ -83,8 +92,6 @@ begin
 end;
 
 procedure TCpuMonitor.StartProcessReplacingTimer(aSampleFrames, aSampleRate : double);
-var
-  freq:Int64;
 begin
   ProcessReplacingData.SampleFrames := aSampleFrames;
   ProcessReplacingData.SampleRate   := aSampleRate;
@@ -101,9 +108,9 @@ begin
   CalculateCpuTimeAndLoad(TimerData);
 
   {$IFDEF Logging}
-  if TimerData.ProcessLoad >= 100 then
+  if ProcessReplacingData.ProcessLoad >= 100 then
   begin
-    s := IntToStr(round(TimerData.ProcessLoad));
+    s := IntToStr(round(ProcessReplacingData.ProcessLoad));
     LogMain.LogError('Processing Replacing Load is ' + s + '%');
   end;
   {$ENDIF}
@@ -111,12 +118,25 @@ end;
 
 procedure TCpuMonitor.StartVstEventTimer;
 begin
-
+  QueryPerformanceCounter(VstEventData.StartTime);
 end;
 
 procedure TCpuMonitor.StopVstEventTimer;
+var
+  TimerData : PTimerData;
+  {$IFDEF Logging}s : string;{$ENDIF}
 begin
+  TimerData := @VstEventData;
 
+  CalculateCpuTimeAndLoad(TimerData);
+
+  {$IFDEF Logging}
+  if VstEventData.ProcessLoad >= 100 then
+  begin
+    s := IntToStr(round(VstEventData.ProcessLoad));
+    LogMain.LogError('VST Event Load is ' + s + '%');
+  end;
+  {$ENDIF}
 end;
 
 end.

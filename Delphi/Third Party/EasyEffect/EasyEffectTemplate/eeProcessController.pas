@@ -189,6 +189,10 @@ var
   pxMidiEvent : PeeMidiEvent;
   {$ENDIF}
 begin
+  {$IFDEF CpuMonitor}
+    CpuMonitor.StartVstEventTimer;
+  {$ENDIF}
+
   MidiInput.ClearEvents;
   FilterAndAddMidiEvents(ev, MidiInput);
 
@@ -198,6 +202,10 @@ begin
     pxMidiEvent := MidiInput.EventAsPointer[c1];
     pxMidiEvent^.Deltaframes := pxMidiEvent^.Deltaframes * Plugin.Settings.OverSampleFactor;
   end;
+  {$ENDIF}
+
+  {$IFDEF CpuMonitor}
+    CpuMonitor.StopVstEventTimer;
   {$ENDIF}
 
   // NOTE: According to VST 2.4 docs, the return value of ProcessEvents is ignored.
