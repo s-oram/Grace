@@ -16,6 +16,7 @@ type
   TSmartInspectProxy = class(TInterfacedObject, ILoggingProxy)
   private
     procedure LogMessage(const aTitle : string);
+    procedure LogError(const aTitle : string);
   end;
 
 implementation
@@ -27,6 +28,11 @@ var
   Connections : string;
 
 { TSmartInspectProxy }
+
+procedure TSmartInspectProxy.LogError(const aTitle: string);
+begin
+  VamLibLog.LogError(aTitle);
+end;
 
 procedure TSmartInspectProxy.LogMessage(const aTitle: string);
 begin
