@@ -712,7 +712,6 @@ begin
   vp := @self;
   Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceFinished, vp);
 
-
   try
     // CleanUp() clears references to other resouces and zeros some internal values.
     // It should be called whenever the voice becomes inactive.

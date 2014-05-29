@@ -19,6 +19,7 @@ type
     function GetProcessReplacingTime: double;
   protected
     ProcessReplacingData : TTimerData;
+    AudioProcess2Data : TTimerData;
     VstEventData : TTimerData;
 
     procedure CalculateCpuTimeAndLoad(const TimerData : PTimerData);
@@ -31,6 +32,9 @@ type
 
     procedure StartProcessReplacingTimer(aSampleFrames, aSampleRate : double);
     procedure StopProcessingReplacingTimer;
+
+    procedure StartAudioProcessTimer2;
+    procedure StopAudioProcessTimer2;
 
     property ProcessReplacingTime : double read GetProcessReplacingTime; // milliseconds
     property ProcessReplacingLoad : double read GetProcessReplacingLoad; // 0..100 (percentage of max load)
@@ -48,6 +52,7 @@ uses
 constructor TCpuMonitor.Create;
 begin
   ProcessReplacingData.ProcessTime := 0;
+  AudioProcess2Data.ProcessTime := 0;
 
   VstEventData.ProcessTime := 0;
   // Sampleframes and samplerate values aren't set by the plugin when
@@ -93,9 +98,14 @@ end;
 
 procedure TCpuMonitor.StartProcessReplacingTimer(aSampleFrames, aSampleRate : double);
 begin
+  AudioProcess2Data.SampleFrames := aSampleFrames;
+  AudioProcess2Data.SampleRate   := aSampleRate;
+
   ProcessReplacingData.SampleFrames := aSampleFrames;
   ProcessReplacingData.SampleRate   := aSampleRate;
   QueryPerformanceCounter(ProcessReplacingData.StartTime);
+
+
 end;
 
 procedure TCpuMonitor.StopProcessingReplacingTimer;
@@ -138,5 +148,31 @@ begin
   end;
   {$ENDIF}
 end;
+
+procedure TCpuMonitor.StartAudioProcessTimer2;
+begin
+  QueryPerformanceCounter(AudioProcess2Data.StartTime);
+end;
+
+procedure TCpuMonitor.StopAudioProcessTimer2;
+var
+  TimerData : PTimerData;
+  {$IFDEF Logging}s : string;{$ENDIF}
+begin
+  TimerData := @AudioProcess2Data;
+
+  CalculateCpuTimeAndLoad(TimerData);
+
+  {$IFDEF Logging}
+  if AudioProcess2Data.ProcessLoad >= 100 then
+  begin
+    s := IntToStr(round(AudioProcess2Data.ProcessLoad));
+    LogMain.LogError('Audio Process 2 Load is ' + s + '%');
+  end;
+  {$ENDIF}
+end;
+
+
+
 
 end.

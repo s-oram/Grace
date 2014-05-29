@@ -1,4 +1,6 @@
 =============================================================================
+- bug: reloading a saved project adds an extra key group.
+
 - There are clicks and pops. something is taking too long.
 
 - Knobs need smoothing. moving them is clicky.

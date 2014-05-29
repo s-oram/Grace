@@ -219,6 +219,8 @@ var
 begin
   {$EXCESSPRECISION OFF}
 
+  OutputDebugString('SAMPLING ON');
+
   {$IFDEF CpuMonitor}
     CpuMonitor.StartProcessReplacingTimer(SampleFrames, fSampleRate);
   {$ENDIF}
@@ -268,13 +270,18 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
+  CpuMonitor.StartAudioProcessTimer2;
   ProcessAudioBlock(ModSampleFrames);
+  CpuMonitor.StopAudioProcessTimer2;
+
+
+
 
   //Ensure midi input data is deleted. (ProcessEvents isn't called each sample block in all VST hosts)
   if MidiInput.EventCount > 0 then MidiInput.ClearEvents;
   //-----------------------------------------------------
   //-----------------------------------------------------
-  
+
 
   {$IFDEF OverSampleEnabled}
   VstOutputsController.PostProcessVstOutputs(Outputs, SampleFrames);
@@ -294,14 +301,15 @@ begin
   {$ENDIF}
 
 
-
   {$IFDEF CpuMonitor}
+
     CpuMonitor.StopProcessingReplacingTimer;
     Plugin.Globals.CpuUsage^.ProcessReplacingTime := CpuMonitor.ProcessReplacingTime;
     Plugin.Globals.CpuUsage^.ProcessReplacingLoad := CpuMonitor.ProcessReplacingLoad;
   {$ENDIF}
 
-  //OutputDebugString('SAMPLING OFF');
+
+  OutputDebugString('SAMPLING OFF');
 end;
 
 
