@@ -139,6 +139,8 @@ begin
 
   CpuMonitor := TCpuMonitor.Create;
 
+  fPlugin.Globals.CpuMonitor := CpuMonitor;
+
   {$IFDEF HasAudioIns}
   VstInputsController := TVstAudioInputController.Create;
   VstInputsController.Setup_PluginInputBuffers(@Plugin.Inputs);
@@ -270,9 +272,9 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
-  CpuMonitor.StartAudioProcessTimer2;
+
   ProcessAudioBlock(ModSampleFrames);
-  CpuMonitor.StopAudioProcessTimer2;
+
 
 
 
@@ -454,6 +456,7 @@ begin
         Plugin.ProcessMidiEvent(ev);
         Inc(CurEv);
       end;
+
 
       if NextControlRateDelta = 0 then
       begin

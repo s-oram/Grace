@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  eeCpuMonitor,
   SysUtils,
   ExtCtrls,
   eeStoredActionList,
@@ -31,6 +32,7 @@ type
     fAudioActions: TStoredActions;
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
+    fCpuMonitor: TCpuMonitor;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
@@ -76,6 +78,9 @@ type
     property SampleMapReference : TObject read fSampleMapReference write fSampleMapReference;
     property KeyGroupsReference : TObject read fKeyGroupsReference write fKeyGroupsReference;
     //================================
+
+    //HACK: including this here is very hacky.
+    property CpuMonitor : TCpuMonitor read fCpuMonitor write fCpuMonitor;
   end;
 
 implementation

@@ -18,6 +18,7 @@ type
     function GetProcessReplacingLoad: double;
     function GetProcessReplacingTime: double;
   protected
+    LogCount : integer;
     ProcessReplacingData : TTimerData;
     AudioProcess2Data : TTimerData;
     VstEventData : TTimerData;
@@ -61,6 +62,8 @@ begin
   // don't want to overload the host process method.
   VstEventData.SampleFrames := 64;
   VstEventData.SampleRate   := 44100;
+
+  LogCount := 0;
 end;
 
 destructor TCpuMonitor.Destroy;
@@ -164,10 +167,12 @@ begin
   CalculateCpuTimeAndLoad(TimerData);
 
   {$IFDEF Logging}
-  if AudioProcess2Data.ProcessLoad >= 100 then
+  inc(LogCount);
+  if (LogCount > 100) or (AudioProcess2Data.ProcessLoad >= 100)  then
   begin
     s := IntToStr(round(AudioProcess2Data.ProcessLoad));
     LogMain.LogError('Audio Process 2 Load is ' + s + '%');
+    LogCount := 0;
   end;
   {$ENDIF}
 end;

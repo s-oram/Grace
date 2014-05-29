@@ -73,6 +73,8 @@ var
 begin
   inherited;
 
+
+
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
@@ -87,6 +89,7 @@ begin
 
     kg := nil;
   end;
+
 
   if MsgID = TLucidMsgID.Audio_KeyGroupInactive then
   begin

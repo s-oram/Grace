@@ -409,6 +409,9 @@ var
 begin
   inherited;
 
+
+
+
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
     pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;

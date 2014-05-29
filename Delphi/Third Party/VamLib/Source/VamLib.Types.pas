@@ -29,8 +29,49 @@ type
     {$Hints On}
   end;
 
+  // TFakeCriticalSection doesn't do anything. It's a fakie and can be useful for
+  // debugging.
+  TFakeCriticalSection = class
+  private
+  public
+    procedure Acquire;
+    procedure Release;
+    function TryEnter: Boolean;
+    procedure Enter; inline;
+    procedure Leave; inline;
+  end;
+
 
 implementation
+
+{ TFakeCriticalSection }
+
+procedure TFakeCriticalSection.Acquire;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Enter;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Leave;
+begin
+  // It's not called fake for nothing.
+end;
+
+procedure TFakeCriticalSection.Release;
+begin
+  // It's not called fake for nothing.
+end;
+
+function TFakeCriticalSection.TryEnter: Boolean;
+begin
+  // It's not called fake for nothing.
+ result := true;
+end;
+
 
 { TVamInterfacedObject }
 

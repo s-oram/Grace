@@ -396,6 +396,8 @@ begin
   SampleMap := (Globals.SampleMapReference as TSampleMap);
   KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
 
+
+
   KeyGroupList := TInterfaceList.Create;
   AutoFree(@KeyGroupList);
 
@@ -436,7 +438,11 @@ begin
     end;
   end;
 
+
+
+
   ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Poly);
+
 end;
 
 procedure TVoiceController.PolyRelease(const Data1, Data2: byte);
@@ -578,11 +584,13 @@ begin
       exit; //======================>> exit >>=======>>
     end;
 
+
     TriggerItem := TriggerQueue[c1] as TRegionTriggerItem;
 
     // NOTE: The regions owning key group must be the same as the supplied key group.
     rg := TriggerItem.RegionIntf as IRegion;
     kg := TriggerItem.KeyGroup as IKeyGroup;
+
 
 
     //==== Trigger the Voice ====
@@ -592,14 +600,17 @@ begin
     aVoice.Trigger(MidiData1, MidiData2, kg, rg);
 
 
+
     //=== send the triggered voice message ====
     // This notfies the audio engine of the voice, the audio will add the voice to
     // it's playback lists...
     kgID := kg.GetID;
     TriggerMsg.Voice      := @aVoice;
     TriggerMsg.KeyGroupID := @kgID;
-    Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
 
+    Globals.CpuMonitor.StartAudioProcessTimer2;
+    Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
+    Globals.CpuMonitor.StopAudioProcessTimer2;
 
     //==== internal voice list management =====
     if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);
@@ -612,6 +623,8 @@ begin
     //Important: Increment the groups triggered not count after the voice Trigger() method has been called.
     KG.IncTriggeredNoteCount;
   end;
+
+
 end;
 
 function TVoiceController.FindVoiceToTrigger: TLucidityVoice;

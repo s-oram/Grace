@@ -159,6 +159,7 @@ type
     VclObjects   : TList;
 
     MessageLock : TFixedCriticalSection;
+    //MessageLock : TFakeCriticalSection;
     DisableMessageSending : boolean;
 
     MainThreadID : cardinal;
@@ -291,6 +292,7 @@ begin
   DisableMessageSending := false;
 
   MessageLock := TFixedCriticalSection.Create;
+  //MessageLock := TFakeCriticalSection.Create;
 
   AudioObjects := TList.Create;
   MainObjects  := TList.Create;

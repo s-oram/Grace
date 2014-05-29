@@ -1223,12 +1223,21 @@ var
 begin
   inherited;
 
+
+
   try
     if IsNoteOn(Event) then
     begin
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
+
+
+
       MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
+
+
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+
+
 
       inc(GlobalModPoints.Source_TriggeredNoteCount);
     end;
@@ -1236,6 +1245,7 @@ begin
     Log.LogMessage('NoteOn Exception.');
     raise;
   end;
+
 
 
   try
@@ -1315,6 +1325,9 @@ procedure TeePlugin.AudioProcess(Sampleframes: integer);
 var
   c1: Integer;
 begin
+  //Globals.CpuMonitor.StartAudioProcessTimer2;
+  //Globals.CpuMonitor.StopAudioProcessTimer2;
+
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
   //ClearBuffer(Outputs[2], SampleFrames);
@@ -1347,6 +1360,8 @@ begin
     raise;
     {$ENDIF}
   end;
+
+
 
 end;
 
