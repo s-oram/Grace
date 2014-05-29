@@ -270,9 +270,9 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
-  //CpuMonitor.StartAudioProcessTimer2;
+  CpuMonitor.StartAudioProcessTimer2;
   ProcessAudioBlock(ModSampleFrames);
-  //CpuMonitor.StopAudioProcessTimer2;
+  CpuMonitor.StopAudioProcessTimer2;
 
 
 
