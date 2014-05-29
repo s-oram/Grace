@@ -568,7 +568,15 @@ begin
   for c1 := 0 to TriggerQueue.Count-1 do
   begin
     aVoice := FindVoiceToTrigger;
-    if not assigned(aVoice) then exit;
+    if assigned(aVoice) then
+    begin
+      ActiveVoices.Remove(aVoice);
+      ReleasedVoices.Remove(aVoice);
+      InactiveVoices.Remove(aVoice);
+    end else
+    begin
+      exit; //======================>> exit >>=======>>
+    end;
 
     TriggerItem := TriggerQueue[c1] as TRegionTriggerItem;
 
@@ -608,12 +616,27 @@ end;
 
 function TVoiceController.FindVoiceToTrigger: TLucidityVoice;
 var
-  Index : integer;
+  aVoice : TLucidityVoice;
 begin
-  //TODO: Check the inactive voice count, if 0, cull an existing voice.
-  Index := InactiveVoices.Count-1;
-  result := InactiveVoices[Index] as TLucidityVoice;
-  InactiveVoices.Delete(Index);
+  if InactiveVoices.Count > 0 then
+  begin
+    aVoice := InactiveVoices[0];
+    InactiveVoices.Remove(aVoice);
+    result := aVoice;
+  end else
+  begin
+    if ReleasedVoices.Count > 0 then
+    begin
+      aVoice := ReleasedVoices[0];
+      ReleasedVoices.Extract(aVoice);
+      aVoice.Kill;
+      result := aVoice;
+      exit; //=======================>>
+    end;
+
+    // no voice has been found if we've made it this far.
+    result := nil;
+  end;
 end;
 
 
