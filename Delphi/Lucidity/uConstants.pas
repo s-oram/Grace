@@ -86,8 +86,8 @@ type
     Audio_MonoNoteRelease             = AudioMsg + 7;
     Audio_LegatoNoteTrigger           = AudioMsg + 8;
     Audio_LegatoNoteRelease           = AudioMsg + 9;
-    Audio_LatchNoteTrigger           = AudioMsg + 10;
-    Audio_LatchNoteRelease           = AudioMsg + 11;
+    Audio_LatchNoteTrigger            = AudioMsg + 10;
+    Audio_LatchNoteRelease            = AudioMsg + 11;
     AudioCommand_QuickReleaseAllNotes = AudioMsg + 12;
   end;
 
