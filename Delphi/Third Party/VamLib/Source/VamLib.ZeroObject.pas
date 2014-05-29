@@ -3,6 +3,7 @@ unit VamLib.ZeroObject;
 interface
 
 uses
+  VamLib.CpuOverloadWatcher,
   SysUtils,
   Classes,
   ExtCtrls,
@@ -164,6 +165,8 @@ type
 
     MainThreadID : cardinal;
 
+    OverloadWatch : TCpuOverloadWatcher;
+
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
@@ -287,6 +290,8 @@ end;
 
 constructor TMotherShip.Create;
 begin
+  OverloadWatch := TCpuOverloadWatcher.Create;
+
   MainThreadID := 0;
 
   DisableMessageSending := false;
@@ -323,6 +328,8 @@ begin
   FreeAndNil(AudioObjects);
   FreeAndNil(MainObjects);
   FreeAndNil(VclObjects);
+
+  OverloadWatch.Free;
 
   inherited;
 end;
@@ -452,8 +459,11 @@ end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 begin
+
+
   //VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
   SendMessageToList(AudioObjects, MsgID, Data);
+
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal);
@@ -548,11 +558,17 @@ end;
 
 procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer);
 var
+  LastIndex : integer;
   c1: Integer;
   zo : IZeroObject;
   LogMsg : string;
   aClass : TClass;
 begin
+  //TODO:HIGH add debug tags or take this overload watcher away.
+  OverloadWatch.Start(32, 44100, 'MotherShip MsgSend ' + IntToStr(MsgID));
+
+  LastIndex := -1;
+
   MessageLock.Enter;
   try
     if ObjectList = MainObjects then LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')'
@@ -566,21 +582,27 @@ begin
     try
       for c1 := 0 to ObjectList.Count - 1 do
       begin
+        LastIndex := c1;
         zo := IZeroObject(ObjectList[c1]);
-
-        aClass := zo.ClassType;
-        LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
-
         zo.ProcessZeroObjectMessage(MsgID, Data);
       end;
     except
+      zo := IZeroObject(ObjectList[LastIndex]);
+      aClass := zo.ClassType;
+      LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
+
       DisableMessageSending := true;
-      Log.LogMessage('ERROR' + LogMsg);
+      Log.LogError('ERROR' + LogMsg);
       raise;
     end;
+
   finally
     MessageLock.Leave;
   end;
+
+  OverloadWatch.Stop;
+
+
 end;
 
 
