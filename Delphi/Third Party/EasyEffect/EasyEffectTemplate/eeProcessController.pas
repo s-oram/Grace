@@ -219,7 +219,7 @@ var
 begin
   {$EXCESSPRECISION OFF}
 
-  OutputDebugString('SAMPLING ON');
+  //OutputDebugString('SAMPLING ON');
 
   {$IFDEF CpuMonitor}
     CpuMonitor.StartProcessReplacingTimer(SampleFrames, fSampleRate);
@@ -270,9 +270,9 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
-  CpuMonitor.StartAudioProcessTimer2;
+  //CpuMonitor.StartAudioProcessTimer2;
   ProcessAudioBlock(ModSampleFrames);
-  CpuMonitor.StopAudioProcessTimer2;
+  //CpuMonitor.StopAudioProcessTimer2;
 
 
 
@@ -309,7 +309,7 @@ begin
   {$ENDIF}
 
 
-  OutputDebugString('SAMPLING OFF');
+  //OutputDebugString('SAMPLING OFF');
 end;
 
 
