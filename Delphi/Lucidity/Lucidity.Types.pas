@@ -6,6 +6,7 @@ uses
   Lucidity.PluginParameters,
   Windows,
   uConstants,
+  eeParSmoother,
   VamLib.UniqueID,
   VamLib.MoreTypes,
   VamLib.Collections.Lists;
@@ -19,8 +20,12 @@ type
   // I'm not entirely sure of the variable naming yet. It doesn't seem quite right.
   TModulatedPar = record
   public
-    //Holds the actual parameter value. Range should be 0..1
+    //Holds the actual parameter value. Range should be 0..1. This is also the target for the SmoothedParValue.
     ParValue  : single;
+    SmoothedParValue : single; //range should be 0..1.
+
+    RequiresSmoothing : boolean;
+    ParSmootherState : TParSmootherState;
 
     //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
     ModAmount : array[0..kModSlotCount-1] of single;
@@ -36,6 +41,8 @@ type
     ModMax    : single;
 
     function IsModulated:boolean;
+
+    procedure Reset;
   end;
 
   PModulatedPars = ^TModulatedPars;
@@ -148,6 +155,14 @@ begin
   end;
 
   result := false;
+end;
+
+procedure TModulatedPar.Reset;
+begin
+  self.ParValue := 0;
+  self.SmoothedParValue := 0;
+  self.RequiresSmoothing := false;
+  self.ParSmootherState.Reset(0);
 end;
 
 { TFakeCriticalSection }

@@ -128,6 +128,8 @@ uses
 { TLucidityEngine }
 
 constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals; const aDebugTag : string);
+var
+  c1 : integer;
 begin
   KeyGroupID.Init;
 
@@ -136,6 +138,11 @@ begin
   Log.LogMessage('KeyGroup Created ID = (' + DebugTag + ')');
 
 
+
+  for c1 := 0 to kModulatedParameterCount-1 do
+  begin
+    ModulatedParameters[c1].Reset;
+  end;
 
   // TODO: The key group shouldn't know about "aVoices". But as my code is currently written the voiceParameter wrapper class is owned by
   // the key group and the voice parameter wrapper does need to know about the voices.
