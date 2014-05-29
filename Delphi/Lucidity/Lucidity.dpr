@@ -164,7 +164,8 @@ uses
   Lucidity.VoiceController in 'Lucidity.VoiceController.pas',
   uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame},
   uVoiceSetupFrame in 'frames\uVoiceSetupFrame.pas' {VoiceSetupFrame: TFrame},
-  Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas';
+  Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas',
+  eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas';
 
 {$R *.res}
 
