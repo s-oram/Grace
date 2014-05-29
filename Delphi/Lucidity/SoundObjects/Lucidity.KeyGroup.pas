@@ -383,7 +383,6 @@ procedure TKeyGroup.FastControlProcess;
 var
   c1 : integer;
 begin
-
   for c1 := ActiveVoices.Count-1 downto 0 do
   begin
     ActiveVoices[c1].FastControlProcess;

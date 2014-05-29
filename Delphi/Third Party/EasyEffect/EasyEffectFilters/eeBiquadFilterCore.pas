@@ -42,7 +42,6 @@ type
     z2A : double;
     z1B : double;
     z2B : double;
-
     In0, In1, In2, Out1, Out2 : double;
   public
     constructor Create;
