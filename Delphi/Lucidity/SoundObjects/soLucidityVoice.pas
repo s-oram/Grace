@@ -163,7 +163,8 @@ type
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
 
     property IsActive    : boolean read fIsActive;
-    property HasBeenReleased : boolean read fHasBeenReleased;
+    property HasBeenReleased      : boolean read fHasBeenReleased;
+    property HasBeenQuickReleased : boolean read fHasBeenQuickReleased;
     property TriggerNote : byte    read fTriggerNote;
 
     //==== Sound modules ====

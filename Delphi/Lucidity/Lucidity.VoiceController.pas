@@ -616,13 +616,17 @@ end;
 
 function TVoiceController.FindVoiceToTrigger: TLucidityVoice;
 var
+  c1 : integer;
   aVoice : TLucidityVoice;
+  TestVoice : TLucidityVoice;
+  CullVoiceNeeded : boolean;
 begin
+  aVoice := nil;
+
   if InactiveVoices.Count > 0 then
   begin
     aVoice := InactiveVoices[0];
     InactiveVoices.Remove(aVoice);
-    result := aVoice;
   end else
   begin
     if ReleasedVoices.Count > 0 then
@@ -630,13 +634,46 @@ begin
       aVoice := ReleasedVoices[0];
       ReleasedVoices.Extract(aVoice);
       aVoice.Kill;
-      result := aVoice;
-      exit; //=======================>>
+    end;
+  end;
+
+  result := aVoice;
+
+
+
+  //Check if we need to release any voices.
+  if (ActiveVoices.Count + ReleasedVoices.Count) > kMaxActiveVoices then
+  begin
+    CullVoiceNeeded := true;
+
+    for c1 := 0 to ReleasedVoices.Count-1 do
+    begin
+      TestVoice := ReleasedVoices[c1];
+      if TestVoice.IsActive and TestVoice.HasBeenQuickReleased = false then
+      begin
+        CullVoiceNeeded := false;
+        TestVoice.QuickRelease;
+        break;
+      end;
     end;
 
-    // no voice has been found if we've made it this far.
-    result := nil;
+    if CullVoiceNeeded then
+    begin
+      for c1 := 0 to ActiveVoices.Count-1 do
+      begin
+        TestVoice := ActiveVoices[c1];
+        if TestVoice.IsActive and TestVoice.HasBeenQuickReleased = false then
+        begin
+          TestVoice.QuickRelease;
+          break;
+        end;
+      end;
+    end;
   end;
+
+
+
+
 end;
 
 

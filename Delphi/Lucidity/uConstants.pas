@@ -117,6 +117,7 @@ type
 const
   kMaxStepSequencerLength = 32;
   kMaxVoiceCount = 64; //max number of voices per group.
+  kMaxActiveVoices = 12;
 
   kModulatedParameterCount = 35;
   kModSlotCount = 8;
