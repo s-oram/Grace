@@ -24,7 +24,7 @@ type
     ParValue  : single;
     SmoothedParValue : single; //range should be 0..1.
 
-    RequiresSmoothing : boolean;
+    IsSmoothingActive : boolean;
     ParSmootherState : TParSmootherState;
 
     //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
@@ -161,7 +161,7 @@ procedure TModulatedPar.Reset;
 begin
   self.ParValue := 0;
   self.SmoothedParValue := 0;
-  self.RequiresSmoothing := false;
+  self.IsSmoothingActive := false;
   self.ParSmootherState.Reset(0);
 end;
 

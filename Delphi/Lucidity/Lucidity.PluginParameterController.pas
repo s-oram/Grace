@@ -29,7 +29,7 @@ type
 
     class function GetPluginParameterVstInfo(const aPlugin : TObject; const ParName : string):TVstParameterInfo; static; inline;
 
-    class procedure ApplyPluginParToKeyGroup(const KeyGroup : IKeyGroup; const Par : TPluginParameter; const ParValue : single); static;
+    class procedure ApplyPluginParToKeyGroup(const KeyGroup : IKeyGroup; const Par : TPluginParameter; const ParValue : single; const SmoothingRequired : boolean = true); static;
 
     class procedure ResetKeyGroupParameters(const KeyGroup : IKeyGroup); static;
   end;
@@ -220,7 +220,8 @@ end;
 class procedure TPluginParameterController.ApplyPluginParToKeyGroup(
   const KeyGroup: IKeyGroup;
   const Par: TPluginParameter;
-  const ParValue: single);
+  const ParValue: single;
+  const SmoothingRequired : boolean = true);
 var
   VoicePar : TLucidityVoiceParameterWrapper;
   ModParIndex : integer;
@@ -608,7 +609,7 @@ begin
     if IsGlobalPluginPar(Par) = false then
     begin
       ParValue := GetPluginParInfo(Par).DefaultValue;
-      ApplyPluginParToKeyGroup(KeyGroup, Par, ParValue);
+      ApplyPluginParToKeyGroup(KeyGroup, Par, ParValue, false);
     end;
 
     //=== set all mod amount values to 0 ==

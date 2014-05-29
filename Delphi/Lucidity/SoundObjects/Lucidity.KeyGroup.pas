@@ -5,8 +5,9 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  eeParSmoother,
+  VamLib.Utils,
   VamLib.ZeroObject,
+  eeParSmoother,
   VamGuiControlInterfaces,
   Lucidity.Types,
   Lucidity.SequencerDataObject,
@@ -64,6 +65,8 @@ type
     procedure SetID(ID:TKeyGroupID);
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+
+    procedure ApplyAllParSmoothingNow;
   protected
     FSeq1Data : TSequencerDataObject;
     FSeq2Data : TSequencerDataObject;
@@ -89,7 +92,7 @@ type
     procedure GetPatch(var Data:TPatchNode);
 
     function GetModParValue(const ModParIndex : integer):single;
-    procedure SetModParValue(const ModParIndex : integer; const Value:single);
+    procedure SetModParValue(const ModParIndex : integer; const Value:single; const SmoothingRequired : boolean = true);
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
     function GetModParModAmount(const ModParIndex, ModSlot : integer):single;
     procedure GetModParModMinMax(const ModParIndex : integer; out ModMin, ModMax:single);
@@ -279,19 +282,49 @@ begin
   result := @self.ModulatedParameters;
 end;
 
-procedure TKeyGroup.SetModParValue(const ModParIndex: integer; const Value: single);
+procedure TKeyGroup.SetModParValue(const ModParIndex: integer; const Value: single; const SmoothingRequired : boolean);
+var
+  CurrentValue : single;
 begin
-  if ModulatedParameters[ModParIndex].ParValue <> Value then
+  if (SmoothingRequired = false) or (ActiveVoices.Count = 0) then
   begin
     ModulatedParameters[ModParIndex].ParValue := Value;
-
-    if not(ModulatedParameters[ModParIndex].RequiresSmoothing) then
+    ModulatedParameters[ModParIndex].SmoothedParValue := Value;
+    ModulatedParameters[ModParIndex].IsSmoothingActive := false;
+  end else
+  if (ModulatedParameters[ModParIndex].ParValue <> Value) then
+  begin
+    if not (ModulatedParameters[ModParIndex].IsSmoothingActive) then
     begin
-      ModulatedParameters[ModParIndex].ParSmootherState.Reset(Value);
-      ModulatedParameters[ModParIndex].RequiresSmoothing := true;
+      CurrentValue := ModulatedParameters[ModParIndex].ParValue;
+      ModulatedParameters[ModParIndex].ParSmootherState.Reset(CurrentValue);
+      ModulatedParameters[ModParIndex].IsSmoothingActive := true;
+    end;
+    ModulatedParameters[ModParIndex].ParValue := Value;
+  end;
+end;
+
+procedure TKeyGroup.ApplyAllParSmoothingNow;
+var
+  c1 : integer;
+  TargetValue : single;
+begin
+  // NOTE: This method is intended to be called when all voices have finished playing.
+  // this will ensure any outstanding parameter smoothing is applied and not left till
+  // the next time a voice is triggered. Parameter smoothing is only applied while
+  // a key group is actively processing voices.
+  for c1 := 0 to kModulatedParameterCount-1 do
+  begin
+    if ModulatedParameters[c1].IsSmoothingActive then
+    begin
+      TargetValue := ModulatedParameters[c1].ParValue;
+      ModulatedParameters[c1].SmoothedParValue := TargetValue;
+      ModulatedParameters[c1].IsSmoothingActive := false;
     end;
   end;
 end;
+
+
 
 procedure TKeyGroup.SampleRateChanged(Sender: TObject);
 begin
@@ -395,6 +428,8 @@ begin
     pVoice := Data;
     if ActiveVoices.IndexOf(pVoice^) <> -1
       then ActiveVoices.Remove(pVoice^);
+    if ActiveVoices.Count = 0
+      then ApplyAllParSmoothingNow;
   end;
 end;
 
@@ -420,9 +455,10 @@ begin
   // It would be better to add the required smoothing states to a list.
   // That way the parameter smoothing step could pontential be resolved with
   // one boolean check. (Ie. If no parameters require smoothing)
+  // NOTE: This implementation as current adds a slight performance disadvantage.
   for c1 := 0 to kModulatedParameterCount-1 do
   begin
-    if ModulatedParameters[c1].RequiresSmoothing then
+    if ModulatedParameters[c1].IsSmoothingActive then
     begin
       TargetValue := ModulatedParameters[c1].ParValue;
       CurrentValue := ModulatedParameters[c1].SmoothedParValue;
@@ -430,10 +466,10 @@ begin
 
       ParSmoother.Step_DirectForm1(TargetValue, CurrentValue, ParSmootherState);
 
-      ModulatedParameters[c1].SmoothedParValue := CurrentValue;
+      ModulatedParameters[c1].SmoothedParValue := Clamp(CurrentValue, 0, 1);
 
       if CurrentValue = TargetValue
-        then ModulatedParameters[c1].RequiresSmoothing := false;
+        then ModulatedParameters[c1].IsSmoothingActive := false;
     end;
   end;
 

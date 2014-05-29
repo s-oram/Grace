@@ -272,7 +272,7 @@ begin
   begin
     Index := FastModulationIndexes[c1];
 
-    pv := ParValueData^[Index].ParValue;
+    pv := ParValueData^[Index].SmoothedParValue;
     CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     ParModData^.SummedModulation[Index] := CombinedModValues;
@@ -291,7 +291,7 @@ begin
   begin
     Index := SlowModulationIndexes[c1];
 
-    pv := ParValueData^[Index].ParValue;
+    pv := ParValueData^[Index].SmoothedParValue;
     CombinedModValues := CalcSummedModulationValue(@ModSlotValues[0], @ParValueData^[Index].ModAmount[0]);
 
     ParModData^.SummedModulation[Index] := CombinedModValues;
@@ -302,7 +302,7 @@ begin
   begin
     Index := NoModulationIndexes[c1];
     ParModData^.SummedModulation[Index] := 0;
-    ParModData^.Raw[Index] := ParValueData^[Index].ParValue;
+    ParModData^.Raw[Index] := ParValueData^[Index].SmoothedParValue;
   end;
 end;
 
@@ -452,6 +452,7 @@ end;
 
 
 end.
+
 
 
 

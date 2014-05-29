@@ -37,7 +37,7 @@ type
     function GetModulatedParameters : PModulatedPars;
 
     function GetModParValue(const ModParIndex : integer):single;
-    procedure SetModParValue(const ModParIndex : integer; const Value:single);
+    procedure SetModParValue(const ModParIndex : integer; const Value:single; const SmoothingRequired : boolean = true);
 
     //TODO: this is a awkward procedure name.
     procedure SetModParModAmount(const ModParIndex, ModSlot : integer; const Value:single);
