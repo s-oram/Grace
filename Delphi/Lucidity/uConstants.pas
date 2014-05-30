@@ -24,6 +24,9 @@ var
   VstPluginDir : string; //Location of the VST plugin dll.
   PresetsDir   : string; //Location of preset files...
 
+
+  function LucidMsgIDToStr(const ID : cardinal):string;
+
 type
   TLucidMsgID = record
   const
@@ -429,6 +432,74 @@ begin
 
   result := Global_Info;
 end;
+
+
+
+function LucidMsgIDToStr(const ID : cardinal):string;
+begin
+  if ID = TLucidMsgID.SampleFocusChanged                 then exit('SampleFocusChanged');
+  if ID = TLucidMsgID.SampleRegionChanged                then exit('SampleRegionChanged');
+  if ID = TLucidMsgID.MouseOverSampleRegionChanged       then exit('MouseOverSampleRegionChanged');
+  if ID = TLucidMsgID.MidiKeyChanged                     then exit('MidiKeyChanged');
+  if ID = TLucidMsgID.PreviewInfoChanged                 then exit('PreviewInfoChanged');
+  if ID = TLucidMsgID.SampleMarkersChanged               then exit('SampleMarkersChanged');
+  if ID = TLucidMsgID.SampleOscTypeChanged               then exit('SampleOscTypeChanged');
+  if ID = TLucidMsgID.LoopTypeChanged                    then exit('LoopTypeChanged');
+  if ID = TLucidMsgID.SampleDirectoriesChanged           then exit('SampleDirectoriesChanged');
+  if ID = TLucidMsgID.FilterChanged                      then exit('FilterChanged');
+  if ID = TLucidMsgID.ModSlotChanged                     then exit('ModSlotChanged');
+  if ID = TLucidMsgID.LfoChanged                         then exit('LfoChanged');
+  if ID = TLucidMsgID.ModAmountChanged                   then exit('ModAmountChanged');
+  if ID = TLucidMsgID.GUILayoutChanged                   then exit('GUILayoutChanged');
+  if ID = TLucidMsgID.Command                            then exit('Command');
+  if ID = TLucidMsgID.Command_ShowSampleMapEdit          then exit('Command_ShowSampleMapEdit');
+  if ID = TLucidMsgID.Command_HideSampleMapEdit          then exit('Command_HideSampleMapEdit');
+  if ID = TLucidMsgID.Command_ShowAboutDialog            then exit('Command_ShowAboutDialog');
+  if ID = TLucidMsgID.Command_CloseCurrentDialog         then exit('Command_CloseCurrentDialog');
+  if ID = TLucidMsgID.Command_UpdateControlVisibility    then exit('Command_UpdateControlVisibility');
+  if ID = TLucidMsgID.Command_UpdateModMatrix            then exit('Command_UpdateModMatrix');
+  if ID = TLucidMsgID.Command_ShowReplaceRegionMessage   then exit('Command_ShowReplaceRegionMessage');
+  if ID = TLucidMsgID.Command_HideReplaceRegionMessage   then exit('Command_HideReplaceRegionMessage');
+  if ID = TLucidMsgID.Command_UpdateSampleDisplay        then exit('Command_UpdateSampleDisplay');
+  if ID = TLucidMsgID.Command_UpdateSampleInfo           then exit('Command_UpdateSampleInfo');
+  if ID = TLucidMsgID.Command_UpdateScope                then exit('Command_UpdateScope');
+  if ID = TLucidMsgID.Command_DisposeKeyGroup            then exit('Command_DisposeKeyGroup');
+  if ID = TLucidMsgID.Command_UpdateGUI                  then exit('Command_UpdateGUI');
+  if ID = TLucidMsgID.Command_BeginGuiUpdate             then exit('Command_BeginGuiUpdate');
+  if ID = TLucidMsgID.Command_EndGuiUpdate               then exit('Command_EndGuiUpdate');
+  if ID = TLucidMsgID.Command_Sample_ZoomIn              then exit('Command_Sample_ZoomIn');
+  if ID = TLucidMsgID.Command_Sample_ZoomOut             then exit('Command_Sample_ZoomOut');
+  if ID = TLucidMsgID.Command_Sample_ZoomOutFull         then exit('Command_Sample_ZoomOutFull');
+  if ID = TLucidMsgID.Actions                            then exit('Actions');
+  if ID = TLucidMsgID.ProgramSavedToDisk                 then exit('ProgramSavedToDisk');
+  if ID = TLucidMsgID.ProgramLoaded                      then exit('ProgramLoaded');
+  if ID = TLucidMsgID.RefreshRequest_StepSeqDisplay      then exit('RefreshRequest_StepSeqDisplay');
+  if ID = TLucidMsgID.Msg_XRegionsDuplicated             then exit('Msg_XRegionsDuplicated');
+  if ID = TLucidMsgID.OnControlEnter                     then exit('OnControlEnter');
+  if ID = TLucidMsgID.OnControlLeave                     then exit('OnControlLeave');
+  if ID = TLucidMsgID.OnParControlEnter                  then exit('OnParControlEnter');
+  if ID = TLucidMsgID.OnParControlLeave                  then exit('OnParControlLeave');
+  if ID = TLucidMsgID.OnParControlChanged                then exit('OnParControlChanged');
+  if ID = TLucidMsgID.OnActiveParameterChanged           then exit('OnActiveParameterChanged');
+  if ID = TLucidMsgID.OnPostCreateFinished               then exit('OnPostCreateFinished');
+  if ID = TLucidMsgID.OnShowMenu                         then exit('OnShowMenu');
+  if ID = TLucidMsgID.AudioMsg                           then exit('AudioMsg');
+  if ID = TLucidMsgID.Audio_VoiceTriggered               then exit('Audio_VoiceTriggered');
+  if ID = TLucidMsgID.Audio_VoiceFinished                then exit('Audio_VoiceFinished');
+  if ID = TLucidMsgID.Audio_KeyGroupInactive             then exit('Audio_KeyGroupInactive');
+  if ID = TLucidMsgID.Audio_PolyNoteTrigger              then exit('Audio_PolyNoteTrigger');
+  if ID = TLucidMsgID.Audio_PolyNoteRelease              then exit('Audio_PolyNoteRelease');
+  if ID = TLucidMsgID.Audio_MonoNoteTrigger              then exit('Audio_MonoNoteTrigger');
+  if ID = TLucidMsgID.Audio_MonoNoteRelease              then exit('Audio_MonoNoteRelease');
+  if ID = TLucidMsgID.Audio_LegatoNoteTrigger            then exit('Audio_LegatoNoteTrigger');
+  if ID = TLucidMsgID.Audio_LegatoNoteRelease            then exit('Audio_LegatoNoteRelease');
+  if ID = TLucidMsgID.Audio_LatchNoteTrigger             then exit('Audio_LatchNoteTrigger');
+  if ID = TLucidMsgID.Audio_LatchNoteRelease             then exit('Audio_LatchNoteRelease');
+  if ID = TLucidMsgID.AudioCommand_QuickReleaseAllNotes  then exit('AudioCommand_QuickReleaseAllNotes');
+
+  result := 'error: unknown ID';
+end;
+
 
 
 
