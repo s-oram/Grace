@@ -167,12 +167,10 @@ begin
   CalculateCpuTimeAndLoad(TimerData);
 
   {$IFDEF Logging}
-  inc(LogCount);
-  if (LogCount > 100) or (AudioProcess2Data.ProcessLoad >= 100)  then
+  if (AudioProcess2Data.ProcessLoad >= 100)  then
   begin
     s := IntToStr(round(AudioProcess2Data.ProcessLoad));
     LogMain.LogError('Audio Process 2 Load is ' + s + '%');
-    LogCount := 0;
   end;
   {$ENDIF}
 end;

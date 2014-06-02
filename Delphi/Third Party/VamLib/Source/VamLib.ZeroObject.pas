@@ -601,8 +601,6 @@ begin
   end;
 
   OverloadWatch.Stop;
-
-
 end;
 
 

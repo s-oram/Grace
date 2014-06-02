@@ -250,6 +250,8 @@ var
 begin
   inherited;
 
+  //ShowMessage(LucidMsgIDToStr(49));
+
 
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceGlide);

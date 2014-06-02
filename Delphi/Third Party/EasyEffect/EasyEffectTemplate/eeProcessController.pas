@@ -227,6 +227,9 @@ begin
     CpuMonitor.StartProcessReplacingTimer(SampleFrames, fSampleRate);
   {$ENDIF}
 
+  //Globals.CpuMonitor.StartAudioProcessTimer2;
+  //Globals.CpuMonitor.StopAudioProcessTimer2;
+
   ModSampleFrames := SampleFrames * Plugin.Settings.OverSampleFactor;
 
 
@@ -272,8 +275,9 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
-
+  CpuMonitor.StartAudioProcessTimer2;
   ProcessAudioBlock(ModSampleFrames);
+  CpuMonitor.StopAudioProcessTimer2;
 
 
 

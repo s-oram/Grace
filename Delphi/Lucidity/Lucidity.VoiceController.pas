@@ -607,10 +607,7 @@ begin
     kgID := kg.GetID;
     TriggerMsg.Voice      := @aVoice;
     TriggerMsg.KeyGroupID := @kgID;
-
-    Globals.CpuMonitor.StartAudioProcessTimer2;
     Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
-    Globals.CpuMonitor.StopAudioProcessTimer2;
 
     //==== internal voice list management =====
     if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);

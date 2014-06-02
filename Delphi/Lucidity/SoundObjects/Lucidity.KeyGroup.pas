@@ -7,6 +7,7 @@ interface
 uses
   VamLib.Utils,
   VamLib.ZeroObject,
+  VamLib.CpuOverloadWatcher,
   eeParSmoother,
   VamGuiControlInterfaces,
   Lucidity.Types,
@@ -56,6 +57,7 @@ type
 
     function GetTriggerMode : TKeyGroupTriggerMode;
   protected
+    OverloadWatch : TCpuOverloadWatcher;
     DebugTag : string;
     ActiveVoices : TLucidityVoiceList;
     KeyGroupID : TKeyGroupID;
@@ -136,6 +138,8 @@ constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalM
 var
   c1 : integer;
 begin
+  OverloadWatch := TCpuOverloadWatcher.Create;
+
   KeyGroupID.Init;
 
   DebugTag := aDebugTag;
@@ -195,6 +199,8 @@ begin
 
   ActiveVoices.Free;
   ParSmoother.Free;
+
+  OverloadWatch.Free;
 
   inherited;
 end;
@@ -414,6 +420,8 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
+    //TODO:HIGH remove overload watch.
+    OverloadWatch.Start(32, 441000, 'Key Group - Voice Triggered');
     pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
 
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
@@ -423,6 +431,7 @@ begin
     begin
       ActiveVoices.Add(pVoice^)
     end;
+    OverloadWatch.Stop;
   end;
 
 
