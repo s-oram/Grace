@@ -3,6 +3,7 @@ unit Lucidity.MidiInputProcessor;
 interface
 
 uses
+  VamLib.CpuOverloadWatcher,
   eeGlobals,
   VamLib.ZeroObject,
   VamLib.Utils,
@@ -22,6 +23,8 @@ type
   protected
     Globals             : TGlobals;
     NoteStack           : TNoteStack;
+
+    OverloadWatch : TCpuOverloadWatcher;
 
     MidiNote_Filter : TCriticallyDampedLowpass;
     MidiNote_Current : double;
@@ -94,6 +97,8 @@ begin
 
   ModWheel_Current := 0;
   ModWheel_Target  := 0;
+
+  OverloadWatch := TCpuOverloadWatcher.Create;
 end;
 
 destructor TMidiInputProcessor.Destroy;
@@ -102,6 +107,7 @@ begin
   MidiNote_Filter.Free;
   PitchBend_Filter.Free;
   ModWheel_Filter.Free;
+  OverloadWatch.Free;
   inherited;
 end;
 
@@ -130,12 +136,17 @@ begin
 end;
 
 procedure TMidiInputProcessor.NoteOn(const Data1, Data2: byte);
+const
+  ksf = 26;
+  ksr = 44100;
 var
   NoteMsgData : TMsgData_NoteEvent;
 begin
   case VoiceMode of
     TVoiceMode.Poly:
     begin
+
+
       MidiNote_Current := Data1;
       MidiNote_Target  := Data1;
       MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
@@ -143,7 +154,11 @@ begin
 
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
+
+      OverloadWatch.Start(ksf, ksr, 'TMidiInputProcessor.NoteOn #1');
       Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteTrigger, @NoteMsgData);
+      OverloadWatch.Stop;
+
     end;
 
     TVoiceMode.Mono:

@@ -7,6 +7,7 @@ interface
 {$M+}
 
 uses
+  VamLib.CpuOverloadWatcher,
   Lucidity.MidiInputProcessor,
   Lucidity.PluginParameters,
   Lucidity.VoiceController,
@@ -100,6 +101,8 @@ type
     Voices : TArrayOfLucidityVoice;
 
     EmptyKeyGroup : IKeyGroup;
+
+    OverloadWatch : TCpuOverloadWatcher;
 
     procedure GetVstParameter(const Par:TVstParameter);
     procedure VstParameterChanged(const Par:TVstParameter);
@@ -249,6 +252,8 @@ var
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
+
+  OverloadWatch := TCpuOverloadWatcher.Create;
 
   //ShowMessage(LucidMsgIDToStr(49));
 
@@ -550,6 +555,8 @@ begin
 
 
   Log.LogMessage('==== TPlugin.Destroy - End ====');
+
+  OverloadWatch.Free;
 
   inherited;
 end;
@@ -1220,6 +1227,8 @@ end;
 procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);
 const
   OneOver127 = 1 / 127;
+  ksf = 28;
+  ksr = 44100;
 var
   pba : single;
 begin
@@ -1230,18 +1239,18 @@ begin
   try
     if IsNoteOn(Event) then
     begin
+
+
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
 
-
-
+      OverloadWatch.Start(ksf, ksr, 'MidiEvent Note On');
       MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
-
+      OverloadWatch.Stop;
 
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
-
-
-
       inc(GlobalModPoints.Source_TriggeredNoteCount);
+
+
     end;
   except
     Log.LogMessage('NoteOn Exception.');
@@ -1253,9 +1262,13 @@ begin
   try
     if IsNoteOff(Event) then
     begin
+      OverloadWatch.Start(ksf, ksr, 'MidiEvent Note Off');
+
       KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
       MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+
+      OverloadWatch.Stop;
     end;
   except
     Log.LogMessage('NoteOff Exception.');
@@ -1264,20 +1277,26 @@ begin
 
   if IsControlChange(Event) then
   begin
+    OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
     MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
+    OverloadWatch.Stop;
   end;
 
   if IsModWheel(Event) then
   begin
+    OverloadWatch.Start(ksf, ksr, 'MidiEvent Mod Wheel');
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
+    OverloadWatch.Stop;
   end;
 
 
   if IsPitchBend(Event) then
   begin
+    OverloadWatch.Start(ksf, ksr, 'MidiEvent Pitchbend');
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
     MidiInputProcessor.PitchBend(pba);
+    OverloadWatch.Stop;
   end;
 
 

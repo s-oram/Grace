@@ -123,8 +123,8 @@ begin
   {$IFDEF Logging}
   if ProcessReplacingData.ProcessLoad >= 100 then
   begin
-    s := IntToStr(round(ProcessReplacingData.ProcessLoad));
-    LogMain.LogError('Processing Replacing Load is ' + s + '%');
+    //s := IntToStr(round(ProcessReplacingData.ProcessLoad));
+    //LogMain.LogError('Processing Replacing Load is ' + s + '%');
   end;
   {$ENDIF}
 end;

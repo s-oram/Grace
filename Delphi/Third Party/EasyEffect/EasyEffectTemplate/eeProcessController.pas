@@ -139,6 +139,9 @@ constructor TProcessController.Create(aPlugin : TeePlugin);
 begin
   fPlugin := aPlugin;
 
+  Plugin.Globals.CpuSampleRate   := 44100;
+  Plugin.Globals.CpuSampleFrames := 64;
+
   OverloadWatch := TCpuOverloadWatcher.Create;
 
   CpuMonitor := TCpuMonitor.Create;
@@ -231,9 +234,6 @@ begin
 
   {$IFDEF CpuMonitor}
     CpuMonitor.StartProcessReplacingTimer(SampleFrames, fSampleRate);
-
-    Plugin.Globals.CpuSampleRate   := 44100;
-    Plugin.Globals.CpuSampleFrames := SampleFrames;
   {$ENDIF}
 
   //Globals.CpuMonitor.StartAudioProcessTimer2;
@@ -284,9 +284,9 @@ begin
   //-----------------------------------------------------
   //   Process the audio input.
   //-----------------------------------------------------
-  CpuMonitor.StartAudioProcessTimer2;
+  //CpuMonitor.StartAudioProcessTimer2;
   ProcessAudioBlock(ModSampleFrames);
-  CpuMonitor.StopAudioProcessTimer2;
+  //CpuMonitor.StopAudioProcessTimer2;
 
 
 
@@ -417,6 +417,9 @@ begin
 end;
 
 procedure TProcessController.ProcessAudioBlock(SampleFrames: integer);
+const
+  ksf = 32;
+  ksr = 44100;
 var
   ev       : TeeMidiEvent;
   NumEv, CurEv:integer;
@@ -456,7 +459,7 @@ begin
     if SamplesToProcess > 0 then
     begin
       //Process those samples..
-      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-AudioProcess');
+      OverloadWatch.Start(ksf, ksr, 'Plugin-AudioProcess');
       Plugin.AudioProcess(SamplesToProcess);
       OverloadWatch.Stop;
       inc(SamplesProcessed, SamplesToProcess);
@@ -464,7 +467,7 @@ begin
       inc(ControlRateOffset, SamplesToProcess);
     end else
     begin
-      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ProcessMidiEvent');
+      //OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessMidiEvent');
       // or process whatever events...
       if NextMidiEventDelta = 0 then
       begin
@@ -472,9 +475,9 @@ begin
         Plugin.ProcessMidiEvent(ev);
         Inc(CurEv);
       end;
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
 
-      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ControlRateProcessing');
+      OverloadWatch.Start(ksf, ksr, 'Plugin-ControlRateProcessing');
       if NextControlRateDelta = 0 then
       begin
         //Important: Always call FastControlProcess before SlowControlProcess
@@ -492,7 +495,7 @@ begin
     end;
   end;
 
-  OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ProcessEnd');
+  OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessEnd');
   Plugin.ProcessEnd;
   OverloadWatch.Stop;
 
