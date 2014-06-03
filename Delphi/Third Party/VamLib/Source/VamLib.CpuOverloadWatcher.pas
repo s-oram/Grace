@@ -8,7 +8,7 @@ uses
 type
   TCpuOverloadWatcher = class
   private
-    MaxTime   : cardinal; // time in milliseconds,
+    MaxTime   : Int64; // time in milliseconds,
     StartTime : Int64;
     ProcessTime : double; // time in milliseconds.
     ProcessLoad : double; // 0..100% of max load.
@@ -32,7 +32,6 @@ uses
 
 constructor TCpuOverloadWatcher.Create;
 begin
-
 end;
 
 destructor TCpuOverloadWatcher.Destroy;

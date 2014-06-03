@@ -11,6 +11,7 @@ interface
 }
 
 uses
+  VamLib.CpuOverloadWatcher,
   eeCpuMonitor, eeVstMidiTypes, eeMidiEvents,
   eePlugin, //TODO: I think this should eventually be removed.
   {$IFDEF HasAudioOuts}
@@ -33,6 +34,7 @@ type
     fTimeInfoMethod: TTimeInfoMethod;
   protected
     CpuMonitor : TCpuMonitor;
+    OverloadWatch : TCpuOverloadWatcher;
 
     fSampleRate : integer;
     fFastControlRateDivision : integer;
@@ -137,6 +139,8 @@ constructor TProcessController.Create(aPlugin : TeePlugin);
 begin
   fPlugin := aPlugin;
 
+  OverloadWatch := TCpuOverloadWatcher.Create;
+
   CpuMonitor := TCpuMonitor.Create;
 
   fPlugin.Globals.CpuMonitor := CpuMonitor;
@@ -175,6 +179,8 @@ begin
 
   MidiInput.Free;
   MidiOutput.Free;
+
+  OverloadWatch.Free;
 
   inherited;
 end;
@@ -225,6 +231,9 @@ begin
 
   {$IFDEF CpuMonitor}
     CpuMonitor.StartProcessReplacingTimer(SampleFrames, fSampleRate);
+
+    Plugin.Globals.CpuSampleRate   := 44100;
+    Plugin.Globals.CpuSampleFrames := SampleFrames;
   {$ENDIF}
 
   //Globals.CpuMonitor.StartAudioProcessTimer2;
@@ -447,12 +456,15 @@ begin
     if SamplesToProcess > 0 then
     begin
       //Process those samples..
+      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-AudioProcess');
       Plugin.AudioProcess(SamplesToProcess);
+      OverloadWatch.Stop;
       inc(SamplesProcessed, SamplesToProcess);
       dec(SampleFrames, SamplesToProcess);
       inc(ControlRateOffset, SamplesToProcess);
     end else
     begin
+      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ProcessMidiEvent');
       // or process whatever events...
       if NextMidiEventDelta = 0 then
       begin
@@ -460,8 +472,9 @@ begin
         Plugin.ProcessMidiEvent(ev);
         Inc(CurEv);
       end;
+      OverloadWatch.Stop;
 
-
+      OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ControlRateProcessing');
       if NextControlRateDelta = 0 then
       begin
         //Important: Always call FastControlProcess before SlowControlProcess
@@ -475,10 +488,13 @@ begin
           Plugin.SlowControlProcess;
         end;
       end;
+      OverloadWatch.Stop;
     end;
   end;
 
+  OverloadWatch.Start(SampleFrames, Plugin.Globals.CpuSampleRate, 'Plugin-ProcessEnd');
   Plugin.ProcessEnd;
+  OverloadWatch.Stop;
 
 
 

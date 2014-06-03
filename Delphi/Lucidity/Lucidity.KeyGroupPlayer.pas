@@ -81,7 +81,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    OverloadWatch.Start(32, 441000, 'Key Group Player - Voice Triggered');
+    OverloadWatch.Start(32, 44100, 'Key Group Player - Voice Triggered');
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 

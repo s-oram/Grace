@@ -33,6 +33,8 @@ type
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
     fCpuMonitor: TCpuMonitor;
+    fCpuSampleFrames: integer;
+    fCpuSampleRate: integer;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
@@ -81,6 +83,9 @@ type
 
     //HACK: including this here is very hacky.
     property CpuMonitor : TCpuMonitor read fCpuMonitor write fCpuMonitor;
+
+    property CpuSampleFrames : integer read fCpuSampleFrames write fCpuSampleFrames;
+    property CpuSampleRate   : integer read fCpuSampleRate   write fCpuSampleRate;
   end;
 
 implementation
