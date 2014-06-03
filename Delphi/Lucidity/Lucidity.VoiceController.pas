@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Lucidity.Interfaces,
   VamLib.CpuOverloadWatcher,
   Contnrs,
   Classes,
@@ -49,6 +50,7 @@ type
     procedure LatchRelease(const Data1, Data2 : byte; const NoteStackCount : integer);
 
     procedure ProcessTriggerQueue(const TriggerQueue : TObjectList; const MidiData1, MidiData2 : byte; const TriggerVoiceMode : TVoiceMode);
+    procedure ProcessTrigger(const KeyGroup : IKeyGroup; Region : IRegion; const MidiData1, MidiData2 : byte; const TriggerVoiceMode : TVoiceMode);
 
     function FindVoiceToTrigger:TLucidityVoice;
   public
@@ -74,7 +76,6 @@ uses
   VamLib.Utils,
   Lucidity.KeyGroupManager,
   Lucidity.Types,
-  Lucidity.Interfaces,
   Lucidity.KeyGroup,
   Lucidity.SampleMap;
 
@@ -402,6 +403,23 @@ var
   TriggerQueue : TObjectList;
   TriggerItem  : TRegionTriggerItem;
 begin
+  SampleMap := (Globals.SampleMapReference as TSampleMap);
+  KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
+
+  for c1 := 0 to SampleMap.RegionCount-1 do
+  begin
+    rg := SampleMap.Regions[c1];
+
+    if IsNoteInsideRegion(rg, Data1, Data2) then
+    begin
+      ProcessTrigger(rg.GetKeyGroup, rg, Data1, Data2, TVoiceMode.Poly);
+    end;
+  end;
+
+
+
+
+  {
   // NOTE: There are overloads here. They seem to happen in a couple different places
   // at different times. Right now I'm guessing all this list construction and
   // destruction is the cause. I will try to rewrite this method to do away
@@ -454,6 +472,7 @@ begin
   end;
 
   ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Poly);
+  }
 end;
 
 procedure TVoiceController.PolyRelease(const Data1, Data2: byte);
@@ -635,6 +654,62 @@ begin
 
 
 end;
+
+
+procedure TVoiceController.ProcessTrigger(const KeyGroup: IKeyGroup; Region: IRegion; const MidiData1, MidiData2: byte; const TriggerVoiceMode: TVoiceMode);
+var
+  c1: Integer;
+  aVoice : TLucidityVoice;
+  rg : IRegion;
+  kg : IKeyGroup;
+  kgID : TKeyGroupID;
+  TriggerMsg : TMsgData_Audio_VoiceTriggered;
+begin
+  aVoice := FindVoiceToTrigger;
+  if assigned(aVoice) then
+  begin
+    ActiveVoices.Remove(aVoice);
+    ReleasedVoices.Remove(aVoice);
+    InactiveVoices.Remove(aVoice);
+  end else
+  begin
+    exit; //======================>> exit >>=======>>
+  end;
+
+
+
+  kg := KeyGroup;
+  rg := Region;
+
+
+  //==== Trigger the Voice ====
+  // triggers the voice's envelopes etc.
+  (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);
+  aVoice.VoiceMode := TriggerVoiceMode;
+  aVoice.Trigger(MidiData1, MidiData2, kg, rg);
+
+
+  //=== send the triggered voice message ====
+  // This notfies the audio engine of the voice, the audio will add the voice to
+  // it's playback lists...
+  kgID := kg.GetID;
+  TriggerMsg.Voice      := @aVoice;
+  TriggerMsg.KeyGroupID := @kgID;
+  Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
+
+  //==== internal voice list management =====
+  if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);
+  TriggeredVoiceStack.Add(aVoice);
+
+  if ActiveVoices.IndexOf(aVoice) = -1
+    then ActiveVoices.Add(aVoice)
+    else raise Exception.Create('Voice is alread in ActiveVoices list.');
+
+  //Important: Increment the groups triggered not count after the voice Trigger() method has been called.
+  KG.IncTriggeredNoteCount;
+end;
+
+
 
 function TVoiceController.FindVoiceToTrigger: TLucidityVoice;
 var
