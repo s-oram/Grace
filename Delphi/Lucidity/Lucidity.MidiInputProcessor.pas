@@ -155,9 +155,9 @@ begin
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
 
-      OverloadWatch.Start(ksf, ksr, 'TMidiInputProcessor.NoteOn #1');
+      //OverloadWatch.Start(ksf, ksr, 'TMidiInputProcessor.NoteOn #1');
       Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteTrigger, @NoteMsgData);
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
 
     end;
 

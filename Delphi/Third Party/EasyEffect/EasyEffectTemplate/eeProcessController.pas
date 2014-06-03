@@ -459,9 +459,9 @@ begin
     if SamplesToProcess > 0 then
     begin
       //Process those samples..
-      OverloadWatch.Start(ksf, ksr, 'Plugin-AudioProcess');
+      //OverloadWatch.Start(ksf, ksr, 'Plugin-AudioProcess');
       Plugin.AudioProcess(SamplesToProcess);
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
       inc(SamplesProcessed, SamplesToProcess);
       dec(SampleFrames, SamplesToProcess);
       inc(ControlRateOffset, SamplesToProcess);
@@ -477,7 +477,7 @@ begin
       end;
       //OverloadWatch.Stop;
 
-      OverloadWatch.Start(ksf, ksr, 'Plugin-ControlRateProcessing');
+      //OverloadWatch.Start(ksf, ksr, 'Plugin-ControlRateProcessing');
       if NextControlRateDelta = 0 then
       begin
         //Important: Always call FastControlProcess before SlowControlProcess
@@ -491,13 +491,13 @@ begin
           Plugin.SlowControlProcess;
         end;
       end;
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
     end;
   end;
 
-  OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessEnd');
+  //OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessEnd');
   Plugin.ProcessEnd;
-  OverloadWatch.Stop;
+  //OverloadWatch.Stop;
 
 
 
