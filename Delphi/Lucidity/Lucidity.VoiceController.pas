@@ -407,10 +407,6 @@ begin
   // destruction is the cause. I will try to rewrite this method to do away
   // with too much create/free.
 
-  OverloadWatch.Start(ksf, ksr, 'Polytrigger #1');
-
-
-
   SampleMap := (Globals.SampleMapReference as TSampleMap);
   KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
 
@@ -420,27 +416,16 @@ begin
   RegionList := TRegionInterfaceList.Create;
   AutoFree(@RegionList);
 
-  OverloadWatch.Stop;
-  OverloadWatch.Start(ksf, ksr, 'Polytrigger #1.25');
-
   TriggerQueue := TObjectList.Create;
   TriggerQueue.OwnsObjects := true;
   AutoFree(@TriggerQueue);
-
-  OverloadWatch.Stop;
-  OverloadWatch.Start(ksf, ksr, 'Polytrigger #1.5');
 
   KeyGroups.FindKeyGroups(KeyGroupList);
 
   if KeyGroupList.Count = 0 then
   begin
-    OverloadWatch.Stop;
     exit;
   end;
-
-  OverloadWatch.Stop;
-  OverloadWatch.Start(ksf, ksr, 'Polytrigger #2');
-
 
   for c1 := 0 to KeyGroupList.Count-1 do
   begin
@@ -468,17 +453,7 @@ begin
     end;
   end;
 
-
-
-
-  OverloadWatch.Stop;
-  OverloadWatch.Start(ksf, ksr, 'Polytrigger #3');
-
   ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Poly);
-
-  OverloadWatch.Stop;
-
-
 end;
 
 procedure TVoiceController.PolyRelease(const Data1, Data2: byte);
@@ -612,8 +587,6 @@ var
 begin
   for c1 := 0 to TriggerQueue.Count-1 do
   begin
-    OverloadWatch.Start(ksf, ksr, 'TriggerQueue #1');
-
     aVoice := FindVoiceToTrigger;
     if assigned(aVoice) then
     begin
@@ -624,10 +597,6 @@ begin
     begin
       exit; //======================>> exit >>=======>>
     end;
-
-    OverloadWatch.Stop;
-    OverloadWatch.Start(ksf, ksr, 'TriggerQueue #2');
-
 
     TriggerItem := TriggerQueue[c1] as TRegionTriggerItem;
 
@@ -642,11 +611,6 @@ begin
     (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);
     aVoice.VoiceMode := TriggerVoiceMode;
     aVoice.Trigger(MidiData1, MidiData2, kg, rg);
-
-
-    OverloadWatch.Stop;
-    OverloadWatch.Start(ksf, ksr, 'TriggerQueue #3');
-
 
 
     //=== send the triggered voice message ====
@@ -667,8 +631,6 @@ begin
 
     //Important: Increment the groups triggered not count after the voice Trigger() method has been called.
     KG.IncTriggeredNoteCount;
-
-    OverloadWatch.Stop;
   end;
 
 
