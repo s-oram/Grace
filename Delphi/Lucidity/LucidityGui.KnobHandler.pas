@@ -306,7 +306,7 @@ begin
   ParName  := Knob.ParameterName;
   //ParValue := Knob.Pos;
 
-  // TODO: need to have BeginEdit() called here for Publised VST parameter.
+  // TODO:HIGH need to have BeginEdit() called here for Publised VST parameter.
 
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
@@ -319,7 +319,7 @@ end;
 
 procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  // TODO: need to have BeginEdit() called here for Publised VST parameter.
+  // TODO:HIGH need to have EndEdit() called here for Publised VST parameter.
 
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
