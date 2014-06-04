@@ -311,6 +311,14 @@ begin
   // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
 
+
+  if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+  begin
+    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, ParName);
+  end;
+
+
+
   if (Button = TMouseButton.mbRight) then
   begin
     ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, ParName);

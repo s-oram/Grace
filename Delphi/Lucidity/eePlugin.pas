@@ -127,6 +127,7 @@ type
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
+    procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
 
@@ -577,6 +578,18 @@ begin
   PublishedVstParameters.AddParameter(pn);
 end;
 
+procedure TeePlugin.ResetPluginParameter(const Scope: TParChangeScope; const ParName: string);
+var
+  dv : single;
+  Par : TPluginParameter;
+begin
+  //I don't think this method is needed for psKeyGroup scope.
+  assert(Scope <> TParChangeScope.psKeyGroup, 'not yet implemented.');
+
+  Par := PluginParFromName(ParName);
+  dv := GetPluginParInfo(Par).DefaultValue;
+  TPluginParameterController.SetPluginParameter(self, Scope, '', ParName, dv);
+end;
 
 function TeePlugin.GetPluginParameter(const ParName: string): single;
 begin
