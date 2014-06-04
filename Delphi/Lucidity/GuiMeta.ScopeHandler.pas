@@ -2,10 +2,13 @@ unit GuiMeta.ScopeHandler;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
+  VamLib.Debouncer,
+  VamLib.ZeroObject,
   eePlugin,
   Lucidity.PluginParameters,
-  VamLib.ZeroObject,
   eeGlobals,
   Classes,
   Controls,
@@ -36,9 +39,12 @@ type
 
     //CurrentParFocus : TPluginParameter;
     CurrentParFocus : string; // this is a parameter name.
+    LastParEnter    : string;
 
     FocusedControl : TControl;
     ScopeFocus : TScopeFocus;
+
+    ScopeFocusDebounceID : TUniqueID;
 
     procedure ParameterEnter(const ParName : string);
     procedure ParameterLeave(const ParName : string);
@@ -57,6 +63,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
   VamLib.Throttler,
   uLucidityEnums,
@@ -152,17 +159,22 @@ begin
   Plugin  := aPlugin;
   Globals := Plugin.Globals;
   IsParFocusActive := false;
+
+  ScopeFocusDebounceID.Init;
 end;
 
 destructor TScopeHandler.Destroy;
 begin
-
+  DebounceCancel(ScopeFocusDebounceID);
   inherited;
 end;
 
 procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+const
+  DebounceTime = 200; //milliseconds,
 var
   s : string;
+  dbf : TProc;
 begin
   inherited;
 
@@ -181,13 +193,29 @@ begin
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
     s := string(Data^);
-    ParameterEnter(s);
+
+    LastParEnter := s;
+
+    dbf := procedure
+    begin
+      LogMain.LogMessage('Parameter Enter ' + s);
+      ParameterEnter(s);
+    end;
+
+    Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
   end;
 
   if MsgID = TLucidMsgID.OnParControlLeave then
   begin
     s := string(Data^);
-    ParameterLeave(s);
+
+    dbf := procedure
+    begin
+      LogMain.LogMessage('Parameter Leave ' + s);
+      ParameterLeave(s);
+    end;
+
+    Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
   end;
 
   if MsgID = TLucidMsgID.OnParControlChanged then
@@ -211,9 +239,10 @@ end;
 
 procedure TScopeHandler.ParameterLeave(const ParName: string);
 begin
-  if ParName = CurrentParFocus then
+  if (ParName = CurrentParFocus) or (ParName = LastParEnter) then
   begin
     CurrentParFocus := '';
+    LastParEnter := '';
     IsParFocusActive := false;
     UpdateScope;
   end;

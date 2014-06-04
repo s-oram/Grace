@@ -9,8 +9,7 @@
 - think about project directories
 - sample map icon needs to be replaced.
 
-The Scope needs some sort of debouncer/throttle handler for stop the scope from flickering between
-modes as the user mouses around.
+
 
 - look at more mouse wheel support!
 
