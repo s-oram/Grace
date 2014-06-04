@@ -1234,13 +1234,9 @@ var
 begin
   inherited;
 
-
-
   try
     if IsNoteOn(Event) then
     begin
-
-
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
 
       OverloadWatch.Start(ksf, ksr, 'MidiEvent Note On');
@@ -1249,8 +1245,6 @@ begin
 
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
       inc(GlobalModPoints.Source_TriggeredNoteCount);
-
-
     end;
   except
     Log.LogMessage('NoteOn Exception.');
