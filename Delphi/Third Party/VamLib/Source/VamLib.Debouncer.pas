@@ -59,6 +59,8 @@ type
     procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedure); overload;
     procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedureOfObject); overload;
     procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProc); overload;
+
+    procedure DebounceCancel(const ID : TUniqueID);
   end;
 
 
@@ -72,6 +74,8 @@ type
 procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedure); overload;
 procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProcedureOfObject); overload;
 procedure Debounce(ID : TUniqueID; Time : integer; Edge : TDebounceEdge; p : TProc); overload;
+
+procedure DebounceCancel(const ID : TUniqueID);
 
 //============================================================================
 
@@ -104,6 +108,13 @@ begin
   if not assigned(GlobalDebouncer) then GlobalDebouncer := TDebounceController.Create;
 
   GlobalDebouncer.Debounce(ID, Time, Edge, p);
+end;
+
+procedure DebounceCancel(const ID : TUniqueID);
+begin
+  if not assigned(GlobalDebouncer) then exit;
+
+  GlobalDebouncer.DebounceCancel(ID);
 end;
 
 
@@ -264,6 +275,17 @@ begin
   end;
 
   if not Timer.Enabled then Timer.Enabled := true;
+end;
+
+procedure TDebounceController.DebounceCancel(const ID: TUniqueID);
+var
+  c1 : integer;
+begin
+  for c1 := InfoList.Count-1 downto 0 do
+  begin
+    if InfoList[c1].ID = ID
+      then InfoList.Delete(c1);
+  end;
 end;
 
 procedure TDebounceController.ProcessDebounceRequests(Sender: TObject);
