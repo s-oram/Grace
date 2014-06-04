@@ -70,6 +70,8 @@ type
 
     property GuiState : TGuiState read fGuiState;
 
+
+    // TODO: I don't know if the keyGroup Lifetime manager is needed.
     property KeyGroupLifeTimeManager : TKeyGroupLifeTimeManager read fKeyGroupLifeTimeManager;
 
     property AudioActions : TStoredActions read fAudioActions;

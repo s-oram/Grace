@@ -962,7 +962,7 @@ var
 begin
   inherited;
 
-  InitializeState;
+  PreLoadProgram;
 
   StateManager := TLucidityStateManager.Create(self);
   try
