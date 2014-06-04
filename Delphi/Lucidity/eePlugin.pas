@@ -1239,9 +1239,9 @@ begin
     begin
       KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
 
-      OverloadWatch.Start(ksf, ksr, 'MidiEvent Note On');
+      //OverloadWatch.Start(ksf, ksr, 'MidiEvent Note On');
       MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
 
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
       inc(GlobalModPoints.Source_TriggeredNoteCount);
@@ -1256,13 +1256,13 @@ begin
   try
     if IsNoteOff(Event) then
     begin
-      OverloadWatch.Start(ksf, ksr, 'MidiEvent Note Off');
+      //OverloadWatch.Start(ksf, ksr, 'MidiEvent Note Off');
 
       KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
       MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
       Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
 
-      OverloadWatch.Stop;
+      //OverloadWatch.Stop;
     end;
   except
     Log.LogMessage('NoteOff Exception.');
@@ -1271,26 +1271,26 @@ begin
 
   if IsControlChange(Event) then
   begin
-    OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
+    //OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
     MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
-    OverloadWatch.Stop;
+    //OverloadWatch.Stop;
   end;
 
   if IsModWheel(Event) then
   begin
-    OverloadWatch.Start(ksf, ksr, 'MidiEvent Mod Wheel');
+    //OverloadWatch.Start(ksf, ksr, 'MidiEvent Mod Wheel');
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
-    OverloadWatch.Stop;
+    //OverloadWatch.Stop;
   end;
 
 
   if IsPitchBend(Event) then
   begin
-    OverloadWatch.Start(ksf, ksr, 'MidiEvent Pitchbend');
+    //OverloadWatch.Start(ksf, ksr, 'MidiEvent Pitchbend');
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
     MidiInputProcessor.PitchBend(pba);
-    OverloadWatch.Stop;
+    //OverloadWatch.Stop;
   end;
 
 

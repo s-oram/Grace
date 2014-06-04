@@ -57,6 +57,8 @@ type
 
     function GetTriggerMode : TKeyGroupTriggerMode;
   protected
+    // TODO:MED maybe make the overload watcher included with a conditional define or remove entirely.
+    // This applies to all units. Not just this one.
     OverloadWatch : TCpuOverloadWatcher;
     DebugTag : string;
     ActiveVoices : TLucidityVoiceList;
@@ -421,7 +423,7 @@ begin
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
     //TODO:HIGH remove overload watch.
-    OverloadWatch.Start(32, 44100, 'Key Group - Voice Triggered');
+    //OverloadWatch.Start(32, 44100, 'Key Group - Voice Triggered');
     pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
 
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
@@ -431,7 +433,7 @@ begin
     begin
       ActiveVoices.Add(pVoice^)
     end;
-    OverloadWatch.Stop;
+    //OverloadWatch.Stop;
   end;
 
 
