@@ -25,12 +25,10 @@ type
     class function ToFullGuiString(aEnum : TFilterType):string; override;
     class function ToShortGuiString(aEnum : TFilterType):string; override;
   end;
-
-
 {$SCOPEDENUMS ON}
 
 type
-  TFilterRouting = (Serial, Parallel, FiftyFifty);
+  TFilterRouting = (Serial, Parallel);
   TFilterRoutingHelper = class(TEnumHelper<TFilterRouting>)
   public
     class function ToFullGuiString(aEnum : TFilterRouting):string; override;
@@ -858,7 +856,6 @@ begin
   case aEnum of
     TFilterRouting.Serial:     result := 'Serial';
     TFilterRouting.Parallel:   result := 'Parallel';
-    TFilterRouting.FiftyFifty: result := 'FiftyFifty';
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -869,7 +866,6 @@ begin
   case aEnum of
     TFilterRouting.Serial:     result := 'Serial';
     TFilterRouting.Parallel:   result := 'Paral';
-    TFilterRouting.FiftyFifty: result := '50/50';
   else
     raise Exception.Create('Type not handled.');
   end;

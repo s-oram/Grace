@@ -427,13 +427,6 @@ begin
       FRInput     := 1;
       FRFilterOne := 0;
     end;
-
-
-    TFilterRouting.FiftyFifty:
-    begin
-      FRInput     := 0.5;
-      FRFilterOne := 0.5;
-    end;
   else
     raise Exception.Create('Type not handled.');
   end;
