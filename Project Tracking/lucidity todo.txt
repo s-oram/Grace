@@ -17,8 +17,6 @@ modes as the user mouses around.
 
 - filters finished. 
 
-Delete 50-50 filter blend mode.
-
 - make LFO phases random. ?
 - switch between random and reset LFO phase on trigger. ? 
 
