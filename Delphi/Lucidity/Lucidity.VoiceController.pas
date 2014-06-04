@@ -415,64 +415,6 @@ begin
       ProcessTrigger(rg.GetKeyGroup, rg, Data1, Data2, TVoiceMode.Poly);
     end;
   end;
-
-
-
-
-  {
-  // NOTE: There are overloads here. They seem to happen in a couple different places
-  // at different times. Right now I'm guessing all this list construction and
-  // destruction is the cause. I will try to rewrite this method to do away
-  // with too much create/free.
-
-  SampleMap := (Globals.SampleMapReference as TSampleMap);
-  KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
-
-  KeyGroupList := TInterfaceList.Create;
-  AutoFree(@KeyGroupList);
-
-  RegionList := TRegionInterfaceList.Create;
-  AutoFree(@RegionList);
-
-  TriggerQueue := TObjectList.Create;
-  TriggerQueue.OwnsObjects := true;
-  AutoFree(@TriggerQueue);
-
-  KeyGroups.FindKeyGroups(KeyGroupList);
-
-  if KeyGroupList.Count = 0 then
-  begin
-    exit;
-  end;
-
-  for c1 := 0 to KeyGroupList.Count-1 do
-  begin
-    kg := KeyGroupList[c1] as IKeyGroup;
-
-    // TODO: At the moment, the samples regions are triggered one key group at a time.
-    // I'm not sure if it's actually necessary any more. I originally chose to do it
-    // like this as an allowence for latching. But the 'latch' mode has been changed
-    // slightly since then.
-
-    RegionList.Clear;
-    SampleMap.FindRegionsByKeyGroup(kg.GetName, RegionList);
-
-    for c2 := 0 to RegionList.Count-1 do
-    begin
-      rg := RegionList[c2];
-      if IsNoteInsideRegion(rg, Data1, Data2) then
-      begin
-        // Add this region to the region trigger queue.
-        TriggerItem := TRegionTriggerItem.Create;
-        TriggerItem.RegionIntf := rg;
-        TriggerItem.KeyGroup   := kg;
-        TriggerQueue.Add(TriggerItem);
-      end;
-    end;
-  end;
-
-  ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Poly);
-  }
 end;
 
 procedure TVoiceController.PolyRelease(const Data1, Data2: byte);
@@ -519,55 +461,15 @@ begin
   end;
 
 
-  SampleMap := (Globals.SampleMapReference as TSampleMap);
-  KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
-
-  KeyGroupList := TInterfaceList.Create;
-  AutoFree(@KeyGroupList);
-
-  RegionList := TRegionInterfaceList.Create;
-  AutoFree(@RegionList);
-
-  TriggerQueue := TObjectList.Create;
-  TriggerQueue.OwnsObjects := true;
-  AutoFree(@TriggerQueue);
-
-  KeyGroups.FindKeyGroups(KeyGroupList);
-
-  if KeyGroupList.Count = 0 then exit;
-
-  for c1 := 0 to KeyGroupList.Count-1 do
+  for c1 := 0 to SampleMap.RegionCount-1 do
   begin
-    kg := KeyGroupList[c1] as IKeyGroup;
+    rg := SampleMap.Regions[c1];
 
-    // TODO: At the moment, the samples regions are triggered one key group at a time.
-    // I'm not sure if it's actually necessary any more. I originally chose to do it
-    // like this as an allowence for latching. But the 'latch' mode has been changed
-    // slightly since then.
-
-
-    RegionList.Clear;
-    SampleMap.FindRegionsByKeyGroup(kg.GetName, RegionList);
-
-    for c2 := 0 to RegionList.Count-1 do
+    if IsNoteInsideRegion(rg, Data1, Data2) then
     begin
-      rg := RegionList[c2];
-      if IsNoteInsideRegion(rg, Data1, Data2) then
-      begin
-        // Add this region to the region trigger queue.
-        TriggerItem := TRegionTriggerItem.Create;
-        TriggerItem.RegionIntf := rg;
-        TriggerItem.KeyGroup   := kg;
-        TriggerQueue.Add(TriggerItem);
-      end;
+      ProcessTrigger(rg.GetKeyGroup, rg, Data1, Data2, TVoiceMode.Mono);
     end;
   end;
-
-
-  // NOTE: At the moment both the Legato and Mono voice modes are using the same
-  // trigger voice code. Both are triggering voices with TVoiceMode.Mono.
-  // This doesn't matter as long as TVoiceMode isn't "Poly".
-  ProcessTriggerQueue(TriggerQueue, Data1, Data2, TVoiceMode.Mono);
 end;
 
 procedure TVoiceController.MonoRelease(const Data1, Data2: byte);
