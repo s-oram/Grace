@@ -2,6 +2,8 @@ unit uVoiceSetupFrame;
 
 interface
 
+// TODO:HIGH rename VoiceSetupFrame to XyPadsFrame.
+
 {$INCLUDE Defines.inc}
 
 uses
@@ -48,6 +50,8 @@ type
 implementation
 
 uses
+  Lucidity.PluginParameters,
+  Lucidity.Types,
   RedFox,
   VamLayoutWizard,
   uConstants;
@@ -178,7 +182,46 @@ end;
 procedure TVoiceSetupFrame.XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
+  Name1, Name2 : string;
 begin
+  if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+  begin
+    Tag := (Sender as TVamXYPad).Tag;
+
+    case Tag of
+      1:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX1);
+        Name2 := PluginParToName(TPluginParameter.PadY1);
+      end;
+
+      2:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX2);
+        Name2 := PluginParToName(TPluginParameter.PadY2);
+      end;
+
+      3:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX3);
+        Name2 := PluginParToName(TPluginParameter.PadY3);
+      end;
+
+      4:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX4);
+        Name2 := PluginParToName(TPluginParameter.PadY4);
+      end;
+    else
+      Name1 := '';
+      Name2 := '';
+      raise Exception.Create('Tag not handled.');
+    end;
+
+    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, Name1);
+    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, Name2);
+  end;
+
   if Button = TMouseButton.mbRight then
   begin
     Tag := (Sender as TVamXYPad).Tag;
