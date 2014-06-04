@@ -1,7 +1,6 @@
 =============================================================================
-- bug: reloading a saved project adds an extra key group.
-
-- There are clicks and pops. something is taking too long.
+- There are clicks and pops. something is taking too long. 
+--- I think this has been fixed but probably could be tested more.
 
 - Knobs need smoothing. moving them is clicky.
 
@@ -25,10 +24,6 @@ Right Click and Hold for sample zoom with mouse
 - Up/Down zooms in/out
 
 - would be good to figure out the text drawing and use a higher quality text drawing routine!
-
-- ctrl+click to reset pads to their default values.
-
-- ctrl+click to reset knobs and other parameters to their default values.
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
