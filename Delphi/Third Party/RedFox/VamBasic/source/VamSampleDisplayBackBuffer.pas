@@ -492,10 +492,8 @@ end;
 procedure TSampleImageBuffer.DrawSample_UsingPoints;
 var
   DestBounds : TRectF;
-  x : integer;
 begin
-  x := CalcPeakCount(SampleData.SampleFrames, Zoom, DisplayWidth);
-  assert(x < DisplayWidth);
+  assert(CalcPeakCount(SampleData.SampleFrames, Zoom, DisplayWidth) < DisplayWidth);
 
   if SampleData.ChannelCount = 1 then
   begin

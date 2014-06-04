@@ -393,18 +393,11 @@ const
   ksf = 23;
   ksr = 44100;
 var
-  c1, c2: Integer;
+  c1 : Integer;
   SampleMap : TSampleMap;
-  KeyGroups : TKeyGroupManager;
-  KeyGroupList : TInterfaceList;
-  kg : IKeyGroup;
   rg : IRegion;
-  RegionList : TRegionInterfaceList;
-  TriggerQueue : TObjectList;
-  TriggerItem  : TRegionTriggerItem;
 begin
   SampleMap := (Globals.SampleMapReference as TSampleMap);
-  KeyGroups := (Globals.KeyGroupsReference as TKeyGroupManager);
 
   for c1 := 0 to SampleMap.RegionCount-1 do
   begin
@@ -438,16 +431,8 @@ end;
 procedure TVoiceController.MonoTrigger(const Data1, Data2: byte);
 var
   c1: Integer;
-  c2: Integer;
   SampleMap : TSampleMap;
-  KeyGroups : TKeyGroupManager;
-  KeyGroupList : TInterfaceList;
-  kg : IKeyGroup;
   rg : IRegion;
-  RegionList : TRegionInterfaceList;
-  //KeyGroupLoopMode :  TSamplerLoopMode;
-  TriggerQueue : TObjectList;
-  TriggerItem  : TRegionTriggerItem;
 begin
   // quick release any current voices.
   for c1 := ActiveVoices.Count-1 downto 0 do
@@ -460,6 +445,7 @@ begin
     ReleasedVoices[c1].QuickRelease;
   end;
 
+  SampleMap := (Globals.SampleMapReference as TSampleMap);
 
   for c1 := 0 to SampleMap.RegionCount-1 do
   begin
@@ -560,7 +546,6 @@ end;
 
 procedure TVoiceController.ProcessTrigger(const KeyGroup: IKeyGroup; Region: IRegion; const MidiData1, MidiData2: byte; const TriggerVoiceMode: TVoiceMode);
 var
-  c1: Integer;
   aVoice : TLucidityVoice;
   rg : IRegion;
   kg : IKeyGroup;

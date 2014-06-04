@@ -66,18 +66,16 @@ end;
 
 procedure TWindowedSincFilter.CalcSincKernel;
 var
-  ScaledCutoff : double;
+  //ScaledCutoff : double;
   c1: Integer;
-
   x2 : double;
-
   sum : double;
   GainFactor : double;
 begin
   SetLength(SincKernel, SincTaps);
 
-  ScaledCutoff := Cutoff * 0.5;
-  assert((ScaledCutoff > 0) and (ScaledCutoff <= 0.5));
+  //ScaledCutoff := Cutoff * 0.5;
+  //assert((ScaledCutoff > 0) and (ScaledCutoff <= 0.5));
 
   for c1 := 0 to SincTaps-1 do
   begin
