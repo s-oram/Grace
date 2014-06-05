@@ -44,8 +44,6 @@
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;bindengine;soaprtl;CustomIPTransport;dsnap;fmxase;IndyCore;inet;fmxobj;inetdbxpress;fmxdae;IPIndyImpl;dbexpress;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
-			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
 			<CfgDependentOn>..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -54,7 +52,7 @@
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_UsePackage>AudioIO_DXE2;VamBasicRunXE2;madBasic_;AggPasRunXE2;SignalTool416;vcldbx;RaizeComponentsTrialVcl;VamBasicDesignXE2;frx16;TeeDB;VamTools;Rave100VCL;vclib;Tee;inetdbbde;MtxTools416;vgscene_XE2;DIB_XE2Runtime;AggPasDesXE2;madDisAsm_;svnui;ibxpress;vclimg;fmi;intrawebdb_120_160;frxDB16;fs16;vclactnband;FMXTee;TeeUI;vcldb;vcldsnap;bindcompvcl;DIB_XE2Install;RedFoxRunXE2;vclie;madExcept_;vcltouch;Intraweb_120_160;websnap;UIAutomationCore;MtxDb416;VclSmp;vclribbon;fsDB16;frxe16;vcl;CloudService;CodeSiteExpressPkg;MtxCore416;FmxTeeUI;dsnapcon;VstComponents_Run_XE2;VstComponents_Des_XE2;vg_vam_controls_XE2;vclx;SignalCore416;webdsnap;svn;VamVstDesignXE2;RedFoxDesignXE2;bdertl;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -73,6 +71,9 @@
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Manifest_File>None</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
