@@ -24,8 +24,9 @@ type
     LastSampledX1, LastSampledX2 : single;
 
 
-    SamplesSinceLast : integer;
-    SamplesToCount   : integer;
+    SamplesSinceLast : single;
+    SamplesToCountTarget : single;
+    SamplesToCount   : single;
     TotalX1, TotalX2 : single;
 
     BitScaleUp, BitScaleDown : single;
@@ -103,6 +104,7 @@ procedure TLofi.Reset;
 begin
   SamplesSinceLast := 0;
   SamplesToCount   := 1;
+  SamplesToCountTarget := 1;
   TotalX1 := 0;
   TotalX2 := 0;
   LastSampledX1 := 0;
@@ -156,7 +158,9 @@ begin
 
 
   fRateReduction := Value;
-  SamplesToCount := round(Value * 63) + 1;
+  SamplesToCountTarget := Value * 63 + 1;
+
+
 
   {
   if Value <> fRateReduction then
@@ -177,14 +181,20 @@ begin
   begin
     LastSampledX1 := TotalX1 / SamplesToCount;
     LastSampledX2 := TotalX2 / SamplesToCount;
-    SamplesSinceLast := 0;
+
+    SamplesSinceLast := SamplesSinceLast - SamplesToCount;
+
     TotalX1 := 0;
     TotalX2 := 0;
+
+    SamplesToCount := SamplesToCountTarget;
   end;
 
   TotalX1 := TotalX1 + x1;
   TotalX2 := TotalX2 + x2;
-  inc(SamplesSinceLast);
+
+  SamplesSinceLast := SamplesSinceLast + 1;
+
 
   x1 := LastSampledX1;
   x2 := LastSampledX2;
