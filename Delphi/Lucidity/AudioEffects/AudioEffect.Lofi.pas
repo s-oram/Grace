@@ -128,27 +128,14 @@ begin
 end;
 
 procedure TLofi.SetBitReduction(const Value: single);
-var
-  cv : single;
-  vx : single;
 begin
   assert(Value >= 0);
   assert(Value <= 1);
 
-  if Value <> fBitReduction then
-  begin
-    fBitReduction := Value;
+  fBitReduction := Value;
 
-    //vx := Power(2, (1-Value) * (1-Value) * 15 + 1);
-    cv := (1-Value) * (1-Value) * (1-Value) * (1-Value);
-    //cv := value * value * value * value; //inverting doesn't work when bits are 0.
-    vx := Power(2, cv * 14 + 2);
-
-    BitScaleUp := vx;
-    BitScaleDown := 1 / BitScaleUp;
-  end;
-
-  //BitScaleDown
+  BitScaleUp := 4 + 512 * Value * Value;
+  BitScaleDown := 1 / BitScaleUp;
 end;
 
 procedure TLofi.SetRateReduction(const Value: single);
@@ -158,17 +145,7 @@ begin
 
 
   fRateReduction := Value;
-  SamplesToCountTarget := Value * 63 + 1;
-
-
-
-  {
-  if Value <> fRateReduction then
-  begin
-    fRateReduction := Value;
-    //FracStepSize := 1 / ((1 - Value * Value) * 1023 + 1);
-  end;
-  }
+  SamplesToCountTarget := (1-Value) * 63 + 1;
 end;
 
 procedure TLofi.Step(var x1, x2: single);
@@ -181,6 +158,9 @@ begin
   begin
     LastSampledX1 := TotalX1 / SamplesToCount;
     LastSampledX2 := TotalX2 / SamplesToCount;
+
+    LastSampledX1 := floor(abs(LastSampledX1) * BitScaleUp) * BitScaleDown * sign(LastSampledX1);
+    LastSampledX2 := floor(abs(LastSampledX2) * BitScaleUp) * BitScaleDown * sign(LastSampledX2);
 
     SamplesSinceLast := SamplesSinceLast - SamplesToCount;
 
