@@ -608,6 +608,8 @@
 			</DCCReference>
 			<DCCReference Include="frames\Menu.XYPadContextMenu.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeParSmoother.pas"/>
+			<DCCReference Include="AudioEffects\AudioEffect.pas"/>
+			<DCCReference Include="AudioEffects\AudioEffect.Lofi.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

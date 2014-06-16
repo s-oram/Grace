@@ -165,7 +165,9 @@ uses
   uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame},
   uVoiceSetupFrame in 'frames\uVoiceSetupFrame.pas' {VoiceSetupFrame: TFrame},
   Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas',
-  eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas';
+  eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas',
+  AudioEffect in 'AudioEffects\AudioEffect.pas',
+  AudioEffect.Lofi in 'AudioEffects\AudioEffect.Lofi.pas';
 
 {$R *.res}
 

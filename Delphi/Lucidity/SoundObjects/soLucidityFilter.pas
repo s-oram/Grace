@@ -13,10 +13,14 @@ uses
   Math,
   Lucidity.Types,
   eeVirtualCV,
+
+  //soFilter.LofiA, //remove this and all instances of it.
+  AudioEffect.Lofi,
+
   FilterCore.SimperSVF,
   soFilter.Test,
   soFilter.MoogLadder,
-  soFilter.LofiA,
+
   soFilter.RingModA,
   soFilter.DistortionA,
   soFilter.CombA,
@@ -41,7 +45,7 @@ type
   protected
     DistortionA : TDistortionA;
     RingModA    : TRingModA;
-    LofiA       : TLofiA;
+    LofiA       : TLofi;
     CombA       : TCombA;
     BlueFilter  : TLowPassA;
     MoogLadder  : TMoogLadder;
@@ -95,7 +99,7 @@ begin
   TestFilter  := TTestFilter.Create;
   RingModA    := TRingModA.Create;
   DistortionA := TDistortionA.Create;
-  LofiA       := TLofiA.Create;
+  LofiA       := TLofi.Create;
   CombA       := TCombA.Create;
   BlueFilter  := TLowPassA.Create;
   MoogLadder  := TMoogLadder.Create;
