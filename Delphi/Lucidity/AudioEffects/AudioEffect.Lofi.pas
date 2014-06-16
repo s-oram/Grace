@@ -3,6 +3,7 @@ unit AudioEffect.Lofi;
 interface
 
 uses
+  eeDsp,
   AudioEffect;
 
 type
@@ -21,6 +22,11 @@ type
 
     OldX1, OldX2 : single;
     LastSampledX1, LastSampledX2 : single;
+
+
+    SamplesSinceLast : integer;
+    SamplesToCount   : integer;
+    TotalX1, TotalX2 : single;
 
     BitScaleUp, BitScaleDown : single;
   public
@@ -83,6 +89,8 @@ begin
   OldX2 := 0;
   FracCounter := 0;
   FracStepSize := 1;
+
+
 end;
 
 destructor TLofi.Destroy;
@@ -93,6 +101,10 @@ end;
 
 procedure TLofi.Reset;
 begin
+  SamplesSinceLast := 0;
+  SamplesToCount   := 1;
+  TotalX1 := 0;
+  TotalX2 := 0;
   LastSampledX1 := 0;
   LastSampledX2 := 0;
   OldX1 := 0;
@@ -142,11 +154,17 @@ begin
   assert(Value >= 0);
   assert(Value <= 1);
 
+
+  fRateReduction := Value;
+  SamplesToCount := round(Value * 63) + 1;
+
+  {
   if Value <> fRateReduction then
   begin
     fRateReduction := Value;
-    FracStepSize := 1 / ((1 - Value * Value) * 1023 + 1);
+    //FracStepSize := 1 / ((1 - Value * Value) * 1023 + 1);
   end;
+  }
 end;
 
 procedure TLofi.Step(var x1, x2: single);
@@ -155,22 +173,42 @@ begin
   //x2 := EmpFunction(x2, fBitEmphasis);
 
 
+  if SamplesToCount < SamplesSinceLast then
+  begin
+    LastSampledX1 := TotalX1 / SamplesToCount;
+    LastSampledX2 := TotalX2 / SamplesToCount;
+    SamplesSinceLast := 0;
+    TotalX1 := 0;
+    TotalX2 := 0;
+  end;
 
+  TotalX1 := TotalX1 + x1;
+  TotalX2 := TotalX2 + x2;
+  inc(SamplesSinceLast);
+
+  x1 := LastSampledX1;
+  x2 := LastSampledX2;
+
+
+
+
+
+  {
   FracCounter := FracCounter + FracStepSize;
   if FracCounter >= 1 then
   begin
     //x1 := EmpFunction(x1, fBitEmphasis);
     //x2 := EmpFunction(x2, fBitEmphasis);
 
-    x1 := round(x1 * BitScaleUp) * BitScaleDown;
-    x2 := round(x2 * BitScaleUp) * BitScaleDown;
+    //x1 := round(x1 * BitScaleUp) * BitScaleDown;
+    //x2 := round(x2 * BitScaleUp) * BitScaleDown;
 
     //x1 := DeEmpFunction(x1, fBitEmphasis);
     //x2 := DeEmpFunction(x2, fBitEmphasis);
 
     FracCounter := FracCounter-1;
-    LastSampledX1 := x1;
-    LastSampledX2 := x2;
+    LastSampledX1 := LinearInterpolation(Oldx1, x1, FracCounter);
+    LastSampledX2 := LinearInterpolation(Oldx2, x2, FracCounter);
     OldX1 := x1;
     OldX2 := x2;
 
@@ -188,7 +226,7 @@ begin
     x1 := LastSampledX1;
     x2 := LastSampledX2;
   end;
-
+  }
 
 end;
 
