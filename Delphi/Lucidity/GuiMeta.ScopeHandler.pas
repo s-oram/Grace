@@ -35,22 +35,19 @@ type
     Plugin  : TeePlugin;
     Globals : TGlobals;
 
-    IsParFocusActive : boolean;
-
-    //CurrentParFocus : TPluginParameter;
-    CurrentParFocus : string; // this is a parameter name.
-    LastParEnter    : string;
+    ScopeState : record
+      IsParFocusActive : boolean;
+      CurrentParFocus : string; // this is a parameter name.
+    end;
 
     FocusedControl : TControl;
-    ScopeFocus : TScopeFocus;
+    LastScopeFocus : TScopeFocus;
 
     ScopeFocusDebounceID : TUniqueID;
 
-    procedure ParameterEnter(const ParName : string);
-    procedure ParameterLeave(const ParName : string);
-    procedure ParameterChanged(const ParName : string);
-
-    procedure UpdateScope;
+    procedure UpdateScope; overload;
+    procedure UpdateScope(const ScopeFocus : TScopeFocus); overload;
+    procedure UpdateScope(const FocusParName : string); overload;
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
@@ -158,7 +155,9 @@ constructor TScopeHandler.Create(aPlugin : TeePlugin);
 begin
   Plugin  := aPlugin;
   Globals := Plugin.Globals;
-  IsParFocusActive := false;
+  ScopeState.IsParFocusActive := false;
+
+  LastScopeFocus := TScopeFocus.None;
 
   ScopeFocusDebounceID.Init;
 end;
@@ -173,6 +172,7 @@ procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer)
 const
   DebounceTime = 200; //milliseconds,
 var
+  ParName : string;
   s : string;
   dbf : TProc;
 begin
@@ -193,13 +193,17 @@ begin
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
     s := string(Data^);
+    ParName := string(Data^);
 
-    LastParEnter := s;
+    if (ParName <> ScopeState.CurrentParFocus) or (ScopeState.IsParFocusActive = false) then
+    begin
+      ScopeState.IsParFocusActive := true;
+      ScopeState.CurrentParFocus := ParName;
+    end;
 
     dbf := procedure
     begin
-      LogMain.LogMessage('Parameter Enter ' + s);
-      ParameterEnter(s);
+      UpdateScope(ScopeState.CurrentParFocus);
     end;
 
     Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
@@ -207,12 +211,17 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlLeave then
   begin
-    s := string(Data^);
+    ParName := string(Data^);
+
+    if (ParName = ScopeState.CurrentParFocus) then
+    begin
+      ScopeState.CurrentParFocus := '';
+      ScopeState.IsParFocusActive := false;
+    end;
 
     dbf := procedure
     begin
-      LogMain.LogMessage('Parameter Leave ' + s);
-      ParameterLeave(s);
+      UpdateScope(ScopeState.CurrentParFocus);
     end;
 
     Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
@@ -220,55 +229,40 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlChanged then
   begin
-    s := string(Data^);
-    ParameterChanged(s);
-  end;
+    ParName := string(Data^);
 
-end;
-
-
-procedure TScopeHandler.ParameterEnter(const ParName: string);
-begin
-  if (ParName <> CurrentParFocus) or (IsParFocusActive = false) then
-  begin
-    IsParFocusActive := true;
-    CurrentParFocus := ParName;
-    UpdateScope;
-  end;
-end;
-
-procedure TScopeHandler.ParameterLeave(const ParName: string);
-begin
-  if (ParName = CurrentParFocus) or (ParName = LastParEnter) then
-  begin
-    CurrentParFocus := '';
-    LastParEnter := '';
-    IsParFocusActive := false;
-    UpdateScope;
-  end;
-end;
-
-procedure TScopeHandler.ParameterChanged(const ParName: string);
-begin
-  if ParName = CurrentParFocus then
-  begin
-    UpdateScope;
+    if ParName = ScopeState.CurrentParFocus then
+    begin
+      UpdateScope;
+    end;
   end;
 end;
 
 procedure TScopeHandler.UpdateScope;
+begin
+  UpdateScope(LastScopeFocus);
+end;
+
+procedure TScopeHandler.UpdateScope(const FocusParName : string);
 var
   ScopeFocus : TScopeFocus;
-  ParValue : single;
 begin
-  if IsParFocusActive then
+  if FocusParName <> '' then
   begin
-    ScopeFocus := FindScopeFocus_New(CurrentParFocus);
+    ScopeFocus := FindScopeFocus_New(FocusParName);
   end else
   begin
     ScopeFocus := TScopeFocus.None;
   end;
 
+  UpdateScope(ScopeFocus);
+end;
+
+procedure TScopeHandler.UpdateScope(const ScopeFocus: TScopeFocus);
+var
+  ParValue : single;
+begin
+  LastScopeFocus := ScopeFocus;
 
   case ScopeFocus of
     TScopeFocus.None:
@@ -359,7 +353,6 @@ begin
 
   ScopeControl.Invalidate;
 end;
-
 
 
 

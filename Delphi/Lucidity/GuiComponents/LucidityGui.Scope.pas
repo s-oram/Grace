@@ -91,8 +91,6 @@ type
     SignalDisplay : TSignalDisplay;
     FreqDisplay   : TFreqDisplay;
 
-
-
     fColorBackground : TRedFoxColor;
     fColorBorder     : TRedFoxColor;
     fColorForeground : TRedFoxColor;
@@ -101,7 +99,6 @@ type
 
     SignalAniID : TUniqueID;
     SignalOpacity : byte;
-
 
     DiagramBuffer : TRedFoxImageBuffer;
     DiagramBufferAlpha : byte;
@@ -486,7 +483,7 @@ begin
 
 
     Animation := TByteAnimation.Create;
-    Animation.RunTime := 500;
+    Animation.RunTime := 125;
     Animation.StartValue := DiagramBufferAlpha;
     Animation.EndValue   := 0;
     Animation.ApplyMethod := procedure(CurrentValue : byte)
@@ -498,7 +495,7 @@ begin
   end else
   begin
     Animation := TByteAnimation.Create;
-    Animation.RunTime := 250;
+    Animation.RunTime := 125;
     Animation.StartValue := SignalOpacity;
     Animation.EndValue   := 65;
     Animation.ApplyMethod := procedure(CurrentValue : byte)
@@ -508,7 +505,7 @@ begin
     GlobalAnimator.Animate(SignalAniID, Animation);
 
     Animation := TByteAnimation.Create;
-    Animation.RunTime := 250;
+    Animation.RunTime := 125;
     Animation.StartValue := DiagramBufferAlpha;
     Animation.EndValue   := 220; //<-- Maximum visible diagram alpha value. probably should be a constant.
     Animation.ApplyMethod := procedure(CurrentValue : byte)
