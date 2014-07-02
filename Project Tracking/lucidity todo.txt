@@ -355,3 +355,28 @@ Page is a way to edit the midi controllers and macro knobs to parameters
 - Destination Parameter (Filter 1 Parameter 1 etc)
 - Scope - (Global/All Key Groups, Focused Key Group, Named Key Group)
 - Mapping - maps the source control range to the destination parameter.
+
+
+
+=============================================================================
+                          VERSION 2.0 IDEAS
+=============================================================================
+
+
+== Meta control parameter mapping ==
+
+Control is needed for music creation. It's not enough to have a static patch. 
+
+All knobs/parameters should be linked to a controller, the mod wheel for example. 
+A mod-map or mod-graph translates the controller position to the actual parameter
+value. The mod-graph is a break point line. 
+
+At it's most simple, each parameter would be linked to a mod-map, each mod-map would
+be linked to one controller. It would be a master meta control. This idea could be
+advanced by allowing more meta controllers. Also, lfos could be used for meta controllers
+as well. 
+
+Current examples are Mutable Instruments Frames. The exp-map in Alchemy.
+
+
+
