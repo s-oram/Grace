@@ -432,13 +432,6 @@ begin
   end;
 end;
 
-procedure TLucidityVoice.SetLoopMode(const Value: TKeyGroupTriggerMode);
-begin
-  fLoopMode := Value;
-
-  OneShotSampleOsc.LoopMode := Value;
-end;
-
 procedure TLucidityVoice.SetPitchTracking(const Value: TPitchTracking);
 begin
   fPitchTracking := Value;
@@ -453,17 +446,45 @@ begin
   if IsActive then assert('ERROR: Changing Playback type while Voice is active.');
 end;
 
+procedure TLucidityVoice.SetLoopMode(const Value: TKeyGroupTriggerMode);
+begin
+  fLoopMode := Value;
+
+  OneShotSampleOsc.LoopMode := Value;
+
+  //==========================================================
+  // HACK: IMPORTANT: update the Sample Reset parameter to force an internal state
+  // change update. (It's a bit hacky but will do for now.)
+  SetSampleReset(fSampleReset);
+  //==========================================================
+end;
+
 procedure TLucidityVoice.SetSampleReset(const Value: TClockSource);
 begin
   fSampleReset := Value;
 
   VoiceClockManager.RemoveListener('LucidityVoice', Self);
 
-  case Value of
-    TClockSource.None: ;
-    TClockSource.Lfo1: VoiceClockManager.AddListener(ClockID_Lfo1, Self, SampleResetClockEvent, 'LucidityVoice');
-    TClockSource.Lfo2: VoiceClockManager.AddListener(ClockID_Lfo2, Self, SampleResetClockEvent, 'LucidityVoice');
+  // IMPORTANT: Don't enable the reset when using "One Shot" trigger mode.
+  if LoopMode <> TKeyGroupTriggerMode.OneShot then
+  begin
+    case Value of
+      TClockSource.None: ;
+      TClockSource.Lfo1: VoiceClockManager.AddListener(ClockID_Lfo1, Self, SampleResetClockEvent, 'LucidityVoice');
+      TClockSource.Lfo2: VoiceClockManager.AddListener(ClockID_Lfo2, Self, SampleResetClockEvent, 'LucidityVoice');
+    else
+      raise Exception.Create('Type not handled.');
+    end;
   end;
+
+  case Value of
+    TClockSource.None: fOneShotSampleOsc.IsSampleResetActive := false;
+    TClockSource.Lfo1: fOneShotSampleOsc.IsSampleResetActive := true;
+    TClockSource.Lfo2: fOneShotSampleOsc.IsSampleResetActive := true;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
 end;
 
 procedure TLucidityVoice.SetVoiceGlide(const Value: single);

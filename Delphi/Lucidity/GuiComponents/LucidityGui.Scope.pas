@@ -405,11 +405,13 @@ begin
 
   if (aWidth > 40) and (aHeight > 40) then
   begin
-    ScopeRect := Rect(8,8,aWidth-8,aHeight-24);
+    //ScopeRect := Rect(8,8,aWidth-8,aHeight-24);
+    ScopeRect := Rect(1,8,aWidth-1,aHeight-17);
 
     if assigned(DiagramBuffer) then
     begin
-      DiagramBuffer.SetSize(AWidth, AHeight);
+      //DiagramBuffer.SetSize(AWidth, AHeight);
+      DiagramBuffer.SetSize(ScopeRect.Width, ScopeRect.Height);
       DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
     end;
 

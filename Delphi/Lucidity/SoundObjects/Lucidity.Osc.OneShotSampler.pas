@@ -35,6 +35,7 @@ type
     fOnFinished: TNotifyEvent;
     fPitchShift: single;
     fLoopMode: TKeyGroupTriggerMode;
+    fIsSampleResetActive: boolean;
     procedure SetLoopBounds(const Value: TSamplerLoopBounds);
     procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
   protected
@@ -91,6 +92,7 @@ type
 
     property LoopBounds    : TSamplerLoopBounds  read fLoopBounds         write SetLoopBounds;
     property LoopMode      : TKeyGroupTriggerMode    read fLoopMode           write SetLoopMode;
+    property IsSampleResetActive : boolean  read fIsSampleResetActive write fIsSampleResetActive;
 
 
     //== For GUI Feedback ==
@@ -215,6 +217,8 @@ begin
     CurRegion         := aSampleRegion;
     CurSample         := aSample;
   end;
+
+
 
 
 
@@ -399,7 +403,7 @@ begin
     case LoopMode of
       TKeyGroupTriggerMode.LoopOff:
       begin
-        if (IsFinishCalledNeeded) then
+        if (IsFinishCalledNeeded) and (not IsSampleResetActive) then
         begin
           IsFinishCalledNeeded := false;
           OnFinished(self);
@@ -425,7 +429,7 @@ begin
           PhaseCounter.ResetTo(CurrentSampleBounds.PlaybackLoopStart);
           VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
         end else
-        if (IsFinishCalledNeeded) then
+        if (IsFinishCalledNeeded) and (not IsSampleResetActive) then
         begin
           IsFinishCalledNeeded := false;
           OnFinished(self);
@@ -434,6 +438,8 @@ begin
 
       TKeyGroupTriggerMode.OneShot:
       begin
+        // IMPORTANT: Igore the IsSampleResetActive value when in one shot mode.
+        //if (IsFinishCalledNeeded) and (not IsSampleResetActive) then
         if (IsFinishCalledNeeded) then
         begin
           IsFinishCalledNeeded := false;
@@ -444,39 +450,10 @@ begin
       raise Exception.Create('type not handled.');
     end;
 
-
-    {
-    case LoopBounds of
-      //TODO: LoopMode isn't loop mode anymore.
-
-      //TSamplerLoopBounds.LoopOff:
-      //begin
-      //  if (IsFinishCalledNeeded) then
-      //  begin
-      //    IsFinishCalledNeeded := false;
-      //    OnFinished(self);
-      //  end;
-      //end;
-
-      TSamplerLoopBounds.LoopSample,
-      TSamplerLoopBounds.LoopPoints:
-      begin
-        StepInFilter.Trigger;
-        LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
-        UpdateSampleBounds;
-        PhaseCounter.ResetTo(CurrentSampleBounds.LoopStart);
-        VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
-      end;
-    else
-      raise Exception.Create('Loop type not handled.');
-    end;
-    }
   end else
   begin
     PhaseCounter.Step;
   end;
-
-
 
 end;
 

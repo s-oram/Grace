@@ -164,7 +164,7 @@ type
     procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
 
     procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
-    
+
   published
     property PitchTracking            : TPitchTracking                     read fPitchTracking           write SetPitchTracking;
     property SamplePlaybackType       : TSamplePlaybackType                read fSamplePlaybackType      write SetSamplePlaybackType;
@@ -228,8 +228,6 @@ type
     property Seq2Clock                : TSequencerClock                    read fSeq2Clock               write SetSeq2Clock;
     property Seq2Direction            : TStepSequencerDirection            read fSeq2Direction           write SetSeq2Direction;
     property StepSeq2Length           : TStepSequencerLength               read fStepSeq2Length          write SetStepSeq2Length;
-
-
   end;
 
 implementation
