@@ -312,6 +312,10 @@ end;
 procedure TVstWrapper.SetPar(Index: integer; const Value: single);
 begin
   fPar[Index] := Value;
+
+  Vst^.setParameter(Vst, Index, Value);
+
+  //Vst^.
 end;
 
 procedure TVstWrapper.LoadVst(DllFileName: string);

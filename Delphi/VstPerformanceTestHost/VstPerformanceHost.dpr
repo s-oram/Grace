@@ -41,7 +41,8 @@ begin
       Test1.Free;
     end;
 
-    ReadKey;
+    ReadLn;
+    //ReadKey;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

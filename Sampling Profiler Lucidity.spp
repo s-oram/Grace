@@ -1,6 +1,6 @@
 [TMainForm]
 FormVersion=0
-FEProcess_FileName=D:\Audio\Apps\Vst Performance Test Host\VstPerformanceHost.exe
+FEProcess_FileName=S:\Delphi\VstPerformanceTestHost\Bin\VstPerformanceHost.exe
 RBSampleDelayed_Checked=False
 RBSampleImmediate_Checked=False
 RBSampleLimited_Checked=False

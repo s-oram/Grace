@@ -19,7 +19,9 @@ type
     InputBuffers, OutputBuffers : TBuffers;
 
   protected
+    procedure SendVstParameterEvents;
     procedure ProcessPlugin(TimeInSeconds : integer);
+    procedure ProcessPluginBuffer; inline;
     procedure SendMidiNoteOnEvents;
     procedure SendMidiNoteOffEvents;
   public
@@ -45,9 +47,7 @@ begin
 
   MidiInput  := TVstMidiInputBuffer.Create;
 
-
   TestInfo := LoadTestInfo;
-
 end;
 
 destructor TProcessPerformanceTest.Destroy;
@@ -75,6 +75,15 @@ begin
   end;
 
 end;
+
+procedure TProcessPerformanceTest.ProcessPluginBuffer;
+begin
+  InputBuffers.ZeroBuffers;
+  OutputBuffers.ZeroBuffers;
+  VstWrapper.ProcessReplacing(InputBuffers.VstBufferPointer, OutputBuffers.VstBufferPointer, TestInfo.BufferSize);
+end;
+
+
 
 procedure TProcessPerformanceTest.RunTest;
 var
@@ -117,8 +126,6 @@ begin
     VstWrapper.TimeInfo := @TimeInfo;
     VstWrapper.IsTimeInfoValid := true;
 
-
-
     VstWrapper.TurnOn;
 
     TimeInfo.sampleRate := TestInfo.SampleRate;
@@ -128,22 +135,31 @@ begin
 
     WriteLn('Processing...');
 
-
-    ProcessPlugin(10);
+    {
+    ProcessPlugin(2);
     SendMidiNoteOnEvents;
-    ProcessPlugin(10);
+    for c1 := 0 to 1000 do
+    begin
+      SendVstParameterEvents;
+      ProcessPlugin(1);
+    end;
     SendMidiNoteOffEvents;
-    ProcessPlugin(30);
-
+    ProcessPlugin(2);
+    }
 
     TotalTime := 0;
     StartTime := CpuCycleTimer.StartTimerMS;
 
-    ProcessPlugin(10);
+
+    ProcessPlugin(2);
     SendMidiNoteOnEvents;
-    ProcessPlugin(10);
+    for c1 := 0 to 10000 do
+    begin
+      SendVstParameterEvents;
+      ProcessPluginBuffer;
+    end;
     SendMidiNoteOffEvents;
-    ProcessPlugin(30);
+    ProcessPlugin(2);
 
     TotalTime := StopTimerMS(STartTime);
     WriteLn(FloatToStr(TotalTime));
@@ -271,10 +287,6 @@ begin
      VstWrapper.Unload;
    end;
 
-
-   ReadLn;
-
-
 end;
 
 procedure TProcessPerformanceTest.SendMidiNoteOnEvents;
@@ -282,16 +294,26 @@ begin
   //== send midi note on ==
   MidiInput.Clear;
   MidiInput.AddMidiEvent(0,kNoteOn, 60,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 59,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 58,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 57,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 56,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 55,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 54,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 53,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 52,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOn, 51,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 59,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 58,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 57,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 56,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 55,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 54,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 53,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 52,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOn, 51,60,0);
   VstWrapper.SendVstEventsToPlugin(MidiInput.VstEventsPointer);
+end;
+
+procedure TProcessPerformanceTest.SendVstParameterEvents;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to VstWrapper.ParCount-1 do
+  begin
+    VstWrapper.Par[c1] := random;
+  end;
 end;
 
 procedure TProcessPerformanceTest.SendMidiNoteOffEvents;
@@ -299,15 +321,15 @@ begin
   //== send midi note off ==
   MidiInput.Clear;
   MidiInput.AddMidiEvent(0,kNoteOff, 60,0,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 59,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 58,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 57,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 56,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 55,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 54,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 53,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 52,60,0);
-  MidiInput.AddMidiEvent(0,kNoteOff, 51,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 59,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 58,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 57,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 56,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 55,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 54,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 53,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 52,60,0);
+  //MidiInput.AddMidiEvent(0,kNoteOff, 51,60,0);
   VstWrapper.SendVstEventsToPlugin(MidiInput.VstEventsPointer);
 end;
 
