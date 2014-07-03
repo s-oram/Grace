@@ -174,7 +174,7 @@ type
 implementation
 
 uses
-  uAudioMaster, Dialogs;
+  uAudioMaster, Vcl.Dialogs;
 
 
 

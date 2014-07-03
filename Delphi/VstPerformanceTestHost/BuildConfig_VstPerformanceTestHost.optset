@@ -1,0 +1,18 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<DCC_BplOutput>$(VstTestHostProjDir)\Bin\Delphi\bpl\$(PLATFORM)</DCC_BplOutput>
+			<DCC_DcpOutput>$(VstTestHostProjDir)\Bin\Delphi\dcp\$(PLATFORM)</DCC_DcpOutput>
+			<DCC_UnitSearchPath>$(VstTestHostProjDir)\Source\NativeXml_401\nativexml;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_Namespace>Vcl;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_ExeOutput>$(VstTestHostProjDir)\Bin</DCC_ExeOutput>
+			<DCC_DcuOutput>$(VstTestHostProjDir)\Bin\Delphi\dcu\$(PLATFORM)</DCC_DcuOutput>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>OptionSet</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality/>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -35,7 +35,7 @@ var
 implementation
 
 uses
-  SysUtils, Dialogs, Contnrs;
+  SysUtils, Vcl.Dialogs, Contnrs;
 
 var
   Plugs:TObjectList;

@@ -17,7 +17,7 @@ implementation
 
 uses
   uAutoFree,
-  Dialogs, SysUtils,
+  Vcl.Dialogs, SysUtils,
   NativeXML, eeVstExtra;
 
 

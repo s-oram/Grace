@@ -14,8 +14,6 @@ uses
   uMachineList in 'Source\EasyHost\uMachineList.pas',
   uVstWrapper in 'Source\EasyHost\uVstWrapper.pas',
   uAudioMaster in 'Source\EasyHost\uAudioMaster.pas',
-  MoreTypes in '..\..\Library\Units - other\MoreTypes.pas',
-  uIntegerList in '..\..\Library\Units - other\uIntegerList.pas',
   DAEffect in 'Source\DVST\DAEffect.pas',
   DAEffectX in 'Source\DVST\DAEffectX.pas',
   DAudioEffect in 'Source\DVST\DAudioEffect.pas',
@@ -24,9 +22,13 @@ uses
   DVSTUtils in 'Source\DVST\DVSTUtils.pas',
   ProcessPerformanceTest in 'Source\ProcessPerformanceTest.pas',
   uVstMidiInput in 'Source\EasyHost\uVstMidiInput.pas',
-  Console in '..\..\Library\Console\Console.pas',
-  CpuCycleTimer in '..\..\Library\Units - other\CpuCycleTimer.pas',
-  phCore in 'phCore.pas';
+  phCore in 'phCore.pas',
+  MoreTypes in 'Source\General\MoreTypes.pas',
+  uIntegerList in 'Source\General\uIntegerList.pas',
+  CpuCycleTimer in 'Source\General\CpuCycleTimer.pas',
+  Console in 'Source\General\Console.pas',
+  uAutoFree in 'Source\General\uAutoFree.pas',
+  eeVSTExtra in 'Source\EasyEffect\eeVSTExtra.pas';
 
 var
   Test1 : TProcessPerformanceTest;
