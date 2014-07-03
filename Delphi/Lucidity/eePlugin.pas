@@ -1260,7 +1260,7 @@ begin
       inc(GlobalModPoints.Source_TriggeredNoteCount);
     end;
   except
-    Log.LogMessage('NoteOn Exception.');
+    //Log.LogMessage('NoteOn Exception.');
     raise;
   end;
 
@@ -1278,15 +1278,13 @@ begin
       //OverloadWatch.Stop;
     end;
   except
-    Log.LogMessage('NoteOff Exception.');
+    //Log.LogMessage('NoteOff Exception.');
     raise;
   end;
 
   if IsControlChange(Event) then
   begin
-    //OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
     MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
-    //OverloadWatch.Stop;
   end;
 
   if IsModWheel(Event) then
@@ -1315,11 +1313,18 @@ end;
 
 
 procedure TeePlugin.FastControlProcess;
+const
+  ksf = 28;
+  ksr = 44100;
 begin
   try
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     MidiInputProcessor.FastControlProcess;
+    //OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
+
+    //OverloadWatch.Stop;
+
     KeyGroupPlayer.FastControlProcess;
   except
     {$IFDEF MadExcept}
@@ -1381,7 +1386,7 @@ begin
 
     inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
   except
-    Log.LogMessage('Audio Process Exception.');
+    //Log.LogMessage('Audio Process Exception.');
     {$IFDEF MadExcept}
     HandleException;
     {$ELSE}
