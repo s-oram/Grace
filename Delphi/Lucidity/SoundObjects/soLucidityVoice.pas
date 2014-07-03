@@ -543,6 +543,7 @@ end;
 procedure TLucidityVoice.Trigger(const MidiNote, MidiVelocity: byte; const aSampleGroup : IKeyGroup; const aSampleRegion:IRegion);
 var
   CV : TModularVoltage;
+  NoteOffset : single;
 begin
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
@@ -628,13 +629,23 @@ begin
     CV := MidiNote / 12;
     ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
     ModPoints.MidiNote_Bipolar := ModPoints.MidiNote_Unipolar * 2 - 1;
-    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(MidiNote - 36);
+
+    NoteOffset := MidiNote - 36;
+    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset);
+
+    FilterOne.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterOne.KeyFollow);
+    FilterTwo.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterTwo.KeyFollow);
   end else
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
     ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
     ModPoints.MidiNote_Bipolar := ModPoints.MidiNote_Unipolar * 2 - 1;
-    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
+
+    NoteOffset := GlobalModPoints.Source_MonophonicMidiNote - 36;
+    ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset);
+
+    FilterOne.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterOne.KeyFollow);
+    FilterTwo.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterTwo.KeyFollow);
   end;
 
   ModPoints.MidiVelocity_Unipolar := MidiVelocity / 127;
@@ -677,6 +688,8 @@ begin
   UpdateOscPitch;
 
   OneShotSampleOsc.Trigger(MidiNote, aSampleRegion, aSampleRegion.GetSample^);
+
+
 
   FilterOne.Reset;
   FilterTwo.Reset;
@@ -764,6 +777,7 @@ var
   CV : TModularVoltage;
   PanX, VolX : single;
   Par1 : single;
+  NoteOffset : single;
 begin
   VolX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputGain);
   PanX := ParModData.GetModulatedParameterValue(TPluginParameter.OutputPan);
@@ -789,6 +803,10 @@ begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;
     ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(GlobalModPoints.Source_MonophonicMidiNote - 36);
+
+    NoteOffset := GlobalModPoints.Source_MonophonicMidiNote - 36;
+    FilterOne.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterOne.KeyFollow);
+    FilterTwo.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterTwo.KeyFollow);
   end;
 
   //=== Control rate step for all control rate modules ===

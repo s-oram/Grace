@@ -34,6 +34,7 @@ type
     fPar3: PSynthPar;
     fPar1: PSynthPar;
     fPar4: PSynthPar;
+    fKeyFollowFreqMultiplier: single;
 
     procedure SetSampleRate(const Value: single);
     procedure SetFilterType(const Value: TFilterType);
@@ -61,6 +62,8 @@ type
     property Par3 : PSynthPar read fPar3 write fPar3;
     property Par4 : PSynthPar read fPar4 write fPar4;
 
+    property KeyFollowFreqMultiplier : single read fKeyFollowFreqMultiplier write fKeyFollowFreqMultiplier;
+
     // TODO: delete this old mod pointer stuff.
     function GetModPointer(const Name:string):PSingle;
 
@@ -75,6 +78,8 @@ type
     //==== Parameters ====
     property FilterType : TFilterType read fFilterType write SetFilterType;
     property KeyFollow  : single      read fKeyFollow  write SetKeyFollow;  //range 0..1.
+
+
 
 
   end;
@@ -242,6 +247,8 @@ begin
     ftCombA:
     begin
       //==== Comb A ====
+      CombA.KeyFollowFreqMultiplier := KeyFollowFreqMultiplier;
+
       px1 := Par1^;
       px1 := Clamp(px1, 0, 1);
       CombA.Par1 := px1;
@@ -253,6 +260,8 @@ begin
       px3 := Par3^;
       px3 := clamp(px3, 0, 1);
       CombA.Par3 := px3;
+
+
     end;
 
     ft2PoleLowPass,

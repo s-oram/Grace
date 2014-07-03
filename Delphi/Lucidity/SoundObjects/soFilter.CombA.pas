@@ -14,6 +14,7 @@ type
     fPar2: single;
     fPar3: single;
     fPar1: single;
+    fKeyFollowFreqMultiplier: single;
     procedure SetSampleRate(const Value: single);
     procedure SetPar1(const Value: single);
     procedure SetPar2(const Value: single);
@@ -40,6 +41,8 @@ type
     property Par2 : single read fPar2 write SetPar2;  // Feedback
     property Par3 : single read fPar3 write SetPar3;  // mix
 
+    property KeyFollowFreqMultiplier : single read fKeyFollowFreqMultiplier write fKeyFollowFreqMultiplier;
+
     //property Par1 : single read fPar1 write SetPar1;
     //property Par2 : single read fPar2 write SetPar2;
     //property Par3 : single read fPar3 write SetPar3;
@@ -48,11 +51,12 @@ type
 implementation
 
 uses
+  VamLib.Utils,
   eeDsp;
 
 const
-  kMinDelay = 0.01;   //milliseconds
-  kMaxDelay = 50; //milliseconds
+  kMinDelay = 1;   //milliseconds
+  kMaxDelay = 100; //milliseconds
 
 { TCombA }
 
@@ -96,8 +100,10 @@ begin
   begin
     fPar1 := Value;
     DelayTimeMS := kMinDelay + (1-Value) * (kMaxDelay - kMinDelay);
+    DelayTimeMS := DelayTimeMS * KeyFollowFreqMultiplier;
+    DelayTimeMS := Clamp(DelayTimeMS, kMinDelay, kMaxDelay);
     DelayInSamples := MillisecondsToSamples(DelayTimeMS, SampleRate);
-    if DelayInSamples <= 1 then DelayInSamples := 2;
+    //if DelayInSamples <= 1 then DelayInSamples := 2;
     assert(DelayInSamples > 1);
   end;
 end;

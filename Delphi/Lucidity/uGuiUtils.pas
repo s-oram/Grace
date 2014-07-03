@@ -487,7 +487,7 @@ begin
     begin
       FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
       FastUpdateControl(Knobs[1], Labels[1], 'AMT');
-      FastUpdateControl(Knobs[2], Labels[2], '');
+      FastUpdateControl(Knobs[2], Labels[2], 'MIX');
       FastUpdateControl(Knobs[3], Labels[3], '');
     end;
 

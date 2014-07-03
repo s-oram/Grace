@@ -185,7 +185,7 @@ type
     MidiVelocity_Bipolar    : single;
     MidiToggle_Unipolar     : single; // range 0 or 1.
     MidiToggle_Bipolar      : single; // range -1 or 1.
-    KeyFollowFreqMultiplier : single;
+    KeyFollowFreqMultiplier : single; // TODO:HIGH Maybe this isn't used anywhere.
     SampleStart             : single;
     SampleEnd               : single;
     LoopStart               : single;
