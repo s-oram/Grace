@@ -268,7 +268,7 @@ var
   c1 : integer;
   aModule : TPatchNode;
   RootNode      : TXmlNode;
-  PatchInfoNode : TXmlNode;
+  //PatchInfoNode : TXmlNode; //TODO:LOW this variable doesn't seem to be getting used. Maybe delete.
   PatchDataNode : TXmlNode;
   ModuleNode    : TXmlNode;
 begin
@@ -282,12 +282,12 @@ begin
   // In this case the method above 'CheckValidityOfXmlPatchData' does all the checking and
   // will raise exceptions if required.
   RootNode := XmlPatchData.Root;
-  PatchInfoNode := RootNode.FindNode('PatchInfo');
+  //PatchInfoNode := RootNode.FindNode('PatchInfo');
   PatchDataNode := RootNode.FindNode('PatchData');
 
   // Sanity checks...
   assert(assigned(RootNode));
-  assert(assigned(PatchInfoNode));
+  //assert(assigned(PatchInfoNode));
   assert(assigned(PatchDataNode));
   //============================================================================
 
