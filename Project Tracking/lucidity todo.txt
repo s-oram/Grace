@@ -1,4 +1,7 @@
 =============================================================================
+
+BUG: CPU Overload when automating parameters in cubase.
+
 - There are clicks and pops. something is taking too long. 
 --- I think this has been fixed but probably could be tested more.
 
@@ -8,8 +11,6 @@
 
 - think about project directories
 - sample map icon needs to be replaced.
-
-
 
 - look at more mouse wheel support!
 
