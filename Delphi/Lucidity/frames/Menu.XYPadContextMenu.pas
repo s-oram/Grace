@@ -122,64 +122,12 @@ end;
 procedure TXYPadContextMenu.Popup(const x, y: integer);
 var
   mi : TMenuItem;
-  miMidiLearnX : TMenuItem;
-  miMidiLearnY : TMenuItem;
   MidiBinding : IMidiBinding;
-  MidiCC : integer;
+  MidiCC_XAxis : integer;
+  MidiCC_YAxis : integer;
   Text : string;
   TargetParNameX, TargetParNameY : string;
 begin
-  Menu.Items.Clear;
-
-
-  // build the context menu before showing it.
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'MIDI Learn X Axis';
-  mi.OnClick := Handle_MidiLearn;
-  mi.Tag := 0;
-  Menu.Items.Add(mi);
-  miMidiLearnX := mi;
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'MIDI Unlearn X Axis';
-  mi.OnClick := Handle_MidiUnlearn;
-  mi.Tag := 0;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Set MIDI CC X Axis...';
-  mi.OnClick := Handle_SetMidiCC;
-  mi.Tag := 0;
-  Menu.Items.Add(mi);
-
-
-  //=== Spacer =========
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := '-';
-  Menu.Items.Add(mi);
-  //=====================
-
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'MIDI Learn Y Axis';
-  mi.OnClick := Handle_MidiLearn;
-  mi.Tag := 1;
-  Menu.Items.Add(mi);
-  miMidiLearnY := mi;
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'MIDI Unlearn Y Axis';
-  mi.OnClick := Handle_MidiUnlearn;
-  mi.Tag := 1;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Set MIDI CC Y Axis...';
-  mi.OnClick := Handle_SetMidiCC;
-  mi.Tag := 1;
-  Menu.Items.Add(mi);
-
-
   case TargetXYPadIndex of
     0:
     begin
@@ -208,38 +156,81 @@ begin
     raise Exception.Create('Index not handled.');
   end;
 
-
-
   //==== MIDI Learn X ======
   MidiBinding := Plugin.MidiAutomation.FindBinding(TargetParNameX);
 
   if assigned(MidiBinding)
-    then MidiCC := MidiBinding.GetMidiCC
-    else MidiCC := -1;
-
-  if MidiCC <> -1
-    then Text := 'MIDI Learn  [CC: ' + IntToStr(MidiCC) + ']'
-    else Text := 'MIDI Learn  [CC: --]';
-
-  miMidiLearnX.Caption := Text;
-
+    then MidiCC_XAxis := MidiBinding.GetMidiCC
+    else MidiCC_XAxis := -1;
 
   //==== MIDI Learn Y ======
   MidiBinding := Plugin.MidiAutomation.FindBinding(TargetParNameY);
 
   if assigned(MidiBinding)
-    then MidiCC := MidiBinding.GetMidiCC
-    else MidiCC := -1;
-
-  if MidiCC <> -1
-    then Text := 'MIDI Learn  [CC: ' + IntToStr(MidiCC) + ']'
-    else Text := 'MIDI Learn  [CC: --]';
-
-  miMidiLearnY.Caption := Text;
-
-
-
+    then MidiCC_YAxis := MidiBinding.GetMidiCC
+    else MidiCC_YAxis := -1;
   //=====================================
+
+
+  Menu.Items.Clear;
+
+
+  // build the context menu before showing it.
+  mi := TMenuItem.Create(Menu);
+  if MidiCC_XAxis <> -1
+    then Text := 'MIDI Learn X Axis [CC: ' + IntToStr(MidiCC_XAxis) + ']'
+    else Text := 'MIDI Learn X Axis';
+  mi.Caption := Text;
+  mi.OnClick := Handle_MidiLearn;
+  mi.Tag := 0;
+  Menu.Items.Add(mi);
+
+  if MidiCC_XAxis <> -1 then
+  begin
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'MIDI Unlearn X Axis';
+    mi.OnClick := Handle_MidiUnlearn;
+    mi.Tag := 0;
+    Menu.Items.Add(mi);
+  end;
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Set MIDI CC X Axis...';
+  mi.OnClick := Handle_SetMidiCC;
+  mi.Tag := 0;
+  Menu.Items.Add(mi);
+
+
+  //=== Spacer =========
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=====================
+
+
+  mi := TMenuItem.Create(Menu);
+  if MidiCC_YAxis <> -1
+    then Text := 'MIDI Learn Y Axis [CC: ' + IntToStr(MidiCC_YAxis) + ']'
+    else Text := 'MIDI Learn Y Axis';
+  mi.Caption := Text;
+  mi.OnClick := Handle_MidiLearn;
+  mi.Tag := 1;
+  Menu.Items.Add(mi);
+
+  if MidiCC_YAxis <> -1 then
+  begin
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'MIDI Unlearn Y Axis';
+    mi.OnClick := Handle_MidiUnlearn;
+    mi.Tag := 1;
+    Menu.Items.Add(mi);
+  end;
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Set MIDI CC Y Axis...';
+  mi.OnClick := Handle_SetMidiCC;
+  mi.Tag := 1;
+  Menu.Items.Add(mi);
 
 
 
