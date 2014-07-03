@@ -630,7 +630,7 @@ begin
     ModPoints.MidiNote_Unipolar := ModularVoltageToAudioRange(cv);
     ModPoints.MidiNote_Bipolar := ModPoints.MidiNote_Unipolar * 2 - 1;
 
-    NoteOffset := MidiNote - 36;
+    NoteOffset := TriggerNote - 36; //TODO:HIGH need to incorporate pitch bend here.
     ModPoints.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset);
 
     FilterOne.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterOne.KeyFollow);
@@ -798,6 +798,10 @@ begin
   begin
     // NOTE: The goal of MIDI Note as a mod source is something similar to 1 volt per octave
     // pitch scaling in modular synths. I want filters to be able to track the keyboard.
+
+    NoteOffset := TriggerNote - 36; //TODO:HIGH need to incorporate pitch bend here.
+    FilterOne.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterOne.KeyFollow);
+    FilterTwo.KeyFollowFreqMultiplier := PitchShiftToRate(NoteOffset * FilterTwo.KeyFollow);
   end else
   begin
     CV := GlobalModPoints.Source_MonophonicMidiNote / 12;

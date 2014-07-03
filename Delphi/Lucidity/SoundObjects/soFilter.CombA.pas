@@ -96,16 +96,18 @@ procedure TCombA.SetPar1(const Value: single);
 var
   DelayTimeMS : single;
 begin
-  if Value <> fPar1 then
-  begin
-    fPar1 := Value;
-    DelayTimeMS := kMinDelay + (1-Value) * (kMaxDelay - kMinDelay);
-    DelayTimeMS := DelayTimeMS * KeyFollowFreqMultiplier;
-    DelayTimeMS := Clamp(DelayTimeMS, kMinDelay, kMaxDelay);
-    DelayInSamples := MillisecondsToSamples(DelayTimeMS, SampleRate);
-    //if DelayInSamples <= 1 then DelayInSamples := 2;
-    assert(DelayInSamples > 1);
-  end;
+  //TODO:HIGH
+  // Par1,2,3 are all updated with their own function calls. This should be
+  // consolidated into one function call at most.
+
+  fPar1 := Value;
+  DelayTimeMS := kMinDelay + (1-Value) * (kMaxDelay - kMinDelay);
+  DelayTimeMS := DelayTimeMS * (1/KeyFollowFreqMultiplier);
+  DelayTimeMS := Clamp(DelayTimeMS, kMinDelay, kMaxDelay);
+  DelayInSamples := MillisecondsToSamples(DelayTimeMS, SampleRate);
+  //if DelayInSamples <= 1 then DelayInSamples := 2;
+  assert(DelayInSamples > 1);
+
 end;
 
 procedure TCombA.SetPar2(const Value: single);
