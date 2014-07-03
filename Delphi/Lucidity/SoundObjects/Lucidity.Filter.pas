@@ -286,10 +286,10 @@ procedure TLucidityFilter.AudioRateStep(var x1, x2: single);
 begin
   case FilterType of
     ftNone: ;
-    ftLofiA:     LofiA.Step(x1, x2);
-    ftRingModA:  RingModA.AudioRateStep(x1, x2);
+    ftLofiA:         LofiA.Step(x1, x2);
+    ftRingModA:      RingModA.AudioRateStep(x1, x2);
     //ftDistA:     DistortionA.AudioRateStep(x1, x2);
-    ftCombA:     CombA.AudioRateStep(x1, x2);
+    ftCombA:         CombA.AudioRateStep(x1, x2);
     ft2PoleLowPass:  BlueFilter.StepAsLowpass2P(x1, x2);
     ft2PoleBandPass: BlueFilter.StepAsBandpass2P(x1, x2);
     ft2PoleHighPass: BlueFilter.StepAsHighpass2P(x1, x2);
