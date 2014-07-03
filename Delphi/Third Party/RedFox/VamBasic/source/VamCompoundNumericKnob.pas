@@ -29,6 +29,12 @@ type
     procedure SetOnKnobPosChanged(Handler:TNotifyEvent);
     procedure SetOnModAmountChanged(Handler:TNotifyEvent);
 
+    procedure SetParameterName(aName:string);
+    function GetParameterName:string;
+
+    function GetKnobMode:TKnobMode;
+    procedure SetKnobMode(const Value: TKnobMode);
+
     function  IKnobControl.GetKnobValue = KnobControl_GetKnobValue;
     procedure IKnobControl.SetKnobValue = KnobControl_SetKnobValue;
     //==========================================================================
@@ -41,6 +47,7 @@ type
     fOnRotaryStepUp: TNotifyEvent;
     fOnRotaryStepDown: TNotifyEvent;
     fColor_Background: TRedFoxColorString;
+    fParameterName: string;
 
     procedure SetColor_Arrows1(const Value: TRedFoxColorString);
     procedure SetColor_Arrows2(const Value: TRedFoxColorString);
@@ -115,6 +122,9 @@ type
     property KnobSensitivity : single read GetKnobSensitivity write SetKnobSensitivity;
 
     property KnobCustomText : string read GetCustomText write SetCustomText;
+
+    // typically used to store the linked parameter name.
+    property ParameterName  : string  read fParameterName  write fParameterName;
 
     property OnChanged        : TNotifyEvent read fOnChanged        write fOnChanged;
     property OnRotaryStepUp   : TNotifyEvent read fOnRotaryStepUp   write fOnRotaryStepUp;
@@ -233,6 +243,11 @@ begin
   result := Knob.KnobMin;
 end;
 
+function TVamCompoundNumericKnob.GetKnobMode: TKnobMode;
+begin
+  result := TKnobMode.PositionEdit;
+end;
+
 function TVamCompoundNumericKnob.GetKnobNumericStyle: TNumericStyle;
 begin
   result := Knob.NumericStyle;
@@ -256,6 +271,11 @@ end;
 function TVamCompoundNumericKnob.GetParameterIndex: integer;
 begin
   result := fParameterIndex;
+end;
+
+function TVamCompoundNumericKnob.GetParameterName: string;
+begin
+  result := fParameterName;
 end;
 
 function TVamCompoundNumericKnob.GetText: string;
@@ -344,6 +364,13 @@ begin
   Knob.KnobMin := Value;
 end;
 
+procedure TVamCompoundNumericKnob.SetKnobMode(const Value: TKnobMode);
+begin
+  // ignore. This is required by IKnobControl but the
+  // compound numeric knob doesn't allow mod depth editing.
+  // Maybe in the future this will be added.
+end;
+
 procedure TVamCompoundNumericKnob.SetKnobNumericStyle(const Value: TNumericStyle);
 begin
   Knob.NumericStyle := Value;
@@ -397,6 +424,11 @@ end;
 procedure TVamCompoundNumericKnob.SetParameterIndex(Index: integer);
 begin
   fParameterIndex := Index;
+end;
+
+procedure TVamCompoundNumericKnob.SetParameterName(aName: string);
+begin
+  fParameterName := aName;
 end;
 
 procedure TVamCompoundNumericKnob.SetText(const Value: string);

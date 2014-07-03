@@ -10,6 +10,8 @@ uses
 // EasyEffect VST template can interact with them programmatically.
 
 type
+  TKnobMode = (PositionEdit, ModEdit);
+
   // The knob control is for the standard VST synth type knob.
   IKnobControl = interface
     ['{9134916E-5ACF-4E64-AA71-61B9B65D5844}']
@@ -17,6 +19,12 @@ type
     // typically used to store the VST parameter index.
     procedure SetParameterIndex(Index : integer);
     function GetParameterIndex:integer;
+    // TODO:MED maybe parameter index isn't used any more. Maybe it can
+    // be deleted.
+
+    // typically used to store the linked parameter name.
+    procedure SetParameterName(aName:string);
+    function GetParameterName:string;
 
     // Get/Set the value/position of the knob. Valid range is 0..1
     function GetKnobValue : single;
@@ -24,6 +32,10 @@ type
 
     function GetModAmountValue : single;
     procedure SetModAmountValue(Value : single);
+
+    function GetKnobMode:TKnobMode;
+    procedure SetKnobMode(const Value: TKnobMode);
+
 
     procedure SetOnMouseEnter(Handler:TNotifyEvent);
     procedure SetOnMouseLeave(Handler:TNotifyEvent);

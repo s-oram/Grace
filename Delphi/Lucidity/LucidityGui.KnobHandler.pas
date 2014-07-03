@@ -68,9 +68,10 @@ type
 implementation
 
 uses
+  SysUtils,
+  VamGuiControlInterfaces,
   Vcl.Dialogs,
   Effect.MidiAutomation,
-  SysUtils,
   VamLib.Throttler,
   Lucidity.PluginParameters,
   VamKnob,
@@ -127,8 +128,20 @@ end;
 
 procedure TKnobHandler.RegisterControl(const c: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
 begin
+  if Supports(c, IKnobControl, KnobControl) then
+  begin
+    KnobControl.SetOnMouseEnter(Handle_MouseEnter);
+    KnobControl.SetOnMouseLeave(Handle_MouseLeave);
+    KnobControl.SetOnMouseDown(Handle_MouseDown);
+    KnobControl.SetOnMouseUp(Handle_MouseUp);
+    KnobControl.SetOnKnobPosChanged(Handle_KnobPosChanged);
+    KnobControl.SetOnModAmountChanged(Handle_ModAmountChanged);
+  end;
+
+
+  {
   assert(c is TVamKnob);
   Knob := c as TVamKnob;
 
@@ -138,6 +151,7 @@ begin
   Knob.OnMouseUp          := Handle_MouseUp;
   Knob.OnKnobPosChanged   := Handle_KnobPosChanged;
   Knob.OnModAmountChanged := Handle_ModAmountChanged;
+  }
 
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
@@ -150,111 +164,91 @@ end;
 
 procedure TKnobHandler.UpdateControl(const c: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   Par : TPluginParameter;
   ParName  : string;
   ParValue : single;
   ModIndex       : integer;
   ModAmountValue : single;
 begin
-  assert(c is TVamKnob);
-  Knob := c as TVamKnob;
-
-  ParName  := Knob.ParameterName;
-  Par := PluginParFromName(Parname);
-  // TODO: It might be handy to have a IsParNameValid() function here
-  // to assert that parameter names are correct.
-  ParValue := Plugin.GetPluginParameter(ParName);
-
-  assert(ParValue >= 0);
-  assert(ParValue <= 1);
-
-  Knob.Pos := ParValue;
-
-  if IsModPar(Par) then
+  if Supports(c, IKnobControl, KnobControl) then
   begin
-    if Plugin.Globals.IsMouseOverModSlot
-      then ModIndex := Plugin.Globals.MouseOverModSlot
-      else ModIndex := Plugin.Globals.SelectedModSlot;
+    ParName  := KnobControl.GetParameterName;
+    Par := PluginParFromName(Parname);
+    // TODO: It might be handy to have a IsParNameValid() function here
+    // to assert that parameter names are correct.
+    ParValue := Plugin.GetPluginParameter(ParName);
 
-    if (ModIndex <> -1) then
+    assert(ParValue >= 0);
+    assert(ParValue <= 1);
+
+    KnobControl.SetKnobValue(ParValue);
+
+    if IsModPar(Par) then
     begin
-      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
-      Knob.ModAmount := ModAmountValue;
+      if Plugin.Globals.IsMouseOverModSlot
+        then ModIndex := Plugin.Globals.MouseOverModSlot
+        else ModIndex := Plugin.Globals.SelectedModSlot;
+
+      if (ModIndex <> -1) then
+      begin
+        ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+        KnobControl.SetModAmountValue(ModAmountValue);
+      end;
     end;
   end;
 
-
-  {
-  if IsModPar(Par) = false then
-  begin
-    assert(Knob.KnobMode = TKnobMode.PositionEdit);
-  end else
-  begin
-    if Plugin.Globals.IsMouseOverModSlot
-      then ModIndex := Plugin.Globals.MouseOverModSlot
-      else ModIndex := Plugin.Globals.SelectedModSlot;
-
-    if (ModIndex <> -1) then
-    begin
-      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
-      Knob.ModAmount := ModAmountValue;
-      Knob.KnobMode := TKnobMode.ModEdit;
-      Knob.ModLineColor := kModLineColorB;
-    end else
-    begin
-      Knob.KnobMode := TKnobMode.PositionEdit;
-      Knob.ModLineColor := kModLineColorA;
-
-      Plugin.GetModParModMinMax(ParName, ModMin, ModMax);
-      Knob.MinModDepth := ModMin;
-      Knob.MaxModDepth := ModMax;
-    end;
-  end;
-  }
 end;
 
 procedure TKnobHandler.UpdateModulation(const c: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   Par : TPluginParameter;
   ParName  : string;
   ModIndex       : integer;
   ModAmountValue : single;
   ModMin, ModMax : single;
 begin
-  assert(c is TVamKnob);
-  Knob := c as TVamKnob;
-
-  ParName  := Knob.ParameterName;
-  Par := PluginParFromName(Parname);
-
-  if IsModPar(Par) = false then
+  if Supports(c, IKnobControl, KnobControl) then
   begin
-    assert(Knob.KnobMode = TKnobMode.PositionEdit);
-  end else
-  begin
-    if Plugin.Globals.IsMouseOverModSlot
-      then ModIndex := Plugin.Globals.MouseOverModSlot
-      else ModIndex := Plugin.Globals.SelectedModSlot;
+    ParName  := KnobControl.GetParameterName;
+    Par := PluginParFromName(Parname);
 
-    if (ModIndex <> -1) then
+    if IsModPar(Par) = false then
     begin
-      ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
-      Knob.ModAmount := ModAmountValue;
-      Knob.KnobMode := TKnobMode.ModEdit;
-      Knob.ModLineColor := kModLineColorB;
+      assert(KnobControl.GetKnobMode = TKnobMode.PositionEdit);
     end else
     begin
-      Knob.KnobMode := TKnobMode.PositionEdit;
-      Knob.ModLineColor := kModLineColorA;
+      if Plugin.Globals.IsMouseOverModSlot
+        then ModIndex := Plugin.Globals.MouseOverModSlot
+        else ModIndex := Plugin.Globals.SelectedModSlot;
 
-      Plugin.GetModParModMinMax(ParName, ModMin, ModMax);
+      if (ModIndex <> -1) then
+      begin
+        ModAmountValue := Plugin.GetPluginParameterModAmount(ParName, ModIndex);
+        KnobControl.SetModAmountValue(ModAmountValue);
+        KnobControl.SetKnobMode(TKnobMode.ModEdit);
 
-      Knob.MinModDepth := ModMin;
-      Knob.MaxModDepth := ModMax;
+        if (c is TVamKnob) then
+        begin
+          (c as TVamKnob).ModLineColor := kModLineColorB;
+        end;
+      end else
+      begin
+        KnobControl.SetKnobMode(TKnobMode.PositionEdit);
+
+        if (c is TVamKnob) then
+        begin
+          (c as TVamKnob).ModLineColor := kModLineColorA;
+
+          Plugin.GetModParModMinMax(ParName, ModMin, ModMax);
+          (c as TVamKnob).MinModDepth := ModMin;
+          (c as TVamKnob).MaxModDepth := ModMax;
+        end;
+      end;
     end;
   end;
+
 end;
 
 
@@ -273,55 +267,51 @@ end;
 
 procedure TKnobHandler.Handle_MouseEnter(Sender: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   ParName  : string;
 begin
-  assert(Sender is TVamKnob);
-  Knob := Sender as TVamKnob;
-  ParName  := Knob.ParameterName;
-  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+  if Supports(Sender, IKnobControl, KnobControl) then
+  begin
+    ParName  := KnobControl.GetParameterName;
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+  end;
 end;
 
 procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   ParName  : string;
 begin
-  assert(Sender is TVamKnob);
-  Knob := Sender as TVamKnob;
-  ParName  := Knob.ParameterName;
-  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
+  if Supports(Sender, IKnobControl, KnobControl) then
+  begin
+    ParName  := KnobControl.GetParameterName;
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
+  end;
 end;
 
 
 procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   ParName  : string;
-  //ParValue : single;
 begin
-  assert(Sender is TVamKnob);
-  Knob := Sender as TVamKnob;
-
-  ParName  := Knob.ParameterName;
-  //ParValue := Knob.Pos;
-
-  // TODO:HIGH need to have BeginEdit() called here for Publised VST parameter.
-
-  // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
-  // aren't updated in the UpdateControl method.
-
-
-  if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+  if Supports(Sender, IKnobControl, KnobControl) then
   begin
-    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, ParName);
-  end;
+    ParName  := KnobControl.GetParameterName;
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
+
+    if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+    begin
+      Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, ParName);
+    end;
 
 
-
-  if (Button = TMouseButton.mbRight) then
-  begin
-    ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, ParName);
+    if (Button = TMouseButton.mbRight) and (Sender is TVamKnob) then
+    begin
+      // NOTE: Only show context menus for TVamKnob here as that is the only
+      // requirement. Numeric knobs don't use a context menu at the moment.
+      ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, ParName);
+    end;
   end;
 end;
 
@@ -335,53 +325,52 @@ end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   ParName  : string;
   ParValue : single;
 begin
-  assert(Sender is TVamKnob);
-  Knob := Sender as TVamKnob;
-
-  ParName  := Knob.ParameterName;
-  ParValue := Knob.Pos;
-
-  // TODO: Check if the parameter is a published vst parameter,
-  // Send parameter change via the published VST parameter route if so,
-  // otherwise set parameter value directly in plugin.
-  Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
-
-  Throttle(ThrottleHandle, 25,
-  procedure
+  if Supports(Sender, IKnobControl, KnobControl) then
   begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
-  end);
+    ParName  := KnobControl.GetParameterName;
+    ParValue := KnobControl.GetKnobValue;
+
+    // TODO:HIGH Check if the parameter is a published vst parameter,
+    // Send parameter change via the published VST parameter route if so,
+    // otherwise set parameter value directly in plugin.
+    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+
+    Throttle(ThrottleHandle, 25,
+    procedure
+    begin
+      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
+    end);
+  end;
 end;
 
 procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);
 var
-  Knob : TVamKnob;
+  KnobControl : IKnobControl;
   ParName  : string;
   ModIndex       : integer;
   ModAmountValue : single;
 begin
-  assert(Sender is TVamKnob);
-  Knob := Sender as TVamKnob;
-
-  ParName  := Knob.ParameterName;
-  ModAmountValue := Knob.ModAmount;
-  ModIndex := Plugin.Globals.SelectedModSlot;
-
-  if ModIndex <> -1 then
+  if Supports(Sender, IKnobControl, KnobControl) then
   begin
-    Plugin.SetPluginParameterModAmount(TParChangeScope.psFocusedKeyGroup, ParName, ModIndex, ModAmountValue);
+    ParName  := KnobControl.GetParameterName;
+    ModAmountValue := KnobControl.GetModAmountValue;
+    ModIndex := Plugin.Globals.SelectedModSlot;
+
+    if ModIndex <> -1 then
+    begin
+      Plugin.SetPluginParameterModAmount(TParChangeScope.psFocusedKeyGroup, ParName, ModIndex, ModAmountValue);
+    end;
+
+    Throttle(ThrottleHandle, 25,
+    procedure
+    begin
+      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged);
+    end);
   end;
-
-  Throttle(ThrottleHandle, 25,
-  procedure
-  begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged);
-  end);
-
 end;
 
 

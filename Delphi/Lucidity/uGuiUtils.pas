@@ -113,6 +113,7 @@ type
 implementation
 
 uses
+  SysUtils,
   Effect.MidiAutomation,
   RedFoxColor,
   VamGuiControlInterfaces,
@@ -124,7 +125,8 @@ uses
   Lucidity.Globals,
   Lucidity.KeyGroup,
   eeGuiStandardv2,
-  SysUtils;
+  VamCompoundNumericKnob;
+
 
 
 procedure CalcZoomOffset(const IndexA, IndexB : single; const SampleFrames, DisplayPixelWidth : integer; out Zoom, Offset : single);
@@ -918,6 +920,14 @@ begin
   begin
     (Control as TVamKnob).ParameterName := PluginParToName(Par);
     gs.RegisterControl('KnobHandler', Control);
+  end else
+  if (Control is TVamCompoundNumericKnob) then
+  begin
+    (Control as TVamCompoundNumericKnob).ParameterName := PluginParToName(Par);
+    gs.RegisterControl('KnobHandler', Control);
+  end else
+  begin
+    raise Exception.Create('type not handled.');
   end;
 
 end;
@@ -935,6 +945,9 @@ begin
   begin
     mc.SetParameterName(PluginParToName(Par));
     gs.RegisterControl('MenuButtonHandler', Control);
+  end else
+  begin
+    raise Exception.Create('type not handled.');
   end;
 end;
 
@@ -1007,3 +1020,4 @@ begin
 end;
 
 end.
+

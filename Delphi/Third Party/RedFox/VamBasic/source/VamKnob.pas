@@ -12,8 +12,6 @@ uses
 
 type
   {$SCOPEDENUMS ON}
-  TKnobMode = (PositionEdit, ModEdit);
-
   TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
@@ -61,6 +59,7 @@ type
     function GetModLineColor: TRedFoxColorString;
     procedure SetModLineColor(const Value: TRedFoxColorString);
     procedure SetKnobMode(const Value: TKnobMode);
+    function GetKnobMode:TKnobMode;
     procedure SetParameterIndex(Index : integer);
     function GetParameterIndex:integer;
     procedure SetModAmount(const Value: single);
@@ -68,6 +67,8 @@ type
     procedure SetModAmountValue(Value : single);
     function GetModLineOffColor: TRedFoxColorString;
     procedure SetModLineOffColor(const Value: TRedFoxColorString);
+    procedure SetParameterName(aName:string);
+    function GetParameterName:string;
     //=================================================
   protected
     IsBeingEdited : boolean;
@@ -139,7 +140,9 @@ type
     property MinModDepth : single read fMinModDepth write SetMinModDepth;
     property MaxModDepth : single read fMaxModDepth write SetMaxModDepth;
 
+    // typically used to store the linked parameter name.
     property ParameterName  : string  read fParameterName  write fParameterName;
+
     // typically used to store the VST parameter index.
     property ParameterIndex : integer read fParameterIndex write fParameterIndex;
 
@@ -562,6 +565,11 @@ begin
   OnModAmountChanged := Handler;
 end;
 
+function TVamKnob.GetKnobMode: TKnobMode;
+begin
+  result := fKnobMode;
+end;
+
 function TVamKnob.GetKnobValue: single;
 begin
   result := ExternalPos;
@@ -587,9 +595,19 @@ begin
   result := fParameterIndex;
 end;
 
+function TVamKnob.GetParameterName: string;
+begin
+  result := fParameterName;
+end;
+
 procedure TVamKnob.SetParameterIndex(Index: integer);
 begin
   fParameterIndex := Index;
+end;
+
+procedure TVamKnob.SetParameterName(aName: string);
+begin
+  fParameterName := aName;
 end;
 
 procedure TVamKnob.SetPos(Value: single);
