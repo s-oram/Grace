@@ -1,4 +1,4 @@
-unit soLucidityFilter;
+unit Lucidity.Filter;
 
 interface
 

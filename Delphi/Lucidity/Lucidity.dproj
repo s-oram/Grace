@@ -454,7 +454,7 @@
 			<DCCReference Include="SoundObjects\Lucidity.Osc.OneShotSampler.SubOsc.pas"/>
 			<DCCReference Include="SoundObjects\soSawSquareOsc.pas"/>
 			<DCCReference Include="SoundObjects\uHarmonicWaveTableGen.pas"/>
-			<DCCReference Include="SoundObjects\soLucidityFilter.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Filter.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.Test.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.BlueFilter.pas"/>
 			<DCCReference Include="SoundObjects\FilterCore.SimperSVF.pas"/>

@@ -40,7 +40,7 @@ uses
   Lucidity.Osc.OneShotSampler.SubOsc in 'SoundObjects\Lucidity.Osc.OneShotSampler.SubOsc.pas',
   soSawSquareOsc in 'SoundObjects\soSawSquareOsc.pas',
   uHarmonicWaveTableGen in 'SoundObjects\uHarmonicWaveTableGen.pas',
-  soLucidityFilter in 'SoundObjects\soLucidityFilter.pas',
+  Lucidity.Filter in 'SoundObjects\Lucidity.Filter.pas',
   soFilter.Test in 'SoundObjects\soFilter.Test.pas',
   soFilter.BlueFilter in 'SoundObjects\soFilter.BlueFilter.pas',
   FilterCore.SimperSVF in 'SoundObjects\FilterCore.SimperSVF.pas',
