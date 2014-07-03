@@ -500,7 +500,6 @@
 			<DCCReference Include="frames\uLucidityPopUpMenu.pas"/>
 			<DCCReference Include="SoundObjects\uOutputMixer.pas"/>
 			<DCCReference Include="SoundObjects\Lucidity.Osc.LoopSampler.pas"/>
-			<DCCReference Include="SoundObjects\soFilter.LofiA.pas"/>
 			<DCCReference Include="SoundObjects\soSineOsc.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.RingModA.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.DistortionA.pas"/>

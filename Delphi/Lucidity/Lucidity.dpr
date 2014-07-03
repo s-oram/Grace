@@ -77,7 +77,6 @@ uses
   uLucidityPopUpMenu in 'frames\uLucidityPopUpMenu.pas',
   uOutputMixer in 'SoundObjects\uOutputMixer.pas',
   Lucidity.Osc.LoopSampler in 'SoundObjects\Lucidity.Osc.LoopSampler.pas',
-  soFilter.LofiA in 'SoundObjects\soFilter.LofiA.pas',
   soSineOsc in 'SoundObjects\soSineOsc.pas',
   soFilter.RingModA in 'SoundObjects\soFilter.RingModA.pas',
   soFilter.DistortionA in 'SoundObjects\soFilter.DistortionA.pas',

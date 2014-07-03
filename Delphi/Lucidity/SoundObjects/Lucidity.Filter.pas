@@ -13,14 +13,10 @@ uses
   Math,
   Lucidity.Types,
   eeVirtualCV,
-
-  //soFilter.LofiA, //remove this and all instances of it.
   AudioEffect.Lofi,
-
   FilterCore.SimperSVF,
   soFilter.Test,
   soFilter.MoogLadder,
-
   soFilter.RingModA,
   soFilter.DistortionA,
   soFilter.CombA,
