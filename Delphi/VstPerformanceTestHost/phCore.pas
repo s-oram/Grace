@@ -33,8 +33,6 @@ begin
 
   fn := IncludeTrailingPathDelimiter(fn) + 'TestInfo.xml';
 
-
-
   xml := TNativeXml.Create(nil);
   AutoFree(@xml);
 

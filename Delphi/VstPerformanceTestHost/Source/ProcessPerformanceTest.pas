@@ -272,6 +272,9 @@ begin
    end;
 
 
+   ReadLn;
+
+
 end;
 
 procedure TProcessPerformanceTest.SendMidiNoteOnEvents;
