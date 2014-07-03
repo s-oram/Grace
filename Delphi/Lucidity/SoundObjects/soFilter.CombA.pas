@@ -68,8 +68,6 @@ begin
   DelayBuffer.Clear;
   DelayInSamples := 100;
 
-
-
   Par1 := 0.6;
   Par2 := 0.6;
   Par3 := 0.6;
@@ -96,7 +94,7 @@ procedure TCombA.SetPar1(const Value: single);
 var
   DelayTimeMS : single;
 begin
-  //TODO:HIGH
+  // TODO:HIGH
   // Par1,2,3 are all updated with their own function calls. This should be
   // consolidated into one function call at most.
 
