@@ -588,15 +588,21 @@ begin
   assert(Scope <> TParChangeScope.psKeyGroup, 'not yet implemented.');
 
   Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+
   dv := GetPluginParInfo(Par).DefaultValue;
 
-  ParID := PluginParToID(Par);
   TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, dv);
 end;
 
 function TeePlugin.GetPluginParameter(const ParName: string): single;
+var
+  Par : TPluginParameter;
+  ParID : TPluginParameterID;
 begin
-  result := TPluginParameterController.GetPluginParameter(self, ParName);
+  Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+  result := TPluginParameterController.GetPluginParameter(self, ParID);
 end;
 
 procedure TeePlugin.SetPluginParameter(const ParName: string; const ParValue: single);

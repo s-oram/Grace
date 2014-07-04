@@ -18,7 +18,7 @@ type
     class procedure SendMessages(const aPlugin : TObject; const Par : TPluginParameter; const ParValue : single); static;
   public
     class procedure SetPluginParameter(const aPlugin : TObject; const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); static; inline;
-    class function GetPluginParameter(const aPlugin : TObject; const ParName : string):single; static; inline;
+    class function GetPluginParameter(const aPlugin : TObject; const ParID : TPluginParameterID):single; static; inline;
 
     class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single); static; inline;
     class function GetParameterModAmount(const aPlugin : TObject; const ParName : string; const ModSlot : integer):single; static; inline;
@@ -50,7 +50,7 @@ uses
 
 { TPluginParameterController }
 
-class function TPluginParameterController.GetPluginParameter(const aPlugin : TObject; const ParName: string): single;
+class function TPluginParameterController.GetPluginParameter(const aPlugin : TObject; const ParID : TPluginParameterID): single;
 var
   Plugin : TeePlugin;
   Par : TPluginParameter;
@@ -64,7 +64,7 @@ begin
   KeyGroup := Plugin.ActiveKeyGroup;
   if not assigned(KeyGroup) then exit(0);
 
-  Par := PluginParFromName(ParName);
+  Par := PluginParFromID(ParID);
 
 
   //======= Plugin scope Parameters ======================
@@ -124,7 +124,7 @@ begin
       TPluginParameter.Seq2Direction:          result := TStepSequencerDirectionHelper.ToSingle(VoicePar.Seq2Direction);
       TPluginParameter.Seq2Length:             result := TStepSequencerLengthHelper.ToSingle(VoicePar.StepSeq2Length);
     else
-      raise Exception.Create('Type not handled. (ParName = ' + ParName + ')');
+      raise Exception.Create('Type not handled.');
     end;
   end;
 end;
