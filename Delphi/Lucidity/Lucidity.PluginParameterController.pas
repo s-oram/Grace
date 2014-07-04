@@ -17,7 +17,7 @@ type
   private
     class procedure SendMessages(const aPlugin : TObject; const Par : TPluginParameter; const ParValue : single); static;
   public
-    class procedure SetPluginParameter(const aPlugin : TObject; const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const ParValue : single); static; inline;
+    class procedure SetPluginParameter(const aPlugin : TObject; const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); static; inline;
     class function GetPluginParameter(const aPlugin : TObject; const ParName : string):single; static; inline;
 
     class procedure SetParameterModAmount(const aPlugin : TObject; const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single); static; inline;
@@ -133,7 +133,7 @@ class procedure TPluginParameterController.SetPluginParameter(
     const aPlugin : TObject;
     const Scope: TParChangeScope;
     const KeyGroupName: string;
-    const ParName: string;
+    const ParID : TPluginParameterID;
     const ParValue: single);
 var
   c1 : integer;
@@ -142,13 +142,11 @@ var
   kg : IKeyGroup;
   kgInfo : IKeyGroupsInfo;
 begin
-  //TODO:HIGH - I need to bench mark all the code in this method to find out where the
-  // slow sections are.
-
   assert(aPlugin is TeePlugin);
   Plugin := aPlugin as TeePlugin;
 
-  Par := PluginParFromName(ParName);
+  //Par := PluginParFromName(ParName);
+  Par := PluginParFromID(ParID);
 
   //======= Plugin scope Parameters ======================
   if IsGlobalPluginPar(Par) then

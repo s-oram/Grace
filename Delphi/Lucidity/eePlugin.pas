@@ -582,13 +582,16 @@ procedure TeePlugin.ResetPluginParameter(const Scope: TParChangeScope; const Par
 var
   dv : single;
   Par : TPluginParameter;
+  ParID : TPluginParameterID;
 begin
   //I don't think this method is needed for psKeyGroup scope.
   assert(Scope <> TParChangeScope.psKeyGroup, 'not yet implemented.');
 
   Par := PluginParFromName(ParName);
   dv := GetPluginParInfo(Par).DefaultValue;
-  TPluginParameterController.SetPluginParameter(self, Scope, '', ParName, dv);
+
+  ParID := PluginParToID(Par);
+  TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, dv);
 end;
 
 function TeePlugin.GetPluginParameter(const ParName: string): single;
@@ -597,15 +600,25 @@ begin
 end;
 
 procedure TeePlugin.SetPluginParameter(const ParName: string; const ParValue: single);
+var
+  Par : TPluginParameter;
+  ParID : TPluginParameterID;
 begin
   // Generally this form of SetPluginParameter() will only be called by published VST parameters.
   // those changes need to effect all key groups so use the 'Global' TParChange scope.
-  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParName, ParValue);
+  Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
 end;
 
 procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName, ParName: string; const Value: single);
+var
+  Par : TPluginParameter;
+  ParID : TPluginParameterID;
 begin
-  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParName, Value);
+  Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, Value);
 end;
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
@@ -670,6 +683,7 @@ var
   ParName : string;
   Par : TPluginParameter;
   ParValue : single;
+
 begin
   inherited;
 
