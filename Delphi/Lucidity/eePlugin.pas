@@ -573,9 +573,11 @@ end;
 procedure TeePlugin.PublishPluginParameterAsVstParameter(const Par: TPluginParameter);
 var
   pn : string;
+  ID : TPluginParameterID;
 begin
   pn := PluginParToName(Par);
-  PublishedVstParameters.AddParameter(pn);
+  ID := PluginParToID(Par);
+  PublishedVstParameters.AddParameter(pn,ID);
 end;
 
 procedure TeePlugin.ResetPluginParameter(const Scope: TParChangeScope; const ParName: string);
