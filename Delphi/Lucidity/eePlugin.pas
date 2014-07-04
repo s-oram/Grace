@@ -131,7 +131,6 @@ type
 
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
-    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload; deprecated;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const Value : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
@@ -579,16 +578,6 @@ end;
 procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single);
 begin
   TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
-end;
-
-procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName, ParName: string; const Value: single);
-var
-  Par : TPluginParameter;
-  ParID : TPluginParameterID;
-begin
-  Par := PluginParFromName(ParName);
-  ParID := PluginParToID(Par);
-  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, Value);
 end;
 
 procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const Value: single);
