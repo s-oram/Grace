@@ -483,6 +483,7 @@ end;
 
 function IndexToPluginParameter(Index : integer):TPluginParameter;
 begin
+  //TODO:HIGH reliance on TPluginParameter needs to be removed.
   assert(Index >= 0);
   assert(Index <= TPluginParameterHelper.GetEnumTypeCount);
   result := TPluginParameterHelper.ToEnum(Index);

@@ -656,10 +656,9 @@ end;
 procedure TeePlugin.InitializeState;
 var
   c1 : integer;
-  ParName : string;
   Par : TPluginParameter;
+  ParID : TPluginParameterID;
   ParValue : single;
-
 begin
   inherited;
 
@@ -675,9 +674,9 @@ begin
   for c1 := 0 to GetPluginParameterCount-1 do
   begin
     Par := IndexToPluginParameter(c1);
-    ParName  := PluginParToName(Par);
+    ParId := PluginParToID(Par);
     ParValue := GetPluginParInfo(Par).DefaultValue;
-    SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
+    SetPluginParameter(TParChangeScope.psGlobal, '', ParID, ParValue);
   end;
 
   // finally.

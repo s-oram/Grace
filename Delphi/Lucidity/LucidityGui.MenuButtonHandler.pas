@@ -42,6 +42,7 @@ implementation
 uses
   SysUtils,
   Menus,
+  eeTypes,
   eeEnumHelper,
   Lucidity.PluginParameters,
   Lucidity.Types,
@@ -156,6 +157,7 @@ var
   mc : IMenuControl;
   Par : TPluginParameter;
   ParName  : string;
+  ParID    : TPluginParameterID;
   ParValue : single;
   EnumHelper : TCustomEnumHelperClass;
   ParValueAsInt : integer;
@@ -166,6 +168,7 @@ begin
     begin
       //===== Increment Enumerated Vst Parameter =================
       ParName  := mc.GetParameterName;
+      ParID    := PluginParNameToID(ParName);
       ParValue := Plugin.GetPluginParameter(ParName);
       Par := PluginParFromName(Parname);
       EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
@@ -178,7 +181,7 @@ begin
       ParValue := EnumHelper.ToSingle(ParValueAsInt);
 
       // TODO: Should check if the parameter is a published vst parameter here.
-      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParID, ParValue);
 
       UpdateControl(Sender);
     end;
@@ -193,12 +196,14 @@ var
   mc : IMenuControl;
   Par : TPluginParameter;
   ParName  : string;
+  ParID    : TPluginParameterID;
   ParValue : single;
   ShowMenuCallback : TShowMenuCallback;
 begin
   if Supports(Sender, IMenuControl, mc)  then
   begin
     ParName  := mc.GetParameterName;
+    ParID    := PluginParNameToID(ParName);
     ParValue := Plugin.GetPluginParameter(ParName);
     Par := PluginParFromName(Parname);
     EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
@@ -211,7 +216,7 @@ begin
       NewParValue := EnumHelper.ToSingle(SelectedItemIndex);
 
       // TODO: Should check if the parameter is a published vst parameter here.
-      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, NewParValue);
+      Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParID, NewParValue);
 
       UpdateControl(Sender);
     end;

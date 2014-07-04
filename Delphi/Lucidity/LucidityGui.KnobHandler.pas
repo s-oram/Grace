@@ -70,11 +70,12 @@ implementation
 
 uses
   SysUtils,
-  VamGuiControlInterfaces,
   Vcl.Dialogs,
+  eeTypes,
   Effect.MidiAutomation,
   VamLib.Throttler,
   VamKnob,
+  VamGuiControlInterfaces,
   Lucidity.Types,
   uConstants,
   uGuiUtils;
@@ -327,17 +328,19 @@ procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
 var
   KnobControl : IKnobControl;
   ParName  : string;
+  ParID    : TPluginParameterID;
   ParValue : single;
 begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
+    ParID    := PluginParNameToID(ParName);
     ParValue := KnobControl.GetKnobValue;
 
     // TODO:HIGH Check if the parameter is a published vst parameter,
     // Send parameter change via the published VST parameter route if so,
     // otherwise set parameter value directly in plugin.
-    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParName, ParValue);
+    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParID, ParValue);
 
     Throttle(ThrottleHandle, 25,
     procedure
