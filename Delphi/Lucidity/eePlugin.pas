@@ -453,44 +453,7 @@ begin
   end;
 
 
-  {
-  //===== Finially - Init Plugin State ========
-  KeyGroups.Clear;
-  KeyGroups.NewKeyGroup;
-  FocusFirstKeyGroup;
-
-  // Set all parameters to default values.
-  for c1 := 0 to GetPluginParameterCount-1 do
-  begin
-    Par := IndexToPluginParameter(c1);
-    ParName  := PluginParToName(Par);
-    ParValue := GetPluginParInfo(Par).DefaultValue;
-    SetPluginParameter(TParChangeScope.psGlobal, '', ParName, ParValue);
-  end;
-
-  //Important: call SampleGroups.UpdateInitReference() after reseting all properties to default.
-  KeyGroups.UpdateInitReference;
-  KeyGroups.Clear;
-  }
-
-  //============================================================================
-  // CODESMELL: HACK: WANRING: Update the "empty" keygroup with default values.
-  // This seems a bit hacky as I don't like the way "EmptyKeyGroup" sits
-  // in relation to rest of the plugin. It feels like a code smell but
-  // i'm not yet sure if this will lead to problems now the track.
-  // NOTE: This code copies the "default" key group parameter state to
-  // the "Empty" keygroup.
-  //kgObj := (KeyGroups.FindFirstKeyGroup.GetObject as TKeyGroup);
-  //(EmptyKeyGroup.GetObject as TKeyGroup).AssignFrom(kgObj);
-  //============================================================================
-
-
-
-  //==== temporarily don't initialize a default patch ====
-  //InitializeState;
-
-
-  //==== temporarily don't load default patch. ====
+  //==== default patch stuff ====
 
   IsDefaultPatchLoaded := false;
 
