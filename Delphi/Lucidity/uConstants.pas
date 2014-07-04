@@ -524,9 +524,10 @@ end;
 
 
 initialization
+  {
   if TModParHelper.GetEnumTypeCount <> kModulatedParameterCount
     then raise Exception.Create('Fatal Error: kModulatedParameterCount should be ' + IntToStr(TModParHelper.GetEnumTypeCount));
-
+  }
 finalization
   if assigned(Global_Info) then Global_Info.Free;
 end.

@@ -183,48 +183,6 @@ type
     //=========================
   end;
 
-
-  TModulatedPluginParameter = (
-    OutputGain,
-    OutputPan,
-    VoicePitchOne,
-    VoicePitchTwo,
-    SampleStart,
-    SampleEnd,
-    LoopStart,
-    LoopEnd,
-    AmpAttack,
-    AmpHold,
-    AmpDecay,
-    AmpSustain,
-    AmpRelease,
-    AmpVelocity,
-    ModAttack,
-    ModHold,
-    ModDecay,
-    ModSustain,
-    ModRelease,
-    ModVelocity,
-    FilterOutputBlend,
-    Filter1Par1,
-    Filter1Par2,
-    Filter1Par3,
-    Filter1Par4,
-    Filter2Par1,
-    Filter2Par2,
-    Filter2Par3,
-    Filter2Par4,
-    Lfo1Par1,
-    Lfo1Par2,
-    Lfo1Par3,
-    Lfo2Par1,
-    Lfo2Par2,
-    Lfo2Par3
-  );
-
-  TModParHelper = class(TEnumHelper<TModulatedPluginParameter>)
-  end;
-
   TPluginParameterInfo = record
   public
     DefaultValue : single;
@@ -240,6 +198,11 @@ function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inlin
 function PluginParToName(const Par : TPluginParameter):string;
 function PluginParFromName(const Name : string):TPluginParameter;
 
+// TODO:HIGH Inline these methods.
+function IsModPar(const Par : TPluginParameterID; out ModParIndex:integer):boolean; {inline;} overload;
+function IsModPar(const Par : TPluginParameter):boolean; {inline;} overload; //deprecated; //TODO:MED deprecate this method.
+
+function GetModParIndex(const Par : TPluginParameter):integer; //inline;
 
 ///===== All functions below this line will need to be reconsidered =====
 
@@ -247,11 +210,6 @@ function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 
 function IsValidPluginParName(const Name : string):boolean;
 
-function IsModPar(const Par : TPluginParameter):boolean; inline;
-function IsModPar_Slow(const Par : TPluginParameter):boolean;
-
-function GetModParIndex(const Par : TPluginParameter):integer; inline;
-function GetModParIndex_Slow(const Par : TPluginParameter):integer;
 
 // "Global Plugin Parameters" are members of the TeePlugin class.
 // They are appliced globally and effect all voices. Other non-global
@@ -261,13 +219,10 @@ function IsGlobalPluginPar(const Par : TPluginParameter):boolean; inline;
 function GetPluginParameterCount:integer; inline;
 function IndexToPluginParameter(Index : integer):TPluginParameter; inline;
 
-
-var
-  BufferedModParIndex : array of integer; //don't access this directly.
-
 implementation
 
 uses
+  uConstants,
   SysUtils,
   Rtti,
   TypInfo,
@@ -313,6 +268,77 @@ begin
 end;
 
 
+function IsModPar(const Par : TPluginParameterID; out ModParIndex:integer):boolean;
+begin
+  case Par of
+    kPluginParameterID.OutputGain:         ModParIndex := 0;
+    kPluginParameterID.OutputPan:          ModParIndex := 1;
+    kPluginParameterID.VoicePitchOne:      ModParIndex := 2;
+    kPluginParameterID.VoicePitchTwo:      ModParIndex := 3;
+    kPluginParameterID.SampleStart:        ModParIndex := 4;
+    kPluginParameterID.SampleEnd:          ModParIndex := 5;
+    kPluginParameterID.LoopStart:          ModParIndex := 6;
+    kPluginParameterID.LoopEnd:            ModParIndex := 7;
+    kPluginParameterID.AmpAttack:          ModParIndex := 8;
+    kPluginParameterID.AmpHold:            ModParIndex := 9;
+    kPluginParameterID.AmpDecay:           ModParIndex := 10;
+    kPluginParameterID.AmpSustain:         ModParIndex := 11;
+    kPluginParameterID.AmpRelease:         ModParIndex := 12;
+    kPluginParameterID.AmpVelocity:        ModParIndex := 13;
+    kPluginParameterID.ModAttack:          ModParIndex := 14;
+    kPluginParameterID.ModHold:            ModParIndex := 15;
+    kPluginParameterID.ModDecay:           ModParIndex := 16;
+    kPluginParameterID.ModSustain:         ModParIndex := 17;
+    kPluginParameterID.ModRelease:         ModParIndex := 18;
+    kPluginParameterID.ModVelocity:        ModParIndex := 19;
+    kPluginParameterID.FilterOutputBlend:  ModParIndex := 20;
+    kPluginParameterID.Filter1Par1:        ModParIndex := 21;
+    kPluginParameterID.Filter1Par2:        ModParIndex := 22;
+    kPluginParameterID.Filter1Par3:        ModParIndex := 23;
+    kPluginParameterID.Filter1Par4:        ModParIndex := 24;
+    kPluginParameterID.Filter2Par1:        ModParIndex := 25;
+    kPluginParameterID.Filter2Par2:        ModParIndex := 26;
+    kPluginParameterID.Filter2Par3:        ModParIndex := 27;
+    kPluginParameterID.Filter2Par4:        ModParIndex := 28;
+    kPluginParameterID.Lfo1Par1:           ModParIndex := 29;
+    kPluginParameterID.Lfo1Par2:           ModParIndex := 30;
+    kPluginParameterID.Lfo1Par3:           ModParIndex := 31;
+    kPluginParameterID.Lfo2Par1:           ModParIndex := 32;
+    kPluginParameterID.Lfo2Par2:           ModParIndex := 33;
+    kPluginParameterID.Lfo2Par3:           ModParIndex := 34;
+  else
+    ModParIndex := -1;
+  end;
+
+  assert(kModulatedParameterCount = 35);
+
+  if ModParIndex <> -1
+    then result := true
+    else result := false;
+end;
+
+function IsModPar(const Par : TPluginParameter):boolean;
+var
+  ID : TPluginParameterID;
+  ModIndex : integer;
+begin
+  ID := PluginParToID(Par);
+  result := IsModPar(ID, ModIndex);
+end;
+
+function GetModParIndex(const Par : TPluginParameter):integer;
+var
+  ID : TPluginParameterID;
+  ModIndex : integer;
+begin
+  ID := PluginParToID(Par);
+  if IsModPar(ID, ModIndex)
+    then result := ModIndex
+    else result := -1;
+  //result := ModIndex;
+end;
+
+
 //============= OLD METHODS ===========================================
 function IsValidPluginParName(const Name : string):boolean;
 var
@@ -329,55 +355,6 @@ begin
   result := false;
 end;
 
-function IsModPar(const Par : TPluginParameter):boolean;
-begin
-  if BufferedModParIndex[Ord(Par)] <> -1
-    then result := true
-    else result := false;
-end;
-
-function IsModPar_Slow(const Par : TPluginParameter):boolean;
-var
-  s : string;
-  c1 : integer;
-  TestString : string;
-begin
-  s := TPluginParameterHelper.ToUnicodeString(Par);
-
-  for c1 := 0 to TModParHelper.GetEnumTypeCount-1 do
-  begin
-    TestString := TModParHelper.ToUnicodeString(c1);
-    if SameText(TestString, s)
-      then exit(true);
-  end;
-
-  //== if we've made it this far the par isn't a modulated parameter.
-  result := false;
-end;
-
-function GetModParIndex(const Par : TPluginParameter):integer;
-begin
-  result := BufferedModParIndex[Ord(Par)];
-end;
-
-function GetModParIndex_Slow(const Par : TPluginParameter):integer;
-var
-  s : string;
-  c1 : integer;
-  TestString : string;
-begin
-  s := TPluginParameterHelper.ToUnicodeString(Par);
-
-  for c1 := 0 to TModParHelper.GetEnumTypeCount-1 do
-  begin
-    TestString := TModParHelper.ToUnicodeString(c1);
-    if SameText(TestString, s)
-      then exit(c1);
-  end;
-
-  //== if we've made it this far the par isn't a modulated parameter.
-  result := -1;
-end;
 
 function IsGlobalPluginPar(const Par : TPluginParameter):boolean;
 begin
@@ -491,28 +468,17 @@ begin
   result := TPluginParameterHelper.ToEnum(Index);
 end;
 
-
+{
 var
   c1 : integer;
   Par : TPluginParameter;
-
+}
 initialization
   //==========================
   // TODO:HIGH in debug mode only.
   CheckPluginParIDs;
   //==========================
-
-  SetLength(BufferedModParIndex, TPluginParameterHelper.GetEnumTypeCount);
-
-  for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
-  begin
-    Par := TPluginParameterHelper.ToEnum(c1);
-    if IsModPar_Slow(Par)
-      then BufferedModParIndex[c1] := GetModParIndex_Slow(Par)
-      else BufferedModParIndex[c1] := -1;
-  end;
-
 finalization
-  SetLength(BufferedModParIndex, 0);
+
 
 end.
