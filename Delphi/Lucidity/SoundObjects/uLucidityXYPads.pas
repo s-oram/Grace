@@ -38,14 +38,15 @@ type
 
     procedure ControlRateProcess;
 
-    property PadX1 : single read fPadX1 write SetPadX1;
-    property PadY1 : single read fPadY1 write SetPadY1;
-    property PadX2 : single read fPadX2 write SetPadX2;
-    property PadY2 : single read fPadY2 write SetPadY2;
-    property PadX3 : single read fPadX3 write SetPadX3;
-    property PadY3 : single read fPadY3 write SetPadY3;
-    property PadX4 : single read fPadX4 write SetPadX4;
-    property PadY4 : single read fPadY4 write SetPadY4;
+    //PadX/Y values are limited to 0..1 range.
+    property PadX1 : single read fPadX1 write fPadX1;
+    property PadY1 : single read fPadY1 write fPadY1;
+    property PadX2 : single read fPadX2 write fPadX2;
+    property PadY2 : single read fPadY2 write fPadY2;
+    property PadX3 : single read fPadX3 write fPadX3;
+    property PadY3 : single read fPadY3 write fPadY3;
+    property PadX4 : single read fPadX4 write fPadX4;
+    property PadY4 : single read fPadY4 write fPadY4;
   end;
 
 implementation
@@ -147,6 +148,8 @@ end;
 
 procedure TLucidityXYPads.ControlRateProcess;
 begin
+  //TODO:MED currently the pad inputs are being smoothed all the time. :(
+
   GlobalModPoints^.Source_PadX1_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX1_Unipolar, fPadX1, SmoothingCoefficient);
   GlobalModPoints^.Source_PadY1_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY1_Unipolar, fPadY1, SmoothingCoefficient);
   GlobalModPoints^.Source_PadX2_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX2_Unipolar, fPadX2, SmoothingCoefficient);
@@ -155,6 +158,7 @@ begin
   GlobalModPoints^.Source_PadY3_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY3_Unipolar, fPadY3, SmoothingCoefficient);
   GlobalModPoints^.Source_PadX4_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadX4_Unipolar, fPadX4, SmoothingCoefficient);
   GlobalModPoints^.Source_PadY4_Unipolar := SmoothParameterChange(GlobalModPoints^.Source_PadY4_Unipolar, fPadY4, SmoothingCoefficient);
+
 
   GlobalModPoints^.Source_PadX1_Bipolar := GlobalModPoints^.Source_PadX1_Unipolar * 2 - 1;
   GlobalModPoints^.Source_PadY1_Bipolar := GlobalModPoints^.Source_PadY1_Unipolar * 2 - 1;
