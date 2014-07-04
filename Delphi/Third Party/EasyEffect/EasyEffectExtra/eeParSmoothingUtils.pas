@@ -11,6 +11,9 @@ function SmoothParameterChange(const CurrentParameterValue, TargetParameterValue
 
 implementation
 
+uses
+  eeDSP;
+
 function CalculateSmoothingCoefficient(const SmoothingTime, SampleRate : single):single;
 begin
   if SmoothingTime = 0
@@ -24,7 +27,7 @@ end;
 
 function SmoothParameterChange(const CurrentParameterValue, TargetParameterValue, SmoothingCoefficient:single):single; inline;
 begin
-  result := TargetParameterValue + (CurrentParameterValue - TargetParameterValue) * SmoothingCoefficient;
+  result := TargetParameterValue + (CurrentParameterValue - TargetParameterValue + kDenormal) * SmoothingCoefficient ;
 end;
 
 end.
