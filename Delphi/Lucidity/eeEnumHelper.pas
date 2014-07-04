@@ -104,10 +104,29 @@ end;
 
 class function TEnumHelper<TEnum>.ToEnum(s: string): TEnum;
 var
-  c1: Integer;
-  TestString : string;
-  v: TValue;
+  // == OLD METHOD VARIABLES ==
+  //c1: Integer;
+  //TestString : string;
+  //v: TValue;
+
+
+  // == NEW METHOD VARIABLES ==
+  Tipo: PTypeInfo;
+  Temp: Integer;
+  PTemp: Pointer;
 begin
+  // == NEW METHOD ==
+  // Source: http://stackoverflow.com/q/2472487/395461
+  Tipo := TypeInfo(TEnum);
+  Temp := GetEnumValue(Tipo, s);
+  PTemp := @Temp;
+  Result := TEnum(PTemp^);
+
+
+  // == OLD METHOD ==
+  // TODO:MED It would be good to bench mark these two conversions to see
+  // which is faster.
+  {
   //result := TFilterType(GetEnumValue(TypeInfo(TFilterType), s));
 
   for c1 := 0 to GetEnumTypeCount-1 do
@@ -123,6 +142,7 @@ begin
 
   //if we've made it this far...
   raise EnumHelperException.Create('TEnumHelper couldn''t compute value from string.');
+  }
 end;
 
 class function TEnumHelper<TEnum>.ToEnum(x: single): TEnum;
