@@ -105,6 +105,82 @@ type
   TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
   end;
 
+  TPluginParameterID = integer;
+
+  kPluginParameterID = record
+  const
+    VoiceMode               = 0;
+    VoiceGlide              = 1;
+    PitchTracking           = 2;
+    SamplePlaybackType      = 3;
+    SampleResetClockSource  = 4;
+    SamplerLoopBounds       = 5;
+    SamplerLoopMode         = 6;
+    OutputGain              = 7;
+    OutputPan               = 8;
+    VoicePitchOne           = 9;
+    VoicePitchTwo           = 10;
+    SampleStart             = 11;
+    SampleEnd               = 12;
+    LoopStart               = 13;
+    LoopEnd                 = 14;
+    AmpAttack               = 15;
+    AmpHold                 = 16;
+    AmpDecay                = 17;
+    AmpSustain              = 18;
+    AmpRelease              = 19;
+    AmpVelocity             = 20;
+    ModAttack               = 21;
+    ModHold                 = 22;
+    ModDecay                = 23;
+    ModSustain              = 24;
+    ModRelease              = 25;
+    ModVelocity             = 26;
+    FilterRouting           = 27;
+    FilterOutputBlend       = 28;
+    Filter1Type             = 29;
+    Filter2Type             = 30;
+    Filter1KeyFollow        = 31;
+    Filter2KeyFollow        = 32;
+    Filter1Par1             = 33;
+    Filter1Par2             = 34;
+    Filter1Par3             = 35;
+    Filter1Par4             = 36;
+    Filter2Par1             = 37;
+    Filter2Par2             = 38;
+    Filter2Par3             = 39;
+    Filter2Par4             = 40;
+    Lfo1Shape               = 41;
+    Lfo2Shape               = 42;
+    Lfo1FreqMode            = 43;
+    Lfo2FreqMode            = 44;
+    Lfo1Range               = 45;
+    Lfo2Range               = 46;
+    Lfo1Par1                = 47;
+    Lfo1Par2                = 48;
+    Lfo1Par3                = 49;
+    Lfo2Par1                = 50;
+    Lfo2Par2                = 51;
+    Lfo2Par3                = 52;
+    Seq1Clock               = 53;
+    Seq1Direction           = 54;
+    Seq1Length              = 55;
+    Seq2Clock               = 56;
+    Seq2Direction           = 57;
+    Seq2Length              = 58;
+    PreviewVolume           = 59;
+    Preview                 = 60;
+    PadX1                   = 61;
+    PadY1                   = 62;
+    PadX2                   = 63;
+    PadY2                   = 64;
+    PadX3                   = 65;
+    PadY3                   = 66;
+    PadX4                   = 67;
+    PadY4                   = 68;
+  end;
+
+
   TModulatedPluginParameter = (
     OutputGain,
     OutputPan,
