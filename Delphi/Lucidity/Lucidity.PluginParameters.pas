@@ -237,15 +237,15 @@ procedure CheckPluginParIDs;
 function PluginParToID(const Par : TPluginParameter):TPluginParameterID; inline;
 function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inline;
 
+function PluginParToName(const Par : TPluginParameter):string;
+function PluginParFromName(const Name : string):TPluginParameter;
+
 
 ///===== All functions below this line will need to be reconsidered =====
 
 function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 
 function IsValidPluginParName(const Name : string):boolean;
-
-function PluginParToName(const Par : TPluginParameter):string;
-function PluginParFromName(const Name : string):TPluginParameter;
 
 function IsModPar(const Par : TPluginParameter):boolean; inline;
 function IsModPar_Slow(const Par : TPluginParameter):boolean;
@@ -270,6 +270,7 @@ implementation
 uses
   SysUtils,
   Rtti,
+  TypInfo,
   uLucidityEnums;
 
 
@@ -301,8 +302,15 @@ begin
   result := TPluginParameter(Par);
 end;
 
+function PluginParToName(const Par : TPluginParameter):string;
+begin
+  result := GetEnumName(TypeInfo(TPluginParameter), integer(Par));
+end;
 
-
+function PluginParFromName(const Name : string):TPluginParameter;
+begin
+  result := TPluginParameter(GetEnumValue(TypeInfo(TPluginParameter),Name));
+end;
 
 
 //============= OLD METHODS ===========================================
@@ -319,16 +327,6 @@ begin
   end;
   //=== no match if we've made it this far ==
   result := false;
-end;
-
-function PluginParToName(const Par : TPluginParameter):string;
-begin
-  result := TPluginParameterHelper.ToUnicodeString(Par);
-end;
-
-function PluginParFromName(const Name : string):TPluginParameter;
-begin
-  result := TPluginParameterHelper.ToEnum(Name);
 end;
 
 function IsModPar(const Par : TPluginParameter):boolean;
