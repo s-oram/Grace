@@ -5,6 +5,28 @@ interface
 uses
   eeEnumHelper;
 
+{
+======= Goal ===============
+
+Currently methods are address using the plugin parameter name
+as a string. To avoid having hardcode strings scattered everywhere
+I am using a TPluginParameter enumerated type that is
+converted to and from the parameter name as needed. This makes for
+easy usage but I'm getting CPU spikes when automating parameters.
+
+I think some of the code to convert to and from strings is a bit slow.
+
+My goal is to use integer parameter ID's instead of parameter name strings.
+
+After that I may also rewrite the way parameter changes are applied to
+keygroups, voices, etc. Instead of using the PluginParameterController
+I might use the ZeroObject system to send messages.
+
+}
+
+
+
+
 {$SCOPEDENUMS ON}
 
 type
@@ -128,6 +150,12 @@ type
   public
     DefaultValue : single;
   end;
+
+
+//======= New functions =================================================
+
+
+///===== All functions below this line will need to be reconsidered =====
 
 function GetPluginParInfo(const Par : TPluginParameter):TPluginParameterInfo;
 
