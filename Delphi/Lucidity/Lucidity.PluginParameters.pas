@@ -197,6 +197,11 @@ function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inlin
 function PluginParToName(const Par : TPluginParameter):string;
 function PluginParFromName(const Name : string):TPluginParameter;
 
+// TODO:MED these methods feel like a stop-gap measure and might be better
+// if removed eventually.
+function PluginParNameToID(const Name : string):TPluginParameterID; inline;
+function PluginParIDToName(const ID : TPluginParameterID):string; inline;
+
 // TODO:HIGH Inline these methods.
 function IsModPar(const Par : TPluginParameterID; out ModParIndex:integer):boolean; {inline;} overload;
 function IsModPar(const Par : TPluginParameter):boolean; {inline;} overload; //deprecated; //TODO:MED deprecate this method.
@@ -264,6 +269,22 @@ end;
 function PluginParFromName(const Name : string):TPluginParameter;
 begin
   result := TPluginParameter(GetEnumValue(TypeInfo(TPluginParameter),Name));
+end;
+
+function PluginParNameToID(const Name : string):TPluginParameterID;
+var
+  Par : TPluginParameter;
+begin
+  Par := PluginParFromName(Name);
+  result := PluginParToID(Par);
+end;
+
+function PluginParIDToName(const ID : TPluginParameterID):string;
+var
+  Par : TPluginParameter;
+begin
+  Par := PluginParFromID(ID);
+  result := PluginParToName(Par);
 end;
 
 

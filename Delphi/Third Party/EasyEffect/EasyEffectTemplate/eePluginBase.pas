@@ -51,7 +51,7 @@ type
 
     function GetPluginParameter(const ParName : string):single; virtual; abstract;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; virtual; abstract;
-    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; virtual; abstract;
+    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; virtual; deprecated; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
   public
     Inputs  : TArrayOfPSingle;

@@ -12,7 +12,8 @@ uses
   eePlugin,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
-  eeGuiStandardv2;
+  eeGuiStandardv2,
+  Lucidity.PluginParameters;
 
 type
   TKnobContextMenu = class(TCustomPopupMenu)
@@ -73,7 +74,6 @@ uses
   Vcl.Dialogs,
   Effect.MidiAutomation,
   VamLib.Throttler,
-  Lucidity.PluginParameters,
   VamKnob,
   Lucidity.Types,
   uConstants,
@@ -512,6 +512,7 @@ var
 begin
   TargetBinding := TMidiBinding.Create;
   TargetBinding.ParName := TargetParameterName;
+  TargetBinding.ParID   := PluginParNameToID(TargetParameterName);
   Plugin.MidiAutomation.ActivateMidiLearn(TargetBinding);
 end;
 

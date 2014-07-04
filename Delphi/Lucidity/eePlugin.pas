@@ -131,7 +131,7 @@ type
 
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
-    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override;
+    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override; deprecated;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
@@ -1254,7 +1254,7 @@ var
   mb : IMidiBinding;
 begin
   mb := Binding as IMidiBinding;
-  SetPluginParameter(mb.GetParName, MidiData2 * OneOver127);
+  SetPluginParameter(mb.GetParID, MidiData2 * OneOver127);
 end;
 
 procedure TeePlugin.Event_MidiAutomation_NewBinding(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);

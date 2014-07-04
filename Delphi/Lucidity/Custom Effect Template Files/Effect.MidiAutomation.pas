@@ -3,24 +3,31 @@ unit Effect.MidiAutomation;
 interface
 
 uses
+  eeTypes,
+  eeMidiAutomationV2,
   NativeXML,
-  Lucidity.Interfaces,
-  eeMidiAutomationV2;
+  Lucidity.Interfaces;
 
 type
   IMidiBinding = interface(ICustomMidiBinding)
     ['{10775DF2-C58D-4EC6-A687-7DA1BB4C8CE9}']
     function GetParName : string;
     procedure SetParName(const Value : string);
+    function GetParID : TPluginParameterID;
+    procedure SetParID(const Value : TPluginParameterID);
   end;
 
   TMidiBinding = class(TCustomMidiBinding, IMidiBinding)
   private
     fParName: string;
+    fParID: TPluginParameterID;
     function GetParName : string;
     procedure SetParName(const Value : string);
+    function GetParID : TPluginParameterID;
+    procedure SetParID(const Value : TPluginParameterID);
   public
     property ParName : string read fParName write fParName;
+    property ParId   : TPluginParameterID read fParID write fParID;
   end;
 
   TMidiAutomation = class(TCustomMidiAutomation)
@@ -45,9 +52,19 @@ uses
 
 { TMidiBinding }
 
+function TMidiBinding.GetParID: TPluginParameterID;
+begin
+  result := fParId;
+end;
+
 function TMidiBinding.GetParName: string;
 begin
   result := fParName;
+end;
+
+procedure TMidiBinding.SetParID(const Value: TPluginParameterID);
+begin
+  fParId := Value;
 end;
 
 procedure TMidiBinding.SetParName(const Value: string);
@@ -124,6 +141,12 @@ var
   DataNode : TXmlNode;
   mb : IMidiBinding;
 begin
+  //TODO:HIGH when saving a MIDI map to a file, we need to save the bindings
+  // indexed to parameter names. Not parameter IDs.
+  // But once loaded we will want to be using parameter IDs as indexes. so
+  // we will need to find the parameter ID when the state is loaded.
+  // (The wording on this comment is probably bad cause I'm tired.) <-- meta-comment!
+
   Clear;
 
   NodeList := TsdNodeList.Create;
