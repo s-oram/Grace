@@ -131,7 +131,8 @@ type
 
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
-    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
+    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload; deprecated;
+    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const Value : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
@@ -589,6 +590,12 @@ begin
   ParID := PluginParToID(Par);
   TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, Value);
 end;
+
+procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const Value: single);
+begin
+  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, Value);
+end;
+
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin
@@ -1385,6 +1392,7 @@ procedure TeePlugin.ProcessEnd;
 begin
   Globals.AudioActions.Run;
 end;
+
 
 
 end.
