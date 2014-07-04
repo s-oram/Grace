@@ -142,6 +142,9 @@ var
   kg : IKeyGroup;
   kgInfo : IKeyGroupsInfo;
 begin
+  //TODO:HIGH - I need to bench mark all the code in this method to find out where the
+  // slow sections are.
+
   assert(aPlugin is TeePlugin);
   Plugin := aPlugin as TeePlugin;
 
