@@ -8,10 +8,22 @@ interface
 
 uses
   VamLib.CpuOverloadWatcher,
+  eeTypes,
+  eePublishedVstParameters,
+  eeAudioBufferUtils,
+  eeAudioFilePreviewPlayerVoice,
+  eeMidiInputSmoother,
+  eePatchObject,
+  eeSampleInt,
+  eeSampleFloat,
+  eePluginBase ,
+  eeMidiEvents,
+  eeMidiAutomationV2,
+  eeAudioFilePreviewPlayer,
+  eeSimpleGate,
   Lucidity.MidiInputProcessor,
   Lucidity.PluginParameters,
   Lucidity.VoiceController,
-  eePublishedVstParameters,
   Lucidity.PluginParameterController,
   Lucidity.Types,
   VamLib.Utils,
@@ -22,21 +34,15 @@ uses
   Generics.Defaults,
   Generics.Collections,
   OtlSync,
-  eeAudioBufferUtils,
-  eeAudioFilePreviewPlayerVoice,
-  eeMidiInputSmoother,
   uLucidityEnums, uLucidityData,
   Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads,
-  SyncObjs, eePatchObject,
-  eeSampleInt, eeSampleFloat,
-  Classes, eePluginBase , eeMidiEvents,
-  eeMidiAutomationV2,
+  SyncObjs,
+  Classes,
   Effect.MidiAutomation,
   Lucidity.SampleMap, Lucidity.KeyGroup, uGuiFeedBackData, Lucidity.Interfaces,
   B2.Filter.CriticallyDampedLowpass,
   Lucidity.KeyGroupManager,
-  eeAudioFilePreviewPlayer,
   FilterCore.SimperSVF,
   Lucidity.Filter,
   soLevelMeter,
@@ -63,8 +69,7 @@ uses
   soGrainStretchSubOsc,
   soLucidityVoiceParameterWrapper,
   uLucidityStepSequencer,
-  Lucidity.KeyGroupPlayer,
-  eeSimpleGate;
+  Lucidity.KeyGroupPlayer;
 
 type
   TeePlugin = class(TeePluginBase)
@@ -125,6 +130,7 @@ type
 	  destructor Destroy; override;
 
     function GetPluginParameter(const ParName : string):single; override;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
     procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
@@ -616,6 +622,11 @@ begin
   // those changes need to effect all key groups so use the 'Global' TParChange scope.
   Par := PluginParFromName(ParName);
   ParID := PluginParToID(Par);
+  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
+end;
+
+procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single);
+begin
   TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
 end;
 

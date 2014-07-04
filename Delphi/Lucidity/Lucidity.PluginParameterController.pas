@@ -5,8 +5,9 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  VamLib.Utils,
+  eeTypes,
   eePublishedVstParameters,
+  VamLib.Utils,
   Lucidity.Interfaces,
   Lucidity.PluginParameters,
   Lucidity.Types;

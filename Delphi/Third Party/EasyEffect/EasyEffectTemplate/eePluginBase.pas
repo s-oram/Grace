@@ -7,8 +7,11 @@ interface
 uses
   eeSyncObjects,
   eePublishedVstParameters,
-  eeTypes, eeMidiEvents, eePluginSettings,
-  eeVstMidiTypes, eeBufferedEventList,
+  eeTypes,
+  eeMidiEvents,
+  eePluginSettings,
+  eeVstMidiTypes,
+  eeBufferedEventList,
   Classes, VamLib.MoreTypes, eeGlobals;
 
   {$IFDEF VER230}
@@ -47,7 +50,8 @@ type
     procedure SetHostPlayState(const Value: THostPlayState); virtual;
 
     function GetPluginParameter(const ParName : string):single; virtual; abstract;
-    procedure SetPluginParameter(const ParName : string; const ParValue : single); virtual; abstract;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; virtual; abstract;
+    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; virtual; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
   public
     Inputs  : TArrayOfPSingle;

@@ -3,6 +3,7 @@ unit Lucidity.PluginParameters;
 interface
 
 uses
+  eeTypes,
   eeEnumHelper;
 
 {
@@ -104,8 +105,6 @@ type
 
   TPluginParameterHelper = class(TEnumHelper<TPluginParameter>)
   end;
-
-  TPluginParameterID = integer;
 
   kPluginParameterID = record
   const

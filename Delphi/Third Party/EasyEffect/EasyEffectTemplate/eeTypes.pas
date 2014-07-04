@@ -64,7 +64,7 @@ type
   TCardinalList = TList<cardinal>;
 
 
-
+  TPluginParameterID = integer;
 
 
 
