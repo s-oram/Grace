@@ -4,7 +4,8 @@ interface
 
 uses
   Contnrs,
-  VamLib.Collections.Lists;
+  VamLib.Collections.Lists,
+  eeTypes;
 
 type
   TVstParameterInfo = record
@@ -32,8 +33,9 @@ type
 
     procedure AddParameter(const PluginParameterName : string; const PluginParID : integer);
 
-    function FindParameterIndex(const PluginParameterName : string) : integer;
-    function FindParameterName(const Index : integer) : string;
+    function FindVstParameterIndex(const PluginParameterName : string) : integer; //TODO:LOW is this method even used anywhere?
+    function FindParameterName(const VstParameterIndex : integer) : string;
+    function FindParameterID(const VstParameterIndex : integer) : TPluginParameterID;
 
     property Count : integer read GetCount;
   end;
@@ -61,7 +63,7 @@ begin
   result := VstParameterList.Count;
 end;
 
-function TPublishedVstParameterController.FindParameterIndex(const PluginParameterName: string): integer;
+function TPublishedVstParameterController.FindVstParameterIndex(const PluginParameterName: string): integer;
 var
   c1: Integer;
   VstPar : TVstParameter;
@@ -77,9 +79,14 @@ begin
   result := -1;
 end;
 
-function TPublishedVstParameterController.FindParameterName(const Index: integer): string;
+function TPublishedVstParameterController.FindParameterID(const VstParameterIndex: integer): TPluginParameterID;
 begin
-  result := (VstParameterList[Index] as TVstParameter).PluginParameterName;
+  result := (VstParameterList[VstParameterIndex] as TVstParameter).PluginParameterID;
+end;
+
+function TPublishedVstParameterController.FindParameterName(const VstParameterIndex: integer): string;
+begin
+  result := (VstParameterList[VstParameterIndex] as TVstParameter).PluginParameterName;
 end;
 
 procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string; const PluginParID : integer);

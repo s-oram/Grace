@@ -50,8 +50,7 @@ type
     procedure SetHostPlayState(const Value: THostPlayState); virtual;
 
     function GetPluginParameter(const ParName : string):single; virtual; abstract;
-    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; virtual; abstract;
-    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; virtual; deprecated; abstract;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); virtual; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
   public
     Inputs  : TArrayOfPSingle;
@@ -216,10 +215,10 @@ end;
 
 procedure TeePluginBase.ParameterChanged(Index: integer; Value: single);
 var
-  ParName : string;
+  ParID : TPluginParameterID;
 begin
-  ParName := PublishedVstParameters.FindParameterName(Index);
-  SetPluginParameter(ParName, Value);
+  ParID   := PublishedVstParameters.FindParameterID(Index);
+  SetPluginParameter(ParID, Value);
 end;
 
 

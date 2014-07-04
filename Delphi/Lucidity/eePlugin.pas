@@ -131,7 +131,6 @@ type
 
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
-    procedure SetPluginParameter(const ParName : string; const ParValue : single); overload; override; deprecated;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParName : string; const Value : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
@@ -611,18 +610,6 @@ begin
   Par := PluginParFromName(ParName);
   ParID := PluginParToID(Par);
   result := TPluginParameterController.GetPluginParameter(self, ParID);
-end;
-
-procedure TeePlugin.SetPluginParameter(const ParName: string; const ParValue: single);
-var
-  Par : TPluginParameter;
-  ParID : TPluginParameterID;
-begin
-  // Generally this form of SetPluginParameter() will only be called by published VST parameters.
-  // those changes need to effect all key groups so use the 'Global' TParChange scope.
-  Par := PluginParFromName(ParName);
-  ParID := PluginParToID(Par);
-  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
 end;
 
 procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single);
