@@ -178,6 +178,9 @@ type
     PadY3                   = 66;
     PadX4                   = 67;
     PadY4                   = 68;
+    //=========================
+    ParameterCount          = 69;
+    //=========================
   end;
 
 
@@ -230,6 +233,10 @@ type
 
 //======= New functions =================================================
 
+procedure CheckPluginParIDs;
+function PluginParToID(const Par : TPluginParameter):TPluginParameterID; inline;
+function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inline;
+
 
 ///===== All functions below this line will need to be reconsidered =====
 
@@ -265,6 +272,40 @@ uses
   Rtti,
   uLucidityEnums;
 
+
+//============= NEW METHODS ===========================================
+
+procedure CheckPluginParIDs;
+var
+  x1 : integer;
+  x2 : integer;
+begin
+  x1 := kPluginParameterID.VoiceMode;
+  x2 := PluginParToID(TPluginParameter.VoiceMode);
+  if x1 <> x2 then raise Exception.Create('Plugin Parameter IDs do not match.');
+
+  // TODO:HIGH
+  // All plugin ID's need to be checked.
+end;
+
+function PluginParToID(const Par : TPluginParameter):TPluginParameterID;
+begin
+  result := Ord(Par);
+end;
+
+function PluginParFromID(const Par : TPluginParameterID):TPluginParameter;
+begin
+  assert(Par >= Ord(Low(TPluginParameter)));
+  assert(Par <= Ord(High(TPluginParameter)));
+
+  result := TPluginParameter(Par);
+end;
+
+
+
+
+
+//============= OLD METHODS ===========================================
 function IsValidPluginParName(const Name : string):boolean;
 var
   c1: Integer;
@@ -458,6 +499,11 @@ var
   Par : TPluginParameter;
 
 initialization
+  //==========================
+  // TODO:HIGH in debug mode only.
+  CheckPluginParIDs;
+  //==========================
+
   SetLength(BufferedModParIndex, TPluginParameterHelper.GetEnumTypeCount);
 
   for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
