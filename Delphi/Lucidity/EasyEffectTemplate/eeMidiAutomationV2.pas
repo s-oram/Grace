@@ -94,11 +94,6 @@ begin
   inherited;
 end;
 
-procedure TCustomMidiAutomation.FastControlProcess;
-begin
-
-end;
-
 function TCustomMidiAutomation.GetIsMidiLearnActive: boolean;
 begin
   if assigned(MidiLearnTarget)
@@ -172,6 +167,13 @@ begin
   end;
 
 end;
+
+procedure TCustomMidiAutomation.FastControlProcess;
+begin
+
+end;
+
+
 
 
 end.

@@ -8,7 +8,9 @@ uses
   eeAudioBufferUtils,
   soLevelMeter,
   VamLib.ZeroObject,
-  VamLib.MoreTypes, soLucidityVoice, Lucidity.Interfaces,
+  VamLib.MoreTypes, soLucidityVoice,
+  Lucidity.Interfaces,
+  Lucidity.Types,
   Classes, Contnrs, uConstants, Lucidity.KeyGroup,
   eeGlobals, SyncObjs;
 
@@ -17,7 +19,6 @@ type
   TKeyGroupsInfo = class;
   IKeyGroupsInfo = interface;
   //===================================
-
 
 
   // HACK: WARNING: TODO: I think there is a problem with how key groups are deleted.
@@ -68,6 +69,8 @@ type
     // NOTE: Clear isn't thread-safe.
     procedure Clear;
 
+    function Request(const KeyGroupID: TKeyGroupID): IKeyGroup;
+
     function NewKeyGroup:IKeyGroup; overload;
     function NewKeyGroup(aName : string):IKeyGroup; overload;
     function FindFirstKeyGroup:IKeyGroup;
@@ -115,7 +118,6 @@ implementation
 uses
   SysUtils,
   VamLib.Utils,
-  Lucidity.Types,
   Lucidity.PluginParameterController;
 
 { TSampleGroupManager }
@@ -259,6 +261,24 @@ begin
   finally
     ListLock.Release;
   end;
+end;
+
+function TKeyGroupManager.Request(const KeyGroupID: TKeyGroupID): IKeyGroup;
+var
+  c1: Integer;
+begin
+  ListLock.Acquire;
+  try
+    for c1 := 0 to fList.Count-1 do
+    begin
+      if (fList[c1] as IKeyGroup).GetID = KeyGroupID
+        then exit(fList[c1] as IKeyGroup);
+    end;
+  finally
+    ListLock.Release;
+  end;
+  //== no match found ==
+  result := nil;
 end;
 
 procedure TKeyGroupManager.DeleteKeyGroup(aName: string);

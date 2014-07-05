@@ -16,7 +16,8 @@ uses
   VamLib.ZeroObject,
   Lucidity.Types,
   Lucidity.KeyGroup,
-  soLucidityVoice;
+  soLucidityVoice,
+  Lucidity.KeyGroupManager;
 
 type
   TKeyGroupPlayer = class(TZeroObject)
@@ -24,10 +25,11 @@ type
     ActiveRegions : TInterfaceList;
   protected
     Globals : TGlobals;
-    OverloadWatch : TCpuOverloadWatcher;
+    OverloadWatch : TCpuOverloadWatcher; //TODO:MED Delete this when ready for release.
+    KeyGroupManager : TKeyGroupManager;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
-    constructor Create(const aGlobals : TGlobals);
+    constructor Create(const aGlobals : TGlobals; const aKeyGroupManager : TKeyGroupManager);
     destructor Destroy; override;
 
     procedure Clear;
@@ -48,15 +50,17 @@ uses
 
 { TKeyGroupPlayer }
 
-constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals);
+constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals; const aKeyGroupManager : TKeyGroupManager);
 begin
   Globals := aGlobals;
   ActiveRegions := TInterfaceList.Create;
   OverloadWatch := TCpuOverloadWatcher.Create;
+  KeyGroupManager := aKeyGroupManager;
 end;
 
 destructor TKeyGroupPlayer.Destroy;
 begin
+  KeyGroupManager := nil;
   ActiveRegions.Free;
   OverloadWatch.Free;
   inherited;
@@ -85,7 +89,7 @@ begin
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 
-    kg := Globals.KeyGroupLifeTimeManager.Request(kgID);
+    kg := KeyGroupManager.Request(kgID);
 
     if (assigned(kg)) and (ActiveRegions.IndexOf(kg) = -1) then
     begin

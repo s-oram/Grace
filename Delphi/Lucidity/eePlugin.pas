@@ -453,9 +453,6 @@ begin
   VoiceController := TVoiceController.Create(Globals, @Voices);
   Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
 
-  KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals);
-  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
-
   fSampleMap := TSampleMap.Create;
   Globals.SampleMapReference := fSampleMap;
   Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.Audio);
@@ -464,6 +461,10 @@ begin
   Globals.KeyGroupsReference := fKeyGroups;
   Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
 
+  KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals, fKeyGroups);
+  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
+
+  // What is this empty keyGroup, can I get rid of it.
   EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
   Globals.KeyGroupLifeTimeManager.Add(EmptyKeyGroup);
 
