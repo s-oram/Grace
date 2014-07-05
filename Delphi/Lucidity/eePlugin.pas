@@ -464,9 +464,7 @@ begin
   KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals, fKeyGroups);
   Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
 
-  // What is this empty keyGroup, can I get rid of it.
   EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
-  Globals.KeyGroupLifeTimeManager.Add(EmptyKeyGroup);
 
   //==== Look for key file ===
   if Globals.UserDataDir <> '' then
