@@ -255,8 +255,6 @@ begin
       Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.Audio);
     end;
 
-    Globals.KeyGroupLifeTimeManager.Add(kg);
-
     result := kg;
   finally
     ListLock.Release;
@@ -303,14 +301,6 @@ begin
         Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
         Globals.MotherShip.MsgMain(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
         Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup);
-
-        // Dispose the reference in the global key group manager.
-        Globals.KeyGroupLifeTimeManager.Dispose(kgID);
-
-        // NOTE: I don't really think the above two step process to free the
-        // key groups should be required. After all the key group is implemented
-        // as a reference counted interface. But I'm having grief with AV errors
-        // after deleting key groups so I'll put this in here for now.
 
         kg := nil;
       end;
