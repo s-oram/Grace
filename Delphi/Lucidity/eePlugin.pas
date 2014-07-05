@@ -72,6 +72,10 @@ uses
   Lucidity.KeyGroupPlayer;
 
 type
+  TPluginState = record
+    PadX1 : single;
+  end;
+
   TeePlugin = class(TeePluginBase)
   private
     fMidiAutomation: TMidiAutomation;
@@ -96,6 +100,8 @@ type
     procedure SetPreviewVolume(const Value: single);
     function GetFocusedKeyGroup: IKeyGroup;
   protected
+    PluginState : TPluginState;
+    fPadX1 : single;
     DeltaOffset     : integer;
     GlobalModPoints : TGlobalModulationPoints;
 
@@ -337,6 +343,7 @@ begin
 
 
   GlobalModPoints.Source_TriggeredNoteCount := 0;
+  GlobalModPoints.Init;
 
   fIsPreviewEnabled := true;
 
@@ -418,9 +425,7 @@ begin
   MidiAutomation.OnNewBinding  := Event_MidiAutomation_NewBinding;
   // TODO: Load default MIDI map here!
 
-
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
-  fXYPads.PadX1 := -0.5;
 
   MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.Audio);
@@ -577,7 +582,19 @@ end;
 
 procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single);
 begin
-  TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
+  case ParID of
+    kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
+    //kPluginParameterID.PadX1: PluginState.PadX1 := ParValue;
+    kPluginParameterID.PadY1: self.XYPads.PadY1 := ParValue;
+    kPluginParameterID.PadX2: self.XYPads.PadX2 := ParValue;
+    kPluginParameterID.PadY2: self.XYPads.PadY2 := ParValue;
+    kPluginParameterID.PadX3: self.XYPads.PadX3 := ParValue;
+    kPluginParameterID.PadY3: self.XYPads.PadY3 := ParValue;
+    kPluginParameterID.PadX4: self.XYPads.PadX4 := ParValue;
+    kPluginParameterID.PadY4: self.XYPads.PadY4 := ParValue;
+  else
+    TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
+  end;
 end;
 
 procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const Value: single);

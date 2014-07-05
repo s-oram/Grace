@@ -148,6 +148,7 @@ type
 
   PGlobalModulationPoints = ^TGlobalModulationPoints;
   TGlobalModulationPoints = record
+  public
     Source_TriggeredNoteCount : cardinal;
     Source_MonophonicMidiNote : single;
     Source_MidiPitchBendST    : single; //Range is in semitones. Should it be CV?
@@ -173,6 +174,8 @@ type
     Source_PadY3_Bipolar      : single;
     Source_PadX4_Bipolar      : single;
     Source_PadY4_Bipolar      : single;
+
+    procedure Init;
   end;
 
   // Per voice modulation points. All modulation values are in audio range.
@@ -522,6 +525,29 @@ end;
 
 
 
+
+{ TGlobalModulationPoints }
+
+procedure TGlobalModulationPoints.Init;
+begin
+  self.Source_PadX1_Unipolar := 0;
+  self.Source_PadY1_Unipolar := 0;
+  self.Source_PadX2_Unipolar := 0;
+  self.Source_PadY2_Unipolar := 0;
+  self.Source_PadX3_Unipolar := 0;
+  self.Source_PadY3_Unipolar := 0;
+  self.Source_PadX4_Unipolar := 0;
+  self.Source_PadY4_Unipolar := 0;
+
+  self.Source_PadX1_Bipolar := 0;
+  self.Source_PadY1_Bipolar := 0;
+  self.Source_PadX2_Bipolar := 0;
+  self.Source_PadY2_Bipolar := 0;
+  self.Source_PadX3_Bipolar := 0;
+  self.Source_PadY3_Bipolar := 0;
+  self.Source_PadX4_Bipolar := 0;
+  self.Source_PadY4_Bipolar := 0;
+end;
 
 initialization
   {
