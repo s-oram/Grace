@@ -31,6 +31,43 @@ I might use the ZeroObject system to send messages.
 {$SCOPEDENUMS ON}
 
 type
+  TPluginParameterClass = class
+  private
+    fParameterValue: single;
+    fName: string;
+    fID: integer;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    property ID   : integer read fID;
+    property Name : string read fName write fName;
+
+    property ParameterValue : single read fParameterValue write fParameterValue;
+  end;
+
+
+  TPluginParameterManager = class
+  private
+    CurrentCount    : integer;
+    fParameterCount : integer;
+    function GetParameter(Index: integer): TPluginParameterClass;
+  public
+    Raw : array of TPluginParameterClass;
+
+    constructor Create(const aParameterCount : integer);
+    destructor Destroy; override;
+
+    procedure Add(const aParameter : TPluginParameterClass);
+
+    property Parameter[Index : integer] : TPluginParameterClass read GetParameter;
+  end;
+
+
+
+  //========= Stuff below here will need to be reconsidered ====================
+
+
   TPluginParameter = (
     VoiceMode,
     VoiceGlide,
@@ -494,6 +531,60 @@ var
   c1 : integer;
   Par : TPluginParameter;
 }
+{ TPluginParameterClass }
+
+constructor TPluginParameterClass.Create;
+begin
+  fID := 0;
+
+end;
+
+destructor TPluginParameterClass.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TPluginParameterManager }
+
+constructor TPluginParameterManager.Create(const aParameterCount: integer);
+begin
+  fParameterCount := aParameterCount;
+  SetLength(Raw, fParameterCount);
+
+  CurrentCount := 0;
+end;
+
+destructor TPluginParameterManager.Destroy;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to CurrentCount-1 do
+  begin
+    Raw[c1].Free;
+  end;
+
+  SetLength(Raw, 0);
+
+  inherited;
+end;
+
+procedure TPluginParameterManager.Add(const aParameter: TPluginParameterClass);
+begin
+  Raw[CurrentCount] := aParameter;
+  aParameter.fID := CurrentCount;
+  inc(CurrentCount);
+end;
+
+
+
+function TPluginParameterManager.GetParameter(Index: integer): TPluginParameterClass;
+begin
+  assert(Index >= 0);
+  assert(Index < fParameterCount);
+  result := Raw[Index];
+end;
+
 initialization
   //==========================
   // TODO:HIGH in debug mode only.

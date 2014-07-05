@@ -90,6 +90,7 @@ type
     fIsPreviewEnabled: boolean;
     fSignalRecorder  : TSignalRecorder;
     fFreqAnalyzer: TFrequencyAnalyzer;
+    fPluginParameters: TPluginParameterManager;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
     function GetVoiceGlide: single;
@@ -114,6 +115,8 @@ type
     EmptyKeyGroup : IKeyGroup;
 
     OverloadWatch : TCpuOverloadWatcher;
+
+
 
     procedure GetVstParameter(const Par:TVstParameter);
     procedure VstParameterChanged(const Par:TVstParameter);
@@ -219,6 +222,8 @@ type
     property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
     property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
 
+    property PluginParameters : TPluginParameterManager read fPluginParameters;
+
   published
     // Global parameters. These properties are for the benefit of the statemanager.
     property VoiceMode  : TVoiceMode read GetVoiceMode    write SetVoiceMode;
@@ -239,6 +244,7 @@ uses
   eeCustomGlobals,
   uLucidityExtra,
   LucidityParameterScaling,
+  LucidityUtils,
   eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
   SysUtils, NativeXML, uAutoFree, eeFunctions, eeDsp,
@@ -266,6 +272,10 @@ begin
   inherited;
 
   OverloadWatch := TCpuOverloadWatcher.Create;
+
+
+  fPluginParameters := TPluginParameterManager.Create(69);
+  SetupPluginParameters(fPluginParameters);
 
   //ShowMessage(LucidMsgIDToStr(49));
 
@@ -550,6 +560,8 @@ begin
   Log.LogMessage('==== TPlugin.Destroy - End ====');
 
   OverloadWatch.Free;
+
+  fPluginParameters.Free;
 
   inherited;
 end;
