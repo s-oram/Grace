@@ -590,7 +590,6 @@
 			<DCCReference Include="EasyEffectTemplate\eeTaskRunner.pas"/>
 			<DCCReference Include="Lucidity.KeyGroupLifeTimeManager.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeStoredActionList.pas"/>
-			<DCCReference Include="EasyEffectTemplate\eeMidiAutomation.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeMidiAutomationV2.pas"/>
 			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>
 			<DCCReference Include="Lucidity.MidiInputProcessor.pas"/>

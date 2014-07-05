@@ -3,11 +3,13 @@ unit eeSaveLoadFunctions;
 interface
 
 uses
-  VamLib.MoreTypes, eeMidiAutomation, NativeXml;
+  VamLib.MoreTypes,
+  NativeXml;
 
+{
 procedure SaveMidiMapToXML(const MidiAutomation:TMidiAutomation; var XML:TNativeXML);
 procedure LoadMidiMapFromXML(var MidiAutomation:TMidiAutomation; const XML:TNativeXML);
-
+}
 
 procedure SaveObjectToXML(const obj:TObject; var XmlNode:TXmlNode);
 procedure LoadObjectFromXML(obj:TObject; const XmlNode:TXmlNode);
@@ -23,6 +25,7 @@ uses
   eeLogging,
   TypInfo, uAutoFree, SysUtils, eeMidiMap, eeFunctions;
 
+  {
 procedure SaveMidiMapToXML(const MidiAutomation:TMidiAutomation; var XML:TNativeXML);
 var
   MidiMapNode:TXmlNode;
@@ -64,7 +67,9 @@ begin
     //MidiMapNode.Free;
   end;
 end;
+}
 
+{
 procedure LoadMidiMapFromXML(var MidiAutomation:TMidiAutomation; const XML:TNativeXML);
 var
   MidiMapNode:TXmlNode;
@@ -84,7 +89,7 @@ begin
 
     BindingNodes := TsdNodeList.Create;
     AutoFree(@BindingNodes);
-    
+
 
     MidiMapNode.FindNodes('Binding', BindingNodes);
 
@@ -122,14 +127,14 @@ begin
         if Value = 'VSTParameter'     then amb.TargetType := ttVstParameter;
         if Value = 'PrivateParameter' then amb.TargetType := ttPrivateParameter;
       end;
-      
+
       MidiAutomation.MidiMap.AddBinding(amb.MidiCC, amb.ParameterId, amb.ParameterName, amb.TargetType);
     end;
 
   end;
 
 end;
-
+}
 
 procedure SaveObjectToXML(const obj:TObject; var XmlNode:TXmlNode);
 var
@@ -169,6 +174,7 @@ begin
 
    end;
 end;
+
 
 procedure LoadObjectFromXML(obj:TObject; const XmlNode:TXmlNode);
 var

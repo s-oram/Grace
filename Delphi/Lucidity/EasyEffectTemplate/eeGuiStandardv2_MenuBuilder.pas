@@ -7,7 +7,8 @@ interface
 uses
   Menus, Controls, Classes,
   eeGlobals,
-  eeTypes, eeMidiAutomation, eeMidiMap,
+  eeTypes,
+  eeMidiMap,
   eeGuiStandard_Types,
   eeEnumHelper;
 

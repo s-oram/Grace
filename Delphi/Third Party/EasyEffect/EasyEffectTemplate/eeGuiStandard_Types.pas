@@ -3,7 +3,7 @@ unit eeGuiStandard_Types;
 interface
 
 uses
-  eeTypes, eeMidiAutomation,
+  eeTypes,
   eeMidiMap;
 
 type
@@ -20,10 +20,6 @@ type
     GetParameterLabel     : TGetParemeterLabelFunction;
     BeginParameterEdit    : TBeginParameterEdit;
     EndParameterEdit      : TEndParameterEdit;
-    EnableMidiLearn       : TEnableMidiLearn;   //TODO: This EnableMIDILearn isn't required anymore I believe.
-    SetMidiBinding        : TSetMidiBinding;      //TODO: This midi binding event isn't required anymore I believe.
-    RemoveMidiBinding     : TRemoveMidiBinding;     //TODO: This midi binding event isn't required anymore I believe.
-    GetCurrentMidiBiding  : TGetCurrentMidiBinding; //TODO: This midi binding event isn't required anymore I believe.
 
     procedure AssignFrom(const Source:TVstMethodReferences);
   end;
@@ -40,10 +36,6 @@ begin
   Self.GetParameterLabel       := Source.GetParameterLabel;
   Self.BeginParameterEdit      := Source.BeginParameterEdit;
   Self.EndParameterEdit        := Source.EndParameterEdit;
-  Self.EnableMidiLearn         := Source.EnableMidiLearn;
-  Self.SetMidiBinding          := Source.SetMidiBinding;
-  Self.RemoveMidiBinding       := Source.RemoveMidiBinding;
-  Self.GetCurrentMidiBiding    := Source.GetCurrentMidiBiding;
 end;
 
 end.
