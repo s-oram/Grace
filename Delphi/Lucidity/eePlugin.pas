@@ -137,7 +137,7 @@ type
 
     function GetPluginParameter(const ParName : string):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
-    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const Value : single); reintroduce; overload;
+    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
@@ -341,7 +341,6 @@ begin
   PublishPluginParameterAsVstParameter(TPluginParameter.PadY4);
 
 
-
   GlobalModPoints.Source_TriggeredNoteCount := 0;
   GlobalModPoints.Init;
 
@@ -349,9 +348,30 @@ begin
 
   Globals.AddEventListener(TPluginEvent.SampleRateChanged, EventHandle_SampleRateChanged);
 
+
+  //============ XY Pads =======================================================
+  fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
+
+  GlobalModPoints.Source_PadX1_Unipolar := @XYPads.UniSmoothedPadX1;
+  GlobalModPoints.Source_PadY1_Unipolar := @XYPads.UniSmoothedPadY1;
+  GlobalModPoints.Source_PadX2_Unipolar := @XYPads.UniSmoothedPadX2;
+  GlobalModPoints.Source_PadY2_Unipolar := @XYPads.UniSmoothedPadY2;
+  GlobalModPoints.Source_PadX3_Unipolar := @XYPads.UniSmoothedPadX3;
+  GlobalModPoints.Source_PadY3_Unipolar := @XYPads.UniSmoothedPadY3;
+  GlobalModPoints.Source_PadX4_Unipolar := @XYPads.UniSmoothedPadX4;
+  GlobalModPoints.Source_PadY4_Unipolar := @XYPads.UniSmoothedPadY4;
+
+  GlobalModPoints.Source_PadX1_Bipolar := @XYPads.BiSmoothedPadX1;
+  GlobalModPoints.Source_PadY1_Bipolar := @XYPads.BiSmoothedPadY1;
+  GlobalModPoints.Source_PadX2_Bipolar := @XYPads.BiSmoothedPadX2;
+  GlobalModPoints.Source_PadY2_Bipolar := @XYPads.BiSmoothedPadY2;
+  GlobalModPoints.Source_PadX3_Bipolar := @XYPads.BiSmoothedPadX3;
+  GlobalModPoints.Source_PadY3_Bipolar := @XYPads.BiSmoothedPadY3;
+  GlobalModPoints.Source_PadX4_Bipolar := @XYPads.BiSmoothedPadX4;
+  GlobalModPoints.Source_PadY4_Bipolar := @XYPads.BiSmoothedPadY4;
+  //============================================================================
+
   TProfiler.Open;
-
-
 
   {$IFDEF Logging}
   if (PluginDataDir^.Exists)
@@ -425,7 +445,7 @@ begin
   MidiAutomation.OnNewBinding  := Event_MidiAutomation_NewBinding;
   // TODO: Load default MIDI map here!
 
-  fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
+
 
   MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
   Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.Audio);
@@ -584,22 +604,32 @@ procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const Pa
 begin
   case ParID of
     kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
-    //kPluginParameterID.PadX1: PluginState.PadX1 := ParValue;
-    kPluginParameterID.PadY1: self.XYPads.PadY1 := ParValue;
-    kPluginParameterID.PadX2: self.XYPads.PadX2 := ParValue;
-    kPluginParameterID.PadY2: self.XYPads.PadY2 := ParValue;
-    kPluginParameterID.PadX3: self.XYPads.PadX3 := ParValue;
-    kPluginParameterID.PadY3: self.XYPads.PadY3 := ParValue;
-    kPluginParameterID.PadX4: self.XYPads.PadX4 := ParValue;
-    kPluginParameterID.PadY4: self.XYPads.PadY4 := ParValue;
+    kPluginParameterID.PadY1: fXYPads.PadY1 := ParValue;
+    kPluginParameterID.PadX2: fXYPads.PadX2 := ParValue;
+    kPluginParameterID.PadY2: fXYPads.PadY2 := ParValue;
+    kPluginParameterID.PadX3: fXYPads.PadX3 := ParValue;
+    kPluginParameterID.PadY3: fXYPads.PadY3 := ParValue;
+    kPluginParameterID.PadX4: fXYPads.PadX4 := ParValue;
+    kPluginParameterID.PadY4: fXYPads.PadY4 := ParValue;
   else
     TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
   end;
 end;
 
-procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const Value: single);
+procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const ParValue: single);
 begin
-  TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, Value);
+  case ParID of
+    kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
+    kPluginParameterID.PadY1: fXYPads.PadY1 := ParValue;
+    kPluginParameterID.PadX2: fXYPads.PadX2 := ParValue;
+    kPluginParameterID.PadY2: fXYPads.PadY2 := ParValue;
+    kPluginParameterID.PadX3: fXYPads.PadX3 := ParValue;
+    kPluginParameterID.PadY3: fXYPads.PadY3 := ParValue;
+    kPluginParameterID.PadX4: fXYPads.PadX4 := ParValue;
+    kPluginParameterID.PadY4: fXYPads.PadY4 := ParValue;
+  else
+    TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, ParValue);
+  end;
 end;
 
 
@@ -1313,6 +1343,8 @@ const
   ksr = 44100;
 begin
   try
+    XYPads.UniSmoothedPadX1 := XYPads.PadX1;
+
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     MidiInputProcessor.FastControlProcess;
@@ -1321,6 +1353,7 @@ begin
     //OverloadWatch.Stop;
 
     KeyGroupPlayer.FastControlProcess;
+
   except
     {$IFDEF MadExcept}
     HandleException;

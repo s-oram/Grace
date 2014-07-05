@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.MoreTypes,
   Lucidity.PluginParameters,
   SysUtils,
   eeEnumHelper,
@@ -157,23 +158,23 @@ type
     Source_MidiModWheel_Unipolar  : single; //range 0..1
     Source_MidiModWheel_Bipolar   : single; //range -1..1
     //Unipolar sources...
-    Source_PadX1_Unipolar     : single;
-    Source_PadY1_Unipolar     : single;
-    Source_PadX2_Unipolar     : single;
-    Source_PadY2_Unipolar     : single;
-    Source_PadX3_Unipolar     : single;
-    Source_PadY3_Unipolar     : single;
-    Source_PadX4_Unipolar     : single;
-    Source_PadY4_Unipolar     : single;
+    Source_PadX1_Unipolar     : PSingle;
+    Source_PadY1_Unipolar     : PSingle;
+    Source_PadX2_Unipolar     : PSingle;
+    Source_PadY2_Unipolar     : PSingle;
+    Source_PadX3_Unipolar     : PSingle;
+    Source_PadY3_Unipolar     : PSingle;
+    Source_PadX4_Unipolar     : PSingle;
+    Source_PadY4_Unipolar     : PSingle;
     //bipolar sources...
-    Source_PadX1_Bipolar      : single;
-    Source_PadY1_Bipolar      : single;
-    Source_PadX2_Bipolar      : single;
-    Source_PadY2_Bipolar      : single;
-    Source_PadX3_Bipolar      : single;
-    Source_PadY3_Bipolar      : single;
-    Source_PadX4_Bipolar      : single;
-    Source_PadY4_Bipolar      : single;
+    Source_PadX1_Bipolar      : PSingle;
+    Source_PadY1_Bipolar      : PSingle;
+    Source_PadX2_Bipolar      : PSingle;
+    Source_PadY2_Bipolar      : PSingle;
+    Source_PadX3_Bipolar      : PSingle;
+    Source_PadY3_Bipolar      : PSingle;
+    Source_PadX4_Bipolar      : PSingle;
+    Source_PadY4_Bipolar      : PSingle;
 
     procedure Init;
   end;
@@ -530,6 +531,7 @@ end;
 
 procedure TGlobalModulationPoints.Init;
 begin
+  {
   self.Source_PadX1_Unipolar := 0;
   self.Source_PadY1_Unipolar := 0;
   self.Source_PadX2_Unipolar := 0;
@@ -547,6 +549,7 @@ begin
   self.Source_PadY3_Bipolar := 0;
   self.Source_PadX4_Bipolar := 0;
   self.Source_PadY4_Bipolar := 0;
+  }
 end;
 
 initialization
