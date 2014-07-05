@@ -154,7 +154,6 @@ uses
   eeGuiStandardv2_MenuBuilder in 'EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas',
   eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
   eeTaskRunner in 'EasyEffectTemplate\eeTaskRunner.pas',
-  Lucidity.KeyGroupLifeTimeManager in 'Lucidity.KeyGroupLifeTimeManager.pas',
   eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas',
   eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas',
   Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',

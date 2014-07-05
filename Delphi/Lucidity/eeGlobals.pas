@@ -11,7 +11,6 @@ uses
   eeStoredActionList,
   VamLib.ManagedObject,
   uGuiState,
-  Lucidity.KeyGroupLifeTimeManager,
   Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 
@@ -28,7 +27,6 @@ type
     fMouseOverModSlot: integer;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
-    fKeyGroupLifeTimeManager: TKeyGroupLifeTimeManager;
     fAudioActions: TStoredActions;
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
@@ -70,13 +68,7 @@ type
 
     property GuiState : TGuiState read fGuiState;
 
-
-    // TODO:MED I don't know if the keyGroup Lifetime manager is needed.
-    property KeyGroupLifeTimeManager : TKeyGroupLifeTimeManager read fKeyGroupLifeTimeManager;
-
     property AudioActions : TStoredActions read fAudioActions;
-
-
 
     //=== some object references =====
     property SampleMapReference : TObject read fSampleMapReference write fSampleMapReference;
@@ -114,9 +106,6 @@ begin
   inherited;
 
   fAudioActions := TStoredActions.Create;
-
-  fKeyGroupLifeTimeManager := TKeyGroupLifeTimeManager.Create;
-  MotherShip.RegisterZeroObject(fKeyGroupLifeTimeManager, TZeroObjectRank.Audio);
 
   fGuiState := TGuiState.Create;
 
@@ -197,7 +186,6 @@ end;
 
 destructor TGlobals.Destroy;
 begin
-  fKeyGroupLifeTimeManager.Free;
   fSkinImageLoader.Free;
   fOptions.Free;
   VclTaskTimer.Free;
