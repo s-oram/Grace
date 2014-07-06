@@ -1,87 +1,219 @@
 object XYPadsFrame: TXYPadsFrame
   Left = 0
   Top = 0
-  Width = 863
-  Height = 404
+  Width = 1102
+  Height = 708
   TabOrder = 0
   object Panel: TRedFoxContainer
+    AlignWithMargins = True
     Left = 0
     Top = 0
-    Width = 863
-    Height = 404
+    Width = 1102
+    Height = 706
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 2
     Color = '$FFEEEEEE'
     Align = alClient
     object BackgroundPanel: TVamPanel
       Left = 0
       Top = 0
-      Width = 863
-      Height = 404
+      Width = 1102
+      Height = 706
+      Opacity = 255
       HitTest = True
       Color = '$FFCCCCCC'
-      Transparent = True
+      Transparent = False
       Align = alClient
       Visible = True
-      object VamLabel1: TVamLabel
-        Left = 0
-        Top = 0
-        Width = 863
-        Height = 18
-        Text = 'XY PADS'
+      OnResize = BackgroundPanelResize
+      object XYPadsContainer: TVamDiv
+        AlignWithMargins = True
+        Left = 112
+        Top = 115
+        Width = 817
+        Height = 206
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Opacity = 255
         HitTest = True
-        AutoSize = False
-        TextAlign = AlignCenter
-        TextVAlign = AlignCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        Align = alTop
         Visible = True
-      end
-      object VamDiv1: TVamDiv
-        Left = 0
-        Top = 363
-        Width = 863
-        Height = 41
-        Text = 'VamDiv1'
-        HitTest = True
-        Align = alBottom
-        Visible = True
-        object CpuText: TVamLabel
-          Left = 120
-          Top = 0
-          Width = 137
-          Height = 41
-          Text = 'CPU: 00%'
-          HitTest = True
-          AutoSize = False
-          TextAlign = AlignNear
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Align = alLeft
-          Visible = True
-        end
-        object VoiceCountText: TVamLabel
+        object XYPadsContainerLabel: TVamLabel
           Left = 0
           Top = 0
-          Width = 120
-          Height = 41
-          Text = 'Voices: 0'
+          Width = 817
+          Height = 18
+          Opacity = 255
+          Text = 'XY PADS'
           HitTest = True
           AutoSize = False
-          TextAlign = AlignNear
+          TextAlign = AlignCenter
           TextVAlign = AlignCenter
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
-          Font.Style = []
-          Align = alLeft
+          Font.Style = [fsBold]
+          Align = alTop
+          Visible = True
+        end
+        object XYPad1: TVamXYPad
+          Tag = 1
+          Left = 32
+          Top = 32
+          Width = 100
+          Height = 100
+          Opacity = 255
+          Text = 'XYPad1'
+          HitTest = True
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
+          Visible = True
+          OnMouseDown = XYPadMouseDown
+          OnChanged = XYPadChanged
+        end
+        object XYPad2: TVamXYPad
+          Tag = 2
+          Left = 200
+          Top = 32
+          Width = 100
+          Height = 100
+          Opacity = 255
+          Text = 'XYPad2'
+          HitTest = True
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
+          Visible = True
+          OnMouseDown = XYPadMouseDown
+          OnChanged = XYPadChanged
+        end
+        object XYPad3: TVamXYPad
+          Tag = 3
+          Left = 384
+          Top = 32
+          Width = 100
+          Height = 100
+          Opacity = 255
+          Text = 'XYPad3'
+          HitTest = True
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
+          Visible = True
+          OnMouseDown = XYPadMouseDown
+          OnChanged = XYPadChanged
+        end
+        object XYPad4: TVamXYPad
+          Tag = 4
+          Left = 555
+          Top = 32
+          Width = 100
+          Height = 100
+          Opacity = 255
+          Text = 'XYPad4'
+          HitTest = True
+          CornerRadius = 3.000000000000000000
+          Color_Background = '$ff242B39'
+          Color_Border = '$ff242B39'
+          Color_Puck = '$ffA1BDED'
+          PosX = 1.000000000000000000
+          PosY = 1.000000000000000000
+          PadX_VstParameterIndex = 0
+          PadY_VstParameterIndex = 0
+          Visible = True
+          OnMouseDown = XYPadMouseDown
+          OnChanged = XYPadChanged
+        end
+        object PadLabel1: TVamLabel
+          Left = 32
+          Top = 138
+          Width = 100
+          Height = 16
+          Opacity = 255
+          Text = 'P4'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object PadLabel2: TVamLabel
+          Left = 200
+          Top = 138
+          Width = 100
+          Height = 16
+          Opacity = 255
+          Text = 'P4'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object PadLabel3: TVamLabel
+          Left = 384
+          Top = 138
+          Width = 100
+          Height = 16
+          Opacity = 255
+          Text = 'P4'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
+        end
+        object PadLabel4: TVamLabel
+          Left = 555
+          Top = 138
+          Width = 100
+          Height = 16
+          Opacity = 255
+          Text = 'P4'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
           Visible = True
         end
       end

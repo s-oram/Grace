@@ -1,8 +1,6 @@
-unit uVoiceSetupFrame;
+unit uXYPadsFrame;
 
 interface
-
-// TODO:HIGH rename VoiceSetupFrame to XyPadsFrame.
 
 {$INCLUDE Defines.inc}
 

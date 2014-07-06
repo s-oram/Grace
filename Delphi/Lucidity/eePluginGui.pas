@@ -11,7 +11,7 @@ uses
   LucidityGui.MenuButtonHandler,
   Lucidity.Interfaces,
   VamLib.ZeroObject,
-  uVoiceSetupFrame,
+  uXYPadsFrame,
   uSequencerFrame,
   OtlComm, uModSystem2Frame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea,

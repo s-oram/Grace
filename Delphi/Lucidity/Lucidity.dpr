@@ -160,7 +160,7 @@ uses
   Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',
   Lucidity.VoiceController in 'Lucidity.VoiceController.pas',
   uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame},
-  uVoiceSetupFrame in 'frames\uVoiceSetupFrame.pas' {XYPadsFrame: TFrame},
+  uXYPadsFrame in 'frames\uXYPadsFrame.pas' {XYPadsFrame: TFrame},
   Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas',
   eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas',
   AudioEffect in 'AudioEffects\AudioEffect.pas',
