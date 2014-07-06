@@ -166,15 +166,6 @@ type
     Source_PadY3_Unipolar     : PSingle;
     Source_PadX4_Unipolar     : PSingle;
     Source_PadY4_Unipolar     : PSingle;
-    //bipolar sources...
-    Source_PadX1_Bipolar      : PSingle;
-    Source_PadY1_Bipolar      : PSingle;
-    Source_PadX2_Bipolar      : PSingle;
-    Source_PadY2_Bipolar      : PSingle;
-    Source_PadX3_Bipolar      : PSingle;
-    Source_PadY3_Bipolar      : PSingle;
-    Source_PadX4_Bipolar      : PSingle;
-    Source_PadY4_Bipolar      : PSingle;
 
     procedure Init;
   end;

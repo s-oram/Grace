@@ -371,23 +371,14 @@ begin
   //============ XY Pads =======================================================
   fXYPads := TLucidityXYPads.Create(@GlobalModPoints, Globals);
 
-  GlobalModPoints.Source_PadX1_Unipolar := @XYPads.UniSmoothedPadX1;
-  GlobalModPoints.Source_PadY1_Unipolar := @XYPads.UniSmoothedPadY1;
-  GlobalModPoints.Source_PadX2_Unipolar := @XYPads.UniSmoothedPadX2;
-  GlobalModPoints.Source_PadY2_Unipolar := @XYPads.UniSmoothedPadY2;
-  GlobalModPoints.Source_PadX3_Unipolar := @XYPads.UniSmoothedPadX3;
-  GlobalModPoints.Source_PadY3_Unipolar := @XYPads.UniSmoothedPadY3;
-  GlobalModPoints.Source_PadX4_Unipolar := @XYPads.UniSmoothedPadX4;
-  GlobalModPoints.Source_PadY4_Unipolar := @XYPads.UniSmoothedPadY4;
-
-  GlobalModPoints.Source_PadX1_Bipolar := @XYPads.BiSmoothedPadX1;
-  GlobalModPoints.Source_PadY1_Bipolar := @XYPads.BiSmoothedPadY1;
-  GlobalModPoints.Source_PadX2_Bipolar := @XYPads.BiSmoothedPadX2;
-  GlobalModPoints.Source_PadY2_Bipolar := @XYPads.BiSmoothedPadY2;
-  GlobalModPoints.Source_PadX3_Bipolar := @XYPads.BiSmoothedPadX3;
-  GlobalModPoints.Source_PadY3_Bipolar := @XYPads.BiSmoothedPadY3;
-  GlobalModPoints.Source_PadX4_Bipolar := @XYPads.BiSmoothedPadX4;
-  GlobalModPoints.Source_PadY4_Bipolar := @XYPads.BiSmoothedPadY4;
+  GlobalModPoints.Source_PadX1_Unipolar := @XYPads.fPadX1;
+  GlobalModPoints.Source_PadY1_Unipolar := @XYPads.fPadY1;
+  GlobalModPoints.Source_PadX2_Unipolar := @XYPads.fPadX2;
+  GlobalModPoints.Source_PadY2_Unipolar := @XYPads.fPadY2;
+  GlobalModPoints.Source_PadX3_Unipolar := @XYPads.fPadX3;
+  GlobalModPoints.Source_PadY3_Unipolar := @XYPads.fPadY3;
+  GlobalModPoints.Source_PadX4_Unipolar := @XYPads.fPadX4;
+  GlobalModPoints.Source_PadY4_Unipolar := @XYPads.fPadY4;
   //============================================================================
 
   TProfiler.Open;
