@@ -3,7 +3,7 @@ unit VamKnob;
 interface
 
 uses
-  VamKnobSmoother,
+  VamKnobSmoother, //TODO:MED Remove the knob smoother if adding parameter smoothing.['{0CA14E6F-028E-4D3F-97BC-B30B897876E3}']
   VamGuiControlInterfaces,
   Types, Controls, Classes, Graphics, AggColor,
   RedFox, RedFoxGraphicControl, RedFoxColor,
