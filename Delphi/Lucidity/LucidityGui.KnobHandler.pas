@@ -304,7 +304,7 @@ begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
 
     if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
     begin

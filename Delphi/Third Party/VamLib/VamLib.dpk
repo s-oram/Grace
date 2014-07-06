@@ -52,6 +52,7 @@ contains
   VamLib.HighSpeedTimer in 'Source\VamLib.HighSpeedTimer.pas',
   VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas',
   VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas',
-  VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas';
+  VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas',
+  VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas';
 
 end.

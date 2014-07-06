@@ -233,7 +233,7 @@ begin
 
     if ParName = ScopeState.CurrentParFocus then
     begin
-      UpdateScope;
+      UpdateScope(ScopeState.CurrentParFocus);
     end;
   end;
 end;

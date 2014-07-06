@@ -75,6 +75,16 @@ function RandomString(const CharacterCount : integer):string;
  // The x1..x4 values are the min-max scaling values.
 function StaggeredExpand(InputValue, x1, x2, x3, x4 : single):single;
 
+
+
+//==============================================================
+//    Enum Helpers
+//==============================================================
+
+
+
+
+
 implementation
 
 uses
