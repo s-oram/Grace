@@ -50,6 +50,7 @@ type
 implementation
 
 uses
+  eeTypes,
   Lucidity.PluginParameters,
   Lucidity.Types,
   RedFox,

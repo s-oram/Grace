@@ -66,6 +66,18 @@ type
 
   TPluginParameterID = integer;
 
+  // TParChangeScope = Parameter Change Scope.
+  // Setting/Getting a plugin parameters value becomes complicated
+  // when a parameter can be dynmaically mapped to different 'focused'
+  // elements of a multi-timbral type patch. For Example: The ADSR
+  // envelope knobs might be applied to the focused sample, not all
+  // loaded samples.
+  // By controst parameter changes sometimes need to be global and
+  // applied to all 'layers' of a patch.
+  // Generally parameter changes from MIDI and Published VST parameters
+  // are "Global" while the GUI normally triggers "Focused" parameter changes.
+  TParChangeScope = (psGlobal, psFocused);
+
 
 
 
