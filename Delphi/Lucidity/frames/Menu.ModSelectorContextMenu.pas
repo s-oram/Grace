@@ -17,6 +17,7 @@ type
     ModViaMenu    : TModSourceMenu;
     ModSlotIndex  : integer;
 
+    procedure Handle_ModSourcePolaritySelected(Sender : TObject);
     procedure Handle_ModSourceSelected(Sender : TObject; aSource : TModSource);
     procedure Handle_ModViaSelected(Sender : TObject; aSource : TModSource);
 
@@ -36,89 +37,6 @@ uses
   SysUtils,
   Lucidity.Interfaces,
   uConstants;
-
-
-procedure SortModMenu(const aMenu : TModSourceMenu);
-  procedure MoveItemToMenu(const DestMenu : TMenuItem; const SourceMenu : TModSourceMenu; const Item : TModSource);
-  var
-    mi : TMenuItem;
-  begin
-    mi := SourceMenu.FindMenuItemByEnum(Item);
-    SourceMenu.Items.Remove(mi);
-    DestMenu.Add(mi);
-    // Check the parent menu so the user can find the current checked item even
-    // when buried in a child menu.
-    if mi.Checked
-      then DestMenu.Checked := true;
-  end;
-var
-  UnipolarMenu : TMenuItem;
-  BipolarMenu  : TMenuItem;
-  SpacerMI : TMenuItem;
-  mi : TMenuItem;
-begin
-  UnipolarMenu := TMenuItem.Create(aMenu.Menu);
-  BipolarMenu  := TMenuItem.Create(aMenu.Menu);
-
-  UnipolarMenu.Caption := 'Unipolar';
-  BipolarMenu.Caption := 'Bipolar';
-
-  //TODO:HIGH Delete all this.
-  {
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Note_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Velocity_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_PitchBend_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_ModWheel_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Toggle_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.AmpEnv_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.FilterEnv_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Lfo1_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Lfo2_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq1_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.StepSeq2_Unipolar);
-
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX1_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY1_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX2_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY2_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX3_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY3_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadX4_Unipolar);
-  MoveItemToMenu(UnipolarMenu, aMenu, TModSource.PadY4_Unipolar);
-
-
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Note_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Velocity_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_PitchBend_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_ModWheel_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Midi_Toggle_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.AmpEnv_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.FilterEnv_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Lfo1_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.Lfo2_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq1_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.StepSeq2_Bipolar);
-
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX1_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY1_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX2_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY2_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX3_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY3_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX4_Bipolar);
-  MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY4_Bipolar);
-  }
-  aMenu.Items.Add(UnipolarMenu);
-  aMenu.Items.Add(BipolarMenu);
-
-  SpacerMI := TMenuItem.Create(aMenu.Menu);
-  SpacerMI.Caption := '-';
-  aMenu.Items.Add(SpacerMI);
-
-  mi := aMenu.Items[0];
-  aMenu.Items.Remove(mi);
-  aMenu.Items.Add(mi);
-end;
 
 { TModSelectorContextMenu }
 
@@ -199,8 +117,6 @@ begin
     mi.Checked := true;
   end;
 
-
-
   mi :=  ModViaMenu.FindMenuItemByEnum(ModVia);
   if assigned(mi) then
   begin
@@ -208,8 +124,27 @@ begin
   end;
 
 
-  SortModMenu(ModSourceMenu);
-  SortModMenu(ModViaMenu);
+  //======== Add extra Mod Source Menu Items =============
+  mi := TMenuItem.Create(nil);
+  mi.Caption := '-';
+  ModSourceMenu.Items.Add(mi);
+
+  mi := TMenuItem.Create(nil);
+  mi.Caption := 'Unipolar';
+  mi.Tag := 1;
+  mi.OnClick := Handle_ModSourcePolaritySelected;
+  if kg.GetModConnections.GetModSourcePolarity(ModSlotIndex) = TModSourcePolarity.Unipolar then mi.Checked := true;
+  ModSourceMenu.Items.Add(mi);
+
+  mi := TMenuItem.Create(nil);
+  mi.Caption := 'Bipolar';
+  mi.OnClick := Handle_ModSourcePolaritySelected;
+  mi.Tag := 2;
+  if kg.GetModConnections.GetModSourcePolarity(ModSlotIndex) = TModSourcePolarity.Bipolar then mi.Checked := true;
+  ModSourceMenu.Items.Add(mi);
+  //======================================================
+
+
 
   IsMute := kg.GetModConnections.GetModMute(ModSlotIndex);
   if IsMute then
@@ -233,6 +168,27 @@ begin
   end;
 
   Menu.Popup(x, y);
+end;
+
+procedure TModSelectorContextMenu.Handle_ModSourcePolaritySelected(Sender: TObject);
+var
+  kg : IKeyGroup;
+  Tag : integer;
+begin
+  Tag := (Sender as TMenuItem).Tag;
+
+  kg := Plugin.ActiveKeyGroup;
+  if assigned(kg) then
+  begin
+    case Tag of
+      1: kg.GetModConnections.SetModSourcePolarity(ModSlotIndex, TModSourcePolarity.Unipolar);
+      2: kg.GetModConnections.SetModSourcePolarity(ModSlotIndex, TModSourcePolarity.Bipolar);
+    else
+      raise Exception.Create('Unexpected tag value.');
+    end;
+
+    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  end;
 end;
 
 procedure TModSelectorContextMenu.Handle_ModSourceSelected(Sender: TObject; aSource: TModSource);

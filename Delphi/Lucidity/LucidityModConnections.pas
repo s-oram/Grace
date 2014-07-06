@@ -8,10 +8,13 @@ uses
   VamLib.MoreTypes,
   uConstants, uLucidityEnums;
 
+{$SCOPEDENUMS ON}
+
 type
   PModConnections = ^TModConnections;
   TModConnections = class
   private
+    fModSourcePolarity : array[0..kModSlotCount-1] of TModSourcePolarity;
     fModSource : array[0..kModSlotCount-1] of TModSource;
     fModVia    : array[0..kModSlotCount-1] of TModSource;
     fModMute   : array[0..kModSlotCount-1] of boolean;
@@ -19,6 +22,9 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    function GetModSourcePolarity(const ModSlotIndex : integer):TModSourcePolarity;
+    procedure SetModSourcePolarity(const ModSlotIndex : integer; const aPolarity : TModSourcePolarity);
 
     function GetModMute(const ModSlotIndex : integer) : boolean;
     procedure SetModMute(const ModSlotIndex : integer; IsMuted:boolean);
@@ -69,6 +75,11 @@ begin
   result := fModSource[ModSlotIndex];
 end;
 
+function TModConnections.GetModSourcePolarity(const ModSlotIndex : integer): TModSourcePolarity;
+begin
+  result := fModSourcePolarity[ModSlotIndex];
+end;
+
 function TModConnections.GetModVia(const ModSlotIndex: integer): TModSource;
 begin
   result := fModVia[ModSlotIndex]
@@ -82,6 +93,12 @@ end;
 procedure TModConnections.SetModSource(const ModSlotIndex: integer; aSource: TModSource);
 begin
   fModSource[ModSlotIndex] := aSource;
+  if assigned(OnChanged) then OnChanged(self);
+end;
+
+procedure TModConnections.SetModSourcePolarity(const ModSlotIndex : integer; const aPolarity: TModSourcePolarity);
+begin
+  fModSourcePolarity[ModSlotIndex] := aPolarity;
   if assigned(OnChanged) then OnChanged(self);
 end;
 

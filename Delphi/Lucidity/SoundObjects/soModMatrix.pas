@@ -48,6 +48,7 @@ type
     ModConnections: PModConnections;
 
     ModSlotValues : array[0..kModSlotCount-1] of single;
+    ModSlotPolarity : array[0..kModSlotCount-1] of boolean; //False = Unipolar, True = Bipolar.
     ModSlotSourcePointers : array[0..kModSlotCount-1] of psingle;
     ModSlotViaPointers    : array[0..kModSlotCount-1] of psingle;
 
@@ -257,7 +258,10 @@ begin
   // Update the Mod Slot Values
   for c1 := 0 to kModSlotCount - 1 do
   begin
-    ModSlotValues[c1] := ModSlotSourcePointers[c1]^ * ModSlotViaPointers[c1]^;
+    //ModSlotPolarity - True = bipolar.
+    if ModSlotPolarity[c1] = true
+      then ModSlotValues[c1] := (ModSlotSourcePointers[c1]^ * 2 - 1) * ModSlotViaPointers[c1]^
+      else ModSlotValues[c1] := ModSlotSourcePointers[c1]^ * ModSlotViaPointers[c1]^;
   end;
 
   // calc the modulation for each modulated parameter.
@@ -331,12 +335,19 @@ var
   aModSource : TModSource;
   IsMute : boolean;
   Index : integer;
+  IsBipolar : boolean;
 begin
 
   // Update mod source pointers...
   for c1 := 0 to kModSlotCount-1 do
   begin
     IsMute := self.ModConnections^.GetModMute(c1);
+
+    if self.ModConnections^.GetModSourcePolarity(c1) = TModSourcePolarity.Bipolar
+      then IsBipolar := true
+      else IsBipolar := false;
+
+    ModSlotPolarity[c1] := IsBipolar;
 
     aModSource := self.ModConnections^.GetModSource(c1);
     if (aModSource <> TModSource.None) and (IsMute = false)

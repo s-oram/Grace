@@ -80,6 +80,8 @@ type
     class function ToShortGuiString(aEnum : TModEnvMode):string; override;
   end;
 
+  TModSourcePolarity = (Unipolar, Bipolar);
+
   TModSource = (
     None,
     //Unipolar sources...
@@ -304,66 +306,58 @@ end;
 { TModSourceHelper }
 
 class function TModSourceHelper.ToFullGuiString(aEnum: TModSource): string;
-const
-  UnipolarStr = '';
-  BipolarStr  = '';
 begin
   case aEnum of
     TModSource.None:                    result := 'None';
-    TModSource.Midi_Note_Unipolar:      result := 'MIDI Note' + UnipolarStr;
-    TModSource.Midi_Velocity_Unipolar:  result := 'MIDI Velocity'  + UnipolarStr;
-    TModSource.Midi_PitchBend_Unipolar: result := 'MIDI Pitchbend' + UnipolarStr;
-    TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel'  + UnipolarStr;
-    TModSource.Midi_Toggle_Unipolar:    result := 'MIDI Toggle' + UnipolarStr;
-    TModSource.AmpEnv_Unipolar:         result := 'Amp Envelope' + UnipolarStr;
-    TModSource.FilterEnv_Unipolar:      result := 'Filter Envelope' + UnipolarStr;
-    TModSource.Lfo1_UniPolar:           result := 'LFO 1' + UnipolarStr;
-    TModSource.Lfo2_UniPolar:           result := 'LFO 2' + UnipolarStr;
-    TModSource.StepSeq1_Unipolar:       result := 'Step Sequencer 1' + UnipolarStr;
-    TModSource.StepSeq2_Unipolar:       result := 'Step Sequencer 2' + UnipolarStr;
+    TModSource.Midi_Note_Unipolar:      result := 'MIDI Note';
+    TModSource.Midi_Velocity_Unipolar:  result := 'MIDI Velocity';
+    TModSource.Midi_PitchBend_Unipolar: result := 'MIDI Pitchbend';
+    TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel';
+    TModSource.Midi_Toggle_Unipolar:    result := 'MIDI Toggle';
+    TModSource.AmpEnv_Unipolar:         result := 'Amp Envelope';
+    TModSource.FilterEnv_Unipolar:      result := 'Filter Envelope';
+    TModSource.Lfo1_UniPolar:           result := 'LFO 1';
+    TModSource.Lfo2_UniPolar:           result := 'LFO 2';
+    TModSource.StepSeq1_Unipolar:       result := 'Step Sequencer 1';
+    TModSource.StepSeq2_Unipolar:       result := 'Step Sequencer 2';
     // unipolar sources...
-    TModSource.PadX1_Unipolar:          result := 'Pad X1' + UnipolarStr;
-    TModSource.PadY1_Unipolar:          result := 'Pad Y1' + UnipolarStr;
-    TModSource.PadX2_Unipolar:          result := 'Pad X2' + UnipolarStr;
-    TModSource.PadY2_Unipolar:          result := 'Pad Y2' + UnipolarStr;
-    TModSource.PadX3_Unipolar:          result := 'Pad X3' + UnipolarStr;
-    TModSource.PadY3_Unipolar:          result := 'Pad Y3' + UnipolarStr;
-    TModSource.PadX4_Unipolar:          result := 'Pad X4' + UnipolarStr;
-    TModSource.PadY4_Unipolar:          result := 'Pad Y4' + UnipolarStr;
-
+    TModSource.PadX1_Unipolar:          result := 'Pad X1';
+    TModSource.PadY1_Unipolar:          result := 'Pad Y1';
+    TModSource.PadX2_Unipolar:          result := 'Pad X2';
+    TModSource.PadY2_Unipolar:          result := 'Pad Y2';
+    TModSource.PadX3_Unipolar:          result := 'Pad X3';
+    TModSource.PadY3_Unipolar:          result := 'Pad Y3';
+    TModSource.PadX4_Unipolar:          result := 'Pad X4';
+    TModSource.PadY4_Unipolar:          result := 'Pad Y4';
   else
     result := inherited;
   end;
 end;
 
 class function TModSourceHelper.ToShortGuiString(aEnum: TModSource): string;
-const
-  UnipolarStr = '+';
-  //BipolarStr  = '±';
-  BipolarStr  = '+/-';
 begin
   case aEnum of
     TModSource.None:                    result := '-';
-    TModSource.Midi_Note_Unipolar:      result := 'Note'    + UnipolarStr;
-    TModSource.Midi_Velocity_Unipolar:  result := 'Vel'     + UnipolarStr;
-    TModSource.Midi_PitchBend_Unipolar: result := 'P.Bend'  + UnipolarStr;
-    TModSource.Midi_ModWheel_Unipolar:  result := 'Mod Whl' + UnipolarStr;
-    TModSource.Midi_Toggle_Unipolar:    result := 'Toggle'  + UnipolarStr;
-    TModSource.AmpEnv_Unipolar:         result := 'Amp Env' + UnipolarStr;
-    TModSource.FilterEnv_Unipolar:      result := 'Mod Env' + UnipolarStr;
-    TModSource.Lfo1_UniPolar:           result := 'LFO1'    + UnipolarStr;
-    TModSource.Lfo2_UniPolar:           result := 'LFO2'    + UnipolarStr;
-    TModSource.StepSeq1_Unipolar:       result := 'Seq1'    + UnipolarStr;
-    TModSource.StepSeq2_Unipolar:       result := 'Seq2'    + UnipolarStr;
+    TModSource.Midi_Note_Unipolar:      result := 'Note';
+    TModSource.Midi_Velocity_Unipolar:  result := 'Vel';
+    TModSource.Midi_PitchBend_Unipolar: result := 'P.Bend';
+    TModSource.Midi_ModWheel_Unipolar:  result := 'Mod Whl';
+    TModSource.Midi_Toggle_Unipolar:    result := 'Toggle';
+    TModSource.AmpEnv_Unipolar:         result := 'Amp Env';
+    TModSource.FilterEnv_Unipolar:      result := 'Mod Env';
+    TModSource.Lfo1_UniPolar:           result := 'LFO1';
+    TModSource.Lfo2_UniPolar:           result := 'LFO2';
+    TModSource.StepSeq1_Unipolar:       result := 'Seq1';
+    TModSource.StepSeq2_Unipolar:       result := 'Seq2';
     // unipolar sources...
-    TModSource.PadX1_Unipolar:          result := 'Pad X1' + UnipolarStr;
-    TModSource.PadY1_Unipolar:          result := 'Pad Y1' + UnipolarStr;
-    TModSource.PadX2_Unipolar:          result := 'Pad X2' + UnipolarStr;
-    TModSource.PadY2_Unipolar:          result := 'Pad Y2' + UnipolarStr;
-    TModSource.PadX3_Unipolar:          result := 'Pad X3' + UnipolarStr;
-    TModSource.PadY3_Unipolar:          result := 'Pad Y3' + UnipolarStr;
-    TModSource.PadX4_Unipolar:          result := 'Pad X4' + UnipolarStr;
-    TModSource.PadY4_Unipolar:          result := 'Pad Y4' + UnipolarStr;
+    TModSource.PadX1_Unipolar:          result := 'Pad X1';
+    TModSource.PadY1_Unipolar:          result := 'Pad Y1';
+    TModSource.PadX2_Unipolar:          result := 'Pad X2';
+    TModSource.PadY2_Unipolar:          result := 'Pad Y2';
+    TModSource.PadX3_Unipolar:          result := 'Pad X3';
+    TModSource.PadY3_Unipolar:          result := 'Pad Y3';
+    TModSource.PadX4_Unipolar:          result := 'Pad X4';
+    TModSource.PadY4_Unipolar:          result := 'Pad Y4';
   else
     result := inherited;
   end;

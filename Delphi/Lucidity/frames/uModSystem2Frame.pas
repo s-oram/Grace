@@ -281,6 +281,7 @@ var
   ModSourceText : string;
   kg : IKeyGroup;
   ModConnections : TModConnections;
+  ModSourcePolarity : TModSourcePolarity;
 begin
   kg := Plugin.ActiveKeyGroup;
   if not assigned(kg) then exit;
@@ -290,8 +291,16 @@ begin
   begin
     ModConnections := kg.GetModConnections;
 
+    ModSourcePolarity := kg.GetModConnections.GetModSourcePolarity(c1);
+
     ModSource := ModConnections.GetModSource(c1);
     ModSourceText := TModSourceHelper.ToShortGuiString(ModSource);
+    if ModSource <> TModSource.None then
+    begin
+      if ModSourcePolarity = TModSourcePolarity.Unipolar
+        then ModSourceText := ModSourceText + '+'
+        else ModSourceText := ModSourceText + '+/-';
+    end;
     ModSelectors[c1].Text := ModSourceText;
 
     ModSource := ModConnections.GetModVia(c1);
