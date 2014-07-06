@@ -134,6 +134,8 @@ type
     procedure Event_MidiAutomation_NewBinding(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
 
     procedure PublishPluginParameterAsVstParameter(const Par : TPluginParameter);
+
+
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -590,9 +592,6 @@ var
   Par : TPluginParameter;
   ParID : TPluginParameterID;
 begin
-  //I don't think this method is needed for psKeyGroup scope.
-  assert(Scope <> TParChangeScope.psKeyGroup, 'not yet implemented.');
-
   Par := PluginParFromName(ParName);
   ParID := PluginParToID(Par);
 

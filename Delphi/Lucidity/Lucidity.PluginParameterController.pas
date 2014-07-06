@@ -210,15 +210,6 @@ begin
       end;
     end;
 
-    psKeyGroup:
-    begin
-      kg := Plugin.KeyGroups.FindSampleGroup(KeyGroupName);
-      if assigned(kg) then
-      begin
-        ApplyPluginParToKeyGroup(kg, Par, ParValue);
-        SendMessages(Plugin, Par, ParValue);
-      end;
-    end;
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -373,15 +364,6 @@ begin
         then kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
     end;
 
-    psKeyGroup:
-    begin
-      assert(false, 'TODO');
-      {
-      kg := Plugin.KeyGroups.FindSampleGroup(KeyGroupName);
-      if assigned(kg)
-        then kg.SetModParModAmount(ModParIndex, ModSlot, ModAmount);
-      }
-    end;
   else
     raise Exception.Create('Type not handled.');
   end;
