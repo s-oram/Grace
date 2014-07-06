@@ -167,6 +167,8 @@ end;
 
 destructor TeePluginBase.Destroy;
 begin
+  Globals.MotherShip.DeregisterZeroObject(self);
+
   SetLength(Inputs,0);
   SetLength(Outputs,0);
 
