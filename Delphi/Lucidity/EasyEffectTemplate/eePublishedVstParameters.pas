@@ -32,7 +32,7 @@ type
     procedure AddParameter(const PluginParameterName : string; const PluginParID : TPluginParameterID);
 
     function FindVstParameterIndex(const PluginParameterName : string) : integer; //TODO:LOW is this method even used anywhere?
-    function FindParameterName(const VstParameterIndex : integer) : string;
+    function FindParameterName(const VstParameterIndex : integer) : string; //TODO:MED this method should be removed. It's been superceded by using a parameterID
     function FindParameterID(const VstParameterIndex : integer) : TPluginParameterID;
 
     property Count : integer read GetCount;
