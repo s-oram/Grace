@@ -63,6 +63,8 @@ begin
   UnipolarMenu.Caption := 'Unipolar';
   BipolarMenu.Caption := 'Bipolar';
 
+  //TODO:HIGH Delete all this.
+  {
   MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Note_Unipolar);
   MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_Velocity_Unipolar);
   MoveItemToMenu(UnipolarMenu, aMenu, TModSource.Midi_PitchBend_Unipolar);
@@ -105,7 +107,7 @@ begin
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY3_Bipolar);
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadX4_Bipolar);
   MoveItemToMenu(BipolarMenu, aMenu, TModSource.PadY4_Bipolar);
-
+  }
   aMenu.Items.Add(UnipolarMenu);
   aMenu.Items.Add(BipolarMenu);
 

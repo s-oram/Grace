@@ -264,14 +264,9 @@ begin
   ModMatrix := TModMatrix.Create;
 
   ModMatrix.SetModSourcePointer(TModSource.Midi_Note_Unipolar, @ModPoints.MidiNote_Unipolar);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Note_Bipolar, @ModPoints.MidiNote_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity_Unipolar, @ModPoints.MidiVelocity_Unipolar);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Velocity_Bipolar, @ModPoints.MidiVelocity_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Unipolar, @GlobalModPoints^.Source_MidiPitchbend_Unipolar);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_PitchBend_Bipolar, @GlobalModPoints^.Source_MidiPitchbend_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Unipolar, @GlobalModPoints^.Source_MidiModWheel_Unipolar);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_ModWheel_Bipolar, @GlobalModPoints^.Source_MidiModWheel_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Bipolar, @ModPoints.MidiToggle_Bipolar);
   ModMatrix.SetModSourcePointer(TModSource.Midi_Toggle_Unipolar, @ModPoints.MidiToggle_Unipolar);
 
   ModMatrix.SetModSourcePointer(TModSource.PadX1_Unipolar, GlobalModPoints^.Source_PadX1_Unipolar);
@@ -282,15 +277,6 @@ begin
   ModMatrix.SetModSourcePointer(TModSource.PadY3_Unipolar, GlobalModPoints^.Source_PadY3_Unipolar);
   ModMatrix.SetModSourcePointer(TModSource.PadX4_Unipolar, GlobalModPoints^.Source_PadX4_Unipolar);
   ModMatrix.SetModSourcePointer(TModSource.PadY4_Unipolar, GlobalModPoints^.Source_PadY4_Unipolar);
-
-  ModMatrix.SetModSourcePointer(TModSource.PadX1_Bipolar, GlobalModPoints^.Source_PadX1_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadY1_Bipolar, GlobalModPoints^.Source_PadY1_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadX2_Bipolar, GlobalModPoints^.Source_PadX2_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadY2_Bipolar, GlobalModPoints^.Source_PadY2_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadX3_Bipolar, GlobalModPoints^.Source_PadX3_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadY3_Bipolar, GlobalModPoints^.Source_PadY3_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadX4_Bipolar, GlobalModPoints^.Source_PadX4_Bipolar);
-  ModMatrix.SetModSourcePointer(TModSource.PadY4_Bipolar, GlobalModPoints^.Source_PadY4_Bipolar);
 
   GrainStretchOsc := TLucidityGrainStretchOsc.Create(@ModPoints, VoiceClockManager);
 
@@ -305,30 +291,26 @@ begin
 
   AmpEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Unipolar, AmpEnv.GetModPointer('EnvOut_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Bipolar, AmpEnv.GetModPointer('EnvOut_Bi'));
+
 
   FilterEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Unipolar, FilterEnv.GetModPointer('EnvOut_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Bipolar, FilterEnv.GetModPointer('EnvOut_Bi'));
+
 
   FilterOne := TLucidityFilter.Create(@ModPoints);
   FilterTwo := TLucidityFilter.Create(@ModPoints);
 
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1_UniPolar, LfoA.GetModPointer('LfoOutput_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.Lfo1_BiPolar,  LfoA.GetModPointer('LfoOutput_Bi'));
 
   LfoB := TLucidityLfo.Create(1, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo2_UniPolar, LfoB.GetModPointer('LfoOutput_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.Lfo2_BiPolar,  LfoB.GetModPointer('LfoOutput_Bi'));
 
   StepSeqOne := TLucidyStepSequencer.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.StepSeq1_Unipolar, StepSeqOne.GetModPointer('StepSeqOutput_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.StepSeq1_Bipolar, StepSeqOne.GetModPointer('StepSeqOutput_Bi'));
 
   StepSeqTwo := TLucidyStepSequencer.Create(VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.StepSeq2_Unipolar, StepSeqTwo.GetModPointer('StepSeqOutput_Uni'));
-  ModMatrix.SetModSourcePointer(TModSource.StepSeq2_Bipolar, StepSeqTwo.GetModPointer('StepSeqOutput_Bi'));
 
   OutputMixer := TOutputMixer.Create;
   OutputMixer.VoiceMixMain := 1;
