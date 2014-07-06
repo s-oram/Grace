@@ -146,6 +146,7 @@ type
 implementation
 
 uses
+  eeTypes,
   VamLib.Utils,
   VamLib.Graphics,
   Lucidity.PluginParameters,
@@ -946,6 +947,7 @@ var
   mode : TPitchTracking;
   xpos : integer;
   ParName : string;
+  ParID    : TPluginParameterID;
   ParValue : single;
 begin
   SampleVolumeKnob.Align := alNone;
@@ -955,7 +957,8 @@ begin
   SampleBeatsKnob.Align := alNone;
 
   ParName := PluginParToName(TPluginParameter.PitchTracking);
-  ParValue := Plugin.GetPluginParameter(ParName);
+  ParID   := PluginParToID(TPluginParameter.PitchTracking);
+  ParValue := Plugin.GetPluginParameter(ParID);
   Mode := TPitchTrackingHelper.ToEnum(ParValue);
 
   case Mode of

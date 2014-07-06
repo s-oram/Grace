@@ -117,6 +117,7 @@ uses
   Effect.MidiAutomation,
   RedFoxColor,
   VamGuiControlInterfaces,
+  eeTypes,
   eeDsp,
   eeSampleFloat,
   uConstants,
@@ -876,19 +877,19 @@ end;
 
 class function Command.GetParValue(const Plugin: TeePlugin; const Par: TPluginParameter): single;
 var
-  ParName : string;
+  ParID : TPluginParameterID;
 begin
-  ParName := PluginParToName(Par);
-  result := Plugin.GetPluginParameter(ParName);
+  ParID := PluginParToID(Par);
+  result := Plugin.GetPluginParameter(ParID);
 end;
 
 class function Command.GetParValue<TEnum>(const Plugin: TeePlugin; const Par: TPluginParameter): TEnum;
 var
-  ParName : string;
+  ParID : TPluginParameterID;
   ParValue : single;
 begin
-  ParName := PluginParToName(Par);
-  ParValue := Plugin.GetPluginParameter(ParName);
+  ParID := PluginParToID(Par);
+  ParValue := Plugin.GetPluginParameter(ParID);
   result := TEnumHelper<TEnum>.ToEnum(ParValue);
 end;
 

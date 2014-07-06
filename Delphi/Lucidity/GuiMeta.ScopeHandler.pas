@@ -274,80 +274,80 @@ begin
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
 
-      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpAttack));
-      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpHold));
-      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpDecay));
-      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpSustain));
-      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.AmpRelease));
+      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.AmpAttack));
+      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.AmpHold));
+      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.AmpDecay));
+      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.AmpSustain));
+      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.AmpRelease));
     end;
 
     TScopeFocus.ModEnv:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.ADSR;
 
-      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModAttack));
-      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModHold));
-      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModDecay));
-      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModSustain));
-      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.ModRelease));
+      ScopeControl.AdsrValues.Attack  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.ModAttack));
+      ScopeControl.AdsrValues.Hold    := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.ModHold));
+      ScopeControl.AdsrValues.Decay   := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.ModDecay));
+      ScopeControl.AdsrValues.Sustain := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.ModSustain));
+      ScopeControl.AdsrValues.Release := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.ModRelease));
     end;
 
     TScopeFocus.Lfo1:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Shape));
+      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo1Shape));
       ScopeControl.LfoValues.Shape := TLfoShapeHelper.ToEnum(ParValue);
 
-      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par1));
-      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par2));
-      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo1Par3));
+      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo1Par1));
+      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo1Par2));
+      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo1Par3));
     end;
 
     TScopeFocus.Lfo2:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.LFO;
 
-      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Shape));
+      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo2Shape));
       ScopeControl.LfoValues.Shape := TLfoShapeHelper.ToEnum(ParValue);
-      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par1));
-      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par2));
-      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Lfo2Par3));
+      ScopeControl.LfoValues.Par1  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo2Par1));
+      ScopeControl.LfoValues.Par2  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo2Par2));
+      ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo2Par3));
     end;
 
     TScopeFocus.Filter1:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
-      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Type));
+      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Type));
       ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
 
-      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par1));
-      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par2));
-      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par3));
-      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter1Par4));
+      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par1));
+      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par2));
+      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par3));
+      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par4));
     end;
 
     TScopeFocus.Filter2:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
 
-      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Type));
+      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Type));
       ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
 
-      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par1));
-      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par2));
-      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par3));
-      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.Filter2Par4));
+      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par1));
+      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par2));
+      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par3));
+      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par4));
     end;
 
     TScopeFocus.FilterBlend:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.FilterBlend;
 
-      ParValue := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterRouting));
+      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.FilterRouting));
       ScopeControl.FilterBlendValues.FilterRouting := TFilterRoutingHelper.ToEnum(ParValue);
-      ScopeControl.FilterBlendValues.BlendAmt      := Plugin.GetPluginParameter(PluginParToName(TPluginparameter.FilterOutputBlend));
+      ScopeControl.FilterBlendValues.BlendAmt      := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.FilterOutputBlend));
     end;
   end;
 

@@ -49,7 +49,7 @@ type
 
     procedure SetHostPlayState(const Value: THostPlayState); virtual;
 
-    function GetPluginParameter(const ParName : string):single; virtual; abstract;
+    function GetPluginParameter(const ParID : TPluginParameterID):single; virtual; abstract;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); virtual; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
   public
@@ -207,10 +207,10 @@ end;
 
 function TeePluginBase.GetParameter(Index: integer): single;
 var
-  ParName : string;
+  ParID : TPluginParameterID;
 begin
-  ParName := PublishedVstParameters.FindParameterName(Index);
-  result := GetPluginParameter(ParName);
+  ParID := PublishedVstParameters.FindParameterID(Index);
+  result := GetPluginParameter(ParID);
 end;
 
 procedure TeePluginBase.VstParameterChanged(Index: integer; Value: single);

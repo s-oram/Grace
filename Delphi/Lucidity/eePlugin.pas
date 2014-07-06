@@ -133,7 +133,7 @@ type
     constructor Create; override;
 	  destructor Destroy; override;
 
-    function GetPluginParameter(const ParName : string):single; override;
+    function GetPluginParameter(const ParID : TPluginParameterID):single; override;
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); overload; override;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
@@ -593,13 +593,8 @@ begin
   TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, dv);
 end;
 
-function TeePlugin.GetPluginParameter(const ParName: string): single;
-var
-  Par : TPluginParameter;
-  ParID : TPluginParameterID;
+function TeePlugin.GetPluginParameter(const ParID : TPluginParameterID): single;
 begin
-  Par := PluginParFromName(ParName);
-  ParID := PluginParToID(Par);
   result := TPluginParameterController.GetPluginParameter(self, ParID);
 end;
 

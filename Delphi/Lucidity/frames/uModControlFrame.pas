@@ -167,6 +167,7 @@ type
 implementation
 
 uses
+  eeTypes,
   VamQuery,
   RedFox,
   MadExcept,
@@ -620,11 +621,14 @@ var
   Knobs : array[0..3] of TControl;
   Labels : array[0..3] of TControl;
   ParName  : string;
+  ParID    : TPluginParameterID;
   ParValue : single;
   FT  : TFilterType;
 begin
+  // TODO:MED this needs to be cleaned up.
   ParName := PluginParToName(TPluginParameter.Filter1Type);
-  ParValue := Plugin.GetPluginParameter(ParName);
+  ParID := PluginParToID(TPluginParameter.Filter1Type);
+  ParValue := Plugin.GetPluginParameter(ParID);
   FT := TFilterTypeHelper.ToEnum(ParValue);
 
   Knobs[0] := Filter1Par1Knob;
@@ -642,7 +646,8 @@ begin
 
 
   ParName := PluginParToName(TPluginParameter.Filter2Type);
-  ParValue := Plugin.GetPluginParameter(ParName);
+  ParID   := PluginParToID(TPluginParameter.Filter2Type);
+  ParValue := Plugin.GetPluginParameter(ParID);
   FT := TFilterTypeHelper.ToEnum(ParValue);
 
   Knobs[0] := Filter2Par1Knob;

@@ -107,6 +107,7 @@ procedure TMenuButtonHandler.UpdateControl(const c: TObject);
 var
   Par : TPluginParameter;
   ParName  : string;
+  ParID : TPluginParameterID;
   ParValue : single;
   EnumHelper : TCustomEnumHelperClass;
   TextValue : string;
@@ -116,8 +117,9 @@ begin
   begin
     ParName  := mc.GetParameterName;
     Par := PluginParFromName(Parname);
+    ParID := PluginParToID(Par);
 
-    ParValue := Plugin.GetPluginParameter(ParName);
+    ParValue := Plugin.GetPluginParameter(ParID);
 
     assert(ParValue >= 0);
     assert(ParValue <= 1);
@@ -169,7 +171,7 @@ begin
       //===== Increment Enumerated Vst Parameter =================
       ParName  := mc.GetParameterName;
       ParID    := PluginParNameToID(ParName);
-      ParValue := Plugin.GetPluginParameter(ParName);
+      ParValue := Plugin.GetPluginParameter(ParID);
       Par := PluginParFromName(Parname);
       EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
 
@@ -204,7 +206,7 @@ begin
   begin
     ParName  := mc.GetParameterName;
     ParID    := PluginParNameToID(ParName);
-    ParValue := Plugin.GetPluginParameter(ParName);
+    ParValue := Plugin.GetPluginParameter(ParID);
     Par := PluginParFromName(Parname);
     EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
     ParValueAsInt := EnumHelper.ToInteger(ParValue);

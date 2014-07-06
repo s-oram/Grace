@@ -168,17 +168,22 @@ var
   KnobControl : IKnobControl;
   Par : TPluginParameter;
   ParName  : string;
+  ParID : TPluginParameterID;
   ParValue : single;
   ModIndex       : integer;
   ModAmountValue : single;
 begin
   if Supports(c, IKnobControl, KnobControl) then
   begin
+    //TODO:HIGH Instead of getting the parameter name from the knob,
+    // we need to get a parameter ID.
     ParName  := KnobControl.GetParameterName;
     Par := PluginParFromName(Parname);
+    ParID := PluginParToID(Par);
+
     // TODO: It might be handy to have a IsParNameValid() function here
     // to assert that parameter names are correct.
-    ParValue := Plugin.GetPluginParameter(ParName);
+    ParValue := Plugin.GetPluginParameter(ParID);
 
     assert(ParValue >= 0);
     assert(ParValue <= 1);
