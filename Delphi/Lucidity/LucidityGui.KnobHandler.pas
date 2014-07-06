@@ -345,7 +345,7 @@ begin
     // TODO:HIGH Check if the parameter is a published vst parameter,
     // Send parameter change via the published VST parameter route if so,
     // otherwise set parameter value directly in plugin.
-    Plugin.SetPluginParameter(TParChangeScope.psFocused, '', ParID, ParValue);
+    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
 
     Throttle(ThrottleHandle, 25,
     procedure

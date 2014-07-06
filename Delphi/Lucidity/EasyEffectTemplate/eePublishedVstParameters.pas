@@ -25,6 +25,8 @@ type
   private
     VstParameterList : TObjectList;
     function GetCount: integer;
+
+
   public
     constructor Create;
     destructor Destroy; override;

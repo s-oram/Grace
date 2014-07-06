@@ -182,8 +182,8 @@ begin
 
       ParValue := EnumHelper.ToSingle(ParValueAsInt);
 
-      // TODO: Should check if the parameter is a published vst parameter here.
-      Plugin.SetPluginParameter(TParChangeScope.psFocused, '', ParID, ParValue);
+      // TODO:HIGH Should check if the parameter is a published vst parameter here.
+      Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
 
       UpdateControl(Sender);
     end;
@@ -217,8 +217,8 @@ begin
     begin
       NewParValue := EnumHelper.ToSingle(SelectedItemIndex);
 
-      // TODO: Should check if the parameter is a published vst parameter here.
-      Plugin.SetPluginParameter(TParChangeScope.psFocused, '', ParID, NewParValue);
+      // TODO:HIGH Should check if the parameter is a published vst parameter here.
+      Plugin.SetPluginParameter(ParID, NewParValue, TParChangeScope.psFocused);
 
       UpdateControl(Sender);
     end;

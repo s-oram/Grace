@@ -134,8 +134,8 @@ type
 	  destructor Destroy; override;
 
     function GetPluginParameter(const ParID : TPluginParameterID):single; override;
-    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); overload; override;
-    procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); reintroduce; overload;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
+
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
@@ -614,23 +614,6 @@ begin
   end;
 end;
 
-procedure TeePlugin.SetPluginParameter(const Scope: TParChangeScope; const KeyGroupName: string; const ParID: TPluginParameterID; const ParValue: single);
-begin
-  case ParID of
-    kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
-    kPluginParameterID.PadY1: fXYPads.PadY1 := ParValue;
-    kPluginParameterID.PadX2: fXYPads.PadX2 := ParValue;
-    kPluginParameterID.PadY2: fXYPads.PadY2 := ParValue;
-    kPluginParameterID.PadX3: fXYPads.PadX3 := ParValue;
-    kPluginParameterID.PadY3: fXYPads.PadY3 := ParValue;
-    kPluginParameterID.PadX4: fXYPads.PadX4 := ParValue;
-    kPluginParameterID.PadY4: fXYPads.PadY4 := ParValue;
-  else
-    TPluginParameterController.SetPluginParameter(self, Scope, KeyGroupName, ParID, ParValue);
-  end;
-end;
-
-
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin
   result := TPluginParameterController.GetParameterModAmount(self, ParName, ModSlot);
@@ -710,7 +693,7 @@ begin
     Par := IndexToPluginParameter(c1);
     ParId := PluginParToID(Par);
     ParValue := GetPluginParInfo(Par).DefaultValue;
-    SetPluginParameter(TParChangeScope.psGlobal, '', ParID, ParValue);
+    SetPluginParameter(ParID, ParValue, TParChangeScope.psGlobal);
   end;
 
   // finally.
