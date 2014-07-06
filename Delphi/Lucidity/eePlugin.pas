@@ -131,7 +131,15 @@ type
     procedure PublishPluginParameterAsVstParameter(const Par : TPluginParameter);
 
 
+    //Applys a changed parameter state to the audio engine. This parameter will
+    // be called with a smoothed parameter value if required (once parameter smoothing is in place).
     procedure ApplyPluginParameterValue(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope);
+
+
+    // This method should be called when ever the plugin loads a new state, or
+    // the plugin GUI focus changes. If not, the managed plugin values will become
+    // out of sync with the audio engine.
+    procedure RefreshManagedPluginParameterValues;
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -629,9 +637,38 @@ begin
     kPluginParameterID.PadX4: fXYPads.PadX4 := ParValue;
     kPluginParameterID.PadY4: fXYPads.PadY4 := ParValue;
   else
+    // TODO:MED This method isn't inlined. It might be better to get rid of it. As performance
+    // becomes important when automating parameters.
     TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, ParValue);
   end;
 end;
+
+procedure TeePlugin.RefreshManagedPluginParameterValues;
+var
+  c1 : integer;
+  ParID : TPluginParameterID;
+begin
+  for c1 := 0 to PluginParameters.Count-1 do
+  begin
+    ParID := c1;
+
+    case ParID of
+      kPluginParameterID.PadX1: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadX1;
+      kPluginParameterID.PadY1: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadY1;
+      kPluginParameterID.PadX2: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadX2;
+      kPluginParameterID.PadY2: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadY2;
+      kPluginParameterID.PadX3: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadX3;
+      kPluginParameterID.PadY3: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadY3;
+      kPluginParameterID.PadX4: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadX4;
+      kPluginParameterID.PadY4: PluginParameters.Parameter[ParID].ParameterValue := fXYPads.PadY4;
+    else
+      PluginParameters.Parameter[ParID].ParameterValue := TPluginParameterController.GetPluginParameter(self, ParID);
+    end;
+  end;
+
+end;
+
+
 
 
 
@@ -747,6 +784,8 @@ begin
       then SampleMap.FocusRegion(aRegion.GetProperties^.UniqueID);
 
     // signal to the GUI that the focus has changed.
+
+    RefreshManagedPluginParameterValues;
     Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
@@ -776,6 +815,7 @@ begin
       SampleMap.FocusRegion(aRegion.GetProperties^.UniqueID);
     end;
 
+    RefreshManagedPluginParameterValues;
     // signal to the GUI that the focus has changed.
     Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
@@ -800,6 +840,7 @@ begin
 
     SampleMap.FocusRegion(aRegionID);
 
+    RefreshManagedPluginParameterValues;
     // signal to the GUI that the focus has changed.
     Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
@@ -821,6 +862,7 @@ procedure TeePlugin.ClearFocus;
 begin
   SampleMap.ClearFocus;
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
@@ -829,6 +871,7 @@ procedure TeePlugin.ClearSelected;
 begin
   SampleMap.DeselectAllRegions;
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
@@ -843,6 +886,7 @@ begin
   SampleMap.DeleteRegionsInKeyGroup(aKeyGroupName);
   KeyGroups.DeleteKeyGroup(aKeyGroupName);
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
@@ -851,6 +895,7 @@ procedure TeePlugin.DeleteSelectedRegions;
 begin
   SampleMap.DeleteSelectedRegions;
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
@@ -859,6 +904,7 @@ procedure TeePlugin.DuplicateSelectedRegions;
 begin
   SampleMap.DuplicateSelectedRegions;
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
@@ -895,6 +941,7 @@ begin
   SampleMap.MoveSelectedRegionsToKeyGoup(KG);
   SampleMap.DeselectAllRegions;
 
+  RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
 end;
@@ -1109,6 +1156,7 @@ begin
     SampleMap.FocusRegion(aRegionID);
   end;
 
+  RefreshManagedPluginParameterValues;
 
   //TODO: These send message calls could be replaced by...
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleMarkersChanged);
@@ -1336,7 +1384,7 @@ const
   ksr = 44100;
 begin
   try
-    XYPads.UniSmoothedPadX1 := XYPads.PadX1;
+    //XYPads.UniSmoothedPadX1 := XYPads.PadX1;
 
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;

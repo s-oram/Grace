@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   eeSyncObjects,
   eePublishedVstParameters,
   eeTypes,
@@ -21,7 +22,7 @@ uses
 type
   TResizeGUIWindowEvent = procedure(Sender:TObject; Width, Height:integer; var Allowed:boolean) of object;
 
-  TeePluginBase = class
+  TeePluginBase = class(TZeroObject)
   private
     fInputCount: integer;
     fOutputCount: integer;
@@ -149,6 +150,8 @@ begin
   fPublishedVstParameters := TPublishedVstParameterController.Create;
 
   Globals     := TGlobals.Create;
+  Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.Main);
+
   AudioEffect := TVstAudioEffect.Create;
 
   fIsSuspended := true;

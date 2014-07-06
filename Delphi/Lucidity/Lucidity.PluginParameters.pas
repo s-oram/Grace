@@ -53,6 +53,9 @@ type
     fParameterCount : integer;
     function GetParameter(Index: integer): TPluginParameterClass;
   public
+    // NOTE: It's intended that all plugin parameters will be
+    // created when the plugin is initialised. Once created, plugin parameters
+    // will not be added, changed or deleted.
     Raw : array of TPluginParameterClass;
 
     constructor Create(const aParameterCount : integer);
@@ -61,6 +64,8 @@ type
     procedure Add(const aParameter : TPluginParameterClass);
 
     property Parameter[Index : integer] : TPluginParameterClass read GetParameter;
+
+    property Count : integer read CurrentCount;
   end;
 
 
