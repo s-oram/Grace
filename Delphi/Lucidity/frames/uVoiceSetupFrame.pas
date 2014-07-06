@@ -218,8 +218,8 @@ begin
       raise Exception.Create('Tag not handled.');
     end;
 
-    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, Name1);
-    Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, Name2);
+    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name1);
+    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name2);
   end;
 
   if Button = TMouseButton.mbRight then

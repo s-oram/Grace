@@ -200,7 +200,7 @@ begin
       end;
     end;
 
-    psFocusedKeyGroup:
+    psFocused:
     begin
       kg :=  Plugin.ActiveKeyGroup;
       if assigned(kg) then
@@ -357,7 +357,7 @@ begin
       end;
     end;
 
-    psFocusedKeyGroup:
+    psFocused:
     begin
       kg :=  Plugin.ActiveKeyGroup;
       if assigned(kg)

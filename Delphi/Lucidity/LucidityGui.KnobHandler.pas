@@ -303,7 +303,7 @@ begin
 
     if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
     begin
-      Plugin.ResetPluginParameter(TParChangeScope.psFocusedKeyGroup, ParName);
+      Plugin.ResetPluginParameter(TParChangeScope.psFocused, ParName);
     end;
 
 
@@ -340,7 +340,7 @@ begin
     // TODO:HIGH Check if the parameter is a published vst parameter,
     // Send parameter change via the published VST parameter route if so,
     // otherwise set parameter value directly in plugin.
-    Plugin.SetPluginParameter(TParChangeScope.psFocusedKeyGroup, '', ParID, ParValue);
+    Plugin.SetPluginParameter(TParChangeScope.psFocused, '', ParID, ParValue);
 
     Throttle(ThrottleHandle, 25,
     procedure
@@ -365,7 +365,7 @@ begin
 
     if ModIndex <> -1 then
     begin
-      Plugin.SetPluginParameterModAmount(TParChangeScope.psFocusedKeyGroup, ParName, ModIndex, ModAmountValue);
+      Plugin.SetPluginParameterModAmount(TParChangeScope.psFocused, ParName, ModIndex, ModAmountValue);
     end;
 
     Throttle(ThrottleHandle, 25,

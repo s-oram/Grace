@@ -126,7 +126,7 @@ type
                    smSampleStartModMarker, smSampleEndModMarker, smLoopStartModMarker, smLoopEndModMarker);
 
 
-  TParChangeScope = (psGlobal, psFocusedKeyGroup);
+  TParChangeScope = (psGlobal, psFocused);
 
 
 
