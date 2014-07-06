@@ -2,13 +2,19 @@
 - Look at adding parameter smoothing.
 
 BUG: CPU Overload when automating parameters in cubase.
+
+BUG: scope disappears when changing a parameter value.
+
 - Assigning values in XY pads is causing the CPU spikes. 
+
+- Mod source polarity needs to be saved in patch data.
 
 - Knobs need smoothing. moving them is clicky.
 
 - might need a 'reverse sample' command.
 
 - think about project directories
+
 - sample map icon needs to be replaced.
 
 - look at more mouse wheel support!
