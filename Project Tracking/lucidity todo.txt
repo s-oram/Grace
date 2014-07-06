@@ -1,11 +1,11 @@
 =============================================================================
 - Look at adding parameter smoothing.
+- Knobs need smoothing. moving them is clicky.
 
 BUG: CPU Overload when automating parameter start/end!
+ --- Lucidity may crash if modulating sample start/end points. 
 
 - Mod source polarity needs to be saved in patch data.
-
-- Knobs need smoothing. moving them is clicky.
 
 - might need a 'reverse sample' command.
 
