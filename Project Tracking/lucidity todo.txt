@@ -1,11 +1,7 @@
 =============================================================================
 - Look at adding parameter smoothing.
 
-BUG: CPU Overload when automating parameters in cubase.
-
-BUG: scope disappears when changing a parameter value.
-
-- Assigning values in XY pads is causing the CPU spikes. 
+BUG: CPU Overload when automating parameter start/end!
 
 - Mod source polarity needs to be saved in patch data.
 
