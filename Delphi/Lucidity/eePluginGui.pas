@@ -79,7 +79,7 @@ type
     AboutFrame             : TAboutFrame;
     ModSystem2Frame        : TModSystem2Frame;
     SequencerFrame         : TSequencerFrame;
-    VoiceSetupFrame        : TVoiceSetupFrame;
+    VoiceSetupFrame        : TXYPadsFrame;
 
     FeedbackData : TGuiFeedBackData;
 
@@ -229,7 +229,7 @@ begin
   SequencerFrame.BackgroundPanel.Visible := true;
   SequencerFrame.BackgroundPanel.Parent := TabPanel;
 
-  VoiceSetupFrame := TVoiceSetupFrame.Create(self.Owner);
+  VoiceSetupFrame := TXYPadsFrame.Create(self.Owner);
   VoiceSetupFrame.BackgroundPanel.Visible := true;
   VoiceSetupFrame.BackgroundPanel.Parent := TabPanel;
 

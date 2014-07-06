@@ -603,7 +603,6 @@ begin
   // we pull the value from the managed Plugin parameter values. It does mead that
   // the stored parameter values will need to be updated everytime the
   // GUI focus changes.
-  // TODO:HIGH we need to update the stored parameter when the GUI focus changes.
   result := PluginParameters.Raw[ParID].ParameterValue;
 end;
 

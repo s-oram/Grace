@@ -1,4 +1,4 @@
-object VoiceSetupFrame: TVoiceSetupFrame
+object XYPadsFrame: TXYPadsFrame
   Left = 0
   Top = 0
   Width = 1102

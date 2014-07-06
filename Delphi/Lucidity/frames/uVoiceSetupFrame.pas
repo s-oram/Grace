@@ -14,7 +14,7 @@ uses
   VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv, VamXYPad;
 
 type
-  TVoiceSetupFrame = class(TFrame, IZeroObject)
+  TXYPadsFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     XYPadsContainer: TVamDiv;
@@ -61,13 +61,13 @@ uses
 
 { TVoiceSetupFrame }
 
-constructor TVoiceSetupFrame.Create(AOwner: TComponent);
+constructor TXYPadsFrame.Create(AOwner: TComponent);
 begin
   inherited;
   PadContextMenu := TXYPadContextMenu.Create;
 end;
 
-destructor TVoiceSetupFrame.Destroy;
+destructor TXYPadsFrame.Destroy;
 begin
   if (assigned(FMotherShip)) then
   begin
@@ -80,12 +80,12 @@ begin
   inherited;
 end;
 
-procedure TVoiceSetupFrame.SetMotherShipReference(aMotherShip: IMothership);
+procedure TXYPadsFrame.SetMotherShipReference(aMotherShip: IMothership);
 begin
   FMotherShip := aMotherShip;
 end;
 
-procedure TVoiceSetupFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: eeGuiStandardv2.TGuiStandard);
+procedure TXYPadsFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: eeGuiStandardv2.TGuiStandard);
 const
   PadWidth = 120;
   PadHeight = 120;
@@ -114,18 +114,18 @@ begin
   PadLabel4.Text := 'XY Pad 4';
 end;
 
-procedure TVoiceSetupFrame.BackgroundPanelResize(Sender: TObject);
+procedure TXYPadsFrame.BackgroundPanelResize(Sender: TObject);
 begin
   XYPadsContainer.Layout.AlignWithinParent(TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignNear).Move(0,8);
 end;
 
 
-procedure TVoiceSetupFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TXYPadsFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
 
 end;
 
-procedure TVoiceSetupFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
+procedure TXYPadsFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
   assert(assigned(Plugin));
 
@@ -141,7 +141,7 @@ begin
 end;
 
 
-procedure TVoiceSetupFrame.XYPadChanged(Sender: TObject);
+procedure TXYPadsFrame.XYPadChanged(Sender: TObject);
 var
   Tag : integer;
   PadX, PadY : single;
@@ -180,7 +180,7 @@ begin
   end;
 end;
 
-procedure TVoiceSetupFrame.XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TXYPadsFrame.XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
   Name1, Name2 : string;
