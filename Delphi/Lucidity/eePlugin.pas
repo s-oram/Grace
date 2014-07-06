@@ -129,12 +129,18 @@ type
     procedure Event_MidiAutomation_NewBinding(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
 
     procedure PublishPluginParameterAsVstParameter(const Par : TPluginParameter);
+
+
+    procedure ApplyPluginParameterValue(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope);
   public
     constructor Create; override;
 	  destructor Destroy; override;
 
-    function GetPluginParameter(const ParID : TPluginParameterID):single; override;
+
+    // SetPluginParameter() receives a parameter change notification. It stores the new parameter value and
+    // calls ApplyPluginParameterValue() change the audio engine state.
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
+    function GetPluginParameter(const ParID : TPluginParameterID):single; override;
 
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
@@ -600,6 +606,15 @@ end;
 
 procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single; const Scope:TParChangeScope);
 begin
+  // Store the changed value in the parameter manager class.
+  PluginParameters.Parameter[ParID].ParameterValue := Value;
+
+  // TODO:HIGH eventually we will trigger the parameter smoothing here.
+  ApplyPluginParameterValue(ParID, ParValue, Scope);
+end;
+
+procedure TeePlugin.ApplyPluginParameterValue(const ParID: TPluginParameterID; const ParValue: single; const Scope: TParChangeScope);
+begin
   case ParID of
     kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
     kPluginParameterID.PadY1: fXYPads.PadY1 := ParValue;
@@ -613,6 +628,8 @@ begin
     TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, ParValue);
   end;
 end;
+
+
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin
