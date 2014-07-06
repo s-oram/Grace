@@ -595,19 +595,23 @@ begin
   ParID := PluginParToID(Par);
 
   dv := GetPluginParInfo(Par).DefaultValue;
-
-  TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, dv);
+  SetPluginParameter(ParID, dv, Scope);
 end;
 
 function TeePlugin.GetPluginParameter(const ParID : TPluginParameterID): single;
 begin
-  result := TPluginParameterController.GetPluginParameter(self, ParID);
+  //NOTE: Instead of pulling the parameter value directly from the audio engine,
+  // we pull the value from the managed Plugin parameter values. It does mead that
+  // the stored parameter values will need to be updated everytime the
+  // GUI focus changes.
+  // TODO:HIGH we need to update the stored parameter when the GUI focus changes.
+  result := PluginParameters.Raw[ParID].ParameterValue;
 end;
 
 procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single; const Scope:TParChangeScope);
 begin
   // Store the changed value in the parameter manager class.
-  PluginParameters.Parameter[ParID].ParameterValue := Value;
+  PluginParameters.Raw[ParID].ParameterValue := ParValue;
 
   // TODO:HIGH eventually we will trigger the parameter smoothing here.
   ApplyPluginParameterValue(ParID, ParValue, Scope);
