@@ -18,9 +18,7 @@ type
   TVstParameter = class
   public
     PluginParameterName : string;
-    // NOTE: PluginParmaterID should be TPluginParameterID, not an integer.
-    // But I would need a common base unit to define TPluginParameterID in.
-    PluginParameterID   : integer;
+    PluginParameterID   : TPluginParameterID;
   end;
 
   TPublishedVstParameterController = class
@@ -31,7 +29,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure AddParameter(const PluginParameterName : string; const PluginParID : integer);
+    procedure AddParameter(const PluginParameterName : string; const PluginParID : TPluginParameterID);
 
     function FindVstParameterIndex(const PluginParameterName : string) : integer; //TODO:LOW is this method even used anywhere?
     function FindParameterName(const VstParameterIndex : integer) : string;
@@ -89,7 +87,7 @@ begin
   result := (VstParameterList[VstParameterIndex] as TVstParameter).PluginParameterName;
 end;
 
-procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string; const PluginParID : integer);
+procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string; const PluginParID : TPluginParameterID);
 var
   VstPar : TVstParameter;
 begin
