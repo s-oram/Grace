@@ -116,11 +116,6 @@ type
 
     OverloadWatch : TCpuOverloadWatcher;
 
-
-
-    procedure GetVstParameter(const Par:TVstParameter);
-    procedure VstParameterChanged(const Par:TVstParameter);
-
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
     procedure EventHandle_SampleRateChanged(Sender:TObject);
@@ -134,14 +129,12 @@ type
     procedure Event_MidiAutomation_NewBinding(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
 
     procedure PublishPluginParameterAsVstParameter(const Par : TPluginParameter);
-
-
   public
     constructor Create; override;
 	  destructor Destroy; override;
 
     function GetPluginParameter(const ParName : string):single; override;
-    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); overload; override;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); overload; override;
     procedure SetPluginParameter(const Scope : TParChangeScope; const KeyGroupName : string; const ParID : TPluginParameterID; const ParValue : single); reintroduce; overload;
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
@@ -610,7 +603,7 @@ begin
   result := TPluginParameterController.GetPluginParameter(self, ParID);
 end;
 
-procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single);
+procedure TeePlugin.SetPluginParameter(const ParID: TPluginParameterID; const ParValue: single; const Scope:TParChangeScope);
 begin
   case ParID of
     kPluginParameterID.PadX1: fXYPads.PadX1 := ParValue;
@@ -622,7 +615,7 @@ begin
     kPluginParameterID.PadX4: fXYPads.PadX4 := ParValue;
     kPluginParameterID.PadY4: fXYPads.PadY4 := ParValue;
   else
-    TPluginParameterController.SetPluginParameter(self, TParChangeScope.psGlobal, '', ParID, ParValue);
+    TPluginParameterController.SetPluginParameter(self, Scope, '', ParID, ParValue);
   end;
 end;
 
@@ -1154,11 +1147,6 @@ begin
   {$ENDIF}
 end;
 
-
-procedure TeePlugin.VstParameterChanged(const Par: TVstParameter);
-begin
-end;
-
 function TeePlugin.GetVoiceGlide: single;
 begin
   result :=  MidiInputProcessor.VoiceGlide;
@@ -1169,10 +1157,6 @@ function TeePlugin.GetVoiceMode: TVoiceMode;
 begin
   result :=  MidiInputProcessor.VoiceMode;
   //result := VoiceController.VoiceMode;
-end;
-
-procedure TeePlugin.GetVstParameter(const Par:TVstParameter);
-begin
 end;
 
 procedure TeePlugin.TriggerPreview(const fn: string);
@@ -1256,7 +1240,7 @@ var
   mb : IMidiBinding;
 begin
   mb := Binding as IMidiBinding;
-  SetPluginParameter(mb.GetParID, MidiData2 * OneOver127);
+  SetPluginParameter(mb.GetParID, MidiData2 * OneOver127, TParChangeScope.psGlobal);
 end;
 
 procedure TeePlugin.Event_MidiAutomation_NewBinding(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);

@@ -50,7 +50,7 @@ type
     procedure SetHostPlayState(const Value: THostPlayState); virtual;
 
     function GetPluginParameter(const ParName : string):single; virtual; abstract;
-    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single); virtual; abstract;
+    procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); virtual; abstract;
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; virtual; abstract;
   public
     Inputs  : TArrayOfPSingle;
@@ -70,7 +70,7 @@ type
 
     //==========================================================================
     function GetParameter(Index:integer):single; virtual;
-    procedure ParameterChanged(Index:integer; Value:single); virtual;
+    procedure VstParameterChanged(Index:integer; Value:single); virtual;
 
     function GetParameterName(Index : integer):string; virtual;
     function GetParameterDisplay(Index : integer):string; virtual;
@@ -213,12 +213,13 @@ begin
   result := GetPluginParameter(ParName);
 end;
 
-procedure TeePluginBase.ParameterChanged(Index: integer; Value: single);
+procedure TeePluginBase.VstParameterChanged(Index: integer; Value: single);
 var
   ParID : TPluginParameterID;
 begin
+  // TODO:HIGH Check that this method is only called by VST Parameter changes.
   ParID   := PublishedVstParameters.FindParameterID(Index);
-  SetPluginParameter(ParID, Value);
+  SetPluginParameter(ParID, Value, TParChangeScope.psGlobal);
 end;
 
 

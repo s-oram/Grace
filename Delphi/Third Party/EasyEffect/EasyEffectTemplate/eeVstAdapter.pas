@@ -542,7 +542,7 @@ end;
 procedure TeeVstAdapter.SetParameter(index: Integer; value: Single);
 begin
   try
-    Plugin.ParameterChanged(Index, Value);
+    Plugin.VstParameterChanged(Index, Value);
   except
     {$IFDEF MadExcept}
     HandleException;
