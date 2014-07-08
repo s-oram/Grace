@@ -12,9 +12,6 @@
 Published vst parameters knobs need to set the related Plugin Parameter
 via SetParameterAutomated.
 
-BUG: CPU Overload when automating parameter start/end!
- --- Lucidity may crash if modulating sample start/end points. 
-
 - Mod source polarity needs to be saved in patch data.
 
 - might need a 'reverse sample' command.
