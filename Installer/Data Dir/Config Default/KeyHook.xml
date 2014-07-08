@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root >
+<!-- 
+
+******************************
+Poise Hotkey Config
+Last Updated: 18th April 2012
+******************************
+
+Config Priority List:
+  * WindowClass + WindowText
+  * WindowClass
+  * HostName + HostVersion
+  * HostName + WindowClass
+  * HostName
+
+Match types at the beginning of the list take priority over subsequent match types. 
+
+The "WindowClass" match types should only be used when necessary. Some hosts have
+the same "WindowClass" value. 
+
+
+Most hosts seem to return the correct HostName value. There are some exceptions, notably 
+the wrapper type hosts such as EnergyXT or JBridge. 
+
+
+* EnergyXT VSTi and VST version return HostName and Version of parent Host. (Cubase, Live etc).
+
+* JBridge returns HostName and Version. Uses same window class as Reaper. 
+
+
+-->
+
+
+  <!-- An empty (default) keyhook config. -->
+  <HostConfig     
+    HostName=""
+	HostVersion="0"
+	WindowClass=""
+	WindowText=""
+	UseKeyHook="false"
+	HookLevel="0"
+	SetFocus="true"
+  />  
+  
+  <!-- EnergyXT -->  
+  <HostConfig    
+    ConfigID="EnergyXT 1.4 Standalone"    
+	WindowClass="eXTSAwin"	
+	HookLevel="2"
+  />
+  
+  <HostConfig    
+    ConfigID="EnergyXT 1.4 Vsti"    
+	WindowClass="eXTVSTiwin"	
+	HookLevel="2"
+  />
+  
+  <HostConfig    
+    ConfigID="EnergyXT 1.4 Vst FX"    
+	WindowClass="eXTVSTwin"	
+	HookLevel="2"
+  />
+  
+  <HostConfig    
+    ConfigID="EnergyXT 2"    
+	WindowClass="XT2APP"	
+	HookLevel="2"
+  />
+  
+  <HostConfig    
+    ConfigID="EnergyXT 2.5"    
+	WindowClass="XT3APP"	
+	HookLevel="2"
+  />
+  
+  <!-- Steinberg Cubase -->
+  <!-- Works with Cubase 5.5.3 -->
+  <!--
+  <HostConfig    
+    ConfigID="Cubase 5"  
+    HostName="Cubase VST"	
+	WindowClass="SteinbergPluginWrapper"
+	HookLevel="2"
+  />   
+  -->
+  <!-- Reaper -->
+  <!--
+  <HostConfig    
+    ConfigID="Reaper"    
+	HostName="REAPER"
+	HookLevel="2"
+  />    
+  
+  <HostConfig    
+    ConfigID="Reaper x32 Bit Bridge"    
+	HostName="REAPERb32"
+	HookLevel="1"
+  />   
+  -->
+  
+  <!-- JBridge -->  
+  <HostConfig    
+    ConfigID="JBridge"    
+	WindowClass="#32770"
+	WindowText="jBridge"	
+	HookLevel="4"
+  />   
+  <!-- 
+  <HostConfig    
+    ConfigID="JBridge2"    
+	WindowClass="#32770"
+	WindowText="jBridge"	
+	UseKeyHook="false"	
+	SetFocus="false"
+  />   
+  -->
+  
+  <!-- Tracktion 3 -->
+  <HostConfig    
+    ConfigID="Tracktion 3"    
+	WindowClass="JUCE_253899123"	
+	HookLevel="0"
+  />     
+   
+  <!-- added for FL Studio 10 -->  
+  <HostConfig    
+    ConfigID="FL Studio 10"  
+    HostName="Fruity Wrapper"	
+    UseKeyHook="false"
+  />      
+  
+  
+  <!-- Podium -->
+  <HostConfig    
+    ConfigID="Podium"    
+	WindowClass="Plugin"	
+	HookLevel="1"
+  />     
+  
+  <!-- Ableton Live -->  
+  <HostConfig    
+    ConfigID="Ableton Live"    
+	HostName="Live"    
+	HookLevel="1"
+	UseKeyHook="false"	
+	SetFocus="false"
+  />       
+  
+  <!-- Sony Acid Pro 6 -->
+  <HostConfig    
+    ConfigID="Sony Acid Pro 6"    
+	WindowClass="SF.VSTiUIPageSite"	
+	HookLevel="4"
+  />     
+  
+  <!-- Cakewalk Sonar -->
+  <HostConfig    
+    ConfigID="Cakewalk Sonar"    
+	WindowClass="CakewalkVSTWndClass"	
+	HookLevel="4"
+  />     
+  
+  <!-- MultiTrackStudio -->
+  <HostConfig    
+    ConfigID="MultiTrackStudio"    
+	WindowClass="TMyPanel"	
+	HookLevel="3"
+  />     
+  
+  <!-- Samplitude -->
+  <HostConfig    
+    ConfigID="Samplitude"    
+	WindowClass="AfxFrameOrView42s"	
+	HookLevel="2"
+  />     
+  
+  <!-- Studio One -->
+  <HostConfig    
+    ConfigID="Studio One"    
+	WindowClass="CCLWindowClass"	
+	HookLevel="2"
+  />     
+  
+  <!-- Renoise -->
+  <!-- Poise's hotkeys may interfere with Renoise. -->
+  <HostConfig    
+    ConfigID="Renoise"    
+	HostName="Renoise"	
+	HookLevel="1"	  
+  />     
+  
+  <!-- Orion -->
+  <HostConfig     
+    ConfigID="Orion"    
+    HostName="Orion"	
+	UseKeyHook="false"	
+	SetFocus="false"
+  />  
+    
+  
+  
+</root>
