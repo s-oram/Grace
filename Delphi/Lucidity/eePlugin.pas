@@ -107,8 +107,8 @@ type
     GlobalModPoints : TGlobalModulationPoints;
 
     MidiInputProcessor : TMidiInputProcessor;
-    VoiceController     : TVoiceController;
-    KeyGroupPlayer  : TKeyGroupPlayer;
+    VoiceController    : TVoiceController;
+    KeyGroupPlayer     : TKeyGroupPlayer;
 
     Voices : TArrayOfLucidityVoice;
 
@@ -1130,8 +1130,29 @@ end;
 
 procedure TeePlugin.PostLoadProgram;
 var
+  c1 : integer;
   aRegionID : TGUID;
+  mb : IMidiBinding;
+  ParName : string;
+  ParID : TPluginParameterID;
 begin
+  //=============================================================
+  // Update MIDI Automation Parameter IDs. This
+  // is because MIDI maps are saved with parameter names, not IDs.
+  // IDs are used internally when mapping a binding to a parameter.
+  // IDs can change between plugin updates. Parameter names
+  // changes can be more easily allowed for when loading older plugins.
+  for c1 := 0 to MidiAutomation.BindingCount-1 do
+  begin
+    mb := MidiAutomation.Binding[c1];
+    // TODO:MED this might be a good place to use a "Is Valid Parameter Name" check
+    // and ignore any non-valid parameter names.
+    ParName := mb.GetParName;
+    ParID := PluginParNameToID(ParName);
+    mb.SetParID(ParID);
+  end;
+  //=============================================================
+
   if KeyGroups.GetInfo.GetKeyGroupCount = 0 then
   begin
     KeyGroups.NewKeyGroup;
@@ -1283,8 +1304,16 @@ end;
 procedure TeePlugin.Event_MidiAutomation_NewBinding(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
 var
   mb : IMidiBinding;
+  ID : TPluginParameterID;
+  ParName : string;
 begin
   mb := Binding as IMidiBinding;
+
+  ID :=  mb.GetParID;
+  ParName := mb.GetParName;
+
+  if ID <> PluginParNameToID(ParName)
+    then raise Exception.Create('Error setting MIDI Learn Parameter ID. (Error Code 703)');
 
   // remove any existing bindings with this parameter name.
   MidiAutomation.ClearBinding(mb.GetParName);

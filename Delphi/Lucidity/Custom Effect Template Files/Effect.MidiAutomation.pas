@@ -32,10 +32,13 @@ type
 
   TMidiAutomation = class(TCustomMidiAutomation)
   private
+    function GetBinding(Index: integer): IMidiBinding;
   protected
   public
     constructor Create; override;
     destructor Destroy; override;
+
+    property Binding[Index : integer]:IMidiBinding read GetBinding;
 
     // TODO: write method to save/load automation to a XML node.
     procedure ReadStateFromXML(var XML : TXmlNode);
@@ -100,6 +103,11 @@ begin
   result := nil;
 end;
 
+function TMidiAutomation.GetBinding(Index: integer): IMidiBinding;
+begin
+  result := BindingList[Index] as IMidiBinding;
+end;
+
 procedure TMidiAutomation.ClearBinding(const ParName: string);
 var
   c1 : integer;
@@ -154,13 +162,14 @@ begin
 
   XML.FindNodes('Binding', NodeList);
 
-
   for c1 := 0 to NodeList.Count-1 do
   begin
     DataNode := NodeList[c1].FindNode('ParName');
     if assigned(DataNode)
       then ParName := DataNode.ValueUnicode
       else ParName := '';
+
+
 
     DataNode := NodeList[c1].FindNode('MidiCC');
     if assigned(DataNode)
