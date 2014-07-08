@@ -1,4 +1,15 @@
 =============================================================================
+
+TODO: Update the data directory Layout
+- Patches
+ |- Factory
+ |- User
+- Config Default
+- Config User Override
+
+
+
+
 - Look at adding parameter smoothing.
   -- There is smoothing in a couple places already. Knobs are smooth their output.
      Cool but maybe unnecessary.
@@ -17,6 +28,9 @@ via SetParameterAutomated.
 - think about project directories
 
 - sample map icon needs to be replaced.
+
+- need "Save Program as Default" command
+- need "Same MIDI Map as Default" command
 
 - look at more mouse wheel support!
 

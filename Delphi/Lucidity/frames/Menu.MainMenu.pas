@@ -20,6 +20,8 @@ type
 
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ImportSFZ(Sender : TObject);
+    procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
+    procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -150,8 +152,13 @@ begin
 
   mi := TMenuItem.Create(Menu);
   mi.Tag     := 2;
-  mi.Caption := 'Save Program...';
+  mi.Caption := 'Save Program As...';
   mi.OnClick := MenuItemClicked;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Save Program As Default';
+  mi.OnClick := EventHandle_SaveProgramAsDefault;
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
@@ -165,21 +172,21 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Import Program';
   Menu.Items.Add(mi);
-
   miRefA := mi;
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Import SFZ';
+  mi.Caption := 'Import SFZ...';
   mi.OnClick := EventHandle_ImportSFZ;
   miRefA.Add(mi);
 
 
 
 
-  // insert a spacer...
+  //==== insert a spacer =====
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
   Menu.Items.Add(mi);
+  //=========================
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Edit Sample Map...';
@@ -187,9 +194,15 @@ begin
   Menu.Items.Add(mi);
 
 
-  // insert a spacer...
+  //==== insert a spacer =====
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Save MIDI Map As Default';
+  mi.OnClick := EventHandle_SaveMidiMapAsDefault;
   Menu.Items.Add(mi);
 
   if Plugin.Globals.KeyData.IsKeyChecksumValid = false then
@@ -264,6 +277,16 @@ begin
   begin
     Plugin.ImportProgram(OpenDialog.FileName, TProgramFormat.Sfz);
   end;
+end;
+
+procedure TMainMenu.EventHandle_SaveMidiMapAsDefault(Sender: TObject);
+begin
+
+end;
+
+procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
+begin
+  Plugin.SaveProgramAsDefault;
 end;
 
 end.

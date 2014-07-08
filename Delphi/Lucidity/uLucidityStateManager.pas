@@ -46,6 +46,9 @@ type
     constructor Create(aPlugin : TeePlugin);
     destructor Destroy; override;
 
+    procedure LoadMidiMapFromFile(const FileName : string);
+    procedure SaveMidiMapToFile(const FileName : string);
+
     procedure ImportProgram_Sfz(const FileName : string);
 
     procedure LoadPesetFromFile(const FileName : string); //called when plugin saves a "program" file.
@@ -954,6 +957,41 @@ begin
 
 end;
 
+
+procedure TLucidityStateManager.SaveMidiMapToFile(const FileName: string);
+var
+  XML : TNativeXML;
+begin
+  XML := TNativeXML.CreateName('root');
+  try
+    //TODO:HIGH  write MIDI map file info here.
+    //WritePatchFormatVersionToXML(XML);
+
+    WriteMidiMapToXML(XML);
+    MakeSampleFileNamesRelative(Xml.Root, FileName);
+    XML.XmlFormat := xfReadable;
+    XML.SaveToFile(FileName);
+  finally
+    XML.Free;
+  end;
+end;
+
+procedure TLucidityStateManager.LoadMidiMapFromFile(const FileName: string);
+var
+  XML : TNativeXML;
+begin
+  XML := TNativeXML.Create(nil);
+  try
+    XML.LoadFromFile(FileName);
+
+    //TODO:HIGH check MIDI map file version info here.
+    //CheckPatchFormatVersion(XML);
+
+    ReadMidiMapFromXML(XML);
+  finally
+    XML.Free;
+  end;
+end;
 
 
 

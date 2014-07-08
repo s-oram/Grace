@@ -50,7 +50,6 @@ type
     MainContextMenu : TFileTreeViewMainContextMenu;
     NodeContextMenu : TFileTreeViewNodeContextMenu;
 
-
     PreviewInfo_ShowVolume : boolean;
 
     procedure EventHandle_NodeFocusChanged(Sender : TObject);

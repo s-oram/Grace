@@ -168,6 +168,10 @@ type
     procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat);
     procedure LoadProgramFromFile(const FileName : string);
     procedure SaveProgramToFile(const FileName : string);
+    procedure SaveProgramAsDefault;
+
+    procedure LoadDefaultMIDIMap;
+    procedure SaveMIDIMapAsDefault;
 
     procedure SetPreset(var ms:TMemoryStream); override;
     procedure GetPreset(var ms:TMemoryStream); override;
@@ -228,7 +232,7 @@ type
     function ActiveVoiceCount : integer;
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
-    property SignalRecorder    : TSignalRecorder read fSignalRecorder write fSignalRecorder;
+    property SignalRecorder    : TSignalRecorder    read fSignalRecorder write fSignalRecorder;
     property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
 
     property PluginParameters : TPluginParameterManager read fPluginParameters;
@@ -422,7 +426,7 @@ begin
   if (PluginDataDir^.Exists) then
   begin
     //==== Load the sample directories info ====
-    DataFileName := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Sample Directories.xml';
+    DataFileName := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override') + 'Sample Directories.xml';
     SampleDirectories.DataFileName := DataFileName;
 
     if FileExists(DataFileName)
@@ -432,13 +436,13 @@ begin
     //===== set the last used directories variable to something useful ====
     if LastProgramLoadDir = '' then
     begin
-      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
       if DirectoryExists(DataDir) then LastProgramLoadDir := DataDir;
     end;
 
     if LastProgramSaveDir = '' then
     begin
-      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
   end;
@@ -486,6 +490,7 @@ begin
     end;
   end;
 
+  LoadDefaultMIDIMap;
 
   //==== default patch stuff ====
 
@@ -494,26 +499,20 @@ begin
   // Now load default patch if it exists.
   if (PluginDataDir^.Exists) then
   begin
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + IncludeTrailingPathDelimiter('Patches');
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches');
     fnA := DataDir + 'Default.lpg';
-
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Factory') + IncludeTrailingPathDelimiter('Patches');
-    fnB := DataDir + 'Default.lpg';
 
     if FileExists(fnA) then
     begin
       LoadProgramFromFile(fnA);
-      IsDefaultPatchLoaded := true;
-    end else
-    if FileExists(fnB) then
-    begin
-      LoadProgramFromFile(fnB);
       IsDefaultPatchLoaded := true;
     end;
   end;
 
   if IsDefaultPatchLoaded = false
     then InitializeState;
+
+
 
 end;
 
@@ -526,8 +525,9 @@ begin
 
   Clear;
 
+  //TODO:MED what is this?
   if (PluginDataDir^.Exists)
-    then fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Lucidity Profiler Report.txt'
+    then fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Lucidity Profiler Report.txt'
     else fn := '';
 
   fFocusedKeyGroup := nil;
@@ -745,7 +745,7 @@ begin
   end;
 
   // finally.
-  FocusFirstKeyGroup;
+  PostLoadProgram;
 end;
 
 procedure TeePlugin.FocusFirstKeyGroup;
@@ -1180,6 +1180,42 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI);
 end;
 
+procedure TeePlugin.SaveMIDIMapAsDefault;
+var
+  DataDir : string;
+  fnA : string;
+  StateManager : TLucidityStateManager;
+begin
+  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override');
+  fnA := DataDir + 'Default MIDI Map.xml';
+
+  StateManager := TLucidityStateManager.Create(self);
+  try
+    StateManager.SaveMidiMapToFile(fnA);
+  finally
+    StateManager.Free;
+  end;
+end;
+
+procedure TeePlugin.LoadDefaultMIDIMap;
+var
+  DataDir : string;
+  fnA : string;
+  StateManager : TLucidityStateManager;
+begin
+  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override');
+  fnA := DataDir + 'Default MIDI Map.xml';
+
+  if FileExists(fnA) then
+  begin
+    StateManager := TLucidityStateManager.Create(self);
+    try
+      StateManager.LoadMidiMapFromFile(fnA);
+    finally
+      StateManager.Free;
+    end;
+  end;
+end;
 
 
 procedure TeePlugin.SaveProgramToFile(const FileName: string);
@@ -1187,6 +1223,7 @@ var
   StateManager : TLucidityStateManager;
 begin
   {$IFNDEF Demo}
+  //TODO:MED Add Message here perhaps explain demo limitation.
 
   Lucidity.Globals.LastProgramSaveDir := ExtractFileDir(FileName);
 
@@ -1204,6 +1241,22 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk);
   {$ENDIF}
 end;
+
+procedure TeePlugin.SaveProgramAsDefault;
+var
+  DataDir : string;
+  fnA : string;
+begin
+  {$IFNDEF Demo}
+  //TODO:HIGH need to update this when I rework the data paths.
+  //TODO:MED Add Message here perhaps explain demo limitation.
+  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches');
+  fnA := DataDir + 'Default.lpg';
+  SaveProgramToFile(fnA);
+  {$ENDIF}
+end;
+
+
 
 function TeePlugin.GetVoiceGlide: single;
 begin

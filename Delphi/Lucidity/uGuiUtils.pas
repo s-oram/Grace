@@ -100,6 +100,8 @@ type
 
     class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
 
+
+
   end;
 
   GuiSetup = record

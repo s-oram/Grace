@@ -309,9 +309,9 @@ begin
 
   Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
 
-  //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
-  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
-  fn := IncludeTrailingPathDelimiter(fn) + 'Config';
+  //==== Load the key hook config ==============================================
+  // TODO:HIGH need to check for duplicate file in the Config User Override directory.
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
   fn := IncludeTrailingPathDelimiter(fn) + 'KeyHook.xml';
 
   {$IFDEF Logging}
@@ -332,9 +332,9 @@ begin
 
 
 
-  //fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
-  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
-  fn := IncludeTrailingPathDelimiter(fn) + 'Config';
+  //==== Load the key commands config ==========================================
+  // TODO:HIGH need to check for duplicate file in the Config User Override directory.
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
   fn := IncludeTrailingPathDelimiter(fn) + 'KeyCommands.xml';
 
   {$IFDEF Logging}

@@ -21,24 +21,18 @@ begin
   if (PluginDataDir^.Exists) then
   begin
     //=== Check that the 'User\Patches' directory exists ===
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
     if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
 
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
     if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
 
-
-
-    //===  Check that the 'Factory\Patches' directory exists ===
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
-    if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
-
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Factory') + 'Patches';
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config User Override';
     if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
 
 
     //=== Check that the samples directories config file exists ===
-    DataFileName := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Sample Directories.xml';
+    DataFileName := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override') + 'Sample Directories.xml';
     if not FileExists(DataFilename) then
     begin
       SampleDirectories := TSampleDirectories.Create;
@@ -46,15 +40,13 @@ begin
 
       SampleDirectories.DataFileName := DataFileName;
 
-      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Factory') + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + 'Factory';
       SampleDirectories.AddSampleDirectory('Factory Patches', DataDir);
 
-      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('User') + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + 'User';
       SampleDirectories.AddSampleDirectory('User Patches', DataDir);
 
-
       //TODO: add the samples directory here...
-
       SampleDirectories.WriteDirectoryInfoToFile(DataFilename);
     end;
 
