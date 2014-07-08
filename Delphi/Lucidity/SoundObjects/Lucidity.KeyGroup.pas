@@ -337,7 +337,8 @@ end;
 procedure TKeyGroup.SampleRateChanged(Sender: TObject);
 begin
   LevelMonitor.SampleRate := Globals.SampleRate;
-  ParSmoother.SetTransitionTime(30, Globals.SlowControlRate);
+  //ParSmoother.SetTransitionTime(30, Globals.SlowControlRate);
+  ParSmoother.SetTransitionTime(75, Globals.SlowControlRate);
 end;
 
 procedure TKeyGroup.BlockSizeChanged(Sender: TObject);
@@ -422,8 +423,6 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    //TODO:HIGH remove overload watch.
-    //OverloadWatch.Start(32, 44100, 'Key Group - Voice Triggered');
     pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
 
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
@@ -433,7 +432,6 @@ begin
     begin
       ActiveVoices.Add(pVoice^)
     end;
-    //OverloadWatch.Stop;
   end;
 
 
@@ -465,11 +463,14 @@ var
   CurrentValue : single;
   ParSmootherState : PParSmootherState;
 begin
-  //TODO:HIGH Current all parameter smoothing is checked for via polling.
+  // TODO:HIGH Current all parameter smoothing is checked for via polling.
   // It would be better to add the required smoothing states to a list.
   // That way the parameter smoothing step could pontential be resolved with
   // one boolean check. (Ie. If no parameters require smoothing)
   // NOTE: This implementation as current adds a slight performance disadvantage.
+  // === It also looks like I'm going to re-implement parameter smoothing at
+  // a higher level so this could be removed here. Maybe. Or maybe it means I
+  // don't have to worry about it for a while.
   for c1 := 0 to kModulatedParameterCount-1 do
   begin
     if ModulatedParameters[c1].IsSmoothingActive then
