@@ -39,6 +39,10 @@ type
     procedure SetLoopBounds(const Value: TSamplerLoopBounds);
     procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
   protected
+    IsLoopTooSmall : boolean;
+    LoopTooSmallCount : integer;
+    LoopTooSmallResetPoint : integer;
+
     PitchParameters : TSampleOscPitchPar;
     ModPoints : TLuciditySampleOscModulationPoints;
     CurRegion : IRegion;
@@ -163,6 +167,8 @@ begin
   inherited;
   StepInFilter.SampleRate := round(Value);
   LoopingFadeOutOsc.SampleRate := Value;
+
+  LoopTooSmallResetPoint := round(Value / 1000);
 end;
 
 function TOneShotSampleOsc.CalcPhaseCounterStepSize: double;
@@ -320,6 +326,20 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
+  if (CurrentSampleBounds.PlaybackEnd < CurrentSampleBounds.PlaybackSampleStart) and (CurrentSampleBounds.PlaybackEnd < CurrentSampleBounds.PlaybackLoopStart) then
+  begin
+    IsLoopTooSmall := true;
+    LoopTooSmallCount := 0;
+
+    // TODO:MED it might be useful to have a gain variable for loop size so the
+    // small loops will become quieter before stopping entirely.
+  end else
+  begin
+    IsLoopTooSmall := false;
+  end;
+
+
+
 
   // NOTE: The sample bounds post-processing above seems a bit complicated and
   // perhaps there are unnecessary calculations being made. It might
@@ -364,6 +384,14 @@ var
   frac       : single;
   xOut1, xOut2 : single;
 begin
+  if IsLoopTooSmall then
+  begin
+    if LoopTooSmallCount >= LoopTooSmallResetPoint
+      then UpdateSampleBounds
+      else Inc(LoopTooSmallCount);
+    Out1 := 0;
+    Out2 := 0;
+  end else
   if (assigned(CurSample))  then
   begin
     ax   := PhaseCounter.IntegerPart;
@@ -397,7 +425,10 @@ begin
   end;
 
 
-
+  if IsLoopTooSmall then
+  begin
+    // do nothing...
+  end else
   if (PhaseCounter >= CurrentSampleBounds.PlaybackEnd) then
   begin
     case LoopMode of
@@ -449,7 +480,6 @@ begin
     else
       raise Exception.Create('type not handled.');
     end;
-
   end else
   begin
     PhaseCounter.Step;
