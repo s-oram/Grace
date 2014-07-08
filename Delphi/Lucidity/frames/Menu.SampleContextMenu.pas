@@ -21,6 +21,10 @@ type
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ShowInWindowsExplorer(Sender : TObject);
     procedure EventHandle_ModulationCommand(Sender : TObject);
+    procedure EventHandle_ClearAllModulationForAllSamplePoints(Sender : TObject);
+    procedure EventHandle_ClearCurrentModulationForAllSamplePoints(Sender : TObject);
+
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -255,6 +259,26 @@ begin
       mi.Add(ChildMi);
   end;
 
+
+  //=== spacer ====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=====================
+
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear All Modulation';
+  mi.OnClick := EventHandle_ClearAllModulationForAllSamplePoints;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear Current Modulation';
+  mi.OnClick := EventHandle_ClearCurrentModulationForAllSamplePoints;
+  Menu.Items.Add(mi);
+
+
+
   Menu.Popup(x, y);
 end;
 
@@ -354,6 +378,43 @@ begin
 
 
 end;
+
+
+procedure TSampleContextMenu.EventHandle_ClearAllModulationForAllSamplePoints(Sender: TObject);
+var
+  ModParIndex : integer;
+begin
+  ModParIndex := GetModParIndex(TPluginParameter.SampleStart);
+  Command.ClearAllModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
+  Command.ClearAllModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.LoopStart);
+  Command.ClearAllModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
+  Command.ClearAllModulationForParameter_OLD(Plugin, ModParIndex);
+end;
+
+procedure TSampleContextMenu.EventHandle_ClearCurrentModulationForAllSamplePoints(Sender: TObject);
+var
+  ModParIndex : integer;
+begin
+  ModParIndex := GetModParIndex(TPluginParameter.SampleStart);
+  Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.SampleEnd);
+  Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.LoopStart);
+  Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
+
+  ModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
+  Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
+end;
+
+
 
 
 
