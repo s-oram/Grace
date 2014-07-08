@@ -96,6 +96,7 @@ begin
 
   TargetBinding := TMidiBinding.Create;
   TargetBinding.ParName := TargetParameterName;
+  TargetBinding.ParId   := PluginParNameToID(TargetParameterName);
   Plugin.MidiAutomation.ActivateMidiLearn(TargetBinding);
 end;
 
