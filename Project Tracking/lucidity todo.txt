@@ -12,8 +12,6 @@
 Published vst parameters knobs need to set the related Plugin Parameter
 via SetParameterAutomated.
 
-- Mod source polarity needs to be saved in patch data.
-
 - might need a 'reverse sample' command.
 
 - think about project directories

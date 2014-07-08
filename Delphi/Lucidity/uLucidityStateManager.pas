@@ -104,12 +104,14 @@ type
     fModVia: TModSource;
     fModSource: TModSource;
     fIsModMute: boolean;
+    fModSourcePolarity: TModSourcePolarity;
   public
     procedure Clear;
   published
     property ModSource : TModSource read fModSource write fModSource;
     property ModVia    : TModSource read fModVia    write fModVia;
     property IsModMute : boolean    read fIsModMute write fIsModMute;
+    property ModSourcePolarity : TModSourcePolarity read fModSourcePolarity write fModSourcePolarity;
   end;
 
   {$M+}
@@ -553,15 +555,17 @@ begin
 
     for c3 := 0 to kModSlotCount-1 do
     begin
-      ModLinkState.ModSource := ModConnections.GetModSource(c3);
-      ModLinkState.ModVia    := ModConnections.GetModVia(c3);
-      ModLinkState.IsModMute := ModConnections.GetModMute(c3);
+      ModLinkState.ModSource         := ModConnections.GetModSource(c3);
+      ModLinkState.ModVia            := ModConnections.GetModVia(c3);
+      ModLinkState.IsModMute         := ModConnections.GetModMute(c3);
+      ModLinkState.ModSourcePolarity := ModConnections.GetModSourcePolarity(c3);
 
       ModLinkNode := ModConnectionsNode.NodeNew('ModLink');
 
       SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'ModSource');
       SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'ModVia');
       SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'IsModMute');
+      SaveObjectPropertyToXML(ModLinkNode, ModLinkState, 'ModSourcePolarity');
     end;
 
 
@@ -780,10 +784,12 @@ begin
         LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'ModSource');
         LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'ModVia');
         LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'IsModMute');
+        LoadObjectPropertyFromXML(ModLinkNode, ModLinkState, 'ModSourcePolarity');
 
         ModConnections.SetModSource(c3, ModLinkState.ModSource);
         ModConnections.SetModVia(c3, ModLinkState.ModVia);
         ModConnections.SetModMute(c3, ModLinkState.IsModMute);
+        ModConnections.SetModSourcePolarity(c3, ModLinkState.ModSourcePolarity);
       end;
     end;
 
