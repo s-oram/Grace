@@ -1,15 +1,4 @@
 =============================================================================
-
-TODO: Update the data directory Layout
-- Patches
- |- Factory
- |- User
-- Config Default
-- Config User Override
-
-
-
-
 - Look at adding parameter smoothing.
   -- There is smoothing in a couple places already. Knobs are smooth their output.
      Cool but maybe unnecessary.
@@ -25,12 +14,7 @@ via SetParameterAutomated.
 
 - might need a 'reverse sample' command.
 
-- think about project directories
-
 - sample map icon needs to be replaced.
-
-- need "Save Program as Default" command
-- need "Same MIDI Map as Default" command
 
 - look at more mouse wheel support!
 
@@ -44,6 +28,8 @@ Right Click and Hold for sample zoom with mouse
 - Up/Down zooms in/out
 
 - would be good to figure out the text drawing and use a higher quality text drawing routine!
+
+- Update the installer so that Default.lpg isn't overwritten. (the default patch.)
 
 =============================================================================
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
