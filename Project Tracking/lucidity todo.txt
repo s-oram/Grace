@@ -1,6 +1,16 @@
 =============================================================================
 - Look at adding parameter smoothing.
-- Knobs need smoothing. moving them is clicky.
+  -- There is smoothing in a couple places already. Knobs are smooth their output.
+     Cool but maybe unnecessary.
+  -- Modulated parameters are smoothed in the KeyGroup class.
+     This does have a performance hit however. 
+- The current parameter smoothing system might be enough for V1 but 
+  smoothing at the parameter change point might be better in the long run.
+  That way all parameters can be optionally smoothed and it might be easier to  
+  port to other plugins. 
+
+Published vst parameters knobs need to set the related Plugin Parameter
+via SetParameterAutomated.
 
 BUG: CPU Overload when automating parameter start/end!
  --- Lucidity may crash if modulating sample start/end points. 
