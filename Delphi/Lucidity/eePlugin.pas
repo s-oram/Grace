@@ -279,7 +279,7 @@ var
   DataFileName : string;
   DataDir : string;
   fn : string;
-  fnA, fnB : string;
+  fnA : string;
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
@@ -578,10 +578,13 @@ procedure TeePlugin.PublishPluginParameterAsVstParameter(const Par: TPluginParam
 var
   pn : string;
   ID : TPluginParameterID;
+  VstParameterIndex : Integer;
 begin
   pn := PluginParToName(Par);
   ID := PluginParToID(Par);
-  PublishedVstParameters.AddParameter(pn,ID);
+  PublishedVstParameters.AddParameter(pn,ID, VstParameterIndex);
+
+  PluginParameters.FindByParameterID(ID).VstParameterIndex := VstParameterIndex;
 end;
 
 procedure TeePlugin.ResetPluginParameter(const Scope: TParChangeScope; const ParName: string);

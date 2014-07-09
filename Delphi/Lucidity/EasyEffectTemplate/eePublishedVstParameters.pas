@@ -25,13 +25,11 @@ type
   private
     VstParameterList : TObjectList;
     function GetCount: integer;
-
-
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure AddParameter(const PluginParameterName : string; const PluginParID : TPluginParameterID);
+    procedure AddParameter(const PluginParameterName : string; const PluginParID : TPluginParameterID; out VstParameterIndex : integer);
 
     function FindVstParameterIndex(const PluginParameterName : string) : integer; //TODO:LOW is this method even used anywhere?
     function FindParameterName(const VstParameterIndex : integer) : string; //TODO:MED this method should be removed. It's been superceded by using a parameterID
@@ -49,7 +47,6 @@ constructor TPublishedVstParameterController.Create;
 begin
   VstParameterList := TObjectList.Create;
   VstParameterList.OwnsObjects := true;
-
 end;
 
 destructor TPublishedVstParameterController.Destroy;
@@ -89,14 +86,14 @@ begin
   result := (VstParameterList[VstParameterIndex] as TVstParameter).PluginParameterName;
 end;
 
-procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string; const PluginParID : TPluginParameterID);
+procedure TPublishedVstParameterController.AddParameter(const PluginParameterName: string; const PluginParID : TPluginParameterID; out VstParameterIndex : integer);
 var
   VstPar : TVstParameter;
 begin
   VstPar := TVstParameter.Create;
   VstPar.PluginParameterName := PluginParameterName;
   VstPar.PluginParameterID   := PluginParID;
-  VstParameterList.Add(VstPar);
+  VstParameterIndex := VstParameterList.Add(VstPar);
 end;
 
 

@@ -41,13 +41,19 @@ type
   private
     fParameterValue: single;
     fName: string;
-    fID: integer;
+    fID: TPluginParameterID;
+    fVstParameterIndex: integer;
   public
     constructor Create;
     destructor Destroy; override;
 
-    property ID   : integer read fID;
-    property Name : string read fName write fName;
+    function IsPublishedVstParameter : boolean;
+
+
+    property ParameterID : TPluginParameterID read fID;
+    property Name        : string             read fName write fName;
+
+    property VstParameterIndex : integer read fVstParameterIndex write fVstParameterIndex;
 
     property ParameterValue : single read fParameterValue write fParameterValue;
   end;
@@ -66,6 +72,9 @@ type
 
     constructor Create(const aParameterCount : integer);
     destructor Destroy; override;
+
+    function FindByName(const ParameterName : string):TPluginParameterClass;
+    function FindByParameterID(const ParameterID : TPluginParameterID):TPluginParameterClass;
 
     procedure Add(const aParameter : TPluginParameterClass);
 
@@ -547,13 +556,20 @@ var
 constructor TPluginParameterClass.Create;
 begin
   fID := 0;
-
+  fVstParameterIndex := -1;
 end;
 
 destructor TPluginParameterClass.Destroy;
 begin
 
   inherited;
+end;
+
+function TPluginParameterClass.IsPublishedVstParameter: boolean;
+begin
+  if fVstParameterIndex >= 0
+    then result := true
+    else result := false;
 end;
 
 { TPluginParameterManager }
@@ -578,6 +594,25 @@ begin
   SetLength(Raw, 0);
 
   inherited;
+end;
+
+function TPluginParameterManager.FindByName(const ParameterName: string): TPluginParameterClass;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to CurrentCount-1 do
+  begin
+    if Raw[c1].Name = ParameterName
+      then exit(Raw[c1]);
+  end;
+
+  // No result found if we make it this far.
+  result := nil;
+end;
+
+function TPluginParameterManager.FindByParameterID(const ParameterID: TPluginParameterID): TPluginParameterClass;
+begin
+  result := Raw[ParameterID];
 end;
 
 procedure TPluginParameterManager.Add(const aParameter: TPluginParameterClass);
