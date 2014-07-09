@@ -23,6 +23,12 @@ After that I may also rewrite the way parameter changes are applied to
 keygroups, voices, etc. Instead of using the PluginParameterController
 I might use the ZeroObject system to send messages.
 
+
+NOTE: At the moment the parameter system is kind of two systems mashed together.
+== TPluginParameter and TPluginParameterClass ==
+TPluginParameter came first and I've refactored some sections so that TPluginParameter
+is being used instead.
+It's all a bit of a mess.
 }
 
 
