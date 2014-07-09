@@ -3,7 +3,7 @@ unit VamKnob;
 interface
 
 uses
-  VamKnobSmoother, //TODO:MED Remove the knob smoother if adding parameter smoothing.['{0CA14E6F-028E-4D3F-97BC-B30B897876E3}']
+  //VamKnobSmoother, //TODO:MED Remove the knob smoother if adding parameter smoothing.['{0CA14E6F-028E-4D3F-97BC-B30B897876E3}']
   VamGuiControlInterfaces,
   Types, Controls, Classes, Graphics, AggColor,
   RedFox, RedFoxGraphicControl, RedFoxColor,
@@ -266,8 +266,6 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
-    KnobSmoother.FinaliseKnob(self);
-
     if (ssAlt in Shift) and (KnobMode = TKnobMode.ModEdit)
       then CurrentEditMode := TKnobMode.ModEdit
       else CurrentEditMode := TKnobMode.PositionEdit;
@@ -287,7 +285,6 @@ begin
       raise Exception.Create('Type not handled.');
     end;
 
-    KnobSmoother.KnobDown(self, CurrentValue, nil);
 
 
   end;
@@ -300,7 +297,6 @@ var
   NewValue : single;
   ScaleFactor : single;
   CurrentAdjustmentState : boolean;
-  ApplyValue : TApplyValueMethod;
 begin
   inherited;
 
@@ -342,19 +338,13 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
+      InternalPos := NewValue;
 
-
-      if InternalPos <> NewValue then
+      if InternalPos <> ExternalPos then
       begin
-        ApplyValue := procedure(x : single)
-        begin
-          ExternalPos := x;
-          KnobPosChanged;
-        end;
-
-        InternalPos := NewValue;
+        ExternalPos := InternalPos;
         Invalidate;
-        KnobSmoother.KnobMove(self, InternalPos, ApplyValue);
+        KnobPosChanged;
       end;
     end else
     begin
@@ -369,24 +359,19 @@ begin
         UpdateReferencePoints(X, Y);
       end;
 
-      if InternalPos + NewValue < 0 then
+      if ExternalPos + NewValue < 0 then
       begin
         NewValue := 0 - InternalPos;
         UpdateReferencePoints(X, Y);
       end;
 
-      if InternalModAmount <> NewValue then
+      InternalModAmount := NewValue;
+
+      if InternalModAmount <> ExternalModAmount then
       begin
-        InternalModAmount := NewValue;
+        ExternalModAmount := InternalModAmount;
         Invalidate;
-
-        ApplyValue := procedure(x : single)
-        begin
-          ExternalModAmount := InternalModAmount;
-          ModAmountChanged;
-        end;
-
-        KnobSmoother.KnobMove(self, InternalModAmount, ApplyValue);
+        ModAmountChanged;
       end;
     end;
 
@@ -395,9 +380,6 @@ begin
 end;
 
 procedure TVamKnob.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  CurrentValue : single;
-  ApplyValue : TApplyValueMethod;
 begin
   inherited;
 
@@ -405,32 +387,25 @@ begin
   begin
     IsGrabbed := false;
 
-    ApplyValue := procedure(x : single)
+    if InternalPos + InternalModAmount > 1
+      then InternalModAmount := 1 - InternalPos;
+
+    if InternalPos + InternalModAmount < 0
+      then InternalModAmount := 0 - InternalPos;
+
+    if InternalPos <> ExternalPos then
     begin
-      if InternalPos <> ExternalPos then
-      begin
-        ExternalPos := InternalPos;
-        KnobPosChanged;
-      end;
-
-      if InternalModAmount <> ExternalModAmount then
-      begin
-        ExternalModAmount := InternalModAmount;
-        ModAmountChanged;
-      end;
-
+      ExternalPos := InternalPos;
       Invalidate;
-      IsBeingEdited := false;
+      KnobPosChanged;
     end;
 
-    case CurrentEditMode of
-      TKnobMode.PositionEdit: CurrentValue := InternalPos;
-      TKnobMode.ModEdit:      CurrentValue := InternalModAmount;
-    else
-      raise Exception.Create('Type not handled.');
+    if InternalModAmount <> ExternalModAmount then
+    begin
+      ExternalModAmount := InternalModAmount;
+      Invalidate;
+      ModAmountChanged;
     end;
-
-    KnobSmoother.KnobUp(self, CurrentValue, ApplyValue);
   end;
 
 end;
