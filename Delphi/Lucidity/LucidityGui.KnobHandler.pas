@@ -318,7 +318,7 @@ begin
     begin
       Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
       Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
-      LogMain.LogMessage('Begin Edit ' + IntToStr(Par.VstParameterIndex));
+      //LogMain.LogMessage('Begin Edit ' + IntToStr(Par.VstParameterIndex));
     end;
 
 
@@ -353,7 +353,7 @@ begin
     begin
       Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
       Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
-      LogMain.LogMessage('End Edit ' + IntToStr(Par.VstParameterIndex));
+      //LogMain.LogMessage('End Edit ' + IntToStr(Par.VstParameterIndex));
     end;
   end;
 

@@ -386,6 +386,7 @@ begin
   if (Button = mbLeft) and (IsGrabbed = true) then
   begin
     IsGrabbed := false;
+    IsBeingEdited := false;
 
     if InternalPos + InternalModAmount > 1
       then InternalModAmount := 1 - InternalPos;
