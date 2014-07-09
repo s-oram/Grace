@@ -13,16 +13,6 @@ object Form1: TForm1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object VamArrows1: TVamArrows
-    Left = 104
-    Top = 64
-    Width = 100
-    Height = 41
-    Opacity = 255
-    HitTest = True
-    Color = '$FF000000'
-    Visible = True
-  end
   object Button1: TButton
     Left = 25
     Top = 461
@@ -39,30 +29,54 @@ object Form1: TForm1
     Height = 425
     Color = '$FFCCCCCC'
     object VamPanel1: TVamPanel
-      Left = 56
+      Left = 48
       Top = 80
-      Width = 345
-      Height = 225
+      Width = 505
+      Height = 313
       Opacity = 255
       Text = 'VamPanel1'
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Visible = True
-      object VamScrollBar1: TVamScrollBar
-        Left = 32
-        Top = 16
-        Width = 33
-        Height = 185
+      object VamKnob1: TVamKnob
+        Left = 64
+        Top = 136
+        Width = 65
+        Height = 65
         Opacity = 255
-        Text = 'VamScrollBar1'
+        Text = 'VamKnob1'
         HitTest = True
-        IndexSize = 0.250000000000000000
-        Color_Border = '$FF000000'
-        Color_Background = '$FF888888'
-        Color_Foreground = '$FFCCCCCC'
-        SliderStyle = SquareCorners
-        SliderType = stVertical
+        ModLineDist = 17.000000000000000000
+        ModLineWidth = 3.000000000000000000
+        ModLineColor = '$FFFF0000'
+        ModLineOffColor = '$FFC0C0C0'
+        IndicatorSize = 2.500000000000000000
+        IndicatorDist = 9.000000000000000000
+        IsBipolarKnob = False
+        KnobMode = PositionEdit
+        IsKnobEnabled = True
+        VisibleSteps = 0
+        ParameterIndex = 0
+        OnKnobPosChanged = VamKnob1KnobPosChanged
+        Visible = True
+      end
+      object VamLabel1: TVamLabel
+        Left = 152
+        Top = 200
+        Width = 193
+        Height = 65
+        Opacity = 255
+        Text = 'Test'
+        HitTest = True
+        AutoSize = False
+        TextAlign = AlignCenter
+        TextVAlign = AlignCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Visible = True
       end
     end

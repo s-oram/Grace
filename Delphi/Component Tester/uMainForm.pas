@@ -41,9 +41,9 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
-    VamArrows1: TVamArrows;
     VamPanel1: TVamPanel;
-    VamScrollBar1: TVamScrollBar;
+    VamKnob1: TVamKnob;
+    VamLabel1: TVamLabel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -71,7 +71,7 @@ implementation
 
 uses
   VamLib.Throttler,
-  eeEnumHelper,
+  //eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
   VamLib.Utils,
@@ -86,13 +86,13 @@ var
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   //
-  VamPanel1.BeginUpdate;
+  //VamPanel1.BeginUpdate;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
   //
-  VamPanel1.EndUpdate;
+  //VamPanel1.EndUpdate;
 end;
 
 procedure TForm1.UpdateLabel;
@@ -110,7 +110,8 @@ end;
 
 procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
 begin
-
+  //
+  VamLabel1.Text := FloatToStr(VamKnob1.Pos);
 end;
 
 
