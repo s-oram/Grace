@@ -32,6 +32,11 @@ Right Click and Hold for sample zoom with mouse
 - Update the installer so that Default.lpg isn't overwritten. (the default patch.)
 
 =============================================================================
+
+  Fundamentals Delphi Library contains a RSA encryption implementation. Investigate.
+  http://sourceforge.net/projects/fundementals/?source=directory
+
+
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
 - zones can be duplicated by holding ALT while dragging a sample zone in the key zone editor. (I'll make this a command in the context menu.)
 - thunderlink://messageid=C96432EDCAD443F880A0337122247144@YannHP

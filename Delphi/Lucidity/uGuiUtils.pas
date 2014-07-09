@@ -72,7 +72,6 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
-
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
 
@@ -101,7 +100,9 @@ type
     class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
 
 
-
+    class procedure VstPar_BeginEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
+    class procedure VstPar_EndEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
+    class procedure VstPar_SetParameterAutomated(const Plugin : TeePlugin; const VstParameterIndex : integer; const ParValue : single); static;
   end;
 
   GuiSetup = record
@@ -705,6 +706,21 @@ begin
     Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
   end;
+end;
+
+class procedure Command.VstPar_BeginEdit(const Plugin: TeePlugin; const VstParameterIndex: integer);
+begin
+  Plugin.Globals.VstMethods.BeginParameterEdit(VstParameterIndex);
+end;
+
+class procedure Command.VstPar_EndEdit(const Plugin: TeePlugin;  const VstParameterIndex: integer);
+begin
+  Plugin.Globals.VstMethods.EndParameterEdit(VstParameterIndex);
+end;
+
+class procedure Command.VstPar_SetParameterAutomated(const Plugin: TeePlugin; const VstParameterIndex: integer; const ParValue: single);
+begin
+  Plugin.Globals.VstMethods.SetParameterAutomated(VstParameterIndex, ParValue);
 end;
 
 class procedure Command.ClearAllModulationForParameter_OLD(const Plugin: TeePlugin; const ModParIndex: integer);

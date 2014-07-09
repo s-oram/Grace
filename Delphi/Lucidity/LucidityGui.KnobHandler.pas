@@ -2,6 +2,8 @@ unit LucidityGui.KnobHandler;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   Vcl.Menus,
   Menu.CustomPopupMenu,
@@ -69,6 +71,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
   Vcl.Dialogs,
   eeTypes,
@@ -300,11 +303,24 @@ procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; S
 var
   KnobControl : IKnobControl;
   ParName  : string;
+  Par : TPluginParameterClass;
 begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
     Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+
+    Par := Plugin.PluginParameters.FindByName(ParName);
+    assert(assigned(Par));
+
+
+    if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
+    begin
+      Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
+      Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
+      LogMain.LogMessage('Begin Edit ' + IntToStr(Par.VstParameterIndex));
+    end;
+
 
     if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
     begin
@@ -322,10 +338,30 @@ begin
 end;
 
 procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  KnobControl : IKnobControl;
+  ParName  : string;
+  Par : TPluginParameterClass;
 begin
-  // TODO:HIGH need to have EndEdit() called here for Publised VST parameter.
+  if Supports(Sender, IKnobControl, KnobControl) then
+  begin
+    ParName  := KnobControl.GetParameterName;
+    Par := Plugin.PluginParameters.FindByName(ParName);
+    assert(assigned(Par));
 
-  // TODO: the last eeGuiStandard had an "Active Controls" list. Active Controls
+    if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
+    begin
+      Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
+      Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
+      LogMain.LogMessage('End Edit ' + IntToStr(Par.VstParameterIndex));
+    end;
+  end;
+
+
+
+
+
+  // TODO:MED the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
 end;
 
@@ -335,6 +371,7 @@ var
   ParName  : string;
   ParID    : TPluginParameterID;
   ParValue : single;
+  Par : TPluginParameterClass;
 begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
@@ -342,10 +379,20 @@ begin
     ParID    := PluginParNameToID(ParName);
     ParValue := KnobControl.GetKnobValue;
 
-    // TODO:HIGH Check if the parameter is a published vst parameter,
-    // Send parameter change via the published VST parameter route if so,
-    // otherwise set parameter value directly in plugin.
-    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+    assert(ParValue >= 0);
+    assert(ParValue <= 1);
+
+    Par := Plugin.PluginParameters.FindByName(ParName);
+    assert(assigned(Par));
+
+    if Par.IsPublishedVstParameter then
+    begin
+      Command.VstPar_SetParameterAutomated(Plugin, Par.VstParameterIndex, ParValue);
+      Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+    end else
+    begin
+      Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+    end;
 
     Throttle(ThrottleHandle, 25,
     procedure

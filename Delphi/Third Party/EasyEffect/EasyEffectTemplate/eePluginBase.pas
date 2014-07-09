@@ -71,7 +71,7 @@ type
 
     //==========================================================================
     function GetParameter(Index:integer):single; virtual;
-    procedure VstParameterChanged(Index:integer; Value:single); virtual;
+    procedure VstParameterChanged(Index:integer; Value:single); virtual; abstract;
 
     function GetParameterName(Index : integer):string; virtual;
     function GetParameterDisplay(Index : integer):string; virtual;
@@ -217,16 +217,6 @@ begin
   ParID := PublishedVstParameters.FindParameterID(Index);
   result := GetPluginParameter(ParID);
 end;
-
-procedure TeePluginBase.VstParameterChanged(Index: integer; Value: single);
-var
-  ParID : TPluginParameterID;
-begin
-  // TODO:HIGH Check that this method is only called by VST Parameter changes.
-  ParID   := PublishedVstParameters.FindParameterID(Index);
-  SetPluginParameter(ParID, Value, TParChangeScope.psGlobal);
-end;
-
 
 function TeePluginBase.GetParameterName(Index: integer): string;
 var

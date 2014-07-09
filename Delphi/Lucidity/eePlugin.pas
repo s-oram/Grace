@@ -150,6 +150,8 @@ type
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
     function GetPluginParameter(const ParID : TPluginParameterID):single; override;
 
+    procedure VstParameterChanged(Index:integer; Value:single); override;
+
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
@@ -1314,6 +1316,25 @@ begin
   end;
 
   Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged);
+end;
+
+procedure TeePlugin.VstParameterChanged(Index: integer; Value: single);
+var
+  ParID : TPluginParameterID;
+  msg : string;
+begin
+  ParID := PublishedVstParameters.FindParameterID(Index);
+
+  if ParID <> Globals.GuiState.ActiveVstPluginParameterID then
+  begin
+    msg := 'VST Change. Value = ' + FloatToStr(Value);
+    //Log.LogMessage(msg);
+    SetPluginParameter(ParID, Value, TParChangeScope.psGlobal)
+  end else
+  begin
+    msg := 'VST Change filtered. Value = ' + FloatToStr(Value);
+    //Log.LogMessage(msg);
+  end;
 end;
 
 procedure TeePlugin.StopPreview;
