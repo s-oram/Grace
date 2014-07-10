@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  ExtCtrls,
   VamLib.Debouncer,
   VamLib.ZeroObject,
   eePlugin,
@@ -35,6 +36,8 @@ type
     Plugin  : TeePlugin;
     Globals : TGlobals;
 
+    UpdateTimer : TTimer;
+
     ScopeState : record
       IsParFocusActive : boolean;
       CurrentParFocus : string; // this is a parameter name.
@@ -50,6 +53,8 @@ type
     procedure UpdateScope(const FocusParName : string); overload;
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+
+    procedure HandleUpdateTimer(Sender : TObject);
   public
     constructor Create(aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -160,12 +165,25 @@ begin
   LastScopeFocus := TScopeFocus.None;
 
   ScopeFocusDebounceID.Init;
+
+  UpdateTimer := TTimer.Create(nil);
+  UpdateTimer.Interval := 50;
+  UpdateTimer.OnTimer := HandleUpdateTimer;
+  UpdateTimer.Enabled := true;
 end;
 
 destructor TScopeHandler.Destroy;
 begin
+  UpdateTimer.Free;
   DebounceCancel(ScopeFocusDebounceID);
   inherited;
+end;
+
+procedure TScopeHandler.HandleUpdateTimer(Sender: TObject);
+begin
+  if LastScopeFocus <> TScopeFocus.None
+    then UpdateScope(LastScopeFocus);
+
 end;
 
 procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
