@@ -1342,13 +1342,22 @@ begin
     //Log.LogMessage(msg);
   end;
 
+  {
+  TODO:MED It would be ideal to have a throttler class in here. I would
+  send messages to the scope so that it could be updated when the parameter
+  changes. But the Trottle() method doesn't work in non-GUI threads or threads
+  with windows message processing.
+
+  I think I will change it so that the scope regularly updates on a timer. I
+  would prefer otherwise but it doesn't seem to want to work other wise.
+
   Throttle(ThrottleID_VSTParChange, 100,
   procedure
   begin
     LogMain.LogMessage('VstParameter Changed Throttle');
     Globals.MotherShip.MsgVclTS(TLucidMsgID.VstParameterChanged);
   end);
-
+  }
 
 
 end;
