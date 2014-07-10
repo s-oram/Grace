@@ -832,7 +832,6 @@ begin
     then SampleOverlay.ShowReplaceMessage := true
     else SampleOverlay.ShowReplaceMessage := false;
 
-
 end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayResize(Sender: TObject);

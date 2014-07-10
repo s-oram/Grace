@@ -304,15 +304,21 @@ var
   KnobControl : IKnobControl;
   ParName  : string;
   Par : TPluginParameterClass;
+  ParID    : TPluginParameterID;
 begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
-
+    ParID    := PluginParNameToID(ParName);
     Par := Plugin.PluginParameters.FindByName(ParName);
     assert(assigned(Par));
 
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+
+    if (Button = TMouseButton.mbLeft) then
+    begin
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
+    end;
 
     if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
     begin
@@ -355,11 +361,12 @@ begin
       Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
       //LogMain.LogMessage('End Edit ' + IntToStr(Par.VstParameterIndex));
     end;
+
+    if (Button = TMouseButton.mbLeft) then
+    begin
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideParChangeInfo);
+    end;
   end;
-
-
-
-
 
   // TODO:MED the last eeGuiStandard had an "Active Controls" list. Active Controls
   // aren't updated in the UpdateControl method.
@@ -397,7 +404,8 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
     end);
   end;
 end;

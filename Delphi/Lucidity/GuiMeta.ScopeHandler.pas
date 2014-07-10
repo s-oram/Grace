@@ -183,7 +183,6 @@ procedure TScopeHandler.HandleUpdateTimer(Sender: TObject);
 begin
   if LastScopeFocus <> TScopeFocus.None
     then UpdateScope(LastScopeFocus);
-
 end;
 
 procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
