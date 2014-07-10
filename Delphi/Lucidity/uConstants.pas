@@ -46,7 +46,8 @@ type
     LfoChanged                       = 12;
     ModAmountChanged                 = 13;
     GUILayoutChanged                 = 14;
-    Command                          = GUILayoutChanged + 1;
+    VstParameterChanged              = 15;
+    Command                          = VstParameterChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;

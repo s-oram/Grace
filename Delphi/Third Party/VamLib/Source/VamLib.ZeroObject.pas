@@ -500,7 +500,7 @@ begin
       SendMessageToList(VclObjects, MsgID, nil);
     end else
     begin
-      // TODO: probably should log a warning or raise an error here.
+      // TODO:MED probably should log a warning or raise an error here.
     end;
   end;
 end;
@@ -515,7 +515,7 @@ begin
       SendMessageToList(VclObjects, MsgID, Data);
     end else
     begin
-      // TODO: probably should log a warning or raise an error here.
+      // TODO:MED probably should log a warning or raise an error here.
     end;
   end;
 end;

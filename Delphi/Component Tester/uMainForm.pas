@@ -12,7 +12,7 @@ uses
   VamLib.Debouncer,
   VamLib.Animation,
   AudioIO,
-  eeSampleFloat, VamSampleDisplayBackBuffer, VamSamplePeakBuffer,
+  eeSampleFloat, {VamSampleDisplayBackBuffer,} {VamSamplePeakBuffer,}
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
   VamSampleDisplay, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamKnob,
@@ -47,10 +47,13 @@ type
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
     StepSize : TOscPhaseCounter;
+
+    ThrottleID_VSTParChange : TUniqueID;
 
     ID : TUniqueID;
     KnobValue : single;
@@ -95,6 +98,13 @@ begin
   //VamPanel1.EndUpdate;
 end;
 
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  ThrottleID_VSTParChange.Init;
+
+  //
+end;
+
 procedure TForm1.UpdateLabel;
 begin
 
@@ -111,7 +121,14 @@ end;
 procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
 begin
   //
-  VamLabel1.Text := FloatToStr(VamKnob1.Pos);
+
+  Throttle(ThrottleID_VSTParChange, 1000,
+  procedure
+  begin
+    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
+  end);
+
+
 end;
 
 

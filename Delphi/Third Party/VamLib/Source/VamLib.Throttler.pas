@@ -14,6 +14,8 @@ uses
 //==============================================================================
 procedure Throttle(const Handle : TUniqueID; Time: integer; Task : TProc);
 
+// TODO:HIGH need a clear throttle method.
+
 
 //==============================================================================
 //        Low level type declarations
@@ -51,6 +53,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   DateUtils;
 
 var
@@ -85,6 +88,8 @@ var
   TaskInfo : PThrottleInfo;
   ms : Int64;
 begin
+  Log.LogMessage('Throttle Timer Event');
+
   for c1 := TaskList.Count-1 downto 0 do
   begin
     TaskInfo := @TaskList.Raw[c1];
@@ -127,6 +132,7 @@ begin
   end else
   begin
     TaskInfo.IsExpired := false;
+    Timer.Enabled := true;
   end;
 end;
 

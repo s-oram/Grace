@@ -7,6 +7,7 @@ interface
 {$M+}
 
 uses
+  VamLib.UniqueID,
   VamLib.CpuOverloadWatcher,
   eeTypes,
   eePublishedVstParameters,
@@ -115,6 +116,8 @@ type
     EmptyKeyGroup : IKeyGroup;
 
     OverloadWatch : TCpuOverloadWatcher;
+
+    ThrottleID_VSTParChange : TUniqueID;
 
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
@@ -253,6 +256,7 @@ implementation
 uses
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
+  VamLib.Throttler,
   MadExcept, Windows,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   VamLib.LoggingProxy,
@@ -285,6 +289,8 @@ var
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
+
+  ThrottleID_VSTParChange.Init;
 
   OverloadWatch := TCpuOverloadWatcher.Create;
 
@@ -1335,6 +1341,16 @@ begin
     msg := 'VST Change filtered. Value = ' + FloatToStr(Value);
     //Log.LogMessage(msg);
   end;
+
+  Throttle(ThrottleID_VSTParChange, 100,
+  procedure
+  begin
+    LogMain.LogMessage('VstParameter Changed Throttle');
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.VstParameterChanged);
+  end);
+
+
+
 end;
 
 procedure TeePlugin.StopPreview;

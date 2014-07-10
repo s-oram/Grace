@@ -183,11 +183,18 @@ begin
     UpdateScope;
   end;
 
-
   if MsgID = TLucidMsgID.Command_UpdateScope then
   begin
     UpdateScope;
   end;
+
+  if MsgID = TLucidMsgID.VstParameterChanged then
+  begin
+    UpdateScope;
+    LogMain.LogMessage('VstParameter Changed Called.');
+
+  end;
+
 
 
   if MsgID = TLucidMsgID.OnParControlEnter then

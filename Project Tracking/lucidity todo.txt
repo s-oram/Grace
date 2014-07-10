@@ -11,6 +11,8 @@
 
 Published vst parameters knobs need to set the related Plugin Parameter
 via SetParameterAutomated.
+ -- Published VST parameters are now automated. It would be nice if the 
+    scope was also updated when one of it's focused controls are automated.
 
 - might need a 'reverse sample' command.
 
