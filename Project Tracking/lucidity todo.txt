@@ -13,11 +13,9 @@
 - Tune and Fine need to show integer values when updated so the user
   knows where they are.
 
-- might need a 'reverse sample' command.
+- Need to trim long sample names so they display appropiately.
 
 - sample map icon needs to be replaced.
-
-- look at more mouse wheel support!
 
 - filters finished. 
 
@@ -31,6 +29,12 @@ Right Click and Hold for sample zoom with mouse
 - would be good to figure out the text drawing and use a higher quality text drawing routine!
 
 - Update the installer so that Default.lpg isn't overwritten. (the default patch.)
+
+- BUG: "Info" in a TVamTextBox causes the text drawing to fail!
+
+- might need a 'reverse sample' command.
+
+- look at more mouse wheel support!
 
 =============================================================================
 

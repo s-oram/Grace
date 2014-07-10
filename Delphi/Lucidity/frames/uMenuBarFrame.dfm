@@ -41,9 +41,9 @@ object MenuBarFrame: TMenuBarFrame
         Visible = True
         object SampleMenuButton: TVamTextBox
           AlignWithMargins = True
-          Left = 441
+          Left = 536
           Top = 0
-          Width = 200
+          Width = 105
           Height = 37
           Margins.Left = 0
           Margins.Top = 0
@@ -63,15 +63,19 @@ object MenuBarFrame: TMenuBarFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alRight
           Visible = True
           OnClick = SampleMenuButtonClick
         end
         object GroupMenuButton: TVamTextBox
           AlignWithMargins = True
-          Left = 307
+          Left = 456
           Top = 0
-          Width = 130
+          Width = 76
           Height = 37
           Margins.Left = 0
           Margins.Top = 0
@@ -91,6 +95,10 @@ object MenuBarFrame: TMenuBarFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alRight
           Visible = True
           OnClick = GroupMenuButtonClick
@@ -119,6 +127,10 @@ object MenuBarFrame: TMenuBarFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
           OnClick = MainMenuButtonClick
@@ -147,9 +159,31 @@ object MenuBarFrame: TMenuBarFrame
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
           OnClick = MapEditButtonClick
+        end
+        object InfoDisplay: TVamLabel
+          Left = 248
+          Top = 8
+          Width = 57
+          Height = 25
+          Opacity = 255
+          Text = 'Tin'
+          HitTest = True
+          AutoSize = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Visible = True
         end
       end
     end

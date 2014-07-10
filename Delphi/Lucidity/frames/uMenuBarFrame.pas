@@ -9,7 +9,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamDiv, RedFoxGraphicControl,
-  VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu;
+  VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu, VamLabel;
 
 type
   TMenuBarFrame = class(TFrame, IZeroObject)
@@ -20,6 +20,7 @@ type
     GroupMenuButton: TVamTextBox;
     MainMenuButton: TVamTextBox;
     MapEditButton: TVamTextBox;
+    InfoDisplay: TVamLabel;
     procedure SampleMapButtonClick(Sender: TObject);
     procedure GroupMenuButtonClick(Sender: TObject);
     procedure SampleMenuButtonClick(Sender: TObject);
@@ -60,10 +61,12 @@ implementation
 uses
   RedFox,
   RedFoxColor,
+  eeTypes,
   uLucidityEnums,
   VamQuery,
   uGuiUtils,
   uConstants,
+  Lucidity.PluginParameters,
   Lucidity.SampleMap,
   Lucidity.Interfaces;
 
@@ -130,6 +133,14 @@ begin
   MapEditButton.ImageOverlay := Plugin.Globals.SkinImageLoader.GetImage('Menu_ProgramIcon');
   MapEditButton.ImageOverlayHorzAlign := TRedFoxAlign.AlignNear;
   MapEditButton.ImageOverlayOffsetX := 2;
+
+
+
+  GroupMenuButton.Width := 116;
+  SampleMenuButton.Width := 136;
+
+  InfoDisplay.Align := alClient;
+  InfoDisplay.Text := '';
 
 
   //===
@@ -226,6 +237,9 @@ begin
 end;
 
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+var
+  ParID : TPluginParameterID;
+  ParValue : single;
 begin
   if MsgID = TLucidmsgID.SampleFocusChanged then
   begin
@@ -240,6 +254,24 @@ begin
   if MsgID = TLucidmsgID.SampleRegionChanged then
   begin
     SampleFocusChanged;
+  end;
+
+
+  if MsgID = TLucidMsgID.Command_ShowParChangeInfo then
+  begin
+    ParID := TPluginParameterID(Data^);
+
+    ParValue := Plugin.GetPluginParameter(ParID);
+
+    InfoDisplay.Text := FloatToStr(ParValue);
+
+    InfoDisplay.Visible := true;
+  end;
+
+  if MsgID = TLucidMsgID.Command_HideParChangeInfo then
+  begin
+
+    InfoDisplay.Visible := false;
   end;
 
   //TODO: will maybe need to respond when hiding the sample map edit.
