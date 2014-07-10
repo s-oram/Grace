@@ -9,12 +9,13 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
-  Lucidity.PluginParameters,
+  eeTypes,
   eeEnumHelper,
   Math,
   Dialogs,
   VamKnob,
   eeGlobals,
+  Lucidity.PluginParameters,
   uLucidityEnums,
   Lucidity.Interfaces,
   Lucidity.Types,
@@ -90,6 +91,7 @@ type
 
     class function GetParValue(const Plugin : TeePlugin; const Par : TPluginParameter):single; overload; static;
     class function GetParValue<TEnum>(const Plugin : TeePlugin; const Par : TPluginParameter):TEnum; overload; static;
+    class function GetParDisplayInfo(const Plugin : TeePlugin; const ParID : TPluginParameterID):string; static;
 
     class procedure SetMidiCCForParameter(const Plugin : TeePlugin; const TargetParameterName : string); static;
 
@@ -103,6 +105,8 @@ type
     class procedure VstPar_BeginEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_EndEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_SetParameterAutomated(const Plugin : TeePlugin; const VstParameterIndex : integer; const ParValue : single); static;
+
+
   end;
 
   GuiSetup = record
@@ -120,7 +124,6 @@ uses
   Effect.MidiAutomation,
   RedFoxColor,
   VamGuiControlInterfaces,
-  eeTypes,
   eeDsp,
   eeSampleFloat,
   uConstants,
@@ -909,6 +912,17 @@ begin
   ParID := PluginParToID(Par);
   ParValue := Plugin.GetPluginParameter(ParID);
   result := TEnumHelper<TEnum>.ToEnum(ParValue);
+end;
+
+class function Command.GetParDisplayInfo(const Plugin: TeePlugin; const ParID: TPluginParameterID): string;
+var
+  text : string;
+  Par : TPluginParameter;
+begin
+  Par := PluginParFromID(ParID);
+  Text := PluginParToDisplayName(Par);
+
+  result := Text;
 end;
 
 class procedure Command.MoveSampleMarker(const Plugin: TeePlugin; const Marker: TSampleMarker; const NewSamplePos: integer);

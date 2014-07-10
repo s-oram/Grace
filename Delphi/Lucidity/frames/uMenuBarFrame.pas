@@ -3,6 +3,7 @@ unit uMenuBarFrame;
 interface
 
 uses
+  eeTypes,
   VamLib.ZeroObject,
   uDialogDisplayArea,
   eeGuiStandardv2, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
@@ -41,11 +42,12 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
 
     procedure SampleFocusChanged; // Called when the sample focus changes...
+
+    procedure ShowParameterChangeInfo(const ParameterID : TPluginParameterID);
+    procedure HideParameterChangeInfo;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
-
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
@@ -61,7 +63,6 @@ implementation
 uses
   RedFox,
   RedFoxColor,
-  eeTypes,
   uLucidityEnums,
   VamQuery,
   uGuiUtils,
@@ -178,8 +179,6 @@ begin
   GroupsMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
-
-
 procedure TMenuBarFrame.SampleFocusChanged;
 var
   kg : IKeyGroup;
@@ -239,7 +238,6 @@ end;
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 var
   ParID : TPluginParameterID;
-  ParValue : single;
 begin
   if MsgID = TLucidmsgID.SampleFocusChanged then
   begin
@@ -260,22 +258,27 @@ begin
   if MsgID = TLucidMsgID.Command_ShowParChangeInfo then
   begin
     ParID := TPluginParameterID(Data^);
-
-    ParValue := Plugin.GetPluginParameter(ParID);
-
-    InfoDisplay.Text := FloatToStr(ParValue);
-
-    InfoDisplay.Visible := true;
+    ShowParameterChangeInfo(ParID);
   end;
 
-  if MsgID = TLucidMsgID.Command_HideParChangeInfo then
-  begin
-
-    InfoDisplay.Visible := false;
-  end;
+  if MsgID = TLucidMsgID.Command_HideParChangeInfo
+    then HideParameterChangeInfo;
 
   //TODO: will maybe need to respond when hiding the sample map edit.
 
 end;
+
+procedure TMenuBarFrame.ShowParameterChangeInfo(const ParameterID: TPluginParameterID);
+begin
+  InfoDisplay.Text := Command.GetParDisplayInfo(self.Plugin, ParameterID);
+  InfoDisplay.Visible := true;
+end;
+
+procedure TMenuBarFrame.HideParameterChangeInfo;
+begin
+  InfoDisplay.Visible := false;
+end;
+
+
 
 end.
