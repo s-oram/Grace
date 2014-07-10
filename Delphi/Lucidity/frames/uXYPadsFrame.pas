@@ -4,6 +4,10 @@ interface
 
 {$INCLUDE Defines.inc}
 
+// TODO:HIGH
+// The XY Pads don't broadcast BeginEdit, EndEdit and SetParameterAutomated
+// so they can't be linked into the host automation. This needs to change.
+
 uses
   uGuiFeedbackData, Menu.XYPadContextMenu,
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
