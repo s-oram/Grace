@@ -5,6 +5,7 @@ interface
 uses
   ExtCtrls,
   SysUtils,
+  VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.Collections.Lists;
 
@@ -40,7 +41,7 @@ type
   private
     TaskList : TInfoList;
     //TODO: Use high speed timer here.
-    Timer : TTimer;
+    Timer : THighSpeedTimer;
     procedure HandleTimerEvent(Sender : TObject);
   public
     constructor Create;
@@ -70,15 +71,17 @@ end;
 constructor TThrottleController.Create;
 begin
   TaskList := TInfoList.Create;
-  Timer := TTimer.Create(nil);
-  Timer.Interval := 1;
+  Timer := THighSpeedTimer.Create;
+  Timer.UseMainThreadForTimerEvent := false;
+  Timer.Interval := 5;
   Timer.OnTimer := HandleTimerEvent;
+  Timer.Enabled       := true;
 end;
 
 destructor TThrottleController.Destroy;
 begin
-  TaskList.Free;
   Timer.Free;
+  TaskList.Free;
   inherited;
 end;
 
@@ -109,8 +112,8 @@ begin
     end;
   end;
 
-  if TaskList.Count = 0
-    then Timer.Enabled := false;
+  //if TaskList.Count = 0
+  //  then Timer.Enabled := false;
 
 end;
 
@@ -128,11 +131,10 @@ begin
     TaskInfo.Task       := Task;
     TaskInfo.HoldTime   := Time;
     TaskInfo.TimeCalled := Now;
-    Timer.Enabled       := true;
   end else
   begin
     TaskInfo.IsExpired := false;
-    Timer.Enabled := true;
+    //Timer.Enabled := true;
   end;
 end;
 

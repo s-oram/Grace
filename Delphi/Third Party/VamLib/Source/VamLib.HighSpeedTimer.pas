@@ -63,7 +63,7 @@ begin
   // http://delphi32.blogspot.com.au/2006/03/using-waitable-timer-in-delphi.html
   // http://www.adp-gmbh.ch/win/misc/timer.html
 
-  TimerHandle := CreateWaitableTimer(nil, True, 'WaitableTimer');
+  TimerHandle := CreateWaitableTimer(nil, True, nil);
   if TimerHandle = 0 then Exit;
   DueTime.QuadPart := -(unitsPerMilliSecond * MilliSeconds);
   SetWaitableTimer(TimerHandle, TLargeInteger(DueTime), 0, nil, nil, False);
@@ -121,14 +121,16 @@ begin
     TaskControl.OnTerminated(HandleTaskTerminated);
     TaskControl.Schedule;
   end;
+
+
 end;
 
 procedure THighSpeedTimer.TaskLoop(const task: IOmniTask);
 begin
   while (fEnabled) and (not Task.Terminated) do
   begin
-    //Sleep(Interval);
-    Wait(Interval);
+    Sleep(Interval);
+    //Wait(Interval);
 
     if fEnabled then
     begin
