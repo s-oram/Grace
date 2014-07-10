@@ -9,10 +9,9 @@
   That way all parameters can be optionally smoothed and it might be easier to  
   port to other plugins. 
 
-Published vst parameters knobs need to set the related Plugin Parameter
-via SetParameterAutomated.
- -- Published VST parameters are now automated. It would be nice if the 
-    scope was also updated when one of it's focused controls are automated.
+- Tune and Fine need to be quantised for the GUI but not automation.
+- Tune and Fine need to show integer values when updated so the user
+  knows where they are.
 
 - might need a 'reverse sample' command.
 
