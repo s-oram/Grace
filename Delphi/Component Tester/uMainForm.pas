@@ -104,7 +104,7 @@ begin
   // http://delphi32.blogspot.com.au/2006/03/using-waitable-timer-in-delphi.html
   // http://www.adp-gmbh.ch/win/misc/timer.html
 
-  hTimer := CreateWaitableTimer(nil, True, 'WaitableTimer');
+  hTimer := CreateWaitableTimer(nil, True, nil);
   if hTimer = 0 then
    Exit;
   liDueTime.QuadPart := -10000000 * lNumberOfSeconds;
@@ -129,13 +129,13 @@ begin
 
   VamLabel1.Text := 'Message A';
 
-  Wait(3);
+  Wait(1);
   VamLabel1.Text := 'Message B';
 
-  Wait(3);
+  Wait(1);
   VamLabel1.Text := 'Message C';
 
-  Wait(3);
+  Wait(1);
   VamLabel1.Text := 'Message D';
 end;
 
@@ -151,7 +151,7 @@ begin
   ThrottleID_VSTParChange.Init;
 
   Timer := THighSpeedTimer.Create;
-  Timer.Interval := 1000;
+  Timer.Interval := 300;
   Timer.OnTimer := self.HandleTimerEvent;
   Timer.Enabled := true;
 
