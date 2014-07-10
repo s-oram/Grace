@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
@@ -63,8 +64,26 @@ object Form1: TForm1
         Visible = True
       end
       object VamLabel1: TVamLabel
-        Left = 152
-        Top = 200
+        Left = 168
+        Top = 80
+        Width = 193
+        Height = 65
+        Opacity = 255
+        Text = 'Test'
+        HitTest = True
+        AutoSize = False
+        TextAlign = AlignCenter
+        TextVAlign = AlignCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Visible = True
+      end
+      object VamLabel2: TVamLabel
+        Left = 168
+        Top = 176
         Width = 193
         Height = 65
         Opacity = 255

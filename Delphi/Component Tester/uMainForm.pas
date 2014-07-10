@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+
   eeOscPhaseCounter,
   VamLib.HighSpeedTimer,
   VamLib.UniqueID,
@@ -44,10 +45,12 @@ type
     VamPanel1: TVamPanel;
     VamKnob1: TVamKnob;
     VamLabel1: TVamLabel;
+    VamLabel2: TVamLabel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
@@ -61,6 +64,7 @@ type
     Timer : THighSpeedTimer;
     procedure UpdateLabel;
 
+    procedure HandleTimerEvent(Sender : TObject);
   public
     procedure UpdateMemo;
   end;
@@ -86,23 +90,76 @@ type
 var
   GlobalDict : TProcDictionary;
 
+
+procedure Wait(lNumberOfSeconds : Longint);
+const
+ _SECOND = 10000000;
+var
+ lBusy : LongInt;
+ hTimer : LongInt;
+ liDueTime : LARGE_INTEGER;
+
+begin
+  // Waitable Timers in Delphi.
+  // http://delphi32.blogspot.com.au/2006/03/using-waitable-timer-in-delphi.html
+  // http://www.adp-gmbh.ch/win/misc/timer.html
+
+  hTimer := CreateWaitableTimer(nil, True, 'WaitableTimer');
+  if hTimer = 0 then
+   Exit;
+  liDueTime.QuadPart := -10000000 * lNumberOfSeconds;
+  SetWaitableTimer(hTimer, TLargeInteger(liDueTime), 0, nil, nil, False);
+
+  repeat
+    lBusy := MsgWaitForMultipleObjects(1, hTimer, False,
+            INFINITE, QS_ALLINPUT);
+      Application.ProcessMessages;
+   Until lBusy = WAIT_OBJECT_0;
+
+    // Close the handles when you are done with them.
+   CloseHandle(hTimer);
+
+End;
+
+
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   //
   //VamPanel1.BeginUpdate;
+
+  VamLabel1.Text := 'Message A';
+
+  Wait(3);
+  VamLabel1.Text := 'Message B';
+
+  Wait(3);
+  VamLabel1.Text := 'Message C';
+
+  Wait(3);
+  VamLabel1.Text := 'Message D';
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
   //
   //VamPanel1.EndUpdate;
+  VamLabel1.Text := 'Message Z';
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   ThrottleID_VSTParChange.Init;
 
-  //
+  Timer := THighSpeedTimer.Create;
+  Timer.Interval := 1000;
+  Timer.OnTimer := self.HandleTimerEvent;
+  Timer.Enabled := true;
+
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  Timer.Free;
 end;
 
 procedure TForm1.UpdateLabel;
@@ -130,6 +187,13 @@ begin
 
 
 end;
+
+procedure TForm1.HandleTimerEvent(Sender: TObject);
+begin
+  VamLabel2.Text :=  IntToStr(Random(4000));
+end;
+
+
 
 
 
