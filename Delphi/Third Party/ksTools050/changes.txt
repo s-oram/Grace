@@ -1,0 +1,63 @@
+version 0.50
+---------------
++ added ksUtils.pas unit;
++ added UtilTests unit test project;
++ added ksClasses.TksFiler class;
++ added ksClasses.TksReader class;
++ added ksClasses.TksWriter class;
++ added ksClasses.TksByteStream class;
++ added ksShrink unit;
++ added ksCompress unit;
++ added CompressTests unit test project;
+! TksTimer.TimerCount is renamed by TksTimer.Count;
++ added TksTimer documentation.
+
+version 0.46
+---------------
++ added TksTimer class (Queue Timer wrapper);
++ added TimerTests project. 
+
+version 0.45
+---------------
++ added ksMath.TksInteger type (multiple precision integers);
++ added IntTests unit test project for TksInteger. 
+
+version 0.40
+---------------
++ added SinFFT procedure (Sine Fourier Transform);
++ added Cos1FFT procedure (Cosine Transform, 1st Form);
++ added Cos2FFT procedure (Cosine Transform, 2nd Form);
++ added ksMath.TksComplex type (complex numbers) 
++ added CmplTests unit test project for TksComplex;
+! fixed TksComPort.OnReadStop issue;
++/- TksComPort StopPos property is replaced by ReadStopped.
+
+version 0.30
+---------------
++ added ksMath unit
+  (Base-2 Fast Fourier Transform, Fast Correlation);
++ added FFTTests project
+  (unit tests for FFT procedures from ksMath).
+ 
+version 0.20
+---------------
+  TksComPort changes:
++ added Read method overload;
++ added Write method overload;
++ added OnReadStop event;
++ added StopPos property;
++ added Handle property;
++ added ClearRBuf and ClearWBuf methods;
++ fixed SetBaudrate error;
+! Active method is renamed by Connected;
+! Enumeration types are replaced by class constants.
+
+version 0.10
+-----------
++ added Delphi 2007 support.
+
+version 0.00
+---------------
+TksComPort component for Delphi 2009;
+Terminal app to test TksComPort.
+---------------

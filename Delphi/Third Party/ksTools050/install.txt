@@ -1,0 +1,31 @@
+Installation instructions.
+
+ksTools includes the runtime package ksToolsR and the designtime package ksToolsD.
+The packages are in the subfolders corresponding the Delphi version (D2007, D2009 or D2010).
+
+The packages are preconfigured with the following options:
+ - LIBSUFFIX directive is set to the corresponding Delphi version (110 for D2007, 120 for D2009, 140 for D2010);
+ - Unit Output Directory is set to $(BDSCOMMONDIR)\Dcp.
+
+Perform the following steps to compile and install the ksTools packages:
+
+Step 1. Compile runtime package
+-------------------------------
+1.1. Open the runtime package ksToolsR.dpk ("File|Open project...");
+1.2. Rightclick the package name (ksToolsR*.bpl) in the Project Manager window;
+1.3. Select "Compile" from the popup menu;
+1.4. Close the runtime package ("File|Close All").
+
+Step 2 [Optional]. Copy runtime package to the system folder
+------------------------------------------------------------
+Warning: this step is required only if you want to compile your projects with runtime packages. Otherwise this step is NOT recommended.
+
+Copy ksToolsR*.bpl file from the $(BDSCOMMONDIR)\Bpl folder (eg. "c:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\" for Delphi 2007 on Windows XP) to the windows system folder (eg. "c:\Windows\System32" on Windows XP).
+
+Step 3. Compile and install designtime package
+----------------------------------------------
+3.1. Open the designtime package ksToolsD.dpk ("File|Open project...");
+3.2. Rightclick the package name (ksToolsD*.bpl) in the Project Manager window;
+3.3. Select "Compile" from the popup menu;
+3.4. Select "Install" from the popup menu;
+3.5. Close the designtime package ("File|Close All").
