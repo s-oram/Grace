@@ -312,36 +312,36 @@ begin
   case SelectPreference of
     msWithPreferenceToModAmounts:
     begin
-      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
-      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
       if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
       if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
+      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
 
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
       if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
       if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
     end;
 
     msWithPreferenceToMarkers:
     begin
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
       if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
       if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
 
-      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
-      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
       if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
       if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
+      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
     end;
 
     msMarkersOnly:
     begin
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
       if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
       if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
     end;
   else
     raise Exception.Create('Type not handled.');
