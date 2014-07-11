@@ -8,7 +8,7 @@ BUTTONON             RCDATA Resources\ButtonOn.png
 BROWSER_FOLDERICON   RCDATA Resources\Browser_FolderIcon.png
 BROWSER_AUDIOICON    RCDATA Resources\Browser_AudioIcon.png
 BROWSER_PROGRAMICON  RCDATA Resources\Browser_ProgramIcon.png
-MENU_PROGRAMICON     RCDATA Resources\Menu_ProgramIcon.png
+MENU_PROGRAMICON     RCDATA Resources\SampleMapEditIcon.png
 MENU_SAMPLEEDITICON  RCDATA Resources\Menu_SampleEditIcon.png
 MODMATRIX_KNOB9      RCDATA Resources\ModMatrixKnob.png
 LOCKED_ICON          RCDATA Resources\LockedIcon.png
