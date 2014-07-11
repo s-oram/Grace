@@ -401,8 +401,6 @@ begin
       Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
     end;
 
-
-
     Throttle(ThrottleHandle, 25,
     procedure
     begin

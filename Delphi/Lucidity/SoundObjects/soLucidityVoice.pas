@@ -501,11 +501,17 @@ begin
   Par1 := ParModData.GetModulatedParameterValue(TPluginParameter.VoicePitchOne);
   Par2 := ParModData.GetModulatedParameterValue(TPluginParameter.VoicePitchTwo);
 
-  PitchOne := Par1;
-  PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
+  assert(InRange(Par1, 0, 1));
+  assert(InRange(Par2, 0, 1));
 
-  PitchTwo := Par2;
-  PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
+  PitchOne := Par1 * 48 - 24;
+  PitchTwo := Par2 * 2 - 1;
+
+  //PitchOne := Par1;
+  //PitchOne := Clamp(PitchOne, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
+
+  //PitchTwo := Par2;
+  //PitchTwo := Clamp(PitchTwo, 0, 1) * 2 - 1; //TODO: this clamp is unnecessary
 
   //=============================================================================
 
@@ -518,7 +524,7 @@ begin
         else OscPitchParameters^.PlaybackNote := GlobalModPoints.Source_MonophonicMidiNote;
 
   OscPitchParameters^.SamplePitchAdjust := SampleRegion.GetProperties^.SampleTune + (SampleRegion.GetProperties^.SampleFine * 0.01);
-  OscPitchParameters^.VoicePitchAdjust  := round(PitchOne * 12) + PitchTwo;
+  OscPitchParameters^.VoicePitchAdjust  := PitchOne + PitchTwo;
   OscPitchParameters^.PitchBendAdjust   := GlobalModPoints^.Source_MidiPitchBendST;
 end;
 
