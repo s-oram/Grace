@@ -208,8 +208,7 @@ begin
   if MsgID = TLucidMsgID.VstParameterChanged then
   begin
     UpdateScope;
-    LogMain.LogMessage('VstParameter Changed Called.');
-
+    //LogMain.LogMessage('VstParameter Changed Called.');
   end;
 
 
