@@ -392,6 +392,11 @@ begin
     Par := Plugin.PluginParameters.FindByName(ParName);
     assert(assigned(Par));
 
+    if Par.IsQuantised then
+    begin
+      ParValue := QuantiseParameterValue(ParValue, Par.QuantisedMin, Par.QuantisedMax);
+    end;
+
     if Par.IsPublishedVstParameter then
     begin
       Command.VstPar_SetParameterAutomated(Plugin, Par.VstParameterIndex, ParValue);
@@ -404,7 +409,6 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      LogMain.LogMessage('Knob Handle Throttle');
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
     end);

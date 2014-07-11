@@ -600,11 +600,19 @@ var
   dv : single;
   Par : TPluginParameter;
   ParID : TPluginParameterID;
+  ParClass : TPluginParameterClass;
 begin
   Par := PluginParFromName(ParName);
   ParID := PluginParToID(Par);
 
   dv := GetPluginParInfo(Par).DefaultValue;
+
+  ParClass := PluginParameters.FindByParameterID(ParID);
+  if ParClass.IsQuantised then
+  begin
+    dv := QuantiseParameterValue(dv, ParClass.QuantisedMin, ParClass.QuantisedMax);
+  end;
+
   SetPluginParameter(ParID, dv, Scope);
 end;
 

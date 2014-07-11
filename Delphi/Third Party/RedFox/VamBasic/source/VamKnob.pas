@@ -259,8 +259,6 @@ end;
 
 
 procedure TVamKnob.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  CurrentValue : single;
 begin
   inherited;
 
@@ -277,18 +275,7 @@ begin
     if (ssShift in Shift)
       then IsFineAdjustment := true
       else IsFineAdjustment := false;
-
-    case CurrentEditMode of
-      TKnobMode.PositionEdit: CurrentValue := self.ExternalPos;
-      TKnobMode.ModEdit:      CurrentValue := self.ExternalModAmount;
-    else
-      raise Exception.Create('Type not handled.');
-    end;
-
-
-
   end;
-
 end;
 
 procedure TVamKnob.MouseMove(Shift: TShiftState; X, Y: Integer);

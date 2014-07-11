@@ -36,6 +36,10 @@ Right Click and Hold for sample zoom with mouse
 
 - look at more mouse wheel support!
 
+- Current parameters are quantised at the knob level. (Tune is the only
+  parameter being quantised so far.) It would be good to quantise the same
+  parameter when input by MIDI Automation or VST Parameter Automation.  
+
 =============================================================================
 
   Fundamentals Delphi Library contains a RSA encryption implementation. Investigate.

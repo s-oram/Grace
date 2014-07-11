@@ -43,6 +43,9 @@ type
     fName: string;
     fID: TPluginParameterID;
     fVstParameterIndex: integer;
+    fIsQuantised: boolean;
+    fQuantisedMin: integer;
+    fQuantisedMax: integer;
   public
     constructor Create;
     destructor Destroy; override;
@@ -56,6 +59,10 @@ type
     property VstParameterIndex : integer read fVstParameterIndex write fVstParameterIndex;
 
     property ParameterValue : single read fParameterValue write fParameterValue;
+
+    property IsQuantised : boolean read fIsQuantised write fIsQuantised;
+    property QuantisedMin : integer read fQuantisedMin write fQuantisedMin;
+    property QuantisedMax : integer read fQuantisedMax write fQuantisedMax;
   end;
 
 
@@ -284,13 +291,18 @@ function IsGlobalPluginPar(const Par : TPluginParameter):boolean; inline;
 function GetPluginParameterCount:integer; inline;
 function IndexToPluginParameter(Index : integer):TPluginParameter; inline;
 
+
+function QuantiseParameterValue(const ParValue : single; const MinValue, MaxValue : integer):single;
+function QuantiseParameterValueAndExpand(const ParValue : single; const MinValue, MaxValue : integer):integer;
+
 implementation
 
 uses
-  uConstants,
+  Math,
   SysUtils,
   Rtti,
   TypInfo,
+  uConstants,
   uLucidityEnums;
 
 
@@ -307,6 +319,47 @@ begin
 
   // TODO:HIGH
   // All plugin ID's need to be checked.
+end;
+
+function QuantiseParameterValue(const ParValue : single; const MinValue, MaxValue : integer):single;
+var
+  x : integer;
+begin
+  assert(InRange(ParValue, 0, 1));
+  assert(MinValue < MaxValue);
+
+  x := round(ParValue * (MaxValue - MinValue));
+
+
+  //if x > (MaxValue - MinValue) then x := (MaxValue - MinValue);
+
+  result := x / (MaxValue - MinValue);
+
+
+  {
+  x := floor(ParValue * (MaxValue - MinValue)) - MinValue;
+
+  if x > MaxValue
+    then x := MaxValue;
+
+  result := (x + MinValue) / (MaxValue - MinValue);
+  }
+  // exit checking...
+  assert(InRange(Result, 0, 1));
+end;
+
+function QuantiseParameterValueAndExpand(const ParValue : single; const MinValue, MaxValue : integer):integer;
+var
+  x : integer;
+begin
+  assert(InRange(ParValue, 0, 1));
+  assert(MinValue < MaxValue);
+
+  x := round(ParValue * (MaxValue - MinValue)) + MinValue;
+
+  //if x > MaxValue then x := MaxValue;
+
+  result := x;
 end;
 
 function PluginParToID(const Par : TPluginParameter):TPluginParameterID;
@@ -560,6 +613,10 @@ constructor TPluginParameterClass.Create;
 begin
   fID := 0;
   fVstParameterIndex := -1;
+  fIsQuantised := false;
+
+  fQuantisedMin := 0;
+  fQuantisedMax := 100;
 end;
 
 destructor TPluginParameterClass.Destroy;
@@ -729,12 +786,14 @@ begin
   ParValue := PluginState.FindByParameterID(ParID).ParameterValue;
 
   case Par of
-    TPluginParameter.VoicePitchOne: result := IntToStr(round(ParValue * 48 - 24)) + ' st';
-    TPluginParameter.VoicePitchTwo: result := IntToStr(round(ParValue * 200 - 100)) + ' cnt';
+    TPluginParameter.VoicePitchOne: result := IntToStr(QuantiseParameterValueAndExpand(ParValue, -24, 24)) + ' st';
+    TPluginParameter.VoicePitchTwo: result := IntToStr(QuantiseParameterValueAndExpand(ParValue, -100, 100)) + ' cnt';
   else
     result := IntToStr(round(ParValue * 100));
   end;
 end;
+
+
 
 initialization
   //==========================

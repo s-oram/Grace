@@ -20,6 +20,8 @@ procedure SetupPluginParameters(const PluginParameters : TPluginParameterManager
     PluginParameters.Add(Par);
     result := Par;
   end;
+var
+  ParClass : TPluginParameterClass;
 begin
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.VoiceMode));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.VoiceGlide));
@@ -90,6 +92,12 @@ begin
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.PadY3));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.PadX4));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.PadY4));
+
+
+  ParClass := PluginParameters.FindByName(PluginParToName(TPluginParameter.VoicePitchOne));
+  ParClass.IsQuantised := true;
+  ParClass.QuantisedMin := -24;
+  ParClass.QuantisedMax := 24;
 end;
 
 end.
