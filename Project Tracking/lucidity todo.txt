@@ -9,10 +9,6 @@
   That way all parameters can be optionally smoothed and it might be easier to  
   port to other plugins. 
 
-- Tune and Fine need to be quantised for the GUI but not automation.
-- Tune and Fine need to show integer values when updated so the user
-  knows where they are.
-
 - Need to trim long sample names so they display appropiately.
 
 - sample map icon needs to be replaced.
