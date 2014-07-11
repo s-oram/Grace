@@ -276,8 +276,6 @@ begin
   InfoDisplay.Text := Command.GetParDisplayInfo(self.Plugin, ParameterID);
   InfoDisplay.Visible := true;
   InfoDisplay.Invalidate;
-
-  LogMain.LogMessage('Text');
 end;
 
 procedure TMenuBarFrame.HideParameterChangeInfo;
