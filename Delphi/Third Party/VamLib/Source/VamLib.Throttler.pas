@@ -41,7 +41,7 @@ type
   private
     TaskList : TInfoList;
     //TODO: Use high speed timer here.
-    Timer : THighSpeedTimer;
+    Timer : TTimer;
     procedure HandleTimerEvent(Sender : TObject);
   public
     constructor Create;
@@ -71,8 +71,8 @@ end;
 constructor TThrottleController.Create;
 begin
   TaskList := TInfoList.Create;
-  Timer := THighSpeedTimer.Create;
-  Timer.UseMainThreadForTimerEvent := false;
+  Timer := TTimer.Create(nil);
+  //Timer.UseMainThreadForTimerEvent := false;
   Timer.Interval := 5;
   Timer.OnTimer := HandleTimerEvent;
   Timer.Enabled       := true;
@@ -91,8 +91,6 @@ var
   TaskInfo : PThrottleInfo;
   ms : Int64;
 begin
-  //Log.LogMessage('Throttle Timer Event');
-
   for c1 := TaskList.Count-1 downto 0 do
   begin
     TaskInfo := @TaskList.Raw[c1];
@@ -105,7 +103,6 @@ begin
         TaskInfo^.CallAgain := false;
         TaskInfo^.Task();
         TaskInfo^.TimeCalled := Now;
-        //Log.LogMessage('Throttle Timer Event');
       end;
     end else
     begin
@@ -115,26 +112,8 @@ begin
         TaskList.Delete(c1);
       end;
     end;
-
-    {
-    if TaskInfo^.IsExpired then
-    begin
-      TaskList.Delete(c1);
-    end else
-    begin
-      ms := MilliSecondsBetween(Now, TaskInfo^.TimeCalled);
-      if (ms >= TaskInfo^.HoldTime)  then
-      begin
-        TaskInfo^.Task();
-        TaskInfo^.TimeCalled := Now;
-        TaskInfo^.IsExpired := true;
-      end;
-    end;
-    }
   end;
 
-  //if TaskList.Count = 0
-  //  then Timer.Enabled := false;
 
 end;
 
@@ -152,11 +131,9 @@ begin
     TaskInfo^.HoldTime   := Time;
     TaskInfo^.CallAgain  := false;
     TaskInfo^.TimeCalled := Now;
-    //Timer.Enabled := true;
   end else
   begin
     TaskInfo^.CallAgain := true;
-    //Timer.Enabled := true;
   end;
 end;
 
