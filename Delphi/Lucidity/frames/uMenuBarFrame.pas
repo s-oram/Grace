@@ -2,6 +2,8 @@ unit uMenuBarFrame;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   eeTypes,
   VamLib.ZeroObject,
@@ -61,6 +63,7 @@ implementation
 {$R *.dfm}
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   RedFox,
   RedFoxColor,
   uLucidityEnums,
@@ -272,6 +275,9 @@ procedure TMenuBarFrame.ShowParameterChangeInfo(const ParameterID: TPluginParame
 begin
   InfoDisplay.Text := Command.GetParDisplayInfo(self.Plugin, ParameterID);
   InfoDisplay.Visible := true;
+  InfoDisplay.Invalidate;
+
+  LogMain.LogMessage('Text');
 end;
 
 procedure TMenuBarFrame.HideParameterChangeInfo;

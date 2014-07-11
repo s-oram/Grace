@@ -401,9 +401,12 @@ begin
       Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
     end;
 
+
+
     Throttle(ThrottleHandle, 25,
     procedure
     begin
+      LogMain.LogMessage('Knob Handle Throttle');
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
     end);

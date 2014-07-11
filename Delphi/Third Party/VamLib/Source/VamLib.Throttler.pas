@@ -28,7 +28,7 @@ type
     Task       : TProc;
     HoldTime   : cardinal; //The desired throttled time delay.
     TimeCalled : TDateTime;
-    IsExpired  : boolean;
+    CallAgain  : boolean;
   end;
 
   TInfoList = class(TSimpleRecordList<TThrottleInfo>)
@@ -91,12 +91,32 @@ var
   TaskInfo : PThrottleInfo;
   ms : Int64;
 begin
-  Log.LogMessage('Throttle Timer Event');
+  //Log.LogMessage('Throttle Timer Event');
 
   for c1 := TaskList.Count-1 downto 0 do
   begin
     TaskInfo := @TaskList.Raw[c1];
 
+    if TaskInfo^.CallAgain then
+    begin
+      ms := MilliSecondsBetween(Now, TaskInfo^.TimeCalled);
+      if (ms >= TaskInfo^.HoldTime)  then
+      begin
+        TaskInfo^.CallAgain := false;
+        TaskInfo^.Task();
+        TaskInfo^.TimeCalled := Now;
+        //Log.LogMessage('Throttle Timer Event');
+      end;
+    end else
+    begin
+      ms := MilliSecondsBetween(Now, TaskInfo^.TimeCalled);
+      if (ms >= TaskInfo^.HoldTime * 2)  then
+      begin
+        TaskList.Delete(c1);
+      end;
+    end;
+
+    {
     if TaskInfo^.IsExpired then
     begin
       TaskList.Delete(c1);
@@ -110,6 +130,7 @@ begin
         TaskInfo^.IsExpired := true;
       end;
     end;
+    }
   end;
 
   //if TaskList.Count = 0
@@ -127,13 +148,14 @@ begin
     Task();
 
     TaskInfo := TaskList.FindOrCreate(Handle);
-    TaskInfo.IsExpired  := true;
-    TaskInfo.Task       := Task;
-    TaskInfo.HoldTime   := Time;
-    TaskInfo.TimeCalled := Now;
+    TaskInfo^.Task       := Task;
+    TaskInfo^.HoldTime   := Time;
+    TaskInfo^.CallAgain  := false;
+    TaskInfo^.TimeCalled := Now;
+    //Timer.Enabled := true;
   end else
   begin
-    TaskInfo.IsExpired := false;
+    TaskInfo^.CallAgain := true;
     //Timer.Enabled := true;
   end;
 end;

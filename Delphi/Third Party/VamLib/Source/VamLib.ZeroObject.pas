@@ -501,6 +501,8 @@ begin
     end else
     begin
       // TODO:MED probably should log a warning or raise an error here.
+      //SendMessageToList(VclObjects, MsgID, nil);
+      Log.LogError('MsgVCL Wrong Thread.');
     end;
   end;
 end;
@@ -516,6 +518,7 @@ begin
     end else
     begin
       // TODO:MED probably should log a warning or raise an error here.
+      Log.LogError('MsgVCL Wrong Thread.');
     end;
   end;
 end;
