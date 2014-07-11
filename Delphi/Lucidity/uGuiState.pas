@@ -79,8 +79,6 @@ end;
 procedure TGuiState.SetActiveVstPluginParameterID(const Value: TPluginParameterId);
 begin
   fActiveVstPluginParameterID := Value;
-
-  Log.LogMessage('SetActiveVstPluginParameterID ' + IntToStr(Value));
 end;
 
 end.
