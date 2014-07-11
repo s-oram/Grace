@@ -922,7 +922,14 @@ begin
   Par := PluginParFromID(ParID);
   Text := PluginParToDisplayName(Par);
 
-  result := Text;
+  if Text <> '' then
+  begin
+    Text := Text + ' ' + PluginParToDisplayValue(Par, Plugin.PluginParameters);
+    result := Text;
+  end else
+  begin
+    result := '';
+  end;
 end;
 
 class procedure Command.MoveSampleMarker(const Plugin: TeePlugin; const Marker: TSampleMarker; const NewSamplePos: integer);

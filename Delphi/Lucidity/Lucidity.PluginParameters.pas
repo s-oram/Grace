@@ -255,6 +255,7 @@ function PluginParToName(const Par : TPluginParameter):string;    //This should 
 function PluginParFromName(const Name : string):TPluginParameter; //This should be the true enumerated name.
 
 function PluginParToDisplayName(const Par : TPluginParameter):string;
+function PluginParToDisplayValue(const Par : TPluginParameter; const PluginState : TPluginParameterManager):string;
 
 
 // TODO:MED these methods feel like a stop-gap measure and might be better
@@ -535,84 +536,6 @@ begin
   end;
 end;
 
-function PluginParToDisplayName(const Par : TPluginParameter):string;
-begin
-  case Par of
-    TPluginParameter.VoiceMode:               result := 'Voice Mode';
-    TPluginParameter.VoiceGlide:              result := 'Glide';
-    TPluginParameter.PitchTracking:           result := 'Tracking';
-    TPluginParameter.SamplePlaybackType:      result := 'Playback';
-    TPluginParameter.SampleResetClockSource:  result := 'Reset';
-    TPluginParameter.SamplerLoopBounds:       result := 'Loop Bounds';
-    TPluginParameter.SamplerLoopMode:         result := 'Loop Mode';
-    TPluginParameter.OutputGain:              result := 'Gain';
-    TPluginParameter.OutputPan:               result := 'Pan';
-    TPluginParameter.VoicePitchOne:           result := 'Tune';
-    TPluginParameter.VoicePitchTwo:           result := 'Fine';
-    TPluginParameter.SampleStart:             result := 'Sample Start';
-    TPluginParameter.SampleEnd:               result := 'Sample End';
-    TPluginParameter.LoopStart:               result := 'Loop Start';
-    TPluginParameter.LoopEnd:                 result := 'Loop End';
-    TPluginParameter.AmpAttack:               result := 'Attack';
-    TPluginParameter.AmpHold:                 result := 'Hold';
-    TPluginParameter.AmpDecay:                result := 'Decay';
-    TPluginParameter.AmpSustain:              result := 'Sustain';
-    TPluginParameter.AmpRelease:              result := 'Release';
-    TPluginParameter.AmpVelocity:             result := 'Velocity ';
-    TPluginParameter.ModAttack:               result := 'Attack';
-    TPluginParameter.ModHold:                 result := 'Hold';
-    TPluginParameter.ModDecay:                result := 'Decay';
-    TPluginParameter.ModSustain:              result := 'Sustain';
-    TPluginParameter.ModRelease:              result := 'Release';
-    TPluginParameter.ModVelocity:             result := 'Velocity';
-    TPluginParameter.FilterRouting:           result := 'Filter Routing';
-    TPluginParameter.FilterOutputBlend:       result := 'Filter Output';
-    TPluginParameter.Filter1Type:             result := 'Filter Type';
-    TPluginParameter.Filter2Type:             result := 'Filter Type';
-    TPluginParameter.Filter1KeyFollow:        result := 'Key Follow';
-    TPluginParameter.Filter2KeyFollow:        result := 'Key Follow';
-    TPluginParameter.Filter1Par1:             result := 'Parameter One';
-    TPluginParameter.Filter1Par2:             result := 'Parameter Two';
-    TPluginParameter.Filter1Par3:             result := 'Parameter Three';
-    TPluginParameter.Filter1Par4:             result := 'Parameter Four';
-    TPluginParameter.Filter2Par1:             result := 'Parameter One';
-    TPluginParameter.Filter2Par2:             result := 'Parameter Two';
-    TPluginParameter.Filter2Par3:             result := 'Parameter Three';
-    TPluginParameter.Filter2Par4:             result := 'Parameter Four';
-    TPluginParameter.Lfo1Shape:               result := 'LFO Shape';
-    TPluginParameter.Lfo2Shape:               result := 'LFO Shape';
-    TPluginParameter.Lfo1FreqMode:            result := 'LFO Frequency';
-    TPluginParameter.Lfo2FreqMode:            result := 'LFO Frequency';
-    TPluginParameter.Lfo1Range:               result := 'LFO Range';
-    TPluginParameter.Lfo2Range:               result := 'LFO Range';
-    TPluginParameter.Lfo1Par1:                result := 'Parameter One';
-    TPluginParameter.Lfo1Par2:                result := 'Parameter Two';
-    TPluginParameter.Lfo1Par3:                result := 'Parameter Three';
-    TPluginParameter.Lfo2Par1:                result := 'Parameter One';
-    TPluginParameter.Lfo2Par2:                result := 'Parameter Two';
-    TPluginParameter.Lfo2Par3:                result := 'Parameter Three';
-    TPluginParameter.Seq1Clock:               result := 'Clock';
-    TPluginParameter.Seq1Direction:           result := 'Direction';
-    TPluginParameter.Seq1Length:              result := 'Length';
-    TPluginParameter.Seq2Clock:               result := 'Clock';
-    TPluginParameter.Seq2Direction:           result := 'Direction';
-    TPluginParameter.Seq2Length:              result := 'Length';
-    TPluginParameter.PreviewVolume:           result := 'Preview Volume';
-    TPluginParameter.Preview:                 result := 'Preview On/Off';
-    TPluginParameter.PadX1:                   result := 'X1';
-    TPluginParameter.PadY1:                   result := 'Y1';
-    TPluginParameter.PadX2:                   result := 'X2';
-    TPluginParameter.PadY2:                   result := 'Y2';
-    TPluginParameter.PadX3:                   result := 'X3';
-    TPluginParameter.PadY3:                   result := 'Y3';
-    TPluginParameter.PadX4:                   result := 'X4';
-    TPluginParameter.PadY4:                   result := 'Y4';
-  else
-    result := '';
-  end;
-end;
-
-
 function GetPluginParameterCount:integer;
 begin
   result := TPluginParameterHelper.GetEnumTypeCount;
@@ -709,6 +632,108 @@ begin
   assert(Index >= 0);
   assert(Index < fParameterCount);
   result := Raw[Index];
+end;
+
+
+function PluginParToDisplayName(const Par : TPluginParameter):string;
+begin
+  case Par of
+    TPluginParameter.VoicePitchOne:           result := 'Tune';
+    TPluginParameter.VoicePitchTwo:           result := 'Fine';
+  else
+    result := '';
+  end;
+  {
+  case Par of
+    TPluginParameter.VoiceMode:               result := 'Voice Mode';
+    TPluginParameter.VoiceGlide:              result := 'Glide';
+    TPluginParameter.PitchTracking:           result := 'Tracking';
+    TPluginParameter.SamplePlaybackType:      result := 'Playback';
+    TPluginParameter.SampleResetClockSource:  result := 'Reset';
+    TPluginParameter.SamplerLoopBounds:       result := 'Loop Bounds';
+    TPluginParameter.SamplerLoopMode:         result := 'Loop Mode';
+    TPluginParameter.OutputGain:              result := 'Gain';
+    TPluginParameter.OutputPan:               result := 'Pan';
+    TPluginParameter.VoicePitchOne:           result := 'Tune';
+    TPluginParameter.VoicePitchTwo:           result := 'Fine';
+    TPluginParameter.SampleStart:             result := 'Sample Start';
+    TPluginParameter.SampleEnd:               result := 'Sample End';
+    TPluginParameter.LoopStart:               result := 'Loop Start';
+    TPluginParameter.LoopEnd:                 result := 'Loop End';
+    TPluginParameter.AmpAttack:               result := 'Attack';
+    TPluginParameter.AmpHold:                 result := 'Hold';
+    TPluginParameter.AmpDecay:                result := 'Decay';
+    TPluginParameter.AmpSustain:              result := 'Sustain';
+    TPluginParameter.AmpRelease:              result := 'Release';
+    TPluginParameter.AmpVelocity:             result := 'Velocity ';
+    TPluginParameter.ModAttack:               result := 'Attack';
+    TPluginParameter.ModHold:                 result := 'Hold';
+    TPluginParameter.ModDecay:                result := 'Decay';
+    TPluginParameter.ModSustain:              result := 'Sustain';
+    TPluginParameter.ModRelease:              result := 'Release';
+    TPluginParameter.ModVelocity:             result := 'Velocity';
+    TPluginParameter.FilterRouting:           result := 'Filter Routing';
+    TPluginParameter.FilterOutputBlend:       result := 'Filter Output';
+    TPluginParameter.Filter1Type:             result := 'Filter Type';
+    TPluginParameter.Filter2Type:             result := 'Filter Type';
+    TPluginParameter.Filter1KeyFollow:        result := 'Key Follow';
+    TPluginParameter.Filter2KeyFollow:        result := 'Key Follow';
+    TPluginParameter.Filter1Par1:             result := 'Parameter One';
+    TPluginParameter.Filter1Par2:             result := 'Parameter Two';
+    TPluginParameter.Filter1Par3:             result := 'Parameter Three';
+    TPluginParameter.Filter1Par4:             result := 'Parameter Four';
+    TPluginParameter.Filter2Par1:             result := 'Parameter One';
+    TPluginParameter.Filter2Par2:             result := 'Parameter Two';
+    TPluginParameter.Filter2Par3:             result := 'Parameter Three';
+    TPluginParameter.Filter2Par4:             result := 'Parameter Four';
+    TPluginParameter.Lfo1Shape:               result := 'LFO Shape';
+    TPluginParameter.Lfo2Shape:               result := 'LFO Shape';
+    TPluginParameter.Lfo1FreqMode:            result := 'LFO Frequency';
+    TPluginParameter.Lfo2FreqMode:            result := 'LFO Frequency';
+    TPluginParameter.Lfo1Range:               result := 'LFO Range';
+    TPluginParameter.Lfo2Range:               result := 'LFO Range';
+    TPluginParameter.Lfo1Par1:                result := 'Parameter One';
+    TPluginParameter.Lfo1Par2:                result := 'Parameter Two';
+    TPluginParameter.Lfo1Par3:                result := 'Parameter Three';
+    TPluginParameter.Lfo2Par1:                result := 'Parameter One';
+    TPluginParameter.Lfo2Par2:                result := 'Parameter Two';
+    TPluginParameter.Lfo2Par3:                result := 'Parameter Three';
+    TPluginParameter.Seq1Clock:               result := 'Clock';
+    TPluginParameter.Seq1Direction:           result := 'Direction';
+    TPluginParameter.Seq1Length:              result := 'Length';
+    TPluginParameter.Seq2Clock:               result := 'Clock';
+    TPluginParameter.Seq2Direction:           result := 'Direction';
+    TPluginParameter.Seq2Length:              result := 'Length';
+    TPluginParameter.PreviewVolume:           result := 'Preview Volume';
+    TPluginParameter.Preview:                 result := 'Preview On/Off';
+    TPluginParameter.PadX1:                   result := 'X1';
+    TPluginParameter.PadY1:                   result := 'Y1';
+    TPluginParameter.PadX2:                   result := 'X2';
+    TPluginParameter.PadY2:                   result := 'Y2';
+    TPluginParameter.PadX3:                   result := 'X3';
+    TPluginParameter.PadY3:                   result := 'Y3';
+    TPluginParameter.PadX4:                   result := 'X4';
+    TPluginParameter.PadY4:                   result := 'Y4';
+  else
+    result := '';
+  end;
+  }
+end;
+
+function PluginParToDisplayValue(const Par : TPluginParameter; const PluginState : TPluginParameterManager):string;
+var
+  ParID    : TPluginParameterID;
+  ParValue : single;
+begin
+  ParID := PluginParToID(Par);
+  ParValue := PluginState.FindByParameterID(ParID).ParameterValue;
+
+  case Par of
+    TPluginParameter.VoicePitchOne: result := IntToStr(round(ParValue * 48 - 24)) + ' st';
+    TPluginParameter.VoicePitchTwo: result := IntToStr(round(ParValue * 200 - 100)) + ' cnt';
+  else
+    result := IntToStr(round(ParValue * 100));
+  end;
 end;
 
 initialization
