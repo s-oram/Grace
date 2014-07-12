@@ -536,6 +536,10 @@ begin
       SampleDisplay.Invalidate;
       }
     end else
+    if (Region.GetSample^.Properties.IsValid = false) then
+    begin
+      SampleDisplay.ClearSample(true);
+    end else
     begin
       SampleDisplay.DrawSample(Region.GetSampleImage);
     end;
@@ -608,10 +612,7 @@ begin
     SampleFineKnob.KnobValue   := 0;
     SampleBeatsKnob.KnobValue  := 4;
   end;
-
-
 end;
-
 
 
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
