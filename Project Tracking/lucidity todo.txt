@@ -1,7 +1,16 @@
 =============================================================================
-- Key map needs C1, C2 tags etc.
+- Bug: 
+  - Open Lucidity
+  - Delete Key Group
+  - Show Sample Map
+   -- There is a sample region in the sample map despite there being no key groups.
 
-- BUG: Crash if triggered when key group contains a sample that hasn't loaded.
+- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
+  maybe that should be made evident. 
+
+ - Need to test SFZ import.
+
+- BUG: "Info" in a TVamTextBox causes the text drawing to fail!
 
 - Need to trim long sample names so they display appropiately.
 
@@ -17,8 +26,6 @@ Right Click and Hold for sample zoom with mouse
 - would be good to figure out the text drawing and use a higher quality text drawing routine!
 
 - Update the installer so that Default.lpg isn't overwritten. (the default patch.)
-
-- BUG: "Info" in a TVamTextBox causes the text drawing to fail!
 
 - might need a 'reverse sample' command.
 
@@ -41,17 +48,6 @@ Right Click and Hold for sample zoom with mouse
 
 - clicking on sample name in sample display should pop up list of other samples. 
   perhaps divided by key group.
-
-- Bug: 
-  - Open Lucidity
-  - Delete Key Group
-  - Show Sample Map
-   -- There is a sample region in the sample map despite there being no key groups.
-
-- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
-  maybe that should be made evident. 
-
- - Need to test SFZ import.
 
  - Sample map. load a patch with a missing sample so that the sample map shows a red region.
    Highlight and select the region. The region is red but the highlight is blue. It creates
