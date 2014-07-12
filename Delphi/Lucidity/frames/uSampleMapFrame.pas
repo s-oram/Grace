@@ -333,61 +333,62 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  KG := Plugin.FocusedKeyGroup;
-
-  if not assigned(KG) then exit;
-
   SampleMap.BeginUpdate;
-
   try
-    //Delete any items that aren't in the plugins sample map.
-    for c1 := SampleMap.SampleRegions.Count-1 downto 0 do
-    begin
-      id := SampleMap.SampleRegions[c1].UniqueID;
-      if Plugin.SampleMap.FindRegionByUniqueID(id) = nil then
-      begin
-        SampleMap.SampleRegions.Delete(c1);
-      end;
-    end;
+    KG := Plugin.FocusedKeyGroup;
 
-    //Update the sample map display to match the Lucidities sample map.
-    for c1 := 0 to Plugin.SampleMap.RegionCount-1 do
+    if not assigned(KG) then
     begin
-      MapRegion := Plugin.SampleMap.Regions[c1];
-      id := MapRegion.GetProperties^.UniqueID;
-      DisplayRegion := SampleMap.FindRegionByUniqueID(id);
-
-      if (DisplayRegion = nil) then
+      SampleMap.SampleRegions.Clear;
+    end else
+    begin
+      //Delete any items that aren't in the plugins sample map.
+      for c1 := SampleMap.SampleRegions.Count-1 downto 0 do
       begin
-        DisplayRegion := TVamSampleRegion.Create;
-        SampleMap.SampleRegions.Add(DisplayRegion);
-        SampleMap.MoveRegionToFront(DisplayRegion);
+        id := SampleMap.SampleRegions[c1].UniqueID;
+        if Plugin.SampleMap.FindRegionByUniqueID(id) = nil then
+        begin
+          SampleMap.SampleRegions.Delete(c1);
+        end;
       end;
 
-      DisplayRegion.UniqueID      := MapRegion.GetProperties^.UniqueID;
-      DisplayRegion.FileName      := MapRegion.GetProperties^.SampleFileName;
-      DisplayRegion.IsSampleError := MapRegion.GetProperties^.IsSampleError;
-      DisplayRegion.LowKey        := MapRegion.GetProperties^.LowNote;
-      DisplayRegion.HighKey       := MapRegion.GetProperties^.HighNote;
-      DisplayRegion.LowVelocity   := MapRegion.GetProperties^.LowVelocity;
-      DisplayRegion.HighVelocity  := MapRegion.GetProperties^.HighVelocity;
-      DisplayRegion.RootNote      := MapRegion.GetProperties^.RootNote;
-      DisplayRegion.IsSelected    := MapRegion.GetProperties^.IsSelected;
-      DisplayRegion.IsFocused     := MapRegion.GetProperties^.IsFocused;
+      //Update the sample map display to match the Lucidities sample map.
+      for c1 := 0 to Plugin.SampleMap.RegionCount-1 do
+      begin
+        MapRegion := Plugin.SampleMap.Regions[c1];
+        id := MapRegion.GetProperties^.UniqueID;
+        DisplayRegion := SampleMap.FindRegionByUniqueID(id);
 
-      NameA := MapRegion.GetKeyGroup.GetName;
-      NameB := KG.GetName;
+        if (DisplayRegion = nil) then
+        begin
+          DisplayRegion := TVamSampleRegion.Create;
+          SampleMap.SampleRegions.Add(DisplayRegion);
+          SampleMap.MoveRegionToFront(DisplayRegion);
+        end;
 
-      if (NameA = NameB)
-        then DisplayRegion.IsInOtherKeyGroup := false
-        else DisplayRegion.IsInOtherKeyGroup := true;
+        DisplayRegion.UniqueID      := MapRegion.GetProperties^.UniqueID;
+        DisplayRegion.FileName      := MapRegion.GetProperties^.SampleFileName;
+        DisplayRegion.IsSampleError := MapRegion.GetProperties^.IsSampleError;
+        DisplayRegion.LowKey        := MapRegion.GetProperties^.LowNote;
+        DisplayRegion.HighKey       := MapRegion.GetProperties^.HighNote;
+        DisplayRegion.LowVelocity   := MapRegion.GetProperties^.LowVelocity;
+        DisplayRegion.HighVelocity  := MapRegion.GetProperties^.HighVelocity;
+        DisplayRegion.RootNote      := MapRegion.GetProperties^.RootNote;
+        DisplayRegion.IsSelected    := MapRegion.GetProperties^.IsSelected;
+        DisplayRegion.IsFocused     := MapRegion.GetProperties^.IsFocused;
 
-      if (NameA = NameB)
-        then DisplayRegion.IsVisible := true
-        else DisplayRegion.IsVisible := false;
+        NameA := MapRegion.GetKeyGroup.GetName;
+        NameB := KG.GetName;
+
+        if (NameA = NameB)
+          then DisplayRegion.IsInOtherKeyGroup := false
+          else DisplayRegion.IsInOtherKeyGroup := true;
+
+        if (NameA = NameB)
+          then DisplayRegion.IsVisible := true
+          else DisplayRegion.IsVisible := false;
+      end;
     end;
-
-
   finally
     SampleMap.EndUpdate;
     SampleMap.Invalidate;
@@ -539,6 +540,12 @@ begin
   if MsgID = TLucidMsgID.MidiKeyChanged then
   begin
     MidiKeyChanged;
+  end;
+
+  if MsgID = TLucidMsgID.SampleFocusChanged then
+  begin
+    UpdateSampleRegions;
+    UpdateRegionInfoDisplay;
   end;
 
 

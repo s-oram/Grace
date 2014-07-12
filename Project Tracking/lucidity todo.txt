@@ -1,14 +1,10 @@
 =============================================================================
-- Bug: 
-  - Open Lucidity
-  - Delete Key Group
-  - Show Sample Map
-   -- There is a sample region in the sample map despite there being no key groups.
-
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 
  - Need to test SFZ import.
+
+- rename installers to Lucidity 32Bit For Windows.
 
 - BUG: "Info" in a TVamTextBox causes the text drawing to fail!
 
