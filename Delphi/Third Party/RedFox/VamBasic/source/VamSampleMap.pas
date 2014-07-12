@@ -1749,6 +1749,7 @@ const
 var
   c1: Integer;
   x1,y1:single;
+  s : string;
   Opacity : byte;
   frac : single;
   //SampleRegionBounds : TRectF;
@@ -1802,6 +1803,14 @@ begin
   end;
 
 
+
+  for c1 := 0 to 10 do
+  begin
+    x1 := KeyZone[c1 * 12].Bounds.Left + 2;
+    y1 := 5;
+    s := 'C' + IntToStr(c1 - 2);
+    BackBuffer.TextOut(x1,y1, s, Font,  TRedFoxColor(Color_BackgroundLines));
+  end;
 
   //==== draw sample regions ==============
   for c1 := SampleRegions.Count-1 downto 0 do
