@@ -250,7 +250,7 @@ begin
   result := BufferInterface.FontHeight;
 end;
 
-procedure TRedFoxImageBuffer.TextOut(x, y: single; Text: string);
+procedure TRedFoxImageBuffer.TextOut(x, y: single; Text: string); deprecated;
 begin
   // This method doesn't always work because UpdateFont() needs to be called somewhere.
   // Maybe it would be possible to only call UpdateFont() when the font changes.
