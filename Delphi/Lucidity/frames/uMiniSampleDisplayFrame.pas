@@ -643,7 +643,7 @@ begin
     XmlRegionInfo := GetVstXmlRegionInfo(0, Data.GetText);
     fn := XmlRegionInfo.FileName;
 
-    // TODO: when loading from cubase we also have access to the sample
+    // TODO:MED when loading from cubase we also have access to the sample
     // start and sample end points. I think this is related to chopping
     // the sample. It would be good to support this somehow.
     // perhaps the load sample will be trimmed to match the
@@ -670,7 +670,7 @@ begin
   // Asume file is an audio sample and attempt to load. TODO: should also check if file is supported audio format here...
   if (fn <> '') then
   begin
-    // TODO: This code requires a few changes.
+    // TODO:HIGH This code requires a few changes.
     // - current region should only be deleted if new sample is loaded successfully.
     // - new region bounds should duplicate the old region bounds if it is replacing an older region.
     // - need some sort of response if the sample doesn't load.
@@ -702,7 +702,7 @@ begin
         aRegion := nil;
       end else
       begin
-        // TODO: Need to show a message here to say that
+        // TODO:HIGH Need to show a message here to say that
         // the sample couldn't be loaded.
       end;
     end else
@@ -728,7 +728,7 @@ begin
         aRegion := nil;
       end else
       begin
-        // TODO: Need to show a message here to say that
+        // TODO:HIGH Need to show a message here to say that
         // the sample couldn't be loaded.
       end;
     end;
