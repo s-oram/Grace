@@ -1,17 +1,9 @@
 =============================================================================
-- Look at adding parameter smoothing.
-  -- There is smoothing in a couple places already. Knobs are smooth their output.
-     Cool but maybe unnecessary.
-  -- Modulated parameters are smoothed in the KeyGroup class.
-     This does have a performance hit however. 
-- The current parameter smoothing system might be enough for V1 but 
-  smoothing at the parameter change point might be better in the long run.
-  That way all parameters can be optionally smoothed and it might be easier to  
-  port to other plugins. 
+- Key map needs C1, C2 tags etc.
+
+- BUG: Crash if triggered when key group contains a sample that hasn't loaded.
 
 - Need to trim long sample names so they display appropiately.
-
-- sample map icon needs to be replaced.
 
 - filters finished. 
 
@@ -35,6 +27,28 @@ Right Click and Hold for sample zoom with mouse
 - Current parameters are quantised at the knob level. (Tune is the only
   parameter being quantised so far.) It would be good to quantise the same
   parameter when input by MIDI Automation or VST Parameter Automation.  
+
+
+- Need to respond when samples are missing.
+
+- An auto select on MIDI input would be nice.
+
+- A move all regions to separate key groups would be nice. When moving to a new
+  key group, current key group settings should be duplicated.
+
+- Trigger region when pressing on key zone.
+
+- clicking on sample name in sample display should pop up list of other samples. 
+  perhaps divided by key group.
+
+- Bug: 
+  - Open Lucidity
+  - Delete Key Group
+  - Show Sample Map
+   -- There is a sample region in the sample map despite there being no key groups.
+
+- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
+  maybe that should be made evident. 
 
 =============================================================================
 
@@ -354,6 +368,18 @@ either way. It's possible the user config should only contain overrides.
 
 - This would be a good system to have and could be incorporated into Poise.
 
+
+=============================================================================
+======= Parameter Smoothing ==================================
+- Look at adding parameter smoothing.
+  -- There is smoothing in a couple places already. Knobs are smooth their output.
+     Cool but maybe unnecessary.
+  -- Modulated parameters are smoothed in the KeyGroup class.
+     This does have a performance hit however. 
+- The current parameter smoothing system might be enough for V1 but 
+  smoothing at the parameter change point might be better in the long run.
+  That way all parameters can be optionally smoothed and it might be easier to  
+  port to other plugins. 
 =============================================================================
 
 
