@@ -8,8 +8,8 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
-			<Platform Condition="'$(Platform)'==''">Win64</Platform>
+			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -509,7 +509,7 @@
 			<DCCReference Include="SoundObjects\soStepInFilter.pas"/>
 			<DCCReference Include="SoundObjects\soStepOutFilter.pas"/>
 			<DCCReference Include="SoundObjects\Lucidity.Osc.FadeOutSampler.pas"/>
-			<DCCReference Include="uLucidityStateManager.pas"/>
+			<DCCReference Include="Lucidity.StateManager.pas"/>
 			<DCCReference Include="frames\Menu.MainMenu.pas"/>
 			<DCCReference Include="frames\Menu.FileTreeMenu.pas"/>
 			<DCCReference Include="frames\uAboutFrame.pas">

@@ -86,7 +86,7 @@ uses
   soStepInFilter in 'SoundObjects\soStepInFilter.pas',
   soStepOutFilter in 'SoundObjects\soStepOutFilter.pas',
   Lucidity.Osc.FadeOutSampler in 'SoundObjects\Lucidity.Osc.FadeOutSampler.pas',
-  uLucidityStateManager in 'uLucidityStateManager.pas',
+  Lucidity.StateManager in 'Lucidity.StateManager.pas',
   Menu.MainMenu in 'frames\Menu.MainMenu.pas',
   Menu.FileTreeMenu in 'frames\Menu.FileTreeMenu.pas',
   uAboutFrame in 'frames\uAboutFrame.pas' {AboutFrame: TFrame},

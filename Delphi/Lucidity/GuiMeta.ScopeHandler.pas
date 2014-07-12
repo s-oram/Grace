@@ -212,7 +212,6 @@ begin
   end;
 
 
-
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
     s := string(Data^);

@@ -254,22 +254,27 @@ type
 implementation
 
 uses
+  MadExcept, Windows,
+  Dialogs,
+  SysUtils,
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  VamLib.LoggingProxy,
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
   VamLib.Throttler,
-  MadExcept, Windows,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  VamLib.LoggingProxy,
   eeCustomGlobals,
+  AudioIO,
+  eeProfilerV2,
+  eePluginDataDir, eePatchObject_XmlWrapper,
+  eeSaveLoadFunctions,
+  NativeXML, uAutoFree, eeFunctions, eeDsp,
   uLucidityExtra,
   LucidityParameterScaling,
   LucidityUtils,
-  eeProfilerV2,
-  eePluginDataDir, eePatchObject_XmlWrapper,
-  SysUtils, NativeXML, uAutoFree, eeFunctions, eeDsp,
-  Dialogs, uLucidityStateManager, Lucidity.Globals, Lucidity.StateHelpers,
-  AudioIO,
-  eeSaveLoadFunctions;
+  Lucidity.StateManager,
+  Lucidity.Globals,
+  Lucidity.StateHelpers;
+
 
 const
   kCurrentPatchFormat  = 'Lucidity';
