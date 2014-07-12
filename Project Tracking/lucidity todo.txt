@@ -28,8 +28,9 @@ Right Click and Hold for sample zoom with mouse
   parameter being quantised so far.) It would be good to quantise the same
   parameter when input by MIDI Automation or VST Parameter Automation.  
 
-
 - Need to respond when samples are missing.
+  - need to be able to right click the sample display that show "audio file not found"
+    the context menu should give options for finding or replacing the sample with another.
 
 - An auto select on MIDI input would be nice.
 

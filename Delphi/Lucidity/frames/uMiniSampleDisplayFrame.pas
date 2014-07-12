@@ -550,6 +550,10 @@ begin
 end;
 
 procedure TMiniSampleDisplayFrame.InternalUpdateSampleInfo(const Region: IRegion; const NoRegionMessage: string);
+  function EncloseWithBrackets(const Text : string):string;
+  begin
+    result := '(' + Text + ')';
+  end;
 var
   px : PRegionProperties;
   s : string;
@@ -575,7 +579,7 @@ begin
       //== Sample Display Overlay ==
       fSampleOverlay.SetSampleInfo(false, 0);
       fSampleOverlay.ShowLoopPoints := false;
-      SampleOverlay.NoSampleMessage := NoRegionMessage;
+      fSampleOverlay.NoSampleMessage :=  EncloseWithBrackets(Region.GetSample^.LastErrorMessage);
     end;
 
     //== Sample / Region Properties =============================

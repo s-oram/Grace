@@ -282,6 +282,12 @@ begin
   Info.IsSupported  := false;
   Info.ErrorMessage := '';
 
+  if FileExists(FileName) = false then
+  begin
+    Info.ErrorMessage := 'Audio file not found.';
+    exit; //===========================================>> exit >>============>>
+  end;
+
   try
     if Ext = '.wav' then
     begin
