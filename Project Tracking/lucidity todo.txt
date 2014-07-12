@@ -50,6 +50,12 @@ Right Click and Hold for sample zoom with mouse
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 
+ - Need to test SFZ import.
+
+ - Sample map. load a patch with a missing sample so that the sample map shows a red region.
+   Highlight and select the region. The region is red but the highlight is blue. It creates
+   an ugly purple color. It should be a red highlight for error samples. 
+
 =============================================================================
 
   Fundamentals Delphi Library contains a RSA encryption implementation. Investigate.

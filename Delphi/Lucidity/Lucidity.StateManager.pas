@@ -228,6 +228,7 @@ begin
   XML.XmlFormat := xfReadable;
   xml.SaveToFile('C:\Users\Shannon Matthews\Desktop\test convert.lpg');
 
+  // TODO:HIGH - whats going on here.
   //ReadStateFromXML(XML);
 end;
 
@@ -692,7 +693,9 @@ begin
 
         RegionLoadInfo.SanitiseData;
 
-        //TODO: add a validity check here before attempting to load a new region.
+        // TODO:MED
+        // add a validity check here before attempting to load a new region.
+        // I can't remember what I wanted to validate before loading... oh well.
         NewRegion(RegionLoadInfo, sgIntF);
       end;
     end;
@@ -808,29 +811,42 @@ end;
 procedure TLucidityStateManager.NewRegion(const RegionLoadInfo: TRegionLoadInfo; const SampleGroup: IKeyGroup);
 var
   aRegion : TRegion;
+  LoadResult : boolean;
 begin
   if not assigned(SampleGroup) then raise Exception.Create('SG (sample group interface variable not assigned.');
 
 
-  // TODO: There's a few things needing to be done here.
+  // TODO:MED There's a few things needing to be done here.
   // - delayed sample loading. (don't load the sample immediately.)
   // - check the RegionLoadInfo is valid and will load a correctly configured region.
   // - the delayed sample loading will also need to handle missing files.
-
   aRegion := TRegion.Create;
 
-  aRegion.Sample.LoadFromFile(RegionLoadInfo.SampleFileName);
-  aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
+  LoadResult := aRegion.Sample.LoadFromFile(RegionLoadInfo.SampleFileName);
 
+  if LoadResult = true then
+  begin
+    // Sample has been loaded.
+    aRegion.Properties^.SampleDataLoaded := true;
+    aRegion.Properties^.IsSampleError    := false;
+    aRegion.Properties^.ErrorMessage     := '';
+  end else
+  begin
+    // Sample has not been loaded for some reason.
+    // TODO:HIGH need to check if the sample is missing. If it is, need to
+    // initiate a search for it somewhere. Probably by creating
+    // a threaded sample search-and-load utility.
+    aRegion.Properties^.SampleDataLoaded := false;
+    aRegion.Properties^.IsSampleError    := true;
+    aRegion.Properties^.ErrorMessage     := aRegion.Sample.LastErrorMessage;
+  end;
+
+  aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
   aRegion.KeyGroup := SampleGroup;
 
-  // TODO: the following three properties are new and have just been added here.
-  // I'm not yet sure what will be the best way to use them.
-  aRegion.Properties^.SampleDataLoaded := true;
-  aRegion.Properties^.IsSampleError    := false;
-  aRegion.Properties^.ErrorMessage     := '';
-  //============================================================================
-
+  //TODO:MED In the case of a missing sample being loaded after these properties
+  // have been assigned. Check that these property values persist and aren't
+  // over-written.
   aRegion.Properties^.SampleFileName := RegionLoadInfo.SampleFileName;
   aRegion.Properties^.LowNote        := RegionLoadInfo.LowNote;
   aRegion.Properties^.HighNote       := RegionLoadInfo.HighNote;
