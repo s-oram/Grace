@@ -1275,9 +1275,19 @@ begin
       **
       **   Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
       *)
-      OleStream := TOLEStream.Create(Stream);
-      Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
-      //Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
+
+      // TODO:MED This memory leak needs investigating.
+      // NOTE: FastMM is reporting a memory leak when I use these two lines of code.
+      // The memory leak goes away when commenting them out. Luckily I don't
+      // need clipboard functionality right now, so I can comment it out. But
+      // I'm not sure if I've had the same problem using before in other
+      // software I've made. ===Shannon Oram 13th July 2004.
+      //OleStream := TOLEStream.Create(Stream);
+      //Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
+
+      //=== Alternate non-memory leaking line.
+      Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
+      //===================================================
 
       IStream(AMedium.stm) := Stream;
     except
