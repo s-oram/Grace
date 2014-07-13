@@ -1,10 +1,4 @@
 =============================================================================
-
-
-- Bug: drag and drop file from windows explorer caused AV error. Will need to 
-  try that again.
-  - looks like a memory leak here too. May be related.
-
 - Bug: drag and drop file on "missing sample" in sample map. Replace message should
   show but it doesn't.
 
