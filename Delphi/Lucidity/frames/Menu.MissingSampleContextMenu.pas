@@ -78,6 +78,7 @@ begin
     if rx.ReplaceSample(FileOpenDialog.FileName) then
     begin
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
     end;
   end;
 end;
