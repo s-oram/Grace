@@ -1277,6 +1277,7 @@ begin
       *)
       OleStream := TOLEStream.Create(Stream);
       Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
+      //Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
 
       IStream(AMedium.stm) := Stream;
     except
