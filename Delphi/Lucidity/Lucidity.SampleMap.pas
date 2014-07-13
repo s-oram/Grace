@@ -314,50 +314,73 @@ var
   Info : TAudioFileInfo;
 begin
   result := false;
+  Properties^.SampleDataLoaded := false;
 
-  // TODO:HIGH insert a check to see if the file exists. set error states correctly
-  // if not.
-
-  GetAudioFileInfoEx(SampleFileName, Info);
-
-  if (Info.IsValid) and (Info.IsSupported) then
+  if FileExists(SampleFileName) = false then
   begin
-    if self.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
+    self.Properties^.SampleDataLoaded := false;
+    self.Properties^.ErrorMessage     := 'Audio file not found.';
+    self.Properties^.IsSampleError := true;
+    self.Properties^.SampleErrorType := TSampleError.FileNotFound;
+  end else
+  //if FileExists(SampleFileName) then
+  begin
+    GetAudioFileInfoEx(SampleFileName, Info);
+
+    if (Info.IsValid) and (Info.IsSupported) then
     begin
-      self.Properties^.SampleStart := 0;
-      self.Properties^.SampleEnd   := Info.SampleFrames-1;
-      self.Properties^.LoopStart   := -1;
-      self.Properties^.LoopEnd     := -1;
-
-      self.Properties^.SampleVolume := 0;
-      self.Properties^.SamplePan    := 0;
-      self.Properties^.SampleTune   := 0;
-      self.Properties^.SampleFine   := 0;
-      self.Properties^.SampleBeats  := 4;
-
-      if self.Sample.LoadFromFile(SampleFileName) = true then
+      if self.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
       begin
-        //Update additional region properties..
-        self.Properties^.LoopStart := 0;
-        self.Properties^.LoopEnd   := Info.SampleFrames-1;
+        self.Properties^.SampleStart := 0;
+        self.Properties^.SampleEnd   := Info.SampleFrames-1;
+        self.Properties^.LoopStart   := -1;
+        self.Properties^.LoopEnd     := -1;
 
-        self.ZeroCrossings.CalcZeroCrossingData(self.Sample);
-        self.UpdateSampleImage;
+        self.Properties^.SampleVolume := 0;
+        self.Properties^.SamplePan    := 0;
+        self.Properties^.SampleTune   := 0;
+        self.Properties^.SampleFine   := 0;
+        self.Properties^.SampleBeats  := 4;
 
-        self.Properties^.SampleDataLoaded := true;
+        if self.Sample.LoadFromFile(SampleFileName) = true then
+        begin
+          result := true;
 
-        result := true;
+          //Update additional region properties..
+          self.Properties^.LoopStart := 0;
+          self.Properties^.LoopEnd   := Info.SampleFrames-1;
+
+          self.ZeroCrossings.CalcZeroCrossingData(self.Sample);
+          self.UpdateSampleImage;
+
+          self.Properties^.SampleDataLoaded := true;
+          self.Properties^.SampleErrorType  := TSampleError.None;
+        end else
+        begin
+          self.Properties^.SampleDataLoaded := false;
+          self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+          self.Properties^.ErrorMessage     := Sample.LastErrorMessage;
+        end;
+      end else
+      begin
+        self.Properties^.SampleDataLoaded := false;
+        self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+        self.Properties^.ErrorMessage     := 'Error reserving memory.';
       end;
+    end else
+    if (Info.IsSupported) = false then
+    begin
+      self.Properties^.IsSampleError    := true;
+      self.Properties^.ErrorMessage     := 'Unsupported File Format.';
+      self.Properties^.SampleDataLoaded := false;
+      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+    end else
+    begin
+      self.Properties^.IsSampleError    := true;
+      self.Properties^.ErrorMessage     := Info.ErrorMessage;
+      self.Properties^.SampleDataLoaded := false;
+      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
     end;
-  end else
-  if (Info.IsSupported) = false then
-  begin
-    self.Properties^.IsSampleError    := true;
-    self.Properties^.ErrorMessage     := 'Unsupported File Format.';
-  end else
-  begin
-    self.Properties^.IsSampleError    := true;
-    self.Properties^.ErrorMessage     := Info.ErrorMessage;
   end;
 end;
 
