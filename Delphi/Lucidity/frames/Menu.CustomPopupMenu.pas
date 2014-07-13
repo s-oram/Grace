@@ -14,9 +14,7 @@ type
     property Plugin : TeePlugin read fPlugin;
     property DialogDisplay : TDialogDisplayArea read fDialogDisplayArea;
   public
-
     procedure Initialize(aPlugin : TeePlugin; aDialogDisplayArea: TDialogDisplayArea);
-
   end;
 
 implementation

@@ -607,6 +607,7 @@
 			<DCCReference Include="EasyEffectTemplate\eeParSmoother.pas"/>
 			<DCCReference Include="AudioEffects\AudioEffect.pas"/>
 			<DCCReference Include="AudioEffects\AudioEffect.Lofi.pas"/>
+			<DCCReference Include="frames\Menu.MissingSampleContextMenu.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

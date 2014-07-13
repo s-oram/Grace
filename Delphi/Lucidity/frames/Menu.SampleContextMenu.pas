@@ -23,8 +23,6 @@ type
     procedure EventHandle_ModulationCommand(Sender : TObject);
     procedure EventHandle_ClearAllModulationForAllSamplePoints(Sender : TObject);
     procedure EventHandle_ClearCurrentModulationForAllSamplePoints(Sender : TObject);
-
-
   public
     constructor Create;
     destructor Destroy; override;
@@ -34,7 +32,6 @@ type
     procedure Popup(const x, y : integer; const aMouseDownSamplePos : integer);
 
     property LoopPointsVisible : boolean read fLoopPointsVisible write fLoopPointsVisible;
-
   end;
 
 implementation

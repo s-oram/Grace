@@ -3,16 +3,17 @@ unit LuciditySampleOverlay;
 interface
 
 uses
-
   Types, Controls, Classes, Graphics,
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl,
+  eePlugin,
   uGuiFeedbackData,
-  Lucidity.Types;
+  Lucidity.Types,
+  Menu.MissingSampleContextMenu;
 
 type
   TSampleMarkerSelect = (msMarkersOnly, msWithPreferenceToMarkers, msWithPreferenceToModAmounts);
-  
+
 
   TSampleMarkerChangedEvent = procedure(Sender:TObject; Marker:TSampleMarker; NewPosition : integer) of object;
 
@@ -46,6 +47,7 @@ type
     fLoopEndModMax: single;
     fSampleStartModMax: single;
     fOnMouseOverMarkerChanged: TNotifyEvent;
+    fIsCurrentSampleMissing: boolean;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -57,6 +59,7 @@ type
     procedure SetShowModPoints(const Value: boolean);
     procedure SetIsModEditActive(const Value: boolean);
   protected
+    MissingSampleContextMenu : TMissingSampleContextMenu;
     FeedbackData : PGuiFeedbackData;
     SampleIsValid : boolean;
     SampleFrames  : integer;
@@ -78,6 +81,8 @@ type
     ZoomDragx2 : integer;
 
     MessageFont : TFont;
+
+    Plugin : TeePlugin;
 
     procedure SetFont(const Value: TFont); override;
 
@@ -105,6 +110,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    procedure Initialize(const aPlugin : TeePlugin);
 
     procedure LinkToGuiFeedbackData(const aFeedbackData : PGuiFeedbackData);
 
@@ -140,9 +147,9 @@ type
     property ShowLoopPoints : boolean read fShowLoopPoints write SetShowLoopPoints;
     property ShowReplaceMessage : boolean read fShowReplaceMessage write SetShowReplaceMessage;
 
-    property NoSampleMessage : string read fNoSampleMessage write SetNoSampleMessage;
-
+    property IsCurrentSampleMissing : boolean read fIsCurrentSampleMissing write fIsCurrentSampleMissing;
     property IsModEditActive : boolean read fIsModEditActive write SetIsModEditActive;
+    property NoSampleMessage : string read fNoSampleMessage write SetNoSampleMessage;
 
     property MouseOverMarker : TSampleMarker read fMouseOverMarker;
   published
@@ -191,6 +198,11 @@ constructor TLuciditySampleOverlay.Create(AOwner: TComponent);
 begin
   inherited;
 
+  // TODO:MED instead of creating the menu at the start, maybe it would
+  // be better to create the menu when needed and free when finish. It
+  // would be more dynmaic.
+  MissingSampleContextMenu := TMissingSampleContextMenu.Create;
+
   FeedbackData := nil;
 
   SampleIsValid := false;
@@ -215,12 +227,19 @@ end;
 destructor TLuciditySampleOverlay.Destroy;
 begin
   MessageFont.Free;
+  MissingSampleContextMenu.Free;
   inherited;
 end;
 
 procedure TLuciditySampleOverlay.LinkToGuiFeedbackData(const aFeedbackData: PGuiFeedbackData);
 begin
   FeedbackData := aFeedbackData;
+end;
+
+procedure TLuciditySampleOverlay.Initialize(const aPlugin: TeePlugin);
+begin
+  Plugin := aPlugin;
+  MissingSampleContextMenu.Initialize(Plugin, nil);
 end;
 
 function TLuciditySampleOverlay.IsNearMarker(const PixelPosX: integer; SelectPreference:TSampleMarkerSelect): TSampleMarker;
@@ -466,7 +485,13 @@ begin
 
 
     Invalidate;
+  end;
 
+
+
+  if (Button = mbRight) and (SampleIsValid = false) and (IsCurrentSampleMissing) then
+  begin
+    MissingSampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
 end;
 

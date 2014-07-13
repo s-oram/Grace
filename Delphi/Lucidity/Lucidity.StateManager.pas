@@ -822,8 +822,12 @@ begin
   // - the delayed sample loading will also need to handle missing files.
   aRegion := TRegion.Create;
 
-  LoadResult := aRegion.Sample.LoadFromFile(RegionLoadInfo.SampleFileName);
 
+  //TODO:MED instead of using the Sample.LoadFromFile() method, the load
+  // method should probably belong to the Region. Currently I'm drilling down
+  // into the region, loading a sample and then setting properties based on
+  // if the sample load was successful.
+  LoadResult := aRegion.Sample.LoadFromFile(RegionLoadInfo.SampleFileName);
   if LoadResult = true then
   begin
     // Sample has been loaded.

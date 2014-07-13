@@ -25,7 +25,6 @@ type
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
 
-
     function GetPluginParameterName(const PadIndex, Axis : integer):string;
   public
     constructor Create;

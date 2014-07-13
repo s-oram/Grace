@@ -164,7 +164,8 @@ uses
   Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas',
   eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas',
   AudioEffect in 'AudioEffects\AudioEffect.pas',
-  AudioEffect.Lofi in 'AudioEffects\AudioEffect.Lofi.pas';
+  AudioEffect.Lofi in 'AudioEffects\AudioEffect.Lofi.pas',
+  Menu.MissingSampleContextMenu in 'frames\Menu.MissingSampleContextMenu.pas';
 
 {$R *.res}
 

@@ -574,12 +574,15 @@ begin
       fSampleOverlay.LoopEnd     := Region.GetProperties^.LoopEnd;
 
       fSampleOverlay.ShowLoopPoints := ShowLoopMarkers(Region);
+
+      fSampleOverlay.IsCurrentSampleMissing := false;
     end else
     begin
       //== Sample Display Overlay ==
       fSampleOverlay.SetSampleInfo(false, 0);
       fSampleOverlay.ShowLoopPoints := false;
       fSampleOverlay.NoSampleMessage :=  EncloseWithBrackets(Region.GetSample^.LastErrorMessage);
+      fSampleOverlay.IsCurrentSampleMissing := true;
     end;
 
     //== Sample / Region Properties =============================
@@ -598,6 +601,7 @@ begin
   begin
     CurrentSample.Info.IsValid := false;
     SampleOverlay.NoSampleMessage := NoRegionMessage;
+    fSampleOverlay.IsCurrentSampleMissing := false;
 
     //===========================================
     InfoDiv.Visible := false;
