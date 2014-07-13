@@ -560,7 +560,7 @@ var
 begin
   if (assigned(Region)) then
   begin
-    if Region.GetSample^.Properties.IsValid then
+    if (Region.GetProperties^.SampleDataLoaded) and (Region.GetSample^.Properties.IsValid) then
     begin
       CurrentSample.Info.IsValid := true;
       CurrentSample.Info.ChannelCount := Region.GetSample^.Properties.ChannelCount;
