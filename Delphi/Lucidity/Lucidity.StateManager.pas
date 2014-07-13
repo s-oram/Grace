@@ -822,28 +822,7 @@ begin
   // - the delayed sample loading will also need to handle missing files.
   aRegion := TRegion.Create;
 
-
-  //TODO:MED instead of using the Sample.LoadFromFile() method, the load
-  // method should probably belong to the Region. Currently I'm drilling down
-  // into the region, loading a sample and then setting properties based on
-  // if the sample load was successful.
-  LoadResult := aRegion.Sample.LoadFromFile(RegionLoadInfo.SampleFileName);
-  if LoadResult = true then
-  begin
-    // Sample has been loaded.
-    aRegion.Properties^.SampleDataLoaded := true;
-    aRegion.Properties^.IsSampleError    := false;
-    aRegion.Properties^.ErrorMessage     := '';
-  end else
-  begin
-    // Sample has not been loaded for some reason.
-    // TODO:HIGH need to check if the sample is missing. If it is, need to
-    // initiate a search for it somewhere. Probably by creating
-    // a threaded sample search-and-load utility.
-    aRegion.Properties^.SampleDataLoaded := false;
-    aRegion.Properties^.IsSampleError    := true;
-    aRegion.Properties^.ErrorMessage     := aRegion.Sample.LastErrorMessage;
-  end;
+  aRegion.LoadSample(RegionLoadInfo.SampleFileName);
 
   aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
   aRegion.KeyGroup := SampleGroup;

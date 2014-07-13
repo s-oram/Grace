@@ -581,7 +581,7 @@ begin
       //== Sample Display Overlay ==
       fSampleOverlay.SetSampleInfo(false, 0);
       fSampleOverlay.ShowLoopPoints := false;
-      fSampleOverlay.NoSampleMessage :=  EncloseWithBrackets(Region.GetSample^.LastErrorMessage);
+      fSampleOverlay.NoSampleMessage :=  EncloseWithBrackets(Region.GetProperties.ErrorMessage);
       fSampleOverlay.IsCurrentSampleMissing := true;
     end;
 
