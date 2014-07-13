@@ -748,7 +748,6 @@ begin
     end;
 
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-
   end;
 end;
 

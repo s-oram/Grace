@@ -3,7 +3,7 @@ unit eeRedFoxDropFileTarget;
 interface
 
 {
-  TODO: instead of explicit references to particular components, I wonder if an interface could be used instead.
+  TODO:LOW instead of explicit references to particular components, I wonder if an interface could be used instead.
 }
 
 uses
@@ -92,14 +92,6 @@ begin
   DropTargetProxy.OnStartAsyncTransfer := self.ProxyStartAsyncTransfer;
 
   DropTargetProxy.GetDataOnEnter := true;
-
-
-
-
-
-
-
-
 
   Targets := TObjectList.Create;
   Targets.OwnsObjects := false;
@@ -244,7 +236,7 @@ var
   ControlIntF : IVamVisibleControl;
   RelativePoint : TPoint;
 begin
-    //check if the files list needs to be updated.
+  //check if the files list needs to be updated.
   if fFiles.Count <> DropTargetProxy.Files.Count then
   begin
     fFiles.Clear;
@@ -293,7 +285,6 @@ begin
   begin
     raise Exception.Create('Target already registered.');
   end;
-
 end;
 
 procedure TRedFoxDropFileTarget.UnregisterTarget(Target: TControl);
