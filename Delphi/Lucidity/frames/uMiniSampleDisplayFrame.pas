@@ -16,6 +16,7 @@ uses
   Lucidity.SampleMap, Menu.SampleContextMenu,
   Lucidity.FlexSampleRenderer,
   LucidityGui.Scope,
+  Menu.MissingSampleContextMenu,
   eePlugin, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
@@ -98,6 +99,7 @@ type
 
     SampleOverlayClickPos : TPoint;
     SampleContextMenu : TSampleContextMenu;
+    MissingSampleContextMenu : TMissingSampleContextMenu;
 
     StoredImage : ISampleImageBuffer;
     SampleRenderer : TSampleImageRenderer;
@@ -194,6 +196,11 @@ begin
 
   SampleContextMenu := TSampleContextMenu.Create;
 
+  // TODO:MED instead of creating the menu at the start, maybe it would
+  // be better to create the menu when needed and free when finish. It
+  // would be more dynmaic.
+  MissingSampleContextMenu := TMissingSampleContextMenu.Create;
+
 
   StoredImage := TSampleImageBuffer.Create;
 
@@ -232,6 +239,7 @@ begin
     FMotherShip := nil;
   end;
 
+  MissingSampleContextMenu.Free;
   SampleContextMenu.Free;
   SampleRenderer.Free;
 
@@ -269,6 +277,7 @@ begin
   InfoDiv.Align := alClient;
 
   SampleContextMenu.Initialize(aPlugin);
+  MissingSampleContextMenu.Initialize(Plugin, nil);
 
   SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
@@ -865,13 +874,20 @@ begin
   CurRegion := Plugin.FocusedRegion;
   if CurRegion = nil then exit;
 
-  if (Button = mbRight) and (CurrentSample.Info.IsValid) then
+  if (Button = mbRight) and (assigned(CurrentSample.Region)) then
   begin
-    SampleContextMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
-
-    MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
-    SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
+    if CurrentSample.Region.GetProperties^.SampleDataLoaded then
+    begin
+      SampleContextMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
+      MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
+      SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
+    end else
+    if (CurrentSample.Region.GetProperties^.IsSampleError) and (CurrentSample.Region.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    begin
+      MissingSampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+    end;
   end;
+
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

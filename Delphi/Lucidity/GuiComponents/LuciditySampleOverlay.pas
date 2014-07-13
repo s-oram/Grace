@@ -8,8 +8,7 @@ uses
   VamGraphicControl, VamWinControl,
   eePlugin,
   uGuiFeedbackData,
-  Lucidity.Types,
-  Menu.MissingSampleContextMenu;
+  Lucidity.Types;
 
 type
   TSampleMarkerSelect = (msMarkersOnly, msWithPreferenceToMarkers, msWithPreferenceToModAmounts);
@@ -59,7 +58,6 @@ type
     procedure SetShowModPoints(const Value: boolean);
     procedure SetIsModEditActive(const Value: boolean);
   protected
-    MissingSampleContextMenu : TMissingSampleContextMenu;
     FeedbackData : PGuiFeedbackData;
     SampleIsValid : boolean;
     SampleFrames  : integer;
@@ -147,7 +145,7 @@ type
     property ShowLoopPoints : boolean read fShowLoopPoints write SetShowLoopPoints;
     property ShowReplaceMessage : boolean read fShowReplaceMessage write SetShowReplaceMessage;
 
-    property IsCurrentSampleMissing : boolean read fIsCurrentSampleMissing write fIsCurrentSampleMissing;
+    property IsCurrentSampleMissing : boolean read fIsCurrentSampleMissing write fIsCurrentSampleMissing; //TODO:MED This could be deleted.
     property IsModEditActive : boolean read fIsModEditActive write SetIsModEditActive;
     property NoSampleMessage : string read fNoSampleMessage write SetNoSampleMessage;
 
@@ -198,11 +196,6 @@ constructor TLuciditySampleOverlay.Create(AOwner: TComponent);
 begin
   inherited;
 
-  // TODO:MED instead of creating the menu at the start, maybe it would
-  // be better to create the menu when needed and free when finish. It
-  // would be more dynmaic.
-  MissingSampleContextMenu := TMissingSampleContextMenu.Create;
-
   FeedbackData := nil;
 
   SampleIsValid := false;
@@ -227,7 +220,6 @@ end;
 destructor TLuciditySampleOverlay.Destroy;
 begin
   MessageFont.Free;
-  MissingSampleContextMenu.Free;
   inherited;
 end;
 
@@ -239,7 +231,6 @@ end;
 procedure TLuciditySampleOverlay.Initialize(const aPlugin: TeePlugin);
 begin
   Plugin := aPlugin;
-  MissingSampleContextMenu.Initialize(Plugin, nil);
 end;
 
 function TLuciditySampleOverlay.IsNearMarker(const PixelPosX: integer; SelectPreference:TSampleMarkerSelect): TSampleMarker;
@@ -485,13 +476,6 @@ begin
 
 
     Invalidate;
-  end;
-
-
-
-  if (Button = mbRight) and (SampleIsValid = false) and (IsCurrentSampleMissing) then
-  begin
-    MissingSampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
 end;
 
