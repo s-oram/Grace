@@ -259,7 +259,7 @@ var
   IsNearMarker_LoopEndMod     : boolean;
 begin
   // default result.
-  result := smNone;
+  result := TSampleMarker.smNone;
 
   assert(InRange(SampleStartMod, -1, 1));
   assert(InRange(SampleEndMod, -1, 1));
@@ -331,36 +331,36 @@ begin
   case SelectPreference of
     msWithPreferenceToModAmounts:
     begin
-      if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
-      if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
-      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
-      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
+      if (IsNearMarker_LoopStartMod)     then exit(TSampleMarker.smLoopStartModMarker);
+      if (IsNearMarker_LoopEndMod)       then exit(TSampleMarker.smLoopEndModMarker);
+      if (IsNearMarker_SampleStartMod)   then exit(TSampleMarker.smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(TSampleMarker.smSampleEndModMarker);
 
-      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
-      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(TSampleMarker.smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(TSampleMarker.smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(TSampleMarker.smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(TSampleMarker.smSampleEndMarker);
     end;
 
     msWithPreferenceToMarkers:
     begin
-      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
-      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(TSampleMarker.smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(TSampleMarker.smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(TSampleMarker.smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(TSampleMarker.smSampleEndMarker);
 
-      if (IsNearMarker_LoopStartMod)     then exit(smLoopStartModMarker);
-      if (IsNearMarker_LoopEndMod)       then exit(smLoopEndModMarker);
-      if (IsNearMarker_SampleStartMod)   then exit(smSampleStartModMarker);
-      if (IsNearMarker_SampleEndMod)     then exit(smSampleEndModMarker);
+      if (IsNearMarker_LoopStartMod)     then exit(TSampleMarker.smLoopStartModMarker);
+      if (IsNearMarker_LoopEndMod)       then exit(TSampleMarker.smLoopEndModMarker);
+      if (IsNearMarker_SampleStartMod)   then exit(TSampleMarker.smSampleStartModMarker);
+      if (IsNearMarker_SampleEndMod)     then exit(TSampleMarker.smSampleEndModMarker);
     end;
 
     msMarkersOnly:
     begin
-      if (IsNearMarker_LoopStart)        then exit(smLoopStartMarker);
-      if (IsNearMarker_LoopEnd)          then exit(smLoopEndMarker);
-      if (IsNearMarker_SampleStart)      then exit(smSampleStartMarker);
-      if (IsNearMarker_SampleEnd)        then exit(smSampleEndMarker);
+      if (IsNearMarker_LoopStart)        then exit(TSampleMarker.smLoopStartMarker);
+      if (IsNearMarker_LoopEnd)          then exit(TSampleMarker.smLoopEndMarker);
+      if (IsNearMarker_SampleStart)      then exit(TSampleMarker.smSampleStartMarker);
+      if (IsNearMarker_SampleEnd)        then exit(TSampleMarker.smSampleEndMarker);
     end;
   else
     raise Exception.Create('Type not handled.');
@@ -405,17 +405,17 @@ begin
       begin
         GrabbedMode := IsNearMarker(X, msWithPreferenceToModAmounts);
         case GrabbedMode of
-          smSampleStartMarker: ResetModAmount := true;
-          smSampleEndMarker:   ResetModAmount := true;
-          smLoopStartMarker:   ResetModAmount := true;
-          smLoopEndMarker:     ResetModAmount := true;
+          TSampleMarker.smSampleStartMarker: ResetModAmount := true;
+          TSampleMarker.smSampleEndMarker:   ResetModAmount := true;
+          TSampleMarker.smLoopStartMarker:   ResetModAmount := true;
+          TSampleMarker.smLoopEndMarker:     ResetModAmount := true;
         end;
 
         case GrabbedMode of
-          smSampleStartMarker: GrabbedMode  := smSampleStartModMarker;
-          smSampleEndMarker:   GrabbedMode  := smSampleEndModMarker;
-          smLoopStartMarker:   GrabbedMode  := smLoopStartModMarker;
-          smLoopEndMarker:     GrabbedMode  := smLoopEndModMarker;
+          TSampleMarker.smSampleStartMarker: GrabbedMode  := TSampleMarker.smSampleStartModMarker;
+          TSampleMarker.smSampleEndMarker:   GrabbedMode  := TSampleMarker.smSampleEndModMarker;
+          TSampleMarker.smLoopStartMarker:   GrabbedMode  := TSampleMarker.smLoopStartModMarker;
+          TSampleMarker.smLoopEndMarker:     GrabbedMode  := TSampleMarker.smLoopEndModMarker;
         end;
       end else
       begin
@@ -429,13 +429,13 @@ begin
     CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
 
     case GrabbedMode of
-      smNone:              GrabbedSampleOffset := 0; // not used
-      smSampleStartMarker: GrabbedSampleOffset := CurrentSamplePos - SampleStart;
-      smSampleEndMarker:   GrabbedSampleOffset := CurrentSamplePos - SampleEnd;
-      smLoopStartMarker:   GrabbedSampleOffset := CurrentSamplePos - LoopStart;
-      smLoopEndMarker:     GrabbedSampleOffset := CurrentSamplePos - LoopEnd;
+      TSampleMarker.smNone:              GrabbedSampleOffset := 0; // not used
+      TSampleMarker.smSampleStartMarker: GrabbedSampleOffset := CurrentSamplePos - SampleStart;
+      TSampleMarker.smSampleEndMarker:   GrabbedSampleOffset := CurrentSamplePos - SampleEnd;
+      TSampleMarker.smLoopStartMarker:   GrabbedSampleOffset := CurrentSamplePos - LoopStart;
+      TSampleMarker.smLoopEndMarker:     GrabbedSampleOffset := CurrentSamplePos - LoopEnd;
 
-      smSampleStartModMarker:
+      TSampleMarker.smSampleStartModMarker:
       begin
         ReferenceX := x;
         if ResetModAmount
@@ -443,7 +443,7 @@ begin
           else ReferenceModAmount := SampleStartMod;
       end;
 
-      smSampleEndModMarker:
+      TSampleMarker.smSampleEndModMarker:
       begin
         ReferenceX := x;
         if ResetModAmount
@@ -451,7 +451,7 @@ begin
           else ReferenceModAmount := SampleEndMod;
       end;
 
-      smLoopStartModMarker:
+      TSampleMarker.smLoopStartModMarker:
       begin
         ReferenceX := x;
         if ResetModAmount
@@ -459,7 +459,7 @@ begin
           else ReferenceModAmount := LoopStartMod;
       end;
 
-      smLoopEndModMarker:
+      TSampleMarker.smLoopEndModMarker:
       begin
         ReferenceX := x;
         if ResetModAmount
@@ -472,7 +472,7 @@ begin
     end;
 
 
-    if (GrabbedMode = smNone) then
+    if (GrabbedMode = TSampleMarker.smNone) then
     begin
       if ssCtrl in Shift
         then IsZoomActive := true
@@ -513,15 +513,15 @@ begin
       else Marker := IsNearMarker(X, msMarkersOnly);
 
     case Marker of
-      smNone:                  Cursor := crDefault;
-      smSampleStartMarker:     Cursor := crSizeWE;
-      smSampleEndMarker:       Cursor := crSizeWE;
-      smLoopStartMarker:       Cursor := crSizeWE;
-      smLoopEndMarker:         Cursor := crSizeWE;
-      smSampleStartModMarker:  Cursor := crSizeWE;
-      smSampleEndModMarker:    Cursor := crSizeWE;
-      smLoopStartModMarker:    Cursor := crSizeWE;
-      smLoopEndModMarker:      Cursor := crSizeWE;
+      TSampleMarker.smNone:                  Cursor := crDefault;
+      TSampleMarker.smSampleStartMarker:     Cursor := crSizeWE;
+      TSampleMarker.smSampleEndMarker:       Cursor := crSizeWE;
+      TSampleMarker.smLoopStartMarker:       Cursor := crSizeWE;
+      TSampleMarker.smLoopEndMarker:         Cursor := crSizeWE;
+      TSampleMarker.smSampleStartModMarker:  Cursor := crSizeWE;
+      TSampleMarker.smSampleEndModMarker:    Cursor := crSizeWE;
+      TSampleMarker.smLoopStartModMarker:    Cursor := crSizeWE;
+      TSampleMarker.smLoopEndModMarker:      Cursor := crSizeWE;
     else
       raise Exception.Create('Unexpected Marker type.');
     end;
@@ -559,7 +559,7 @@ begin
 
 
 
-    if (GrabbedMode = smSampleStartMarker) then
+    if (GrabbedMode = TSampleMarker.smSampleStartMarker) then
     begin
       CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
       xPos := round(CurrentSamplePos - GrabbedSampleOffset);
@@ -573,7 +573,7 @@ begin
     end;
 
 
-    if (GrabbedMode = smSampleEndMarker) then
+    if (GrabbedMode = TSampleMarker.smSampleEndMarker) then
     begin
       CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
       xPos := round(CurrentSamplePos - GrabbedSampleOffset);
@@ -587,7 +587,7 @@ begin
     end;
 
 
-    if (GrabbedMode = smLoopStartMarker) then
+    if (GrabbedMode = TSampleMarker.smLoopStartMarker) then
     begin
       CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
       xPos := round(CurrentSamplePos - GrabbedSampleOffset);
@@ -601,7 +601,7 @@ begin
     end;
 
 
-    if (GrabbedMode = smLoopEndMarker) then
+    if (GrabbedMode = TSampleMarker.smLoopEndMarker) then
     begin
       CurrentSamplePos := VamSampleDisplayBackBuffer.PixelPosToSamplePos(X, SampleFrames, Width, Zoom, Offset);
       xPos := round(CurrentSamplePos - GrabbedSampleOffset);
@@ -614,7 +614,7 @@ begin
       end;
     end;
 
-    if (GrabbedMode = smSampleStartModMarker) then
+    if (GrabbedMode = TSampleMarker.smSampleStartModMarker) then
     begin
       xDist := x - ReferenceX;
       ModAmount := xDist / (Width / (1-Zoom));
@@ -628,7 +628,7 @@ begin
       if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
     end;
 
-    if (GrabbedMode = smSampleEndModMarker) then
+    if (GrabbedMode = TSampleMarker.smSampleEndModMarker) then
     begin
       xDist := x - ReferenceX;
       ModAmount := xDist / (Width / (1-Zoom));
@@ -642,7 +642,7 @@ begin
       if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
     end;
 
-    if (GrabbedMode = smLoopStartModMarker) then
+    if (GrabbedMode = TSampleMarker.smLoopStartModMarker) then
     begin
       xDist := x - ReferenceX;
       ModAmount := xDist / (Width / (1-Zoom));
@@ -656,7 +656,7 @@ begin
       if assigned(OnModAmountsChanged) then OnModAmountsChanged(Self);
     end;
 
-    if (GrabbedMode = smLoopEndModMarker) then
+    if (GrabbedMode = TSampleMarker.smLoopEndModMarker) then
     begin
       xDist := x - ReferenceX;
       ModAmount := xDist / (Width / (1-Zoom));
@@ -686,10 +686,10 @@ begin
     //call the event handlers....
     if assigned(OnSampleMarkerChanged) then
     begin
-      if (GrabbedMode = smSampleStartMarker) then OnSampleMarkerChanged(Self, smSampleStartMarker, SampleStart);
-      if (GrabbedMode = smSampleEndMarker)   then OnSampleMarkerChanged(Self, smSampleEndMarker, SampleEnd);
-      if (GrabbedMode = smLoopStartMarker)   then OnSampleMarkerChanged(Self, smLoopStartMarker, LoopStart);
-      if (GrabbedMode = smLoopEndMarker)     then OnSampleMarkerChanged(Self, smLoopEndMarker, LoopEnd);
+      if (GrabbedMode = TSampleMarker.smSampleStartMarker) then OnSampleMarkerChanged(Self, TSampleMarker.smSampleStartMarker, SampleStart);
+      if (GrabbedMode = TSampleMarker.smSampleEndMarker)   then OnSampleMarkerChanged(Self, TSampleMarker.smSampleEndMarker, SampleEnd);
+      if (GrabbedMode = TSampleMarker.smLoopStartMarker)   then OnSampleMarkerChanged(Self, TSampleMarker.smLoopStartMarker, LoopStart);
+      if (GrabbedMode = TSampleMarker.smLoopEndMarker)     then OnSampleMarkerChanged(Self, TSampleMarker.smLoopEndMarker, LoopEnd);
     end;
 
 
@@ -712,10 +712,10 @@ begin
     //call the event handlers....
     if assigned(OnSampleMarkerChanged) then
     begin
-      if (GrabbedMode = smSampleStartMarker) then OnSampleMarkerChanged(Self, smSampleStartMarker, SampleStart);
-      if (GrabbedMode = smSampleEndMarker)   then OnSampleMarkerChanged(Self, smSampleEndMarker, SampleEnd);
-      if (GrabbedMode = smLoopStartMarker)   then OnSampleMarkerChanged(Self, smLoopStartMarker, LoopStart);
-      if (GrabbedMode = smLoopEndMarker)     then OnSampleMarkerChanged(Self, smLoopEndMarker, LoopEnd);
+      if (GrabbedMode = TSampleMarker.smSampleStartMarker) then OnSampleMarkerChanged(Self, TSampleMarker.smSampleStartMarker, SampleStart);
+      if (GrabbedMode = TSampleMarker.smSampleEndMarker)   then OnSampleMarkerChanged(Self, TSampleMarker.smSampleEndMarker, SampleEnd);
+      if (GrabbedMode = TSampleMarker.smLoopStartMarker)   then OnSampleMarkerChanged(Self, TSampleMarker.smLoopStartMarker, LoopStart);
+      if (GrabbedMode = TSampleMarker.smLoopEndMarker)     then OnSampleMarkerChanged(Self, TSampleMarker.smLoopEndMarker, LoopEnd);
     end;
 
     if ssCtrl in Shift
@@ -755,7 +755,7 @@ begin
 
     // Important. Do this last.
     IsGrabbed    := false;
-    GrabbedMode  := smNone;
+    GrabbedMode  := TSampleMarker.smNone;
     IsZooming    := false;
     IsZoomActive := false;
   end;
@@ -1062,7 +1062,7 @@ begin
     if (IsGrabbed = false) then
     begin
       case fMouseOverMarker of
-        smSampleStartMarker:
+        TSampleMarker.smSampleStartMarker:
         begin
           x1 := SampleStart;
           x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
@@ -1070,7 +1070,7 @@ begin
           Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smSampleStartMarker);
         end;
 
-        smSampleEndMarker:
+        TSampleMarker.smSampleEndMarker:
         begin
           x1 := SampleEnd;
           x1 := VamSampleDisplayBackBuffer.SamplePosToPixelPos(x1, SampleFrames, Width, Zoom, Offset);
@@ -1078,7 +1078,7 @@ begin
           Draw_MarkerTag(x1, fMouseOverMarkerVertOffset, TSampleMarker.smSampleEndMarker);
         end;
 
-        smLoopStartMarker:
+        TSampleMarker.smLoopStartMarker:
         begin
           if (ShowLoopPoints) and (LoopStart <> -1) then
           begin
@@ -1090,7 +1090,7 @@ begin
 
         end;
 
-        smLoopEndMarker:
+        TSampleMarker.smLoopEndMarker:
         begin
           if (ShowLoopPoints) and (LoopEnd <> -1) then
           begin
@@ -1136,25 +1136,25 @@ begin
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
   case aMarker of
-    smSampleStartMarker:
+    TSampleMarker.smSampleStartMarker:
     begin
       TextColor := GetRedFoxColor(kSampleStart);
       Text := 'Sample Start';
     end;
 
-    smSampleEndMarker:
+    TSampleMarker.smSampleEndMarker:
     begin
       TextColor := GetRedFoxColor(kSampleEnd);
       Text := 'Sample End';
     end;
 
-    smLoopStartMarker:
+    TSampleMarker.smLoopStartMarker:
     begin
       TextColor := GetRedFoxColor(kLoopPoint);
       Text := 'Loop Start';
     end;
 
-    smLoopEndMarker:
+    TSampleMarker.smLoopEndMarker:
     begin
       TextColor := GetRedFoxColor(kLoopPoint);
       Text := 'Loop End';

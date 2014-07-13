@@ -11,6 +11,8 @@ uses
   VamLib.MoreTypes,
   VamLib.Collections.Lists;
 
+{$SCOPEDENUMS ON}
+
 
 type
   TGuidList = TSimpleList<TGUID>;
@@ -79,11 +81,7 @@ type
   // stored in the voice class. (If these comments are up to date!)
   PSynthPar = PSingle;
 
-
-
-
-
-
+  TSampleError = (None, FileNotFound, FileIsCorrupt);
 
   PRegionProperties = ^TRegionProperties;
   TRegionProperties = record

@@ -347,10 +347,10 @@ begin
   end;
 
   case Tag of
-    SampleStartTag : SampleMarker := smSampleStartMarker;
-    SampleEndTag   : SampleMarker := smSampleEndMarker;
-    LoopStartTag   : SampleMarker := smLoopStartMarker;
-    LoopEndTag     : SampleMarker := smLoopEndMarker;
+    SampleStartTag : SampleMarker := TSampleMarker.smSampleStartMarker;
+    SampleEndTag   : SampleMarker := TSampleMarker.smSampleEndMarker;
+    LoopStartTag   : SampleMarker := TSampleMarker.smLoopStartMarker;
+    LoopEndTag     : SampleMarker := TSampleMarker.smLoopEndMarker;
   else
     raise Exception.Create('Type not handled.');
   end;

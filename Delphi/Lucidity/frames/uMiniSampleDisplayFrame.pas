@@ -890,10 +890,10 @@ begin
   CurRegion := Plugin.FocusedRegion;
 
   case Marker of
-    smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
-    smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
-    smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
-    smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
+    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
+    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
+    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
+    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
   end;
 
   UpdateSampleDisplayInfo;
@@ -1119,15 +1119,15 @@ begin
   Marker := (Sender as TLuciditySampleOverlay).MouseOverMarker;
 
   case Marker  of
-    smNone:                  ParName := '';
-    smSampleStartMarker:     ParName := PluginParToName(TPluginParameter.SampleStart);
-    smSampleEndMarker:       ParName := PluginParToName(TPluginParameter.SampleEnd);
-    smLoopStartMarker:       ParName := PluginParToName(TPluginParameter.LoopStart);
-    smLoopEndMarker:         ParName := PluginParToName(TPluginParameter.LoopEnd);
-    smSampleStartModMarker:  ParName := PluginParToName(TPluginParameter.SampleStart);
-    smSampleEndModMarker:    ParName := PluginParToName(TPluginParameter.SampleEnd);
-    smLoopStartModMarker:    ParName := PluginParToName(TPluginParameter.LoopStart);
-    smLoopEndModMarker:      ParName := PluginParToName(TPluginParameter.LoopEnd);
+    TSampleMarker.smNone:                  ParName := '';
+    TSampleMarker.smSampleStartMarker:     ParName := PluginParToName(TPluginParameter.SampleStart);
+    TSampleMarker.smSampleEndMarker:       ParName := PluginParToName(TPluginParameter.SampleEnd);
+    TSampleMarker.smLoopStartMarker:       ParName := PluginParToName(TPluginParameter.LoopStart);
+    TSampleMarker.smLoopEndMarker:         ParName := PluginParToName(TPluginParameter.LoopEnd);
+    TSampleMarker.smSampleStartModMarker:  ParName := PluginParToName(TPluginParameter.SampleStart);
+    TSampleMarker.smSampleEndModMarker:    ParName := PluginParToName(TPluginParameter.SampleEnd);
+    TSampleMarker.smLoopStartModMarker:    ParName := PluginParToName(TPluginParameter.LoopStart);
+    TSampleMarker.smLoopEndModMarker:      ParName := PluginParToName(TPluginParameter.LoopEnd);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -1373,10 +1373,10 @@ begin
   CurRegion := Plugin.FocusedRegion;
 
   case Marker of
-    smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
-    smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
-    smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
-    smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
+    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
+    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
+    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
+    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
   end;
 
   GuiEvent_SampleMakersChanged;

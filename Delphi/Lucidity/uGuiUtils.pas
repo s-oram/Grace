@@ -939,10 +939,10 @@ begin
   Region := Plugin.FocusedRegion;
 
   case Marker of
-    smSampleStartMarker: Region.GetProperties^.SampleStart := NewSamplePos;
-    smSampleEndMarker:   Region.GetProperties^.SampleEnd   := NewSamplePos;
-    smLoopStartMarker:   Region.GetProperties^.LoopStart   := NewSamplePos;
-    smLoopEndMarker:     Region.GetProperties^.LoopEnd     := NewSamplePos;
+    TSampleMarker.smSampleStartMarker: Region.GetProperties^.SampleStart := NewSamplePos;
+    TSampleMarker.smSampleEndMarker:   Region.GetProperties^.SampleEnd   := NewSamplePos;
+    TSampleMarker.smLoopStartMarker:   Region.GetProperties^.LoopStart   := NewSamplePos;
+    TSampleMarker.smLoopEndMarker:     Region.GetProperties^.LoopEnd     := NewSamplePos;
   end;
 
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.SampleMarkersChanged);
