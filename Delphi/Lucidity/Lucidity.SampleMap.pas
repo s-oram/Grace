@@ -46,6 +46,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
+    function LoadSample(const SampleFileName : string):boolean;
+
     function GetDbLevelAt(SamplePoint:integer):single;
 
     procedure UpdateSampleImage;
@@ -307,6 +309,58 @@ begin
   result := fZeroCrossings;
 end;
 
+function TRegion.LoadSample(const SampleFileName: string): boolean;
+var
+  Info : TAudioFileInfo;
+begin
+  result := false;
+
+  // TODO:HIGH insert a check to see if the file exists. set error states correctly
+  // if not.
+
+  GetAudioFileInfoEx(SampleFileName, Info);
+
+  if (Info.IsValid) and (Info.IsSupported) then
+  begin
+    if self.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
+    begin
+      self.Properties^.SampleStart := 0;
+      self.Properties^.SampleEnd   := Info.SampleFrames-1;
+      self.Properties^.LoopStart   := -1;
+      self.Properties^.LoopEnd     := -1;
+
+      self.Properties^.SampleVolume := 0;
+      self.Properties^.SamplePan    := 0;
+      self.Properties^.SampleTune   := 0;
+      self.Properties^.SampleFine   := 0;
+      self.Properties^.SampleBeats  := 4;
+
+      if self.Sample.LoadFromFile(SampleFileName) = true then
+      begin
+        //Update additional region properties..
+        self.Properties^.LoopStart := 0;
+        self.Properties^.LoopEnd   := Info.SampleFrames-1;
+
+        self.ZeroCrossings.CalcZeroCrossingData(self.Sample);
+        self.UpdateSampleImage;
+
+        self.Properties^.SampleDataLoaded := true;
+
+        result := true;
+      end;
+    end;
+  end else
+  if (Info.IsSupported) = false then
+  begin
+    self.Properties^.IsSampleError    := true;
+    self.Properties^.ErrorMessage     := 'Unsupported File Format.';
+  end else
+  begin
+    self.Properties^.IsSampleError    := true;
+    self.Properties^.ErrorMessage     := Info.ErrorMessage;
+  end;
+end;
+
 procedure TRegion.UpdateSampleImage;
 var
   SDI : TSampleDisplayInfo;
@@ -497,7 +551,6 @@ function TSampleMap.NewRegion(CreateInfo: TRegionCreateInfo): IRegion;
 var
   rx : TRegion;
   aRegion : IRegion;
-  Info : TAudioFileInfo;
 begin
   result := nil;
   rx := TRegion.Create;
@@ -519,54 +572,14 @@ begin
   rx.KeyGroup := CreateInfo.KeyGroup;
   //====================
 
-  GetAudioFileInfoEx(CreateInfo.AudioFileName, Info);
 
-  if (Info.IsValid) and (Info.IsSupported) then
-  begin
-    if rx.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
-    begin
-      rx.Properties^.SampleStart := 0;
-      rx.Properties^.SampleEnd   := Info.SampleFrames-1;
-      rx.Properties^.LoopStart   := -1;
-      rx.Properties^.LoopEnd     := -1;
+  rx.LoadSample(CreateInfo.AudioFileName);
 
-      rx.Properties^.SampleVolume := 0;
-      rx.Properties^.SamplePan    := 0;
-      rx.Properties^.SampleTune   := 0;
-      rx.Properties^.SampleFine   := 0;
-      rx.Properties^.SampleBeats  := 4;
-
-      if rx.Sample.LoadFromFile(CreateInfo.AudioFileName) = true then
-      begin
-        //Update additional region properties..
-        rx.Properties^.LoopStart := 0;
-        rx.Properties^.LoopEnd   := Info.SampleFrames-1;
-
-        rx.ZeroCrossings.CalcZeroCrossingData(rx.Sample);
-        rx.UpdateSampleImage;
-
-        rx.Properties^.SampleDataLoaded := true;
-      end;
-    end;
-  end else
-  if (Info.IsSupported) = false then
-  begin
-    rx.Properties^.IsSampleError    := true;
-    rx.Properties^.ErrorMessage     := 'Unsupported File Format.';
-  end else
-  begin
-    rx.Properties^.IsSampleError    := true;
-    rx.Properties^.ErrorMessage     := Info.ErrorMessage;
-  end;
-
-  // Only add the region if it's supported.
-  if (Info.IsSupported) then
-  begin
-    //Add the region...
-    RegionList.Add(aRegion);
-    result := aRegion;
-  end;
-
+  // TODO:HIGH Regions are always added. What happens if I try loading an
+  // unsupported file format? ie. .FLAC or something else.
+  //Add the region...
+  RegionList.Add(aRegion);
+  result := aRegion;
 end;
 
 procedure TSampleMap.DeselectAllRegions;
