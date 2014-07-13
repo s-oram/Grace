@@ -56,7 +56,7 @@ procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array
 
 
 type
-  TDialogTarget = (dtLucidityProgram, dtSfzProgram);
+  TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile);
 
 procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
 procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
@@ -534,7 +534,7 @@ begin
       ft.FileMask    := '*.lpg';
 
       ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'All Files';
+      ft.DisplayName := 'Any Type';
       ft.FileMask    := '*.*';
 
       OpenDialog.DefaultExtension := 'lpg';
@@ -543,18 +543,29 @@ begin
 
     dtSfzProgram:
     begin
-      // TODO: set default folder location.
+      // TODO:MED set default folder location.
 
       ft := OpenDialog.FileTypes.Add;
       ft.DisplayName := 'SFZ Program';
       ft.FileMask    := '*.sfz';
 
       ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'All Files';
+      ft.DisplayName := 'Any Type';
       ft.FileMask    := '*.*';
 
       OpenDialog.DefaultExtension := 'sfz';
     end;
+
+    dtAudioFile:
+    begin
+      ft := OpenDialog.FileTypes.Add;
+      ft.DisplayName := 'All Types';
+      ft.FileMask    := '*.wav; *.aif; *.aiff; *.snd';
+
+      ft := OpenDialog.FileTypes.Add;
+      ft.DisplayName := 'Any Type';
+      ft.FileMask    := '*.*';
+    end
   else
     raise Exception.Create('Target type not handled.');
   end;

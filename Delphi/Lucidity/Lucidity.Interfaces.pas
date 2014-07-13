@@ -66,6 +66,9 @@ type
     function GetDbLevelAt(SamplePoint:integer):single;
 
     procedure UpdateSampleImage;
+
+    function LoadSample(const SampleFileName : string):boolean;
+    function ReplaceSample(const SampleFileName : string):boolean;
   end;
 
 

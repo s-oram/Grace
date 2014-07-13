@@ -47,6 +47,7 @@ type
     destructor Destroy; override;
 
     function LoadSample(const SampleFileName : string):boolean;
+    function ReplaceSample(const SampleFileName : string):boolean;
 
     function GetDbLevelAt(SamplePoint:integer):single;
 
@@ -382,6 +383,11 @@ begin
       self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
     end;
   end;
+end;
+
+function TRegion.ReplaceSample(const SampleFileName: string): boolean;
+begin
+  result := LoadSample(SampleFileName);
 end;
 
 procedure TRegion.UpdateSampleImage;

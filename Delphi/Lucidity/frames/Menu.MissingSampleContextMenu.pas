@@ -23,7 +23,12 @@ type
 implementation
 
 uses
-  Dialogs;
+  Dialogs,
+  VamLib.Utils,
+  uConstants,
+  Lucidity.Types,
+  Lucidity.Interfaces,
+  uGuiUtils;
 
 { TMissingSampleContextMenu }
 
@@ -53,11 +58,28 @@ begin
 end;
 
 procedure TMissingSampleContextMenu.HandleEvent_LocateMissingSample(Sender: TObject);
+var
+  FileOpenDialog : TFileOpenDialog;
+  rx : IRegion;
 begin
+  rx := Plugin.FocusedRegion;
+  if not assigned(rx) then exit;
+  if rx.GetProperties^.SampleDataLoaded = true then exit;
+  if rx.GetProperties^.SampleErrorType <> TSampleError.FileNotFound then exit;
 
 
-  ShowMessage(Plugin.FocusedRegion.GetProperties^.SampleFileName);
-  //Plugin.FocusedRegion.GetSample^.
+  FileOpenDialog := TFileOpenDialog.Create(nil);
+  AutoFree(@FileOpenDialog);
+
+  SetupFileOpenDialog(FileOpenDialog, TDialogTarget.dtAudioFile);
+
+  if FileOpenDialog.Execute then
+  begin
+    if rx.ReplaceSample(FileOpenDialog.FileName) then
+    begin
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    end;
+  end;
 end;
 
 
