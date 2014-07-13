@@ -230,7 +230,7 @@ end;
 
 constructor TRegion.Create;
 begin
-  fPropertiesPtr := @ fProperties;
+  fPropertiesPtr := @fProperties;
   Sample         := TSampleFloat.Create;
   fZeroCrossings := TSampleZeroCrossings.Create;
   fSampleImage   := TSampleImageBuffer.Create;
@@ -340,16 +340,10 @@ begin
   end;
 
 
-
   //============================================================================
   //            Peak Buffer
   //============================================================================
-
   GenerateRegionPeaks(self, kSampleImageWidth, fPeakBuffer);
-
-
-
-
 end;
 
 { TSampleMap }
