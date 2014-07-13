@@ -22,6 +22,9 @@ type
 
 implementation
 
+uses
+  Dialogs;
+
 { TMissingSampleContextMenu }
 
 constructor TMissingSampleContextMenu.Create;
@@ -51,6 +54,9 @@ end;
 
 procedure TMissingSampleContextMenu.HandleEvent_LocateMissingSample(Sender: TObject);
 begin
+
+
+  ShowMessage(Plugin.FocusedRegion.GetProperties^.SampleFileName);
   //Plugin.FocusedRegion.GetSample^.
 end;
 

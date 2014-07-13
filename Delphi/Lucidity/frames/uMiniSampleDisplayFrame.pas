@@ -252,6 +252,7 @@ begin
   Plugin := aPlugin;
   GuiStandard := aGuiStandard;
 
+  fSampleOverlay.Initialize(aPlugin);
 
   //TODO: This should be tied to the active voice group, or the active voice.
   // not the global scope.
