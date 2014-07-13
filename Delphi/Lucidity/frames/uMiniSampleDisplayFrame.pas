@@ -675,7 +675,7 @@ begin
   if (fn <> '') and (IsLucidityProgramFile(fn)) then
   begin
     Plugin.LoadProgramFromFile(fn);
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     exit; //====================================================exit======>>
   end;
 
@@ -747,7 +747,8 @@ begin
       end;
     end;
 
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+
   end;
 end;
 
@@ -810,7 +811,7 @@ begin
   // NOTE: Send a ModSlotChanged message here to force the sample overlay to update
   // it's modulation values. The current mod slot hasn't changed so
   // the message isn't strictly UM_MOD_SLOT_CHANGED appropiate.
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleMarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
@@ -829,7 +830,7 @@ begin
   end;
 
   UpdateSampleDisplayInfo;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleMarkersChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleMarkersChanged);
 end;
 
 
