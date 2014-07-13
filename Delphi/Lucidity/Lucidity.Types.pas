@@ -81,7 +81,7 @@ type
   // stored in the voice class. (If these comments are up to date!)
   PSynthPar = PSingle;
 
-  TSampleError = (None, FileNotFound, FileIsCorrupt);
+  TSampleError = (None, FileNotFound, ErrorLoadingData);
 
   PRegionProperties = ^TRegionProperties;
   TRegionProperties = record
@@ -89,6 +89,7 @@ type
     SampleFileName   : string;
     SampleDataLoaded : boolean;
     IsSampleError    : boolean;
+    SampleErrorType  : TSampleError;
     ErrorMessage     : string;
 
     IsSelected     : boolean; //Multiple regions can be selected.
