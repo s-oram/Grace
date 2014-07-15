@@ -1051,6 +1051,7 @@ var
   NodeIsSelected:boolean;
   Selection:TRect;
   TextBounds : TRect;
+  tw : single;
 begin
   assert(assigned(Node));
 
@@ -1091,8 +1092,10 @@ begin
 
     if NodeIsSelected then
     begin
+      //tw := BufferInterface.TextWidth(AnsiString(Text));
+      tw := Buffer.TextWidth(Text, Font);
       Selection.Left   := TextPosX;
-      Selection.Right  := round(TextPosX + BufferInterface.TextWidth(AnsiString(Text)));
+      Selection.Right  := round(TextPosX + tw);
       Selection.Top    := TextPosY;
       Selection.Bottom := TextPosY + DefaultNodeHeight;
 

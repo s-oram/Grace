@@ -142,7 +142,8 @@ begin
 
   //x := round(BackBuffer.TextWidth('110CLP.WAV'));
   //x := round(BackBuffer.TextWidth('A', self.Font));
-  x := round(BackBuffer.TextWidth('110CLP.WAV', self.Font));
+  BackBuffer.UpdateFont(Font);
+  x := round(BackBuffer.TextWidth('110CLP.WAV'));
   VamLabel1.Text := IntToStr(x);
 end;
 

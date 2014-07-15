@@ -1,6 +1,7 @@
 =============================================================================
-- Bug: drag and drop file on "missing sample" in sample map. Replace message should
-  show but it doesn't.
+boss dr110
+
+110CLP.WAV
 
 - Scope display draws LFO waveform over boundary.
 

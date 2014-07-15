@@ -7,14 +7,14 @@ object Form1: TForm1
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object Button1: TButton
     Left = 25
     Top = 461
@@ -76,7 +76,7 @@ object Form1: TForm1
         TextVAlign = AlignCenter
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
         Visible = True
@@ -94,7 +94,7 @@ object Form1: TForm1
         TextVAlign = AlignCenter
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
         Visible = True
