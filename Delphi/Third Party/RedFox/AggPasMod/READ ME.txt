@@ -1,0 +1,10 @@
+The AggPasMod source here is currently a hacking together of code from the official source repository
+and my own changes.
+
+The official source is dated 2012-12-06
+
+My changes include replacing sections of with units pulled from earlier versions of AggPasMod
+- The most up to date build wasn't compiling for me when using in Lucidity.
+
+Agg2D.pas is an old version as well. The newest version removes the PixelFormat property. My 
+images were all rendering with inverted colors. RGBA was translated to BGRA. Annoying.
