@@ -41,7 +41,112 @@ interface
 
 
 type
-{$I expat_external.inc }
+  (* General Integer Types *)
+  Int8 = Shortint;
+  Int8u = Byte;
+  Int16 = Smallint;
+  Int16u = Word;
+  Int32 = Longint;
+  Int32u = Longword;
+  Int64 = System.Int64;
+
+  {$IFDEF FPC }
+  Int64u = Qword;
+
+  {$ELSE }
+  Int64u = System.Int64;
+
+  {$ENDIF }
+  (* General Character Types *)
+  Char8 = Char;
+  Char16 = Int16u;
+  Char32 = Int32u;
+
+  (* C/C++ compatibility Types *)
+  Int = Int32;
+  Cardinal = Int32u;
+  Size_t = Int32u;
+
+  (* Pascal Pointer Computation Type *)
+  {$IFDEF CPU64 }
+  PtrComp = System.Int64;
+
+  {$ELSE }
+  PtrComp = Integer;
+
+  {$ENDIF }
+  (* Type Pointers *)
+  Int8_ptr = ^Int8;
+  Int8_ptr_ptr = ^Int8_ptr;
+
+  Int8u_ptr = ^Int8u;
+  Int8u_ptr_ptr = ^Int8u_ptr;
+
+  Int16_ptr = ^Int16;
+  Int16_ptr_ptr = ^Int16_ptr;
+
+  TInt16uAccessptr = ^Int16u;
+  TInt16uAccessptr_ptr = ^TInt16uAccessptr;
+
+  TInt32Accessptr = ^Int32;
+  TInt32Accessptr_ptr = ^TInt32Accessptr;
+
+  TInt32uAccessptr = ^Int32u;
+  TInt32uAccessptr_ptr = ^TInt32uAccessptr;
+
+  Int64_ptr = ^Int64;
+  Int64_ptr_ptr = ^Int64_ptr;
+
+  TInt64uAccessptr = ^Int64u;
+  TInt64uAccessptr_ptr = ^TInt64uAccessptr;
+
+  Char8_ptr = ^Char8;
+  Char8_ptr_ptr = ^Char8_ptr;
+
+  Char16_ptr = ^Char16;
+  Char16_ptr_ptr = ^Char16_ptr;
+
+  Char32_ptr = ^Char32;
+  Char32_ptr_ptr = ^Char32_ptr;
+
+  PInt = ^Int;
+  PInt_ptr = ^PInt;
+
+  PCardinal = ^Cardinal;
+  PCardinal_ptr = ^PCardinal;
+
+  PPAnsiChar = ^PAnsiChar;
+
+  (* Expat Types *)
+  {$IFDEF XML_UNICODE } // Information is UTF-16 encoded.
+  {$IFDEF XML_UNICODE_WCHAR_T }
+  XML_Char = Int16u;
+  XML_LChar = Int16u;
+
+  {$ELSE }
+  XML_Char = Word;
+  XML_LChar = AnsiChar;
+
+  {$ENDIF }
+  {$ELSE }              // Information is UTF-8 encoded.
+  XML_Char = AnsiChar;
+  XML_LChar = AnsiChar;
+
+  {$ENDIF }
+  XML_PAnsiChar = ^XML_Char;
+  XML_LPAnsiChar = ^XML_LChar;
+
+  XML_PPAnsiChar = ^XML_PAnsiChar;
+
+  {$IFDEF XML_LARGE_SIZE } // Use large integers for file/stream positions.
+  XML_Index = Int64;
+  XML_Size = Int64u;
+
+  {$ELSE }
+  XML_Index = Longint;
+  XML_Size = Longword;
+
+  {$ENDIF }
 
 implementation
 
