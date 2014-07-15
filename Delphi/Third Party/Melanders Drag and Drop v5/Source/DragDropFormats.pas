@@ -1193,7 +1193,7 @@ var
   Size: integer;
   Global: HGLOBAL;
   Stream: IStream;
-  OleStream: TStream;
+  //OleStream: TStream;
 begin
   Result := False;
 
