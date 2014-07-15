@@ -83,22 +83,22 @@ begin
   inherited;
 end;
 
-function TAggConvClipPolyline.GetX1: Double;
+function TAggConvClipPolyline.GetX1;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).X1;
 end;
 
-function TAggConvClipPolyline.GetY1: Double;
+function TAggConvClipPolyline.GetY1;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).Y1;
 end;
 
-function TAggConvClipPolyline.GetX2: Double;
+function TAggConvClipPolyline.GetX2;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).X2;
 end;
 
-function TAggConvClipPolyline.GetY2: Double;
+function TAggConvClipPolyline.GetY2;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).Y2;
 end;

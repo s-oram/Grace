@@ -40,7 +40,7 @@ type
   TAggDdaLineInterpolator = record
   private
     FY, FInc, FDeltaY, FFractionShift, YShift: Integer;
-    function GetY: Integer; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+    function GetY: Integer;
   public
     procedure Initialize(FS: Integer; YS: Integer = 0); overload;
     procedure Initialize(Y1, Y2: Integer; Count: Cardinal; FS: Integer;
@@ -140,12 +140,12 @@ begin
   Dec(FDeltaY, FInc);
 end;
 
-procedure TAggDdaLineInterpolator.IncOperator(N: Integer);
+procedure TAggDdaLineInterpolator.IncOperator;
 begin
   Inc(FDeltaY, FInc * N);
 end;
 
-procedure TAggDdaLineInterpolator.DecOperator(N: Integer);
+procedure TAggDdaLineInterpolator.DecOperator;
 begin
   Dec(FDeltaY, FInc * N);
 end;
@@ -297,7 +297,7 @@ begin
     FInterpolator.Initialize(Y1, Y2, FLength);
 end;
 
-function TAggLineBresenhamInterpolator.LineLowResolution(V: Integer): Integer;
+function TAggLineBresenhamInterpolator.LineLowResolution;
 begin
   Result := ShrInt32(V, CAggSubpixelShift);
 end;
@@ -321,22 +321,22 @@ begin
   FLowResolution.Y1 := FLowResolution.Y1 + FInc;
 end;
 
-function TAggLineBresenhamInterpolator.GetX2: Integer;
+function TAggLineBresenhamInterpolator.GetX2;
 begin
   Result := LineLowResolution(FInterpolator.Y);
 end;
 
-function TAggLineBresenhamInterpolator.GetY2: Integer;
+function TAggLineBresenhamInterpolator.GetY2;
 begin
   Result := LineLowResolution(FInterpolator.Y);
 end;
 
-function TAggLineBresenhamInterpolator.GetX2HighResolution: Integer;
+function TAggLineBresenhamInterpolator.GetX2HighResolution;
 begin
   Result := FInterpolator.Y;
 end;
 
-function TAggLineBresenhamInterpolator.GetY2HighResolution: Integer;
+function TAggLineBresenhamInterpolator.GetY2HighResolution;
 begin
   Result := FInterpolator.Y;
 end;

@@ -118,7 +118,6 @@ begin
 end;
 
 procedure Order32GammaDirApply(This: TAggPixelFormatProcessor; P: PInt8u);
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 begin
   PInt8u(PtrComp(P) + This.Order.R)^ :=
     Int8u(This.Apply.Dir[PInt8u(PtrComp(P) + This.Order.R)^]);
@@ -129,7 +128,6 @@ begin
 end;
 
 procedure Order32GammaInvApply(This: TAggPixelFormatProcessor; P: PInt8u);
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 begin
   PInt8u(PtrComp(P) + This.Order.R)^ :=
     Int8u(This.Apply.Inv[PInt8u(PtrComp(P) + This.Order.R)^]);
@@ -1760,54 +1758,6 @@ begin
   end;
 end;
 
-procedure coRgbaAlpha2(This: TAggPixelFormatProcessor; P: PInt8u;
-  Sr, Sg, Sb, Sa, Cover: Cardinal);
-  function ByteMult(b1, b2 : Cardinal):Cardinal;
-  begin
-    result := cardinal(b1 * b2 + 255) shr 8;
-  end;
-var
-  S1a: Cardinal;
-  CombinedAlpha : byte;
-  Dr, Dg, Db, Da : Cardinal;
-begin
-  if Cover >= 255 then
-  begin
-    PInt8u(PtrComp(P) + This.Order.R)^ := sr;
-    PInt8u(PtrComp(P) + This.Order.G)^ := sg;
-    PInt8u(PtrComp(P) + This.Order.B)^ := sb;
-    PInt8u(PtrComp(P) + This.Order.A)^ := sa;
-  end else
-  if PInt8u(PtrComp(P) + This.Order.A)^ = 0 then
-  begin
-    //TODO:
-  end else
-  begin
-    //TODO:
-    {
-    Dr := PInt8u(PtrComp(P) + This.Order.R)^;
-    Dg := PInt8u(PtrComp(P) + This.Order.G)^;
-    Db := PInt8u(PtrComp(P) + This.Order.B)^;
-    Da := PInt8u(PtrComp(P) + This.Order.A)^;
-
-    CombinedAlpha := ByteMult(sa, Cover);
-
-    assert(CombinedAlpha >= 0);
-    assert(CombinedAlpha <= 255);
-
-    Dr := ByteMult(Dr, 1 - CombinedAlpha) + ByteMult(Sr, CombinedAlpha);
-    Dg := ByteMult(Dg, 1 - CombinedAlpha) + ByteMult(Sg, CombinedAlpha);
-    Db := ByteMult(Db, 1 - CombinedAlpha) + ByteMult(Sb, CombinedAlpha);
-    Da := ByteMult(Da, 1 - CombinedAlpha) + ByteMult(Sa, CombinedAlpha);
-
-    PInt8u(PtrComp(P) + This.Order.R)^ := Dr;
-    PInt8u(PtrComp(P) + This.Order.G)^ := Dg;
-    PInt8u(PtrComp(P) + This.Order.B)^ := Db;
-    PInt8u(PtrComp(P) + This.Order.A)^ := Da;
-    }
-  end;
-end;
-
 const
   CBlendModeTableRgba: array [TAggBlendMode] of TAggFuncBlendPix = (coRgbaClear,
     coRgbaSrc, coRgbaDst, coRgbaSrcOver, coRgbaDstOver, coRgbaSrcIn,
@@ -1815,7 +1765,7 @@ const
     coRgbaXor, coRgbaPlus, coRgbaMinus, coRgbaMultiply, coRgbaScreen,
     coRgbaOverlay, coRgbaDarken, coRgbaLighten, coRgbaColorDodge,
     coRgbaColorBurn, coRgbaHardLight, coRgbaSoftLight, coRgbaDifference,
-    coRgbaExclusion, coRgbaContrast, coRgbaInvert, coRgbaInvertRgb, nil, coRgbaAlpha2);
+    coRgbaExclusion, coRgbaContrast, coRgbaInvert, coRgbaInvertRgb, nil);
 
 procedure BlendModeAdaptorRgba(This: TAggPixelFormatProcessor;
   BlendMode: TAggBlendMode; P: PInt8u; Cr, Cg, Cb, Ca, Cover: Cardinal);

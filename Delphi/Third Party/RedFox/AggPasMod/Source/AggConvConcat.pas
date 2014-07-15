@@ -40,14 +40,16 @@ type
   private
     FSource1, FSource2: TAggVertexSource;
     FStatus: Integer;
+    procedure SetSource1(Source: TAggVertexSource);
+    procedure SetSource2(Source: TAggVertexSource);
   public
     constructor Create(Source1, Source2: TAggVertexSource);
 
     procedure Rewind(PathID: Cardinal); override;
     function Vertex(X, Y: PDouble): Cardinal; override;
 
-    property Source1: TAggVertexSource read FSource1 write FSource1;
-    property Source2: TAggVertexSource read FSource2 write FSource2;
+    property Source1: TAggVertexSource read FSource1 write SetSource1;
+    property Source2: TAggVertexSource read FSource2 write SetSource2;
   end;
 
 implementation
@@ -60,6 +62,16 @@ begin
   FSource1 := Source1;
   FSource2 := Source2;
   FStatus := 2;
+end;
+
+procedure TAggConvConcat.SetSource1(Source: TAggVertexSource);
+begin
+  FSource1 := Source;
+end;
+
+procedure TAggConvConcat.SetSource2(Source: TAggVertexSource);
+begin
+  FSource2 := Source;
 end;
 
 procedure TAggConvConcat.Rewind(PathID: Cardinal);

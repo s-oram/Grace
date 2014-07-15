@@ -284,8 +284,9 @@ function TAggVcgenStroke.Vertex(X, Y: PDouble): Cardinal;
 var
   C: PPointDouble;
   Cmd: Cardinal;
+
 label
-  Rdy, Out2;
+  _rdy, Out2, _end;
 begin
   Cmd := CAggPathCmdLineTo;
 
@@ -295,16 +296,17 @@ begin
       seInitial:
         begin
           Rewind(0);
-          goto Rdy;
+
+          goto _rdy;
         end;
 
       seReady:
         begin
-        Rdy:
+        _rdy:
           if FSourceVertices.Size < 2 + Cardinal(FClosed <> 0) then
           begin
             Cmd := CAggPathCmdStop;
-            Continue;
+            goto _end;
           end;
 
           if (FClosed <> 0) then
@@ -351,13 +353,14 @@ begin
             begin
               FPrevStatus := seCloseFirst;
               FStatus := seEndPoly1;
-              Continue;
+              goto _end;
+
             end
             else
           else if FSourceVertex >= FSourceVertices.Size - 1 then
           begin
             FStatus := seCap2;
-            Continue;
+            goto _end;
           end;
 
           StrokeCalcJoin(FOutVertices, FSourceVertices.Prev(FSourceVertex),
@@ -391,7 +394,7 @@ begin
           begin
             FStatus := seEndPoly2;
             FPrevStatus := seStop;
-            Continue;
+            goto _end;
           end;
 
           Dec(FSourceVertex);
@@ -448,6 +451,8 @@ begin
       seStop:
         Cmd := CAggPathCmdStop;
     end;
+
+  _end:
   end;
 
   Result := Cmd;

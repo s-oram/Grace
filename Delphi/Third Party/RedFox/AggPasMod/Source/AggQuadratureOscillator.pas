@@ -35,10 +35,10 @@ type
     procedure SetFrequency(const Value: Double);
     procedure SetAmplitude(const Value: Double);
   protected
-    FAmplitude: Double;
-    FFrequency: Double;
-    FAngle: TPointDouble;
-    FPosition: TPointDouble;
+    FAmplitude     : Double;
+    FFrequency     : Double;
+    FAngle         : TPointDouble;
+    FPosition      : TPointDouble;
     procedure FrequencyChanged; virtual;
   public
     constructor Create(Frequency: Double; Amplitude: Double = 1); virtual;

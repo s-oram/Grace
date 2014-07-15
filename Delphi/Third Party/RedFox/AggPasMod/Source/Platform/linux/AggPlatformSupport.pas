@@ -754,7 +754,7 @@ begin
   XSetWMIconName(FDisplay, FWindow, @Tp);
 end;
 
-procedure TPlatformSpecific.Put_Image;
+procedure TPlatformSpecific.PuTAggImage;
 var
   RowLength: Integer;
   TempBuffer: Pointer;
@@ -767,8 +767,8 @@ begin
   FXImageWindow.Data := FBufferWindow;
 
   if FPixelFormat = FSystemFormat then
-    XPut_Image(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, 
-      Src.GetWidth, Src.GetHeight)
+    XPuTAggImage(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, Src.GetWidth,
+      Src.GetHeight)
   else
   begin
     RowLength := Src.GetWidth * FSystemBitsPerPixel div 8;
@@ -882,8 +882,8 @@ begin
 
     FXImageWindow.Data := TempBuffer;
 
-    XPut_Image(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, 
-      Src.GetWidth, Src.GetHeight);
+    XPuTAggImage(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, Src.GetWidth,
+      Src.GetHeight);
 
     AggFreeMem(TempBuffer, RowLength * Src.GetHeight);
 

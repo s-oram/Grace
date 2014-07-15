@@ -74,12 +74,18 @@ implementation
 
 constructor TAggRoundedRect.Create;
 begin
-  FPoint[0] := PointDouble(0);
-  FPoint[1] := PointDouble(0);
-  FRadius[0] := PointDouble(0);
-  FRadius[1] := PointDouble(0);
-  FRadius[2] := PointDouble(0);
-  FRadius[3] := PointDouble(0);
+  FPoint[0].X := 0;
+  FPoint[0].Y := 0;
+  FPoint[1].X := 0;
+  FPoint[1].Y := 0;
+  FRadius[0].X := 0;
+  FRadius[0].Y := 0;
+  FRadius[1].X := 0;
+  FRadius[1].Y := 0;
+  FRadius[2].X := 0;
+  FRadius[2].Y := 0;
+  FRadius[3].X := 0;
+  FRadius[3].Y := 0;
 
   FStatus := 0;
 
@@ -90,12 +96,18 @@ constructor TAggRoundedRect.Create(X1, Y1, X2, Y2, R: Double);
 begin
   Create;
 
-  FPoint[0] := PointDouble(X1, Y1);
-  FPoint[1] := PointDouble(X2, Y2);
-  FRadius[0] := PointDouble(R);
-  FRadius[1] := PointDouble(R);
-  FRadius[2] := PointDouble(R);
-  FRadius[3] := PointDouble(R);
+  FPoint[0].X := X1;
+  FPoint[0].Y := Y1;
+  FPoint[1].X := X2;
+  FPoint[1].Y := Y2;
+  FRadius[0].X := R;
+  FRadius[0].Y := R;
+  FRadius[1].X := R;
+  FRadius[1].Y := R;
+  FRadius[2].X := R;
+  FRadius[2].Y := R;
+  FRadius[3].X := R;
+  FRadius[3].Y := R;
 
   if X1 > X2 then
   begin
@@ -118,8 +130,10 @@ end;
 
 procedure TAggRoundedRect.Rect(X1, Y1, X2, Y2: Double);
 begin
-  FPoint[0] := PointDouble(X1, Y1);
-  FPoint[1] := PointDouble(X2, Y2);
+  FPoint[0].X := X1;
+  FPoint[0].Y := Y1;
+  FPoint[1].X := X2;
+  FPoint[1].Y := Y2;
 
   if X1 > X2 then
   begin
@@ -136,8 +150,10 @@ end;
 
 procedure TAggRoundedRect.Rect(Value: TRectDouble);
 begin
-  FPoint[0] := PointDouble(Value.X1, Value.Y1);
-  FPoint[1] := PointDouble(Value.X2, Value.Y2);
+  FPoint[0].X := Value.X1;
+  FPoint[0].Y := Value.Y1;
+  FPoint[1].X := Value.X2;
+  FPoint[1].Y := Value.Y2;
 
   if Value.X1 > Value.X2 then
   begin
@@ -154,18 +170,26 @@ end;
 
 procedure TAggRoundedRect.Radius(R: Double);
 begin
-  FRadius[0] := PointDouble(R);
-  FRadius[1] := PointDouble(R);
-  FRadius[2] := PointDouble(R);
-  FRadius[3] := PointDouble(R);
+  FRadius[0].X := R;
+  FRadius[0].Y := R;
+  FRadius[1].X := R;
+  FRadius[1].Y := R;
+  FRadius[2].X := R;
+  FRadius[2].Y := R;
+  FRadius[3].X := R;
+  FRadius[3].Y := R;
 end;
 
 procedure TAggRoundedRect.Radius(Rx, Ry: Double);
 begin
-  FRadius[0] := PointDouble(Rx, Ry);
-  FRadius[1] := PointDouble(Rx, Ry);
-  FRadius[2] := PointDouble(Rx, Ry);
-  FRadius[3] := PointDouble(Rx, Ry);
+  FRadius[0].X := Rx;
+  FRadius[1].X := Rx;
+  FRadius[2].X := Rx;
+  FRadius[3].X := Rx;
+  FRadius[0].Y := Ry;
+  FRadius[1].Y := Ry;
+  FRadius[2].Y := Ry;
+  FRadius[3].Y := Ry;
 end;
 
 procedure TAggRoundedRect.Radius(Radius: TPointDouble);
@@ -178,10 +202,14 @@ end;
 
 procedure TAggRoundedRect.Radius(BottomX, BottomY, TopX, TopY: Double);
 begin
-  FRadius[0] := PointDouble(BottomX, BottomY);
-  FRadius[1] := PointDouble(BottomX, BottomY);
-  FRadius[2] := PointDouble(TopX, TopY);
-  FRadius[3] := PointDouble(TopX, TopY);
+  FRadius[0].X := BottomX;
+  FRadius[1].X := BottomX;
+  FRadius[2].X := TopX;
+  FRadius[3].X := TopX;
+  FRadius[0].Y := BottomY;
+  FRadius[1].Y := BottomY;
+  FRadius[2].Y := TopY;
+  FRadius[3].Y := TopY;
 end;
 
 procedure TAggRoundedRect.Radius(Bottom, Top: TPointDouble);
@@ -194,10 +222,14 @@ end;
 
 procedure TAggRoundedRect.Radius(Rx1, Ry1, Rx2, Ry2, Rx3, Ry3, Rx4, Ry4: Double);
 begin
-  FRadius[0] := PointDouble(Rx1, Ry1);
-  FRadius[1] := PointDouble(Rx2, Ry2);
-  FRadius[2] := PointDouble(Rx3, Ry3);
-  FRadius[3] := PointDouble(Rx4, Ry4);
+  FRadius[0].X := Rx1;
+  FRadius[0].Y := Ry1;
+  FRadius[1].X := Rx2;
+  FRadius[1].Y := Ry2;
+  FRadius[2].X := Rx3;
+  FRadius[2].Y := Ry3;
+  FRadius[3].X := Rx4;
+  FRadius[3].Y := Ry4;
 end;
 
 procedure TAggRoundedRect.Radius(Radius1, Radius2, Radius3,
@@ -219,31 +251,37 @@ begin
 
   K := 1.0;
 
-  if (FRadius[0].X + FRadius[1].X) > 0 then
-  begin
+  try
     T := Delta.X / (FRadius[0].X + FRadius[1].X);
-    if T < K then K := T;
+
+    if T < K then
+      K := T;
+  except
   end;
 
-  if (FRadius[2].X + FRadius[3].X) > 0 then
-  begin
+  try
     T := Delta.X / (FRadius[2].X + FRadius[3].X);
-    if T < K then K := T;
+
+    if T < K then
+      K := T;
+  except
   end;
 
-  if (FRadius[0].Y + FRadius[1].Y) > 0 then
-  begin
+  try
     T := Delta.Y / (FRadius[0].Y + FRadius[1].Y);
-    if T < K then K := T;
+
+    if T < K then
+      K := T;
+  except
   end;
 
-
-  if (FRadius[2].Y + FRadius[3].Y) > 0 then
-  begin
+  try
     T := Delta.Y / (FRadius[2].Y + FRadius[3].Y);
-    if T < K then K := T;
-  end;
 
+    if T < K then
+      K := T;
+  except
+  end;
 
   if K < 1.0 then
   begin
@@ -284,8 +322,7 @@ begin
   case FStatus of
     0:
       begin
-        FArc.Init(FPoint[0].X + FRadius[0].X, FPoint[0].Y + FRadius[0].Y,
-          FRadius[0].X, FRadius[0].Y, Pi, Pi + Pi * 0.5);
+        FArc.Init(FPoint[0].X + FRadius[0].X, FPoint[0].Y + FRadius[0].Y, FRadius[0].X, FRadius[0].Y, Pi, Pi + Pi * 0.5);
         FArc.Rewind(0);
 
         Inc(FStatus);
@@ -301,11 +338,14 @@ begin
         if IsStop(Cmd) then
         begin
           Inc(FStatus);
+
           goto _2;
+
         end
         else
         begin
           Result := Cmd;
+
           Exit;
         end;
       end;
@@ -313,11 +353,12 @@ begin
     2:
     _2:
       begin
-        FArc.Init(FPoint[1].X - FRadius[1].X, FPoint[0].Y + FRadius[1].Y,
-          FRadius[1].X, FRadius[1].Y, Pi + Pi * 0.5, 0.0);
+        FArc.Init(FPoint[1].X - FRadius[1].X, FPoint[0].Y + FRadius[1].Y, FRadius[1].X, FRadius[1].Y,
+          Pi + Pi * 0.5, 0.0);
         FArc.Rewind(0);
 
         Inc(FStatus);
+
         goto _3;
       end;
 
@@ -329,11 +370,14 @@ begin
         if IsStop(Cmd) then
         begin
           Inc(FStatus);
+
           goto _4;
+
         end
         else
         begin
           Result := CAggPathCmdLineTo;
+
           Exit;
         end;
       end;
@@ -341,11 +385,11 @@ begin
     4:
     _4:
       begin
-        FArc.Init(FPoint[1].X - FRadius[2].X, FPoint[1].Y - FRadius[2].Y,
-          FRadius[2].X, FRadius[2].Y, 0.0, Pi * 0.5);
+        FArc.Init(FPoint[1].X - FRadius[2].X, FPoint[1].Y - FRadius[2].Y, FRadius[2].X, FRadius[2].Y, 0.0, Pi * 0.5);
         FArc.Rewind(0);
 
         Inc(FStatus);
+
         goto _5;
       end;
 
@@ -357,11 +401,14 @@ begin
         if IsStop(Cmd) then
         begin
           Inc(FStatus);
+
           goto _6;
+
         end
         else
         begin
           Result := CAggPathCmdLineTo;
+
           Exit;
         end;
       end;
@@ -369,11 +416,11 @@ begin
     6:
     _6:
       begin
-        FArc.Init(FPoint[0].X + FRadius[3].X, FPoint[1].Y - FRadius[3].Y,
-          FRadius[3].X, FRadius[3].Y, Pi * 0.5, Pi);
+        FArc.Init(FPoint[0].X + FRadius[3].X, FPoint[1].Y - FRadius[3].Y, FRadius[3].X, FRadius[3].Y, Pi * 0.5, Pi);
         FArc.Rewind(0);
 
         Inc(FStatus);
+
         goto _7;
       end;
 
@@ -385,11 +432,14 @@ begin
         if IsStop(Cmd) then
         begin
           Inc(FStatus);
+
           goto _8;
+
         end
         else
         begin
           Result := CAggPathCmdLineTo;
+
           Exit;
         end;
       end;
@@ -398,6 +448,7 @@ begin
     _8:
       begin
         Cmd := CAggPathCmdEndPoly or CAggPathFlagsClose or CAggPathFlagsCcw;
+
         Inc(FStatus);
       end;
   end;

@@ -89,7 +89,6 @@ type
     procedure NoColor;
     procedure Random;
     procedure Black;
-    procedure White;
 
     function Gradient(C: TAggRgba8; K: Double): TAggRgba8;
   case Integer of
@@ -327,14 +326,6 @@ end;
 procedure TAggRgba8.Random;
 begin
   ABGR := System.Random($FFFFFFFF);
-end;
-
-procedure TAggRgba8.White;
-begin
-  R := $FF;
-  G := $FF;
-  B := $FF;
-  A := $FF;
 end;
 
 function TAggRgba8.Gradient(C: TAggRgba8; K: Double): TAggRgba8;
@@ -669,5 +660,3 @@ begin
 end;
 
 end.
-
-

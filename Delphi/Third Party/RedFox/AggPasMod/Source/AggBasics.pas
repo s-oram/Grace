@@ -228,7 +228,7 @@ type
     class operator NotEqual(const Lhs, Rhs: TRectInteger): Boolean;
     class operator Add(const Lhs, Rhs: TRectInteger): TRectInteger;
     class operator Subtract(const Lhs, Rhs: TRectInteger): TRectInteger;
-    class function Zero: TRectInteger; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF} static;
+    class function Zero: TRectInteger; inline; static;
 
     procedure Normalize;
     function Clip(var Rect: TRectInteger): Boolean;
@@ -261,7 +261,7 @@ type
     class operator Add(const Lhs, Rhs: TRectDouble): TRectDouble;
     class operator Subtract(const Lhs, Rhs: TRectDouble): TRectDouble;
 
-    class function Zero: TRectDouble; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF} static;
+    class function Zero: TRectDouble; inline; static;
 
     class operator Implicit(const Value: TRectInteger): TRectDouble;
 
@@ -293,10 +293,8 @@ type
   end;
 
   TCardinalList = class
-  protected
-    function GetItem(Index: Cardinal): Cardinal; virtual; abstract;
   public
-    property Item[Index: Cardinal]: Cardinal read GetItem; default;
+    function ArrayOperator(Idx: Cardinal): Cardinal; virtual; abstract;
   end;
 
 function AggGetMem(out Buf: Pointer; Sz: Cardinal): Boolean;
@@ -311,27 +309,27 @@ function IntersectRectanglesDouble(const R1, R2: TRectDouble): TRectDouble;
 function UniteRectangles(const R1, R2: TRectInteger): TRectInteger;
 function UniteRectanglesDouble(const R1, R2: TRectDouble): TRectDouble;
 
-function IsVertex(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsDrawing(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsStop(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsMove(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsLineTo(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsMoveTo(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsCurve(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsCurve3(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsCurve4(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsEndPoly(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsClose(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsNextPoly(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsClockwise(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsCounterClockwise(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsOriented(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IsClosed(CX: Cardinal): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+function IsVertex(CX: Cardinal): Boolean;
+function IsDrawing(CX: Cardinal): Boolean;
+function IsStop(CX: Cardinal): Boolean;
+function IsMove(CX: Cardinal): Boolean;
+function IsLineTo(CX: Cardinal): Boolean;
+function IsMoveTo(CX: Cardinal): Boolean;
+function IsCurve(CX: Cardinal): Boolean;
+function IsCurve3(CX: Cardinal): Boolean;
+function IsCurve4(CX: Cardinal): Boolean;
+function IsEndPoly(CX: Cardinal): Boolean;
+function IsClose(CX: Cardinal): Boolean;
+function IsNextPoly(CX: Cardinal): Boolean;
+function IsClockwise(CX: Cardinal): Boolean;
+function IsCounterClockwise(CX: Cardinal): Boolean;
+function IsOriented(CX: Cardinal): Boolean;
+function IsClosed(CX: Cardinal): Boolean;
 
-function GetCloseFlag(CX: Cardinal): Cardinal; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function ClearOrientation(CX: Cardinal): Cardinal; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function GetOrientation(CX: Cardinal): Cardinal; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function SetOrientation(CX, O: Cardinal): Cardinal; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+function GetCloseFlag(CX: Cardinal): Cardinal;
+function ClearOrientation(CX: Cardinal): Cardinal;
+function GetOrientation(CX: Cardinal): Cardinal;
+function SetOrientation(CX, O: Cardinal): Cardinal;
 
 procedure SwapPointers(A, B: Pointer); {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 function IntToDouble(I: Integer): Double;
@@ -359,13 +357,13 @@ function PointDouble(Value: Double): TPointDouble; overload;
   {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 
 function PointIntegerOffset(Point: TPointInteger; Value: Integer)
-  : TPointInteger; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+  : TPointInteger; inline;
 function PointDoubleOffset(Point: TPointDouble; Value: Double): TPointDouble;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+  inline;
 function PointIntegerScale(Point: TPointInteger; Value: Integer): TPointInteger;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+  inline;
 function PointDoubleScale(Point: TPointDouble; Value: Double): TPointDouble;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+  inline;
 
 function QuadDouble(RectDouble: TRectDouble): TQuadDouble;
   {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
@@ -379,10 +377,6 @@ procedure Srand(Seed: Integer);
 function Rand: Integer;
 *)
 
-function EnsureRange(const Value, Min, Max: Integer): Integer;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF} overload;
-function EnsureRange(const Value, Min, Max: Double): Double;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF} overload;
 function UnsignedRound(V: Double): Cardinal;
   {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 function IntegerRound(V: Double): Integer;
@@ -1109,7 +1103,7 @@ begin
   Result.Y := Y;
 end;
 
-function PointInteger(Value: Integer): TPointInteger;
+function PointInteger(Value: Integer): TPointInteger; overload; inline;
 begin
   Result.X := Value;
   Result.Y := Value;
@@ -1165,23 +1159,16 @@ begin
 end;
 
 
-function EnsureRange(const Value, Min, Max: Integer): Integer;
-begin
-  Result := Value;
-  if Result < Min then
-    Result := Min;
-  if Result > Max then
-    Result := Max;
-end;
+(*
+var
+  GRandomSeed: Integer = 1;
 
-function EnsureRange(const Value, Min, Max: Double): Double;
+function Rand: Integer;
 begin
-  Result := Value;
-  if Result < Min then
-    Result := Min;
-  if Result > Max then
-    Result := Max;
+  GRandomSeed := GRandomSeed * 214013 + 2531011;
+  Result := GRandomSeed;
 end;
+*)
 
 function UnsignedRound(V: Double): Cardinal;
 begin

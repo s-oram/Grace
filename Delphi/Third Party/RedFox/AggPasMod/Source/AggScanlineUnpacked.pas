@@ -176,7 +176,7 @@ begin
   inherited;
 end;
 
-procedure TAggScanLineUnpacked8.Reset(MinX, MaxX: Integer);
+procedure TAggScanLineUnpacked8.Reset;
 var
   MaxLength: Cardinal;
 begin
@@ -209,7 +209,7 @@ begin
   FY := Y;
 end;
 
-procedure TAggScanLineUnpacked8.AddCell(X: Integer; Cover: Cardinal);
+procedure TAggScanLineUnpacked8.AddCell;
 begin
   Dec(X, FMinX);
 
@@ -230,8 +230,7 @@ begin
   FLastX := X;
 end;
 
-procedure TAggScanLineUnpacked8.AddCells(X: Integer; Len: Cardinal;
-  Covers: PInt8u);
+procedure TAggScanLineUnpacked8.AddCells;
 begin
   Dec(X, FMinX);
   Move(Covers^, PInt8u(PtrComp(FCovers) + X)^, Len * SizeOf(Int8u));
@@ -250,7 +249,7 @@ begin
   FLastX := X + Len - 1;
 end;
 
-procedure TAggScanLineUnpacked8.AddSpan(X: Integer; Len, Cover: Cardinal);
+procedure TAggScanLineUnpacked8.AddSpan;
 begin
   Dec(X, FMinX);
 
@@ -270,17 +269,17 @@ begin
   FLastX := X + Len - 1;
 end;
 
-function TAggScanLineUnpacked8.GetY: Integer;
+function TAggScanLineUnpacked8.GetY;
 begin
   Result := FY;
 end;
 
-function TAggScanLineUnpacked8.GetNumSpans: Cardinal;
+function TAggScanLineUnpacked8.GetNumSpans;
 begin
   Result := (PtrComp(FCurrentSpan) - PtrComp(FSpans)) div SizeOf(TAggSpanUnpacked8);
 end;
 
-function TAggScanLineUnpacked8.GetBegin: Pointer;
+function TAggScanLineUnpacked8.GetBegin;
 begin
   Result := PAggSpanUnpacked8(PtrComp(FSpans) + SizeOf(TAggSpanUnpacked8));
 end;

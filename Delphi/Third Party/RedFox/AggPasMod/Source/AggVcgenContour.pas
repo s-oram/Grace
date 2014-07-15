@@ -182,7 +182,7 @@ begin
   FStatus := siInitial;
 end;
 
-procedure TAggVcgenContour.AddVertex(X, Y: Double; Cmd: Cardinal);
+procedure TAggVcgenContour.AddVertex;
 var
   Vd: TAggVertexDistance;
 begin
@@ -232,15 +232,17 @@ end;
 
 function TAggVcgenContour.Vertex(X, Y: PDouble): Cardinal;
 var
+  Cmd: Cardinal;
   C: PPointDouble;
 
 label
-  _ready, _Outline, _Out_vertices;
+  _next, _ready, _Outline, _Out_vertices;
 
 begin
-  Result := CAggPathCmdLineTo;
+  Cmd := CAggPathCmdLineTo;
 
-  while not IsStop(Result) do
+_next:
+  while not IsStop(Cmd) do
     case FStatus of
       siInitial:
         begin
@@ -254,13 +256,14 @@ begin
         begin
           if FSourceVertices.Size < 2 + Cardinal(FClosed <> 0) then
           begin
-            Result := CAggPathCmdStop;
-            Continue;
+            Cmd := CAggPathCmdStop;
+
+            goto _next;
           end;
 
           FStatus := siOutline;
 
-          Result := CAggPathCmdMoveTo;
+          Cmd := CAggPathCmdMoveTo;
 
           FSourceVertex := 0;
           FOutVertex := 0;
@@ -274,7 +277,8 @@ begin
           if FSourceVertex >= FSourceVertices.Size then
           begin
             FStatus := siEndPoly;
-            Continue;
+
+            goto _next;
           end;
 
           StrokeCalcJoin(FOutVertices, FSourceVertices.Prev(FSourceVertex),
@@ -306,6 +310,8 @@ begin
           X^ := C.X;
           Y^ := C.Y;
 
+          Result := Cmd;
+
           Exit;
         end;
 
@@ -331,6 +337,8 @@ begin
           Exit;
         end;
     end;
+
+  Result := Cmd;
 end;
 
 end.

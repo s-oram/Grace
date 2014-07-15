@@ -93,7 +93,7 @@ begin
   inherited Create(Rbuf);
 end;
 
-function TAggRendererMarkers.Visible(X, Y, R: Integer): Boolean;
+function TAggRendererMarkers.Visible;
 var
   Rc: TRectInteger;
 begin
@@ -102,7 +102,7 @@ begin
   Result := Rc.Clip(RenderBase.BoundingClipBox^);
 end;
 
-procedure TAggRendererMarkers.Square(X, Y, R: Integer);
+procedure TAggRendererMarkers.Square;
 begin
   if Visible(X, Y, R) then
     if R <> 0 then

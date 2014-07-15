@@ -206,10 +206,34 @@ begin
       LowRes.Y := FWrapModeY.IncOperator;
     until HiRes.Y >= FilterSize;
 
-    Fg[0] := EnsureRange(Fg[0] div TotalWeight, 0, CAggBaseMask);
-    Fg[1] := EnsureRange(Fg[1] div TotalWeight, 0, CAggBaseMask);
-    Fg[2] := EnsureRange(Fg[2] div TotalWeight, 0, CAggBaseMask);
-    Fg[3] := EnsureRange(Fg[3] div TotalWeight, 0, CAggBaseMask);
+    Fg[0] := Fg[0] div TotalWeight;
+    Fg[1] := Fg[1] div TotalWeight;
+    Fg[2] := Fg[2] div TotalWeight;
+    Fg[3] := Fg[3] div TotalWeight;
+
+    if Fg[0] < 0 then
+      Fg[0] := 0;
+
+    if Fg[1] < 0 then
+      Fg[1] := 0;
+
+    if Fg[2] < 0 then
+      Fg[2] := 0;
+
+    if Fg[3] < 0 then
+      Fg[3] := 0;
+
+    if Fg[FOrder.A] > CAggBaseMask then
+      Fg[FOrder.A] := CAggBaseMask;
+
+    if Fg[FOrder.R] > Fg[FOrder.A] then
+      Fg[FOrder.R] := Fg[FOrder.A];
+
+    if Fg[FOrder.G] > Fg[FOrder.A] then
+      Fg[FOrder.G] := Fg[FOrder.A];
+
+    if Fg[FOrder.B] > Fg[FOrder.A] then
+      Fg[FOrder.B] := Fg[FOrder.A];
 
     Span.Rgba8.R := Int8u(Fg[FOrder.R]);
     Span.Rgba8.G := Int8u(Fg[FOrder.G]);
@@ -221,6 +245,7 @@ begin
     Intr.IncOperator;
 
     Dec(Len);
+
   until Len = 0;
 
   Result := Allocator.Span;
@@ -330,7 +355,8 @@ begin
     Radius.X := ShrInt32(Diameter * Rx, 1);
     Radius.Y := ShrInt32(Diameter * Ry, 1);
 
-    Max := PointInteger(SourceImage.Width - 1, SourceImage.Height - 1);
+    Max.X := SourceImage.Width - 1;
+    Max.Y := SourceImage.Height - 1;
 
     Inc(X, FilterDeltaXInteger - Radius.X);
     Inc(Y, FilterDeltaYInteger - Radius.Y);
@@ -384,10 +410,34 @@ begin
 
     until HiRes.Y >= FilterSize;
 
-    Fg[0] := EnsureRange(Fg[0] div TotalWeight, 0, CAggBaseMask);
-    Fg[1] := EnsureRange(Fg[1] div TotalWeight, 0, CAggBaseMask);
-    Fg[2] := EnsureRange(Fg[2] div TotalWeight, 0, CAggBaseMask);
-    Fg[3] := EnsureRange(Fg[3] div TotalWeight, 0, CAggBaseMask);
+    Fg[0] := Fg[0] div TotalWeight;
+    Fg[1] := Fg[1] div TotalWeight;
+    Fg[2] := Fg[2] div TotalWeight;
+    Fg[3] := Fg[3] div TotalWeight;
+
+    if Fg[0] < 0 then
+      Fg[0] := 0;
+
+    if Fg[1] < 0 then
+      Fg[1] := 0;
+
+    if Fg[2] < 0 then
+      Fg[2] := 0;
+
+    if Fg[3] < 0 then
+      Fg[3] := 0;
+
+    if Fg[FOrder.A] > CAggBaseMask then
+      Fg[FOrder.A] := CAggBaseMask;
+
+    if Fg[FOrder.R] > Fg[FOrder.A] then
+      Fg[FOrder.R] := Fg[FOrder.A];
+
+    if Fg[FOrder.G] > Fg[FOrder.A] then
+      Fg[FOrder.G] := Fg[FOrder.A];
+
+    if Fg[FOrder.B] > Fg[FOrder.A] then
+      Fg[FOrder.B] := Fg[FOrder.A];
 
     Span.Rgba8.R := Int8u(Fg[FOrder.R]);
     Span.Rgba8.G := Int8u(Fg[FOrder.G]);
@@ -399,6 +449,7 @@ begin
     Intr.IncOperator;
 
     Dec(Len);
+
   until Len = 0;
 
   Result := Allocator.Span;

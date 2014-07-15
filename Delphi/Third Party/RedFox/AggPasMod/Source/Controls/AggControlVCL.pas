@@ -28,12 +28,12 @@ interface
 
 uses
   {$IFDEF FPC} LCLIntf, LMessages, {$IFDEF MSWindows} Windows, {$ENDIF} {$ELSE}
-  Windows, {$ENDIF} Classes, Controls, Messages, Graphics, SysUtils, XMLIntf,
-  XMLDoc, AggBasics, AggColor, AggWin32Bmp, AggPlatformSupport, AggPixelFormat,
-  AggPixelFormatRgba, AggRenderScanLines, AggRendererBase, AggRenderingBuffer,
+  Windows, {$ENDIF} Classes, Controls, Messages, Graphics, AggBasics, AggColor,
+  AggWin32Bmp, AggPlatformSupport, AggPixelFormat, AggPixelFormatRgba,
+  AggRenderScanLines, AggRendererBase, AggRenderingBuffer,
   AggRasterizerScanLineAA, AggRendererScanLine, AggScanLinePacked,
   AggControl, AggSliderControl, AggCheckBoxControl, AggRadioBoxControl,
-  AggGsvText, AggTransAffine, AggSvgParser, AggSvgPathRenderer;
+  AggGsvText, AggTransAffine;
 
 type
   TAggCustomControl = class(TCustomControl)
@@ -68,7 +68,6 @@ type
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
     procedure AssignTo(Dest: TPersistent); override;
   published
-    property Align;
     property Anchors;
     property Color;
     property ParentColor;
@@ -285,39 +284,6 @@ type
     property Space: Double read GetSpace write SetSpace;
     property LineSpace: Double read GetLineSpace write SetLineSpace;
     property TextWidth: Double read FTextWidth write SetTextWidth;
-  end;
-
-  TAggSVG = class(TAggCustomControl)
-  private
-    FTransform: TAggTransAffine;
-    FPath: TPathRenderer;
-    FColor: TAggColor;
-    FAngle: Double;
-    FScale: Double;
-    FBounds: TRectDouble;
-    procedure SetAngle(const Value: Double);
-    procedure SetScale(const Value: Double);
-{$IFDEF FPC}
-    procedure CMColorChanged(var Message: TLMessage); message CM_COLORCHANGED;
-{$ELSE}
-    procedure CMColorChanged(var Message: TMessage); message CM_COLORCHANGED;
-    procedure CalculateTransform;
-{$ENDIF}
-  protected
-    procedure PaintBuffer; override;
-    procedure AngleChanged; virtual;
-    procedure ScaleChanged; virtual;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-
-    procedure LoadFromStream(Stream: TStream);
-    procedure LoadFromFile(FileName: TFileName);
-
-    property Bounds: TRectDouble read FBounds;
-  published
-    property Scale: Double read FScale write SetScale;
-    property Angle: Double read FAngle write SetAngle;
   end;
 
 implementation
@@ -648,11 +614,7 @@ begin
   Invalidate;
 end;
 
-{$IFDEF FPC}
-procedure TAggLabel.CMColorChanged(var Message: TLMessage);
-{$ELSE}
 procedure TAggLabel.CMColorChanged(var Message: TMessage);
-{$ENDIF}
 begin
   FColor := ColorToAggColor(Color);
   Invalidate;
@@ -1261,119 +1223,6 @@ begin
   begin
     FValue := Value;
     ValueChanged;
-  end;
-end;
-
-
-{ TAggSVG }
-
-constructor TAggSVG.Create(AOwner: TComponent);
-begin
-  inherited;
-  FColor.White;
-
-  Color := clBtnFace;
-
-  FTransform := TAggTransAffine.Create;
-  FPath := TPathRenderer.Create;
-  FScale := 1;
-  FAngle := 0;
-end;
-
-destructor TAggSVG.Destroy;
-begin
-  FPath.Free;
-  FTransform.Free;
-  inherited;
-end;
-
-procedure TAggSVG.LoadFromFile(FileName: TFileName);
-begin
-  with TParser.Create(FPath) do
-  try
-    Parse(FileName);
-  finally
-    Free;
-  end;
-
-  FPath.ArrangeOrientations;
-  FPath.BoundingRect(@FBounds.X1, @FBounds.Y1, @FBounds.X2, @FBounds.Y2);
-end;
-
-procedure TAggSVG.LoadFromStream(Stream: TStream);
-begin
-  raise Exception.Create('Not yet implemented!');
-  // yet todo
-end;
-
-procedure TAggSVG.PaintBuffer;
-var
-  RenScan: TAggRendererScanLineAASolid;
-begin
-  inherited;
-
-  FRendererBase.Clear(@FColor);
-
-  RenScan := TAggRendererScanLineAASolid.Create(FRendererBase);
-  try
-    FPath.Render(FRasterizer, FScanLine, RenScan, FTransform,
-      FRendererBase.GetClipBox^, 1.0);
-  finally
-    RenScan.Free;
-  end;
-end;
-
-{$IFDEF FPC}
-procedure TAggSVG.CMColorChanged(var Message: TLMessage);
-{$ELSE}
-procedure TAggSVG.CMColorChanged(var Message: TMessage);
-{$ENDIF}
-begin
-  FColor := ColorToAggColor(Color);
-  Invalidate;
-end;
-
-procedure TAggSVG.CalculateTransform;
-var
-  Center: TPointDouble;
-begin
-  Center.X := 0.5 * (FBounds.X1 + FBounds.X2);
-  Center.Y := 0.5 * (FBounds.Y1 + FBounds.Y2);
-
-  FTransform.Reset;
-  FTransform.Translate(-Center.X, -Center.Y);
-  FTransform.Scale(FScale);
-  FTransform.Rotate(FAngle);
-  FTransform.Translate(Center.X, Center.Y);
-end;
-
-procedure TAggSVG.AngleChanged;
-begin
-  CalculateTransform;
-  Invalidate;
-end;
-
-procedure TAggSVG.ScaleChanged;
-begin
-  CalculateTransform;
-  Invalidate;
-end;
-
-procedure TAggSVG.SetAngle(const Value: Double);
-begin
-  if FAngle <> Value then
-  begin
-    FAngle := Value;
-    AngleChanged;
-  end;
-end;
-
-procedure TAggSVG.SetScale(const Value: Double);
-begin
-  if FScale <> Value then
-  begin
-    FScale := Value;
-    ScaleChanged;
   end;
 end;
 

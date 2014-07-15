@@ -154,7 +154,6 @@ type
       AShift: Cardinal); overload;
     destructor Destroy; override;
 
-    procedure Clear;
     procedure RemoveAll;
     procedure RemoveLast;
 
@@ -213,11 +212,11 @@ type
 procedure QuickSort(Arr: TAggCustomArray; Less: TAggFuncLess);
 function RemoveDuplicates(Arr: TAggCustomArray; Equal: TAggFuncEqual): Cardinal;
 
-function IntLess(A, B: Pointer): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function IntGreater(A, B: Pointer): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+function IntLess(A, B: Pointer): Boolean;
+function IntGreater(A, B: Pointer): Boolean;
 
-function CardinalLess(A, B: Pointer): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-function CardinalGreater(A, B: Pointer): Boolean; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
+function CardinalLess(A, B: Pointer): Boolean;
+function CardinalGreater(A, B: Pointer): Boolean;
 
 implementation
 
@@ -255,16 +254,16 @@ begin
       Pivot := Base + Len div 2;
 
       // SwapElements(arr[base], arr[pivot]);
-      Move(Arr[Base]^, Temp^, Swap);
-      Move(Arr[Pivot]^, Arr[Base]^, Swap);
-      Move(Temp^, Arr[Pivot]^, Swap);
+      Move(Arr.At(Base)^, Temp^, Swap);
+      Move(Arr.At(Pivot)^, Arr.At(Base)^, Swap);
+      Move(Temp^, Arr.At(Pivot)^, Swap);
 
       I := Base + 1;
       J := Limit - 1;
 
       // now ensure that *i <= *base <= *j
-      E1 := Arr[J];
-      E2 := Arr[I];
+      E1 := Arr.At(J);
+      E2 := Arr.At(I);
 
       if Less(E1, E2) then
       begin
@@ -274,8 +273,8 @@ begin
         Move(Temp^, E2^, Swap);
       end;
 
-      E1 := Arr[Base];
-      E2 := Arr[I];
+      E1 := Arr.At(Base);
+      E2 := Arr.At(I);
 
       if Less(E1, E2) then
       begin
@@ -285,8 +284,8 @@ begin
         Move(Temp^, E2^, Swap);
       end;
 
-      E1 := Arr[J];
-      E2 := Arr[Base];
+      E1 := Arr.At(J);
+      E2 := Arr.At(Base);
 
       if Less(E1, E2) then
       begin
@@ -299,25 +298,28 @@ begin
       repeat
         repeat
           Inc(I)
-        until not Less(Arr[I], Arr[Base]);
+
+        until not Less(Arr.At(I), Arr.At(Base));
 
         repeat
           Dec(J);
-        until not Less(Arr[Base], Arr[J]);
+
+        until not Less(Arr.At(Base), Arr.At(J));
 
         if I > J then
           Break;
 
         // SwapElements(arr[i], arr[j]);
-        Move(Arr[I]^, Temp^, Swap);
-        Move(Arr[J]^, Arr[I]^, Swap);
-        Move(Temp^, Arr[J]^, Swap);
+        Move(Arr.At(I)^, Temp^, Swap);
+        Move(Arr.At(J)^, Arr.At(I)^, Swap);
+        Move(Temp^, Arr.At(J)^, Swap);
+
       until False;
 
       // SwapElements(arr[base], arr[j]);
-      Move(Arr[Base]^, Temp^, Swap);
-      Move(Arr[J]^, Arr[Base]^, Swap);
-      Move(Temp^, Arr[J]^, Swap);
+      Move(Arr.At(Base)^, Temp^, Swap);
+      Move(Arr.At(J)^, Arr.At(Base)^, Swap);
+      Move(Temp^, Arr.At(J)^, Swap);
 
       // now, push the largest sub-array
       if J - Base > Limit - I then
@@ -325,6 +327,7 @@ begin
         Top^[0] := Base;
         Top^[1] := J;
         Base := I;
+
       end
       else
       begin
@@ -343,8 +346,8 @@ begin
 
       while I < Limit do
       begin
-        E1 := Arr[J + 1];
-        E2 := Arr[J];
+        E1 := Arr.At(J + 1);
+        E2 := Arr.At(J);
 
         while Less(E1, E2) do
         begin
@@ -358,8 +361,8 @@ begin
 
           Dec(J);
 
-          E1 := Arr[J + 1];
-          E2 := Arr[J];
+          E1 := Arr.At(J + 1);
+          E2 := Arr.At(J);
         end;
 
         J := I;
@@ -373,10 +376,12 @@ begin
 
         Base := Top^[0];
         Limit := Top^[1];
+
       end
       else
         Break;
     end;
+
   until False;
 
   AggFreeMem(Temp, Arr.Entry);
@@ -692,11 +697,6 @@ begin
 
     AggFreeMem(Pointer(FBlocks), FMaxBlocks * SizeOf(Pointer));
   end;
-end;
-
-procedure TAggPodDeque.Clear;
-begin
-  FSize := 0;
 end;
 
 procedure TAggPodDeque.RemoveAll;

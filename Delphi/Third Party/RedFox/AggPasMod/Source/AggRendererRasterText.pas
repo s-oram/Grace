@@ -253,22 +253,22 @@ begin
   FSpan.Initialize(X, Len, Covers);
 end;
 
-function TAggScanLineSingleSpan.GetY: Integer;
+function TAggScanLineSingleSpan.GetY;
 begin
   Result := FY;
 end;
 
-function TAggScanLineSingleSpan.GetNumSpans: Cardinal;
+function TAggScanLineSingleSpan.GetNumSpans;
 begin
   Result := 1;
 end;
 
-function TAggScanLineSingleSpan.GetBegin: Pointer;
+function TAggScanLineSingleSpan.GetBegin;
 begin
   Result := @FSpan;
 end;
 
-function TAggScanLineSingleSpan.GetSizeOfSpan: Cardinal;
+function TAggScanLineSingleSpan.GetSizeOfSpan;
 begin
   Result := SizeOf(TAggConstSpan);
 end;
@@ -282,8 +282,7 @@ begin
   FGlyph := Glyph;
 end;
 
-procedure TAggRendererRasterHorizontalText.RenderText(FX, Y: Double;
-  Str: PAnsiChar; Flip: Boolean = False);
+procedure TAggRendererRasterHorizontalText.RenderText;
 var
   R: TAggGlyphRect;
   I: Integer;

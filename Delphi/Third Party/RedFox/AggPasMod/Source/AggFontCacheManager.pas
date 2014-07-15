@@ -169,9 +169,7 @@ begin
     Result := nil;
 end;
 
-function TAggFontCache.CacheGlyph(GlyphCode, GlyphIndex, DataSize: Cardinal;
-  DataType: TAggGlyphData; var Bounds: TRectInteger; AdvanceX, AdvanceY: Double)
-  : PAggGlyphCache;
+function TAggFontCache.CacheGlyph;
 var
   Msb, Lsb: Cardinal;
   Glyph: PAggGlyphCache;
@@ -216,7 +214,7 @@ end;
 
 { TAggFontCachePool }
 
-constructor TAggFontCachePool.Create(MaxFonts: Cardinal = 32);
+constructor TAggFontCachePool.Create;
 begin
   AggGetMem(Pointer(FFonts), MaxFonts * SizeOf(TAggFontCache));
 
@@ -286,12 +284,12 @@ begin
   end;
 end;
 
-function TAggFontCachePool.GetFont: TAggFontCache;
+function TAggFontCachePool.GetFont;
 begin
   Result := FCurrentFont;
 end;
 
-function TAggFontCachePool.FindGlyph(GlyphCode: Cardinal): PAggGlyphCache;
+function TAggFontCachePool.FindGlyph;
 begin
   if FCurrentFont <> nil then
     Result := FCurrentFont.FindGlyph(GlyphCode)
@@ -299,9 +297,7 @@ begin
     Result := nil;
 end;
 
-function TAggFontCachePool.CacheGlyph(GlyphCode, GlyphIndex, DataSize: Cardinal;
-  DataType: TAggGlyphData; var Bounds: TRectInteger; AdvanceX, AdvanceY: Double)
-  : PAggGlyphCache;
+function TAggFontCachePool.CacheGlyph;
 begin
   if FCurrentFont <> nil then
     Result := FCurrentFont.CacheGlyph(GlyphCode, GlyphIndex, DataSize,

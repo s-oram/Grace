@@ -83,13 +83,14 @@ type
     constructor Create(A, B: TAggVertexSource; Op: TAggGpcOp = goOr);
     destructor Destroy; override;
 
+    procedure SetSource1(Source: TAggVertexSource);
+    procedure SetSource2(Source: TAggVertexSource);
+
+    procedure Operation(V: TAggGpcOp);
+
     // Vertex Source Interface
     procedure Rewind(PathID: Cardinal); override;
     function Vertex(X, Y: PDouble): Cardinal; override;
-
-    property Operation: TAggGpcOp read FOperation write FOperation;
-    property Source1: TAggVertexSource read FSource1 write FSource1;
-    property Source2: TAggVertexSource read FSource2 write FSource2;
   end;
 
 implementation
@@ -97,7 +98,7 @@ implementation
 
 { TAggConvGpc }
 
-constructor TAggConvGpc.Create(A, B: TAggVertexSource; Op: TAggGpcOp = goOr);
+constructor TAggConvGpc.Create;
 begin
   FVertexAccumulator := TAggPodDeque.Create(SizeOf(TGpcVertex), 8);
   FContourAccumulator := TAggPodDeque.Create(SizeOf(TAggContourHeader), 6);
@@ -123,6 +124,21 @@ begin
   FContourAccumulator.Free;
 
   inherited;
+end;
+
+procedure TAggConvGpc.SetSource1;
+begin
+  FSourceA := Source;
+end;
+
+procedure TAggConvGpc.SetSource2;
+begin
+  FSourceB := Source;
+end;
+
+procedure TAggConvGpc.Operation;
+begin
+  FOperation := V;
 end;
 
 procedure TAggConvGpc.Rewind(PathID: Cardinal);
@@ -195,9 +211,10 @@ begin
   Result := CAggPathCmdStop;
 end;
 
-procedure TAggConvGpc.FreePolygon(P: PGpcPolygon);
+procedure TAggConvGpc.FreePolygon;
 var
   I: Integer;
+
 begin
   I := 0;
 
@@ -239,7 +256,7 @@ begin
   FVertexAccumulator.RemoveAll;
 end;
 
-procedure TAggConvGpc.SetAddVertex(X, Y: Double);
+procedure TAggConvGpc.SetAddVertex;
 var
   V: TGpcVertex;
 begin
@@ -249,11 +266,12 @@ begin
   FVertexAccumulator.Add(@V);
 end;
 
-procedure TAggConvGpc.EndContour(Orientation: Cardinal);
+procedure TAggConvGpc.EndContour;
 var
-  H: PAggContourHeader;
+  H   : PAggContourHeader;
   D, S: PAggGpcVertex;
-  I: Integer;
+  I   : Integer;
+
 begin
   if FContourAccumulator.Size <> 0 then
     if FVertexAccumulator.Size > 2 then
@@ -285,7 +303,7 @@ begin
       FVertexAccumulator.RemoveLast;
 end;
 
-procedure TAggConvGpc.MakePolygon(P: PGpcPolygon);
+procedure TAggConvGpc.MakePolygon;
 var
   I: Integer;
   H: PAggContourHeader;
@@ -345,7 +363,7 @@ begin
     Result := False;
 end;
 
-function TAggConvGpc.NextVertex(X, Y: PDouble): Boolean;
+function TAggConvGpc.NextVertex;
 var
   Vlist: PGpcVertexList;
   V: PAggGpcVertex;
@@ -368,7 +386,7 @@ begin
     Result := False;
 end;
 
-procedure TAggConvGpc.Add(Src: TAggVertexSource; P: PGpcPolygon);
+procedure TAggConvGpc.Add;
 var
   Cmd, Orientation: Cardinal;
   X, Y, StartX, StartY: Double;

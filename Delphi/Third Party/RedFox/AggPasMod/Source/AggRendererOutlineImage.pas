@@ -327,7 +327,7 @@ begin
   inherited;
 end;
 
-procedure TAggLineImagePattern.Build(Src: TAggPixelSource);
+procedure TAggLineImagePattern.Build;
 var
   X, Y, H: Cardinal;
   D1, D2, S1, S2: PAggRgba8;
@@ -367,10 +367,10 @@ begin
 
   for Y := 0 to FDilation - 1 do
   begin
-    D1 := PAggRgba8(PtrComp(FRenderingBuffer.Row(FDilation + FHeight + Y)) +
-      FDilation * SizeOf(TAggRgba8));
-    D2 := PAggRgba8(PtrComp(FRenderingBuffer.Row(FDilation - Y - 1)) +
-      FDilation * SizeOf(TAggRgba8));
+    D1 := PAggRgba8(PtrComp(FRenderingBuffer.Row(FDilation + FHeight + Y)) + FDilation *
+      SizeOf(TAggRgba8));
+    D2 := PAggRgba8(PtrComp(FRenderingBuffer.Row(FDilation - Y - 1)) + FDilation *
+      SizeOf(TAggRgba8));
 
     for X := 0 to FWidth - 1 do
     begin
@@ -386,14 +386,12 @@ begin
 
   for Y := 0 to H - 1 do
   begin
-    S1 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) +
-      FDilation * SizeOf(TAggRgba8));
+    S1 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) + FDilation * SizeOf(TAggRgba8));
     S2 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) + (FDilation + FWidth) *
       SizeOf(TAggRgba8));
     D1 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) + (FDilation + FWidth) *
       SizeOf(TAggRgba8));
-    D2 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) +
-      FDilation * SizeOf(TAggRgba8));
+    D2 := PAggRgba8(PtrComp(FRenderingBuffer.Row(Y)) + FDilation * SizeOf(TAggRgba8));
 
     for X := 0 to FDilation - 1 do
     begin
@@ -458,8 +456,8 @@ end;
 
 procedure TAggLineImagePatternPow2.Pixel(P: PAggColor; X, Y: Integer);
 begin
-  FFilter.PixelHighResolution(FRenderingBuffer.Rows, P, (X and FMask) +
-    FDilationHR, Y + FOffsetYhr);
+  FFilter.PixelHighResolution(FRenderingBuffer.Rows, P, (X and FMask) + FDilationHR,
+    Y + FOffsetYhr);
 end;
 
 
@@ -471,7 +469,8 @@ var
   D: Double;
   Delta: TPointInteger;
 begin
-  FDelta := PointInteger(X2 - X1, Y2 - Y1);
+  FDelta.X := X2 - X1;
+  FDelta.Y := Y2 - Y1;
 
   FDeltaStart.X := LineMedResolution(Sx) - LineMedResolution(X1);
   FDeltaStart.Y := LineMedResolution(Sy) - LineMedResolution(Y1);
@@ -481,15 +480,12 @@ begin
   FDist := Trunc((X + CAggLineSubpixelSize * 0.5 - X2) * FDelta.Y -
     (Y + CAggLineSubpixelSize * 0.5 - Y2) * FDelta.X);
 
-  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
-    LineMedResolution(Sx)) * FDeltaStart.Y -
-    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
-    LineMedResolution(Sy)) * FDeltaStart.X;
+  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Sx)) *
+    FDeltaStart.Y - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Sy)) *
+    FDeltaStart.X;
 
-  FDistEnd := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
-    LineMedResolution(Ex)) * FDeltaEnd.Y -
-    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
-    LineMedResolution(Ey)) * FDeltaEnd.X;
+  FDistEnd := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Ex)) * FDeltaEnd.Y
+    - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Ey)) * FDeltaEnd.X;
 
   if Scale <> 0 then
     FLength := Trunc(Length / Scale)
@@ -500,18 +496,21 @@ begin
 
   if D <> 0 then
   begin
-    D := 1 / D;
-    Delta.X := Trunc(((X2 - X1) shl CAggLineSubpixelShift) * D);
-    Delta.Y := Trunc(((Y2 - Y1) shl CAggLineSubpixelShift) * D);
+    Delta.X := Trunc(((X2 - X1) shl CAggLineSubpixelShift) / D);
+    Delta.Y := Trunc(((Y2 - Y1) shl CAggLineSubpixelShift) / D);
   end
   else
-    Delta := PointInteger(0, 0);
+  begin
+    Delta.X := 0;
+    Delta.Y := 0;
+  end;
 
-  FDeltaPict := PointInteger(-Delta.Y, Delta.X);
+  FDeltaPict.X := -Delta.Y;
+  FDeltaPict.Y := Delta.X;
 
   FDistPict := ShrInt32((X + CAggLineSubpixelSize div 2 - (X1 - Delta.Y)) *
-    FDeltaPict.Y - (Y + CAggLineSubpixelSize div 2 - (Y1 + Delta.X)) *
-    FDeltaPict.X, CAggLineSubpixelShift);
+    FDeltaPict.Y - (Y + CAggLineSubpixelSize div 2 - (Y1 + Delta.X)) * FDeltaPict.X,
+    CAggLineSubpixelShift);
 
   FDelta.X := FDelta.X shl CAggLineSubpixelShift;
   FDelta.Y := FDelta.Y shl CAggLineSubpixelShift;
@@ -715,11 +714,9 @@ begin
   FLineParameters := Lp;
 
   if Lp.Vertical then
-    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.X2 - Lp.X1),
-      Abs(Lp.Y2 - Lp.Y1))
+    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.X2 - Lp.X1), Abs(Lp.Y2 - Lp.Y1))
   else
-    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.Y2 - Lp.Y1),
-      Abs(Lp.X2 - Lp.X1) + 1);
+    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.Y2 - Lp.Y1), Abs(Lp.X2 - Lp.X1) + 1);
 
   FDistanceInterpolator := TAggDistanceInterpolator4.Create(Lp.X1, Lp.Y1, Lp.X2,
     Lp.Y2, Sx, Sy, Ex, Ey, Lp.Len, ScaleX, Lp.X1 and not CAggLineSubpixelMask,
@@ -779,8 +776,7 @@ begin
 
       Dec(FY, Lp.IncValue);
 
-      FX := ShrInt32(FLineParameters.X1 + FLineInterpolator.Y,
-        CAggLineSubpixelShift);
+      FX := ShrInt32(FLineParameters.X1 + FLineInterpolator.Y, CAggLineSubpixelShift);
 
       if Lp.IncValue > 0 then
         FDistanceInterpolator.SetDecY(FX - FOldX)
@@ -825,8 +821,7 @@ begin
 
       Dec(FX, Lp.IncValue);
 
-      FY := ShrInt32(FLineParameters.Y1 + FLineInterpolator.Y,
-        CAggLineSubpixelShift);
+      FY := ShrInt32(FLineParameters.Y1 + FLineInterpolator.Y, CAggLineSubpixelShift);
 
       if Lp.IncValue > 0 then
         FDistanceInterpolator.SetDecX(FY - FOldY)
@@ -887,8 +882,7 @@ begin
 
   Inc(FX, FLineParameters.IncValue);
 
-  FY := ShrInt32(FLineParameters.Y1 + FLineInterpolator.Y,
-    CAggLineSubpixelShift);
+  FY := ShrInt32(FLineParameters.Y1 + FLineInterpolator.Y, CAggLineSubpixelShift);
 
   if FLineParameters.IncValue > 0 then
     FDistanceInterpolator.SetIncX(FY - FOldY)
@@ -1002,8 +996,7 @@ begin
 
   Inc(FY, FLineParameters.IncValue);
 
-  FX := ShrInt32(FLineParameters.X1 + FLineInterpolator.Y,
-    CAggLineSubpixelShift);
+  FX := ShrInt32(FLineParameters.X1 + FLineInterpolator.Y, CAggLineSubpixelShift);
 
   if FLineParameters.IncValue > 0 then
     FDistanceInterpolator.SetIncY(FX - FOldX)
@@ -1202,8 +1195,7 @@ procedure TAggRendererOutlineImage.Line2;
 begin
 end;
 
-procedure TAggRendererOutlineImage.Line3(Lp: PAggLineParameters; Sx, Sy,
-  Ex, Ey: Integer);
+procedure TAggRendererOutlineImage.Line3(Lp: PAggLineParameters; Sx, Sy, Ex, Ey: Integer);
 var
   Li: TAggLineInterpolatorImage;
 begin

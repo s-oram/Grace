@@ -58,7 +58,7 @@ implementation
 
 { TAggConvMarker }
 
-constructor TAggConvMarker.Create(MarkerLocator, MarkerShapes: TAggVertexSource);
+constructor TAggConvMarker.Create;
 begin
   FTransform := TAggTransAffine.Create;
   FMatrix := TAggTransAffine.Create;
@@ -91,14 +91,16 @@ end;
 function TAggConvMarker.Vertex(X, Y: PDouble): Cardinal;
 var
   Cmd: Cardinal;
+
   X1, Y1, X2, Y2: Double;
 
 label
-  _markers, _polygon, _stop;
+  _next, _markers, _polygon, _stop;
 
 begin
   Cmd := CAggPathCmdMoveTo;
 
+_next:
   while not IsStop(Cmd) do
     case FStatus of
       siInitial:
@@ -106,7 +108,8 @@ begin
           if FNumMarkers = 0 then
           begin
             Cmd := CAggPathCmdStop;
-            Continue;
+
+            goto _next;
           end;
 
           FMarkerLocator.Rewind(FMarker);
@@ -122,16 +125,24 @@ begin
       siMarkers:
       _markers:
         begin
-          if IsStop(FMarkerLocator.Vertex(@X1, @Y1)) or
-            IsStop(FMarkerLocator.Vertex(@X2, @Y2)) then
+          if IsStop(FMarkerLocator.Vertex(@X1, @Y1)) then
           begin
             FStatus := siInitial;
-            Continue;
+
+            goto _next;
+          end;
+
+          if IsStop(FMarkerLocator.Vertex(@X2, @Y2)) then
+          begin
+            FStatus := siInitial;
+
+            goto _next;
           end;
 
           Inc(FNumMarkers);
 
           FMatrix.Assign(FTransform);
+
           FMatrix.Rotate(ArcTan2(Y2 - Y1, X2 - X1));
           FMatrix.Translate(X1, Y1);
 
@@ -151,18 +162,22 @@ begin
           begin
             Cmd := CAggPathCmdMoveTo;
             FStatus := siMarkers;
-            Continue;
+
+            goto _next;
           end;
 
           FMatrix.Transform(FMatrix, X, Y);
 
-          Break;
+          Result := Cmd;
+
+          Exit;
         end;
 
       siStop:
         begin
           Cmd := CAggPathCmdStop;
-          Continue;
+
+          goto _next;
         end;
     end;
 

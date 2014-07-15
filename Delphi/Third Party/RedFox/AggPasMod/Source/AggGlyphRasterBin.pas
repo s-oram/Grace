@@ -107,7 +107,7 @@ begin
   Result := PInt8u(PtrComp(FFont) + SizeOf(Int8u))^;
 end;
 
-function TAggGlyphRasterBin.Width(Str: PAnsiChar): Double;
+function TAggGlyphRasterBin.Width;
 var
   StartChar, NumChars, W, Glyph: Cardinal;
   Bits: PInt8u;
@@ -131,8 +131,7 @@ begin
   Result := W;
 end;
 
-procedure TAggGlyphRasterBin.Prepare(R: PAggGlyphRect; X, Y: Double;
-  Glyph: Cardinal; Flip: Boolean);
+procedure TAggGlyphRasterBin.Prepare;
 var
   StartChar, NumChars: Cardinal;
 begin

@@ -275,7 +275,7 @@ begin
   FLastIdx := -1;
 end;
 
-function TAggBSpline.Get(X: Double): Double;
+function TAggBSpline.Get;
 var
   I: Integer;
 begin
@@ -308,7 +308,7 @@ begin
   Result := 0.0;
 end;
 
-function TAggBSpline.GetStateful(X: Double): Double;
+function TAggBSpline.GetStateful;
 begin
   if FNum > 2 then
   begin
@@ -352,6 +352,7 @@ begin
       Result := Interpolation(X, FLastIdx);
 
       Exit;
+
     end
     else
     begin

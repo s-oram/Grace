@@ -365,15 +365,16 @@ begin
     FPixelFormatProcessor.BlendPixel(FPixelFormatProcessor, X, Y, C, Cover);
 end;
 
-function TAggRendererBase.Pixel(X, Y: Integer): TAggColor;
+function TAggRendererBase.Pixel;
 begin
   if Inbox(X, Y) then
     Result := FPixelFormatProcessor.Pixel(FPixelFormatProcessor, X, Y);
 end;
 
-procedure TAggRendererBase.CopyHorizontalLine(X1, Y, X2: Integer; C: PAggColor);
+procedure TAggRendererBase.CopyHorizontalLine;
 var
   T: Integer;
+
 begin
   if X1 > X2 then
   begin
@@ -404,9 +405,10 @@ begin
     X2 - X1 + 1, C);
 end;
 
-procedure TAggRendererBase.CopyVerticalLine(X, Y1, Y2: Integer; C: PAggColor);
+procedure TAggRendererBase.CopyVerticalLine;
 var
   T: Integer;
+
 begin
   if Y1 > Y2 then
   begin
@@ -437,10 +439,10 @@ begin
     Y2 - Y1 + 1, C);
 end;
 
-procedure TAggRendererBase.BlendHorizontalLine(X1, Y, X2: Integer; C: PAggColor;
-  Cover: Int8u);
+procedure TAggRendererBase.BlendHorizontalLine;
 var
   T: Integer;
+
 begin
   if X1 > X2 then
   begin
@@ -471,10 +473,10 @@ begin
     X2 - X1 + 1, C, Cover);
 end;
 
-procedure TAggRendererBase.BlendVerticalLine(X, Y1, Y2: Integer; C: PAggColor;
-  Cover: Int8u);
+procedure TAggRendererBase.BlendVerticalLine;
 var
   T: Integer;
+
 begin
   if Y1 > Y2 then
   begin
@@ -505,7 +507,7 @@ begin
     Y2 - Y1 + 1, C, Cover);
 end;
 
-procedure TAggRendererBase.CopyBar(X1, Y1, X2, Y2: Integer; C: PAggColor);
+procedure TAggRendererBase.CopyBar;
 var
   Y : Integer;
   RectClip: TRectInteger;
@@ -527,8 +529,7 @@ begin
   end;
 end;
 
-procedure TAggRendererBase.BlendBar(X1, Y1, X2, Y2: Integer; C: PAggColor;
-  Cover: Int8u);
+procedure TAggRendererBase.BlendBar;
 var
   RectClip: TRectInteger;
   Y : Integer;
@@ -550,12 +551,11 @@ begin
   end;
 end;
 
-function TAggRendererBase.Span(X, Y: Integer; Len: Cardinal): Pointer;
+function TAggRendererBase.Span;
 begin
 end;
 
-procedure TAggRendererBase.BlendSolidHSpan(X, Y, Len: Integer; C: PAggColor;
-  Covers: PInt8u);
+procedure TAggRendererBase.BlendSolidHSpan;
 begin
   if Y > GetYMax then
     Exit;
@@ -587,8 +587,7 @@ begin
     Covers);
 end;
 
-procedure TAggRendererBase.BlendSolidVSpan(X, Y, Len: Integer; C: PAggColor;
-  Covers: PInt8u);
+procedure TAggRendererBase.BlendSolidVSpan;
 begin
   if X > GetXMax then
     Exit;
@@ -620,10 +619,10 @@ begin
     Covers);
 end;
 
-procedure TAggRendererBase.CopyColorHSpan(X, Y, Len: Integer;
-  Colors: PAggColor);
+procedure TAggRendererBase.CopyColorHSpan;
 var
   D: Integer;
+
 begin
   if Y > GetYMax then
     Exit;
@@ -657,10 +656,10 @@ begin
     Colors);
 end;
 
-procedure TAggRendererBase.BlendColorHSpan(X, Y, Len: Integer;
-  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
+procedure TAggRendererBase.BlendColorHSpan;
 var
   D: Integer;
+
 begin
   if Y > GetYMax then
     Exit;
@@ -697,10 +696,10 @@ begin
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.BlendColorVSpan(X, Y, Len: Integer;
-  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
+procedure TAggRendererBase.BlendColorVSpan;
 var
   D: Integer;
+
 begin
   if X > GetXMax then
     Exit;
@@ -737,27 +736,24 @@ begin
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.CopyColorHSpanNoClip(X, Y, Len: Integer; Colors: PAggColor);
+procedure TAggRendererBase.CopyColorHSpanNoClip;
 begin
   // not implemented
 end;
 
-procedure TAggRendererBase.BlendColorHSpanNoClip(X, Y, Len: Integer;
-  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
+procedure TAggRendererBase.BlendColorHSpanNoClip;
 begin
   FPixelFormatProcessor.BlendColorHSpan(FPixelFormatProcessor, X, Y, Len,
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.BlendColorVSpanNoClip(X, Y, Len: Integer;
-  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
+procedure TAggRendererBase.BlendColorVSpanNoClip;
 begin
   FPixelFormatProcessor.BlendColorVSpan(FPixelFormatProcessor, X, Y, Len,
     Colors, Covers, Cover);
 end;
 
-function TAggRendererBase.ClipRectArea(var Dst, Src: TRectInteger; Wsrc,
-  Hsrc: Integer): TRectInteger;
+function TAggRendererBase.ClipRectArea;
 var
   RectClip, Cb: TRectInteger;
 begin

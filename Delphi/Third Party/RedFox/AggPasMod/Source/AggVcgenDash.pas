@@ -117,7 +117,7 @@ begin
   FCurrentDash := 0;
 end;
 
-procedure TAggVcgenDash.AddDash(DashLength, GapLength: Double);
+procedure TAggVcgenDash.AddDash;
 begin
   if FNumDashes < CMaxDashes then
   begin
@@ -159,7 +159,7 @@ begin
   FClosed := 0;
 end;
 
-procedure TAggVcgenDash.AddVertex(X, Y: Double; Cmd: Cardinal);
+procedure TAggVcgenDash.AddVertex;
 var
   Vd: TAggVertexDistance;
 begin
@@ -192,13 +192,15 @@ end;
 function TAggVcgenDash.Vertex(X, Y: PDouble): Cardinal;
 var
   DashRest, Temp: Double;
+  Cmd: Cardinal;
 label
-  _ready;
+  _next, _ready;
 
 begin
-  Result := CAggPathCmdMoveTo;
+  Cmd := CAggPathCmdMoveTo;
 
-  while not IsStop(Result) do
+_next:
+  while not IsStop(Cmd) do
     case FStatus of
       siInitial:
         begin
@@ -212,8 +214,9 @@ begin
         begin
           if (FNumDashes < 2) or (FSourceVertices.Size < 2) then
           begin
-            Result := CAggPathCmdStop;
-            Continue;
+            Cmd := CAggPathCmdStop;
+
+            goto _next;
           end;
 
           FStatus := siPolyline;
@@ -240,9 +243,9 @@ begin
           DashRest := FDashes[FCurrentDash] - FCurrDashStart;
 
           if FCurrentDash and 1 <> 0 then
-            Result := CAggPathCmdMoveTo
+            Cmd := CAggPathCmdMoveTo
           else
-            Result := CAggPathCmdLineTo;
+            Cmd := CAggPathCmdLineTo;
 
           if FCurrentRest > DashRest then
           begin
@@ -285,12 +288,16 @@ begin
               FVertex2 := FSourceVertices[FSourceVertex];
           end;
 
+          Result := Cmd;
+
           Exit;
         end;
 
       siStop:
-        Result := CAggPathCmdStop;
+        Cmd := CAggPathCmdStop;
     end;
+
+  Result := CAggPathCmdStop;
 end;
 
 procedure TAggVcgenDash.CalculateDashStart;

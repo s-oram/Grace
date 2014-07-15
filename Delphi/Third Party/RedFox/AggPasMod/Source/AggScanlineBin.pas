@@ -108,7 +108,7 @@ begin
   FCurrentSpan := FSpans;
 end;
 
-procedure TAggScanLineBin.Finalize(Y: Integer);
+procedure TAggScanLineBin.Finalize;
 begin
   FY := Y;
 end;

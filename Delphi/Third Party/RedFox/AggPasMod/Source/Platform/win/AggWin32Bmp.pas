@@ -81,8 +81,6 @@ type
     constructor Create;
     destructor Destroy; override;
 
-
-
     procedure Assign(Source: TPixelMap); virtual;
     procedure Build(AWidth, AHeight, Org: Cardinal; AClearVal: Cardinal = 256);
     procedure SetSize(Width, Height: Cardinal);
@@ -182,35 +180,40 @@ var
   Bmi: PBITMAPINFO;
 
   BmpSize: Cardinal;
+label
+  Bmperr;
+
 begin
   BlockRead(Fd, Bmf, SizeOf(Bmf));
 
-  try
-    if Bmf.BfType <> $4D42 then
-      raise Exception.Create('Bitmap magic not found');
+  if Bmf.BfType <> $4D42 then
+    goto Bmperr;
 
-    BmpSize := Bmf.BfSize - SizeOf(BITMAPFILEHEADER);
+  BmpSize := Bmf.BfSize - SizeOf(BITMAPFILEHEADER);
 
-    AggGetMem(Pointer(Bmi), BmpSize);
-    BlockRead(Fd, Bmi^, BmpSize, Sz);
+  AggGetMem(Pointer(Bmi), BmpSize);
+  BlockRead(Fd, Bmi^, BmpSize, Sz);
 
-    if Sz <> BmpSize then
-      raise Exception.Create('Bitmap size mismatch');
+  if Sz <> BmpSize then
+    goto Bmperr;
 
-    FreeBitmap;
+  FreeBitmap;
 
-    FBitsPerPixel := Bmi.BmiHeader.BiBitCount;
+  FBitsPerPixel := Bmi.BmiHeader.BiBitCount;
 
-    CreateFromBitmap(Bmi);
+  CreateFromBitmap(Bmi);
 
-    FIsInternal := True;
-    Result := True;
-  except
-    if Bmi <> nil then
-      AggFreeMem(Pointer(Bmi), BmpSize);
+  FIsInternal := True;
 
-    Result := False;
-  end;
+  Result := True;
+
+  Exit;
+
+Bmperr:
+  if Bmi <> nil then
+    AggFreeMem(Pointer(Bmi), BmpSize);
+
+  Result := False;
 end;
 
 function TPixelMap.LoadFromBitmap(Filename: TFileName): Boolean;
@@ -463,7 +466,6 @@ end;
 
 function TPixelMap.GetWidth;
 begin
-  //NOTE: An access violation error happened here when destroying a test application  (shannon 3rd Dec 2012)
   Result := FBitmapInfo.BmiHeader.BiWidth;
 end;
 

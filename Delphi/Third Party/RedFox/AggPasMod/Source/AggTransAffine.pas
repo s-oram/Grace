@@ -107,6 +107,7 @@ type
   TAggTransAffine = class
   protected
     FData: TAggParallelogram;
+    procedure InitializeTransforms;
   public
     Transform, Transform2x2, InverseTransform: TAggProcTransform;
 
@@ -150,9 +151,6 @@ type
 
     // Reset - actually load an identity matrix
     procedure Reset; virtual;
-
-    // Initialize Transforms
-    procedure InitializeTransforms;
 
     // Multiply matrix to another one
     procedure Multiply(M: TAggTransAffine);
@@ -592,10 +590,11 @@ procedure TAggTransAffine.PreMultiply(M: TAggTransAffine);
 var
   T: TAggTransAffine;
 begin
-  Transform := @M.Transform;
-  Transform2x2 := @M.Transform2x2;
-  InverseTransform := @M.InverseTransform;
-  Multiply(M);
+  T.AssignAll(M);
+
+  T.Multiply(Self);
+
+  Assign(@T);
 end;
 
 procedure TAggTransAffine.MultiplyInv(M: TAggTransAffine);
@@ -927,7 +926,8 @@ constructor TAggTransAffineLineSegment.Create(X1, Y1, X2, Y2, Dist: Double);
 var
   Delta: TPointDouble;
 begin
-  Delta := PointDouble(X2 - X1, Y2 - Y1);
+  Delta.X := X2 - X1;
+  Delta.Y := Y2 - Y1;
 
   if Dist > 0 then
     Scale(Hypot(Delta.X, Delta.Y) / Dist);
@@ -959,7 +959,6 @@ end;
 constructor TAggTransAffineReflection.Create(X, Y: Double);
 var
   Nx, Ny: Double;
-  Tmp: Double;
 begin
   if (X = 0) and (Y = 0) then
   begin
@@ -968,9 +967,8 @@ begin
   end
   else
   begin
-    Tmp := 1 / Hypot(X, Y);
-    Nx := X * Tmp;
-    Ny := Y * Tmp;
+    Nx := X / Hypot(X, Y);
+    Ny := Y / Hypot(X, Y);
   end;
 
   inherited Create(Nx, Ny);

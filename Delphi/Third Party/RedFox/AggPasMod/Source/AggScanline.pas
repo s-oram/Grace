@@ -93,7 +93,7 @@ begin
   Result := 0;
 end;
 
-function TAggCustomSpan.Covers: PInt8u;
+function TAggCustomSpan.Covers;
 begin
   Result := nil;
 end;
@@ -105,12 +105,12 @@ end;
 
 { TAggCustomScanLine }
 
-function TAggCustomScanLine.GetIsPlainSpan: Boolean;
+function TAggCustomScanLine.GetIsPlainSpan;
 begin
   Result := True;
 end;
 
-function TAggCustomScanLine.GetIsEmbedded: Boolean;
+function TAggCustomScanLine.GetIsEmbedded;
 begin
   Result := False;
 end;

@@ -33,9 +33,9 @@ uses
 
 
 const
-  CSvgCommands: ShortString = '+-MmZzLlHhVvCcSsQqTtAaFfPp';
-  CSvgNumeric: ShortString = '.Ee0123456789';
-  CSvgSeparators: ShortString = ' ,'#9#10#13;
+  CSvgCommands = '+-MmZzLlHhVvCcSsQqTtAaFfPp';
+  CSvgNumeric = '.Ee0123456789';
+  CSvgSeparators = ' ,'#9#10#13;
 
 type
   // SVG path tokenizer.
@@ -70,7 +70,7 @@ type
   TPathTokenizer = class
   private
     FSeparatorsMask, FCommandsMask, FNumericMask:
-      array [0..31] of AnsiChar;
+      array [0..256 div 8 - 1] of AnsiChar;
 
     FPath: PAnsiChar;
     FLastNumber: Double;
@@ -83,29 +83,19 @@ type
     function Next: Boolean; overload;
     function Next(Cmd: AnsiChar): Double; overload;
 
-    procedure InitCharMask(Mask, CharSet: PAnsiChar);
+    function LastCommand: AnsiChar;
+    function LastNumber: Double;
 
+    procedure InitCharMask(Mask, Char_set: PAnsiChar);
+
+    function Contains_(Mask: PAnsiChar; C: Cardinal): Boolean;
     function IsCommand(C: Cardinal): Boolean;
     function IsNumeric(C: Cardinal): Boolean;
     function IsSeparator(C: Cardinal): Boolean;
     function ParseNumber: Boolean;
-
-    property LastCommand: AnsiChar read FLastCommand;
-    property LastNumber: Double read FLastNumber;
   end;
 
 implementation
-
-resourcestring
-  RCStrNextInvalidChar = 'TPathTokenizer.Next: Invalid Character %c';
-  RCStrParsePathUnexpectedEnd = 'ParsePath: Unexpected end of path';
-
-function Contains(Mask: PAnsiChar; C: Cardinal): Boolean;
-  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
-begin
-  Result := (PInt8u(PtrComp(Mask) + (C shr 3) and 31)^ and
-    (1 shl (C and 7))) <> 0;
-end;
 
 
 { TPathTokenizer }
@@ -131,6 +121,7 @@ end;
 function TPathTokenizer.Next: Boolean;
 var
   Buf: array [0..99] of AnsiChar;
+
 begin
   Result := False;
 
@@ -142,7 +133,8 @@ begin
     not IsNumeric(Cardinal(FPath^)) do
   begin
     if not IsSeparator(Cardinal(FPath^)) then
-      raise TSvgException.Create(Format(RCStrNextInvalidChar, [FPath^]));
+      raise TSvgException.Create(Format('TPathTokenizer::next : Invalid '
+        + 'Character %c', [FPath^]));
 
     Inc(PtrComp(FPath));
   end;
@@ -181,50 +173,68 @@ end;
 function TPathTokenizer.Next(Cmd: AnsiChar): Double;
 var
   Buf: array [0..99] of AnsiChar;
+
 begin
   if not Next then
-    raise TSvgException.Create(PAnsiChar(RCStrParsePathUnexpectedEnd));
+    raise TSvgException.Create(PAnsiChar('parse_path: Unexpected end of path'));
 
   if LastCommand <> Cmd then
-    raise TSvgException.Create(Format('ParsePath: Command %c: bad or missing '
+    raise TSvgException.Create(Format('parse_path: Command %c: bad or missing '
       + 'parameters', [Cmd]));
 
   Result := LastNumber;
 end;
 
-procedure TPathTokenizer.InitCharMask(Mask, CharSet: PAnsiChar);
+function TPathTokenizer.LastCommand;
+begin
+  Result := FLastCommand;
+end;
+
+function TPathTokenizer.LastNumber;
+begin
+  Result := FLastNumber;
+end;
+
+procedure TPathTokenizer.InitCharMask;
 var
   C: Cardinal;
-begin
-  FillChar(Mask^, 32, 0);
 
-  while CharSet^ <> #0 do
+begin
+  FillChar(Mask^, 256 div 8, 0);
+
+  while Char_set^ <> #0 do
   begin
-    C := PInt8u(CharSet)^;
+    C := PInt8u(Char_set)^;
 
     PInt8u(PtrComp(Mask) + (C shr 3))^ := PInt8u(PtrComp(Mask) + (C shr 3)
       )^ or (1 shl (C and 7));
 
-    Inc(PtrComp(CharSet));
+    Inc(PtrComp(Char_set));
   end;
 end;
 
-function TPathTokenizer.IsCommand(C: Cardinal): Boolean;
+function TPathTokenizer.Contains_;
 begin
-  Result := Contains(@FCommandsMask[0], C);
+  Result := (PInt8u(PtrComp(Mask) + (C shr 3) and (256 div 8 - 1))^ and
+    (1 shl (C and 7))) <> 0;
 end;
 
-function TPathTokenizer.IsNumeric(C: Cardinal): Boolean;
+function TPathTokenizer.IsCommand;
 begin
-  Result := Contains(@FNumericMask[0], C);
+  Result := Contains_(@FCommandsMask[0], C);
 end;
 
-function TPathTokenizer.IsSeparator(C: Cardinal): Boolean;
+function TPathTokenizer.IsNumeric;
 begin
-  Result := Contains(@FSeparatorsMask[0], C);
+  Result := Contains_(@FNumericMask[0], C);
 end;
 
-function TPathTokenizer.ParseNumber: Boolean;
+function TPathTokenizer.IsSeparator;
+begin
+  Result := Contains_(@FSeparatorsMask[0], C);
+end;
+
+function TPathTokenizer.ParseNumber;
 var
   Buf: array [0..255] of AnsiChar; // Should be enough for any number
   BufPointer: PAnsiChar;

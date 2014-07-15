@@ -862,37 +862,37 @@ begin
   FRasterizer.Gamma(Value);
 end;
 
-procedure TAggFontEngineWin32TrueTypeBase.SetTransform(Mtx: TAggTransAffine);
+procedure TAggFontEngineWin32TrueTypeBase.SetTransform;
 begin
   FAffine.AssignAll(Mtx);
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetTypeFace: AnsiString;
+function TAggFontEngineWin32TrueTypeBase.GetTypeFace;
 begin
   Result := FTypeFace;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetHeight: Double;
+function TAggFontEngineWin32TrueTypeBase.GetHeight;
 begin
   Result := FHeight;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetWidth: Double;
+function TAggFontEngineWin32TrueTypeBase.GetWidth;
 begin
   Result := FWidth;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetFontSignature: AnsiString;
+function TAggFontEngineWin32TrueTypeBase.GetFontSignature;
 begin
   Result := FSignature;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.ChangeStamp: Integer;
+function TAggFontEngineWin32TrueTypeBase.ChangeStamp;
 begin
   Result := FChangeStamp;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.PrepareGlyph(GlyphCode: Cardinal): Boolean;
+function TAggFontEngineWin32TrueTypeBase.PrepareGlyph;
 const
   GGO_UNHINTED = $0100; // For compatibility with old SDKs.
 
@@ -1135,37 +1135,37 @@ begin
   Result := False;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetGlyphIndex: Cardinal;
+function TAggFontEngineWin32TrueTypeBase.GetGlyphIndex;
 begin
   Result := FGlyphIndex;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetDataSize: Cardinal;
+function TAggFontEngineWin32TrueTypeBase.GetDataSize;
 begin
   Result := FDataSize;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetDataType: TAggGlyphData;
+function TAggFontEngineWin32TrueTypeBase.GetDataType;
 begin
   Result := FDataType;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetBounds: PRectInteger;
+function TAggFontEngineWin32TrueTypeBase.GetBounds;
 begin
   Result := @FBounds;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetAdvanceX: Double;
+function TAggFontEngineWin32TrueTypeBase.GetAdvanceX;
 begin
   Result := FAdvanceX;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.GetAdvanceY: Double;
+function TAggFontEngineWin32TrueTypeBase.GetAdvanceY;
 begin
   Result := FAdvanceY;
 end;
 
-procedure TAggFontEngineWin32TrueTypeBase.WriteGlyphTo(Data: PInt8u);
+procedure TAggFontEngineWin32TrueTypeBase.WriteGlyphTo;
 begin
   if (Data <> nil) and (FDataSize <> 0) then
     case FDataType of
@@ -1289,7 +1289,7 @@ begin
   end;
 end;
 
-function TAggFontEngineWin32TrueTypeBase.PairLess(V1, V2: PKerningPair): Boolean;
+function TAggFontEngineWin32TrueTypeBase.PairLess;
 begin
   if V1.WFirst <> V2.WFirst then
     Result := V1.WFirst < V2.WFirst

@@ -70,8 +70,8 @@ type
   private
     Index: Cardinal;
 
-    FFillColor, FStrokeColor: TAggColor;
-    FFillFlag, FStrokeFlag, FEvenOddFlag: Boolean;
+    FillColor, StrokeColor: TAggColor;
+    FillFlag, StrokeFlag, EvenOddFlag: Boolean;
 
     FLineJoin: TAggLineJoin;
     FLineCap: TAggLineCap;
@@ -86,18 +86,8 @@ type
     // Copy constructor with new index value
     constructor Create(Attr: PPathAttributesRecord; Idx: Cardinal); overload;
 
-    procedure Assign(Attr: PPathAttributesRecord); overload;
-    procedure Assign(Attr: PPathAttributesRecord; Idx: Cardinal); overload;
-
     property MiterLimit: Double read FMiterLimit write FMiterLimit;
     property StrokeWidth: Double read FStrokeWidth write FStrokeWidth;
-
-    property LineCap: TAggLineCap read FLineCap write FLineCap;
-    property LineJoin: TAggLineJoin read FLineJoin write FLineJoin;
-
-    property FillFlag: Boolean read FFillFlag write FFillFlag;
-    property StrokeFlag: Boolean read FStrokeFlag write FStrokeFlag;
-    property EvenOddFlag: Boolean read FEvenOddFlag write FEvenOddFlag;
   end;
 
   // Path container and Renderer.
@@ -119,17 +109,6 @@ type
     // Private
     function GetCurrentAttributes: PPathAttributesRecord;
     function GetTransform: TAggTransAffine;
-    function GetVertexCount: Cardinal;
-
-    procedure SetFillOpacity(Value: Double);
-    procedure SetStrokeOpacity(Value: Double);
-    procedure SetLineJoin(Value: TAggLineJoin);
-    procedure SetLineCap(Value: TAggLineCap);
-    procedure SetMiterLimit(Value: Double);
-    procedure SetEvenOdd(Value: Boolean);
-    procedure SetStrokeWidth(Value: Double);
-  protected
-    function GetItem(Index: Cardinal): Cardinal; override;
   public
     constructor Create;
     destructor Destroy; override;
@@ -163,17 +142,26 @@ type
 
     procedure AddPath(Vs: TAggVertexSource; PathID: Cardinal = 0;
       SolidPath: Boolean = True);
+    function GetVertexCount: Cardinal;
 
     // Call these functions on <g> tag (start_element, end_element respectively)
     procedure PushAttribute;
     procedure PopAttribute;
 
     // Attribute setting functions
-    procedure SetFillColor(Value: PAggColor);
-    procedure SetStrokeColor(Value: PAggColor);
+    procedure SetFillColor(F: PAggColor);
+    procedure SetStrokeColor(S: PAggColor);
+    procedure EvenOdd(Flag: Boolean);
+    procedure SetStrokeWidth(W: Double);
 
     procedure FillNone;
     procedure StrokeNone;
+
+    procedure SetFillOpacity(Op: Double);
+    procedure SetStrokeOpacity(Op: Double);
+    procedure SetLineJoin(Value: TAggLineJoin);
+    procedure SetLineCap(Value: TAggLineCap);
+    procedure SetMiterLimit(Ml: Double);
 
     // Make all polygons CCW-oriented
     procedure ArrangeOrientations;
@@ -181,6 +169,7 @@ type
     // Expand all polygons
     procedure Expand(Value: Double);
 
+    function ArrayOperator(Idx: Cardinal): Cardinal; virtual;
     procedure BoundingRect(X1, Y1, X2, Y2: PDouble);
 
     // Rendering. One can specify two additional parameters:
@@ -191,25 +180,10 @@ type
       const Cb: TRectInteger; Opacity: Double = 1.0);
 
     property Transform: TAggTransAffine read GetTransform;
-    property VertexCount: Cardinal read GetVertexCount;
-
-    property FillOpacity: Double write SetFillOpacity;
-    property StrokeOpacity: Double write SetFillOpacity;
-    property LineJoin: TAggLineJoin write SetLineJoin;
-    property LineCap: TAggLineCap write SetLineCap;
-    property MiterLimit: Double write SetMiterLimit;
-    property EvenOdd: Boolean write SetEvenOdd;
-    property StrokeWidth: Double write SetStrokeWidth;
   end;
 
 implementation
 
-resourcestring
-  RCStrParsePathNotImplemented = 'ParsePath: Command A: NOT IMPLEMENTED YET';
-  RCStrParsePathInvalidCommand = 'ParsePath: Invalid Command %c';
-  RCStrEndPathNotStarted = 'EndPath: The path was not begun';
-  RCStrPopAttributeEmptyStack = 'PopAttribute: Attribute stack is empty';
-  RCStrGetCurrentAttributesEmpty = 'GetCurrentAttributes: Attribute stack is empty';
 
 { TAggConvCount }
 
@@ -241,48 +215,40 @@ end;
 
 constructor TPathAttributesRecord.Create(Attr: PPathAttributesRecord);
 begin
+  Index := Attr.Index;
+
+  FillColor := Attr.FillColor;
+  StrokeColor := Attr.StrokeColor;
+
+  FillFlag := Attr.FillFlag;
+  StrokeFlag := Attr.StrokeFlag;
+  EvenOddFlag := Attr.EvenOddFlag;
+  FLineJoin := Attr.FLineJoin;
+  FLineCap := Attr.FLineCap;
+  FMiterLimit := Attr.FMiterLimit;
+  FStrokeWidth := Attr.FStrokeWidth;
+
   FTransform := TAggTransAffine.Create;
-  Assign(Attr);
+  FTransform.AssignAll(Attr.FTransform);
 end;
 
 constructor TPathAttributesRecord.Create(Attr: PPathAttributesRecord; Idx: Cardinal);
 begin
-  FTransform := TAggTransAffine.Create;
-  Assign(Attr, Idx);
-end;
-
-procedure TPathAttributesRecord.Assign(Attr: PPathAttributesRecord);
-begin
-  Index := Attr^.Index;
-
-  FFillColor := Attr^.FFillColor;
-  FStrokeColor := Attr^.FStrokeColor;
-
-  FillFlag := Attr^.FillFlag;
-  FStrokeFlag := Attr^.StrokeFlag;
-  FEvenOddFlag := Attr^.EvenOddFlag;
-  FLineJoin := Attr^.FLineJoin;
-  FLineCap := Attr^.FLineCap;
-  FMiterLimit := Attr^.FMiterLimit;
-  FStrokeWidth := Attr^.FStrokeWidth;
-  FTransform.AssignAll(Attr^.FTransform);
-end;
-
-procedure TPathAttributesRecord.Assign(Attr: PPathAttributesRecord; Idx: Cardinal);
-begin
   Index := Idx;
 
-  FFillColor := Attr^.FFillColor;
-  FStrokeColor := Attr^.FStrokeColor;
+  FillColor := Attr.FillColor;
+  StrokeColor := Attr.StrokeColor;
 
-  FillFlag := Attr^.FillFlag;
-  FStrokeFlag := Attr^.StrokeFlag;
-  FEvenOddFlag := Attr^.EvenOddFlag;
-  FLineJoin := Attr^.FLineJoin;
-  FLineCap := Attr^.FLineCap;
-  FMiterLimit := Attr^.FMiterLimit;
-  FStrokeWidth := Attr^.FStrokeWidth;
-  FTransform.AssignAll(Attr^.FTransform);
+  FillFlag := Attr.FillFlag;
+  StrokeFlag := Attr.StrokeFlag;
+  EvenOddFlag := Attr.EvenOddFlag;
+  FLineJoin := Attr.FLineJoin;
+  FLineCap := Attr.FLineCap;
+  FMiterLimit := Attr.FMiterLimit;
+  FStrokeWidth := Attr.FStrokeWidth;
+
+  FTransform := TAggTransAffine.Create;
+  FTransform.AssignAll(Attr.FTransform);
 end;
 
 
@@ -306,8 +272,6 @@ begin
 end;
 
 destructor TPathRenderer.Destroy;
-var
-  Index: Integer;
 begin
   FCurved.Free;
   FCurvedCount.Free;
@@ -315,9 +279,6 @@ begin
   FCurvedStrokedTrans.Free;
   FCurvedTrans.Free;
   FCurvedTransContour.Free;
-
-  for Index := 0 to FAttrStorage.Size - 1 do
-    PPathAttributesRecord(FAttrStorage.ItemPointer[Index])^.FTransform.Free;
 
   FAttrStack.Free;
   FAttrStorage.Free;
@@ -344,12 +305,12 @@ begin
 
   Idx := FStorage.StartNewPath;
 
-  // create attribute and add to storage list
   Attr.Create(GetCurrentAttributes, Idx);
+
   FAttrStorage.Add(@Attr);
 end;
 
-procedure TPathRenderer.ParsePath(Tok: TPathTokenizer);
+procedure TPathRenderer.ParsePath;
 var
   Arg: array [0..9] of Double;
   I  : Cardinal;
@@ -422,13 +383,16 @@ begin
         end;
 
       'A', 'a':
-        raise TSvgException.Create(PAnsiChar(RCStrParsePathNotImplemented));
+        raise TSvgException.Create(PAnsiChar('parse_path: Command A: NOT IMPLEMENTED YET'));
 
       'Z', 'z':
         CloseSubpath;
 
     else
-      raise TSvgException.Create(Format(RCStrParsePathInvalidCommand, [Cmd]));
+      begin
+        raise TSvgException.Create(Format('parse_path: Invalid Command %c',
+          [Cmd]));
+      end;
     end;
   end;
 end;
@@ -436,20 +400,23 @@ end;
 procedure TPathRenderer.EndPath;
 var
   Idx : Cardinal;
-  Attr: PPathAttributesRecord;
+  Attr: TPathAttributesRecord;
 begin
   if FAttrStorage.Size = 0 then
-    raise TSvgException.Create(PAnsiChar(RCStrEndPathNotStarted));
+    raise TSvgException.Create(PAnsiChar('end_path : The path was not begun'));
 
-  Attr := PPathAttributesRecord(FAttrStorage[FAttrStorage.Size - 1]);
-  Idx := Attr.Index;
-  Attr.Assign(GetCurrentAttributes);
+  Attr.Create(GetCurrentAttributes);
+
+  Idx := PPathAttributesRecord(FAttrStorage[FAttrStorage.Size - 1]).Index;
   Attr.Index := Idx;
+
+  Move(Pointer(@Attr)^, PPathAttributesRecord(FAttrStorage[
+    FAttrStorage.Size - 1])^, SizeOf(TPathAttributesRecord));
 
   PopAttribute;
 end;
 
-procedure TPathRenderer.MoveTo(X, Y: Double; Rel: Boolean = False);
+procedure TPathRenderer.MoveTo;
 begin
   if Rel then
     FStorage.RelativeToAbsolute(@X, @Y);
@@ -457,7 +424,7 @@ begin
   FStorage.MoveTo(X, Y);
 end;
 
-procedure TPathRenderer.LineTo(X, Y: Double; Rel: Boolean = False);
+procedure TPathRenderer.LineTo;
 begin
   if Rel then
     FStorage.RelativeToAbsolute(@X, @Y);
@@ -465,7 +432,7 @@ begin
   FStorage.LineTo(X, Y);
 end;
 
-procedure TPathRenderer.HorizontalLineTo(X: Double; Rel: Boolean = False);
+procedure TPathRenderer.HorizontalLineTo;
 var
   X2, Y2: Double;
 begin
@@ -483,7 +450,7 @@ begin
   end;
 end;
 
-procedure TPathRenderer.VerticalLineTo(Y: Double; Rel: Boolean = False);
+procedure TPathRenderer.VerticalLineTo;
 var
   X2, Y2: Double;
 begin
@@ -514,6 +481,7 @@ end;
 
 procedure TPathRenderer.Curve3(X, Y: Double; Rel: Boolean = False);
 begin
+  // raise exception("Curve3(x, y) : NOT IMPLEMENTED YET");
   if Rel then
     FStorage.Curve3Relative(X, Y)
   else
@@ -535,6 +503,7 @@ end;
 
 procedure TPathRenderer.Curve4(X2, Y2, X, Y: Double; Rel: Boolean = False);
 begin
+  // throw exception("Curve4(x2, y2, x, y) : NOT IMPLEMENTED YET");
   if Rel then
     FStorage.Curve4Relative(X2, Y2, X, Y)
   else
@@ -546,13 +515,12 @@ begin
   FStorage.EndPoly(CAggPathFlagsClose);
 end;
 
-procedure TPathRenderer.AddPath(Vs: TAggVertexSource; PathID: Cardinal = 0;
-  SolidPath: Boolean = True);
+procedure TPathRenderer.AddPath;
 begin
   FStorage.AddPath(Vs, PathID, SolidPath);
 end;
 
-function TPathRenderer.GetVertexCount: Cardinal;
+function TPathRenderer.GetVertexCount;
 begin
   Result := FCurvedCount.Count;
 end;
@@ -569,14 +537,14 @@ begin
     begin
       Index := 0;
 
-      FFillColor.Black;
-      FStrokeColor.Black;
+      FillColor.Black;
+      StrokeColor.Black;
 
       FillFlag := True;
       StrokeFlag := False;
       EvenOddFlag := False;
-      LineJoin := ljMiter;
-      LineCap := lcButt;
+      FLineJoin := ljMiter;
+      FLineCap := lcButt;
       MiterLimit := 4.0;
       StrokeWidth := 1.0;
 
@@ -590,46 +558,43 @@ end;
 procedure TPathRenderer.PopAttribute;
 begin
   if FAttrStack.Size = 0 then
-    raise TSvgException.Create(PAnsiChar(RCStrPopAttributeEmptyStack));
-
-  if FAttrStack.Size = 1 then
-    PPathAttributesRecord(FAttrStack.Last).FTransform.Free;
+    raise TSvgException.Create(PAnsiChar('pop_attr : Attribute stack is empty'));
 
   FAttrStack.RemoveLast;
 end;
 
-procedure TPathRenderer.SetFillColor(Value: PAggColor);
+procedure TPathRenderer.SetFillColor;
 var
   Attr: PPathAttributesRecord;
 begin
   Attr := GetCurrentAttributes;
 
-  Attr.FFillColor := Value^;
+  Attr.FillColor := F^;
   Attr.FillFlag := True;
 end;
 
-procedure TPathRenderer.SetStrokeColor(Value: PAggColor);
+procedure TPathRenderer.SetStrokeColor;
 var
   Attr: PPathAttributesRecord;
 begin
   Attr := GetCurrentAttributes;
 
-  Attr.FStrokeColor := Value^;
+  Attr.StrokeColor := S^;
   Attr.StrokeFlag := True;
 end;
 
-procedure TPathRenderer.SetEvenOdd(Value: Boolean);
+procedure TPathRenderer.EvenOdd;
 begin
-  GetCurrentAttributes.EvenOddFlag := Value;
+  GetCurrentAttributes.EvenOddFlag := Flag;
 end;
 
-procedure TPathRenderer.SetStrokeWidth(Value: Double);
+procedure TPathRenderer.SetStrokeWidth;
 var
   Attr: PPathAttributesRecord;
 begin
   Attr := GetCurrentAttributes;
 
-  Attr.StrokeWidth := Value;
+  Attr.StrokeWidth := W;
   Attr.StrokeFlag := True;
 end;
 
@@ -643,14 +608,14 @@ begin
   GetCurrentAttributes.StrokeFlag := False;
 end;
 
-procedure TPathRenderer.SetFillOpacity(Value: Double);
+procedure TPathRenderer.SetFillOpacity;
 begin
-  GetCurrentAttributes.FFillColor.Opacity := Value;
+  GetCurrentAttributes.FillColor.Opacity := Op;
 end;
 
-procedure TPathRenderer.SetStrokeOpacity(Value: Double);
+procedure TPathRenderer.SetStrokeOpacity;
 begin
-  GetCurrentAttributes.FStrokeColor.Opacity := Value;
+  GetCurrentAttributes.StrokeColor.Opacity := Op;
 end;
 
 procedure TPathRenderer.SetLineJoin(Value: TAggLineJoin);
@@ -663,12 +628,12 @@ begin
   GetCurrentAttributes.FLineCap := Value;
 end;
 
-procedure TPathRenderer.SetMiterLimit(Value: Double);
+procedure TPathRenderer.SetMiterLimit;
 begin
-  GetCurrentAttributes.FMiterLimit := Value;
+  GetCurrentAttributes.FMiterLimit := Ml;
 end;
 
-function TPathRenderer.GetTransform: TAggTransAffine;
+function TPathRenderer.GetTransform;
 begin
   Result := GetCurrentAttributes.FTransform;
 end;
@@ -678,27 +643,25 @@ begin
   FStorage.ArrangeOrientationsAllPaths(CAggPathFlagsCcw);
 end;
 
-procedure TPathRenderer.Expand(Value: Double);
+procedure TPathRenderer.Expand;
 begin
   FCurvedTransContour.Width := Value;
 end;
 
-function TPathRenderer.GetItem(Index: Cardinal): Cardinal;
+function TPathRenderer.ArrayOperator;
 begin
-  FTransform.AssignAll(PPathAttributesRecord(FAttrStorage[Index]).FTransform);
-  Result := PPathAttributesRecord(FAttrStorage[Index]).Index;
+  FTransform.AssignAll(@PPathAttributesRecord(FAttrStorage[Idx]).FTransform);
+
+  Result := PPathAttributesRecord(FAttrStorage[Idx]).Index;
 end;
 
-procedure TPathRenderer.BoundingRect(X1, Y1, X2, Y2: PDouble);
+procedure TPathRenderer.BoundingRect;
 var
   Trans: TAggConvTransform;
 begin
   Trans := TAggConvTransform.Create(FStorage, FTransform);
-  try
-    BoundingRectInteger(Trans, Self, 0, FAttrStorage.Size, X1, Y1, X2, Y2);
-  finally
-    Trans.Free;
-  end;
+
+  BoundingRectInteger(Trans, @Self, 0, FAttrStorage.Size, X1, Y1, X2, Y2);
 end;
 
 procedure TPathRenderer.Render(Ras: TAggRasterizerScanLine;
@@ -724,7 +687,7 @@ begin
 
     Scl := FTransform.GetScale;
 
-    // FCurved.ApproximationMethod := curveInc;
+    // FCurved.approximation_method(curveInc );
 
     FCurved.ApproximationScale := Scl;
     FCurved.AngleTolerance := 0.0;
@@ -747,7 +710,7 @@ begin
         Ras.AddPath(FCurvedTransContour, Attr.Index);
       end;
 
-      Color := Attr.FFillColor;
+      Color := Attr.FillColor;
 
       Color.Opacity := Color.Opacity * Opacity;
       Ren.SetColor(@Color);
@@ -758,11 +721,7 @@ begin
     begin
       FCurvedStroked.Width := Attr.StrokeWidth;
 
-      (*
-      if Attr.LineJoin = ljMiter then
-        FCurvedStroked.LineJoin := ljMiterRound
-      else
-      *)
+      // FCurvedStroked.FLineJoin((attr.FLineJoin == MiterJoin) ? MiterJoin_round : attr.FLineJoin);
 
       FCurvedStroked.LineJoin := Attr.FLineJoin;
       FCurvedStroked.LineCap := Attr.FLineCap;
@@ -779,7 +738,7 @@ begin
       Ras.FillingRule := frNonZero;
       Ras.AddPath(FCurvedStrokedTrans, Attr.Index);
 
-      Color := Attr.FStrokeColor;
+      Color := Attr.StrokeColor;
 
       Color.Opacity := Color.Opacity * Opacity;
       Ren.SetColor(@Color);
@@ -790,10 +749,10 @@ begin
   end;
 end;
 
-function TPathRenderer.GetCurrentAttributes: PPathAttributesRecord;
+function TPathRenderer.GetCurrentAttributes;
 begin
   if FAttrStack.Size = 0 then
-    raise TSvgException.Create(PAnsiChar(RCStrGetCurrentAttributesEmpty));
+    raise TSvgException.Create(PAnsiChar('cur_attr : Attribute stack is empty'));
 
   Result := PPathAttributesRecord(FAttrStack[FAttrStack.Size - 1]);
 end;

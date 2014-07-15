@@ -227,20 +227,22 @@ end;
 procedure TAggRasterizerCellsAA.Line(X1, Y1, X2, Y2: Integer);
 const
   CDxLimit = 16384 shl CAggPolySubpixelShift;
+
 var
-  Dx, Dy: Integer;
-  Center: TPointInteger;
-  Ex1, Ex2, Ey1, Ey2, Fy1, Fy2, Ex, TwoFX, Area: Integer;
-  FromX, ToX, P, Rem, ModValue, Lift, Delta, First, Incr: Integer;
+  Dx, Cx, Cy, Dy, Ex1, Ex2, Ey1, Ey2, Fy1, Fy2, Ex, TwoFX, Area,
+
+    FromX, ToX, P, Rem, ModValue, Lift, Delta, First, Incr: Integer;
+
 begin
   Dx := X2 - X1;
 
   if (Dx >= CDxLimit) or (Dx <= -CDxLimit) then
   begin
-    Center := PointInteger(ShrInt32(X1 + X2, 1), ShrInt32(Y1 + Y2, 1));
+    Cx := ShrInt32(X1 + X2, 1);
+    Cy := ShrInt32(Y1 + Y2, 1);
 
-    Line(X1, Y1, Center.X, Center.Y);
-    Line(Center.X, Center.Y, X2, Y2);
+    Line(X1, Y1, Cx, Cy);
+    Line(Cx, Cy, X2, Y2);
   end;
 
   Dy := Y2 - Y1;
@@ -441,11 +443,14 @@ const
 
 procedure QuickSortCells(Start: PPAggCellStyleAA; Num: Cardinal);
 var
-  Stack: array [0..79] of PPAggCellStyleAA;
-  Top: PPPAggCellStyleAA;
+  Stack      : array [0..79] of PPAggCellStyleAA;
+  Top        : PPPAggCellStyleAA;
   Limit, Base: PPAggCellStyleAA;
+
   Len, X: Integer;
+
   I, J, Pivot: PPAggCellStyleAA;
+
 begin
   Limit := PPAggCellStyleAA(PtrComp(Start) + Num *
     SizeOf(PAggCellStyleAA));
@@ -481,16 +486,19 @@ begin
 
         repeat
           Inc(PtrComp(I), SizeOf(PAggCellStyleAA));
+
         until I^^.X >= X;
 
         repeat
           Dec(PtrComp(J), SizeOf(PAggCellStyleAA));
+
         until X >= J^^.X;
 
         if PtrComp(I) > PtrComp(J) then
           Break;
 
         SwapCells(I, J);
+
       until False;
 
       SwapCells(Base, J);
@@ -553,6 +561,7 @@ begin
       else
         Break;
     end;
+
   until False;
 end;
 
@@ -564,6 +573,7 @@ var
   Nb, I, Start, V: Cardinal;
 
   CurrentY: PAggSortedY;
+
 begin
   // Perform sort only the first time.
   if FSorted then
@@ -709,7 +719,8 @@ end;
 function TAggRasterizerCellsAA.ScanLineCells(Y: Cardinal): PPAggCellStyleAA;
 begin
   Result := PPAggCellStyleAA(PtrComp(FSortedCells.Data) +
-    PAggSortedY(FSortedY[Y - FMin.Y]).Start * SizeOf(PAggCellStyleAA));
+    PAggSortedY(FSortedY[Y - FMin.Y]).Start *
+    SizeOf(PAggCellStyleAA));
 end;
 
 procedure TAggRasterizerCellsAA.SetCurrentCell(X, Y: Integer);
@@ -749,6 +760,7 @@ end;
 procedure TAggRasterizerCellsAA.RenderHorizontalLine(Ey, X1, Y1, X2, Y2: Integer);
 var
   Ex1, Ex2, Fx1, Fx2, Delta, P, First, Dx, Incr, Lift, ModValue, Rem: Integer;
+
 begin
   Ex1 := ShrInt32(X1, CAggPolySubpixelShift);
   Ex2 := ShrInt32(X2, CAggPolySubpixelShift);
@@ -851,6 +863,7 @@ end;
 procedure TAggRasterizerCellsAA.AllocateBlock;
 var
   NewCells: PPAggCellStyleAA;
+
 begin
   if FCurrVlock >= FNumBlocks then
   begin

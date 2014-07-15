@@ -79,12 +79,12 @@ begin
   inherited;
 end;
 
-procedure TAggConvSmoothPoly.SetSmoothValue(Value: Double);
+procedure TAggConvSmoothPoly.SetSmoothValue;
 begin
   FGenerator.SmoothValue := Value;
 end;
 
-function TAggConvSmoothPoly.GetSmoothValue: Double;
+function TAggConvSmoothPoly.GetSmoothValue;
 begin
   Result := FGenerator.SmoothValue;
 end;
@@ -106,12 +106,12 @@ begin
   inherited;
 end;
 
-procedure TAggConvSmoothPolyCurve.SetSmoothValue(Value: Double);
+procedure TAggConvSmoothPolyCurve.SetSmoothValue;
 begin
   TAggVcgenSmoothPoly1(FSmooth.Generator).SmoothValue := Value;
 end;
 
-function TAggConvSmoothPolyCurve.GetSmoothValue: Double;
+function TAggConvSmoothPolyCurve.GetSmoothValue;
 begin
   Result := TAggVcgenSmoothPoly1(FSmooth.Generator).SmoothValue;
 end;
