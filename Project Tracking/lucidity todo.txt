@@ -1,5 +1,8 @@
 =============================================================================
-Bug: 64 Bit Cubase. Arrows on the GUI draw using incorrect color.
+Bug: 64 Bit Cubase. Sequencer drop box control captions are red!
+
+GetRedFoxColor() returns different results depending on whether the application is
+32bit or 64 bit.
 
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
