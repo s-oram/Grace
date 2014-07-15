@@ -491,7 +491,6 @@ begin
   end;
 
 
-
   if IsSupportedAudioFormat(NodeFileName) then
   begin
     Bitmap := Plugin.Globals.SkinImageLoader.GetImage('Browser_AudioIcon');

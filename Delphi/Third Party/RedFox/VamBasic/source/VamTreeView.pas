@@ -31,7 +31,7 @@ type
   private
     fDefaultNodeHeight: integer;
     fChildIndent: integer;
-    fBuffer: TRedFoxImageBuffer;
+    fStagingBuffer: TRedFoxImageBuffer;
     fOptions: TETOptions;
     fRootIndent: integer;
     fSelectedList: TObjectList;
@@ -81,7 +81,7 @@ type
     procedure ScrollXChange;
     procedure ScrollYChange;
 
-    procedure RenderNode(Node:TVamTreeViewNode; var vOffset, hOffset:integer);
+
 
     procedure SelectVisibleNodesBetween(NodeA, NodeB:TVamTreeViewNode);
 
@@ -93,12 +93,20 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure DoNodeMultiSelect(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
-    property Buffer:TRedFoxImageBuffer read fBuffer write fBuffer;
-    property BufferInterface:TAgg2D read fBufferInterface write fBufferInterface;
+    property StagingBuffer:TRedFoxImageBuffer read fStagingBuffer write fStagingBuffer;
+    //property BufferInterface:TAgg2D read fBufferInterface write fBufferInterface;
     property SelectedList:TObjectList read fSelectedList write fSelectedList;
     property BufferNeedsUpdate:boolean read fBufferNeedsUpdate write fBufferNeedsUpdate;
     property From:TVamTreeViewNode read fFrom write fFrom;
+
+
+    //==== Drawing Methods =====================================================
     procedure Paint; override;
+
+    procedure DrawTreeView(const DestBuffer : TRedFoxImageBuffer);
+
+    procedure RenderNode(const DestBuffer : TRedFoxImageBuffer; const Node:TVamTreeViewNode; var vOffset, hOffset:integer);
+    //==========================================================================
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -209,14 +217,10 @@ begin
   fTreeOffsetX := 0;
   fTreeOffsetY := 0;
 
-  Buffer := TRedFoxImageBuffer.Create;
-  Buffer.Width := 10;
-  Buffer.Height := 10;
+  StagingBuffer := TRedFoxImageBuffer.Create;
+  StagingBuffer.Width := 10;
+  StagingBuffer.Height := 10;
 
-  //TODO: Delete
-  //BufferCanvas := Buffer.Canvas;
-
-  BufferInterface := Buffer.BufferInterface;
 
   BufferNeedsUpdate := false;
 
@@ -237,7 +241,7 @@ end;
 destructor TVamTreeView.Destroy;
 begin
   SelectedList.Free;
-  Buffer.Free;
+  StagingBuffer.Free;
   inherited;
 end;
 
@@ -263,10 +267,13 @@ var
   c1 : integer;
   tw, nw:double;
 begin
+  BackBuffer.UpdateFont(Font);
+
   nw := RootIndent + (ChildIndent * aNode.Depth);
   //TODO: BUG: There is a problem with this line. When running on the host OS it
   // returns a incorrect value.
-  nw := nw + BufferInterface.TextWidth(AnsiString(aNode.Caption));
+
+  nw := nw + BackBuffer.TextWidth(aNode.Caption);
   nw := nw + DefaultNodeHeight + 4;  //Take the node bitmap into account.
 
   if (aNode.HasChildren) and (aNode.Expanded) then
@@ -1040,115 +1047,6 @@ begin
   Invalidate;
 end;
 
-
-procedure TVamTreeView.RenderNode(Node: TVamTreeViewNode; var vOffset, hOffset: integer);
-var
-  Text:string;
-  TextPosX,TextPosY:integer;
-  c1:integer;
-  NodeBitmap:TBitmap;
-  Src,Dest:TRect;
-  NodeIsSelected:boolean;
-  Selection:TRect;
-  TextBounds : TRect;
-  tw : single;
-begin
-  assert(assigned(Node));
-
-  //Setup some values.
-  Text := Node.Caption;
-
-  NodeBitmap := GetNodeBitmap(Node);
-
-  BufferInterface.NoFill;
-  if (FocusedNode = Node) or (SelectedList.IndexOf(Node) <> -1)
-    then NodeIsSelected := true
-    else NodeIsSelected := false;
-
-  //render the node
-  if (vOffset > (0-DefaultNodeHeight * 2)) and (vOffset < self.Height + DefaultNodeHeight * 2) then
-  begin
-    if NodeBitmap <> nil then
-    begin
-      Src.Left    := 0;
-      Src.Top     := 0;
-      Src.Right   := NodeBitmap.Width;
-      Src.Bottom  := NodeBitmap.Height;
-
-      Dest.Left   := hOffset;
-      Dest.Right  := hOffset + DefaultNodeHeight;
-      Dest.Top    := vOffset;
-      Dest.Bottom := vOffset + DefaultNodeHeight;
-
-      Buffer.TransformImage(NodeBitmap, Dest.Left, Dest.Top);
-
-      TextPosX := hOffset + DefaultNodeHeight + 2;
-      TextPosY := vOffset;
-    end else
-    begin
-      TextPosX := hOffset;
-      TextPosY := vOffset;
-    end;
-
-    if NodeIsSelected then
-    begin
-      //tw := BufferInterface.TextWidth(AnsiString(Text));
-      tw := Buffer.TextWidth(Text, Font);
-      Selection.Left   := TextPosX;
-      Selection.Right  := round(TextPosX + tw);
-      Selection.Top    := TextPosY;
-      Selection.Bottom := TextPosY + DefaultNodeHeight;
-
-      BufferInterface.LineColor := GetAggColor(SelectedNodeColor, SelectedNodeAlpha);
-      BufferInterface.FillColor := GetAggColor(SelectedNodeColor, SelectedNodeAlpha);
-
-      BufferInterface.Rectangle(Selection.Left,
-                                Selection.Top,
-                                Selection.Right,
-                                Selection.Bottom);
-    end;
-
-
-    //Buffer.BufferInterface.LineColor := GetAggColor(Font.Color);
-    //Buffer.BufferInterface.FillColor := GetAggColor(Font.Color);
-    //Buffer.TextOut(TextPosX, (TextPosY + DefaultNodeHeight * 0.5), Text);
-
-
-
-    TextBounds.Left := TextPosX;
-    TextBounds.Right := round(TextPosX + BufferInterface.TextWidth(AnsiString(Text)));
-    TextBounds.Top  := TextPosY;
-    TextBounds.Bottom := TextPosY + DefaultNodeHeight;
-
-    Buffer.DrawText(Text, Font, TRedFoxAlign.AlignNear, TRedFoxAlign.AlignCenter, TextBounds);
-
-    //TextBounds := Rect(0,0, Width, Height);
-    //BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
-
-    Node.Width := round(TextPosX + BufferInterface.TextWidth(AnsiString(Text)));
-  end;
-
-  //fill in some values.
-  Node.Left    := hOffset;
-  Node.Top     := vOffset;
-  Node.Visible := true;
-
-  inc(vOffset, DefaultNodeHeight);
-
-  //Render child nodes if needed..
-  if (Node.HasChildren) and (Node.Expanded) then
-  begin
-    inc(hOffset, ChildIndent);
-
-    for c1 := 0 to Node.ChildCount - 1 do
-    begin
-      RenderNode(Node.Child[c1],vOffset,hOffset);
-    end;
-
-    dec(hOffset, ChildIndent);
-  end;
-end;
-
 procedure TVamTreeView.SetTreeOffsetX(Value: integer);
 begin
   if Value > 0 then Value := 0
@@ -1185,7 +1083,7 @@ var
   c1, th,tw:integer;
   NodeWidth:integer;
 begin
-  if not assigned(Buffer) then exit;
+  if not assigned(StagingBuffer) then exit;
 
 
   BufferNeedsUpdate := true;
@@ -1217,8 +1115,8 @@ begin
   if TreeWidth > Width * 3 then TreeWidth := Width * 3;
 
 
-  Buffer.Width  := TreeWidth;
-  Buffer.Height := TreeHeight;
+  StagingBuffer.Width  := TreeWidth;
+  StagingBuffer.Height := TreeHeight;
 
 
   if TreeOffsetX < Width - TreeWidth then TreeOffsetX := Width - TreeWidth;
@@ -1298,9 +1196,25 @@ var
 begin
   inherited;
 
+  BackBuffer.BufferInterface.ClearAll(255,255,255,555);
+
+  DrawTreeView(BackBuffer);
+
+  //BackBuffer.TransformImage();
+
+  //DestBuffer.TransformImage(NodeBitmap, Dest.Left, Dest.Top);
+
+  //BackBuffer.BufferInterface.ClearAll(255,255,255,0);
+
+
+
+
+
+
+  {
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-  Buffer.UpdateFont(Font);
+  StagingBuffer.UpdateFont(Font);
 
   //=== Update Font =======
   //Buffer.UpdateFont(Font);
@@ -1321,28 +1235,21 @@ begin
     Dest.Top    := 0;
     Dest.Bottom := Height;
 
-    Buffer.TransformImage(Background, -Left, -Top);
+    StagingBuffer.TransformImage(Background, -Left, -Top);
 
     BufferNeedsUpdate := true;
   end else
   begin
     //Buffer.BufferInterface.ClearAll(0,0,0,0);
-    Buffer.BufferInterface.ClearAll(255,255,255,0);
-    Buffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
-    Buffer.BufferInterface.AntiAliasGamma := 10000;
+    StagingBuffer.BufferInterface.ClearAll(255,255,255,0);
+    StagingBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
+    StagingBuffer.BufferInterface.AntiAliasGamma := 10000;
 
     BufferNeedsUpdate := true;
   end;
 
   if BufferNeedsUpdate then
   begin
-    {
-    if Background = nil then
-    begin
-      BufferInterface.ClearAll(GetAggColor(clWhite));
-    end;
-    }
-
     ResetNodeVisibility(MasterNode);
 
     CurVertOffset := RootIndent + TreeOffsetY;
@@ -1361,9 +1268,146 @@ begin
   end;
 
   //copy the back buffer to the display.
-  BackBuffer.BufferInterface.CopyImage(Buffer.AsImage,0,0);
+  BackBuffer.BufferInterface.CopyImage(StagingBuffer.AsImage,0,0);
+  }
 
 end;
+
+procedure TVamTreeView.DrawTreeView(const DestBuffer: TRedFoxImageBuffer);
+var
+  c1:integer;
+  CurVertOffset:integer;
+  CurHorzOffset:integer;
+  Node:TVamTreeViewNode;
+begin
+  DestBuffer.BufferInterface.ClearAll(255,255,255,0);
+  DestBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSource;
+  DestBuffer.UpdateFont(Font);
+
+  ResetNodeVisibility(MasterNode);
+
+  CurVertOffset := RootIndent + TreeOffsetY;
+  CurHorzOffset := RootIndent + TreeOffsetX;
+
+  //Paint the nodes.
+  DestBuffer.BufferInterface.FillColor := GetAggColor(clSilver);
+
+  for c1 := 0 to RootNodeCount - 1 do
+  begin
+    Node := RootNodes[c1];
+    RenderNode(DestBuffer, Node, CurVertOffset, CurHorzOffSet);
+  end;
+end;
+
+procedure TVamTreeView.RenderNode(const DestBuffer: TRedFoxImageBuffer; const Node: TVamTreeViewNode; var vOffset, hOffset: integer);
+var
+  Text:string;
+  TextPosX,TextPosY:integer;
+  c1:integer;
+  NodeBitmap:TBitmap;
+  Src,Dest:TRect;
+  NodeIsSelected:boolean;
+  Selection:TRect;
+  TextBounds : TRect;
+  tw : single;
+begin
+  assert(assigned(Node));
+
+  //Setup some values.
+  Text := Node.Caption;
+
+  NodeBitmap := GetNodeBitmap(Node);
+
+  DestBuffer.BufferInterface.NoFill;
+  if (FocusedNode = Node) or (SelectedList.IndexOf(Node) <> -1)
+    then NodeIsSelected := true
+    else NodeIsSelected := false;
+
+  //render the node
+  if (vOffset > (0-DefaultNodeHeight * 2)) and (vOffset < self.Height + DefaultNodeHeight * 2) then
+  begin
+    if NodeBitmap <> nil then
+    begin
+      Src.Left    := 0;
+      Src.Top     := 0;
+      Src.Right   := NodeBitmap.Width;
+      Src.Bottom  := NodeBitmap.Height;
+
+      Dest.Left   := hOffset;
+      Dest.Right  := hOffset + DefaultNodeHeight;
+      Dest.Top    := vOffset;
+      Dest.Bottom := vOffset + DefaultNodeHeight;
+
+      DestBuffer.TransformImage(NodeBitmap, Dest.Left, Dest.Top);
+
+      TextPosX := hOffset + DefaultNodeHeight + 2;
+      TextPosY := vOffset;
+    end else
+    begin
+      TextPosX := hOffset;
+      TextPosY := vOffset;
+    end;
+
+    if NodeIsSelected then
+    begin
+      //tw := BufferInterface.TextWidth(AnsiString(Text));
+      tw := StagingBuffer.TextWidth(Text, Font);
+      Selection.Left   := TextPosX;
+      Selection.Right  := round(TextPosX + tw);
+      Selection.Top    := TextPosY;
+      Selection.Bottom := TextPosY + DefaultNodeHeight;
+
+      DestBuffer.BufferInterface.LineColor := GetAggColor(SelectedNodeColor, SelectedNodeAlpha);
+      DestBuffer.BufferInterface.FillColor := GetAggColor(SelectedNodeColor, SelectedNodeAlpha);
+
+      DestBuffer.BufferInterface.Rectangle(Selection.Left,
+                                Selection.Top,
+                                Selection.Right,
+                                Selection.Bottom);
+    end;
+
+
+    //DestBuffer.BufferInterface.LineColor := GetAggColor(Font.Color);
+    //DestBuffer.BufferInterface.FillColor := GetAggColor(Font.Color);
+    //Buffer.TextOut(TextPosX, (TextPosY + DefaultNodeHeight * 0.5), Text);
+
+
+
+    TextBounds.Left := TextPosX;
+    TextBounds.Right := round(TextPosX + DestBuffer.TextWidth(AnsiString(Text)));
+    TextBounds.Top  := TextPosY;
+    TextBounds.Bottom := TextPosY + DefaultNodeHeight;
+
+    DestBuffer.DrawText(Text, Font, TRedFoxAlign.AlignNear, TRedFoxAlign.AlignCenter, TextBounds, GetAggColor(Font.Color));
+
+    //TextBounds := Rect(0,0, Width, Height);
+    //BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+
+    Node.Width := round(TextPosX + DestBuffer.TextWidth(AnsiString(Text)));
+  end;
+
+  //fill in some values.
+  Node.Left    := hOffset;
+  Node.Top     := vOffset;
+  Node.Visible := true;
+
+  inc(vOffset, DefaultNodeHeight);
+
+  //Render child nodes if needed..
+  if (Node.HasChildren) and (Node.Expanded) then
+  begin
+    inc(hOffset, ChildIndent);
+
+    for c1 := 0 to Node.ChildCount - 1 do
+    begin
+      RenderNode(DestBuffer, Node.Child[c1],vOffset,hOffset);
+    end;
+
+    dec(hOffset, ChildIndent);
+  end;
+end;
+
+
 
 
 
