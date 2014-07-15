@@ -43,7 +43,7 @@ end;
 
 procedure ReadValuesFromSample_LinearInterpolation(const aSample:TSampleFloat; const ReadIndex:cardinal; const ReadIndexFrac:single; Out Out1, Out2 : single); inline;
 var
-  x1, x2, x3, x4 : single;
+  x1, x2 : single;
 begin
   if aSample.Properties.ChannelCount = 1 then
   begin

@@ -112,7 +112,6 @@ begin
   if Name = 'EnvOut' then Exit(@ScaledEnvValue);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
 end;
 
 procedure TADSR.SetSampleRate(const Value: integer);
