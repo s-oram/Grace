@@ -3,7 +3,7 @@
 #define MyAppPublisher "One Small Clue"
 #define MyAppName "Lucidity"
 #define MyAppURL "http://www.onesmallclue.com/"
-#define MyAppPlatform "Win32"
+#define MyAppPlatform "32bit"
 
 //===Automatice defines====
 #define MyAppVersion GetFileVersion(VersionReference)
@@ -12,11 +12,11 @@
 
 
 
-OutputBaseFilename=Setup_{#MyAppName}_Full_{#MyAppVersionAlt}_{#MyAppPlatform}
+OutputBaseFilename=Setup_{#MyAppName}_{#MyAppPlatform}_Full_{#MyAppVersionAlt}_Windows
 AppCopyright={#MyAppPublisher}
 AppPublisher={#MyAppPublisher}
 AppName={#MyAppName}
-AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppPlatform} {#MyAppVersion}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}

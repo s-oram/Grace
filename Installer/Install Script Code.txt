@@ -17,14 +17,14 @@ begin
   Text3 := 'The plugin will be installed in the directory selected below. To install in a different directory, click Browse and select another directory.';
   
   //Get the VST plugin directory as specified in the Windows registery.
-  if '{#MyAppPlatform}' = 'Win32' then
+  if '{#MyAppPlatform}' = '32bit' then
   begin
     Dir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', Dir);;
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', Dir);
   end;
   
-  if '{#MyAppPlatform}' = 'Win64' then
+  if '{#MyAppPlatform}' = '64bit' then
   begin
     Dir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', Dir);;
@@ -40,9 +40,9 @@ end;
 
 function GetDataDir(Param: String): String;
 begin
-  if (Param = 'DataDir') and ('{#MyAppPlatform}' = 'Win32')
+  if (Param = 'DataDir') and ('{#MyAppPlatform}' = '32bit')
     then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x32') 
-  else if (Param = 'DataDir') and ('{#MyAppPlatform}' = 'Win64')
+  else if (Param = 'DataDir') and ('{#MyAppPlatform}' = '64Bbt')
     then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x64')
   else if Param = 'VstDir' 
     then Result := VstDirPage.Values[0];

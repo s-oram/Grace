@@ -4,8 +4,6 @@
 
  - Need to test SFZ import.
 
-- rename installers to Lucidity 32Bit For Windows.
-
 - Need to trim long sample names so they display appropiately.
 
 - filters finished. 
