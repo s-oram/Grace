@@ -417,6 +417,7 @@ type
 
     // Path commands
     procedure ResetPath;
+    procedure AddPath(Vs: TAggCustomVertexSource);
 
     procedure MoveTo(X, Y: Double);
     procedure MoveRel(Dx, Dy: Double);
@@ -2783,6 +2784,11 @@ procedure TAgg2D.AddLine(X1, Y1, X2, Y2: Double);
 begin
   FPath.MoveTo(X1, Y1);
   FPath.LineTo(X2, Y2);
+end;
+
+procedure TAgg2D.AddPath(Vs: TAggCustomVertexSource);
+begin
+  FPath.AddPath(Vs);
 end;
 
 procedure TAgg2D.UpdateApproximationScale;
