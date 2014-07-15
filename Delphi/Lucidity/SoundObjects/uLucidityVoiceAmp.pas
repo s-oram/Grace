@@ -59,7 +59,7 @@ begin
   if Name = 'ModInput_Gain' then Exit(@ModPoints.ModInput_Gain);
   if Name = 'ModInput_Pan' then Exit(@ModPoints.ModInput_Pan);
 
-  result := nil;
+  //result := nil;
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 

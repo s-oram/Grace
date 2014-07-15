@@ -91,7 +91,7 @@ function TFivePointEnvelope.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'EnvOut' then Exit(@CurEnvValue);
 
-  result := nil;
+  //result := nil;
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 
