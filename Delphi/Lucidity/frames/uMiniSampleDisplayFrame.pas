@@ -215,9 +215,7 @@ begin
   ZoomInButton.OnMouseDown          := ZoomButtonMouseDown;
   ZoomApplyButton.OnMouseDown       := ZoomButtonMouseDown;
 
-
   ZoomScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
-
 
   Scope := TLucidityScope.Create(AOwner);
   Scope.Visible := true;
@@ -225,7 +223,6 @@ begin
   Scope.HitTest := false;
   Scope.BringToFront;
   Scope.Name := 'Scope';
-
 
   Scope.Font.Name := 'Tahoma';
   Scope.Font.Style := [];

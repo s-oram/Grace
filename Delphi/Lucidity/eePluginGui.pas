@@ -234,12 +234,9 @@ begin
   VoiceSetupFrame.BackgroundPanel.Parent := TabPanel;
 
   //======= Build the GUI =======
-
   DropFileTarget := TRedFoxDropFileTarget.Create(RedFoxContainer);
   DropFileTarget.RegisterTarget(SampleMapFrame.SampleMap);
   DropFileTarget.RegisterTarget(MiniSampleDisplayFrame.SampleOverlay);
-
-
   //===================================
 
 
