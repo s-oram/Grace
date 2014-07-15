@@ -811,7 +811,7 @@ end;
 procedure TLucidityStateManager.NewRegion(const RegionLoadInfo: TRegionLoadInfo; const SampleGroup: IKeyGroup);
 var
   aRegion : TRegion;
-  LoadResult : boolean;
+  //LoadResult : boolean;
 begin
   if not assigned(SampleGroup) then raise Exception.Create('SG (sample group interface variable not assigned.');
 
