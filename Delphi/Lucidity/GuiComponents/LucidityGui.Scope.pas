@@ -114,16 +114,12 @@ type
     FilterValues      : TScopeFilterValues;
     FilterBlendValues : TScopeFilterBlendValues;
 
-
-
-
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Paint; override;
 
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
-
 
     //== AHDSR values ==
     //== Lfo values ==
@@ -209,7 +205,7 @@ begin
   AutoFree(@Path);
 
   OldClipBox := Canvas.ClipBox;
-  Canvas.ClipBox(Bounds.Left, Bounds.Top, Bounds.Right, Bounds.Bottom);
+  //Canvas.ClipBox(Bounds.Left, Bounds.Top, Bounds.Right, Bounds.Bottom);
 
   Width := Bounds.Width;
   Height := Bounds.Height;
@@ -248,7 +244,7 @@ begin
   Canvas.DrawPath;
 
   //Reset the clip box.
-  Canvas.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
+  //Canvas.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
 end;
 
 function Quantise(const x : single; const Steps : integer):single;
@@ -405,13 +401,11 @@ begin
 
   if (aWidth > 40) and (aHeight > 40) then
   begin
-    //ScopeRect := Rect(8,8,aWidth-8,aHeight-24);
-    ScopeRect := Rect(1,8,aWidth-1,aHeight-17);
+    ScopeRect := Rect(1,8,aWidth-1,aHeight-24);
 
     if assigned(DiagramBuffer) then
     begin
-      //DiagramBuffer.SetSize(AWidth, AHeight);
-      DiagramBuffer.SetSize(ScopeRect.Width, ScopeRect.Height);
+      DiagramBuffer.SetSize(AWidth, AHeight);
       DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
     end;
 
@@ -420,8 +414,6 @@ begin
 
     if assigned(FreqDisplay)
       then FreqDisplay.SetSize(ScopeRect.Width, ScopeRect.Height);
-
-
 
   end else
   begin
@@ -539,7 +531,6 @@ var
 begin
   inherited;
 
-
   LfoValues.UpdateRandomValues;
 
   //BackBuffer.BufferInterface.ClearAll(0,0,0,0);
@@ -588,9 +579,8 @@ begin
   end;
 
 
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
-  BackBuffer.BufferInterface.NoFill;
-
+  //BackBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
+  //BackBuffer.BufferInterface.NoFill;
   //BackBuffer.BufferInterface.RoundedRect(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
 end;
 
@@ -629,8 +619,7 @@ procedure TLucidityScope.Draw_Lfo;
 var
   OldClipBox : TRectDouble;
 begin
-  OldClipBox := DiagramBuffer.BufferInterface.ClipBox;
-  DiagramBuffer.BufferInterface.ClipBox(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom);
+  DiagramBuffer.BufferInterface.ClipBox(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right-1, ScopeRect.Bottom);
 
   DiagramBuffer.BufferInterface.ClearAll(0,0,0,0);
 
@@ -658,7 +647,12 @@ begin
   end;
 
 
-  DiagramBuffer.BufferInterface.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
+  //DiagramBuffer.BufferInterface.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
+
+  //DiagramBuffer.BufferInterface.LineWidth := 1;
+  //DiagramBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
+  //DiagramBuffer.BufferInterface.NoFill;
+  //DiagramBuffer.BufferInterface.RoundedRect(, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
 end;
 
 { TLfoDrawingRoutines }

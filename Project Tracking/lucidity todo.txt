@@ -1,6 +1,4 @@
 =============================================================================
-- Scope display draws LFO waveform over boundary.
-
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 
