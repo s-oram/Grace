@@ -177,8 +177,6 @@ begin
 end;
 
 procedure StringToVstKey(const Text : string; out KeyChar : integer; out VstVirtualKey : TVstVirtualKey);
-var
-  aKey : TVstVirtualKey;
 begin
   KeyChar := 0;
   VstVirtualKey := TVstVirtualKey.vkNone;

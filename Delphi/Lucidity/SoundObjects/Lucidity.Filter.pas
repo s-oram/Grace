@@ -133,7 +133,7 @@ function TLucidityFilter.GetModPointer(const Name: string): PSingle;
 begin
   if Name ='Par1Mod' then exit(@DummyModValue);
   if Name ='Par2Mod' then exit(@DummyModValue);  if Name ='Par3Mod' then exit(@DummyModValue);  if Name ='Par4Mod' then exit(@DummyModValue);
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');  result := nil;end;
+  result := nil;  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');end;
 
 procedure TLucidityFilter.SetFilterType(const Value: TFilterType);
 begin

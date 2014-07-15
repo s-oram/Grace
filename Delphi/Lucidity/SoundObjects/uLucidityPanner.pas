@@ -57,8 +57,8 @@ function TLucidityPanner.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'ModInput_Pan' then Exit(@ModPoints.ModInput_Pan);
 
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 
 procedure TLucidityPanner.SetPan(const Value: single);
@@ -68,8 +68,6 @@ begin
 
   fPan := Value;
   fPanScaled := Value;
-
-
 end;
 
 procedure TLucidityPanner.FastControlProcess;

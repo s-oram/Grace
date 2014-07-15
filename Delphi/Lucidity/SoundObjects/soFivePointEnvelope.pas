@@ -91,8 +91,8 @@ function TFivePointEnvelope.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'EnvOut' then Exit(@CurEnvValue);
 
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 
 function TFivePointEnvelope.GetStageLevel(const Index: Integer): single;

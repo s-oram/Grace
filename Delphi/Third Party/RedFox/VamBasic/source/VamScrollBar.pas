@@ -278,8 +278,8 @@ begin
       if SliderPos > 1 then SliderPos := 1;
     end;
   else
-    raise Exception.Create('Unexpected SliderType value.');
     SliderPos := 0;
+    raise Exception.Create('Unexpected SliderType value.');
   end;
 
   result := SliderPos;
@@ -310,8 +310,8 @@ begin
       PixelPos := SliderPos * Span + Low;
     end;
   else
-    raise Exception.Create('Unexpected SliderType value.');
     PixelPos := 0;
+    raise Exception.Create('Unexpected SliderType value.');
   end;
 
   result := PixelPos;

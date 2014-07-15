@@ -616,8 +616,6 @@ begin
 end;
 
 procedure TLucidityScope.Draw_Lfo;
-var
-  OldClipBox : TRectDouble;
 begin
   DiagramBuffer.BufferInterface.ClipBox(ScopeRect.Left, ScopeRect.Top, ScopeRect.Right-1, ScopeRect.Bottom);
 
@@ -627,11 +625,6 @@ begin
   DiagramBuffer.BufferInterface.LineColor := fColorForeground;
   DiagramBuffer.BufferInterface.LineWidth := 1.5;
   DiagramBuffer.BufferInterface.LineCap   := TAggLineCap.lcRound;
-
-  //DiagramBuffer.BufferInterface.LineColor := fColorForeground;
-  //DiagramBuffer.BufferInterface.NoFill;
-  //DiagramBuffer.BufferInterface.LineWidth := 1.5;
-  //DiagramBuffer.BufferInterface.LineCap := TAggLineCap.lcButt;
 
   case LfoValues.Shape of
     TLfoShape.SawUp:    TLfoDrawingRoutines.Draw_Lfo_SawUp(DiagramBuffer, ScopeRect, LfoValues);
@@ -646,13 +639,6 @@ begin
     TLfoShape.Cycle:         TLfoDrawingRoutines.Draw_Lfo_Cycle(DiagramBuffer, ScopeRect, LfoValues);
   end;
 
-
-  //DiagramBuffer.BufferInterface.ClipBox(OldClipBox.X1, OldClipBox.Y1, OldClipBox.X2, OldClipBox.Y2);
-
-  //DiagramBuffer.BufferInterface.LineWidth := 1;
-  //DiagramBuffer.BufferInterface.LineColor := GetAggColor(clSilver);
-  //DiagramBuffer.BufferInterface.NoFill;
-  //DiagramBuffer.BufferInterface.RoundedRect(, ScopeRect.Top, ScopeRect.Right, ScopeRect.Bottom, 3);
 end;
 
 { TLfoDrawingRoutines }

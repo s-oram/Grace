@@ -378,7 +378,6 @@ procedure HalfBandDftFilter(aSource:PSingle; SampleFrames:integer); inline;
 var
   c1:integer;
   Index1,Index2:integer;
-  Base:integer;
   xTime:TArrayOfSingle absolute aSource;
   yTime:TArrayOfSingle;
   xFreq:TArrayOfSingle;
@@ -401,7 +400,6 @@ begin
   end;
 
   InverseDFT(SampleFrames,@xTime[0],@yTime[0],@xFreq[0],@yFreq[0]);
-
 
   SetLength(yTime,0);
   SetLength(xFreq,0);

@@ -59,8 +59,8 @@ begin
   if Name = 'ModInput_Gain' then Exit(@ModPoints.ModInput_Gain);
   if Name = 'ModInput_Pan' then Exit(@ModPoints.ModInput_Pan);
 
-  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
   result := nil;
+  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 
 procedure TLucidityVoiceAmp.SetPan(const Value: single);
