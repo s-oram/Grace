@@ -71,10 +71,10 @@ uses
   AggFontWin32TrueType,
   Windows,
 {$ENDIF}
-
   Math;
 
 type
+  TAggPixelFormat = (pfRGBA, pfBGRA);
   PAggColorRgba8 = ^TAggColorRgba8;
   TAggColorRgba8 = TAggRgba8;
 
@@ -277,7 +277,8 @@ type
     FFillColor: TAggColorRgba8;
     FLineColor: TAggColorRgba8;
 
-    FPixelFormat: TAggPixelFormatProcessor;
+    FPixelFormat: TAggPixelFormat;
+    FPixelFormatProc: TAggPixelFormatProcessor;
     FPixelFormatComp: TAggPixelFormatProcessor;
     FPixelFormatPre: TAggPixelFormatProcessor;
     FPixelFormatCompPre: TAggPixelFormatProcessor;
@@ -293,14 +294,14 @@ type
     property Rasterizer: TAggRasterizerScanLineAA read FRasterizer;
     property Path: TAggPathStorage read FPath;
   public
-    constructor Create; overload; virtual;
+    constructor Create(PixelFormat: TAggPixelFormat = pfBGRA); overload; virtual;
     constructor Create(Buffer: PInt8u; Width, Height: Cardinal;
-      Stride: Integer); overload; virtual;
+      Stride: Integer; PixelFormat: TAggPixelFormat = pfBGRA); overload; virtual;
     destructor Destroy; override;
 
     // Setup
     procedure Attach(Buffer: PInt8u; Width, Height: Cardinal;
-      Stride: Integer); overload;
+     Stride: Integer); overload;
     procedure Attach(Img: TAgg2DImage); overload;
 
     procedure ClipBox(X1, Y1, X2, Y2: Double); overload;
@@ -382,8 +383,8 @@ type
     procedure RoundedRect(Rect: TRectDouble; R: Double); overload;
     procedure RoundedRect(X1, Y1, X2, Y2, Rx, Ry: Double); overload;
     procedure RoundedRect(Rect: TRectDouble; Rx, Ry: Double); overload;
-    procedure RoundedRect(X1, Y1, X2, Y2, RxBottom, RyBottom, RxTop,
-      RyTop: Double); overload;
+    procedure RoundedRect(X1, Y1, X2, Y2, RxBottom, RyBottom, RxTop, RyTop: Double); overload;
+    procedure RoundedRectEx(X1, Y1, X2, Y2, Radius1, Radius2, Radius3, Radius4 : double);
 
     procedure Ellipse(Cx, Cy, Rx, Ry: Double);
     procedure Circle(Cx, Cy, Radius: Double);
@@ -417,6 +418,7 @@ type
 
     // Path commands
     procedure ResetPath;
+
     procedure AddPath(Vs: TAggCustomVertexSource);
 
     procedure MoveTo(X, Y: Double);
@@ -432,9 +434,9 @@ type
     procedure VerticalLineRel(Dy: Double);
 
     procedure ArcTo(Rx, Ry, Angle: Double; LargeArcFlag, SweepFlag: Boolean;
-      X, Y: Double);
+      X, Y: Double); overload;
     procedure ArcRel(Rx, Ry, Angle: Double; LargeArcFlag, SweepFlag: Boolean;
-      Dx, Dy: Double);
+      Dx, Dy: Double); overload;
 
     procedure QuadricCurveTo(XCtrl, YCtrl, XTo, YTo: Double); overload;
     procedure QuadricCurveRel(DxCtrl, DyCtrl, DxTo, DyTo: Double); overload;
@@ -514,6 +516,8 @@ type
     property FillEvenOdd: Boolean read FEvenOddFlag write SetFillEvenOdd;
     property FlipText: Boolean read GetFlipText write SetFlipText;
     property TextHints: Boolean read FTextHints write SetTextHints;
+    property HorizontalTextAlignment: TAggTextAlignmentHorizontal read FTextAlignX write FTextAlignX;
+    property VerticalTextAlignment: TAggTextAlignmentVertical read FTextAlignY write FTextAlignY;
     property ImageResample: TAggImageResample read FImageResample write SetImageResample;
     property Row[Y: Cardinal]: PInt8U read GetRow;
 
@@ -628,20 +632,35 @@ end;
 
 { TAgg2D }
 
-constructor TAgg2D.Create;
+constructor TAgg2D.Create(PixelFormat: TAggPixelFormat = pfBGRA);
 begin
   FGammaAgg2D := nil;
 
   FRenderingBuffer := TAggRenderingBuffer.Create;
 
-  PixelFormatBgra32(FPixelFormat, FRenderingBuffer);
-  PixelFormatCustomBlendRgba(FPixelFormatComp, FRenderingBuffer,
-    @BlendModeAdaptorRgba, CAggOrderBgra);
-  PixelFormatBgra32(FPixelFormatPre, FRenderingBuffer);
-  PixelFormatCustomBlendRgba(FPixelFormatCompPre, FRenderingBuffer,
-    @BlendModeAdaptorRgba, CAggOrderBgra);
+  FPixelFormat := PixelFormat;
+  case PixelFormat of
+    pfRGBA:
+      begin
+        PixelFormatRgba32(FPixelFormatProc, FRenderingBuffer);
+        PixelFormatCustomBlendRgba(FPixelFormatComp, FRenderingBuffer,
+          @BlendModeAdaptorRgba, CAggOrderRgba);
+        PixelFormatRgba32(FPixelFormatPre, FRenderingBuffer);
+        PixelFormatCustomBlendRgba(FPixelFormatCompPre, FRenderingBuffer,
+          @BlendModeAdaptorRgba, CAggOrderRgba);
+      end;
+    pfBGRA:
+      begin
+        PixelFormatBgra32(FPixelFormatProc, FRenderingBuffer);
+        PixelFormatCustomBlendRgba(FPixelFormatComp, FRenderingBuffer,
+          @BlendModeAdaptorRgba, CAggOrderBgra);
+        PixelFormatBgra32(FPixelFormatPre, FRenderingBuffer);
+        PixelFormatCustomBlendRgba(FPixelFormatCompPre, FRenderingBuffer,
+          @BlendModeAdaptorRgba, CAggOrderBgra);
+      end;
+  end;
 
-  FRendererBase := TAggRendererBase.Create(FPixelFormat);
+  FRendererBase := TAggRendererBase.Create(FPixelFormatProc);
   FRendererBaseComp := TAggRendererBase.Create(FPixelFormatComp);
   FRendererBasePre := TAggRendererBase.Create(FPixelFormatPre);
   FRendererBaseCompPre := TAggRendererBase.Create(FPixelFormatCompPre);
@@ -743,9 +762,9 @@ begin
 end;
 
 constructor TAgg2D.Create(Buffer: PInt8u; Width, Height: Cardinal;
-  Stride: Integer);
+  Stride: Integer; PixelFormat: TAggPixelFormat = pfBGRA);
 begin
-  Create;
+  Create(PixelFormat);
   Attach(Buffer, Width, Height, Stride);
 end;
 
@@ -804,7 +823,7 @@ begin
   FFontEngine.Free;
   FFontCacheManager.Free;
 
-  FPixelFormat.Free;
+  FPixelFormatProc.Free;
   FPixelFormatComp.Free;
   FPixelFormatPre.Free;
   FPixelFormatCompPre.Free;
@@ -1755,8 +1774,7 @@ begin
   DrawPath(dpfFillAndStroke);
 end;
 
-procedure TAgg2D.RoundedRect(X1, Y1, X2, Y2, RxBottom, RyBottom, RxTop,
-  RyTop: Double);
+procedure TAgg2D.RoundedRect(X1, Y1, X2, Y2, RxBottom, RyBottom, RxTop, RyTop: Double);
 var
   Rc: TAggRoundedRect;
 begin
@@ -1765,6 +1783,27 @@ begin
   try
     Rc.Rect(X1, Y1, X2, Y2);
     Rc.Radius(RxBottom, RyBottom, RxTop, RyTop);
+    Rc.NormalizeRadius;
+
+    Rc.ApproximationScale := WorldToScreen(1) * GApproxScale;
+
+    FPath.AddPath(Rc, 0, False);
+  finally
+    Rc.Free;
+  end;
+
+  DrawPath(dpfFillAndStroke);
+end;
+
+procedure TAgg2D.RoundedRectEx(X1, Y1, X2, Y2, Radius1, Radius2, Radius3,  Radius4: double);
+var
+  Rc: TAggRoundedRect;
+begin
+  FPath.RemoveAll;
+  Rc := TAggRoundedRect.Create;
+  try
+    Rc.Rect(X1, Y1, X2, Y2);
+    Rc.Radius(Radius1, Radius1, Radius2, Radius2, Radius3, Radius3, Radius4, Radius4);
     Rc.NormalizeRadius;
 
     Rc.ApproximationScale := WorldToScreen(1) * GApproxScale;
@@ -2042,8 +2081,7 @@ begin
     Result := ScreenToWorld(X);
 end;
 
-procedure TAgg2D.Text(X, Y: Double; Str: PAnsiChar; RoundOff: Boolean = False;
-  Ddx: Double = 0; Ddy: Double = 0);
+procedure TAgg2D.Text(X, Y: Double; Str: PAnsiChar; RoundOff: Boolean = False; Ddx: Double = 0; Ddy: Double = 0);
 var
   Asc: Double;
   Delta, Start: TPointDouble;
@@ -2788,7 +2826,7 @@ end;
 
 procedure TAgg2D.AddPath(Vs: TAggCustomVertexSource);
 begin
-  FPath.AddPath(Vs);
+  fPath.AddPath(Vs);
 end;
 
 procedure TAgg2D.UpdateApproximationScale;
@@ -3079,8 +3117,14 @@ begin
     if Gr.FImageFilter = ifNoFilter then
     begin
       Clr.Clear;
-      Sg := TAggSpanImageFilterRgbaNN.Create(Gr.FAllocator, Img.FRenderingBuffer,
-        @Clr, Interpolator, CAggOrderRgba);
+      case Gr.FPixelFormat of
+        pfRGBA:
+          Sg := TAggSpanImageFilterRgbaNN.Create(Gr.FAllocator,
+            Img.FRenderingBuffer, @Clr, Interpolator, CAggOrderRgba);
+        pfBGRA:
+          Sg := TAggSpanImageFilterRgbaNN.Create(Gr.FAllocator,
+            Img.FRenderingBuffer, @Clr, Interpolator, CAggOrderBgra);
+      end;
       try
         Sc := TAggSpanConverter.Create(Sg, Blend);
         try
@@ -3112,9 +3156,16 @@ begin
       if Resample then
       begin
         Clr.Clear;
-        Sa := TAggSpanImageResampleRgbaAffine.Create(Gr.FAllocator,
-          Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
-          CAggOrderRgba);
+        case Gr.FPixelFormat of
+          pfRGBA:
+            Sa := TAggSpanImageResampleRgbaAffine.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderRgba);
+          pfBGRA:
+            Sa := TAggSpanImageResampleRgbaAffine.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderBgra);
+        end;
         try
           Sc := TAggSpanConverter.Create(Sa, Blend);
           try
@@ -3134,8 +3185,14 @@ begin
       else if Gr.FImageFilter = ifBilinear then
       begin
         Clr.Clear;
-        Sb := TAggSpanImageFilterRgbaBilinear.Create(Gr.FAllocator,
-          Img.FRenderingBuffer, @Clr, Interpolator, CAggOrderRgba);
+        case GR.FPixelFormat of
+          pfRGBA:
+            Sb := TAggSpanImageFilterRgbaBilinear.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, CAggOrderRgba);
+          pfBGRA:
+            Sb := TAggSpanImageFilterRgbaBilinear.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, CAggOrderBgra);
+        end;
         try
           Sc := TAggSpanConverter.Create(Sb, Blend);
           try
@@ -3155,9 +3212,16 @@ begin
       else if Gr.FImageFilterLUT.Diameter = 2 then
       begin
         Clr.Clear;
-        S2 := TAggSpanImageFilterRgba2x2.Create(Gr.FAllocator,
-          Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
-          CAggOrderRgba);
+        case GR.FPixelFormat of
+          pfRGBA:
+            S2 := TAggSpanImageFilterRgba2x2.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderRgba);
+          pfBGRA:
+            S2 := TAggSpanImageFilterRgba2x2.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderBgra);
+        end;
         try
           Sc := TAggSpanConverter.Create(S2, Blend);
           try
@@ -3177,8 +3241,16 @@ begin
       else
       begin
         Clr.Clear;
-        Si := TAggSpanImageFilterRgba.Create(Gr.FAllocator, Img.FRenderingBuffer,
-          @Clr, Interpolator, Gr.FImageFilterLUT, CAggOrderRgba);
+        case GR.FPixelFormat of
+          pfRGBA:
+            Si := TAggSpanImageFilterRgba.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderRgba);
+          pfBGRA:
+            Si := TAggSpanImageFilterRgba.Create(Gr.FAllocator,
+              Img.FRenderingBuffer, @Clr, Interpolator, Gr.FImageFilterLUT,
+              CAggOrderBgra);
+        end;
         try
           Sc := TAggSpanConverter.Create(Si, Blend);
           try
