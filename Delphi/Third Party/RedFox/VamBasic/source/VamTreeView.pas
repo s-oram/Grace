@@ -44,7 +44,6 @@ type
     fOnScrollXChange: TNotifyEvent;
     fOnScrollYChange: TNotifyEvent;
     fOnGetNodeBitmap: TNodeBitmapEvent;
-    fBufferInterface: TAgg2D;
     fBufferNeedsUpdate: boolean;
     fOnGetBackground: TBitmapEvent;
     fSelectedNodeColor: TColor;
@@ -1186,29 +1185,23 @@ begin
 end;
 
 procedure TVamTreeView.Paint;
-var
-  c1:integer;
-  CurVertOffset:integer;
-  CurHorzOffset:integer;
-  Node:TVamTreeViewNode;
-  Background:TBitmap;
-  Src,Dest:TRect;
+//var
+  //c1:integer;
+  //CurVertOffset:integer;
+  //CurHorzOffset:integer;
+  //Node:TVamTreeViewNode;
+  //Background:TBitmap;
+  //Src,Dest:TRect;
 begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,555);
-
   DrawTreeView(BackBuffer);
 
-  //BackBuffer.TransformImage();
-
-  //DestBuffer.TransformImage(NodeBitmap, Dest.Left, Dest.Top);
-
-  //BackBuffer.BufferInterface.ClearAll(255,255,255,0);
-
-
-
-
+  // TODO:MED Previously the tree view would be drawn into a another
+  // bitmap buffer. That buffer would then be blitted to the control
+  // backbuffer when required. Consider doing that again.
+  // I've kept the code below as a reference as to what used to happen.
 
 
   {
@@ -1374,7 +1367,7 @@ begin
 
 
     TextBounds.Left := TextPosX;
-    TextBounds.Right := round(TextPosX + DestBuffer.TextWidth(AnsiString(Text)));
+    TextBounds.Right := round(TextPosX + DestBuffer.TextWidth(Text));
     TextBounds.Top  := TextPosY;
     TextBounds.Bottom := TextPosY + DefaultNodeHeight;
 
@@ -1383,7 +1376,7 @@ begin
     //TextBounds := Rect(0,0, Width, Height);
     //BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
 
-    Node.Width := round(TextPosX + DestBuffer.TextWidth(AnsiString(Text)));
+    Node.Width := round(TextPosX + DestBuffer.TextWidth(Text));
   end;
 
   //fill in some values.
