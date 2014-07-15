@@ -145,8 +145,6 @@ begin
   case VoiceMode of
     TVoiceMode.Poly:
     begin
-
-
       MidiNote_Current := Data1;
       MidiNote_Target  := Data1;
       MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
