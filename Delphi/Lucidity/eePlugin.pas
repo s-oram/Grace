@@ -258,7 +258,7 @@ uses
   Dialogs,
   SysUtils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  VamLib.LoggingProxy,
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
   VamLib.Throttler,
