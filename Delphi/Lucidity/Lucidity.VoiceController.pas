@@ -286,7 +286,7 @@ begin
       begin
         rg := SampleMap.Regions[c1];
         kg := rg.GetKeyGroup;
-        if IsNoteInsideRegion(rg, Data1, Data2) then
+        if (IsNoteInsideRegion(rg, Data1, Data2)) and (rg.GetProperties^.SampleDataLoaded) then
         begin
           // Add this region to the region trigger queue.
           TriggerItem := TRegionTriggerItem.Create;
@@ -324,7 +324,7 @@ begin
       begin
         rg := SampleMap.Regions[c1];
         kg := rg.GetKeyGroup;
-        if IsNoteInsideRegion(rg, FirstNoteLatch_Data1, FirstNoteLatch_Data2) then
+        if (IsNoteInsideRegion(rg, FirstNoteLatch_Data1, FirstNoteLatch_Data2)) and (rg.GetProperties^.SampleDataLoaded) then
         begin
           // Add this region to the region trigger queue.
           TriggerItem := TRegionTriggerItem.Create;
@@ -345,7 +345,7 @@ begin
     begin
       rg := SampleMap.Regions[c1];
       kg := rg.GetKeyGroup;
-      if IsNoteInsideRegion(rg, Data1, Data2) then
+      if (IsNoteInsideRegion(rg, Data1, Data2)) and (rg.GetProperties^.SampleDataLoaded) then
       begin
         // Add this region to the region trigger queue.
         TriggerItem := TRegionTriggerItem.Create;
@@ -403,7 +403,7 @@ begin
   begin
     rg := SampleMap.Regions[c1];
 
-    if IsNoteInsideRegion(rg, Data1, Data2) then
+    if (IsNoteInsideRegion(rg, Data1, Data2)) and (rg.GetProperties^.SampleDataLoaded) then
     begin
       ProcessTrigger(rg.GetKeyGroup, rg, Data1, Data2, TVoiceMode.Poly);
     end;
@@ -451,7 +451,7 @@ begin
   begin
     rg := SampleMap.Regions[c1];
 
-    if IsNoteInsideRegion(rg, Data1, Data2) then
+    if (IsNoteInsideRegion(rg, Data1, Data2)) and (rg.GetProperties^.SampleDataLoaded) then
     begin
       ProcessTrigger(rg.GetKeyGroup, rg, Data1, Data2, TVoiceMode.Mono);
     end;
