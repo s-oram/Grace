@@ -149,7 +149,7 @@ begin
       BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmClear;
       BackBuffer.BufferInterface.Line(DrawXIndex + 0.5, 0, DrawXIndex + 0.5, BackBuffer.Height);
 
-      BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha2;
+      BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmAlpha;
       Backbuffer.BufferInterface.Line(DrawXIndex + 0.5, y1, DrawXIndex + 0.5, y2);
 
       inc(DrawXIndex);
