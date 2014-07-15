@@ -601,7 +601,7 @@ begin
   BackBuffer.BufferInterface.FillColor := KeyColor;
   BackBuffer.BufferInterface.LineColor := c1;
   BackBuffer.BufferInterface.LineWidth := 1;
-  BackBuffer.BufferInterface.RoundedRectEx(x1, y1, x2, y2, 0,0,6,6);
+  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 0,0,6,6);
 end;
 
 procedure TVamSamplerKeys.DrawBlackKey(const KeyBounds: TRectF; const KeyColor : TRedFoxColor);
@@ -616,7 +616,7 @@ begin
   BackBuffer.BufferInterface.FillColor := KeyColor;
   BackBuffer.BufferInterface.LineColor := KeyColor;
   BackBuffer.BufferInterface.LineWidth := 1;
-  BackBuffer.BufferInterface.RoundedRectEx(x1, y1, x2, y2, 0,0,6,6);
+  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 0,0,6,6);
 end;
 
 function TVamSamplerKeys.CalcKeyColor(const KeyIndex: integer): TRedFoxColor;

@@ -340,9 +340,9 @@ begin
 
   case SliderStyle of
     TVamScrollBarStyle.SquareCorners:      BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
-    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, 0,3,3,0);
-    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, 0,0,3,3);
+    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 3,3,3,3);
+    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 0,3,3,0);
+    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 0,0,3,3);
   else
     raise Exception.Create('Slider style not handled.');
   end;
@@ -386,9 +386,9 @@ begin
 
   case SliderStyle of
     TVamScrollBarStyle.SquareCorners:      BackBuffer.BufferInterface.Rectangle(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5);
-    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRectEx(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRectEx(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRectEx(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
+    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
+    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
+    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
   else
     raise Exception.Create('Slider style not handled.');
   end;
