@@ -2,6 +2,8 @@ unit uModControlFrame;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   Lucidity.PluginParameters,
   eeGuiStandardv2,
@@ -167,6 +169,8 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   eeTypes,
   VamQuery,
   RedFox,
@@ -560,8 +564,6 @@ begin
 
 
 
-
-
   //=== colors ===
   GuiSetup.StyleButton_SelectorButton(AmpVelocityButton);
   GuiSetup.StyleButton_SelectorButton(ModEnvVelocityButton);
@@ -586,16 +588,16 @@ begin
   Filter1KeyTrackKnob.Color_Background := kColor_LcdDark1;
   Filter1KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
   Filter1KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
-  Filter1KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
-  Filter1KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
+  Filter1KeyTrackKnob.Color_Arrows1  := kArrowColor1;
+  Filter1KeyTrackKnob.Color_Arrows2  := kArrowColor2;
 
   Filter2KeyTrackKnob.Padding.Left  := 4;
   Filter2KeyTrackKnob.Padding.Right := 4;
   Filter2KeyTrackKnob.Color_Background := kColor_LcdDark1;
   Filter2KeyTrackKnob.Color_Label    := GetRedFoxColor(kColor_LcdDark4);
   Filter2KeyTrackKnob.Color_Numeric  := GetRedFoxColor(kColor_LcdDark5);
-  Filter2KeyTrackKnob.Color_Arrows1 := GetRedFoxColor(kArrowColor1);
-  Filter2KeyTrackKnob.Color_Arrows2 := GetRedFoxColor(kArrowColor2);
+  Filter2KeyTrackKnob.Color_Arrows1  := kArrowColor1;
+  Filter2KeyTrackKnob.Color_Arrows2  := kArrowColor2;
 
 
   //TODO:MED Delete this timer.
