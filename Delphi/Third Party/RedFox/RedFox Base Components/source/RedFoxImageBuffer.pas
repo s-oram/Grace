@@ -48,7 +48,8 @@ type
     procedure TextOut(const x, y:single; const Text : string; const Font:TFont; const aColor : TRedFoxColor) overload;
     procedure TextOutAlt(x, y: single; Text:string);
 
-    function TextWidth(Text:string):double; inline;
+    function TextWidth(Text:string):double; overload; inline;
+    function TextWidth(const Text:string; const Font : TFont):double; overload; inline;
     function TextHeight:double; inline;
 
 
@@ -281,6 +282,14 @@ function TRedFoxImageBuffer.TextWidth(Text: string): double;
 begin
   result := BufferInterface.TextWidth(AnsiString(Text));
 end;
+
+function TRedFoxImageBuffer.TextWidth(const Text: string; const Font: TFont): double;
+begin
+  UpdateFont(Font);
+  result := BufferInterface.TextWidth(AnsiString(Text));
+end;
+
+
 
 
 
