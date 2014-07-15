@@ -144,7 +144,6 @@ begin
   if Name = 'SampleResetInput' then exit(@ModPoints.SampleResetInput);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
 end;
 
 function TOneShotSampleOsc.GetPitchParameters: PSampleOscPitchPar;

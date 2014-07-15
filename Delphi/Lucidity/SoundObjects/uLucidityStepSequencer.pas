@@ -122,7 +122,6 @@ begin
   if Name = 'StepSeqOutput_Uni' then Exit(@ModSeqOutput_Unipolar);
   if Name = 'StepSeqOutput_Bi' then Exit(@ModSeqOutput_Bipolar);
 
-  result := nil;
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 

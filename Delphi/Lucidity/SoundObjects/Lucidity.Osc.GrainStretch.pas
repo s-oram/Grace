@@ -145,7 +145,6 @@ begin
   if Name = 'DestPosition' then exit(@ModPoints.DestPosition);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
 end;
 
 procedure TLucidityGrainStretchOsc.SetSampleRate(const Value: single);

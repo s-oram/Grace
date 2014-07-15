@@ -112,7 +112,6 @@ begin
   if Name = 'EnvOut_Bi' then exit(@ModOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
-  result := nil;
 end;
 
 procedure TLucidityADSR.SetAttackTime(const Value: single);

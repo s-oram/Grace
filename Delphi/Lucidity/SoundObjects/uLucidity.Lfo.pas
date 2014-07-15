@@ -203,7 +203,6 @@ begin
   if Name = 'LfoOutput_Uni' then Exit(@LfoOutput_Unipolar);
   if Name = 'LfoOutput_Bi' then Exit(@LfoOutput_Bipolar);
 
-  result := nil;
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
 
