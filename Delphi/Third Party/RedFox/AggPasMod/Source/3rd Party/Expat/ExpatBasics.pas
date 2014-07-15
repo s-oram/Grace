@@ -1,4 +1,4 @@
-unit expat_basics;
+unit ExpatBasics;
 
 // ----------------------------------------------------------------------------
 // Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
@@ -37,11 +37,11 @@ unit expat_basics;
 
 interface
 
-{$I expat_mode.inc }
-{ GLOBAL PROCEDURES }
-function Expat_getmem(var Ptr: Pointer; Sz: Integer): Boolean;
-function Expat_realloc(var Ptr: Pointer; Old, Sz: Integer): Boolean;
-function Expat_freemem(var Ptr: Pointer; Sz: Integer): Boolean;
+{$I ExpatMode.inc }
+
+function ExpatGetMem(var Ptr: Pointer; Size: Integer): Boolean;
+function ExpatRealloc(var Ptr: Pointer; Old, Size: Integer): Boolean;
+function ExpatFreemem(var Ptr: Pointer; Size: Integer): Boolean;
 
 procedure NoP;
 
@@ -51,41 +51,37 @@ procedure NoP;
 // number is negative. We have to be compatible with c++ implementation,
 // thus instead of directly using SHR we emulate c++ solution.
 function ShrInt8(I, Shift: Shortint): Shortint;
-function ShrInt16(I, Shift: Smallint): Smallint;
+function ShrInt16(I, Shift: SmallInt): SmallInt;
 function ShrInt32(I, Shift: Longint): Longint;
 
 implementation
 
-
-
-{ EXPAT_GETMEM }
-function Expat_getmem;
+function ExpatGetMem(var Ptr: Pointer; Size: Integer): Boolean;
 begin
   Result := False;
   try
-    Getmem(Ptr, Sz);
+    Getmem(Ptr, Size);
     Result := True;
   except
     Ptr := nil;
   end;
 end;
 
-{ EXPAT_REALLOC }
-function Expat_realloc;
+function ExpatRealloc(var Ptr: Pointer; Old, Size: Integer): Boolean;
 var
   Nb : Pointer;
   Max: Integer;
 begin
-  if Expat_getmem(Nb, Sz) then
+  if ExpatGetMem(Nb, Size) then
   begin
     Max := Old;
 
-    if Max > Sz then
-      Max := Sz;
+    if Max > Size then
+      Max := Size;
 
     Move(Ptr^, Nb^, Max);
 
-    Expat_freemem(Ptr, Old);
+    ExpatFreemem(Ptr, Old);
 
     Ptr := Nb;
     Result := True;
@@ -94,15 +90,14 @@ begin
     Result := False;
 end;
 
-{ EXPAT_FREEMEM }
-function Expat_freemem;
+function ExpatFreemem(var Ptr: Pointer; Size: Integer): Boolean;
 begin
   if Ptr = nil then
     Result := True
 
   else
     try
-      Freemem(Ptr, Sz);
+      Freemem(Ptr, Size);
 
       Ptr := nil;
       Result := True;
@@ -112,23 +107,20 @@ begin
     end;
 end;
 
-{ NOP }
 procedure NoP;
 begin
 end;
 
-{ SHR_INT8 }
-function ShrInt8;
+function ShrInt8(I, Shift: Shortint): Shortint;
 begin
-{$IFDEF EXPAT_CPU_386 }
+{$IFDEF EXPAT_CPU_386}
   asm
     mov     al ,byte ptr [i ]
     mov     cl ,byte ptr [shift ]
     sar     al ,cl
     mov     byte ptr [result ] ,al
   end;
-
-{$ENDIF }
+{$ENDIF}
 {$IFDEF EXPAT_CPU_PPC }
   asm
     lbz     r2,i
@@ -139,14 +131,12 @@ begin
     extsb   r2,r2
     stb     r2,result
   end;
-
-{$ENDIF }
+{$ENDIF}
 end;
 
-{ SHR_INT16 }
-function ShrInt16;
+function ShrInt16(I, Shift: SmallInt): SmallInt;
 begin
-{$IFDEF EXPAT_CPU_386 }
+{$IFDEF EXPAT_CPU_386}
   asm
     mov     ax ,word ptr [i ]
     mov     cx ,word ptr [shift ]
@@ -154,8 +144,8 @@ begin
     mov     word ptr [result ] ,ax
   end;
 
-{$ENDIF }
-{$IFDEF EXPAT_CPU_PPC }
+{$ENDIF}
+{$IFDEF EXPAT_CPU_PPC}
   asm
     lha     r2,i
     lha     r3,shift
@@ -164,14 +154,12 @@ begin
     sth     r2,result
 
   end;
-
-{$ENDIF }
+{$ENDIF}
 end;
 
-{ SHR_INT32 }
-function ShrInt32;
+function ShrInt32(I, Shift: Longint): Longint;
 begin
-{$IFDEF EXPAT_CPU_386 }
+{$IFDEF EXPAT_CPU_386}
   asm
     mov     eax, dword ptr [i ]
     mov     ecx, dword ptr [shift ]
@@ -179,16 +167,15 @@ begin
     mov     dword ptr [result ] ,eax
   end;
 
-{$ENDIF }
-{$IFDEF EXPAT_CPU_PPC }
+{$ENDIF}
+{$IFDEF EXPAT_CPU_PPC}
   asm
     lwz     r3, i
     lwz     r2, shift
     sraw    r3, r3,r2
     stw     r3, result
   end;
-
-{$ENDIF }
+{$ENDIF}
 end;
 
 end.

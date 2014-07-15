@@ -195,8 +195,6 @@ contains
   Expat in '..\Source\3rd Party\Expat\Expat.pas',
   xmlrole in '..\Source\3rd Party\Expat\xmlrole.pas',
   xmltok in '..\Source\3rd Party\Expat\xmltok.pas',
-  Agg2DGraphics in '..\Source\Agg2DGraphics.pas',
-  expat_basics in '..\Source\3rd Party\Expat\expat_basics.pas',
-  expat_external in '..\Source\3rd Party\Expat\expat_external.pas';
+  Agg2DGraphics in '..\Source\Agg2DGraphics.pas';
 
 end.
