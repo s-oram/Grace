@@ -47,6 +47,7 @@ type
     VamLabel1: TVamLabel;
     VamLabel2: TVamLabel;
     VamTextBox1: TVamTextBox;
+    Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);

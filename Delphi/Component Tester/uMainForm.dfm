@@ -124,6 +124,32 @@ object Form1: TForm1
         ImageOverlayOffsetY = 0
         Visible = True
       end
+      object Filter2KeyTrackKnob: TVamCompoundNumericKnob
+        Left = 56
+        Top = 259
+        Width = 73
+        Height = 17
+        Opacity = 255
+        Text = 'Key'
+        HitTest = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Units = '%'
+        Color_Background = '$00000000'
+        Color_Label = clGray
+        Color_Numeric = clBlack
+        Color_Arrows1 = '$cc000000'
+        Color_Arrows2 = '$FF000000'
+        KnobMin = 0
+        KnobMax = 100
+        KnobNumericStyle = nsInteger
+        KnobDecimalPlaces = 2
+        KnobSensitivity = 1.000000000000000000
+        Visible = True
+      end
     end
   end
   object Button2: TButton
