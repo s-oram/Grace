@@ -1,4 +1,6 @@
 =============================================================================
+Bug: 64 Bit Cubase. Arrows on the GUI draw using incorrect color.
+
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 
