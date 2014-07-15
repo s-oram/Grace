@@ -99,6 +99,31 @@ object Form1: TForm1
         Font.Style = []
         Visible = True
       end
+      object VamTextBox1: TVamTextBox
+        Left = 74
+        Top = 17
+        Width = 113
+        Height = 57
+        Opacity = 255
+        Text = 'Info'
+        HitTest = True
+        Color = '$FF3E3E3E'
+        ColorMouseOver = '$FF3E3E3E'
+        ColorBorder = '$00000000'
+        ShowBorder = False
+        TextAlign = AlignCenter
+        TextVAlign = AlignCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = 18
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageOverlayVertAlign = AlignCenter
+        ImageOverlayHorzAlign = AlignCenter
+        ImageOverlayOffsetX = 0
+        ImageOverlayOffsetY = 0
+        Visible = True
+      end
     end
   end
   object Button2: TButton
