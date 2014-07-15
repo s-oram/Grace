@@ -897,13 +897,17 @@ begin
   begin
     TextBounds := Rect(0,0, Width, Height);
     BackBuffer.DrawText(fNoSampleMessage, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
+
+    if (ShowReplaceMessage) then
+    begin
+      Draw_ReplaceMessage;
+    end;
   end;
 
   if SampleIsValid then
   begin
     if IsModEditActive
       then Draw_ModPointAreas;
-
 
     if assigned(FeedbackData) then
     begin
@@ -1098,7 +1102,6 @@ begin
     begin
       Draw_ReplaceMessage;
     end;
-
   end;
 
 end;
