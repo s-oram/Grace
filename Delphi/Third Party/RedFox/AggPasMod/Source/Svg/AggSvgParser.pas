@@ -590,20 +590,20 @@ end;
 
 procedure TParser.Parse(Fname: ShortString);
 var
-  P : XML_Parser;
+  P : TXMLParser;
   Af: TApiFile;
   Ts: PAnsiChar;
   Done: Boolean;
   Len : Integer;
 begin
-  P := XML_ParserCreate(nil);
+  P := XMLParserCreate(nil);
 
   if P = nil then
     raise TSvgException.Create('Couldn''t allocate memory for parser');
 
-  XML_SetUserData(P, @Self);
-  XML_SetElementHandler(P, @StartElement, @EndElement);
-  XML_SetCharacterDataHandler(P, @Content);
+  XMLSetUserData(P, @Self);
+  XMLSetElementHandler(P, @StartElement, @EndElement);
+  XMLSetCharacterDataHandler(P, @Content);
 
   Fname := Fname + #0;
 
@@ -611,7 +611,7 @@ begin
 
   if not ApiOpenFile(Af, Fname) then
   begin
-    XML_ParserFree(P);
+    XMLParserFree(P);
     raise TSvgException.Create(Format('Couldn''t open file %s', [Fname[1]]));
   end;
 
@@ -622,20 +622,20 @@ begin
 
     Done := Len < CAggBufferSize;
 
-    if XML_Parse(P, Pointer(FBuffer), Len, Integer(Done)) = XML_STATUS_ERROR then
+    if XMLParse(P, Pointer(FBuffer), Len, Integer(Done)) = TXmlStatus.xsError then
     begin
       ApiCloseFile(Af);
-      XML_ParserFree(P);
+      XMLParserFree(P);
 
       raise TSvgException.Create(Format('%s at line %d'#13, [Cardinal(
-        XML_ErrorString(XML_Error(XML_GetErrorCode(P)))),
-        XML_GetCurrentLineNumber(P)]));
+        XMLErrorString(TXMLError(XMLGetErrorCode(P)))),
+        XMLGetCurrentLineNumber(P)]));
     end;
 
   until Done;
 
   ApiCloseFile(Af);
-  XML_ParserFree(P);
+  XMLParserFree(P);
 
   Ts := FTitle;
 
