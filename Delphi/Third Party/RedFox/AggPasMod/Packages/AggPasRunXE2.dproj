@@ -245,12 +245,12 @@
 			<DCCReference Include="..\Source\AggVpGenClipPolyline.pas"/>
 			<DCCReference Include="..\Source\AggVpGenSegmentator.pas"/>
 			<DCCReference Include="..\Source\Platform\win\AggWin32Bmp.pas"/>
-			<DCCReference Include="..\Source\3rd Party\Expat\ExpatBasics.pas"/>
-			<DCCReference Include="..\Source\3rd Party\Expat\ExpatExternal.pas"/>
 			<DCCReference Include="..\Source\3rd Party\Expat\Expat.pas"/>
 			<DCCReference Include="..\Source\3rd Party\Expat\xmlrole.pas"/>
 			<DCCReference Include="..\Source\3rd Party\Expat\xmltok.pas"/>
 			<DCCReference Include="..\Source\Agg2DGraphics.pas"/>
+			<DCCReference Include="..\Source\3rd Party\Expat\expat_basics.pas"/>
+			<DCCReference Include="..\Source\3rd Party\Expat\expat_external.pas"/>
 			<None Include="..\Source\AggCompiler.inc"/>
 			<None Include="ModelSupport_AggPasRunXE2\default.txaPackage"/>
 			<BuildConfiguration Include="Debug">
