@@ -3,8 +3,8 @@ unit uMainForm;
 interface
 
 uses
-
   eeOscPhaseCounter,
+  RedFoxImageBuffer,
   VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.ZeroObject,
@@ -23,8 +23,8 @@ uses
   VamTextBox, VamTabPanel, VamTabs, VamScrollBox, VamScrollBar, VamPanel,
   VamMultiLineTextBox, VamMemo, VamImage, VamDiv, VamButton,
   RedFoxGraphicControl, VamGraphicControl, VamArrows, VamXYPad, VamSlider,
-  VamStatusLed, VamSampleZoomControl, VamSamplerKeys, VamSampleMap,
-  VamModularJack, LucidityGui.VectorSequence, VamCompoundModMatrixSection,
+  VamStatusLed, VamSamplerKeys, VamSampleMap,
+  VamModularJack, LucidityGui.VectorSequence,
   VamCompoundLabel;
 
 type
@@ -57,6 +57,8 @@ type
     StepSize : TOscPhaseCounter;
 
     ThrottleID_VSTParChange : TUniqueID;
+
+    BackBuffer: TRedFoxImageBuffer;
 
     ID : TUniqueID;
     KnobValue : single;
@@ -122,6 +124,34 @@ begin
 End;
 
 
+//==============================================================================
+
+procedure TForm1.FormCreate(Sender: TObject);
+var
+  x : integer;
+begin
+  ThrottleID_VSTParChange.Init;
+
+  Timer := THighSpeedTimer.Create;
+  Timer.Interval := 300;
+  Timer.OnTimer := self.HandleTimerEvent;
+  //Timer.Enabled := true;
+
+  BackBuffer := TRedFoxImageBuffer.Create;
+
+
+  //x := round(BackBuffer.TextWidth('110CLP.WAV'));
+  //x := round(BackBuffer.TextWidth('A', self.Font));
+  x := round(BackBuffer.TextWidth('110CLP.WAV', self.Font));
+  VamLabel1.Text := IntToStr(x);
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  Timer.Free;
+  BackBuffer.Free;
+end;
+
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   //
@@ -146,21 +176,6 @@ begin
   VamLabel1.Text := 'Message Z';
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
-begin
-  ThrottleID_VSTParChange.Init;
-
-  Timer := THighSpeedTimer.Create;
-  Timer.Interval := 300;
-  Timer.OnTimer := self.HandleTimerEvent;
-  Timer.Enabled := true;
-
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-  Timer.Free;
-end;
 
 procedure TForm1.UpdateLabel;
 begin
@@ -184,6 +199,7 @@ begin
   begin
     VamLabel1.Text := FloatToStr(VamKnob1.Pos);
   end);
+
 
 
 end;
