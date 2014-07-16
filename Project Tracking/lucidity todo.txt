@@ -1,12 +1,16 @@
 =============================================================================
      TODO HIGH
 =============================================================================
+- Bug: sample display needs to update when using BPM tracking.
+
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 
 - Need to trim long sample names so they display appropiately.
 
 - Bug: Crash after loading program via drag and drop.
+
+- Preview Volume isn't being saved in a global options file.
 
 =============================================================================
      TODO MED
