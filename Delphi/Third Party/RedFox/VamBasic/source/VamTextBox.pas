@@ -25,6 +25,7 @@ type
     fImageOverlayHorzAlign: TRedFoxAlign;
     fImageOverlayOffsetY: integer;
     fImageOverlayOffsetX: integer;
+    fAutoTrimText: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -41,12 +42,17 @@ type
     procedure SetShowBorder(const Value: boolean);
     procedure SetParameterName(const Value: string);
     function GetParameterName: string;
+    procedure SetAutoTrimText(const Value: boolean);
   protected
+    DisplayText : string;
+
     procedure MouseEnter; override;
     procedure MouseLeave; override;
     procedure Paint; override;
 
     procedure EventHandle_TextPaddingChange(Sender : TObject);
+
+    procedure CalculateDisplayText;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -55,6 +61,8 @@ type
     property ParameterName  : string  read GetParameterName  write SetParameterName;
 
   published
+    property AutoTrimText : boolean read fAutoTrimText write SetAutoTrimText;
+
     property Color : TRedFoxColorString read GetColor write SetColor;
     property ColorMouseOver : TRedFoxColorString read GetColorMouseOver write SetColorMouseOver;
 
@@ -84,6 +92,21 @@ uses
   SysUtils, Types, AggPixelFormat;
 
 { TVamTextBox }
+
+procedure TVamTextBox.CalculateDisplayText;
+var
+  TextMargin : integer;
+begin
+  if (AutoTrimText) then
+  begin
+    TextMargin := TextPadding.Left + TextPadding.Right;
+    BackBuffer.UpdateFont(self.Font);
+    DisplayText := BackBuffer.AutoTrimTextToFitBufferWidth(fText, TextMargin);
+  end else
+  begin
+    DisplayText := fText;
+  end;
+end;
 
 constructor TVamTextBox.Create(AOwner: TComponent);
 begin
@@ -152,6 +175,17 @@ begin
   Invalidate;
 end;
 
+procedure TVamTextBox.SetAutoTrimText(const Value: boolean);
+begin
+  if Value <> fAutoTrimText then
+  begin
+    fAutoTrimText := Value;
+    CalculateDisplayText;
+    Invalidate;
+  end;
+
+end;
+
 procedure TVamTextBox.SetColor(const Value: TRedFoxColorString);
 begin
   if Value <> fColor.AsString then
@@ -212,6 +246,7 @@ begin
   if Value <> fText then
   begin
     fText := Value;
+    CalculateDisplayText;
     Invalidate;
   end;
 end;
@@ -280,7 +315,7 @@ begin
   //== draw the text ==
   //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.
   TextBounds := Rect(TextPadding.Left, TextPadding.Top, Width-TextPadding.Right, Height-TextPadding.Bottom);
-  BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  BackBuffer.DrawText(DisplayText, Font, TextAlign, TextVAlign, TextBounds);
 
 
   if assigned(ImageOverlay) then

@@ -52,6 +52,8 @@ type
     function TextWidth(const Text:string; const Font : TFont):double; overload; inline;
     function TextHeight:double; inline;
 
+    function AutoTrimTextToFitBufferWidth(const Text : string; const TextMargin : integer = 0):string;
+
 
     //======== Bitmap Drawing Methods =======================
     procedure TransformImage(aBitmap: Graphics.TBitmap); overload;
@@ -469,6 +471,39 @@ begin
   finally
     AggImage.Free;
   end;
+end;
+
+function TRedFoxImageBuffer.AutoTrimTextToFitBufferWidth(const Text: string; const TextMargin : integer = 0): string;
+var
+  tw : single;
+  TestString : string;
+begin
+  // IMPORTANT: Call UpdateFont() before this method to ensure the buffer is using the
+  // correct font and font size.
+
+  if Width > 1 then
+  begin
+    TestString := Text;
+
+    tw := TextWidth(TestString);
+
+    if (tw + TextMargin >= Width) then
+    begin
+      while (tw + TextMargin >= Width) do
+      begin
+        if Length(TestString) = 0 then break;
+        Delete(TestString, Length(TestString), 1); //delete the last charactor.
+        tw := TextWidth(TestString + '...');
+      end;
+      TestString := Trim(TestString);
+      TestString := TestString + '...';
+    end;
+  end else
+  begin
+    TestString := '';
+  end;
+
+  result := TestString;
 end;
 
 function TRedFoxImageBuffer.CalcActualTextBounds(const Text: string; const Font: TFont; const HorzAlign, VertAlign: TRedFoxAlign; const TextBounds: TRect): TRect;

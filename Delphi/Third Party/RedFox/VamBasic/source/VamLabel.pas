@@ -12,21 +12,29 @@ type
     fTextVAlign: TRedFoxAlign;
     fTextAlign: TRedFoxAlign;
     fAutoSize: boolean;
+    fAutoTrimText: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
+    procedure SetAutoTrimText(const Value: boolean);
 
   protected
+    DisplayText : string;
+
     procedure Paint; override;
 
     procedure SetAutoSize(Value: boolean); override;
+
+    procedure CalculateDisplayText;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure PerformAutoSize;
+    procedure PerformAutoSize(const s : string);
   published
-    property AutoSize : boolean read fAutoSize write SetAutoSize;
+    property AutoTrimText : boolean read fAutoTrimText write SetAutoTrimText;
+    property AutoSize     : boolean read fAutoSize     write SetAutoSize;
+
     property TextAlign  : TRedFoxAlign read fTextAlign  write SetTextAlign;
     property TextVAlign : TRedFoxAlign read fTextVAlign write SetTextVAlign;
 
@@ -50,6 +58,9 @@ constructor TVamLabel.Create(AOwner: TComponent);
 begin
   inherited;
 
+  fText := '';
+  DisplayText := '';
+
   fTextAlign := TRedFoxAlign.AlignCenter;
   fTextVAlign := TRedFoxAlign.AlignCenter;
 end;
@@ -60,13 +71,36 @@ begin
   inherited;
 end;
 
+procedure TVamLabel.CalculateDisplayText;
+begin
+  if (AutoTrimText) and (not AutoSize) then
+  begin
+    BackBuffer.UpdateFont(self.Font);
+    DisplayText := BackBuffer.AutoTrimTextToFitBufferWidth(fText);
+  end else
+  begin
+    DisplayText := fText;
+  end;
+end;
+
 procedure TVamLabel.SetAutoSize(Value: boolean);
 begin
   fAutoSize := Value;
 
-  if Value then
+  CalculateDisplayText;
+  if (Value) then
   begin
-    PerformAutoSize;
+    PerformAutoSize(DisplayText);
+  end;
+end;
+
+procedure TVamLabel.SetAutoTrimText(const Value: boolean);
+begin
+  if Value <> fAutoTrimText then
+  begin
+    fAutoTrimText := Value;
+    CalculateDisplayText;
+    Invalidate;
   end;
 end;
 
@@ -75,7 +109,8 @@ begin
   if Value <> fText then
   begin
     fText := Value;
-    if AutoSize then PerformAutoSize;
+    CalculateDisplayText;
+    if AutoSize then PerformAutoSize(DisplayText);
     Invalidate;
   end;
 end;
@@ -98,6 +133,24 @@ begin
   end;
 end;
 
+procedure TVamLabel.PerformAutoSize(const s : string);
+var
+  tw : integer;
+begin
+  if Assigned(self.BackBuffer) then
+  begin
+    BackBuffer.UpdateFont(Font);
+    tw := round(BackBuffer.TextWidth(s));
+
+    if Self.Width <> tw then
+    begin
+      self.Width := tw;
+    end;
+  end;
+
+end;
+
+
 procedure TVamLabel.Paint;
 var
   TextBounds : TRect;
@@ -108,24 +161,8 @@ begin
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
   TextBounds := Rect(0,0, Width, Height);
-  BackBuffer.DrawText(Text, Font, TextAlign, TextVAlign, TextBounds);
+  BackBuffer.DrawText(DisplayText, Font, TextAlign, TextVAlign, TextBounds);
 end;
 
-procedure TVamLabel.PerformAutoSize;
-var
-  tw : integer;
-begin
-  if Assigned(self.BackBuffer) then
-  begin
-    BackBuffer.UpdateFont(Font);
-    tw := round(BackBuffer.TextWidth(Text));
-
-    if Self.Width <> tw then
-    begin
-      self.Width := tw;
-    end;
-  end;
-
-end;
 
 end.
