@@ -1,8 +1,6 @@
 =============================================================================
      TODO HIGH
 =============================================================================
-- Bug: sample display needs to update when using BPM tracking.
-
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 

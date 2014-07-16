@@ -276,13 +276,11 @@ begin
   SampleContextMenu.Initialize(aPlugin);
   MissingSampleContextMenu.Initialize(Plugin, nil);
 
-
   SampleNameLabel.AutoSize := false;
   SampleNameLabel.Align := alLeft;
   SampleNameLabel.AlignWithMargins := true;
   SampleNameLabel.Margins.SetBounds(0, 0, 4, 0);
   SampleNameLabel.Width := 220;
-
 
   SampleNameLabel.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
@@ -775,7 +773,7 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayResize(Sender: TObject);
 begin
-  self.UpdateControlVisibility;
+  UpdateControlVisibility;
   UpdateSampleDisplay;
   UpdateSampleDisplayInfo;
 end;
