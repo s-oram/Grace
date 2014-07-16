@@ -7239,6 +7239,7 @@ begin
   // read the BOM if it is there
   Move(FRawBuffer[0], BOM, 4);
 
+  BomInfoFound := false;
   i := 0;
   while i < cBomInfoListCount do
   begin
