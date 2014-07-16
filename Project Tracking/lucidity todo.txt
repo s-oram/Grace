@@ -1,6 +1,12 @@
 =============================================================================
      TODO HIGH
 =============================================================================
+- Dragging over the sample map display but not clicking de-selects the current
+  selected region.
+
+- Need to trim long sample names so they display appropiately.
+
+- Bug: Crash after loading program via drag and drop.
 
 =============================================================================
      TODO MED
@@ -10,7 +16,7 @@
 
  - Need to test SFZ import.
 
-- Need to trim long sample names so they display appropiately.
+
 
 - filters finished. 
 
