@@ -508,18 +508,16 @@ begin
   IsDefaultPatchLoaded := false;
 
   // Now load default patch if it exists.
-  if (PluginDataDir^.Exists) then
+  if PluginDataDir^.Path <> '' then
   begin
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches');
-    fnA := DataDir + 'Default.lpg';
-
+    fnA := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + IncludeTrailingPathDelimiter('User');
+    fnA := fnA + 'Default.lpg';
     if FileExists(fnA) then
     begin
       LoadProgramFromFile(fnA);
       IsDefaultPatchLoaded := true;
     end;
   end;
-
   if IsDefaultPatchLoaded = false
     then InitializeState;
 
@@ -1261,14 +1259,12 @@ end;
 
 procedure TeePlugin.SaveProgramAsDefault;
 var
-  DataDir : string;
   fnA : string;
 begin
   {$IFNDEF Demo}
-  //TODO:HIGH need to update this when I rework the data paths.
   //TODO:MED Add Message here perhaps explain demo limitation.
-  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches');
-  fnA := DataDir + 'Default.lpg';
+  fnA := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + IncludeTrailingPathDelimiter('User');
+  fnA := fnA + 'Default.lpg';
   SaveProgramToFile(fnA);
   {$ENDIF}
 end;
