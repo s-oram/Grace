@@ -55,7 +55,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies/>
+				<Dependencies>Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="ASM Tester\AsmTester.dproj">
 				<Dependencies/>
@@ -233,13 +233,13 @@
 		<Target Name="CodeGen:Make">
 			<MSBuild Targets="Make" Projects="Code Gen\CodeGen.dproj"/>
 		</Target>
-		<Target Name="ComponentTester">
+		<Target Name="ComponentTester" DependsOnTargets="RedFoxRunXE2">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="RedFoxRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="RedFoxRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="AsmTester">

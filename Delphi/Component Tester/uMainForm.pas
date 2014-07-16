@@ -81,6 +81,7 @@ implementation
 {$R *.dfm}
 
 uses
+  RedFoxColor,
   VamLib.Throttler,
   //eeEnumHelper,
   Generics.Collections,
@@ -129,8 +130,14 @@ End;
 //==============================================================================
 
 procedure TForm1.FormCreate(Sender: TObject);
+const
+  kDebugStr = '$11223344';
+  kRed = '$FFFF0000';
 var
   x : integer;
+  rc : TRedFoxColor;
+
+
 begin
   ThrottleID_VSTParChange.Init;
 
@@ -147,6 +154,27 @@ begin
   BackBuffer.UpdateFont(Font);
   x := round(BackBuffer.TextWidth('110CLP.WAV'));
   VamLabel1.Text := IntToStr(x);
+
+  VamLabel1.Text := GetRedFoxColor(kRed);
+
+
+  {
+  rc.A := 11;
+  rc.R := 22;
+  rc.G := 33;
+  rc.B := 44;
+
+  rc.ARGB := Swap4(StrToInt(kRed));
+  rc.ARGB := Swap4(rc.ARGB);
+  VamLabel1.Text := IntToHex(rc.ARGB, 8);
+  }
+
+  //VamLabel1.Text := IntToStr(rc.ARGB);
+  //VamLabel1.Text := '$' + IntToHex(Swap4(rc.ARGB),8);
+  //VamLabel1.Text := '$' + IntToHex(rc.A, 2) + IntToHex(rc.R, 2) + IntToHex(rc.G, 2) +  IntToHex(rc.B, 2);
+
+  //rc.SetColor(255,255,0,0);
+  //VamLabel1.Text := rc.AsString;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
