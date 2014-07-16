@@ -1,8 +1,6 @@
 =============================================================================
      TODO HIGH
 =============================================================================
-- Preview Volume isn't being saved in a global options file.
-
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 

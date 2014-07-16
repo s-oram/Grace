@@ -523,6 +523,8 @@ begin
   if IsDefaultPatchLoaded = false
     then InitializeState;
 
+  // Set the preview volume to 0.5.
+  SetPluginParameter(PluginParToID(TPluginParameter.PreviewVolume), 0.5, TParChangeScope.psGlobal);
 end;
 
 destructor TeePlugin.Destroy;
