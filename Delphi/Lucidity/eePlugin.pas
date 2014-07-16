@@ -445,7 +445,6 @@ begin
     if FileExists(DataFileName)
       then SampleDirectories.ReadDirectoryInfoFromfile(DataFileName);
 
-
     //===== set the last used directories variable to something useful ====
     if LastProgramLoadDir = '' then
     begin
@@ -471,7 +470,6 @@ begin
   MidiAutomation.OnMidiMessage := Event_MidiAutomation_Message;
   MidiAutomation.OnNewBinding  := Event_MidiAutomation_NewBinding;
   // TODO: Load default MIDI map here!
-
 
 
   MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
@@ -524,8 +522,6 @@ begin
 
   if IsDefaultPatchLoaded = false
     then InitializeState;
-
-
 
 end;
 

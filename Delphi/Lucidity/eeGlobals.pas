@@ -50,6 +50,7 @@ type
 
     property KeyData : TLucidityKey read fKeyData;
 
+    //TODO:HIGH I've stopped using this User and factor data directory. These need to be deleted.
     property FactoryDataDir : string read fFactoryDataDir;
     property UserDataDir    : string read fUserDataDir;
 
