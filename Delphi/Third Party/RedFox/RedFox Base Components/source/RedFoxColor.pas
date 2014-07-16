@@ -73,7 +73,6 @@ function ColorFadeF(const ColorA, ColorB: TRedFoxColor; const FadeAmt : single):
 
 function ByteCrossFade(const x1, x2, f : byte):byte;
 
-
 implementation
 
 uses
@@ -139,12 +138,7 @@ end;
 
 // Four byte swap
 // Taken from: https://forums.embarcadero.com/thread.jspa?threadID=55185
-function Swap4 (i: Longint): Longint;  register; overload;
-asm
-  bswap eax;
-end;
-
-function Swap4 (i: cardinal): cardinal;  register; overload;
+function Swap4 (i: integer): integer;  register;
 asm
   bswap eax;
 end;
@@ -235,8 +229,17 @@ begin
 end;
 
 function TRedFoxColor.AsString: string;
+var
+  x : integer;
 begin
-  result := '$' + IntToHex(Swap4(ARGB),8);
+  //============================================================================
+  // Very Important: Copy to local variable before calling Swap.
+  // The Swap4 operation returns an incorrect result otherwise. Not sure why
+  // that is.
+  x := self.ARGB;
+  x := Swap4(x);
+  //============================================================================
+  result := '$' + IntToHex(x,8);
 end;
 
 class operator TRedFoxColor.Equal(a, b: TRedFoxColor): Boolean;
