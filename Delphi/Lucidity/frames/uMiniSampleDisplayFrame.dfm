@@ -92,15 +92,20 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             Visible = True
             OnResize = InfoDivResize
             object SampleNameLabel: TVamLabel
+              AlignWithMargins = True
               Left = 0
               Top = 0
-              Width = 107
+              Width = 157
               Height = 27
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
               Opacity = 255
               Text = 'Awesome Sample.wav'
               HitTest = True
-              AutoSize = True
-              TextAlign = AlignCenter
+              AutoSize = False
+              TextAlign = AlignNear
               TextVAlign = AlignCenter
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWhite
