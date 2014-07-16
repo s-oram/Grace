@@ -1,4 +1,10 @@
 =============================================================================
+     TODO HIGH
+=============================================================================
+
+=============================================================================
+     TODO MED
+=============================================================================
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 
@@ -45,17 +51,39 @@ Right Click and Hold for sample zoom with mouse
    Highlight and select the region. The region is red but the highlight is blue. It creates
    an ugly purple color. It should be a red highlight for error samples. 
 
-=============================================================================
+- key zone context menu needs a 'Move Key Zone to New Key Group'
 
+* « open sample in_audio editor _»
+- requested by yann
+- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+=============================================================================
+     TODO LOW
+=============================================================================
   Fundamentals Delphi Library contains a RSA encryption implementation. Investigate.
   http://sourceforge.net/projects/fundementals/?source=directory
 
 
+
+
+=============================================================================
+     Notes and Things to Think About
+=============================================================================
+==TODO==
+Feature Request: In place preview. Current sample is replaced by preview sample.
+
+
+* Possible effects
+  multiband compressor, bit crusher, multiband EQ, chorus, delay, reverb, distortion, phaser, plate reverb, destroyer, flanger, space pan, limiter, sub generator, EQ 10 bands, analog delay, pitch shift chorus, vocal filter, analog chorus, leslie
+
+
+=============================================================================
+     Random Bits
+=============================================================================
+
 - I have found a small bug : when using long sample names, the sample name is written all over the parameters values (like tune/volume, etc). 
 - zones can be duplicated by holding ALT while dragging a sample zone in the key zone editor. (I'll make this a command in the context menu.)
 - thunderlink://messageid=C96432EDCAD443F880A0337122247144@YannHP
-
-key zone context menu needs a 'Move Key Zone to New Key Group'
 
 * Lucidity Notes from Yann
 I noticed a couple of quirks, bugs & strange behaviour, so i wanted to report it :
@@ -88,21 +116,11 @@ strong : instead of jumping from note to note, it keeps jumping from half an oct
   --- SampleRenderer needs to be able to draw with offset and zoom.
 
 
-
-
-* bug: GUI doesn't update when loading a patch with no found samples.
-
-
 sample display
 - change pitch to Tune & Fine.
 
 Sample map
 - add scrollable Root Key, LowKey, High Key, Low Vel, High Vel fields.
-
-* « open sample in_audio editor _»
-- requested by yann
-- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
-
 
 
 * Check samples are saved using relative paths when saving programs.
@@ -212,45 +230,6 @@ Should be able to nil items.
   - 3mb?
   Audio file compression could be used as well to make best use of the space.
 
-
-==TODO==
-- MIDI learn should apply to the knobs. If there are multiple groups being used, the
-  knob change should be applied to all groups.
-  -- if the user wants a knob to only affect a parameter in one group, the user
-     can use the XY pads to route the MIDI CC input to a particular parameter.
-
-==TODO==
-CPU usage is too high.
-- Create a group of Voice objects that are independent of the groups and group manager. (details below)
-- Audio Rate process needs to move to a buffered scheme.
-- look at vector operations. It might be necessary to re-write the audio engine
-  so that multiple voices are processed at once with SSE vector operations.
-- when trigging multiple regions at once, regions can all share the same filter and LFO path.
-  IE. a voice would contain multiple sample oscillator layers.
-- dynaimically adjust quality settings as active voice count goes up and down.
-
-CPU USAGE
-- No AudioRate processing or control rate processing. CPU = 2%
-- Current Usage is 6-7% with no voices running.
-
-Update
-- Cpu Usage with no Audio/Control rate processing at all = 2%
-- Cpu Usage with no active voices = 2%
-- Cpu Usage with one active voice = 6-7%
--- Improved results are from moving the voices from the Sample Group classes
-   to the TVoiceController classes. I think having the Sample Groups as
-   interfaces added another layer of indirection and slowed down processing
-   dramatically.
-
-
-
-==TODO==
-- When adjusting a modulation Depth and Offset knobs, show the target knob, or
-  a stand-in knob with the modulation depth and offset drawn onto the knob
-  so the user can quickly see the full range of the modulation that will
-  be applied.
-
-
 ==TODO==
 - need to load loop points from audio file.
 - double clicking on an item in the browser should do something.
@@ -281,8 +260,7 @@ LFO's sync to other LFO's.
 - Sync (sync to the left LFO)
 
 
-==TODO==
-Feature Request: In place preview. Current sample is replaced by preview sample.
+
 
 
 
@@ -376,10 +354,6 @@ either way. It's possible the user config should only contain overrides.
   That way all parameters can be optionally smoothed and it might be easier to  
   port to other plugins. 
 =============================================================================
-
-
-* Possible effects
-  multiband compressor, bit crusher, multiband EQ, chorus, delay, reverb, distortion, phaser, plate reverb, destroyer, flanger, space pan, limiter, sub generator, EQ 10 bands, analog delay, pitch shift chorus, vocal filter, analog chorus, leslie
 
 
 
