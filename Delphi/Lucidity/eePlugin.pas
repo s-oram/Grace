@@ -8,7 +8,6 @@ interface
 
 uses
   VamLib.UniqueID,
-  VamLib.CpuOverloadWatcher,
   eeTypes,
   eePublishedVstParameters,
   eeAudioBufferUtils,
@@ -114,8 +113,6 @@ type
     Voices : TArrayOfLucidityVoice;
 
     EmptyKeyGroup : IKeyGroup;
-
-    OverloadWatch : TCpuOverloadWatcher; //TODO:MED Delete this.
 
     ThrottleID_VSTParChange : TUniqueID;
 
@@ -297,14 +294,8 @@ begin
 
   ThrottleID_VSTParChange.Init;
 
-  OverloadWatch := TCpuOverloadWatcher.Create;
-
-
   fPluginParameters := TPluginParameterManager.Create(69);
   SetupPluginParameters(fPluginParameters);
-
-  //ShowMessage(LucidMsgIDToStr(49));
-
 
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceGlide);
@@ -562,8 +553,6 @@ begin
   end;
   SetLength(Voices, 0);
   //=============================================
-
-  OverloadWatch.Free;
 
   fPluginParameters.Free;
 
@@ -1436,39 +1425,19 @@ var
 begin
   inherited;
 
-  try
-    if IsNoteOn(Event) then
-    begin
-      KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
-
-      //OverloadWatch.Start(ksf, ksr, 'MidiEvent Note On');
-      MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
-      //OverloadWatch.Stop;
-
-      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
-      inc(GlobalModPoints.Source_TriggeredNoteCount);
-    end;
-  except
-    //Log.LogMessage('NoteOn Exception.');
-    raise;
+  if IsNoteOn(Event) then
+  begin
+    KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
+    MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+    inc(GlobalModPoints.Source_TriggeredNoteCount);
   end;
 
-
-
-  try
-    if IsNoteOff(Event) then
-    begin
-      //OverloadWatch.Start(ksf, ksr, 'MidiEvent Note Off');
-
-      KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
-      MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
-      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
-
-      //OverloadWatch.Stop;
-    end;
-  except
-    //Log.LogMessage('NoteOff Exception.');
-    raise;
+  if IsNoteOff(Event) then
+  begin
+    KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
+    MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
   end;
 
   if IsControlChange(Event) then
@@ -1478,23 +1447,15 @@ begin
 
   if IsModWheel(Event) then
   begin
-    //OverloadWatch.Start(ksf, ksr, 'MidiEvent Mod Wheel');
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
-    //OverloadWatch.Stop;
   end;
-
 
   if IsPitchBend(Event) then
   begin
-    //OverloadWatch.Start(ksf, ksr, 'MidiEvent Pitchbend');
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
     MidiInputProcessor.PitchBend(pba);
-    //OverloadWatch.Stop;
   end;
-
-
-
 
 end;
 
@@ -1507,17 +1468,10 @@ const
   ksr = 44100;
 begin
   try
-    //XYPads.UniSmoothedPadX1 := XYPads.PadX1;
-
     XYPads.ControlRateProcess;
     MidiAutomation.FastControlProcess;
     MidiInputProcessor.FastControlProcess;
-    //OverloadWatch.Start(ksf, ksr, 'MidiEvent MIDI CC');
-
-    //OverloadWatch.Stop;
-
     KeyGroupPlayer.FastControlProcess;
-
   except
     {$IFDEF MadExcept}
     HandleException;
