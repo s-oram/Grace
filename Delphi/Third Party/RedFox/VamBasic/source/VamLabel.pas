@@ -3,6 +3,7 @@ unit VamLabel;
 interface
 
 uses
+  Agg2D,
   Classes, RedFox, RedFoxWinControl, VamWinControl;
 
 type

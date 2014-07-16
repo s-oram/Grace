@@ -477,6 +477,7 @@ function TRedFoxImageBuffer.AutoTrimTextToFitBufferWidth(const Text: string; con
 var
   tw : single;
   TestString : string;
+  HorizontalEllipsis : string;
 begin
   // IMPORTANT: Call UpdateFont() before this method to ensure the buffer is using the
   // correct font and font size.
@@ -489,14 +490,16 @@ begin
 
     if (tw + TextMargin >= Width) then
     begin
+      HorizontalEllipsis := AnsiChar(133); // ...
+
       while (tw + TextMargin >= Width) do
       begin
         if Length(TestString) = 0 then break;
         Delete(TestString, Length(TestString), 1); //delete the last charactor.
-        tw := TextWidth(TestString + '...');
+        tw := TextWidth(TestString + HorizontalEllipsis);
       end;
       TestString := Trim(TestString);
-      TestString := TestString + '...';
+      TestString := TestString + HorizontalEllipsis;
     end;
   end else
   begin
