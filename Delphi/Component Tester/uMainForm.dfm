@@ -71,6 +71,7 @@ object Form1: TForm1
         Opacity = 255
         Text = 'Test'
         HitTest = True
+        AutoTrimText = True
         AutoSize = False
         TextAlign = AlignCenter
         TextVAlign = AlignCenter
@@ -89,6 +90,7 @@ object Form1: TForm1
         Opacity = 255
         Text = 'Test'
         HitTest = True
+        AutoTrimText = False
         AutoSize = False
         TextAlign = AlignCenter
         TextVAlign = AlignCenter

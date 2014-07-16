@@ -136,45 +136,26 @@ const
 var
   x : integer;
   rc : TRedFoxColor;
-
-
+  xs : string;
 begin
   ThrottleID_VSTParChange.Init;
 
   Timer := THighSpeedTimer.Create;
   Timer.Interval := 300;
   Timer.OnTimer := self.HandleTimerEvent;
-  //Timer.Enabled := true;
+  Timer.Enabled := false;
 
-  BackBuffer := TRedFoxImageBuffer.Create;
+  xs := 'James Brown';
 
+  Delete(xs, Length(xs), 1);
 
-  //x := round(BackBuffer.TextWidth('110CLP.WAV'));
-  //x := round(BackBuffer.TextWidth('A', self.Font));
-  BackBuffer.UpdateFont(Font);
-  x := round(BackBuffer.TextWidth('110CLP.WAV'));
-  VamLabel1.Text := IntToStr(x);
+  VamLabel1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
 
-  VamLabel1.Text := GetRedFoxColor(kRed);
+  VamTextBox1.AutoTrimText := true;
+  VamTextBox1.TextPadding.Left := 8;
+  VamTextBox1.TextPadding.Right := 24;
 
-
-  {
-  rc.A := 11;
-  rc.R := 22;
-  rc.G := 33;
-  rc.B := 44;
-
-  rc.ARGB := Swap4(StrToInt(kRed));
-  rc.ARGB := Swap4(rc.ARGB);
-  VamLabel1.Text := IntToHex(rc.ARGB, 8);
-  }
-
-  //VamLabel1.Text := IntToStr(rc.ARGB);
-  //VamLabel1.Text := '$' + IntToHex(Swap4(rc.ARGB),8);
-  //VamLabel1.Text := '$' + IntToHex(rc.A, 2) + IntToHex(rc.R, 2) + IntToHex(rc.G, 2) +  IntToHex(rc.B, 2);
-
-  //rc.SetColor(255,255,0,0);
-  //VamLabel1.Text := rc.AsString;
+  VamTextBox1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
