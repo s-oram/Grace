@@ -115,7 +115,7 @@ type
 
     EmptyKeyGroup : IKeyGroup;
 
-    OverloadWatch : TCpuOverloadWatcher;
+    OverloadWatch : TCpuOverloadWatcher; //TODO:MED Delete this.
 
     ThrottleID_VSTParChange : TUniqueID;
 
@@ -534,8 +534,6 @@ var
   c1 : integer;
   fn : string;
 begin
-  Log.LogMessage('TPlugin.Destroy - Begin');
-
   Clear;
 
   //TODO:MED what is this?
@@ -568,9 +566,6 @@ begin
   end;
   SetLength(Voices, 0);
   //=============================================
-
-
-  Log.LogMessage('==== TPlugin.Destroy - End ====');
 
   OverloadWatch.Free;
 
