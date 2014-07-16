@@ -492,9 +492,9 @@ begin
   EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
 
   //==== Look for key file ===
-  if Globals.UserDataDir <> '' then
+  if Globals.UserConfigDir <> '' then
   begin
-    fn := IncludeTrailingPathDelimiter(Globals.UserDataDir) + kKeyFileName;
+    fn := IncludeTrailingPathDelimiter(Globals.UserConfigDir) + kKeyFileName;
     if FileExists(fn) then
     begin
       Globals.LoadRegistrationKeyFile(fn);

@@ -18,8 +18,6 @@ type
   TGlobals = class(TCustomGlobals)
   private
     fKeyData: TLucidityKey;
-    fFactoryDataDir: string;
-    fUserDataDir: string;
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
     fSelectedModSlot: integer;
@@ -33,6 +31,8 @@ type
     fCpuMonitor: TCpuMonitor;
     fCpuSampleFrames: integer;
     fCpuSampleRate: integer;
+    fUserConfigDir: string;
+    fDefaultConfigDir: string;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
@@ -50,9 +50,8 @@ type
 
     property KeyData : TLucidityKey read fKeyData;
 
-    //TODO:HIGH I've stopped using this User and factor data directory. These need to be deleted.
-    property FactoryDataDir : string read fFactoryDataDir;
-    property UserDataDir    : string read fUserDataDir;
+    property DefaultConfigDir : string read fDefaultConfigDir;
+    property UserConfigDir    : string read fUserConfigDir;
 
     property SkinImageLoader : TSkinImageLoader read fSkinImageLoader;
 
@@ -120,37 +119,34 @@ begin
 
   fKeyData.Clear;
 
-  fFactoryDataDir := '';
-  fUserDataDir    := '';
+  fDefaultConfigDir := '';
+  fUserConfigDir    := '';
 
   if (PluginDataDir^.Exists) then
   begin
     // Find or Create User data directory.
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
     if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
 
     if DirectoryExists(DataDir)
-      then fUserDataDir := DataDir
-      else fUserDataDir := '';
+      then fDefaultConfigDir := DataDir
+      else fDefaultConfigDir := '';
 
 
     // find or create factory data directory.
-    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Factory';
+    DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config User Override';
     if (DirectoryExists(DataDir) = false) then CreateDir(DataDir);
 
     if DirectoryExists(DataDir)
-      then fFactoryDataDir := DataDir
-      else fFactoryDataDir := '';
-
+      then fUserConfigDir := DataDir
+      else fUserConfigDir := '';
   end;
 
 
   fOptions := TOptions.Create;
-
-
-  if DirectoryExists(UserDataDir) then
+  if DirectoryExists(UserConfigDir) then
   begin
-    fn := IncludeTrailingPathDelimiter(UserDataDir) + 'Lucidity Options.xml';
+    fn := IncludeTrailingPathDelimiter(UserConfigDir) + 'Lucidity Options.xml';
     if FileExists(fn) then
     begin
       Options.ReadFromFile(fn);
@@ -208,11 +204,11 @@ begin
     fKeyData.LoadFromFile(FileName);
     if fKeyData.IsKeyChecksumValid then
     begin
-      if (UserDataDir <> '') then
+      if (UserConfigDir <> '') then
       begin
         SourceFileName := FileName;
-        DestFileName   := IncludeTrailingPathDelimiter(UserDataDir) + kKeyFileName;
-        CopyFile(sourceFileName, DestFileName);
+        DestFileName   := IncludeTrailingPathDelimiter(UserConfigDir) + kKeyFileName;
+        CopyFile(SourceFileName, DestFileName);
       end;
     end else
     begin
