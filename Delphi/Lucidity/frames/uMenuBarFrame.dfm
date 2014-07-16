@@ -52,6 +52,7 @@ object MenuBarFrame: TMenuBarFrame
           Opacity = 255
           Text = 'Sample'
           HitTest = True
+          AutoTrimText = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -84,6 +85,7 @@ object MenuBarFrame: TMenuBarFrame
           Opacity = 255
           Text = 'Group'
           HitTest = True
+          AutoTrimText = True
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -116,6 +118,7 @@ object MenuBarFrame: TMenuBarFrame
           Opacity = 255
           Text = 'Menu'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -148,6 +151,7 @@ object MenuBarFrame: TMenuBarFrame
           Opacity = 255
           Text = 'M'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -175,6 +179,7 @@ object MenuBarFrame: TMenuBarFrame
           Opacity = 255
           Text = 'Tin'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter

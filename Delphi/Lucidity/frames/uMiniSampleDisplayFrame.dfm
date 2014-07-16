@@ -104,6 +104,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Opacity = 255
               Text = 'Awesome Sample.wav'
               HitTest = True
+              AutoTrimText = True
               AutoSize = False
               TextAlign = AlignNear
               TextVAlign = AlignCenter
@@ -351,6 +352,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = '-'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -383,6 +385,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = '+'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -415,6 +418,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'Close'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -447,6 +451,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'Loop Start'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -479,6 +484,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'Sample End'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -511,6 +517,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'Sample Start'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -542,6 +549,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'ZOOM'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -567,6 +575,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = '100%'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -599,6 +608,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Opacity = 255
           Text = 'Loop End'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
