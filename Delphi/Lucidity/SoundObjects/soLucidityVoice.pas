@@ -725,7 +725,6 @@ procedure TLucidityVoice.CleanUp;
 var
   vp : PLucidityVoice;
 begin
-  // TODO: Need to board cast the voice being finished here.
   vp := @self;
   Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceFinished, vp);
 
