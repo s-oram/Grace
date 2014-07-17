@@ -376,7 +376,6 @@ begin
   BackBuffer.BufferInterface.ClearAll(aColor.WithAlpha(0));
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
-
   if IsMouseOver = false
     then aColor := fColor
     else aColor := fColorMouseOver;
@@ -487,12 +486,17 @@ begin
 end;
 
 procedure TVamModSelector.Draw_MuteIcon(TextAreaBounds: TRect);
+const
+  //TODO:MED HACK: This color is hard coded because it doesn't corrospond to
+  // any of the existing color properties.
+  kTextColor = '$ff242B39';
 var
   ptx, pty : single;
   ElementBounds : TRect;
 begin
   pty := TextAreaBounds.Top + TextAreaBounds.Height * 0.5;
   ptx := TextAreaBounds.Left + TextAreaBounds.Width * 1/5;
+
 
   BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
@@ -503,8 +507,7 @@ begin
   ElementBounds.Top    := round(pty - 8);
   ElementBounds.Bottom := round(pty + 9);
 
-  BackBuffer.DrawText('M', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, ElementBounds, Color);
-
+  BackBuffer.DrawText('M', Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, ElementBounds, kTextColor);
 end;
 
 end.

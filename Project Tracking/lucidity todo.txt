@@ -4,7 +4,7 @@
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 
-- Bug: Crash after loading program via drag and drop.
+- Bug: Crash after loading program via drag and drop. (can't reproduce reliable yet.)
 
 - Need to test SFZ import.
 
@@ -18,11 +18,8 @@ Loop Until Release
 Note (Loop Off)
 One Shot 
 
-
 - Filter Gain needs more bite.
 - Filter freq scaling might need some work. 
-
-- Update Mute Modulation drawing so the M isn't transparent
 
 - ring modulation effect when first selected is muted. must need to be initialised somewhere.
 
