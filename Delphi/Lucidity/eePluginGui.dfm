@@ -81,6 +81,7 @@ object PluginGui: TPluginGui
             Opacity = 255
             Text = 'LUCIDITY'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
