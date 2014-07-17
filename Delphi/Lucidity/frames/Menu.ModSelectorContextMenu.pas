@@ -187,7 +187,7 @@ begin
       raise Exception.Create('Unexpected tag value.');
     end;
 
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -199,7 +199,7 @@ begin
   if assigned(kg) then
   begin
     kg.GetModConnections.SetModSource(ModSlotIndex, aSource);
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -211,7 +211,7 @@ begin
   if assigned(kg) then
   begin
     kg.GetModConnections.SetModVia(ModSlotIndex, aSource);
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -226,7 +226,7 @@ begin
     IsMute := kg.GetModConnections.GetModMute(ModSlotIndex);
     IsMute := not IsMute;
     kg.GetModConnections.SetModMute(ModSlotIndex, IsMute);
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
