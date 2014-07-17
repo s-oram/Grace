@@ -335,29 +335,20 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(VoiceSetupFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(ModSystem2Frame, TZeroObjectRank.VCL);
 
-
-  try
-    // Initalize all the frame controls...
-    MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
-    FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
-    MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
-    ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-    VoiceSetupFrame.InitializeFrame(Plugin, GuiStandard);
-    VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
-  except
-  end;
-
-
-
+  // Initalize all the frame controls...
+  MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
+  FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
+  MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
+  ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  VoiceSetupFrame.InitializeFrame(Plugin, GuiStandard);
+  VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
 
   //Update the GUI to match the previous GUI state.
   LowerTabState := Plugin.Globals.GuiState.LowerTabState;
   UpdateLayout;
-
-
 
   //===== set up the skin graphics =======
   if Plugin.Globals.SkinImageLoader.Exists('Knob_Lower')
@@ -401,7 +392,6 @@ begin
     (c as TVamKnob).IndicatorSize := 2.4;
     (c as TVamKnob).IndicatorDist := 6.5;
   end;
-
 
   if Plugin.Globals.SkinImageLoader.Exists('Small_Knob')
     then bm2 := Plugin.Globals.SkinImageLoader.GetImage('Small_Knob');
