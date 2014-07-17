@@ -337,7 +337,6 @@ var
   Index : integer;
   IsBipolar : boolean;
 begin
-
   // Update mod source pointers...
   for c1 := 0 to kModSlotCount-1 do
   begin
@@ -359,7 +358,6 @@ begin
       then ModSlotViaPointers[c1] := fModSourceValues[Integer(aModSource)]
       else ModSlotViaPointers[c1] := @ViaNoneValue;
   end;
-
 
 
   // update modulated parameters

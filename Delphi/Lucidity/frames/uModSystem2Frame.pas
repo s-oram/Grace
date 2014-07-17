@@ -48,7 +48,6 @@ type
   protected
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
-
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
