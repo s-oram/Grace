@@ -512,7 +512,7 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainRate');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainPosition');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopBounds');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopMode');
+    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerTriggerMode');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
@@ -713,7 +713,7 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainRate');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainPosition');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopBounds');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopMode');
+      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerTriggerMode');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');

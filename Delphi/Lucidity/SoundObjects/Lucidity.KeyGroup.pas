@@ -227,7 +227,7 @@ end;
 
 function TKeyGroup.GetTriggerMode: TKeyGroupTriggerMode;
 begin
-  result := VoiceParameters.SamplerLoopMode;
+  result := VoiceParameters.SamplerTriggerMode;
 end;
 
 function TKeyGroup.GetSequenceData(SeqIndex: integer): IStepSequenceDataObject;

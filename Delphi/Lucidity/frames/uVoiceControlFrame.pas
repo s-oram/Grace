@@ -185,7 +185,7 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);     // NOTE: Using ShowPlayTypeMenuCallBack().
   GuiStandard_RegisterMenuButton(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);
   GuiStandard_RegisterMenuButton(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource); // NOTE: Using ShowSamplResetMenuCallBack().
-  GuiStandard_RegisterMenuButton(aGuiStandard, TriggerModeTextBox,          TPluginParameter.SamplerLoopMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, TriggerModeTextBox,          TPluginParameter.SamplerTriggerMode);
   GuiStandard_RegisterMenuButton(aGuiStandard, LoopBoundsTextBox,           TPluginParameter.SamplerLoopBounds);
   //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);
 

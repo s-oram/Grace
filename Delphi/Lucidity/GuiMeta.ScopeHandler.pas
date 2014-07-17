@@ -94,7 +94,7 @@ begin
     TPluginParameter.SamplePlaybackType:        result := TScopeFocus.None;
     TPluginParameter.SampleResetClockSource:    result := TScopeFocus.None;
     TPluginParameter.SamplerLoopBounds:         result := TScopeFocus.None;
-    TPluginParameter.SamplerLoopMode:           result := TScopeFocus.None;
+    TPluginParameter.SamplerTriggerMode:           result := TScopeFocus.None;
     TPluginParameter.OutputGain:                result := TScopeFocus.None;
     TPluginParameter.OutputPan:                 result := TScopeFocus.None;
     TPluginParameter.VoicePitchOne:             result := TScopeFocus.None;

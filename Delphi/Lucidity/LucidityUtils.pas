@@ -29,7 +29,7 @@ begin
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.SamplePlaybackType));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.SampleResetClockSource));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.SamplerLoopBounds));
-  CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.SamplerLoopMode));
+  CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.SamplerTriggerMode));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.OutputGain));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.OutputPan));
   CreateNamedParameter(PluginParameters, PluginParToName(TPluginParameter.VoicePitchOne));

@@ -699,8 +699,8 @@ end;
 class function TKeyGroupTriggerModeHelper.ToFullGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TKeyGroupTriggerMode.LoopOff:         result := 'Loop Off';
-    TKeyGroupTriggerMode.LoopContinuous:     result := 'Loop Sustain';
+    TKeyGroupTriggerMode.LoopOff:         result := 'Note On (Loop Off)';
+    TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop Continuous';
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Until Release';
     TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else
@@ -711,8 +711,8 @@ end;
 class function TKeyGroupTriggerModeHelper.ToShortGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TKeyGroupTriggerMode.LoopOff:         result := 'Off';
-    TKeyGroupTriggerMode.LoopContinuous:     result := 'Loop';
+    TKeyGroupTriggerMode.LoopOff:         result := 'Note On';
+    TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop ';
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Rls';
     TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else

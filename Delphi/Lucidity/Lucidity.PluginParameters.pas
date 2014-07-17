@@ -102,7 +102,7 @@ type
     SamplePlaybackType,
     SampleResetClockSource,
     SamplerLoopBounds,
-    SamplerLoopMode,
+    SamplerTriggerMode,
     OutputGain,
     OutputPan,
     VoicePitchOne,
@@ -523,7 +523,7 @@ begin
     TPluginParameter.SamplePlaybackType:       result.DefaultValue := 0;
     TPluginParameter.SampleResetClockSource:   result.DefaultValue := 0;
     TPluginParameter.SamplerLoopBounds:        result.DefaultValue := 1;
-    TPluginParameter.SamplerLoopMode:          result.DefaultValue := 0;
+    TPluginParameter.SamplerTriggerMode:       result.DefaultValue := 0;
     TPluginParameter.OutputGain:               result.DefaultValue := 0.5;
     TPluginParameter.OutputPan:                result.DefaultValue := 0.5;
     TPluginParameter.VoicePitchOne:            result.DefaultValue := 0.5;
@@ -538,12 +538,12 @@ begin
     TPluginParameter.AmpSustain:               result.DefaultValue := 0.3;
     TPluginParameter.AmpRelease:               result.DefaultValue := 0.3;
     TPluginParameter.AmpVelocity:              result.DefaultValue := 0.2;
-    TPluginParameter.ModAttack:             result.DefaultValue := 0;
-    TPluginParameter.ModHold:               result.DefaultValue := 0;
-    TPluginParameter.ModDecay:              result.DefaultValue := 0.3;
-    TPluginParameter.ModSustain:            result.DefaultValue := 0.3;
-    TPluginParameter.ModRelease:            result.DefaultValue := 0.3;
-    TPluginParameter.ModVelocity:           result.DefaultValue := 0.2;
+    TPluginParameter.ModAttack:                result.DefaultValue := 0;
+    TPluginParameter.ModHold:                  result.DefaultValue := 0;
+    TPluginParameter.ModDecay:                 result.DefaultValue := 0.3;
+    TPluginParameter.ModSustain:               result.DefaultValue := 0.3;
+    TPluginParameter.ModRelease:               result.DefaultValue := 0.3;
+    TPluginParameter.ModVelocity:              result.DefaultValue := 0.2;
     TPluginParameter.FilterRouting:            result.DefaultValue := 0;
     TPluginParameter.FilterOutputBlend:        result.DefaultValue := 1;
     TPluginParameter.Filter1Type:              result.DefaultValue := 0;
@@ -708,7 +708,7 @@ begin
     TPluginParameter.SamplePlaybackType:      result := 'Playback';
     TPluginParameter.SampleResetClockSource:  result := 'Reset';
     TPluginParameter.SamplerLoopBounds:       result := 'Loop Bounds';
-    TPluginParameter.SamplerLoopMode:         result := 'Loop Mode';
+    TPluginParameter.SamplerTriggerMode:         result := 'Loop Mode';
     TPluginParameter.OutputGain:              result := 'Gain';
     TPluginParameter.OutputPan:               result := 'Pan';
     TPluginParameter.VoicePitchOne:           result := 'Tune';

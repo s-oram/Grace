@@ -303,7 +303,7 @@ begin
   //PublishPluginParameterAsVstParameter(TPluginParameter.SamplePlaybackType);
   PublishPluginParameterAsVstParameter(TPluginParameter.SampleResetClockSource);
   PublishPluginParameterAsVstParameter(TPluginParameter.SamplerLoopBounds);
-  PublishPluginParameterAsVstParameter(TPluginParameter.SamplerLoopMode);
+  PublishPluginParameterAsVstParameter(TPluginParameter.SamplerTriggerMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.OutputGain);
   PublishPluginParameterAsVstParameter(TPluginParameter.OutputPan);
   PublishPluginParameterAsVstParameter(TPluginParameter.VoicePitchOne);
