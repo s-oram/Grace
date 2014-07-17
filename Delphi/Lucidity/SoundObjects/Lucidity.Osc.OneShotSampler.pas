@@ -255,7 +255,7 @@ procedure TOneShotSampleOsc.Release;
 begin
   HasBeenReleased := true;
 
-  if (LoopMode = TKeyGroupTriggerMode.LoopRelease) then
+  if (LoopMode = TKeyGroupTriggerMode.LoopSustain) then
   begin
     CurrentSampleBounds.PlaybackEnd := CurrentSampleBounds.SampleEnd;
   end;
@@ -282,7 +282,7 @@ begin
       if  (LoopBounds = TSamplerLoopBounds.LoopSample)
        or (LoopMode = TKeyGroupTriggerMode.LoopOff)
        or (LoopMode = TKeyGroupTriggerMode.OneShot)
-       or ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopRelease))
+       or ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopSustain))
        then
       begin
         CurrentSampleBounds.PlaybackLoopStart := CurrentSampleBounds.SampleStart;
@@ -311,7 +311,7 @@ begin
           CurrentSampleBounds.PlaybackSampleStart := CurrentSampleBounds.LoopStart;
           CurrentSampleBounds.PlaybackLoopStart   := CurrentSampleBounds.LoopStart;
 
-          if ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopRelease))
+          if ((HasBeenReleased) and (LoopMode = TKeyGroupTriggerMode.LoopSustain))
             then CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.SampleEnd
             else CurrentSampleBounds.PlaybackEnd         := CurrentSampleBounds.LoopEnd;
         end;
@@ -440,7 +440,7 @@ begin
         end;
       end;
 
-      TKeyGroupTriggerMode.LoopSustain:
+      TKeyGroupTriggerMode.LoopContinuous:
       begin
         StepInFilter.Trigger;
         LoopingFadeOutOsc.Trigger(CurRegion, PhaseCounter.AsFloat, PhaseCounter.StepSize);
@@ -449,7 +449,7 @@ begin
         VoiceClockManager.SendClockEvent(ClockID_SampleLoop);
       end;
 
-      TKeyGroupTriggerMode.LoopRelease:
+      TKeyGroupTriggerMode.LoopSustain:
       begin
         if HasBeenReleased = false then
         begin
