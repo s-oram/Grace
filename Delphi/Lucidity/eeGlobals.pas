@@ -44,6 +44,8 @@ type
     constructor Create; override;
 	  destructor Destroy; override;
 
+    function FindConfigFile(const ConfigFilename : string; Out FullPathLocation : string):boolean;
+
     procedure AddVclTask(aTask : TProc);
 
     procedure LoadRegistrationKeyFile(FileName : string);
@@ -190,6 +192,38 @@ begin
   fGuiState.Free;
   fAudioActions.Free;
   inherited;
+end;
+
+function TGlobals.FindConfigFile(const ConfigFilename: string; out FullPathLocation: string): boolean;
+var
+  TestFilename : string;
+begin
+  // First, check for the config in the user overrides directory
+  if UserConfigDir <> '' then
+  begin
+    TestFileName := IncludeTrailingPathDelimiter(UserConfigDir) + ConfigFileName;
+    if FileExists(TestFileName) then
+    begin
+      FullPathLocation := TestFileName;
+      exit(true); //============================================================>> exit >>=============>>
+    end;
+  end;
+
+  // Then check in the default config directory.
+  if DefaultConfigDir <> '' then
+  begin
+    TestFileName := IncludeTrailingPathDelimiter(DefaultConfigDir) + ConfigFileName;
+    if FileExists(TestFileName) then
+    begin
+      FullPathLocation := TestFileName;
+      exit(true); //============================================================>> exit >>=============>>
+    end;
+  end;
+
+
+  // if still not found, it doesn't exist;
+  FullPathLocation := '';
+  result := false;
 end;
 
 procedure TGlobals.LoadRegistrationKeyFile(FileName: string);
