@@ -693,7 +693,7 @@ begin
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
     begin
-      v^.LoopMode := Value;
+      v^.TriggerMode := Value;
     end
   );
 end;
@@ -921,7 +921,7 @@ begin
   aVoice.OneShotSampleOsc.LoopBounds     := SamplerLoopBounds;
   aVoice.LoopSampleOsc.LoopBounds        := SamplerLoopBounds;
 
-  aVoice.LoopMode                        := SamplerTriggerMode;
+  aVoice.TriggerMode                        := SamplerTriggerMode;
 
   aVoice.OutputMixer.VoiceMixAuxA        := MixAuxA;
   aVoice.OutputMixer.VoiceMixAuxB        := MixAuxB;

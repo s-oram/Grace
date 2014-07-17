@@ -86,14 +86,14 @@ type
     fLevelMonitor: TLevelMonitor;
     fKeyGroupID: TKeyGroupID;
     fKeyGroup : IKeyGroup;
-    fLoopMode: TKeyGroupTriggerMode;
+    fTriggerMode: TKeyGroupTriggerMode;
     function GetObject:TObject;
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSampleReset(const Value: TClockSource);
     procedure SetVoiceGlide(const Value: single);
     procedure SetPitchTracking(const Value: TPitchTracking);
     procedure SetFilterRouting(const Value: TFilterRouting);
-    procedure SetLoopMode(const Value: TKeyGroupTriggerMode);
+    procedure SetTriggerMode(const Value: TKeyGroupTriggerMode);
   protected
     VoiceClockManager : TLucidityVoiceClockManager;
 
@@ -189,7 +189,7 @@ type
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
     //===== Parameters ======
-    property LoopMode           : TKeyGroupTriggerMode    read fLoopMode           write SetLoopMode;
+    property TriggerMode        : TKeyGroupTriggerMode    read fTriggerMode           write SetTriggerMode;
     property SamplePlaybackType : TSamplePlaybackType read fSamplePlaybackType write SetSamplePlaybackType;
     property PitchTracking      : TPitchTracking      read fPitchTracking      write SetPitchTracking;
     property VoiceGlide         : single              read fVoiceGlide         write SetVoiceGlide; //range 0..1.
@@ -429,9 +429,9 @@ begin
   if IsActive then assert('ERROR: Changing Playback type while Voice is active.');
 end;
 
-procedure TLucidityVoice.SetLoopMode(const Value: TKeyGroupTriggerMode);
+procedure TLucidityVoice.SetTriggerMode(const Value: TKeyGroupTriggerMode);
 begin
-  fLoopMode := Value;
+  fTriggerMode := Value;
 
   OneShotSampleOsc.LoopMode := Value;
 
@@ -449,7 +449,7 @@ begin
   VoiceClockManager.RemoveListener('LucidityVoice', Self);
 
   // IMPORTANT: Don't enable the reset when using "One Shot" trigger mode.
-  if LoopMode <> TKeyGroupTriggerMode.OneShot then
+  if TriggerMode <> TKeyGroupTriggerMode.OneShot then
   begin
     case Value of
       TClockSource.None: ;

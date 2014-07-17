@@ -419,7 +419,7 @@ begin
   begin
     aVoice := ActiveVoices[c1];
 
-    if (aVoice.TriggerNote = Data1) and (aVoice.LoopMode <> TKeyGroupTriggerMode.OneShot) then
+    if (aVoice.TriggerNote = Data1) and (aVoice.TriggerMode <> TKeyGroupTriggerMode.OneShot) then
     begin
       ActiveVoices.Remove(aVoice);
       ReleasedVoices.Add(aVoice);
@@ -467,7 +467,7 @@ begin
   begin
     aVoice := ActiveVoices[c1];
 
-    if (aVoice.LoopMode <> TKeyGroupTriggerMode.OneShot) then
+    if (aVoice.TriggerMode <> TKeyGroupTriggerMode.OneShot) then
     begin
       ActiveVoices.Remove(aVoice);
       ReleasedVoices.Add(aVoice);
