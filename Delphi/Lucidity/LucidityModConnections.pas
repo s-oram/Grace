@@ -88,6 +88,7 @@ end;
 procedure TModConnections.SetModMute(const ModSlotIndex: integer; IsMuted: boolean);
 begin
   fModMute[ModSlotIndex] := IsMuted;
+  if assigned(OnChanged) then OnChanged(self);
 end;
 
 procedure TModConnections.SetModSource(const ModSlotIndex: integer; aSource: TModSource);
