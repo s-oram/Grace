@@ -35,6 +35,7 @@ type
     fPar1: PSynthPar;
     fPar4: PSynthPar;
     fKeyFollowFreqMultiplier: single;
+    fIsActive: boolean;
 
     procedure SetSampleRate(const Value: single);
     procedure SetFilterType(const Value: TFilterType);
@@ -53,6 +54,10 @@ type
     DummyModValue : single; //TODO: Delete this.
 
     VoiceModPoints : PVoiceModulationPoints;
+
+    procedure UpdateFilterParameters; {$IFDEF AudioInline}inline;{$ENDIF}
+
+    property IsActive : boolean read fIsActive;
   public
     constructor Create(const aVoiceModPoints : PVoiceModulationPoints);
     destructor Destroy; override;
@@ -67,7 +72,8 @@ type
     // TODO: delete this old mod pointer stuff.
     function GetModPointer(const Name:string):PSingle;
 
-    procedure Reset;
+    procedure ResetAndMakeActive; //call before starting audio processing.
+    procedure Kill;               //call when audio processing has finished.
 
     property SampleRate : single read fSampleRate write SetSampleRate;
 
@@ -95,7 +101,12 @@ uses
 
 constructor TLucidityFilter.Create(const aVoiceModPoints : PVoiceModulationPoints);
 begin
+  fIsActive := false;
+
   VoiceModPoints := aVoiceModPoints;
+
+  //TODO:MED Currently all filters are active at once. It would be better
+  // to only instantiate the active filter and leave the others off.
 
   TestFilter  := TTestFilter.Create;
   RingModA    := TRingModA.Create;
@@ -120,13 +131,17 @@ begin
   inherited;
 end;
 
-procedure TLucidityFilter.Reset;
+procedure TLucidityFilter.ResetAndMakeActive;
 begin
+  fIsActive := true;
+
   DistortionA.Reset;
   RingModA.Reset;
   BlueFilter.Reset;
   MoogLadder.Reset;
   OptimisedFilter.Reset;
+
+  UpdateFilterParameters;
 end;
 
 function TLucidityFilter.GetModPointer(const Name: string): PSingle;
@@ -134,17 +149,29 @@ begin
   if Name ='Par1Mod' then exit(@DummyModValue);
   if Name ='Par2Mod' then exit(@DummyModValue);  if Name ='Par3Mod' then exit(@DummyModValue);  if Name ='Par4Mod' then exit(@DummyModValue);  raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');end;
 
+procedure TLucidityFilter.Kill;
+begin
+  fIsActive := false;
+end;
+
 procedure TLucidityFilter.SetFilterType(const Value: TFilterType);
 begin
   fFilterType := Value;
 
-  LofiA.Reset;
-  CombA.Reset;
-  BlueFilter.Reset;
-  RingModA.Reset;
-  DistortionA.Reset;
-  MoogLadder.Reset;
-  OptimisedFilter.reset;
+  // TODO:HIGH probably need a mutex around IsActive.
+  // SetFilterType can be called from the GUI thread as far as I know.
+  if IsActive then
+  begin
+    LofiA.Reset;
+    CombA.Reset;
+    BlueFilter.Reset;
+    RingModA.Reset;
+    DistortionA.Reset;
+    MoogLadder.Reset;
+    OptimisedFilter.Reset;
+
+    UpdateFilterParameters;
+  end;
 end;
 
 procedure TLucidityFilter.SetKeyFollow(const Value: single);
@@ -167,8 +194,7 @@ begin
   OptimisedFilter.SampleRate := Value;
 end;
 
-
-procedure TLucidityFilter.FastControlProcess;
+procedure TLucidityFilter.UpdateFilterParameters;
 const
   kBaseFilterFreq = 4.0878994578;
   kMinFreq = 0.001;
@@ -285,9 +311,13 @@ begin
 
 end;
 
+procedure TLucidityFilter.FastControlProcess;
+begin
+  UpdateFilterParameters;
+end;
+
 procedure TLucidityFilter.SlowControlProcess;
 begin
-
 end;
 
 procedure TLucidityFilter.AudioRateStep(var x1, x2: single);

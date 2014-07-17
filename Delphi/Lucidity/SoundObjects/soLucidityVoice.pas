@@ -679,8 +679,8 @@ begin
 
 
 
-  FilterOne.Reset;
-  FilterTwo.Reset;
+  FilterOne.ResetAndMakeActive;
+  FilterTwo.ResetAndMakeActive;
 end;
 
 procedure TLucidityVoice.Release;
@@ -742,6 +742,9 @@ begin
     GrainStretchOsc.Kill;
     LfoA.Kill;
     LfoB.Kill;
+
+    FilterOne.Kill;
+    FilterTwo.Kill;
 
     StepSeqOne.SequenceData := nil;
     StepSeqTwo.SequenceData := nil;

@@ -8,8 +8,6 @@
 
 - Need to test SFZ import.
 
-- mute modulation is only applied to next triggered voice. I wonder if it can be applied immediately.
-
 - Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
   maybe that should be made evident. 
 Loop -> Trigger
@@ -20,8 +18,6 @@ One Shot
 
 - Filter Gain needs more bite.
 - Filter freq scaling might need some work. 
-
-- ring modulation effect when first selected is muted. must need to be initialised somewhere.
 
 =============================================================================
      TODO MED

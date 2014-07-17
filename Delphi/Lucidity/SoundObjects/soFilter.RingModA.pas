@@ -61,22 +61,16 @@ begin
   assert(Value >= 0);
   assert(Value <= 1);
 
-  if Value <> fDepth then
-  begin
-    fDepth := Value;
+  fDepth := Value;
 
-    MixDry := (1 - fDepth);
-    MixWet := fDepth;
-  end;
+  MixDry := (1 - fDepth);
+  MixWet := fDepth;
 end;
 
 procedure TRingModA.SetOscFreq(const Value: single);
 begin
-  if Value <> fOscFreq then
-  begin
-    fOscFreq := Value;
-    Osc.Freq := Value;
-  end;
+  fOscFreq := Value;
+  Osc.Freq := Value;
 end;
 
 procedure TRingModA.SetSampleRate(const Value: single);
