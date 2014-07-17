@@ -189,12 +189,12 @@ type
     property LevelMonitor     : TLevelMonitor            read fLevelMonitor     write fLevelMonitor;
 
     //===== Parameters ======
-    property TriggerMode        : TKeyGroupTriggerMode    read fTriggerMode           write SetTriggerMode;
-    property SamplePlaybackType : TSamplePlaybackType read fSamplePlaybackType write SetSamplePlaybackType;
-    property PitchTracking      : TPitchTracking      read fPitchTracking      write SetPitchTracking;
-    property VoiceGlide         : single              read fVoiceGlide         write SetVoiceGlide; //range 0..1.
-    property SampleReset        : TClockSource        read fSampleReset        write SetSampleReset;
-    property FilterRouting      : TFilterRouting      read fFilterRouting      write SetFilterRouting;
+    property TriggerMode        : TKeyGroupTriggerMode  read fTriggerMode        write SetTriggerMode;
+    property SamplePlaybackType : TSamplePlaybackType   read fSamplePlaybackType write SetSamplePlaybackType;
+    property PitchTracking      : TPitchTracking        read fPitchTracking      write SetPitchTracking;
+    property VoiceGlide         : single                read fVoiceGlide         write SetVoiceGlide; //range 0..1.
+    property SampleReset        : TClockSource          read fSampleReset        write SetSampleReset;
+    property FilterRouting      : TFilterRouting        read fFilterRouting      write SetFilterRouting;
 
     // TODO: NOTE: It's a bit strange that 'VoiceMode' is a member of the voice class and is set per voice.
     // It's a global property and applies to all key groups. It should be represented as such probably.
