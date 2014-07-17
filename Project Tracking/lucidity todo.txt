@@ -8,14 +8,6 @@
 
 - Need to test SFZ import.
 
-- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
-  maybe that should be made evident. 
-Loop -> Trigger
-Loop Sustain -> Loop On
-Loop Until Release
-Note (Loop Off)
-One Shot 
-
 - Filter Gain needs more bite.
 - Filter freq scaling might need some work. 
 
