@@ -149,12 +149,6 @@ var
   DataNode : TXmlNode;
   mb : IMidiBinding;
 begin
-  //TODO:HIGH when saving a MIDI map to a file, we need to save the bindings
-  // indexed to parameter names. Not parameter IDs.
-  // But once loaded we will want to be using parameter IDs as indexes. so
-  // we will need to find the parameter ID when the state is loaded.
-  // (The wording on this comment is probably bad cause I'm tired.) <-- meta-comment!
-
   Clear;
 
   NodeList := TsdNodeList.Create;
