@@ -45,7 +45,7 @@ type
     RingModA    : TRingModA;
     LofiA       : TLofi;
     CombA       : TCombA;
-    BlueFilter  : TLowPassA;
+    BlueFilter  : TBlueFilter;
     MoogLadder  : TMoogLadder;
     OptimisedFilter : TOptimisedFilter;
 
@@ -113,7 +113,7 @@ begin
   DistortionA := TDistortionA.Create;
   LofiA       := TLofi.Create;
   CombA       := TCombA.Create;
-  BlueFilter  := TLowPassA.Create;
+  BlueFilter  := TBlueFilter.Create;
   MoogLadder  := TMoogLadder.Create;
   OptimisedFilter := TOptimisedFilter.Create;
 end;

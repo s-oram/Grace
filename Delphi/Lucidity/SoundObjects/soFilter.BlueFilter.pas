@@ -8,7 +8,7 @@ uses
   FilterCore.SimperSVF;
 
 type
-  TLowPassA = class
+  TBlueFilter = class
   private
     fSampleRate: single;
     fFreq: single;
@@ -50,23 +50,23 @@ uses
 
 { TLowPassA }
 
-constructor TLowPassA.Create;
+constructor TBlueFilter.Create;
 begin
 end;
 
-destructor TLowPassA.Destroy;
+destructor TBlueFilter.Destroy;
 begin
   inherited;
 end;
 
 
-procedure TLowPassA.Reset;
+procedure TBlueFilter.Reset;
 begin
   FilterData1.Reset;
   FilterData2.Reset;
 end;
 
-procedure TLowPassA.Step(var x1, x2: single);
+procedure TBlueFilter.Step(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 + kDenormal;
   FilterData1.Input[1] := x2 + kDenormal;
@@ -82,7 +82,7 @@ begin
   x2 := FilterData2.Ouput[1];
 end;
 
-procedure TLowPassA.StepAsLowpass2P(var x1, x2: single);
+procedure TBlueFilter.StepAsLowpass2P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
   FilterData1.Input[1] := x2 * GainIn  + kDenormal;
@@ -93,7 +93,7 @@ begin
   x2 := FilterData1.Ouput[1] * GainOut;
 end;
 
-procedure TLowPassA.StepAsBandpass2P(var x1, x2: single);
+procedure TBlueFilter.StepAsBandpass2P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
   FilterData1.Input[1] := x2 * GainIn  + kDenormal;
@@ -104,7 +104,7 @@ begin
   x2 := FilterData1.Ouput[1] * GainOut;
 end;
 
-procedure TLowPassA.StepAsHighpass2P(var x1, x2: single);
+procedure TBlueFilter.StepAsHighpass2P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
   FilterData1.Input[1] := x2 * GainIn  + kDenormal;
@@ -116,7 +116,7 @@ begin
 end;
 
 
-procedure TLowPassA.StepAsLowpass4P(var x1, x2: single);
+procedure TBlueFilter.StepAsLowpass4P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
   FilterData1.Input[1] := x2 * GainIn  + kDenormal;
@@ -132,7 +132,7 @@ begin
   x2 := FilterData2.Ouput[1] * GainOut;
 end;
 
-procedure TLowPassA.StepAsBandpass4P(var x1, x2: single);
+procedure TBlueFilter.StepAsBandpass4P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 + kDenormal;
   FilterData1.Input[1] := x2 + kDenormal;
@@ -148,7 +148,7 @@ begin
   x2 := FilterData2.Ouput[1];
 end;
 
-procedure TLowPassA.StepAsHighpass4P(var x1, x2: single);
+procedure TBlueFilter.StepAsHighpass4P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 + kDenormal;
   FilterData1.Input[1] := x2 + kDenormal;
@@ -164,7 +164,7 @@ begin
   x2 := FilterData2.Ouput[1];
 end;
 
-procedure TLowPassA.UpdateParameters(const Freq, Q, InputGain: single);
+procedure TBlueFilter.UpdateParameters(const Freq, Q, InputGain: single);
 var
   G : single;
   K : single;
