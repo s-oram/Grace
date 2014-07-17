@@ -6,15 +6,34 @@
 
 - Bug: Crash after loading program via drag and drop.
 
+- Need to test SFZ import.
+
+- mute modulation is only applied to next triggered voice. I wonder if it can be applied immediately.
+
+- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
+  maybe that should be made evident. 
+Loop -> Trigger
+Loop Sustain -> Loop On
+Loop Until Release
+Note (Loop Off)
+One Shot 
+
+
+- Filter Gain needs more bite.
+- Filter freq scaling might need some work. 
+
+- Update Mute Modulation drawing so the M isn't transparent
+
+- ring modulation effect when first selected is muted. must need to be initialised somewhere.
+
 =============================================================================
      TODO MED
 =============================================================================
-- Not sure about Loop mode names. Loop Off is ambiguious. This is "Trigger Mode" parameter
-  maybe that should be made evident. 
 
- - Need to test SFZ import.
+- A "Swap Effect Order" command
 
-
+- sample map trigger display should have a minimum trigger time so it's not 
+  epilisy inducing.  
 
 - filters finished. 
 
