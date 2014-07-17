@@ -307,19 +307,7 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
 
   //==== Load the key hook config ==============================================
-  // TODO:HIGH need to check for duplicate file in the Config User Override directory.
-  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
-  fn := IncludeTrailingPathDelimiter(fn) + 'KeyHook.xml';
-
-  {$IFDEF Logging}
-  if FileExists(fn)
-    then LogMain.LogText('KeyHook.xml Found', fn)
-    else LogMain.LogText('KeyHook.xml NOT Found!', fn);
-  {$ENDIF}
-
-
-  //called by the plugin after plugin reference has been assigned.
-  if FileExists(fn) then
+  if Plugin.Globals.FindConfigFile('KeyHook.xml', fn) then
   begin
     PluginKeyHook := TPluginKeyHook.Create(Plugin.Globals.HostProperties^.HostName, Plugin.Globals.HostProperties^.HostVersion, aVstWindow, fn);
 
@@ -327,30 +315,14 @@ begin
     PluginKeyHook.OnKeyUp   := PluginHotKeys.KeyUp;
   end;
 
-
-
   //==== Load the key commands config ==========================================
-  // TODO:HIGH need to check for duplicate file in the Config User Override directory.
-  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Config Default';
-  fn := IncludeTrailingPathDelimiter(fn) + 'KeyCommands.xml';
-
-  {$IFDEF Logging}
-  if FileExists(fn)
-    then LogMain.LogText('KeyCommands.xml Found', fn)
-    else LogMain.LogText('KeyCommands.xml NOT Found!', fn);
-  {$ENDIF}
-
-
-  if FileExists(fn) then
+  if Plugin.Globals.FindConfigFile('KeyCommands.xml', fn) then
   begin
     PluginHotkeys.LoadFromXML(fn);
   end;
 
-
-
   // TODO:MED Delete this AddWindowsMessageLister(). It's been superceded by the ZeroObject stuff.
   Plugin.Globals.AddWindowsMessageListener(self.Handle);
-
 
   //====== Register frames as zero objects =====================================
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
