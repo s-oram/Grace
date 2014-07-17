@@ -44,6 +44,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'VOICE CONTROLS'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -76,6 +77,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'GRAIN STRETCH '
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -95,6 +97,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'SIZE'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -113,6 +116,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'RATE'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -131,6 +135,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'POS'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -149,6 +154,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'LOOP'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -168,6 +174,7 @@ object VoiceControlFrame: TVoiceControlFrame
             DisplayClass = 'MenuButton'
             Text = '---'
             HitTest = True
+            AutoTrimText = False
             Color = '$FF3E3E3E'
             ColorMouseOver = '$FF3E3E3E'
             ColorBorder = '$00000000'
@@ -276,6 +283,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'OSCILLATOR'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -295,6 +303,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'SHAPE'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -313,6 +322,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'PW'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -391,6 +401,7 @@ object VoiceControlFrame: TVoiceControlFrame
             Opacity = 255
             Text = 'SAMPLE ONE-SHOT'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
@@ -411,6 +422,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'PLAYBACK'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -430,6 +442,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -455,6 +468,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'RESET'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -474,6 +488,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -522,6 +537,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'TUNE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -540,6 +556,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'FINE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -573,7 +590,7 @@ object VoiceControlFrame: TVoiceControlFrame
           ParameterIndex = 0
           Visible = True
         end
-        object SamplerLoopBoundsTextBox: TVamTextBox
+        object LoopBoundsTextBox: TVamTextBox
           Left = 399
           Top = 32
           Width = 50
@@ -582,6 +599,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -599,7 +617,7 @@ object VoiceControlFrame: TVoiceControlFrame
           ImageOverlayOffsetY = 0
           Visible = True
         end
-        object SamplerLoopBoundsLabel: TVamLabel
+        object LoopBoundsLabel: TVamLabel
           Left = 399
           Top = 46
           Width = 50
@@ -607,6 +625,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'BOUNDS'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -626,6 +645,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -651,6 +671,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'MODE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -692,6 +713,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'GLIDE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -702,14 +724,15 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object SamplerLoopModeLabel: TVamLabel
+        object TriggerModeLabel: TVamLabel
           Left = 337
           Top = 46
           Width = 50
           Height = 16
           Opacity = 255
-          Text = 'LOOP'
+          Text = 'TRIGGER'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -720,7 +743,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Font.Style = [fsBold]
           Visible = True
         end
-        object SamplerLoopModeTextBox: TVamTextBox
+        object TriggerModeTextBox: TVamTextBox
           Left = 337
           Top = 32
           Width = 50
@@ -729,6 +752,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -755,6 +779,7 @@ object VoiceControlFrame: TVoiceControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -780,6 +805,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'TRACK'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -821,6 +847,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'GAIN'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -862,6 +889,7 @@ object VoiceControlFrame: TVoiceControlFrame
           Opacity = 255
           Text = 'PAN'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter

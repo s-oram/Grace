@@ -44,14 +44,14 @@ type
     VoicePitch1Label: TVamLabel;
     VoicePitch2Label: TVamLabel;
     VoicePitch2Knob: TVamKnob;
-    SamplerLoopBoundsTextBox: TVamTextBox;
-    SamplerLoopBoundsLabel: TVamLabel;
+    LoopBoundsTextBox: TVamTextBox;
+    LoopBoundsLabel: TVamLabel;
     VoiceModeTextBox: TVamTextBox;
     VoiceModeLabel: TVamLabel;
     GlideKnob: TVamKnob;
     GlideLabel: TVamLabel;
-    SamplerLoopModeLabel: TVamLabel;
-    SamplerLoopModeTextBox: TVamTextBox;
+    TriggerModeLabel: TVamLabel;
+    TriggerModeTextBox: TVamTextBox;
     PitchTrackTextBox: TVamTextBox;
     PitchTrackLabel: TVamLabel;
     MainOutputKnob: TVamKnob;
@@ -185,8 +185,8 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);     // NOTE: Using ShowPlayTypeMenuCallBack().
   GuiStandard_RegisterMenuButton(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);
   GuiStandard_RegisterMenuButton(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource); // NOTE: Using ShowSamplResetMenuCallBack().
-  GuiStandard_RegisterMenuButton(aGuiStandard, SamplerLoopModeTextBox,      TPluginParameter.SamplerLoopMode);
-  GuiStandard_RegisterMenuButton(aGuiStandard, SamplerLoopBoundsTextBox,    TPluginParameter.SamplerLoopBounds);
+  GuiStandard_RegisterMenuButton(aGuiStandard, TriggerModeTextBox,          TPluginParameter.SamplerLoopMode);
+  GuiStandard_RegisterMenuButton(aGuiStandard, LoopBoundsTextBox,           TPluginParameter.SamplerLoopBounds);
   //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);
 
 
@@ -226,8 +226,8 @@ begin
   GuiSetup.StyleButton_SelectorButton(ResetTextBox);
   GuiSetup.StyleButton_SelectorButton(VoiceModeTextBox);
   GuiSetup.StyleButton_SelectorButton(GrainLoopTextBox);
-  GuiSetup.StyleButton_SelectorButton(SamplerLoopModeTextBox);
-  GuiSetup.StyleButton_SelectorButton(SamplerLoopBoundsTextBox);
+  GuiSetup.StyleButton_SelectorButton(TriggerModeTextBox);
+  GuiSetup.StyleButton_SelectorButton(LoopBoundsTextBox);
 
   //=====    Main Voice Controls    =======================
   VoiceControlsContainer.Align := alClient;
@@ -265,16 +265,16 @@ begin
   PitchTrackTextBox.Layout.Anchor(VoicePitch2Knob).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge).Move(8,0);
   PitchTrackLabel.Layout.Anchor(PitchTrackTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
-  SamplerLoopModeTextBox.Layout.SetSize(32 * 2, 16);
-  SamplerLoopModeTextBox.Layout.Anchor(PitchTrackTextBox).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  SamplerLoopModeLabel.Layout.SetSize(32 * 2, 16).Anchor(SamplerLoopModeTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  TriggerModeTextBox.Layout.SetSize(32 * 2, 16);
+  TriggerModeTextBox.Layout.Anchor(PitchTrackTextBox).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  TriggerModeLabel.Layout.SetSize(32 * 2, 16).Anchor(TriggerModeTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
-  SamplerLoopBoundsTextBox.Layout.SetSize(32 * 2, 16);
-  SamplerLoopBoundsTextBox.Layout.Anchor(SamplerLoopModeTextBox).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
-  SamplerLoopBoundsLabel.Layout.SetSize(32 * 2, 16).Anchor(SamplerLoopBoundsTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  LoopBoundsTextBox.Layout.SetSize(32 * 2, 16);
+  LoopBoundsTextBox.Layout.Anchor(TriggerModeTextBox).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  LoopBoundsLabel.Layout.SetSize(32 * 2, 16).Anchor(LoopBoundsTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
   ResetTextBox.Layout.SetSize(64, 16);
-  ResetTextBox.Layout.Anchor(SamplerLoopBoundsTextBox).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge).Move(8,0);
+  ResetTextBox.Layout.Anchor(LoopBoundsTextBox).SnapToEdge(TControlFeature.RightEdge).AlignEdge(TControlFeature.BottomEdge).Move(8,0);
   ResetLabel.Layout.Anchor(ResetTextBox).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
 
 
