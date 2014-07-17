@@ -35,12 +35,12 @@ type
 
     // Freq range 10?..1/4 Nyquist?
     // Q range 0..1
-    // Input gain is a linear multipication
+    // Input gain...
     procedure UpdateParameters(const Freq, Q, InputGain : single);
 
     property SampleRate : single read fSampleRate write fSampleRate;
 
-    property InputGain : single read fInputGain write fInputGain; //Linear value.
+    property InputGain : single read fInputGain write fInputGain;
   end;
 
 implementation
@@ -119,7 +119,7 @@ end;
 procedure TBlueFilter.StepAsLowpass4P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
-  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn + kDenormal;
 
   TSimperVCF.StepAsLowPass(FilterData1);
 
@@ -180,8 +180,8 @@ begin
   FilterData1.SetGK(G, K);
   FilterData2.SetGK(G, K);
 
-  GainIn  := 1 * (1 + (InputGain * 8));
-  GainOut := 1 / (1 + (InputGain * 4));
+  GainIn  := 1 * (1 + (InputGain * 12));
+  GainOut := 1 / (1 + (InputGain * 5));
 end;
 
 end.

@@ -302,6 +302,8 @@ begin
   //TODO: maybe this non-linear magic here can be optimised somewhat.
   Data.v2[0] := FastTanH(Data.v2[0] * 0.125) * 8;
   Data.v2[1] := FastTanH(Data.v2[1] * 0.125) * 8;
+  //Data.v2[0] := TanH(Data.v2[0] * 0.125) * 8;
+  //Data.v2[1] := TanH(Data.v2[1] * 0.125) * 8;
 end;
 
 class procedure TSimperVCF.StepAsLowPass(var Data: TDualSimperSVFData);
