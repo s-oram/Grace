@@ -50,7 +50,7 @@ uses
 constructor TModConnections.Create;
 begin
   self.fModSource[0] := TModSource.AmpEnv_Unipolar;
-  self.fModSource[1] := TModSource.FilterEnv_Unipolar;
+  self.fModSource[1] := TModSource.ModEnv_Unipolar;
   self.fModSource[2] := TModSource.Lfo1_UniPolar;
   self.fModSource[3] := TModSource.Lfo2_UniPolar;
   self.fModSource[4] := TModSource.StepSeq1_Unipolar;

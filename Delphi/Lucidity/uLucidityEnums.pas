@@ -91,7 +91,7 @@ type
     Midi_ModWheel_Unipolar,
     Midi_Toggle_Unipolar,
     AmpEnv_Unipolar,
-    FilterEnv_Unipolar,
+    ModEnv_Unipolar,
     Lfo1_Unipolar,
     Lfo2_Unipolar,
     StepSeq1_Unipolar,
@@ -310,7 +310,7 @@ begin
     TModSource.Midi_ModWheel_Unipolar:  result := 'MIDI Modwheel';
     TModSource.Midi_Toggle_Unipolar:    result := 'MIDI Toggle';
     TModSource.AmpEnv_Unipolar:         result := 'Amp Envelope';
-    TModSource.FilterEnv_Unipolar:      result := 'Mod Envelope';
+    TModSource.ModEnv_Unipolar:      result := 'Mod Envelope';
     TModSource.Lfo1_UniPolar:           result := 'LFO 1';
     TModSource.Lfo2_UniPolar:           result := 'LFO 2';
     TModSource.StepSeq1_Unipolar:       result := 'Step Sequencer 1';
@@ -339,7 +339,7 @@ begin
     TModSource.Midi_ModWheel_Unipolar:  result := 'Mod Whl';
     TModSource.Midi_Toggle_Unipolar:    result := 'Toggle';
     TModSource.AmpEnv_Unipolar:         result := 'Amp Env';
-    TModSource.FilterEnv_Unipolar:      result := 'Mod Env';
+    TModSource.ModEnv_Unipolar:      result := 'Mod Env';
     TModSource.Lfo1_UniPolar:           result := 'LFO1';
     TModSource.Lfo2_UniPolar:           result := 'LFO2';
     TModSource.StepSeq1_Unipolar:       result := 'Seq1';
