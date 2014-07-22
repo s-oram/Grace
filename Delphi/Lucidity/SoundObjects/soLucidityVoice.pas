@@ -295,11 +295,13 @@ begin
   ModEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.ModEnv_Unipolar, ModEnv.GetModPointer('EnvOut_Uni'));
 
+
   FilterOne := TLucidityFilter.Create(@ModPoints);
   FilterTwo := TLucidityFilter.Create(@ModPoints);
 
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1_UniPolar, LfoA.GetModPointer('LfoOutput_Uni'));
+  //ModMatrix.SetModSourcePointer(TModSource.ModEnv_Unipolar, LfoA.GetModPointer('LfoOutput_Uni'));
 
   LfoB := TLucidityLfo.Create(1, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo2_UniPolar, LfoB.GetModPointer('LfoOutput_Uni'));
@@ -371,7 +373,7 @@ begin
 
   //==== Control Rate Modules ====
   AmpEnv.SampleRate     := Globals.ControlRate;
-  ModEnv.SampleRate  := Globals.ControlRate;
+  ModEnv.SampleRate     := Globals.ControlRate;
   LfoA.SampleRate       := Globals.ControlRate;
   LfoB.SampleRate       := Globals.ControlRate;
   StepSeqOne.SampleRate := Globals.ControlRate;
@@ -567,13 +569,25 @@ begin
   LfoB.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo2Par2);
   LfoB.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.Lfo2Par3);
 
-  //-- IMPORTANT: Do first. --
+  //*************************************************************************************
+  //-- IMPORTANT: I Think the ordering here may be important. Careful if changing. --
+  //=== Step 1 ===
   ModMatrix.Init(ParValueData, @self.ParModData, ModConnections);
   ModMatrix.UpdateModConnections;
-  ModMatrix.ZeroLocalValues;
+
+  //=== Step 2 ===
+  // Zero all local values.
+  LfoA.ZeroOutput;
+  LfoB.ZeroOutput;
+  AmpEnv.ZeroOutput;
+  ModEnv.ZeroOutput;
+  StepSeqOne.ZeroOutput;
+  StepSeqTwo.ZeroOutput;
+
+  //=== Step 3 ===
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
-  //--------------------------
+  //*************************************************************************************
 
   OneShotSampleOsc.Init(ParValueData, @self.ParModData);
 

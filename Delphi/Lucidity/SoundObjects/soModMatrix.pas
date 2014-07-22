@@ -71,9 +71,6 @@ type
     property ModSourceValues : TModSourceValues read fModSourceValues;
     //==========================================================================
 
-    procedure ZeroAllValues;
-    procedure ZeroLocalValues;
-
     procedure SetModSourcePointer(const aModSource : TModSource; const Source:PSingle);
     //procedure SetModDestPointer(const aModDest : TModDest; const Dest:PSingle);
 
@@ -221,28 +218,6 @@ end;
 procedure TModMatrix.SetModSourcePointer(const aModSource: TModSource; const Source: PSingle);
 begin
   fModSourceValues[Integer(aModSource)] := Source;
-end;
-
-procedure TModMatrix.ZeroAllValues;
-var
-  c1 : integer;
-begin
-  for c1 := 0 to ModSourceCount-1 do
-  begin
-    fModSourceValues[c1]^ := 0;
-  end;
-end;
-
-
-procedure TModMatrix.ZeroLocalValues;
-begin
-  // Zero all local values. Other values are supplied by external modulation sources.
-  fModSourceValues[Integer(TModSource.AmpEnv_Unipolar)]^    := 0;
-  fModSourceValues[Integer(TModSource.ModEnv_Unipolar)]^ := 0;
-  fModSourceValues[Integer(TModSource.Lfo1_Unipolar)]^      := 0;
-  fModSourceValues[Integer(TModSource.Lfo2_Unipolar)]^      := 0;
-  fModSourceValues[Integer(TModSource.StepSeq1_Unipolar)]^  := 0;
-  fModSourceValues[Integer(TModSource.StepSeq2_Unipolar)]^  := 0;
 end;
 
 procedure TModMatrix.FastControlProcess;

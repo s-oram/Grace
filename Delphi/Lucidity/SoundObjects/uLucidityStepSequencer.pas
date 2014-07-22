@@ -43,7 +43,6 @@ type
     // Mod Data...
     ModClockInput : single;
     ModSeqOutput_Unipolar : single;
-    ModSeqOutput_Bipolar : single;
 
     TargetOutput : single;
 
@@ -62,6 +61,7 @@ type
 
     function GetModPointer(const Name:string):PSingle;
 
+    procedure ZeroOutput;
     procedure StepResetA(TriggeredNote : cardinal);
     procedure StepResetB;
     procedure Step;
@@ -93,7 +93,6 @@ begin
   fStepSeqClock := TSequencerClock.Div_1;
 
   ModSeqOutput_Unipolar := 0;
-  ModSeqOutput_Bipolar  := -1;
   TargetOutput := 0;
 
   SmoothingFilter := TCriticallyDampedLowpass.Create;
@@ -118,9 +117,7 @@ end;
 
 function TLucidyStepSequencer.GetModPointer(const Name: string): PSingle;
 begin
-  if Name = 'ClockInput'    then Exit(@ModClockInput);
   if Name = 'StepSeqOutput_Uni' then Exit(@ModSeqOutput_Unipolar);
-  if Name = 'StepSeqOutput_Bi' then Exit(@ModSeqOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
@@ -188,7 +185,6 @@ begin
     TargetOutput := CurrentStepValues[fCurrentStep];
     SmoothingFilter.Reset(TargetOutput);
     ModSeqOutput_Unipolar := TargetOutput;
-    ModSeqOutput_Bipolar := TargetOutput * 2 - 1;
   end else
   begin
     x := StepSequencerLengthToInteger(StepCount);
@@ -198,7 +194,6 @@ begin
     TargetOutput  := CurrentStepValues[fCurrentStep];
     SmoothingFilter.Reset(TargetOutput);
     ModSeqOutput_Unipolar := TargetOutput;
-    ModSeqOutput_Bipolar  := TargetOutput * 2 - 1;
   end;
 
   //TODO: add a filter for the step sequencer and reset the filter output here.
@@ -207,6 +202,11 @@ end;
 procedure TLucidyStepSequencer.StepResetB;
 begin
 
+end;
+
+procedure TLucidyStepSequencer.ZeroOutput;
+begin
+  ModSeqOutput_Unipolar := 0;
 end;
 
 procedure TLucidyStepSequencer.SetStepSeqClock(const Value: TSequencerClock);
@@ -282,8 +282,6 @@ begin
   x := SmoothingFilter.Step(TargetOutput);
 
   ModSeqOutput_Unipolar := x;
-  ModSeqOutput_Bipolar  := x * 2 - 1;
-
 end;
 
 procedure TLucidyStepSequencer.ClockEvent(Sender: TObject; ClockID: cardinal);

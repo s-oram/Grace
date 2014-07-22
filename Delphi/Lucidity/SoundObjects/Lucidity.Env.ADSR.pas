@@ -38,7 +38,6 @@ type
     fADSR : TADSR;
 
     ModOutput_Unipolar : single;
-    ModOutput_Bipolar : single;
 
     procedure UpdateParameters;
 
@@ -60,6 +59,7 @@ type
     property Par4 : PSynthPar read fPar4 write fPar4;
     property Par5 : PSynthPar read fPar5 write fPar5;
 
+    procedure ZeroOutput;
     procedure StepResetA; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure FastControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
     procedure SlowControlProcess; {$IFDEF AudioInline}inline;{$ENDIF}
@@ -109,7 +109,6 @@ end;
 function TLucidityADSR.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'EnvOut_Uni' then exit(@ModOutput_Unipolar);
-  if Name = 'EnvOut_Bi' then exit(@ModOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
@@ -206,13 +205,17 @@ begin
   fADSR.Kill;
 end;
 
+procedure TLucidityADSR.ZeroOutput;
+begin
+  ModOutput_Unipolar := 0;
+end;
+
 procedure TLucidityADSR.StepResetA;
 begin
   UpdateParameters;
   fADSR.StepReset;
 
   ModOutput_Unipolar := 0;
-  ModOutput_Bipolar  := -1;
 end;
 
 procedure TLucidityADSR.FastControlProcess;
@@ -220,7 +223,6 @@ begin
   fADSR.Step;
 
   ModOutput_Unipolar := fAdsr.Value;
-  ModOutput_Bipolar  := fAdsr.Value * 2 - 1;
 end;
 
 procedure TLucidityADSR.SlowControlProcess;

@@ -45,7 +45,6 @@ type
     VoiceClockManager : TLucidityVoiceClockManager;
     FModuleIndex  : integer;
     LfoOutput_Unipolar : single;
-    LfoOutput_Bipolar  : single;
 
     ActiveLfo     : TActiveLfo;
 
@@ -76,8 +75,11 @@ type
     property Par2 : PSynthPar read fPar2 write SetPar2;
     property Par3 : PSynthPar read fPar3 write SetPar3;
 
+    //==== reset methods ====
+    procedure ZeroOutput;
     procedure StepResetA;
     procedure StepResetB;
+    //=======================
 
     procedure FastControlProcess;
     procedure SlowControlProcess;
@@ -201,7 +203,6 @@ end;
 function TLucidityLfo.GetModPointer(const Name: string): PSingle;
 begin
   if Name = 'LfoOutput_Uni' then Exit(@LfoOutput_Unipolar);
-  if Name = 'LfoOutput_Bi' then Exit(@LfoOutput_Bipolar);
 
   raise Exception.Create('ModPointer (' + Name + ') doesn''t exist.');
 end;
@@ -314,8 +315,6 @@ begin
   else
     raise Exception.Create('Type not handled');
   end;
-
-  LfoOutput_Bipolar := LfoOutput_Unipolar * 2 - 1;
 end;
 
 procedure TLucidityLfo.StepResetB;
@@ -357,6 +356,11 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+end;
+
+procedure TLucidityLfo.ZeroOutput;
+begin
+  LfoOutput_Unipolar := 0;
 end;
 
 procedure TLucidityLfo.Trigger;
@@ -407,8 +411,6 @@ begin
       then VoiceClockManager.SendClockEvent(ClockID_Lfo1)
       else VoiceClockManager.SendClockEvent(ClockID_Lfo2);
   end;
-
-  LfoOutput_Bipolar := LfoOutput_Unipolar * 2 - 1;
 end;
 
 procedure TLucidityLfo.SlowControlProcess;
