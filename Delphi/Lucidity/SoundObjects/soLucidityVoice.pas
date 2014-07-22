@@ -62,7 +62,7 @@ type
   private
     fAmpEnv : TLucidityADSR;
     fTriggerNote: byte;
-    fFilterEnv: TLucidityADSR;
+    fModEnv: TLucidityADSR;
     fFilterOne: TLucidityFilter;
     fFilterTwo: TLucidityFilter;
     fModMatrix: TModMatrix;
@@ -174,7 +174,7 @@ type
     property LoopSampleOsc    : TLoopSampleOsc           read fLoopSampleOsc    write fLoopSampleOsc;
     property WaveOsc          : TLucidityWaveOsc         read fWaveOsc          write fWaveOsc;
     property AmpEnv           : TLucidityADSR            read fAmpEnv           write fAmpEnv;
-    property FilterEnv        : TLucidityADSR            read fFilterEnv        write fFilterEnv;
+    property ModEnv           : TLucidityADSR            read fModEnv           write fModEnv;
 
     property OutputMixer      : TOutputMixer             read fOutputMixer      write fOutputMixer; //TODO: delete the output mixer.
     property FilterOne        : TLucidityFilter          read fFilterOne        write fFilterOne;
@@ -292,8 +292,8 @@ begin
   AmpEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Unipolar, AmpEnv.GetModPointer('EnvOut_Uni'));
 
-  FilterEnv := TLucidityADSR.Create;
-  ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Unipolar, FilterEnv.GetModPointer('EnvOut_Uni'));
+  ModEnv := TLucidityADSR.Create;
+  ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Unipolar, ModEnv.GetModPointer('EnvOut_Uni'));
 
   FilterOne := TLucidityFilter.Create(@ModPoints);
   FilterTwo := TLucidityFilter.Create(@ModPoints);
@@ -328,7 +328,7 @@ begin
   fSampleRegion := nil;
 
   AmpEnv.Free;
-  FilterEnv.Free;
+  ModEnv.Free;
   OneShotSampleOsc.Free;
   LoopSampleOsc.Free;
   GrainStretchOsc.Free;
@@ -371,7 +371,7 @@ begin
 
   //==== Control Rate Modules ====
   AmpEnv.SampleRate     := Globals.ControlRate;
-  FilterEnv.SampleRate  := Globals.ControlRate;
+  ModEnv.SampleRate  := Globals.ControlRate;
   LfoA.SampleRate       := Globals.ControlRate;
   LfoB.SampleRate       := Globals.ControlRate;
   StepSeqOne.SampleRate := Globals.ControlRate;
@@ -597,11 +597,11 @@ begin
   AmpEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
 
   //======== Modulation Envelope =======
-  FilterEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpAttack);
-  FilterEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpHold);
-  FilterEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpDecay);
-  FilterEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpSustain);
-  FilterEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
+  ModEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpAttack);
+  ModEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpHold);
+  ModEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpDecay);
+  ModEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpSustain);
+  ModEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
 
 
   //=============================================================
@@ -651,7 +651,7 @@ begin
   LfoA.StepResetA;
   LfoB.StepResetA;
   AmpEnv.StepResetA;
-  FilterEnv.StepResetA;
+  ModEnv.StepResetA;
   StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
   StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
@@ -667,7 +667,7 @@ begin
 
   // Call Trigger on all components that need it....
   AmpEnv.Trigger(MidiVelocity / 127);
-  FilterEnv.Trigger(MidiVelocity / 127);
+  ModEnv.Trigger(MidiVelocity / 127);
   LfoA.Trigger;
   LfoB.Trigger;
 
@@ -689,7 +689,7 @@ begin
 
     OneShotSampleOsc.Release;
     AmpEnv.Release;
-    FilterEnv.Release;
+    ModEnv.Release;
     LfoA.Release;
     LfoB.Release;
   end;
@@ -708,7 +708,7 @@ end;
 procedure TLucidityVoice.Kill;
 begin
   AmpEnv.Kill;
-  FilterEnv.Kill;
+  ModEnv.Kill;
 
   fIsActive := false;
   fHasBeenReleased := false;
@@ -805,7 +805,7 @@ begin
   LfoA.FastControlProcess;
   LfoB.FastControlProcess;
   AmpEnv.FastControlProcess;
-  FilterEnv.FastControlProcess;
+  ModEnv.FastControlProcess;
   StepSeqOne.Step;
   StepSeqTwo.Step;
 
@@ -834,7 +834,7 @@ begin
   LfoA.SlowControlProcess;
   LfoB.SlowControlProcess;
   AmpEnv.SlowControlProcess;
-  FilterEnv.SlowControlProcess;
+  ModEnv.SlowControlProcess;
 
   ModMatrix.SlowControlProcess;
   OneShotSampleOsc.SlowControlProcess;

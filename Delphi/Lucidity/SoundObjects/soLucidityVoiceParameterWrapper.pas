@@ -439,7 +439,7 @@ begin
   UpdateActiveVoices(
     procedure(v:PLucidityVoice)
     begin
-      v^.FilterEnv.VelocityDepth := Value;
+      v^.ModEnv.VelocityDepth := Value;
     end
   );
 end;
@@ -937,7 +937,7 @@ begin
   aVoice.FilterOne.KeyFollow             := Filter1KeyFollow;
   aVoice.FilterTwo.KeyFollow             := Filter2KeyFollow;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
-  aVoice.FilterEnv.VelocityDepth         := ModVelocityDepth;
+  aVoice.ModEnv.VelocityDepth         := ModVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.LfoA.FreqMode                   := LfoFreqMode1;
