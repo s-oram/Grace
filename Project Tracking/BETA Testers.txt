@@ -1,28 +1,15 @@
 =================================================================================================
     Lucidity Testers
 =================================================================================================
-
-stereovegan@mm.st
-thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
-- Not sent this guy anything yet. 
-
-Pete
-grabmyknee@gmail.com
-thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
-- Not sent this guy anything yet. 
-
-
-
-Scott Conway (Great Tester!)
-- interested in the latching feature.
-thunderlink://messageid=1384437336.34548.YahooMailNeo@web171506.mail.ir2.yahoo.com
-
-
 Yann
 waveshaperkit@gmail.com
 - thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
 
 
+
+=================================================================================================
+    Awesome Testers and Great Contacts for Providing Extended Feedback
+=================================================================================================
 
 Juanjo (JJ) (Great Tester!)
 juanjo@walnutdoor.net
@@ -31,72 +18,110 @@ juanjo@walnutdoor.net
 
 
 
+=================================================================================================
+    BETA Testers 
+=================================================================================================
+Scott Conway (Great Tester!)
+viscience1@yahoo.co.uk
+- Scott is a Controllerist.
+- interested in the latching feature.
+thunderlink://messageid=1384437336.34548.YahooMailNeo@web171506.mail.ir2.yahoo.com
+	BETA Send History:
+    - Lucidity 0.0.1.33
+
+
 Terry Foster
 - terryfoster69@hotmail.com
 - Linux, Renoise
-Response - thunderlink://messageid=DUB112-W4372F9AAD965469206F768B10F0@phx.gbl 
-
-
-
+	Response - thunderlink://messageid=DUB112-W4372F9AAD965469206F768B10F0@phx.gbl 
+	BETA Send History:
+    - Lucidity 0.0.1.33
 
 Chris Holmes
 futuresproof@gmail.com
-response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
+	response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
+	BETA Send History:
+    - Lucidity 0.0.1.33
 
+
+
+Ryu Beats <rsbeats@hotmail.com>
+thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
+	BETA Send History:
+    - Lucidity 0.0.1.33
+
+Marco
+djfonplaz@gmail.com
+thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
+- No test builds sent yet.
+  BETA Send History:
+  - Lucidity 0.0.1.33
+    thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
+    
+
+Pete
+grabmyknee@gmail.com
+thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
+	BETA Send History:
+  - Lucidity 0.0.1.33
+
+
+stereovegan@mm.st
+thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
+	BETA Send History:
+  - Lucidity 0.0.1.33
+
+Will Blake
+  - interested in looping capabilities
+  strajanka@gmail.com
+  thunderlink://messageid=-7130064992972917739@unknownmsgid  
+  BETA Send History:
+  - Lucidity 0.0.1.33
 
 
 Julian Clapham
 stoolzo@gmail.com
 - no time for testing. 
+	BETA Send History:
+    - Lucidity 0.0.1.33
+    NOTE: Do not send anything again unless I hear back from last mail out.
 
-
-Christian
-christianscheggia@gmail.com
-
-
-Ryu Beats <rsbeats@hotmail.com>
-thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
-
-Maroc
-djfonplaz@gmail.com
-thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
-- No test builds sent yet.
-
-
-
-=================================================================================================
-    BETA Testers 
-=================================================================================================
-
-
-
-
-=================================================================================================
-    Potential BETA Testers 
-=================================================================================================
 
 Anthony Crayton
 tonecre8@comcast.net
 thunderlink://messageid=005001cf2845$45b0e8b0$d112ba10$@comcast.net
-
-
+	BETA Send History:
+    - Lucidity 0.0.1.33
 
 JC
 jshonuff@gmail.com
 thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail.gmail.com
+	BETA Send History:
+    - Lucidity 0.0.1.33
 
 Michael Worth
+michaelworth@hotmail.ca
 thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
+	BETA Send History:
+    - Lucidity 0.0.1.33
+    NOTE: Do not send anything again unless I hear back from last mail out.
+
+=================================================================================================
+    Potential BETA Testers (Expressed interest in testing or a product)
+=================================================================================================
+
+
+=================================================================================================
+    People To Consider Asking (people with specific skills or good communication)
+=================================================================================================
 
 Geoffrey McGuire - Produces deep house.
   geoffrey.mcguire@gmail.com
   thunderlink://messageid=009101ce6aa4$6e1fc640$4a5f52c0$@gmail.com
 
-Will Blake
-  - interested in looping capabilities
-  strajanka@gmail.com
-  thunderlink://messageid=-7130064992972917739@unknownmsgid
-
 Carlo Del Prato
 - pluggotic@null.net
 - http://pluggotic.com
+
+Christian
+christianscheggia@gmail.com

@@ -11,9 +11,25 @@
 - Filter Gain needs more bite.
 - Filter freq scaling might need some work. 
 
+- Add Directory command should be in all browser context menus.
+
+- Sequencer context menu: randomise is spelt with a Z. 
+
+- Browser needs to have a slight delay before triggering sample preview. 
+
+- Add a "Manual..." command to open the manual.
+- Add a contact support command.
+-- Email
+-- Forum
+-- Website
+-- Report Bug
+-- check for updates. 
+
 =============================================================================
      TODO MED
 =============================================================================
+
+- Have a "Loading Sample" popup show when trying to load a sample.
 
 - A "Swap Effect Order" command
 
