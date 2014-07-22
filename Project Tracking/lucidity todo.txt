@@ -1,9 +1,6 @@
 =============================================================================
      TODO HIGH
 =============================================================================
-- Bug: Modulation evenlope modulation doesn't work. Looks like it's picking up the 
-  Amp adsr. 
-
 - Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
 
 - Dragging over the sample map display but not clicking de-selects the current
@@ -30,6 +27,27 @@
 =============================================================================
      TODO MED
 =============================================================================
+
+--------Optimisation Ideas----------------------------------------------------
+-- instead of caluclating the LFO, Env and Seq values each step, maybe 
+   use some sort of approximation. The mod sources will be calculated at some 
+   lower control rate while, while updated at a faster rate using something 
+   like: 
+   	CurrentValue := CurrentValue + StepSize. 
+   StepSize will be calculated at the control rate. Whatever it is. 
+
+  Using a scheme like this, it's possible that the "Slow Control Rate" 
+  value could be updated 10 times a second or less. The modulation sources
+  could be interpolated at the faster control rate or audio rate.
+
+-- The process loop is a little deep at the moment. There are multiple loops.
+   Consider: there is the key group processing loop to process all values 
+   that belong to this loop. 
+   Instead. Each voice should be pointed to an output buffer. Voices could
+   then be processed in one group. 
+--------------------------------------------------------------------------------  
+
+
 
 - Have a "Loading Sample" popup show when trying to load a sample.
 
