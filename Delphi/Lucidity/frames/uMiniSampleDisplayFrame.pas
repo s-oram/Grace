@@ -140,8 +140,6 @@ type
 
     property SampleOverlay : TLuciditySampleOverlay read fSampleOverlay;
 
-
-
     property UsageContext : TUsageContext read fSampleDisplayContext write SetSampleDisplayContext;
   end;
 

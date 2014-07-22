@@ -22,9 +22,6 @@ type
     VertGain        : single; //default = 1.
   end;
 
-
-
-
   TFlexSampleImageRenderer = class
   private
     class function CalcDestBounds(const ChannelIndex, ChannelCount : integer; const ImageWidth, ImageHeight : cardinal):TRectF; static;
@@ -32,7 +29,6 @@ type
   public
     class function RenderSample(const aSampleRegion : IRegion; const Par:TFlexRenderPar):IInterfacedBitmap; static;
   end;
-
 
 implementation
 
