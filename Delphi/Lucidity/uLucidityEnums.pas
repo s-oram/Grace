@@ -84,7 +84,7 @@ type
 
   TModSource = (
     None,
-    //Unipolar sources...
+    //Unipolar sources... //TODO:MED all sources are unipolar. These should probably be renamed.
     Midi_Note_Unipolar,
     Midi_Velocity_Unipolar,
     Midi_PitchBend_Unipolar,
