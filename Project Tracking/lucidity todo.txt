@@ -1,10 +1,13 @@
 =============================================================================
      TODO HIGH
 =============================================================================
-- Dragging over the sample map display but not clicking de-selects the current
-  selected region.
+- Bug: Modulation evenlope modulation doesn't work. Looks like it's picking up the 
+  Amp adsr. 
 
 - Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
+
+- Dragging over the sample map display but not clicking de-selects the current
+  selected region.
 
 - Need to test SFZ import.
 
@@ -23,9 +26,6 @@
 -- Website
 -- Report Bug
 -- check for updates. 
-
-- Bug: Modulation evenlope modulation doesn't work. Looks like it's picking up the 
-  Amp adsr. 
 
 - Bug: there is a click some where. :(
 

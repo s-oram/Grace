@@ -515,37 +515,15 @@ begin
 
       SampleOverlay.SetZoomOffset(0, 0);
 
-
-
-
-      {
-      // Provide sample info for real-time drawing of sample.
-      aZoom   := Zoom;
-      aOffset := Offset;
-
-      SampleOverlay.SetZoomOffset(aZoom, aOffset);
-      SampleDisplay.Zoom := aZoom;
-      SampleDisplay.Offset := aOffset;
-
-
-      CurrentSample.SampleInfo.IsValid := true;
-      CurrentSample.SampleInfo.ChannelCount := Region.GetSample^.Properties.ChannelCount;
-      CurrentSample.SampleInfo.SampleFrames := Region.GetSample^.Properties.SampleFrames;
-
-      if Region.GetSample^.Properties.ChannelCount = 1 then
-      begin
-        CurrentSample.SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
-      end;
-
-      if Region.GetSample^.Properties.ChannelCount = 2 then
-      begin
-        CurrentSample.SampleInfo.Ch1 := Region.GetSample^.Properties.Ch1;
-        CurrentSample.SampleInfo.Ch2 := Region.GetSample^.Properties.Ch2;
-      end;
-
-      SampleDisplay.DrawSample(CurrentSample.SampleInfo);
-      SampleDisplay.Invalidate;
-      }
+      // TODO:LOW Look at the two sample renderers used above.
+      // a) xSampleImage := TFlexSampleImageRenderer.RenderSample(Region, FlexPar);
+      // b) xSampleImage := SampleRenderer.RenderSample(Par, Region, Region.GetPeakBuffer);
+      // Notice one is using class functions while the other needs to initiate the class.
+      // It would be better if both were the same. Additionally, FlexSampleImageRenderer
+      // is a more descriptive name than SampleRenderer. This needs to be updated
+      // so the difference between the two sample renderers appear to be deliberate
+      // instead of looking like a fogotten left-over after refactoring some functionality
+      // somewhere.
     end else
     if (Region.GetSample^.Properties.IsValid = false) then
     begin
