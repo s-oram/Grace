@@ -15,8 +15,6 @@
 
 - Add Directory command should be in all browser context menus.
 
-- Sequencer context menu: randomise is spelt with a Z. 
-
 - Browser needs to have a slight delay before triggering sample preview. 
 
 - Add a "Manual..." command to open the manual.

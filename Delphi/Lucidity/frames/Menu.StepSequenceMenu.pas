@@ -69,7 +69,7 @@ begin
 
   mi := TMenuItem.Create(Menu);
   mi.Tag     := 1;
-  mi.Caption := 'Randomize';
+  mi.Caption := 'Randomise';
   mi.OnClick := EventHandle_RandomizeSteps;
   Menu.Items.Add(mi);
 
