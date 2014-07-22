@@ -292,10 +292,8 @@ begin
   AmpEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.AmpEnv_Unipolar, AmpEnv.GetModPointer('EnvOut_Uni'));
 
-
   FilterEnv := TLucidityADSR.Create;
   ModMatrix.SetModSourcePointer(TModSource.FilterEnv_Unipolar, FilterEnv.GetModPointer('EnvOut_Uni'));
-
 
   FilterOne := TLucidityFilter.Create(@ModPoints);
   FilterTwo := TLucidityFilter.Create(@ModPoints);
