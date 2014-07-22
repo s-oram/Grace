@@ -301,7 +301,6 @@ begin
 
   LfoA := TLucidityLfo.Create(0, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo1_UniPolar, LfoA.GetModPointer('LfoOutput_Uni'));
-  //ModMatrix.SetModSourcePointer(TModSource.ModEnv_Unipolar, LfoA.GetModPointer('LfoOutput_Uni'));
 
   LfoB := TLucidityLfo.Create(1, VoiceClockManager);
   ModMatrix.SetModSourcePointer(TModSource.Lfo2_UniPolar, LfoB.GetModPointer('LfoOutput_Uni'));
@@ -611,12 +610,11 @@ begin
   AmpEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
 
   //======== Modulation Envelope =======
-  ModEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpAttack);
-  ModEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpHold);
-  ModEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpDecay);
-  ModEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpSustain);
-  ModEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.AmpRelease);
-
+  ModEnv.Par1 := ParModData.GetModulatedParameterPointer(TPluginParameter.ModAttack);
+  ModEnv.Par2 := ParModData.GetModulatedParameterPointer(TPluginParameter.ModHold);
+  ModEnv.Par3 := ParModData.GetModulatedParameterPointer(TPluginParameter.ModDecay);
+  ModEnv.Par4 := ParModData.GetModulatedParameterPointer(TPluginParameter.ModSustain);
+  ModEnv.Par5 := ParModData.GetModulatedParameterPointer(TPluginParameter.ModRelease);
 
   //=============================================================
 
