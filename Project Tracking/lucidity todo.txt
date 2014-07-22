@@ -13,8 +13,6 @@
 
 - Filter Gain needs more bite. 
 
-- Add Directory command should be in all browser context menus.
-
 - Browser needs to have a slight delay before triggering sample preview. 
 
 - Add a "Manual..." command to open the manual.
