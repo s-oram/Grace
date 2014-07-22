@@ -39,7 +39,7 @@ type
     procedure SetPeakCount(const Value: integer);
   public
     destructor Destroy; override;
-    procedure CalcPeaks(SDI:TSampleDisplayInfo);
+    procedure CalcPeaks(const SDI:TSampleDisplayInfo; const VertGain : single = 1);
     property PeakCount : integer read fPeakCount write SetPeakCount;
 
     property PeaksL : TArrayOfPeak read fPeaksL write fPeaksL;
@@ -244,7 +244,7 @@ begin
   SetLength(fPeaksR, Value);
 end;
 
-procedure TPeakData.CalcPeaks(SDI: TSampleDisplayInfo);
+procedure TPeakData.CalcPeaks(const SDI: TSampleDisplayInfo; const VertGain : single);
 var
   c1: Integer;
   FirstSample : integer;
@@ -261,26 +261,48 @@ begin
 
     if SDI.ChannelCount = 1 then
     begin
+      //==== Left Channel (MONO) ========
       GetMinMaxValuesFloat(SDI.Ch1, FirstSample, LastSample, MinValue, MaxValue);
+
+      MinValue := MinValue * VertGain;
+      MaxValue := MaxValue * VertGain;
+
       if MinValue < -1 then MinValue := -1;
       if MaxValue > 1  then MaxValue := 1;
+
       PeaksL[c1].MinValue := round((MinValue + 1) * 127.5);
       PeaksL[c1].MaxValue := round((MaxValue + 1) * 127.5);
+      //=======================================
     end;
 
     if SDI.ChannelCount = 2 then
     begin
+      //==== Left Channel ========
       GetMinMaxValuesFloat(SDI.Ch1, FirstSample, LastSample, MinValue, MaxValue);
+
+      MinValue := MinValue * VertGain;
+      MaxValue := MaxValue * VertGain;
+
       if MinValue < -1 then MinValue := -1;
       if MaxValue > 1  then MaxValue := 1;
+
       PeaksL[c1].MinValue := round((MinValue + 1) * 127.5);
       PeaksL[c1].MaxValue := round((MaxValue + 1) * 127.5);
+      //=======================================
 
+
+      //==== Right Channel ========
       GetMinMaxValuesFloat(SDI.Ch2, FirstSample, LastSample, MinValue, MaxValue);
+
+      MinValue := MinValue * VertGain;
+      MaxValue := MaxValue * VertGain;
+
       if MinValue < -1 then MinValue := -1;
       if MaxValue > 1  then MaxValue := 1;
+
       PeaksR[c1].MinValue := round((MinValue + 1) * 127.5);
       PeaksR[c1].MaxValue := round((MaxValue + 1) * 127.5);
+      //=======================================
     end;
   end;
 end;

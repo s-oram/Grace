@@ -305,7 +305,7 @@ class function TFlexSampleImageRenderer.RenderSample(const aSampleRegion: IRegio
     AutoFree(@PeakData);
 
     PeakData.PeakCount := x;
-    PeakData.CalcPeaks(SampleData);
+    PeakData.CalcPeaks(SampleData, Par.VertGain);
 
     VisiblePeaks := Par.ImageWidth;
     FirstPeak := CalcFirstVisiblePeak(Par.Offset, PeakData.PeakCount, Par.ImageWidth);
