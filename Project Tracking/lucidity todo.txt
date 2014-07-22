@@ -4,12 +4,11 @@
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 
-- Bug: Crash after loading program via drag and drop. (can't reproduce reliable yet.)
+- Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
 
 - Need to test SFZ import.
 
-- Filter Gain needs more bite.
-- Filter freq scaling might need some work. 
+- Filter Gain needs more bite. 
 
 - Add Directory command should be in all browser context menus.
 
@@ -24,6 +23,18 @@
 -- Website
 -- Report Bug
 -- check for updates. 
+
+- Bug: Zoom in on sample that has been normalised. Normalisation isn't applied 
+  to the zoomed display.
+
+- Bug: Modulation evenlope modulation doesn't work. Looks like it's picking up the 
+  Amp adsr. 
+
+- Bug: there is a click some where. :(
+
+- rethink the filter gain. try adding the gain stage before the filter.
+
+- Mod Envelope is named Filter in 
 
 =============================================================================
      TODO MED
