@@ -34,7 +34,7 @@
 
 - rethink the filter gain. try adding the gain stage before the filter.
 
-- Mod Envelope is named Filter in 
+
 
 =============================================================================
      TODO MED
