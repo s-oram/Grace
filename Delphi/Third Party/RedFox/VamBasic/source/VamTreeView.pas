@@ -866,7 +866,12 @@ procedure TVamTreeView.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 begin
   inherited;
 
-  if (AWidth <> 0) and (AHeight <> 0) then CalcTreeDimensions;
+  if (AWidth <> 0) and (AHeight <> 0) then
+  begin
+    StagingBuffer.Width  := AWidth;
+    StagingBuffer.Height := AHeight;
+    CalcTreeDimensions;
+  end;
 end;
 
 
@@ -1084,7 +1089,6 @@ var
 begin
   if not assigned(StagingBuffer) then exit;
 
-
   BufferNeedsUpdate := true;
 
   th := 0;
@@ -1112,11 +1116,6 @@ begin
   // limits the maximum size of the bitmap size with complete disregard for
   // how this impacts functionality.
   if TreeWidth > Width * 3 then TreeWidth := Width * 3;
-
-
-  StagingBuffer.Width  := TreeWidth;
-  StagingBuffer.Height := TreeHeight;
-
 
   if TreeOffsetX < Width - TreeWidth then TreeOffsetX := Width - TreeWidth;
 
@@ -1196,7 +1195,14 @@ begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,555);
-  DrawTreeView(BackBuffer);
+
+  if BufferNeedsUpdate then
+  begin
+    BufferNeedsUpdate := false;
+    DrawTreeView(StagingBuffer);
+  end;
+
+  StagingBuffer.RedFoxInterface.DrawTo(BackBuffer.RedFoxInterface, 0, 0);
 
   // TODO:MED Previously the tree view would be drawn into a another
   // bitmap buffer. That buffer would then be blitted to the control
