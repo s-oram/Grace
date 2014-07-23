@@ -3,6 +3,8 @@ unit uMainForm;
 interface
 
 uses
+  VamLib.Debouncer,
+  VamLib.GuiUtils,
   eeOscPhaseCounter,
   RedFoxImageBuffer,
   VamLib.HighSpeedTimer,
@@ -10,7 +12,7 @@ uses
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
-  VamLib.Debouncer,
+
   VamLib.Animation,
   AudioIO,
   eeSampleFloat, {VamSampleDisplayBackBuffer,} {VamSamplePeakBuffer,}
@@ -66,6 +68,7 @@ type
     KnobValue : single;
     TimeReference : TDateTime;
     Timer : THighSpeedTimer;
+    Token : TDebounceToken;
     procedure UpdateLabel;
 
     procedure HandleTimerEvent(Sender : TObject);
@@ -86,7 +89,6 @@ uses
   //eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
-  VamLib.GuiUtils,
   DateUtils;
 
 type
@@ -139,6 +141,7 @@ begin
 
   VamLabel1.Text := 'Message A';
 
+  {
   Wait(2000);
   VamLabel1.Text := 'Message B';
 
@@ -147,6 +150,7 @@ begin
 
   Wait(2000);
   VamLabel1.Text := 'Message D';
+  }
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
@@ -178,16 +182,27 @@ end;
 
 
 procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
+var
+  ReferenceTime : TDateTime;
 begin
   //
-
+  {
   Throttle(ThrottleID_VSTParChange, 1000,
   procedure
   begin
     VamLabel1.Text := FloatToStr(VamKnob1.Pos);
   end);
+  }
 
 
+  //Debounce(10, ReferenceTime);
+
+
+  VamLib.GuiUtils.Debounce(Token, TDebounceEdge.deBoth, 500,
+  procedure
+  begin
+    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
+  end);
 
 end;
 

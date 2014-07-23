@@ -2,6 +2,9 @@ unit VamLib.GuiUtils;
 
 interface
 
+uses
+  SysUtils;
+
 procedure Wait(const MilliSeconds : Longint);
 
 // TODO:HIGH write a GuiDebouce and/or GuiThrottle methods based
@@ -29,9 +32,29 @@ procedure Wait(const MilliSeconds : Longint);
 }
 
 
+type
+  TDebounceToken = record
+  private
+    LastCallTime : TDateTime;
+    CallRef : TProc;
+    IsTrailingCallRequired : Boolean;
+    IsActive : boolean;
+  public
+  end;
+
+  TDebounceEdge = (deLeading, deTrailing, deBoth);
+
+procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
+
+
+
+
+
+
 implementation
 
 uses
+  DateUtils,
   Vcl.Forms,
   WinApi.Windows;
 
@@ -71,7 +94,48 @@ begin
   CloseHandle(TimerHandle);
 end;
 
+procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
+var
+  IsWaitFinished : boolean;
+begin
+  if (DebounceToken.IsActive = false) then
+  begin
+    if (Edge <> TDebounceEdge.deTrailing)
+      then Proc();
 
+    DebounceToken.IsTrailingCallRequired := true;
+    DebounceToken.IsActive := true;
+    DebounceToken.LastCallTime := Now;
+
+    IsWaitFinished := false;
+
+    repeat
+      Wait(MilliSeconds);
+
+      if not WithinPastMilliSeconds(Now, DebounceToken.LastCallTime, MilliSeconds) then
+      begin
+        if DebounceToken.IsTrailingCallRequired then
+        begin
+          if (Edge <> TDebounceEdge.deLeading)
+            then Proc();
+
+          DebounceToken.IsTrailingCallRequired := false;
+          DebounceToken.LastCallTime := Now;
+        end else
+        begin
+          IsWaitFinished := true;
+        end;
+      end;
+    until
+      IsWaitFinished;
+
+    DebounceToken.IsActive := false;
+  end else
+  begin
+    DebounceToken.LastCallTime := Now;
+    DebounceToken.IsTrailingCallRequired := true;
+  end;
+end;
 
 
 
