@@ -27,6 +27,8 @@
 - ZeroObject should have a IDataObject reference. Will allow messages to be sent 
   across thread boundaries using delayed message sending.
 
+- Clicking and immediately dragging a sample in the browser causes a audible glitch.
+
 =============================================================================
      TODO MED
 =============================================================================
