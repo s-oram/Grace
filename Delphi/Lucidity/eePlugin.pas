@@ -1459,42 +1459,20 @@ begin
 
 end;
 
-
-
-
 procedure TeePlugin.FastControlProcess;
 const
   ksf = 28;
   ksr = 44100;
 begin
-  try
-    XYPads.ControlRateProcess;
-    MidiAutomation.FastControlProcess;
-    MidiInputProcessor.FastControlProcess;
-    KeyGroupPlayer.FastControlProcess;
-  except
-    {$IFDEF MadExcept}
-    HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
-    //TODO:HIGH maybe get rid of the exception handling here!
-  end;
+  XYPads.ControlRateProcess;
+  MidiAutomation.FastControlProcess;
+  MidiInputProcessor.FastControlProcess;
+  KeyGroupPlayer.FastControlProcess;
 end;
 
 procedure TeePlugin.SlowControlProcess;
 begin
-  try
-    KeyGroupPlayer.SlowControlProcess;
-  except
-    {$IFDEF MadExcept}
-    HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
-    //TODO:HIGH maybe get rid of the exception handling here!
-  end;
-
+  KeyGroupPlayer.SlowControlProcess;
 end;
 
 function TeePlugin.ActiveVoiceCount: integer;
@@ -1509,32 +1487,23 @@ begin
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
 
-  try
-    AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
-    KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
-    SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
-    FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 
-    //Don't forget to increment inputs and outputs.
-    for c1 := 0 to self.InputCount-1 do
-    begin
-      inc(Inputs[c1], SampleFrames);
-    end;
-    for c1 := 0 to self.OutputCount-1 do
-    begin
-      inc(Outputs[c1], SampleFrames);
-    end;
+  AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
+  KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
+  SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
+  FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 
-    inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
-  except
-    {$IFDEF MadExcept}
-    HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
-    //TODO:HIGH maybe get rid of the exception handling here!
+  //Don't forget to increment inputs and outputs.
+  for c1 := 0 to self.InputCount-1 do
+  begin
+    inc(Inputs[c1], SampleFrames);
+  end;
+  for c1 := 0 to self.OutputCount-1 do
+  begin
+    inc(Outputs[c1], SampleFrames);
   end;
 
+  inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
 end;
 
 procedure TeePlugin.ProcessEnd;
