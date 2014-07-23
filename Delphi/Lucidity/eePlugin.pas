@@ -1508,7 +1508,9 @@ end;
 
 procedure TeePlugin.ProcessEnd;
 begin
-  Globals.AudioActions.Run;
+  //TODO:MED Currently AudioActions isn't being used, so comment it out
+  // so the code doesn't get called.
+  //Globals.AudioActions.Run;
 end;
 
 

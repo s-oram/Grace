@@ -70,6 +70,10 @@ type
 
     property GuiState : TGuiState read fGuiState;
 
+
+    // TODO:MED AudioActions isn't being used at all. The role of audio actions,
+    // being able to pass events to be processed at the end of the audio processing
+    // block does seem useful however. I won't delete it right away.
     property AudioActions : TStoredActions read fAudioActions;
 
     //=== some object references =====

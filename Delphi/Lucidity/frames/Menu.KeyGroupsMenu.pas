@@ -125,10 +125,7 @@ end;
 
 procedure TGroupsMenu.DeleteKeyGroup(Sender: TObject);
 begin
-  Plugin.Globals.AudioActions.Add(0, procedure
-  begin
-    Plugin.DeleteKeyGroup(CurrentGroup);
-  end);
+  Plugin.DeleteKeyGroup(CurrentGroup);
 end;
 
 procedure TGroupsMenu.FocusKeyGroup(Sender: TObject);
