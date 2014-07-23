@@ -1412,14 +1412,9 @@ begin
   MidiAutomation.ClearBinding(mb.GetParName);
 end;
 
-
-
-
 procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);
 const
   OneOver127 = 1 / 127;
-  ksf = 28;
-  ksr = 44100;
 var
   pba : single;
 begin
@@ -1460,9 +1455,6 @@ begin
 end;
 
 procedure TeePlugin.FastControlProcess;
-const
-  ksf = 28;
-  ksr = 44100;
 begin
   XYPads.ControlRateProcess;
   MidiAutomation.FastControlProcess;
@@ -1486,7 +1478,6 @@ var
 begin
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
-
 
   AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
   KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
