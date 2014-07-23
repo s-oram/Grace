@@ -222,6 +222,8 @@ var
   TimeInfo : PVstTimeInfo;
   ModSampleFrames : integer;
 begin
+  CpuOverloadWatch_Start('Plugin-ProcessReplacing');
+
   {$EXCESSPRECISION OFF}
 
   //OutputDebugString('SAMPLING ON');
@@ -319,6 +321,7 @@ begin
 
 
   //OutputDebugString('SAMPLING OFF');
+  CpuOverloadWatch_Stop('Plugin-ProcessReplacing');
 end;
 
 procedure TProcessController.Resume(const aBlockSize, aSampleRate, aOverSampleFactor, aInputCount, aOutputCount : integer);

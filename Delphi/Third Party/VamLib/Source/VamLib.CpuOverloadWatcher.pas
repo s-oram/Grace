@@ -24,7 +24,7 @@ type
   end;
 
 
-procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : Int64 = 1);
+procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : single = 1);
 procedure CpuOverloadWatch_Stop(const WatchName : string);
 
 
@@ -100,7 +100,7 @@ type
   private
   public
     WatchName : string;
-    MaxTime   : Int64; // time in milliseconds,
+    MaxTime   : single; // time in milliseconds,
     StartTime : Int64;
     EndTime   : Int64;
   end;
@@ -134,7 +134,7 @@ begin
   result := wd;
 end;
 
-procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : Int64);
+procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : single);
 var
   wd : TCpuWatchData;
 begin
