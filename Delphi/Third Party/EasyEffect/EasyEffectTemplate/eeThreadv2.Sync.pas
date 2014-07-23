@@ -10,6 +10,9 @@ uses
   Contnrs, WinApi.Windows;
 
 type
+  // TeeCritcalSection needs to be replaced by TFixedCriticalSection.
+  // It is found in VamLib.Types.pas
+
   TeeCriticalSection = class
   private
     cs : TRTLCriticalSection;

@@ -20,6 +20,12 @@ type
     function _Release: Integer; stdcall;
   end;
 
+
+
+  //============================================================================
+  // TODO:LOW It might make sense to move TFixedCriticalSection
+  // to a VamLib.Sync unit.
+  //============================================================================
   // NOTE: On TFixedCriticalSection
   // http://delphitools.info/2011/11/30/fixing-tcriticalsection/
   TFixedCriticalSection = class(TCriticalSection)

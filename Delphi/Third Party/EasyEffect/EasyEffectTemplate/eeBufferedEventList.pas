@@ -8,7 +8,8 @@ unit eeBufferedEventList;
 interface
 
 uses
-  SyncObjs;
+  SyncObjs,
+  VamLib.Types;
 
 type
   PBufferedEvent = ^TBufferedEvent; 
@@ -28,7 +29,7 @@ type
     function GetEvent(Index: integer): PBufferedEvent;
   protected
     fEvents:array of TBufferedEvent;
-    cs:TCriticalSection;
+    cs:TFixedCriticalSection;
     property MaxEventCount:integer read fMaxEventCount write SetMaxEventCount;
   public
     constructor Create;
@@ -71,7 +72,7 @@ end;
 constructor TBufferedEventList.Create;
 begin
   MaxEventCount := 16;
-  cs := TCriticalSection.Create;
+  cs := TFixedCriticalSection.Create;
 end;
 
 destructor TBufferedEventList.Destroy;

@@ -29,6 +29,7 @@ unit eeSampleLoader;
 interface
 
 uses
+  VamLib.Types,
   eeCustomSample, eeSampleInt, eeSampleFloat, OTLComm, OTLTask, OTLTaskControl, OTLEventMonitor, SyncObjs;
 
 type
@@ -55,7 +56,7 @@ type
   protected
     LoadSampleTask  : IOmniTaskControl;
 
-    IsBusyLock:TCriticalSection;
+    IsBusyLock:TFixedCriticalSection;
 
     //--Tempory variable storage---
     NextFileName   :string;
@@ -118,7 +119,7 @@ end;
 constructor TSampleLoader.Create;
 begin
   NextFileName := '';
-  IsBusyLock := TCriticalSection.Create;
+  IsBusyLock := TFixedCriticalSection.Create;
 end;
 
 destructor TSampleLoader.Destroy;

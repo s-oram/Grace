@@ -119,7 +119,6 @@
 			<DCCReference Include="..\source\VamTabs.pas"/>
 			<DCCReference Include="..\source\VamNumericKnob.pas"/>
 			<DCCReference Include="..\source\VamKeyStateTracker.pas"/>
-			<DCCReference Include="..\source\VamSyncObjects.pas"/>
 			<DCCReference Include="..\source\VamArrows.pas"/>
 			<DCCReference Include="..\source\VamCompoundNumericKnob.pas"/>
 			<DCCReference Include="..\source\VamCompoundLabel.pas"/>

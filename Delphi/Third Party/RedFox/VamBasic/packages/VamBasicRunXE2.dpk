@@ -58,7 +58,6 @@ contains
   VamTabs in '..\source\VamTabs.pas',
   VamNumericKnob in '..\source\VamNumericKnob.pas',
   VamKeyStateTracker in '..\source\VamKeyStateTracker.pas',
-  VamSyncObjects in '..\source\VamSyncObjects.pas',
   VamArrows in '..\source\VamArrows.pas',
   VamCompoundNumericKnob in '..\source\VamCompoundNumericKnob.pas',
   VamCompoundLabel in '..\source\VamCompoundLabel.pas',

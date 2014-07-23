@@ -122,7 +122,7 @@ type
     function LoadSample(const AudioFileName : string; OwningSampleGroup : IKeyGroup): IRegion;
     function ReplaceSample(const AudioFileName : string; const TargetRegion : IRegion): IRegion;
 
-    // TODO: It might make sense to add a lock (TCriticalSection)
+    // TODO:MED It might make sense to add a lock
     // so that only one of these methods will make changes to
     // the sample map at once.
     //===================================================

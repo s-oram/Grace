@@ -3,7 +3,7 @@ unit VamKeyStateTracker;
 interface
 
 uses
-  Generics.Collections, VamSyncObjects;
+  Generics.Collections, VamLib.Types;
 
 type
   TKeyState = record

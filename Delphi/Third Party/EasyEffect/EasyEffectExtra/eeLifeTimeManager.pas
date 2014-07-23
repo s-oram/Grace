@@ -11,7 +11,7 @@ unit eeLifeTimeManager;
 interface
 
 uses
-  Contnrs, SyncObjs;
+  Contnrs, SyncObjs, VamLib.Types;
 
 type
   TObjectWrapper = class
@@ -32,7 +32,7 @@ type
   protected
     InActiveObjects:TObjectList;
     ActiveObjects:TObjectList;
-    Lock:TCriticalSection;
+    Lock:TFixedCriticalSection;
     function FindAsActive(aObject:TObject):TObjectWrapper;
     function FindAsInActive(aObject:TObject):TObjectWrapper;
   public
@@ -76,7 +76,7 @@ begin
   InActiveObjects := TObjectList.Create;
   InActiveObjects.OwnsObjects := true;
 
-  Lock := TCriticalSection.Create;
+  Lock := TFixedCriticalSection.Create;
 end;
 
 destructor TLifeTimeManager.Destroy;
