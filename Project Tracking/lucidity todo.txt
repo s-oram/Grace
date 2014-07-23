@@ -29,6 +29,10 @@
 
 - Clicking and immediately dragging a sample in the browser causes a audible glitch.
 
+- there is still an occasional click but it might be passable enough for release. 
+  I'm not sure where the clicking is coming from.
+  Try replacing all critical sections with slim-reader-writer locks. perhaps.
+
 =============================================================================
      TODO MED
 =============================================================================

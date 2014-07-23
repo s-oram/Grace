@@ -1478,6 +1478,7 @@ begin
     {$ELSE}
     raise;
     {$ENDIF}
+    //TODO:HIGH maybe get rid of the exception handling here!
   end;
 end;
 
@@ -1491,6 +1492,7 @@ begin
     {$ELSE}
     raise;
     {$ENDIF}
+    //TODO:HIGH maybe get rid of the exception handling here!
   end;
 
 end;
@@ -1504,15 +1506,8 @@ procedure TeePlugin.AudioProcess(Sampleframes: integer);
 var
   c1: Integer;
 begin
-  //Globals.CpuMonitor.StartAudioProcessTimer2;
-  //Globals.CpuMonitor.StopAudioProcessTimer2;
-
   ClearBuffer(Outputs[0], SampleFrames);
   ClearBuffer(Outputs[1], SampleFrames);
-  //ClearBuffer(Outputs[2], SampleFrames);
-  //ClearBuffer(Outputs[3], SampleFrames);
-  //ClearBuffer(Outputs[4], SampleFrames);
-  //ClearBuffer(Outputs[5], SampleFrames);
 
   try
     AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
@@ -1532,15 +1527,13 @@ begin
 
     inc(DeltaOffset,SampleFrames); //Always increment DeltaOffset last.
   except
-    //Log.LogMessage('Audio Process Exception.');
     {$IFDEF MadExcept}
     HandleException;
     {$ELSE}
     raise;
     {$ENDIF}
+    //TODO:HIGH maybe get rid of the exception handling here!
   end;
-
-
 
 end;
 
