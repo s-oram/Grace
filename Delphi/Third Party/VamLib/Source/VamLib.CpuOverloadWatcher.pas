@@ -17,21 +17,29 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure Start(const SampleFrames, SampleRate: double; const WatchName : string);
+    procedure Start(const SampleFrames, SampleRate: double; const WatchName : string); overload;
+    procedure Start(const MaxProcessTime : Int64;  const WatchName : string); overload;
+
     procedure Stop;
   end;
+
+
+procedure CpuOverloadWatch_Start(const MaxProcessTime : Int64;  const WatchName : string);
+procedure CpuOverloadWatch_Stop(const WatchName : string);
 
 
 implementation
 
 uses
   SysUtils,
-  Windows;
+  Windows,
+  Contnrs;
 
 { TCpuOverloadWatcher }
 
 constructor TCpuOverloadWatcher.Create;
 begin
+  // TODO:MED It would be handy to check for the minimum process time slice here.
 end;
 
 destructor TCpuOverloadWatcher.Destroy;
@@ -44,6 +52,15 @@ procedure TCpuOverloadWatcher.Start(const SampleFrames, SampleRate: double; cons
 begin
   fWatchName := WatchName;
   MaxTime := round(SampleFrames / SampleRate * 1000);
+  QueryPerformanceCounter(StartTime);
+end;
+
+
+procedure TCpuOverloadWatcher.Start(const MaxProcessTime: Int64; const WatchName: string);
+// MaxProcessTime is in Milliseconds.
+begin
+  fWatchName := WatchName;
+  MaxTime := MaxProcessTime;
   QueryPerformanceCounter(StartTime);
 end;
 
@@ -68,5 +85,96 @@ begin
 
 
 end;
+
+
+
+
+//==============================================================================================
+//==============================================================================================
+
+
+
+
+type
+  TCpuWatchData = class
+  private
+  public
+    WatchName : string;
+    MaxTime   : Int64; // time in milliseconds,
+    StartTime : Int64;
+    EndTime   : Int64;
+  end;
+
+var
+  GlobalWatchList : TObjectList;
+
+function CpuOverloadWatch_FindOrCreateWatch(const WatchName : string):TCpuWatchData;
+var
+  c1: Integer;
+  wd : TCpuWatchData;
+begin
+  wd := nil;
+
+  for c1 := 0 to GlobalWatchList.Count-1 do
+  begin
+    if (GlobalWatchList.Items[c1] as TCpuWatchData).WatchName = WatchName then
+    begin
+      wd := GlobalWatchList.Items[c1] as TCpuWatchData;
+      exit(wd); //=========== take a short cut! ===============>>
+    end;
+  end;
+
+  if not assigned(wd) then
+  begin
+    wd := TCpuWatchData.Create;
+    wd.WatchName := WatchName;
+    GlobalWatchList.Add(wd);
+  end;
+
+  result := wd;
+end;
+
+procedure CpuOverloadWatch_Start(const MaxProcessTime : Int64;  const WatchName : string);
+var
+  wd : TCpuWatchData;
+begin
+  // TODO:HIGH add conditional defines so all this is optional.
+  wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
+  wd.MaxTime := MaxProcessTime;
+  QueryPerformanceCounter(wd.StartTime);
+end;
+
+procedure CpuOverloadWatch_Stop(const WatchName : string);
+var
+  wd : TCpuWatchData;
+  freq:Int64;
+  ProcessTime:single;
+  xLoad : string;
+begin
+  // TODO:HIGH add conditional defines so all this is optional.
+
+  wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
+  QueryPerformanceCounter(wd.EndTime);
+
+  ProcessTime := (wd.EndTime - wd.StartTime) * 1000 / freq;
+  if ProcessTime > wd.MaxTime then
+  begin
+    xLoad := IntToStr(round(ProcessTime / wd.MaxTime * 100)) + '%';
+    VamLib.LoggingProxy.Log.LogError('CPU Overload (' + WatchName + ') Load = ' + xLoad);
+  end;
+end;
+
+
+//==============================================================================================
+//==============================================================================================
+
+initialization
+  // TODO:HIGH add conditional defines so all this is optional.
+  GlobalWatchList := TObjectList.Create;
+  GlobalWatchList.OwnsObjects := true;
+
+
+finalization
+  GlobalWatchList.Free;
 
 end.
