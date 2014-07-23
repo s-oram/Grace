@@ -39,6 +39,8 @@ type
     // locks would be to allow multiple sections of code to read items from
     // the list, but only allow one section of code at a time to write
     // changes to the list.
+    // TODO:It might be better to get rid of this critical section and go for
+    // a lock free approach.
     ListLock : TFixedCriticalSection;
 
     fList : TInterfaceList;
