@@ -73,7 +73,6 @@ type
     function ProcessEvents(ev: PVstEvents): longint;
 
     procedure ProcessReplacing(Inputs, Outputs: PPSingle; Sampleframes: Integer);
-    procedure ProcessReplacing2(Inputs, Outputs: PPSingle; Sampleframes: Integer);
 
     property Plugin : TeePlugin read fPlugin;
 
@@ -326,14 +325,6 @@ begin
 
   //OutputDebugString('SAMPLING OFF');
 end;
-
-
-
-
-procedure TProcessController.ProcessReplacing2(Inputs, Outputs: PPSingle; Sampleframes: Integer);
-begin
-end;
-
 
 procedure TProcessController.Resume(const aBlockSize, aSampleRate, aOverSampleFactor, aInputCount, aOutputCount : integer);
 begin
