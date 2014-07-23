@@ -24,6 +24,9 @@
 
 - rethink the filter gain. try adding the gain stage before the filter.
 
+- ZeroObject should have a IDataObject reference. Will allow messages to be sent 
+  across thread boundaries using delayed message sending.
+
 =============================================================================
      TODO MED
 =============================================================================
