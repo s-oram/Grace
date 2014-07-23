@@ -7,6 +7,7 @@ interface
 uses
   eeAudioBufferUtils,
   soLevelMeter,
+  VamLib.Types,
   VamLib.ZeroObject,
   VamLib.MoreTypes, soLucidityVoice,
   Lucidity.Interfaces,
@@ -38,13 +39,8 @@ type
     // locks would be to allow multiple sections of code to read items from
     // the list, but only allow one section of code at a time to write
     // changes to the list.
-    ListLock : TMutex;
+    ListLock : TFixedCriticalSection;
 
-    //TODO: Compare the difference between using TCriticalSection and TMutux.
-    // TFixedCriticalSection.
-    // http://delphitools.info/2013/06/06/tmonitor-vs-trtlcriticalsection/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+DelphiTools+%28DelphiTools.info%29
-    // TCriticalSection vs TMutex
-    // https://forums.embarcadero.com/thread.jspa?threadID=61392
     fList : TInterfaceList;
 
     GlobalModPoints : PGlobalModulationPoints;
@@ -137,7 +133,7 @@ begin
 
   Voices := aVoices;
 
-  ListLock := TMutex.Create;
+  ListLock := TFixedCriticalSection.Create;
 
   KeyGroupIDCount := 1;
 end;
