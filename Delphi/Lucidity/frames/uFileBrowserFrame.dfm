@@ -57,6 +57,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignNear
             TextVAlign = AlignCenter
@@ -76,6 +77,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignNear
             TextVAlign = AlignCenter
@@ -95,6 +97,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Opacity = 255
             Text = 'Awesome Drum.wav'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignNear
             TextVAlign = AlignCenter
@@ -124,6 +127,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Opacity = 255
             Text = 'PREVIEW'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignCenter
             TextVAlign = AlignCenter
