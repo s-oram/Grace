@@ -258,7 +258,6 @@ uses
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
-  VamLib.Throttler,
   eeCustomGlobals,
   AudioIO,
   eeProfilerV2,

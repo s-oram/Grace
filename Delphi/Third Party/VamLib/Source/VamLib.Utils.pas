@@ -7,8 +7,6 @@ type
 
 function AutoFree(const aObject: PObject): IUnknown;
 
-procedure Wait(const MilliSeconds : Longint);
-
 function LowestValue(const x1, x2 : integer):integer;
 function HighestValue(const x1, x2 : integer):integer; overload;
 function HighestValue(const x1, x2 : single):single; overload;
@@ -95,7 +93,6 @@ uses
   {$ELSE}
   PerlRegEx,
   {$ENDIF}
-  WinApi.Windows,
   Math,
   SysUtils;
 
@@ -523,34 +520,7 @@ begin
 end;
 
 
-procedure Wait(const MilliSeconds : Longint);
-const
-  _SECOND = 10000000;
-  unitsPerMilliSecond = 10*1000;
-var
- Busy : LongInt;
- TimerHandle : LongInt;
- DueTime : LARGE_INTEGER;
-begin
-  // Waitable Timers in Delphi.
-  // http://delphi32.blogspot.com.au/2006/03/using-waitable-timer-in-delphi.html
-  // http://www.adp-gmbh.ch/win/misc/timer.html
 
-  TimerHandle := CreateWaitableTimer(nil, True, nil);
-  if TimerHandle = 0 then Exit;
-  DueTime.QuadPart := -(unitsPerMilliSecond * MilliSeconds);
-  SetWaitableTimer(TimerHandle, TLargeInteger(DueTime), 0, nil, nil, False);
-
-  repeat
-    Busy := MsgWaitForMultipleObjects(1, TimerHandle, False, INFINITE, QS_ALLINPUT);
-  until Busy = WAIT_OBJECT_0;
-
-  // TODO:MED I wonder if there is a way to interrupt the timer to force it to return early.
-  // It might be useful in implementing the HighSpeedTimer class below.
-
-  // Close the handles when you are done with them.
-  CloseHandle(TimerHandle);
-End;
 
 
 end.

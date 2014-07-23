@@ -109,6 +109,7 @@ object Form1: TForm1
         Opacity = 255
         Text = 'Info'
         HitTest = True
+        AutoTrimText = False
         Color = '$FF3E3E3E'
         ColorMouseOver = '$FF3E3E3E'
         ColorBorder = '$00000000'

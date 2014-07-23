@@ -92,7 +92,6 @@ implementation
 
 uses
   VamLib.ZeroObject,
-  VamLib.Throttler,
   uConstants,
   eePluginDataDir,
   eeFunctions;

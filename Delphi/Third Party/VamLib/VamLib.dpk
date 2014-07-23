@@ -53,6 +53,7 @@ contains
   VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas',
   VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas',
   VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas',
-  VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas';
+  VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas',
+  VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas';
 
 end.

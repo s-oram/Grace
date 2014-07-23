@@ -86,7 +86,7 @@ uses
   //eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
-  VamLib.Utils,
+  VamLib.GuiUtils,
   DateUtils;
 
 type
@@ -94,38 +94,6 @@ type
 
 var
   GlobalDict : TProcDictionary;
-
-
-procedure Wait(lNumberOfSeconds : Longint);
-const
- _SECOND = 10000000;
-var
- lBusy : LongInt;
- hTimer : LongInt;
- liDueTime : LARGE_INTEGER;
-
-begin
-  // Waitable Timers in Delphi.
-  // http://delphi32.blogspot.com.au/2006/03/using-waitable-timer-in-delphi.html
-  // http://www.adp-gmbh.ch/win/misc/timer.html
-
-  hTimer := CreateWaitableTimer(nil, True, nil);
-  if hTimer = 0 then
-   Exit;
-  liDueTime.QuadPart := -10000000 * lNumberOfSeconds;
-  SetWaitableTimer(hTimer, TLargeInteger(liDueTime), 0, nil, nil, False);
-
-  repeat
-    lBusy := MsgWaitForMultipleObjects(1, hTimer, False,
-            INFINITE, QS_ALLINPUT);
-      Application.ProcessMessages;
-   Until lBusy = WAIT_OBJECT_0;
-
-    // Close the handles when you are done with them.
-   CloseHandle(hTimer);
-
-End;
-
 
 //==============================================================================
 
@@ -171,21 +139,28 @@ begin
 
   VamLabel1.Text := 'Message A';
 
-  Wait(1);
+  Wait(2000);
   VamLabel1.Text := 'Message B';
 
-  Wait(1);
+  Wait(2000);
   VamLabel1.Text := 'Message C';
 
-  Wait(1);
+  Wait(2000);
   VamLabel1.Text := 'Message D';
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
-  //
-  //VamPanel1.EndUpdate;
-  VamLabel1.Text := 'Message Z';
+  VamLabel1.Text := 'Message A';
+
+  Sleep(2000);
+  VamLabel1.Text := 'Message B';
+
+  Sleep(2000);
+  VamLabel1.Text := 'Message C';
+
+  Sleep(2000);
+  VamLabel1.Text := 'Message D';
 end;
 
 
