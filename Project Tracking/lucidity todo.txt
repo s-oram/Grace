@@ -9,6 +9,7 @@
 - Need to test SFZ import.
 
 - Filter Gain needs more bite. 
+- rethink the filter gain. try adding the gain stage before the filter.
 
 - Browser needs to have a slight delay before triggering sample preview. 
 
@@ -21,8 +22,6 @@
 -- check for updates. 
 
 - Bug: there is a click some where. :(
-
-- rethink the filter gain. try adding the gain stage before the filter.
 
 - ZeroObject should have a IDataObject reference. Will allow messages to be sent 
   across thread boundaries using delayed message sending.
