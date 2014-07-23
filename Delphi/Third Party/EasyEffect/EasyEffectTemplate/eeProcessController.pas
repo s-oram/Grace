@@ -11,7 +11,6 @@ interface
 }
 
 uses
-  VamLib.CpuOverloadWatcher,
   eeCpuMonitor, eeVstMidiTypes, eeMidiEvents,
   eePlugin, //TODO: I think this should eventually be removed.
   {$IFDEF HasAudioOuts}
@@ -34,7 +33,6 @@ type
     fTimeInfoMethod: TTimeInfoMethod;
   protected
     CpuMonitor : TCpuMonitor;
-    OverloadWatch : TCpuOverloadWatcher;
 
     fSampleRate : integer;
     fFastControlRateDivision : integer;
@@ -86,6 +84,7 @@ implementation
 uses
   Windows,
   SysUtils,
+  VamLib.CpuOverloadWatcher,
   eeTypes;
 
 // Procedure FilterAndAddMidiEvents
@@ -141,8 +140,6 @@ begin
   Plugin.Globals.CpuSampleRate   := 44100;
   Plugin.Globals.CpuSampleFrames := 64;
 
-  OverloadWatch := TCpuOverloadWatcher.Create;
-
   CpuMonitor := TCpuMonitor.Create;
 
   fPlugin.Globals.CpuMonitor := CpuMonitor;
@@ -181,8 +178,6 @@ begin
 
   MidiInput.Free;
   MidiOutput.Free;
-
-  OverloadWatch.Free;
 
   inherited;
 end;
@@ -450,25 +445,27 @@ begin
     if SamplesToProcess > 0 then
     begin
       //Process those samples..
-      //OverloadWatch.Start(ksf, ksr, 'Plugin-AudioProcess');
+      CpuOverloadWatch_Start('Plugin-AudioProcess');
       Plugin.AudioProcess(SamplesToProcess);
-      //OverloadWatch.Stop;
       inc(SamplesProcessed, SamplesToProcess);
       dec(SampleFrames, SamplesToProcess);
       inc(ControlRateOffset, SamplesToProcess);
+      CpuOverloadWatch_Stop('Plugin-AudioProcess');
     end else
     begin
-      //OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessMidiEvent');
       // or process whatever events...
+      CpuOverloadWatch_Start('Plugin-MidiEventProcess');
       if NextMidiEventDelta = 0 then
       begin
         ev := MidiInput[CurEv];
         Plugin.ProcessMidiEvent(ev);
         Inc(CurEv);
       end;
-      //OverloadWatch.Stop;
+      CpuOverloadWatch_Stop('Plugin-MidiEventProcess');
 
-      //OverloadWatch.Start(ksf, ksr, 'Plugin-ControlRateProcessing');
+
+
+      CpuOverloadWatch_Start('Plugin-ControlProcess');
       if NextControlRateDelta = 0 then
       begin
         //Important: Always call FastControlProcess before SlowControlProcess
@@ -482,13 +479,15 @@ begin
           Plugin.SlowControlProcess;
         end;
       end;
-      //OverloadWatch.Stop;
+      CpuOverloadWatch_Stop('Plugin-ControlProcess');
     end;
   end;
 
-  //OverloadWatch.Start(ksf, ksr, 'Plugin-ProcessEnd');
+
+  CpuOverloadWatch_Start('Plugin-ProcessEnd');
   Plugin.ProcessEnd;
-  //OverloadWatch.Stop;
+  CpuOverloadWatch_Stop('Plugin-ProcessEnd');
+
 
 
 
