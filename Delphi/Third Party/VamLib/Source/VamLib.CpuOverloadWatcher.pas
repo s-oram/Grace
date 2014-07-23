@@ -24,7 +24,7 @@ type
   end;
 
 
-procedure CpuOverloadWatch_Start(const MaxProcessTime : Int64;  const WatchName : string);
+procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : Int64 = 1);
 procedure CpuOverloadWatch_Stop(const WatchName : string);
 
 
@@ -134,7 +134,7 @@ begin
   result := wd;
 end;
 
-procedure CpuOverloadWatch_Start(const MaxProcessTime : Int64;  const WatchName : string);
+procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : Int64);
 var
   wd : TCpuWatchData;
 begin
@@ -155,6 +155,7 @@ begin
 
   wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
   QueryPerformanceCounter(wd.EndTime);
+  QueryPerformanceFrequency(freq);
 
   ProcessTime := (wd.EndTime - wd.StartTime) * 1000 / freq;
   if ProcessTime > wd.MaxTime then
