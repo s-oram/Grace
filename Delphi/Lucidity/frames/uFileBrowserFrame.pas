@@ -3,6 +3,8 @@ unit uFileBrowserFrame;
 interface
 
 uses
+  VamLib.UniqueID,
+  VamLib.Debouncer,
   VamLib.ZeroObject,
   Menu.FileTreeMenu,
   Lucidity.Interfaces,
@@ -47,6 +49,8 @@ type
     IsManualScroll : boolean;
     FileBrowserAddon : TFileBrowserAddon;
 
+    PreviewDebounceID : TUniqueID;
+
     MainContextMenu : TFileTreeViewMainContextMenu;
     NodeContextMenu : TFileTreeViewNodeContextMenu;
 
@@ -87,6 +91,8 @@ uses
 constructor TFileBrowserFrame.Create(AOwner: TComponent);
 begin
   inherited;
+
+  PreviewDebounceID.Init;
 
   FileBrowserAddon := TFileBrowserAddon.Create(FileTreeView);
   FileBrowserAddOn.OnNodeFocusChanged := EventHandle_NodeFocusChanged;
@@ -364,19 +370,24 @@ end;
 procedure TFileBrowserFrame.EventHandle_NodeFocusChanged(Sender: TObject);
 var
   NodeData : PNodeData;
+  Proc : TProc;
 begin
   if not assigned(Plugin) then exit;
 
   Plugin.StopPreview;
 
-  NodeData := FileBrowserAddOn.GetFocusedNodeData;
-  if assigned(NodeData) then
+  Proc := procedure
   begin
-    if FileExists(NodeData.FileName)
-      then Plugin.TriggerPreview(NodeData.FileName)
-      else Plugin.ClearPreviewInfo;
+    NodeData := FileBrowserAddOn.GetFocusedNodeData;
+    if assigned(NodeData) then
+    begin
+      if FileExists(NodeData.FileName)
+        then Plugin.TriggerPreview(NodeData.FileName)
+        else Plugin.ClearPreviewInfo;
+    end;
   end;
 
+  Debounce(PreviewDebounceID, 150, TDebounceEdge.deTrailing, Proc);
 end;
 
 procedure TFileBrowserFrame.EventHandle_FilterNodes(Sender: TObject; const RootDir: string; var FolderNodes, FileNodes: TStringList);

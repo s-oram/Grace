@@ -3,9 +3,6 @@
 =============================================================================
 - Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
 
-- Browser needs to have a slight delay before triggering sample preview. 
-  -- Wait() in VamLib.GuiUtils.pas will likely be very useful in implementing this.
-
 - Dragging over the sample map display but not clicking de-selects the current
   selected region.
 
