@@ -69,6 +69,7 @@ type
     TimeReference : TDateTime;
     Timer : THighSpeedTimer;
     Token : TDebounceToken;
+    KnobTT : TThrottleToken;
     procedure UpdateLabel;
 
     procedure HandleTimerEvent(Sender : TObject);
@@ -198,12 +199,19 @@ begin
   //Debounce(10, ReferenceTime);
 
 
+  {
   VamLib.GuiUtils.Debounce(Token, TDebounceEdge.deBoth, 500,
   procedure
   begin
     VamLabel1.Text := FloatToStr(VamKnob1.Pos);
   end);
+  }
 
+  VamLib.GuiUtils.Throttle(KnobTT, 100,
+  procedure
+  begin
+    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
+  end);
 end;
 
 procedure TForm1.HandleTimerEvent(Sender: TObject);

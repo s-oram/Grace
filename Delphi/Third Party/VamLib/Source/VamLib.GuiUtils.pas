@@ -35,8 +35,17 @@ procedure Wait(const MilliSeconds : Longint);
 type
   TDebounceToken = record
   private
-    LastCallTime : TDateTime;
     CallRef : TProc;
+    LastCallTime : TDateTime;
+    IsTrailingCallRequired : Boolean;
+    IsActive : boolean;
+  public
+  end;
+
+  TThrottleToken = record
+  private
+    CallRef : TProc;
+    LastCallTime : TDateTime;
     IsTrailingCallRequired : Boolean;
     IsActive : boolean;
   public
@@ -47,7 +56,7 @@ type
 procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
 
 
-
+procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
 
 
 
@@ -100,8 +109,10 @@ var
 begin
   if (DebounceToken.IsActive = false) then
   begin
+    DebounceToken.CallRef := Proc;
+
     if (Edge <> TDebounceEdge.deTrailing)
-      then Proc();
+      then DebounceToken.CallRef();
 
     DebounceToken.IsTrailingCallRequired := true;
     DebounceToken.IsActive := true;
@@ -117,7 +128,7 @@ begin
         if DebounceToken.IsTrailingCallRequired then
         begin
           if (Edge <> TDebounceEdge.deLeading)
-            then Proc();
+            then DebounceToken.CallRef();
 
           DebounceToken.IsTrailingCallRequired := false;
           DebounceToken.LastCallTime := Now;
@@ -132,8 +143,48 @@ begin
     DebounceToken.IsActive := false;
   end else
   begin
+    DebounceToken.CallRef := Proc;
     DebounceToken.LastCallTime := Now;
     DebounceToken.IsTrailingCallRequired := true;
+  end;
+end;
+
+procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
+var
+  IsWaitFinished : boolean;
+begin
+  if (ThrottleToken.IsActive = false) then
+  begin
+    ThrottleToken.CallRef := Proc;
+
+    ThrottleToken.CallRef();
+
+    ThrottleToken.IsTrailingCallRequired := false;
+    ThrottleToken.IsActive := true;
+    ThrottleToken.LastCallTime := Now;
+
+    IsWaitFinished := false;
+
+    repeat
+      Wait(MilliSeconds);
+      if ThrottleToken.IsTrailingCallRequired then
+      begin
+        ThrottleToken.CallRef();
+        ThrottleToken.IsTrailingCallRequired := false;
+        ThrottleToken.LastCallTime := Now;
+      end else
+      begin
+        IsWaitFinished := true;
+      end;
+    until
+      IsWaitFinished;
+
+    ThrottleToken.IsActive := false;
+  end else
+  begin
+    ThrottleToken.CallRef := Proc;
+    ThrottleToken.LastCallTime := Now;
+    ThrottleToken.IsTrailingCallRequired := true;
   end;
 end;
 
