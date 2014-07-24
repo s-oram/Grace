@@ -113,6 +113,12 @@ var
   c1: Integer;
   wd : TCpuWatchData;
 begin
+  if not assigned(GlobalWatchList) then
+  begin
+    GlobalWatchList := TObjectList.Create;
+    GlobalWatchList.OwnsObjects := true;
+  end;
+
   wd := nil;
 
   for c1 := 0 to GlobalWatchList.Count-1 do
@@ -170,12 +176,12 @@ end;
 //==============================================================================================
 
 initialization
-  // TODO:HIGH add conditional defines so all this is optional.
   GlobalWatchList := TObjectList.Create;
   GlobalWatchList.OwnsObjects := true;
 
 
 finalization
-  GlobalWatchList.Free;
+  if assigned(GlobalWatchList)
+    then FreeAndNil(GlobalWatchList);
 
 end.
