@@ -1,6 +1,18 @@
 =============================================================================
      TODO HIGH
 =============================================================================
+- Bug: 
+  - Create cubase project
+  - add multiple Lucidity instances.
+  - create and activate new cubase project.
+  - close first cubase project
+  - there is a bug somewhere round here.
+
+- random LFOs always reset to 0. Might be the same for the step sequencers 
+  when used as mod sources.
+
+- Is the comb filter reseting it's delay buffer? when be retriggered?
+
 - Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
 
 - Dragging over the sample map display but not clicking de-selects the current
