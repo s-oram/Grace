@@ -18,6 +18,7 @@ type
     procedure OpenKeyFile(Sender : TObject);
     procedure ShowAboutBox(Sender : TObject);
 
+    procedure EventHandle_OpenManual(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ImportSFZ(Sender : TObject);
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
@@ -32,6 +33,9 @@ type
 implementation
 
 uses
+  Windows,
+  ShellApi,
+  eePluginDataDir,
   uLucidityEnums,
   uAboutDialog,
   SysUtils,
@@ -214,6 +218,13 @@ begin
     Menu.Items.Add(mi);
   end;
 
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Open Manual...';
+  mi.OnClick := EventHandle_OpenManual;
+  Menu.Items.Add(mi);
+
+
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'About...';
   mi.OnClick := ShowAboutBox;
@@ -276,6 +287,26 @@ begin
   if OpenDialog.Execute then
   begin
     Plugin.ImportProgram(OpenDialog.FileName, TProgramFormat.Sfz);
+  end;
+end;
+
+procedure TMainMenu.EventHandle_OpenManual(Sender: TObject);
+var
+  fn : string;
+begin
+  if PluginDataDir.Exists then
+  begin
+    fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Manual') + 'Lucidity Manual.html';
+    if FileExists(fn) then
+    begin
+      ShellExecute(0, 'OPEN', PChar(fn), '', '', SW_SHOWNORMAL);
+    end else
+    begin
+      ShowMessage('Manual not found. Please contact support.');
+    end;
+  end else
+  begin
+    ShowMessage('Data directory not found. Please re-install Lucidity.');
   end;
 end;
 
