@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lucidity Manual</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Lucidity Manual</h1>
+<ul>
+<li>Last Updated 19th July 2014</li>
+<li>For Lucidity Version 0.x.x.x</li>
+</ul>
+<h2>Credits</h2>
+<p>Thanks to the BETA Testers</p>
+<p>Steinberg credit etc.</p>
+<h1>Welcome to Lucidity</h1>
+<p>Lucidity is a VST Plugin Sampler. It's been designed for use with MIDI keyboards. As such it's ideal for playing back &quot;melodic&quot; samples. Pianos, keys, strings, synths etc. Some additions have been included for playback of loops to increase Lucidity versatility.</p>
+<p>Talk about where lucidity comes from, the eventual goal.   </p>
+<p>sample playback instrument that follows in the footsteps of many other </p>
+<p>Development of Lucidity began at the end of 2012. I wanted to create a sampler </p>
+<p>Thank you for purchasing Lucidity. Your support enables ongoing development of Lucidity and other software. I hope you enjoy using Lucidity!</p>
+<p>Yours Sincerely,<br> 
+Shannon Oram <br>
+One Small Clue <br> 
+shannon@onesmallclue.com <br></p>
+<h1>Installation and Setup</h1>
+<h1>Interface Elements</h1>
+<p><img src="images/MainInterfaceDescription.png"></p>
+<h2>File Browser</h2>
+<p>The file browser is a convenient way to load samples and Lucidity Programs. All items in the browser are mapped to directories (or folders) on your hard-drive.</p>
+<p>Add and Remove items from the file browser via context menu. (Right click anywhere in the browser.)  </p>
+<h2>Sample Display</h2>
+<p>The sample display shows the currently selected sample. </p>
+<p>The sample markers (sample start, sample end, loop start, loop end) can all be adjusted by dragging. </p>
+<p>There are a number of sample playback controls under the sample display.</p>
+<p><strong>Volume:</strong> Adjust volume of sample.<br>
+<strong>Pan:</strong> Adjust stereo balance of sample.<br> 
+<strong>Tune:</strong> Adjust pitch of sample in semitone steps.<br>
+<strong>Fine:</strong> Adjust pitch of sample by +/- 100 cents.<br></p>
+<h2>Voice Controls</h2>
+<p>The voice controls are split over two panels. The voice controls adjust sample playback. All voice control settings are applied to all samples in the <em>key group</em>.</p>
+<h3>Main Voice Controls</h3>
+<p><img src="images/MainVoiceControls.png" ></p>
+<p><strong>Gain:</strong> Adjust volume of key group.<br>
+<strong>Pan:</strong> Adjust stereo balance of key group.<br> 
+<strong>Tune:</strong> Adjust pitch of key group in semitone steps.<br>
+<strong>Fine:</strong> Adjust pitch of key group by +/- 100 cents.<br></p>
+<p><strong>Track:</strong> controls how and when a sample is re-pitched. </p>
+<ul>
+<li><strong>NOTE:</strong> Use for keyboard type sounds.</li>
+<li><strong>BPM:</strong> Use for tempo synced loops.</li>
+<li><strong>OFF:</strong> No pitch tracking. Sample always plays back at the same pitch.</li>
+</ul>
+<p><strong>Trigger:</strong> Turns looping on or off.</p>
+<ul>
+<li><strong>NOTE ON:</strong> No looping. Sample plays until MIDI Note Off event is received.</li>
+<li><strong>ONE SHOT:</strong> No looping. Sample plays until end.</li>
+<li><strong>LOOP CONTINUOUS:</strong> Looping on.</li>
+<li><strong>LOOP UNTIL RELEASE:</strong> Looping on until a MIDI Note Off event is received.</li>
+</ul>
+<p><strong>Bounds:</strong> Controls where the sample loops.</p>
+<ul>
+<li><strong>SAMPLE:</strong> Loops between sample start and sample end markers.</li>
+<li><strong>LOOP:</strong> Loops between loop start and loop end markers.</li>
+</ul>
+<p>Looping using <strong>SAMPLE</strong> bounds is useful when modulating the sample start and end markers to produce &quot;glitchy&quot; sounds.</p>
+<p><strong>Reset:</strong> When set to <strong>LFO 1</strong> or <strong>LFO 2</strong>, the sample playback position will be reset to the beginning in sync with the LFO source. This is useful for doing tempo synced drum roll type sounds. </p>
+<p><strong>Mode:</strong> The voice mode selector.</p>
+<ul>
+<li><strong>POLY:</strong> Normal polyphonic mode.</li>
+<li><strong>MONO:</strong> Monophonic, each note re-triggers envelopes and LFOs. </li>
+<li><strong>LEGATO:</strong> Monophonic, envelopes aren't re-triggered when notes overlap.  </li>
+<li><strong>LATCH:</strong> The first note triggers a voice. The second note releases or stops the voice. LATCH is normally used with loops. </li>
+</ul>
+<p><strong>Glide:</strong> Controls the pitch slew rate when using MONO or LEGATO voice modes. </p>
+<h3>The Filter Section</h3>
+<p>Lucidity features two flexible filter slots. Each filter slot can load one of several different filter types. The two filters can be routed in a serial or parallel configuration. </p>
+<p><img src="images/FilterControls.png" ></p>
+<p><strong>Filter Type Selector:</strong> Choose the type of filter.</p>
+<p><strong>Filter Key Follow:</strong> Controls how much the filter frequency will track the MIDI Input.  </p>
+<p><strong>Filter Blend:</strong> When the knob is fully CCW only FILTER ONE will heard at the output. When the knob is fully CW only FILTER TWO will be heard at the output. In between values allow for the two filters to be mixed together.  </p>
+<p><strong>Filter Routing:</strong></p>
+<ul>
+<li><strong>SERIAL:</strong> The output of FILTER ONE will be fed to the input of FILTER TWO. FILTER TWO is sent to the output. </li>
+<li><strong>PARALLEL:</strong> The output of both filters is sent directly to the output. </li>
+</ul>
+<p>BLEND will control the balance of the two filters in both FILTER ROUTING modes. Ensure the BLEND knob is fully CW for the classic serial mode filter routing. Other values will allow some of filter one to be heard in the output.  </p>
+<h3>The AHDSR Envelope Section</h3>
+<p>Lucidity has two clasic AHDSR envelopes. The <strong>AMP ENVELOPE</strong> is always routed to the voice amplitude (volume). The <strong>MOD ENVELOPE</strong> is freely assignable to any destination via the modulation matrix.  </p>
+<p><img src="images/EnvelopeControls.png" ></p>
+<p><strong>A:</strong> Attack envelope time.<br> 
+<strong>H:</strong> Hold envelope time.<br>
+<strong>D:</strong> Decay envelope time.<br>
+<strong>S:</strong> Sustain envelope time.<br>
+<strong>R:</strong> Release envelope time.<br></p>
+<p><strong>Velocity Sensitivity:</strong> Controls how much the MIDI velocity input level affects the amplitude of the envelope.  At 0% the envelope will always rise to the full envelope value. At 100% the envelope will be scaled by the velocity value. Lower velocity values will trigger correspondingly smaller envelope signals.   </p>
+<h3>The LFO Section</h3>
+<p>Lucidity has two Low Frequency Oscillators (LFO) with the usual selection of triangle, square and ramp wave shapes. There are some more exotic selections as well. </p>
+<p><img src="images/LfoControls.png" ></p>
+<p><strong>LFO Shape:</strong> Selects the LFO waveform shape. The function of the three LFO knobs will vary depending on the LFO shape.</p>
+<p><strong>LFO Sync:</strong> Select between a free-running and tempo-synced LFO. </p>
+<p><strong>LFO Range:</strong> Select the Maximum LFO time.</p>
+<h4>Periodic LFO Waveform Shapes</h4>
+<ul>
+<li>Saw </li>
+<li>Ramp</li>
+<li>Triangle</li>
+<li>Square </li>
+<li>Sine</li>
+</ul>
+<p>The three LFO knobs are <strong>RATE</strong>, <strong>PH</strong> (phase) and <strong>SYM</strong> (symmetry) when using the periodic waveform shapes.</p>
+<h4>Random LFO Waveform Shapes</h4>
+<ul>
+<li>Random Smooth </li>
+<li>Random Stepped</li>
+</ul>
+<p>The three LFO knobs are <strong>RATE</strong>, <strong>%</strong> (chance of change) and <strong>FLUX</strong> (amount of change).</p>
+<h4>Attack-Decay LFO Waveform Shapes</h4>
+<ul>
+<li>Attack-Decay</li>
+<li>Attack-Release</li>
+<li>Cycle</li>
+</ul>
+<p>The three LFO knobs are <strong>CURVE</strong>, <strong>A</strong> (attack) and <strong>D</strong> (decay) or <strong>R</strong> (release).</p>
+<p>These selections are not regular LFO shapes in the traditional sense. They are based on Attack-Decay envelopes commonly found in modular synthesisers.</p>
+<p>Each selection has a Attack stage where the signal rises from 0 to 100%, then a Decay or Release stage when the signal falls back to 0%. The time of each stage is controlled independently instead of using a single Rate control as with the other LFO waveform shapes.    </p>
+<p><strong>Attack-Decay</strong> and <strong>Attack-Release</strong> is triggered at the beginning of a note and will not cycle or repeat. They are not LFO's in the strict sense.</p>
+<p><strong>Cycle</strong> is also triggered at the beginning of a note. Unlike the other two, <strong>Cycle</strong> will repeat continuously. In this way it produces similar results to the <strong>Triangle</strong> LFO waveform shape. </p>
+<h3>The Sequencer Section</h3>
+<p>Lucidity also features two step sequencers for maximum modulation possibilities!</p>
+<p><img src="images/SequencerControls.png" ></p>
+<p><strong>Clock:</strong> Controls the speed of the sequencer. <br>
+<strong>Mode:</strong> Controls the direction of the sequencer. <br> 
+<strong>Steps:</strong> Sets the number of steps in a sequence. <br></p>
+<p>A sequencer context menu has commands to RESET or RANDOMISE the steps.</p>
+<h3>The XY Pads</h3>
+<p>The XY Pads provide another modulation source similar to the Mod Envelope or the LFOs. The XY Pads can modulate multiple parameters at once using the Modulation Matrix.</p>
+<p>Most commonly the XY Pads will be linked to your MIDI controller knobs. They provide an important interface point between your MIDI controller and Lucidity's parameters.</p>
+<p><img src="images/XyPadControls.png" ></p>
+<p>Right click an XY Pad to show the context menu with commands for MIDI Learn etc.       </p>
+<h2>Filters</h2>
+<p>(Details about the individual filter types goes here!)   </p>
+<h2>Modulation</h2>
+<p>The Modulation Matrix routes signals from the modulation sources (LFOs, Envelopes, XY Pads, MIDI Input etc) to Lucidity's parameters. It is the heart of Lucidity's modulation system.   </p>
+<p><img src="images/ModMatrix.png" ></p>
+<p><strong>Main:</strong> Modulation Matrix editing is disabled when the MAIN button is selected (as shown in the image above).</p>
+<p><strong>Mod Shots:</strong> Lucidity features 8 MOD SLOTS. Each MOD SLOT provides a way to route one modulation source to multiple destinations. </p>
+<p><strong>Prev/Next Mod Slot:</strong> These buttons select the previous or next MOD SLOT. Off course you don't have to use these buttons. You may simply click on the desired MOD SLOT to select it.</p>
+<h3>How To Internally Modulate a Parameter</h3>
+<p><img src="images/InternalModulationSetup_Step1.png" ></p>
+<p><strong>Step 1</strong> Select a MOD SLOT</p>
+<p><img src="images/InternalModulationSetup_Step2.png" ></p>
+<p><strong>Step 2</strong> Locate the parameter you would like to modulate. Filter One FREQ in this case.</p>
+<p><strong>Step 3</strong> Hold the ALT key while using the adjust the knob. You will see the modulation depth indicator advance around the knob.  </p>
+<p><img src="images/InternalModulationSetup_Step4.png" ></p>
+<p><strong>Step 4</strong> Select the MAIN modulation button. Notice the modulation depth indicator around the FREQ knob changes color. It now shows the maximum modulation depth of all modulation sources combined. (A parameter can be modulated by multiple modulation sources.)</p>
+<h1>The Mapping Editor</h1>
+<p>Samples, which are audio files, are made playable by creating Regions. Regions are mapped to a location on a keyboard. Each region contains 1 sample.  </p>
+<p><img src="images/SampleMapEditDisplay.png" ></p>
+<p>One or more sample files may be dropped on the mapping display to add more sample regions. Audio samples can dragged from Lucidity's browser, Windows' file explore or from within some hosts. (Reaper, Cubase and many others support audio being dragged directly from the project timeline to VST Plugins.)</p>
+<h1>Keyboard Shortcuts</h1>
+<p>Hotkey support is fairly limited at this time and will slowly improve in future updates. </p>
+<p><strong>Up/Down/Left/Right:</strong> Navigate the browser.<br>
+<strong>Enter:</strong> Load selected item in browser.<br> </p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
