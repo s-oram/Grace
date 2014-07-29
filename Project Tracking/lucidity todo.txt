@@ -8,6 +8,8 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
+- need to be able to read loop points from wav file.
+
 - random LFOs always reset to 0. Might be the same for the step sequencers 
   when used as mod sources.
 
@@ -40,6 +42,15 @@
 - there is still an occasional click but it might be passable enough for release. 
   I'm not sure where the clicking is coming from.
   Try replacing all critical sections with slim-reader-writer locks. perhaps.
+
+
+
+PS : one thing that i *really*don't like in Lucidity, is that the default patch has everything disabled by default (the volume is set at zero, the enveloppe release is set at zero too, so as soon as you load a sound, you expect to hear it when hitting a key but it is actually muted) : is it by design, or could it be changed in a forthcoming version ?
+From Yann
+thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
+
+
+
 
 =============================================================================
      TODO MED
