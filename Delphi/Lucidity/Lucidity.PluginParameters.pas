@@ -52,7 +52,6 @@ type
 
     function IsPublishedVstParameter : boolean;
 
-
     property ParameterID : TPluginParameterID read fID;
     property Name        : string             read fName write fName;
 
@@ -60,7 +59,7 @@ type
 
     property ParameterValue : single read fParameterValue write fParameterValue;
 
-    property IsQuantised : boolean read fIsQuantised write fIsQuantised;
+    property IsQuantised  : boolean read fIsQuantised  write fIsQuantised;
     property QuantisedMin : integer read fQuantisedMin write fQuantisedMin;
     property QuantisedMax : integer read fQuantisedMax write fQuantisedMax;
   end;
@@ -682,15 +681,12 @@ begin
   inc(CurrentCount);
 end;
 
-
-
 function TPluginParameterManager.GetParameter(Index: integer): TPluginParameterClass;
 begin
   assert(Index >= 0);
   assert(Index < fParameterCount);
   result := Raw[Index];
 end;
-
 
 function PluginParToDisplayName(const Par : TPluginParameter):string;
 begin

@@ -144,7 +144,6 @@ type
     constructor Create; override;
 	  destructor Destroy; override;
 
-
     // SetPluginParameter() receives a parameter change notification. It stores the new parameter value and
     // calls ApplyPluginParameterValue() change the audio engine state.
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
@@ -209,6 +208,8 @@ type
     property FocusedRegion   : IRegion   read GetFocusedRegion;
     function ActiveKeyGroup : IKeyGroup;
 
+    procedure CopyKeyGroupParameters;
+    procedure PasteKeyGroupParameters;
 
     procedure FocusFirstKeyGroup;
     procedure FocusKeyGroup(const aKeyGroupName : string);
@@ -749,6 +750,16 @@ begin
 
   // finally.
   PostLoadProgram;
+end;
+
+procedure TeePlugin.CopyKeyGroupParameters;
+begin
+
+end;
+
+procedure TeePlugin.PasteKeyGroupParameters;
+begin
+
 end;
 
 procedure TeePlugin.FocusFirstKeyGroup;

@@ -16,6 +16,8 @@ type
     procedure CreateNewKeyGroup(Sender : TObject);
     procedure DeleteKeyGroup(Sender : TObject);
     procedure FocusKeyGroup(Sender : TObject);
+    procedure CopyKeyGroupParameters(Sender : TObject);
+    procedure PasteKeyGroupParameters(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -110,6 +112,18 @@ begin
   if CurrentGroup = '' then mi.Enabled := false;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Copy Key Group Settings';
+  mi.OnClick := CopyKeyGroupParameters;
+  if CurrentGroup = '' then mi.Enabled := false;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Paste Key Group Settings';
+  mi.OnClick := PasteKeyGroupParameters;
+  if CurrentGroup = '' then mi.Enabled := false;
+  Menu.Items.Add(mi);
+
 
 
   Menu.Popup(X, Y);
@@ -134,6 +148,16 @@ var
 begin
   Text := (Sender as TMenuItem).Hint;
   Plugin.FocusKeyGroup(Text);
+end;
+
+procedure TGroupsMenu.CopyKeyGroupParameters(Sender: TObject);
+begin
+  Plugin.CopyKeyGroupParameters;
+end;
+
+procedure TGroupsMenu.PasteKeyGroupParameters(Sender: TObject);
+begin
+  Plugin.PasteKeyGroupParameters;
 end;
 
 
