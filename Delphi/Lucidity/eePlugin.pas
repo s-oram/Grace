@@ -116,6 +116,8 @@ type
 
     ThrottleID_VSTParChange : TUniqueID;
 
+    CopiedKeyGroupValues : TPluginParameterStateBuffer;
+
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
     procedure EventHandle_SampleRateChanged(Sender:TObject);
@@ -521,6 +523,10 @@ var
   c1 : integer;
   fn : string;
 begin
+  if assigned(CopiedKeyGroupValues)
+    then CopiedKeyGroupValues.Free;
+
+
   Clear;
 
   //TODO:MED what is this?
@@ -754,7 +760,10 @@ end;
 
 procedure TeePlugin.CopyKeyGroupParameters;
 begin
+  if not assigned(CopiedKeyGroupValues)
+    then CopiedKeyGroupValues := TPluginParameterStateBuffer.Create;
 
+  PluginParameters.AssignTo(CopiedKeyGroupValues);
 end;
 
 procedure TeePlugin.PasteKeyGroupParameters;

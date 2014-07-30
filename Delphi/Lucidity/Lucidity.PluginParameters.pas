@@ -37,6 +37,11 @@ It's all a bit of a mess.
 {$SCOPEDENUMS ON}
 
 type
+  //=== forward declarations ================
+  TPluginParameterStateBuffer = class;
+  //=========================================
+
+
   TPluginParameterClass = class
   private
     fParameterValue: single;
@@ -67,7 +72,7 @@ type
 
   TPluginParameterManager = class
   private
-    CurrentCount    : integer;
+    CurrentCount    : integer; //TODO:MED CurrentCount is misleading and not needed anymore. It should be changed to parameter count.
     fParameterCount : integer;
     function GetParameter(Index: integer): TPluginParameterClass;
     procedure Add(const aParameter : TPluginParameterClass);
@@ -83,11 +88,25 @@ type
     function FindByName(const ParameterName : string):TPluginParameterClass;
     function FindByParameterID(const ParameterID : TPluginParameterID):TPluginParameterClass;
 
-
-
     property Parameter[Index : integer] : TPluginParameterClass read GetParameter;
 
     property Count : integer read CurrentCount;
+
+    procedure AssignTo(var ParStateBuffer : TPluginParameterStateBuffer);
+    procedure AssignFrom(const ParStateBuffer : TPluginParameterStateBuffer);
+  end;
+
+  TPluginParameterStateBuffer = class
+  private
+  protected
+    ParCount  : integer;
+    ParValues : array of single;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    function GetParameterValueByID(const ParameterID : TPluginParameterID):single;
+    procedure SetParameterValueByID(const ParameterID : TPluginParameterID; const Value : single);
   end;
 
 
@@ -673,6 +692,39 @@ begin
   inherited;
 end;
 
+procedure TPluginParameterManager.AssignFrom(const ParStateBuffer: TPluginParameterStateBuffer);
+var
+  c1: Integer;
+  ParValue : single;
+begin
+  for c1 := 0 to CurrentCount-1 do
+  begin
+    assert(self.Raw[c1].ParameterID = c1);
+
+    ParValue := ParStateBuffer.GetParameterValueByID(c1);
+
+    if Raw[c1].IsQuantised then
+    begin
+      ParValue := QuantiseParameterValue(ParValue, Raw[c1].QuantisedMin, Raw[c1].QuantisedMax);
+    end;
+
+    Raw[c1].ParameterValue := ParValue;
+  end;
+end;
+
+procedure TPluginParameterManager.AssignTo(var ParStateBuffer: TPluginParameterStateBuffer);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to CurrentCount-1 do
+  begin
+    assert(self.Raw[c1].ParameterID = c1);
+    ParStateBuffer.SetParameterValueByID(c1, self.Raw[c1].ParameterValue);
+  end;
+end;
+
+
+
 function TPluginParameterManager.FindByName(const ParameterName: string): TPluginParameterClass;
 var
   c1: Integer;
@@ -807,6 +859,30 @@ begin
 end;
 
 
+
+{ TPluginParameterStateBuffer }
+
+constructor TPluginParameterStateBuffer.Create;
+begin
+  ParCount := TPluginParameterHelper.GetEnumTypeCount;
+  SetLength(ParValues, ParCount);
+end;
+
+destructor TPluginParameterStateBuffer.Destroy;
+begin
+  SetLength(ParValues, 0);
+  inherited;
+end;
+
+function TPluginParameterStateBuffer.GetParameterValueByID(const ParameterID: TPluginParameterID): single;
+begin
+  result := ParValues[ParameterID];
+end;
+
+procedure TPluginParameterStateBuffer.SetParameterValueByID(const ParameterID: TPluginParameterID; const Value: single);
+begin
+  ParValues[ParameterID] := Value;
+end;
 
 initialization
     //===== IMPORTANT: Check all the plugin parameter ID constant values are correct =============
