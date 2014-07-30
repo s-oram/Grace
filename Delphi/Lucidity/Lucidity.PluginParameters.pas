@@ -177,7 +177,7 @@ type
     SamplePlaybackType      = 3;
     SampleResetClockSource  = 4;
     SamplerLoopBounds       = 5;
-    SamplerLoopMode         = 6;
+    SamplerTriggerMode      = 6;
     OutputGain              = 7;
     OutputPan               = 8;
     VoicePitchOne           = 9;
@@ -252,8 +252,6 @@ type
 
 
 //======= New functions =================================================
-
-procedure CheckPluginParIDs;
 function PluginParToID(const Par : TPluginParameter):TPluginParameterID; inline;
 function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inline;
 
@@ -306,20 +304,6 @@ uses
 
 
 //============= NEW METHODS ===========================================
-
-procedure CheckPluginParIDs;
-var
-  x1 : integer;
-  x2 : integer;
-begin
-  x1 := kPluginParameterID.VoiceMode;
-  x2 := PluginParToID(TPluginParameter.VoiceMode);
-  if x1 <> x2 then raise Exception.Create('Plugin Parameter IDs do not match.');
-
-  // TODO:HIGH
-  // All plugin ID's need to be checked.
-end;
-
 function QuantiseParameterValue(const ParValue : single; const MinValue, MaxValue : integer):single;
 var
   x : integer;
@@ -792,10 +776,79 @@ end;
 
 
 initialization
-  //==========================
-  // TODO:HIGH in debug mode only.
-  CheckPluginParIDs;
-  //==========================
+    //===== IMPORTANT: Check all the plugin parameter ID constant values are correct =============
+    assert(kPluginParameterID.VoiceMode                    = Integer(TPluginParameter.VoiceMode));
+    assert(kPluginParameterID.VoiceGlide                   = Integer(TPluginParameter.VoiceGlide));
+    assert(kPluginParameterID.PitchTracking                = Integer(TPluginParameter.PitchTracking));
+    assert(kPluginParameterID.SamplePlaybackType           = Integer(TPluginParameter.SamplePlaybackType));
+    assert(kPluginParameterID.SampleResetClockSource       = Integer(TPluginParameter.SampleResetClockSource));
+    assert(kPluginParameterID.SamplerLoopBounds            = Integer(TPluginParameter.SamplerLoopBounds));
+    assert(kPluginParameterID.SamplerTriggerMode           = Integer(TPluginParameter.SamplerTriggerMode));
+    assert(kPluginParameterID.OutputGain                   = Integer(TPluginParameter.OutputGain));
+    assert(kPluginParameterID.OutputPan                    = Integer(TPluginParameter.OutputPan));
+    assert(kPluginParameterID.VoicePitchOne                = Integer(TPluginParameter.VoicePitchOne));
+    assert(kPluginParameterID.VoicePitchTwo                = Integer(TPluginParameter.VoicePitchTwo));
+    assert(kPluginParameterID.SampleStart                  = Integer(TPluginParameter.SampleStart));
+    assert(kPluginParameterID.SampleEnd                    = Integer(TPluginParameter.SampleEnd));
+    assert(kPluginParameterID.LoopStart                    = Integer(TPluginParameter.LoopStart));
+    assert(kPluginParameterID.LoopEnd                      = Integer(TPluginParameter.LoopEnd));
+    assert(kPluginParameterID.AmpAttack                    = Integer(TPluginParameter.AmpAttack));
+    assert(kPluginParameterID.AmpHold                      = Integer(TPluginParameter.AmpHold));
+    assert(kPluginParameterID.AmpDecay                     = Integer(TPluginParameter.AmpDecay));
+    assert(kPluginParameterID.AmpSustain                   = Integer(TPluginParameter.AmpSustain));
+    assert(kPluginParameterID.AmpRelease                   = Integer(TPluginParameter.AmpRelease));
+    assert(kPluginParameterID.AmpVelocity                  = Integer(TPluginParameter.AmpVelocity));
+    assert(kPluginParameterID.ModAttack                    = Integer(TPluginParameter.ModAttack));
+    assert(kPluginParameterID.ModHold                      = Integer(TPluginParameter.ModHold));
+    assert(kPluginParameterID.ModDecay                     = Integer(TPluginParameter.ModDecay));
+    assert(kPluginParameterID.ModSustain                   = Integer(TPluginParameter.ModSustain));
+    assert(kPluginParameterID.ModRelease                   = Integer(TPluginParameter.ModRelease));
+    assert(kPluginParameterID.ModVelocity                  = Integer(TPluginParameter.ModVelocity));
+    assert(kPluginParameterID.FilterRouting                = Integer(TPluginParameter.FilterRouting));
+    assert(kPluginParameterID.FilterOutputBlend            = Integer(TPluginParameter.FilterOutputBlend));
+    assert(kPluginParameterID.Filter1Type                  = Integer(TPluginParameter.Filter1Type));
+    assert(kPluginParameterID.Filter2Type                  = Integer(TPluginParameter.Filter2Type));
+    assert(kPluginParameterID.Filter1KeyFollow             = Integer(TPluginParameter.Filter1KeyFollow));
+    assert(kPluginParameterID.Filter2KeyFollow             = Integer(TPluginParameter.Filter2KeyFollow));
+    assert(kPluginParameterID.Filter1Par1                  = Integer(TPluginParameter.Filter1Par1));
+    assert(kPluginParameterID.Filter1Par2                  = Integer(TPluginParameter.Filter1Par2));
+    assert(kPluginParameterID.Filter1Par3                  = Integer(TPluginParameter.Filter1Par3));
+    assert(kPluginParameterID.Filter1Par4                  = Integer(TPluginParameter.Filter1Par4));
+    assert(kPluginParameterID.Filter2Par1                  = Integer(TPluginParameter.Filter2Par1));
+    assert(kPluginParameterID.Filter2Par2                  = Integer(TPluginParameter.Filter2Par2));
+    assert(kPluginParameterID.Filter2Par3                  = Integer(TPluginParameter.Filter2Par3));
+    assert(kPluginParameterID.Filter2Par4                  = Integer(TPluginParameter.Filter2Par4));
+    assert(kPluginParameterID.Lfo1Shape                    = Integer(TPluginParameter.Lfo1Shape));
+    assert(kPluginParameterID.Lfo2Shape                    = Integer(TPluginParameter.Lfo2Shape));
+    assert(kPluginParameterID.Lfo1FreqMode                 = Integer(TPluginParameter.Lfo1FreqMode));
+    assert(kPluginParameterID.Lfo2FreqMode                 = Integer(TPluginParameter.Lfo2FreqMode));
+    assert(kPluginParameterID.Lfo1Range                    = Integer(TPluginParameter.Lfo1Range));
+    assert(kPluginParameterID.Lfo2Range                    = Integer(TPluginParameter.Lfo2Range));
+    assert(kPluginParameterID.Lfo1Par1                     = Integer(TPluginParameter.Lfo1Par1));
+    assert(kPluginParameterID.Lfo1Par2                     = Integer(TPluginParameter.Lfo1Par2));
+    assert(kPluginParameterID.Lfo1Par3                     = Integer(TPluginParameter.Lfo1Par3));
+    assert(kPluginParameterID.Lfo2Par1                     = Integer(TPluginParameter.Lfo2Par1));
+    assert(kPluginParameterID.Lfo2Par2                     = Integer(TPluginParameter.Lfo2Par2));
+    assert(kPluginParameterID.Lfo2Par3                     = Integer(TPluginParameter.Lfo2Par3));
+    assert(kPluginParameterID.Seq1Clock                    = Integer(TPluginParameter.Seq1Clock));
+    assert(kPluginParameterID.Seq1Direction                = Integer(TPluginParameter.Seq1Direction));
+    assert(kPluginParameterID.Seq1Length                   = Integer(TPluginParameter.Seq1Length));
+    assert(kPluginParameterID.Seq2Clock                    = Integer(TPluginParameter.Seq2Clock));
+    assert(kPluginParameterID.Seq2Direction                = Integer(TPluginParameter.Seq2Direction));
+    assert(kPluginParameterID.Seq2Length                   = Integer(TPluginParameter.Seq2Length));
+    assert(kPluginParameterID.PreviewVolume                = Integer(TPluginParameter.PreviewVolume));
+    assert(kPluginParameterID.Preview                      = Integer(TPluginParameter.Preview));
+    assert(kPluginParameterID.PadX1                        = Integer(TPluginParameter.PadX1));
+    assert(kPluginParameterID.PadY1                        = Integer(TPluginParameter.PadY1));
+    assert(kPluginParameterID.PadX2                        = Integer(TPluginParameter.PadX2));
+    assert(kPluginParameterID.PadY2                        = Integer(TPluginParameter.PadY2));
+    assert(kPluginParameterID.PadX3                        = Integer(TPluginParameter.PadX3));
+    assert(kPluginParameterID.PadY3                        = Integer(TPluginParameter.PadY3));
+    assert(kPluginParameterID.PadX4                        = Integer(TPluginParameter.PadX4));
+    assert(kPluginParameterID.PadY4                        = Integer(TPluginParameter.PadY4));
+
+    assert(kPluginParameterID.ParameterCount = TPluginParameterHelper.GetEnumTypeCount);
+
 finalization
 
 
