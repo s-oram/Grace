@@ -1,21 +1,13 @@
 =================================================================================================
-    Lucidity Testers
-=================================================================================================
-Yann
-waveshaperkit@gmail.com
-- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
-
-
-
-=================================================================================================
     Awesome Testers and Great Contacts for Providing Extended Feedback
 =================================================================================================
-
 Juanjo (JJ) (Great Tester!)
 juanjo@walnutdoor.net
 - thunderlink://messageid=526AB0C0.5010200@walnutdoor.net
 
-
+Yann
+waveshaperkit@gmail.com
+- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
 
 
 =================================================================================================
@@ -42,6 +34,7 @@ futuresproof@gmail.com
 	response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
 	BETA Send History:
     - Lucidity 0.0.1.33
+      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
 
 
 
@@ -79,14 +72,6 @@ Will Blake
   - Lucidity 0.0.1.33
 
 
-Julian Clapham
-stoolzo@gmail.com
-- no time for testing. 
-	BETA Send History:
-    - Lucidity 0.0.1.33
-    NOTE: Do not send anything again unless I hear back from last mail out.
-
-
 Anthony Crayton
 tonecre8@comcast.net
 thunderlink://messageid=005001cf2845$45b0e8b0$d112ba10$@comcast.net
@@ -111,6 +96,8 @@ thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
 =================================================================================================
 
 
+
+
 =================================================================================================
     People To Consider Asking (people with specific skills or good communication)
 =================================================================================================
@@ -125,3 +112,14 @@ Carlo Del Prato
 
 Christian
 christianscheggia@gmail.com
+
+
+=================================================================================================
+    Inactive Testers 
+=================================================================================================
+Julian Clapham
+stoolzo@gmail.com
+- no time for testing. 
+  BETA Send History:
+    - Lucidity 0.0.1.33
+    NOTE: Do not send anything again unless I hear back from last mail out.

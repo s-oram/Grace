@@ -8,6 +8,10 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
+Bug 
+  - mod slots don't update when changing groups. this is a bug
+    when using different mod sources for each group. 
+
 - need to be able to read loop points from wav file.
 
 - random LFOs always reset to 0. Might be the same for the step sequencers 
@@ -26,7 +30,6 @@
 - rethink the filter gain. try adding the gain stage before the filter.
 -- maybe it's ok. I could try an additional gain stage before the filter.
 
-- Add a "Manual..." command to open the manual.
 - Add a contact support command.
 -- Email
 -- Forum
@@ -49,7 +52,19 @@ PS : one thing that i *really*don't like in Lucidity, is that the default patch 
 From Yann
 thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
 
+- need a "Move Sample To New Key Group..." command. 
 
+
+=============================================================================
+> is it possible to layer groups and use different Amp, Filter, 
+> Mod settings for each group? The knobs seem to change from group to 
+> group but as soon as I edit something all groups are affected the 
+> same. 
+It should be possible to use different amp, filter and mod settings for each group. It might be a bug. I'll take a look. 
+
+Send this dude a new build and check if he can now use different settings for each group.
+
+=============================================================================
 
 
 =============================================================================
