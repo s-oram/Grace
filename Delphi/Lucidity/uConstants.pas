@@ -6,7 +6,7 @@ interface
 
 uses
   VamLib.MoreTypes,
-  Lucidity.PluginParameters,
+  //Lucidity.PluginParameters,
   SysUtils,
   eeEnumHelper,
   uLucidityEnums,

@@ -370,7 +370,7 @@ begin
 
   Plugin.Globals.MouseOverModSlot := Index;
   Plugin.Globals.IsMouseOverModSlot := true;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TModSystem2Frame.Handle_ModSelectorMouseLeave(Sender: TObject);
@@ -384,7 +384,7 @@ begin
       CurrentMouseOverControl := nil;
 
       Plugin.Globals.IsMouseOverModSlot := false;
-      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     end;
   end;
 

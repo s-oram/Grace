@@ -97,9 +97,11 @@ begin
     Menu.Items.Add(mi);
   end;
 
+  //====== spacer ==================
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
   Menu.Items.Add(mi);
+  //================================
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'New Key Group';
@@ -111,6 +113,12 @@ begin
   mi.OnClick := DeleteKeyGroup;
   if CurrentGroup = '' then mi.Enabled := false;
   Menu.Items.Add(mi);
+
+  //====== spacer ==================
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //================================
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Copy Key Group Settings';
@@ -135,11 +143,24 @@ var
 begin
   kg := Plugin.KeyGroups.NewKeyGroup;
   Plugin.FocusKeyGroup(kg.GetName);
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
 end;
 
 procedure TGroupsMenu.DeleteKeyGroup(Sender: TObject);
 begin
   Plugin.DeleteKeyGroup(CurrentGroup);
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+  try
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
+  finally
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+  end;
 end;
 
 procedure TGroupsMenu.FocusKeyGroup(Sender: TObject);
@@ -148,6 +169,16 @@ var
 begin
   Text := (Sender as TMenuItem).Hint;
   Plugin.FocusKeyGroup(Text);
+
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+  try
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
+  finally
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+  end;
 end;
 
 procedure TGroupsMenu.CopyKeyGroupParameters(Sender: TObject);
@@ -158,6 +189,15 @@ end;
 procedure TGroupsMenu.PasteKeyGroupParameters(Sender: TObject);
 begin
   Plugin.PasteKeyGroupParameters;
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+  try
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
+  finally
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+  end;
 end;
 
 

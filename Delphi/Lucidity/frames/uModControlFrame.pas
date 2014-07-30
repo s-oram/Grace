@@ -154,8 +154,6 @@ type
     ParIndexFilter2Type : integer;
 
     StepSequenceMenu : TStepSequenceMenu;
-
-
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;

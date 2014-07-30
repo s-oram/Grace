@@ -3,6 +3,8 @@ unit Lucidity.PluginParameters;
 interface
 
 uses
+  uLucidityEnums,
+  uConstants,
   eeTypes,
   eeEnumHelper;
 
@@ -38,7 +40,7 @@ It's all a bit of a mess.
 
 type
   //=== forward declarations ================
-  TPluginParameterStateBuffer = class;
+  TKeyGroupStateBuffer = class;
   //=========================================
 
 
@@ -92,21 +94,35 @@ type
 
     property Count : integer read CurrentCount;
 
-    procedure AssignTo(var ParStateBuffer : TPluginParameterStateBuffer);
-    procedure AssignFrom(const ParStateBuffer : TPluginParameterStateBuffer);
+    procedure AssignTo(var ParStateBuffer : TKeyGroupStateBuffer);
+    procedure AssignFrom(const ParStateBuffer : TKeyGroupStateBuffer);
   end;
 
-  TPluginParameterStateBuffer = class
+  TKeyGroupStateBuffer = class
   private
+  protected type
+    TParValue = record
+      ParValue  : single; //range 0..1
+      //Stores the modulation amount for each mod slot. ModAmount range = -1 to 1.
+      ModAmount : array[0..kModSlotCount-1] of single;
+    end;
   protected
     ParCount  : integer;
-    ParValues : array of single;
+    ParValues : array of TParValue;
   public
+    ModSourcePolarity : array[0..kModSlotCount-1] of TModSourcePolarity;
+    ModSource : array[0..kModSlotCount-1] of TModSource;
+    ModVia    : array[0..kModSlotCount-1] of TModSource;
+    ModMute   : array[0..kModSlotCount-1] of boolean;
+
     constructor Create;
     destructor Destroy; override;
 
     function GetParameterValueByID(const ParameterID : TPluginParameterID):single;
     procedure SetParameterValueByID(const ParameterID : TPluginParameterID; const Value : single);
+
+    function GetParameterModAmount(const ParameterID : TPluginParameterID; const ModSlot : integer):single;
+    procedure SetParameterModAmount(const ParameterID : TPluginParameterID; const ModSlot : integer; const ModAmount:single);
   end;
 
 
@@ -318,9 +334,7 @@ uses
   Math,
   SysUtils,
   Rtti,
-  TypInfo,
-  uConstants,
-  uLucidityEnums;
+  TypInfo;
 
 
 //============= NEW METHODS ===========================================
@@ -692,7 +706,7 @@ begin
   inherited;
 end;
 
-procedure TPluginParameterManager.AssignFrom(const ParStateBuffer: TPluginParameterStateBuffer);
+procedure TPluginParameterManager.AssignFrom(const ParStateBuffer: TKeyGroupStateBuffer);
 var
   c1: Integer;
   ParValue : single;
@@ -712,7 +726,7 @@ begin
   end;
 end;
 
-procedure TPluginParameterManager.AssignTo(var ParStateBuffer: TPluginParameterStateBuffer);
+procedure TPluginParameterManager.AssignTo(var ParStateBuffer: TKeyGroupStateBuffer);
 var
   c1: Integer;
 begin
@@ -862,27 +876,39 @@ end;
 
 { TPluginParameterStateBuffer }
 
-constructor TPluginParameterStateBuffer.Create;
+constructor TKeyGroupStateBuffer.Create;
 begin
   ParCount := TPluginParameterHelper.GetEnumTypeCount;
   SetLength(ParValues, ParCount);
 end;
 
-destructor TPluginParameterStateBuffer.Destroy;
+destructor TKeyGroupStateBuffer.Destroy;
 begin
   SetLength(ParValues, 0);
   inherited;
 end;
 
-function TPluginParameterStateBuffer.GetParameterValueByID(const ParameterID: TPluginParameterID): single;
+function TKeyGroupStateBuffer.GetParameterValueByID(const ParameterID: TPluginParameterID): single;
 begin
-  result := ParValues[ParameterID];
+  result := ParValues[ParameterID].ParValue;
 end;
 
-procedure TPluginParameterStateBuffer.SetParameterValueByID(const ParameterID: TPluginParameterID; const Value: single);
+procedure TKeyGroupStateBuffer.SetParameterValueByID(const ParameterID: TPluginParameterID; const Value: single);
 begin
-  ParValues[ParameterID] := Value;
+  ParValues[ParameterID].ParValue := Value;
 end;
+
+function TKeyGroupStateBuffer.GetParameterModAmount(const ParameterID: TPluginParameterID; const ModSlot: integer): single;
+begin
+  result := ParValues[ParameterID].ModAmount[ModSlot];
+end;
+
+procedure TKeyGroupStateBuffer.SetParameterModAmount(const ParameterID: TPluginParameterID; const ModSlot: integer; const ModAmount: single);
+begin
+  ParValues[ParameterID].ModAmount[ModSlot] := ModAmount;
+end;
+
+
 
 initialization
     //===== IMPORTANT: Check all the plugin parameter ID constant values are correct =============

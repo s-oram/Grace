@@ -48,6 +48,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'STEP SEQUENCE ONE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -91,6 +92,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -123,6 +125,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -155,6 +158,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -191,6 +195,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'CLOCK'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -210,6 +215,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'MODE'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -229,6 +235,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'STEPS'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -264,6 +271,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'STEP SEQUENCE TWO'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -301,6 +309,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'CLOCK'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -320,6 +329,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'MODE'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -339,6 +349,7 @@ object ModControlFrame: TModControlFrame
               Opacity = 255
               Text = 'STEPS'
               HitTest = True
+              AutoTrimText = False
               AutoSize = False
               TextAlign = AlignCenter
               TextVAlign = AlignCenter
@@ -374,6 +385,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -406,6 +418,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -438,6 +451,7 @@ object ModControlFrame: TModControlFrame
               DisplayClass = 'MenuButton'
               Text = '---'
               HitTest = True
+              AutoTrimText = False
               Color = '$FF3E3E3E'
               ColorMouseOver = '$FF3E3E3E'
               ColorBorder = '$00000000'
@@ -480,6 +494,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'FILTER TWO'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -499,6 +514,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P1'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -517,6 +533,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P2'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -535,6 +552,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P3'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -555,6 +573,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -681,6 +700,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -739,6 +759,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'MOD ENV'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -758,6 +779,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'R'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -776,6 +798,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'S'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -794,6 +817,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'D'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -812,6 +836,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'A'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -830,6 +855,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'H'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -966,6 +992,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1005,6 +1032,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'LFO ONE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1024,6 +1052,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'DEPTH'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1042,6 +1071,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'RATE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1061,6 +1091,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1155,6 +1186,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'DEPTH'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1174,6 +1206,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1200,6 +1233,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1239,6 +1273,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'AMP ENV'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1258,6 +1293,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'R'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1276,6 +1312,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'S'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1294,6 +1331,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'D'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1312,6 +1350,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'A'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1330,6 +1369,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'H'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1464,6 +1504,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1503,6 +1544,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'FILTER ONE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1522,6 +1564,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P3'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1540,6 +1583,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P2'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1558,6 +1602,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P1'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1577,6 +1622,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1703,6 +1749,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1757,6 +1804,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'BLEND'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1776,6 +1824,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'F1 - F2'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1818,6 +1867,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -1857,6 +1907,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'LFO TWO'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1876,6 +1927,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'DEPTH'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1894,6 +1946,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'RATE'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -1913,6 +1966,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -2007,6 +2061,7 @@ object ModControlFrame: TModControlFrame
           Opacity = 255
           Text = 'DEPTH'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -2026,6 +2081,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'
@@ -2052,6 +2108,7 @@ object ModControlFrame: TModControlFrame
           DisplayClass = 'MenuButton'
           Text = '---'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'

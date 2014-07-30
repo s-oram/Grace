@@ -116,7 +116,7 @@ type
 
     ThrottleID_VSTParChange : TUniqueID;
 
-    CopiedKeyGroupValues : TPluginParameterStateBuffer;
+    CopiedKeyGroupValues : TKeyGroupStateBuffer;
 
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
@@ -151,14 +151,17 @@ type
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
     function GetPluginParameter(const ParID : TPluginParameterID):single; override;
 
+    procedure SetPluginParameterModAmount(const ParID : TPluginParameterID; const ModSlot : integer; const ModAmount : single; const Scope:TParChangeScope); overload;
+    function GetPluginParameterModAmount(const ParID : TPluginParameterID; const ModSlot : integer):single; overload;
+
     procedure VstParameterChanged(Index:integer; Value:single); override;
 
     procedure ResetPluginParameter(const Scope : TParChangeScope; const ParName : string);
 
     function GetPluginParameterVstInfo(const ParName : string):TVstParameterInfo; override;
 
-    procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single);
-    function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single;
+    procedure SetPluginParameterModAmount(const Scope : TParChangeScope; const ParName : string; const ModSlot : integer; const ModAmount : single); overload;
+    function GetPluginParameterModAmount(const ParName : string; const ModSlot : integer):single; overload;
     function GetPluginParameterInfo(const ParName : string) : TPluginParameterInfo;
 
     procedure GetModParModMinMax(const ParName : string; out ModMin, ModMax:single);
@@ -687,6 +690,24 @@ begin
   TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModSlot, ModAmount);
 end;
 
+procedure TeePlugin.SetPluginParameterModAmount(const ParID: TPluginParameterID; const ModSlot: integer; const ModAmount: single; const Scope: TParChangeScope);
+var
+  ParName : string;
+begin
+  ParName := PluginParIDToName(ParID);
+  TPluginParameterController.SetParameterModAmount(self, Scope, ParName, ModSlot, ModAmount);
+end;
+
+function TeePlugin.GetPluginParameterModAmount(const ParID: TPluginParameterID; const ModSlot: integer): single;
+var
+  ParName : string;
+begin
+  ParName := PluginParIDToName(ParID);
+  result := TPluginParameterController.GetParameterModAmount(self, ParName, ModSlot);
+end;
+
+
+
 procedure TeePlugin.GetModParModMinMax(const ParName: string; out ModMin, ModMax: single);
 begin
   TPluginParameterController.GetModParModMinMax(self, ParName, ModMin, ModMax);
@@ -759,15 +780,156 @@ begin
 end;
 
 procedure TeePlugin.CopyKeyGroupParameters;
+var
+  kg : IKeyGroup;
+  ParID : TPluginParameterID;
+  ModParIndex : integer;
+  ModAmount : single;
+  c1, c2 : integer;
 begin
-  if not assigned(CopiedKeyGroupValues)
-    then CopiedKeyGroupValues := TPluginParameterStateBuffer.Create;
+  kg := self.GetFocusedKeyGroup;
+  if not assigned(kg) then
+  begin
+    if assigned(CopiedKeyGroupValues)
+      then FreeAndNil(CopiedKeyGroupValues);
+  end;
 
+  if not assigned(CopiedKeyGroupValues)
+    then CopiedKeyGroupValues := TKeyGroupStateBuffer.Create;
+
+  // Get the key group parameter values.
   PluginParameters.AssignTo(CopiedKeyGroupValues);
+
+  // get the key group parameter modulation depths
+  for c1 := 0 to TPluginParameterHelper.GetEnumTypeCount-1 do
+  begin
+    ParID := c1;
+    if IsModPar(ParId, ModParIndex) then
+    begin
+      for c2 := 0 to kModSlotCount-1 do
+      begin
+        ModAmount := KG.GetModParModAmount(ModParIndex, c2);
+        CopiedKeyGroupValues.SetParameterModAmount(ParId, c2, ModAmount);
+      end;
+    end else
+    begin
+      for c2 := 0 to kModSlotCount-1 do
+      begin
+        CopiedKeyGroupValues.SetParameterModAmount(ParId, c2, 0);
+      end;
+    end;
+  end;
+
+  //=== copy the mod connections ====
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    CopiedKeyGroupValues.ModSourcePolarity[c1] := kg.GetModConnections.GetModSourcePolarity(c1);
+    CopiedKeyGroupValues.ModSource[c1]         := kg.GetModConnections.GetModSource(c1);
+    CopiedKeyGroupValues.ModVia[c1]            := kg.GetModConnections.GetModVia(c1);
+    CopiedKeyGroupValues.ModMute[c1]           := kg.GetModConnections.GetModMute(c1);
+  end;
+
 end;
 
 procedure TeePlugin.PasteKeyGroupParameters;
+  procedure PasteParameter(const Par : TPluginParameter; const ParStateBuffer : TKeyGroupStateBuffer);
+  var
+    c1 : integer;
+    ParID : TPluginParameterID;
+    ModParIndex : integer;
+    ModAmount : single;
+    ParValue : single;
+  begin
+    ParID := PluginParToID(Par);
+    ParValue := ParStateBuffer.GetParameterValueByID(ParID);
+    SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+
+    if IsModPar(ParID, ModParIndex) then
+    begin
+      for c1 := 0 to kModSlotCount-1 do
+      begin
+        ModAmount := ParStateBuffer.GetParameterModAmount(ParID, c1);
+        SetPluginParameterModAmount(ParId, c1, ModAmount, TParChangeScope.psFocused);
+      end;
+    end;
+  end;
+var
+  c1 : integer;
+  kg : IKeyGroup;
 begin
+  if not assigned(CopiedKeyGroupValues) then exit;
+
+  kg := self.GetFocusedKeyGroup;
+  if not assigned(kg) then exit;
+
+  PasteParameter(TPluginParameter.PitchTracking, CopiedKeyGroupValues);
+
+  PasteParameter(TPluginParameter.SamplePlaybackType, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.SampleResetClockSource, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.SamplerLoopBounds, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.SamplerTriggerMode, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.OutputGain, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.OutputPan, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.VoicePitchOne, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.VoicePitchTwo, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.SampleStart, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.SampleEnd, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.LoopStart, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.LoopEnd, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpAttack, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpHold, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpDecay, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpSustain, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpRelease, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpVelocity, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModAttack, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModHold, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModDecay, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModSustain, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModRelease, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModVelocity, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.FilterRouting, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.FilterOutputBlend, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1Type, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2Type, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1KeyFollow, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2KeyFollow, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1Par1, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1Par2, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1Par3, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter1Par4, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2Par1, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2Par2, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2Par3, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Filter2Par4, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1Shape, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2Shape, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1FreqMode, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2FreqMode, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1Range, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2Range, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1Par1, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1Par2, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo1Par3, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2Par1, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2Par2, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Lfo2Par3, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq1Clock, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq1Direction, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq1Length, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq2Clock, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq2Direction, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.Seq2Length, CopiedKeyGroupValues);
+
+
+  //=== paste the mod connections ====
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    kg.GetModConnections.SetModSourcePolarity(c1, CopiedKeyGroupValues.ModSourcePolarity[c1]);
+    kg.GetModConnections.SetModSource(c1,         CopiedKeyGroupValues.ModSource[c1]);
+    kg.GetModConnections.SetModVia(c1,            CopiedKeyGroupValues.ModVia[c1]);
+    kg.GetModConnections.SetModMute(c1,           CopiedKeyGroupValues.ModMute[c1]);
+  end;
 
 end;
 
