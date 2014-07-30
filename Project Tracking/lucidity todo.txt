@@ -47,6 +47,7 @@
 PS : one thing that i *really*don't like in Lucidity, is that the default patch has everything disabled by default (the volume is set at zero, the enveloppe release is set at zero too, so as soon as you load a sound, you expect to hear it when hitting a key but it is actually muted) : is it by design, or could it be changed in a forthcoming version ?
 From Yann
 thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
+-- It shouldn't be doing this anymore. 
 
 - need a "Move Sample To New Key Group..." command. 
 
