@@ -70,19 +70,20 @@ type
     CurrentCount    : integer;
     fParameterCount : integer;
     function GetParameter(Index: integer): TPluginParameterClass;
+    procedure Add(const aParameter : TPluginParameterClass);
   public
     // NOTE: It's intended that all plugin parameters will be
     // created when the plugin is initialised. Once created, plugin parameters
     // will not be added, changed or deleted.
     Raw : array of TPluginParameterClass;
 
-    constructor Create(const aParameterCount : integer);
+    constructor Create;
     destructor Destroy; override;
 
     function FindByName(const ParameterName : string):TPluginParameterClass;
     function FindByParameterID(const ParameterID : TPluginParameterID):TPluginParameterClass;
 
-    procedure Add(const aParameter : TPluginParameterClass);
+
 
     property Parameter[Index : integer] : TPluginParameterClass read GetParameter;
 
@@ -617,12 +618,45 @@ end;
 
 { TPluginParameterManager }
 
-constructor TPluginParameterManager.Create(const aParameterCount: integer);
+constructor TPluginParameterManager.Create;
+var
+  c1: Integer;
+  aPar      : TPluginParameter;
+  aParCount : integer;
+  aParClass : TPluginParameterClass;
 begin
-  fParameterCount := aParameterCount;
-  SetLength(Raw, fParameterCount);
+  aParCount := TPluginParameterHelper.GetEnumTypeCount;
+
+
+  fParameterCount := aParCount;
+  SetLength(Raw, aParCount);
 
   CurrentCount := 0;
+
+  for c1 := 0 to aParCount-1 do
+  begin
+    aPar := PluginParFromID(c1);
+
+    aParClass := TPluginParameterClass.Create;
+    aParClass.Name := PluginParToName(aPar);
+    aParClass.fID := c1;
+
+    Add(aParClass);
+  end;
+
+
+
+
+  //====== More parameter setup ===============
+  aParClass := FindByName(PluginParToName(TPluginParameter.VoicePitchOne));
+  aParClass.IsQuantised := true;
+  aParClass.QuantisedMin := -24;
+  aParClass.QuantisedMax := 24;
+
+
+
+
+
 end;
 
 destructor TPluginParameterManager.Destroy;
@@ -661,7 +695,6 @@ end;
 procedure TPluginParameterManager.Add(const aParameter: TPluginParameterClass);
 begin
   Raw[CurrentCount] := aParameter;
-  aParameter.fID := CurrentCount;
   inc(CurrentCount);
 end;
 

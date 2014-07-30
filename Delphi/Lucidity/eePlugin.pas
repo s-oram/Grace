@@ -294,8 +294,8 @@ begin
 
   ThrottleID_VSTParChange.Init;
 
-  fPluginParameters := TPluginParameterManager.Create(69);
-  SetupPluginParameters(fPluginParameters);
+  fPluginParameters := TPluginParameterManager.Create;
+
 
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceGlide);
