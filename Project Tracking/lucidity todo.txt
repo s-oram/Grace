@@ -8,10 +8,6 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-Bug 
-  - mod slots don't update when changing groups. this is a bug
-    when using different mod sources for each group. 
-
 - need to be able to read loop points from wav file.
 
 - random LFOs always reset to 0. Might be the same for the step sequencers 

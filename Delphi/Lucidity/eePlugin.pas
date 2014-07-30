@@ -812,9 +812,6 @@ begin
     // signal to the GUI that the focus has changed.
     Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
-
-
-
 end;
 
 procedure TeePlugin.FocusRegion(aRegionID: TGUID);
