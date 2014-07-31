@@ -8,10 +8,6 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-- Need to improve the way modulation amounts are applied to knobs.
-  -- allow modulation to be applied by adjusting ring area.
-  -- highlight where the knob edit mode is when mousing over a knob in modulation edit mode.
-
 - need a "Move Sample To New Key Group..." command. 
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
