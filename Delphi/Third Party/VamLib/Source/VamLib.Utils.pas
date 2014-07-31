@@ -28,21 +28,24 @@ function InRange(const Value, MinValue, MaxValue : single):boolean; inline;
 procedure SwapValues(var x1, x2:single); inline; overload;
 procedure SwapValues(var x1, x2:integer); inline; overload;
 
-// Expands a 0-1 ranged float to an arbitary integer range.
-function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
-
-function MemoryUsed: cardinal;
-
-function BytesToMegaBytes(const Value : single):single;
+function FloatToBoolean(Value:single):boolean; inline;
+function BooleanToFloat(Value:boolean):single; inline;
 
 
+function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 
+//==============================================================
+//    String Handling
+//==============================================================
 
 function TrimFileExt(FileName:string):string;
 
+function IntToStrB(Int:integer; MinDigits:integer):string;
+function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
+function IncrementName(Name:string; MinDigits:integer = 2):string;
+function RandomString(const CharacterCount : integer):string;
 
 
-//==============================================================
 // Use the DataIO functions to convert values to and from strings for
 // storing into save files. The DataIO functions ensure values are valid
 // when converting back from strings.
@@ -53,15 +56,6 @@ function DataIO_IntToStr(Value:integer):string;
 function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
 function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
-//==============================================================
-
-function FloatToBoolean(Value:single):boolean; inline;
-function BooleanToFloat(Value:boolean):single; inline;
-
-function IntToStrB(Int:integer; MinDigits:integer):string;
-function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
-function IncrementName(Name:string; MinDigits:integer = 2):string;
-function RandomString(const CharacterCount : integer):string;
 
 
 
@@ -75,7 +69,17 @@ function RandomString(const CharacterCount : integer):string;
  // The x1..x4 values are the min-max scaling values.
 function StaggeredExpand(InputValue, x1, x2, x3, x4 : single):single;
 
+// Expands a 0-1 ranged float to an arbitary integer range.
+function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
 
+
+//==============================================================
+//    Utilities
+//==============================================================
+
+function MemoryUsed: cardinal;
+
+function BytesToMegaBytes(const Value : single):single;
 
 //==============================================================
 //    Enum Helpers
@@ -520,7 +524,11 @@ begin
 end;
 
 
-
+function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
+// http://www.mathwarehouse.com/algebra/distance_formula/index.php
+begin
+  result := Sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
+end;
 
 
 end.
