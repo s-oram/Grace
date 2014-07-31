@@ -22,7 +22,6 @@ type
   TSampleMapInfo = class;
   ISampleMapInfo = interface;
   //===================================
-  
 
   TRegionInterfaceList = class(TList<IRegion>);
 
@@ -70,7 +69,6 @@ type
     LowVelocity   : integer;
     HighVelocity  : integer;
     RootNote      : integer;
-
     procedure Init;
     procedure AssignFrom(Source : TRegion); overload;
     procedure AssignFrom(Source : IRegion); overload;
@@ -136,10 +134,6 @@ type
   end;
 
 
-
-
-
-
   ISampleMapInfo = interface
     ['{599130BB-8141-4959-AB00-E2C8DCBFD4E0}']
     function GetRegion(Index: integer): IRegion;
@@ -163,14 +157,10 @@ type
   end;
 
 
-
-
-
 function IsNoteInsideRegion(const aSampleRegion: IRegion; const MidiNoteData1, MidiNoteData2: byte): boolean;
 
 procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const aSampleImageWidth : integer; var Peaks : IPeakBuffer); overload;
 procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA, SampleIndexB : integer; const aSampleImageWidth : integer; var Peaks : IPeakBuffer); overload;
-
 
 
 implementation
@@ -313,6 +303,8 @@ end;
 function TRegion.LoadSample(const SampleFileName: string): boolean;
 var
   Info : TAudioFileInfo;
+  LoopStart, LoopEnd : integer;
+  LoopDataFound : boolean;
 begin
   result := false;
   Properties^.SampleDataLoaded := false;
@@ -332,24 +324,28 @@ begin
     begin
       if self.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
       begin
-        self.Properties^.SampleStart := 0;
-        self.Properties^.SampleEnd   := Info.SampleFrames-1;
-        self.Properties^.LoopStart   := -1;
-        self.Properties^.LoopEnd     := -1;
-
         self.Properties^.SampleVolume := 0;
         self.Properties^.SamplePan    := 0;
         self.Properties^.SampleTune   := 0;
         self.Properties^.SampleFine   := 0;
         self.Properties^.SampleBeats  := 4;
+        self.Properties^.SampleStart := 0;
+        self.Properties^.SampleEnd   := Info.SampleFrames-1;
+
+        LoopDataFound := ReadLoopPoints(SampleFileName, LoopStart, LoopEnd);
+        if LoopDataFound then
+        begin
+          self.Properties^.LoopStart   := LoopStart;
+          self.Properties^.LoopEnd     := LoopEnd;
+        end else
+        begin
+          self.Properties^.LoopStart   := 0;
+          self.Properties^.LoopEnd     := Info.SampleFrames-1;
+        end;
 
         if self.Sample.LoadFromFile(SampleFileName) = true then
         begin
           result := true;
-
-          //Update additional region properties..
-          self.Properties^.LoopStart := 0;
-          self.Properties^.LoopEnd   := Info.SampleFrames-1;
 
           self.ZeroCrossings.CalcZeroCrossingData(self.Sample);
           self.UpdateSampleImage;
@@ -379,7 +375,6 @@ begin
       self.Properties^.IsSampleError    := true;
       self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
       self.Properties^.ErrorMessage     := 'Unsupported File Format.';
-
     end else
     begin
       self.Properties^.SampleDataLoaded := false;
