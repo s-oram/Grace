@@ -100,6 +100,8 @@ function SaveAudioToFile(const FileName:string; const SaveInfo:TAudioFileSaveInf
 
 //Memory required for sample data. Result in bytes.
 function CalcSampleDataSize(const SampleFrames, ChannelCount : integer; const SampleFormat:TDataType):cardinal;
+
+function ReadLoopPoints(const FileName : string; out LoopStart, LoopEnd : integer):boolean;
 //====================================================================================================================
 
 
@@ -661,6 +663,35 @@ begin
       ErrorMessage := E.Message;
     end;
     else raise;
+  end;
+
+end;
+
+function ReadLoopPoints(const FileName : string; out LoopStart, LoopEnd : integer):boolean;
+var
+  Info:TAudioFileInfo;
+begin
+  GetAudioFileInfoEx(FileName, Info);
+
+  if (Info.IsValid) and (Info.IsSupported) then
+  begin
+    case Info.FileFormat of
+      afUnknown: result := false;
+      afWave:    result := WaveFile_ReadLoopPoints(FileName, LoopStart, LoopEnd);
+      afAiff: assert(false, 'todo'); //TODO:HIGH
+      afSnd:  assert(false, 'todo'); //TODO:HIGH
+    else
+      raise Exception.Create('Unhandled file type.');
+    end;
+  end else
+  begin
+    result := false;
+  end;
+
+  if result = false then
+  begin
+    LoopStart := -1;
+    LoopEnd   := -1;
   end;
 
 end;

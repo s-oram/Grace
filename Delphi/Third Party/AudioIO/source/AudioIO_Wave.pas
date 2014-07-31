@@ -39,7 +39,6 @@ type
   end;
 
 //----  HighLevel functions   ------------------------------------------------------------------
-
 function IsWaveFileFormatSupported(FileName:string):boolean;
 
 function GetWaveFileInfo(FileName:string):TWaveInfo;
@@ -52,6 +51,8 @@ function LoadWaveFileMono(FileName:string; Left:PSingle):boolean;
 
 function LoadWaveFileMono_Int(FileName:string; Left:PSmallInt):boolean;
 function LoadWaveFileStereo_Int(FileName:string; Left, Right:PSmallInt):boolean;
+
+function WaveFile_ReadLoopPoints(const FileName : string; out LoopStart, LoopEnd : integer):boolean;
 
 implementation
 
@@ -73,14 +74,8 @@ const
   // http://www.recordingblogs.com/sa/tabid/88/Default.aspx?topic=Format+chunk+%28of+a+Wave+file%29
   WAVE_FORMAT_OGG_VORBIS  = $674f;
 
-
   // There are lots of Wave format "compression" codes
   // http://www.recordingblogs.com/sa/tabid/88/Default.aspx?topic=Format+chunk+%28of+a+Wave+file%29
-
-
-
-
-
 
 type
   DWORD = LongWord;
@@ -96,11 +91,9 @@ type
     ckSize : dword;
   end;
 
-
   // The Format chunk specifies the format of the data. There are 3 variants of
   // the Format chunk for sampled data. These differ in the extensions to the
   // basic Formant chunk.
-
   TFmtChunk = packed record
     FormatTag          : word;
     Channels           : word;
@@ -134,6 +127,31 @@ type
       0: (GUID      : array[0..15] of byte); // GUID, including the data sub format code
       1: (SubFormat : word);
     end;
+
+    // The "smpl" chunk
+    // http://www.sonicspot.com/guide/wavefiles.html#smpl
+    TsmplChunk = packed record
+      Manufacturer      : dword;
+      Product           : dword;
+      SamplePeriod      : dword;
+      MidiUnityNote     : dword;
+      MidiPitchFraction : dword;
+      SmpteFormat       : dword;
+      SmpteOffset       : dword;
+      NumSampleLoops    : dword;
+      SamplerData       : dword;
+    end;
+
+    TsmplChunk_SampleLoop = packed record
+      CuePointID : dword;
+      LoopType   : dword;
+      LoopStart  : dword;
+      LoopEnd    : dword;
+      Fraction   : dword;
+      PlayCount  : dword;
+    end;
+
+
 
 
 procedure InterleaveAndScaleData(SampleInfo:TWaveInfo; SourceSampleData:TChannelPointers; DestSampleData:Pointer);
@@ -299,7 +317,6 @@ begin
   //start of the FmtChunkData. The FmtChunk 'fmt' label and chunksize
   //will be skipped. The function will return the size of the 'fmt' chunk.
 
-
   //Reset the wave file position to read the first chunk label.
   WaveFile.Position := 12;
   WaveFile.Read(ChunkDescriptor, SizeOf(ChunkDescriptor));
@@ -321,7 +338,6 @@ var
   ChunkDescriptor : TChunkDescriptor;
 begin
   // TODO: It would be better to write a generic LocateChunk() method that could be used to find any chunk.
-
 
 
   //Reset the wave file position to read the first chunk label.
@@ -368,6 +384,69 @@ begin
   // for the data chunk byte by byte. It doesn't step through the file using
   // the riff chunk offsets. As such this is a forgiving implementation that
   // could allow files which should be labelled as corrupt to propagate.
+end;
+
+
+function LocateChunk(var WaveFile:TWinFile; const ChunkName : ansiString):integer;
+var
+  ReadIndex : integer;
+  ChunkDescriptor : TChunkDescriptor;
+begin
+  //============================================================================
+  //   Fast Check - This should be enough to find any chunks.
+  //============================================================================
+
+  //Reset the wave file position to read the first chunk label.
+  WaveFile.Position := 12;
+  WaveFile.Read(ChunkDescriptor, SizeOf(ChunkDescriptor));
+
+  while (ChunkDescriptor.ckID <> ChunkName) and (WaveFile.Position < WaveFile.Size-1) do
+  begin
+    WaveFile.Position := WaveFile.Position + ChunkDescriptor.ckSize;
+    WaveFile.Read(ChunkDescriptor, SizeOf(ChunkDescriptor));
+  end;
+
+  if ChunkDescriptor.ckID = ChunkName then
+  begin
+    // Chunk found.
+    result := ChunkDescriptor.ckSize;
+    exit; //=============>>exit>>===========>>
+  end else
+  begin
+    result := -1;
+  end;
+
+  //============================================================================
+  //   Slow & Detailed Check
+  //============================================================================
+  // The detailed check searches through the entire file looking
+  // for the chunk byte by byte. It doesn't step through the file using
+  // the riff chunk offsets. As such this is a forgiving implementation that
+  // could allow files which should be labelled as corrupt to propagate.
+  // There is also the chance a blob of data may be mistook for a chunk label.
+  {
+  ReadIndex := 12;
+  WaveFile.Position := ReadIndex;
+  WaveFile.Read(ChunkDescriptor, SizeOf(ChunkDescriptor));
+  while (ChunkDescriptor.ckID <> 'data') and (WaveFile.Position < WaveFile.Size-1) do
+  begin
+    inc(ReadIndex);
+    WaveFile.Position := ReadIndex;
+    WaveFile.Read(ChunkDescriptor, SizeOf(ChunkDescriptor));
+  end;
+
+  if ChunkDescriptor.ckID = 'data' then
+  begin
+    // Chunk found.
+    result := ChunkDescriptor.ckSize;
+    exit; //=============>>exit>>===========>>
+  end;
+
+  // If execution makes it this far, the data chunk has not been found...
+  raise EAudioIOException.Create('The data chunk could not be located.');
+  }
+
+
 end;
 
 
@@ -1049,6 +1128,42 @@ begin
 
   result := false;
 
+end;
+
+function WaveFile_ReadLoopPoints(const FileName : string; out LoopStart, LoopEnd : integer):boolean;
+var
+  WaveFile:TWinFile;
+  ChunkSize:integer;
+  SmplChunk : TsmplChunk;
+  LoopChunk : TsmplChunk_SampleLoop;
+begin
+  try
+    WaveFile := TWinFile.Create(FileName, kGenericRead, kFileShareRead, kOpenExisting);
+    try
+      ChunkSize := LocateChunk(WaveFile, 'smpl');
+      if ChunkSize = -1                then exit(false); //====== exit ========>>
+      if ChunkSize < SizeOf(SmplChunk) then exit(false); //====== exit ========>>
+
+      WaveFile.Read(SmplChunk, SizeOf(SmplChunk));
+
+      if SmplChunk.NumSampleLoops = 0 then exit(false); //====== exit ========>>
+
+
+      // NOTE: There can be multiple loops in a wave file, if so there
+      // will be multiple loop chunks. For now only read the first loop chunk.
+      // It might be worth extending this method to read other loop chunks at a
+      // later stage.
+      WaveFile.Read(LoopChunk, SizeOf(LoopChunk));
+
+      LoopStart := LoopChunk.LoopStart;
+      LoopEnd   := LoopChunk.LoopEnd;
+      result := true;
+    finally
+      WaveFile.Free;
+    end;
+  except
+    result := false;
+  end;
 end;
 
 
