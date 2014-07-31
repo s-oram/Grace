@@ -39,6 +39,7 @@ type
     fInternalPos: single;
     fInternalModAmount: single;
     fParameterName: string;
+    fModEditRadius: single;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -69,6 +70,7 @@ type
     procedure SetModLineOffColor(const Value: TRedFoxColorString);
     procedure SetParameterName(aName:string);
     function GetParameterName:string;
+    procedure SetModEditRadius(const Value: single);
     //=================================================
   protected
     IsBeingEdited : boolean;
@@ -77,9 +79,10 @@ type
 
 
     CurrentEditMode : TKnobMode;
+    MouseOverEditMode : TKnobMode;
 
     ReferencePoint   : TPoint;
-    ReferenceValue     : single;
+    ReferenceValue   : single;
     procedure UpdateReferencePoints(const X, Y:integer);
 
 
@@ -110,6 +113,8 @@ type
     //InternalPos is the knob pos. It is only available internally.
     property InternalPos       : single read fInternalPos       write fInternalPos;
     property InternalModAmount : single read fInternalModAmount write fInternalModAmount;
+
+    function CalculateKnobEditMode(const Shift: TShiftState; const X, Y : integer):TKnobMode;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -130,8 +135,10 @@ type
     property IndicatorSize : single read fIndicatorSize write fIndicatorSize;
     property IndicatorDist : single read fIndicatorDist write fIndicatorDist;
     property IsBipolarKnob : boolean read fIsBipolarKnob write fIsBipolarKnob;
-    property KnobMode      : TKnobMode read fKnobMode       write SetKnobMode;
     property IsKnobEnabled : boolean   read fIsKnobEnabled  write SetIsKnobEnabled;
+    property KnobMode      : TKnobMode read fKnobMode       write SetKnobMode;   // Knob Edit Mode. Position Edit or Modulation Edit.
+    property ModEditRadius : single    read fModEditRadius  write SetModEditRadius; // Range 0..1 as a percentage.
+
     property VisibleSteps  : integer   read fVisibleSteps   write SetVisibleSteps;
 
     property Pos       : single read ExternalPos       write SetPos;
@@ -212,6 +219,8 @@ end;
 constructor TVamKnob.Create(AOwner: TComponent);
 begin
   inherited;
+
+  fModEditRadius := 0.6;
   fVisibleSteps := 0;
   fIsKnobEnabled := true;
 
@@ -235,6 +244,35 @@ begin
 
   inherited;
 end;
+
+function TVamKnob.CalculateKnobEditMode(const Shift: TShiftState; const X, Y: integer): TKnobMode;
+var
+  MaxRadius  : single;
+  MidX, MidY : single;
+  RadiusFrac : single;
+  CurRadius  : single;
+begin
+  if (KnobMode = TKnobMode.PositionEdit) then
+  begin
+    result := TKnobMode.PositionEdit;
+  end else
+  begin
+    assert(KnobMode = TKnobMode.ModEdit);
+
+    MidX := Width  * 0.5;
+    MidY := Height * 0.5;
+    CurRadius := DistanceBetweenTwoPoints(MidX, MidY, x, y);
+    MaxRadius := DistanceBetweenTwoPoints(0, 0, MidX, MidY);
+    RadiusFrac := CurRadius / MaxRadius;
+
+    if (ssAlt in Shift) or (RadiusFrac >= ModEditRadius)
+      then result := TKnobMode.ModEdit
+      else result := TKnobMode.PositionEdit;
+  end;
+
+end;
+
+
 
 procedure TVamKnob.KnobPosChanged;
 begin
@@ -264,9 +302,7 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
-    if (ssAlt in Shift) and (KnobMode = TKnobMode.ModEdit)
-      then CurrentEditMode := TKnobMode.ModEdit
-      else CurrentEditMode := TKnobMode.PositionEdit;
+    CurrentEditMode := CalculateKnobEditMode(Shift, x, y);
 
     IsGrabbed := true;
     IsBeingEdited := true;
@@ -284,8 +320,20 @@ var
   NewValue : single;
   ScaleFactor : single;
   CurrentAdjustmentState : boolean;
+  EditMode : TKnobMode;
 begin
   inherited;
+
+  if (IsGrabbed = false) then
+  begin
+    EditMode := CalculateKnobEditMode(Shift, x, y);
+    if EditMode <> MouseOverEditMode then
+    begin
+      MouseOverEditMode := EditMode;
+      Invalidate;
+    end;
+  end;
+
 
   if (IsGrabbed = true) then
   begin
@@ -506,6 +554,13 @@ end;
 procedure TVamKnob.SetModAmountValue(Value: single);
 begin
   SetModAmount(Value);
+end;
+
+procedure TVamKnob.SetModEditRadius(const Value: single);
+begin
+  assert(Value >= 0);
+  assert(Value <= 1);
+  fModEditRadius := Value;
 end;
 
 procedure TVamKnob.SetModLineColor(const Value: TRedFoxColorString);
