@@ -8,10 +8,11 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-- need a "Move Sample To New Key Group..." command. 
+- Need to improve the way modulation amounts are applied to knobs.
+  -- allow modulation to be applied by adjusting ring area.
+  -- highlight where the knob edit mode is when mousing over a knob in modulation edit mode.
 
-- random LFOs always reset to 0. Might be the same for the step sequencers 
-  when used as mod sources.
+- need a "Move Sample To New Key Group..." command. 
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
 
