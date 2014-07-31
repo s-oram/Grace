@@ -84,6 +84,7 @@ implementation
 {$R *.dfm}
 
 uses
+  VamGuiControlInterfaces,
   RedFoxColor,
   VamLib.Throttler,
   //eeEnumHelper,
@@ -96,6 +97,44 @@ type
 
 var
   GlobalDict : TProcDictionary;
+
+type
+  TKnobHack = class(TVamKnob)
+  private
+  public
+  end;
+
+procedure DrawKnob_ModEditOverlay(Sender: TObject);
+  procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
+  begin
+    Start := (Angle2+90) / 360 * 2 * pi;
+    Sweep := (Angle1+90) / 360 * 2 * pi;
+  end;
+const
+  kMinAngle = 30;
+  kMaxAngle = 300;
+  kArcSpan  = 300;
+var
+  Knob : TKnobHack;
+  MidX, MidY : single;
+  Angle1, Angle2 : single;
+  s1, s2 : single;
+begin
+  Knob := TKnobHack(Sender as TVamKnob);
+
+  MidX := Knob.Width  * 0.5;
+  MidY := Knob.Height * 0.5;
+
+  Knob.BackBuffer.BufferInterface.LineWidth := Knob.ModLineWidth;
+  Knob.BackBuffer.BufferInterface.LineColor := GetAggColor(clAqua, 128);
+
+  Angle1 := kMinAngle;
+  Angle2 := kMinAngle + kArcSpan;
+
+  CalcStartSweep(Angle1, Angle2, s1, s2);
+  Knob.BackBuffer.BufferInterface.Arc(MidX, MidY, Knob.ModLineDist, Knob.ModLineDist, s1, s2);
+end;
+
 
 //==============================================================================
 
@@ -126,6 +165,9 @@ begin
   VamTextBox1.TextPadding.Right := 24;
 
   VamTextBox1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
+
+  VamKnob1.KnobMode := TKnobMode.ModEdit;
+  VamKnob1.DrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -182,32 +224,7 @@ procedure TForm1.VamKnob1KnobPosChanged(Sender: TObject);
 var
   ReferenceTime : TDateTime;
 begin
-  //
-  {
-  Throttle(ThrottleID_VSTParChange, 1000,
-  procedure
-  begin
-    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
-  end);
-  }
 
-
-  //Debounce(10, ReferenceTime);
-
-
-  {
-  VamLib.GuiUtils.Debounce(Token, TDebounceEdge.deBoth, 500,
-  procedure
-  begin
-    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
-  end);
-  }
-
-  VamLib.GuiUtils.Throttle(KnobTT, 100,
-  procedure
-  begin
-    VamLabel1.Text := FloatToStr(VamKnob1.Pos);
-  end);
 end;
 
 procedure TForm1.HandleTimerEvent(Sender: TObject);
