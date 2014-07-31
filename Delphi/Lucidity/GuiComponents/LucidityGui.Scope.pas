@@ -905,11 +905,11 @@ begin
     x2 := x1 + Dist;
     if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
 
-    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed) - 0.1;
+    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed);
     RandomNewOffset  := LfoValues.FakeRandom(RandomSeed) - 0.5;
     DoToggleChance   := LfoValues.FakeRandom(RandomSeed);
 
-    if ChanceOfNewValue <= LfoValues.Par2 then
+    if ChanceOfNewValue < LfoValues.Par2 then
     begin
       yFrac := (y1 - ScopeRect.Top) / ScopeRect.Height;
       yFrac := (yFrac - 0.5);
@@ -987,11 +987,11 @@ begin
     x2 := x1 + Dist;
     if x2 >= ScopeRect.Right-1 then x2 := ScopeRect.Right-1;
 
-    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed) - 0.1;
+    ChanceOfNewValue := LfoValues.FakeRandom(RandomSeed);
     RandomNewOffset  := LfoValues.FakeRandom(RandomSeed) - 0.5;
     DoToggleChance   := LfoValues.FakeRandom(RandomSeed);
 
-    if ChanceOfNewValue <= LfoValues.Par2 then
+    if ChanceOfNewValue < LfoValues.Par2 then
     begin
       yFrac := (y1 - ScopeRect.Top) / ScopeRect.Height;
       yFrac := (yFrac - 0.5);
