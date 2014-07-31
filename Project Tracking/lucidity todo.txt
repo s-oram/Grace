@@ -8,6 +8,8 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
+- need a "Move Sample To New Key Group..." command. 
+
 - random LFOs always reset to 0. Might be the same for the step sequencers 
   when used as mod sources.
 
@@ -44,7 +46,7 @@ From Yann
 thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
 -- It shouldn't be doing this anymore. 
 
-- need a "Move Sample To New Key Group..." command. 
+
 
 
 =============================================================================

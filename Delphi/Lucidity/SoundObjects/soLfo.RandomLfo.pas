@@ -79,7 +79,16 @@ begin
 end;
 
 procedure TRandomLfo.ResetPhase;
+var
+  rx : single;
 begin
+  {
+  rx := random;
+  LastValue   := rx;
+  TargetValue := rx;
+  LowPass.Reset(rx);
+  }
+
   LastValue := random;
   TargetValue := random;
 end;

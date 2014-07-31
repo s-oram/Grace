@@ -300,13 +300,12 @@ begin
     then UpdateLfoParameters;
 end;
 
-
-procedure TLucidityLfo.StepResetA;
+procedure TLucidityLfo.ZeroOutput;
 begin
+  UpdateLfoParameters;
+
   WaveTableLFO.ResetPhase;
   RandomLfo.ResetPhase;
-
-  UpdateLfoParameters;
 
   case ActiveLFO of
     TActiveLFO.WaveTable: LfoOutput_Unipolar := WaveTableLfo.Step;
@@ -315,6 +314,11 @@ begin
   else
     raise Exception.Create('Type not handled');
   end;
+end;
+
+procedure TLucidityLfo.StepResetA;
+begin
+  UpdateLfoParameters;
 end;
 
 procedure TLucidityLfo.StepResetB;
@@ -356,11 +360,6 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
-end;
-
-procedure TLucidityLfo.ZeroOutput;
-begin
-  LfoOutput_Unipolar := 0;
 end;
 
 procedure TLucidityLfo.Trigger;
