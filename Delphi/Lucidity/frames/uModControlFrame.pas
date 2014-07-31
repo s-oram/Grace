@@ -227,7 +227,6 @@ begin
 
   for c1 := 0 to KnobList.Count-1 do
   begin
-    (KnobList[c1] as TVamKnob).DrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay;
     (KnobList[c1] as TVamKnob).ModEditRadius := 0.25;
   end;
 

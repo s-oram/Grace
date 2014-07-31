@@ -12,8 +12,6 @@ uses
 {$SCOPEDENUMS ON}
 
 type
-  TDrawKnobMethod = reference to procedure(Sender : TObject);
-
   TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
@@ -42,7 +40,6 @@ type
     fInternalModAmount: single;
     fParameterName: string;
     fModEditRadius: single;
-    fDrawKnob_ModEditOverlay: TDrawKnobMethod;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -113,6 +110,7 @@ type
     procedure DrawKnob_ModDepth;
     procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
+    procedure DrawKnob_ModEditOverlay;
 
     //InternalPos is the knob pos. It is only available internally.
     property InternalPos       : single read fInternalPos       write fInternalPos;
@@ -130,9 +128,6 @@ type
     property ImageStripGlyphCount : integer read fImageStripGlyphCount write SetImageStripGlyphCount;
 
     property DisabledImage : TBitmap read fDisabledImage write SetDisabledImage;
-
-
-    property DrawKnob_ModEditOverlay : TDrawKnobMethod read fDrawKnob_ModEditOverlay write fDrawKnob_ModEditOverlay;
   published
     property ModLineDist   : single read fModLineDist   write fModLineDist;
     property ModLineWidth  : single read fModLineWidth  write fModLineWidth;
@@ -220,18 +215,11 @@ begin
   end;
 end;
 
-procedure DrawKnob_ModEditOverlay_Default(Sender : TObject);
-begin
-  (Sender as TVamKnob).BackBuffer.BufferInterface.Line(0,0, 50,50);
-end;
-
 { TVamKnob }
 
 constructor TVamKnob.Create(AOwner: TComponent);
 begin
   inherited;
-
-  fDrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay_Default;
 
   fModEditRadius := 0.6;
   fVisibleSteps := 0;
@@ -716,8 +704,8 @@ begin
 
     if ShowMouseOverEditMode then
     begin
-      if (MouseOverEditMode = TKnobMode.ModEdit) and (assigned(DrawKnob_ModEditOverlay))
-        then DrawKnob_ModEditOverlay(self);
+      if (MouseOverEditMode = TKnobMode.ModEdit)
+        then DrawKnob_ModEditOverlay;
     end;
 
 
@@ -828,6 +816,34 @@ begin
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
+end;
+
+procedure TVamKnob.DrawKnob_ModEditOverlay;
+  procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
+  begin
+    Start := (Angle2+90) / 360 * 2 * pi;
+    Sweep := (Angle1+90) / 360 * 2 * pi;
+  end;
+const
+  kMinAngle = 30;
+  kMaxAngle = 300;
+  kArcSpan  = 300;
+var
+  MidX, MidY : single;
+  Angle1, Angle2 : single;
+  s1, s2 : single;
+begin
+  MidX := Width  * 0.5;
+  MidY := Height * 0.5;
+
+  BackBuffer.BufferInterface.LineWidth := ModLineWidth;
+  BackBuffer.BufferInterface.LineColor := GetAggColor(clAqua, 128);
+
+  Angle1 := kMinAngle;
+  Angle2 := kMinAngle + kArcSpan;
+
+  CalcStartSweep(Angle1, Angle2, s1, s2);
+  BackBuffer.BufferInterface.Arc(MidX, MidY, ModLineDist, ModLineDist, s1, s2);
 end;
 
 procedure TVamKnob.DrawKnob_PositionArc;
