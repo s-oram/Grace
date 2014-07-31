@@ -165,7 +165,8 @@ uses
   eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas',
   AudioEffect in 'AudioEffects\AudioEffect.pas',
   AudioEffect.Lofi in 'AudioEffects\AudioEffect.Lofi.pas',
-  Menu.MissingSampleContextMenu in 'frames\Menu.MissingSampleContextMenu.pas';
+  Menu.MissingSampleContextMenu in 'frames\Menu.MissingSampleContextMenu.pas',
+  GuiDrawingRoutines in 'GuiDrawingRoutines.pas';
 
 {$R *.res}
 

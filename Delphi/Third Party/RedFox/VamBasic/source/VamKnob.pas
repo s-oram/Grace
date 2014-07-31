@@ -9,9 +9,11 @@ uses
   RedFox, RedFoxGraphicControl, RedFoxColor,
   VamGraphicControl, VamWinControl;
 
+{$SCOPEDENUMS ON}
 
 type
-  {$SCOPEDENUMS ON}
+  TDrawKnobMethod = reference to procedure(Sender : TObject);
+
   TVamKnob = class(TVamWinControl, IKnobControl)
   private
     fOnChanged: TNotifyEvent;
@@ -40,6 +42,7 @@ type
     fInternalModAmount: single;
     fParameterName: string;
     fModEditRadius: single;
+    fDrawKnob_ModEditOverlay: TDrawKnobMethod;
     procedure SetPos(Value: single);
     procedure SetImageStripGlyphCount(const Value: integer);
     procedure SetImageStrip(const Value: TBitmap);
@@ -77,14 +80,16 @@ type
     IsGrabbed : boolean;
     IsFineAdjustment : boolean;
 
-
     CurrentEditMode : TKnobMode;
     MouseOverEditMode : TKnobMode;
+    ShowMouseOverEditMode : boolean;
 
     ReferencePoint   : TPoint;
     ReferenceValue   : single;
     procedure UpdateReferencePoints(const X, Y:integer);
 
+    procedure MouseEnter; override;
+    procedure MouseLeave; override;
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -109,7 +114,6 @@ type
     procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
 
-
     //InternalPos is the knob pos. It is only available internally.
     property InternalPos       : single read fInternalPos       write fInternalPos;
     property InternalModAmount : single read fInternalModAmount write fInternalModAmount;
@@ -127,6 +131,8 @@ type
 
     property DisabledImage : TBitmap read fDisabledImage write SetDisabledImage;
 
+
+    property DrawKnob_ModEditOverlay : TDrawKnobMethod read fDrawKnob_ModEditOverlay write fDrawKnob_ModEditOverlay;
   published
     property ModLineDist   : single read fModLineDist   write fModLineDist;
     property ModLineWidth  : single read fModLineWidth  write fModLineWidth;
@@ -214,11 +220,18 @@ begin
   end;
 end;
 
+procedure DrawKnob_ModEditOverlay_Default(Sender : TObject);
+begin
+  (Sender as TVamKnob).BackBuffer.BufferInterface.Line(0,0, 50,50);
+end;
+
 { TVamKnob }
 
 constructor TVamKnob.Create(AOwner: TComponent);
 begin
   inherited;
+
+  fDrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay_Default;
 
   fModEditRadius := 0.6;
   fVisibleSteps := 0;
@@ -302,6 +315,8 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
+    ShowMouseOverEditMode := false;
+
     CurrentEditMode := CalculateKnobEditMode(Shift, x, y);
 
     IsGrabbed := true;
@@ -312,6 +327,20 @@ begin
       then IsFineAdjustment := true
       else IsFineAdjustment := false;
   end;
+end;
+
+procedure TVamKnob.MouseEnter;
+begin
+  inherited;
+  ShowMouseOverEditMode := true;
+  Invalidate;
+end;
+
+procedure TVamKnob.MouseLeave;
+begin
+  inherited;
+  ShowMouseOverEditMode := false;
+  Invalidate;
 end;
 
 procedure TVamKnob.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -327,9 +356,16 @@ begin
   if (IsGrabbed = false) then
   begin
     EditMode := CalculateKnobEditMode(Shift, x, y);
+
     if EditMode <> MouseOverEditMode then
     begin
       MouseOverEditMode := EditMode;
+      Invalidate;
+    end;
+
+    if not ShowMouseOverEditMode then
+    begin
+      ShowMouseOverEditMode := true;
       Invalidate;
     end;
   end;
@@ -676,6 +712,17 @@ begin
     if KnobMode = TKnobMode.PositionEdit
       then DrawKnob_ModDepth
       else DrawKnob_ModAmount;
+
+
+    if ShowMouseOverEditMode then
+    begin
+      if (MouseOverEditMode = TKnobMode.ModEdit) and (assigned(DrawKnob_ModEditOverlay))
+        then DrawKnob_ModEditOverlay(self);
+    end;
+
+
+
+
   end else
   begin
     if assigned(DisabledImage) then

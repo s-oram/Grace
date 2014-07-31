@@ -176,6 +176,7 @@ uses
   VamLayoutWizard,
   RedFoxColor, uLucidityEnums,
   uConstants, uGuiUtils,
+  GuiDrawingRoutines,
   Lucidity.KeyGroup,
   LucidityModConnections;
 
@@ -184,6 +185,8 @@ uses
 { TModControlFrame }
 
 constructor TModControlFrame.Create(AOwner: TComponent);
+var
+  c1: Integer;
 begin
   inherited;
 
@@ -221,6 +224,12 @@ begin
   KnobList.Add(LfoBKnob2);
   KnobList.Add(LfoBKnob3);
   KnobList.Add(FilterBlendKnob);
+
+  for c1 := 0 to KnobList.Count-1 do
+  begin
+    (KnobList[c1] as TVamKnob).DrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay;
+    (KnobList[c1] as TVamKnob).ModEditRadius := 0.25;
+  end;
 
 
 
