@@ -12,7 +12,6 @@ uses
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   VamLib.MultiEvent,
-
   VamLib.Animation,
   AudioIO,
   eeSampleFloat, {VamSampleDisplayBackBuffer,} {VamSamplePeakBuffer,}
@@ -136,22 +135,19 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+var
+  OpenDialog : TFileOpenDialog;
+  LoopStart, LoopEnd : integer;
 begin
-  //
-  //VamPanel1.BeginUpdate;
+  OpenDialog := TFileOpenDialog.Create(nil);
 
-  VamLabel1.Text := 'Message A';
+  if OpenDialog.Execute then
+  begin
+    ReadLoopPoints(OpenDialog.FileName, LoopStart, LoopEnd);
+    VamLabel1.Text := IntToStr(LoopStart) + ' - ' + IntToStr(LoopEnd);
+  end;
 
-  {
-  Wait(2000);
-  VamLabel1.Text := 'Message B';
-
-  Wait(2000);
-  VamLabel1.Text := 'Message C';
-
-  Wait(2000);
-  VamLabel1.Text := 'Message D';
-  }
+  OpenDialog.Free;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
