@@ -110,7 +110,9 @@ type
     procedure DrawKnob_ModDepth;
     procedure DrawKnob_ModAmount;
     procedure DrawKnob_Indicator;
+
     procedure DrawKnob_ModEditOverlay;
+    procedure DrawKnob_PosEditOverlay;
 
     //InternalPos is the knob pos. It is only available internally.
     property InternalPos       : single read fInternalPos       write fInternalPos;
@@ -702,14 +704,12 @@ begin
       else DrawKnob_ModAmount;
 
 
-    if ShowMouseOverEditMode then
+    if (ShowMouseOverEditMode) and (KnobMode = TKnobMode.ModEdit) then
     begin
       if (MouseOverEditMode = TKnobMode.ModEdit)
-        then DrawKnob_ModEditOverlay;
+        then DrawKnob_ModEditOverlay
+        else DrawKnob_PosEditOverlay;
     end;
-
-
-
 
   end else
   begin
@@ -837,13 +837,27 @@ begin
   MidY := Height * 0.5;
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clAqua, 128);
+  BackBuffer.BufferInterface.LineColor := GetAggColor(clAqua, 100);
 
   Angle1 := kMinAngle;
   Angle2 := kMinAngle + kArcSpan;
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
   BackBuffer.BufferInterface.Arc(MidX, MidY, ModLineDist, ModLineDist, s1, s2);
+end;
+
+procedure TVamKnob.DrawKnob_PosEditOverlay;
+var
+  MidX, MidY : single;
+  r : single;
+begin
+  MidX := Width  * 0.5;
+  MidY := Height * 0.5;
+  r := 0.2 * Min(Width, Height);
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetAggColor(clAqua, 100);
+  BackBuffer.BufferInterface.Circle(MidX, MidY, r);
 end;
 
 procedure TVamKnob.DrawKnob_PositionArc;
