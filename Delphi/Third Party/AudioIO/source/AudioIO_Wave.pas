@@ -389,7 +389,7 @@ end;
 
 function LocateChunk(var WaveFile:TWinFile; const ChunkName : ansiString):integer;
 var
-  ReadIndex : integer;
+  //ReadIndex : integer;
   ChunkDescriptor : TChunkDescriptor;
 begin
   //============================================================================
