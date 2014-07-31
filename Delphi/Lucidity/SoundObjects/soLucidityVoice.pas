@@ -580,8 +580,8 @@ begin
   LfoB.ZeroOutput;
   AmpEnv.ZeroOutput;
   ModEnv.ZeroOutput;
-  StepSeqOne.ZeroOutput;
-  StepSeqTwo.ZeroOutput;
+  StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
+  StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
   //=== Step 3 ===
   ModMatrix.FastControlProcess;
@@ -664,8 +664,6 @@ begin
   LfoB.StepResetA;
   AmpEnv.StepResetA;
   ModEnv.StepResetA;
-  StepSeqOne.StepResetA(aSampleGroup.GetTriggeredNoteCount);
-  StepSeqTwo.StepResetA(aSampleGroup.GetTriggeredNoteCount);
 
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;

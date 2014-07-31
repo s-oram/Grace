@@ -61,7 +61,6 @@ type
 
     function GetModPointer(const Name:string):PSingle;
 
-    procedure ZeroOutput;
     procedure StepResetA(TriggeredNote : cardinal);
     procedure StepResetB;
     procedure Step;
@@ -202,11 +201,6 @@ end;
 procedure TLucidyStepSequencer.StepResetB;
 begin
 
-end;
-
-procedure TLucidyStepSequencer.ZeroOutput;
-begin
-  ModSeqOutput_Unipolar := 0;
 end;
 
 procedure TLucidyStepSequencer.SetStepSeqClock(const Value: TSequencerClock);
