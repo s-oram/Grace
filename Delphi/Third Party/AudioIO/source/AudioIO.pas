@@ -676,10 +676,10 @@ begin
   if (Info.IsValid) and (Info.IsSupported) then
   begin
     case Info.FileFormat of
-      afUnknown: result := false;
       afWave:    result := WaveFile_ReadLoopPoints(FileName, LoopStart, LoopEnd);
-      afAiff: assert(false, 'todo'); //TODO:HIGH
-      afSnd:  assert(false, 'todo'); //TODO:HIGH
+      afAiff:    result := false; //TODO:HIGH
+      afSnd:     result := false; //TODO:HIGH
+      afUnknown: result := false;
     else
       raise Exception.Create('Unhandled file type.');
     end;
