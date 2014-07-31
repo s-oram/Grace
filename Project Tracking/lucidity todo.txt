@@ -8,17 +8,12 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-- need to be able to read loop points from wav file.
-
 - random LFOs always reset to 0. Might be the same for the step sequencers 
   when used as mod sources.
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
 
 - Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
-
-- Dragging over the sample map display but not clicking de-selects the current
-  selected region.
 
 - Need to test SFZ import.
 
