@@ -1,0 +1,62 @@
+object Form1: TForm1
+  Left = 315
+  Top = 253
+  Width = 188
+  Height = 114
+  HorzScrollBar.Range = 179
+  VertScrollBar.Range = 66
+  ActiveControl = SpinEdit1
+  Caption = 'LAME Demo'
+  Color = clBackground
+  PixelsPerInch = 72
+  TextHeight = 15
+  TextWidth = 7
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 48
+    Width = 169
+    Height = 18
+  end
+  object SpinEdit1: TSpinEdit
+    Left = 48
+    Top = 8
+    Width = 41
+    Height = 23
+    Min = 1
+    TabOrder = 0
+    Value = 1
+    OnEnter = SpinEdit1Enter
+  end
+  object Button1: TButton
+    Left = 104
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Rip!'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 8
+    Width = 31
+    Height = 15
+    Caption = 'Track'
+  end
+  object MP3Out1: TMP3Out
+    Input = CDIn1
+    SuspendWhenIdle = False
+    OnDone = MP3Out1Done
+    OnProgress = MP3Out1Progress
+    BitRate = br128
+    Left = 48
+    Top = 80
+  end
+  object CDIn1: TCDIn
+    CDPath = '/dev/cdrom'
+    StartTrack = 0
+    EndTrack = 0
+    Left = 8
+    Top = 80
+  end
+end

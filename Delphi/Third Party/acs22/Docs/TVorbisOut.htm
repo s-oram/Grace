@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TVorbisOut</TITLE>
+</HEAD>
+<BODY>
+
+<FONT COLOR="#800000"><H3><IMG SRC="Images/TVorbisOut.bmp" WIDTH=24 HEIGHT=24> TVorbisOut</H3>
+</FONT><P><HR></P>
+<P><A HREF="#Props"><U><FONT COLOR="#0000ff">Properties</U></FONT></A> <A HREF="#Meths"><U><FONT COLOR="#0000ff">Methods</U></FONT></A> <A HREF="#Evnts"><U><FONT COLOR="#0000ff">Events</U></FONT></A></P>
+<P><B>Unit: </B>ACS_Vorbis</P>
+<P><B>Descends from:</B> <A HREF="TACSFileOut.htm"><U><FONT COLOR="#0000ff">TACSFileOut</U></FONT></A></P>
+<P>TVorbisOut component stores incoming audio stream in an Ogg Vorbis audio compression format.</P>
+<P>Note that in order to encode data into Ogg Vorbis, libogg.so, libvorbis.so, and libvorbisenc.so (for Linux) or ogg.dll, vorbis.dll, and vorbisenc.dll (for Windows) libraries should be present in your system.</P>
+<P>You can use foAppend mode with this component (see the <A HREF="TACSFileOutp.htm#FileMode">FileMode</A> property). When the new data is added to TVorbisOut, the new logical bitstream is created. Make sure you have assigned a unique serial number to each logical bitstream (see the <A HREF="TVorbOutp.htm#Serial">Serial</A> property). Note that currently not all vorbis-supporting audio software can handle multi-streamed ogg vorbis files correctly. As for TVorbisIn component, it not only handles these files correctly but also allows you to navigate between bitstreams in a multi-streamed file.</P>
+<P><B>See also: </B><A HREF="TVorbisIn.htm"><U><FONT COLOR="#0000ff">TVorbisIn</U></FONT></A> </P>
+<P><HR></P>
+<A NAME=Props><FONT COLOR="#000080"><H4>TVorbisOut Properties</H4>
+</FONT>
+<P><A HREF="TVorbOutp.htm#Comments"><U><FONT COLOR="#0000ff">Comments</U></FONT></A></P>
+<P><A HREF="TVorbOutp.htm#Compression"><U><FONT COLOR="#0000ff">Compression</U></FONT></A></P>
+<P><A HREF="TVorbOutp.htm#DesiredMaximumBitrate"><U><FONT COLOR="#0000ff">DesiredMaximumBitrate</U></FONT></A></P>
+<P><A HREF="TVorbOutp.htm#DesiredNominalBitrate"><U><FONT COLOR="#0000ff">DesiredNominalBitrate</U></FONT></A></P>
+<P><A HREF="TVorbOutp.htm#MinimumBitrate"><U><FONT COLOR="#0000ff">MinimumBitrate</U></FONT></A></P>
+<P><A HREF="TVorbOutp.htm#Serial"><U><FONT COLOR="#0000ff">Serial</U></FONT></A></P>
+<P>Inherited from <A HREF="TACSFileOut.htm#Props">TACSFileOut</A></P>
+<P>Inherited from <A HREF="TACSStreamedOutput.htm#Props">TACSStreamedOutput</A></P>
+<P>Inherited from <A HREF="TACSOutput.htm#Props">TACSOutput</A></P>
+<P><HR></P>
+<A NAME=Meths><FONT COLOR="#000080"><H4>TVorbisOut Methods</H4>
+</FONT>
+<P>Inherited from <A HREF="TACSOutput.htm#Meths">TACSOutput</A></P>
+<P><HR></P>
+<A NAME=Evnts><FONT COLOR="#000080"><H4>TVorbisOut Events</H4>
+</FONT>
+<P>Inherited from <A HREF="TACSOutput.htm#Evnts">TACSOutput</A></P>
+<P><HR></P>
+<P><A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

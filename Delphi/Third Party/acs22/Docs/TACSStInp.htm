@@ -1,0 +1,19 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TACSStreamedInput Properties</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TACSStreamedInput Properties</H4>
+<P><HR></P>
+<P><A NAME="Seekable">Seekable : Boolean;</P>
+<P>If you write network applications with ACS, you are encouraged to use custom streams as it is described in programmer's introduction (see also OggStream demo). Usually these custom streams will not be seekable. Unfortunately TStream class has no way to indicate it is not seekable (all standart TStream descendats are seekable). So this property has been added to allow you to specify if the stream is seekable or not. The default value of this property is True, and if the stream you're planning to use with this component is not seekable, you have to set Seekable to False. Note that if the stream is not seekable, such properties as Channels, SampleRate, BitsPerSample, and Valid will not return correct values until the input component starts performing the actual playback.</P>
+<P><HR></P>
+<P><A NAME="Stream">Stream : TStream;</P>
+<P>Use this property to set the input stream for the input component. Remember that you have to create, destroy and position the input stream explicitly. In <A HREF=TACSFileIn.htm>TACSFileIn</A> descendants the stream assigned to this property takes over the FileName property, i. e. if both Stream and FileName property are assigned, the stream and not the file will be used for the actual input. To unassign this property set it to <B>nil</B>. If the stream is seekable it will be reset to the beginning at the end of the playback.</P>
+<P><HR></P>
+<P><A HREF=TACSStreamedInput.htm>TACSStreamedInput</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

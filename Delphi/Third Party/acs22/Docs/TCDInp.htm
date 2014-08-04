@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TCDIn Properties</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TCDIn Properties</H4>
+<P><HR></P>
+<A NAME=CDPath><P>CDPath : <B>String;</B></P>
+<P><B>Linux only</B></P><P>Set CDPath to specify the path to the CD-ROM device file. The default value is "/dev/cdrom" which is the CD-ROM device file on most systems with only one CD-ROM device.</P>
+<P><HR></P>
+<A NAME=CurrentDrive><P>CurrentDrive : Integer;</P>
+<P><B>Windows only</B></P><P>Use this property to set or get the number of the current CD-ROM drive. Possible values range from 0 to <A HREF=#DrivesCount>DrivesCount</A> - 1.</P>
+<P><HR></P>
+<P><A NAME="DiscInfo">DiscInfo : TCDInfo;</P>
+<B><P>Readonly</P>
+</B><P>Read DiscInfo to obtain an information about the disc currently in the drive. The possible values of this property are:</P>
+<P>cdiNoDisc - No disc in the drive</P>
+<P>cdiDiscAudio - Disc is an audio disc</P>
+<P>cdiDiscData - Disc is a data disc</P>
+<P>cdiDiscMixed - Disc is a mixed audio-data disc</P>
+<P>cdiUnknown - Unknown disc</P>
+<B><P>See also:</B><A HREF="#Status"><U><FONT COLOR="#0000ff">Status</U></FONT></A></P>
+<P><HR></P>
+<A NAME=DriveName><P>DriveName : <B>String</B>;</P>
+<P><B>Windows only, Readonly</B></P><P>The name of the current CD-ROM drive as returned by the drive unit.</P>
+<P><HR></P>
+<A NAME=DrivesCount><P>DrivesCount : Integer;</P>
+<P><B>Windows only, Readonly</B></P><P>The total number of the CD-ROM drives detected.</P>
+<P><HR></P>
+<P><A NAME="EndPos">EndPos : <A HREF="TCDPosition.htm"><U><FONT COLOR="#0000ff">TCDPosition</U></FONT></A>;</P>
+<P>Set this property to specify the ending position for data transfer in terms of track number : MSF. There is an EndOfDisc constant in ACS_CDROM unit. Use this constant to specify the end of disk as the ending position for data transfer.</P>
+<B><P>See also: </B><A HREF=#StartPos>StartPos</A><B>, </B><A HREF=#EndTrack>EndTrack</A></P>
+<P><HR></P>
+<A NAME=EndTrack><P>EndTrack : Integer;</P>
+<P>Set EndTrack to specify the ending position for data transfer at the end of the track identified by number. If you want to get data from a single track, the end track number should be the same as the start track number.</P>
+<B><P>See also: </B><A HREF=#StartTrack>StartTrack</A>, <A HREF=#EndPos>EndPos</A></P>
+<P><HR></P>
+<P><A NAME="StartPos">StartPos : <A HREF="TCDPosition.htm"><U><FONT COLOR="#0000ff">TCDPosition</U></FONT></A>;</P>
+<P>Set this property to specify the starting position for data transfer in terms of track number : MSF.</P>
+<B><P>See also: </B><A HREF=#EndPos>EndPos</A> <A HREF=#StartTrack>StartTrack</A></P>
+<P><HR></P>
+<P><A NAME="StartTrack">StartTrack : Integer;</P>
+<P>Set StartTrack to specify the starting position for data transfer at the beginning of the track identified by number. The tracks are numbered starting from 1.</P>
+<B><P>See also: </B><A HREF=#EndTrack>EndTrack</A>, <A HREF=#StartPos>StartPos</A> </P>
+<P><HR><A NAME="Status"></P>
+<P>Status : TCDStatus;</P>
+<B><P>Readonly</P>
+</B><P>Read Status to get an information about the disc/drive status.</P>
+<P>The possible values of this property are:</P>
+<P>cdsNotReady - Drive is not ready </P>
+<P>cdsReady - Drive is ready to play</P>
+<P>cdsPlaying - Drive is already playing a disc</P>
+<P>cdsPaused - Drive is paused</P>
+<B><P>See also:</B> <A HREF="#DiscInfo"><U><FONT COLOR="#0000ff">DiscInfo</U></FONT></A></P>
+<P><HR></P>
+<P><A NAME="Tracks">Tracks : <A HREF="TCDTrackInfo.htm"><U><FONT COLOR="#0000ff">TCDTrackInfo</U></FONT></A></P>
+<B><P>Readonly</P>
+</B><P>Provides an information about a particular disc track. This property can be treaded as an indexed array, where the index 1 corresponds to the first data/audio track on the disc and the last possible index is equal to TracksCount property.</P>
+<P><HR></P>
+<P><A NAME="TracksCount">TracksCount : Integer;</P>
+<B><P>Readonly</P>
+</B><P>Read TracksCount to get the number of tracks on the disc.</P>
+<P><HR></P>
+<P><A HREF=TCDIn.htm>TCDIn</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

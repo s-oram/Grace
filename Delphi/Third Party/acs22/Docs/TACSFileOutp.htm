@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TACSFileOut Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TACSFileOut Properties</H4>
+<P><HR></P>
+<P><A NAME="AccessMask">AccessMask : Integer;</P>
+<P><B>Linux only</B></P>
+<P>Use this property to set the file access mask. The default value is $1B6, which corresponds to rw-rw-rw- access mask.</P>
+<P><HR></P>
+<P><A NAME="FileName">FileName : TFileName;</P>
+<P>Use this property to set the name of the file to save data to.</P>
+<P><B>See also:</B> <A HREF="TACSStOutp.htm#Stream">Stream</A> property. </P>
+<P><HR></P>
+<P><A NAME="FileMode">FileMode : TFileOutputMode;</P>
+<P>There are two possible values for this property: foRewrite and foAppend. When foRewrite (default value) is set and the file with the specified name already exists (or a stream is assigned) the contents of the file (stream) is rewritten. In the foAppend mode the new data is appended to the end of the existing file (stream). Currently only <A HREF=TWaveOut.htm>TWaveOut</A> and <A HREF=TVorbisOut.htm>TVorbisOut</A> components support foAppend mode.</P>
+<P><HR></P>
+<P><A HREF=TACSFileOut.htm>TACSFileOut</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

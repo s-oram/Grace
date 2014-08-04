@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TAudioOut</TITLE>
+</HEAD>
+<BODY>
+
+<FONT COLOR="#800000"><H3><IMG SRC="Images/TAudioOut.bmp" WIDTH=24 HEIGHT=24> TAudioOut</H3>
+</FONT>
+<P><A HREF="#Props"><U><FONT COLOR="#0000ff">Properties</U></FONT></A> <A HREF="#Meths"><U><FONT COLOR="#0000ff">Methods</U></FONT></A> <A HREF="#Evnts"><U><FONT COLOR="#0000ff">Events</U></FONT></A></P>
+<P><B>Unit: </B>ACS_Audio</P>
+<P><B>Descends from:</B> <A HREF="TACSOutput.htm"><U><FONT COLOR="#0000ff">TACSOutput</U></FONT></A></P>
+<P>TAudioOut component allows audio stream to be played via soundcard device using OSS/ALSA drivers under Linux and wave-audio devices under Windows. </P>
+<P>Under OSS Linux drivers and Windows it is possible to do simultaneous playback to several soundcards (using several TAudioOut components). If the soundcard supports duplex operation (playing back while recording from such sources as LineIn) is possible to use TAudioIn and TAudioOut at the same time.</P>
+<P><B>Windows note:</B> when you run your application containing TAudioOut component under IDE, it may crash if you close the application during sound playback without stopping playback first. To prevent this, change the creation order of the output and input components so that the input component is created first.</P>
+<P><B>See also: </B><A HREF="TMixer.htm"><U><FONT COLOR="#0000ff">TMixer</U></FONT></A>, <A HREF="TAOLive.htm"><U><FONT COLOR="#0000ff">TAOLive</U></FONT></A>, <A HREF="TAudioIn.htm"><U><FONT COLOR="#0000ff">TAudioIn</U></FONT></A></P>
+<P><HR></P>
+<A NAME=Props><FONT COLOR="#000080"><H4>TAudioOut Properties</H4>
+</FONT>
+<P><A HREF="TAuOutp.htm#BaseChannel"><U><FONT COLOR="#0000ff">BaseChannel</U></FONT></A></P>
+<P><B>W</B> <A HREF="TAuOutp.htm#ReadChunks"><U><FONT COLOR="#0000ff">ReadChunks</U></FONT></A></P>
+<P><A HREF="TAuOutp.htm#Volume"><U><FONT COLOR="#0000ff">Volume</U></FONT></A></P>
+<P>Inherited from <A HREF="TACSOutput.htm#Props">TACSOutput</A></P>
+<P><HR></P>
+<A NAME=Meths><FONT COLOR="#000080"><H4>TAudioOut Methods</H4>
+</FONT>
+<P>Inherited from <A HREF="TACSOutput.htm#Meths">TACSOutput</A></P>
+<P><HR></P>
+<A NAME=Evnts><FONT COLOR="#000080"><H4>TAudioOut Events</H4>
+</FONT><P><HR></P>
+<P>Inherited from <A HREF="TACSOutput.htm#Evnts">TACSOutput</A></P>
+<P><HR></P>
+<P><A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

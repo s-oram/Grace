@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TMixer Properties</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TMixer Properties</H4>
+<P><HR></P>
+<P><A NAME="BitsPerSample"><A NAME="Channels">Channels : TMixerChannelSet;</P>
+<B><P>Readonly</P>
+</B><P>Channels property is a set of constants, indicating what channels are found on the soundcard. The constants are of type TMixerChannel which enumerates following elements:</P>
+<P>mcVolume - general output level for the current soundcard.<BR>
+mcTreble - treble level <BR>
+mcBass - bass level<BR>
+mcSynth - internal synthesizer output level<BR>
+mcPCM - output for /dev/dsp and dev/audio devices <BR>
+mcSpeaker - internal PC speaker (this channel is available if the speaker is directly connected to the sound card) <BR>
+mcLine - Line In jack of the sound card<BR>
+mcMic - input level for microphone<BR>
+mcCD - input level for CD-ROM drive (audio CD)<BR>
+mcIMix, mcAltPCM - these channels are rarely available<BR>
+mcRecLev - general recording level <BR>
+mcUnknown - unknown channel</P>
+<P>The line of code checking whether the soundcard posses particular channel might look like this:</P>
+<B><P>if</B> mcMic <B>in</B> Mixer1.Channels <B>then</B> // Microphone is supported </P>
+<P>There is a function called ChannelToStr in ACS_Mixer unit. This function takes a TMixerChannel value and returns a string, containing the name of the channel.</P>
+<P><HR></P>
+<P><A NAME="DevNum">DevNum : Integer;</P>
+<P>There may be more than one mixer in the system. For example if you have several soundcards installed, each of them usually has its own mixer. Set DevNum to the number of the mixer you want to use. There is a variable called MixersCount in ACS_Mixer unit. Read this variable to get the number of mixers found in the system. The mixer numbers assigned to DevNum start from zero, and the maximum number possible is MixersCount - 1.</P>
+<P><HR></P>
+<P><A NAME="Level">Level[<B>const</B> vChannel : TMixerChannel] : <A HREF="TMixerLevel.htm"><U><FONT COLOR="#0000ff">TMixerLevel</U></FONT></A>;</P>
+<P>Use Level to get or set the level value for a particular mixer channel (see <A HREF=#Channels>Channels</A> property).</P>
+<P><HR></P>
+<P><A NAME="MixerName">MixerName : <B>String</B>;</P>
+<B><P>Readonly</P>
+</B><P>Read MixerName to get the mixer name specified by soundcard's vendor. </P>
+<P><HR></P>
+<P><A NAME="RecordSource">RecordSource : TMixerChannel;</P>
+<P>Use RecordSource to set or get the channel currently used as recording source (see <A HREF=#Channels>Channels</A> property).</P>
+<P><HR></P>
+<P><A HREF=TMixer.htm>TMixer</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</P>
+</BODY>
+</HTML>

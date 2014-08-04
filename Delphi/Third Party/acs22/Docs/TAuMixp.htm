@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TAudioMixer Properties</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TAudioMixer Properties</H4>
+<P><HR></P>
+<P><A NAME="FgPlaying">FgPlaying : Boolean;</P>
+<P><B>Read only</B></P>
+<P>Use this property in amRTMix mode to check if the forground sound is currently playing.</P>
+<P><HR></P>
+<P><A NAME="Input1">Input1 : <A HREF="TACSInput.htm"><U><FONT COLOR="#0000ff">TACSInput</U></FONT></A>;</P>
+<P>Use this property to set the first input stream to be mixed. </P>
+<P><HR></P>
+<P><A NAME="Input2">Input2 : <A HREF="TACSInput.htm"><U><FONT COLOR="#0000ff">TACSInput</U></FONT></A>;</P>
+<P>Use this property to set the second input stream to be mixed. </P>
+<P><HR></P>
+<P><A NAME="Mode">Mode : TAudioMixerMode;</P>
+<P>This property sets the mode for the TAudioMixer. The possible values for this property are amMix, amConcatenate, amRTMix. If it is set to amMix (default) the mixer mixes input streams and the size of the resulting stream is equal to the size of longest input stream. If this property is set to amConcatenate, the two streams are concatenated together and the size of the resulting stream is the sum of the sizes of the input streams. When the mode is amConcatenate the stream from the Input1 is put before the stream from the Input2.</P>
+<P>In amRTMix mode you can add Input2 (forground) to Input1 (background) at any time while the mixer is playing. To add forground sound to the background just assign an input to Input2 property. Note the following: after forground sound is done with the Input2 pointer becomes <B>nil</B>. The total length of the playback is equal to the background sound length, with any forground sound still playing being aborted. You can assign new forground sound while another  forground sound is playing (in which case the new sound will replace the old one) but you cannot use the same input component in this case. When the AudioMixer is playing you can tell if the forground sound is playing by checking the value of FgPlaying property. The following code illustrates this:</P>
+<P><PRE><FONT FACE="Courier"><B>var
+  InputVar1 : TACSInput;
+  InputVar2 : TACSInput;
+begin
+  AudioMixer1.Input2 := InputVar1;
+  ...
+  if AudioMixer1.FgPlaying then 
+  AudioMixer1.Input2 := InputVar2; // Cannot assign InputVar1 here
+  ...
+  if not AudioMixer1.FgPlaying then 
+  AudioMixer1.Input2 := InputVar2; // Can assign the same input component again
+</B></FONT></PRE></P>
+<P><HR></P>
+<A NAME=Volume1><P>Volume1 : Integer;</P>
+<P>Use Volume1 to set the volume of the first stream in the resulting mixed stream. The maximum value is 255 (default) the minimum value is 0.</P>
+<P><HR></P>
+<A NAME=Volume2><P>Volume2 : Integer;</P>
+<P>Use Volume2 to set the volume of the second stream in the resulting mixed stream. The maximum value is 255 (default) the minimum value is 0.</P>
+<P><HR></P>
+<P><A HREF=TAudioMixer.htm>TAudioMixer</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

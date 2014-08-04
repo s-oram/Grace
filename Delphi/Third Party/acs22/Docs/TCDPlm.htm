@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TCDPlayer Methods</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TCDPlayer Methods</H4>
+<P><HR></P>
+<A NAME=CloseTray><B><P>procedure</B> CloseTray; </P>
+<P>Closes CD-ROM drive's tray.</P>
+<B><P>See also:</B><A HREF=#Eject>Eject</A></P>
+<P><HR></P>
+<A NAME=Eject><B><P>procedure</B> Eject;</P>
+<P>Ejects CD-ROM drive's tray.</P>
+<B><P>See also:</B><A HREF=#CloseTray>CloseTray</A></P>
+<P><HR></P>
+<A NAME=Pause><B><P>procedure</B> Pause;</P>
+<P>Pauses the drive if it is playing.</P>
+<B><P>See also:</B><A HREF=#Resume> Resume</A></P>
+<P><HR></P>
+<A NAME=Play><B><P>procedure</B> Play(Track : Integer); <B>overload;</P>
+<P>procedure</B> Play(Track, Index : Integer); <B>overload;</P>
+<P>procedure</B> Play(PlayFrom, PlayTo : TCDPosition); <B>overload;</B> </P>
+<P>Start playing CD in the drive from a cpecified postition. The first method tells the system to play a single track whose number is specified in the Track property. The second method allows to specify a track and a track index to be played. The third method allows to specify two positions: the first is the osition to begin playing from, the second is the position where playback should stop. The positions are specified with <A HREF="TCDPosition.htm"><U><FONT COLOR="#0000ff">TCDPosition</U></FONT></A> structure.</P>
+<P>There is a special constant called EndOfDisc of type <A HREF="TCDPosition.htm"><U><FONT COLOR="#0000ff">TCDPosition</U></FONT></A> in SPK_CD_ROM unit. This constant specifies the end of the last track on the disc. You can use this constant to tell the component to play CD from the current position to the end of disc:</P>
+<FONT FACE="Courier New"><P>CDPlayer1.Play(CurPos, EndOfDisc);</P>
+</FONT><P ALIGN="CENTER"><HR></P>
+<A NAME=Resume><B><P>procedure</B> Resume;<B> </P>
+</B><P>Resumes playing paused CD.</P>
+<B><P>See also:</B><A HREF=#Pause> Pause</A></P>
+<P><HR></P>
+<A NAME=Stop><B><P>procedure</B> Stop; </P>
+<P>Stops playing CD.</P>
+<P><HR></P>
+<P><A HREF=TCDPlayer.htm>TCDPlayer</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

@@ -1,0 +1,218 @@
+object Form1: TForm1
+  Left = 201
+  Top = 191
+  Width = 339
+  Height = 240
+  HorzScrollBar.Range = 323
+  VertScrollBar.Range = 231
+  ActiveControl = Button1
+  Caption = 'CD Player'
+  Color = clSilver
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 75
+  TextHeight = 15
+  TextWidth = 7
+  object Bevel1: TBevel
+    Left = 168
+    Top = 32
+    Width = 155
+    Height = 25
+  end
+  object Label1: TLabel
+    Left = 168
+    Top = 33
+    Width = 153
+    Height = 23
+    AutoSize = False
+    Caption = '0:00'
+    Color = clBlack
+    Font.Color = clBlack
+    Font.Height = 15
+    Font.Name = 'adobe-helvetica'
+    Font.Pitch = fpVariable
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Button1: TButton
+    Left = 8
+    Top = 64
+    Width = 137
+    Height = 25
+    Caption = 'Play'
+    TabOrder = 9
+    OnClick = Button1Click
+  end
+  object ComboBox1: TComboBox
+    Left = 8
+    Top = 32
+    Width = 140
+    Height = 23
+    Style = csDropDownList
+    ItemHeight = 17
+    TabOrder = 7
+  end
+  object Button3: TButton
+    Left = 88
+    Top = 96
+    Width = 57
+    Height = 25
+    Caption = 'Pause'
+    TabOrder = 1
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 8
+    Top = 96
+    Width = 73
+    Height = 25
+    Caption = 'Stop'
+    TabOrder = 2
+    OnClick = Button4Click
+  end
+  object Button5: TButton
+    Left = 8
+    Top = 128
+    Width = 73
+    Height = 25
+    Caption = 'Eject'
+    TabOrder = 3
+    OnClick = Button5Click
+  end
+  object Button6: TButton
+    Left = 88
+    Top = 128
+    Width = 57
+    Height = 25
+    Caption = 'Close'
+    TabOrder = 4
+    OnClick = Button6Click
+  end
+  object TrackBar1: TTrackBar
+    Left = 184
+    Top = 104
+    Width = 22
+    Height = 100
+    LineSize = 10
+    Max = 255
+    Orientation = trVertical
+    PageSize = 1
+    TabOrder = 5
+    TickMarks = tmBoth
+    TickStyle = tsNone
+    OnChange = TrackBar1Change
+  end
+  object TrackBar2: TTrackBar
+    Left = 271
+    Top = 104
+    Width = 22
+    Height = 100
+    Max = 255
+    Orientation = trVertical
+    TabOrder = 6
+    TickMarks = tmBoth
+    TickStyle = tsNone
+    OnChange = TrackBar2Change
+  end
+  object Label2: TLabel
+    Left = 160
+    Top = 216
+    Width = 71
+    Height = 15
+    Caption = 'Left Channel'
+  end
+  object Label3: TLabel
+    Left = 240
+    Top = 216
+    Width = 79
+    Height = 15
+    Caption = 'Right Channel'
+  end
+  object Label4: TLabel
+    Left = 168
+    Top = 8
+    Width = 76
+    Height = 15
+    Caption = 'Current Track'
+  end
+  object Label5: TLabel
+    Left = 8
+    Top = 8
+    Width = 77
+    Height = 15
+    Caption = 'Starting Track'
+  end
+  object Button7: TButton
+    Left = 168
+    Top = 64
+    Width = 33
+    Height = 25
+    Caption = '|<<'
+    Font.Color = clBlack
+    Font.Height = 13
+    Font.Name = 'adobe-helvetica'
+    Font.Pitch = fpVariable
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 12
+    OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 288
+    Top = 64
+    Width = 33
+    Height = 25
+    Caption = '>>|'
+    Font.Color = clBlack
+    Font.Height = 13
+    Font.Name = 'adobe-helvetica'
+    Font.Pitch = fpVariable
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 13
+    OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 208
+    Top = 64
+    Width = 33
+    Height = 25
+    Caption = '<<'
+    Font.Color = clBlack
+    Font.Height = 13
+    Font.Name = 'adobe-helvetica'
+    Font.Pitch = fpVariable
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 14
+    OnClick = Button9Click
+  end
+  object Button10: TButton
+    Left = 248
+    Top = 64
+    Width = 33
+    Height = 25
+    Caption = '>>'
+    Font.Color = clBlack
+    Font.Height = 13
+    Font.Name = 'adobe-helvetica'
+    Font.Pitch = fpVariable
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 15
+    OnClick = Button10Click
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 8
+    Top = 168
+  end
+  object CDPlayer1: TCDPlayer
+    CDPath = '/dev/cdrom'
+    LVolume = 255
+    RVolume = 255
+    Left = 40
+    Top = 168
+  end
+end

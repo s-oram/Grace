@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TSincFilter Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TSincFilter Properties</H4>
+<P><HR></P>
+<P><A NAME="FilterType">FilterType : TFilterType;</P>
+<P>Use this property to select the filter type.
+The possible values are:<BR>
+ftBandPass - Band-pass filter. HighFreq and LowFreq define the band to be passed.<BR>
+ftBandReject - Band-reject filter. HighFreq and LowFreq define the band to be rejected.<BR>
+ftHighPass - High-pass filter. HighFreq defines the cut-off frequency.<BR>
+ftLowPass - Low-pass filter. LowFreq defines the cut-off frequency.<BR>
+ftAllPass - All-pass filter. HighFreq and LowFreq are ignored.</P>
+<P>You can modify this property while the filter is operating. In this case the filter's kernel will be recalculated dynamically.</P>
+<P><HR></P>
+<P><A NAME="HighFreq">HighFreq : Integer;</P>
+<P>Defines the higher filter frequency. See the <A HREF=#FilterType>FilterType</A> property.</P>
+<P>You can modify this property while the filter is operating. In this case the filter's kernel will be recalculated dynamically.</P>
+<P><HR></P>
+<P><A NAME="KernelWidth">KernelWidth : Integer;</P>
+<P>Use this property to set the number of the kernel points for the filter. Note, that for many filter operations to work correctly, this value must be odd. If this value is set to an even number and the filter operation requires it to be odd, it will be changed to odd by the component.</P>
+<P><HR></P>
+<P><A NAME="LowFreq">LowFreq : Integer;</P>
+<P>Defines the lower filter frequency. See the <A HREF=#FilterType>FilterType</A> property.</P>
+<P>You can modify this property while the filter is operating. In this case the filter's kernel will be recalculated dynamically.</P>
+<P><HR></P>
+<P><A NAME="WindowType">WindowType  : TFilterWindowType;</P>
+<P>Use this property to set the type of the window applied to the kernel. The possible values are wtBlackman, wtHamming, and wtHann.</P>
+<P>You can modify this property while the filter is operating. In this case the filter's kernel will be recalculated dynamically.</P>
+<P><HR></P>
+<P><A HREF=TSincFilter.htm>TSincFilter</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

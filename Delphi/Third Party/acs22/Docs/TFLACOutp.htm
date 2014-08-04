@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TFLACOut Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TFLACOut Properties</H4>
+<P><HR></P>
+Most of TFLACOut-specific properties correspond directly to the settings provided by the FLAC API. The following properties descriptions are taken from FLAC API docs. It is recommended that you read this docs directly to get better understanding of the FLAC encoder management.
+<P><HR></P>
+<P><A NAME="BestModelSearch">BestModelSearch : Boolean;</P>
+<P>Set this property to False to let the encoder estimate the best model order based on the residual signal energy, or True to force the encoder to evaluate all order models and select the best.</P>
+<P><HR></P>
+<P><A NAME="BlockSize">BlockSize : Integer; </P>
+<P>Set the blocksize to use while encoding. The size used for blocking the audio data has a direct effect on the compression ratio. If the block size is too small, the resulting large number of frames mean that excess bits will be wasted on frame headers. If the block size is too large, the characteristics of the signal may vary so much that the encoder will be unable to find a good predictor. In order to simplify encoder/decoder design, FLAC imposes a minimum block size of 16 samples, and a maximum block size of 65535 samples. This range covers the optimal size for all of the audio data FLAC supports.</P>
+<P><HR></P>
+<P><A NAME="EnableLooseMidSideStereo">EnableLooseMidSideStereo : Boolean; </P>
+<P>Set to True to enable adaptive switching between mid-side and left-right encoding on stereo input. The number of channels must be 2. Set to False when unisg best model search. In either case, the EnableMidSideStereo property must be se to True.</P>
+<P><HR></P>
+<P><A NAME="EnableMidSideStereo">EnableMidSideStereo : Boolean; </P>
+<P>Set to True to enable mid-side encoding on stereo input. The number of channels must be 2. Set to False to use only independent channel coding.</P>
+<P><HR></P>
+<P><A NAME="MaxLPCOrder">MaxLPCOrder : Integer; </P>
+<P>Set the maximum LPC order, or 0 to use only the fixed predictors.</P>
+<P><HR></P>
+<P><A NAME="MaxResidualPartitionOrder">MaxResidualPartitionOrder : Integer; </P>
+<P>Set the maximum partition order to search when coding the residual. The partition order determines the context size in the residual. The context size will be approximately blocksize / (2 ^ order).</P>
+<P>Set both min and max values to 0 to force a single context, whose Rice parameter is based on the residual signal variance. Otherwise, set a min and max order, and the encoder will search all orders, using the mean of each context for its Rice parameter, and use the best.</P>
+<P><HR></P>
+<P><A NAME="MinResidualPartitionOrder">MinResidualPartitionOrder : Integer; </P>
+<P>Set the minimum partition order to search when coding the residual. The partition order determines the context size in the residual. The context size will be approximately blocksize / (2 ^ order).</P>
+<P>Set both min and max values to 0 to force a single context, whose Rice parameter is based on the residual signal variance. Otherwise, set a min and max order, and the encoder will search all orders, using the mean of each context for its Rice parameter, and use the best.</P>
+order).</P>
+<P><HR></P>
+<P><A NAME="QLPCoeffPrecision">QLPCoeffPrecision : Integer; </P>
+<P>Set the precision, in bits, of the quantized linear predictor coefficients, or 0 to let the encoder select it based on the blocksize.<BR> 
+<B>Note:</B> In the current implementation, qlp_coeff_precision + bits_per_sample must be less than 32.</P>
+<P><HR></P>
+<P><A NAME="QLPCoeffPrecisionSearch">QLPCoeffPrecisionSearch : Boolean; </P>
+<P>Set to False to use only the specified quantized linear predictor coefficient precision, or True to search neighboring precision values and use the best one.</P>
+<P><HR></P>
+<P><A NAME="Verify">Verify : Boolean; </P>
+<P>Use this property to set the "verify" flag. If set to True, the encoder will verify it's own encoded output by feeding it through an internal decoder and comparing the original signal against the decoded signal. If a mismatch occurs, the exception will be generated. Note that this will slow the encoding process by the extra time required for decoding and comparison.</P>
+<P><HR></P>
+<P><A HREF=TFLACOut.htm>TLACOut</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

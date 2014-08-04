@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TVorbisIn Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TVorbisIn Properties</H4>
+<P><HR></P>
+<P><A NAME="BitStreams">BitStreams : Integer;</P>
+<P><B>Readonly</B></P>
+<P>Read this property to get number of logical bitstreams in the multi-streamed file. By default the component plays all the bitstreams from the first to the last just as if they were the same bitstream. The playback time also refers to the total time of all the bitstreams. You need to handle  bitstreams-related properties only if you want to navigate between several bitstreams in a multi-streamed file.</P>
+<P><HR></P>
+<P><A NAME="Comments">Comments : TStringList;</P>
+<P><B>Readonly</B></P>
+<P>Use this property to read comment strings added to the Ogg file.</P>
+<P><HR></P>
+<P><A NAME="CurrentBitStream">CurrentBitStream : Integer;</P>
+<P>Read this property to get the number of the current bitstream being played (0 &lt = CurrentBitStream &lt BitStreams). Assigning a value to this property makes the component start  playback from the begininning of the specified logical bitstream. This property can be used only during actual playback process.</P>
+<P><B>See also</B> <A HREF="#BitStreams">BitStreams</A> property.</P>
+<P><HR></P>
+<P><A NAME="InstantBitRate">InstantBitRate : Integer;</P>
+<P><B>Readonly</B></P>
+<P>Use this property to get current bitrate (in bits per second) of the VBR-encoded Vorbis file.</P>
+<P><HR></P>
+<P><A NAME="MaxBitRate">MaxBitRate : Integer;</P>
+<P><B>Readonly</B></P>
+<P>Use this property to get the maximum bitrate (in bits per second) of the Vorbis file.</P>
+<P><HR></P>
+<P><A NAME="MinBitRate">MinBitRate : Integer;</P>
+<P><B>Readonly</B></P>
+<P>Use this property to get the minimum bitrate (in bits per second) of the Vorbis file.</P>
+<P><HR></P>
+<P><A NAME="NominalBitRate">NominalBitRate : Integer;</P>
+<P><B>Readonly</B></P>
+<P>Use this property to get the nominal bitrate (in bits per second) of the Vorbis file.</P>
+<P><HR></P>
+<P><A HREF=TVorbisIn.htm>TVorbisIn</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

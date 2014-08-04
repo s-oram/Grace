@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TAudioIn</TITLE>
+</HEAD>
+<BODY>
+
+<FONT COLOR="#800000"><H3><IMG SRC="Images/TAudioIn.bmp" WIDTH=24 HEIGHT=24> TAudioIn</H3>
+</FONT><P><HR></P>
+<P><A HREF="#Props"><U><FONT COLOR="#0000ff">Properties</U></FONT></A> <A HREF="#Meths"><U><FONT COLOR="#0000ff">Methods</U></FONT></A> Events</P>
+<P><B>Unit: </B>ACS_Audio</P>
+<P><B>Descends from:</B> <A HREF="TACSInput.htm"><U><FONT COLOR="#0000ff">TACSInput</U></FONT></A></P>
+<P>TAudioIn component acquires audio data from the soundcard device using OSS/ALSA drivers under Linux and Wave-audio devices under Windows. This component allows the application to record sound from all recordable soundcard channels (you should use TMixer component or some mixer application to select the record source and record level). In order to process recorded data you have to assign AudioIn component to Input property of some converter or output component.</P>
+<P>Under OSS Linux drivers and Windows it is possible to record simultaneously from several soundcards (using several TAudioIn components). If the soundcard supports duplex operation (playing back while recording from such sources as LineIn) is possible to use TAudioIn and TAudioOut at the same time.</P>
+<P><B>Linux note:</B> When connecting TAudioIn to some output component, set output component's Delay property to zero.</P>
+<P><B>See also: </B><A HREF="TMixer.htm"><U><FONT COLOR="#0000ff">TMixer</U></FONT></A>, <A HREF="TAudioOut.htm"><U><FONT COLOR="#0000ff">TAudioOut</U></FONT></A></P>
+<P><HR></P>
+<A NAME=Props><FONT COLOR="#000080"><H4>TAudioIn Properties</H4>
+</FONT>
+<P><A HREF="TAuInp.htm#BaseChannel"><U><FONT COLOR="#0000ff">BaseChannel</U></FONT></A></P>
+<P><A HREF="TAuInp.htm#InBitsPerSample"><U><FONT COLOR="#0000ff">InBitsPerSample</U></FONT></A></P>
+<P><A HREF="TAuInp.htm#InChannels"><U><FONT COLOR="#0000ff">InChannels</U></FONT></A></P>
+<P><A HREF="TAuInp.htm#InSampleRate"><U><FONT COLOR="#0000ff">InSampleRate</U></FONT></A></P>
+<P><A HREF="TAuInp.htm#RecordTime"><U><FONT COLOR="#0000ff">RecordTime</U></FONT></A></P>
+<P>Inherited from <A HREF="TACSInput.htm#Props">TACSInput</A></P>
+<P><HR></P>
+<A NAME=Meths>
+<FONT COLOR="#000080"><H4>TAudioIn Methods</H4>
+</FONT>
+<P>Inherited from <A HREF="TACSInput.htm#Meths">TACSInput</A></P>
+<P><HR></P>
+<P><A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TACSOutput Events</TITLE>
+</HEAD>
+<BODY>
+<H4>TACSOutput Events</H4>
+<P><HR></P>
+<P><A NAME="OnDone">OnDone : TOutputDoneEvent;</P>
+<P>TOutputDoneEvent<B> = procedure</B>(Sender : TComponent)<B> of object;</B>  </P>
+<P>This event is invoked when the output is finished.  Note: don't try to start other output job before OnDone event from the previous job is triggered. An attempt to do so will cause the "Component is buisy" exception. It is a good practice to desable output-starting controls in the method where the output component's Run method is called and to enable them in the output component's OnDone event handler.</P>
+<P><HR></P>
+<P><A NAME="OnProgress">OnProgress : TOutputProgressEvent;</P>
+<P>TOutputProgressEvent<B> = procedure</B>(Sender : TComponent)<B> of object;</B>  </P>
+<P>This event is invoked every time the Progress property value changes. Be careful when referencing GUI interface components in OnProgress event's handler.</P>
+<P><B>See also:</B> <A HREF=TACSOutp.htm#Progress>Progress</A> property</P>
+<P><HR></P>
+<P><A NAME="OnThreadException">OnThreadException : TThreadExceptionEvent</P>
+<P>TThreadExceptionEvent  = <B>procedure</B>(Sender : TComponent; E : Exception)<B> of object;</B></P>
+<P>Thread procedure should never terminate. For this reason all the exceptions that might arise in the thread procedure are caught within the procedure itself. The thread generates OnThreadException event to inform the application that an exception has occurred. Avoid any potential exception-rising actions in this event’s handler! Use the handler to reset application controls (if needed) and call the input component’s <A HREF="TACSInm.htm#Reset">Reset</A> method. See the CD ripper demo for an example of handling thread exceptions.</P>
+<P><HR></P>
+<P><A HREF=TACSOutput.htm>TACSOutput</A> <A HREF=index.htm>Home</A> <A HREF=ClassList.htm>ACS Classes</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P></BODY>
+</HTML>

@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TInputList Events</TITLE>
+</HEAD>
+<BODY>
+<H4>TInputList Events</H4>
+<P><HR></P>
+<P><A NAME="OnInputChanged">OnInputChanged : TInputChangedEvent;</P>
+<P><FONT FACE="Courier New"><B>TInputChangedEvent = procedure(Sender : TComponent; var Index : Integer; var Continue : Boolean) of object;</B></FONT></P>
+<P>This event is envoked when TInputList instance switches from one input item to enother. Index is the index of the item to be played next. You may change this value to play another item. For example, if you want the last input to be played again, you can write an event handler like this:</P>
+<P><PRE><FONT FACE="Courier New"><B>
+procedure TForm1.InputList1InputChanged(Sender: TComponent;
+  var Index: Integer; var Continue: Boolean);
+begin
+  if not GoToNext then Dec(Index);
+end;
+</B></FONT></PRE></P>
+<P>Note GoToNext variable (defined somewhere else) which ensures that the playback will not loop endlessly. The Continue parameter allows you to stop list playback (by setting it to False).</P>
+<P><HR></P>
+<P><A HREF=TInputList.htm>TInputList</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

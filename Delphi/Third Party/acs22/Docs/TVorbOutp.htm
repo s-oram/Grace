@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TVorbisOut Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TVorbisOut Properties</H4>
+<P><HR></P>
+<P><A NAME="Comments">Comments : TStringList;</P>
+<P>Use this property to add comment strings to the ogg file. Ogg comments usually have the form <BR>CommentName=CommentValue <BR>for example: 'TITLE=My Favourite Song'.</P>
+<P><HR></P>
+<P><A NAME="Compression">Compression : Single; </P>
+<P>Use this property to set the compression ratio for the file being created. The valid values vary from -0.1 (maximum compression, lowest quality) to 1.0 (minimum compression, highest quality).</P>
+<P>If DesiredNominalBitrate property is assigned a value other than brAutoSelect, Compression property is ignored.</P>
+<P><HR></P>
+<P><A NAME="DesiredMaximumBitrate">DesiredMaximumBitrate : TVorbisBitrate; </P>
+<P>Use this property to set the desired maximum bitrate limit for the file being created. The values of this property are brXXX constants, indicating bitrates in kbps. Depending on the parameters of the incoming audio data the actual maximum bitrate may be hihger than that specified with this property. This property has an effect only if DesiredNominalBitrate property is assigned a value other than brAutoSelect.</P>
+<P><HR></P>
+<P><A NAME="DesiredNominalBitrate">DesiredNominalBitrate : TVorbisBitrate; </P>
+<P>If this property is set to a value other than brAutoSelect, the Compression property is ignored and the size/quality of the output file are determined by the values of DesiredNominalBitrate, DesiredMaximumBitrate, and MinimumBitrate properties. The values of this property are brXXX constants, indicating bitrates in kbps. Depending on the parameters of the incoming audio data the output file's actual nomial bitrate may be different from that specified with this property.</P>
+<P><HR></P>
+<P><A NAME="MinimumBitrate">MinimumBitrate : TVorbisBitrate; </P>
+<P>Use this property to set the minimum bitrate limit for the file being created. The values of this property are brXXX constants, indicating bitrates in kbps. This property has an effect only if DesiredNominalBitrate property is assigned a value other than brAutoSelect.</P>
+<P><HR></P>
+<P><A NAME="Serial">Serial : Integer; </P>
+<P>Use this property to set the serial number of the logical bitstream in Virbis file. The value of this property is of any concern only if you create multy-streamed Vorbis files (in foAppend mode).</P>
+<P><HR></P>
+<P><A HREF=TVorbisOut.htm>TVorbisOut</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

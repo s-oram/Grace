@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>ACS Introduction</TITLE>
+</HEAD>
+<BODY>
+
+<FONT COLOR="#800000"><H2 ALIGN="CENTER">The Audio Components Suite Introduction</H2>
+</FONT>
+<P><FONT FACE="Times"><B>Author:</B> Andrei Borovsky, <A HREF=mailto:audiocomps@mail.ru>audiocomps@mail.ru</A></FONT></P>
+<B><P>This document covers the following topics:</P>
+<P><A HREF=#Whatsnew>What's new in ACS 2.2</A></P>
+<P><A HREF=#Thanks>Thanks Section</A></P>
+<P><A HREF=#Introduction>Introduction to ACS Programming</A></P>
+<DIR><A HREF=#BasicOp>Basic Operation</A></DIR>
+<DIR><A HREF=#ChTasks>Chaining Tasks</A></DIR>
+<DIR><A HREF=#SuThreads>Suspending Threads</A></DIR>
+<DIR><A HREF=#ThreadEx>Handling Thread Exceptions</A></DIR>
+<DIR><A HREF=#InputSwitching>Input Switching</A></DIR>
+<DIR><A HREF=#BuisyError>Avoiding Common Errors</A></DIR>
+<DIR><A HREF=#SearchLibs>Searching Linux Libraries</A></DIR>
+<P><A HREF=#What_you_need>What other libraries you need to use all the features of ACS</A></P>
+<P><A HREF=#Installation>ACS Installation</A><BR></P></B>
+<FONT SIZE=5 FACE="Times" COLOR="#800000">
+<HR>
+<A NAME=Whatsnew><P ALIGN="CENTER"><B>What's new in ACS 2.2</B></P></FONT>
+<UL><LI>Changes in the object model: TACSFileOut class has been introduced to allow more uniformity in the output in different file formats. TACSConverter class is now the base for all converter classes allowing more flexibility in building complex audio-processing chains.</LI>
+<LI>TWaveIn component is now capable of reading files in MS DVI IMA ADPCM and MS ADPCM encodings. TWaveOut component can now store data in  MS DVI IMA ADPCM encoding.</LI>
+<LI>TWaveOut and TVorbisOut components can now append data to already existing files. Seeking/positioning mechanism for file output components has been improved.</LI>
+<LI>FLAC format support is added.</LI>
+<LI>TMP3ToWav converter component has been added. With this component that uses MAD decoder you can convert mp3 files into wave files or streams.</LI>
+<LI>Sample rate converter (TRateConverter component) has been completely rewritten to improve conversion quality.</LI>
+<LI>New audio processing components, including TConvolver and TSoundIndicator have been added.</LI>
+<LI>TSincFilter component implementing several sinc-based filters has been added.</LI>
+<LI>Under Windows it is now possible to do the playback and sound recording simultaneously and to use several TAudioOut components at the same time.</LI>
+<LI>Under Linux new run-time shared libraries search mechanism simplifies package usage and applications deployment across various Linux distributions.</LI>
+</UL>
+<P>There are also some other minor changes and fixes in ACS.</P>
+<FONT SIZE=5 FACE="Times" COLOR="#800000"><A NAME=Thanks><P ALIGN="CENTER"><B>Thanks Section</B></P></FONT>
+<P>Several people have made contributions to the ACS code. Among those I want to thank specially:</P>
+<P><B>Thomas la Cour</B>, tlc@top-house.dk, http://www.top-house.dk/~nr161/delphi/ - for providing Monkey Audio input/output components.</P>
+<P><B>Jan Henrik Ejme</B> (jan.h.ejme@xhlp.com) - for adding ACM-plaing support.</P>
+<P><B>Thomas Grelle</B> (grelle@online.de) - for improving CDRip support.</P>
+<P><B>Jan Bartels</B> (ATR Industrie-Elektronik GmbH & Co. KG, Viersen, Germany) - for some useful corrections and suggestions.</P>
+<P>And all other folks who sent me their comments and suggestions.</P>
+<FONT SIZE=5 FACE="Times" COLOR="#800000"><A NAME=Introduction><P ALIGN="CENTER"><B>Introduction to ACS Programming</B></P>
+</FONT>
+<P><A NAME="BasicOp"><B>Basic Operation</B></P>
+<P><FONT FACE="Times" SIZE=3 COLOR="#000000">The Audio Components Suite is a set of components designed to handle different sound processing tasks, such as reading and storing data in different audio formats, working with sound hardware, audio streams mixing and so on.</P> <P>Most of the components in the Audio Component Suite belong to one of three categories: input components, output components, converter components. There are also two components that do not fit into this scheme. These are TCDPlayer component and TMixer component.</P>
+<P>The input components acquire audio input from some source (device, disk file, etc.) and convert it into a digital audio stream which is the internal audio representation in ACS. The output components take in the digital audio produced by input components and send it to some audio output device or store it on disk in a specified audio file format. Converter components perform different operations on audio streams. These components take in a digital audio stream and output a stream which is modified according to the function of the component. The following diagram illustrates the flow of audio data in the ACS processing chain:</P>
+<P><IMG SRC="Images/diagram.png" WIDTH=156 HEIGHT=218>
+</P>
+<P>All components are linked via their Input properties. Red arrows show the direction in which the data flows in the chain. In this example we read audio data from the soundcard input with TAudioIn (input component), pass it through the TSoundIndicator component ("converter" component) and store in a *.wav file via TWaveOut component (output component).
+</P>
+<P>The converter component is not a necessary element in this chain. In many cases you will just connect input and output components together to convert data from one format to the other or to perform I/O with some particular device. As you can see ACS isn't just a collection of components implementing interfaces to some hardware or file formats. It is rather a set of building blocks with which you can construct a complete sound-processing application.</P>
+<P>The driving force of this sound processing chain is an output component. Output components use internal thread objects that call data-retrieving functions of the input/converter components attached to the output component. Note that ACS provides you with several ways to set the amount of CPU time consumed by these threads: TheradPriority, Delay, and SuspendWhenIdle properties. You can use this features to set the best performance/CPU usage ratio in your ACS applications.</P>
+<P>Suppose you want your application to convert data from audio CD tracks to Ogg Vorbis audio compression format. First, you put into your form a CDIn input component that reads data from CD tracks (don't confuse this component with TCDPlayer component which is designed to <I>play</I> CD tracks). Now you need an output component, and in our case it is VorbisOut. In order to chain two components together you have to assign CDIn component to the VorbisOut's Input property:</P>
+<P><FONT FACE="Courier"><B>VorbisOut1.Input := CDIn1;</B></FONT></P>
+<P>Now set the CD track you want to be converted:</P>
+<P><FONT FACE="Courier"><B>CDIn1.StartTrack := 1;<BR>
+CDIn1.EndTrack := 1;</B></FONT></P>
+<P>This tells the component to read only one track (the first track on the CD).</P>
+<P>Now you have to set up a file name for an output file:</P>
+<P><FONT FACE="Courier"><B>VorbisOut1.FileName := 'Track1.ogg';</B>
+</FONT></P>
+<P>And desired compression ratio:</P>
+<P><FONT FACE="Courier"><B>VorbisOut1.Compression := 0.1;</B></FONT></P>
+<P>Believe it or not, you have now set up everything for the data conversion. In order to perform the conversion, simply call:</P>
+<P><FONT FACE="Courier"><B>VorbisOut1.Run;</B>
+</FONT></P>
+<P>The actual compression process runs in its own thread, while your main thread can do something else. You can control how conversion goes on by checking VorbisOut1's Progress property. When the conversion is finished, the VorbisOut1.OnDone property will be called.</P>
+<P>You get access to an input component's data directly in a non-threaded way. The following example shows how data can be obtained from an audio CD with CDIn component.</P>
+<P><PRE><FONT FACE="Courier"><B>var</BR>
+  Len, DataSize : Integer;</BR>
+  Data : Pointer;</BR>
+begin<BR>
+  ...<BR>
+  CDIn1.StartTrack := 1;<BR> 
+  CDIn1.EndTrack := 1;<BR>
+  CDIn1.Init;<BR>
+  Len := CDIn1.GetData(Data, DataSize);<BR>
+  while Len &lt;&gt; 0 do<BR>
+  begin<BR>
+    // Process CD data<BR>
+    Len := CDIn1.GetData(Data, DataSize);<BR>
+  end;<BR>
+  CDIn1.Flush;</B>
+</FONT></PRE></P>
+<P>Let's take another example. Suppose, we want to get stereo audio data from a *.wav file, convert it to mono and save to another *.wav file. We will need WaveIn component, which reads data from a *.wav file, MSConverter component that converts stereo strem to mono and vice versa, and WaveOut component that writes data to a *.wav file. Now we chain these three components:</P>
+<P><PRE><FONT FACE="Courier"><B>WaveIn1.FileName := 'input.wav';<BR>
+MSConverter1.Input := WaveIn1;<BR>
+WaveOut1.Input := MSConverter1;<BR>
+WaveOut1.FileName := 'output.wav';<BR>
+WaveOut1.Run;</B>
+</FONT></PRE></P>
+<P>Converter components take input from input components or from other converters and output data to output components or other converters. It is possible to chain any number of converters this way. There is a special converter in ACS called AudioMixer. This component takes in two audio streams and mixes them into a single output stream. 
+In the new version of ACS AudioMixer can also concatenate to incoming audio streams, i.e. make one stream where two input streams go consecutively</P>
+<P><A NAME="ChTasks"><B>Chaining Tasks</B></P>
+<P><B>Note:</B> the technique described below is only useful when the input sources have different audio parameters (sample rate, number of channels, number of bits per sample). In case when all the inputs have the same audio parameters you may want to use TInputList component instead.</P>
+<P>In some cases you may want to start the next audio task automatically right after the previous task has been finished. Suppose you build an audio player with a kind of playlist. You want the files in the playlist to be played one after another.</P> 
+<P>When the current file playback or other output operation is finished output component generates OnDone event indicating it has finished current output operation. The problem is however that generally you cannot call output component’s Run method from the component’s own OnDone event handler to play the next file. You could use messages or timers to bypass this problem but there is another, purely ACS way to do it.</P>
+<P>Use two output components instead of one. In our example you can use two AudioOut components in your player application. When you start playing the playlist the first AudioOut component takes the job. After the first audio file playback is finished the first AudioOut component generates the OnDone event. In this OnDone event’s handler you select the second file from the playlist and make the second AudioOut component to play the file by calling its Run method. When the second AudioOut component has finished the playback it also generates the OnDone event. In this OnDone event’s handler you turn back to the first AudioOut component and make it to play the third file from the playlist and so on. You can find a working example of this technique in the Audio Player Demo.</P>
+<P><A NAME=#SuThreads><B>Suspending Threads</B></P>
+<P>This topic is thoroughly described in the farther documentation, but people send me so many questions on it that I decided to put an additional explanation here.</P>
+<P>The actual input and output is performed in ACS by threads. It is natural to put the thread into the suspended state when it has no job to do and resume the thread when it has one. However, when developing under Kylix IDE suspending and resuming threads may be inconvenient since every time such an operation is performed, signals are emitted. These signals are trapped by the IDE, and the program execution stops. That is why SuspendWhenIdle property has been introduced. The idea behind this property is that when you develop an application under Kylix, you set this property to False, so that the ACS threads don’t get suspended. When you’re preparing the final release, you set this property to True which makes the threads to be suspended when there is no job for them and thus reduces CPU load.</P>
+<P>Under Linux the default value of SuspendWhenIdle property is False so threads don’t get suspended by default. Under Windows, where there is no problem with signals the default value of this property is True and there is no need to change it.</P>
+<P>Two following pictures show the CPU load with SuspendWhenIdle set to False and True respectively. The high plateau on the right side of the first picture corresponds to the high CPU cycles consumption by the idle thread not being suspended.</P>
+<P><IMG SRC="Images/SWIDisabled.png"> <IMG SRC="Images/SWIEnabled.png"></P>
+<P><A NAME=ThreadEx><B>Handling Thread Exceptions</B></A></P>
+<P>Output components' threads are designed in such a way that when an exception occures within the thread, it is caught by the thread procedure itself and isn't propagated. To be informed about exceptions that might arise during thread execution, assign a handler to the OnThreadException event of the output component. A reference to the exception object is passed to this event handler, so that you can analyse the exception.</P>
+<P><A NAME=InputSwitching><B>Input Switching</B></P>
+<P>Starting from the ACS version 2.2 most of the components that have Input property (output and converter components) allow assigning new input on the fly (i.e. while the component is doing playback). It is important to remember that when changing input on the fly, new input audio stream parameters must be thhe same as the old ones. Note that TAudioProcessor Component doesn't allow modifing Input property while it is playing. InputList component allows modifing all input items at anytime except the item, currently being played. You can switch to other InputList's item on the fly by changing the components CurrentInput property.</P>
+<P><A NAME="BuisyError"><B>Avoiding Common Errors</B></P>
+<P>This section explains how to avoid some errors that are most often encountered by the programmers beginning to use ACS.</P>
+<P><UL>
+<LI>Never call ouput component's Run method if the component is buisy. You can check if it is by inspecting the value of the Status property. Ouput component goes to the buisy state after its Run method is called. When component becomes idle, its OnDone event is triggered.</LI>
+<LI>While most output and converter components allow modifying Input property "on the fly" (see <A HREF="#InputSwitching">Input Switching</A>), some do not. At present TAudioMixer doesn't allow modifing Input1 property on the fily (changing Input2 property on the fly is possible in amRTMix mode) TAudioProcessor Component doesn't allow modifing input property while it is playing. InputList component allows modifing all input items at anytime except the item, currently being played.</LI>
+<LI>With CDIn component it is a good practice to check if the right kind of media is in the drive before calling any disc-concerning method. You can check the CD in the drive by means of DiscInfo and Status properties.</LI>
+<LI>When using file input components always check if the assigned file is valid with Valid property before reading any file description properties or calling Run method.</LI>
+<LI>Some components may propagate exception if the aplication exit is being performed while these components are buisy doing some work. To avoid this, you have to stop audio-processing chain before the app's form and its components are destroyed. Suppose, you have an audio-processing chain driven by TAudioOut component. In the form's OnClose handler you could add some code like this:<BR>
+<PRE><FONT FACE="Courier New"><B>AudioOut1.Stop;
+while AudioOut1.Status &lt&gt tosIdle do;</B></FONT></PRE><BR>
+This will slow application termination a bit (only if the app quits amidst some audio job being done) but guarantees there is no exception messages on exit.
+ </LI>
+</UL></P>
+<P><A NAME="SearchLibs"><B>Searching Linux Libraries</B></P>
+<P>Under Linux the shared libraries required by ACS (Ogg Vorbis libraries and the like) may have different filenames and locations depending on Linux distro. To simplify libraries linking ACS uses dynamic linking and run-time libraries search. This search however can slow down appliactions sturtup. If you develop an application for a particular distro and you know where exactly some library is placed and what its file name is you may disable run-time search. This requires you to provide full library name and disable SEARCH_LIBS directive in the appropriate unit. Let's for example look at VorbisFile unit. If the run-time search is anabled, the corresponding fragment of the unit looks like this:</P>
+<P><PRE><FONT FACE="Courier"><B>
+{$IFDEF LINUX}
+  LibvorbisfilePath =  'libvorbisfile.so*'; // search mask
+  {$DEFINE SEARCH_LIBS}  // directive
+{$ENDIF}
+</B></FONT></PRE></P>
+<P>In order to disable run-time search change this fragment to:</P>
+<P><PRE><FONT FACE="Courier"><B>
+{$IFDEF LINUX}
+  LibvorbisfilePath =  '/usr/lib/libvorbisfile.so.0.1'; // exact file name
+  // {$DEFINE SEARCH_LIBS}  // directive disabled
+{$ENDIF}
+</B></FONT></PRE></P>
+<P ALIGN="CENTER"><B><FONT SIZE=5 COLOR="#800000"><A NAME=What_you_need>What you may need</B></FONT></P>
+<P><FONT SIZE=3 COLOR="#000000">Some of ACS components require certain shared libraries, which are not included in the package but are publicly available and may be found on many sites. In order to use VorbisIn and VorbisOut components you will need Ogg Vorbis shared libraries. These libraries are available at <A HREF="http://www.xiph.org/"><U>www.xiph.org</U></A> (you will need either Windows or Linux versions of these libraries depending on the development environment you use).</P>
+<P>Under Linux the TMPEGIn component requires smpeg library by Locki Entertainment. AOLive Linux component requires libao library.</P>
+<P>TFLACIn and TFLACOut components depend on libFLAC.dll library under Windows and libFLAC.so library under Linux.</P>
+<P>TMP3ToWav component requires MADLib.dll library under Windows and libmad.so library under Linux. Under linux libmad.so library is also required for TWaveIn component to read ACM-encoded files (you don't need this library if you only read wave files in other encodings).</P>
+<P>Monkey Audio components require MacDLL.dll library. This library is included into windlls.zip archive (see below). You can also download it with Monkey Audio SDK available on the Net.</P>
+<P>Under Windows TCDIn component requires CDRip.dll library distibuted under GPL (I use the variant of the library distributed with NeoAudio). TMP3Out component requires lame_enc.dll (under Windows) or libmp3lame.so (under Linux).</P>
+<P>Note on using LAME: LAME is an encoder created for educational purposes only. It may be illegal to use LAME in your Country. Check this out.</P>
+<P>It is important to note that since all libraries required by ACS components are loaded dynamically at run-time, you can use ACS as a whole without these libraries. Of course, those components <i>requiring</i> certain library will only work if the library is found.</P>
+<P><B>Windows note:</B> you can download all dlls required by ACS components from <A HREF="http://www.mtu-net.ru/aborovsky/acs/windlls.zip">http://www.mtu-net.ru/aborovsky/acs/windlls.zip</A> (binary form). You can also download CDRip.dll and lame-enc.dll sources from <A HREF="http://www.mtu-net.ru/aborovsky/acs/CDRip.zip">http://www.mtu-net.ru/aborovsky/acs/CDRip.zip</A> and <A HREF="http://www.mtu-net.ru/aborovsky/acs/lame-3.93.1.zip">http://www.mtu-net.ru/aborovsky/acs/lame-3.93.1.zip</A></P>.
+<B><FONT SIZE=5 COLOR="#800000"><A NAME=Installation><P ALIGN="CENTER">Installation</P>
+</B></FONT><P><FONT SIZE=3 COLOR="#000000">If you have installed previous version of ACS, uninstall it before installing the new version. Click Component-&gt;Install Packages menu item. In the opened dialog box select the Audio Components Suite package and click "Remove" button. Make sure to remove all the previous version files from the IDE search path.</P>
+<P>To install Audio Components Suite, first compile the package. Create or select directory where you want the components to be installed (you can use your Delphi/Kylix lib directory). We will call this directory ACS directory. Now go to the Src directory of the ACS distribution, and copy all the files from either Linux or Win32 directory to the ACS directory. Copy all the files from the Common directory into ACS directory.  
+Now go to the ACS directory, open ACS.dpk file in your IDE. Press "Options" button, in the opened dialog go to Directories/Conditionals tab and set up the output paths to the directory where you have copied ACS source files, press OK and then in the package window press "Compile" button. Click Component-&gt;Install Packages menu item. In the opened dialog box click "Add" button. Browse to the ACS directory and select the file called bplACS.so.2.2 (Kylix) or ACS.bpl (Delphi). After this two new tabs: "Audio I/O" and "Audio Processing" will appear on the components palette. Unless you have selected your Kylix/Delphi lib directory as ACS directory, you will have to add the ACS installation directory to the Kylix/Delphi libraries search path. This can be done on the "Library" page of the "Environment Options" dialog box (Tools-&gt;Environment Options... menu item).</P></FONT>
+<P><HR></P>
+<P><A HREF="index.htm">Home</A> <A HREF="ClassList.htm">ACS Classes</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

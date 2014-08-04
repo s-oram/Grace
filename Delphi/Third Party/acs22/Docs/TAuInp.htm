@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TAudioIn Properties</TITLE>
+</HEAD>
+<BODY>
+
+<H4>TAudioIn Properties</H4>
+<P><HR></P>
+<P><A NAME="BaseChannel">BaseChannel : Integer; </P>
+<P>Soundcards and their drivers present several audiochannels. There is a variable called InputChannelsCount in ACS_Audio unit. The channels are numbered starting from zero and the maximum number possible is InputChannelsCount  - 1.</P>
+<P><B>Linux Note:</B> Under ALSA there is only one channel available for each soundcard installed.</P>
+<P><B>Windows Note:</B> Under Windows this property holds the id of the current wave-audio device [0..InputChannelsCount-1] where InputChannelsCount variable holds the total number of input wave-audio devices.</P>
+<P><HR></P>
+<P><A NAME="InBitsPerSample">InBitsPerSample : Integer;</P>
+<P>Use this property to set the number of bits per sample for the input audio stream. Possible values are 8 and 16.</P>
+<P><HR></P>
+<P><A NAME="InChannels">InChannels : Integer;</P>
+<P>Use this property to set the number of channels for the input audio stream. Possible values are 1 (mono) and 2 (stereo).</P>
+<P><HR></P>
+<P><A NAME="InSampleRate">InSampleRate : Integer;</P>
+<P>Use this property to set the sample rate for the input audio stream. Possible values are determined by the soundcard hardware.</P>
+<P><HR></P>
+<P><A NAME="RecordTime">RecordTime : Integer; </P>
+<P>This property allow you to set the record duration time in seconds. If you assign -1 to this property TAudioIn will never stop recording by itself. In both cases you can stop recording at any time by calling Stop method of the respective output component.</P>
+<P><HR></P>
+<P><A HREF=TAudioIn.htm>TAudioIn</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>

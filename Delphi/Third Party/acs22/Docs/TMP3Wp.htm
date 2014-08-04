@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<TITLE>TMP3ToWav Properties</TITLE>
+</HEAD>
+<BODY>
+<H4>TMP3ToWav Properties</H4>
+<P><HR></P>
+<P><A NAME="Buisy">Buisy : Boolean;</P>
+<P><B>Read only</B></P>
+<P>Read this property to determine if the component is buisy.</P>
+<P><HR></P>
+<P><A NAME="InputFile">InputFile : TFileName;</P>
+<P>Use this property to set the name of the input mp3 file for the conversion. Note that if InputStream property is also assigned, InputFile will be ignored.</P>
+<P><HR></P>
+<P><A NAME="InputStream">InputStream : TStream;</P>
+<P>Use this property to set the input stream containing mp3 frames for the conversion. This property precedes over InputFile so InputFile is used only when InputStream is unassigned. To unassign previously assigned InputStream property, set it to <B>nil</B>.</P>
+<P><HR></P>
+<P><A NAME="OutputFile">OutputFile : TFileName;</P>
+<P>Use this property to set the name of the output wav file for the converter. Note that if OutputStream property is also assigned, OutputFile will be ignored.</P>
+<P><HR></P>
+<P><A NAME="OutputStream">OutputStream : TStream;</P>
+<P>Use this property to set the output stream which wav-formatted data will be written to. This property precedes over OutputFile so OutputFile is used only when OutputStream is unassigned. To unassign previously assigned OutputStream property, set it to <B>nil</B>.</P>
+<P><HR></P>
+<P><A NAME="Progress">Progress : Integer;</P>
+<P><B>Read only</B></P>
+<P>This property indicates current job progress (in percents).</P>
+<P><HR></P>
+<P><A HREF=TMP3ToWav.htm>TMP3ToWav</A> <A HREF=ClassList.htm>ACS Classes</A> <A HREF=index.htm>Home</A></P>
+<P><HR></P>
+<P>Copyright © 2002, 2003 Andrei Borovsky. All rights reserved.</P>
+</BODY>
+</HTML>
