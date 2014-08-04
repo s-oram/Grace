@@ -167,7 +167,6 @@ begin
   VamTextBox1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
 
   VamKnob1.KnobMode := TKnobMode.ModEdit;
-  VamKnob1.DrawKnob_ModEditOverlay := DrawKnob_ModEditOverlay;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
