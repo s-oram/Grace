@@ -360,8 +360,8 @@ begin
   if MsgID = TLucidMsgID.Command_UpdateSampleDisplay     then UpdateSampleDisplay;
   if MsgID = TLucidMsgID.Command_UpdateSampleInfo        then UpdateSampleDisplayInfo;
 
-  if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := true;
-  if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.ShowReplaceMessage := false;
+  if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.LargeTextMessage := 'Replace Sample';
+  if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.LargeTextMessage := '';
 
   if MsgID = TLucidMsgID.Command_Sample_ZoomIn then
   begin
@@ -623,7 +623,7 @@ var
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;
 begin
-  SampleOverlay.ShowReplaceMessage := false;
+  SampleOverlay.LargeTextMessage := '';
 
   Plugin.StopPreview;
 
@@ -732,18 +732,23 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragLeave(Sender: TObject);
 begin
-  SampleOverlay.ShowReplaceMessage := false;
+  SampleOverlay.LargeTextMessage := '';
 end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragOver(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
+var
+  fn : string;
 begin
-  //TODO: Nothing here yet.
-
   if not assigned(Plugin) then exit;
 
-  if assigned(Plugin.FocusedRegion)
-    then SampleOverlay.ShowReplaceMessage := true
-    else SampleOverlay.ShowReplaceMessage := false;
+  if Data.GetFiles.Count > 0 then
+  begin
+    fn := Data.GetFiles[0];
+
+    if IsSupportedAudioFormat(fn)   then SampleOverlay.LargeTextMessage := 'Replace Sample' else
+    if IsSupportedProgramFormat(fn) then SampleOverlay.LargeTextMessage := 'Load Program'
+    else SampleOverlay.LargeTextMessage := '';
+  end;
 
 end;
 

@@ -29,7 +29,6 @@ type
     fShowMarkerTags: boolean;
     fNoSampleMessage: string;
     fOnZoomChanged: TSampleOverlayZoomEvent;
-    fShowReplaceMessage: boolean;
     fSampleEndMod: single;
     fLoopStartMod: single;
     fLoopEndMod: single;
@@ -47,6 +46,7 @@ type
     fSampleStartModMax: single;
     fOnMouseOverMarkerChanged: TNotifyEvent;
     fIsCurrentSampleMissing: boolean;
+    fLargeTextMessage: string;
     procedure SetSampleEnd(const Value: integer);
     procedure SetSampleStart(const Value: integer);
     procedure SetLoopEnd(const Value: integer);
@@ -54,9 +54,9 @@ type
     procedure SetShowLoopPoints(const Value: boolean);
     procedure SetShowMarkerTags(const Value: boolean);
     procedure SetNoSampleMessage(const Value: string);
-    procedure SetShowReplaceMessage(const Value: boolean);
     procedure SetShowModPoints(const Value: boolean);
     procedure SetIsModEditActive(const Value: boolean);
+    procedure SetLargeTextMessage(const Value: string);
   protected
     FeedbackData : PGuiFeedbackData;
     SampleIsValid : boolean;
@@ -99,7 +99,7 @@ type
     procedure Draw_LoopEnd(const xPos : single);
     procedure Draw_ModLoopPoint(const xPos : single);
     procedure Draw_ZoomSelection(const x1, x2 : integer);
-    procedure Draw_ReplaceMessage;
+    procedure Draw_LargeTextMessage(const s : string);
     procedure Draw_ModPointAreas;
     procedure Draw_ModPointAmounts;
     procedure Draw_SamplePointLine(const xPos : single; const aColor : TRedFoxColor);
@@ -143,7 +143,9 @@ type
 
     property ShowModPoints  : boolean read fShowModPoints  write SetShowModPoints;
     property ShowLoopPoints : boolean read fShowLoopPoints write SetShowLoopPoints;
-    property ShowReplaceMessage : boolean read fShowReplaceMessage write SetShowReplaceMessage;
+
+    // LargeTextMessage draws a large message over the sample. Set message to an empty message to clear.
+    property LargeTextMessage : string read fLargeTextMessage write SetLargeTextMessage;
 
     property IsCurrentSampleMissing : boolean read fIsCurrentSampleMissing write fIsCurrentSampleMissing; //TODO:MED This could be deleted.
     property IsModEditActive : boolean read fIsModEditActive write SetIsModEditActive;
@@ -209,12 +211,11 @@ begin
   MessageFont.Height := 16;
   MessageFont.Style  := [TFontStyle.fsBold];
 
-  ShowReplaceMessage := false;
-
-  fSampleStartMod := 0.25;
-  fSampleEndMod := 0;
-  fLoopStartMod := 0;
-  fLoopEndMod   := 0;
+  fLargeTextMessage := '';
+  fSampleStartMod   := 0;
+  fSampleEndMod     := 0;
+  fLoopStartMod     := 0;
+  fLoopEndMod       := 0;
 end;
 
 destructor TLuciditySampleOverlay.Destroy;
@@ -780,6 +781,15 @@ begin
   end;
 end;
 
+procedure TLuciditySampleOverlay.SetLargeTextMessage(const Value: string);
+begin
+  if Value <> fLargeTextMessage then
+  begin
+    fLargeTextMessage := Value;
+    Invalidate;
+  end;
+end;
+
 procedure TLuciditySampleOverlay.SetLoopEnd(const Value: integer);
 begin
   if Value <> fLoopEnd then
@@ -852,15 +862,6 @@ begin
   end;
 end;
 
-procedure TLuciditySampleOverlay.SetShowReplaceMessage(const Value: boolean);
-begin
-  if Value <> fShowReplaceMessage then
-  begin
-    fShowReplaceMessage := Value;
-    Invalidate;
-  end;
-end;
-
 procedure TLuciditySampleOverlay.SetSampleInfo(const aIsValid: boolean; const aSampleFrames: integer);
 begin
   if (aIsValid <> SampleIsValid) or (aSampleFrames <> SampleFrames) then
@@ -898,9 +899,9 @@ begin
     TextBounds := Rect(0,0, Width, Height);
     BackBuffer.DrawText(fNoSampleMessage, Font, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds);
 
-    if (ShowReplaceMessage) then
+    if fLargeTextMessage <> '' then
     begin
-      Draw_ReplaceMessage;
+      Draw_LargeTextMessage(fLargeTextMessage);
     end;
   end;
 
@@ -1098,9 +1099,9 @@ begin
       Draw_ZoomSelection(ZoomDragx1, ZoomDragx2);
     end;
 
-    if (ShowReplaceMessage) then
+    if fLargeTextMessage <> '' then
     begin
-      Draw_ReplaceMessage;
+      Draw_LargeTextMessage(fLargeTextMessage);
     end;
   end;
 
@@ -1431,7 +1432,7 @@ begin
   BackBuffer.TextOut(x2 + 4, 4, Msg, Font, kZoomSelectionColor);
 end;
 
-procedure TLuciditySampleOverlay.Draw_ReplaceMessage;
+procedure TLuciditySampleOverlay.Draw_LargeTextMessage(const s: string);
 var
   tw, th : single;
   Text : string;
@@ -1445,7 +1446,7 @@ begin
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
   BackBuffer.UpdateFont(MessageFont);
 
-  Text := 'Replace Sample';
+  Text := s;
 
   tw := round(BackBuffer.TextWidth(Text));
   th := round(BackBuffer.TextHeight);
@@ -1479,9 +1480,9 @@ begin
   TextColor := GetRedFoxColor(kMessageColor);
 
   BackBuffer.DrawText(Text, MessageFont, TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignCenter, TextBounds, TextColor);
-
-
 end;
+
+
 
 
 procedure TLuciditySampleOverlay.Draw_ModPointAreas;
