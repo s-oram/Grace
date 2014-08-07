@@ -235,8 +235,9 @@ begin
 
   //======= Build the GUI =======
   DropFileTarget := TRedFoxDropFileTarget.Create(RedFoxContainer);
-  DropFileTarget.RegisterTarget(SampleMapFrame.SampleMap);
+  DropFileTarget.RegisterTarget(SampleMapFrame.SampleMap); //TODO:MED SampleMapFrame is used and should be deleted.
   DropFileTarget.RegisterTarget(MiniSampleDisplayFrame.SampleOverlay);
+  DropFileTarget.RegisterTarget(FileBrowserFrame.FileTreeView);
   //===================================
 
 

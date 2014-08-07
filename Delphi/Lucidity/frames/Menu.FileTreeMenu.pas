@@ -104,7 +104,7 @@ begin
       DirName := ExtractFileName(OD.FileName);
 
       Plugin.SampleDirectories.AddSampleDirectory(DirName, DirPath);
-      Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleDirectoriesChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
     end;
   end;
 end;

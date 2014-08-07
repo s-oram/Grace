@@ -233,6 +233,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Height = 465
             Opacity = 255
             HitTest = True
+            OnOleDragDrop = FileTreeViewOleDragDrop
             SelectedNodeColor = clBlack
             SelectedNodeAlpha = 35
             ChildIndent = 12
@@ -250,6 +251,8 @@ object FileBrowserFrame: TFileBrowserFrame
             Font.Style = []
             Align = alClient
             Visible = True
+            ExplicitLeft = 1
+            ExplicitTop = 1
           end
         end
       end

@@ -6,10 +6,12 @@ uses
   VamLib.UniqueID,
   VamLib.Debouncer,
   VamLib.ZeroObject,
-  Menu.FileTreeMenu,
+  uLucidityEnums,
   Lucidity.Interfaces,
+  Menu.FileTreeMenu,
   eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandardv2,
-  uLucidityEnums, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  VamVisibleControl,
+  Winapi.Windows, Winapi.Messages, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamCustomTreeView, VamTreeView,
   VamScrollBox, RedFoxGraphicControl, VamGraphicControl, VamLabel, VamDiv,
@@ -38,6 +40,7 @@ type
     procedure FileTreeViewTreeRightClicked(Sender: TObject);
     procedure PreviewOnOffButtonChanged(Sender: TObject);
     procedure PreviewControlLabelClick(Sender: TObject);
+    procedure FileTreeViewOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -80,6 +83,7 @@ type
 implementation
 
 uses
+  FileCtrl, SysUtils,
   VamLayoutWizard,
   uGuiUtils,
   Lucidity.PluginParameters,
@@ -552,5 +556,40 @@ begin
 
   SampleDirectoriesChanged;
 end;
+
+procedure TFileBrowserFrame.FileTreeViewOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
+var
+  Files : TStringList;
+  c1: Integer;
+  fn : string;
+  DirPath, DirName : string;
+  Ext : string;
+begin
+  //=== Check drag and dropped files for directories. Add any directories to the browser =====
+  Files := Data.GetFiles;
+  if assigned(Files) then
+  begin
+    for c1 := 0 to Files.Count-1 do
+    begin
+      fn := Files[c1];
+      Ext := ExtractFileExt(fn);
+      if Ext = '' then
+      begin
+        fn := ExcludeTrailingPathDelimiter(fn);
+        DirName := ExtractFileName(fn);
+        DirPath := ExtractFileDir(fn);
+        DirPath := IncludeTrailingPathDelimiter(DirPath) + DirName;
+        Plugin.SampleDirectories.AddSampleDirectory(DirName, DirPath);
+      end;
+    end;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
+  end;
+end;
+
+
+
+
+
+
 
 end.
