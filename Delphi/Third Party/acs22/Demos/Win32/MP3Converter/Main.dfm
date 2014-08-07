@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 192
   Top = 109
-  Width = 257
-  Height = 153
   Caption = 'MP3 Converter'
+  ClientHeight = 115
+  ClientWidth = 241
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -55,8 +55,6 @@ object Form1: TForm1
     Top = 80
     Width = 233
     Height = 17
-    Min = 0
-    Max = 100
     Smooth = True
     Step = 2
     TabOrder = 3
@@ -71,20 +69,15 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 105
-    Width = 249
+    Top = 96
+    Width = 241
     Height = 19
     Panels = <
       item
         Width = 50
       end>
-    SimplePanel = False
-  end
-  object MP3ToWav1: TMP3ToWav
-    OnDone = MP3ToWav1Done
-    OnProgress = MP3ToWav1Progress
-    Left = 152
-    Top = 40
+    ExplicitTop = 105
+    ExplicitWidth = 249
   end
   object OpenDialog1: TOpenDialog
     Filter = 'MP3 files|*.mp3'
@@ -95,12 +88,5 @@ object Form1: TForm1
     Filter = 'Wave|*.wav|Ogg Vorbis|*.ogg'
     Left = 216
     Top = 40
-  end
-  object WaveIn1: TWaveIn
-    EndSample = -1
-    Loop = False
-    StartSample = 0
-    Left = 152
-    Top = 72
   end
 end

@@ -90,7 +90,8 @@ uses
   //eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
-  DateUtils;
+  DateUtils,
+  ACS_MAD;
 
 type
   TProcDictionary = TDictionary<integer, TDateTime>;
@@ -179,16 +180,24 @@ procedure TForm1.Button1Click(Sender: TObject);
 var
   OpenDialog : TFileOpenDialog;
   LoopStart, LoopEnd : integer;
+  Mp3ToWav : TMp3ToWav;
 begin
   OpenDialog := TFileOpenDialog.Create(nil);
+  Mp3ToWav := TMp3ToWav.Create(nil);
 
   if OpenDialog.Execute then
   begin
-    ReadLoopPoints(OpenDialog.FileName, LoopStart, LoopEnd);
-    VamLabel1.Text := IntToStr(LoopStart) + ' - ' + IntToStr(LoopEnd);
+    //ReadLoopPoints(OpenDialog.FileName, LoopStart, LoopEnd);
+    //VamLabel1.Text := IntToStr(LoopStart) + ' - ' + IntToStr(LoopEnd);
+
+    //Mp3ToWav.InputFile := OpenDialog.FileName;
+    //Mp3ToWav.OutputFile := 'D:\TestConversion.mp3';
+    //Mp3ToWav.Run;
   end;
 
+
   OpenDialog.Free;
+  Mp3ToWav.Free;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
