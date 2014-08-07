@@ -251,8 +251,6 @@ object FileBrowserFrame: TFileBrowserFrame
             Font.Style = []
             Align = alClient
             Visible = True
-            ExplicitLeft = 1
-            ExplicitTop = 1
           end
         end
       end

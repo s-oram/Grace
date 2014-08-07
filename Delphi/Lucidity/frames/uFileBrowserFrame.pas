@@ -385,10 +385,12 @@ begin
     NodeData := FileBrowserAddOn.GetFocusedNodeData;
     if assigned(NodeData) then
     begin
+      //TODO:HIGH Crash here when deleting directory in browser.
       if FileExists(NodeData.FileName)
         then Plugin.TriggerPreview(NodeData.FileName)
         else Plugin.ClearPreviewInfo;
     end;
+
   end;
 
   Debounce(PreviewDebounceID, 150, TDebounceEdge.deTrailing, Proc);
