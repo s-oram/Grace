@@ -628,7 +628,7 @@ begin
 
   Region.GetProperties^.SampleVolume := -MaxDB;
 
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateSampleDisplay);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
 end;
 
 

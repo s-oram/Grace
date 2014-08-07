@@ -118,7 +118,6 @@ function TxpBrowserSelectDialog.Execute: boolean;
 var
   //== WinXP ==
   Root, Directory : string;
-  Options: TSelectDirExtOpts;
   //== WinVista ==
 begin
   case xpMode of

@@ -280,7 +280,6 @@ begin
   if Value <> fSelectedModSlot then
   begin
     fSelectedModSlot := Value;
-    MotherShip.SendMessageUsingGuiThread(TLucidMsgID.ModSlotChanged);
   end;
 end;
 

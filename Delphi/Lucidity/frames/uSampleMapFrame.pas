@@ -403,7 +403,7 @@ begin
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
 
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -430,7 +430,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -446,12 +446,12 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapDblClick(Sender: TObject);
 begin
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideSampleMapEdit);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideSampleMapEdit);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
@@ -462,7 +462,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapShowRegionContextMenu(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -477,8 +477,8 @@ end;
 procedure TSampleMapFrame.SampleMapShowReplaceRegionMessage(Sender: TObject; Value: Boolean);
 begin
   if Value
-    then Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_ShowReplaceRegionMessage)
-    else Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_HideReplaceRegionMessage);
+    then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowReplaceRegionMessage)
+    else Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideReplaceRegionMessage);
 
 end;
 
@@ -499,7 +499,7 @@ begin
 
   UpdateRegionInfoDisplay;
   UpdateSampleRegions;
-  Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleRegionChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
 end;
 
 procedure TSampleMapFrame.MidiKeyChanged;

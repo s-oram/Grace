@@ -70,7 +70,7 @@ begin
   if Tag = 1 then
   begin
     Plugin.InitializeState;
-    Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   end;
 
 

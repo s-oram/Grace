@@ -318,6 +318,7 @@ object SampleMapFrame: TSampleMapFrame
           Opacity = 255
           Text = 'Close'
           HitTest = True
+          AutoTrimText = False
           Color = '$FF3E3E3E'
           ColorMouseOver = '$FF3E3E3E'
           ColorBorder = '$00000000'

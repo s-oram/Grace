@@ -46,12 +46,6 @@ type
     Create a ZeroObject implementation that can be added to frames etc
     that can't descend from the TZeroObject class.
 
-    Think about getting rid of the SendMessageUsingGuiThread() function.
-    - It would really simplify the mother ship implementation.
-    - Cross thread communication would be good but the current implement
-      only goes one way and it's a tad complicated. Perhaps a more
-      general solution could be implemented.
-
     - Zero objects should have a 'Name' parameter so objects can
       be received. Maybe the name parameter should be dynamic so
       objects can match multiple names at different times...
@@ -102,10 +96,6 @@ type
 
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj:IZeroObject);
-
-    //procedure SendMessage(MsgID : cardinal); overload;
-    //procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
-    procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
@@ -197,11 +187,6 @@ type
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVclTS(MsgID : cardinal);
-
-    procedure SendMessage(MsgID : cardinal); overload;
-    procedure SendMessage(MsgID : cardinal; Data : Pointer); overload;
-
-    procedure SendMessageUsingGuiThread(MsgID : cardinal);
 
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
@@ -414,23 +399,6 @@ begin
 
   if IsD = false
     then raise Exception.Create('ZeroObject faided to deregister itself.');
-end;
-
-
-
-procedure TMotherShip.SendMessage(MsgID: cardinal);
-begin
-  SendMessage(MsgID, nil);
-end;
-
-procedure TMotherShip.SendMessage(MsgID: cardinal; Data: Pointer);
-begin
-  MsgMain(MsgID, Data);
-end;
-
-procedure TMotherShip.SendMessageUsingGuiThread(MsgID: cardinal);
-begin
-  MsgVclTS(MsgID);
 end;
 
 procedure TMotherShip.SetIsGuiOpen(const Value: boolean);

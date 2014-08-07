@@ -158,7 +158,7 @@ begin
       TPluginParameter.VoiceMode:
       begin
         Plugin.VoiceMode  := TVoiceModeHelper.ToEnum(ParValue);
-        Plugin.Globals.MotherShip.SendMessageUsingGuiThread(TLucidMsgID.Command_UpdateControlVisibility);
+        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
       end;
       TPluginParameter.VoiceGlide:    Plugin.VoiceGlide := ParValue;
       TPluginParameter.PreviewVolume: Plugin.PreviewVolume := ParValue;
