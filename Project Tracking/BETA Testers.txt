@@ -13,6 +13,22 @@ waveshaperkit@gmail.com
 =================================================================================================
     BETA Testers 
 =================================================================================================
+Joseph
+stereovegan@mm.st
+- is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
+- no email acess at OS level. 
+thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
+  BETA Send History:
+  - Lucidity 0.0.1.33
+    thunderlink://messageid=1406820798.1919228.147723018.23527BC8@webmail.messagingengine.com
+
+Chris Holmes
+futuresproof@gmail.com
+  response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
+  BETA Send History:
+    - Lucidity 0.0.1.33
+      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
+
 Scott Conway (Great Tester!)
 viscience1@yahoo.co.uk
 - Scott is a Controllerist.
@@ -29,12 +45,7 @@ Terry Foster
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-Chris Holmes
-futuresproof@gmail.com
-	response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
-	BETA Send History:
-    - Lucidity 0.0.1.33
-      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
+
 
 
 
@@ -43,24 +54,12 @@ thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-Marco
-djfonplaz@gmail.com
-thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
-- No test builds sent yet.
-  BETA Send History:
-  - Lucidity 0.0.1.33
-    thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
+
     
 
 Pete
 grabmyknee@gmail.com
 thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
-	BETA Send History:
-  - Lucidity 0.0.1.33
-
-
-stereovegan@mm.st
-thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
 	BETA Send History:
   - Lucidity 0.0.1.33
 
@@ -90,6 +89,14 @@ thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
 	BETA Send History:
     - Lucidity 0.0.1.33
     NOTE: Do not send anything again unless I hear back from last mail out.
+
+Marco
+djfonplaz@gmail.com
+thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
+  BETA Send History:
+  - Lucidity 0.0.1.33
+    thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
+    -- Not interested in Lucidity. Do not send any more builds.
 
 =================================================================================================
     Potential BETA Testers (Expressed interest in testing or a product)
