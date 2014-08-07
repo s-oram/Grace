@@ -197,4 +197,12 @@ object Form1: TForm1
       'Memo1')
     TabOrder = 1
   end
+  object Edit1: TEdit
+    Left = 368
+    Top = 439
+    Width = 401
+    Height = 22
+    TabOrder = 7
+    Text = 'Edit1'
+  end
 end

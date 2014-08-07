@@ -49,6 +49,7 @@ type
     VamLabel2: TVamLabel;
     VamTextBox1: TVamTextBox;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
+    Edit1: TEdit;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -177,27 +178,29 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+// c:\test1\test2\
 var
-  OpenDialog : TFileOpenDialog;
-  LoopStart, LoopEnd : integer;
-  Mp3ToWav : TMp3ToWav;
+  fn : string;
+  DirPath, DirName : string;
+  Ext : string;
 begin
-  OpenDialog := TFileOpenDialog.Create(nil);
-  Mp3ToWav := TMp3ToWav.Create(nil);
+  fn := Edit1.Text;
 
-  if OpenDialog.Execute then
+  DirPath := ExtractFileDir(fn);
+  DirName := ExtractFileName(DirPath);
+  Ext := ExtractFileExt(fn);
+  if Ext = '' then
   begin
-    //ReadLoopPoints(OpenDialog.FileName, LoopStart, LoopEnd);
-    //VamLabel1.Text := IntToStr(LoopStart) + ' - ' + IntToStr(LoopEnd);
-
-    //Mp3ToWav.InputFile := OpenDialog.FileName;
-    //Mp3ToWav.OutputFile := 'D:\TestConversion.mp3';
-    //Mp3ToWav.Run;
+    fn := ExcludeTrailingPathDelimiter(fn);
+    DirName := ExtractFileName(DirPath);
+    DirPath := ExtractFileDir(fn);
+    DirPath := IncludeTrailingPathDelimiter(DirPath) + DirName;
+    ShowMessage(DirPath);
   end;
 
 
-  OpenDialog.Free;
-  Mp3ToWav.Free;
+
+
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
