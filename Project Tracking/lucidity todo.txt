@@ -14,8 +14,7 @@ About Lucidity,I tray to load SFZ file,but there is an error,In attachment the s
 Anyway,these sampler it's a great potential tool.
 thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
 
-bug
-- lucidity crashes when deleting a directory in the file browser.
+
 
  bug
  - TFileOpenDialog only works on Vista and upwards. Need a WinXP compatible solution. 

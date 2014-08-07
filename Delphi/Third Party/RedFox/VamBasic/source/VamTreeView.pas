@@ -110,6 +110,8 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
+    procedure Clear; override;
+
     procedure CalcTreeDimensions; override;
 
     procedure SetFontSize(Size:integer);
@@ -208,6 +210,13 @@ begin
 end;
 }
 
+
+procedure TVamTreeView.Clear;
+begin
+  inherited;
+
+  FocusedNode := nil;
+end;
 
 constructor TVamTreeView.Create(AOwner: TComponent);
 begin

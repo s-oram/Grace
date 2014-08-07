@@ -40,7 +40,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure Clear;
+    procedure Clear; virtual;
     function CreateNode(aParent:TVamTreeViewNode):TVamTreeViewNode; virtual;
     function CreateRootNode:TVamTreeViewNode; virtual;
 
@@ -118,6 +118,7 @@ end;
 
 procedure TVamCustomTreeView.Clear;
 begin
+
   if MasterNode.HasChildren then DeleteChildNodes(MasterNode, false);
   CalcTreeDimensions;
   Invalidate;

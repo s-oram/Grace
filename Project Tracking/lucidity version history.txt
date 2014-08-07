@@ -1,4 +1,5 @@
 == Finished for the next release ==
+New:
 - The sample display now shows "Loading Program" when dragging and dropping a supported program file
   on the sample display.
 - SFZ files can be loaded via dragging and dropping on sample display.
@@ -7,10 +8,12 @@
 - Knob modulation depth can now extend pass the maximum knob value.
 - Drag and drop a folder on the Lucidity browser to add it. 
 
+Bug Fixes:
+- lucidity would crash when deleting a directory in the file browser.
+
 
 
 === BETA v0.0.1.38 (7-Aug-2014) ===
-
 Rewrote the internal messaging system. Previously components could only send messages
 to the GUI. Now components can send messages to audio and other non-visual components. 
 
@@ -26,13 +29,6 @@ Add Duplicate Regions command to the sample map context menu.
 A modulation slot can now be muted. 
 
 Knob parameter changes are now smoothed. 
-
-
-
-
-
-
-
 
 
 === Alpha Version 0.0.1.19 released 5th February ===
