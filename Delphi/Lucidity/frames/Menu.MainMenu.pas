@@ -33,6 +33,7 @@ type
 implementation
 
 uses
+  XPLAT.Dialogs,
   Windows,
   ShellApi,
   eePluginDataDir,
@@ -61,7 +62,7 @@ procedure TMainMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
   SaveDialog : TFileSaveDialog;
-  OpenDialog : TFileOpenDialog;
+  OpenDialog : TxpFileOpenDialog;
 begin
   assert(Sender is TMenuItem);
 
@@ -92,7 +93,7 @@ begin
 
   if Tag = 3 then
   begin
-    OpenDialog := TFileOpenDialog.Create(nil);
+    OpenDialog := TxpFileOpenDialog.Create(nil);
     AutoFree(@OpenDialog);
 
     SetupFileOpenDialog_Program(OpenDialog);

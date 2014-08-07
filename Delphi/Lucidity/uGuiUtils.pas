@@ -9,6 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  XPLAT.Dialogs,
   eeTypes,
   eeEnumHelper,
   Math,
@@ -59,7 +60,8 @@ type
   TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile);
 
 procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
-procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
+procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog); overload; //TODO:HIGH eventually this method will be deleted.
+procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
 
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 
@@ -295,6 +297,15 @@ begin
   ft.FileMask    := '*.*';
 
   OpenDialog.DefaultExtension := 'lpg';
+end;
+
+procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
+begin
+  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+  begin
+    OpenDialog.InitialDir := Lucidity.Globals.LastProgramLoadDir;
+  end;
+  OpenDialog.Filter := 'Lucidity Program|*.lpg|All Files|*.*';
 end;
 
 

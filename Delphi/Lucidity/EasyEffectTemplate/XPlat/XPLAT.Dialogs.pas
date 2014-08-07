@@ -28,10 +28,9 @@ type
 
     function Execute : boolean;
 
-    property DefaultExt: string   read FDefaultExt  write FDefaultExt;
+    property DefaultExt: string   read FDefaultExt  write FDefaultExt;  //example: 'exe' or 'txt'
     property FileName: string     read FFileName    write FFileName;
-
-    // Same as TOpenDialog.
+    // Similar to TOpenDialog.
     // Format: <first displayed name>|<first file extension>|<second displayed name>|<second file extension>|...|<n-th displayed name>|<n-th file extension>
     // Example:
     //    Filter := 'Applications|*.EXE|Text files|*.TXT';
