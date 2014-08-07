@@ -143,7 +143,7 @@ procedure TFileTreeViewNodeContextMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
   NodeData  : PNodeData;
-  OD : TFileOpenDialog;
+  OD : TxpBrowserSelectDialog;
   DirName, DirPath : string;
 begin
   assert(Sender is TMenuItem);
@@ -180,12 +180,11 @@ begin
 
   if Tag = 5 then
   begin
-    OD := TFileOpenDialog.Create(nil);
+    OD := TxpBrowserSelectDialog.Create(nil);
     AutoFree(@OD);
 
     // NOTE: Using file open dialog to select folders.
     // - http://stackoverflow.com/a/7422764/395461
-    OD.Options :=  [fdoPickFolders];
     if OD.Execute then
     begin
       DirPath := OD.FileName;
@@ -298,29 +297,20 @@ end;
 
 procedure TFileTreeViewNodeContextMenu.EventHandler_OpenWithUnknownApp(Sender: TObject);
 var
-  OD : TFileOpenDialog;
-  ft : TFileTypeItem;
+  OD : TxpFileOpenDialog;
   SoundEditorApp : string;
 begin
-  OD := TFileOpenDialog.Create(nil);
+  OD := TxpFileOpenDialog.Create(nil);
   AutoFree(@OD);
 
-  ft := OD.FileTypes.Add;
-  ft.DisplayName := 'Executable';
-  ft.FileMask := '*.exe';
-
-  OD.DefaultExtension := 'exe';
+  OD.Filter := 'Executable|*.exe';
 
   if od.Execute then
   begin
     SoundEditorApp := od.FileName;
-
     Plugin.Globals.Options.AddNewSoundEditor(SoundEditorApp);
-
     ShellOpenFileWith(NodeFileName, SoundEditorApp);
   end;
-
-
 end;
 
 

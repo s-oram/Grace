@@ -25,8 +25,9 @@ bug
 
 bug - modulate a knob. go to main - clear all modulation. modulation amount doesn't reset.
 
-
 TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
+
+Add rename sample directory option.
 
 - need a "Move Sample To New Key Group..." command. 
 

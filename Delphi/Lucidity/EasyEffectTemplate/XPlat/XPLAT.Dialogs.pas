@@ -12,6 +12,12 @@ type
   TxpMode = (WinXP, WinVista);
 
   TxpFileOpenDialog = class
+  private
+    FFileName: string;
+    FFilterIndex: Integer;
+    FDefaultExt: string;
+    FFilter: string;
+    FInitialDir: string;
   protected
     xpMode   : TxpMode;
     WinXP    : TOpenDialog;
@@ -19,6 +25,20 @@ type
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
+
+    function Execute : boolean;
+
+    property DefaultExt: string   read FDefaultExt  write FDefaultExt;
+    property FileName: string     read FFileName    write FFileName;
+
+    // Same as TOpenDialog.
+    // Format: <first displayed name>|<first file extension>|<second displayed name>|<second file extension>|...|<n-th displayed name>|<n-th file extension>
+    // Example:
+    //    Filter := 'Applications|*.EXE|Text files|*.TXT';
+    //    Filter := 'Pascal files|*.PAS;*.DPK;*.DPR';
+    property Filter: string       read FFilter      write FFilter;
+    property FilterIndex: Integer read FFilterIndex write FFilterIndex default 1;
+    property InitialDir: string   read FInitialDir  write FInitialDir;
   end;
 
   TxpBrowserSelectDialog = class
@@ -40,7 +60,8 @@ implementation
 uses
   SysUtils,
   JclSysInfo,
-  Vcl.FileCtrl;
+  Vcl.FileCtrl,
+  VamLib.Utils;
 
 
 function GetXPMode:TxpMode;
@@ -80,6 +101,7 @@ end;
 constructor TxpFileOpenDialog.Create(AOwner: TComponent);
 begin
   xpMode := GetxpMode;
+  //xpMode := TxpMode.WinXP;
 
   case xpMode of
     TxpMode.WinXP:    WinXP    := TOpenDialog.Create(AOwner);
@@ -87,6 +109,12 @@ begin
   else
     raise Exception.Create('Unexpected type.');
   end;
+
+  FFileName   := '';
+  FDefaultExt := '';
+  FFilter     := '';
+  FInitialDir := '';
+  FDefaultExt := '';
 end;
 
 destructor TxpFileOpenDialog.Destroy;
@@ -95,6 +123,90 @@ begin
   if assigned(WinVista) then WinVista.Free;
 
   inherited;
+end;
+
+function TxpFileOpenDialog.Execute: boolean;
+var
+  FileTypesList : TStringList;
+  c1: Integer;
+  Index : integer;
+  ft : TFileTypeItem;
+  FilterTypesProcessed : string;
+begin
+  case xpMode of
+    TxpMode.WinXP:
+    begin
+      //======= Setup File Tpes ========================
+      FilterTypesProcessed := '';
+      FileTypesList := TStringList.Create;
+      try
+        ExplodeString('|', fFilter, FileTypesList);
+        for c1 := 0 to FileTypesList.Count div 2 - 1 do
+        begin
+          Index := c1 * 2;
+          FilterTypesProcessed := FilterTypesProcessed + FileTypesList[Index] + ' (' + FileTypesList[Index+1] + ')';
+          FilterTypesProcessed := FilterTypesProcessed + '|' + FileTypesList[Index+1];
+          if c1+1 <= FileTypesList.Count div 2 - 1
+            then FilterTypesProcessed := FilterTypesProcessed + '|';
+        end;
+      finally
+        FileTypesList.Free;
+      end;
+      //================================================
+      WinXP.Filter     := FilterTypesProcessed;
+      WinXP.FileName   := FFileName;
+      WinXP.DefaultExt := FDefaultExt;
+      WinXP.InitialDir := FInitialDir;
+      WinXP.DefaultExt := FDefaultExt;
+
+
+      if WinXP.Execute then
+      begin
+        FFileName := WinXP.FileName;
+        result := true;
+      end else
+      begin
+        FFileName := '';
+        result := false;
+      end;
+    end;
+
+    TxpMode.WinVista:
+    begin
+      //======= Setup File Tpes ========================
+      WinVista.FileTypes.Clear;
+      FileTypesList := TStringList.Create;
+      try
+        ExplodeString('|', fFilter, FileTypesList);
+        for c1 := 0 to FileTypesList.Count div 2 - 1 do
+        begin
+          Index := c1 * 2;
+          ft := WinVista.FileTypes.Add;
+          ft.DisplayName := FileTypesList[Index];
+          ft.FileMask    := FileTypesList[Index+1];
+        end;
+      finally
+        FileTypesList.Free;
+      end;
+      //================================================
+      WinVista.DefaultFolder    := FInitialDir;
+      WinVista.DefaultExtension := FDefaultExt;
+      WinVista.FileTypeIndex    := FFilterIndex;
+      WinVista.FileName         := FFileName;
+
+      if WinVista.Execute then
+      begin
+        FFileName := WinVista.FileName;
+        result := true;
+      end else
+      begin
+        FFileName := '';
+        result := false;
+      end;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 { TxpBrowserSelectDialog }

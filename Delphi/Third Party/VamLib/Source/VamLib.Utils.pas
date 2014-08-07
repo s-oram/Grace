@@ -2,6 +2,9 @@ unit VamLib.Utils;
 
 interface
 
+uses
+  Classes;
+
 type
   PObject = ^TObject;
 
@@ -44,6 +47,8 @@ function IntToStrB(Int:integer; MinDigits:integer):string;
 function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
 function IncrementName(Name:string; MinDigits:integer = 2):string;
 function RandomString(const CharacterCount : integer):string;
+
+procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);
 
 
 // Use the DataIO functions to convert values to and from strings for
@@ -479,6 +484,30 @@ begin
   result := s;
 end;
 
+procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);
+// Source: http://delphi.about.com/od/adptips2005/qt/parsedelimited.htm
+var
+  dx : integer;
+  ns : string;
+  txt : string;
+  delta : integer;
+begin
+  delta := Length(delimiter) ;
+  txt := Str + delimiter;
+  ListOfStrings.BeginUpdate;
+  ListOfStrings.Clear;
+  try
+    while Length(txt) > 0 do
+    begin
+      dx := Pos(delimiter, txt) ;
+      ns := Copy(txt,0,dx-1) ;
+      ListOfStrings.Add(ns) ;
+      txt := Copy(txt,dx+delta,MaxInt) ;
+    end;
+  finally
+    ListOfStrings.EndUpdate;
+  end;
+end;
 
 function LowestValue(const x1, x2 : integer):integer;
 begin

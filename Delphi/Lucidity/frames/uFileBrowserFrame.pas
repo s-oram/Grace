@@ -184,18 +184,13 @@ begin
   PreviewVolumeKnob.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-7,4);
 
 
-
-
   //==== Parameters ====
   GuiStandard_RegisterControl(aGuiStandard, PreviewVolumeKnob,         TPluginParameter.PreviewVolume);
-
-
 
   // TODO: NOTE: Setting the color here doesn't work correctly in Win64.
   //ScrollBox.Color_Border     := GetRedFoxColor(kPanelVeryDark);
   //ScrollBox.Color_Background := GetRedFoxColor(kPanelDark);
   //ScrollBox.Color_Foreground := GetRedFoxColor(kPanelLight);
-
 
   MainContextMenu.Initialize(aPlugin);
   NodeContextMenu.Initialize(aPlugin);
@@ -317,10 +312,6 @@ begin
 end;
 
 
-
-
-
-
 procedure TFileBrowserFrame.PreviewInfoChanged;
 var
   Text : string;
@@ -349,7 +340,6 @@ begin
     PreviewInfo3.Text := '';
   end;
 
-
   if PreviewInfo_ShowVolume = false then
   begin
     if Plugin.IsPreviewEnabled
@@ -361,12 +351,8 @@ begin
     PreviewControlLabel.Text := Text;
   end;
 
-
   if PreviewOnOffButton.IsOn <> Plugin.IsPreviewEnabled
     then PreviewOnOffButton.IsOn := Plugin.IsPreviewEnabled;
-
-
-
 end;
 
 
