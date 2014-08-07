@@ -124,6 +124,8 @@ begin
   case xpMode of
     TxpMode.WinXP:
     begin
+       // Using SelectDirectory()
+       // http://stackoverflow.com/a/7422937/395461
        if SelectDirectory('Select a directory', Root, Directory, [sdNewUI]) then
        begin
          fFileName := Directory;
