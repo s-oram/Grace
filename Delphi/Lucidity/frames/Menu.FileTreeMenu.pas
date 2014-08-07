@@ -54,6 +54,7 @@ type
 implementation
 
 uses
+  XPLAT.Dialogs,
   uLucidityExtra,
   SysUtils,
   uAutoFree,
@@ -83,7 +84,7 @@ end;
 procedure TFileTreeViewMainContextMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
-  OD : TFileOpenDialog;
+  OD : TxpBrowserSelectDialog;
   DirName, DirPath : string;
 begin
   assert(Sender is TMenuItem);
@@ -92,12 +93,8 @@ begin
 
   if Tag = 1 then
   begin
-    OD := TFileOpenDialog.Create(nil);
+    OD := TxpBrowserSelectDialog.Create(nil);
     AutoFree(@OD);
-
-    // NOTE: Using file open dialog to select folders.
-    // - http://stackoverflow.com/a/7422764/395461
-    OD.Options :=  [fdoPickFolders];
     if OD.Execute then
     begin
       DirPath := OD.FileName;
