@@ -846,8 +846,8 @@ const
   kArcSpan  = 300;
 var
   MidX, MidY : single;
-  Angle1, Angle2 : single;
-  s1, s2 : single;
+  //Angle1, Angle2 : single;
+  //s1, s2 : single;
   r : single;
 begin
   MidX := Width  * 0.5;
