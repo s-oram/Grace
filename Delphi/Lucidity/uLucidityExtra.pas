@@ -62,10 +62,10 @@ var
 begin
   ext := ExtractFileExt(FileName);
 
-  if SameText(ext, '.lpg')
-    then result := true
-    else result := false;
+  if SameText(ext, '.sfz') then exit(true);
+  if SameText(ext, '.lpg') then exit(true);
 
+  result := false;
 end;
 
 

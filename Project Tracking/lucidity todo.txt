@@ -15,7 +15,10 @@ thunderlink://messageid=1406820958.1920048.147734482.78E9326E@webmail.messaginge
 bug 
  - some wavefiles from Joesph don't load. 
 
+bug - modulate a knob. go to main - clear all modulation. modulation amount doesn't reset.
 
+
+TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
 
 - need a "Move Sample To New Key Group..." command. 
 
@@ -45,8 +48,6 @@ bug
   I'm not sure where the clicking is coming from.
   Try replacing all critical sections with slim-reader-writer locks. perhaps.
 
-
-
 PS : one thing that i *really*don't like in Lucidity, is that the default patch has everything disabled by default (the volume is set at zero, the enveloppe release is set at zero too, so as soon as you load a sound, you expect to hear it when hitting a key but it is actually muted) : is it by design, or could it be changed in a forthcoming version ?
 From Yann
 thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
@@ -59,7 +60,8 @@ Installer needs option to put data folder
 - or custom location.
 
 
-
+- Andy reports the Voice Mod frame tab text is too large and overflows 
+  over the tabs.
 
 =============================================================================
 > is it possible to layer groups and use different Amp, Filter, 

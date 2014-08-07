@@ -1,4 +1,13 @@
 == Finished for the next release ==
+- SFZ files can be loaded via dragging and dropping on sample display.
+- SFZ files now show in the browser. 
+- Changed the knob modulation edit drawing.
+- Knob modulation depth can now extend pass the maximum knob value.
+- Drag and drop a folder on the Lucidity browser to add it. 
+
+
+
+=== BETA v0.0.1.38 (7-Aug-2014) ===
 
 Rewrote the internal messaging system. Previously components could only send messages
 to the GUI. Now components can send messages to audio and other non-visual components. 
