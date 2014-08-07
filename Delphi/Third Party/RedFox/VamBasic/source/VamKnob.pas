@@ -179,6 +179,7 @@ const
   kMinAngle = 30;
   kMaxAngle = 300;
   kArcSpan  = 300;
+  kColor_ModSelector = '$aa83FBF5';
 
 
 // TranslateAngleRadiusToXY is used by VstKnob to draw the Pointer line.
@@ -305,8 +306,6 @@ begin
 
   if (IsKnobEnabled) and (Button = mbLeft) and ((ssCtrl in Shift) = false) then
   begin
-    ShowMouseOverEditMode := false;
-
     CurrentEditMode := CalculateKnobEditMode(Shift, x, y);
 
     IsGrabbed := true;
@@ -414,6 +413,9 @@ begin
       // position limits.
 
       // NOTE: Clamp the mod amount values to the end of the knob ranges.
+
+
+      {
       if InternalPos + NewValue > 1 then
       begin
         NewValue := 1 - InternalPos;
@@ -423,6 +425,19 @@ begin
       if ExternalPos + NewValue < 0 then
       begin
         NewValue := 0 - InternalPos;
+        UpdateReferencePoints(X, Y);
+      end;
+      }
+
+      if NewValue > 1 then
+      begin
+        NewValue := 1;
+        UpdateReferencePoints(X, Y);
+      end;
+
+      if NewValue < -1 then
+      begin
+        NewValue := -1;
         UpdateReferencePoints(X, Y);
       end;
 
@@ -449,11 +464,13 @@ begin
     IsGrabbed := false;
     IsBeingEdited := false;
 
+    {
     if InternalPos + InternalModAmount > 1
       then InternalModAmount := 1 - InternalPos;
 
     if InternalPos + InternalModAmount < 0
       then InternalModAmount := 0 - InternalPos;
+    }
 
     if InternalPos <> ExternalPos then
     begin
@@ -565,8 +582,8 @@ procedure TVamKnob.SetModAmount(const Value: single);
 begin
   if IsBeingEdited then exit;
 
-  assert(Value >= -1);
-  assert(Value <= 1);
+  //assert(Value >= -1);
+  //assert(Value <= 1);
 
   if (Value <> ExternalModAmount) or (Value <> InternalModAmount) then
   begin
@@ -699,17 +716,16 @@ begin
 
     DrawKnob_Arc;
 
-    if KnobMode = TKnobMode.PositionEdit
-      then DrawKnob_ModDepth
-      else DrawKnob_ModAmount;
-
-
     if (ShowMouseOverEditMode) and (KnobMode = TKnobMode.ModEdit) then
     begin
       if (MouseOverEditMode = TKnobMode.ModEdit)
         then DrawKnob_ModEditOverlay
         else DrawKnob_PosEditOverlay;
     end;
+
+    if KnobMode = TKnobMode.PositionEdit
+      then DrawKnob_ModDepth
+      else DrawKnob_ModAmount;
 
   end else
   begin
@@ -832,18 +848,29 @@ var
   MidX, MidY : single;
   Angle1, Angle2 : single;
   s1, s2 : single;
+  r : single;
 begin
   MidX := Width  * 0.5;
   MidY := Height * 0.5;
 
+  {
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := GetAggColor(clAqua, 100);
+  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(kColor_ModSelector);
 
   Angle1 := kMinAngle;
   Angle2 := kMinAngle + kArcSpan;
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
   BackBuffer.BufferInterface.Arc(MidX, MidY, ModLineDist, ModLineDist, s1, s2);
+  }
+
+
+  BackBuffer.BufferInterface.LineColor := GetRedFoxColor(kColor_ModSelector, 255);
+  BackBuffer.BufferInterface.LineWidth := 1.8;
+  BackBuffer.BufferInterface.NoFill;
+
+  r := 0.48 * Min(Width, Height);
+  BackBuffer.BufferInterface.Circle(MidX, Midy, r);
 end;
 
 procedure TVamKnob.DrawKnob_PosEditOverlay;
@@ -853,10 +880,10 @@ var
 begin
   MidX := Width  * 0.5;
   MidY := Height * 0.5;
-  r := 0.2 * Min(Width, Height);
+  r := 0.17 * Min(Width, Height);
 
   BackBuffer.BufferInterface.NoLine;
-  BackBuffer.BufferInterface.FillColor := GetAggColor(clAqua, 100);
+  BackBuffer.BufferInterface.FillColor := GetRedFoxColor(kColor_ModSelector);
   BackBuffer.BufferInterface.Circle(MidX, MidY, r);
 end;
 
@@ -909,17 +936,22 @@ begin
   MiddleX := Width * 0.5;
   MiddleY := Height * 0.5;
 
+  Color2 := GetRedFoxColor(kColor_ModSelector,255);
+  BackBuffer.BufferInterface.LineColor := Color2;
   BackBuffer.BufferInterface.LineWidth := ModLineWidth;
-  BackBuffer.BufferInterface.LineColor := fModLineColor;
 
-  Angle1 := kMinAngle + kArcSpan * Clamp((InternalPos), 0, 1);
-  Angle2 := kMinAngle + kArcSpan * Clamp((InternalPos + ModAmount), 0, 1);
+
+  //Angle1 := kMinAngle + kArcSpan * Clamp((InternalPos), 0, 1);
+  //Angle2 := kMinAngle + kArcSpan * Clamp((InternalPos + ModAmount), 0, 1);
+
+  Angle1 := kMinAngle + kArcSpan * (InternalPos);
+  Angle2 := kMinAngle + kArcSpan * (InternalPos + ModAmount);
 
   CalcStartSweep(Angle1, Angle2, s1, s2);
 
   BackBuffer.BufferInterface.Arc(MiddleX, MiddleY, ModLineDist, ModLineDist, s1, s2);
 
-  Color2 := fModLineColor;
+  Color2 := GetRedFoxColor(kColor_ModSelector,255);
   Color2.AdjustLightness(0.1);
 
   BackBuffer.BufferInterface.LineWidth := ModLineWidth * 0.7;
