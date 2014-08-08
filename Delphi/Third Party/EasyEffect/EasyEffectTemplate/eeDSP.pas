@@ -21,6 +21,9 @@ function SamplesToBeats(Samples, BPM, SampleRate: double): double; inline;
 function SyncToSamples(SyncFactor, BPM, SampleRate: double): double; inline;
 function SamplesToSync(Samples, BPM, SampleRate: double): double; inline;
 
+function SyncToFreq(const SyncFactor, BPM : double):double; inline;
+function FreqToSync(const Freq, BPM : double):double; inline;
+
 function DecibelsToVoltage(dB:single):single; inline;
 function VoltageToDecibels(const Voltage:single):single; inline;
 
@@ -273,22 +276,42 @@ end;
 
 function SyncToSamples(SyncFactor, BPM, SampleRate: double): double; inline;
 begin
-  result := (SyncFactor * 4) * SampleRate * 60 / BPM;
+  //TODO:MED This method doesn't match the SyncToFreq conversion. AFAIK
+  //result := SyncFactor * SampleRate * 60 / BPM;
+end;
+
+function SyncToFreq(const SyncFactor, BPM : double):double; inline;
+begin
+  // TODO:MED This matches Zebra! This is right. I don't think the other conversion methods are!!
+  // 1/1 should corrospond to 0.5hz = 1 bar at 120bpm.
+  // 1/4 should corrospond to 4/4 kick drum or 0.25hz.
+  // 1/4 dot. The dot adds 50%. ie 2->3.
+  result := BPM / (SyncFactor * 240);
+end;
+
+function FreqToSync(const Freq, BPM : double):double; inline;
+const
+  OneOver240 = 1/240;
+begin
+  result := BPM / Freq * OneOver240;
 end;
 
 function SamplesToSync(Samples, BPM, SampleRate: double): double; inline;
 begin
-  result := Samples * BPM / (SampleRate * 60) * 0.25;
+  //TODO:MED This method doesn't match the SyncToFreq conversion. AFAIK
+  result := Samples * BPM / (SampleRate * 60);
 end;
 
 function BeatsToSamples(SyncFactor, BPM, SampleRate: double): double; inline;
 begin
- result := (SyncFactor) * SampleRate * 60 / BPM;
+  //TODO:MED This method doesn't match the SyncToFreq conversion. AFAIK
+  result := (SyncFactor) * SampleRate * 60 / BPM;
 end;
 
 function SamplesToBeats(Samples, BPM, SampleRate: double): double; inline;
 begin
- result := Samples * BPM / (SampleRate * 60);
+  //TODO:MED This method doesn't match the SyncToFreq conversion.
+  result := Samples * BPM / (SampleRate * 60);
 end;
 
 function DecibelsToVoltage(dB:single):single; inline;

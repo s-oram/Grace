@@ -224,10 +224,8 @@ begin
 
   SfzImporter.ConvertFile(FileName, XML);
 
-
   XML.XmlFormat := xfReadable;
   xml.SaveToFile('C:\Users\Shannon Matthews\Desktop\test convert.lpg');
-
   // TODO:HIGH - whats going on here.
   //ReadStateFromXML(XML);
 end;
