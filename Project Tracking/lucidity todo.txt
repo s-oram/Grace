@@ -1,6 +1,13 @@
 =============================================================================
      TODO HIGH
 =============================================================================
+Change the way the LFO rate is calculated. 
+- Zebra and ACE both use a Max lfo time and scale between 0 and max LFO frequency.
+  The LFO frequency can be tempo synced. But the lfo can't be adjusted to fit 
+  in divisions of the LFO sync speed. 
+  - Zebra uses a exponential rate to freq slope.
+  - ACE uses a linear slope.
+
 Change AD envelopes.
 - Parameters should be Rate, Shape, Bend.
   This way all LFO parameters will have the first parameter being a frequency value. 
@@ -12,6 +19,9 @@ Ensure the AD and AR envelopes can have minimal attack and fall times.
 
 Look at the envelopes draw on the GUI. look at the minimum times for the ADSR, AD, AR envelopes.
 I think they all need reducing.
+
+Possible bug.
+- Check LFO rates change when switching sync rates.
 
 - Lucidity Patch Format
   -- Modulated parameter values should be stored using their
