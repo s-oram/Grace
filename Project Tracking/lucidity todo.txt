@@ -24,9 +24,6 @@ TODO: Kill voice if sample is released and less than 75db when multiple voices a
 Make video explaining modulation source. Send to Spacedad.
 - thunderlink://messageid=53E3683C.6040005@spaceraiders.co.uk
 
-
-Add rename sample directory option.
-
 - need a "Move Sample To New Key Group..." command. 
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?

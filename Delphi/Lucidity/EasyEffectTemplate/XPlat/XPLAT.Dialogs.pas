@@ -91,6 +91,31 @@ type
     function FileName : string;
   end;
 
+
+  TxpInputBox = class
+  private
+    Owner : TComponent;
+    xpMode   : TxpMode;
+    fInitialValue: string;
+    fPrompt: string;
+    fCaption: string;
+    fResultText: string;
+  protected
+  public
+    constructor Create(AOwner: TComponent);
+    destructor Destroy; override;
+
+    function Execute : boolean;
+
+    property ResultText : string read fResultText;
+
+    property Caption : string read fCaption write fCaption;
+    property Prompt  : string read fPrompt  write fPrompt;
+    property InitialValue : string read fInitialValue write fInitialValue;
+  end;
+
+
+
 implementation
 
 uses
@@ -438,6 +463,36 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+end;
+
+{ TxpInputBox }
+
+constructor TxpInputBox.Create(AOwner: TComponent);
+begin
+  fResultText := '';
+end;
+
+destructor TxpInputBox.Destroy;
+begin
+
+  inherited;
+end;
+
+function TxpInputBox.Execute: boolean;
+var
+  s: string;
+begin
+  s := InitialValue;
+  if InputQuery(Caption, Prompt, s) then
+  begin
+    fResultText := s;
+    result := true;
+  end else
+  begin
+    fResultText := '';
+    result := false;
+  end;
+
 end;
 
 end.

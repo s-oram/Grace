@@ -17,6 +17,7 @@ New:
 - Changed the knob modulation edit drawing.
 - Knob modulation depth can now extend pass the maximum knob value.
 - Drag and drop a folder on the Lucidity browser to add it. 
+- Add rename sample directory option.
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.

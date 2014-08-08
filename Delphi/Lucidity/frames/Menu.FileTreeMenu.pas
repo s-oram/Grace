@@ -39,6 +39,7 @@ type
 
     procedure EventHandler_OpenWithUnknownApp(Sender : TObject);
     procedure EventHandler_OpenWith(Sender : TObject);
+    procedure EventHandler_RenameRootNode(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -226,6 +227,15 @@ begin
   if (assigned(FocusedNode)) and (FocusedNode.IsRootNode) then
   begin
     mi := TMenuItem.Create(Menu);
+    mi.Tag     := 1;
+    mi.Caption := 'Rename...';
+    mi.OnClick := EventHandler_RenameRootNode;
+    Menu.Items.Add(mi);
+  end;
+
+  if (assigned(FocusedNode)) and (FocusedNode.IsRootNode) then
+  begin
+    mi := TMenuItem.Create(Menu);
     mi.Tag     := 3;
     mi.Caption := 'Move Up';
     mi.OnClick := MenuItemClicked;
@@ -314,5 +324,25 @@ begin
 end;
 
 
+
+procedure TFileTreeViewNodeContextMenu.EventHandler_RenameRootNode(Sender: TObject);
+var
+  InputBox : TxpInputBox;
+begin
+  if not (assigned(FocusedNode)) then exit;
+
+  InputBox := TxpInputBox.Create(nil);
+  AutoFree(@InputBox);
+
+  InputBox.Caption := 'Rename';
+  InputBox.Prompt  := 'Rename';
+  InputBox.InitialValue := FocusedNode.Caption;
+
+  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  begin
+    Plugin.SampleDirectories.RenameSampleDirectory(FocusedNode.NodeIndex, InputBox.ResultText);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
+  end;
+end;
 
 end.

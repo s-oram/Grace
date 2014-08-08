@@ -42,7 +42,7 @@ type
   end;
 
 
-
+  PDirectoryInfo = ^TDirectoryInfo;
   TDirectoryInfo = record
     Name : string;
     Path : string;
@@ -71,6 +71,7 @@ type
 
     procedure AddSampleDirectory(const Name, Path : string);
     procedure RemoveSampleDirectory(const Index : integer);
+    procedure RenameSampleDirectory(const Index : integer; const NewName : string);
 
     procedure WriteDirectoryInfoToFile(const FileName : string);
     procedure ReadDirectoryInfoFromfile(const FileName : string);
@@ -238,6 +239,23 @@ begin
   if (fDataFileName <> '') then
   begin
     WriteDirectoryInfoToFile(fDataFileName);
+  end;
+end;
+
+procedure TSampleDirectories.RenameSampleDirectory(const Index: integer; const NewName: string);
+var
+  DirInfo : TDirectoryInfo;
+begin
+  if NewName <> '' then
+  begin
+    DirInfo := DirectoryList[Index];
+    DirInfo.Name := NewName;
+    DirectoryList[Index] := DirInfo;
+
+    if (fDataFileName <> '') then
+    begin
+      WriteDirectoryInfoToFile(fDataFileName);
+    end;
   end;
 end;
 
