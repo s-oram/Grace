@@ -8,8 +8,42 @@ uses
 
 {$SCOPEDENUMS ON}
 
+{$DEFINE ForceWinXPMode}
+
 type
   TxpMode = (WinXP, WinVista);
+
+  TxpFileSaveDialog = class
+  private
+    FFileName: string;
+    FFilterIndex: Integer;
+    FDefaultExt: string;
+    FTitle: string;
+    FFilter: string;
+    FInitialDir: string;
+  protected
+    xpMode   : TxpMode;
+    WinXP    : TSaveDialog;
+    WinVista : TFileSaveDialog;
+    Owner : TComponent;
+  public
+    constructor Create(AOwner: TComponent);
+    destructor Destroy; override;
+
+    function Execute : boolean;
+
+    property Title: string        read FTitle       write FTitle;
+    property DefaultExt: string   read FDefaultExt  write FDefaultExt;  //example: 'exe' or 'txt'
+    property FileName: string     read FFileName    write FFileName;
+    // Similar to TOpenDialog.
+    // Format: <first displayed name>|<first file extension>|<second displayed name>|<second file extension>|...|<n-th displayed name>|<n-th file extension>
+    // Example:
+    //    Filter := 'Applications|*.EXE|Text files|*.TXT';
+    //    Filter := 'Pascal files|*.PAS;*.DPK;*.DPR';
+    property Filter: string       read FFilter      write FFilter;
+    property FilterIndex: Integer read FFilterIndex write FFilterIndex default 1;
+    property InitialDir: string   read FInitialDir  write FInitialDir;
+  end;
 
   TxpFileOpenDialog = class
   private
@@ -23,6 +57,7 @@ type
     xpMode   : TxpMode;
     WinXP    : TOpenDialog;
     WinVista : TFileOpenDialog;
+    Owner : TComponent;
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -101,8 +136,13 @@ end;
 
 constructor TxpFileOpenDialog.Create(AOwner: TComponent);
 begin
-  xpMode := GetxpMode;
-  //xpMode := TxpMode.WinXP;
+  {$IFDEF ForceWinXPMode}
+    xpMode := TxpMode.WinXP;
+  {$ELSE}
+    xpMode := GetxpMode;
+  {$ENDIF}
+
+  Owner := AOwner;
 
   case xpMode of
     TxpMode.WinXP:    WinXP    := TOpenDialog.Create(AOwner);
@@ -216,7 +256,11 @@ end;
 
 constructor TxpBrowserSelectDialog.Create(AOwner: TComponent);
 begin
-  xpMode := GetxpMode;
+  {$IFDEF ForceWinXPMode}
+    xpMode := TxpMode.WinXP;
+  {$ELSE}
+    xpMode := GetxpMode;
+  {$ENDIF}
 
   Owner := AOwner;
   fFileName := '';
@@ -276,6 +320,124 @@ end;
 function TxpBrowserSelectDialog.FileName: string;
 begin
   result := fFileName;
+end;
+
+{ TxpFileSaveDialog }
+
+constructor TxpFileSaveDialog.Create(AOwner: TComponent);
+begin
+  {$IFDEF ForceWinXPMode}
+    xpMode := TxpMode.WinXP;
+  {$ELSE}
+    xpMode := GetxpMode;
+  {$ENDIF}
+
+  Owner := AOwner;
+
+  FFileName   := '';
+  FDefaultExt := '';
+  FFilter     := '';
+  FInitialDir := '';
+  FDefaultExt := '';
+  FTitle      := 'Open File';
+end;
+
+destructor TxpFileSaveDialog.Destroy;
+begin
+  if assigned(WinXP)    then WinXP.Free;
+  if assigned(WinVista) then WinVista.Free;
+  inherited;
+end;
+
+function TxpFileSaveDialog.Execute: boolean;
+var
+  FileTypesList : TStringList;
+  c1: Integer;
+  Index : integer;
+  ft : TFileTypeItem;
+  FilterTypesProcessed : string;
+begin
+  case xpMode of
+    TxpMode.WinXP:
+    begin
+      if not assigned(WinXP)
+        then WinXP := TSaveDialog.Create(Owner);
+
+      //======= Setup File Tpes ========================
+      FilterTypesProcessed := '';
+      FileTypesList := TStringList.Create;
+      try
+        ExplodeString('|', fFilter, FileTypesList);
+        for c1 := 0 to FileTypesList.Count div 2 - 1 do
+        begin
+          Index := c1 * 2;
+          FilterTypesProcessed := FilterTypesProcessed + FileTypesList[Index] + ' (' + FileTypesList[Index+1] + ')';
+          FilterTypesProcessed := FilterTypesProcessed + '|' + FileTypesList[Index+1];
+          if c1+1 <= FileTypesList.Count div 2 - 1
+            then FilterTypesProcessed := FilterTypesProcessed + '|';
+        end;
+      finally
+        FileTypesList.Free;
+      end;
+      //================================================
+      WinXP.Filter     := FilterTypesProcessed;
+      WinXP.FileName   := FFileName;
+      WinXP.DefaultExt := FDefaultExt;
+      WinXP.InitialDir := FInitialDir;
+      WinXP.DefaultExt := FDefaultExt;
+      WinXP.Title      := FTitle;
+
+      if WinXP.Execute then
+      begin
+        FFileName := WinXP.FileName;
+        result := true;
+      end else
+      begin
+        FFileName := '';
+        result := false;
+      end;
+    end;
+
+    TxpMode.WinVista:
+    begin
+      if not assigned(WinVista)
+        then WinVista := TFileSaveDialog.Create(Owner);
+
+      //======= Setup File Tpes ========================
+      WinVista.FileTypes.Clear;
+      FileTypesList := TStringList.Create;
+      try
+        ExplodeString('|', fFilter, FileTypesList);
+        for c1 := 0 to FileTypesList.Count div 2 - 1 do
+        begin
+          Index := c1 * 2;
+          ft := WinVista.FileTypes.Add;
+          ft.DisplayName := FileTypesList[Index];
+          ft.FileMask    := FileTypesList[Index+1];
+        end;
+      finally
+        FileTypesList.Free;
+      end;
+      //================================================
+      WinVista.DefaultFolder    := FInitialDir;
+      WinVista.DefaultExtension := FDefaultExt;
+      WinVista.FileTypeIndex    := FFilterIndex;
+      WinVista.FileName         := FFileName;
+      WinVista.Title            := FTitle;
+
+      if WinVista.Execute then
+      begin
+        FFileName := WinVista.FileName;
+        result := true;
+      end else
+      begin
+        FFileName := '';
+        result := false;
+      end;
+    end;
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 end.
