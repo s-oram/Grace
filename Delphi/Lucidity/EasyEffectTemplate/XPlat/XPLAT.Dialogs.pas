@@ -8,7 +8,7 @@ uses
 
 {$SCOPEDENUMS ON}
 
-{$DEFINE ForceWinXPMode}
+{.$DEFINE ForceWinXPMode}
 
 type
   TxpMode = (WinXP, WinVista);

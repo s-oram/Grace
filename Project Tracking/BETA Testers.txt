@@ -13,6 +13,18 @@ waveshaperkit@gmail.com
 =================================================================================================
     BETA Testers 
 =================================================================================================
+
+Sam
+sizeoverload@gmail.com
+- Keen to test Lucidity.
+thunderlink://messageid=58A0193A-0107-4E54-AF0A-DF34B488C328@gmail.com
+
+Ian Halbwachs
+preferred.nomenclature@gmail.com
+- Keen to test Lucidity.
+thunderlink://messageid=CA+8c1wQ=vr+MBU5ZC8TuCBSv+6Yoo2F9_WN8B660QX_RTQaL4Q@mail.gmail.com
+
+
 Joseph
 stereovegan@mm.st
 - is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
@@ -37,7 +49,6 @@ thunderlink://messageid=1384437336.34548.YahooMailNeo@web171506.mail.ir2.yahoo.c
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-
 Terry Foster
 - terryfoster69@hotmail.com
 - Linux, Renoise
@@ -45,17 +56,10 @@ Terry Foster
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-
-
-
-
 Ryu Beats <rsbeats@hotmail.com>
 thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
 	BETA Send History:
-    - Lucidity 0.0.1.33
-
-
-    
+    - Lucidity 0.0.1.33    
 
 Pete
 grabmyknee@gmail.com
@@ -70,7 +74,6 @@ Will Blake
   BETA Send History:
   - Lucidity 0.0.1.33
 
-
 Anthony Crayton
 tonecre8@comcast.net
 thunderlink://messageid=005001cf2845$45b0e8b0$d112ba10$@comcast.net
@@ -83,26 +86,14 @@ thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-Michael Worth
-michaelworth@hotmail.ca
-thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
-	BETA Send History:
-    - Lucidity 0.0.1.33
-    NOTE: Do not send anything again unless I hear back from last mail out.
-
-Marco
-djfonplaz@gmail.com
-thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
-  BETA Send History:
-  - Lucidity 0.0.1.33
-    thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
-    -- Not interested in Lucidity. Do not send any more builds.
 
 =================================================================================================
     Potential BETA Testers (Expressed interest in testing or a product)
 =================================================================================================
 
-
+Nym - Lewis
+- Would be interested in a Live Looper MLR style. 
+thunderlink://messageid=CAOaAozbxoeS3zB3fw1gM1kiLdDN2mwUq+yD1MQEYP22FhFDr_g@mail.gmail.com
 
 
 =================================================================================================
@@ -127,6 +118,21 @@ christianscheggia@gmail.com
 Julian Clapham
 stoolzo@gmail.com
 - no time for testing. 
+  BETA Send History:
+    - Lucidity 0.0.1.33
+    NOTE: Do not send anything again unless I hear back from last mail out.
+
+Marco
+djfonplaz@gmail.com
+thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail.gmail.com
+  BETA Send History:
+  - Lucidity 0.0.1.33
+    thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
+    -- Not interested in Lucidity. Do not send any more builds.
+
+Michael Worth
+michaelworth@hotmail.ca
+thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
   BETA Send History:
     - Lucidity 0.0.1.33
     NOTE: Do not send anything again unless I hear back from last mail out.

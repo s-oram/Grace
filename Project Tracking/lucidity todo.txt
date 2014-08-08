@@ -8,18 +8,16 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-- bug
-I noticed it's Lucidity.key,but I need to rename to Lucidity.dat to work properly.
-About Lucidity,I tray to load SFZ file,but there is an error,In attachment the scrrenshot.
-Anyway,these sampler it's a great potential tool.
-thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
+bug
+	I noticed it's Lucidity.key,but I need to rename to Lucidity.dat to work properly.
+	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
+	http://www.reusenoise.com
 
-
-
- bug
- - TFileOpenDialog only works on Vista and upwards. Need a WinXP compatible solution. 
-thunderlink://messageid=1406820958.1920048.147734482.78E9326E@webmail.messagingengine.com
--- Continue removing TFileOpenDialog references. 
+Bug
+	Lucidity,I tray to load SFZ file,but there is an error,In attachment the scrrenshot.
+	Anyway,these sampler it's a great potential tool.
+	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
+	http://www.reusenoise.com
 
 bug 
  - some wavefiles from Joesph don't load. 
@@ -27,6 +25,10 @@ bug
 bug - modulate a knob. go to main - clear all modulation. modulation amount doesn't reset.
 
 TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
+
+Make video explaining modulation source. Send to Spacedad.
+- thunderlink://messageid=53E3683C.6040005@spaceraiders.co.uk
+
 
 Add rename sample directory option.
 

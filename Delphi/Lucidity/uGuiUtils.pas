@@ -59,12 +59,9 @@ procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array
 type
   TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile);
 
-procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
-procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog); overload; //TODO:HIGH eventually this method will be deleted.
-procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
-
-procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget); overload; //TODO:HIGH eventually this method will be deleted.
-procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget); overload;
+procedure SetupFileSaveDialog_Program(var SaveDialog : TxpFileSaveDialog);
+procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog);
+procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
 
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
@@ -264,40 +261,15 @@ begin
 end;
 
 
-procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
-var
-  ft : TFileTypeItem;
+procedure SetupFileSaveDialog_Program(var SaveDialog : TxpFileSaveDialog);
 begin
   if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
   begin
-    SaveDialog.DefaultFolder := Lucidity.Globals.LastProgramSaveDir;
+    SaveDialog.InitialDir := Lucidity.Globals.LastProgramSaveDir;
   end;
 
-  ft := SaveDialog.FileTypes.Add;
-  ft.DisplayName := 'Lucidity Program';
-  ft.FileMask    := '*.lpg';
-
-  SaveDialog.DefaultExtension := 'lpg';
-end;
-
-procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog);
-var
-  ft : TFileTypeItem;
-begin
-  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
-  begin
-    OpenDialog.DefaultFolder := Lucidity.Globals.LastProgramLoadDir;
-  end;
-
-  ft := OpenDialog.FileTypes.Add;
-  ft.DisplayName := 'Lucidity Program';
-  ft.FileMask    := '*.lpg';
-
-  ft := OpenDialog.FileTypes.Add;
-  ft.DisplayName := 'All Files';
-  ft.FileMask    := '*.*';
-
-  OpenDialog.DefaultExtension := 'lpg';
+  SaveDialog.Filter := 'Lucidity Program|*.lpg';
+  SaveDialog.DefaultExt := 'lpg';
 end;
 
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
@@ -559,61 +531,6 @@ begin
     raise Exception.Create('Target type not handled.');
   end;
 end;
-
-procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
-var
-  ft : TFileTypeItem;
-begin
-  case Target of
-    dtLucidityProgram:
-    begin
-      if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
-      begin
-        OpenDialog.DefaultFolder := Lucidity.Globals.LastProgramLoadDir;
-      end;
-
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'Lucidity Program';
-      ft.FileMask    := '*.lpg';
-
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'Any Type';
-      ft.FileMask    := '*.*';
-
-      OpenDialog.DefaultExtension := 'lpg';
-    end;
-
-
-    dtSfzProgram:
-    begin
-      // TODO:MED set default folder location.
-
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'SFZ Program';
-      ft.FileMask    := '*.sfz';
-
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'Any Type';
-      ft.FileMask    := '*.*';
-
-      OpenDialog.DefaultExtension := 'sfz';
-    end;
-
-    dtAudioFile:
-    begin
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'All Types';
-      ft.FileMask    := '*.wav; *.aif; *.aiff; *.snd';
-
-      ft := OpenDialog.FileTypes.Add;
-      ft.DisplayName := 'Any Type';
-      ft.FileMask    := '*.*';
-    end
-  else
-    raise Exception.Create('Target type not handled.');
-  end;
-end;
-
 
 { Command }
 

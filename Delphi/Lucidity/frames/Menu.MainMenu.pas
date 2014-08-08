@@ -61,7 +61,7 @@ end;
 procedure TMainMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
-  SaveDialog : TFileSaveDialog;
+  SaveDialog : TxpFileSaveDialog;
   OpenDialog : TxpFileOpenDialog;
 begin
   assert(Sender is TMenuItem);
@@ -76,7 +76,7 @@ begin
 
   if Tag = 2 then
   begin
-    SaveDialog := TFileSaveDialog.Create(nil);
+    SaveDialog := TxpFileSaveDialog.Create(nil);
     AutoFree(@SaveDialog);
 
     SetupFileSaveDialog_Program(SaveDialog);

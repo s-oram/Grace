@@ -1,3 +1,8 @@
+==Notify On Update==
+Now using new XP compatible dialogs. 
+thunderlink://messageid=1406820958.1920048.147734482.78E9326E@webmail.messagingengine.com
+
+
 == Finished for the next release ==
 New:
 - The sample display now shows "Loading Program" when dragging and dropping a supported program file
@@ -10,6 +15,9 @@ New:
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.
+- Now using File Open/Save Dialogs that are compatible with Windows XP. 
+  Newer Windows Vista style dialogs will be used on Vista machines an up.      
+
 
 
 
