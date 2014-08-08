@@ -211,6 +211,8 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+
+  SlopeGen.MinTotalTime := 1000 / MaxLfoFreq;
 end;
 
 
@@ -364,9 +366,8 @@ begin
     TActiveLFO.Slope:
     begin
       //TODO: Slope gen needs to have it's attack and decay times quantised as well.
-      SlopeGen.Curve      := Par1^;
-      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, 1, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
-      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, 1, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
+      SlopeGen.EnvRate := Par1^;
+      SlopeGen.Curve   := Par3^;
     end;
   else
     raise Exception.Create('Type not handled.');

@@ -27,9 +27,11 @@ type
     fCurve: single;
     fSlopeMode: TSlopeMode;
     fAttackTime: single;
+    fMinTotalTime: single;
+    fEnvRate: single;
     procedure SetSampleRate(const Value: single);
-    procedure SetAttackTime(const Value: single);
-    procedure SetDecayTime(const Value: single);
+    procedure SetMinTotalTime(const Value: single);
+    procedure SetEnvRate(const Value: single);
 
   protected type
     TEnvStage = (Attack, Sustrain, Release, Off);
@@ -39,6 +41,9 @@ type
     CurrentValue   : single;
     AttackStepSize : single;
     DecayStepSize  : single;
+
+
+    procedure UpdateEnvStepSizes; //inline;
   public
     constructor Create;
     destructor Destroy; override;
@@ -53,9 +58,14 @@ type
     property Bpm          : single read fBpm           write fBpm;
     property SampleRate   : single read fSampleRate    write SetSampleRate;
 
+    // MinTotalTime is used as a reference when calculating how fast any RATE value is.
+    property MinTotalTime : single read fMinTotalTime  write SetMinTotalTime;  //milliseconds.
+    property EnvRate      : single read fEnvRate       write SetEnvRate; // range 0..1
+
+
+
     property Curve        : single read fCurve         write fCurve;         // Envelope curve. 0..1 range. 0.5 is a straight line.
-    property AttackTime   : single read fAttackTime    write SetAttackTime;  // Time is in milliseconds. Probably shouldn't be 0.
-    property DecayTime    : single read fDecayTime     write SetDecayTime;   // Time is in milliseconds. Probably shouldn't be 0.
+
 
     property SlopeMode : TSlopeMode read fSlopeMode    write fSlopeMode;
 
@@ -86,23 +96,27 @@ begin
   CurrentValue := 0;
 end;
 
-procedure TSlopeGen.SetAttackTime(const Value: single);
+procedure TSlopeGen.UpdateEnvStepSizes;
+var
+  TotalStepSize : single;
 begin
-  fAttackTime := Value;
-  if Value > 0
-    then AttackStepSize := 1 / (fSampleRate * Value * 0.001)
-    else AttackStepSize := 1;
+  //TODO:MED optimisation opportuniity here! factor out the 1/samplerate value.
+  TotalStepSize := 1 / (fSampleRate * fMinTotalTime * 0.001);
+  TotalStepSize := TotalStepSize * fEnvRate * 2;
+  AttackStepSize := TotalStepSize;
+  DecayStepSize  := TotalStepSize;
 end;
 
-procedure TSlopeGen.SetDecayTime(const Value: single);
+procedure TSlopeGen.SetEnvRate(const Value: single);
 begin
-  fDecayTime := Value;
-  if Value > 0
-    then DecayStepSize := 1 / (fSampleRate * Value * 0.001)
-    else DecayStepSize := 1;
+  fEnvRate := Value;
+  UpdateEnvStepSizes;
+end;
 
-
-
+procedure TSlopeGen.SetMinTotalTime(const Value: single);
+begin
+  fMinTotalTime := Value;
+  UpdateEnvStepSizes;
 end;
 
 procedure TSlopeGen.SetSampleRate(const Value: single);
