@@ -34,6 +34,7 @@ type
     procedure SetMinTotalTime(const Value: single);
     procedure SetEnvRate(const Value: single);
     procedure SetBias(const Value: single);
+    procedure SetCurve(const Value: single);
 
   protected type
     TEnvStage = (Attack, Sustrain, Release, Off);
@@ -43,6 +44,8 @@ type
     CurrentValue   : single;
     AttackStepSize : single;
     DecayStepSize  : single;
+
+    CurveFactor : single;
 
 
     procedure UpdateEnvStepSizes; //inline;
@@ -54,6 +57,7 @@ type
     procedure Release;
     procedure Kill;
 
+    //TODO:HIGH these methods should probably be inlined.
     function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
     function Step: single; overload;
 
@@ -64,8 +68,7 @@ type
     property MinTotalTime : single read fMinTotalTime  write SetMinTotalTime;  //milliseconds.
     property EnvRate      : single read fEnvRate       write SetEnvRate; // range 0..1
     property Bias         : single read fBias          write SetBias;    // range 0..1
-
-    property Curve        : single read fCurve         write fCurve;         // Envelope curve. 0..1 range. 0.5 is a straight line.
+    property Curve        : single read fCurve         write SetCurve;         // Envelope curve. 0..1 range. 0.5 is a straight line.
 
 
     property SlopeMode : TSlopeMode read fSlopeMode    write fSlopeMode;
@@ -132,6 +135,18 @@ procedure TSlopeGen.SetBias(const Value: single);
 begin
   fBias := Value;
   UpdateEnvStepSizes;
+end;
+
+procedure TSlopeGen.SetCurve(const Value: single);
+begin
+  assert(Value >= 0);
+  assert(Value <= 1);
+  fCurve := Value;
+
+  // Fast Curve Code.
+  // kvr DSP forum - topic "Help required to optimize code"
+  // http://www.kvraudio.com/forum/viewtopic.php?p=1812158&highlight=exp+envelope#1812158
+  CurveFactor := 1-(1/Value);
 end;
 
 procedure TSlopeGen.SetEnvRate(const Value: single);
@@ -214,7 +229,8 @@ begin
   end;
 
 
-  result := CurrentValue;
+  //result := CurrentValue;
+  result := CurrentValue / (CurrentValue + CurveFactor * (CurrentValue-1));
 end;
 
 
