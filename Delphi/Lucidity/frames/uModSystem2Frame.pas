@@ -236,6 +236,7 @@ begin
   begin
     Index := (Sender as TVamModSelector).Tag;
     Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -244,6 +245,7 @@ begin
   if Button = mbLeft then
   begin
     Plugin.Globals.SelectedModSlot := -1;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -257,6 +259,7 @@ begin
     Index := Plugin.Globals.SelectedModSlot - 1;
     if Index < -1 then Index := 7;
     Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 
@@ -269,6 +272,7 @@ begin
     Index := Plugin.Globals.SelectedModSlot + 1;
     if Index > 7 then Index := -1;
     Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
 

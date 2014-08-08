@@ -17,8 +17,6 @@ Bug
 bug 
  - some wavefiles from Joesph don't load. 
 
-bug - modulate a knob. go to main - clear all modulation. modulation amount doesn't reset.
-
 TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
 
 Make video explaining modulation source. Send to Spacedad.

@@ -109,6 +109,14 @@ var
 begin
   inherited;
 
+  if MsgID = TLucidMsgID.ModAmountChanged then
+  begin
+    for c1 := 0 to ControlList.Count-1 do
+    begin
+      UpdateModulation(ControlList[c1]);
+    end;
+  end;
+
   if MsgID = TLucidMsgID.ModSlotChanged then
   begin
     for c1 := 0 to ControlList.Count-1 do

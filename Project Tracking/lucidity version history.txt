@@ -24,6 +24,8 @@ Bug Fixes:
 - Now using File Open/Save Dialogs that are compatible with Windows XP. 
   Newer Windows Vista style dialogs will be used on Vista machines an up.     
 - Lucidity now expects the key file extension to be ".key" instead of ".dat"
+- Clear all modulation wouldn't cause a knob's Min/Max mod amount range to update.
+
 
 
 
