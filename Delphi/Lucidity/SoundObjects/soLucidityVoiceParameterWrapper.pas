@@ -80,8 +80,6 @@ type
     fLfoFreqMode2: TLfoFreqMode;
     fLfoFreqMode1: TLfoFreqMode;
     fFilterRouting: TFilterRouting;
-    fLfoRange2: TLfoRange;
-    fLfoRange1: TLfoRange;
     fLfoShape2: TLfoShape;
     fLfoShape1: TLfoShape;
     procedure SetFilter1Par1(const Value: single);

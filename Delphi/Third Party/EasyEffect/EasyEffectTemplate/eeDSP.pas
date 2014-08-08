@@ -277,7 +277,7 @@ end;
 function SyncToSamples(SyncFactor, BPM, SampleRate: double): double; inline;
 begin
   //TODO:MED This method doesn't match the SyncToFreq conversion. AFAIK
-  //result := SyncFactor * SampleRate * 60 / BPM;
+  result := SyncFactor * SampleRate * 60 / BPM;
 end;
 
 function SyncToFreq(const SyncFactor, BPM : double):double; inline;

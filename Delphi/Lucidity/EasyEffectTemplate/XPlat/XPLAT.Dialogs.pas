@@ -94,8 +94,8 @@ type
 
   TxpInputBox = class
   private
-    Owner : TComponent;
-    xpMode   : TxpMode;
+    //Owner : TComponent;
+    //xpMode   : TxpMode;
     fInitialValue: string;
     fPrompt: string;
     fCaption: string;
