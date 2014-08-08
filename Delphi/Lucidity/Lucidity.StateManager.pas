@@ -524,8 +524,6 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoShape2');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode1');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode2');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoRange1');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoRange2');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');
@@ -725,8 +723,6 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoShape2');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode1');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode2');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoRange1');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoRange2');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
       LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');
