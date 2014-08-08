@@ -1224,33 +1224,6 @@ object ModControlFrame: TModControlFrame
           ImageOverlayOffsetY = 0
           Visible = True
         end
-        object LfoARangeSelector: TVamTextBox
-          Left = 3
-          Top = 109
-          Width = 40
-          Height = 16
-          Opacity = 255
-          DisplayClass = 'MenuButton'
-          Text = '---'
-          HitTest = True
-          AutoTrimText = False
-          Color = '$FF3E3E3E'
-          ColorMouseOver = '$FF3E3E3E'
-          ColorBorder = '$00000000'
-          ShowBorder = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ImageOverlayVertAlign = AlignCenter
-          ImageOverlayHorzAlign = AlignCenter
-          ImageOverlayOffsetX = 0
-          ImageOverlayOffsetY = 0
-          Visible = True
-        end
       end
       object AmpEnvContainer: TVamDiv
         AlignWithMargins = True
@@ -2075,33 +2048,6 @@ object ModControlFrame: TModControlFrame
         object LfoBFreqModeSelector: TVamTextBox
           Left = 3
           Top = 87
-          Width = 40
-          Height = 16
-          Opacity = 255
-          DisplayClass = 'MenuButton'
-          Text = '---'
-          HitTest = True
-          AutoTrimText = False
-          Color = '$FF3E3E3E'
-          ColorMouseOver = '$FF3E3E3E'
-          ColorBorder = '$00000000'
-          ShowBorder = False
-          TextAlign = AlignCenter
-          TextVAlign = AlignCenter
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ImageOverlayVertAlign = AlignCenter
-          ImageOverlayHorzAlign = AlignCenter
-          ImageOverlayOffsetX = 0
-          ImageOverlayOffsetY = 0
-          Visible = True
-        end
-        object LfoBRangeSelector: TVamTextBox
-          Left = 3
-          Top = 109
           Width = 40
           Height = 16
           Opacity = 255

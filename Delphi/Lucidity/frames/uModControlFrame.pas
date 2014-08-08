@@ -122,7 +122,6 @@ type
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     LfoAFreqModeSelector: TVamTextBox;
     FilterRoutingButton: TVamTextBox;
-    LfoARangeSelector: TVamTextBox;
     LfoBContainer: TVamDiv;
     LfoBContainerLabel: TVamLabel;
     LfoBLabel2: TVamLabel;
@@ -133,7 +132,6 @@ type
     LfoBKnob3: TVamKnob;
     LfoBLabel3: TVamLabel;
     LfoBFreqModeSelector: TVamTextBox;
-    LfoBRangeSelector: TVamTextBox;
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -238,8 +236,6 @@ begin
 
   LfoAShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Shape);
   LfoAFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo1FreqMode);
-  LfoARangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo1Range);
-
 
   LfoBKnob1.ParameterName := PluginParToName(TPluginParameter.Lfo2Par1);
   LfoBKnob2.ParameterName := PluginParToName(TPluginParameter.Lfo2Par2);
@@ -247,10 +243,6 @@ begin
 
   LfoBShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Shape);
   LfoBFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
-  LfoBRangeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Range);
-
-
-  
 
 
 end;
@@ -329,11 +321,8 @@ begin
 
   GuiStandard_RegisterMenuButton(aGuiStandard, LfoAShapeSelector,       TPluginParameter.Lfo1Shape);
   GuiStandard_RegisterMenuButton(aGuiStandard, LfoAFreqModeSelector,    TPluginParameter.Lfo1FreqMode);
-  GuiStandard_RegisterMenuButton(aGuiStandard, LfoARangeSelector,       TPluginParameter.Lfo1Range);
   GuiStandard_RegisterMenuButton(aGuiStandard, LfoBShapeSelector,       TPluginParameter.Lfo2Shape);
   GuiStandard_RegisterMenuButton(aGuiStandard, LfoBFreqModeSelector,    TPluginParameter.Lfo2FreqMode);
-  GuiStandard_RegisterMenuButton(aGuiStandard, LfoBRangeSelector,       TPluginParameter.Lfo2Range);
-
 
   //============================================================================
   //                         GUI Stylings
@@ -524,11 +513,9 @@ begin
 
   LfoAFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
   LfoAFreqModeSelector.Layout.Anchor(LfoAShapeSelector).SnapToEdge(TControlFeature.RightEdge);
-  LfoARangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoAFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
 
   LfoAShapeSelector.Layout.AdjustBounds(0,0,-2,0);
   LfoAFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
-  LfoARangeSelector.Layout.AdjustBounds(-2,0,0,0);
   //==================================================
 
 
@@ -552,11 +539,9 @@ begin
 
   LfoBFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
   LfoBFreqModeSelector.Layout.Anchor(LfoBShapeSelector).SnapToEdge(TControlFeature.RightEdge);
-  LfoBRangeSelector.Layout.SetSize(24, TGuiConst.SelectorButtonHeight).Anchor(LfoBFreqModeSelector).SnapToEdge(TControlFeature.RightEdge);
 
   LfoBShapeSelector.Layout.AdjustBounds(0,0,-2,0);
   LfoBFreqModeSelector.Layout.AdjustBounds(-2,0,-2,0);
-  LfoBRangeSelector.Layout.AdjustBounds(-2,0,0,0);
   //==================================================
 
 
@@ -578,10 +563,8 @@ begin
   GuiSetup.StyleButton_SelectorButton(Filter2TypeTextBox);
   GuiSetup.StyleButton_SelectorButton(LfoAShapeSelector);
   GuiSetup.StyleButton_SelectorButton(LfoAFreqModeSelector);
-  GuiSetup.StyleButton_SelectorButton(LfoARangeSelector);
   GuiSetup.StyleButton_SelectorButton(LfoBShapeSelector);
   GuiSetup.StyleButton_SelectorButton(LfoBFreqModeSelector);
-  GuiSetup.StyleButton_SelectorButton(LfoBRangeSelector);
   GuiSetup.StyleButton_SelectorButton(Seq1ClockTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq1DirectionTextBox);
   GuiSetup.StyleButton_SelectorButton(Seq1StepsTextBox);
