@@ -116,8 +116,6 @@ begin
       TPluginParameter.Lfo2Shape:              result := TLfoShapeHelper.ToSingle(VoicePar.LfoShape2);
       TPluginParameter.Lfo1FreqMode:           result := TLfoFreqModeHelper.ToSingle(VoicePar.LfoFreqMode1);
       TPluginParameter.Lfo2FreqMode:           result := TLfoFreqModeHelper.ToSingle(VoicePar.LfoFreqMode2);
-      TPluginParameter.Lfo1Range:              result := TLfoRangeHelper.ToSingle(VoicePar.LfoRange1);
-      TPluginParameter.Lfo2Range:              result := TLfoRangeHelper.ToSingle(VoicePar.LfoRange2);
       TPluginParameter.Seq1Clock:              result := TSequencerClockHelper.ToSingle(VoicePar.Seq1Clock);
       TPluginParameter.Seq1Direction:          result := TStepSequencerDirectionHelper.ToSingle(VoicePar.Seq1Direction);
       TPluginParameter.Seq1Length:             result := TStepSequencerLengthHelper.ToSingle(VoicePar.StepSeq1Length);
@@ -249,8 +247,6 @@ begin
       TPluginParameter.Lfo2Shape:              VoicePar.LfoShape2           := TLfoShapeHelper.ToEnum(ParValue);
       TPluginParameter.Lfo1FreqMode:           VoicePar.LfoFreqMode1        := TLfoFreqModeHelper.ToEnum(ParValue);
       TPluginParameter.Lfo2FreqMode:           VoicePar.LfoFreqMode2        := TLfoFreqModeHelper.ToEnum(ParValue);
-      TPluginParameter.Lfo1Range:              VoicePar.LfoRange1           := TLfoRangeHelper.ToEnum(ParValue);
-      TPluginParameter.Lfo2Range:              VoicePar.LfoRange2           := TLfoRangeHelper.ToEnum(ParValue);
       TPluginParameter.Seq1Clock:              VoicePar.Seq1Clock           := TSequencerClockHelper.ToEnum(ParValue);
       TPluginParameter.Seq1Direction:          VoicePar.Seq1Direction       := TStepSequencerDirectionHelper.ToEnum(ParValue);
       TPluginParameter.Seq1Length:             VoicePar.StepSeq1Length      := TStepSequencerLengthHelper.ToEnum(ParValue);

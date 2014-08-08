@@ -32,14 +32,12 @@ type
     fPar2: PSynthPar;
     fPar3: PSynthPar;
     fFreqMode: TLfoFreqMode;
-    fLfoRange: TLfoRange;
     procedure SetSampleRate(const Value: single);
     procedure SetBpm(const Value: single);
     procedure SetPar1(const Value: PSynthPar);
     procedure SetPar2(const Value: PSynthPar);
     procedure SetPar3(const Value: PSynthPar);
     procedure SetShape(const Value: TLfoShape);
-    procedure SetLfoRange(const Value: TLfoRange);
     procedure SetFreqMode(const Value: TLfoFreqMode);
   protected
     IsActive : boolean;
@@ -52,7 +50,6 @@ type
     WaveTableLfo  : TWaveTableLfo;
     RandomLFO     : TRandomLfo;
     SlopeGen      : TSlopeGen;
-    RangeMult     : integer;
 
     MaxLfoFreq : single;
 
@@ -73,7 +70,6 @@ type
     property Shape      : TLfoShape    read fShape      write SetShape;
     property Bpm        : single       read fBpm        write SetBpm;
     property FreqMode   : TLfoFreqMode read fFreqMode   write SetFreqMode;
-    property Range      : TLfoRange    read fLfoRange   write SetLfoRange;   //TODO:HIGH delete lfo range.
 
     property Par1 : PSynthPar read fPar1 write SetPar1;
     property Par2 : PSynthPar read fPar2 write SetPar2;
@@ -192,8 +188,6 @@ begin
   RandomLFO    := TRandomLfo.Create;
   SlopeGen     := TSlopeGen.Create;
   fModuleIndex := aModuleIndex;
-
-  RangeMult := 1;
 end;
 
 
@@ -263,20 +257,6 @@ procedure TLucidityLfo.SetFreqMode(const Value: TLfoFreqMode);
 begin
   fFreqMode := Value;
   UpdateMaxLfoFreq;
-end;
-
-procedure TLucidityLfo.SetLfoRange(const Value: TLfoRange);
-begin
-  fLfoRange := Value;
-
-  case Value of
-    TLfoRange.x1: RangeMult := 1;
-    TLfoRange.x2: RangeMult := 2;
-    TLfoRange.x4: RangeMult := 4;
-    TLfoRange.x8: RangeMult := 8;
-  else
-    raise Exception.Create('type not handled.');
-  end;
 end;
 
 procedure TLucidityLfo.SetSampleRate(const Value: single);
@@ -385,8 +365,8 @@ begin
     begin
       //TODO: Slope gen needs to have it's attack and decay times quantised as well.
       SlopeGen.Curve      := Par1^;
-      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, RangeMult, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
-      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, RangeMult, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
+      SlopeGen.AttackTime := ComputeSlopeTime(Par2^, FreqMode, 1, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
+      SlopeGen.DecayTime  := ComputeSlopeTime(Par3^, FreqMode, 1, Bpm, SampleRate); //TODO:HIGH this should be the same frequency as the LFOs.
     end;
   else
     raise Exception.Create('Type not handled.');
