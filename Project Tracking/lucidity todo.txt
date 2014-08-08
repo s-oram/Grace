@@ -1,6 +1,27 @@
 =============================================================================
      TODO HIGH
 =============================================================================
+Change AD envelopes.
+- Parameters should be Rate, Shape, Bend.
+  This way all LFO parameters will have the first parameter being a frequency value. 
+  All LFO's should share the same frequency. Will make it much easier for patch import.
+
+Maybe need a slope envelope LFO.
+
+Ensure the AD and AR envelopes can have minimal attack and fall times. 
+
+Look at the envelopes draw on the GUI. look at the minimum times for the ADSR, AD, AR envelopes.
+I think they all need reducing.
+
+- Lucidity Patch Format
+  -- Modulated parameter values should be stored using their
+     proper units. IE. Amp Attack time is 5ms. 
+     This will make it much easier to allow importing of other formats.
+     It will also make it much easier to maintain backwards compatability.
+  -- what happens when loading incomplete patch files. IE. patch files with not
+     all data included. 
+  -- what happens when loading a patch file with incorrectly named XML elements. 
+
 - Bug: 
   - Create cubase project
   - add multiple Lucidity instances.
