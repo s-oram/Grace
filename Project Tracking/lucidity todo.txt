@@ -2,13 +2,11 @@
      TODO HIGH
 =============================================================================
 - add more LFO sync modes. Look at zebra for comparison. 
+- LFO curves in the scope display need to be updated to match the new LFO properties.
 
-- LFO curve.
-
-Change AD envelopes.
-- Parameters should be Rate, Bias, Bend.
-  This way all LFO parameters will have the first parameter being a frequency value. 
-  All LFO's should share the same frequency. Will make it much easier for patch import.
+- LFO: Replace the SYM parameter of the regular LFO types with the BEND parameter 
+  from the AD LFO modes. It will have the same effect with the SAW shape but will
+  be better with sine and triangle.
 
 Maybe need a slope envelope LFO.
 

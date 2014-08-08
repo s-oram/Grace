@@ -24,6 +24,10 @@ Change:
   is calculated to match the current LFO sync division. The LFO Rate
   now interpolates between 0hz and the Maximum LFO Frequency. Previously 
   the LFO Rate would snap to multiples of the faster sync rate. 
+- The Attack-Decay, Attack-Release and Cycle LFO types have changed. 
+  Instead of individual control over the Attack and Decay/Release stages, 
+  the LFO mode has total time (RATE) and shape (BIAS) controls. Bias 
+  changes the shape from a downwards saw -> triangel -> upwards saw
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.
