@@ -225,7 +225,7 @@ begin
 
   for c1 := 0 to KnobList.Count-1 do
   begin
-    (KnobList[c1] as TVamKnob).ModEditRadius := 0.25;
+    (KnobList[c1] as TVamKnob).ModEditRadius := 0.40;
   end;
 
 

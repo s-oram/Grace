@@ -110,6 +110,10 @@ begin
   inherited;
   VoicePitch1Knob.VisibleSteps := 24; //24 steps reflects tuning by +/-12 semitones.
 
+  VoicePitch1Knob.ModEditRadius := 0.40;
+  VoicePitch2Knob.ModEditRadius := 0.40;
+  MainOutputKnob.ModEditRadius  := 0.40;
+  MainPanKnob.ModEditRadius     := 0.40;
 
   //misc.
   GlideKnob.MinModDepth := 0;
