@@ -666,6 +666,7 @@ end;
 
 procedure TModControlFrame.FilterKnobMouseEnter(Sender: TObject);
 begin
+  // Is this code needed?
   AltFilterText.LastControl := Sender as TControl;
 
   AltFilterText.ShowAltText1 := false;
@@ -757,25 +758,13 @@ begin
       LfoALabel3.Text := 'FLUX';
     end;
 
+    TLfoShape.Cycle,
+    TLfoShape.AttackRelease,
     TLfoShape.AttackDecay:
     begin
-      LfoALabel1.Text := 'CURVE';
-      LfoALabel2.Text := 'A';
-      LfoALabel3.Text := 'D';
-    end;
-
-    TLfoShape.AttackRelease:
-    begin
-      LfoALabel1.Text := 'CURVE';
-      LfoALabel2.Text := 'A';
-      LfoALabel3.Text := 'R';
-    end;
-
-    TLfoShape.Cycle:
-    begin
-      LfoALabel1.Text := 'CURVE';
-      LfoALabel2.Text := 'A';
-      LfoALabel3.Text := 'D';
+      LfoALabel1.Text := 'RATE';
+      LfoALabel2.Text := 'BIAS';
+      LfoALabel3.Text := 'BEND';
     end;
   else
     raise Exception.Create('Type not handled.');
@@ -807,25 +796,13 @@ begin
       LfoBLabel3.Text := 'FLUX';
     end;
 
+    TLfoShape.Cycle,
+    TLfoShape.AttackRelease,
     TLfoShape.AttackDecay:
     begin
-      LfoBLabel1.Text := 'CURVE';
-      LfoBLabel2.Text := 'A';
-      LfoBLabel3.Text := 'D';
-    end;
-
-    TLfoShape.AttackRelease:
-    begin
-      LfoBLabel1.Text := 'CURVE';
-      LfoBLabel2.Text := 'A';
-      LfoBLabel3.Text := 'R';
-    end;
-
-    TLfoShape.Cycle:
-    begin
-      LfoBLabel1.Text := 'CURVE';
-      LfoBLabel2.Text := 'A';
-      LfoBLabel3.Text := 'D';
+      LfoBLabel1.Text := 'RATE';
+      LfoBLabel2.Text := 'BIAS';
+      LfoBLabel3.Text := 'BEND';
     end;
   else
     raise Exception.Create('Type not handled.');
