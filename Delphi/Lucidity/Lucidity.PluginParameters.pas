@@ -176,8 +176,6 @@ type
     Lfo2Shape,
     Lfo1FreqMode,
     Lfo2FreqMode,
-    Lfo1Range,
-    Lfo2Range,
     Lfo1Par1,
     Lfo1Par2,
     Lfo1Par3,
@@ -252,32 +250,30 @@ type
     Lfo2Shape               = 42;
     Lfo1FreqMode            = 43;
     Lfo2FreqMode            = 44;
-    Lfo1Range               = 45;
-    Lfo2Range               = 46;
-    Lfo1Par1                = 47;
-    Lfo1Par2                = 48;
-    Lfo1Par3                = 49;
-    Lfo2Par1                = 50;
-    Lfo2Par2                = 51;
-    Lfo2Par3                = 52;
-    Seq1Clock               = 53;
-    Seq1Direction           = 54;
-    Seq1Length              = 55;
-    Seq2Clock               = 56;
-    Seq2Direction           = 57;
-    Seq2Length              = 58;
-    PreviewVolume           = 59;
-    Preview                 = 60;
-    PadX1                   = 61;
-    PadY1                   = 62;
-    PadX2                   = 63;
-    PadY2                   = 64;
-    PadX3                   = 65;
-    PadY3                   = 66;
-    PadX4                   = 67;
-    PadY4                   = 68;
+    Lfo1Par1                = 45;
+    Lfo1Par2                = 46;
+    Lfo1Par3                = 47;
+    Lfo2Par1                = 48;
+    Lfo2Par2                = 49;
+    Lfo2Par3                = 50;
+    Seq1Clock               = 51;
+    Seq1Direction           = 52;
+    Seq1Length              = 53;
+    Seq2Clock               = 54;
+    Seq2Direction           = 55;
+    Seq2Length              = 56;
+    PreviewVolume           = 57;
+    Preview                 = 58;
+    PadX1                   = 59;
+    PadY1                   = 60;
+    PadX2                   = 61;
+    PadY2                   = 62;
+    PadX3                   = 63;
+    PadY3                   = 64;
+    PadX4                   = 65;
+    PadY4                   = 66;
     //=========================
-    ParameterCount          = 69;
+    ParameterCount          = 67;
     //=========================
   end;
 
@@ -579,8 +575,6 @@ begin
     TPluginParameter.Lfo2Shape:                result.DefaultValue := TLfoShapeHelper.ToSingle(TLfoShape.Triangle);
     TPluginParameter.Lfo1FreqMode:             result.DefaultValue := 0;
     TPluginParameter.Lfo2FreqMode:             result.DefaultValue := 0;
-    TPluginParameter.Lfo1Range:                result.DefaultValue := 0.3;
-    TPluginParameter.Lfo2Range:                result.DefaultValue := 0.3;
     TPluginParameter.Lfo1Par1:                 result.DefaultValue := 0.5;
     TPluginParameter.Lfo1Par2:                 result.DefaultValue := 0.5;
     TPluginParameter.Lfo1Par3:                 result.DefaultValue := 0.5;
@@ -957,8 +951,6 @@ initialization
     assert(kPluginParameterID.Lfo2Shape                    = Integer(TPluginParameter.Lfo2Shape));
     assert(kPluginParameterID.Lfo1FreqMode                 = Integer(TPluginParameter.Lfo1FreqMode));
     assert(kPluginParameterID.Lfo2FreqMode                 = Integer(TPluginParameter.Lfo2FreqMode));
-    assert(kPluginParameterID.Lfo1Range                    = Integer(TPluginParameter.Lfo1Range));
-    assert(kPluginParameterID.Lfo2Range                    = Integer(TPluginParameter.Lfo2Range));
     assert(kPluginParameterID.Lfo1Par1                     = Integer(TPluginParameter.Lfo1Par1));
     assert(kPluginParameterID.Lfo1Par2                     = Integer(TPluginParameter.Lfo1Par2));
     assert(kPluginParameterID.Lfo1Par3                     = Integer(TPluginParameter.Lfo1Par3));

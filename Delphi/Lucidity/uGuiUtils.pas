@@ -981,8 +981,6 @@ begin
     TPluginParameter.Lfo2Shape:              result := TLfoShapeHelper;
     TPluginParameter.Lfo1FreqMode:           result := TLfoFreqModeHelper;
     TPluginParameter.Lfo2FreqMode:           result := TLfoFreqModeHelper;
-    TPluginParameter.Lfo1Range:              result := TLfoRangeHelper;
-    TPluginParameter.Lfo2Range:              result := TLfoRangeHelper;
     TPluginParameter.Seq1Clock:              result := TSequencerClockHelper;
     TPluginParameter.Seq1Direction:          result := TStepSequencerDirectionHelper;
     TPluginParameter.Seq1Length:             result := TStepSequencerLengthHelper;

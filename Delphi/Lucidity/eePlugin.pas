@@ -347,8 +347,6 @@ begin
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Shape);
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1FreqMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2FreqMode);
-  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Range);
-  PublishPluginParameterAsVstParameter(TPluginParameter.Lfo2Range);
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par1);
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par2);
   PublishPluginParameterAsVstParameter(TPluginParameter.Lfo1Par3);
@@ -906,8 +904,6 @@ begin
   PasteParameter(TPluginParameter.Lfo2Shape, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Lfo1FreqMode, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Lfo2FreqMode, CopiedKeyGroupValues);
-  PasteParameter(TPluginParameter.Lfo1Range, CopiedKeyGroupValues);
-  PasteParameter(TPluginParameter.Lfo2Range, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Lfo1Par1, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Lfo1Par2, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Lfo1Par3, CopiedKeyGroupValues);

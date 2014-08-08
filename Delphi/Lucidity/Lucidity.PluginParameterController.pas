@@ -429,8 +429,6 @@ begin
     TPluginParameter.Lfo2Shape:               result.Name := 'Lfo2 Shape';
     TPluginParameter.Lfo1FreqMode:            result.Name := 'Lfo1 Freq Mode';
     TPluginParameter.Lfo2FreqMode:            result.Name := 'Lfo2 Freq Mode';
-    TPluginParameter.Lfo1Range:               result.Name := 'Lfo1 Range';
-    TPluginParameter.Lfo2Range:               result.Name := 'Lfo2 Range';
     TPluginParameter.Lfo1Par1:                result.Name := 'Lfo1 Par1';
     TPluginParameter.Lfo1Par2:                result.Name := 'Lfo1 Par2';
     TPluginParameter.Lfo1Par3:                result.Name := 'Lfo1 Par3';
@@ -505,8 +503,6 @@ begin
     TPluginParameter.Lfo2Shape:               result.ShortName := 'Lfo2 Shp';
     TPluginParameter.Lfo1FreqMode:            result.ShortName := 'Lfo1Mode';
     TPluginParameter.Lfo2FreqMode:            result.ShortName := 'Lfo2Mode';
-    TPluginParameter.Lfo1Range:               result.ShortName := 'Lfo1 Rng';
-    TPluginParameter.Lfo2Range:               result.ShortName := 'Lfo2 Rng';
     TPluginParameter.Lfo1Par1:                result.ShortName := 'Lfo1 P1';
     TPluginParameter.Lfo1Par2:                result.ShortName := 'Lfo1 P2';
     TPluginParameter.Lfo1Par3:                result.ShortName := 'Lfo1 P3';
@@ -568,8 +564,6 @@ begin
     TPluginParameter.Lfo2Shape:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
     TPluginParameter.Lfo1FreqMode:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
     TPluginParameter.Lfo2FreqMode:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.Lfo1Range:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.Lfo2Range:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
     TPluginParameter.SamplerTriggerMode:    Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
     TPluginParameter.VoiceMode:          Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
   end;

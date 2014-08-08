@@ -131,13 +131,11 @@ begin
     TPluginParameter.Filter2Par4:       result := TScopeFocus.Filter2;
     TPluginParameter.Lfo1Shape:         result := TScopeFocus.Lfo1;
     TPluginParameter.Lfo1FreqMode:      result := TScopeFocus.Lfo1;
-    TPluginParameter.Lfo1Range:         result := TScopeFocus.Lfo1;
     TPluginParameter.Lfo1Par1:          result := TScopeFocus.Lfo1;
     TPluginParameter.Lfo1Par2:          result := TScopeFocus.Lfo1;
     TPluginParameter.Lfo1Par3:          result := TScopeFocus.Lfo1;
     TPluginParameter.Lfo2Shape:         result := TScopeFocus.Lfo2;
     TPluginParameter.Lfo2FreqMode:      result := TScopeFocus.Lfo2;
-    TPluginParameter.Lfo2Range:         result := TScopeFocus.Lfo2;
     TPluginParameter.Lfo2Par1:          result := TScopeFocus.Lfo2;
     TPluginParameter.Lfo2Par2:          result := TScopeFocus.Lfo2;
     TPluginParameter.Lfo2Par3:          result := TScopeFocus.Lfo2;
