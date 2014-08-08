@@ -18,6 +18,7 @@ type
     FDefaultExt: string;
     FFilter: string;
     FInitialDir: string;
+    FTitle: string;
   protected
     xpMode   : TxpMode;
     WinXP    : TOpenDialog;
@@ -28,6 +29,7 @@ type
 
     function Execute : boolean;
 
+    property Title: string        read FTitle       write FTitle;
     property DefaultExt: string   read FDefaultExt  write FDefaultExt;  //example: 'exe' or 'txt'
     property FileName: string     read FFileName    write FFileName;
     // Similar to TOpenDialog.
@@ -114,6 +116,7 @@ begin
   FFilter     := '';
   FInitialDir := '';
   FDefaultExt := '';
+  FTitle      := 'Open File';
 end;
 
 destructor TxpFileOpenDialog.Destroy;
@@ -157,7 +160,7 @@ begin
       WinXP.DefaultExt := FDefaultExt;
       WinXP.InitialDir := FInitialDir;
       WinXP.DefaultExt := FDefaultExt;
-
+      WinXP.Title      := FTitle;
 
       if WinXP.Execute then
       begin
@@ -192,6 +195,7 @@ begin
       WinVista.DefaultExtension := FDefaultExt;
       WinVista.FileTypeIndex    := FFilterIndex;
       WinVista.FileName         := FFileName;
+      WinVista.Title            := FTitle;
 
       if WinVista.Execute then
       begin
