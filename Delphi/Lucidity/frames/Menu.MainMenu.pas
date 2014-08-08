@@ -118,7 +118,7 @@ begin
   FileOpenDialog.Title := 'Open Registration Key File...';
 
   // TODO:HIGH change key data file extension to .key
-  FileOpenDialog.Filter := 'Key Data File|*.dat';
+  FileOpenDialog.Filter := 'Key Data File|*.key';
 
   if FileOpenDialog.Execute then
   begin

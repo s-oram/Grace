@@ -8,11 +8,6 @@
   - close first cubase project
   - there is a bug somewhere round here.
 
-bug
-	I noticed it's Lucidity.key,but I need to rename to Lucidity.dat to work properly.
-	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
-	http://www.reusenoise.com
-
 Bug
 	Lucidity,I tray to load SFZ file,but there is an error,In attachment the scrrenshot.
 	Anyway,these sampler it's a great potential tool.

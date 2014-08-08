@@ -18,7 +18,7 @@ const
   kProductVersion = '1.0';
 
 const
-  kKeyFileName = 'LucidityKey.dat';
+  kKeyFileName = 'LucidityKey.key';
 
 var
   AppDataDir   : string; //As specified by windows.

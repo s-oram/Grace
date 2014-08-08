@@ -2,6 +2,11 @@
 Now using new XP compatible dialogs. 
 thunderlink://messageid=1406820958.1920048.147734482.78E9326E@webmail.messagingengine.com
 
+bug
+	I noticed it's Lucidity.key,but I need to rename to Lucidity.dat to work properly.
+	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
+	http://www.reusenoise.com
+
 
 == Finished for the next release ==
 New:
@@ -16,7 +21,8 @@ New:
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.
 - Now using File Open/Save Dialogs that are compatible with Windows XP. 
-  Newer Windows Vista style dialogs will be used on Vista machines an up.      
+  Newer Windows Vista style dialogs will be used on Vista machines an up.     
+- Lucidity now expects the key file extension to be ".key" instead of ".dat"
 
 
 
