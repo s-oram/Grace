@@ -138,6 +138,8 @@ begin
 end;
 
 procedure TSlopeGen.SetCurve(const Value: single);
+var
+  ValueMod : single;
 begin
   assert(Value >= 0);
   assert(Value <= 1);
@@ -145,8 +147,9 @@ begin
 
   // Fast Curve Code.
   // kvr DSP forum - topic "Help required to optimize code"
-  // http://www.kvraudio.com/forum/viewtopic.php?p=1812158&highlight=exp+envelope#1812158
-  CurveFactor := 1-(1/Value);
+
+  ValueMod := Value * 0.8 + 0.1;
+  CurveFactor := 1-(1/ValueMod);
 end;
 
 procedure TSlopeGen.SetEnvRate(const Value: single);
