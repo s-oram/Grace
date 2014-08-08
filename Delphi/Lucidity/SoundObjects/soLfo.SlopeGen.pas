@@ -29,9 +29,11 @@ type
     fAttackTime: single;
     fMinTotalTime: single;
     fEnvRate: single;
+    fBias: single;
     procedure SetSampleRate(const Value: single);
     procedure SetMinTotalTime(const Value: single);
     procedure SetEnvRate(const Value: single);
+    procedure SetBias(const Value: single);
 
   protected type
     TEnvStage = (Attack, Sustrain, Release, Off);
@@ -61,8 +63,7 @@ type
     // MinTotalTime is used as a reference when calculating how fast any RATE value is.
     property MinTotalTime : single read fMinTotalTime  write SetMinTotalTime;  //milliseconds.
     property EnvRate      : single read fEnvRate       write SetEnvRate; // range 0..1
-
-
+    property Bias         : single read fBias          write SetBias;    // range 0..1
 
     property Curve        : single read fCurve         write fCurve;         // Envelope curve. 0..1 range. 0.5 is a straight line.
 
@@ -99,12 +100,38 @@ end;
 procedure TSlopeGen.UpdateEnvStepSizes;
 var
   TotalStepSize : single;
+  TotalTime : single;
+  AttackTime : single;
+  DecayTime  : single;
+  ModBias : single;
 begin
-  //TODO:MED optimisation opportuniity here! factor out the 1/samplerate value.
-  TotalStepSize := 1 / (fSampleRate * fMinTotalTime * 0.001);
-  TotalStepSize := TotalStepSize * fEnvRate * 2;
-  AttackStepSize := TotalStepSize;
-  DecayStepSize  := TotalStepSize;
+  if fEnvRate >= 0.01 then
+  begin
+    TotalTime := fMinTotalTime / fEnvRate;
+    TotalTime := TotalTime;
+    assert(TotalTime > 0, 'Total Time is smaller than zero!'); //TODO:HIGH this feels hacky need to test.
+
+    ModBias := Bias * 0.8 + 0.1;
+
+    AttackTime := TotalTime * ModBias;
+    DecayTime  := TotalTime * (1 - ModBias);
+
+    AttackStepSize := 1 / (fSampleRate * AttackTime * 0.001);
+    DecayStepSize  := 1 / (fSampleRate * DecayTime * 0.001);
+
+    assert(AttackStepSize <= 1, 'Slope Step Size is larger than 1.');
+    assert(DecayStepSize <= 1, 'Slope Step Size is larger than 1.');
+  end else
+  begin
+    AttackStepSize := 0;
+    DecayStepSize  := 0;
+  end;
+end;
+
+procedure TSlopeGen.SetBias(const Value: single);
+begin
+  fBias := Value;
+  UpdateEnvStepSizes;
 end;
 
 procedure TSlopeGen.SetEnvRate(const Value: single);

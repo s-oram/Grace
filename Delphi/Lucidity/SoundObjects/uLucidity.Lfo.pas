@@ -367,6 +367,7 @@ begin
     begin
       //TODO: Slope gen needs to have it's attack and decay times quantised as well.
       SlopeGen.EnvRate := Par1^;
+      SlopeGen.Bias    := Par2^;
       SlopeGen.Curve   := Par3^;
     end;
   else

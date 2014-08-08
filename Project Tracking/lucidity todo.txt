@@ -20,8 +20,8 @@ Ensure the AD and AR envelopes can have minimal attack and fall times.
 Look at the envelopes draw on the GUI. look at the minimum times for the ADSR, AD, AR envelopes.
 I think they all need reducing.
 
-Possible bug.
-- Check LFO rates change when switching sync rates.
+Check out this version of NewAC
+https://code.google.com/p/newac/wiki/Introduction
 
 - Lucidity Patch Format
   -- Modulated parameter values should be stored using their
