@@ -74,7 +74,6 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   end;
 
-
   if Tag = 2 then
   begin
     SaveDialog := TFileSaveDialog.Create(nil);
@@ -89,7 +88,6 @@ begin
       Plugin.SaveProgramToFile(SaveDialog.FileName);
     end;
   end;
-
 
   if Tag = 3 then
   begin
@@ -111,19 +109,16 @@ end;
 
 procedure TMainMenu.OpenKeyFile(Sender: TObject);
 var
-  FileOpenDialog : TFileOpenDialog;
+  FileOpenDialog : TxpFileOpenDialog;
 begin
-  FileOpenDialog := TFileOpenDialog.Create(nil);
+  FileOpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@FileOpenDialog);
 
   FileOpenDialog.FileName := kKeyFileName;
   FileOpenDialog.Title := 'Open Registration Key File...';
 
-  with FileOpenDialog.FileTypes.Add do
-  begin
-    DisplayName := 'Key Data File';
-    FileMask    := '*.dat';
-  end;
+  // TODO:HIGH change key data file extension to .key
+  FileOpenDialog.Filter := 'Key Data File|*.dat';
 
   if FileOpenDialog.Execute then
   begin
@@ -276,9 +271,9 @@ end;
 
 procedure TMainMenu.EventHandle_ImportSFZ(Sender: TObject);
 var
-  OpenDialog : TFileOpenDialog;
+  OpenDialog : TxpFileOpenDialog;
 begin
-  OpenDialog := TFileOpenDialog.Create(nil);
+  OpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@OpenDialog);
 
   SetupFileOpenDialog(OpenDialog, TDialogTarget.dtSfzProgram);

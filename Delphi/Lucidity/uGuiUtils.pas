@@ -63,7 +63,8 @@ procedure SetupFileSaveDialog_Program(var SaveDialog : TFileSaveDialog);
 procedure SetupFileOpenDialog_Program(var OpenDialog : TFileOpenDialog); overload; //TODO:HIGH eventually this method will be deleted.
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
 
-procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
+procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget); overload; //TODO:HIGH eventually this method will be deleted.
+procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget); overload;
 
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
@@ -527,6 +528,37 @@ begin
 
 end;
 
+procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
+begin
+  case Target of
+    dtLucidityProgram:
+    begin
+      if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+      begin
+        OpenDialog.InitialDir := Lucidity.Globals.LastProgramLoadDir;
+      end;
+
+      OpenDialog.Filter := 'Lucidity Program|*.lpg|Any Type|*.*';
+      OpenDialog.DefaultExt := 'lpg';
+    end;
+
+
+    dtSfzProgram:
+    begin
+      // TODO:MED set default folder location.
+      OpenDialog.Filter := 'SFZ Program|*.sfz|Any Type|*.*';
+      OpenDialog.DefaultExt := 'sfz';
+    end;
+
+    dtAudioFile:
+    begin
+      OpenDialog.Filter := 'Audio Files|*.wav; *.aif; *.aiff; *.snd|Any Type|*.*';
+      OpenDialog.DefaultExt := '';
+    end
+  else
+    raise Exception.Create('Target type not handled.');
+  end;
+end;
 
 procedure SetupFileOpenDialog(var OpenDialog : TFileOpenDialog; const Target : TDialogTarget);
 var
