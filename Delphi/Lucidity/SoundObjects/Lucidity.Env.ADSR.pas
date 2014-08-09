@@ -117,35 +117,35 @@ procedure TLucidityADSR.SetAttackTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fAttackTime := Value;
-  fADSR.AttackTime := TParScaler.ADSR_AttackTimeVstParToMS(Value);
+  fADSR.AttackTime := Value * Value * Value * 8000;
 end;
 
 procedure TLucidityADSR.SetHoldTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fHoldTime := Value;
-  fADSR.HoldTime := TParScaler.ADSR_HoldTimeVstParToMS(Value);
+  fADSR.HoldTime := Value * Value * 500;
 end;
 
 procedure TLucidityADSR.SetDecayTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fDecayTime := Value;
-  fADSR.DecayTime := TParScaler.ADSR_DecayTimeVstParToMS(Value);
+  fADSR.DecayTime := Value * Value * Value * 8000 + 6;
 end;
 
 procedure TLucidityADSR.SetSustainLevel(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fSustainLevel := Value;
-  fADSR.SustainLevel := Value * value;
+  fADSR.SustainLevel := Value * Value;
 end;
 
 procedure TLucidityADSR.SetReleaseTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fReleaseTime := Value;
-  fADSR.ReleaseTime := TParScaler.ADSR_ReleaseTimeVstParToMS(Value);
+  fADSR.ReleaseTime := Value * Value * Value * 8000 + 6;
 end;
 
 procedure TLucidityADSR.SetSampleRate(const Value: integer);

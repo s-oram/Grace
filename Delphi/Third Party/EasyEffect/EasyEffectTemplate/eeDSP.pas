@@ -920,7 +920,6 @@ begin
   if Tau <= 0
     then result := 0
     else result := exp( -1.0 / (Tau * SampleRate));
-
 end;
 
 function RcEnvFilter(const CurrentValue, TargetValue, Coefficient: double): double; inline;
