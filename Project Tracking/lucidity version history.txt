@@ -29,6 +29,8 @@ Change:
   the LFO mode has total time (RATE) and shape (BIAS) controls. Bias 
   changes the shape from a downwards saw -> triangel -> upwards saw
 - Changed the LFO sync options. 
+- Made a few tweaks to the ADSR parameter scaling to ease importing 
+  SFZ and other formats.
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.

@@ -23,16 +23,12 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-Ensure the AD and AR envelopes can have minimal attack and fall times. 
-
-- Lucidity Patch Format
-  -- Envelope parameter values should be stored using their  
-     proper units. IE. Amp Attack time is 5ms. 
-     This will make it much easier to allow importing of other formats.
-     It will also make it much easier to maintain backwards compatability.
+- Lucidity Patch Format  
   -- what happens when loading incomplete patch files. IE. patch files with not
      all data included. 
   -- what happens when loading a patch file with incorrectly named XML elements. 
+
+SFZ import!
 
 Check out this version of NewAC - WavPack and MP3 import maybe.
 https://code.google.com/p/newac/wiki/Introduction
