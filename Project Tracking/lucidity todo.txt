@@ -20,6 +20,10 @@ bug
    were disabling all instances of "anticipative FX processing".  
    thunderlink://messageid=1407526910.2254955.150695977.6DD3CC0A@webmail.messagingengine.com
 
+Bug
+- Andy reports the Voice Mod frame tab text is too large and overflows 
+  over the tabs.
+
 =============================================================================
      TODO HIGH
 =============================================================================
@@ -70,15 +74,13 @@ From Yann
 thunderlink://messageid=CAP8CW6OMk6qV82OX5422fAmqVbkWuc=cbfCbtxNx32vqALNEPA@mail.gmail.com
 -- It shouldn't be doing this anymore.
 
+Patch loading needs to have some range checking when loading values to ensure
+everything is valid/sanitised. 
 
 Installer needs option to put data folder 
 - in default location
 - in VST Plugin directory
 - or custom location.
-
-
-- Andy reports the Voice Mod frame tab text is too large and overflows 
-  over the tabs.
 
 =============================================================================
 > is it possible to layer groups and use different Amp, Filter, 

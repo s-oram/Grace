@@ -3,6 +3,9 @@ unit uMainForm;
 interface
 
 uses
+  NativeXML,
+  Lucidity.Sfz,
+  VamLib.Utils,
   VamLib.Debouncer,
   VamLib.GuiUtils,
   eeOscPhaseCounter,
@@ -183,24 +186,21 @@ var
   fn : string;
   DirPath, DirName : string;
   Ext : string;
+
+  SFZImporter : TSfzImporter;
+  Dest : TNativeXML;
 begin
-  fn := Edit1.Text;
-
-  DirPath := ExtractFileDir(fn);
-  DirName := ExtractFileName(DirPath);
-  Ext := ExtractFileExt(fn);
-  if Ext = '' then
-  begin
-    fn := ExcludeTrailingPathDelimiter(fn);
-    DirName := ExtractFileName(DirPath);
-    DirPath := ExtractFileDir(fn);
-    DirPath := IncludeTrailingPathDelimiter(DirPath) + DirName;
-    ShowMessage(DirPath);
+  SFZImporter := TSfzImporter.Create;
+  Dest := nil;
+  try
+    fn := 'D:\temp\Lucidity\source.sfz';
+    SfzImporter.ConvertFile(fn, Dest);
+    Dest.XmlFormat := TXmlFormatType.xfReadable;
+    Dest.SaveToFile('D:\temp\Lucidity\test.lpg');
+  finally
+    Dest.Free;
+    sfzImporter.Free;
   end;
-
-
-
-
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);

@@ -653,7 +653,7 @@ begin
   // check if the dropped file is a lucidity program..
   if (fn <> '') and (IsSupportedProgramFormat(fn)) then
   begin
-    Plugin.LoadProgramFromFile(fn);
+    Plugin.ImportProgram(fn);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     exit; //====================================================exit======>>
   end;

@@ -12,16 +12,11 @@ type
   TSfzImporter = class
   private
     Parser : TSfzParser;
-
     RootNode : TXmlNode;
     CurrentGroup  : TXmlNode;
     CurrentRegion : TXmlNode;
-
     GroupCount : integer;
-
-
     SupportedOpcodeList : TObjectList;
-
     procedure Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
     procedure Event_OnRegionStart(Sender : TObject);
     procedure Event_OnRegionEnd(Sender : TObject);
@@ -30,14 +25,14 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure ConvertFile(SourceFileName : string; var Dest : TNativeXML);
+    procedure ConvertFile(SourceFileName : string; out Dest : TNativeXML);
   end;
 
 
 implementation
 
 uses
-  eeFunctions,
+  VamLib.Utils,
   SysUtils,
   NativeXmlEx,
   uAutoFree;
@@ -59,27 +54,24 @@ begin
   inherited;
 end;
 
-procedure TSfzImporter.ConvertFile(SourceFileName: string; var Dest: TNativeXML);
+procedure TSfzImporter.ConvertFile(SourceFileName: string; out Dest: TNativeXML);
 begin
+  if assigned(Dest) then raise Exception.Create('Dest should not be assigned.');
+
+  Dest := TNativeXML.CreateName('root');
+
   RootNode      := nil;
   CurrentRegion := nil;
   CurrentGroup  := nil;
   GroupCount    := 0;
-
-  Dest.Clear;
-
-  if not assigned(Dest.Root) then
-  begin
-    Dest.NodeNew('root');
-  end;
 
   if assigned(Dest.Root) then
   begin
     RootNode := Dest.Root;
 
     Dest.Root.Name := 'root';
-    Dest.Root.NodeNew('FileType').ValueUnicode := 'LucidityPatch';
-    Dest.Root.NodeNew('FileVersion').ValueUnicode := '1';
+    Dest.Root.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
+    Dest.Root.NodeNew('PatchFileFormatVersion').ValueUnicode := '1';
 
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceMode').ValueUnicode := 'Poly';
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceGlide').ValueUnicode := '0';
@@ -103,7 +95,7 @@ begin
 
 
     //== default voice parameters ==
-    NodeWiz(CurrentGroup).CreateNode('VoiceParameters/SamplePlaybackType').ValueUnicode := 'NoteSampler';
+    NodeWiz(CurrentGroup).CreateNode('VoiceParameters/SamplePlaybackType').ValueUnicode := 'NoteSampler'; //TODO:MED delete this. Node isn't needed.
 
 
     inc(GroupCount);
@@ -123,10 +115,21 @@ procedure TSfzImporter.Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue 
   var
     x : integer;
   begin
-    x := DataIO_StrToInt(Value, MinValue);
-    if x < MinValue then x := MinValue;
-    if x > MaxValue then x := MaxValue;
-    result := x;
+    if IsMidiKeyNameString(Value, x) then
+    begin
+      if x < MinValue then x := MinValue;
+      if x > MaxValue then x := MaxValue;
+      result := x;
+    end else
+    if TryStrToInt(Value, x) then
+    begin
+      if x < MinValue then x := MinValue;
+      if x > MaxValue then x := MaxValue;
+      result := x;
+    end else
+    begin
+      raise EConvertError.Create('Value is not an integer.');
+    end;
   end;
   function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
   var

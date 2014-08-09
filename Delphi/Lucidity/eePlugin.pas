@@ -171,8 +171,9 @@ type
 
     procedure InitializeState; override;
 
-    procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat);
-    procedure LoadProgramFromFile(const FileName : string);
+    procedure ImportProgram(const FileName : string); overload;
+    procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat); overload;
+    procedure LoadProgramFromFile(const FileName : string); //TODO:HIGH Maybe this isn't needed.
     procedure SaveProgramToFile(const FileName : string);
     procedure SaveProgramAsDefault;
 
@@ -1267,6 +1268,19 @@ begin
   {$ENDIF}
 
 
+end;
+
+procedure TeePlugin.ImportProgram(const FileName: string);
+var
+  Ext : string;
+begin
+  Ext := ExtractFileExt(FileName);
+
+  if SameText(ext, '.lpg')
+    then ImportProgram(FileName, TProgramFormat.Lucidity);
+
+  if SameText(ext, '.sfz')
+    then ImportProgram(FileName, TProgramFormat.Sfz);
 end;
 
 procedure TeePlugin.ImportProgram(const FileName: string; ProgramFormat : TProgramFormat);

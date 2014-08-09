@@ -59,6 +59,7 @@ function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
 //function DataIO_UTF8StrToInt(Value:UTF8String; FallbackValue:integer):integer;
 
+
 //==============================================================
 
 
@@ -803,6 +804,7 @@ begin
     result := FallBackValue;
   end;
 end;
+
 
 {
 function DataIO_UTF8StrToInt(Value:UTF8String; FallbackValue:integer):integer;

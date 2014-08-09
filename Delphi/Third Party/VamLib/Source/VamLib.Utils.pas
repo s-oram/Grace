@@ -62,6 +62,10 @@ function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
 function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
 
+function IsIntegerString(const Value : string):boolean;
+function IsMidiKeyNameString(Value : string):boolean; overload; 
+function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boolean; overload;
+function MidiKeyNameToNoteNumber(Value : string):integer; 
 
 
 
@@ -558,6 +562,105 @@ function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 begin
   result := Sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
 end;
+
+
+function IsIntegerString(const Value : string):boolean;
+var
+  x : integer;
+begin
+  result := TryStrToInt(Value, x);
+end;
+
+
+function MidiKeyNameToNoteNumber(Value : string):integer; 
+var
+  x : integer;
+begin
+  if IsMidiKeyNameString(Value, x) 
+    then result := x
+    else raise EConvertError.Create('Value is a not a MIDI Key Name string.');  
+end;
+
+function IsMidiKeyNameString(Value : string):boolean; overload;
+var
+  x : integer;
+begin
+  result := IsMidiKeyNameString(Value, x);
+end;
+
+
+function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boolean; overload;
+// NOTES:
+//   http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm
+var
+  NoteName : string;
+  IsSharp : boolean;
+  NoteNumber : integer;
+  OctaveString : string;
+  CopyStartIndex : integer;
+  CopyLength : integer;
+  OctaveNumber : integer;
+begin
+  if Length(Value) < 2 then exit(false);
+
+  Value := Lowercase(value);
+
+  // Convert note name to note number.
+
+  NoteName := Value[1];
+
+  if Value[2] = '#' then
+  begin
+    // MIDI Note is a sharp.    
+    if NoteName = 'c' then NoteNumber := 1 else
+    if NoteName = 'd' then NoteNumber := 3 else
+    if NoteName = 'f' then NoteNumber := 6 else
+    if NoteName = 'g' then NoteNumber := 8 else
+    if NoteName = 'a' then NoteNumber := 10
+      else exit(false); // Invalid note name //=================>> exit >>=======>>
+  end else
+  begin
+    // MIDI Note is *not* a sharp.    
+    if NoteName = 'c' then NoteNumber := 0 else
+    if NoteName = 'd' then NoteNumber := 2 else
+    if NoteName = 'e' then NoteNumber := 4 else
+    if NoteName = 'f' then NoteNumber := 5 else
+    if NoteName = 'g' then NoteNumber := 7 else
+    if NoteName = 'a' then NoteNumber := 9 else
+    if NoteName = 'b' then NoteNumber := 11
+      else exit(false); // Invalid note name //=================>> exit >>=======>>
+  end;
+
+  if (Value[2] = '#') or (Value[2] = '_')
+    then CopyStartIndex := 3
+    else CopyStartIndex := 2;
+
+  try  
+    CopyLength := Length(Value) - CopyStartIndex + 1;
+    OctaveString := Copy(Value, CopyStartIndex, CopyLength);
+  except
+    // something went wrong. assume note is invalid.
+    exit(false);
+  end;
+
+  if TryStrToInt(OctaveString, OctaveNumber) then
+  begin
+    // Check octave boundary. 
+    if OctaveNumber < -2 then exit(false);
+    if OctaveNumber > 8  then exit(false);    
+    
+    // if we make it this far, the string is a MIDI key name. phew! 
+    result := true;
+    MidiNoteNumber := (OctaveNumber + 2)  * 12 + NoteNumber; //Important: don't forget to set the result variable!
+    assert(MidiNoteNumber >= 0);
+    assert(MidiNoteNumber <= 127);  
+  end else
+  begin
+    // It's not an octave number if it can't be converted to an integer. 
+    exit(false);
+  end;
+end;
+
 
 
 end.

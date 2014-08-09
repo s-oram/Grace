@@ -216,18 +216,26 @@ var
   SfzImporter : TSfzImporter;
   XML : TNativeXML;
 begin
+  CopyFile(FileName, 'D:\temp\Lucidity\Source.sfz');
+
   SfzImporter := TSfzImporter.Create;
   AutoFree(@SfzImporter);
 
-  XML := TNativeXML.Create(nil);
-  AutoFree(@xml);
+  XML := nil;
+  try
+    SfzImporter.ConvertFile(FileName, XML);
 
-  SfzImporter.ConvertFile(FileName, XML);
+    XML.XmlFormat := xfReadable;
+    xml.SaveToFile('D:\temp\Lucidity\test.lpg');
 
-  XML.XmlFormat := xfReadable;
-  xml.SaveToFile('C:\Users\Shannon Matthews\Desktop\test convert.lpg');
-  // TODO:HIGH - whats going on here.
-  //ReadStateFromXML(XML);
+    // TODO:HIGH - whats going on here.
+    CheckPatchFormatVersion(XML);
+    MakeSampleFileNamesAbsolute(Xml.Root, FileName);
+    ReadStateFromXML(XML);
+  finally
+    XML.Free;
+  end;
+
 end;
 
 procedure TLucidityStateManager.LoadPesetFromFile(const FileName: string);

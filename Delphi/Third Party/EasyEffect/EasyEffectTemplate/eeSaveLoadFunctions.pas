@@ -265,9 +265,7 @@ begin
 
   if not assigned(aNode) then exit; //====== node with property name not found so exit. ====>>
 
-
   Value := aNode.ValueUnicode;
-
 
   case PropInfo^.PropType^^.Kind of
     tkEnumeration:

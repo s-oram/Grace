@@ -7,6 +7,7 @@ interface
 uses
   SysUtils;
 
+procedure LogError(const ErrorMessage : string);
 procedure LogException(const E:Exception); overload;
 procedure LogException(const E:Exception; const Title : string); overload;
 
@@ -16,6 +17,13 @@ uses
   MadExcept,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeTypes;
+
+procedure LogError(const ErrorMessage : string);
+begin
+  {$IFDEF Logging}
+  LogMain.LogError(ErrorMessage);
+  {$ENDIF}
+end;
 
 
 procedure LogException(const E:Exception);
