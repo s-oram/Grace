@@ -2,6 +2,8 @@ unit Lucidity.StateManager;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 {$M+}
 
 uses
@@ -80,8 +82,10 @@ type
     fSampleFine: integer;
   private
   public
-  published
+    procedure ResetToDefaultValues;
     procedure SanitiseData; // call after reading data from a save file.
+  published
+
 
     property LowNote        : integer read fLowNote        write fLowNote;
     property HighNote       : integer read fHighNote       write fHighNote;
@@ -216,7 +220,10 @@ var
   SfzImporter : TSfzImporter;
   XML : TNativeXML;
 begin
+
+  {$IFDEF Debug}
   CopyFile(FileName, 'D:\temp\Lucidity\Source.sfz');
+  {$ENDIF}
 
   SfzImporter := TSfzImporter.Create;
   AutoFree(@SfzImporter);
@@ -225,8 +232,10 @@ begin
   try
     SfzImporter.ConvertFile(FileName, XML);
 
+    {$IFDEF Debug}
     XML.XmlFormat := xfReadable;
     xml.SaveToFile('D:\temp\Lucidity\test.lpg');
+    {$ENDIF}
 
     // TODO:HIGH - whats going on here.
     CheckPatchFormatVersion(XML);
@@ -678,6 +687,8 @@ begin
 
       if (assigned(RegionPropertiesNode)) and (assigned(SamplePropertiesNode)) then
       begin
+        RegionLoadInfo.ResetToDefaultValues;
+
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'LowNote');
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'HighNote');
         LoadObjectPropertyFromXML(RegionPropertiesNode, RegionLoadInfo, 'LowVelocity');
@@ -848,10 +859,43 @@ begin
   aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
   aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
 
+
+
+
   Plugin.SampleMap.AddRegion(aRegion);
 end;
 
 { TRegionLoadInfo }
+
+procedure TRegionLoadInfo.ResetToDefaultValues;
+begin
+  // TODO:HIGH These are default values.
+  // Some of these values won't be appropitate. I should
+  // change the way they work so when a new region is created
+  // I knob what values have been ---
+  // Maybe that can be done as part of the sanitisation stage.
+
+  // TODO:HIGH I wonder if other classes will need to have this
+  // same default load state applied.
+
+
+  LowNote        := 0;
+  HighNote       := 127;
+  LowVelocity    := 0;
+  HighVelocity   := 127;
+  RootNote       := -1;
+  SampleStart    := -1;
+  SampleEnd      := -1;
+  LoopStart      := -1;
+  LoopEnd        := -1;
+  SampleBeats    := 0;
+  SampleVolume   := 0;
+  SamplePan      := 0;
+  SampleTune     := 0;
+  SampleFine     := 0;
+  SampleFileName := '';
+  SampleFrames   := -1;
+end;
 
 procedure TRegionLoadInfo.SanitiseData;
 begin
