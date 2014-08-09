@@ -16,9 +16,8 @@ type
     class function ADSR_DecayTimeToMS(const Value:single):single;
     class function ADSR_ReleaseTimeToMS(const Value:single):single;
 
-
-    class function ModEnv_StageTimeToMS(const Value:single):single; //TODO:MED this should eventually be deleted.
-
+    //TODO:MED this can probably deleted at some stage.
+    class function ModEnv_StageTimeToMS(const Value:single):single;
   end;
 
 implementation
@@ -52,6 +51,12 @@ class function TParScaler.ADSR_ReleaseTimeToMS(const Value: single): single;
 begin
   assert((Value >= 0) and (Value <= 1));
   result := StaggeredExpand((Value * Value), 6,500,3000,8000);
+end;
+
+class function TParScaler.ModEnv_StageTimeToMS(const Value: single): single;
+begin
+  assert((Value >= 0) and (Value <= 1));
+  result := StaggeredExpand((Value * Value), 1,500,3000,8000);
 end;
 
 end.
