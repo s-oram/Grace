@@ -45,7 +45,7 @@ type
   TStepSequencerDirection = (Forwards, Backwards, PingPong, Random);
   TStepSequencerDirectionHelper = class(TEnumHelper<TStepSequencerDirection>);
 
-  TLfoShape = (SawUp, SawDown, Square, Triangle, Sine, RandomStepped, RandomSmooth, AttackDecay, AttackRelease, Cycle);
+  TLfoShape = (SawUp, SawDown, Square, Triangle, Sine, RandomStepped, RandomSmooth, AttackRelease, AttackDecay, Cycle);
   TLfoShapeHelper = class(TEnumHelper<TLfoShape>)
   public
     class function ToFullGuiString(aEnum : TLfoShape):string; override;
@@ -63,6 +63,7 @@ type
     class function ToShortGuiString(aEnum : TLfoFreqMode):string; override;
   end;
 
+  //TODO:HIGH delete this.
   TLfoRange = (x1, x2, x4, x8);
   TLfoRangeHelper = class(TEnumHelper<TLfoRange>)
   public
@@ -377,7 +378,7 @@ begin
     TLfoShape.RandomStepped: result := 'Random Stepped';
     TLfoShape.AttackDecay:   result := 'Attack-Decay';
     TLfoShape.AttackRelease: result := 'Attack-Release';
-    TLfoShape.Cycle:         result := 'Cycle';
+    TLfoShape.Cycle:         result := 'Attack-Decay Cycle';
   else
     result := inherited;
   end;
@@ -395,7 +396,7 @@ begin
     TLfoShape.RandomStepped: result := 'R.Stp';
     TLfoShape.AttackDecay:   result := 'AD';
     TLfoShape.AttackRelease: result := 'AR';
-    TLfoShape.Cycle:         result := 'Cycle';
+    TLfoShape.Cycle:         result := 'AD Cycle';
   else
     result := inherited;
   end;
