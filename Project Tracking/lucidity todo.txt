@@ -23,8 +23,6 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- add more LFO sync modes. Look at zebra for comparison. 
-
 Ensure the AD and AR envelopes can have minimal attack and fall times. 
 
 - Lucidity Patch Format

@@ -56,7 +56,12 @@ type
   TLfoMode = (Free, Sync, Tempo);
   TLfoModeHelper = class(TEnumHelper<TLfoMode>);
 
-  TLfoFreqMode = (Hertz, Sync4, Sync8, Sync16, Sync32, Sync64);
+  TLfoFreqMode = (Fixed100Millisecond, Fixed1Second, Fixed10Second, Sync1_32, Sync1_16, Sync1_8, Sync1_4, Sync1_2, Sync1_1,
+  Sync1_32Dot, Sync1_16Dot, Sync1_8Dot, Sync1_4Dot, Sync1_2Dot, Sync1_1Dot,
+  Sync1_32Triple, Sync1_16Triple, Sync1_8Triple, Sync1_4Triple, Sync1_2Triple, Sync1_1Triple,
+  Sync2_1, Sync3_1, Sync4_1, Sync5, Sync6_1, Sync7_1, Sync8_1
+  );
+
   TLfoFreqModeHelper = class(TEnumHelper<TLfoFreqMode>)
   public
     class function ToFullGuiString(aEnum : TLfoFreqMode):string; override;
@@ -741,27 +746,40 @@ end;
 
 class function TLfoFreqModeHelper.ToFullGuiString(aEnum: TLfoFreqMode): string;
 begin
-  case aEnum of
-    TLfoFreqMode.Hertz:   result := 'Hertz';
-    TLfoFreqMode.Sync4:   result := 'Sync 1/4';
-    TLfoFreqMode.Sync8:   result := 'Sync 1/8';
-    TLfoFreqMode.Sync16:  result := 'Sync 1/16';
-    TLfoFreqMode.Sync32:  result := 'Sync 1/32';
-    TLfoFreqMode.Sync64:  result := 'Sync 1/64';
-  else
-    raise Exception.Create('Type not handled.');
-  end;
+  result := self.ToShortGuiString(aEnum);
 end;
 
 class function TLfoFreqModeHelper.ToShortGuiString(aEnum: TLfoFreqMode): string;
 begin
   case aEnum of
-    TLfoFreqMode.Hertz:   result := 'Hz';
-    TLfoFreqMode.Sync4:   result := '1/4';
-    TLfoFreqMode.Sync8:   result := '1/8';
-    TLfoFreqMode.Sync16:  result := '1/16';
-    TLfoFreqMode.Sync32:  result := '1/32';
-    TLfoFreqMode.Sync64:  result := '1/64';
+    TLfoFreqMode.Fixed100Millisecond: result := '0.1s';
+    TLfoFreqMode.Fixed1Second:        result := '1s';
+    TLfoFreqMode.Fixed10Second:       result := '10s';
+    TLfoFreqMode.Sync1_32:       result := '1/32';
+    TLfoFreqMode.Sync1_16:       result := '1/16';
+    TLfoFreqMode.Sync1_8:        result := '1/8';
+    TLfoFreqMode.Sync1_4:        result := '1/4';
+    TLfoFreqMode.Sync1_2:        result := '1/2';
+    TLfoFreqMode.Sync1_1:        result := '1/1';
+    TLfoFreqMode.Sync1_32Dot:    result := '1/32 Dot';
+    TLfoFreqMode.Sync1_16Dot:    result := '1/16 Dot';
+    TLfoFreqMode.Sync1_8Dot:     result := '1/8 Dot';
+    TLfoFreqMode.Sync1_4Dot:     result := '1/4 Dot';
+    TLfoFreqMode.Sync1_2Dot:     result := '1/2 Dot';
+    TLfoFreqMode.Sync1_1Dot:     result := '1/1 Dot';
+    TLfoFreqMode.Sync1_32Triple: result := '1/32 Triple';
+    TLfoFreqMode.Sync1_16Triple: result := '1/16 Triple';
+    TLfoFreqMode.Sync1_8Triple:  result := '1/8 Triple';
+    TLfoFreqMode.Sync1_4Triple:  result := '1/4 Triple';
+    TLfoFreqMode.Sync1_2Triple:  result := '1/2 Triple';
+    TLfoFreqMode.Sync1_1Triple:  result := '1/1 Triple';
+    TLfoFreqMode.Sync2_1:        result := '2/1';
+    TLfoFreqMode.Sync3_1:        result := '3/1';
+    TLfoFreqMode.Sync4_1:        result := '4/1';
+    TLfoFreqMode.Sync5:          result := '5/1';
+    TLfoFreqMode.Sync6_1:        result := '6/1';
+    TLfoFreqMode.Sync7_1:        result := '7/1';
+    TLfoFreqMode.Sync8_1:        result := '8/1';
   else
     raise Exception.Create('Type not handled.');
   end;

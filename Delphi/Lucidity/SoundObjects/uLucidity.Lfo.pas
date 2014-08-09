@@ -85,10 +85,6 @@ type
     procedure SlowControlProcess;
   end;
 
-//TODO:HIGH delete these methods.
-function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
-function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
-
 implementation
 
 uses
@@ -96,88 +92,6 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
-
-
-function ComputeLfoFrequency(const FreqPar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
-  function CalcSyncFreq(const FreqPar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
-  var
-    LfoFreq : single;
-    BeatSync : double;
-    Beats : integer;
-  begin
-    Beats := round(BeatDivision * Bars * (1-FreqPar));
-    if Beats < 1
-      then Beats := 1;
-    BeatSync := Beats / BeatDivision;
-    LfoFreq := SyncToSamples(BeatSync, Bpm, SampleRate);
-    LfoFreq := SampleRate / LfoFreq;
-    result := LfoFreq;
-  end;
-var
-  LfoFreq : single;
-  MinFreq, MaxFreq : single;
-begin
-  case FreqMode of
-    TLfoFreqMode.Hertz:
-    begin
-      MaxFreq := 30;
-      MinFreq := 1 / Power(2,RangeMult);
-      LfoFreq := (FreqPar * FreqPar) * (MaxFreq-MinFreq) + MinFreq;
-    end;
-    TLfoFreqMode.Sync4:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 4,   RangeMult);
-    TLfoFreqMode.Sync8:   LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 8,   RangeMult);
-    TLfoFreqMode.Sync16:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 16,  RangeMult);
-    TLfoFreqMode.Sync32:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 32,  RangeMult);
-    TLfoFreqMode.Sync64:  LfoFreq := CalcSyncFreq(FreqPar, Bpm, SampleRate, 64,  RangeMult);
-  else
-    raise Exception.Create('Type not handled.');
-  end;
-
-  result := LfoFreq;
-end;
-
-
-
-function ComputeSlopeTime(const TimePar : single; const FreqMode : TLfoFreqMode; const RangeMult : single; const Bpm, SampleRate : single):single;
-  function CalcTime(const TimePar, Bpm, SampleRate : single; const BeatDivision : integer; const Bars : single): single; inline;
-  var
-    TimeInSamples : single;
-    BeatSync : double;
-    Beats : integer;
-  begin
-    Beats := round(BeatDivision * Bars * TimePar);
-    if Beats < 1
-      then Beats := 1;
-    BeatSync := Beats / BeatDivision;
-    TimeInSamples := SyncToSamples(BeatSync, Bpm, SampleRate);
-    result := SamplesToMilliSeconds(TimeInSamples, SampleRate);
-  end;
-var
-  SlopeTime : single;
-  MaxTime : single;
-begin
-  case FreqMode of
-    TLfoFreqMode.Hertz:
-    begin
-      MaxTime := 1000 * RangeMult;
-      SlopeTime := (TimePar * TimePar) * MaxTime;
-    end;
-    TLfoFreqMode.Sync4:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 4,   RangeMult);
-    TLfoFreqMode.Sync8:   SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 8,   RangeMult);
-    TLfoFreqMode.Sync16:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 16,  RangeMult);
-    TLfoFreqMode.Sync32:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 32,  RangeMult);
-    TLfoFreqMode.Sync64:  SlopeTime := CalcTime(TimePar, Bpm, SampleRate, 64,  RangeMult);
-  else
-    raise Exception.Create('Type not handled.');
-  end;
-
-  if SlopeTime < 20
-    then SlopeTime := 20;
-
-
-  result := SlopeTime;
-end;
-
 
 { TLucidityLfo }
 
@@ -200,14 +114,39 @@ begin
 end;
 
 procedure TLucidityLfo.UpdateMaxLfoFreq;
+const
+  Dot    = 1.5;
+  Triple = 0.3333333;
 begin
   case FreqMode of
-    TLfoFreqMode.Hertz:   MaxLfoFreq := 15;
-    TLfoFreqMode.Sync4:   MaxLfoFreq := SyncToFreq(1/4, BPM);
-    TLfoFreqMode.Sync8:   MaxLfoFreq := SyncToFreq(1/8, BPM);
-    TLfoFreqMode.Sync16:  MaxLfoFreq := SyncToFreq(1/16, BPM);
-    TLfoFreqMode.Sync32:  MaxLfoFreq := SyncToFreq(1/32, BPM);
-    TLfoFreqMode.Sync64:  MaxLfoFreq := SyncToFreq(1/64, BPM);
+    TLfoFreqMode.Fixed100Millisecond: MaxLfoFreq := 15;
+    TLfoFreqMode.Fixed1Second:        MaxLfoFreq := 1;
+    TLfoFreqMode.Fixed10Second:       MaxLfoFreq := 0.1;
+    TLfoFreqMode.Sync1_32:       MaxLfoFreq := SyncToFreq(1/32, BPM);
+    TLfoFreqMode.Sync1_16:       MaxLfoFreq := SyncToFreq(1/16, BPM);
+    TLfoFreqMode.Sync1_8:        MaxLfoFreq := SyncToFreq(1/8, BPM);
+    TLfoFreqMode.Sync1_4:        MaxLfoFreq := SyncToFreq(1/4, BPM);
+    TLfoFreqMode.Sync1_2:        MaxLfoFreq := SyncToFreq(1/2, BPM);
+    TLfoFreqMode.Sync1_1:        MaxLfoFreq := SyncToFreq(1, BPM);
+    TLfoFreqMode.Sync1_32Dot:    MaxLfoFreq := SyncToFreq(1/32*Dot, BPM);
+    TLfoFreqMode.Sync1_16Dot:    MaxLfoFreq := SyncToFreq(1/16*Dot, BPM);
+    TLfoFreqMode.Sync1_8Dot:     MaxLfoFreq := SyncToFreq(1/8*Dot, BPM);
+    TLfoFreqMode.Sync1_4Dot:     MaxLfoFreq := SyncToFreq(1/4*Dot, BPM);
+    TLfoFreqMode.Sync1_2Dot:     MaxLfoFreq := SyncToFreq(1/2*Dot, BPM);
+    TLfoFreqMode.Sync1_1Dot:     MaxLfoFreq := SyncToFreq(1*Dot, BPM);
+    TLfoFreqMode.Sync1_32Triple: MaxLfoFreq := SyncToFreq(1/32*Triple, BPM);
+    TLfoFreqMode.Sync1_16Triple: MaxLfoFreq := SyncToFreq(1/16*Triple, BPM);
+    TLfoFreqMode.Sync1_8Triple:  MaxLfoFreq := SyncToFreq(1/8*Triple, BPM);
+    TLfoFreqMode.Sync1_4Triple:  MaxLfoFreq := SyncToFreq(1/4*Triple, BPM);
+    TLfoFreqMode.Sync1_2Triple:  MaxLfoFreq := SyncToFreq(1/2*Triple, BPM);
+    TLfoFreqMode.Sync1_1Triple:  MaxLfoFreq := SyncToFreq(1*Triple, BPM);
+    TLfoFreqMode.Sync2_1:        MaxLfoFreq := SyncToFreq(2, BPM);
+    TLfoFreqMode.Sync3_1:        MaxLfoFreq := SyncToFreq(3, BPM);
+    TLfoFreqMode.Sync4_1:        MaxLfoFreq := SyncToFreq(4, BPM);
+    TLfoFreqMode.Sync5:          MaxLfoFreq := SyncToFreq(5, BPM);
+    TLfoFreqMode.Sync6_1:        MaxLfoFreq := SyncToFreq(6, BPM);
+    TLfoFreqMode.Sync7_1:        MaxLfoFreq := SyncToFreq(7, BPM);
+    TLfoFreqMode.Sync8_1:        MaxLfoFreq := SyncToFreq(8, BPM);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -347,7 +286,6 @@ begin
   case ActiveLFO of
     TActiveLFO.WaveTable:
     begin
-      //WaveTableLFO.Freq          := ComputeLfoFrequency(Par1^, FreqMode, RangeMult, Bpm, SampleRate);
       WaveTableLfo.Freq          := Par1^ * MaxLfoFreq;
       WaveTableLFO.PhaseOffset   := Par2^;
       WaveTableLFO.Symmetry      := Par3^;
@@ -356,7 +294,6 @@ begin
 
     TActiveLFO.Random:
     begin
-      //RandomLFO.Freq     := ComputeLfoFrequency(Par1^, FreqMode, RangeMult, Bpm, SampleRate);
       RandomLFO.Freq     := Par1^ * MaxLfoFreq;
       RandomLFO.Density  := Par2^;
       RandomLFO.Flux     := Par3^;
@@ -365,7 +302,6 @@ begin
 
     TActiveLFO.Slope:
     begin
-      //TODO: Slope gen needs to have it's attack and decay times quantised as well.
       SlopeGen.EnvRate := Par1^;
       SlopeGen.Bias    := Par2^;
       SlopeGen.Curve   := Par3^;

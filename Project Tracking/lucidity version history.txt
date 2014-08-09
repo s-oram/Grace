@@ -28,6 +28,7 @@ Change:
   Instead of individual control over the Attack and Decay/Release stages, 
   the LFO mode has total time (RATE) and shape (BIAS) controls. Bias 
   changes the shape from a downwards saw -> triangel -> upwards saw
+- Changed the LFO sync options. 
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.
