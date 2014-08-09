@@ -16,9 +16,8 @@ type
     class function ADSR_DecayTimeToMS(const Value:single):single;
     class function ADSR_ReleaseTimeToMS(const Value:single):single;
 
-    class function LFO_SpeedToFrequency(const Value:single):single;
 
-    class function ModEnv_StageTimeToMS(const Value:single):single;
+    class function ModEnv_StageTimeToMS(const Value:single):single; //TODO:MED this should eventually be deleted.
 
   end;
 
@@ -53,23 +52,6 @@ class function TParScaler.ADSR_ReleaseTimeToMS(const Value: single): single;
 begin
   assert((Value >= 0) and (Value <= 1));
   result := StaggeredExpand((Value * Value), 6,500,3000,8000);
-end;
-
-class function TParScaler.LFO_SpeedToFrequency(const Value: single): single;
-var
-  Freq : single;
-  CV : TModularVoltage;
-begin
-  assert((Value >= 0) and (Value <= 1));
-  CV := (Value * 12);
-  Freq := VoltsToFreq(0.05, CV);
-  result := Freq;
-end;
-
-class function TParScaler.ModEnv_StageTimeToMS(const Value: single): single;
-begin
-  assert((Value >= 0) and (Value <= 1));
-  result := StaggeredExpand((Value * Value), 1,500,3000,8000);
 end;
 
 end.

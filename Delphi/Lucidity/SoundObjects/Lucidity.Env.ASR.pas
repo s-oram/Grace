@@ -9,6 +9,9 @@ uses
 
 {$SCOPEDENUMS ON}
 
+// TODO:HIGH I don't believe this asr class is being used any more. It probably can
+// be deleted.
+
 type
   TEnvStage = (Off, Attack, Hold, Sustain, Release);
 
