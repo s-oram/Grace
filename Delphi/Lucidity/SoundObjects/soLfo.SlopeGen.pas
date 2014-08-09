@@ -147,7 +147,6 @@ begin
 
   // Fast Curve Code.
   // kvr DSP forum - topic "Help required to optimize code"
-
   ValueMod := Value * 0.8 + 0.1;
   CurveFactor := 1-(1/ValueMod);
 end;

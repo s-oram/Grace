@@ -1,33 +1,6 @@
 =============================================================================
-     TODO HIGH
+     BUGS
 =============================================================================
-- add more LFO sync modes. Look at zebra for comparison. 
-
-- LFO curves in the scope display need to be updated to match the new LFO properties.
-
-- LFO: Replace the SYM parameter of the regular LFO types with the BEND parameter 
-  from the AD LFO modes. It will have the same effect with the SAW shape but will
-  be better with sine and triangle.
-
-Maybe need a slope envelope LFO.
-
-Ensure the AD and AR envelopes can have minimal attack and fall times. 
-
-Look at the envelopes draw on the GUI. look at the minimum times for the ADSR, AD, AR envelopes.
-I think they all need reducing.
-
-Check out this version of NewAC
-https://code.google.com/p/newac/wiki/Introduction
-
-- Lucidity Patch Format
-  -- Modulated parameter values should be stored using their
-     proper units. IE. Amp Attack time is 5ms. 
-     This will make it much easier to allow importing of other formats.
-     It will also make it much easier to maintain backwards compatability.
-  -- what happens when loading incomplete patch files. IE. patch files with not
-     all data included. 
-  -- what happens when loading a patch file with incorrectly named XML elements. 
-
 - Bug: 
   - Create cubase project
   - add multiple Lucidity instances.
@@ -41,18 +14,39 @@ Bug
 	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
 	http://www.reusenoise.com
 
-TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
-
 bug 
  - some wavefiles from Joesph don't load. 
  - Now Avoided: The changes I made to REAPER's configuration
    were disabling all instances of "anticipative FX processing".  
    thunderlink://messageid=1407526910.2254955.150695977.6DD3CC0A@webmail.messagingengine.com
 
+=============================================================================
+     TODO HIGH
+=============================================================================
+- add more LFO sync modes. Look at zebra for comparison. 
+
+Ensure the AD and AR envelopes can have minimal attack and fall times. 
+
+- Lucidity Patch Format
+  -- Modulated parameter values should be stored using their
+     proper units. IE. Amp Attack time is 5ms. 
+     This will make it much easier to allow importing of other formats.
+     It will also make it much easier to maintain backwards compatability.
+  -- what happens when loading incomplete patch files. IE. patch files with not
+     all data included. 
+  -- what happens when loading a patch file with incorrectly named XML elements. 
+
+Check out this version of NewAC - WavPack and MP3 import maybe.
+https://code.google.com/p/newac/wiki/Introduction
+
+TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
+
 Make video explaining modulation source. Send to Spacedad.
 - thunderlink://messageid=53E3683C.6040005@spaceraiders.co.uk
 
 - need a "Move Sample To New Key Group..." command. 
+
+Maybe need a slope envelope LFO.
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
 
@@ -70,9 +64,6 @@ Make video explaining modulation source. Send to Spacedad.
 -- Website
 -- Report Bug
 -- check for updates. 
-
-- ZeroObject should have a IDataObject reference. Will allow messages to be sent 
-  across thread boundaries using delayed message sending.
 
 - Clicking and immediately dragging a sample in the browser causes a audible glitch.
 
@@ -130,7 +121,8 @@ Send this dude a new build and check if he can now use different settings for ea
    then be processed in one group. 
 --------------------------------------------------------------------------------  
 
-
+- ZeroObject should have a IDataObject reference. Will allow messages to be sent 
+  across thread boundaries using delayed message sending.
 
 - Have a "Loading Sample" popup show when trying to load a sample.
 

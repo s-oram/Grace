@@ -191,7 +191,7 @@ uses
 type
   TDrawFunction = reference to function(x:single):single;
 
-procedure DrawFunction(const Canvas:TAgg2D; const Bounds : TRect; const Steps : integer; aFunction : TDrawFunction);
+procedure DrawFunction(const Canvas:TAgg2D; const Bounds : TRect; const Steps : integer; aFunction : TDrawFunction; const IsBipolar : boolean = true);
 var
   c1: Integer;
   tx, ty : single;
@@ -212,12 +212,18 @@ begin
 
 
   x1 := Bounds.Left - 5;
-  y1 := Bounds.Top + (Bounds.Height div 2);
+  if IsBipolar
+    then y1 := Bounds.Top + (Bounds.Height div 2)
+    else y1 := Bounds.Top + Bounds.Height;
+
   Path.MoveTo(x1, y1);
 
 
   tx := 0;
-  ty := aFunction(tx) * 0.5 + 0.5;
+  if IsBipolar
+    then ty := aFunction(tx) * 0.5 + 0.5
+    else ty := aFunction(tx);
+
 
   x1 := Bounds.Left;
   y1 := Bounds.Bottom - (Height * ty);
@@ -227,7 +233,9 @@ begin
   for c1 := 1 to Steps-1 do
   begin
     tx := c1 / (Steps-1);
-    ty := aFunction(tx) * 0.5 + 0.5;
+    if IsBipolar
+      then ty := aFunction(tx) * 0.5 + 0.5
+      else ty := aFunction(tx);
 
     x2 := Bounds.Left   + (tx * Width);
     y2 := Bounds.Bottom - (ty * Height);
@@ -236,7 +244,9 @@ begin
   end;
 
   x1 := Bounds.Right + 5;
-  y1 := Bounds.Top + (Bounds.Height div 2);
+  if IsBipolar
+    then y1 := Bounds.Top + (Bounds.Height div 2)
+    else y1 := Bounds.Top + Bounds.Height;
   Path.LineTo(x1, y1);
 
   Canvas.ResetPath;
@@ -271,6 +281,15 @@ begin
   result := y * 2 - 1;
 end;
 
+function BendMod(const Input, BendAmt : single):single;
+var
+  ValueMod : single;
+  CurveFactor : single;
+begin
+  ValueMod := BendAmt;
+  CurveFactor := 1-(1/ValueMod);
+  result := Input / (Input + CurveFactor * (Input-1));
+end;
 
 function EnvCurve(const StartValue, EndValue, EnvPhase, CurveAmount : single):single;
 var
@@ -750,122 +769,66 @@ begin
 end;
 
 class procedure TLfoDrawingRoutines.Draw_Lfo_AttackDecay(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
-const
-  kMinStageTime : single = 0.1;
 var
-  x1, y1 : single;
-  //x2, y2 : single;
-  //x3, y3 : single;
-  x4, y4 : single;
-  SectionWidth : single;
-  CurveAmount : single;
-  Path: TAggPathStorage;
+  aFunction : TDrawFunction;
 begin
-  SectionWidth := ScopeRect.Width / 2.3;
-
-  //== pre-amble ==
-  Path := TAggPathStorage.Create;
-  AutoFree(@Path);
-  x1 := ScopeRect.Left-5;
-  y1 := ScopeRect.Top + ScopeRect.Height;
-  Path.MoveTo(x1, y1);
-
-
-  CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
-
-  //== Draw Attack Stage ==
-  x1 := ScopeRect.Left;
-  y1 := ScopeRect.Bottom;
-  x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
-  y4 := ScopeRect.Top;
-  AddEnvCurveToPath(Path, x1,y1, x4,y4, CurveAmount);
-
-  //== Draw Release Stage ==
-  x1 := x4;
-  y1 := y4;
-  x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
-  y4 := ScopeRect.Bottom;
-  AddEnvCurveToPath(Path, x1,y1, x4,y4, 1-CurveAmount);
-
-
-  //== Draw Off Stage ==
-  //x1 := x4;
-  //y1 := y4;
-  x4 := ScopeRect.Right;
-  y4 := ScopeRect.Bottom;
-
-  //BackBuffer.BufferInterface.Line(x1,y1,x4,y4);
-  Path.LineTo(x4,y4);
-
-
-
-  //== post-amble ==
-  x1 := ScopeRect.Right + 5;
-  y1 := ScopeRect.Top + ScopeRect.Height;
-  Path.LineTo(x1, y1);
-
-  BackBuffer.BufferInterface.ResetPath;
-  BackBuffer.BufferInterface.AddPath(Path);
-  BackBuffer.BufferInterface.DrawPath;
-end;
-
-
-class procedure TLfoDrawingRoutines.Draw_Lfo_Cycle(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
-const
-  kMinStageTime : single = 0.1;
-var
-  x1, y1 : single;
-  //x2, y2 : single;
-  //x3, y3 : single;
-  x4, y4 : single;
-  SectionWidth : single;
-  CurveAmount : single;
-  Path: TAggPathStorage;
-begin
-  SectionWidth := ScopeRect.Width / 2.3;
-
-  //== pre-amble ==
-  Path := TAggPathStorage.Create;
-  AutoFree(@Path);
-  x1 := ScopeRect.Left-5;
-  y1 := ScopeRect.Top + ScopeRect.Height;
-  Path.MoveTo(x1, y1);
-
-
-  CurveAmount := LfoValues.Par1 * 0.7 + 0.15;
-
-  x1 := ScopeRect.Left;
-  y1 := ScopeRect.Bottom;
-
-  while x1 < ScopeRect.Right do
+  aFunction := function(x:single):single
+  var
+    tx : single;
+    BiasPoint : single;
   begin
-    //== Draw Attack Stage ==
-    x4 := x1 + SectionWidth * (LfoValues.Par2 + kMinStageTime);
-    y4 := ScopeRect.Top;
-    AddEnvCurveToPath(Path, x1,y1, x4,y4, CurveAmount);
-
-    //== Draw Release Stage ==
-    x1 := x4;
-    y1 := y4;
-    x4 := x1 + SectionWidth * (LfoValues.Par3 + kMinStageTime);
-    y4 := ScopeRect.Bottom;
-    AddEnvCurveToPath(Path, x1,y1, x4,y4, 1-CurveAmount);
-
-    x1 := x4;
-    y1 := y4;
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := Clamp(tx, 0, 1);
+    BiasPoint := LfoValues.Par2 * 0.95 + 0.025;
+    if tx < BiasPoint then
+    begin
+      tx := tx / BiasPoint;
+    end else
+    if tx > BiasPoint then
+    begin
+      tx := (1 - tx) / (1 - BiasPoint);
+    end else
+    begin
+      tx := 1;
+    end;
+    tx := BendMod(tx, (LfoValues.Par3 * 0.7 + 0.15)); //Apply the bend.
+    result := tx;
   end;
 
-
-  //== post-amble ==
-  x1 := ScopeRect.Right + 5;
-  y1 := ScopeRect.Top + ScopeRect.Height;
-  Path.LineTo(x1, y1);
-
-  BackBuffer.BufferInterface.ResetPath;
-  BackBuffer.BufferInterface.AddPath(Path);
-  BackBuffer.BufferInterface.DrawPath;
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction, false);
 end;
 
+class procedure TLfoDrawingRoutines.Draw_Lfo_Cycle(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
+var
+  aFunction : TDrawFunction;
+begin
+  aFunction := function(x:single):single
+  var
+    tx : single;
+    BiasPoint : single;
+  begin
+    //Generate Ramp Up Wave
+    tx := (x) * (LfoValues.Par1 * 10 + 3); //rate
+    tx := Wrap(tx, 0, 1);
+    BiasPoint := LfoValues.Par2 * 0.95 + 0.025;
+    if tx < BiasPoint then
+    begin
+      tx := tx / BiasPoint;
+    end else
+    if tx > BiasPoint then
+    begin
+      tx := (1 - tx) / (1 - BiasPoint);
+    end else
+    begin
+      tx := 1;
+    end;
+    tx := BendMod(tx, (LfoValues.Par3 * 0.7 + 0.15)); //Apply the bend.
+    result := tx;
+  end;
+
+  DrawFunction(BackBuffer.BufferInterface, ScopeRect, ScopeRect.Width*8, aFunction, false);
+end;
 
 class procedure TLfoDrawingRoutines.Draw_Lfo_RandomStepped(BackBuffer: TRedFoxImageBuffer; ScopeRect: TRect; LfoValues: TScopeLfoValues);
 const
