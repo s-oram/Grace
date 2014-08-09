@@ -509,9 +509,9 @@ begin
 
   // NOTE: The LFO Shape selector is wider than the others, but might be reduced if I add "Global/Reset/Free" lfo mode selector button.
   //LfoAShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoAShapeSelector.Layout.SetSize(54, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoAShapeSelector.Layout.SetSize(LfoAContainer.Width div 2, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
 
-  LfoAFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
+  LfoAFreqModeSelector.Layout.SetSize(LfoAContainer.Width div 2, TGuiConst.SelectorButtonHeight);
   LfoAFreqModeSelector.Layout.Anchor(LfoAShapeSelector).SnapToEdge(TControlFeature.RightEdge);
 
   LfoAShapeSelector.Layout.AdjustBounds(0,0,-2,0);
@@ -535,9 +535,9 @@ begin
 
   // NOTE: The LFO Shape selector is wider than the others, but might be reduced if I add "Global/Reset/Free" lfo mode selector button.
   //LfoBShapeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
-  LfoBShapeSelector.Layout.SetSize(54, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
+  LfoBShapeSelector.Layout.SetSize(LfoAContainer.Width div 2, TGuiConst.SelectorButtonHeight).SnapToParentEdge(TControlFeature.BottomEdge);
 
-  LfoBFreqModeSelector.Layout.SetSize(40, TGuiConst.SelectorButtonHeight);
+  LfoBFreqModeSelector.Layout.SetSize(LfoAContainer.Width div 2, TGuiConst.SelectorButtonHeight);
   LfoBFreqModeSelector.Layout.Anchor(LfoBShapeSelector).SnapToEdge(TControlFeature.RightEdge);
 
   LfoBShapeSelector.Layout.AdjustBounds(0,0,-2,0);
