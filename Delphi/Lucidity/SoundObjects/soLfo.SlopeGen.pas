@@ -23,10 +23,8 @@ type
   private
     fSampleRate: single;
     fBpm: single;
-    fDecayTime: single;
     fCurve: single;
     fSlopeMode: TSlopeMode;
-    fAttackTime: single;
     fMinTotalTime: single;
     fEnvRate: single;
     fBias: single;
@@ -102,7 +100,6 @@ end;
 
 procedure TSlopeGen.UpdateEnvStepSizes;
 var
-  TotalStepSize : single;
   TotalTime : single;
   AttackTime : single;
   DecayTime  : single;
