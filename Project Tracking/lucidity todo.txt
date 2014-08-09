@@ -2,6 +2,7 @@
      TODO HIGH
 =============================================================================
 - add more LFO sync modes. Look at zebra for comparison. 
+
 - LFO curves in the scope display need to be updated to match the new LFO properties.
 
 - LFO: Replace the SYM parameter of the regular LFO types with the BEND parameter 
@@ -40,10 +41,13 @@ Bug
 	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
 	http://www.reusenoise.com
 
+TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
+
 bug 
  - some wavefiles from Joesph don't load. 
-
-TODO: Kill voice if sample is released and less than 75db when multiple voices are playing.
+ - Now Avoided: The changes I made to REAPER's configuration
+   were disabling all instances of "anticipative FX processing".  
+   thunderlink://messageid=1407526910.2254955.150695977.6DD3CC0A@webmail.messagingengine.com
 
 Make video explaining modulation source. Send to Spacedad.
 - thunderlink://messageid=53E3683C.6040005@spaceraiders.co.uk
