@@ -149,20 +149,38 @@ type
     // IMPORTANT: If re-implementing, check that the settings are applied to the voice classes, currently everything is commentted out.
     property VoiceMode                : TVoiceMode                         read fVoiceMode               write SetVoiceMode;
     property VoiceGlide               : single                             read fVoiceGlide              write SetVoiceGlide;
-  public
-    constructor Create(const aVoices:PArrayOfLucidityVoice; const aOwningSampleGroup : IKeyGroup);
-    destructor Destroy; override;
 
-    procedure UpdateModConnections;
 
-    procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
 
-    procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
+    //========= TODO:HIGH Delete these ============================================================================================
+    property ModAttack                : single                             read fModAttack               write SetModAttack;
+    property ModHold                  : single                             read fModHold                 write SetModHold;
+    property ModDecay                 : single                             read fModDecay                write SetModDecay;
+    property ModSustain               : single                             read fModSustain              write SetModSustain;
+    property ModRelease               : single                             read fModRelease              write SetModRelease;
 
-  published
-    property PitchTracking            : TPitchTracking                     read fPitchTracking           write SetPitchTracking;
-    property SamplePlaybackType       : TSamplePlaybackType                read fSamplePlaybackType      write SetSamplePlaybackType;
-    property SampleReset              : TClockSource                       read fSampleReset             write SetSampleReset;
+    property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
+    property LfoRate2                 : single                             read fLfoRate2                write SetLfoRate2;
+    property LfoAPar2                 : single                             read fLfoAPar2                write SetLfoAPar2;
+    property LfoAPar3                 : single                             read fLfoAPar3                write SetLfoAPar3;
+    property LfoBPar2                 : single                             read fLfoBPar2                write SetLfoBPar2;
+    property LfoBPar3                 : single                             read fLfoBPar3                write SetLfoBPar3;
+
+    property Filter1Par1              : single                             read fFilter1Par1             write SetFilter1Par1;
+    property Filter1Par2              : single                             read fFilter1Par2             write SetFilter1Par2;
+    property Filter1Par3              : single                             read fFilter1Par3             write SetFilter1Par3;
+    property Filter1Par4              : single                             read fFilter1Par4             write SetFilter1Par4;
+    property Filter2Par1              : single                             read fFilter2Par1             write SetFilter2Par1;
+    property Filter2Par2              : single                             read fFilter2Par2             write SetFilter2Par2;
+    property Filter2Par3              : single                             read fFilter2Par3             write SetFilter2Par3;
+    property Filter2Par4              : single                             read fFilter2Par4             write SetFilter2Par4;
+
+    property MixAuxA                  : single                             read fMixAuxA                 write SetMixAuxA;
+    property MixAuxB                  : single                             read fMixAuxB                 write SetMixAuxB;
+
+    property OscShape                 : single                             read fOscShape                write SetOscShape;
+    property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
+
     property VoiceGain                : single                             read fVoiceGain               write SetVoiceGain;
     property VoicePan                 : single                             read fVoicePan                write SetVoicePan;
     property VoicePitchOne            : single                             read fVoicePitchOne           write SetVoicePitchOne; //range -1..1
@@ -172,48 +190,38 @@ type
     property GrainLength              : single                             read fGrainLength             write SetGrainLength;
     property GrainRate                : single                             read fGrainRate               write SetGrainRate;
     property GrainPosition            : single                             read fGrainPosition           write SetGrainPosition;
+    //===============================================================================================================================
+  public
+    constructor Create(const aVoices:PArrayOfLucidityVoice; const aOwningSampleGroup : IKeyGroup);
+    destructor Destroy; override;
+
+    procedure UpdateModConnections;
+
+    procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
+
+    procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
+  published
+    // Not currently used.
+    property SamplePlaybackType       : TSamplePlaybackType                read fSamplePlaybackType      write SetSamplePlaybackType;
+
+    property PitchTracking            : TPitchTracking                     read fPitchTracking           write SetPitchTracking;
+    property SampleReset              : TClockSource                       read fSampleReset             write SetSampleReset;
 
     property SamplerLoopBounds        : TSamplerLoopBounds                 read fSamplerLoopBounds       write SetSampleLoopBounds;
     property SamplerTriggerMode       : TKeyGroupTriggerMode               read fSamplerTriggerMode      write SetSamplerTriggerMode;
 
-    property MixAuxA                  : single                             read fMixAuxA                 write SetMixAuxA;
-    property MixAuxB                  : single                             read fMixAuxB                 write SetMixAuxB;
-
-    property OscShape                 : single                             read fOscShape                write SetOscShape;
-    property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
     property FilterRouting            : TFilterRouting                     read fFilterRouting           write SetFilterRouting;
     property Filter1Type              : TFilterType                        read fFilter1Type             write SetFilter1Type;
     property Filter2Type              : TFilterType                        read fFilter2Type             write SetFilter2Type;
     property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write SetFilter1KeyFollow; //range 0..1
     property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write SetFilter2KeyFollow; //range 0..1
-    property Filter1Par1              : single                             read fFilter1Par1             write SetFilter1Par1;
-    property Filter1Par2              : single                             read fFilter1Par2             write SetFilter1Par2;
-    property Filter1Par3              : single                             read fFilter1Par3             write SetFilter1Par3;
-    property Filter1Par4              : single                             read fFilter1Par4             write SetFilter1Par4;
-    property Filter2Par1              : single                             read fFilter2Par1             write SetFilter2Par1;
-    property Filter2Par2              : single                             read fFilter2Par2             write SetFilter2Par2;
-    property Filter2Par3              : single                             read fFilter2Par3             write SetFilter2Par3;
-    property Filter2Par4              : single                             read fFilter2Par4             write SetFilter2Par4;
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write SetAmpVelocityDepth;
-
-    property ModAttack                : single                             read fModAttack               write SetModAttack;
-    property ModHold                  : single                             read fModHold                 write SetModHold;
-    property ModDecay                 : single                             read fModDecay                write SetModDecay;
-    property ModSustain               : single                             read fModSustain              write SetModSustain;
-    property ModRelease               : single                             read fModRelease              write SetModRelease;
     property ModVelocityDepth         : TEnvVelocityDepth                  read fModVelocityDepth        write SetModVelocityDepth;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write SetLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
     property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write SetLfoFreqMode1;
     property LfoFreqMode2             : TLfoFreqMode                       read fLfoFreqMode2            write SetLfoFreqMode2;
 
-    //TODO: I don't know if these parameter wrapped values are required any more.
-    property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
-    property LfoRate2                 : single                             read fLfoRate2                write SetLfoRate2;
-    property LfoAPar2                 : single                             read fLfoAPar2                write SetLfoAPar2;
-    property LfoAPar3                 : single                             read fLfoAPar3                write SetLfoAPar3;
-    property LfoBPar2                 : single                             read fLfoBPar2                write SetLfoBPar2;
-    property LfoBPar3                 : single                             read fLfoBPar3                write SetLfoBPar3;
     property Seq1Clock                : TSequencerClock                    read fSeq1Clock               write SetSeq1Clock;
     property Seq1Direction            : TStepSequencerDirection            read fSeq1Direction           write SetSeq1Direction;
     property StepSeq1Length           : TStepSequencerLength               read fStepSeq1Length          write SetStepSeq1Length;
