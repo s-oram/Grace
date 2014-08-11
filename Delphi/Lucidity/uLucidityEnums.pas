@@ -228,14 +228,12 @@ type
   // loop_continuous: once the player reaches sample loop point, the loop will play until note expiration.
   // loop_sustain: the player will play the loop while the note is held, by keeping it depressed or by using
   //               the sustain pedal (CC64). The rest of the sample will play after note release.
-  TKeyGroupTriggerMode = (LoopContinuous, LoopSustain, LoopOff, OneShot);
+  TKeyGroupTriggerMode = (OneShot, LoopOff, LoopContinuous, LoopSustain);
   TKeyGroupTriggerModeHelper = class(TEnumHelper<TKeyGroupTriggerMode>)
   public
     class function ToFullGuiString(aEnum : TKeyGroupTriggerMode):string; override;
     class function ToShortGuiString(aEnum : TKeyGroupTriggerMode):string; override;
   end;
-
-
 
 
   TGrainStretchLoopMode = (LoopOff, LoopOn);
@@ -697,10 +695,10 @@ end;
 class function TKeyGroupTriggerModeHelper.ToFullGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TKeyGroupTriggerMode.LoopOff:         result := 'Note On (Loop Off)';
+    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
+    TKeyGroupTriggerMode.LoopOff:         result := 'No Loop';
     TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop Continuous';
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Until Release';
-    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -709,10 +707,10 @@ end;
 class function TKeyGroupTriggerModeHelper.ToShortGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
-    TKeyGroupTriggerMode.LoopOff:         result := 'Note On';
+    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
+    TKeyGroupTriggerMode.LoopOff:         result := 'No Loop';
     TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop ';
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Rls';
-    TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
   else
     raise Exception.Create('Type not handled.');
   end;
