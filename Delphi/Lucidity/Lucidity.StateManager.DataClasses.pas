@@ -55,6 +55,27 @@ type
 
   TKeyGroupStateInfo = class
   private
+    fFilter2Type: TFilterType;
+    fSamplerLoopBounds: TSamplerLoopBounds;
+    fSamplerTriggerMode: TKeyGroupTriggerMode;
+    fFilter2KeyFollow: single;
+    fFilter1Type: TFilterType;
+    fAmpVelocityDepth: TEnvVelocityDepth;
+    fFilter1KeyFollow: single;
+    fSeq2Clock: TSequencerClock;
+    fStepSeq2Length: TStepSequencerLength;
+    fSeq1Clock: TSequencerClock;
+    fModVelocityDepth: TEnvVelocityDepth;
+    fLfoShape2: TLfoShape;
+    fStepSeq1Length: TStepSequencerLength;
+    fLfoShape1: TLfoShape;
+    fPitchTracking: TPitchTracking;
+    fSeq2Direction: TStepSequencerDirection;
+    fLfoFreqMode2: TLfoFreqMode;
+    fFilterRouting: TFilterRouting;
+    fSeq1Direction: TStepSequencerDirection;
+    fSampleReset: TClockSource;
+    fLfoFreqMode1: TLfoFreqMode;
   public
     procedure ResetToDefaultValues;
     procedure SanitiseData; // call after reading data from a save file.
@@ -86,6 +107,28 @@ type
     // Seq2Clock
     // Seq2Direction
     // StepSeq2Length
+
+    property PitchTracking            : TPitchTracking                     read fPitchTracking           write fPitchTracking;
+    property SampleReset              : TClockSource                       read fSampleReset             write fSampleReset;
+    property SamplerLoopBounds        : TSamplerLoopBounds                 read fSamplerLoopBounds       write fSamplerLoopBounds;
+    property SamplerTriggerMode       : TKeyGroupTriggerMode               read fSamplerTriggerMode      write fSamplerTriggerMode;
+    property FilterRouting            : TFilterRouting                     read fFilterRouting           write fFilterRouting;
+    property Filter1Type              : TFilterType                        read fFilter1Type             write fFilter1Type;
+    property Filter2Type              : TFilterType                        read fFilter2Type             write fFilter2Type;
+    property Filter1KeyFollow         : single                             read fFilter1KeyFollow        write fFilter1KeyFollow; //range 0..1
+    property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write fFilter2KeyFollow; //range 0..1
+    property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write fAmpVelocityDepth;
+    property ModVelocityDepth         : TEnvVelocityDepth                  read fModVelocityDepth        write fModVelocityDepth;
+    property LfoShape1                : TLfoShape                          read fLfoShape1               write fLfoShape1;
+    property LfoShape2                : TLfoShape                          read fLfoShape2               write fLfoShape2;
+    property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write fLfoFreqMode1;
+    property LfoFreqMode2             : TLfoFreqMode                       read fLfoFreqMode2            write fLfoFreqMode2;
+    property Seq1Clock                : TSequencerClock                    read fSeq1Clock               write fSeq1Clock;
+    property Seq1Direction            : TStepSequencerDirection            read fSeq1Direction           write fSeq1Direction;
+    property StepSeq1Length           : TStepSequencerLength               read fStepSeq1Length          write fStepSeq1Length;
+    property Seq2Clock                : TSequencerClock                    read fSeq2Clock               write fSeq2Clock;
+    property Seq2Direction            : TStepSequencerDirection            read fSeq2Direction           write fSeq2Direction;
+    property StepSeq2Length           : TStepSequencerLength               read fStepSeq2Length          write fStepSeq2Length;
   end;
 
 implementation

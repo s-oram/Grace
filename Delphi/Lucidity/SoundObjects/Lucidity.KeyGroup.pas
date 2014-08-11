@@ -93,8 +93,8 @@ type
     destructor Destroy; override;
     procedure AssignFrom(const Source : TKeyGroup);
 
-    procedure ReadState(const StateInfo : TKeyGroupStateInfo);
-    procedure WriteState(var StateInfo : TKeyGroupStateInfo);
+    procedure LoadState(const Source : TKeyGroupStateInfo);
+    procedure SaveState(var Dest : TKeyGroupStateInfo);
 
     procedure SetPatch(var Data:TPatchNode);
     procedure GetPatch(var Data:TPatchNode);
@@ -450,9 +450,54 @@ begin
 end;
 
 
-procedure TKeyGroup.ReadState(const StateInfo: TKeyGroupStateInfo);
+procedure TKeyGroup.LoadState(const Source: TKeyGroupStateInfo);
 begin
+  VoiceParameters.PitchTracking            := Source.PitchTracking;
+  VoiceParameters.SampleReset              := Source.SampleReset;
+  VoiceParameters.SamplerLoopBounds        := Source.SamplerLoopBounds;
+  VoiceParameters.SamplerTriggerMode       := Source.SamplerTriggerMode;
+  VoiceParameters.FilterRouting            := Source.FilterRouting;
+  VoiceParameters.Filter1Type              := Source.Filter1Type;
+  VoiceParameters.Filter2Type              := Source.Filter2Type;
+  VoiceParameters.Filter1KeyFollow         := Source.Filter1KeyFollow;
+  VoiceParameters.Filter2KeyFollow         := Source.Filter2KeyFollow;
+  VoiceParameters.AmpVelocityDepth         := Source.AmpVelocityDepth;
+  VoiceParameters.ModVelocityDepth         := Source.ModVelocityDepth;
+  VoiceParameters.LfoShape1                := Source.LfoShape1;
+  VoiceParameters.LfoShape2                := Source.LfoShape2;
+  VoiceParameters.LfoFreqMode1             := Source.LfoFreqMode1;
+  VoiceParameters.LfoFreqMode2             := Source.LfoFreqMode2;
+  VoiceParameters.Seq1Clock                := Source.Seq1Clock;
+  VoiceParameters.Seq1Direction            := Source.Seq1Direction;
+  VoiceParameters.StepSeq1Length           := Source.StepSeq1Length;
+  VoiceParameters.Seq2Clock                := Source.Seq2Clock;
+  VoiceParameters.Seq2Direction            := Source.Seq2Direction;
+  VoiceParameters.StepSeq2Length           := Source.StepSeq2Length;
+end;
 
+procedure TKeyGroup.SaveState(var Dest: TKeyGroupStateInfo);
+begin
+  Dest.PitchTracking      := VoiceParameters.PitchTracking;
+  Dest.SampleReset        := VoiceParameters.SampleReset;
+  Dest.SamplerLoopBounds  := VoiceParameters.SamplerLoopBounds;
+  Dest.SamplerTriggerMode := VoiceParameters.SamplerTriggerMode;
+  Dest.FilterRouting      := VoiceParameters.FilterRouting;
+  Dest.Filter1Type        := VoiceParameters.Filter1Type;
+  Dest.Filter2Type        := VoiceParameters.Filter2Type;
+  Dest.Filter1KeyFollow   := VoiceParameters.Filter1KeyFollow;
+  Dest.Filter2KeyFollow   := VoiceParameters.Filter2KeyFollow;
+  Dest.AmpVelocityDepth   := VoiceParameters.AmpVelocityDepth;
+  Dest.ModVelocityDepth   := VoiceParameters.ModVelocityDepth;
+  Dest.LfoShape1          := VoiceParameters.LfoShape1;
+  Dest.LfoShape2          := VoiceParameters.LfoShape2;
+  Dest.LfoFreqMode1       := VoiceParameters.LfoFreqMode1;
+  Dest.LfoFreqMode2       := VoiceParameters.LfoFreqMode2;
+  Dest.Seq1Clock          := VoiceParameters.Seq1Clock;
+  Dest.Seq1Direction      := VoiceParameters.Seq1Direction;
+  Dest.StepSeq1Length     := VoiceParameters.StepSeq1Length;
+  Dest.Seq2Clock          := VoiceParameters.Seq2Clock;
+  Dest.Seq2Direction      := VoiceParameters.Seq2Direction;
+  Dest.StepSeq2Length     := VoiceParameters.StepSeq2Length;
 end;
 
 procedure TKeyGroup.FastControlProcess;
@@ -503,10 +548,6 @@ begin
   end;
 end;
 
-procedure TKeyGroup.WriteState(var StateInfo: TKeyGroupStateInfo);
-begin
-  assert(false, 'TODO');
-end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
 var
