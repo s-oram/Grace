@@ -6,9 +6,14 @@ unit Lucidity.Sfz;
 interface
 
 uses
+  uLucidityEnums,
   NativeXML, SfzParser, Contnrs;
 
 type
+//================================================================================
+//    PUBLIC - for external use
+//================================================================================
+
   TSfzImporter = class
   private
     Parser : TSfzParser;
@@ -29,6 +34,16 @@ type
   end;
 
 
+
+//================================================================================
+//    PRIVATE - for internal use
+//================================================================================
+function ConvertOpcode(Value:string; MinValue, MaxValue:integer):integer; overload;
+function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
+
+function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
+
+
 implementation
 
 uses
@@ -36,6 +51,48 @@ uses
   SysUtils,
   NativeXmlEx,
   uAutoFree;
+
+function ConvertOpcode(Value:string; MinValue, MaxValue:integer):integer; overload;
+var
+  x : integer;
+begin
+  if IsMidiKeyNameString(Value, x) then
+  begin
+    if x < MinValue then x := MinValue;
+    if x > MaxValue then x := MaxValue;
+    result := x;
+  end else
+  if TryStrToInt(Value, x) then
+  begin
+    if x < MinValue then x := MinValue;
+    if x > MaxValue then x := MaxValue;
+    result := x;
+  end else
+  begin
+    raise EConvertError.Create('Value is not an integer.');
+  end;
+end;
+
+function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
+var
+  x : single;
+begin
+  x := DataIO_StrToFloat(Value, MinValue);
+  if x < MinValue then x := MinValue;
+  if x > MaxValue then x := MaxValue;
+  result := x;
+end;
+
+function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
+begin
+  if SameText(Value, 'no_loop')         then exit(TKeyGroupTriggerMode.LoopOff);
+  if SameText(Value, 'one_shot')        then exit(TKeyGroupTriggerMode.OneShot);
+  if SameText(Value, 'loop_continuous') then exit(TKeyGroupTriggerMode.LoopContinuous);
+  if SameText(Value, 'loop_sustain')    then exit(TKeyGroupTriggerMode.LoopSustain);
+
+  // If we've made it this far, the value isn't a valid SFZ opcode.
+  raise EConvertError.Create('Value is not an integer.');
+end;
 
 { TSfzImporter }
 
@@ -108,40 +165,13 @@ begin
 end;
 
 procedure TSfzImporter.Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
-  function ConvertOpcode(Value:string; MinValue, MaxValue:integer):integer; overload;
-  var
-    x : integer;
-  begin
-    if IsMidiKeyNameString(Value, x) then
-    begin
-      if x < MinValue then x := MinValue;
-      if x > MaxValue then x := MaxValue;
-      result := x;
-    end else
-    if TryStrToInt(Value, x) then
-    begin
-      if x < MinValue then x := MinValue;
-      if x > MaxValue then x := MaxValue;
-      result := x;
-    end else
-    begin
-      raise EConvertError.Create('Value is not an integer.');
-    end;
-  end;
-  function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
-  var
-    x : single;
-  begin
-    x := DataIO_StrToFloat(Value, MinValue);
-    if x < MinValue then x := MinValue;
-    if x > MaxValue then x := MaxValue;
-    result := x;
-  end;
 var
   DataInt   : integer;
   DataText  : string;
   //DataFloat : single;
   TargetNode : TXmlNode;
+
+  TriggerMode : TKeyGroupTriggerMode;
 begin
   if not assigned(CurrentRegion) then exit;
 
@@ -231,6 +261,17 @@ begin
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
+
+
+
+    if SameText(OpcodeName, 'loop_mode') then
+    begin
+      TriggerMode := OpcodeToTriggerMode(OpcodeValue);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := TKeyGroupTriggerModeHelper.ToUnicodeString(TriggerMode);
+    end;
+
+
 
 
   except
