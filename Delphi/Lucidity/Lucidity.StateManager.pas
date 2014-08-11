@@ -849,8 +849,14 @@ begin
     // As set in TRegionLoadInfo.ResetToDefaultValues().
     if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
     if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
-    if aRegion.Properties^.LoopStart < 0   then aRegion.Properties^.LoopStart   := 0;
-    if aRegion.Properties^.LoopEnd < 0     then aRegion.Properties^.LoopEnd     := SampleFrames-1;
+
+    // NOTE: When loop mode isn't defined, reset it in a way that is compatible with the SFZ format.
+    // If loop_start is not specified and the sample has a loop defined, the sample start point will be used.
+    // If loop_start is specified, it will overwrite the loop start point defined in the sample.
+    // If loop_end is not specified and the sample have a loop defined, the sample loop end point will be used.
+    // If loop_end is specified, it will overwrite the loop end point defined in the sample.
+    if aRegion.Properties^.LoopStart < 0   then aRegion.Properties^.LoopStart   := aRegion.Properties^.SampleStart;
+    if aRegion.Properties^.LoopEnd < 0     then aRegion.Properties^.LoopEnd     := aRegion.Properties^.SampleEnd;
 
     // Clamp start/end points to fit inside sample boundaries.
     aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
