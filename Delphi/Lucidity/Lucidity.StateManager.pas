@@ -687,33 +687,27 @@ begin
 
     if assigned(VoiceParNode) then
     begin
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'PitchTracking');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SampleReset');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainLoop');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainLength');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainRate');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'GrainPosition');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopBounds');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'SamplerTriggerMode');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Filter2KeyFollow');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'AmpVelocityDepth');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'ModVelocityDepth');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoShape1');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoShape2');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode1');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode2');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq2Clock');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'Seq2Direction');
-      LoadObjectPropertyFromXML(VoiceParNode, sg.VoiceParameters, 'StepSeq2Length');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'PitchTracking');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'SampleReset');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'SamplerLoopBounds');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'SamplerTriggerMode');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'FilterRouting');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Filter1Type');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Filter2Type');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Filter1KeyFollow');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Filter2KeyFollow');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'AmpVelocityDepth');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'ModVelocityDepth');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'LfoShape1');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'LfoShape2');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'LfoFreqMode1');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'LfoFreqMode2');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq1Clock');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq1Direction');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'StepSeq1Length');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq2Clock');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq2Direction');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'StepSeq2Length');
     end;
 
     LoadModulatedParametersFromNode(VoiceParNode, sg);
@@ -752,11 +746,9 @@ begin
       end;
     end;
 
-
-
     KeyGroupLoadInfo.SanitiseData;
 
-
+    sg.LoadState(KeyGroupLoadInfo);
 
     //===== restore mod slot values =====
     ModConnections := sg.ModConnections;
