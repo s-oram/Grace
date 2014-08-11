@@ -1,0 +1,27 @@
+==========================================
+        Lucidity Patch Format
+==========================================
+
+
+
+
+
+==========================================
+            SFZ Import
+==========================================
+
+
+Opcodes recognised.
+
+group
+region
+sample
+lokey
+hikey
+lovel
+hivel
+pitch_keycenter
+
+
+
+

@@ -62,6 +62,9 @@ function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
 function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
 
+procedure Sanitise(var Value : integer; const LowValue, HighValue : integer); overload;
+procedure Sanitise(var Value : single;  const LowValue, HighValue : single); overload;
+
 function IsIntegerString(const Value : string):boolean;
 function IsMidiKeyNameString(Value : string):boolean; overload; 
 function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boolean; overload;
@@ -594,7 +597,6 @@ function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boole
 //   http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm
 var
   NoteName : string;
-  IsSharp : boolean;
   NoteNumber : integer;
   OctaveString : string;
   CopyStartIndex : integer;
@@ -661,6 +663,16 @@ begin
   end;
 end;
 
+procedure Sanitise(var Value : integer; const LowValue, HighValue : integer);
+begin
+  Value := Clamp(Value, LowValue, HighValue);
+end;
+
+
+procedure Sanitise(var Value : single;  const LowValue, HighValue : single);
+begin
+  Value := Clamp(Value, LowValue, HighValue);
+end;
 
 
 end.

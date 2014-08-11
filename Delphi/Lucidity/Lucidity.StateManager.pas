@@ -825,6 +825,7 @@ procedure TLucidityStateManager.NewRegion(const RegionLoadInfo: TRegionLoadInfo;
 var
   aRegion : TRegion;
   //LoadResult : boolean;
+  SampleFrames : integer;
 begin
   if not assigned(SampleGroup) then raise Exception.Create('SG (sample group interface variable not assigned.');
 
@@ -835,12 +836,28 @@ begin
   // - the delayed sample loading will also need to handle missing files.
   aRegion := TRegion.Create;
 
+
+
+  // TODO:HIGH I need to re-architecture the sample loading for a region.
+  // The sample loading *should* happen once all the region properties have
+  // been set. The sample loading shouldn't overwrite any region properties
+  // that have previously been set. LoadSample() initialises some values to
+  // default states, so right now it would overright things.
+  // One of the reasons for this change would be to have delayed sample loading.
+  // -- load a patch and load all samples in a background thread. This
+  //    will allow a project to load quickly and not be bogged down by sample
+  //    loading. Perhaps make this option. (Maybe a pop-up notification in
+  //    the windows notification area show sample loading progress.
+  // -- This will also be important when loading missing samples. Currently
+  //    loading a missing sample will cause properties be to over-written.
+  // TODO:HIGH IMPORTANT: Don't forget to move the sample loading sanitisation
+  // code below when making the above changes.
   aRegion.LoadSample(RegionLoadInfo.SampleFileName);
 
   aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
   aRegion.KeyGroup := SampleGroup;
 
-  //TODO:MED In the case of a missing sample being loaded after these properties
+  // TODO:HIGH In the case of a missing sample being loaded after these properties
   // have been assigned. Check that these property values persist and aren't
   // over-written.
   aRegion.Properties^.SampleFileName := RegionLoadInfo.SampleFileName;
@@ -858,6 +875,28 @@ begin
   aRegion.Properties^.SampleFine     := RegionLoadInfo.SampleFine;
   aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
   aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
+
+
+  //============================================================================
+  // Perform some sanitisation after the sample has been loaded.
+  if (aRegion.Sample.Properties.IsValid) then
+  begin
+    SampleFrames := aRegion.Sample.Properties.SampleFrames;
+
+    // NOTE: Check for negative values because the default 'unassigned' values will be -1.
+    // As set in TRegionLoadInfo.ResetToDefaultValues().
+    if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
+    if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
+    if aRegion.Properties^.LoopStart < 0   then aRegion.Properties^.LoopStart   := 0;
+    if aRegion.Properties^.LoopEnd < 0     then aRegion.Properties^.LoopEnd     := SampleFrames-1;
+
+    // Clamp start/end points to fit inside sample boundaries.
+    aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
+    aRegion.Properties^.SampleEnd   := Clamp(aRegion.Properties^.SampleEnd, 0, SampleFrames-1);
+    aRegion.Properties^.LoopStart   := Clamp(aRegion.Properties^.LoopStart, 0, SampleFrames-1);
+    aRegion.Properties^.LoopEnd     := Clamp(aRegion.Properties^.LoopEnd, 0, SampleFrames-1);
+  end;
+  //============================================================================
 
 
 
@@ -899,7 +938,18 @@ end;
 
 procedure TRegionLoadInfo.SanitiseData;
 begin
-  //TODO: add range checks.
+  if RootNote = -1 then
+  begin
+     if (LowNote = 0) and (HighNote = 127)
+       then RootNote := 60
+       else RootNote := LowNote;
+  end;
+
+  Sanitise(fLowNote, 0, 127);
+  Sanitise(fHighNote, 0, 127);
+  Sanitise(fLowVelocity, 0, 127);
+  Sanitise(fHighVelocity, 0, 127);
+  Sanitise(fRootNote, 0, 127);
 end;
 
 procedure TLucidityStatemanager.ReadPresetInfoFromXML(var XML: TNativeXML);

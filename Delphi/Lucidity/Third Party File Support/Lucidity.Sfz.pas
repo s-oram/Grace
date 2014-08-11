@@ -82,7 +82,6 @@ begin
 
     // - Check the filenames are relative. put them into a form Lucidity can understand.
     // - check that all regions have region bounds. (low key, hi key, low vel, high vel, root note etc).
-
   end;
 end;
 
@@ -93,10 +92,8 @@ begin
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
 
-
     //== default voice parameters ==
     NodeWiz(CurrentGroup).CreateNode('VoiceParameters/SamplePlaybackType').ValueUnicode := 'NoteSampler'; //TODO:MED delete this. Node isn't needed.
-
 
     inc(GroupCount);
   end;
@@ -192,40 +189,52 @@ begin
   }
 
 
+  try
+    if SameText(OpcodeName, 'sample') then
+    begin
+      DataText := OpcodeValue;
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := DataText;
+    end;
 
-  if SameText(OpcodeName, 'sample') then
-  begin
-    DataText := OpcodeValue;
-    TargetNode := CurrentRegion;
-    NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := DataText;
-  end;
+    if SameText(OpcodeName, 'lokey') then
+    begin
+      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
 
-  if SameText(OpcodeName, 'lokey') then
-  begin
-    DataInt := ConvertOpcode(OpcodeValue, 0, 127);
-    TargetNode := CurrentRegion;
-    NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := DataIO_IntToStr(DataInt);
-  end;
+    if SameText(OpcodeName, 'hikey') then
+    begin
+      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
 
-  if SameText(OpcodeName, 'hikey') then
-  begin
-    DataInt := ConvertOpcode(OpcodeValue, 0, 127);
-    TargetNode := CurrentRegion;
-    NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := DataIO_IntToStr(DataInt);
-  end;
+    if SameText(OpcodeName, 'lovel') then
+    begin
+      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
 
-  if SameText(OpcodeName, 'lovel') then
-  begin
-    DataInt := ConvertOpcode(OpcodeValue, 0, 127);
-    TargetNode := CurrentRegion;
-    NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
-  end;
+    if SameText(OpcodeName, 'hivel') then
+    begin
+      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
 
-  if SameText(OpcodeName, 'hivel') then
-  begin
-    DataInt := ConvertOpcode(OpcodeValue, 0, 127);
-    TargetNode := CurrentRegion;
-    NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
+    if SameText(OpcodeName, 'pitch_keycenter') then
+    begin
+      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+
+  except
+
   end;
 
 
