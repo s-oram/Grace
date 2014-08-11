@@ -160,7 +160,7 @@ end;
 
 procedure TKeyGroupStateInfo.ResetToDefaultValues;
 begin
-
+ SamplerTriggerMode := TKeyGroupTriggerMode.LoopOff;
 end;
 
 procedure TKeyGroupStateInfo.SanitiseData;
