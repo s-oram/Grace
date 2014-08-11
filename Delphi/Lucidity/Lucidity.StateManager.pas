@@ -400,8 +400,6 @@ var
   SampleGroupNode : TXmlNode;
   VoiceParNode : TXmlNode;
 
-
-
   RegionNode : TXmlNode;
   RegionPropertiesNode : TXmlNode;
   SamplePropertiesNode : TXmlNode;
@@ -482,14 +480,8 @@ begin
 
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'PitchTracking');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SampleReset');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainLoop');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainLength');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainRate');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'GrainPosition');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopBounds');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerTriggerMode');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscShape');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'OscPulseWidth');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
     SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');

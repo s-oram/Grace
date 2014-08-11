@@ -21,9 +21,14 @@ hikey
 lovel
 hivel
 pitch_keycenter
-
-
+end
+loop_start
+loop_end
 loop_mode
+transpose
+tune
+volume
+pan
 
 
 

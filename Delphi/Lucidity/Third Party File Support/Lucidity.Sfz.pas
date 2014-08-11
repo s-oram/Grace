@@ -38,10 +38,14 @@ type
 //================================================================================
 //    PRIVATE - for internal use
 //================================================================================
-function ConvertOpcode(Value:string; MinValue, MaxValue:integer):integer; overload;
-function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
 
+// These methods convert SFZ opcodes to Lucidity parameter values...
 function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
+
+function OpcodeToInteger(const Value : string):integer; overload;
+function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
+function OpcodeToFloat(const Value : string):single; overload;
+function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
 
 
 implementation
@@ -52,7 +56,35 @@ uses
   NativeXmlEx,
   uAutoFree;
 
-function ConvertOpcode(Value:string; MinValue, MaxValue:integer):integer; overload;
+function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
+begin
+  if SameText(Value, 'no_loop')         then exit(TKeyGroupTriggerMode.LoopOff);
+  if SameText(Value, 'one_shot')        then exit(TKeyGroupTriggerMode.OneShot);
+  if SameText(Value, 'loop_continuous') then exit(TKeyGroupTriggerMode.LoopContinuous);
+  if SameText(Value, 'loop_sustain')    then exit(TKeyGroupTriggerMode.LoopSustain);
+
+  // If we've made it this far, the value isn't a valid SFZ opcode.
+  raise EConvertError.Create('Value is not an integer.');
+end;
+
+function OpcodeToInteger(const Value : string):integer;
+var
+  x : integer;
+begin
+  if IsMidiKeyNameString(Value, x) then
+  begin
+    result := x;
+  end else
+  if TryStrToInt(Value, x) then
+  begin
+    result := x;
+  end else
+  begin
+    raise EConvertError.Create('Value is not an integer.');
+  end;
+end;
+
+function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
 var
   x : integer;
 begin
@@ -73,25 +105,34 @@ begin
   end;
 end;
 
-function ConvertOpcode(Value:string; MinValue, MaxValue:single):single; overload;
+function OpcodeToFloat(const Value : string):single;
 var
-  x : single;
+  fs:TFormatSettings;
 begin
-  x := DataIO_StrToFloat(Value, MinValue);
-  if x < MinValue then x := MinValue;
-  if x > MaxValue then x := MaxValue;
-  result := x;
+  fs.ThousandSeparator := ',';
+  fs.DecimalSeparator  := '.';
+  try
+    result := StrToFloat(Value, fs)
+  except
+    raise EConvertError.Create('Value is not a valid float.');
+  end;
 end;
 
-function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
+function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
+var
+  x : single;
+  fs:TFormatSettings;
 begin
-  if SameText(Value, 'no_loop')         then exit(TKeyGroupTriggerMode.LoopOff);
-  if SameText(Value, 'one_shot')        then exit(TKeyGroupTriggerMode.OneShot);
-  if SameText(Value, 'loop_continuous') then exit(TKeyGroupTriggerMode.LoopContinuous);
-  if SameText(Value, 'loop_sustain')    then exit(TKeyGroupTriggerMode.LoopSustain);
-
-  // If we've made it this far, the value isn't a valid SFZ opcode.
-  raise EConvertError.Create('Value is not an integer.');
+  fs.ThousandSeparator := ',';
+  fs.DecimalSeparator  := '.';
+  try
+    x := StrToFloat(Value, fs);
+    if x < MinValue then x := MinValue;
+    if x > MaxValue then x := MaxValue;
+    result := x;
+  except
+    raise EConvertError.Create('Value is not a valid float.');
+  end;
 end;
 
 { TSfzImporter }
@@ -168,9 +209,8 @@ procedure TSfzImporter.Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue 
 var
   DataInt   : integer;
   DataText  : string;
-  //DataFloat : single;
+  DataFloat : single;
   TargetNode : TXmlNode;
-
   TriggerMode : TKeyGroupTriggerMode;
 begin
   if not assigned(CurrentRegion) then exit;
@@ -229,38 +269,118 @@ begin
 
     if SameText(OpcodeName, 'lokey') then
     begin
-      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
 
     if SameText(OpcodeName, 'hikey') then
     begin
-      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
 
     if SameText(OpcodeName, 'lovel') then
     begin
-      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
 
     if SameText(OpcodeName, 'hivel') then
     begin
-      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
 
     if SameText(OpcodeName, 'pitch_keycenter') then
     begin
-      DataInt := ConvertOpcode(OpcodeValue, 0, 127);
+      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
       TargetNode := CurrentRegion;
       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := DataIO_IntToStr(DataInt);
     end;
+
+    if SameText(OpcodeName, 'end') then
+    begin
+      // === SFZ Import Notes ===
+      // The endpoint of the sample, in sample units.
+      // The player will reproduce the whole sample if end is not specified.
+      // If end value is -1, the sample will not play. Marking a region end
+      // with -1 can be used to use a silent region to turn off other
+      // regions by using the group and off_by opcodes.
+      DataInt := OpcodeToInteger(OpcodeValue);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleEnd').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+
+
+    if SameText(OpcodeName, 'loop_start') then
+    begin
+      DataInt := OpcodeToInteger(OpcodeValue);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopStart').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+    if SameText(OpcodeName, 'loop_end') then
+    begin
+      DataInt := OpcodeToInteger(OpcodeValue);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopEnd').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+    if SameText(OpcodeName, 'transpose') then
+    begin
+      // === SFZ Import Notes ===
+      // The transposition value for this region which will be applied to the sample.
+      // (I think it's in semitones but the documentation doesn't say)
+      // == Lucidity Import Notes ==
+      // Lucidty format units are *semitones*.
+      DataInt := OpcodeToInteger(OpcodeValue, -127, 127);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleTune').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+    if SameText(OpcodeName, 'tune') then
+    begin
+      // === SFZ Import Notes ===
+      // The fine tuning for the sample, in cents. Range is *ERROR* semitone,
+      // from -100 to 100. Only negative values must be prefixed with sign.
+      // == Lucidity Import Notes ==
+      // Lucidty format units are *cents*.
+      DataInt := OpcodeToInteger(OpcodeValue, -100, 100);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleFine').ValueUnicode := DataIO_IntToStr(DataInt);
+    end;
+
+    if SameText(OpcodeName, 'volume') then
+    begin
+      // === SFZ Import Notes ===
+      // The volume for the region, in decibels. -144 to 6 dB
+      // == Lucidity Import Notes ==
+      // Lucidty format units are *decibels*.
+      DataFloat := OpcodeToFloat(OpcodeValue, -144, 6);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleVolume').ValueUnicode := DataIO_FloatToStr(DataFloat);
+    end;
+
+    if SameText(OpcodeName, 'pan') then
+    begin
+      // === SFZ Import Notes ===
+      // The panoramic position for the region.
+      // If a mono sample is used, pan value defines the position in the stereo
+      // image where the sample will be placed.
+      // When a stereo sample is used, the pan value the relative amplitude of one channel respect the other.
+      // == Lucidity Import Notes ==
+      // Lucidty format units are *decibels*.
+      DataFloat := OpcodeToFloat(OpcodeValue, -100, 100);
+      TargetNode := CurrentRegion;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SamplePan').ValueUnicode := DataIO_FloatToStr(DataFloat);
+    end;
+
+
 
 
 
@@ -273,9 +393,10 @@ begin
 
 
 
-
   except
-
+    on EConvertError do {nothing};
+    else
+      raise;
   end;
 
 

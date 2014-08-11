@@ -126,9 +126,9 @@ begin
   HighNote       := 127;
   LowVelocity    := 0;
   HighVelocity   := 127;
-  RootNote       := -1;
+  RootNote       := 60; // Default root note is 60, same as SFZ format.
   SampleStart    := -1;
-  SampleEnd      := -1;
+  SampleEnd      := -1; // TODO:HIGH - When using SFZ Format, -1 is a valid value. I should change lucidity so that it matches.
   LoopStart      := -1;
   LoopEnd        := -1;
   SampleBeats    := 0;
@@ -142,18 +142,18 @@ end;
 
 procedure TRegionLoadInfo.SanitiseData;
 begin
-  if RootNote = -1 then
-  begin
-     if (LowNote = 0) and (HighNote = 127)
-       then RootNote := 60
-       else RootNote := LowNote;
-  end;
-
   Sanitise(fLowNote, 0, 127);
   Sanitise(fHighNote, 0, 127);
   Sanitise(fLowVelocity, 0, 127);
   Sanitise(fHighVelocity, 0, 127);
   Sanitise(fRootNote, 0, 127);
+
+
+  Sanitise(fSampleVolume, -48, 36);
+  Sanitise(fSamplePan, -100, 100);
+
+  Sanitise(fSampleTune, -48, 48);
+  Sanitise(fSampleFine, -100, 100);
 end;
 
 { TKeyGroupLoadInfo }
