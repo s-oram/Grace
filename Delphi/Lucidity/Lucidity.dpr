@@ -167,7 +167,8 @@ uses
   AudioEffect.Lofi in 'AudioEffects\AudioEffect.Lofi.pas',
   Menu.MissingSampleContextMenu in 'frames\Menu.MissingSampleContextMenu.pas',
   GuiDrawingRoutines in 'GuiDrawingRoutines.pas',
-  XPLAT.Dialogs in 'EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas';
+  XPLAT.Dialogs in 'EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas',
+  Lucidity.StateManager.DataClasses in 'Lucidity.StateManager.DataClasses.pas';
 
 {$R *.res}
 

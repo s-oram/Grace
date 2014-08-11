@@ -610,6 +610,7 @@
 			<DCCReference Include="frames\Menu.MissingSampleContextMenu.pas"/>
 			<DCCReference Include="GuiDrawingRoutines.pas"/>
 			<DCCReference Include="EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas"/>
+			<DCCReference Include="Lucidity.StateManager.DataClasses.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

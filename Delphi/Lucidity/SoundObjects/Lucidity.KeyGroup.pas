@@ -14,6 +14,7 @@ uses
   Lucidity.SequencerDataObject,
   LucidityGui.VectorSequence,
   Lucidity.Interfaces, LucidityModConnections,
+  Lucidity.StateManager.DataClasses,
   VamLib.MoreTypes, eeGlobals,
   uLucidityEnums,
   eeVoiceLogic,
@@ -91,6 +92,9 @@ type
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals; const aDebugTag : string = 'Unnamed');
     destructor Destroy; override;
     procedure AssignFrom(const Source : TKeyGroup);
+
+    procedure ReadState(const StateInfo : TKeyGroupStateInfo);
+    procedure WriteState(var StateInfo : TKeyGroupStateInfo);
 
     procedure SetPatch(var Data:TPatchNode);
     procedure GetPatch(var Data:TPatchNode);
@@ -446,6 +450,11 @@ begin
 end;
 
 
+procedure TKeyGroup.ReadState(const StateInfo: TKeyGroupStateInfo);
+begin
+
+end;
+
 procedure TKeyGroup.FastControlProcess;
 var
   c1 : integer;
@@ -492,6 +501,11 @@ begin
   begin
     ActiveVoices[c1].SlowControlProcess;
   end;
+end;
+
+procedure TKeyGroup.WriteState(var StateInfo: TKeyGroupStateInfo);
+begin
+  assert(false, 'TODO');
 end;
 
 procedure TKeyGroup.AudioProcess(const Outputs: TArrayOfPSingle; const SampleFrames: integer);
