@@ -52,7 +52,6 @@ type
   end;
 
 
-
   TKeyGroupStateInfo = class
   private
     fFilter2Type: TFilterType;
@@ -80,34 +79,6 @@ type
     procedure ResetToDefaultValues;
     procedure SanitiseData; // call after reading data from a save file.
   published
-    // PitchTracking
-    // SampleReset
-    // GrainLoop
-    // GrainLength
-    // GrainRate
-    // GrainPosition
-    // SamplerLoopBounds
-    // SamplerTriggerMode
-    // OscShape
-    // OscPulseWidth
-    // FilterRouting
-    // Filter1Type
-    // Filter2Type
-    // Filter1KeyFollow
-    // Filter2KeyFollow
-    // AmpVelocityDepth
-    // ModVelocityDepth
-    // LfoShape1
-    // LfoShape2
-    // LfoFreqMode1
-    // LfoFreqMode2
-    // Seq1Clock
-    // Seq1Direction
-    // StepSeq1Length
-    // Seq2Clock
-    // Seq2Direction
-    // StepSeq2Length
-
     property PitchTracking            : TPitchTracking                     read fPitchTracking           write fPitchTracking;
     property SampleReset              : TClockSource                       read fSampleReset             write fSampleReset;
     property SamplerLoopBounds        : TSamplerLoopBounds                 read fSamplerLoopBounds       write fSamplerLoopBounds;
