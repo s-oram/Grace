@@ -1,6 +1,11 @@
 =============================================================================
      BUGS
 =============================================================================
+Bug:
+  - view the sample map.
+  - load a SFZ format patch.
+  - waveform display now reads "error" despite the import working.
+
 - Bug: 
   - Create cubase project
   - add multiple Lucidity instances.
@@ -23,6 +28,8 @@ bug
 Bug
 - Andy reports the Voice Mod frame tab text is too large and overflows 
   over the tabs.
+
+
 
 =============================================================================
      TODO HIGH
