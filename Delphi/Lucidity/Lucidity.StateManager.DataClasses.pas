@@ -161,6 +161,9 @@ end;
 procedure TKeyGroupStateInfo.ResetToDefaultValues;
 begin
  SamplerTriggerMode := TKeyGroupTriggerMode.LoopOff;
+ SamplerLoopBounds  := TSamplerLoopBounds.LoopPoints;
+ PitchTracking := TPitchTracking.Note;
+ SampleReset := TClockSource.None;
 end;
 
 procedure TKeyGroupStateInfo.SanitiseData;
