@@ -416,12 +416,17 @@ var
   ModLinkNode        : TXmlNode;
 
   SeqData : IStepSequenceDataObject;
+
+  KeyGroupStateInfo : TKeyGroupStateInfo;
 begin
   ModLinkState := TModLinkSaveObject.Create;
   AutoFree(@ModLinkState);
 
   RegionList := TRegionInterfaceList.Create;
   AutoFree(@RegionList);
+
+  KeyGroupStateInfo := TKeyGroupStateInfo.Create;
+  AutoFree(@KeyGroupStateInfo);
 
   RootNode := xml.Root;
   assert(assigned(RootNode));
@@ -476,29 +481,32 @@ begin
 
 
     //==== Voice Parameters =====
+    KeyGroupStateInfo.ResetToDefaultValues;
+    sg.SaveState(KeyGroupStateInfo);
+
     VoiceParNode := SampleGroupNode.NodeNew('VoiceParameters');
 
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'PitchTracking');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SampleReset');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerLoopBounds');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'SamplerTriggerMode');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'FilterRouting');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1Type');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2Type');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter1KeyFollow');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Filter2KeyFollow');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'AmpVelocityDepth');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'ModVelocityDepth');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoShape1');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoShape2');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode1');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'LfoFreqMode2');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Clock');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq1Direction');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq1Length');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq2Clock');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'Seq2Direction');
-    SaveObjectPropertyToXML(VoiceParNode, sg.VoiceParameters, 'StepSeq2Length');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'PitchTracking');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'SampleReset');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'SamplerLoopBounds');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'SamplerTriggerMode');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'FilterRouting');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Filter1Type');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Filter2Type');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Filter1KeyFollow');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Filter2KeyFollow');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'AmpVelocityDepth');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'ModVelocityDepth');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'LfoShape1');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'LfoShape2');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'LfoFreqMode1');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'LfoFreqMode2');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq1Clock');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq1Direction');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'StepSeq1Length');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq2Clock');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq2Direction');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'StepSeq2Length');
 
     SaveModulatedParametersToNode(VoiceParNode, sg);
 
