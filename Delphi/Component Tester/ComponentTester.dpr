@@ -2,8 +2,7 @@ program ComponentTester;
 
 uses
   Vcl.Forms,
-  uMainForm in 'uMainForm.pas' {Form1},
-  Lucidity.Sfz in 'Lucidity.Sfz.pas';
+  uMainForm in 'uMainForm.pas' {Form1};
 
 {$R *.res}
 
