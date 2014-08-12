@@ -351,11 +351,7 @@ end;
 
 procedure TSfzImporter.Event_OnRegionOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
 var
-  DataInt   : integer;
-  DataText  : string;
-  DataFloat : single;
   TargetNode : TXmlNode;
-  TriggerMode : TKeyGroupTriggerMode;
   PatchValue : string;
 begin
   if not assigned(CurrentRegion) then exit;
