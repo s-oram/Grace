@@ -23,6 +23,7 @@ type
     fOnRegionOpcode: TOpcodeEvent;
     fOnGroupEnd: TNotifyEvent;
     fOnGroupStart: TNotifyEvent;
+    fOnGroupOpcode: TOpcodeEvent;
   protected
     IsRegionOpen : boolean;
     IsGroupOpen  : boolean;
@@ -43,12 +44,12 @@ type
     procedure ParseFile(Filename : string);
     procedure ParseText(Text : TStringList);
 
-    property OnGroupStart  : TNotifyEvent read fOnGroupStart write fOnGroupStart;
-    property OnGroupEnd    : TNotifyEvent read fOnGroupEnd   write fOnGroupEnd;
+    property OnGroupStart  : TNotifyEvent read fOnGroupStart  write fOnGroupStart;
+    property OnGroupEnd    : TNotifyEvent read fOnGroupEnd    write fOnGroupEnd;
+    property OnGroupOpcode : TOpcodeEvent read fOnGroupOpcode write fOnGroupOpcode;
 
-    property OnRegionStart : TNotifyEvent read fOnRegionStart write fOnRegionStart;
-    property OnRegionEnd   : TNotifyEvent read fOnRegionEnd   write fOnRegionEnd;
-
+    property OnRegionStart  : TNotifyEvent read fOnRegionStart  write fOnRegionStart;
+    property OnRegionEnd    : TNotifyEvent read fOnRegionEnd    write fOnRegionEnd;
     property OnRegionOpcode : TOpcodeEvent read fOnRegionOpcode write fOnRegionOpcode;
   end;
 

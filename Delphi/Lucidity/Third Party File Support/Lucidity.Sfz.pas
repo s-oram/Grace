@@ -22,9 +22,12 @@ type
     CurrentRegion : TXmlNode;
     GroupCount : integer;
     SupportedOpcodeList : TObjectList;
-    procedure Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+    procedure Event_OnGroupStart(Sender : TObject);
+    procedure Event_OnGroupEnd(Sender : TObject);
+    procedure Event_OnGroupOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
     procedure Event_OnRegionStart(Sender : TObject);
     procedure Event_OnRegionEnd(Sender : TObject);
+    procedure Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
   protected
   public
     constructor Create;
@@ -140,9 +143,16 @@ end;
 constructor TSfzImporter.Create;
 begin
   Parser := TSfzParser.Create;
+
+  Parser.OnGroupStart  := Event_OnGroupStart;
+  Parser.OnGroupEnd    := Event_OnGroupEnd;
+  Parser.OnGroupOpcode := Event_OnGroupOpcode;
+
   Parser.OnRegionStart  := Event_OnRegionStart;
   Parser.OnRegionEnd    := Event_OnRegionEnd;
   Parser.OnRegionOpcode := Event_OnRegionOpcode;
+
+
 end;
 
 destructor TSfzImporter.Destroy;
@@ -199,7 +209,6 @@ begin
   CurrentRegion := NodeWiz(CurrentGroup).CreateNode('Region');
 end;
 
-
 procedure TSfzImporter.Event_OnRegionEnd(Sender: TObject);
 begin
   CurrentRegion := nil;
@@ -214,50 +223,6 @@ var
   TriggerMode : TKeyGroupTriggerMode;
 begin
   if not assigned(CurrentRegion) then exit;
-
-  //DataInt   := 0;
-  DataText  := '';
-  //DataFloat := 0;
-  //TargetNode := nil;
-
-  //   SFZ Opcode documentation
-  //   http://www.cakewalk.com/DevXchange/article.aspx?aid=108
-
-
-
-  {
-  AddTextOpcode('sample');
-  AddIntegerOpcode('pitch_keycenter', 0, 127); //actual range is -127..127
-  AddIntegerOpcode('lokey', 0, 127);
-  AddIntegerOpcode('hikey', 0, 127);
-  AddIntegerOpcode('key', 0, 127);
-  AddIntegerOpcode('lovel', 0, 127);
-  AddIntegerOpcode('hivel', 0, 127);
-  AddTextOpcode('trigger'); //attack, release, first, legato,
-  AddIntegerOpcode('group', 0, kMaxInt);
-  AddTextOpcode('loop_mode');
-  AddIntegerOpcode('loop_start', 0, kMaxInt); //should be unsigned.
-  AddIntegerOpcode('loop_end', 0, kMaxInt);   //should be unsigned.
-
-  AddFloatOpcode('volume', -144, 6); //db.
-  AddFloatOpcode('pan', -100, 100); //%
-
-
-  // Amplitude envelope
-  AddFloatOpcode('ampeg_attack', 0, 100); //seconds
-  AddFloatOpcode('ampeg_hold', 0, 100); //seconds
-  AddFloatOpcode('ampeg_decay', 0, 100); //seconds
-  AddFloatOpcode('ampeg_sustain', 0, 100); //seconds
-  AddFloatOpcode('ampeg_release', 0, 100); //seconds
-
-  // filter envelope
-  AddFloatOpcode('fileg_attack', 0, 100); //seconds
-  AddFloatOpcode('fileg_hold', 0, 100); //seconds
-  AddFloatOpcode('fileg_decay', 0, 100); //seconds
-  AddFloatOpcode('fileg_sustain', 0, 100); //seconds
-  AddFloatOpcode('fileg_release', 0, 100); //seconds
-  }
-
 
   try
     if SameText(OpcodeName, 'sample') then
@@ -400,6 +365,21 @@ begin
   end;
 
 
+
+end;
+
+procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
+begin
+
+end;
+
+procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
+begin
+
+end;
+
+procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; OpcodeName, OpcodeValue: string);
+begin
 
 end;
 
