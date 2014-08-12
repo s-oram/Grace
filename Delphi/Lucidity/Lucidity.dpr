@@ -169,7 +169,8 @@ uses
   GuiDrawingRoutines in 'GuiDrawingRoutines.pas',
   XPLAT.Dialogs in 'EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas',
   Lucidity.StateManager.DataClasses in 'Lucidity.StateManager.DataClasses.pas',
-  SfzParser.SfzOpcodes in '..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas';
+  SfzParser.SfzOpcodes in '..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas',
+  Lucidity.SfzOpcodeConversion in 'Third Party File Support\Lucidity.SfzOpcodeConversion.pas';
 
 {$R *.res}
 
