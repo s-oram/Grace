@@ -51,8 +51,7 @@ uses
   VamLib.Utils,
   SysUtils,
   NativeXmlEx,
-  uAutoFree;
-
+  Lucidity.SfzOpcodeConversion;
 
 
 { TSfzImporter }
@@ -138,154 +137,221 @@ var
   DataFloat : single;
   TargetNode : TXmlNode;
   TriggerMode : TKeyGroupTriggerMode;
+  PatchValue : string;
 begin
   if not assigned(CurrentRegion) then exit;
 
+  TargetNode := CurrentRegion;
 
+  case Opcode of
+    TSfzOpcode.Unknown: ;
+    TSfzOpcode.lochan: ;
+    TSfzOpcode.hichan: ;
 
-  {
-  try
-    if SameText(OpcodeName, 'sample') then
+    TSfzOpcode.sample:  NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.pitch_keycenter: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.lokey:           NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.hikey:           NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.key:
     begin
-      DataText := OpcodeValue;
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := DataText;
+      PatchValue := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := PatchValue;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := PatchValue;
+      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := PatchValue;
     end;
-
-    if SameText(OpcodeName, 'lokey') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'hikey') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'lovel') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'hivel') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighVelocity').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'pitch_keycenter') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue, 0, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'end') then
-    begin
-      // === SFZ Import Notes ===
-      // The endpoint of the sample, in sample units.
-      // The player will reproduce the whole sample if end is not specified.
-      // If end value is -1, the sample will not play. Marking a region end
-      // with -1 can be used to use a silent region to turn off other
-      // regions by using the group and off_by opcodes.
-      DataInt := OpcodeToInteger(OpcodeValue);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleEnd').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-
-
-    if SameText(OpcodeName, 'loop_start') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopStart').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'loop_end') then
-    begin
-      DataInt := OpcodeToInteger(OpcodeValue);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopEnd').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'transpose') then
-    begin
-      // === SFZ Import Notes ===
-      // The transposition value for this region which will be applied to the sample.
-      // (I think it's in semitones but the documentation doesn't say)
-      // == Lucidity Import Notes ==
-      // Lucidty format units are *semitones*.
-      DataInt := OpcodeToInteger(OpcodeValue, -127, 127);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleTune').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'tune') then
-    begin
-      // === SFZ Import Notes ===
-      // The fine tuning for the sample, in cents. Range is *ERROR* semitone,
-      // from -100 to 100. Only negative values must be prefixed with sign.
-      // == Lucidity Import Notes ==
-      // Lucidty format units are *cents*.
-      DataInt := OpcodeToInteger(OpcodeValue, -100, 100);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleFine').ValueUnicode := DataIO_IntToStr(DataInt);
-    end;
-
-    if SameText(OpcodeName, 'volume') then
-    begin
-      // === SFZ Import Notes ===
-      // The volume for the region, in decibels. -144 to 6 dB
-      // == Lucidity Import Notes ==
-      // Lucidty format units are *decibels*.
-      DataFloat := OpcodeToFloat(OpcodeValue, -144, 6);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleVolume').ValueUnicode := DataIO_FloatToStr(DataFloat);
-    end;
-
-    if SameText(OpcodeName, 'pan') then
-    begin
-      // === SFZ Import Notes ===
-      // The panoramic position for the region.
-      // If a mono sample is used, pan value defines the position in the stereo
-      // image where the sample will be placed.
-      // When a stereo sample is used, the pan value the relative amplitude of one channel respect the other.
-      // == Lucidity Import Notes ==
-      // Lucidty format units are *decibels*.
-      DataFloat := OpcodeToFloat(OpcodeValue, -100, 100);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SamplePan').ValueUnicode := DataIO_FloatToStr(DataFloat);
-    end;
-
-
-
-
-
-    if SameText(OpcodeName, 'loop_mode') then
-    begin
-      TriggerMode := OpcodeToTriggerMode(OpcodeValue);
-      TargetNode := CurrentRegion;
-      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := TKeyGroupTriggerModeHelper.ToUnicodeString(TriggerMode);
-    end;
-
-
-
-  except
-    on EConvertError do ;
-    else
-      raise;
+    TSfzOpcode.lovel: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowVelocity').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.hivel: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighVelocity').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.lobend: ;
+    TSfzOpcode.hibend: ;
+    TSfzOpcode.lochanaft: ;
+    TSfzOpcode.hichanaft: ;
+    TSfzOpcode.lopolyaft: ;
+    TSfzOpcode.hipolyaft: ;
+    TSfzOpcode.lorand: ;
+    TSfzOpcode.hirand: ;
+    TSfzOpcode.lobpm: ;
+    TSfzOpcode.hibpm: ;
+    TSfzOpcode.seq_length: ;
+    TSfzOpcode.seq_position: ;
+    TSfzOpcode.sw_lokey: ;
+    TSfzOpcode.sw_hikey: ;
+    TSfzOpcode.sw_last: ;
+    TSfzOpcode.sw_down: ;
+    TSfzOpcode.sw_up: ;
+    TSfzOpcode.sw_previous: ;
+    TSfzOpcode.sw_vel: ;
+    TSfzOpcode.trigger: ;
+    TSfzOpcode.group: ;
+    TSfzOpcode.off_by: ;
+    TSfzOpcode.off_mode: ;
+    TSfzOpcode.on_loccN: ;
+    TSfzOpcode.on_hiccN: ;
+    TSfzOpcode.delay: ;
+    TSfzOpcode.delay_random: ;
+    TSfzOpcode.delay_ccN: ;
+    TSfzOpcode.offset: ;
+    TSfzOpcode.offset_random: ;
+    TSfzOpcode.offset_ccN: ;
+    TSfzOpcode.sample_end: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleEnd').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.count: ;
+    TSfzOpcode.loop_mode:  NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.loop_start: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopStart').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.loop_end:   NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopEnd').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.sync_beats: ;
+    TSfzOpcode.sync_offset: ;
+    TSfzOpcode.transpose:  NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleTune').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.tune:       NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleFine').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.pitch_keytrack: ;
+    TSfzOpcode.pitch_veltrack: ;
+    TSfzOpcode.pitch_random: ;
+    TSfzOpcode.bend_up: ;
+    TSfzOpcode.bend_down: ;
+    TSfzOpcode.bend_step: ;
+    TSfzOpcode.pitcheg_delay: ;
+    TSfzOpcode.pitcheg_start: ;
+    TSfzOpcode.pitcheg_attack: ;
+    TSfzOpcode.pitcheg_hold: ;
+    TSfzOpcode.pitcheg_decay: ;
+    TSfzOpcode.pitcheg_sustain: ;
+    TSfzOpcode.pitcheg_release: ;
+    TSfzOpcode.pitcheg_depth: ;
+    TSfzOpcode.pitcheg_vel2delay: ;
+    TSfzOpcode.pitcheg_vel2attack: ;
+    TSfzOpcode.pitcheg_vel2hold: ;
+    TSfzOpcode.pitcheg_vel2decay: ;
+    TSfzOpcode.pitcheg_vel2sustain: ;
+    TSfzOpcode.pitcheg_vel2release: ;
+    TSfzOpcode.pitcheg_vel2depth: ;
+    TSfzOpcode.pitchlfo_delay: ;
+    TSfzOpcode.pitchlfo_fade: ;
+    TSfzOpcode.pitchlfo_freq: ;
+    TSfzOpcode.pitchlfo_depth: ;
+    TSfzOpcode.pitchlfo_depthccN: ;
+    TSfzOpcode.pitchlfo_depthchanaft: ;
+    TSfzOpcode.pitchlfo_depthpolyaft: ;
+    TSfzOpcode.pitchlfo_freqccN: ;
+    TSfzOpcode.pitchlfo_freqchanaft: ;
+    TSfzOpcode.pitchlfo_freqpolyaft: ;
+    TSfzOpcode.fil_type: ;
+    TSfzOpcode.cutoff: ;
+    TSfzOpcode.cutoff_ccN: ;
+    TSfzOpcode.cutoff_chanaft: ;
+    TSfzOpcode.cutoff_polyaft: ;
+    TSfzOpcode.resonance: ;
+    TSfzOpcode.fil_keytrack: ;
+    TSfzOpcode.fil_keycenter: ;
+    TSfzOpcode.fil_veltrack: ;
+    TSfzOpcode.fil_random: ;
+    TSfzOpcode.fileg_delay: ;
+    TSfzOpcode.fileg_start: ;
+    TSfzOpcode.fileg_attack: ;
+    TSfzOpcode.fileg_hold: ;
+    TSfzOpcode.fileg_decay: ;
+    TSfzOpcode.fileg_sustain: ;
+    TSfzOpcode.fileg_release: ;
+    TSfzOpcode.fileg_depth: ;
+    TSfzOpcode.fileg_vel2delay: ;
+    TSfzOpcode.fileg_vel2attack: ;
+    TSfzOpcode.fileg_vel2hold: ;
+    TSfzOpcode.fileg_vel2decay: ;
+    TSfzOpcode.fileg_vel2sustain: ;
+    TSfzOpcode.fileg_vel2release: ;
+    TSfzOpcode.fileg_vel2depth: ;
+    TSfzOpcode.fillfo_delay: ;
+    TSfzOpcode.fillfo_fade: ;
+    TSfzOpcode.fillfo_freq: ;
+    TSfzOpcode.fillfo_depth: ;
+    TSfzOpcode.fillfo_depthccN: ;
+    TSfzOpcode.fillfo_depthchanaft: ;
+    TSfzOpcode.fillfo_depthpolyaft: ;
+    TSfzOpcode.fillfo_freqccN: ;
+    TSfzOpcode.fillfo_freqchanaft: ;
+    TSfzOpcode.fillfo_freqpolyaft: ;
+    TSfzOpcode.volume:  NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleVolume').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.pan:     NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SamplePan').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.width: ;
+    TSfzOpcode.position: ;
+    TSfzOpcode.amp_keytrack: ;
+    TSfzOpcode.amp_keycenter: ;
+    TSfzOpcode.amp_veltrack: ;
+    TSfzOpcode.amp_velcurve_1: ;
+    TSfzOpcode.amp_velcurve_127: ;
+    TSfzOpcode.amp_random: ;
+    TSfzOpcode.rt_decay: ;
+    TSfzOpcode.output: ;
+    TSfzOpcode.gain_ccN: ;
+    TSfzOpcode.xfin_lokey: ;
+    TSfzOpcode.xfin_hikey: ;
+    TSfzOpcode.xfout_lokey: ;
+    TSfzOpcode.xfout_hikey: ;
+    TSfzOpcode.xf_keycurve: ;
+    TSfzOpcode.xfin_lovel: ;
+    TSfzOpcode.xfin_hivel: ;
+    TSfzOpcode.xfout_lovel: ;
+    TSfzOpcode.xfout_hivel: ;
+    TSfzOpcode.xf_velcurve: ;
+    TSfzOpcode.xfin_loccN: ;
+    TSfzOpcode.xfin_hiccN: ;
+    TSfzOpcode.xfout_loccN: ;
+    TSfzOpcode.xfout_hiccN: ;
+    TSfzOpcode.xf_cccurve: ;
+    TSfzOpcode.ampeg_delay: ;
+    TSfzOpcode.ampeg_start: ;
+    TSfzOpcode.ampeg_attack: ;
+    TSfzOpcode.ampeg_hold: ;
+    TSfzOpcode.ampeg_decay: ;
+    TSfzOpcode.ampeg_sustain: ;
+    TSfzOpcode.ampeg_release: ;
+    TSfzOpcode.ampeg_vel2delay: ;
+    TSfzOpcode.ampeg_vel2attack: ;
+    TSfzOpcode.ampeg_vel2hold: ;
+    TSfzOpcode.ampeg_vel2decay: ;
+    TSfzOpcode.ampeg_vel2sustain: ;
+    TSfzOpcode.ampeg_vel2release: ;
+    TSfzOpcode.ampeg_delayccN: ;
+    TSfzOpcode.ampeg_startccN: ;
+    TSfzOpcode.ampeg_attackccN: ;
+    TSfzOpcode.ampeg_holdccN: ;
+    TSfzOpcode.ampeg_decayccN: ;
+    TSfzOpcode.ampeg_sustainccN: ;
+    TSfzOpcode.ampeg_releaseccN: ;
+    TSfzOpcode.amplfo_delay: ;
+    TSfzOpcode.amplfo_fade: ;
+    TSfzOpcode.amplfo_freq: ;
+    TSfzOpcode.amplfo_depth: ;
+    TSfzOpcode.amplfo_depthccN: ;
+    TSfzOpcode.amplfo_depthchanaft: ;
+    TSfzOpcode.amplfo_depthpolyaft: ;
+    TSfzOpcode.amplfo_freqccN: ;
+    TSfzOpcode.amplfo_freqchanaft: ;
+    TSfzOpcode.amplfo_freqpolyaft: ;
+    TSfzOpcode.eq1_freq: ;
+    TSfzOpcode.eq2_freq: ;
+    TSfzOpcode.eq3_freq: ;
+    TSfzOpcode.eq1_freqccN: ;
+    TSfzOpcode.eq2_freqccN: ;
+    TSfzOpcode.eq3_freqccN: ;
+    TSfzOpcode.eq1_vel2freq: ;
+    TSfzOpcode.eq2_vel2freq: ;
+    TSfzOpcode.eq3_vel2freq: ;
+    TSfzOpcode.eq1_bw: ;
+    TSfzOpcode.eq2_bw: ;
+    TSfzOpcode.eq3_bw: ;
+    TSfzOpcode.eq1_bwccN: ;
+    TSfzOpcode.eq2_bwccN: ;
+    TSfzOpcode.eq3_bwccN: ;
+    TSfzOpcode.eq1_gain: ;
+    TSfzOpcode.eq2_gain: ;
+    TSfzOpcode.eq3_gain: ;
+    TSfzOpcode.eq1_gainccN: ;
+    TSfzOpcode.eq2_gainccN: ;
+    TSfzOpcode.eq3_gainccN: ;
+    TSfzOpcode.eq1_vel2gain: ;
+    TSfzOpcode.eq2_vel2gain: ;
+    TSfzOpcode.eq3_vel2gain: ;
+    TSfzOpcode.effect1: ;
+    TSfzOpcode.effect2: ;
   end;
-  }
-
-
 end;
 
 procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
