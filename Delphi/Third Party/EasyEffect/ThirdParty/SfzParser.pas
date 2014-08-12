@@ -3,7 +3,8 @@ unit SfzParser;
 interface
 
 uses
-  Classes, Contnrs;
+  Classes, Contnrs,
+  SfzParser.SfzOpcodes;
 
 {$SCOPEDENUMS ON}
 
@@ -11,17 +12,9 @@ type
   TSfzTokenType = (Unknown, Comment, Group, Region, MultipleOpcodes, Opcode);
 
 
-  TSfzOpcode = (
-    Unknown
-  );
-
 
   // Events
-  TOpcodeEvent = procedure(Sender : TObject; OpcodeName, OpcodeValue : string) of object;
-
-
-
-
+  TOpcodeEvent = procedure(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string) of object;
 
   TSfzParser = class
   private
@@ -202,6 +195,7 @@ end;
 procedure TSfzParser.ProcessOpcode(s: string);
 var
   OpcodeName, OpcodeValue : string;
+  Opcode : TSfzOpcode;
   Lines : TStringDynArray;
 begin
   Lines := SplitString(s, '=');
@@ -211,13 +205,15 @@ begin
     OpcodeName  := Lines[0];
     OpcodeValue := Lines[1];
 
+    Opcode := StrToSfzOpcode(OpcodeName);
+
     if IsRegionOpen then
     begin
-      if assigned(OnRegionOpcode) then OnRegionOpcode(self, OpcodeName, OpcodeValue);
+      if assigned(OnRegionOpcode) then OnRegionOpcode(self, Opcode, OpcodeValue);
     end else
     if IsGroupOpen then
     begin
-      if assigned(OnGroupOpcode) then OnGroupOpcode(self, OpcodeName, OpcodeValue);
+      if assigned(OnGroupOpcode) then OnGroupOpcode(self, Opcode, OpcodeValue);
     end;
   end;
 end;
