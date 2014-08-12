@@ -20,7 +20,7 @@ type
     OpcodeList : TObjectList;
     fOnRegionStart: TNotifyEvent;
     fOnRegionEnd: TNotifyEvent;
-    fOnOpcode: TOpcodeEvent;
+    fOnRegionOpcode: TOpcodeEvent;
     fOnGroupEnd: TNotifyEvent;
     fOnGroupStart: TNotifyEvent;
   protected
@@ -49,7 +49,7 @@ type
     property OnRegionStart : TNotifyEvent read fOnRegionStart write fOnRegionStart;
     property OnRegionEnd   : TNotifyEvent read fOnRegionEnd   write fOnRegionEnd;
 
-    property OnOpcode : TOpcodeEvent read fOnOpcode write fOnOpcode;
+    property OnRegionOpcode : TOpcodeEvent read fOnRegionOpcode write fOnRegionOpcode;
   end;
 
 
@@ -219,7 +219,7 @@ begin
   begin
     OpcodeName  := Lines[0];
     OpcodeValue := Lines[1];
-    if assigned(OnOpcode) then OnOpcode(self, OpcodeName, OpcodeValue);
+    if assigned(OnRegionOpcode) then OnRegionOpcode(self, OpcodeName, OpcodeValue);
   end;
 end;
 

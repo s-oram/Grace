@@ -22,7 +22,7 @@ type
     CurrentRegion : TXmlNode;
     GroupCount : integer;
     SupportedOpcodeList : TObjectList;
-    procedure Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+    procedure Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
     procedure Event_OnRegionStart(Sender : TObject);
     procedure Event_OnRegionEnd(Sender : TObject);
   protected
@@ -140,9 +140,9 @@ end;
 constructor TSfzImporter.Create;
 begin
   Parser := TSfzParser.Create;
-  Parser.OnRegionStart := Event_OnRegionStart;
-  Parser.OnRegionEnd   := Event_OnRegionEnd;
-  Parser.OnOpcode      := Event_OnOpcode;
+  Parser.OnRegionStart  := Event_OnRegionStart;
+  Parser.OnRegionEnd    := Event_OnRegionEnd;
+  Parser.OnRegionOpcode := Event_OnRegionOpcode;
 end;
 
 destructor TSfzImporter.Destroy;
@@ -205,7 +205,7 @@ begin
   CurrentRegion := nil;
 end;
 
-procedure TSfzImporter.Event_OnOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+procedure TSfzImporter.Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
 var
   DataInt   : integer;
   DataText  : string;
