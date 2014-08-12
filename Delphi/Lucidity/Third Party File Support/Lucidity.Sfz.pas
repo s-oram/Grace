@@ -38,13 +38,6 @@ type
     procedure ConvertFile(SourceFileName : string; out Dest : TNativeXML);
   end;
 
-
-
-
-
-
-
-
 implementation
 
 uses
@@ -67,8 +60,6 @@ begin
   Parser.OnRegionStart  := Event_OnRegionStart;
   Parser.OnRegionEnd    := Event_OnRegionEnd;
   Parser.OnRegionOpcode := Event_OnRegionOpcode;
-
-
 end;
 
 destructor TSfzImporter.Destroy;
@@ -109,20 +100,248 @@ begin
   end;
 end;
 
-procedure TSfzImporter.Event_OnRegionStart(Sender: TObject);
+
+procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
 begin
   if not assigned(CurrentGroup) then
   begin
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
+    inc(GroupCount);
 
     //== default voice parameters ==
-    NodeWiz(CurrentGroup).CreateNode('VoiceParameters/SamplePlaybackType').ValueUnicode := 'NoteSampler'; //TODO:MED delete this. Node isn't needed.
-
-    inc(GroupCount);
+    //NodeWiz(CurrentGroup).CreateNode('VoiceParameters/SamplePlaybackType').ValueUnicode := 'NoteSampler'; //TODO:MED delete this. Node isn't needed.
+    NodeWiz(CurrentGroup).CreateNode('VoiceParameters');
   end;
+end;
 
-  CurrentRegion := NodeWiz(CurrentGroup).CreateNode('Region');
+procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
+begin
+  //=====================================
+  // Do some final adjustments here...
+
+
+  //=====================================
+  CurrentGroup := nil;
+end;
+
+procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; Opcode : TSfzOpcode; OpcodeValue: string);
+var
+  TargetNode : TXmlNode;
+begin
+  if not assigned(CurrentGroup) then exit;
+  TargetNode := CurrentGroup;
+
+  case Opcode of
+    TSfzOpcode.lokey: ;
+    TSfzOpcode.hikey: ;
+    TSfzOpcode.key: ;
+    TSfzOpcode.lovel: ;
+    TSfzOpcode.hivel: ;
+    TSfzOpcode.lobend: ;
+    TSfzOpcode.hibend: ;
+    TSfzOpcode.lochanaft: ;
+    TSfzOpcode.hichanaft: ;
+    TSfzOpcode.lopolyaft: ;
+    TSfzOpcode.hipolyaft: ;
+    TSfzOpcode.lorand: ;
+    TSfzOpcode.hirand: ;
+    TSfzOpcode.lobpm: ;
+    TSfzOpcode.hibpm: ;
+    TSfzOpcode.seq_length: ;
+    TSfzOpcode.seq_position: ;
+    TSfzOpcode.sw_lokey: ;
+    TSfzOpcode.sw_hikey: ;
+    TSfzOpcode.sw_last: ;
+    TSfzOpcode.sw_down: ;
+    TSfzOpcode.sw_up: ;
+    TSfzOpcode.sw_previous: ;
+    TSfzOpcode.sw_vel: ;
+    TSfzOpcode.trigger: ;
+    TSfzOpcode.group: ;
+    TSfzOpcode.off_by: ;
+    TSfzOpcode.off_mode: ;
+    TSfzOpcode.on_loccN: ;
+    TSfzOpcode.on_hiccN: ;
+    TSfzOpcode.delay: ;
+    TSfzOpcode.delay_random: ;
+    TSfzOpcode.delay_ccN: ;
+    TSfzOpcode.offset: ;
+    TSfzOpcode.offset_random: ;
+    TSfzOpcode.offset_ccN: ;
+    TSfzOpcode.sample_end: ;
+    TSfzOpcode.count: ;
+    TSfzOpcode.loop_mode: ;
+    TSfzOpcode.loop_start: ;
+    TSfzOpcode.loop_end: ;
+    TSfzOpcode.sync_beats: ;
+    TSfzOpcode.sync_offset: ;
+    TSfzOpcode.transpose: ;
+    TSfzOpcode.tune: ;
+    TSfzOpcode.pitch_keycenter: ;
+    TSfzOpcode.pitch_keytrack: ;
+    TSfzOpcode.pitch_veltrack: ;
+    TSfzOpcode.pitch_random: ;
+    TSfzOpcode.bend_up: ;
+    TSfzOpcode.bend_down: ;
+    TSfzOpcode.bend_step: ;
+    TSfzOpcode.pitcheg_delay: ;
+    TSfzOpcode.pitcheg_start: ;
+    TSfzOpcode.pitcheg_attack: ;
+    TSfzOpcode.pitcheg_hold: ;
+    TSfzOpcode.pitcheg_decay: ;
+    TSfzOpcode.pitcheg_sustain: ;
+    TSfzOpcode.pitcheg_release: ;
+    TSfzOpcode.pitcheg_depth: ;
+    TSfzOpcode.pitcheg_vel2delay: ;
+    TSfzOpcode.pitcheg_vel2attack: ;
+    TSfzOpcode.pitcheg_vel2hold: ;
+    TSfzOpcode.pitcheg_vel2decay: ;
+    TSfzOpcode.pitcheg_vel2sustain: ;
+    TSfzOpcode.pitcheg_vel2release: ;
+    TSfzOpcode.pitcheg_vel2depth: ;
+    TSfzOpcode.pitchlfo_delay: ;
+    TSfzOpcode.pitchlfo_fade: ;
+    TSfzOpcode.pitchlfo_freq: ;
+    TSfzOpcode.pitchlfo_depth: ;
+    TSfzOpcode.pitchlfo_depthccN: ;
+    TSfzOpcode.pitchlfo_depthchanaft: ;
+    TSfzOpcode.pitchlfo_depthpolyaft: ;
+    TSfzOpcode.pitchlfo_freqccN: ;
+    TSfzOpcode.pitchlfo_freqchanaft: ;
+    TSfzOpcode.pitchlfo_freqpolyaft: ;
+    TSfzOpcode.fil_type: ;
+    TSfzOpcode.cutoff:
+    begin
+
+    end;
+
+    TSfzOpcode.cutoff_ccN: ;
+    TSfzOpcode.cutoff_chanaft: ;
+    TSfzOpcode.cutoff_polyaft: ;
+    TSfzOpcode.resonance: ;
+    TSfzOpcode.fil_keytrack: ;
+    TSfzOpcode.fil_keycenter: ;
+    TSfzOpcode.fil_veltrack: ;
+    TSfzOpcode.fil_random: ;
+    TSfzOpcode.fileg_delay: ;
+    TSfzOpcode.fileg_start: ;
+    TSfzOpcode.fileg_attack: ;
+    TSfzOpcode.fileg_hold: ;
+    TSfzOpcode.fileg_decay: ;
+    TSfzOpcode.fileg_sustain: ;
+    TSfzOpcode.fileg_release: ;
+    TSfzOpcode.fileg_depth: ;
+    TSfzOpcode.fileg_vel2delay: ;
+    TSfzOpcode.fileg_vel2attack: ;
+    TSfzOpcode.fileg_vel2hold: ;
+    TSfzOpcode.fileg_vel2decay: ;
+    TSfzOpcode.fileg_vel2sustain: ;
+    TSfzOpcode.fileg_vel2release: ;
+    TSfzOpcode.fileg_vel2depth: ;
+    TSfzOpcode.fillfo_delay: ;
+    TSfzOpcode.fillfo_fade: ;
+    TSfzOpcode.fillfo_freq: ;
+    TSfzOpcode.fillfo_depth: ;
+    TSfzOpcode.fillfo_depthccN: ;
+    TSfzOpcode.fillfo_depthchanaft: ;
+    TSfzOpcode.fillfo_depthpolyaft: ;
+    TSfzOpcode.fillfo_freqccN: ;
+    TSfzOpcode.fillfo_freqchanaft: ;
+    TSfzOpcode.fillfo_freqpolyaft: ;
+    TSfzOpcode.volume: ;
+    TSfzOpcode.pan: ;
+    TSfzOpcode.width: ;
+    TSfzOpcode.position: ;
+    TSfzOpcode.amp_keytrack: ;
+    TSfzOpcode.amp_keycenter: ;
+    TSfzOpcode.amp_veltrack: ;
+    TSfzOpcode.amp_velcurve_1: ;
+    TSfzOpcode.amp_velcurve_127: ;
+    TSfzOpcode.amp_random: ;
+    TSfzOpcode.rt_decay: ;
+    TSfzOpcode.output: ;
+    TSfzOpcode.gain_ccN: ;
+    TSfzOpcode.xfin_lokey: ;
+    TSfzOpcode.xfin_hikey: ;
+    TSfzOpcode.xfout_lokey: ;
+    TSfzOpcode.xfout_hikey: ;
+    TSfzOpcode.xf_keycurve: ;
+    TSfzOpcode.xfin_lovel: ;
+    TSfzOpcode.xfin_hivel: ;
+    TSfzOpcode.xfout_lovel: ;
+    TSfzOpcode.xfout_hivel: ;
+    TSfzOpcode.xf_velcurve: ;
+    TSfzOpcode.xfin_loccN: ;
+    TSfzOpcode.xfin_hiccN: ;
+    TSfzOpcode.xfout_loccN: ;
+    TSfzOpcode.xfout_hiccN: ;
+    TSfzOpcode.xf_cccurve: ;
+    TSfzOpcode.ampeg_delay: ;
+    TSfzOpcode.ampeg_start: ;
+    TSfzOpcode.ampeg_attack: ;
+    TSfzOpcode.ampeg_hold: ;
+    TSfzOpcode.ampeg_decay: ;
+    TSfzOpcode.ampeg_sustain: ;
+    TSfzOpcode.ampeg_release: ;
+    TSfzOpcode.ampeg_vel2delay: ;
+    TSfzOpcode.ampeg_vel2attack: ;
+    TSfzOpcode.ampeg_vel2hold: ;
+    TSfzOpcode.ampeg_vel2decay: ;
+    TSfzOpcode.ampeg_vel2sustain: ;
+    TSfzOpcode.ampeg_vel2release: ;
+    TSfzOpcode.ampeg_delayccN: ;
+    TSfzOpcode.ampeg_startccN: ;
+    TSfzOpcode.ampeg_attackccN: ;
+    TSfzOpcode.ampeg_holdccN: ;
+    TSfzOpcode.ampeg_decayccN: ;
+    TSfzOpcode.ampeg_sustainccN: ;
+    TSfzOpcode.ampeg_releaseccN: ;
+    TSfzOpcode.amplfo_delay: ;
+    TSfzOpcode.amplfo_fade: ;
+    TSfzOpcode.amplfo_freq: ;
+    TSfzOpcode.amplfo_depth: ;
+    TSfzOpcode.amplfo_depthccN: ;
+    TSfzOpcode.amplfo_depthchanaft: ;
+    TSfzOpcode.amplfo_depthpolyaft: ;
+    TSfzOpcode.amplfo_freqccN: ;
+    TSfzOpcode.amplfo_freqchanaft: ;
+    TSfzOpcode.amplfo_freqpolyaft: ;
+    TSfzOpcode.eq1_freq: ;
+    TSfzOpcode.eq2_freq: ;
+    TSfzOpcode.eq3_freq: ;
+    TSfzOpcode.eq1_freqccN: ;
+    TSfzOpcode.eq2_freqccN: ;
+    TSfzOpcode.eq3_freqccN: ;
+    TSfzOpcode.eq1_vel2freq: ;
+    TSfzOpcode.eq2_vel2freq: ;
+    TSfzOpcode.eq3_vel2freq: ;
+    TSfzOpcode.eq1_bw: ;
+    TSfzOpcode.eq2_bw: ;
+    TSfzOpcode.eq3_bw: ;
+    TSfzOpcode.eq1_bwccN: ;
+    TSfzOpcode.eq2_bwccN: ;
+    TSfzOpcode.eq3_bwccN: ;
+    TSfzOpcode.eq1_gain: ;
+    TSfzOpcode.eq2_gain: ;
+    TSfzOpcode.eq3_gain: ;
+    TSfzOpcode.eq1_gainccN: ;
+    TSfzOpcode.eq2_gainccN: ;
+    TSfzOpcode.eq3_gainccN: ;
+    TSfzOpcode.eq1_vel2gain: ;
+    TSfzOpcode.eq2_vel2gain: ;
+    TSfzOpcode.eq3_vel2gain: ;
+    TSfzOpcode.effect1: ;
+    TSfzOpcode.effect2: ;
+  end;
+end;
+
+procedure TSfzImporter.Event_OnRegionStart(Sender: TObject);
+begin
+  if assigned(CurrentGroup) then
+  begin
+    CurrentRegion := NodeWiz(CurrentGroup).CreateNode('Region');
+  end;
 end;
 
 procedure TSfzImporter.Event_OnRegionEnd(Sender: TObject);
@@ -147,8 +366,7 @@ begin
     TSfzOpcode.Unknown: ;
     TSfzOpcode.lochan: ;
     TSfzOpcode.hichan: ;
-
-    TSfzOpcode.sample:  NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.sample:          NodeWiz(TargetNode).FindOrCreateNode('SampleProperties/SampleFileName').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.pitch_keycenter: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/RootNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.lokey:           NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LowNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.hikey:           NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/HighNote').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
@@ -354,20 +572,6 @@ begin
   end;
 end;
 
-procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
-begin
-
-end;
-
-procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
-begin
-
-end;
-
-procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; Opcode : TSfzOpcode; OpcodeValue: string);
-begin
-
-end;
 
 
 
