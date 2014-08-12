@@ -40,17 +40,9 @@ type
 
 
 
-//================================================================================
-//    PRIVATE - for internal use
-//================================================================================
 
-// These methods convert SFZ opcodes to Lucidity parameter values...
-function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
 
-function OpcodeToInteger(const Value : string):integer; overload;
-function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
-function OpcodeToFloat(const Value : string):single; overload;
-function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
+
 
 
 implementation
@@ -61,84 +53,7 @@ uses
   NativeXmlEx,
   uAutoFree;
 
-function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
-begin
-  if SameText(Value, 'no_loop')         then exit(TKeyGroupTriggerMode.LoopOff);
-  if SameText(Value, 'one_shot')        then exit(TKeyGroupTriggerMode.OneShot);
-  if SameText(Value, 'loop_continuous') then exit(TKeyGroupTriggerMode.LoopContinuous);
-  if SameText(Value, 'loop_sustain')    then exit(TKeyGroupTriggerMode.LoopSustain);
 
-  // If we've made it this far, the value isn't a valid SFZ opcode.
-  raise EConvertError.Create('Value is not an integer.');
-end;
-
-function OpcodeToInteger(const Value : string):integer;
-var
-  x : integer;
-begin
-  if IsMidiKeyNameString(Value, x) then
-  begin
-    result := x;
-  end else
-  if TryStrToInt(Value, x) then
-  begin
-    result := x;
-  end else
-  begin
-    raise EConvertError.Create('Value is not an integer.');
-  end;
-end;
-
-function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
-var
-  x : integer;
-begin
-  if IsMidiKeyNameString(Value, x) then
-  begin
-    if x < MinValue then x := MinValue;
-    if x > MaxValue then x := MaxValue;
-    result := x;
-  end else
-  if TryStrToInt(Value, x) then
-  begin
-    if x < MinValue then x := MinValue;
-    if x > MaxValue then x := MaxValue;
-    result := x;
-  end else
-  begin
-    raise EConvertError.Create('Value is not an integer.');
-  end;
-end;
-
-function OpcodeToFloat(const Value : string):single;
-var
-  fs:TFormatSettings;
-begin
-  fs.ThousandSeparator := ',';
-  fs.DecimalSeparator  := '.';
-  try
-    result := StrToFloat(Value, fs)
-  except
-    raise EConvertError.Create('Value is not a valid float.');
-  end;
-end;
-
-function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
-var
-  x : single;
-  fs:TFormatSettings;
-begin
-  fs.ThousandSeparator := ',';
-  fs.DecimalSeparator  := '.';
-  try
-    x := StrToFloat(Value, fs);
-    if x < MinValue then x := MinValue;
-    if x > MaxValue then x := MaxValue;
-    result := x;
-  except
-    raise EConvertError.Create('Value is not a valid float.');
-  end;
-end;
 
 { TSfzImporter }
 
