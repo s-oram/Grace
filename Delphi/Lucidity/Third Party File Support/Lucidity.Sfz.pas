@@ -6,8 +6,10 @@ unit Lucidity.Sfz;
 interface
 
 uses
+  SfzParser, SfzParser.SfzOpcodes,
   uLucidityEnums,
-  NativeXML, SfzParser, Contnrs;
+  NativeXML,
+  Contnrs;
 
 type
 //================================================================================
@@ -24,10 +26,10 @@ type
     SupportedOpcodeList : TObjectList;
     procedure Event_OnGroupStart(Sender : TObject);
     procedure Event_OnGroupEnd(Sender : TObject);
-    procedure Event_OnGroupOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+    procedure Event_OnGroupOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
     procedure Event_OnRegionStart(Sender : TObject);
     procedure Event_OnRegionEnd(Sender : TObject);
-    procedure Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+    procedure Event_OnRegionOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
   protected
   public
     constructor Create;
@@ -214,7 +216,7 @@ begin
   CurrentRegion := nil;
 end;
 
-procedure TSfzImporter.Event_OnRegionOpcode(Sender : TObject; OpcodeName, OpcodeValue : string);
+procedure TSfzImporter.Event_OnRegionOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
 var
   DataInt   : integer;
   DataText  : string;
@@ -224,6 +226,9 @@ var
 begin
   if not assigned(CurrentRegion) then exit;
 
+
+
+  {
   try
     if SameText(OpcodeName, 'sample') then
     begin
@@ -359,11 +364,11 @@ begin
 
 
   except
-    on EConvertError do {nothing};
+    on EConvertError do ;
     else
       raise;
   end;
-
+  }
 
 
 end;
@@ -378,7 +383,7 @@ begin
 
 end;
 
-procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; OpcodeName, OpcodeValue: string);
+procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; Opcode : TSfzOpcode; OpcodeValue: string);
 begin
 
 end;

@@ -168,7 +168,8 @@ uses
   Menu.MissingSampleContextMenu in 'frames\Menu.MissingSampleContextMenu.pas',
   GuiDrawingRoutines in 'GuiDrawingRoutines.pas',
   XPLAT.Dialogs in 'EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas',
-  Lucidity.StateManager.DataClasses in 'Lucidity.StateManager.DataClasses.pas';
+  Lucidity.StateManager.DataClasses in 'Lucidity.StateManager.DataClasses.pas',
+  SfzParser.SfzOpcodes in '..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas';
 
 {$R *.res}
 

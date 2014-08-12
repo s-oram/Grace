@@ -611,11 +611,13 @@
 			<DCCReference Include="GuiDrawingRoutines.pas"/>
 			<DCCReference Include="EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas"/>
 			<DCCReference Include="Lucidity.StateManager.DataClasses.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
 			<None Include="Defines.inc"/>
 			<None Include="FastMM4Options.inc"/>
+			<None Include="Profiling\AQtimeModule1.aqt"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>
