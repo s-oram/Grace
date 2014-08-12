@@ -2,15 +2,11 @@ unit SfzParser;
 
 interface
 
-
-//   SFZ Opcode documentation
-//   http://www.cakewalk.com/DevXchange/article.aspx?aid=108
-
 uses
   Classes, Contnrs;
 
 type
-  TSFZTokenType = (ttUnknown, ttComment, ttRegion, ttMultipleOpcodes, ttOpcode);
+  TSFZTokenType = (ttUnknown, ttComment, ttGroup, ttRegion, ttMultipleOpcodes, ttOpcode);
 
   // Events
   TOpcodeEvent = procedure(Sender : TObject; OpcodeName, OpcodeValue : string) of object;
@@ -25,6 +21,8 @@ type
     fOnRegionStart: TNotifyEvent;
     fOnRegionEnd: TNotifyEvent;
     fOnOpcode: TOpcodeEvent;
+    fOnGroupEnd: TNotifyEvent;
+    fOnGroupStart: TNotifyEvent;
   protected
     IsRegionOpen : boolean;
     IsGroupOpen  : boolean;
@@ -35,6 +33,7 @@ type
     procedure ProcessUnknown(s : string);
     procedure ProcessComment(s : string);
     procedure ProcessRegion(s : string);
+    procedure ProcessGroup(s : string);
     procedure ProcessMultipleOpcodes(s : string);
     procedure ProcessOpcode(s : string);
   public
@@ -43,6 +42,9 @@ type
 
     procedure ParseFile(Filename : string);
     procedure ParseText(Text : TStringList);
+
+    property OnGroupStart  : TNotifyEvent read fOnGroupStart write fOnGroupStart;
+    property OnGroupEnd    : TNotifyEvent read fOnGroupEnd   write fOnGroupEnd;
 
     property OnRegionStart : TNotifyEvent read fOnRegionStart write fOnRegionStart;
     property OnRegionEnd   : TNotifyEvent read fOnRegionEnd   write fOnRegionEnd;
@@ -87,40 +89,6 @@ constructor TSfzParser.Create;
 begin
   OpcodeList := TObjectList.Create;
   OpcodeList.OwnsObjects := true;
-
-
-  {
-  AddTextOpcode('sample');
-  AddIntegerOpcode('pitch_keycenter', 0, 127); //actual range is -127..127
-  AddIntegerOpcode('lokey', 0, 127);
-  AddIntegerOpcode('hikey', 0, 127);
-  AddIntegerOpcode('key', 0, 127);
-  AddIntegerOpcode('lovel', 0, 127);
-  AddIntegerOpcode('hivel', 0, 127);
-  AddTextOpcode('trigger'); //attack, release, first, legato,
-  AddIntegerOpcode('group', 0, kMaxInt);
-  AddTextOpcode('loop_mode');
-  AddIntegerOpcode('loop_start', 0, kMaxInt); //should be unsigned.
-  AddIntegerOpcode('loop_end', 0, kMaxInt);   //should be unsigned.
-
-  AddFloatOpcode('volume', -144, 6); //db.
-  AddFloatOpcode('pan', -100, 100); //%
-
-
-  // Amplitude envelope
-  AddFloatOpcode('ampeg_attack', 0, 100); //seconds
-  AddFloatOpcode('ampeg_hold', 0, 100); //seconds
-  AddFloatOpcode('ampeg_decay', 0, 100); //seconds
-  AddFloatOpcode('ampeg_sustain', 0, 100); //seconds
-  AddFloatOpcode('ampeg_release', 0, 100); //seconds
-
-  // filter envelope
-  AddFloatOpcode('fileg_attack', 0, 100); //seconds
-  AddFloatOpcode('fileg_hold', 0, 100); //seconds
-  AddFloatOpcode('fileg_decay', 0, 100); //seconds
-  AddFloatOpcode('fileg_sustain', 0, 100); //seconds
-  AddFloatOpcode('fileg_release', 0, 100); //seconds
-  }
 end;
 
 destructor TSfzParser.Destroy;
@@ -137,17 +105,11 @@ begin
   Text := TStringList.Create;
   try
     Text.LoadFromFile(FileName);
-
     ParseText(Text);
   finally
     Text.Free;
   end;
 end;
-
-
-
-
-
 
 procedure TSfzParser.ParseText(Text: TStringList);
 var
@@ -161,11 +123,16 @@ begin
     ParseLine(Text[c1]);
   end;
 
-
   if IsRegionOpen then
   begin
     if assigned(OnRegionEnd) then OnRegionEnd(self);
     IsRegionOpen := false;
+  end;
+
+  if IsGroupOpen then
+  begin
+    if assigned(OnGroupEnd) then OnGroupEnd(self);
+    IsGroupOpen := false;
   end;
 end;
 
@@ -182,6 +149,7 @@ begin
     case TokenType of
       ttUnknown:         ProcessUnknown(s);
       ttComment:         ProcessComment(s);
+      ttGroup:           ProcessGroup(s);
       ttRegion:          ProcessRegion(s);
       ttMultipleOpcodes: ProcessMultipleOpcodes(s);
       ttOpcode:          ProcessOpcode(s);
@@ -195,15 +163,22 @@ function TSfzParser.FindTokenType(s: string): TSfzTokenType;
 var
   x : integer;
 begin
+  //== Check for comment ==
   if StartsText('//', s) then exit(ttComment);
 
+
+  //== Check for group ==
+  if SameText('<group>', s) then exit(ttGroup);
+
+  //== Check for region ==
   if SameText('<region>', s) then exit(ttRegion);
 
+  //== Check for opcodes ==
   x := Occurrences('=', s);
   if x = 1 then exit(ttOpcode);
   if x > 1 then exit(ttMultipleOpcodes);
 
-  //if we've made it this far we haven't found what token the string contains. :(
+  //== token type is unknown if we've made it this far ==
   result := ttUnknown;
 end;
 
@@ -248,6 +223,19 @@ begin
   end;
 end;
 
+procedure TSfzParser.ProcessGroup(s: string);
+begin
+  if IsGroupOpen then
+  begin
+    if assigned(OnGroupEnd)   then OnGroupEnd(self);
+    if assigned(OnGroupStart) then OnGroupStart(self);
+  end else
+  begin
+    if assigned(OnGroupStart) then OnGroupStart(self);
+    IsGroupOpen := true;
+  end;
+end;
+
 procedure TSfzParser.ProcessRegion(s: string);
 begin
   if IsRegionOpen then
@@ -259,8 +247,6 @@ begin
     if assigned(OnRegionStart) then OnRegionStart(self);
     IsRegionOpen := true;
   end;
-
-
 end;
 
 procedure TSfzParser.ProcessUnknown(s: string);
