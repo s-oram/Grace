@@ -202,7 +202,15 @@ begin
   begin
     OpcodeName  := Lines[0];
     OpcodeValue := Lines[1];
-    if assigned(OnRegionOpcode) then OnRegionOpcode(self, OpcodeName, OpcodeValue);
+
+    if IsRegionOpen then
+    begin
+      if assigned(OnRegionOpcode) then OnRegionOpcode(self, OpcodeName, OpcodeValue);
+    end else
+    if IsGroupOpen then
+    begin
+      if assigned(OnGroupOpcode) then OnGroupOpcode(self, OpcodeName, OpcodeValue);
+    end;
   end;
 end;
 
