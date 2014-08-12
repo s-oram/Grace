@@ -60,7 +60,7 @@ implementation
 
 uses
   Types,
-  eeFunctions,
+  VamLib.Utils,
   SysUtils,
   StrUtils;
 
