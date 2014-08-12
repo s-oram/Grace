@@ -34,6 +34,11 @@ Bug
 =============================================================================
      TODO HIGH
 =============================================================================
+
+Make some tweaks to the sample map drawing to counterbalance the small size of the 
+sample map area. 
+thunderlink://messageid=CAG2OC08cgYOCXouxvJOUeVUba+CtwNOYquv6n2eguVGBdRgnoQ@mail.gmail.com
+
 - Lucidity Patch Format  
   -- what happens when loading incomplete patch files. IE. patch files with not
      all data included. 
@@ -124,6 +129,9 @@ Send this dude a new build and check if he can now use different settings for ea
    then be processed in one group. 
 --------------------------------------------------------------------------------  
 
+- What about a detachable sample map editor. It would open in another window along
+  with the browser. The new editor window would be able to be resized. 
+
 - ZeroObject should have a IDataObject reference. Will allow messages to be sent 
   across thread boundaries using delayed message sending.
 
@@ -186,6 +194,9 @@ Right Click and Hold for sample zoom with mouse
   http://sourceforge.net/projects/fundementals/?source=directory
 
 
+Thread Runner
+  This unit provides helper functions to batch threads and to execute procedures or methods in their own threads without the requirement of creating a thread class descendant. 
+  https://code.google.com/p/threadutils/
 
 
 =============================================================================
