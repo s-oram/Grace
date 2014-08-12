@@ -34,7 +34,6 @@ procedure SwapValues(var x1, x2:integer); inline; overload;
 function FloatToBoolean(Value:single):boolean; inline;
 function BooleanToFloat(Value:boolean):single; inline;
 
-
 function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 
 //==============================================================
@@ -50,7 +49,6 @@ function RandomString(const CharacterCount : integer):string;
 
 function Occurrences(const Substring, Text: string): integer;
 procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);
-
 
 // Use the DataIO functions to convert values to and from strings for
 // storing into save files. The DataIO functions ensure values are valid
