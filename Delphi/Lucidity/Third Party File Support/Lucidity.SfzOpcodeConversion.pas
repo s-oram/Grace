@@ -18,7 +18,6 @@ function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; const OpcodeValue 
 
 
 
-
 //================================================================================
 //                LOW LEVEL METHODS
 //================================================================================
