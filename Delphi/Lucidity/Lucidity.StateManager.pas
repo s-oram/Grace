@@ -12,9 +12,11 @@ uses
   VamLib.Utils,
   VamGuiControlInterfaces,
   LucidityModConnections,
+  Lucidity.PluginParameters,
   uLucidityEnums, soModMatrix,
   SysUtils, Lucidity.KeyGroup,
   eePlugin, Classes, NativeXML,
+  eeTypes,
   Lucidity.StateManager.DataClasses;
 
 type
@@ -22,8 +24,15 @@ type
 
   TLucidityStateManager = class
   strict private
+    {$Hints Off}
+    // SaveModulatedParametersToNode() isn't being used, but I'm keeping it here
+    // for the time being as a reference to how version 1 lucidity patches are saved.
     procedure SaveModulatedParametersToNode(ParentNode : TXmlNode; sg : TKeyGroup);
+    {$Hints On}
     procedure LoadModulatedParametersFromNode(ParentNode : TXmlNode; sg : TKeyGroup);
+
+    procedure SaveModulatedParameterToNode(ParentNode : TXmlNode; kg : TKeyGroup; ParName : string);
+    procedure LoadModulatedParameterFromNode(ParentNode : TXmlNode; kg : TKeyGroup; ParName : string);
   private
   protected
     Plugin : TeePlugin;
@@ -112,7 +121,7 @@ type
 implementation
 
 uses
-  Lucidity.PluginParameters,
+  NativeXmlEx,
   Lucidity.SequencerDataObject,
   LucidityUtils,
   Lucidity.StateHelpers,
@@ -222,6 +231,74 @@ begin
   end;
 end;
 
+procedure TLucidityStateManager.LoadModulatedParameterFromNode(ParentNode: TXmlNode; kg: TKeyGroup; ParName: string);
+var
+  Par : TPluginParameter;
+  ParID : TPluginParameterID;
+  ModParValue : single;
+  ModAmountValue : single;
+  ModParIndex : integer;
+  c1: Integer;
+  NodePath : string;
+  ParameterNode : TXmlNode;
+  ModDataNode : TXmlNode;
+begin
+  //TODO:HIGH test what happens with an incorrect plugin parameter name.
+  Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+
+  if not IsModPar(ParID, ModParIndex) then raise Exception.Create('This is not a modulated parameter.');
+
+  ParameterNode := ParentNode.NodeByName(UTF8String(ParName));
+  if assigned(ParameterNode) then
+  begin
+    ModParValue := DataIO_StrToFloat(ParameterNode.ValueUnicode, 0.5);
+    ModParValue := Clamp(ModParValue, 0, 1);
+    kg.SetModParValue(ModParIndex, ModParValue, false);
+
+    for c1 := 0 to kModSlotCount-1 do
+    begin
+      NodePath := 'ModAmount' + IntToStr(c1 + 1);
+      ModDataNode := ParameterNode.FindNode(UTF8String(NodePath));
+      if assigned(ModDataNode) then
+      begin
+        ModAmountValue := DataIO_StrToFloat(ModDataNode.ValueUnicode, 0);
+        ModAmountValue := Clamp(ModAmountValue, 0, 1);
+        kg.SetModParModAmount(ModParIndex, c1, ModAmountValue);
+      end;
+    end;
+  end;
+end;
+
+procedure TLucidityStateManager.SaveModulatedParameterToNode(ParentNode: TXmlNode; kg: TKeyGroup; ParName: string);
+var
+  Par : TPluginParameter;
+  ParID : TPluginParameterID;
+  ModParValue : single;
+  ModAmountValue : single;
+  ModParIndex : integer;
+  c1: Integer;
+  NodePath : string;
+begin
+  //TODO:HIGH test what happens with an incorrect plugin parameter name.
+  Par := PluginParFromName(ParName);
+  ParID := PluginParToID(Par);
+
+  if not IsModPar(ParID, ModParIndex) then raise Exception.Create('This is not a modulated parameter.');
+
+  ModParValue := kg.GetModParValue(ModParIndex);
+  NodeWiz(ParentNode).FindOrCreateNode(ParName).ValueUnicode := DataIO_FloatToStr(ModParValue);
+
+  for c1 := 0 to kModSlotCount-1 do
+  begin
+    NodePath := ParName + '/ModAmount' + IntToStr(c1+1);
+    ModAmountValue := kg.GetModParModAmount(ModParIndex, c1);
+    NodeWiz(ParentNode).FindOrCreateNode(NodePath).ValueUnicode := DataIO_FloatToStr(ModAmountValue);
+  end;
+end;
+
+
+
 procedure TLucidityStateManager.SaveModulatedParametersToNode(ParentNode: TXmlNode; sg: TKeyGroup);
 var
   c1 : integer;
@@ -265,39 +342,6 @@ begin
 
 
   end;
-
-
-  //TODO: Delete this code.
-  {
-  for c1 := 0 to kParameterCount-1 do
-  begin
-    if ParInfoEx[c1].ModLinkIndex <> -1 then
-    begin
-      ModParSaveObject.ParName  := ParInfoEx[c1].Name;
-      ModParSaveObject.ParValue   := sg.GetModParValue(ParInfoEx[c1].ModLinkIndex);
-      ModParSaveObject.ModAmount1 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 0);
-      ModParSaveObject.ModAmount2 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 1);
-      ModParSaveObject.ModAmount3 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 2);
-      ModParSaveObject.ModAmount4 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 3);
-      ModParSaveObject.ModAmount5 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 4);
-      ModParSaveObject.ModAmount6 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 5);
-      ModParSaveObject.ModAmount7 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 6);
-      ModParSaveObject.ModAmount8 := sg.GetModParModAmount(ParInfoEx[c1].ModLinkIndex, 7);
-
-      ModParNode := ParentNode.NodeNew('ModulatedParameter');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParName');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ParValue');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount1');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount2');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount3');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount4');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount5');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount6');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount7');
-      SaveObjectPropertyToXML(ModParNode, ModParSaveObject, 'ModAmount8');
-    end;
-  end;
-  }
 end;
 
 procedure TLucidityStateManager.LoadModulatedParametersFromNode(ParentNode: TXmlNode; sg: TKeyGroup);
@@ -353,24 +397,6 @@ begin
         sg.SetModParModAmount(ModLinkIndex, 7, ModParSaveObject.ModAmount8);
       end;
     end;
-
-
-    //TODO: Delete this code.
-    {
-    ModLinkIndex := ParNameToModLinkIndex(ModParSaveObject.ParName);
-    if ModLinkIndex <> -1 then
-    begin
-      sg.SetModParValue(ModLinkIndex, ModParSaveObject.ParValue);
-      sg.SetModParModAmount(ModLinkIndex, 0, ModParSaveObject.ModAmount1);
-      sg.SetModParModAmount(ModLinkIndex, 1, ModParSaveObject.ModAmount2);
-      sg.SetModParModAmount(ModLinkIndex, 2, ModParSaveObject.ModAmount3);
-      sg.SetModParModAmount(ModLinkIndex, 3, ModParSaveObject.ModAmount4);
-      sg.SetModParModAmount(ModLinkIndex, 4, ModParSaveObject.ModAmount5);
-      sg.SetModParModAmount(ModLinkIndex, 5, ModParSaveObject.ModAmount6);
-      sg.SetModParModAmount(ModLinkIndex, 6, ModParSaveObject.ModAmount7);
-      sg.SetModParModAmount(ModLinkIndex, 7, ModParSaveObject.ModAmount8);
-    end;
-    }
   end;
 end;
 
@@ -486,6 +512,7 @@ begin
 
     VoiceParNode := SampleGroupNode.NodeNew('VoiceParameters');
 
+    //==== Save standard parameters ====
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'PitchTracking');
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'SampleReset');
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'SamplerLoopBounds');
@@ -508,7 +535,51 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq2Direction');
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'StepSeq2Length');
 
-    SaveModulatedParametersToNode(VoiceParNode, sg);
+
+    // NOTE: Patch Format Version 1 vs Version 2
+    // I've changed the way modulated parameter values are saved into a patch file.
+    // Therefore the patch version has been changed to version 2. It's possible
+    // for the patch loading code to simultaneously support version 1 and version 2
+    // patch formats.
+
+    //==== Save modulated parameters -- Patch Format Version 1 ====
+    //SaveModulatedParametersToNode(VoiceParNode, sg);
+
+    //==== Save modulated parameters -- Patch Format Version 2 ====
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'OutputGain');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'OutputPan');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'VoicePitchOne');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'VoicePitchTwo');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'SampleStart');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'SampleEnd');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'LoopStart');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'LoopEnd');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'AmpAttack');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'AmpHold');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'AmpDecay');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'AmpSustain');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'AmpRelease');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'ModAttack');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'ModHold');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'ModDecay');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'ModSustain');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'ModRelease');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'FilterOutputBlend');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter1Par1');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter1Par2');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter1Par3');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter1Par4');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter2Par1');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter2Par2');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter2Par3');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Filter2Par4');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo1Par1');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo1Par2');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo1Par3');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo2Par1');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo2Par2');
+    SaveModulatedParameterToNode(VoiceParNode, sg, 'Lfo2Par3');
+    //==========================================================================
 
     StepSeqNode := SampleGroupNode.NodeNew('StepSeq1');
     SeqData := sg.Seq1Data;
@@ -710,7 +781,46 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'StepSeq2Length');
     end;
 
+
+    //==== Load modulated parameters -- Patch Format Version 1 ====
     LoadModulatedParametersFromNode(VoiceParNode, sg);
+
+    //==== Load modulated parameters -- Patch Format Version 2 ====
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'OutputGain');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'OutputPan');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'VoicePitchOne');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'VoicePitchTwo');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'SampleStart');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'SampleEnd');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'LoopStart');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'LoopEnd');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'AmpAttack');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'AmpHold');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'AmpDecay');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'AmpSustain');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'AmpRelease');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'ModAttack');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'ModHold');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'ModDecay');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'ModSustain');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'ModRelease');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'FilterOutputBlend');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter1Par1');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter1Par2');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter1Par3');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter1Par4');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter2Par1');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter2Par2');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter2Par3');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Filter2Par4');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo1Par1');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo1Par2');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo1Par3');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo2Par1');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo2Par2');
+    LoadModulatedParameterFromNode(VoiceParNode, sg, 'Lfo2Par3');
+    //================================================================================
+
 
     StepSeqNode := SampleGroupNode.FindNode('StepSeq1');
     SeqData := sg.Seq1Data;
@@ -944,7 +1054,7 @@ begin
   assert(assigned(RootNode));
 
   aNode := RootNode.NodeNew('PatchFileFormatVersion');
-  aNode.ValueUnicode := DataIO_IntToStr(1);
+  aNode.ValueUnicode := DataIO_IntToStr(2);
 
   RootNode.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
 end;

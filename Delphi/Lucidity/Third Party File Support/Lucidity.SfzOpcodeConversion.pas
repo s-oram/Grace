@@ -124,11 +124,15 @@ var
   xFloat : single;
   TriggerMode : TKeyGroupTriggerMode;
 begin
+  {$Hints Off}
   // Set the xInt and xFloat to some nonsense values.
   // Hopefully this will help quickly expose errors
   // if they are used in the wrong location
   xInt := Low(Integer);
   xFloat := NaN;
+  // NOTE: Hints are off because these variable assignments *shouldn't* actually
+  // show up as used. "never used" is exactly what we want.
+  {$Hints On}
 
   // set Result to a default value.
   result := '';

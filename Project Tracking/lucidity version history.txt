@@ -31,6 +31,9 @@ Change:
 - Changed the LFO sync options. 
 - Made a few tweaks to the ADSR parameter scaling to ease importing 
   SFZ and other formats.
+- The Lucidity patch format has been changed. Patches are now saved
+  useing "Patch Format Version 2". Lucidity is still capable of loading
+  Version 1 format patches. 
 
 Bug Fixes:
 - lucidity would crash when deleting a directory in the file browser.

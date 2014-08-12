@@ -285,7 +285,7 @@ type
 
 //======= New functions =================================================
 function PluginParToID(const Par : TPluginParameter):TPluginParameterID; inline;
-function PluginParFromID(const Par : TPluginParameterID):TPluginParameter; inline;
+function PluginParFromID(const ParID : TPluginParameterID):TPluginParameter; inline;
 
 function PluginParToName(const Par : TPluginParameter):string;    //This should be the true enumerated name.
 function PluginParFromName(const Name : string):TPluginParameter; //This should be the true enumerated name.
@@ -380,12 +380,12 @@ begin
   result := Ord(Par);
 end;
 
-function PluginParFromID(const Par : TPluginParameterID):TPluginParameter;
+function PluginParFromID(const ParID : TPluginParameterID):TPluginParameter;
 begin
-  assert(Par >= Ord(Low(TPluginParameter)));
-  assert(Par <= Ord(High(TPluginParameter)));
+  assert(ParID >= Ord(Low(TPluginParameter)));
+  assert(ParID <= Ord(High(TPluginParameter)));
 
-  result := TPluginParameter(Par);
+  result := TPluginParameter(ParID);
 end;
 
 function PluginParToName(const Par : TPluginParameter):string;
