@@ -48,6 +48,7 @@ function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
 function IncrementName(Name:string; MinDigits:integer = 2):string;
 function RandomString(const CharacterCount : integer):string;
 
+function Occurrences(const Substring, Text: string): integer;
 procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);
 
 
@@ -110,6 +111,7 @@ uses
   PerlRegEx,
   {$ENDIF}
   Math,
+  StrUtils,
   SysUtils;
 
 
@@ -489,6 +491,19 @@ begin
     s := s + Char(x);
   end;
   result := s;
+end;
+
+function Occurrences(const Substring, Text: string): integer;
+var
+  offset: integer;
+begin
+  result := 0;
+  offset := PosEx(Substring, Text, 1);
+  while offset <> 0 do
+  begin
+    inc(result);
+    offset := PosEx(Substring, Text, offset + length(Substring));
+  end;
 end;
 
 procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);

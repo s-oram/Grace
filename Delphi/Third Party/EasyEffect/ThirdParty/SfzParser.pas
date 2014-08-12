@@ -67,23 +67,6 @@ uses
 const
   kMaxInt = High(Integer);
 
-
-function Occurrences(const Substring, Text: string): integer;
-var
-  offset: integer;
-begin
-  result := 0;
-  offset := PosEx(Substring, Text, 1);
-  while offset <> 0 do
-  begin
-    inc(result);
-    offset := PosEx(Substring, Text, offset + length(Substring));
-  end;
-end;
-
-
-
-
 { TSfzParser }
 
 constructor TSfzParser.Create;
@@ -166,7 +149,6 @@ var
 begin
   //== Check for comment ==
   if StartsText('//', s) then exit(ttComment);
-
 
   //== Check for group ==
   if SameText('<group>', s) then exit(ttGroup);
