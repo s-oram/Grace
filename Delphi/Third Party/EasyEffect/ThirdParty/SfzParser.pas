@@ -5,8 +5,16 @@ interface
 uses
   Classes, Contnrs;
 
+{$SCOPEDENUMS ON}
+
 type
-  TSFZTokenType = (ttUnknown, ttComment, ttGroup, ttRegion, ttMultipleOpcodes, ttOpcode);
+  TSfzTokenType = (Unknown, Comment, Group, Region, MultipleOpcodes, Opcode);
+
+
+  TSfzOpcode = (
+    Unknown
+  );
+
 
   // Events
   TOpcodeEvent = procedure(Sender : TObject; OpcodeName, OpcodeValue : string) of object;
@@ -131,12 +139,12 @@ begin
     TokenType := FindTokenType(s);
 
     case TokenType of
-      ttUnknown:         ProcessUnknown(s);
-      ttComment:         ProcessComment(s);
-      ttGroup:           ProcessGroup(s);
-      ttRegion:          ProcessRegion(s);
-      ttMultipleOpcodes: ProcessMultipleOpcodes(s);
-      ttOpcode:          ProcessOpcode(s);
+      TSfzTokenType.Unknown:         ProcessUnknown(s);
+      TSfzTokenType.Comment:         ProcessComment(s);
+      TSfzTokenType.Group:           ProcessGroup(s);
+      TSfzTokenType.Region:          ProcessRegion(s);
+      TSfzTokenType.MultipleOpcodes: ProcessMultipleOpcodes(s);
+      TSfzTokenType.Opcode:          ProcessOpcode(s);
     else
       raise Exception.Create('Unexpected token type.');
     end;
@@ -148,21 +156,21 @@ var
   x : integer;
 begin
   //== Check for comment ==
-  if StartsText('//', s) then exit(ttComment);
+  if StartsText('//', s) then exit(TSfzTokenType.Comment);
 
   //== Check for group ==
-  if SameText('<group>', s) then exit(ttGroup);
+  if SameText('<group>', s) then exit(TSfzTokenType.Group);
 
   //== Check for region ==
-  if SameText('<region>', s) then exit(ttRegion);
+  if SameText('<region>', s) then exit(TSfzTokenType.Region);
 
   //== Check for opcodes ==
   x := Occurrences('=', s);
-  if x = 1 then exit(ttOpcode);
-  if x > 1 then exit(ttMultipleOpcodes);
+  if x = 1 then exit(TSfzTokenType.Opcode);
+  if x > 1 then exit(TSfzTokenType.MultipleOpcodes);
 
   //== token type is unknown if we've made it this far ==
-  result := ttUnknown;
+  result := TSfzTokenType.Unknown;
 end;
 
 
@@ -180,7 +188,7 @@ begin
 
   for c1 := 0 to Length(Lines)-1 do
   begin
-    if FindTokenType(Lines[c1]) = ttMultipleOpcodes then
+    if FindTokenType(Lines[c1]) = TSfzTokenType.MultipleOpcodes then
     begin
       ProcessUnknown('**ERROR**' + Lines[c1] + '**ERROR**');
     end else
