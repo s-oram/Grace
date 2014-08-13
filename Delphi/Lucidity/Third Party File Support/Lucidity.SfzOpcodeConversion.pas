@@ -26,7 +26,7 @@ function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; const OpcodeValue 
 function OpcodeToInteger(const Value : string):integer; overload;
 function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
 function OpcodeToFloat(const Value : string):single; overload;
-function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
+function OpcodeToFloat(const Value : string; const MinValue, MaxValue:single):single; overload;
 
 // Opcode conversion for specific opcodes.
 // These methods convert SFZ opcodes to Lucidity parameter values...
@@ -122,7 +122,7 @@ begin
   end;
 end;
 
-function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
+function OpcodeToFloat(const Value : string; const MinValue, MaxValue:single):single; overload;
 var
   x : single;
   fs:TFormatSettings;
@@ -404,11 +404,65 @@ begin
     TSfzOpcode.fil_random: ;    // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
     TSfzOpcode.fileg_delay: ;
     TSfzOpcode.fileg_start: ;
-    TSfzOpcode.fileg_attack: ;
-    TSfzOpcode.fileg_hold: ;
-    TSfzOpcode.fileg_decay: ;
-    TSfzOpcode.fileg_sustain: ;
-    TSfzOpcode.fileg_release: ;
+    TSfzOpcode.fileg_attack:
+    begin
+      // == SFZ Import ==
+      // Filter EG attack time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.fileg_hold:
+    begin
+      // == SFZ Import ==
+      // Filter EG hold time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 0.5);
+      xFloat := xFloat/0.5;
+      xFloat := Power(xFloat, 1/2);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.fileg_decay:
+    begin
+      // == SFZ Import ==
+      // Filter EG decay time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.fileg_sustain:
+    begin
+      // == SFZ Import ==
+      // Filter EG sustain in percentage.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 100);
+      xFloat := xFloat/100;
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.fileg_release:
+    begin
+      // == SFZ Import ==
+      // Filter EG release time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
     TSfzOpcode.fileg_depth: ;
     TSfzOpcode.fileg_vel2delay: ;
     TSfzOpcode.fileg_vel2attack: ;
@@ -475,12 +529,74 @@ begin
     TSfzOpcode.xfout_hiccN: ;
     TSfzOpcode.xf_cccurve: ;
     TSfzOpcode.ampeg_delay: ;
-    TSfzOpcode.ampeg_start: ;
-    TSfzOpcode.ampeg_attack: ;
-    TSfzOpcode.ampeg_hold: ;
-    TSfzOpcode.ampeg_decay: ;
-    TSfzOpcode.ampeg_sustain: ;
-    TSfzOpcode.ampeg_release: ;
+    TSfzOpcode.ampeg_start:
+    begin
+      // == SFZ Import ==
+      //
+      // == Lucidity Import ==
+      //
+
+    end;
+    TSfzOpcode.ampeg_attack:
+    begin
+      // == SFZ Import ==
+      // Amplifier EG attack time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.ampeg_hold:
+    begin
+      // == SFZ Import ==
+      // Amplifier EG hold time, in seconds. During the hold stage, EG output
+      // will remain at its maximum value.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 0.5);
+      xFloat := xFloat/0.5;
+      xFloat := Power(xFloat, 1/2);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.ampeg_decay:
+    begin
+      // == SFZ Import ==
+      // Amplifier EG decay time, in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.ampeg_sustain:
+    begin
+      // == SFZ Import ==
+      // Amplifier EG sustain level, in percentage.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 100);
+      xFloat := xFloat/100;
+      result := DataIO_FloatToStr(xFloat);
+    end;
+    TSfzOpcode.ampeg_release:
+    begin
+      // == SFZ Import ==
+      // Amplifier EG release time (after note release), in seconds.
+      // Type: floating point
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 8);
+      xFloat := xFloat/8;
+      xFloat := Power(xFloat, 1/3);
+      result := DataIO_FloatToStr(xFloat);
+    end;
     TSfzOpcode.ampeg_vel2delay: ;
     TSfzOpcode.ampeg_vel2attack: ;
     TSfzOpcode.ampeg_vel2hold: ;

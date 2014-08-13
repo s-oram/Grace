@@ -127,19 +127,22 @@ procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
 var
   TargetNode : TXmlNode;
 begin
-  //=====================================
+  //****************************************************************************
   // Do some final adjustments here...
   TargetNode := CurrentGroup;
 
+
+  //===============================================================================
   if (GroupLoadData.IsCutoffSet) then
   begin
     // The filter type value is optional for SFZ files.
-    if NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Type') = false then
+    if not NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Type') then
     begin
       NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Type').ValueUnicode := TFilterTypeHelper.ToUnicodeString(TFiltertype.ft2PoleLowPass);
     end;
 
-    if NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Par2') = false then
+    // Set filter resonance if not set.
+    if not NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Par2') then
     begin
       NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par2').ValueUnicode := '0';
     end;
@@ -147,10 +150,22 @@ begin
     // Set filter gain to 0.
     NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par3').ValueUnicode := '0';
   end;
+  //===============================================================================
+
+  // Amp envelope Sustain
+  if not NodeWiz(TargetNode).Exists('VoiceParameters/AmpSustain') then
+  begin
+    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpSustain').ValueUnicode := '1';
+  end;
+
+  // Filter envelope sustain.
+  if not NodeWiz(TargetNode).Exists('VoiceParameters/ModSustain') then
+  begin
+    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModSustain').ValueUnicode := '1';
+  end;
 
 
-
-  //=====================================
+  //****************************************************************************
   CurrentGroup := nil;
 end;
 
@@ -255,11 +270,11 @@ begin
     TSfzOpcode.fil_random: ;
     TSfzOpcode.fileg_delay: ;
     TSfzOpcode.fileg_start: ;
-    TSfzOpcode.fileg_attack: ;
-    TSfzOpcode.fileg_hold: ;
-    TSfzOpcode.fileg_decay: ;
-    TSfzOpcode.fileg_sustain: ;
-    TSfzOpcode.fileg_release: ;
+    TSfzOpcode.fileg_attack:  NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModAttack').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.fileg_hold:    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModHold').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.fileg_decay:   NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModDecay').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.fileg_sustain: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModSustain').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.fileg_release: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModRelease').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fileg_depth: ;
     TSfzOpcode.fileg_vel2delay: ;
     TSfzOpcode.fileg_vel2attack: ;
@@ -308,11 +323,11 @@ begin
     TSfzOpcode.xf_cccurve: ;
     TSfzOpcode.ampeg_delay: ;
     TSfzOpcode.ampeg_start: ;
-    TSfzOpcode.ampeg_attack: ;
-    TSfzOpcode.ampeg_hold: ;
-    TSfzOpcode.ampeg_decay: ;
-    TSfzOpcode.ampeg_sustain: ;
-    TSfzOpcode.ampeg_release: ;
+    TSfzOpcode.ampeg_attack:  NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpAttack').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.ampeg_hold:    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpHold').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.ampeg_decay:   NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpDecay').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.ampeg_sustain: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpSustain').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.ampeg_release: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpRelease').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.ampeg_vel2delay: ;
     TSfzOpcode.ampeg_vel2attack: ;
     TSfzOpcode.ampeg_vel2hold: ;

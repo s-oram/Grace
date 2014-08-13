@@ -29,6 +29,20 @@ transpose
 tune
 volume
 pan
+fil_type
+cutoff
+resonance
+fil_keytrack
+ampeg_attack
+ampeg_hold
+ampeg_decay
+ampeg_sustain
+ampeg_release
+fileg_attack
+fileg_hold
+fileg_decay
+fileg_sustain
+fileg_release
 
 
 
