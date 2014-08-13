@@ -11,38 +11,47 @@
 ==========================================
 
 
-Opcodes recognised.
+Lucidity SFZ Import - Supported SFZ Opcodes
 
-group
-region
-sample
-lokey
-hikey
-lovel
-hivel
-pitch_keycenter
-end
-loop_start
-loop_end
-loop_mode
-transpose
-tune
-volume
-pan
-fil_type
-cutoff
-resonance
-fil_keytrack
-ampeg_attack
-ampeg_hold
-ampeg_decay
-ampeg_sustain
-ampeg_release
-fileg_attack
-fileg_hold
-fileg_decay
-fileg_sustain
-fileg_release
+Both the <group> and <region> opcodes are recognised. 
+<group> elements are translated to Lucidity Key Groups.
+<region> elements are translated to Lucidity Sample Regions. 
+
+
+These opcodes are only supported when used as part of a <group>
+- fil_type
+- cutoff
+- resonance
+- fil_keytrack
+- fil_veltrack
+- fileg_attack
+- fileg_hold
+- fileg_decay
+- fileg_sustain
+- fileg_release
+- fileg_depth
+- amp_veltrack
+- ampeg_attack
+- ampeg_hold
+- ampeg_decay
+- ampeg_sustain
+- ampeg_release
+
+These opcodes are only supported when used as part of a <region>
+- sample
+- lokey
+- hikey
+- lovel
+- hivel
+- pitch_keycenter
+- end
+- loop_start
+- loop_end
+- loop_mode
+- transpose
+- tune
+- volume
+- pan
 
 
 

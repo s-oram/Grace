@@ -326,7 +326,10 @@ begin
       result := DataIO_IntToStr(xInt);
     end;
     TSfzOpcode.pitch_keytrack: ;
-    TSfzOpcode.pitch_veltrack: ;
+    TSfzOpcode.pitch_veltrack:
+    begin
+
+    end;
     TSfzOpcode.pitch_random: ;
     TSfzOpcode.bend_up: ;
     TSfzOpcode.bend_down: ;
@@ -400,7 +403,22 @@ begin
       result := DataIO_FloatToStr(xFloat / 100);
     end;
     TSfzOpcode.fil_keycenter: ; // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
-    TSfzOpcode.fil_veltrack: ;  // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
+    TSfzOpcode.fil_veltrack:
+    begin
+    // === SFZ Import Notes ===
+      // Amplifier velocity tracking, represents how much the amplitude changes
+      // with incoming note velocity. Range: -100 to 100%.
+      // Type: floating point.
+      // == Lucidity Import Notes ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 100);
+      if (xFloat < 10) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.VelOff)
+      else if (xFloat < 30) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel20)
+      else if (xFloat < 50) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel40)
+      else if (xFloat < 70) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel60)
+      else if (xFloat < 90) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel80)
+      else result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel100);
+    end;
     TSfzOpcode.fil_random: ;    // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
     TSfzOpcode.fileg_delay: ;
     TSfzOpcode.fileg_start: ;
@@ -463,7 +481,17 @@ begin
       xFloat := Power(xFloat, 1/3);
       result := DataIO_FloatToStr(xFloat);
     end;
-    TSfzOpcode.fileg_depth: ;
+    TSfzOpcode.fileg_depth:
+    begin
+      // == SFZ Import ==
+      // Depth for the filter EG, in cents. Range -12000 to 12000
+      //
+      // == Lucidity Import ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 12000);
+      xFloat := xFloat / 12000;
+      result := DataIO_FloatToStr(xFloat);
+    end;
     TSfzOpcode.fileg_vel2delay: ;
     TSfzOpcode.fileg_vel2attack: ;
     TSfzOpcode.fileg_vel2hold: ;
@@ -506,7 +534,22 @@ begin
     TSfzOpcode.position: ;
     TSfzOpcode.amp_keytrack: ;
     TSfzOpcode.amp_keycenter: ;
-    TSfzOpcode.amp_veltrack: ;
+    TSfzOpcode.amp_veltrack:
+    begin
+    // === SFZ Import Notes ===
+      // Amplifier velocity tracking, represents how much the amplitude changes
+      // with incoming note velocity. Range: -100 to 100%.
+      // Type: floating point.
+      // == Lucidity Import Notes ==
+      //
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 100);
+      if (xFloat < 10) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.VelOff)
+      else if (xFloat < 30) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel20)
+      else if (xFloat < 50) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel40)
+      else if (xFloat < 70) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel60)
+      else if (xFloat < 90) then  result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel80)
+      else result := TEnvVelocityDepthHelper.ToUnicodeString(TEnvVelocityDepth.Vel100);
+    end;
     TSfzOpcode.amp_velcurve_1: ;
     TSfzOpcode.amp_velcurve_127: ;
     TSfzOpcode.amp_random: ;

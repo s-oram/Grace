@@ -38,6 +38,7 @@ type
     procedure Event_OnRegionEnd(Sender : TObject);
     procedure Event_OnRegionOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
   protected
+    procedure GenerateModMatrixPatchData;
   public
     constructor Create;
     destructor Destroy; override;
@@ -166,6 +167,11 @@ begin
 
 
   //****************************************************************************
+
+  GenerateModMatrixPatchData;
+
+
+  //****************************************************************************
   CurrentGroup := nil;
 end;
 
@@ -220,8 +226,8 @@ begin
     TSfzOpcode.loop_end: ;
     TSfzOpcode.sync_beats: ;
     TSfzOpcode.sync_offset: ;
-    TSfzOpcode.transpose: ;
-    TSfzOpcode.tune: ;
+    TSfzOpcode.transpose: ; //TODO:HIGH
+    TSfzOpcode.tune: ; //TODO:HIGH
     TSfzOpcode.pitch_keycenter: ;
     TSfzOpcode.pitch_keytrack: ;
     TSfzOpcode.pitch_veltrack: ;
@@ -263,10 +269,10 @@ begin
     TSfzOpcode.cutoff_ccN: ;
     TSfzOpcode.cutoff_chanaft: ;
     TSfzOpcode.cutoff_polyaft: ;
-    TSfzOpcode.resonance: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par2').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
-    TSfzOpcode.fil_keytrack: ;
+    TSfzOpcode.resonance:    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par2').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.fil_keytrack: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1KeyFollow').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fil_keycenter: ;
-    TSfzOpcode.fil_veltrack: ;
+    TSfzOpcode.fil_veltrack: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModVelocityDepth').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fil_random: ;
     TSfzOpcode.fileg_delay: ;
     TSfzOpcode.fileg_start: ;
@@ -275,7 +281,7 @@ begin
     TSfzOpcode.fileg_decay:   NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModDecay').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fileg_sustain: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModSustain').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fileg_release: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/ModRelease').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
-    TSfzOpcode.fileg_depth: ;
+    TSfzOpcode.fileg_depth:   NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par1/ModAmount2').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fileg_vel2delay: ;
     TSfzOpcode.fileg_vel2attack: ;
     TSfzOpcode.fileg_vel2hold: ;
@@ -293,13 +299,13 @@ begin
     TSfzOpcode.fillfo_freqccN: ;
     TSfzOpcode.fillfo_freqchanaft: ;
     TSfzOpcode.fillfo_freqpolyaft: ;
-    TSfzOpcode.volume: ;
-    TSfzOpcode.pan: ;
+    TSfzOpcode.volume: ; //TODO:HIGH
+    TSfzOpcode.pan: ;    //TODO:HIGH
     TSfzOpcode.width: ;
     TSfzOpcode.position: ;
     TSfzOpcode.amp_keytrack: ;
     TSfzOpcode.amp_keycenter: ;
-    TSfzOpcode.amp_veltrack: ;
+    TSfzOpcode.amp_veltrack: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/AmpVelocityDepth').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.amp_velcurve_1: ;
     TSfzOpcode.amp_velcurve_127: ;
     TSfzOpcode.amp_random: ;
@@ -612,6 +618,78 @@ begin
   end;
 end;
 
+
+procedure TSfzImporter.GenerateModMatrixPatchData;
+var
+  TargetNode : TXmlNode;
+  ModLinkNode : TXmlNode;
+begin
+  // Mod Slot 1 = Amp Env
+  // Mod Slot 2 = Mod Env
+  // Mod Slot 3 = LFO 1
+  // Mod Slot 4 = LFO 2
+  // Mod Slot 5 = Mod Wheel
+  // Mod Slot 6 = MIDI Velocity
+  // Mod Slot 7 = Empty
+  // Mod Slot 8 = Empty
+
+
+  //==== Mod Slot 1 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.AmpEnv_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 2 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.ModEnv_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 3 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.Lfo1_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 4 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.Lfo2_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 5 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.Midi_ModWheel_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 6 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.Midi_Velocity_Unipolar);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 7 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+
+  //==== Mod Slot 8 =====
+  ModLinkNode := NodeWiz(CurrentGroup).CreateNode('ModConnections/ModLink');
+  ModLinkNode.NodeNew('ModSource').ValueUnicode         := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('ModVia').ValueUnicode            := TModSourceHelper.ToUnicodeString(TModSource.None);
+  ModLinkNode.NodeNew('IsModMute').ValueUnicode         := 'False';
+  ModLinkNode.NodeNew('ModSourcePolarity').ValueUnicode := 'Unipolar';
+end;
 
 
 

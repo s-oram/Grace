@@ -10,14 +10,15 @@ bug
 
 == Finished for the next release ==
 New:
-- The sample display now shows "Loading Program" when dragging and dropping a supported program file
-  on the sample display.
+- SFZ Import now working!
 - SFZ files can be loaded via dragging and dropping on sample display.
 - SFZ files now show in the browser. 
 - Changed the knob modulation edit drawing.
 - Knob modulation depth can now extend pass the maximum knob value.
 - Drag and drop a folder on the Lucidity browser to add it. 
 - Add rename sample directory option.
+- The sample display now shows "Loading Program" when dragging and dropping a supported program file
+  on the sample display.
 
 Change: 
 - Changed the way the LFO rates are calculated. A maximum LFO Frequency 
