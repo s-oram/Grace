@@ -282,24 +282,10 @@ begin
     ft4PoleBandPass,
     ft4PoleHighPass:
     begin
-      // TODO:HIGH
-      // try using exponential scalling for the filter frequency instead
-      // of the 1v/oct type scaling I am currently using.
-      {
-      CV := (Par1^ * 15);
-      cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
-      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
-      assert(Par1^ >= 0);
-      assert(Par1^ <= 1);
-      }
-
-      //cFreq :=
-
       cFreq := VstFloatToFilterFrequency(Par1^) * FreqMultFactor;
       cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
       cQ := (Par2^) * 0.98;
       Gain := Par3^;
-
       BlueFilter.UpdateParameters(cFreq, cQ, Gain);
     end;
   end;
