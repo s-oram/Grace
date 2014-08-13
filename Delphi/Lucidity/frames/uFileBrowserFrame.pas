@@ -450,7 +450,7 @@ begin
 
     if IsSupportedProgramFormat(NodeData.FileName) then
     begin
-      Plugin.LoadProgramFromFile(NodeData.FileName);
+      Plugin.ImportProgram(NodeData.FileName);
     end;
 
 

@@ -100,7 +100,7 @@ begin
 
     if OpenDialog.Execute then
     begin
-      Plugin.LoadProgramFromFile(OpenDialog.FileName);
+      Plugin.ImportProgram(OpenDialog.FileName);
     end;
   end;
 
@@ -116,8 +116,6 @@ begin
 
   FileOpenDialog.FileName := kKeyFileName;
   FileOpenDialog.Title := 'Open Registration Key File...';
-
-  // TODO:HIGH change key data file extension to .key
   FileOpenDialog.Filter := 'Key Data File|*.key';
 
   if FileOpenDialog.Execute then

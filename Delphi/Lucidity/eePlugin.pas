@@ -173,7 +173,6 @@ type
 
     procedure ImportProgram(const FileName : string); overload;
     procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat); overload;
-    procedure LoadProgramFromFile(const FileName : string); //TODO:HIGH Maybe this isn't needed.
     procedure SaveProgramToFile(const FileName : string);
     procedure SaveProgramAsDefault;
 
@@ -509,7 +508,7 @@ begin
     fnA := fnA + 'Default.lpg';
     if FileExists(fnA) then
     begin
-      LoadProgramFromFile(fnA);
+      ImportProgram(fnA);
       IsDefaultPatchLoaded := true;
     end;
   end;
@@ -1244,30 +1243,6 @@ end;
 procedure TeePlugin.SetVoiceMode(const Value: TVoiceMode);
 begin
   MidiInputProcessor.VoiceMode := Value;
-end;
-
-procedure TeePlugin.LoadProgramFromFile(const FileName: string);
-var
-  StateManager : TLucidityStateManager;
-begin
-  {$IFNDEF Demo}
-  Lucidity.Globals.LastProgramLoadDir := ExtractFileDir(FileName);
-
-  PreLoadProgram;
-
-  StateManager := TLucidityStateManager.Create(self);
-  try
-    StateManager.LoadPesetFromFile(FileName);
-  finally
-    StateManager.Free;
-  end;
-
-  PostLoadProgram;
-
-  PresetName := RemoveFileExt(FileName);
-  {$ENDIF}
-
-
 end;
 
 procedure TeePlugin.ImportProgram(const FileName: string);
