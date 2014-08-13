@@ -60,6 +60,7 @@ type
 
     function CalcKeyColor(const KeyIndex:integer):TRedFoxColor;
 
+    procedure DrawWhiteKeyMargin(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
     procedure DrawWhiteKey(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
     procedure DrawBlackKey(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
 
@@ -551,6 +552,12 @@ const
     B : $44;
     A : $FF;
   );
+  Black_c2 : TAggRgba8 = (
+    R : $44;
+    G : $44;
+    B : $44;
+    A : $FF;
+  );
 var
   c1: Integer;
   aColor : TRedFoxColor;
@@ -572,6 +579,18 @@ begin
 
   for c1 := 0 to kMaximumKeys-1 do
   begin
+    if KeyBuffer[c1].IsBlackKey = false then
+    begin
+      aColor := Black_c2;
+
+      if c1 mod 12 = 0
+        then DrawWhiteKeyMargin(KeyBuffer[c1].Bounds, aColor.WithAlpha(115));
+        //se DrawWhiteKeyMargin(KeyBuffer[c1].Bounds, aColor.WithAlpha(30))
+    end;
+  end;
+
+  for c1 := 0 to kMaximumKeys-1 do
+  begin
     if KeyBuffer[c1].IsBlackKey = true then
     begin
       aColor := self.CalcKeyColor(c1);
@@ -582,13 +601,27 @@ begin
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 end;
 
+procedure TVamSamplerKeys.DrawWhiteKeyMargin(const KeyBounds: TRectF; const KeyColor: TRedFoxColor);
+var
+  x1, y1, x2, y2 : single;
+begin
+  x1 := KeyBounds.Left;
+  x2 := KeyBounds.Right;
+  y1 := KeyBounds.Top;
+  y2 := KeyBounds.Bottom;
+
+  BackBuffer.BufferInterface.LineColor := KeyColor;
+  BackBuffer.BufferInterface.LineWidth := 1;
+  BackBuffer.BufferInterface.Line(x1, y1, x1, y2);
+end;
+
 procedure TVamSamplerKeys.DrawWhiteKey(const KeyBounds: TRectF; const KeyColor : TRedFoxColor);
 const
   c1 : TAggRgba8 = (
     R : $aa;
     G : $aa;
     B : $aa;
-    A : $FF;
+    A : $0a;
   );
 var
   x1, y1, x2, y2 : single;
@@ -600,8 +633,10 @@ begin
 
   BackBuffer.BufferInterface.FillColor := KeyColor;
   BackBuffer.BufferInterface.LineColor := c1;
+  //BackBuffer.BufferInterface.LineColor := c1;
+  //BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.LineWidth := 1;
-  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 0,0,6,6);
+  BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2-1, 0,0,6,6);
 end;
 
 procedure TVamSamplerKeys.DrawBlackKey(const KeyBounds: TRectF; const KeyColor : TRedFoxColor);
