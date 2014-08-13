@@ -621,7 +621,6 @@ end;
 
 procedure TSfzImporter.GenerateModMatrixPatchData;
 var
-  TargetNode : TXmlNode;
   ModLinkNode : TXmlNode;
 begin
   // Mod Slot 1 = Amp Env

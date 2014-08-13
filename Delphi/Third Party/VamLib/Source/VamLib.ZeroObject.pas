@@ -535,9 +535,6 @@ var
   LogMsg : string;
   aClass : TClass;
 begin
-  //TODO:HIGH add debug tags or take this overload watcher away.
-  //OverloadWatch.Start(32, 44100, 'MotherShip MsgSend ' + IntToStr(MsgID));
-
   LastIndex := -1;
 
   MessageLock.Enter;
@@ -570,8 +567,6 @@ begin
   finally
     MessageLock.Leave;
   end;
-
-  //OverloadWatch.Stop;
 end;
 
 

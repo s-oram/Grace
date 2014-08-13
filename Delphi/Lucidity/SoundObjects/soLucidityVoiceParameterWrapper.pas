@@ -25,54 +25,23 @@ type
 
   TLucidityVoiceParameterWrapper = class
   private
-    fOscShape: single;
-    fOscPulseWidth: single;
     fSamplePlaybackType: TSamplePlaybackType;
-    fVoiceGain: single;
-    fVoicePan: single;
-    fVoicePitchOne: single;
-    fVoicePitchTwo: single;
     fFilter1Type: TFilterType;
     fFilter2Type: TFilterType;
-    fFilter1Par1: single;
-    fFilter1Par2: single;
-    fFilter1Par3: single;
-    fFilter2Par1: single;
-    fFilter2Par2: single;
-    fFilter2Par3: single;
-    fModAttack: single;
-    fModHold: single;
-    fModDecay: single;
-    fModSustain: single;
-    fModRelease: single;
-    fLfoRate1: single;
-    fLfoRate2: single;
     fSeq1Clock: TSequencerClock;
     fSeq1Direction: TStepSequencerDirection;
     fStepSeq1Length: TStepSequencerLength;
     fSeq2Clock: TSequencerClock;
     fSeq2Direction: TStepSequencerDirection;
     fStepSeq2Length: TStepSequencerLength;
-    fGrainLoop: TGrainStretchLoopMode;
-    fGrainLength: single;
-    fGrainRate: single;
-    fGrainPosition: single;
-    fMixAuxB: single;
-    fMixAuxA: single;
     fSamplerLoopBounds: TSamplerLoopBounds;
     fSampleReset: TClockSource;
-    fLfoAPar2: single;
-    fLfoBPar2: single;
     fAmpVelocityDepth: TEnvVelocityDepth;
     fModVelocityDepth: TEnvVelocityDepth;
     fVoiceMode: TVoiceMode;
     fVoiceGlide: single;
-    fFilter1Par4: single;
-    fFilter2Par4: single;
     fSamplerTriggerMode: TKeyGroupTriggerMode;
     fPitchTracking: TPitchTracking;
-    fLfoBPar3: single;
-    fLfoAPar3: single;
     fFilter2KeyFollow: single;
     fFilter1KeyFollow: single;
     fLfoFreqMode2: TLfoFreqMode;
@@ -80,29 +49,10 @@ type
     fFilterRouting: TFilterRouting;
     fLfoShape2: TLfoShape;
     fLfoShape1: TLfoShape;
-    procedure SetFilter1Par1(const Value: single);
-    procedure SetFilter1Par2(const Value: single);
-    procedure SetFilter1Par3(const Value: single);
     procedure SetFilter1Type(const Value: TFilterType);
-    procedure SetFilter2Par1(const Value: single);
-    procedure SetFilter2Par2(const Value: single);
-    procedure SetFilter2Par3(const Value: single);
     procedure SetFilter2Type(const Value: TFilterType);
-    procedure SetModAttack(const Value: single);
-    procedure SetModDecay(const Value: single);
-    procedure SetModHold(const Value: single);
-    procedure SetModRelease(const Value: single);
-    procedure SetModSustain(const Value: single);
-    procedure SetGrainLength(const Value: single);
-    procedure SetGrainLoop(const Value: TGrainStretchLoopMode);
-    procedure SetGrainPosition(const Value: single);
-    procedure SetGrainRate(const Value: single);
-    procedure SetLfoRate1(const Value: single);
-    procedure SetLfoRate2(const Value: single);
     procedure SetLfoShape1(const Value: TLfoShape);
     procedure SetLfoShape2(const Value: TLfoShape);
-    procedure SetOscPulseWidth(const Value: single);
-    procedure SetOscShape(const Value: single);
     procedure SetSamplePlaybackType(const Value: TSamplePlaybackType);
     procedure SetSeq1Clock(const Value: TSequencerClock);
     procedure SetSeq1Direction(const Value: TStepSequencerDirection);
@@ -110,26 +60,14 @@ type
     procedure SetSeq2Direction(const Value: TStepSequencerDirection);
     procedure SetStepSeq1Length(const Value: TStepSequencerLength);
     procedure SetStepSeq2Length(const Value: TStepSequencerLength);
-    procedure SetVoiceGain(const Value: single);
-    procedure SetVoicePan(const Value: single);
-    procedure SetVoicePitchOne(const Value: single);
-    procedure SetVoicePitchTwo(const Value: single);
-    procedure SetMixAuxA(const Value: single);
-    procedure SetMixAuxB(const Value: single);
     procedure SetSampleLoopBounds(const Value: TSamplerLoopBounds);
     procedure SetSampleReset(Value: TClockSource);
-    procedure SetLfoAPar2(const Value: single);
-    procedure SetLfoBPar2(const Value: single);
     procedure SetAmpVelocityDepth(const Value: TEnvVelocityDepth);
     procedure SetModVelocityDepth(const Value: TEnvVelocityDepth);
     procedure SetVoiceMode(const Value: TVoiceMode);
     procedure SetVoiceGlide(const Value: single);
-    procedure SetFilter1Par4(const Value: single);
-    procedure SetFilter2Par4(const Value: single);
     procedure SetSamplerTriggerMode(const Value: TKeyGroupTriggerMode);
     procedure SetPitchTracking(const Value: TPitchTracking);
-    procedure SetLfoAPar3(const Value: single);
-    procedure SetLfoBPar3(const Value: single);
     procedure SetFilter1KeyFollow(const Value: single);
     procedure SetFilter2KeyFollow(const Value: single);
     procedure SetLfoFreqMode1(const Value: TLfoFreqMode);
@@ -150,47 +88,6 @@ type
     property VoiceMode                : TVoiceMode                         read fVoiceMode               write SetVoiceMode;
     property VoiceGlide               : single                             read fVoiceGlide              write SetVoiceGlide;
 
-
-
-    //========= TODO:HIGH Delete these ============================================================================================
-    property ModAttack                : single                             read fModAttack               write SetModAttack;
-    property ModHold                  : single                             read fModHold                 write SetModHold;
-    property ModDecay                 : single                             read fModDecay                write SetModDecay;
-    property ModSustain               : single                             read fModSustain              write SetModSustain;
-    property ModRelease               : single                             read fModRelease              write SetModRelease;
-
-    property LfoRate1                 : single                             read fLfoRate1                write SetLfoRate1;
-    property LfoRate2                 : single                             read fLfoRate2                write SetLfoRate2;
-    property LfoAPar2                 : single                             read fLfoAPar2                write SetLfoAPar2;
-    property LfoAPar3                 : single                             read fLfoAPar3                write SetLfoAPar3;
-    property LfoBPar2                 : single                             read fLfoBPar2                write SetLfoBPar2;
-    property LfoBPar3                 : single                             read fLfoBPar3                write SetLfoBPar3;
-
-    property Filter1Par1              : single                             read fFilter1Par1             write SetFilter1Par1;
-    property Filter1Par2              : single                             read fFilter1Par2             write SetFilter1Par2;
-    property Filter1Par3              : single                             read fFilter1Par3             write SetFilter1Par3;
-    property Filter1Par4              : single                             read fFilter1Par4             write SetFilter1Par4;
-    property Filter2Par1              : single                             read fFilter2Par1             write SetFilter2Par1;
-    property Filter2Par2              : single                             read fFilter2Par2             write SetFilter2Par2;
-    property Filter2Par3              : single                             read fFilter2Par3             write SetFilter2Par3;
-    property Filter2Par4              : single                             read fFilter2Par4             write SetFilter2Par4;
-
-    property MixAuxA                  : single                             read fMixAuxA                 write SetMixAuxA;
-    property MixAuxB                  : single                             read fMixAuxB                 write SetMixAuxB;
-
-    property OscShape                 : single                             read fOscShape                write SetOscShape;
-    property OscPulseWidth            : single                             read fOscPulseWidth           write SetOscPulseWidth;
-
-    property VoiceGain                : single                             read fVoiceGain               write SetVoiceGain;
-    property VoicePan                 : single                             read fVoicePan                write SetVoicePan;
-    property VoicePitchOne            : single                             read fVoicePitchOne           write SetVoicePitchOne; //range -1..1
-    property VoicePitchTwo            : single                             read fVoicePitchTwo           write SetVoicePitchTwo; //range -1..1
-
-    property GrainLoop                : TGrainStretchLoopMode              read fGrainLoop               write SetGrainLoop;
-    property GrainLength              : single                             read fGrainLength             write SetGrainLength;
-    property GrainRate                : single                             read fGrainRate               write SetGrainRate;
-    property GrainPosition            : single                             read fGrainPosition           write SetGrainPosition;
-    //===============================================================================================================================
   public
     constructor Create(const aVoices:PArrayOfLucidityVoice; const aOwningSampleGroup : IKeyGroup);
     destructor Destroy; override;
@@ -244,9 +141,6 @@ begin
   OwningSampleGroup := Pointer(aOwningSampleGroup);
   VoiceCount := uConstants.kMaxVoiceCount;
   Voices := aVoices;
-
-  self.fVoiceGain := 1;
-  self.fVoicePan  := 0.5;
 end;
 
 destructor TLucidityVoiceParameterWrapper.Destroy;
@@ -301,26 +195,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilter1Par1(const Value: single);
-begin
-  fFilter1Par1 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter1Par2(const Value: single);
-begin
-  fFilter1Par2 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter1Par3(const Value: single);
-begin
-  fFilter1Par3 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter1Par4(const Value: single);
-begin
-  fFilter1Par4 := Value;
-end;
-
 procedure TLucidityVoiceParameterWrapper.SetFilter1Type(const Value: TFilterType);
 begin
   fFilter1Type := Value;
@@ -363,26 +237,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetFilter2Par1(const Value: single);
-begin
-  fFilter2Par1 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter2Par2(const Value: single);
-begin
-  fFilter2Par2 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter2Par3(const Value: single);
-begin
-  fFilter2Par3 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetFilter2Par4(const Value: single);
-begin
-  fFilter2Par4 := Value;
-end;
-
 procedure TLucidityVoiceParameterWrapper.SetFilter2Type(const Value: TFilterType);
 begin
   fFilter2Type := Value;
@@ -393,26 +247,6 @@ begin
       v^.FilterTwo.FilterType := Value;
     end
   );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModAttack(const Value: single);
-begin
-  fModAttack := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModDecay(const Value: single);
-begin
-  fModDecay := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModHold(const Value: single);
-begin
-  fModHold := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetModRelease(const Value: single);
-begin
-  fModRelease := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetFilterRouting(const Value: TFilterRouting);
@@ -427,11 +261,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetModSustain(const Value: single);
-begin
-  fModSustain := Value;
-end;
-
 procedure TLucidityVoiceParameterWrapper.SetModVelocityDepth(const Value: TEnvVelocityDepth);
 begin
   fModVelocityDepth := Value;
@@ -442,75 +271,6 @@ begin
       v^.ModEnv.VelocityDepth := Value;
     end
   );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetGrainLength(const Value: single);
-begin
-  fGrainLength := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.GrainStretchOsc.GrainLength := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetGrainLoop(const Value: TGrainStretchLoopMode);
-begin
-  fGrainLoop := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.GrainStretchOsc.LoopMode := Value;
-    end
-  );
-end;
-
-
-procedure TLucidityVoiceParameterWrapper.SetGrainPosition(const Value: single);
-begin
-  fGrainPosition := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.GrainStretchOsc.GrainPosition := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetGrainRate(const Value: single);
-begin
-  fGrainRate := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.GrainStretchOsc.GrainRate := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoAPar2(const Value: single);
-begin
-  fLfoAPar2 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoAPar3(const Value: single);
-begin
-  fLfoAPar3 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoBPar2(const Value: single);
-begin
-  fLfoBPar2 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoBPar3(const Value: single);
-begin
-  fLfoBPar3 := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoFreqMode1(const Value: TLfoFreqMode);
@@ -535,16 +295,6 @@ begin
       v^.LfoB.FreqMode := Value;
     end
   );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoRate1(const Value: single);
-begin
-  fLfoRate1 := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetLfoRate2(const Value: single);
-begin
-  fLfoRate2 := Value;
 end;
 
 procedure TLucidityVoiceParameterWrapper.SetLfoShape1(const Value: TLfoShape);
@@ -583,33 +333,6 @@ begin
     end
   );
 end;
-
-procedure TLucidityVoiceParameterWrapper.SetOscPulseWidth(const Value: single);
-begin
-  fOscPulseWidth := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.WaveOsc.PulseWidth := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetOscShape(const Value: single);
-begin
-  fOscShape := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.WaveOsc.Shape := Value;
-    end
-  );
-end;
-
-
-
 
 procedure TLucidityVoiceParameterWrapper.SetPitchTracking(const Value: TPitchTracking);
 begin
@@ -747,11 +470,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetVoiceGain(const Value: single);
-begin
-  fVoiceGain := Value;
-end;
-
 procedure TLucidityVoiceParameterWrapper.SetVoiceGlide(const Value: single);
 begin
   fVoiceGlide := Value;
@@ -776,44 +494,6 @@ begin
   );
 end;
 
-procedure TLucidityVoiceParameterWrapper.SetVoicePan(const Value: single);
-begin
-  fVoicePan := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetVoicePitchOne(const Value: single);
-begin
-  fVoicePitchOne := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetVoicePitchTwo(const Value: single);
-begin
-  fVoicePitchTwo := Value;
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetMixAuxA(const Value: single);
-begin
-  fMixAuxA := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.OutputMixer.VoiceMixAuxA := Value;
-    end
-  );
-end;
-
-procedure TLucidityVoiceParameterWrapper.SetMixAuxB(const Value: single);
-begin
-  fMixAuxB := Value;
-
-  UpdateActiveVoices(
-    procedure(v:PLucidityVoice)
-    begin
-      v^.OutputMixer.VoiceMixAuxB := Value;
-    end
-  );
-end;
 
 procedure TLucidityVoiceParameterWrapper.AssignFrom(const Source: TLucidityVoiceParameterWrapper);
 begin
@@ -824,51 +504,20 @@ begin
   self.SamplePlaybackType       := Source.SamplePlaybackType;
   self.SampleReset              := Source.SampleReset;
 
-  Self.GrainLoop                := Source.GrainLoop;
-  Self.GrainLength              := Source.GrainLength;
-  Self.GrainRate                := Source.GrainRate;
-  Self.GrainPosition            := Source.GrainPosition;
-
   self.SamplerLoopBounds        := Source.SamplerLoopBounds;
-  self.SamplerTriggerMode          := Source.SamplerTriggerMode;
+  self.SamplerTriggerMode       := Source.SamplerTriggerMode;
 
-  self.MixAuxA                  := Source.MixAuxA;
-  self.MixAuxB                  := Source.MixAuxB;
-
-  Self.OscShape                 := Source.OscShape;
-  Self.OscPulseWidth            := Source.OscPulseWidth;
-  Self.VoiceGain                := Source.VoiceGain;
-  Self.VoicePan                 := Source.VoicePan;
-  Self.VoicePitchOne            := Source.VoicePitchOne;
-  Self.VoicePitchTwo            := Source.VoicePitchTwo;
   Self.FilterRouting            := Source.FilterRouting;
   Self.Filter1Type              := Source.Filter1Type;
   Self.Filter2Type              := Source.Filter2Type;
   Self.Filter1KeyFollow         := Source.Filter1KeyFollow;
   Self.Filter2KeyFollow         := Source.Filter2KeyFollow;
-  Self.Filter1Par1              := Source.Filter1Par1;
-  Self.Filter1Par2              := Source.Filter1Par2;
-  Self.Filter1Par3              := Source.Filter1Par3;
-  Self.Filter1Par4              := Source.Filter1Par4;
-  Self.Filter2Par1              := Source.Filter2Par1;
-  Self.Filter2Par2              := Source.Filter2Par2;
-  Self.Filter2Par3              := Source.Filter2Par3;
-  Self.Filter2Par4              := Source.Filter2Par4;
   Self.AmpVelocityDepth         := Source.AmpVelocityDepth;
-  Self.ModAttack             := Source.ModAttack;
-  Self.ModHold               := Source.ModHold;
-  Self.ModDecay              := Source.ModDecay;
-  Self.ModSustain            := Source.ModSustain;
-  Self.ModRelease            := Source.ModRelease;
-  Self.ModVelocityDepth      := Source.ModVelocityDepth;
+  Self.ModVelocityDepth         := Source.ModVelocityDepth;
   Self.LfoShape1                := Source.LfoShape1;
   Self.LfoShape2                := Source.LfoShape2;
   Self.LfoFreqMode1             := Source.LfoFreqMode1;
   Self.LfoFreqMode2             := Source.LfoFreqMode2;
-  Self.LfoRate1                 := Source.LfoRate1;
-  Self.LfoRate2                 := Source.LfoRate2;
-  self.LfoAPar2                 := Source.LfoAPar2;
-  self.LfoBPar2                 := Source.LfoBPar2;
   Self.Seq1Clock                := Source.Seq1Clock;
   Self.Seq1Direction            := Source.Seq1Direction;
   Self.StepSeq1Length           := Source.StepSeq1Length;
@@ -887,31 +536,18 @@ begin
   aVoice.SamplePlaybackType              := SamplePlayBackType;
   aVoice.SampleReset                     := SampleReset;
 
-  aVoice.GrainStretchOsc.LoopMode        := GrainLoop;
-  aVoice.GrainStretchOsc.GrainLength     := GrainLength;
-  aVoice.GrainStretchOsc.GrainRate       := GrainRate;
-  aVoice.GrainStretchOsc.GrainPosition   := GrainPosition;
-
   aVoice.OneShotSampleOsc.LoopBounds     := SamplerLoopBounds;
   aVoice.LoopSampleOsc.LoopBounds        := SamplerLoopBounds;
 
-  aVoice.TriggerMode                        := SamplerTriggerMode;
+  aVoice.TriggerMode                     := SamplerTriggerMode;
 
-  aVoice.OutputMixer.VoiceMixAuxA        := MixAuxA;
-  aVoice.OutputMixer.VoiceMixAuxB        := MixAuxB;
-  aVoice.WaveOsc.Shape                   := OscShape;
-  aVoice.WaveOsc.PulseWidth              := OscPulseWidth;
-  //aVoice.SampleOsc.FmAmount := OscFm;  //!! what's going on here. duplicated parameters again?
-  //aVoice.SampleOsc.AmAmount := OscAm;  //!! what's going on here. duplicated parameters again?
-  //aVoice.StepSeq1Clock := ClockDivisionA; //I don't think this is needed.
-  //aVoice.StepSeq2Clock := ClockDivisionB; //I don't think this is needed.
   aVoice.FilterRouting                   := FilterRouting;
   aVoice.FilterOne.FilterType            := Filter1Type;
   aVoice.FilterTwo.FilterType            := Filter2Type;
   aVoice.FilterOne.KeyFollow             := Filter1KeyFollow;
   aVoice.FilterTwo.KeyFollow             := Filter2KeyFollow;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
-  aVoice.ModEnv.VelocityDepth         := ModVelocityDepth;
+  aVoice.ModEnv.VelocityDepth            := ModVelocityDepth;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.LfoA.FreqMode                   := LfoFreqMode1;

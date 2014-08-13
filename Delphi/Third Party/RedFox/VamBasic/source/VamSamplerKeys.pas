@@ -603,10 +603,10 @@ end;
 
 procedure TVamSamplerKeys.DrawWhiteKeyMargin(const KeyBounds: TRectF; const KeyColor: TRedFoxColor);
 var
-  x1, y1, x2, y2 : single;
+  x1, y1, y2 : single;
 begin
   x1 := KeyBounds.Left;
-  x2 := KeyBounds.Right;
+  //x2 := KeyBounds.Right;
   y1 := KeyBounds.Top;
   y2 := KeyBounds.Bottom;
 
