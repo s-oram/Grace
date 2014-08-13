@@ -12,6 +12,7 @@ type
     function FindOrCreateNode(ChildPath : string):TXmlNode;
     function CreateNode(ChildPath : string):TXmlNode;
 
+    function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
     function ValueUnicode(ChildPath : string):string;
   end;
@@ -23,11 +24,14 @@ type
     constructor Create(aAnchorNode : TXmlNode);
 
 
+    function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
 
     // Navigates to the final child node, giving preference to existing nodes.
     // Non-existing nodes will be created.
     function FindOrCreateNode(ChildPath : string):TXmlNode;
+
+
 
     //function CreateNode()
     // Navigates to the final child node, giving preference to existing nodes.
@@ -128,6 +132,18 @@ begin
 
   result := RefNode;
 end;
+
+function TNodeWiz.Exists(NodePath: string): boolean;
+var
+  aNode : TXmlNode;
+begin
+  aNode :=  self.Child(NodePath);
+  if assigned(aNode)
+    then result := true
+    else result := false;
+end;
+
+
 
 function TNodeWiz.Child(ChildPath: string): TXmlNode;
 var

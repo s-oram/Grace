@@ -22,17 +22,23 @@ function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; const OpcodeValue 
 //                LOW LEVEL METHODS
 //================================================================================
 
-// These methods convert SFZ opcodes to Lucidity parameter values...
-function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
-
+// General purpose opcode conversion
 function OpcodeToInteger(const Value : string):integer; overload;
 function OpcodeToInteger(const Value : string; const MinValue, MaxValue:integer):integer; overload;
 function OpcodeToFloat(const Value : string):single; overload;
 function OpcodeToFloat(const Value : string; const MinValue, MaxValue:integer):single; overload;
 
+// Opcode conversion for specific opcodes.
+// These methods convert SFZ opcodes to Lucidity parameter values...
+function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode; //TODO:MED the result should be a string.
+function OpcodeToFilterType(const Value : string): string;
+
+
+
 implementation
 
 uses
+  LucidityParameterScaling,
   Math,
   VamLib.Utils,
   SysUtils;
@@ -45,7 +51,24 @@ begin
   if SameText(Value, 'loop_sustain')    then exit(TKeyGroupTriggerMode.LoopSustain);
 
   // If we've made it this far, the value isn't a valid SFZ opcode.
-  raise EConvertError.Create('Value is not an integer.');
+  raise EConvertError.Create('Value is not valid opcode for this conversion type.');
+end;
+
+function OpcodeToFilterType(const Value : string): string;
+begin
+  // Convert SFZ opcode "fil_type" to TFilterType.
+
+  if SameText(Value, 'lpf_1p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleLowPass));  //should be one-pole low pass.   //TODO:MED
+  if SameText(Value, 'hpf_1p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleHighPass)); //should be one-pole high pass. //TODO:MED
+  if SameText(Value, 'lpf_2p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleLowPass));
+  if SameText(Value, 'hpf_2p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleHighPass));
+  if SameText(Value, 'bpf_2p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleBandPass));
+  if SameText(Value, 'brf_2p')  then exit(TFilterTypeHelper.ToUnicodeString(TFilterType.ft2PoleLowPass)); //should be two-pole band rejection filter
+
+  // If we've made it this far, the value isn't a valid SFZ opcode.
+  raise EConvertError.Create('Value is not valid opcode for this conversion type.');
+
+  //TODO:HIGH I need to write some more filters specifically for SFZ compatibility.
 end;
 
 function OpcodeToInteger(const Value : string):integer;
@@ -333,16 +356,52 @@ begin
     TSfzOpcode.pitchlfo_freqccN: ;
     TSfzOpcode.pitchlfo_freqchanaft: ;
     TSfzOpcode.pitchlfo_freqpolyaft: ;
-    TSfzOpcode.fil_type: ;
-    TSfzOpcode.cutoff: ;
+    TSfzOpcode.fil_type: result := OpcodeToFilterType(OpcodeValue);
+    TSfzOpcode.cutoff:
+    begin
+      // == SFZ Import ==
+      // The filter cutoff frequency, in Hertz.
+      // If the cutoff is not specified, the filter will be disabled,
+      // with the consequent CPU drop in the player.
+      // == Lucidity Import ==
+      // Lucidity expects a 0 to 1 range parameter value.
+      // The 0-1 range is mapped to a 6-20000hz filter frequency
+      // using an exponential scale.
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 20000);
+      if xFloat <> 0
+        then xFloat := FilterFrequencyToVstFloat(xFloat);
+      xFloat := Clamp(xFloat, 0, 1);
+      result := DataIO_FloatToStr(xFloat);
+    end;
     TSfzOpcode.cutoff_ccN: ;
     TSfzOpcode.cutoff_chanaft: ;
     TSfzOpcode.cutoff_polyaft: ;
-    TSfzOpcode.resonance: ;
-    TSfzOpcode.fil_keytrack: ;
-    TSfzOpcode.fil_keycenter: ;
-    TSfzOpcode.fil_veltrack: ;
-    TSfzOpcode.fil_random: ;
+    TSfzOpcode.resonance:
+    begin
+      // == SFZ Import ==
+      // The filter cutoff resonance value, in decibels. range 0-40dB
+      // == Lucidity Import ==
+      // Lucidity expects a 0 to 1 range parameter value.
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 40);
+      result := DataIO_FloatToStr(xFloat / 40);
+    end;
+    TSfzOpcode.fil_keytrack:
+    begin
+      // == SFZ Import ==
+      // Filter keyboard tracking (change on cutoff for each key) in cents.
+      // Type: Integer.
+      // == Lucidity Import ==
+      // Lucidity expects a 0-1 ranged parameter value
+      // which is scaled to 0-100% key tracking.
+      //=============
+      // NOTE: The SFZ fil_keytrack value is an integer
+      // but we are reading it in as a float.
+      xFloat := OpcodeToFloat(OpcodeValue, 0, 100);
+      result := DataIO_FloatToStr(xFloat / 100);
+    end;
+    TSfzOpcode.fil_keycenter: ; // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
+    TSfzOpcode.fil_veltrack: ;  // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
+    TSfzOpcode.fil_random: ;    // ignored in lucidity patches. //TODO:HIGH this could actually be implemented by using the mod matrix
     TSfzOpcode.fileg_delay: ;
     TSfzOpcode.fileg_start: ;
     TSfzOpcode.fileg_attack: ;

@@ -16,6 +16,12 @@ type
 //    PUBLIC - for external use
 //================================================================================
 
+  TSfzGroupLoadData = record
+  public
+    IsCutoffSet : boolean;
+    procedure Reset;
+  end;
+
   TSfzImporter = class
   private
     Parser : TSfzParser;
@@ -24,6 +30,7 @@ type
     CurrentRegion : TXmlNode;
     GroupCount : integer;
     SupportedOpcodeList : TObjectList;
+    GroupLoadData : TSfzGroupLoadData;
     procedure Event_OnGroupStart(Sender : TObject);
     procedure Event_OnGroupEnd(Sender : TObject);
     procedure Event_OnGroupOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
@@ -86,7 +93,7 @@ begin
 
     Dest.Root.Name := 'root';
     Dest.Root.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
-    Dest.Root.NodeNew('PatchFileFormatVersion').ValueUnicode := '1';
+    Dest.Root.NodeNew('PatchFileFormatVersion').ValueUnicode := '2';
 
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceMode').ValueUnicode := 'Poly';
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceGlide').ValueUnicode := '0';
@@ -105,6 +112,7 @@ procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
 begin
   if not assigned(CurrentGroup) then
   begin
+    GroupLoadData.Reset;
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
     inc(GroupCount);
@@ -116,9 +124,30 @@ begin
 end;
 
 procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
+var
+  TargetNode : TXmlNode;
 begin
   //=====================================
   // Do some final adjustments here...
+  TargetNode := CurrentGroup;
+
+  if (GroupLoadData.IsCutoffSet) then
+  begin
+    // The filter type value is optional for SFZ files.
+    if NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Type') = false then
+    begin
+      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Type').ValueUnicode := TFilterTypeHelper.ToUnicodeString(TFiltertype.ft2PoleLowPass);
+    end;
+
+    if NodeWiz(TargetNode).Exists('VoiceParameters/Filter1Par2') = false then
+    begin
+      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par2').ValueUnicode := '0';
+    end;
+
+    // Set filter gain to 0.
+    NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par3').ValueUnicode := '0';
+  end;
+
 
 
   //=====================================
@@ -210,16 +239,16 @@ begin
     TSfzOpcode.pitchlfo_freqccN: ;
     TSfzOpcode.pitchlfo_freqchanaft: ;
     TSfzOpcode.pitchlfo_freqpolyaft: ;
-    TSfzOpcode.fil_type: ;
+    TSfzOpcode.fil_type: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Type').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.cutoff:
     begin
-
+      GroupLoadData.IsCutoffSet := true;
+      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par1').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     end;
-
     TSfzOpcode.cutoff_ccN: ;
     TSfzOpcode.cutoff_chanaft: ;
     TSfzOpcode.cutoff_polyaft: ;
-    TSfzOpcode.resonance: ;
+    TSfzOpcode.resonance: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/Filter1Par2').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.fil_keytrack: ;
     TSfzOpcode.fil_keycenter: ;
     TSfzOpcode.fil_veltrack: ;
@@ -572,5 +601,12 @@ end;
 
 
 
+
+{ TSfzGroupLoadData }
+
+procedure TSfzGroupLoadData.Reset;
+begin
+  IsCutoffSet := false;
+end;
 
 end.

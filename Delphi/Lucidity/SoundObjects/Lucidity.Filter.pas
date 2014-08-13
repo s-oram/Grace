@@ -95,7 +95,8 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeDsp,
-  SysUtils;
+  SysUtils,
+  LucidityParameterScaling;
 
 { TLucidityFilter }
 
@@ -214,6 +215,16 @@ var
 
   FreqMultFactor : single;
 begin
+  assert(Par1^ >= 0);
+  assert(Par1^ <= 1);
+
+  assert(Par2^ >= 0);
+  assert(Par2^ <= 1);
+
+  assert(Par3^ >= 0);
+  assert(Par3^ <= 1);
+
+
   FreqMultFactor := LinearInterpolation(1, VoiceModPoints^.KeyFollowFreqMultiplier, fKeyFollow);
 
   case FilterType of
@@ -224,17 +235,9 @@ begin
     ftLofiA:
     begin
       //==== Lofi A ====
-      px1 := Par1^;
-      px1 := Clamp(px1, 0, 1);
-      LofiA.RateReduction := px1;
-
-      px2 := Par2^;
-      px2 := clamp(px2, 0, 1);
-      LofiA.BitReduction := px2;
-
-      px3 := Par3^;
-      px3 := clamp(px3, 0, 1);
-      LofiA.BitEmphasis := px3;
+      LofiA.RateReduction := Par1^;
+      LofiA.BitReduction  := Par2^;
+      LofiA.BitEmphasis   := Par3^;
     end;
 
     ftRingModA:
@@ -242,12 +245,10 @@ begin
       //==== Ring Mod A ====
       CV := (Par1^ * 12);
       cFreq := VoltsToFreq(15, CV)  * FreqMultFactor;
-      cFreq := Clamp(cFreq, 15, 18000);
+      cFreq := Clamp(cFreq, 15, 18000);   //TODO:MED this clamp might not be needed. Par1^ is already limited to a 0-1 range.
       RingModA.OscFreq := cFreq;
 
-      px2 := Par2^;
-      px2 := clamp(px2, 0, 1);
-      RingModA.Depth := px2;
+      RingModA.Depth := Par2^;
     end;
 
 
@@ -274,19 +275,9 @@ begin
       //==== Comb A ====
       CombA.KeyFollowFreqMultiplier := KeyFollowFreqMultiplier;
 
-      px1 := Par1^;
-      px1 := Clamp(px1, 0, 1);
-      CombA.Par1 := px1;
-
-      px2 := Par2^;
-      px2 := clamp(px2, 0, 1);
-      CombA.Par2 := px2;
-
-      px3 := Par3^;
-      px3 := clamp(px3, 0, 1);
-      CombA.Par3 := px3;
-
-
+      CombA.Par1 := Par1^;
+      CombA.Par2 := Par2^;
+      CombA.Par3 := Par3^;
     end;
 
     ft2PoleLowPass,
@@ -296,13 +287,22 @@ begin
     ft4PoleBandPass,
     ft4PoleHighPass:
     begin
+      // TODO:HIGH
+      // try using exponential scalling for the filter frequency instead
+      // of the 1v/oct type scaling I am currently using.
+      {
       CV := (Par1^ * 15);
       cFreq := VoltsToFreq(kBaseFilterFreq, CV) * FreqMultFactor;
       cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
+      assert(Par1^ >= 0);
+      assert(Par1^ <= 1);
+      }
 
+      //cFreq :=
+
+      cFreq := VstFloatToFilterFrequency(Par1^) * FreqMultFactor;
+      cFreq := Clamp(cFreq, kMinFreq, kMaxFreq);
       cQ := (Par2^) * 0.98;
-      cQ := Clamp(cQ, kMinQ, kMaxQ);
-
       Gain := Par3^;
 
       BlueFilter.UpdateParameters(cFreq, cQ, Gain);

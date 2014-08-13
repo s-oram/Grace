@@ -30,10 +30,19 @@ Bug
   over the tabs.
 
 
+Bug
+- Velocity off has no impact on amplitude velocity envelope.
+
+Bug
+- Dragging over the sample map with a sample will cause the sample selection to change.
 
 =============================================================================
      TODO HIGH
 =============================================================================
+
+
+try using exponential scalling for the filter frequency instead
+of the 1v/oct type scaling I am currently using.
 
 Make some tweaks to the sample map drawing to counterbalance the small size of the 
 sample map area. 
