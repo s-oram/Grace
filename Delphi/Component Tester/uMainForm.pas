@@ -3,6 +3,7 @@ unit uMainForm;
 interface
 
 uses
+  SfzParser,
   NativeXML,
   Lucidity.Sfz,
   VamLib.Utils,
@@ -183,24 +184,24 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 // c:\test1\test2\
 var
-  fn : string;
-  DirPath, DirName : string;
-  Ext : string;
-
-  SFZImporter : TSfzImporter;
-  Dest : TNativeXML;
+  strings : TStringList;
+  c1: Integer;
 begin
-  SFZImporter := TSfzImporter.Create;
-  Dest := nil;
+  Strings := TStringList.Create;
   try
-    fn := 'D:\temp\Lucidity\source.sfz';
-    SfzImporter.ConvertFile(fn, Dest);
-    Dest.XmlFormat := TXmlFormatType.xfReadable;
-    Dest.SaveToFile('D:\temp\Lucidity\test.lpg');
+    ExplodeSfzString(Edit1.Text, Strings);
+
+    Memo1.Clear;
+
+    for c1 := 0 to Strings.Count-1 do
+    begin
+      Memo1.Lines.Add(Strings[c1]);
+    end;
   finally
-    Dest.Free;
-    sfzImporter.Free;
+    Strings.Free;
   end;
+
+
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);

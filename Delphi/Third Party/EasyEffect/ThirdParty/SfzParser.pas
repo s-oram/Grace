@@ -29,7 +29,7 @@ type
     IsRegionOpen : boolean;
     IsGroupOpen  : boolean;
 
-    procedure ParseLine(s : string);
+    procedure ParseLine(const Text : string);
     function FindTokenType(s : string):TSfzTokenType;
 
     procedure ProcessUnknown(s : string);
@@ -56,6 +56,10 @@ type
 
 
 
+procedure ExplodeSfzString(s : string; var Results : TStringList);
+
+
+
 
 implementation
 
@@ -67,6 +71,28 @@ uses
 
 const
   kMaxInt = High(Integer);
+
+
+procedure ExplodeSfzString(s : string; var Results : TStringList);
+var
+  c1: Integer;
+  TestString : string;
+  OpcodeTestResult : integer;
+begin
+  s := Trim(s);
+  ExplodeString(' ', s, Results);
+  for c1 := Results.Count-1 downto 1 do
+  begin
+    TestString := Lowercase(Results[c1]);
+    OpcodeTestResult := Pos('=', TestString);
+    if (TestString <> '<group>') and (TestString <> '<region>') and (OpcodeTestResult = 0) then
+    begin
+      TestString := Results[c1-1] + ' ' + TestString;
+      Results[c1-1] := TestString;
+      Results.Delete(c1);
+    end;
+  end;
+end;
 
 { TSfzParser }
 
@@ -121,26 +147,38 @@ begin
   end;
 end;
 
-procedure TSfzParser.ParseLine(s: string);
+procedure TSfzParser.ParseLine(const Text: string);
 var
   TokenType : TSfzTokenType;
+  StringList : TStringList;
+  s : string;
+  c1 : integer;
 begin
-  s := Trim(s);
+  if Text = '' then exit;
 
-  if s <> '' then
-  begin
-    TokenType := FindTokenType(s);
+  StringList := TStringList.Create;
+  try
+    ExplodeSfzString(Text, StringList);
 
-    case TokenType of
-      TSfzTokenType.Unknown:         ProcessUnknown(s);
-      TSfzTokenType.Comment:         ProcessComment(s);
-      TSfzTokenType.Group:           ProcessGroup(s);
-      TSfzTokenType.Region:          ProcessRegion(s);
-      TSfzTokenType.MultipleOpcodes: ProcessMultipleOpcodes(s);
-      TSfzTokenType.Opcode:          ProcessOpcode(s);
-    else
-      raise Exception.Create('Unexpected token type.');
+    for c1 := 0 to StringList.Count-1 do
+    begin
+      s := StringList[c1];
+
+      TokenType := FindTokenType(s);
+
+      case TokenType of
+        TSfzTokenType.Unknown:         ProcessUnknown(s);
+        TSfzTokenType.Comment:         ProcessComment(s);
+        TSfzTokenType.Group:           ProcessGroup(s);
+        TSfzTokenType.Region:          ProcessRegion(s);
+        TSfzTokenType.MultipleOpcodes: ProcessMultipleOpcodes(s);
+        TSfzTokenType.Opcode:          ProcessOpcode(s);
+      else
+        raise Exception.Create('Unexpected token type.');
+      end;
     end;
+  finally
+    StringList.Free;
   end;
 end;
 

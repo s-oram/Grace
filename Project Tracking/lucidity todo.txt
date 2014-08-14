@@ -43,10 +43,6 @@ bug:
 bug:
 - disable the temporary file creation when importing SFZ format files.
 
-bug: 
-- many of the Camel Factory Sounds don't load because the sample opcode is directory
-  after the region opcode.
-
 =============================================================================
      TODO HIGH
 =============================================================================

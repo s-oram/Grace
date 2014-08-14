@@ -27,7 +27,7 @@ object Form1: TForm1
   object RedFoxContainer1: TRedFoxContainer
     Left = 25
     Top = 8
-    Width = 849
+    Width = 592
     Height = 425
     Color = '$FFCCCCCC'
     object VamPanel1: TVamPanel
@@ -189,8 +189,8 @@ object Form1: TForm1
     OnClick = Button5Click
   end
   object Memo1: TMemo
-    Left = 592
-    Top = 463
+    Left = 640
+    Top = 83
     Width = 353
     Height = 265
     Lines.Strings = (
@@ -198,11 +198,11 @@ object Form1: TForm1
     TabOrder = 1
   end
   object Edit1: TEdit
-    Left = 368
-    Top = 439
+    Left = 640
+    Top = 55
     Width = 401
     Height = 22
     TabOrder = 7
-    Text = 'Edit1'
+    Text = '<region> sample=tom one.wav lokey=12'
   end
 end

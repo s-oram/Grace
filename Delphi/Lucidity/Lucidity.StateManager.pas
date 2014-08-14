@@ -4,6 +4,7 @@ interface
 
 {$INCLUDE Defines.inc}
 
+{.$GenerateTemporaryConversionFiles}
 
 //TODO:MED perhaps it might be possible to reduce the executable size by remove the M+
 {$M+}
@@ -189,8 +190,7 @@ var
   SfzImporter : TSfzImporter;
   XML : TNativeXML;
 begin
-
-  {$IFDEF Debug}
+  {$IFDEF GenerateTemporaryConversionFiles}
   CopyFile(FileName, 'D:\temp\Lucidity\Source.sfz');
   {$ENDIF}
 
@@ -201,7 +201,7 @@ begin
   try
     SfzImporter.ConvertFile(FileName, XML);
 
-    {$IFDEF Debug}
+    {$IFDEF GenerateTemporaryConversionFiles}
     XML.XmlFormat := xfReadable;
     xml.SaveToFile('D:\temp\Lucidity\test.lpg');
     {$ENDIF}
