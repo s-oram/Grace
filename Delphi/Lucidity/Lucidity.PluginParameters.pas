@@ -431,33 +431,31 @@ begin
     kPluginParameterID.AmpDecay:           ModParIndex := 10;
     kPluginParameterID.AmpSustain:         ModParIndex := 11;
     kPluginParameterID.AmpRelease:         ModParIndex := 12;
-    kPluginParameterID.AmpVelocity:        ModParIndex := 13;
-    kPluginParameterID.ModAttack:          ModParIndex := 14;
-    kPluginParameterID.ModHold:            ModParIndex := 15;
-    kPluginParameterID.ModDecay:           ModParIndex := 16;
-    kPluginParameterID.ModSustain:         ModParIndex := 17;
-    kPluginParameterID.ModRelease:         ModParIndex := 18;
-    kPluginParameterID.ModVelocity:        ModParIndex := 19;
-    kPluginParameterID.FilterOutputBlend:  ModParIndex := 20;
-    kPluginParameterID.Filter1Par1:        ModParIndex := 21;
-    kPluginParameterID.Filter1Par2:        ModParIndex := 22;
-    kPluginParameterID.Filter1Par3:        ModParIndex := 23;
-    kPluginParameterID.Filter1Par4:        ModParIndex := 24;
-    kPluginParameterID.Filter2Par1:        ModParIndex := 25;
-    kPluginParameterID.Filter2Par2:        ModParIndex := 26;
-    kPluginParameterID.Filter2Par3:        ModParIndex := 27;
-    kPluginParameterID.Filter2Par4:        ModParIndex := 28;
-    kPluginParameterID.Lfo1Par1:           ModParIndex := 29;
-    kPluginParameterID.Lfo1Par2:           ModParIndex := 30;
-    kPluginParameterID.Lfo1Par3:           ModParIndex := 31;
-    kPluginParameterID.Lfo2Par1:           ModParIndex := 32;
-    kPluginParameterID.Lfo2Par2:           ModParIndex := 33;
-    kPluginParameterID.Lfo2Par3:           ModParIndex := 34;
+    kPluginParameterID.ModAttack:          ModParIndex := 13;
+    kPluginParameterID.ModHold:            ModParIndex := 14;
+    kPluginParameterID.ModDecay:           ModParIndex := 15;
+    kPluginParameterID.ModSustain:         ModParIndex := 16;
+    kPluginParameterID.ModRelease:         ModParIndex := 17;
+    kPluginParameterID.FilterOutputBlend:  ModParIndex := 18;
+    kPluginParameterID.Filter1Par1:        ModParIndex := 19;
+    kPluginParameterID.Filter1Par2:        ModParIndex := 20;
+    kPluginParameterID.Filter1Par3:        ModParIndex := 21;
+    kPluginParameterID.Filter1Par4:        ModParIndex := 22;
+    kPluginParameterID.Filter2Par1:        ModParIndex := 23;
+    kPluginParameterID.Filter2Par2:        ModParIndex := 24;
+    kPluginParameterID.Filter2Par3:        ModParIndex := 25;
+    kPluginParameterID.Filter2Par4:        ModParIndex := 26;
+    kPluginParameterID.Lfo1Par1:           ModParIndex := 27;
+    kPluginParameterID.Lfo1Par2:           ModParIndex := 28;
+    kPluginParameterID.Lfo1Par3:           ModParIndex := 29;
+    kPluginParameterID.Lfo2Par1:           ModParIndex := 30;
+    kPluginParameterID.Lfo2Par2:           ModParIndex := 31;
+    kPluginParameterID.Lfo2Par3:           ModParIndex := 32;
   else
     ModParIndex := -1;
   end;
 
-  assert(kModulatedParameterCount = 35);
+  assert(kModulatedParameterCount = 33);
 
   if ModParIndex <> -1
     then result := true

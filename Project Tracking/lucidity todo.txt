@@ -29,19 +29,12 @@ Bug
 - Andy reports the Voice Mod frame tab text is too large and overflows 
   over the tabs.
 
-
-Bug
-- Velocity off has no impact on amplitude velocity envelope.
-
 Bug
 - Dragging over the sample map with a sample will cause the sample selection to change.
 
 bug:
 - Voice stealing causes clicks. It's very noticable when using a sine wave waveform
   with a part that is busy enough to cause voice stealing. 
-
-bug:
-- disable the temporary file creation when importing SFZ format files.
 
 =============================================================================
      TODO HIGH

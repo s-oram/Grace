@@ -126,7 +126,7 @@ const
   kMaxVoiceCount = 64; //max number of voices per group.
   kMaxActiveVoices = 12;
 
-  kModulatedParameterCount = 35;
+  kModulatedParameterCount = 33;
   kModSlotCount = 8;
 
 

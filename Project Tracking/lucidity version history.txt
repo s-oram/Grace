@@ -14,6 +14,8 @@ Bug Fix:
 - SFZ Import: Previously Lucidity wasn't able to import a SFZ Opcode if it was 
   on the same line as a <region> or <group> opcode. Lucidity expected all <region>
   and <group> opcodes to seperated on individual lines. 
+- The AHDSR envelopes ignored the "Velocity Depth" parameter. 
+
 
 
 
