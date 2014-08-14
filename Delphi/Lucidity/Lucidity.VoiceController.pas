@@ -6,7 +6,7 @@ interface
 
 uses
   Lucidity.Interfaces,
-  VamLib.CpuOverloadWatcher,
+  //VamLib.CpuOverloadWatcher,
   Contnrs,
   Classes,
   uConstants,
@@ -19,8 +19,6 @@ type
   TVoiceController = class(TZeroObject)
   private
   protected
-    OverloadWatch : TCpuOverloadWatcher;
-
     Globals : TGlobals;
     Voices  : PArrayOfLucidityVoice;
 
@@ -109,8 +107,6 @@ begin
 
   Latch_ReleaseAllOnNoteUp := false;
   FirstNoteLatch_TriggerRequired := false;
-
-  OverloadWatch := TCpuOverloadWatcher.Create;
 end;
 
 destructor TVoiceController.Destroy;
@@ -119,7 +115,6 @@ begin
   ActiveVoices.Free;
   ReleasedVoices.Free;
   TriggeredVoiceStack.Free;
-  OverloadWatch.Free;
   inherited;
 end;
 

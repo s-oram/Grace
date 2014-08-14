@@ -7,7 +7,7 @@ interface
 uses
   VamLib.Utils,
   VamLib.ZeroObject,
-  VamLib.CpuOverloadWatcher,
+  //VamLib.CpuOverloadWatcher,
   eeParSmoother,
   VamGuiControlInterfaces,
   Lucidity.Types,
@@ -58,9 +58,6 @@ type
 
     function GetTriggerMode : TKeyGroupTriggerMode;
   protected
-    // TODO:MED maybe make the overload watcher included with a conditional define or remove entirely.
-    // This applies to all units. Not just this one.
-    OverloadWatch : TCpuOverloadWatcher;
     DebugTag : string;
     ActiveVoices : TLucidityVoiceList;
     KeyGroupID : TKeyGroupID;
@@ -144,8 +141,6 @@ constructor TKeyGroup.Create(const aVoices:PArrayOfLucidityVoice; const aGlobalM
 var
   c1 : integer;
 begin
-  OverloadWatch := TCpuOverloadWatcher.Create;
-
   KeyGroupID.Init;
 
   DebugTag := aDebugTag;
@@ -205,8 +200,6 @@ begin
 
   ActiveVoices.Free;
   ParSmoother.Free;
-
-  OverloadWatch.Free;
 
   inherited;
 end;

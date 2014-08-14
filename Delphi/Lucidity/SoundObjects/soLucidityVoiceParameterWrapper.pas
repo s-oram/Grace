@@ -97,7 +97,7 @@ type
     procedure AssignFrom(const Source : TLucidityVoiceParameterWrapper);
 
     procedure ApplyParametersToVoice(aVoice : TLucidityVoice);
-  published
+  published //TODO:HIGH try removing the published requirement here.
     // Not currently used.
     property SamplePlaybackType       : TSamplePlaybackType                read fSamplePlaybackType      write SetSamplePlaybackType;
 

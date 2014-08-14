@@ -6,7 +6,7 @@ interface
 
 uses
   Classes,
-  VamLib.CpuOverloadWatcher,
+  //VamLib.CpuOverloadWatcher,
   VamLib.Types,
   eeGlobals,
   eeCustomGlobals,
@@ -25,7 +25,6 @@ type
     ActiveRegions : TInterfaceList;
   protected
     Globals : TGlobals;
-    OverloadWatch : TCpuOverloadWatcher; //TODO:MED Delete this when ready for release.
     KeyGroupManager : TKeyGroupManager;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
   public
@@ -54,7 +53,6 @@ constructor TKeyGroupPlayer.Create(const aGlobals : TGlobals; const aKeyGroupMan
 begin
   Globals := aGlobals;
   ActiveRegions := TInterfaceList.Create;
-  OverloadWatch := TCpuOverloadWatcher.Create;
   KeyGroupManager := aKeyGroupManager;
 end;
 
@@ -62,7 +60,6 @@ destructor TKeyGroupPlayer.Destroy;
 begin
   KeyGroupManager := nil;
   ActiveRegions.Free;
-  OverloadWatch.Free;
   inherited;
 end;
 
@@ -85,7 +82,6 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    //OverloadWatch.Start(32, 44100, 'Key Group Player - Voice Triggered');
     ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 
@@ -97,7 +93,6 @@ begin
     end;
 
     kg := nil;
-    //OverloadWatch.Stop;
   end;
 
 

@@ -3,7 +3,7 @@ unit VamLib.ZeroObject;
 interface
 
 uses
-  VamLib.CpuOverloadWatcher,
+  //VamLib.CpuOverloadWatcher,
   SysUtils,
   Classes,
   ExtCtrls,
@@ -155,8 +155,6 @@ type
 
     MainThreadID : cardinal;
 
-    OverloadWatch : TCpuOverloadWatcher;
-
     // TODO: Instead of using a timer, it might be better to try and implement a
     // background window handle or something similer so the window handle has
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
@@ -275,8 +273,6 @@ end;
 
 constructor TMotherShip.Create;
 begin
-  OverloadWatch := TCpuOverloadWatcher.Create;
-
   MainThreadID := 0;
 
   DisableMessageSending := false;
@@ -313,8 +309,6 @@ begin
   FreeAndNil(AudioObjects);
   FreeAndNil(MainObjects);
   FreeAndNil(VclObjects);
-
-  OverloadWatch.Free;
 
   inherited;
 end;

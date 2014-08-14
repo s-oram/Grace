@@ -140,14 +140,17 @@ begin
   result := wd;
 end;
 
+
 procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : single);
 var
   wd : TCpuWatchData;
 begin
   // TODO:HIGH add conditional defines so all this is optional.
+  {
   wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
   wd.MaxTime := MaxProcessTime;
   QueryPerformanceCounter(wd.StartTime);
+  }
 end;
 
 procedure CpuOverloadWatch_Stop(const WatchName : string);
@@ -158,7 +161,7 @@ var
   xLoad : string;
 begin
   // TODO:HIGH add conditional defines so all this is optional.
-
+  {
   wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
   QueryPerformanceCounter(wd.EndTime);
   QueryPerformanceFrequency(freq);
@@ -169,7 +172,12 @@ begin
     xLoad := IntToStr(round(ProcessTime / wd.MaxTime * 100)) + '%';
     VamLib.LoggingProxy.Log.LogError('CPU Overload (' + WatchName + ') Load = ' + xLoad);
   end;
+  }
 end;
+
+
+
+
 
 
 //==============================================================================================
