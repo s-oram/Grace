@@ -613,6 +613,7 @@
 			<DCCReference Include="Lucidity.StateManager.DataClasses.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas"/>
 			<DCCReference Include="Third Party File Support\Lucidity.SfzOpcodeConversion.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
