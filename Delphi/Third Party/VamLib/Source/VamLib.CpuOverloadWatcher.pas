@@ -142,8 +142,10 @@ end;
 
 
 procedure CpuOverloadWatch_Start(const WatchName : string; const MaxProcessTime : single);
+{
 var
   wd : TCpuWatchData;
+}
 begin
   // TODO:HIGH add conditional defines so all this is optional.
   {
@@ -154,11 +156,13 @@ begin
 end;
 
 procedure CpuOverloadWatch_Stop(const WatchName : string);
+{
 var
   wd : TCpuWatchData;
   freq:Int64;
   ProcessTime:single;
   xLoad : string;
+}
 begin
   // TODO:HIGH add conditional defines so all this is optional.
   {
