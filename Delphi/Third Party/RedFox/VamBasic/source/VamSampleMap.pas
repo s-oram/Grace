@@ -289,6 +289,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   SysUtils,
   VamLib.WinUtils,
   VamLib.Utils,
@@ -2214,7 +2215,6 @@ begin
   // This method returns information about the current state of the sample map display.
   // The GUI can use this information to sync other GUI components to reflect the current
   // state of the sample map.
-
   aRegion := nil;
 
   if (not assigned(aRegion)) and (ProposedSampleRegions.Count > 0) then

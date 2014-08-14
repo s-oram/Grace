@@ -10,13 +10,14 @@ procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVam
 procedure ResizeSelectedRegions(
     const FocusedRegion:TVamSampleRegion;
     const Regions:TVamSampleRegionList;
-    const KeyOffset, VelocityOffset : integer;
+    KeyOffset, VelocityOffset : integer;
     const Handle : TRegionHandleID;
     const Snapping : boolean );
 
 implementation
 
 uses
+  //VamLib.LoggingProxy,
   SysUtils,
   VamLib.Utils,
   VamLib.Collections.Lists,
@@ -361,6 +362,11 @@ begin
           aRegion.MovedHighKey := tx-1;
         end;
 
+        if aRegion.MovedLowKey = aRegion.MovedHighKey+1 then
+        begin
+          aRegion.MovedHighKey := aRegion.MovedLowKey;
+        end;
+
         if aRegion.RootNote < aRegion.MovedLowKey
           then aRegion.MovedRootNote := aRegion.MovedLowKey;
       end;
@@ -374,6 +380,11 @@ begin
           tx := aRegion.MovedLowKey;
           aRegion.MovedLowKey  := aRegion.MovedHighKey + 1;
           aRegion.MovedHighKey := tx - 1;
+        end;
+
+        if aRegion.MovedHighKey = aRegion.MovedLowKey-1 then
+        begin
+          aRegion.MovedLowKey := aRegion.MovedHighKey;
         end;
 
         if aRegion.RootNote > aRegion.MovedHighKey
@@ -390,6 +401,11 @@ begin
           aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
           aRegion.MovedHighVelocity := tx - 1;
         end;
+
+        if aRegion.MovedHighVelocity = aRegion.MovedLowVelocity-1 then
+        begin
+          aRegion.MovedLowVelocity := aRegion.MovedHighVelocity;
+        end;
       end;
 
       if (Handle = rhBottomLeft) or (Handle = rhBottom) or (Handle = rhBottomRight) then
@@ -401,6 +417,11 @@ begin
           tx := aRegion.MovedLowVelocity;
           aRegion.MovedLowVelocity  := aRegion.MovedHighVelocity + 1;
           aRegion.MovedHighVelocity := tx - 1;
+        end;
+
+        if aRegion.MovedLowVelocity = aRegion.MovedHighVelocity+1 then
+        begin
+          aRegion.MovedHighVelocity := aRegion.MovedLowVelocity;
         end;
       end;
 
@@ -459,7 +480,7 @@ end;
 procedure ResizeSelectedRegions(
     const FocusedRegion:TVamSampleRegion;
     const Regions:TVamSampleRegionList;
-    const KeyOffset, VelocityOffset : integer;
+    KeyOffset, VelocityOffset : integer;
     const Handle : TRegionHandleID;
     const Snapping : boolean );
 var
@@ -471,6 +492,20 @@ var
   VertSmartSnapDisable : boolean;
   HorzSmartSnapDisable : boolean;
 begin
+  case Handle of
+    rhNone:
+    begin
+      KeyOffset      := 0;
+      VelocityOffset := 0;
+    end;
+    rhTop:    KeyOffset      := 0;
+    rhBottom: KeyOffset      := 0;
+    rhRight:  VelocityOffset := 0;
+    rhLeft:   VelocityOffset := 0;
+  end;
+
+  if (KeyOffset = 0) and (VelocityOffset = 0) then exit;
+
   if not Snapping then
   begin
     ApplyRegionResize(Regions, Handle, KeyOffset, VelocityOffset);
