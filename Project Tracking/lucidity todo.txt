@@ -50,6 +50,10 @@ bug:
 =============================================================================
      TODO HIGH
 =============================================================================
+Sample Map editor
+- disable horizontal snapping when zoomed in close.
+
+
 - The sample map editor needs to reset all root note option to tune root notes.
   - detect root note in filename
   - detect root note by detecting sample frequency.
