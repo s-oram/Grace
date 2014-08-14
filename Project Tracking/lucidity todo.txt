@@ -36,24 +36,37 @@ Bug
 Bug
 - Dragging over the sample map with a sample will cause the sample selection to change.
 
+bug:
+- Voice stealing causes clicks. It's very noticable when using a sine wave waveform
+  with a part that is busy enough to cause voice stealing. 
+
+bug:
+- disable the temporary file creation when importing SFZ format files.
+
+bug: 
+- many of the Camel Factory Sounds don't load because the sample opcode is directory
+  after the region opcode.
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- The sample map editor needs to reset all root note option to tune root notes.
+  - detect root note in filename
+  - detect root note by detecting sample frequency.
+  - detect root note with regards to sample boundary.
 
+- it would be nice to have a bulk SFZ conversion.
 
-try using exponential scalling for the filter frequency instead
-of the 1v/oct type scaling I am currently using.
+- Add a "Save Patch" command.
 
-Make some tweaks to the sample map drawing to counterbalance the small size of the 
-sample map area. 
-thunderlink://messageid=CAG2OC08cgYOCXouxvJOUeVUba+CtwNOYquv6n2eguVGBdRgnoQ@mail.gmail.com
+- horziontal snapping should be disabled when placing multiple samples.
+
+- The mod slot needs something to indicate the mod slot is being used.
 
 - Lucidity Patch Format  
   -- what happens when loading incomplete patch files. IE. patch files with not
      all data included. 
   -- what happens when loading a patch file with incorrectly named XML elements. 
-
-SFZ import!
 
 Check out this version of NewAC - WavPack and MP3 import maybe.
 https://code.google.com/p/newac/wiki/Introduction
