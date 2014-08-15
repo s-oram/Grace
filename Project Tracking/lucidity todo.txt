@@ -32,9 +32,7 @@ Bug
 Bug
 - Dragging over the sample map with a sample will cause the sample selection to change.
 
-bug:
-- Voice stealing causes clicks. It's very noticable when using a sine wave waveform
-  with a part that is busy enough to cause voice stealing. 
+
 
 bug: 
 - confirm these SFZ patches should work.

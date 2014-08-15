@@ -709,7 +709,7 @@ procedure TLucidityVoice.QuickRelease;
 begin
   if fHasBeenQuickReleased = false then
   begin
-    AmpEnv.QuickRelease(35);
+    AmpEnv.QuickRelease(135);
     fHasBeenReleased      := true;
     fHasBeenQuickReleased := true;
   end;
