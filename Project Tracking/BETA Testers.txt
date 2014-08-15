@@ -25,17 +25,12 @@ NNecaise@live.com
 thunderlink://messageid=BLU436-SMTP16377750A546910B9CDAC3FBBEB0@phx.gbl
 - Sent Lucidity 0.0.1.41
 
-Sam
-sizeoverload@gmail.com
-- Keen to test Lucidity.
-thunderlink://messageid=58A0193A-0107-4E54-AF0A-DF34B488C328@gmail.com
-- Sent Lucidity 0.0.1.41
-
 Ian Halbwachs
 preferred.nomenclature@gmail.com
 - Keen to test Lucidity.
 thunderlink://messageid=CA+8c1wQ=vr+MBU5ZC8TuCBSv+6Yoo2F9_WN8B660QX_RTQaL4Q@mail.gmail.com
 - Sent Lucidity 0.0.1.41
+  thunderlink://messageid=908A3565-3FD0-4C6E-89D2-541D22074AA8@gmail.com
 
 
 Joseph
@@ -134,6 +129,7 @@ stoolzo@gmail.com
   BETA Send History:
     - Lucidity 0.0.1.33
     NOTE: Do not send anything again unless I hear back from last mail out.
+    **DO NOT SEND**
 
 Marco
 djfonplaz@gmail.com
@@ -142,6 +138,7 @@ thunderlink://messageid=CAKEXtDe15ZdA5PdmvtJ=eeim_v=fQH3NBp-08-pQCSauD8SdEg@mail
   - Lucidity 0.0.1.33
     thunderlink://messageid=CAKEXtDfdFJMEUKzY9fBAqf-kd6OYnm1BwHo9uzeUzpqoRArZtA@mail.gmail.com
     -- Not interested in Lucidity. Do not send any more builds.
+    **DO NOT SEND**
 
 Michael Worth
 michaelworth@hotmail.ca
@@ -149,3 +146,13 @@ thunderlink://messageid=SNT404-EAS2462654ECBB3ECF3D721BCDBD580@phx.gbl
   BETA Send History:
     - Lucidity 0.0.1.33
     NOTE: Do not send anything again unless I hear back from last mail out.
+    **DO NOT SEND**
+
+Sam
+sizeoverload@gmail.com
+- Keen to test Lucidity.
+- Mac Only. 
+thunderlink://messageid=58A0193A-0107-4E54-AF0A-DF34B488C328@gmail.com
+- Sent Lucidity 0.0.1.41
+  thunderlink://messageid=856B01FB-34E5-4786-9675-56C67F0E424F@gmail.com
+  **DO NOT SEND**

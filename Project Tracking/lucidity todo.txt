@@ -36,6 +36,10 @@ bug:
 - Voice stealing causes clicks. It's very noticable when using a sine wave waveform
   with a part that is busy enough to cause voice stealing. 
 
+bug: 
+- confirm these SFZ patches should work.
+thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
+
 =============================================================================
      TODO HIGH
 =============================================================================
