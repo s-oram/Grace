@@ -802,6 +802,7 @@ begin
       end;
     end;
 
+    UpdateSampleRegions;
   finally
     SetLength(NewRegions, 0);
   end;
