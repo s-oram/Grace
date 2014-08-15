@@ -1362,7 +1362,6 @@ begin
         if assigned(OnFocusRegion)        then OnFocusRegion(self, nil);
         if assigned(OnDeselectAllRegions) then OnDeselectAllRegions(self);
         if assigned(OnDragSelectStart)    then OnDragSelectStart(self);
-
       end;
     end;
   end;

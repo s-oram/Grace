@@ -22,6 +22,7 @@ Bug Fix:
 - Dragging a sample over the sample map would change the current sample selection.
 - Voice stealing could cause clicks as active voices are quickly muted.
 - added a minumum attack time of 3ms to the AHDSR envelopes.
+- newly added regions are now selected in the sample map display.
 
 
 === BETA v0.0.1.41 (14-Aug-2014) ===

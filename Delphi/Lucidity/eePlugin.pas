@@ -957,7 +957,7 @@ begin
     // signal to the GUI that the focus has changed.
 
     RefreshManagedPluginParameterValues;
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -988,7 +988,7 @@ begin
 
     RefreshManagedPluginParameterValues;
     // signal to the GUI that the focus has changed.
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -1010,7 +1010,7 @@ begin
 
     RefreshManagedPluginParameterValues;
     // signal to the GUI that the focus has changed.
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -1032,7 +1032,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.ClearSelected;
@@ -1041,7 +1041,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteKeyGroup(const aKeyGroupName: string);
@@ -1056,7 +1056,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteSelectedRegions;
@@ -1065,7 +1065,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DuplicateSelectedRegions;
@@ -1074,7 +1074,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
+  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 

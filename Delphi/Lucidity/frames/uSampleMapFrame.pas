@@ -2,6 +2,8 @@ unit uSampleMapFrame;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
@@ -107,6 +109,8 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   uGuiUtils,
   VamLib.Throttler,
   VamLib.Animation,
@@ -330,6 +334,8 @@ var
   id : TGUID;
   KG : IKeyGroup;
   NameA, NameB : string;
+
+  Text : string;
 begin
   if not assigned(Plugin) then exit;
 
@@ -377,6 +383,11 @@ begin
         DisplayRegion.IsSelected    := MapRegion.GetProperties^.IsSelected;
         DisplayRegion.IsFocused     := MapRegion.GetProperties^.IsFocused;
 
+        Text := IntToStr(MapRegion.GetProperties^.LowNote) + ' ' + IntToStr(MapRegion.GetProperties^.HighNote)  + ' ' + IntToStr(MapRegion.GetProperties^.LowVelocity)  + ' ' + IntToStr(MapRegion.GetProperties^.HighVelocity);
+        Text := 'Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
+        Log.LogMessage(Text);
+
+
         NameA := MapRegion.GetKeyGroup.GetName;
         NameB := KG.GetName;
 
@@ -393,16 +404,11 @@ begin
     SampleMap.EndUpdate;
     SampleMap.Invalidate;
   end;
-
 end;
 
 procedure TSampleMapFrame.SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
 begin
   Plugin.SampleMap.SelectRegion(aRegion.UniqueID);
-
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
-
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
@@ -427,9 +433,6 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectRegion(aRegion.UniqueID);
-
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
@@ -443,9 +446,6 @@ begin
 
   SG := Plugin.FocusedKeyGroup;
   Plugin.SampleMap.DeselectOtherRegions(aRegion.UniqueID);
-
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
@@ -459,9 +459,6 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectAllRegions;
-
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
@@ -497,8 +494,6 @@ begin
     MapRegion.GetProperties^.RootNote     := aRegion.MovedRootNote;
   end;
 
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
 end;
 
@@ -544,8 +539,8 @@ begin
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
-    UpdateSampleRegions;
     UpdateRegionInfoDisplay;
+    UpdateSampleRegions;
   end;
 
 
@@ -802,7 +797,7 @@ begin
       end;
     end;
 
-    UpdateSampleRegions;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   finally
     SetLength(NewRegions, 0);
   end;
@@ -865,8 +860,8 @@ begin
     Plugin.SampleMap.DeleteRegion(OldRegion.UniqueID);
   end;
 
-  UpdateRegionInfoDisplay;
-  UpdateSampleRegions;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+
 end;
 
 
@@ -889,14 +884,18 @@ begin
     for c1 := 0 to aRegions.Count-1 do
     begin
       RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
-      RegionCreateInfo.LowNote       := aRegions[c1].LowKey;
-      RegionCreateInfo.HighNote      := aRegions[c1].HighKey;
-      RegionCreateInfo.LowVelocity   := aRegions[c1].LowVelocity;
-      RegionCreateInfo.HighVelocity  := aRegions[c1].HighVelocity;
-      RegionCreateInfo.RootNote      := aRegions[c1].RootNote;
+      RegionCreateInfo.LowNote       := aRegions[c1].MovedLowKey;
+      RegionCreateInfo.HighNote      := aRegions[c1].MovedHighKey;
+      RegionCreateInfo.LowVelocity   := aRegions[c1].MovedLowVelocity;
+      RegionCreateInfo.HighVelocity  := aRegions[c1].MovedHighVelocity;
+      RegionCreateInfo.RootNote      := aRegions[c1].MovedRootNote;
       RegionCreateInfo.AudioFileName := aRegions[c1].FileName;
 
-      NewRegions[c1] := Plugin.NewRegion(RegionCreateInfo);
+      //NewRegions[c1] := Plugin.NewRegion(RegionCreateInfo);
+
+      Text := IntToStr(RegionCreateInfo.LowNote) + ' ' + IntToStr(RegionCreateInfo.HighNote)  + ' ' + IntToStr(RegionCreateInfo.LowVelocity)  + ' ' + IntToStr(RegionCreateInfo.HighVelocity);
+      Text := 'New Copy Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
+      Log.LogMessage(Text);
     end;
 
 
@@ -904,6 +903,22 @@ begin
     //====== update sample region selections ====================================
     Plugin.ClearSelected;
 
+    {
+    if NewRegionCount >= 1 then
+    begin
+      for c1 := 0 to NewRegionCount-1 do
+      begin
+        if assigned(NewRegions[c1]) then
+        begin
+          Plugin.SelectRegion(NewRegions[c1].GetProperties^.UniqueID);
+        end;
+      end;
+
+      Plugin.FocusRegion(NewRegions[0].GetProperties^.UniqueID);
+    end;
+    }
+
+    {
     if NewRegionCount = 1 then
     begin
       if assigned(NewRegions[0]) then
@@ -923,7 +938,9 @@ begin
         end;
       end;
     end;
+    }
 
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
   finally
     SetLength(NewRegions, 0);
   end;
