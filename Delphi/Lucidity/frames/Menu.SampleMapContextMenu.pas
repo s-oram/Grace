@@ -137,12 +137,17 @@ begin
   Tag := (Sender as TMenuItem).Tag;
 
   case Tag of
-    1: Plugin.DeleteSelectedRegions;
+    1:
+    begin
+      Plugin.DeleteSelectedRegions;
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+    end;
 
     2:
     begin
       KeyGroupName := (Sender as TMenuItem).Hint;
       Plugin.MoveSelectedRegionsToKeyGroup(KeyGroupName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
     end;
   else
     raise Exception.Create('Unexpected tag value.');

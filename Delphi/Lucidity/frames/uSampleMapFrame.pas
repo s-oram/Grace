@@ -891,7 +891,7 @@ begin
       RegionCreateInfo.RootNote      := aRegions[c1].MovedRootNote;
       RegionCreateInfo.AudioFileName := aRegions[c1].FileName;
 
-      //NewRegions[c1] := Plugin.NewRegion(RegionCreateInfo);
+      NewRegions[c1] := Plugin.NewRegion(RegionCreateInfo);
 
       Text := IntToStr(RegionCreateInfo.LowNote) + ' ' + IntToStr(RegionCreateInfo.HighNote)  + ' ' + IntToStr(RegionCreateInfo.LowVelocity)  + ' ' + IntToStr(RegionCreateInfo.HighVelocity);
       Text := 'New Copy Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
@@ -903,7 +903,7 @@ begin
     //====== update sample region selections ====================================
     Plugin.ClearSelected;
 
-    {
+
     if NewRegionCount >= 1 then
     begin
       for c1 := 0 to NewRegionCount-1 do
@@ -916,29 +916,6 @@ begin
 
       Plugin.FocusRegion(NewRegions[0].GetProperties^.UniqueID);
     end;
-    }
-
-    {
-    if NewRegionCount = 1 then
-    begin
-      if assigned(NewRegions[0]) then
-      begin
-        Plugin.FocusRegion(NewRegions[0].GetProperties^.UniqueID);
-      end;
-    end;
-
-
-    if NewRegionCount > 1 then
-    begin
-      for c1 := 0 to NewRegionCount-1 do
-      begin
-        if assigned(NewRegions[c1]) then
-        begin
-          Plugin.SelectRegion(NewRegions[c1].GetProperties^.UniqueID);
-        end;
-      end;
-    end;
-    }
 
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
   finally

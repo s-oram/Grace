@@ -13,6 +13,7 @@ bug
 
 Change:
 - Disabled horizontal sample map snapping.
+- re-worked the sample map region copy code. (Hold ALT to drag-copy a region.)
 
 Bug Fix:
 - SFZ Import: Previously Lucidity wasn't able to import a SFZ Opcode if it was 

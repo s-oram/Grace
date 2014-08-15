@@ -133,14 +133,16 @@ type
 
     fColors : array[0..10] of TRedFoxColorString;
 
-    IsCopyRegionActive : boolean;
-    IsDragSelectActive : boolean;
+    IsGrabbedByLeft         : boolean;
+    IsGrabbedByRight        : boolean;
+    IsDragDropSamplesActive : boolean;
+    IsCopyRegionActive      : boolean;
+    IsDragSelectActive      : boolean;
     LastDragSelectIndex : integer;
     DragSelectRect     : TRect;
-    IsGrabbedByLeft : boolean;
-    IsGrabbedByRight : boolean;
     WatchForDrag : boolean;
     IsDragActive : boolean;
+
     DeselectOthersOnMouseUp : boolean;
     MouseDownPos : TPoint;
     MouseDownRegion       : TVamSampleRegion;
@@ -386,20 +388,20 @@ begin
 end;
 
 
-procedure PrepareCopiedRegions(const Regions, ProposedRegions : TVamSampleRegionList);
+procedure PrepareCopiedRegions(const Dest, Source : TVamSampleRegionList);
 var
   c1 : integer;
   aRegion : TVamSampleRegion;
 begin
-  for c1 := 0 to Regions.Count-1 do
+  for c1 := 0 to Source.Count-1 do
   begin
-    if Regions[c1].IsSelected then
+    if Source[c1].IsSelected then
     begin
       aRegion := TVamSampleRegion.Create;
-      aRegion.AssignFrom(Regions[c1]);
-      ProposedRegions.Add(aRegion);
+      aRegion.AssignFrom(Source[c1]);
+      Dest.Add(aRegion);
 
-      Regions[c1].IsSelected := false;
+      Source[c1].IsSelected := false;
     end;
   end;
 end;
@@ -962,6 +964,8 @@ procedure TVamSampleMap.OleDragEnter(Sender: TObject; ShiftState: TShiftState; A
 var
   NewRegionCount : integer;
 begin
+  IsDragDropSamplesActive := true;
+
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
@@ -1007,6 +1011,8 @@ begin
     ProposedSampleRegions.Clear;
   end;
 
+  IsDragDropSamplesActive := false;
+
   Invalidate;
   RegionInfoChanged;
   ShowReplaceRegionMessage(false);
@@ -1015,13 +1021,15 @@ end;
 procedure TVamSampleMap.OleDragLeave(Sender: TObject);
 begin
   if ProposedSampleRegions.Count > 0 then ProposedSampleRegions.Clear;
-  Invalidate;
-  RegionInfoChanged;
-  ShowReplaceRegionMessage(false);
+  IsDragDropSamplesActive := false;
 
   MouseOverRegion := nil;
   MouseOverRegionHandle := rhNone;
   MouseOverRegionChanged(nil);
+
+  Invalidate;
+  RegionInfoChanged;
+  ShowReplaceRegionMessage(false);
 end;
 
 function TVamSampleMap.FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;
@@ -1294,7 +1302,6 @@ begin
       //Move the clicked region to the front
       MoveRegionToFront(MouseDownRegion);
 
-
       //=== Logic for mouse down on a region with no modifier keys ===
       if not((ssCtrl in Shift) {or (ssAlt in Shift)} or (ssShift in Shift)) then
       begin
@@ -1337,6 +1344,8 @@ begin
         and (not(ssShift in Shift)) then
       begin
         IsCopyRegionActive := true;
+        PrepareCopiedRegions(ProposedSampleRegions, SampleRegions);
+        Invalidate;
       end;
 
 
@@ -1416,6 +1425,30 @@ begin
   end;
 
 
+  if (IsGrabbedByLeft) and (IsCopyRegionActive) then
+  begin
+    CurKey      := PixelToSampleMapPos(Point(x, y)).X;
+    CurVelocity := PixelToSampleMapPos(Point(x, y)).Y;
+
+    DistKey      := CurKey - OriginKey;
+    DistVelocity := CurVelocity - OriginVelocity;
+
+    if (abs(DistKey) > abs(DistVelocity)) and (ssCtrl in Shift) then DistVelocity := 0;
+    if (abs(DistVelocity) > abs(DistKey)) and (ssCtrl in Shift) then DistKey      := 0;
+
+    if (DistKey <> LastDistKey) or (DistVelocity <> LastDistVelocity) then
+    begin
+      LastDistKey := DistKey;
+      LastDistVelocity := DistVelocity;
+
+      MoveSelectedRegions(MouseDownRegion, ProposedSampleRegions, DistKey, DistVelocity, IsSnapping);
+
+      Invalidate;
+      RegionInfoChanged;
+    end;
+  end;
+
+
   if (IsGrabbedByLeft) and (assigned(MouseDownRegion)) and (MouseDownRegionHandle = rhNone) then
   begin
     CurKey      := PixelToSampleMapPos(Point(x, y)).X;
@@ -1437,7 +1470,6 @@ begin
       Invalidate;
       RegionInfoChanged;
     end;
-
   end;
 
 
@@ -1634,8 +1666,6 @@ begin
     //Finalise copied regions..
     if IsCopyRegionActive then
     begin
-      PrepareCopiedRegions(SampleRegions, ProposedSampleRegions);
-
       if assigned(OnNewCopiedRegions) then OnNewCopiedRegions(self, ProposedSampleRegions);
       ProposedSampleRegions.Clear;
     end;
@@ -1839,34 +1869,6 @@ begin
     end;
   end;
 
-
-  // Draw the regions being copied at their original position.
-  if IsCopyRegionActive then
-  begin
-    for c1 := SampleRegions.Count-1 downto 0 do
-    begin
-      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
-      begin
-        if SampleRegions[c1].IsInOtherKeyGroup = false
-          then aColor := Color_Region
-          else aColor := Color_OtherKeyGroup;
-
-        if SampleRegions[c1].IsSampleError then
-        begin
-          ErrorColor := Color_RegionError;
-          ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
-          ErrorColor.A := aColor.A;
-          aColor := ErrorColor;
-        end;
-
-        DrawSampleRegion(SampleRegions[c1], aColor, false);
-      end;
-    end;
-  end;
-
-
-
-
   // Draw moving regions... (includes copied regions destination position)
   for c1 := SampleRegions.Count-1 downto 0 do
   begin
@@ -1875,9 +1877,6 @@ begin
       if SampleRegions[c1].IsInOtherKeyGroup = false
         then aColor := Color_RegionFocused
         else aColor := Color_OtherKeyGroupSelected;
-
-      if IsCopyRegionActive
-        then aColor := Color_RegionFocused;
 
       if SampleRegions[c1].IsSampleError then
       begin
@@ -2003,20 +2002,54 @@ begin
   end;
 
 
-
-
-  //==== draw the proposed sample regions ==============
-  aColor := Color_ProposedRegions;
-  if (ProposedSampleRegions.Count > 0) and (ProposedMapInfo.IsFullKeyboardSpread = false) then
+  // Draw the regions being copied at their original position.
+  if IsCopyRegionActive then
   begin
+    aColor := Color_ProposedRegions;
     for c1 := 0 to ProposedSampleRegions.Count-1 do
     begin
-      DrawSampleRegion(ProposedSampleRegions[c1], aColor, false);
+      DrawSampleRegion(ProposedSampleRegions[c1], aColor, true);
     end;
-  end else
-  if (ProposedSampleRegions.Count > 0) and (ProposedMapInfo.IsFullKeyboardSpread = true) then
+
+    {
+    for c1 := SampleRegions.Count-1 downto 0 do
+    begin
+      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
+      begin
+        if SampleRegions[c1].IsInOtherKeyGroup = false
+          then aColor := Color_Region
+          else aColor := Color_OtherKeyGroup;
+
+        if SampleRegions[c1].IsSampleError then
+        begin
+          ErrorColor := Color_RegionError;
+          ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
+          ErrorColor.A := aColor.A;
+          aColor := ErrorColor;
+        end;
+
+        DrawSampleRegion(SampleRegions[c1], aColor, false);
+      end;
+    end;
+    }
+  end;
+
+
+  //==== draw the proposed drag and drop sample regions ==============
+  if IsDragDropSamplesActive then
   begin
-    DrawSampleRegion(ProposedSampleRegions.First, aColor, false);
+    aColor := Color_ProposedRegions;
+    if (ProposedSampleRegions.Count > 0) and (ProposedMapInfo.IsFullKeyboardSpread = false) then
+    begin
+      for c1 := 0 to ProposedSampleRegions.Count-1 do
+      begin
+        DrawSampleRegion(ProposedSampleRegions[c1], aColor, false);
+      end;
+    end else
+    if (ProposedSampleRegions.Count > 0) and (ProposedMapInfo.IsFullKeyboardSpread = true) then
+    begin
+      DrawSampleRegion(ProposedSampleRegions.First, aColor, false);
+    end;
   end;
 
 
