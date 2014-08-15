@@ -117,7 +117,7 @@ procedure TLucidityADSR.SetAttackTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fAttackTime := Value;
-  fADSR.AttackTime := Value * Value * Value * 8000;
+  fADSR.AttackTime := Value * Value * Value * 8000 + 3;
 end;
 
 procedure TLucidityADSR.SetHoldTime(const Value: single);
