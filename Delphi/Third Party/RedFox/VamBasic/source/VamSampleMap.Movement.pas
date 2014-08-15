@@ -260,12 +260,11 @@ begin
     NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
     NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
 
-    cvVertA := FindClosestValue(NewBounds.Left,  VertSnapPoints);
+    cvVertA := FindClosestValue(NewBounds.Left,    VertSnapPoints);
     cvVertB := FindClosestValue(NewBounds.Right+1, VertSnapPoints)-1;
 
     cvHorzA := FindClosestValue(NewBounds.Bottom, HorzSnapPoints);
-    cvHorzB := FindClosestValue(NewBounds.Top+1,    HorzSnapPoints)-1;
-
+    cvHorzB := FindClosestValue(NewBounds.Top+1,  HorzSnapPoints)-1;
 
     DistA := abs(cvVertA - NewBounds.Left);
     DistB := abs(cvVertB - NewBounds.Right);
@@ -285,7 +284,11 @@ begin
 
     FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
 
-    ModifiedOffsetX := KeyOffset + SnapOffsetX;
+    //==========================================================================
+    // Ignore Horizontal snapping.
+    //ModifiedOffsetX := KeyOffset + SnapOffsetX;
+    ModifiedOffsetX := KeyOffset;
+    //==========================================================================
     ModifiedOffsetY := VelocityOffset + SnapOffsetY;
 
     ModifiedOffsetX := Clamp(ModifiedOffsetX, MinKeyOffset,      MaxKeyOffset);
@@ -549,7 +552,8 @@ begin
       raise Exception.Create('Type not handled.');
     end;
 
-
+    //=========================================================================================
+    {
     case Handle of
       rhBottomLeft,
       rhTopLeft,
@@ -577,6 +581,12 @@ begin
     else
       raise Exception.Create('Type not handled.');
     end;
+    }
+
+    // Try to ignore horizontal snapping - this is untested.
+    ModifiedKeyOffset := KeyOffset;
+    //=========================================================================================
+
 
     CheckSmartSnappingState(FocusedRegion, KeyOffset, VelocityOffset, Handle, VertSmartSnapDisable, HorzSmartSnapDisable);
     if VertSmartSnapDisable
