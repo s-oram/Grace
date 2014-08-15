@@ -15,7 +15,7 @@ Bug Fix:
   on the same line as a <region> or <group> opcode. Lucidity expected all <region>
   and <group> opcodes to seperated on individual lines. 
 - The AHDSR envelopes ignored the "Velocity Depth" parameter. 
-
+- Dragging a sample over the sample map would change the current sample selection.
 
 
 

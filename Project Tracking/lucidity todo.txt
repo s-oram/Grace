@@ -29,9 +29,6 @@ Bug
 - Andy reports the Voice Mod frame tab text is too large and overflows 
   over the tabs.
 
-Bug
-- Dragging over the sample map with a sample will cause the sample selection to change.
-
 bug: 
 - confirm these SFZ patches should work.
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com

@@ -885,9 +885,6 @@ begin
   sr.HighKey      := RegionAtDropPoint.HighKey;
   sr.LowVelocity  := RegionAtDropPoint.LowVelocity;
   sr.HighVelocity := RegionAtDropPoint.HighVelocity;
-
-
-
 end;
 
 function TVamSampleMap.CalcProposedSampleRegionKeyWidth(aPoint: TPoint): integer;
@@ -1021,6 +1018,10 @@ begin
   Invalidate;
   RegionInfoChanged;
   ShowReplaceRegionMessage(false);
+
+  MouseOverRegion := nil;
+  MouseOverRegionHandle := rhNone;
+  MouseOverRegionChanged(nil);
 end;
 
 function TVamSampleMap.FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity: integer): TVamSampleRegion;

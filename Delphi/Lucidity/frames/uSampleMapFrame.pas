@@ -809,7 +809,7 @@ end;
 
 procedure TSampleMapFrame.SampleMapOleDragEnter(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
 begin
-  Plugin.ClearSelected;
+  //Plugin.ClearSelected;
 end;
 
 procedure TSampleMapFrame.SampleMapReplaceRegion(Sender: TObject; const NewRegion, OldRegion: TVamSampleRegion; const Data: IVamDragData);
