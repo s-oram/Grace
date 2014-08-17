@@ -1,1 +1,0 @@
-This demo shows the use of generic streams in simple client-server network system used for sending sound messages. Indy components are used in this demo to implement the network layer.
