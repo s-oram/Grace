@@ -3,6 +3,8 @@ unit uMainForm;
 interface
 
 uses
+  ACS_Wave,
+  ACS_smpeg,
   SfzParser,
   NativeXML,
   Lucidity.Sfz,
@@ -54,6 +56,7 @@ type
     VamTextBox1: TVamTextBox;
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     Edit1: TEdit;
+    FileOpenDialog1: TFileOpenDialog;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -184,24 +187,23 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 // c:\test1\test2\
 var
-  strings : TStringList;
-  c1: Integer;
+  Mp3In : TMP3In;
+  wavOut : TWaveOut;
 begin
-  Strings := TStringList.Create;
+  mp3In := TMp3In.Create(nil);
+  wavOut := TWaveOut.Create(nil);
   try
-    ExplodeSfzString(Edit1.Text, Strings);
-
-    Memo1.Clear;
-
-    for c1 := 0 to Strings.Count-1 do
+    if FileOpenDialog1.Execute then
     begin
-      Memo1.Lines.Add(Strings[c1]);
+      mp3In.FileName := FileOpenDialog1.FileName;
+      wavOut.Input := mp3In;
+      wavOut.FileName := 'D:\A WAve Convert Test.wav';
+      WavOut.BlockingRun;
     end;
   finally
-    Strings.Free;
+    mp3In.free;
+    WavOut.Free;
   end;
-
-
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);

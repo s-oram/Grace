@@ -205,4 +205,11 @@ object Form1: TForm1
     TabOrder = 7
     Text = '<region> sample=tom one.wav lokey=12'
   end
+  object FileOpenDialog1: TFileOpenDialog
+    FavoriteLinks = <>
+    FileTypes = <>
+    Options = []
+    Left = 816
+    Top = 368
+  end
 end
