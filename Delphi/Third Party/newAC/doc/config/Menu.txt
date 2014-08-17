@@ -1,0 +1,127 @@
+Format: 1.4
+
+
+Title: NewAC
+SubTitle: v2.6.1
+
+Footer: Content (c) 2008-2010 Andrei Borovsky. Design (c) 2008 Wayne Thursby. <b><u><a href="http://symmetrica.net/newac">Go to the project's main page</a></u></b>
+
+# You can add a timestamp to your documentation like one of these:
+# Timestamp: Generated on month day, year
+# Timestamp: Updated mm/dd/yyyy
+# Timestamp: Last updated mon day
+#
+#   m     - One or two digit month.  January is "1"
+#   mm    - Always two digit month.  January is "01"
+#   mon   - Short month word.  January is "Jan"
+#   month - Long month word.  January is "January"
+#   d     - One or two digit day.  1 is "1"
+#   dd    - Always two digit day.  1 is "01"
+#   day   - Day with letter extension.  1 is "1st"
+#   yy    - Two digit year.  2006 is "06"
+#   yyyy  - Four digit year.  2006 is "2006"
+#   year  - Four digit year.  2006 is "2006"
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# --------------------------------------------------------------------------
+
+
+Group: Documentation  {
+
+   File: Quick Introduction to NewAC  (no auto-title, doc\txt\introduction.txt)
+   File: About the Documentation  (doc\txt\about documentation.txt)
+   File: Component Writer's Guide  (doc\txt\cwguide.txt)
+   File: License  (doc\txt\license.txt)
+   File: Tips &amp; Tricks  (doc\txt\tips and tricks.txt)
+   File: About New Audio Components  (doc\txt\newac.txt)
+   File: NewAC Main Features List  (doc\txt\features.txt)
+   }  # Group: Documentation
+
+Group: Main Units  {
+
+   File: ACS_AudioMix  (src\ACS_AudioMix.pas)
+   File: ACS_CDROM  (src\ACS_CDROM.pas)
+   File: ACS_Classes  (src\ACS_Classes.pas)
+   File: ACS_Converters  (src\ACS_Converters.pas)
+   File: ACS_DXAudio  (src\ACS_DXAudio.pas)
+   File: ACS_FLAC  (src\ACS_FLAC.pas)
+   File: ACS_Filters  (src\ACS_Filters.pas)
+   File: ACS_LAME  (src\ACS_LAME.pas)
+   File: ACS_MAC  (src\ACS_MAC.pas)
+   File: ACS_Misc  (src\ACS_Misc.pas)
+   File: ACS_MPC  (src\ACS_MPC.pas)
+   File: ACS_OptimFROG  (src\ACS_OptimFROG.pas)
+   File: ACS_SMPEG  (src\ACS_smpeg.pas)
+   File: ACS_Streams  (src\ACS_Streams.pas)
+   File: ACS_TTA  (src\ACS_TTA.pas)
+   File: ACS_Tags  (src\ACS_Tags.pas)
+   File: ACS_Vorbis  (src\ACS_Vorbis.pas)
+   File: ACS_WavPack  (src\ACS_WavPack.pas)
+   File: ACS_Wave  (src\ACS_Wave.pas)
+   File: ACS_WinMedia  (src\ACS_WinMedia.pas)
+   File: ACS_AAC  (src\ACS_AAC.pas)
+   File: AudioDMO  (src\AudioDMO.pas)
+   File: AudioPass  (src\AudioPass.pas)
+   File: AuSampleRate  (src\AuSampleRate.pas)
+   File: AuASIO  (src\AuASIO.pas)
+   File: AuSynch  (src\AuSynch.pas)
+   File: NewACDTS  (src\NewACDTS.pas)
+   File: NewAC_AVI  (src\NewAC_AVI.pas)
+   File: NewAC_DSP  (src\NewAC_DSP.pas)
+   File: NewACAC3  (src\NewACAC3.pas)
+   File: NewACIndicators  (src\NewACIndicators.pas)
+   File: NewACDSAudio  (no auto-title, src\NewACDSAudio.pas)
+   File: ACS_AAC  (src\ACS_AAC.pas)
+   }  # Group: Main Units
+
+Group: Utility Units  {
+
+   File: ACS_Misc  (src\ACS_Misc.pas)
+   File: ACS_Procs  (src\ACS_Procs.pas)
+   File: ACS_Reg  (src\acs_reg.pas)
+   File: ACS_Types  (src\ACS_Types.pas)
+   }  # Group: Utility Units
+
+Group: Tutorials  {
+
+   File: Audio Processor  (demos\Tutorial\AudioProcessor\Main.pas)
+   File: Components Demo  (demos\Tutorial\ComponentsDemo\ComponentsDemo.pas)
+   File: Rip'n'Listen Demo  (demos\Recorders-rippers\Rip'n'listen\Main.pas)
+   }  # Group: Tutorials
+
+File: ACS_MAC TestCases  (dunit\dunit\Test_ACS_MAC.pas)
+File: ACS_WavPack TestCases  (dunit\dunit\Test_ACS_WavPack.pas)
+File: TestFLACEncode  (dunit\dunit\Test_ACS_FLAC.pas)
+File: uLog.pas  (dunit\dunit\uLog.pas)
+File: uTestBase  (dunit\dunit\uTestBase.pas)
+File: uUtility  (dunit\dunit\uUtility.pas)
+
+Group: Index  {
+
+   Index: Everything
+   Class Index: Classes
+   Constant Index: Constants
+   Function Index: Functions
+   Property Index: Properties
+   Type Index: Types
+   Variable Index: Variables
+   File Index: Files
+   }  # Group: Index
+

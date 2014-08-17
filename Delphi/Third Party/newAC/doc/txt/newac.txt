@@ -1,0 +1,15 @@
+Title: About New Audio Components
+
+	
+	New Audio Components (NewAC) are designed to help your Delphi programs perform different sound processing tasks. With NewAC you can play audio stored in many formats (wav, Ogg Vorbis, FLAC, Monkey Audio, WavPack, MP3, Windows WMA, AAC (M4A), True Audio (TTA), OptimFROG, TAK, Musepack, DTS 5.1, AC-3). You can also extract audio encoded in AVI files, MP4 files, DTS or AC-3 from DVD VOB files and CD/DVD images. The playback is performed in the background, and although your application can control it (stop, pause, move forward and backward, play in a loop) it can perform other tasks while audio plays.
+	You can play sound not only from external files, but also from sound resources embedded into your program, and, in fact, from any stream providing audio data. But NewAC not only allows you to play sound, you can acquire audio data from such input devices as microphone or CD, from live audio server, and encode it into any of the audio formats mentioned above. While playing audio stored in a file or while writing audio content to a file you can manipulate tags supported by the chosen audio format. DIrectSound and ASIO systems may be used for both playback and recording.
+	In addition to all this, NewAC can perform some audio editing tasks, like mixing and concatenating audio streams, selecting fragments of streams, and performing sample rate and bits per sample conversions. NewAC an also perform some utility task, like splitting CD/DVD Audio image files and ripped files using cue-sheets and perform a gapless playback of several compositions.
+	Along with the full NewAC source code you will find a set of demos showing how to use different NewAC components. Some of these demos are in fact full featured programs that you can use for audio processing.
+
+	Some of the NewAC components require third-party DLLs. You can get these DLLs on the net, or at the official NewAC site. See the "Quick Introduction to NewAC" on where to get these DLLs.
+
+	The main NewAC site is http://symmetrica.net/newac.
+
+	Get the latest source for NewAC at Google Code (http://code.google.com/p/newac/source). 
+	
+	If your NewAc program doesn't work and you want some help, please read this page first: http://groups.google.com/group/newac-users/web/how-to-ask-questions-about-newac-in-a-smart-way.

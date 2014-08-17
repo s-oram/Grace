@@ -1,0 +1,19 @@
+
+Title: License
+
+New Audio Components package Copyright (c) 2002-2008 Andrei Borovsky.
+All rights reserved.
+Portions Copyright (c) 2007-2008 Sergei Borisov.
+
+The New Audio Components package is free. It may be used both in commercial and non-commercial software either in original or in modified form.
+The New Audio Components package can be freely distributed in any way and by any means provided this copyright notice is preserved.
+The third party libraries required by different NewAC components are distributed under different licenses. Check the appropriate licenses for more detail.
+
+NewAC developers have tried to make the New Audio Components package (software) as stable and reliable as possible but still we have to warn you of the following:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESSED 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.

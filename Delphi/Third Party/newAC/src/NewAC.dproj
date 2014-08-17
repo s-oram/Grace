@@ -1,0 +1,249 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A18D1CBE-E7E8-4395-B1C8-1C620E29D71A}</ProjectGuid>
+        <MainSource>NewAC.dpk</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Package</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <ProjectVersion>14.3</ProjectVersion>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <GenDll>true</GenDll>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_MinorVer>3</VerInfo_MinorVer>
+        <DCC_UsePackage>vcl;rtl;dbrtl;adortl;vcldb;vclx;bdertl;vcldbx;ibxpress;dsnap;cds;bdecds;qrpt;teeui;teedb;tee;dss;teeqr;visualclx;visualdbclx;dsnapcrba;dsnapcon;VclSmp;vclshlctrls;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;inetdb;nmfast;webdsnap;websnap;dbexpress;dbxcds;$(DCC_UsePackage)</DCC_UsePackage>
+        <VerInfo_Locale>1049</VerInfo_Locale>
+        <VerInfo_Build>2</VerInfo_Build>
+        <DCC_E>false</DCC_E>
+        <DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+        <DCC_K>false</DCC_K>
+        <DCC_S>false</DCC_S>
+        <DCC_N>true</DCC_N>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Description>New Audio Components v 2.6</DCC_Description>
+        <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+        <GenPackage>true</GenPackage>
+        <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+        <DCC_F>false</DCC_F>
+        <DCC_Optimize>false</DCC_Optimize>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.3.1.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=2.3.1.0</VerInfo_Keys>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>NewAC_Icon.ico</Icon_MainIcon>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <Icon_MainIcon>NewAC_Icon.ico</Icon_MainIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_DebugInformation>false</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="ACS_Wave.dcr"/>
+        <DCCReference Include="ACS_Vorbis.dcr"/>
+        <DCCReference Include="ACS_Misc.dcr"/>
+        <DCCReference Include="ACS_Converters.dcr"/>
+        <DCCReference Include="ACS_Filters.dcr"/>
+        <DCCReference Include="ACS_AudioMix.dcr"/>
+        <DCCReference Include="ACS_CDROM.dcr"/>
+        <DCCReference Include="ACS_LAME.dcr"/>
+        <DCCReference Include="ACS_Streams.dcr"/>
+        <DCCReference Include="ACS_MAC.dcr"/>
+        <DCCReference Include="ACS_FLAC.dcr"/>
+        <DCCReference Include="ACS_DXAudio.dcr"/>
+        <DCCReference Include="ACS_smpeg.dcr"/>
+        <DCCReference Include="AuSampleRate.dcr"/>
+        <DCCReference Include="ACS_WavPack.dcr"/>
+        <DCCReference Include="ACS_WinMedia.dcr"/>
+        <DCCReference Include="ACS_TTA.dcr"/>
+        <DCCReference Include="AudioPass.dcr"/>
+        <DCCReference Include="ACS_OptimFROG.dcr"/>
+        <DCCReference Include="ACS_MPC.dcr"/>
+        <DCCReference Include="ACS_TAK.dcr"/>
+        <DCCReference Include="AudioDMO.dcr"/>
+        <DCCReference Include="NewAC_AVI.dcr"/>
+        <DCCReference Include="NewAC_DSP.dcr"/>
+        <DCCReference Include="AuASIO.dcr"/>
+        <DCCReference Include="AuSynch.dcr"/>
+        <DCCReference Include="NewACDTS.dcr"/>
+        <DCCReference Include="NewACAC3.dcr"/>
+        <DCCReference Include="NewACIndicators.dcr"/>
+        <DCCReference Include="NewACDSAudio.dcr"/>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="ACS_Classes.pas"/>
+        <DCCReference Include="ACS_Wave.pas"/>
+        <DCCReference Include="ACS_Vorbis.pas"/>
+        <DCCReference Include="ACS_Misc.pas"/>
+        <DCCReference Include="ACS_Converters.pas"/>
+        <DCCReference Include="ACS_Filters.pas"/>
+        <DCCReference Include="acs_reg.pas"/>
+        <DCCReference Include="ACS_AudioMix.pas"/>
+        <DCCReference Include="VorbisFile.pas"/>
+        <DCCReference Include="VorbisEnc.pas"/>
+        <DCCReference Include="ogg.pas"/>
+        <DCCReference Include="Codec.pas"/>
+        <DCCReference Include="_CDRip.pas"/>
+        <DCCReference Include="ACS_CDROM.pas"/>
+        <DCCReference Include="ACS_LAME.pas"/>
+        <DCCReference Include="lame.pas"/>
+        <DCCReference Include="ACS_Streams.pas"/>
+        <DCCReference Include="_MSAcm.pas"/>
+        <DCCReference Include="waveconverter.pas"/>
+        <DCCReference Include="MACDll.pas"/>
+        <DCCReference Include="ACS_MAC.pas"/>
+        <DCCReference Include="ACS_Procs.pas"/>
+        <DCCReference Include="ACS_Types.pas"/>
+        <DCCReference Include="FLAC.pas"/>
+        <DCCReference Include="ACS_DXAudio.pas"/>
+        <DCCReference Include="ACS_FLAC.pas"/>
+        <DCCReference Include="ACS_smpeg.pas"/>
+        <DCCReference Include="DSWrapper.pas"/>
+        <DCCReference Include="_DirectSound.pas"/>
+        <DCCReference Include="libsamplerate.pas"/>
+        <DCCReference Include="AuSampleRate.pas"/>
+        <DCCReference Include="WavPackDLL.pas"/>
+        <DCCReference Include="ACS_Tags.pas"/>
+        <DCCReference Include="ACS_WavPack.pas"/>
+        <DCCReference Include="_DXTypes.pas"/>
+        <DCCReference Include="ACS_WinMedia.pas"/>
+        <DCCReference Include="libwma1.pas"/>
+        <DCCReference Include="wmfintf.pas"/>
+        <DCCReference Include="ACS_TTA.pas"/>
+        <DCCReference Include="TTALib.pas"/>
+        <DCCReference Include="AudioPass.pas"/>
+        <DCCReference Include="ACS_OptimFROG.pas"/>
+        <DCCReference Include="OptimFROGDLL.pas"/>
+        <DCCReference Include="libmpdec.pas"/>
+        <DCCReference Include="ACS_MPC.pas"/>
+        <DCCReference Include="ACS_TAK.pas"/>
+        <DCCReference Include="tak_decoder.pas"/>
+        <DCCReference Include="libmppenc.pas"/>
+        <DCCReference Include="AudioDMO.pas"/>
+        <DCCReference Include="_Direct3D9.pas"/>
+        <DCCReference Include="_DirectShow9.pas"/>
+        <DCCReference Include="msdmo.pas"/>
+        <DCCReference Include="NewAC_AVI.pas"/>
+        <DCCReference Include="fftreal.pas"/>
+        <DCCReference Include="NewAC_DSP.pas"/>
+        <DCCReference Include="AuASIO.pas"/>
+        <DCCReference Include="OpenASIO.pas"/>
+        <DCCReference Include="ASIO.pas"/>
+        <DCCReference Include="AsioList.pas"/>
+        <DCCReference Include="mr_cddb.pas"/>
+        <DCCReference Include="AuSynch.pas"/>
+        <DCCReference Include="libdca.pas"/>
+        <DCCReference Include="NewACDTS.pas"/>
+        <DCCReference Include="NewACAC3.pas"/>
+        <DCCReference Include="DMXStreams.pas"/>
+        <DCCReference Include="GainAnalysis.pas"/>
+        <DCCReference Include="liba52.pas"/>
+        <DCCReference Include="NewACIndicators.pas"/>
+        <DCCReference Include="mpg123_.pas"/>
+        <DCCReference Include="taglib.pas"/>
+        <DCCReference Include="FastcodeCPUID.pas"/>
+        <DCCReference Include="FastMove.pas"/>
+        <DCCReference Include="DSAudio.pas"/>
+        <DCCReference Include="NewACDSAudio.pas"/>
+        <DCCReference Include="mp4ff.pas"/>
+        <DCCReference Include="neaac.pas"/>
+        <DCCReference Include="ACS_AAC.pas"/>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Package</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">NewAC.dpk</Source>
+                </Source>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">True</VersionInfo>
+                    <VersionInfo Name="MajorVer">2</VersionInfo>
+                    <VersionInfo Name="MinorVer">3</VersionInfo>
+                    <VersionInfo Name="Release">1</VersionInfo>
+                    <VersionInfo Name="Build">2</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">1049</VersionInfo>
+                    <VersionInfo Name="CodePage">1251</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName"/>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">2.3.1.2</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright"/>
+                    <VersionInfoKeys Name="LegalTrademarks"/>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName"/>
+                    <VersionInfoKeys Name="ProductVersion">2.3.1.0</VersionInfoKeys>
+                </VersionInfoKeys>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

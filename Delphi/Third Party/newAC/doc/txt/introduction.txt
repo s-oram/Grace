@@ -1,0 +1,386 @@
+
+Title: Introduction
+	An introduction to NewAC, Delphi components for manipulating audio data.
+	
+Author:
+	Andrei Borovsky, anb@symmetrica.net
+
+Contributors:
+	Several people have made contributions to the NewAC code.
+
+	- Lev Amelin: improved and extended TMP3Out component.
+	- Thomas la Cour: Monkey Audio input/output components.
+	- Jan Henrik Ejme: adding ACM-playing support.
+	- Thomas Grelle: improving CDRip support.
+	- Jan Bartels (ATR Industrie-Elektronik GmbH & Co. KG, Viersen, Germany): some useful corrections and suggestions.
+	- Sergei Borisov: quite a few contributions, including WavPack, TTA, TAK, Tags, OptimFrog support and much more. 
+	- Eriks Aleksans: many useful suggestions.
+	- Wayne Thursby: preparing documentation and not breaking things (not entirely, at least)
+	- Christophe De Vocht: updated ACS_LAME unit.
+	- Michael Reisch: TCDDBInfo component 
+
+Section: On the Web
+	
+	Topic: Project Homepage
+		You can find the official homepage of NewAC at http://www.symmetrica.net/newac.
+		
+	Topic: Project Discussion
+		Discussion and support can be found on the Google Group newac-users at http://groups.google.com/group/newac-users.
+
+	Topic: Project Source
+		The source code for NewAC is now hosted on Google Code http://code.google.com/p/newac/.
+
+Section: Version History
+	Short list of new features for each NewAC version.
+
+Version: NewAC 2.6
+	- The TDSAudioOut - new and better sound output  component is added.
+	- The TAudioCache component is added.
+	- The TMP4In component for AAC playback is added.
+	- OnSyncDone event (like OnDone, but fired at ones) is added.
+	- Windows 7 compatibility is attested.
+	- Some minor fixes.
+
+Version: NewAC 2.5
+	- The TFastGainIndicaor component is added.
+	- Performance farther improved.
+
+Version: NewAC 2.4
+	- The Audio Output Latency property is added.
+	- Common audio tags properties are added.
+	- TSpectrumIndicator component is added.
+	- TTagsEditor component is added.
+	- TGainControl component is added.
+	- TMpgIn component is added.
+
+Version: NewAC 2.3
+	- TGainIndicator component is added.
+	- Some minor bug fixes and improvements.
+
+Version: NewAC 2.2.2
+	- TCDIn CD-ripping component is updated. Jitter correction and higher speed on new drives.
+	- Some minor bug fixes and improvements.
+
+Version: NewAC 2.2.1
+	- Many bug fixes and improvements.
+	- Input prefetch mechanism is implemented to allow low latencies when playing back via DirectSound.
+
+Version: NewAC 2.2
+	- AC-3 decoder added.
+	- DTS decoder is greatly improved.
+	- TDownMixer component is added (converts 5.1 to stereo lets you to control the parameters).
+	- TWVIn and TWVOut components are significantly improved.
+
+Version: NewAC 2.1
+	- DTS decoder added.
+	- TAudioPlaylist component which allows gapless playback added. 
+	- TCueSplitter component added (splits audiotracks automatically using cue-sheets).
+	- ASIO output now supports 5.1 channels.
+
+Version: NewAC 2.0
+	- Low-latency ASIO drivers support added.
+	- Real-time audio components (TAudioSynchronizer, TAudioHiResTimer) added. 
+	- Some minor improvements.
+
+Version: NewAC 1.9
+	- Experimental delphi-based compresor added.
+	- Delphi 2009 compatibility added.
+	- TCDDBInfo component added
+	- Small bugs fixed.	
+
+Version: NewAC 1.8
+	- TFastResampler component (fully Delphi-based) for fast resampling.
+	- TConvolver and TDifferenceEquation components for exploring DSP operations.
+	- TChebyshevFilter component implementing Chebyshev filters.
+	- TFrequencyAnalysis component thst performs DFT on audio data.
+
+Version: NewAC 1.7.2
+	- New TRealTimeMixer component.
+	- External DLLs are now loaded on demand 
+	- Updated LAME encoder
+	- Some bugs are fixed.
+
+Version: NewAC 1.7.1
+	- AVI files reader added (TAVIIn component).
+	- Some bugs are fixed.
+
+Version: NewAC 1.7
+	- New Audio processing components: TDitherer, TNormalizer, TMSResampler, TVoiceFilter.
+	- Improved 32-bit and multichannel sound support.
+	- Two pass WMA encoder added. 
+
+Version: NewAC 1.6
+	- Musepack support (decoding/encoding).
+	- TAK support (decoding).
+	- Multichannel audio support.
+	- Audio broadcasting support.
+
+Version: NewAC 1.5
+	- TWMStreamedIn for reading live MP3 and WMA network streams.
+	- WMA lossless encoding support.
+	- TWaveTap and TWMATap components.
+	- Many smaller fixes and improvements.  
+	
+Version: NewAC 1.4
+	- FLAC tags support (reading/writing).
+	- TTA lossless audio format support.
+	- New converter components: TACMConverter and TAudioPass.
+	- Numerous smaller fixes and improvements.  
+
+Version: NewAC 1.3.2
+	- Improved WMA encoder
+	- Object Model has changed: SuspendWhenIdle property and WaitForStop method are now obsolete.
+
+Version: NewAC v1.3.1
+	- MP3 decoding is now done with Windows decoder (additional DLL (mpadec.dll) no longer needed) 
+
+Version: NewAC v1.3
+	- Windows Media files input support (TWMIn component), Windows Media Audio (wma) files output support (TWMAOut component). 
+	- Event handling improved
+
+Version: NewAC v1.2
+	- WavPack format support (TWVIn, TWVOut components).
+	- 24-bit sound support. 
+	- Unicode file names support (via the WideFileName property).
+	- Large (larger than 2 GB) files support. 
+
+Version: NewAC v1.1
+	- Base class interfaces is changed to make data flow more efficient. 
+	- FLAC and Monkey's Audio codecs are updated.
+	- New TAudioConverter and TResampler components are added.
+	- New MP3 decoder support is added to make MP3 input seekable.
+
+Version: NewAC v1.0.1
+	- Ogg Vorbis bugs are fixed.
+	- DirectSound API is implemented in Delphi, so there is no more need in dswrapper DLL.
+	- Base classes are renamed from TACS* to TAu*.
+	- Some minor bugs are fixed.
+
+Version: NewAC v1.0
+	- Some bugs are fixed.
+	- TMP3In component is added for mp3 playback.
+	- TCDPlayer can now work with several drives.
+
+Version: ACS v2.3
+	- Changes in the object model: Event and thread handling improved.
+	- DirectX input/output has been added (TDXAudiIn and TDXAudiOut components). 
+	- TMP3Out component has been improved.
+
+Section: A Note to the Reader
+
+	It is only fair to warn you that this documentation is not complete. Like all the programmers in the World we prefer to write code, not the documentation. Some components and features are not covered just because we think they are insignificant to the user or are going to obsolescense. At the same time we try as mush as possible to make this documenation to reflect the latest state of NewAC package. It is important to note that the documentation will match up with your source code if you downloaded both of them at the same time from the same place. On the website, the very latest version of the documentation is readily available. It reflects the latest changes with the idea that more documentation is always a good thing. 
+	
+	If you read something in this documentation that disagrees with the source code you have, odds are you have outdated source. Unless you have production code, there is no reason not to pull directly from the Subversion repository. If for some reason there is instability in this code you would be doing everyone a favor by at least discovering and reporting it.
+
+Note from Andrei Borovsky:
+	Not being a native English speaker, I especially apologise for any grammatical and orthographical mistakes and clumsiness you may find in this documentation. If you find such a thing it is most probably my fault and not Wayne's. 
+
+Section: Introduction to NewAC Programming
+
+Topic: Basic Operation
+
+The New Audio Components package is a set of components designed to handle different sound processing tasks, such as reading and storing data in different audio formats, working with sound hardware, audio streams mixing and so on.
+
+Most of the components in the New Audio Components package belong in one of three categories: input components, output components, or converter components.
+
+The input components acquire audio input from some source (device, disk file, etc.) and convert it into a digital audio stream which is the internal audio representation in NewAC. The output components take in the digital audio produced by input components and send it to some audio output device or store it on disk in a specified audio file format. Converter components perform different operations on audio streams. These components take in a digital audio stream and output a stream which is modified according to the function of the component. The following diagram illustrates the flow of audio data in the NewAC processing chain.
+
+(see diagram.png)
+
+All components are linked via their Input properties. Arrows show connections between components (from WaveOut1 to AudioIn1). Audio data flows through the chain in the opposite direction, from AudioIn1 to WaveOut1. In this example we read audio data from the sound card input component AudioIn1 (input component), pass it through the RateConverter1 component (converter component) and store in a *.wav file via WaveOut1 component (output component). 
+
+The converter component is not a necessary element in this chain. In many cases you will just connect input and output components together to convert data from one format to the other or to perform I/O with some particular device. As you can see NewAC isn't just a collection of components implementing interfaces to some hardware or file formats. It is rather a set of building blocks with which you can construct a complete sound-processing application.
+
+Note that an audio processing chain may have more than one input (by using TAudioMixer) and more than one output (by using TAudioPass or TAudioTap descendents).
+
+The driving force of this sound processing chain is an output component. Output components use internal thread objects that call data retrieving functions of the input/converter components attached to the output component. Note that NewAC provides you with two ways to set the amount of CPU time consumed by these threads: <ThreadPriority> and <Delay>. You can use these properties to set the desired performance/CPU usage ratio for your application.
+
+Topic: Ripping a CD to OGG
+
+Suppose you want your application to convert data from audio CD tracks to Ogg Vorbis audio compression format. First, you put into your form a TCDIn input component that reads data from CD tracks (don't confuse this component with TCDPlayer component which is designed to play CD tracks). Now you need an output component, and in our case it is VorbisOut. In order to chain two components together you have to assign an instance of the TCDIn component to the VorbisOut's Input property.
+
+	> VorbisOut1.Input := CDIn1;
+
+Now set the CD track you want to be converted.
+
+	> CDIn1.StartTrack := 1;
+	> CDIn1.EndTrack := 1;
+
+This tells the component to read only one track (the first track on the CD).
+
+Now you have to set up a file name for an output file.
+
+	> VorbisOut1.FileName := 'Track1.ogg';
+
+And desired compression ratio.
+
+	> VorbisOut1.Compression := 0.1;
+
+Believe it or not, you have now set up everything for the data conversion. In order to perform the conversion, call Run method is used.
+
+	> VorbisOut1.Run; 
+
+The actual compression process runs in its own thread, while your main thread can do something else. You can control how conversion goes on by checking VorbisOut1's Progress property. When the conversion is finished, the VorbisOut1.OnDone property will be called.
+
+If you disable some application's controls while NewAC components perform their action and enable them back in the OnDone event handler (like it is done in most of the demos), make sure you disable the controls before calling the Run method. Otherwise these controls may be not automatically re-enabled if an error occurs during NewAC operation.
+
+You get access to an input component's data directly in a non-threaded way. The following example shows how data can be obtained from an audio CD with the TCDIn component.
+
+(code)
+
+var
+  Len, DataSize : Integer;
+  Data : Pointer;
+begin
+  ...
+  CDIn1.StartTrack := 1;
+  CDIn1.EndTrack := 1;
+  CDIn1.Init;
+  Len := CDIn1.CopyData(Data, DataSize);
+  while Len <> 0 do
+  begin
+    // Process CD data
+    Len := CDIn1.CopyData(Data, DataSize);
+  end;
+  CDIn1.Flush;
+  ...
+end;
+
+(end)
+
+Topic: Converting Stereo to Mono
+
+To get stereo audio data from a *.wav file, convert it to mono and save to another *.wav file, we will need an instance of the TWaveIn component. It reads data from a *.wav file, an instance of the TMSConverter component then converts the stereo stream to mono, and an instance of the TWaveOut component that writes data to a *.wav file. Now we chain these three components.
+
+(code)
+
+WaveIn1.FileName := 'input.wav';
+MSConverter1.Input := WaveIn1;
+WaveOut1.Input := MSConverter1;
+WaveOut1.FileName := 'output.wav';
+WaveOut1.Run;
+
+(end)
+
+Converter components take input from input components or from other converters and output data to output components or other converters. It is possible to chain any number of converters this way. There is a special converter in NewAC called AudioMixer. This component takes in two audio streams and mixes them into a single output stream. In the new version of NewAC AudioMixer can also concatenate to incoming audio streams, i.e. make one stream where two input streams go consecutively.
+
+Topic: Using Streams
+
+Almost all NewAC components that read data from audio files or store data in audio file format can work with both disk files and memory streams (currently only TMACIn and TMACOut components do not support general streams). You can use FileName property to specify the name of the file on disk (or the WideFileName property if the file name is in Unicode) or the Stream property to assign some other type of stream (including a memory stream TMemoryStream) to an input or an output component.
+
+Topic: Stopping and Pausing
+
+You can stop a playing chain by calling an output component's Stop method. If you want to pause playback, call the output component's Pause method, and call Resume to resume the paused playback. Input components that read data from disc files and memory streams allow seeking. Use an input component's Seek method to set the current input position (the position is measured from the beginning of data in frames, not in bytes).
+
+Topic: Terminating the Playback
+
+You can call the output component’s Stop method to terminate an ongoing playback at any time, but because of the multithreaded nature of NewAC the playback doesn't stop at once when requested. There are two modes of behavior when you call a Stop method. The first mode is asynchronous. In this mode the called Stop returns at once (may be before the output component is stopped). When the output components is actually stopped your application gets an OnDone event. In this mode you can use OnDone event handler to get notified when your App’s audio chain finishes playing. Sometimes you don't want to wait for OnDone event. For example it is a good practice to stop any current output in the Application’s Form OnClose Event. In that case you can call Stop in synchronous mode. In this mode Stop blocks the calling thread until the output is actually stopped. No OnDone event is raised in this mode.. To call Stop in asynchronous mode pass True as a value of its only argument (this is the default value, so calling Stop without an argument stops asynchronously). To make synchronous Stop call pass the False value as the method's argument. There are two ways of calling Stop.
+
+	> WaveOut1.Stop;  // Asynchronous call 
+	> ...	// Wait for an OnDone event to know when the output is done 
+
+or
+
+	> WaveOut1.Stop(False); // Synchronous call. When it returns the output is actually done
+
+Section: Chaining Audio Tasks
+
+In some cases you may want to start the next audio task automatically right after the previous task has been finished. Suppose you build an audio player with a kind of playlist. You want the files in the playlist to be played one after another. When the current file playback or other output operation is finished output component generates OnDone event indicating it has finished current output operation. Starting from the NewAC version 1.0 you can set new input source component (or reset current input properties) from OnDone event handler. See AudioPlayer demo program for an example.
+
+Section: Editing Sound
+
+Several sound-editing operations can be performed with NewAC. Converter components allow you to change the number of channels, bits per sample, and the sample rate of an audio stream. With the TAudioMixer component you can mix together two audio streams, selecting volume level values for each stream, and concatenate two streams into a single stream. See the AudioMixer demo for streams mixing and concatenation example.
+
+<TWaveOut> and <TVorbisOut> components allow you to append audio data to the already existing files. Set the component's FileMode property to foAppend to append data to an existing file rather than rewriting it.
+
+
+All input components that descend from TAuFileIn allow you to specify StartSample and EndSample properties. If you set these properties' values, the actual data reading will start from the StartSample and will stop at EndSample value (the total number of samples in the input stream is returned via TotalSamples property, and since it is read from the file, you should check the Valid property value before reading TotalSamples). This way you can select a fragment of an input audio file, rather than a whole file, for further processing. AudioCutter demo shows how to play back and save selected fragments of audio files. The StartSample and EndSample properties allow to select audio file fragments with the maximum possible precision. If you don't need that precision you can use SetStartTime and SetEndTime methods that specify start and end time for the selection in minutes:seconds format.
+
+Section: Handling I/O Errors
+
+Programs operating in real world have to provide means to handle input and output errors. NewAC tries to handle errors in such a way that if an error occurs the components are not left in unrecoverable state. There are two main types of errors in NewAC: errors that arise when the program tries to open corrupt audio sources and errors that arise during the sound processing chain operation.
+
+The first rule is this: before starting to process an input file, check the Valid property. The TAuFileIn class and its descendants expose this property. If the Valid property's value is False, it means that the input file could not be opened and the program should not try to process it.
+
+If an exception is raised within NewAC after you have called an output component's Run method it is not propagated. When such an exception occurs the operation is stopped and the OnThreadException event is generated. The exception's text is stored in the output component's ExceptionMessage property. After that an OnDone event is generated as usual. You can determine if an error has happened during the NewAC operation by assigning a handler to the OnThreadException event or by checking the ExceptionMessage value in an OnDone event handler (it should be an empty string if the error took place during an audio processing operation). See the CDRipper and Wave2Ogg-2 demos for how error handling is done.
+
+Section: Input Switching
+
+Most of the output components allow assigning new input on the fly (i.e. while the component is doing playback). It is important to remember that when changing input on the fly, new input audio stream parameters must be the same as the old ones. Note that TAudioProcessor Component doesn't allow modifying Input property while it is playing. InputList component allows modifying all input items at anytime except the item, currently being played. You can switch to other InputList's item on the fly by changing the components CurrentInput property.
+
+
+Section: Avoiding Common Errors
+
+This section explains how to avoid some errors that are most often encountered by the programmers beginning to use NewAC.
+
+	-	Never call an output component's Run method if the component is busy. You can check if it is by inspecting the value of the Status property. Output component goes to the busy state after its Run method is called. When component becomes idle, its OnDone event is triggered.
+	-	With the TCDIn component it is a good practice to check if the right kind of media is in the drive before calling any disc-concerning method. You can check the CD in the drive by means of DiscInfo and Status properties.
+	-	When using file input components always check if the assigned file is valid with Valid property before reading any file description properties or calling Run method.
+	-	Some of NewAC components require external DLLs. When you start a NewAC application and it cannot find a required DLL it shows a message "foobar.dll could not be found"... but not under Vista. Vista hides this message (just like many other important technical messages) from a user and tells you instead that your "application suddenly stopped working". This may give you a false impression that the NewAC application is screwed up under Vista. That’s not so. If you get this "the application suddenly stopped working" dialog right when the app starts, check, first of all, if all the required DLLs are accessible to the application.
+
+Keep in mind that all the demos provided with NewAC work under Vista (at least under 32-bit version).
+
+
+Section: Legacy Components
+
+Some NewAC components are now considered legacy. They are kept for backward comparability and their development is stopped. For all these components there are analogous newer components that should be used instead. Here is the list of the current legacy components and their replacements.
+
+	-	TAudioIn (should be replaced with TDXAudioIn in new programs).
+	-	TAudioOut (should be replaced with TDXAudioOut in new programs).
+	-	TRateConverter (should be replaced with TResampler in new programs).
+	-	TMSConverter (TMSConverter's functionality is duplicated in <TAudioConverter>, which additionally supports 24 bit sound conversion).
+
+Section: Third Party Libraries
+
+Some of NewAC components require certain shared libraries, which are not included in the package but are publicly available and may be found on many sites both in source and binary forms.
+Many NewAC components do not require any additional libraries at all. hese are: TDXIn, TDXOut, TInputList, TMemoryIn,TWaveIn, TWaveOut, TWMIn, TWMOut, TWMStreamedIn, TWMStreamedOut, TSreamIn, TStreamOut, TWMADualPassOut, TAVIIn, TAudioMixer, TRealTimeMixer, TAudioConverter, TSincFilter, TStereoBalance, TACMConverter, TNormalizer, TMSResampler, TVoiceFilter. *Important note:* In previous versions required DLLs were loaded at application startup. If some DLL was missing the application could not proceed. Since NewAC 1.7.2 DLLs are loaded on demand. For example file-reading component loads a required DLL only when it opens a file for playback. Now NewAC applications may work even if not all the required DLLs are present. If you try to put to an active audio chain a  component that cannot find a required DLL, it will indicate that it cannot proceed. File input components set Valid property to False and file output components raise OnThreadException event.
+
+For those components that require third-party shared libraries you can download these libraries in binary form from the NewAC Site. If you want to compile yourself, below are the links to the libraries' sources on the Net.
+
+	Libraries, require by some NewAC components in a precompiled binary form are available at http://symmetrica.net/uploads/newac/windlls.zip and http://symmetrica.net/uploads/newac/windlls-2.zip
+
+It is important to note that since all libraries required by NewAC components are loaded dynamically at run-time, you can use NewAC as a whole without these libraries. Of course, those components requiring certain library will only work if the library is found.
+
+	-	<TVorbisIn> and <TVorbisOut> components require Ogg Vorbis libraries (ogg.dll, vorbis.dll, vorbisenc.dll, vorbisfile.dll). See the additional note below.
+	-	<TFLACIn> and <TFLACOut> components depend on libFLAC.dll. You can find FLAC sources at http://flac.sourceforge.net.
+	-	Monkey Audio components require MacDLL.dll library. The Monkey Audio SDK is available at http://www.monkeysaudio.com.
+	- <TCDIn> component requires CDRip.dll library distributed under GPL (I use the variant of the library distributed with NeoAudio). 
+	- <TResampler> component requires the libsamplerate.dll library. You can get the sources at http://www.mega-nerd.com/SRC/win32.html.
+	- <TMP3Out> component requires lame_enc.dll (under Windows). Sources are available at http://lame.sourceforge.net
+Note:
+	LAME is an encoder created for educational purposes only. It may be illegal to use LAME in your country.
+
+Note on Ogg Vorbis libraries:
+	Don't use Ogg Vorbis v1.1 libraries with NewAC. You can use the aoTuV Ogg Vorbis suite or the Ogg Vorbis v1.2 codec (or, possibly a later version). You can get precompiled aoTuV Ogg Vorbis libraries from the NewAC site along with other libraries. The Ogg Vorbis 1.2 codec is available at http://www.vorbis.com/. The official aoTuV site is http://www.geocities.jp/aoyoume/aotuv/.
+
+Section: Installation
+
+Since NewAc is an ordinary Delphi package its installation procedure should be straightforward for most of the Delphi users.
+
+If you have installed previous version of ACS or NewAC, uninstall it before installing the new version. Click Component->Install Packages menu item. In the opened dialog box select the Audio Components Suite package and click "Remove" button. Make sure to remove all the previous version files from the IDE search path.
+
+To install New Audio Components package, first compile the package. Create or select directory where you want the components to be installed (you can use your Delphi lib directory). We will call this directory NewAC directory. Now go to the Source directory of the NewAC distribution, and copy all the files to the NewAC directory. Go to the NewAC directory, open NewAC.dpk file in your IDE. Press "Compile" button in the package manager window. Press Install button.. After this the two new tabs: "Audio I/O" and "Audio Processing" will appear on the components palette. Unless you have selected your Delphi lib directory as NewAC directory, you will have to add the NewAC installation directory to the Delphi libraries search path. This can be done on the "Library" page of the "Environment Options" dialog box (Tools->Environment Options... menu item).
+
+Section: Writing Your Own Components
+
+Eventually you may want to extend NewAC with your own components. It will be great if you make these components available for the entire community (although you are not required to do so). How to write a new component for NewAC? You have the sources of all the components, and they all can be your guides. But most component's sources contain lots of component-specific stuff. It is not easy to tell from the first site, what is required, and what is arbitrary. 
+
+Understanding this I have provided a special input/output <Component Writer’s
+Guide>. You can find a text version of it in .\doc\txt\cwguide.txt.
+Additionally, two demo components, <TDemoWaveIn> and <TDemoWaveOut>, are
+written specially for this tutorial. These two components are not the part of
+the main NewAC package, you can find them in the <Components Demo>, found in
+the .\Demos\ComponentsDemo folder. These demo components handle simple input
+and output tasks, and the sources are extensively commented (unlike other
+components' sources, I must admit).
+
+Section: Licenses
+
+The NewAC code itself is distributed free of charge, under a simple license that allows an unrestricted use (both non-commercial and commercial). See the license.txt for more detail. The third party libraries required by different NewAC components are distributed under different licenses. 
+
+	- The ogg.dll, vorbis.dll, vorbisfile.dll, and vorbisenc.dll libraries are distributed under the GPLv2. 
+	- The libFLAC.dll library is distributed under the GPLv2. 
+	- The libsamplerate.dll library is distributed under the GPLv2.
+	- The MACDll.dll library is distributed under a custom license (http://www.monkeysaudio.com for more details). 
+	- The CDRip.dll library is distributed under the GPLv2.
+	- The TTALib.dll library is distributed under the GPLv2.

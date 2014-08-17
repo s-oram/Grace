@@ -1,0 +1,146 @@
+package NewAC_XE3;
+
+{$R *.res}
+{$R 'ACS_Wave.dcr'}
+{$R 'ACS_Vorbis.dcr'}
+{$R 'ACS_Misc.dcr'}
+{$R 'ACS_Converters.dcr'}
+{$R 'ACS_Filters.dcr'}
+{$R 'ACS_AudioMix.dcr'}
+{$R 'ACS_CDROM.dcr'}
+{$R 'ACS_LAME.dcr'}
+{$R 'ACS_Streams.dcr'}
+{$R 'ACS_MAC.dcr'}
+{$R 'ACS_FLAC.dcr'}
+{$R 'ACS_DXAudio.dcr'}
+{$R 'ACS_smpeg.dcr'}
+{$R 'AuSampleRate.dcr'}
+{$R 'ACS_WavPack.dcr'}
+{$R 'ACS_WinMedia.dcr'}
+{$R 'ACS_TTA.dcr'}
+{$R 'AudioPass.dcr'}
+{$R 'ACS_OptimFROG.dcr'}
+{$R 'ACS_MPC.dcr'}
+{$R 'ACS_TAK.dcr'}
+{$R 'AudioDMO.dcr'}
+{$R 'NewAC_AVI.dcr'}
+{$R 'NewAC_DSP.dcr'}
+{$R 'AuASIO.dcr'}
+{$R 'AuSynch.dcr'}
+{$R 'NewACDTS.dcr'}
+{$R 'NewACAC3.dcr'}
+{$R 'NewACIndicators.dcr'}
+{$R 'NewACDSAudio.dcr'}
+{$R 'NewACAAC.dcr'}
+{$R 'NewACMP4.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'New Audio Components v 2.6'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  ACS_Classes in 'ACS_Classes.pas',
+  ACS_Wave in 'ACS_Wave.pas',
+  ACS_Vorbis in 'ACS_Vorbis.pas',
+  ACS_Misc in 'ACS_Misc.pas',
+  ACS_Converters in 'ACS_Converters.pas',
+  ACS_Filters in 'ACS_Filters.pas',
+  acs_reg in 'acs_reg.pas',
+  ACS_AudioMix in 'ACS_AudioMix.pas',
+  VorbisFile in 'VorbisFile.pas',
+  VorbisEnc in 'VorbisEnc.pas',
+  ogg in 'ogg.pas',
+  Codec in 'Codec.pas',
+  _CDRip in '_CDRip.pas',
+  ACS_CDROM in 'ACS_CDROM.pas',
+  ACS_LAME in 'ACS_LAME.pas',
+  lame in 'lame.pas',
+  ACS_Streams in 'ACS_Streams.pas',
+  _MSAcm in '_MSAcm.pas',
+  waveconverter in 'waveconverter.pas',
+  MACDll in 'MACDll.pas',
+  ACS_MAC in 'ACS_MAC.pas',
+  ACS_Procs in 'ACS_Procs.pas',
+  ACS_Types in 'ACS_Types.pas',
+  FLAC in 'FLAC.pas',
+  ACS_DXAudio in 'ACS_DXAudio.pas',
+  ACS_FLAC in 'ACS_FLAC.pas',
+  ACS_smpeg in 'ACS_smpeg.pas',
+  DSWrapper in 'DSWrapper.pas',
+  _DirectSound in '_DirectSound.pas',
+  libsamplerate in 'libsamplerate.pas',
+  AuSampleRate in 'AuSampleRate.pas',
+  WavPackDLL in 'WavPackDLL.pas',
+  ACS_Tags in 'ACS_Tags.pas',
+  ACS_WavPack in 'ACS_WavPack.pas',
+  _DXTypes in '_DXTypes.pas',
+  ACS_WinMedia in 'ACS_WinMedia.pas',
+  libwma1 in 'libwma1.pas',
+  wmfintf in 'wmfintf.pas',
+  ACS_TTA in 'ACS_TTA.pas',
+  TTALib in 'TTALib.pas',
+  AudioPass in 'AudioPass.pas',
+  ACS_OptimFROG in 'ACS_OptimFROG.pas',
+  OptimFROGDLL in 'OptimFROGDLL.pas',
+  libmpdec in 'libmpdec.pas',
+  ACS_MPC in 'ACS_MPC.pas',
+  ACS_TAK in 'ACS_TAK.pas',
+  tak_decoder in 'tak_decoder.pas',
+  libmppenc in 'libmppenc.pas',
+  AudioDMO in 'AudioDMO.pas',
+  _Direct3D9 in '_Direct3D9.pas',
+  _DirectShow9 in '_DirectShow9.pas',
+  msdmo in 'msdmo.pas',
+  NewAC_AVI in 'NewAC_AVI.pas',
+  fftreal in 'fftreal.pas',
+  NewAC_DSP in 'NewAC_DSP.pas',
+  AuASIO in 'AuASIO.pas',
+  OpenASIO in 'OpenASIO.pas',
+  ASIO in 'ASIO.pas',
+  AsioList in 'AsioList.pas',
+  mr_cddb in 'mr_cddb.pas',
+  AuSynch in 'AuSynch.pas',
+  libdca in 'libdca.pas',
+  NewACDTS in 'NewACDTS.pas',
+  NewACAC3 in 'NewACAC3.pas',
+  DMXStreams in 'DMXStreams.pas',
+  GainAnalysis in 'GainAnalysis.pas',
+  liba52 in 'liba52.pas',
+  NewACIndicators in 'NewACIndicators.pas',
+  mpg123_ in 'mpg123_.pas',
+  taglib in 'taglib.pas',
+  FastcodeCPUID in 'FastcodeCPUID.pas',
+  FastMove in 'FastMove.pas',
+  DSAudio in 'DSAudio.pas',
+  NewACDSAudio in 'NewACDSAudio.pas',
+  mp4ff in 'mp4ff.pas',
+  neaac in 'neaac.pas',
+  ACS_AAC in 'ACS_AAC.pas';
+
+end.

@@ -1,0 +1,2 @@
+{$DEFINE DEBUG}
+{$Define AutoCreate}

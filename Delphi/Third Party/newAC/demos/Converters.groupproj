@@ -1,0 +1,252 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{8D2E27B3-31FC-4672-81FF-881D5843E0CF}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Converters\AC32WMA\AC3ToWMA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\CueSplitter\CueSplitter.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\DTS2WMA\DTS2WMA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Lossless2mp3\lossless2mp3.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\MP3Converter\MP2Wav.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\MP32WMA\MP32WMA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\SincFilterDemo\FilterDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\VOB2WMA\VOB2WMA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2APE\Wav2APE.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2FLAC\Wav2FLAC.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2MP3\Wav2MP3.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2MPC\Wav2MPC.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2Ogg\Wav2Ogg.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2Ogg-2\Wav2Ogg_2.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2TTA\Wav2TTA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2WMA\Wav2WMA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2WMA-2\Wav2WMA2.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\Wav2WV\Wav2WV.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Converters\WMA2Ogg\WMA2Ogg.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="AC3ToWMA">
+        <MSBuild Projects="Converters\AC32WMA\AC3ToWMA.dproj"/>
+    </Target>
+    <Target Name="AC3ToWMA:Clean">
+        <MSBuild Projects="Converters\AC32WMA\AC3ToWMA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AC3ToWMA:Make">
+        <MSBuild Projects="Converters\AC32WMA\AC3ToWMA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CueSplitter">
+        <MSBuild Projects="Converters\CueSplitter\CueSplitter.dproj"/>
+    </Target>
+    <Target Name="CueSplitter:Clean">
+        <MSBuild Projects="Converters\CueSplitter\CueSplitter.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CueSplitter:Make">
+        <MSBuild Projects="Converters\CueSplitter\CueSplitter.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DTS2WMA">
+        <MSBuild Projects="Converters\DTS2WMA\DTS2WMA.dproj"/>
+    </Target>
+    <Target Name="DTS2WMA:Clean">
+        <MSBuild Projects="Converters\DTS2WMA\DTS2WMA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DTS2WMA:Make">
+        <MSBuild Projects="Converters\DTS2WMA\DTS2WMA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="lossless2mp3">
+        <MSBuild Projects="Converters\Lossless2mp3\lossless2mp3.dproj"/>
+    </Target>
+    <Target Name="lossless2mp3:Clean">
+        <MSBuild Projects="Converters\Lossless2mp3\lossless2mp3.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="lossless2mp3:Make">
+        <MSBuild Projects="Converters\Lossless2mp3\lossless2mp3.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MP2Wav">
+        <MSBuild Projects="Converters\MP3Converter\MP2Wav.dproj"/>
+    </Target>
+    <Target Name="MP2Wav:Clean">
+        <MSBuild Projects="Converters\MP3Converter\MP2Wav.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MP2Wav:Make">
+        <MSBuild Projects="Converters\MP3Converter\MP2Wav.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MP32WMA">
+        <MSBuild Projects="Converters\MP32WMA\MP32WMA.dproj"/>
+    </Target>
+    <Target Name="MP32WMA:Clean">
+        <MSBuild Projects="Converters\MP32WMA\MP32WMA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MP32WMA:Make">
+        <MSBuild Projects="Converters\MP32WMA\MP32WMA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FilterDemo">
+        <MSBuild Projects="Converters\SincFilterDemo\FilterDemo.dproj"/>
+    </Target>
+    <Target Name="FilterDemo:Clean">
+        <MSBuild Projects="Converters\SincFilterDemo\FilterDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FilterDemo:Make">
+        <MSBuild Projects="Converters\SincFilterDemo\FilterDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="VOB2WMA">
+        <MSBuild Projects="Converters\VOB2WMA\VOB2WMA.dproj"/>
+    </Target>
+    <Target Name="VOB2WMA:Clean">
+        <MSBuild Projects="Converters\VOB2WMA\VOB2WMA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="VOB2WMA:Make">
+        <MSBuild Projects="Converters\VOB2WMA\VOB2WMA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2APE">
+        <MSBuild Projects="Converters\Wav2APE\Wav2APE.dproj"/>
+    </Target>
+    <Target Name="Wav2APE:Clean">
+        <MSBuild Projects="Converters\Wav2APE\Wav2APE.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2APE:Make">
+        <MSBuild Projects="Converters\Wav2APE\Wav2APE.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2FLAC">
+        <MSBuild Projects="Converters\Wav2FLAC\Wav2FLAC.dproj"/>
+    </Target>
+    <Target Name="Wav2FLAC:Clean">
+        <MSBuild Projects="Converters\Wav2FLAC\Wav2FLAC.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2FLAC:Make">
+        <MSBuild Projects="Converters\Wav2FLAC\Wav2FLAC.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2MP3">
+        <MSBuild Projects="Converters\Wav2MP3\Wav2MP3.dproj"/>
+    </Target>
+    <Target Name="Wav2MP3:Clean">
+        <MSBuild Projects="Converters\Wav2MP3\Wav2MP3.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2MP3:Make">
+        <MSBuild Projects="Converters\Wav2MP3\Wav2MP3.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2MPC">
+        <MSBuild Projects="Converters\Wav2MPC\Wav2MPC.dproj"/>
+    </Target>
+    <Target Name="Wav2MPC:Clean">
+        <MSBuild Projects="Converters\Wav2MPC\Wav2MPC.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2MPC:Make">
+        <MSBuild Projects="Converters\Wav2MPC\Wav2MPC.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2Ogg">
+        <MSBuild Projects="Converters\Wav2Ogg\Wav2Ogg.dproj"/>
+    </Target>
+    <Target Name="Wav2Ogg:Clean">
+        <MSBuild Projects="Converters\Wav2Ogg\Wav2Ogg.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2Ogg:Make">
+        <MSBuild Projects="Converters\Wav2Ogg\Wav2Ogg.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2Ogg_2">
+        <MSBuild Projects="Converters\Wav2Ogg-2\Wav2Ogg_2.dproj"/>
+    </Target>
+    <Target Name="Wav2Ogg_2:Clean">
+        <MSBuild Projects="Converters\Wav2Ogg-2\Wav2Ogg_2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2Ogg_2:Make">
+        <MSBuild Projects="Converters\Wav2Ogg-2\Wav2Ogg_2.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2TTA">
+        <MSBuild Projects="Converters\Wav2TTA\Wav2TTA.dproj"/>
+    </Target>
+    <Target Name="Wav2TTA:Clean">
+        <MSBuild Projects="Converters\Wav2TTA\Wav2TTA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2TTA:Make">
+        <MSBuild Projects="Converters\Wav2TTA\Wav2TTA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2WMA">
+        <MSBuild Projects="Converters\Wav2WMA\Wav2WMA.dproj"/>
+    </Target>
+    <Target Name="Wav2WMA:Clean">
+        <MSBuild Projects="Converters\Wav2WMA\Wav2WMA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2WMA:Make">
+        <MSBuild Projects="Converters\Wav2WMA\Wav2WMA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2WMA2">
+        <MSBuild Projects="Converters\Wav2WMA-2\Wav2WMA2.dproj"/>
+    </Target>
+    <Target Name="Wav2WMA2:Clean">
+        <MSBuild Projects="Converters\Wav2WMA-2\Wav2WMA2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2WMA2:Make">
+        <MSBuild Projects="Converters\Wav2WMA-2\Wav2WMA2.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Wav2WV">
+        <MSBuild Projects="Converters\Wav2WV\Wav2WV.dproj"/>
+    </Target>
+    <Target Name="Wav2WV:Clean">
+        <MSBuild Projects="Converters\Wav2WV\Wav2WV.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Wav2WV:Make">
+        <MSBuild Projects="Converters\Wav2WV\Wav2WV.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WMA2Ogg">
+        <MSBuild Projects="Converters\WMA2Ogg\WMA2Ogg.dproj"/>
+    </Target>
+    <Target Name="WMA2Ogg:Clean">
+        <MSBuild Projects="Converters\WMA2Ogg\WMA2Ogg.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WMA2Ogg:Make">
+        <MSBuild Projects="Converters\WMA2Ogg\WMA2Ogg.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="AC3ToWMA;CueSplitter;DTS2WMA;lossless2mp3;MP2Wav;MP32WMA;FilterDemo;VOB2WMA;Wav2APE;Wav2FLAC;Wav2MP3;Wav2MPC;Wav2Ogg;Wav2Ogg_2;Wav2TTA;Wav2WMA;Wav2WMA2;Wav2WV;WMA2Ogg"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="AC3ToWMA:Clean;CueSplitter:Clean;DTS2WMA:Clean;lossless2mp3:Clean;MP2Wav:Clean;MP32WMA:Clean;FilterDemo:Clean;VOB2WMA:Clean;Wav2APE:Clean;Wav2FLAC:Clean;Wav2MP3:Clean;Wav2MPC:Clean;Wav2Ogg:Clean;Wav2Ogg_2:Clean;Wav2TTA:Clean;Wav2WMA:Clean;Wav2WMA2:Clean;Wav2WV:Clean;WMA2Ogg:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="AC3ToWMA:Make;CueSplitter:Make;DTS2WMA:Make;lossless2mp3:Make;MP2Wav:Make;MP32WMA:Make;FilterDemo:Make;VOB2WMA:Make;Wav2APE:Make;Wav2FLAC:Make;Wav2MP3:Make;Wav2MPC:Make;Wav2Ogg:Make;Wav2Ogg_2:Make;Wav2TTA:Make;Wav2WMA:Make;Wav2WMA2:Make;Wav2WV:Make;WMA2Ogg:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

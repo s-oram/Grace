@@ -1,0 +1,153 @@
+1.4
+Pascal
+H:\repo\newac\demos\Players\i-Radio\Main.pas	1247160366	0	H:\repo\newac\demos\Players\i-Radio\Main.pas
+H:\repo\newac\src\_MSAcm.pas	1245134391	0	H:\repo\newac\src\_MSAcm.pas
+H:\repo\newac\demos\Tutorial\ReadMe.txt	1245134395	0	H:\repo\newac\demos\Tutorial\ReadMe.txt
+H:\repo\newac\src\NewACDTS.pas	1255975073	1	NewACDTS
+H:\repo\newac\src\ACS_Streams.pas	1245134391	1	ACS_Streams
+H:\repo\newac\src\AudioPass.pas	1245134391	1	AudioPass
+H:\repo\newac\src\lame.pas	1254493120	0	H:\repo\newac\src\lame.pas
+H:\repo\newac\demos\Recorders-rippers\CDRipper\CDexLog.txt	1253878181	0	H:\repo\newac\demos\Recorders-rippers\CDRipper\CDexLog.txt
+H:\repo\newac\demos\Editors\AudioMixer\Main.pas	1245134396	0	H:\repo\newac\demos\Editors\AudioMixer\Main.pas
+H:\repo\newac\src\BeRoASIO.pas	1216209902	0	H:\repo\newac\src\BeRoASIO.pas
+H:\repo\newac\demos\Recorders-rippers\Rip'n'listen\Main.pas	1245134404	1	Rip'n'Listen Demo
+H:\repo\newac\src\_CDRip.pas	1255255934	1	CDRip
+H:\repo\newac\src\TTALib.pas	1245134391	0	H:\repo\newac\src\TTALib.pas
+H:\repo\newac\src\AuSynch.pas	1247159080	1	AuSynch
+H:\repo\newac\src\liba52.pas	1250879839	0	H:\repo\newac\src\liba52.pas
+H:\repo\newac\src\ASIOChannelStrip.pas	1213337290	0	H:\repo\newac\src\ASIOChannelStrip.pas
+H:\repo\newac\src\libdca.pas	1249842272	0	H:\repo\newac\src\libdca.pas
+H:\repo\newac\demos\Converters\Wav2TTA\Main.pas	1245134400	0	H:\repo\newac\demos\Converters\Wav2TTA\Main.pas
+H:\repo\newac\dunit\uLogOpts.inc	1245134376	0	H:\repo\newac\dunit\uLogOpts.inc
+H:\repo\newac\src\ACS_LAME.pas	1255255533	1	ACS_LAME
+H:\repo\newac\src\VorbisFile.pas	1245134391	0	H:\repo\newac\src\VorbisFile.pas
+H:\repo\newac\demos\Converters\Wav2Ogg\Main.pas	1245134402	0	H:\repo\newac\demos\Converters\Wav2Ogg\Main.pas
+H:\repo\newac\demos\Tutorial\ComponentsDemo\Main.pas	1245134395	0	H:\repo\newac\demos\Tutorial\ComponentsDemo\Main.pas
+H:\repo\newac\src\AudioDMO.pas	1245134391	1	AudioDMO
+H:\repo\newac\doc\txt\about documentation.txt	1252393591	1	About the Documentation
+H:\repo\newac\src\AsioList.pas	1245678454	0	H:\repo\newac\src\AsioList.pas
+H:\repo\newac\demos\Converters\Wav2WMA-2\Main.pas	1245134400	0	H:\repo\newac\demos\Converters\Wav2WMA-2\Main.pas
+H:\repo\newac\demos\Players\FLACPlayer\Main.pas	1254045596	0	H:\repo\newac\demos\Players\FLACPlayer\Main.pas
+H:\repo\newac\src\DMXStreams.pas	1252842708	0	H:\repo\newac\src\DMXStreams.pas
+H:\repo\newac\src\DSWrapper.pas	1245134391	1	DSWrapper
+H:\repo\newac\doc\txt\newac.txt	1252393591	1	About New Audio Components
+H:\repo\newac\src\ACS_Misc.pas	1260493758	1	ACS_Misc
+H:\repo\newac\demos\Players\AudioPlayer\Main.pas	1260002240	0	H:\repo\newac\demos\Players\AudioPlayer\Main.pas
+H:\repo\newac\demos\Editors\WaveFileConverter\Main.pas	1255975423	0	H:\repo\newac\demos\Editors\WaveFileConverter\Main.pas
+H:\repo\newac\src\VorbisEnc.pas	1245134391	0	H:\repo\newac\src\VorbisEnc.pas
+H:\repo\newac\demos\Converters\VOB2WMA\Main.pas	1253944894	0	H:\repo\newac\demos\Converters\VOB2WMA\Main.pas
+H:\repo\newac\src\GainAnalysis.pas	1254149218	0	H:\repo\newac\src\GainAnalysis.pas
+H:\repo\newac\src\acs_reg.pas	1260496928	1	ACS_Reg
+H:\repo\newac\demos\Editors\ReplayGain\Main.pas	1254205256	0	H:\repo\newac\demos\Editors\ReplayGain\Main.pas
+H:\repo\newac\src\ASIOMixer.pas	1213337290	0	H:\repo\newac\src\ASIOMixer.pas
+H:\repo\newac\src\Копия ACS_Procs.pas	1256460620	1	ACS_Procs
+H:\repo\newac\src\OptimFROGDLL.pas	1245134391	0	H:\repo\newac\src\OptimFROGDLL.pas
+H:\repo\newac\demos\Converters\Wav2MP3\Main.pas	1245134398	0	H:\repo\newac\demos\Converters\Wav2MP3\Main.pas
+H:\repo\newac\demos\Players\MP3Player\Main.pas	1255047284	0	H:\repo\newac\demos\Players\MP3Player\Main.pas
+H:\repo\newac\src\ACS_FLAC.pas	1254409744	1	ACS_FLAC
+H:\repo\newac\demos\Players\PPKPlayer\Main.pas	1245134393	0	H:\repo\newac\demos\Players\PPKPlayer\Main.pas
+H:\repo\newac\src\ACS_WavPack.pas	1252409882	1	ACS_WavPack
+H:\repo\newac\dunit\Test_ACS_MAC.pas	1245134376	1	ACS_MAC TestCases
+H:\repo\newac\src\ACS_smpeg.pas	1250784904	1	ACS_SMPEG
+H:\repo\newac\demos\Converters\MP3Converter\Unit1.pas	1245134400	0	H:\repo\newac\demos\Converters\MP3Converter\Unit1.pas
+H:\repo\newac\src\ASIO.inc	1213337292	0	H:\repo\newac\src\ASIO.inc
+H:\repo\newac\src\ACS_Tags.pas	1254164173	1	ACS_Tags
+H:\repo\newac\demos\Players\WVPlayer\Main.pas	1251591534	0	H:\repo\newac\demos\Players\WVPlayer\Main.pas
+H:\repo\newac\src\libdac.pas	1249658410	0	H:\repo\newac\src\libdac.pas
+H:\repo\newac\src\MACDll.pas	1245134391	0	H:\repo\newac\src\MACDll.pas
+H:\repo\newac\demos\Editors\RTMixer\Main.pas	1245134397	0	H:\repo\newac\demos\Editors\RTMixer\Main.pas
+H:\repo\newac\license.txt	1255976415	0	H:\repo\newac\license.txt
+H:\repo\newac\demos\Players\TTAPlayer\Main.pas	1245134393	0	H:\repo\newac\demos\Players\TTAPlayer\Main.pas
+H:\repo\newac\dunit\Test_ACS_WavPack.pas	1245134376	1	ACS_WavPack TestCases
+H:\repo\newac\demos\Converters\ReadMe.txt	1245134403	0	H:\repo\newac\demos\Converters\ReadMe.txt
+H:\repo\newac\demos\Players\DTSPlayer\Main.pas	1260071934	0	H:\repo\newac\demos\Players\DTSPlayer\Main.pas
+H:\repo\newac\src\ACS_TTA.pas	1245134391	1	ACS_TTA
+H:\repo\newac\doc\txt\introduction.txt	1260501384	1	Introduction
+H:\repo\newac\src\_Direct3D9.pas	1245134391	1	d3d9types.h d3d9caps.h d3d9.h
+H:\repo\newac\demos\Recorders-rippers\RadioRecorder\Main.pas	1245134403	0	H:\repo\newac\demos\Recorders-rippers\RadioRecorder\Main.pas
+H:\repo\newac\demos\Players\OggPlayer\Main.pas	1245134393	0	H:\repo\newac\demos\Players\OggPlayer\Main.pas
+H:\repo\newac\demos\Editors\MemoryInDemo\Main.pas	1245134396	0	H:\repo\newac\demos\Editors\MemoryInDemo\Main.pas
+H:\repo\newac\src\ACS_OptimFROG.pas	1245134391	1	ACS_OptimFROG
+H:\repo\newac\src\ExtThreads.pas	1245246778	1	H:\repo\newac\src\ExtThreads.pas
+H:\repo\newac\src\WavPackDLL.pas	1245134391	0	H:\repo\newac\src\WavPackDLL.pas
+H:\repo\newac\src\ACS_AudioMix.pas	1251123599	1	ACS_AudioMix
+H:\repo\newac\src\ACS_Procs.pas	1256461307	1	ACS_Procs
+H:\repo\newac\src\wmfintf.pas	1249996797	0	H:\repo\newac\src\wmfintf.pas
+H:\repo\newac\src\fftreal.pas	1245134391	0	H:\repo\newac\src\fftreal.pas
+H:\repo\newac\demos\Converters\Wav2PP\Main.pas	1245134398	0	H:\repo\newac\demos\Converters\Wav2PP\Main.pas
+H:\repo\newac\src\libmpdec.pas	1245134391	0	H:\repo\newac\src\libmpdec.pas
+H:\repo\newac\src\libwma1.pas	1253434629	1	libwma1.pas
+H:\repo\newac\src\NewACIndicators.pas	1260501464	1	NewACIndicators
+H:\repo\newac\demos\Recorders-rippers\DirectSoundRecorder\Main.pas	1260500218	0	H:\repo\newac\demos\Recorders-rippers\DirectSoundRecorder\Main.pas
+H:\repo\newac\src\ACS_Vorbis.pas	1254409744	1	ACS_Vorbis
+H:\repo\newac\demos\Converters\CueSplitter\Main.pas	1252994922	0	H:\repo\newac\demos\Converters\CueSplitter\Main.pas
+H:\repo\newac\src\ACS_DXAudio.pas	1260501552	1	ACS_DXAudio
+H:\repo\newac\demos\Converters\Wav2FLAC\Main.pas	1245134400	0	H:\repo\newac\demos\Converters\Wav2FLAC\Main.pas
+H:\repo\newac\src\NewAC_DSP.pas	1245134391	1	NewAC_DSP
+H:\repo\newac\demos\Players\NetworkRadioStation-2\Main.pas	1247415742	0	H:\repo\newac\demos\Players\NetworkRadioStation-2\Main.pas
+H:\repo\newac\src\AuASIO.pas	1255975241	1	AuASIO
+H:\repo\newac\dunit\uTestBase.pas	1245134376	1	uTestBase
+H:\repo\newac\demos\Tutorial\AudioProcessor\Main.pas	1245134395	1	Audio Processor
+H:\repo\newac\demos\Converters\Wav2MPC\Main.pas	1245134398	0	H:\repo\newac\demos\Converters\Wav2MPC\Main.pas
+H:\repo\newac\src\ACS_MPC.pas	1254409744	1	ACS_MPC
+H:\repo\newac\demos\Converters\Lossless2mp3\Main.pas	1253681734	0	H:\repo\newac\demos\Converters\Lossless2mp3\Main.pas
+H:\repo\newac\src\Codec.pas	1245134391	1	Codec
+H:\repo\newac\src\ACS_Filters.pas	1255123042	1	ACS_Filters
+H:\repo\newac\src\_DirectShow9.pas	1245134391	1	EncAPI.idl
+H:\repo\newac\doc\txt\features.txt	1252393591	1	NewAC Main Features List
+H:\repo\newac\doc\txt\cwguide.txt	1252393591	1	Component Writer's Guide
+H:\repo\newac\demos\Recorders-rippers\CDRipper\Main.pas	1253899082	0	H:\repo\newac\demos\Recorders-rippers\CDRipper\Main.pas
+H:\repo\newac\src\ASIO.pas	1215605078	0	H:\repo\newac\src\ASIO.pas
+H:\repo\newac\demos\Players\ReadMe.txt	1247416192	0	H:\repo\newac\demos\Players\ReadMe.txt
+H:\repo\newac\src\ACS_TAK.pas	1245134391	0	H:\repo\newac\src\ACS_TAK.pas
+H:\repo\newac\demos\Converters\WMA2Ogg\Main.pas	1245134399	0	H:\repo\newac\demos\Converters\WMA2Ogg\Main.pas
+H:\repo\newac\demos\Editors\ReadMe.txt	1245134397	0	H:\repo\newac\demos\Editors\ReadMe.txt
+H:\repo\newac\src\msdmo.pas	1245134391	0	H:\repo\newac\src\msdmo.pas
+H:\repo\newac\src\tak_decoder.pas	1245134391	0	H:\repo\newac\src\tak_decoder.pas
+H:\repo\newac\doc\txt\license.txt	1252393591	1	License
+H:\repo\newac\demos\Tutorial\ComponentsDemo\ComponentsDemo.pas	1245134395	1	Components Demo
+H:\repo\newac\demos\Converters\MP32WMA\Unit1.pas	1245134400	0	H:\repo\newac\demos\Converters\MP32WMA\Unit1.pas
+H:\repo\newac\src\libsamplerate.pas	1245134391	0	H:\repo\newac\src\libsamplerate.pas
+H:\repo\newac\src\NewACAC3.pas	1253951313	1	NewACAC3
+H:\repo\newac\dunit\Test_ACS_FLAC.pas	1245134376	1	ACS_FLAC TestCases
+H:\repo\newac\demos\Converters\SincFilterDemo\Main.pas	1255122782	0	H:\repo\newac\demos\Converters\SincFilterDemo\Main.pas
+H:\repo\newac\doc\filelist.txt	1252393598	0	H:\repo\newac\doc\filelist.txt
+H:\repo\newac\dunit\uLog.pas	1245134376	1	uLog
+H:\repo\newac\src\ACS_MAC.pas	1245134391	1	ACS_MAC
+H:\repo\newac\src\_DXTypes.pas	1245134391	1	_DXTypes
+H:\repo\newac\src\OpenASIO.pas	986485066	0	H:\repo\newac\src\OpenASIO.pas
+H:\repo\newac\demos\Converters\AC32WMA\Main.pas	1252212090	0	H:\repo\newac\demos\Converters\AC32WMA\Main.pas
+H:\repo\newac\src\FLAC.pas	1245382250	1	FLAC
+H:\repo\newac\src\WaveConverter.pas	1245134391	0	H:\repo\newac\src\WaveConverter.pas
+H:\repo\newac\src\mr_cddb.pas	1255950821	0	H:\repo\newac\src\mr_cddb.pas
+H:\repo\newac\src\_DirectSound.pas	1245134391	1	_DirectSound
+H:\repo\newac\src\_md5.pas	1251565248	0	H:\repo\newac\src\_md5.pas
+H:\repo\newac\demos\Editors\AudioCutter\Main.pas	1245134396	0	H:\repo\newac\demos\Editors\AudioCutter\Main.pas
+H:\repo\newac\demos\Converters\Wav2WMA\Main.pas	1253066946	0	H:\repo\newac\demos\Converters\Wav2WMA\Main.pas
+H:\repo\newac\src\ACS_Types.pas	1245134391	1	ACS_Types
+H:\repo\newac\demos\Converters\DTS2WMA\Main.pas	1252210636	0	H:\repo\newac\demos\Converters\DTS2WMA\Main.pas
+H:\repo\newac\demos\Converters\Wav2Ogg-2\Main.pas	1245134401	0	H:\repo\newac\demos\Converters\Wav2Ogg-2\Main.pas
+H:\repo\newac\src\ACS_WinMedia.pas	1260447224	1	ACS_WinMedia
+H:\repo\newac\demos\Players\APEPlayer\Main.pas	1245134392	0	H:\repo\newac\demos\Players\APEPlayer\Main.pas
+H:\repo\newac\demos\Players\NetworkRadioStation\Main.pas	1245134393	0	H:\repo\newac\demos\Players\NetworkRadioStation\Main.pas
+H:\repo\newac\src\ACS_Classes.pas	1260447223	1	ACS_Classes
+H:\repo\newac\dunit\uUtility.pas	1245134376	1	uUtility
+H:\repo\newac\src\libAC3dec.pas	1251748458	0	H:\repo\newac\src\libAC3dec.pas
+H:\repo\newac\demos\Converters\Wav2WV\Main.pas	1245134403	0	H:\repo\newac\demos\Converters\Wav2WV\Main.pas
+H:\repo\newac\demos\Players\CDPlayer\Main.pas	1245134392	0	H:\repo\newac\demos\Players\CDPlayer\Main.pas
+H:\repo\newac\demos\Editors\FiltersTest\Main.pas	1245134396	0	H:\repo\newac\demos\Editors\FiltersTest\Main.pas
+H:\repo\newac\src\ogg.pas	1245134391	0	H:\repo\newac\src\ogg.pas
+H:\repo\newac\src\libmppenc.pas	1245134391	0	H:\repo\newac\src\libmppenc.pas
+H:\repo\newac\demos\Recorders-rippers\ReadMe.txt	1245134405	0	H:\repo\newac\demos\Recorders-rippers\ReadMe.txt
+H:\repo\newac\src\ACS_Wave.pas	1254473559	1	ACS_Wave
+H:\repo\newac\dunit\dunit_options.inc	1245134376	0	H:\repo\newac\dunit\dunit_options.inc
+H:\repo\newac\demos\Players\AudioPlayer\README.txt	1245134394	0	H:\repo\newac\demos\Players\AudioPlayer\README.txt
+H:\repo\newac\src\NewAC_AVI.pas	1252025116	1	NewAC_AVI
+H:\repo\newac\src\AuSampleRate.pas	1245134391	1	AuSampleRate
+H:\repo\newac\demos\Players\WMPlayer\Main.pas	1253345652	0	H:\repo\newac\demos\Players\WMPlayer\Main.pas
+H:\repo\newac\src\ACS_Converters.pas	1252394109	1	ACS_Converters
+H:\repo\newac\doc\txt\tips and tricks.txt	1252393591	1	Tips & Tricks
+H:\repo\newac\demos\Editors\AudioProcessorDemo\Main.pas	1253689934	0	H:\repo\newac\demos\Editors\AudioProcessorDemo\Main.pas
+H:\repo\newac\demos\Converters\Wav2APE\Main.pas	1245134399	0	H:\repo\newac\demos\Converters\Wav2APE\Main.pas
+H:\repo\newac\src\ovencode.pas	1245134391	0	H:\repo\newac\src\ovencode.pas
+H:\repo\newac\src\ACS_CDROM.pas	1255975151	1	ACS_CDROM

@@ -1,0 +1,99 @@
+
+Title: Tips & Tricks
+	Here is a collection of hints and code snippets related to NewAC or audio processing in general.
+	
+	Documentation Note:
+		If you're inserting a single snippet, put a new topic in the <Snippets>
+		section. If you've got a mini-tutorial, make a new section.
+		
+Section: Snippets
+	Bits of code to do things related to NewAC.
+
+
+Topic: How to make an indicator component more responsive
+	When constructing an audio-processing chain always try to place an indicator component as close to the audio input/output component as possible. It should be the first component after AudioIn or the last componentbefore AudioOut.
+
+
+Topic: What to do if an input component reports premature end of data
+	One possible reason for this may be an exception raised during components' operation. Don't forget to set the OnThreadException event handler and inspect an output component's ExceptionMessage property.
+
+Topic: How to decrease the delay before audio playback
+	The TDXAudioOut component buffers its output in order to make it smoother. This
+	buffering introduces some delay at the beginning of audio playback.
+
+	You can decrease the delay by decreasing the size of the TDXAudioOut buffer.
+	The size of this buffer is set up by the <DS_BUFFER_SIZE> constant in
+	ACS_DxAudio.pas.
+	
+	If you decrease the buffer size you may also want to decrease the
+	<DS_POLLING_INTERVAL> value which determines how often the component requests
+	data from its input.
+
+Topic: How not to crash or hang when exiting an application
+If you exit a NewAC application while it is playing without stopping it, it
+may crash or hang. To prevent this, provide an OnClose event handler for the
+form where NewAC components reside. In this hander call Stop methods for all
+output components. A typical OnClose handler might look like this.
+
+(code)
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DXAudioOut1.Stop(False);
+end;
+(end)
+
+You pass Stop a False value if you are closing an application and don't want
+any events. Remember that it is not harmful to call Stop even when the output
+component is idle.
+
+Topic: Create Class Based on Filename
+	These functions create a TAuFile component of a class based on the file extension of a filename.
+	
+(code)
+uses
+  ACS_Classes, ACS_smpeg, ACS_WavPack, ACS_Wave, ACS_FLAC, ACS_MAC, ACS_Vorbis;
+...
+
+function CreateInputFromExt(sFilename: string): TAuFileIn;
+var
+  sExt: string;
+begin
+  sExt := ExtractFileExt(sFilename);
+  if sExt = '.wav' then
+    Result := TWaveIn.Create(nil)
+  else if sExt = '.wv' then
+    Result := TWVIn.Create(nil)
+  else if sExt = '.mp3' then
+    Result := TMP3In.Create(nil)
+  else if sExt = '.flac' then
+    Result := TFLACIn.Create(nil)
+  else if sExt = '.ape' then
+    Result := TMACIn.Create(nil)
+  else if sExt = '.ogg' then
+    Result := TVorbisIn.Create(nil)
+  else
+    Result := nil;
+end;
+
+function CreateOutputFromExt(sFilename: string): TAuFileOut;
+var
+  sExt: string;
+begin
+  sExt := ExtractFileExt(sFilename);
+  if sExt = '.wav' then
+    Result := TWaveOut.Create(nil)
+  else if sExt = '.wv' then
+    Result := TWVOut.Create(nil)
+//TODO: Find out what is used to play MP3s
+//  else if sExt = '.mp3' then
+//    Result := TMP3Out.Create(nil)
+  else if sExt = '.flac' then
+    Result := TFLACOut.Create(nil)
+  else if sExt = '.ape' then
+    Result := TMACOut.Create(nil)
+  else if sExt = '.ogg' then
+    Result := TVorbisOut.Create(nil)
+  else
+    Result := nil;
+end;
+(end)

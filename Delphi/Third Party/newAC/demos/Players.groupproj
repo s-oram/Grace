@@ -1,0 +1,180 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{4C2E3BC8-B92B-4753-9BD9-901F4840DDA8}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Players\APEPlayer\APEPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\AudioPlayer\AudioPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\CDPlayer\CDPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\DTSPlayer\DTSPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\FLACPlayer\FLACPlayerDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\i-Radio\iRadio.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\MP3Player\MP3Player.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\NetworkRadioStation\NetworkStation.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\NetworkRadioStation-2\NetRadioStation.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\OggPlayer\OggPlayerDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\TTAPlayer\TTAPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\WMPlayer\WMPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Players\WVPlayer\WVPlayer.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="APEPlayer">
+        <MSBuild Projects="Players\APEPlayer\APEPlayer.dproj"/>
+    </Target>
+    <Target Name="APEPlayer:Clean">
+        <MSBuild Projects="Players\APEPlayer\APEPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="APEPlayer:Make">
+        <MSBuild Projects="Players\APEPlayer\APEPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="AudioPlayer">
+        <MSBuild Projects="Players\AudioPlayer\AudioPlayer.dproj"/>
+    </Target>
+    <Target Name="AudioPlayer:Clean">
+        <MSBuild Projects="Players\AudioPlayer\AudioPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AudioPlayer:Make">
+        <MSBuild Projects="Players\AudioPlayer\AudioPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CDPlayer">
+        <MSBuild Projects="Players\CDPlayer\CDPlayer.dproj"/>
+    </Target>
+    <Target Name="CDPlayer:Clean">
+        <MSBuild Projects="Players\CDPlayer\CDPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CDPlayer:Make">
+        <MSBuild Projects="Players\CDPlayer\CDPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DTSPlayer">
+        <MSBuild Projects="Players\DTSPlayer\DTSPlayer.dproj"/>
+    </Target>
+    <Target Name="DTSPlayer:Clean">
+        <MSBuild Projects="Players\DTSPlayer\DTSPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DTSPlayer:Make">
+        <MSBuild Projects="Players\DTSPlayer\DTSPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FLACPlayerDemo">
+        <MSBuild Projects="Players\FLACPlayer\FLACPlayerDemo.dproj"/>
+    </Target>
+    <Target Name="FLACPlayerDemo:Clean">
+        <MSBuild Projects="Players\FLACPlayer\FLACPlayerDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FLACPlayerDemo:Make">
+        <MSBuild Projects="Players\FLACPlayer\FLACPlayerDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="iRadio">
+        <MSBuild Projects="Players\i-Radio\iRadio.dproj"/>
+    </Target>
+    <Target Name="iRadio:Clean">
+        <MSBuild Projects="Players\i-Radio\iRadio.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="iRadio:Make">
+        <MSBuild Projects="Players\i-Radio\iRadio.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MP3Player">
+        <MSBuild Projects="Players\MP3Player\MP3Player.dproj"/>
+    </Target>
+    <Target Name="MP3Player:Clean">
+        <MSBuild Projects="Players\MP3Player\MP3Player.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MP3Player:Make">
+        <MSBuild Projects="Players\MP3Player\MP3Player.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="NetworkStation">
+        <MSBuild Projects="Players\NetworkRadioStation\NetworkStation.dproj"/>
+    </Target>
+    <Target Name="NetworkStation:Clean">
+        <MSBuild Projects="Players\NetworkRadioStation\NetworkStation.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="NetworkStation:Make">
+        <MSBuild Projects="Players\NetworkRadioStation\NetworkStation.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="NetRadioStation">
+        <MSBuild Projects="Players\NetworkRadioStation-2\NetRadioStation.dproj"/>
+    </Target>
+    <Target Name="NetRadioStation:Clean">
+        <MSBuild Projects="Players\NetworkRadioStation-2\NetRadioStation.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="NetRadioStation:Make">
+        <MSBuild Projects="Players\NetworkRadioStation-2\NetRadioStation.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="OggPlayerDemo">
+        <MSBuild Projects="Players\OggPlayer\OggPlayerDemo.dproj"/>
+    </Target>
+    <Target Name="OggPlayerDemo:Clean">
+        <MSBuild Projects="Players\OggPlayer\OggPlayerDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="OggPlayerDemo:Make">
+        <MSBuild Projects="Players\OggPlayer\OggPlayerDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TTAPlayer">
+        <MSBuild Projects="Players\TTAPlayer\TTAPlayer.dproj"/>
+    </Target>
+    <Target Name="TTAPlayer:Clean">
+        <MSBuild Projects="Players\TTAPlayer\TTAPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TTAPlayer:Make">
+        <MSBuild Projects="Players\TTAPlayer\TTAPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WMPlayer">
+        <MSBuild Projects="Players\WMPlayer\WMPlayer.dproj"/>
+    </Target>
+    <Target Name="WMPlayer:Clean">
+        <MSBuild Projects="Players\WMPlayer\WMPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WMPlayer:Make">
+        <MSBuild Projects="Players\WMPlayer\WMPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WVPlayer">
+        <MSBuild Projects="Players\WVPlayer\WVPlayer.dproj"/>
+    </Target>
+    <Target Name="WVPlayer:Clean">
+        <MSBuild Projects="Players\WVPlayer\WVPlayer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WVPlayer:Make">
+        <MSBuild Projects="Players\WVPlayer\WVPlayer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="APEPlayer;AudioPlayer;CDPlayer;DTSPlayer;FLACPlayerDemo;iRadio;MP3Player;NetworkStation;NetRadioStation;OggPlayerDemo;TTAPlayer;WMPlayer;WVPlayer"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="APEPlayer:Clean;AudioPlayer:Clean;CDPlayer:Clean;DTSPlayer:Clean;FLACPlayerDemo:Clean;iRadio:Clean;MP3Player:Clean;NetworkStation:Clean;NetRadioStation:Clean;OggPlayerDemo:Clean;TTAPlayer:Clean;WMPlayer:Clean;WVPlayer:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="APEPlayer:Make;AudioPlayer:Make;CDPlayer:Make;DTSPlayer:Make;FLACPlayerDemo:Make;iRadio:Make;MP3Player:Make;NetworkStation:Make;NetRadioStation:Make;OggPlayerDemo:Make;TTAPlayer:Make;WMPlayer:Make;WVPlayer:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

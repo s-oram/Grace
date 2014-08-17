@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{52662CFD-FBD0-40DA-AA13-E45C9805F76B}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Recorders-rippers\CDRipper\CDRipper.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Recorders-rippers\DirectSoundRecorder\DirectSoundRecorder.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Recorders-rippers\RadioRecorder\RadioRecorder.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Recorders-rippers\RecordOverMusic\RecordOverMusic.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Recorders-rippers\Rip'n'listen\RipAndListen.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CDRipper">
+        <MSBuild Projects="Recorders-rippers\CDRipper\CDRipper.dproj"/>
+    </Target>
+    <Target Name="CDRipper:Clean">
+        <MSBuild Projects="Recorders-rippers\CDRipper\CDRipper.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CDRipper:Make">
+        <MSBuild Projects="Recorders-rippers\CDRipper\CDRipper.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DirectSoundRecorder">
+        <MSBuild Projects="Recorders-rippers\DirectSoundRecorder\DirectSoundRecorder.dproj"/>
+    </Target>
+    <Target Name="DirectSoundRecorder:Clean">
+        <MSBuild Projects="Recorders-rippers\DirectSoundRecorder\DirectSoundRecorder.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DirectSoundRecorder:Make">
+        <MSBuild Projects="Recorders-rippers\DirectSoundRecorder\DirectSoundRecorder.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RadioRecorder">
+        <MSBuild Projects="Recorders-rippers\RadioRecorder\RadioRecorder.dproj"/>
+    </Target>
+    <Target Name="RadioRecorder:Clean">
+        <MSBuild Projects="Recorders-rippers\RadioRecorder\RadioRecorder.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RadioRecorder:Make">
+        <MSBuild Projects="Recorders-rippers\RadioRecorder\RadioRecorder.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RecordOverMusic">
+        <MSBuild Projects="Recorders-rippers\RecordOverMusic\RecordOverMusic.dproj"/>
+    </Target>
+    <Target Name="RecordOverMusic:Clean">
+        <MSBuild Projects="Recorders-rippers\RecordOverMusic\RecordOverMusic.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RecordOverMusic:Make">
+        <MSBuild Projects="Recorders-rippers\RecordOverMusic\RecordOverMusic.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RipAndListen">
+        <MSBuild Projects="Recorders-rippers\Rip'n'listen\RipAndListen.dproj"/>
+    </Target>
+    <Target Name="RipAndListen:Clean">
+        <MSBuild Projects="Recorders-rippers\Rip'n'listen\RipAndListen.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RipAndListen:Make">
+        <MSBuild Projects="Recorders-rippers\Rip'n'listen\RipAndListen.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CDRipper;DirectSoundRecorder;RadioRecorder;RecordOverMusic;RipAndListen"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CDRipper:Clean;DirectSoundRecorder:Clean;RadioRecorder:Clean;RecordOverMusic:Clean;RipAndListen:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CDRipper:Make;DirectSoundRecorder:Make;RadioRecorder:Make;RecordOverMusic:Make;RipAndListen:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

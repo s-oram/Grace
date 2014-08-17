@@ -1,0 +1,132 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{34814539-5D86-4057-A573-373BB946D20B}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Editors\AudioCutter\AudioCutter.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\AudioMixer\AudioMixer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\AudioProcessorDemo\APDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\FiltersTest\FiltersTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\MemoryInDemo\SineWaveGenerator.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\ReplayGain\ReplayGain.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\RTMixer\RTMixer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\TagsEditor\TagsEditor.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Editors\WaveFileConverter\WFConverter.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="AudioCutter">
+        <MSBuild Projects="Editors\AudioCutter\AudioCutter.dproj"/>
+    </Target>
+    <Target Name="AudioCutter:Clean">
+        <MSBuild Projects="Editors\AudioCutter\AudioCutter.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AudioCutter:Make">
+        <MSBuild Projects="Editors\AudioCutter\AudioCutter.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="AudioMixer">
+        <MSBuild Projects="Editors\AudioMixer\AudioMixer.dproj"/>
+    </Target>
+    <Target Name="AudioMixer:Clean">
+        <MSBuild Projects="Editors\AudioMixer\AudioMixer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AudioMixer:Make">
+        <MSBuild Projects="Editors\AudioMixer\AudioMixer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="APDemo">
+        <MSBuild Projects="Editors\AudioProcessorDemo\APDemo.dproj"/>
+    </Target>
+    <Target Name="APDemo:Clean">
+        <MSBuild Projects="Editors\AudioProcessorDemo\APDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="APDemo:Make">
+        <MSBuild Projects="Editors\AudioProcessorDemo\APDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FiltersTest">
+        <MSBuild Projects="Editors\FiltersTest\FiltersTest.dproj"/>
+    </Target>
+    <Target Name="FiltersTest:Clean">
+        <MSBuild Projects="Editors\FiltersTest\FiltersTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FiltersTest:Make">
+        <MSBuild Projects="Editors\FiltersTest\FiltersTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SineWaveGenerator">
+        <MSBuild Projects="Editors\MemoryInDemo\SineWaveGenerator.dproj"/>
+    </Target>
+    <Target Name="SineWaveGenerator:Clean">
+        <MSBuild Projects="Editors\MemoryInDemo\SineWaveGenerator.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SineWaveGenerator:Make">
+        <MSBuild Projects="Editors\MemoryInDemo\SineWaveGenerator.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ReplayGain">
+        <MSBuild Projects="Editors\ReplayGain\ReplayGain.dproj"/>
+    </Target>
+    <Target Name="ReplayGain:Clean">
+        <MSBuild Projects="Editors\ReplayGain\ReplayGain.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReplayGain:Make">
+        <MSBuild Projects="Editors\ReplayGain\ReplayGain.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RTMixer">
+        <MSBuild Projects="Editors\RTMixer\RTMixer.dproj"/>
+    </Target>
+    <Target Name="RTMixer:Clean">
+        <MSBuild Projects="Editors\RTMixer\RTMixer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RTMixer:Make">
+        <MSBuild Projects="Editors\RTMixer\RTMixer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TagsEditor">
+        <MSBuild Projects="Editors\TagsEditor\TagsEditor.dproj"/>
+    </Target>
+    <Target Name="TagsEditor:Clean">
+        <MSBuild Projects="Editors\TagsEditor\TagsEditor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TagsEditor:Make">
+        <MSBuild Projects="Editors\TagsEditor\TagsEditor.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WFConverter">
+        <MSBuild Projects="Editors\WaveFileConverter\WFConverter.dproj"/>
+    </Target>
+    <Target Name="WFConverter:Clean">
+        <MSBuild Projects="Editors\WaveFileConverter\WFConverter.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WFConverter:Make">
+        <MSBuild Projects="Editors\WaveFileConverter\WFConverter.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="AudioCutter;AudioMixer;APDemo;FiltersTest;SineWaveGenerator;ReplayGain;RTMixer;TagsEditor;WFConverter"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="AudioCutter:Clean;AudioMixer:Clean;APDemo:Clean;FiltersTest:Clean;SineWaveGenerator:Clean;ReplayGain:Clean;RTMixer:Clean;TagsEditor:Clean;WFConverter:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="AudioCutter:Make;AudioMixer:Make;APDemo:Make;FiltersTest:Make;SineWaveGenerator:Make;ReplayGain:Make;RTMixer:Make;TagsEditor:Make;WFConverter:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

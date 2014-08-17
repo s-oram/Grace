@@ -1,0 +1,48 @@
+Title: NewAC Main Features List
+
+Topic: General Features
+
+With NewAC Delphi components package components you can:
+
+- Play audio using your sound card and DirectSound.
+- Record audio from your sound card and DirectSound.
+- Play and record audio using low-latency ASIO drivers.
+- Acquire audio data from live Internet audio streams (WMA, MP3).
+- Broadcast audio over the network.
+- Rip audio CDs.
+- Convert audio from one format to another.
+- Mix and concatenate audio data from several sources.
+- Change audio streams sample rate, number of bits per sample and number of channels.
+- Select parts of audio files for further manipulation.
+- Read and store audio in TStream classes, including TMemoryStream.
+- Split audiotracks automatically using cue-sheets.
+- Build gapless playlists from several audio-files.
+- Extract multi-channel audio from CD/DVD images.
+
+NewAC supports new Windows Vista DSP components: built in audio resampler and voice data DSP.
+
+Suported formats:
+
+- Wav: reading, writing (PCM, MS ADPCM, IMA DVI ADPCM, IEEE Float encodings). You can add audio data to already existing Wav files.
+- MP3: decoding with Windows Media decoder, reading tags, encoding with LAME.
+- Ogg Vorbis: decoding, encoding, writing/reading tags (comments), several bitstreams support. You can add audio data to already existing Ogg Vorbis files.
+- FLAC: decoding, encoding, writing/reading tags (comments)
+- WMA including WMA lossless, – decoding, encoding, editing tags.
+- Monkey’s Audio: decoding, encoding.
+- TTA: decoding, encoding, editing tags.
+- WavPack: decoding, encoding, editing tags.
+- Musepack: decoding, encoding, editing tags.
+- DTS (Digital Theater System): decoding.
+- AC-3 (Dolby Digital): decoding.
+- AAC (MPEG-4, M4A, MP4) files decoding
+- OptimFROG: decoding.
+- TAK: decoding.
+
+Topic: Additional Features
+
+Section: Additional Features
+
+- Extracting audio tracks from WMV and AVI files.
+- 8, 16, 24, 32 bit sound support
+- Multichannel audio support.
+- Unicode file names and Unicode tags are support.
