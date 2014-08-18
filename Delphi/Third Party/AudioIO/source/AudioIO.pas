@@ -12,6 +12,9 @@ unit AudioIO;
 
 interface
 
+{.$DEFINE EnableMP3Support}
+{.$DEFINE EnableWavPackSupport}
+
 uses
   SysUtils, VamLib.MoreTypes;
 
@@ -149,9 +152,14 @@ begin
   if Ext = '.aif'  then IsSupportedExtension := true;
   if Ext = '.aiff' then IsSupportedExtension := true;
   if Ext = '.snd'  then IsSupportedExtension := true;
-  if Ext = '.mp3'  then IsSupportedExtension := true;
-  if Ext = '.wv'   then IsSupportedExtension := true;
 
+  {$IFDEF EnableMP3Support}
+  if Ext = '.mp3'  then IsSupportedExtension := true;
+  {$ENDIF}
+
+  {$IFDEF EnableWavPackSupport}
+  if Ext = '.wv'   then IsSupportedExtension := true;
+  {$ENDIF}
 
   if IsSupportedExtension
     then result := true
