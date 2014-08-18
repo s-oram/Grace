@@ -189,8 +189,16 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);     // NOTE: Using ShowPlayTypeMenuCallBack().
   GuiStandard_RegisterMenuButton(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);
   GuiStandard_RegisterMenuButton(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource); // NOTE: Using ShowSamplResetMenuCallBack().
+
+  // TODO:HIGH need a way to fire off a call back when the Trigger Mode menu item has been selected.
+  //   I need to fire off an event to update the GUI.
   GuiStandard_RegisterMenuButton(aGuiStandard, TriggerModeTextBox,          TPluginParameter.SamplerTriggerMode);
+
+  // TODO:HIGH need a way to fire off a call back when the SampleLoopBounds menu item has been selected.
+  //   I need to fire off an event to update the GUI.
   GuiStandard_RegisterMenuButton(aGuiStandard, LoopBoundsTextBox,           TPluginParameter.SamplerLoopBounds);
+
+
   //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);
 
 

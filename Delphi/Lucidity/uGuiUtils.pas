@@ -951,7 +951,6 @@ begin
   assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
   gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
 
-
   if Supports(Control, IMenuControl, mc)  then
   begin
     mc.SetParameterName(PluginParToName(Par));
