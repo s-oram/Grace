@@ -41,6 +41,8 @@ thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail
      Currently the GUI will freeze when trying to load long MP3 files
      as the file is converted to PCM sample data.
 
+- Add MP3 and WavPack Support (after adding threaded sample loading.)
+
 - The sample map editor needs to reset all root note option to tune root notes.
   - detect root note in filename
   - detect root note by detecting sample frequency.
