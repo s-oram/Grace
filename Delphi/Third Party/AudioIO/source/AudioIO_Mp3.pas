@@ -2,6 +2,8 @@ unit AudioIO_Mp3;
 
 interface
 
+{$INCLUDE AudioIO.inc}
+
 uses
   AudioIO;
 
@@ -23,11 +25,16 @@ function LoadMp3FileMono(FileName:string; Left:PSingle):boolean;
 
 implementation
 
+
 uses
+  {$IFDEF UseNewAudioComponents}
   ACS_MemFloat,
-  ACS_smpeg;
+  ACS_smpeg,
+  {$ENDIF}
+  SysUtils;
 
 function GetMp3FileInfo(FileName:string):TMp3FileInfo;
+{$IFDEF UseNewAudioComponents}
 var
   Mp3In : TMP3In;
 begin
@@ -55,9 +62,14 @@ begin
     Mp3In.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 
 function LoadMp3FileStereo(FileName:string; Left,Right:PSingle):boolean;
+{$IFDEF UseNewAudioComponents}
 var
   Mp3In : TMP3In;
   MemFloatOut : TMemFloatOut;
@@ -86,8 +98,13 @@ begin
     MemFloatOut.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 function LoadMp3FileMono(FileName:string; Left:PSingle):boolean;
+{$IFDEF UseNewAudioComponents}
 var
   Mp3In : TMP3In;
   MemFloatOut : TMemFloatOut;
@@ -114,5 +131,9 @@ begin
     MemFloatOut.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 end.

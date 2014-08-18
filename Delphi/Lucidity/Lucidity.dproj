@@ -623,6 +623,7 @@
 			<None Include="Defines.inc"/>
 			<None Include="FastMM4Options.inc"/>
 			<None Include="Profiling\AQtimeModule1.aqt"/>
+			<None Include="..\Third Party\AudioIO\source\AudioIO.inc"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>

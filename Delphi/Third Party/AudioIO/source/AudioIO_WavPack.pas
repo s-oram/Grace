@@ -2,6 +2,7 @@ unit AudioIO_WavPack;
 
 interface
 
+{$INCLUDE AudioIO.inc}
 
 // TODO:HIGH
 // WavPack support depends on a "wavpackdll.dll" being present on the system.
@@ -30,10 +31,14 @@ function LoadWavPackFileMono(FileName:string; Left:PSingle):boolean;
 implementation
 
 uses
+  {$IFDEF UseNewAudioComponents}
   ACS_MemFloat,
-  ACS_WavPack;
+  ACS_WavPack,
+  {$ENDIF}
+  SysUtils;
 
 function GetWavPackFileInfo(FileName:string):TWavPackFileInfo;
+{$IFDEF UseNewAudioComponents}
 var
   WavPackIn : TWVIn;
 begin
@@ -55,9 +60,14 @@ begin
     WavPackIn.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 
 function LoadWavPackFileStereo(FileName:string; Left,Right:PSingle):boolean;
+{$IFDEF UseNewAudioComponents}
 var
   WavPackIn : TWVIn;
   MemFloatOut : TMemFloatOut;
@@ -86,8 +96,13 @@ begin
     MemFloatOut.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 function LoadWavPackFileMono(FileName:string; Left:PSingle):boolean;
+{$IFDEF UseNewAudioComponents}
 var
   WavPackIn : TWVIn;
   MemFloatOut : TMemFloatOut;
@@ -114,5 +129,9 @@ begin
     MemFloatOut.Free;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 end.

@@ -12,8 +12,7 @@ unit AudioIO;
 
 interface
 
-{.$DEFINE EnableMP3Support}
-{.$DEFINE EnableWavPackSupport}
+{$INCLUDE AudioIO.inc}
 
 uses
   SysUtils, VamLib.MoreTypes;
