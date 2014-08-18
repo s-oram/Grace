@@ -165,7 +165,7 @@ object SampleMapFrame: TSampleMapFrame
           Visible = True
           object LowNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 365
+            Left = 298
             Top = 3
             Width = 61
             Height = 22
@@ -189,10 +189,11 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 365
           end
           object HighNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 231
+            Left = 365
             Top = 3
             Width = 61
             Height = 22
@@ -216,6 +217,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 386
           end
           object LowVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
@@ -246,7 +248,7 @@ object SampleMapFrame: TSampleMapFrame
           end
           object HighVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 298
+            Left = 231
             Top = 3
             Width = 61
             Height = 22
@@ -270,6 +272,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 202
           end
           object RootNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True

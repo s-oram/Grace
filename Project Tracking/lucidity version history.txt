@@ -17,6 +17,7 @@ Bug Fix:
 - loop points aren't being read from wavefiles when SFZ files are loaded.
 - SFZ loop_mode opcode wasn't being imported correctly.
 - sample loop indicators weren't showing at the correct time.
+- sample region boundary edit boxes weren't in the correct order.
 
 
 === BETA v0.0.1.43 (18-Aug-2014) ===

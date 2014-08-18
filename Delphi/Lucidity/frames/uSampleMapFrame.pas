@@ -120,6 +120,7 @@ uses
   Lucidity.Types,
   eeVstXml,
   RedFoxColor, eePitch,
+  VamLayoutWizard,
   VamKeyStateTracker, GuidEx,
   uConstants, Lucidity.SampleMap, Lucidity.KeyGroup;
 
@@ -263,9 +264,21 @@ begin
   RootNoteKnob.OnRotaryStepUp   := Handle_KnobStepUp;
   RootNoteKnob.OnRotaryStepDown := Handle_KnobStepDown;
 
+
+  LowVelKnob.Align   := TAlign.alNone;
+  HighVelKnob.Align  := TAlign.alNone;
+  LowNoteKnob.Align  := TAlign.alNone;
+  HighNoteKnob.Align := TAlign.alNone;
+  RootNoteKnob.Align := TAlign.alNone;
+
+  LowVelKnob.Layout.SetPos(8,1);
+  HighVelKnob.Layout.Anchor(LowVelKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  LowNoteKnob.Layout.Anchor(HighVelKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  HighNoteKnob.Layout.Anchor(LowNoteKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+  RootNoteKnob.Layout.Anchor(HighNoteKnob).SnapToEdge(TControlFeature.RightEdge).Move(8,0);
+
   //UpperPanelArea.Color := kColor_LcdDark1;
   UpperPanelArea.Color := kPanelLight;
-
 end;
 
 
