@@ -71,6 +71,8 @@ type
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+
+    procedure EventHandle_LoopModeSelected(Sender : TObject);
   protected
     procedure UpdateControlVisibility;
   public
@@ -132,6 +134,11 @@ begin
   inherited;
 end;
 
+procedure TVoiceControlFrame.EventHandle_LoopModeSelected(Sender: TObject);
+begin
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.LoopTypeChanged);
+end;
+
 procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 var
   NameA, NameB : string;
@@ -189,14 +196,12 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, SamplePlaybackTypeTextBox,   TPluginParameter.SamplePlaybackType);     // NOTE: Using ShowPlayTypeMenuCallBack().
   GuiStandard_RegisterMenuButton(aGuiStandard, PitchTrackTextBox,           TPluginParameter.PitchTracking);
   GuiStandard_RegisterMenuButton(aGuiStandard, ResetTextBox,                TPluginParameter.SampleResetClockSource); // NOTE: Using ShowSamplResetMenuCallBack().
-
-  // TODO:HIGH need a way to fire off a call back when the Trigger Mode menu item has been selected.
-  //   I need to fire off an event to update the GUI.
   GuiStandard_RegisterMenuButton(aGuiStandard, TriggerModeTextBox,          TPluginParameter.SamplerTriggerMode);
-
-  // TODO:HIGH need a way to fire off a call back when the SampleLoopBounds menu item has been selected.
-  //   I need to fire off an event to update the GUI.
   GuiStandard_RegisterMenuButton(aGuiStandard, LoopBoundsTextBox,           TPluginParameter.SamplerLoopBounds);
+
+
+  TriggerModeTextBox.MenuItemSelectedCallback := EventHandle_LoopModeSelected;
+  LoopBoundsTextBox.MenuItemSelectedCallback  := EventHandle_LoopModeSelected;
 
 
   //GuiStandard_RegisterControl(aGuiStandard, GrainLoopTextBox,            TPluginParameter.GrainLoop);

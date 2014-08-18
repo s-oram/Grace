@@ -380,13 +380,11 @@ begin
     TSamplePlaybackType.LoopSampler,
     TSamplePlaybackType.OneShotSampler:
     begin
-      case kg.VoiceParameters.SamplerLoopBounds of
-        //TSamplerLoopBounds.LoopOff:    result := false;
-        TSamplerLoopBounds.LoopSample: result := false;
-        TSamplerLoopBounds.LoopPoints: result := true;
-      else
-        raise Exception.Create('Unexpected type.');
-      end;
+      if kg.VoiceParameters.SamplerLoopBounds = TSamplerLoopBounds.LoopSample then exit(false);
+      if kg.VoiceParameters.SamplerTriggerMode = TKeyGroupTriggerMode.OneShot  then exit(false);
+      if kg.VoiceParameters.SamplerTriggerMode = TKeyGroupTriggerMode.LoopOff  then exit(false);
+      // result is true if we make it this far.
+      result := true;
     end;
 
     TSamplePlaybackType.GrainStretch: result := true;

@@ -64,6 +64,8 @@ type
 
     procedure SetMenuText(Value : string);
 
+    function GetMenuItemSelectedCallback: TNotifyEvent;
+
     procedure SetOnMouseEnter(Handler:TNotifyEvent);
     procedure SetOnMouseLeave(Handler:TNotifyEvent);
     procedure SetOnMouseDown(Handler:TMouseEvent);

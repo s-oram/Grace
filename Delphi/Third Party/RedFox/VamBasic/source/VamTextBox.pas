@@ -26,6 +26,7 @@ type
     fImageOverlayOffsetY: integer;
     fImageOverlayOffsetX: integer;
     fAutoTrimText: boolean;
+    fMenuItemSelectedCallback: TNotifyEvent;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -43,6 +44,7 @@ type
     procedure SetParameterName(const Value: string);
     function GetParameterName: string;
     procedure SetAutoTrimText(const Value: boolean);
+    function GetMenuItemSelectedCallback: TNotifyEvent;
   protected
     DisplayText : string;
 
@@ -60,6 +62,8 @@ type
     // ParameterName is a 'Tag' type property used to store a VST parameter name.
     property ParameterName  : string  read GetParameterName  write SetParameterName;
 
+
+    property MenuItemSelectedCallback : TNotifyEvent read GetMenuItemSelectedCallback write fMenuItemSelectedCallback;
   published
     property AutoTrimText : boolean read fAutoTrimText write SetAutoTrimText;
 
@@ -82,6 +86,9 @@ type
     property ImageOverlayHorzAlign : TRedFoxAlign read fImageOverlayHorzAlign write fImageOverlayHorzAlign;
     property ImageOverlayOffsetX   : integer      read fImageOverlayOffsetX   write fImageOverlayOffsetX;
     property ImageOverlayOffsetY   : integer      read fImageOverlayOffsetY   write fImageOverlayOffsetY;
+
+
+
 
     {$INCLUDE TControlProperties.inc}
   end;
@@ -152,6 +159,11 @@ end;
 function TVamTextBox.GetColorMouseOver: TRedFoxColorString;
 begin
   result := fColorMouseOver.AsString;
+end;
+
+function TVamTextBox.GetMenuItemSelectedCallback: TNotifyEvent;
+begin
+  Result := fMenuItemSelectedCallback;
 end;
 
 function TVamTextBox.GetParameterName: string;

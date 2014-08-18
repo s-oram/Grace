@@ -364,6 +364,8 @@ begin
   if MsgID = TLucidMsgID.LoopTypeChanged                 then UpdateSampleDisplayInfo;
   if MsgID = TLucidMsgID.Command_UpdateSampleDisplay     then UpdateSampleDisplay;
   if MsgID = TLucidMsgID.Command_UpdateSampleInfo        then UpdateSampleDisplayInfo;
+  if MsgID = TLucidMsgID.Command then
+
 
   if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.LargeTextMessage := 'Replace Sample';
   if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.LargeTextMessage := '';

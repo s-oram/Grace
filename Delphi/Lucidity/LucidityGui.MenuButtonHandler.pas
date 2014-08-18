@@ -201,6 +201,7 @@ var
   ParID    : TPluginParameterID;
   ParValue : single;
   ShowMenuCallback : TShowMenuCallback;
+  CustomCallback : TNotifyEvent;
 begin
   if Supports(Sender, IMenuControl, mc)  then
   begin
@@ -219,6 +220,10 @@ begin
 
       // TODO:HIGH Should check if the parameter is a published vst parameter here.
       Plugin.SetPluginParameter(ParID, NewParValue, TParChangeScope.psFocused);
+
+      CustomCallback := mc.GetMenuItemSelectedCallback;
+      if assigned(CustomCallback)
+        then CustomCallback(self);
 
       UpdateControl(Sender);
     end;
