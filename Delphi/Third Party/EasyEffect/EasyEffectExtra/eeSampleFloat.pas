@@ -89,6 +89,16 @@ begin
       exit; //===================================>>
     end;
 
+    on  ERangeError do
+    begin
+      SetLength(fCh1, 0);
+      SetLength(fCh2, 0);
+      fProperties.Ch1 := nil;
+      fProperties.Ch2 := nil;
+      result := false;
+      exit; //===================================>>
+    end;
+
     // HACK: This routine has raised access violations, but AFAICT it shouldn't... grrr :/
     // response, so handle anyway.
     on EAccessViolation do
@@ -155,6 +165,7 @@ begin
 
     if (Info.IsValid) and (Info.IsSupported) then
     begin
+      // TODO:HIGH Bug - range check error fail here while loading MP3. Eprom Metahuman.
       //Before anything, try to get memory for sample data.
       if GetSampleMem(Info.Channels, Info.SampleFrames) = false then
       begin
