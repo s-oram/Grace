@@ -271,6 +271,16 @@ end;
 
 procedure TSfzParser.ProcessRegion(s: string);
 begin
+  // NOTE: SFZ files don't require a <group> tag to start a region.
+  // To ease importing into other formats, lets open a group here
+  // if one isn't already open.
+  if not IsGroupOpen then
+  begin
+    if assigned(OnGroupStart) then OnGroupStart(self);
+    IsGroupOpen := true;
+  end;
+  //================================================================
+
   if IsRegionOpen then
   begin
     if assigned(OnRegionEnd)   then OnRegionEnd(self);

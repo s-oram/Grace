@@ -34,9 +34,29 @@ bug:
 - These Patches work. Email Reuse Noise with new build.
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
+
+bug:
+- save patch directory needs to default to user directory.
+
+bug 
+- loop indicators shouldn't show when changing loop mode.
+
+bug
+- sample map bound edit boxes aren't in the correct order.
+
+bug
+= loop points aren't being read from wavefiles when SFZ files are loaded.
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- a merge all key groups command would be ace!
+
+- a show all key groups in the key map editor would be ace!
+
+- a hotkey to press when changing a parameter to "set all groups" value would
+  be ace!
+
 - sample loading needs to happen in a thread.
   -- this is for main sample loading and preview sample loading.
      Currently the GUI will freeze when trying to load long MP3 files
