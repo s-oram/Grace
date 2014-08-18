@@ -616,6 +616,7 @@
 			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.pas"/>
 			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_Mp3.pas"/>
 			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_WavPack.pas"/>
+			<DCCReference Include="Lucidity.SampleMap.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

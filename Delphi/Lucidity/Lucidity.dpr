@@ -173,7 +173,8 @@ uses
   Lucidity.SfzOpcodeConversion in 'Third Party File Support\Lucidity.SfzOpcodeConversion.pas',
   SfzParser in '..\Third Party\EasyEffect\ThirdParty\SfzParser.pas',
   AudioIO_Mp3 in '..\Third Party\AudioIO\source\AudioIO_Mp3.pas',
-  AudioIO_WavPack in '..\Third Party\AudioIO\source\AudioIO_WavPack.pas';
+  AudioIO_WavPack in '..\Third Party\AudioIO\source\AudioIO_WavPack.pas',
+  Lucidity.SampleMap in 'Lucidity.SampleMap.pas';
 
 {$R *.res}
 

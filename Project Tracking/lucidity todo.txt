@@ -31,6 +31,7 @@ Bug
 
 bug: 
 - confirm these SFZ patches should work.
+- These Patches work. Email Reuse Noise with new build.
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
 =============================================================================
