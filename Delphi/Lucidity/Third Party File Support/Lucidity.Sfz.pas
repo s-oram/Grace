@@ -221,7 +221,7 @@ begin
     TSfzOpcode.offset_ccN: ;
     TSfzOpcode.sample_end: ;
     TSfzOpcode.count: ;
-    TSfzOpcode.loop_mode: ;
+    TSfzOpcode.loop_mode: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.loop_start: ;
     TSfzOpcode.loop_end: ;
     TSfzOpcode.sync_beats: ;
@@ -458,7 +458,7 @@ begin
     TSfzOpcode.offset_ccN: ;
     TSfzOpcode.sample_end: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/SampleEnd').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.count: ;
-    TSfzOpcode.loop_mode:  NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.loop_mode: ;
     TSfzOpcode.loop_start: NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopStart').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.loop_end:   NodeWiz(TargetNode).FindOrCreateNode('RegionProperties/LoopEnd').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
     TSfzOpcode.sync_beats: ;

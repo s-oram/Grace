@@ -695,9 +695,14 @@ end;
 class function TKeyGroupTriggerModeHelper.ToFullGuiString(aEnum: TKeyGroupTriggerMode): string;
 begin
   case aEnum of
+    // one_shot: sample will play from start to end, ignoring note off.
     TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
+    // no_loop: no looping will be performed. Sample will play straight from start to end, or until note off, whatever reaches first.
     TKeyGroupTriggerMode.LoopOff:         result := 'No Loop';
+    // loop_continuous: once the player reaches sample loop point, the loop will play until note expiration.
     TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop Continuous';
+    // loop_sustain: the player will play the loop while the note is held,
+    // by keeping it depressed or by using the sustain pedal (CC64). The rest of the sample will play after note release.
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Until Release';
   else
     raise Exception.Create('Type not handled.');
@@ -709,7 +714,7 @@ begin
   case aEnum of
     TKeyGroupTriggerMode.OneShot:         result := 'One Shot';
     TKeyGroupTriggerMode.LoopOff:         result := 'No Loop';
-    TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop ';
+    TKeyGroupTriggerMode.LoopContinuous:  result := 'Loop Cont.';
     TKeyGroupTriggerMode.LoopSustain:     result := 'Loop Rls';
   else
     raise Exception.Create('Type not handled.');
