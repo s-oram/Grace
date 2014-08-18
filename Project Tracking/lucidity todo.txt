@@ -33,9 +33,6 @@ bug:
 - confirm these SFZ patches should work.
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
-bug: 
-changing sample focus doesn't update display.
-
 =============================================================================
      TODO HIGH
 =============================================================================
