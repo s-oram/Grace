@@ -9,8 +9,8 @@ bug
 
 
 == Finished for the next release ==
-
 Change:
+- save patch directory now defaults to "user" patch directory.
 
 Bug Fix:
 - Can now load SFZ files that don't contain any <group> tags. 

@@ -443,12 +443,14 @@ begin
     if LastProgramLoadDir = '' then
     begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
       if DirectoryExists(DataDir) then LastProgramLoadDir := DataDir;
     end;
 
     if LastProgramSaveDir = '' then
     begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
+      DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
       if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
     end;
   end;

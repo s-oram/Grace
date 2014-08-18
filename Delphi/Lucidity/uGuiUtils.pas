@@ -263,7 +263,7 @@ end;
 
 procedure SetupFileSaveDialog_Program(var SaveDialog : TxpFileSaveDialog);
 begin
-  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+  if (Lucidity.Globals.LastProgramSaveDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
   begin
     SaveDialog.InitialDir := Lucidity.Globals.LastProgramSaveDir;
   end;
@@ -274,7 +274,7 @@ end;
 
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
 begin
-  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramLoadDir)) then
   begin
     OpenDialog.InitialDir := Lucidity.Globals.LastProgramLoadDir;
   end;

@@ -35,10 +35,6 @@ bug:
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
 
-bug:
-- save patch directory needs to default to user directory.
-
-
 =============================================================================
      TODO HIGH
 =============================================================================
