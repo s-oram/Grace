@@ -385,7 +385,6 @@ begin
 
         Text := IntToStr(MapRegion.GetProperties^.LowNote) + ' ' + IntToStr(MapRegion.GetProperties^.HighNote)  + ' ' + IntToStr(MapRegion.GetProperties^.LowVelocity)  + ' ' + IntToStr(MapRegion.GetProperties^.HighVelocity);
         Text := 'Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
-        Log.LogMessage(Text);
 
 
         NameA := MapRegion.GetKeyGroup.GetName;
@@ -895,7 +894,6 @@ begin
 
       Text := IntToStr(RegionCreateInfo.LowNote) + ' ' + IntToStr(RegionCreateInfo.HighNote)  + ' ' + IntToStr(RegionCreateInfo.LowVelocity)  + ' ' + IntToStr(RegionCreateInfo.HighVelocity);
       Text := 'New Copy Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
-      Log.LogMessage(Text);
     end;
 
 

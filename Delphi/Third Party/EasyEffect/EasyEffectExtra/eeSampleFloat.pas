@@ -165,7 +165,6 @@ begin
 
     if (Info.IsValid) and (Info.IsSupported) then
     begin
-      // TODO:HIGH Bug - range check error fail here while loading MP3. Eprom Metahuman.
       //Before anything, try to get memory for sample data.
       if GetSampleMem(Info.Channels, Info.SampleFrames) = false then
       begin

@@ -1519,3 +1519,8 @@
 {.$UNDEF SUPPORTS_WEAKPACKAGEUNIT}
 
 {$ENDIF ~NewAC_INC}
+
+
+// Included here by Shannon Oram August 18th 2014.
+// Included because NewAC components weren't compiling.
+{$M-}

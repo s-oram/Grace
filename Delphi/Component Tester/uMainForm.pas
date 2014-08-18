@@ -2,7 +2,11 @@ unit uMainForm;
 
 interface
 
+
+
 uses
+  wmfintf,
+  ACS_MemFloat,
   ACS_Wave,
   ACS_smpeg,
   SfzParser,
@@ -92,6 +96,7 @@ implementation
 {$R *.dfm}
 
 uses
+  _DirectSound,
   VamGuiControlInterfaces,
   RedFoxColor,
   VamLib.Throttler,
@@ -189,20 +194,29 @@ procedure TForm1.Button1Click(Sender: TObject);
 var
   Mp3In : TMP3In;
   wavOut : TWaveOut;
+  MemFloatOut : TMemFloatOut;
 begin
   mp3In := TMp3In.Create(nil);
   wavOut := TWaveOut.Create(nil);
+  memFloatOut := TMemFloatOut.Create(nil);
+
   try
     if FileOpenDialog1.Execute then
     begin
       mp3In.FileName := FileOpenDialog1.FileName;
-      wavOut.Input := mp3In;
-      wavOut.FileName := 'D:\A WAve Convert Test.wav';
-      WavOut.BlockingRun;
+
+      //wavOut.Input := mp3In;
+      //wavOut.FileName := 'D:\A WAve Convert Test.wav';
+      //WavOut.BlockingRun;
+
+      MemFloatOut.Input := mp3In;
+      MemFloatOut.BlockingRun;
+      //MemFloatOut.SampleData[0,0] := 1;
     end;
   finally
     mp3In.free;
     WavOut.Free;
+    MemFloatOut.Free;
   end;
 end;
 

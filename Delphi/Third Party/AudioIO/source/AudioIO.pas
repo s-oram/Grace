@@ -26,7 +26,7 @@ const
 type
   PSingle = VamLib.MoreTypes.PSingle;
 
-  TAudioFileFormat = (afUnknown, afWave, afAiff, afSnd);
+  TAudioFileFormat = (afUnknown, afWave, afAiff, afSnd, afMP3);
 
   TAudioFileInfo = record
     IsValid        : boolean; //Is this audio file a valid file? ie, sample rate value is correct etc.
@@ -128,6 +128,7 @@ function LoadStereo_Int(FileName:string; LeftData,RightData:PSmallInt):boolean;
 implementation
 
 uses
+  AudioIO_Mp3,
   AudioIO_Wave, AudioIO_Aiff, AudioIO_Snd,
   AudioIO_WindowedSincResampler,
   AudioIO_Resampler_r8brain;
@@ -147,6 +148,7 @@ begin
   if Ext = '.aif'  then IsSupportedExtension := true;
   if Ext = '.aiff' then IsSupportedExtension := true;
   if Ext = '.snd'  then IsSupportedExtension := true;
+  if Ext = '.mp3'  then IsSupportedExtension := true;
 
   if IsSupportedExtension
     then result := true
@@ -271,10 +273,11 @@ end;
 
 procedure GetAudioFileInfoEx(FileName:String; var Info:TAudioFileInfo);
 var
-  Ext:string;
-  WaveInfo:TWaveInfo;
-  AiffInfo:TAiffInfo;
-  SndInfo:TSndInfo;
+  Ext : string;
+  WaveInfo : TWaveInfo;
+  AiffInfo : TAiffInfo;
+  SndInfo  : TSndInfo;
+  Mp3Info  : TMp3FileInfo;
 begin
   Ext := ExtractFileExt(FileName);
   Ext := Lowercase(Ext);
@@ -342,6 +345,20 @@ begin
       Info.FileFormatEx  := '';
     end;
 
+    if Ext = '.mp3' then
+    begin
+      Mp3Info := GetMp3FileInfo(FileName);
+
+      Info.FileFormat    := afMp3;
+      Info.IsValid       := Mp3Info.IsValid;
+      Info.IsSupported   := Mp3Info.IsSupported;
+      Info.SampleRate    := Mp3Info.SampleRate;
+      Info.Channels      := Mp3Info.Channels;
+      Info.SampleFrames  := Mp3Info.SampleFrames;
+      Info.BitDepth      := 32;
+      Info.FileFormatEx  := '';
+    end;
+
 
     if (Info.IsValid) and (Info.IsSupported) then
     begin
@@ -396,8 +413,7 @@ begin
   if Ext = '.aiff' then result := LoadAiffFileMono(FileName, LeftData);
   if Ext = '.snd'  then result := LoadSndFileMono(FileName, LeftData);
   if Ext = '.wav'  then result := LoadWaveFileMono(FileName, LeftData);
-
-
+  if Ext = '.mp3'  then result := LoadMp3FileMono(FileName, LeftData);
 end;
 
 function LoadStereo(FileName:string; LeftData,RightData:PSingle):boolean;
@@ -413,8 +429,7 @@ begin
   if Ext = '.aiff' then result := LoadAiffFileStereo(FileName, LeftData, RightData);
   if Ext = '.snd'  then result := LoadSndFileStereo(FileName, LeftData, RightData);
   if Ext = '.wav'  then result := LoadWaveFileStereo(FileName, LeftData, RightData);
-
-
+  if Ext = '.mp3'  then result := LoadMp3FileStereo(FileName, LeftData, RightData);
 end;
 
 function LoadMono_Int(FileName:string; LeftData:PSmallInt):boolean;
@@ -595,6 +610,7 @@ begin
   if Ext = '.aiff' then FileFormat := afAiff;
   if Ext = '.snd'  then FileFormat := afSnd;
   if Ext = '.wav'  then FileFormat := afWave;
+  if Ext = '.mp3'  then FileFormat := afMp3;
 
   if (FileFormat = afUnknown) then
   begin
@@ -608,6 +624,7 @@ begin
       afWave: result := LoadWaveFileMono(LoadParameters.FileName, LoadParameters.Ch1);
       afAiff: result := LoadAiffFileMono(LoadParameters.FileName, LoadParameters.Ch1);
       afSnd:  result := LoadSndFileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afMp3:  result := LoadMp3FileMono(LoadParameters.FileName, LoadParameters.Ch1);
     else
       result := false;
     end;
@@ -618,6 +635,7 @@ begin
       afWave: result := LoadWaveFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
       afAiff: result := LoadAiffFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
       afSnd:  result := LoadSndFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afMp3:  result := LoadMp3FileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
     else
       result := false;
     end;
@@ -679,6 +697,7 @@ begin
       afWave:    result := WaveFile_ReadLoopPoints(FileName, LoopStart, LoopEnd);
       afAiff:    result := false; //TODO:HIGH
       afSnd:     result := false; //TODO:HIGH
+      afMp3:     result := false;
       afUnknown: result := false;
     else
       raise Exception.Create('Unhandled file type.');

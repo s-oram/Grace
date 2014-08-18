@@ -12,6 +12,7 @@ unit libwma1;
 (*  This Delphi unit provides a simple C-style interface for reading and writing WMA files.
     (c) 2007-2008 Andrei Borovsky *)
 
+// Included here by Shannon Oram August 18th 2014.
 {$I NewAC.inc}
 
 interface

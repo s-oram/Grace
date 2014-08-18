@@ -171,7 +171,8 @@ uses
   Lucidity.StateManager.DataClasses in 'Lucidity.StateManager.DataClasses.pas',
   SfzParser.SfzOpcodes in '..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas',
   Lucidity.SfzOpcodeConversion in 'Third Party File Support\Lucidity.SfzOpcodeConversion.pas',
-  SfzParser in '..\Third Party\EasyEffect\ThirdParty\SfzParser.pas';
+  SfzParser in '..\Third Party\EasyEffect\ThirdParty\SfzParser.pas',
+  AudioIO_Mp3 in '..\Third Party\AudioIO\source\AudioIO_Mp3.pas';
 
 {$R *.res}
 

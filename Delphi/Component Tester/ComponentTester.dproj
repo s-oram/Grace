@@ -96,6 +96,7 @@
 				<Form>Form1</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
+			<DCCReference Include="..\Third Party\newAC\src\ACS_MemFloat.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

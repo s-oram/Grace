@@ -1,4 +1,3 @@
-
 {******************************************************************************}
 {*                                                                            *}
 {*  Copyright (C) Microsoft Corporation.  All Rights Reserved.                *}
@@ -49,6 +48,10 @@
 
 {$MINENUMSIZE 4}
 {$ALIGN ON}
+
+
+// Included here by Shannon Oram August 18th 2014.
+{$I NewAC.inc}
 
 unit _DirectSound;
 
@@ -520,6 +523,7 @@ type
 
   IID_IDirectSoundBuffer8 = IDirectSoundBuffer8;
   {$EXTERNALSYM IID_IDirectSoundBuffer8}
+
 
 const
   // Special GUID meaning "select all objects" for use in GetObjectInPath()
