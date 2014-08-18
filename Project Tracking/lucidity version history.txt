@@ -10,7 +10,7 @@ bug
 
 == Finished for the next release ==
 
-
+=== BETA v0.0.1.43 (18-Aug-2014) ===
 Change:
 - Disabled horizontal sample map snapping.
 - reworked the sample map region copy code. (Hold ALT to drag-copy a region.)
@@ -24,6 +24,7 @@ Bug Fix:
 - Voice stealing could cause clicks as active voices are quickly muted.
 - added a minumum attack time of 3ms to the AHDSR envelopes.
 - newly added regions are now selected in the sample map display.
+
 
 
 === BETA v0.0.1.41 (14-Aug-2014) ===
