@@ -47,9 +47,12 @@ bug
 bug
 = loop points aren't being read from wavefiles when SFZ files are loaded.
 
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- ensure loop point data is loaded and saved when saving regular Lucidity format files.
+
 - a merge all key groups command would be ace!
 
 - a show all key groups in the key map editor would be ace!
