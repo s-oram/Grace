@@ -12,7 +12,6 @@ type
     SampleRate     : integer;
     Channels       : integer;
     SampleFrames   : integer;
-    //BitDepth       : integer;
     FileFormatEx   : string;  //Additional info about the file format.
     ErrorMessage   : string;  // if the file is invalid or not supported, ErrorMessage explains why.
   end;
@@ -49,6 +48,9 @@ begin
       result.IsValid     := false;
       result.IsSupported := false;
     end;
+
+    //TODO:HIGH
+    // test what happens when loading an invalid file.
   finally
     Mp3In.Free;
   end;

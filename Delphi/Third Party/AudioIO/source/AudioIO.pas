@@ -26,7 +26,7 @@ const
 type
   PSingle = VamLib.MoreTypes.PSingle;
 
-  TAudioFileFormat = (afUnknown, afWave, afAiff, afSnd, afMP3);
+  TAudioFileFormat = (afUnknown, afWave, afAiff, afSnd, afMP3, afWavPack);
 
   TAudioFileInfo = record
     IsValid        : boolean; //Is this audio file a valid file? ie, sample rate value is correct etc.
@@ -129,6 +129,7 @@ implementation
 
 uses
   AudioIO_Mp3,
+  AudioIO_WavPack,
   AudioIO_Wave, AudioIO_Aiff, AudioIO_Snd,
   AudioIO_WindowedSincResampler,
   AudioIO_Resampler_r8brain;
@@ -149,6 +150,8 @@ begin
   if Ext = '.aiff' then IsSupportedExtension := true;
   if Ext = '.snd'  then IsSupportedExtension := true;
   if Ext = '.mp3'  then IsSupportedExtension := true;
+  if Ext = '.wv'   then IsSupportedExtension := true;
+
 
   if IsSupportedExtension
     then result := true
@@ -278,6 +281,7 @@ var
   AiffInfo : TAiffInfo;
   SndInfo  : TSndInfo;
   Mp3Info  : TMp3FileInfo;
+  WavPackInfo : TWavPackFileInfo;
 begin
   Ext := ExtractFileExt(FileName);
   Ext := Lowercase(Ext);
@@ -359,6 +363,20 @@ begin
       Info.FileFormatEx  := '';
     end;
 
+    if Ext = '.wv' then
+    begin
+      WavPackInfo := GetWavPackFileInfo(FileName);
+
+      Info.FileFormat    := afWavPack;
+      Info.IsValid       := WavPackInfo.IsValid;
+      Info.IsSupported   := WavPackInfo.IsSupported;
+      Info.SampleRate    := WavPackInfo.SampleRate;
+      Info.Channels      := WavPackInfo.Channels;
+      Info.SampleFrames  := WavPackInfo.SampleFrames;
+      Info.BitDepth      := 32;
+      Info.FileFormatEx  := '';
+    end;
+
 
     if (Info.IsValid) and (Info.IsSupported) then
     begin
@@ -414,6 +432,8 @@ begin
   if Ext = '.snd'  then result := LoadSndFileMono(FileName, LeftData);
   if Ext = '.wav'  then result := LoadWaveFileMono(FileName, LeftData);
   if Ext = '.mp3'  then result := LoadMp3FileMono(FileName, LeftData);
+  if Ext = '.wv'   then result := LoadWavPackFileMono(FileName, LeftData);
+
 end;
 
 function LoadStereo(FileName:string; LeftData,RightData:PSingle):boolean;
@@ -430,6 +450,7 @@ begin
   if Ext = '.snd'  then result := LoadSndFileStereo(FileName, LeftData, RightData);
   if Ext = '.wav'  then result := LoadWaveFileStereo(FileName, LeftData, RightData);
   if Ext = '.mp3'  then result := LoadMp3FileStereo(FileName, LeftData, RightData);
+  if Ext = '.wv'   then result := LoadWavPackFileStereo(FileName, LeftData, RightData);
 end;
 
 function LoadMono_Int(FileName:string; LeftData:PSmallInt):boolean;
@@ -611,6 +632,7 @@ begin
   if Ext = '.snd'  then FileFormat := afSnd;
   if Ext = '.wav'  then FileFormat := afWave;
   if Ext = '.mp3'  then FileFormat := afMp3;
+  if Ext = '.wv'   then FileFormat := afWavPack;
 
   if (FileFormat = afUnknown) then
   begin
@@ -621,10 +643,11 @@ begin
   if (LoadParameters.DstDataType = sdFloat) and (LoadParameters.ChannelCount = 1)  then
   begin
     case FileFormat of
-      afWave: result := LoadWaveFileMono(LoadParameters.FileName, LoadParameters.Ch1);
-      afAiff: result := LoadAiffFileMono(LoadParameters.FileName, LoadParameters.Ch1);
-      afSnd:  result := LoadSndFileMono(LoadParameters.FileName, LoadParameters.Ch1);
-      afMp3:  result := LoadMp3FileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afWave:    result := LoadWaveFileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afAiff:    result := LoadAiffFileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afSnd:     result := LoadSndFileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afMp3:     result := LoadMp3FileMono(LoadParameters.FileName, LoadParameters.Ch1);
+      afWavPack: result := LoadWavPackFileMono(LoadParameters.FileName, LoadParameters.Ch1);
     else
       result := false;
     end;
@@ -632,10 +655,11 @@ begin
   if (LoadParameters.DstDataType = sdFloat) and (LoadParameters.ChannelCount = 2) then
   begin
     case FileFormat of
-      afWave: result := LoadWaveFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
-      afAiff: result := LoadAiffFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
-      afSnd:  result := LoadSndFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
-      afMp3:  result := LoadMp3FileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afWave:    result := LoadWaveFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afAiff:    result := LoadAiffFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afSnd:     result := LoadSndFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afMp3:     result := LoadMp3FileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
+      afWavPack: result := LoadWavPackFileStereo(LoadParameters.FileName, LoadParameters.Ch1, LoadParameters.Ch2);
     else
       result := false;
     end;
@@ -698,6 +722,7 @@ begin
       afAiff:    result := false; //TODO:HIGH
       afSnd:     result := false; //TODO:HIGH
       afMp3:     result := false;
+      afWavPack: result := false;
       afUnknown: result := false;
     else
       raise Exception.Create('Unhandled file type.');
