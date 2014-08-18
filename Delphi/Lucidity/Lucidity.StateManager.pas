@@ -122,6 +122,7 @@ type
 implementation
 
 uses
+  AudioIO,
   NativeXmlEx,
   Lucidity.SequencerDataObject,
   LucidityUtils,
@@ -895,9 +896,11 @@ end;
 
 procedure TLucidityStateManager.NewRegion(const RegionLoadInfo: TRegionLoadInfo; const SampleGroup: IKeyGroup);
 var
+  fn : string;
   aRegion : TRegion;
   //LoadResult : boolean;
   SampleFrames : integer;
+  SourceSampleLoopStart, SourceSampleLoopEnd : integer;
 begin
   if not assigned(SampleGroup) then raise Exception.Create('SG (sample group interface variable not assigned.');
 
@@ -959,6 +962,18 @@ begin
     // As set in TRegionLoadInfo.ResetToDefaultValues().
     if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
     if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
+
+    fn := RegionLoadInfo.SampleFileName;
+    if (FileExists(fn)) and (ReadLoopPoints(fn, SourceSampleLoopStart, SourceSampleLoopEnd)) then
+    begin
+      if aRegion.Properties^.LoopStart = -1
+        then aRegion.Properties^.LoopStart := SourceSampleLoopStart;
+
+      if aRegion.Properties^.LoopEnd = -0
+        then aRegion.Properties^.LoopEnd := SourceSampleLoopEnd;
+    end;
+
+
 
     // NOTE: When loop mode isn't defined, reset it in a way that is compatible with the SFZ format.
     // If loop_start is not specified and the sample has a loop defined, the sample start point will be used.

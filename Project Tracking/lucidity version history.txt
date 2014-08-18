@@ -14,6 +14,7 @@ Change:
 
 Bug Fix:
 - Can now load SFZ files that don't contain any <group> tags. 
+- loop points aren't being read from wavefiles when SFZ files are loaded.
 
 
 === BETA v0.0.1.43 (18-Aug-2014) ===

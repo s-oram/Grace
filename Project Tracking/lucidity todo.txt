@@ -45,8 +45,9 @@ bug
 - sample map bound edit boxes aren't in the correct order.
 
 bug
-= loop points aren't being read from wavefiles when SFZ files are loaded.
-
+- SFZ group loop mode opcode isn't being imported correctly.
+- <group> loop_mode=loop_sustain
+D:\Audio\Apps\Camel Audio Alchemy Data\Alchemy\Samples\Factory\Strings\ChamberStrings
 
 =============================================================================
      TODO HIGH
