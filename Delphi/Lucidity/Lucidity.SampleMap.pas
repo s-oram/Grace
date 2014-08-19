@@ -598,11 +598,15 @@ begin
   rx.Properties^.LowVelocity      := CreateInfo.LowVelocity;
   rx.Properties^.HighVelocity     := CreateInfo.HighVelocity;
   rx.Properties^.RootNote         := CreateInfo.RootNote;
+  rx.Properties^.LoopStart        := -1;
+  rx.Properties^.LoopEnd          := -1;
   rx.KeyGroup := CreateInfo.KeyGroup;
   //====================
 
 
   rx.LoadSample(CreateInfo.AudioFileName);
+
+
 
   // TODO:HIGH Regions are always added. What happens if I try loading an
   // unsupported file format? ie. .FLAC or something else.
