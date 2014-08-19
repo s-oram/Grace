@@ -11,6 +11,7 @@ bug
 == Finished for the next release ==
 Change:
 - save patch directory now defaults to "user" patch directory.
+- tweak sample map keyboard drawing. add octave notes.
 
 Bug Fix:
 - Can now load SFZ files that don't contain any <group> tags. 

@@ -63,6 +63,7 @@ type
     procedure DrawWhiteKeyMargin(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
     procedure DrawWhiteKey(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
     procedure DrawBlackKey(const KeyBounds : TRectF; const KeyColor : TRedFoxColor);
+    procedure DrawKeyNote(const KeyBounds : TRectF; const aColor : TRedFoxColor; const Note:integer);
 
     function GetKeyIndexAt(PixelPosX, PixelPosY:integer):integer;
 
@@ -101,6 +102,7 @@ type
 implementation
 
 uses
+  SysUtils,
   Math, AggPixelFormat,
   Graphics;
 
@@ -402,7 +404,7 @@ begin
     KeyBuffer[c1].Bounds.Top := 0;
     if KeyBuffer[c1].IsBlackKey = false
       then KeyBuffer[c1].Bounds.Bottom := Height
-      else KeyBuffer[c1].Bounds.Bottom := Height * 2/3;
+      else KeyBuffer[c1].Bounds.Bottom := Height * 5/8;
   end;
 
 
@@ -598,6 +600,16 @@ begin
     end;
   end;
 
+  for c1 := 0 to kMaximumKeys-1 do
+  begin
+    if c1 mod 12 = 0 then
+    begin
+      DrawKeyNote(KeyBuffer[c1].Bounds, aColor.WithAlpha(255), c1 div 12-2);
+    end;
+  end;
+
+
+
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 end;
 
@@ -632,9 +644,11 @@ begin
   y2 := KeyBounds.Bottom;
 
   BackBuffer.BufferInterface.FillColor := KeyColor;
-  BackBuffer.BufferInterface.LineColor := c1;
-  //BackBuffer.BufferInterface.LineColor := c1;
-  //BackBuffer.BufferInterface.NoLine;
+
+  if BackBuffer.TextWidth('-2') < KeyBounds.Width
+    then BackBuffer.BufferInterface.LineColor := KeyColor.WithAlpha(100)
+    else BackBuffer.BufferInterface.LineColor := KeyColor;
+
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2-1, 0,0,6,6);
 end;
@@ -652,6 +666,47 @@ begin
   BackBuffer.BufferInterface.LineColor := KeyColor;
   BackBuffer.BufferInterface.LineWidth := 1;
   BackBuffer.BufferInterface.RoundedRect(x1, y1, x2, y2, 0,0,6,6);
+end;
+
+procedure TVamSamplerKeys.DrawKeyNote(const KeyBounds: TRectF; const aColor: TRedFoxColor; const Note: integer);
+var
+  x, y : single;
+  s : string;
+  tw,th : single;
+  Offset : integer;
+begin
+  BackBuffer.UpdateFont(Font);
+
+  if BackBuffer.TextWidth('C-2') < KeyBounds.Width-2 then
+  begin
+    s := IntToStr(Note);
+    s := 'C' + s;
+    Offset := 0;
+  end else
+  if BackBuffer.TextWidth('C0') < KeyBounds.Width-4 then
+  begin
+    s := IntToStr(Note);
+    if Note >= 0 then s := 'C' + s;
+    Offset := 0;
+  end else
+  if BackBuffer.TextWidth('-2') < KeyBounds.Width then
+  begin
+    s := IntToStr(Note);
+    Offset := 0;
+  end else
+  begin
+    s := IntToStr(Note);
+    Offset := 2;
+  end;
+
+  if s <> '' then
+  begin
+    tw := BackBuffer.TextWidth(s);
+    th := BackBuffer.TextHeight;
+    x := Offset + KeyBounds.Left + (KeyBounds.Width - tw) * 0.5;
+    y := KeyBounds.Bottom - th;
+    BackBuffer.TextOut(x, y, s, Font, aColor);
+  end;
 end;
 
 function TVamSamplerKeys.CalcKeyColor(const KeyIndex: integer): TRedFoxColor;

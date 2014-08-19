@@ -234,7 +234,6 @@ type
     function GetSelectedCount   : integer;
     function GetMouseOverRegionInfo : TVamSampleMapDisplayInfo;
 
-
   published
     property Color_Background            : TRedFoxColorString index 0 read GetColors write SetColors;
     property Color_BackgroundLines       : TRedFoxColorString index 1 read GetColors write SetColors;
