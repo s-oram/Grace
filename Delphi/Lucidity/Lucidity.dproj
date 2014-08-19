@@ -617,6 +617,7 @@
 			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_Mp3.pas"/>
 			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_WavPack.pas"/>
 			<DCCReference Include="Lucidity.SampleMap.pas"/>
+			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

@@ -174,7 +174,8 @@ uses
   SfzParser in '..\Third Party\EasyEffect\ThirdParty\SfzParser.pas',
   AudioIO_Mp3 in '..\Third Party\AudioIO\source\AudioIO_Mp3.pas',
   AudioIO_WavPack in '..\Third Party\AudioIO\source\AudioIO_WavPack.pas',
-  Lucidity.SampleMap in 'Lucidity.SampleMap.pas';
+  Lucidity.SampleMap in 'Lucidity.SampleMap.pas',
+  AudioIO in '..\Third Party\AudioIO\source\AudioIO.pas';
 
 {$R *.res}
 
