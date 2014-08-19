@@ -30,7 +30,8 @@ bug:
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
 bug
-- filter parameters don't update correctly when changing key groups.
+- play length indicator is incorrect when trigger mode is one shot or loop off.
+  the play length indicator shows the looped area. 
 
 =============================================================================
      TODO HIGH

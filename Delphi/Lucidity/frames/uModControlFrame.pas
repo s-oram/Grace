@@ -601,10 +601,10 @@ end;
 
 procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
 begin
+  if MsgID = TLucidMsgID.SampleFocusChanged              then UpdateControlVisibility;
   if MsgID = TLucidMsgID.FilterChanged                   then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.LfoChanged                      then UpdateLfo;
-
 end;
 
 procedure TModControlFrame.UpdateControlVisibility;
