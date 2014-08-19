@@ -20,7 +20,7 @@ futuresproof@gmail.com
   BETA Send History:
     - Lucidity 0.0.1.33
       thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
-    send next version
+    Sent Lucidity 0.0.1.44  
 
 Hugo Caldeira Vinagre
 hugocaldeiravinagre@gmail.com
@@ -76,11 +76,6 @@ Terry Foster
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-Ryu Beats <rsbeats@hotmail.com>
-thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
-	BETA Send History:
-    - Lucidity 0.0.1.33    
-
 Pete
 grabmyknee@gmail.com
 thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
@@ -105,6 +100,12 @@ jshonuff@gmail.com
 thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail.gmail.com
 	BETA Send History:
     - Lucidity 0.0.1.33
+
+Ryu Beats <rsbeats@hotmail.com>
+thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
+  BETA Send History:
+    - Lucidity 0.0.1.33    
+
 
 
 =================================================================================================
