@@ -14,16 +14,26 @@ waveshaperkit@gmail.com
     BETA Testers 
 =================================================================================================
 
+Chris Holmes
+futuresproof@gmail.com
+  response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
+  BETA Send History:
+    - Lucidity 0.0.1.33
+      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
+    send next version
+
 Hugo Caldeira Vinagre
 hugocaldeiravinagre@gmail.com
 Interested in testing Lucidity
 thunderlink://messageid=CAPN=qRy34C0H800GCOSVQsSnyxq4ZrJT7JMbbd8BQv27VuZasQ@mail.gmail.com
+- Sent Lucidity 0.0.1.44
 
 Andrea Biasior - Reuse Noise
 reusenoise@gmail.com
 - Been using lucidity. 
 - Sent Lucidity 0.0.1.41
   -- a number of responses. Good tester!
+- Sent Lucidity 0.0.1.44
 
 Nicholas Necaise
 NNecaise@live.com
@@ -47,13 +57,9 @@ thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengi
   BETA Send History:
   - Lucidity 0.0.1.33
     thunderlink://messageid=1406820798.1919228.147723018.23527BC8@webmail.messagingengine.com
+  - Lucidity 0.0.1.44
 
-Chris Holmes
-futuresproof@gmail.com
-  response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
-  BETA Send History:
-    - Lucidity 0.0.1.33
-      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
+
 
 Scott Conway (Great Tester!)
 viscience1@yahoo.co.uk

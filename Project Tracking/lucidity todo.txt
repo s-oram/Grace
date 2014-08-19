@@ -29,6 +29,8 @@ bug:
 - These Patches work. Email Reuse Noise with new build.
 thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
 
+bug
+- filter parameters don't update correctly when changing key groups.
 
 =============================================================================
      TODO HIGH
@@ -149,6 +151,12 @@ Send this dude a new build and check if he can now use different settings for ea
    Instead. Each voice should be pointed to an output buffer. Voices could
    then be processed in one group. 
 --------------------------------------------------------------------------------  
+
+
+Create a free sample resources page
+- Sonatina Symphonic Orchestra  
+  http://sso.mattiaswestlund.net
+  
 
 - What about a detachable sample map editor. It would open in another window along
   with the browser. The new editor window would be able to be resized. 
