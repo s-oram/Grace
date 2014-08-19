@@ -9,6 +9,9 @@ bug
 
 
 == Finished for the next release ==
+
+
+=== BETA v0.0.1.44 (19-Aug-2014) ===
 Change:
 - save patch directory now defaults to "user" patch directory.
 - tweak sample map keyboard drawing. add octave notes.
