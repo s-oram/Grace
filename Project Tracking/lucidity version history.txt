@@ -12,6 +12,7 @@ bug
 Change:
 - save patch directory now defaults to "user" patch directory.
 - tweak sample map keyboard drawing. add octave notes.
+- tweak sample map region drawing.
 
 Bug Fix:
 - Can now load SFZ files that don't contain any <group> tags. 

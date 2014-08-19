@@ -99,16 +99,6 @@ object SampleMapFrame: TSampleMapFrame
             Opacity = 255
             HitTest = True
             OnOleDragEnter = SampleMapOleDragEnter
-            Color_Background = '$FF242B39'
-            Color_BackgroundLines = '$FF64718D'
-            Color_Region = '$707887A0'
-            Color_RegionFocused = '$a0639DFF'
-            Color_RegionMouseOver = '$ff639DFF'
-            Color_ProposedRegions = '$a0EAEDD3'
-            Color_SelectionRect = '$40639DFF'
-            Color_RegionError = '$66FF0000'
-            Color_OtherKeyGroup = '$55FFD455'
-            Color_OtherKeyGroupSelected = '$bbFFD455'
             OnFocusRegion = SampleMapFocusRegion
             OnSelectRegion = SampleMapSelectRegion
             OnDeselectRegion = SampleMapDeselectRegion

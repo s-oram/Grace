@@ -234,7 +234,7 @@ type
     function GetSelectedCount   : integer;
     function GetMouseOverRegionInfo : TVamSampleMapDisplayInfo;
 
-  published
+
     property Color_Background            : TRedFoxColorString index 0 read GetColors write SetColors;
     property Color_BackgroundLines       : TRedFoxColorString index 1 read GetColors write SetColors;
     property Color_Region                : TRedFoxColorString index 2 read GetColors write SetColors;
@@ -245,8 +245,7 @@ type
     property Color_RegionError           : TRedFoxColorString index 7 read GetColors write SetColors;
     property Color_OtherKeyGroup         : TRedFoxColorString index 8 read GetColors write SetColors;
     property Color_OtherKeyGroupSelected : TRedFoxColorString index 9 read GetColors write SetColors;
-
-
+  published
     property Zoom   : single read fZoom   write SetZoom;   //Range 0..1. 0=Show all keys, 1=Show minimum keys.
     property Offset : single read fOffset write SetOffset; //Range 0..1  0=Show lowest keys, 1=show highest keys.
 
@@ -493,16 +492,30 @@ begin
   SampleRegions := TVamSampleRegionList.Create(true);
   ProposedSampleRegions := TVamSampleRegionList.Create(true);
 
+
   Color_Background            := '$FF242B39';
   Color_BackgroundLines       := '$FF64718D';
   Color_Region                := '$dd226CEA';
-  Color_RegionFocused         := '$dd226CEA';
+  Color_RegionFocused         := '$dd22C2EA';
   Color_RegionMouseOver       := '$ffffffff';
   Color_ProposedRegions       := '$a0EAEDD3';
   Color_SelectionRect         := '$40639DFF';
   Color_RegionError           := '$66FF0000';
   Color_OtherKeyGroup         := '$55FFD455';
   Color_OtherKeyGroupSelected := '$bbFFD455';
+
+  {
+  Color_Background            := '$FF242B39';
+  Color_BackgroundLines       := '$FF64718D';
+  Color_Region                := '$dd226CEA';
+  Color_RegionFocused         := '$FF0000EA';
+  Color_RegionMouseOver       := '$ffffffff';
+  Color_ProposedRegions       := '$a0EAEDD3';
+  Color_SelectionRect         := '$40639DFF';
+  Color_RegionError           := '$66FF0000';
+  Color_OtherKeyGroup         := '$55FFD455';
+  Color_OtherKeyGroupSelected := '$bbFFD455';
+  }
 end;
 
 procedure TVamSampleMap.DeselectOtherRegions(const TargetRegion: TVamSampleRegion);
@@ -911,9 +924,6 @@ begin
   end;
 end;
 
-
-
-
 function TVamSampleMap.CalcSampleRegionBounds(aSampleRegion: TVamSampleRegion; const CalcMovingBounds : boolean = false): TRectF;
 var
   x1, y1, x2, y2 : single;
@@ -934,12 +944,13 @@ begin
   end;
 
   x1 := KeyZone[LowKey].Bounds.Left;
-  x2 := KeyZone[HighKey].Bounds.Right;
+  x2 := KeyZone[HighKey].Bounds.Right+1;
 
   y1 := (1 - ((HighVelocity + 1) / 128)) * (Height);
   y2 := (1 - (LowVelocity        / 128)) * (Height);
   y1 := round(y1) + 0.5;
-  y2 := round(y2) - 0.5;
+  y2 := round(y2) + 0.5;
+  if y2 >= Height then y2 := Height - 0.5;
 
   result := RectF(x1, y1, x2, y2);
 end;
@@ -1794,7 +1805,7 @@ begin
 
   //Draw octave divisions.
   frac := (1 - NumberOfKeysToShow / kMaximumKeys);
-  Opacity := round(120 * frac) + 80;
+  Opacity := round(120 * frac) + 40;
   BackBuffer.BufferInterface.LineColor := TRedFoxColor(Color_BackgroundLines).WithAlpha(Opacity);
   BackBuffer.BufferInterface.LineWidth := 1;
   for c1 := 0 to kMaximumKeys-1 do
@@ -2067,8 +2078,8 @@ procedure TVamSampleMap.DrawSampleRegion(const aRegion: TVamSampleRegion; aColor
 var
   SampleRegionBounds : TRectF;
 begin
-  BackBuffer.BufferInterface.FillColor := aColor.WithAlphaBlend(200).AsAggRgba8;
-  BackBuffer.BufferInterface.LineColor := aColor.WithAlphaBlend(255).AsAggRgba8;
+  BackBuffer.BufferInterface.FillColor := aColor.WithAlphaBlend(100);
+  BackBuffer.BufferInterface.LineColor := aColor.WithAlphaBlend(255);
   BackBuffer.BufferInterface.LineWidth := 1;
 
   if UseMovingBounds
