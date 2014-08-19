@@ -169,6 +169,8 @@ type
 
     function PixelToSampleMapPos(Pixel : TPoint):TPoint;
 
+
+    function CalcRegionColor(const aSampleRegion : TVamSampleRegion):TRedFoxColor;
     function CalcSampleRegionBounds(aSampleRegion : TVamSampleRegion; const CalcMovingBounds : boolean = false):TRectF;
     function CalcRegionHandleBounds(const aRegion : TVamSampleRegion; const HandleIndex : TRegionHandleID):TRectF;
 
@@ -1796,7 +1798,6 @@ var
   //SampleRegionBounds : TRectF;
   HandleBounds : TRectF;
   aColor : TRedFoxColor;
-  ErrorColor : TRedFoxColor;
 begin
   inherited;
 
@@ -1831,7 +1832,6 @@ begin
     end;
   end;
 
-
   //draw horizontal lines.
   frac := (1 - NumberOfKeysToShow / kMaximumKeys);
   Opacity := round(10 * frac) + 42;
@@ -1843,8 +1843,6 @@ begin
     BackBuffer.BufferInterface.Line(0,y1, Width, y1);
   end;
 
-
-
   for c1 := 0 to 10 do
   begin
     x1 := KeyZone[c1 * 12].Bounds.Left + 2;
@@ -1853,29 +1851,29 @@ begin
     BackBuffer.TextOut(x1,y1, s, Font,  TRedFoxColor(Color_BackgroundLines));
   end;
 
-  //==== draw sample regions ==============
+  //==== draw sample regions non-selected sample regions ==============
   for c1 := SampleRegions.Count-1 downto 0 do
   begin
-    if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = false)then
+    if (not SampleRegions[c1].IsSelected) and (not SampleRegions[c1].IsFocused) then
     begin
-      if SampleRegions[c1].IsInOtherKeyGroup = false
-        then aColor := Color_Region
-        else aColor := Color_OtherKeyGroup;
-
-      if (SampleRegions[c1].IsDragSelected)
-        or (SampleRegions[c1].IsFocused)
-        or (SampleRegions[c1].IsSelected)
-        then aColor := Color_RegionFocused;
-
-      if SampleRegions[c1].IsSampleError then
+      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = false) then
       begin
-        ErrorColor := Color_RegionError;
-        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
-        ErrorColor.A := aColor.A;
-        aColor := ErrorColor;
+        aColor := CalcRegionColor(SampleRegions[c1]);
+        DrawSampleRegion(SampleRegions[c1], aColor, false);
       end;
+    end;
+  end;
 
-      DrawSampleRegion(SampleRegions[c1], aColor, false);
+  //==== draw sample regions selected sample regions ==============
+  for c1 := SampleRegions.Count-1 downto 0 do
+  begin
+    if (SampleRegions[c1].IsSelected) or (SampleRegions[c1].IsFocused) then
+    begin
+      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = false) then
+      begin
+        aColor := CalcRegionColor(SampleRegions[c1]);
+        DrawSampleRegion(SampleRegions[c1], aColor, false);
+      end;
     end;
   end;
 
@@ -1884,83 +1882,10 @@ begin
   begin
     if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
     begin
-      if SampleRegions[c1].IsInOtherKeyGroup = false
-        then aColor := Color_RegionFocused
-        else aColor := Color_OtherKeyGroupSelected;
-
-      if SampleRegions[c1].IsSampleError then
-      begin
-        ErrorColor := Color_RegionError;
-        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
-        ErrorColor.A := aColor.A;
-        aColor := ErrorColor;
-      end;
-
+      aColor := CalcRegionColor(SampleRegions[c1]);
       DrawSampleRegion(SampleRegions[c1], aColor, true);
     end;
   end;
-
-
-
-
-
-  {
-  for c1 := SampleRegions.Count-1 downto 0 do
-  begin
-    if (SampleRegions[c1].IsDragSelected = false)
-      and (SampleRegions[c1].IsFocused = false)
-      and (SampleRegions[c1].IsSelected = false)
-      and (SampleRegions[c1] <> MouseOverRegion)
-      then
-    begin
-      if SampleRegions[c1].IsInOtherKeyGroup = false
-        then aColor := Color_Region
-        else aColor := Color_OtherKeyGroup;
-
-      if SampleRegions[c1].IsSampleError then
-      begin
-        ErrorColor := Color_RegionError;
-        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
-        ErrorColor.A := aColor.A;
-        aColor := ErrorColor;
-      end;
-
-      if (SampleRegions[c1].IsVisible) or (ShowOtherRegions) then
-      begin
-        DrawSampleRegion(SampleRegions[c1], aColor);
-      end;
-    end;
-  end;
-
-  for c1 := SampleRegions.Count-1 downto 0 do
-  begin
-    if ((SampleRegions[c1].IsDragSelected = true) or (SampleRegions[c1].IsFocused = true) or (SampleRegions[c1].IsSelected = true))
-      and (SampleRegions[c1] <> MouseOverRegion)
-      then
-    begin
-      if SampleRegions[c1].IsInOtherKeyGroup = false
-        then aColor := Color_RegionFocused
-        else aColor := Color_OtherKeyGroupSelected;
-
-      if SampleRegions[c1].IsSampleError then
-      begin
-        ErrorColor := Color_RegionError;
-        ErrorColor := ColorFadeF(aColor, ErrorColor, 0.7);
-        ErrorColor.A := aColor.A;
-        aColor := ErrorColor;
-      end;
-
-      if (IsCopyRegionActive) and (SampleRegions[c1].IsMoving)
-        then aColor := Color_ProposedRegions;
-
-      if (SampleRegions[c1].IsVisible) or (ShowOtherRegions) then
-      begin
-        DrawSampleRegion(SampleRegions[c1], aColor);
-        DrawSampleRegionResizeHandles(SampleRegions[c1], aColor);
-      end;
-    end;
-  end;
-  }
 
   if assigned(MouseOverRegion) then
   begin
@@ -1980,35 +1905,6 @@ begin
         BackBuffer.BufferInterface.Rectangle(HandleBounds.Left, HandleBounds.Top, HandleBounds.Right, HandleBounds.Bottom);
       end;
     end;
-
-
-    {
-    if MouseOverRegion.IsInOtherKeyGroup = false
-        then aColor := Color_RegionMouseOver
-        else aColor := Color_OtherKeyGroupSelected;
-
-    if MouseOverRegion.IsSampleError then
-    begin
-      ErrorColor := Color_RegionError;
-      ErrorColor := ColorFadeF(aColor, ErrorColor, 0.8);
-      ErrorColor.A := aColor.A;
-      aColor := ErrorColor;
-    end;
-
-    if (MouseOverRegion.IsVisible) or (ShowOtherRegions) then
-    begin
-      DrawSampleRegion(MouseOverRegion, aColor, false);
-      DrawSampleRegionResizeHandles(MouseOverRegion, aColor, false);
-
-      if (MouseOverRegionHandle <> rhNone) then
-      begin
-        BackBuffer.BufferInterface.FillColor := GetRedFoxColor('$FFFFFFFF').AsAggRgba8;
-        BackBuffer.BufferInterface.NoLine;
-        HandleBounds := CalcRegionHandleBounds(MouseOverRegion, MouseOverRegionHandle);
-        BackBuffer.BufferInterface.Rectangle(HandleBounds.Left, HandleBounds.Top, HandleBounds.Right, HandleBounds.Bottom);
-      end;
-    end;
-    }
   end;
 
 
@@ -2020,28 +1916,6 @@ begin
     begin
       DrawSampleRegion(ProposedSampleRegions[c1], aColor, true);
     end;
-
-    {
-    for c1 := SampleRegions.Count-1 downto 0 do
-    begin
-      if ((SampleRegions[c1].IsVisible) or (ShowOtherRegions)) and (SampleRegions[c1].IsMoving = true)then
-      begin
-        if SampleRegions[c1].IsInOtherKeyGroup = false
-          then aColor := Color_Region
-          else aColor := Color_OtherKeyGroup;
-
-        if SampleRegions[c1].IsSampleError then
-        begin
-          ErrorColor := Color_RegionError;
-          ErrorColor := ColorFadeF(aColor, ErrorColor, 0.3);
-          ErrorColor.A := aColor.A;
-          aColor := ErrorColor;
-        end;
-
-        DrawSampleRegion(SampleRegions[c1], aColor, false);
-      end;
-    end;
-    }
   end;
 
 
@@ -2062,15 +1936,12 @@ begin
     end;
   end;
 
-
   if IsDragSelectActive then
   begin
     BackBuffer.BufferInterface.FillColor := TRedFoxColor(Color_SelectionRect);
     BackBuffer.BufferInterface.NoLine;
     BackBuffer.BufferInterface.Rectangle(DragSelectRect.Left, DragSelectRect.Top, DragSelectRect.Right, DragSelectRect.Bottom);
   end;
-
-
 
 end;
 
@@ -2157,6 +2028,28 @@ begin
   HandleBounds.Intersect(SampleRegionBounds);
   BackBuffer.BufferInterface.Rectangle(HandleBounds.Left, HandleBounds.Top, HandleBounds.Right, HandleBounds.Bottom);
 
+end;
+
+function TVamSampleMap.CalcRegionColor(const aSampleRegion: TVamSampleRegion): TRedFoxColor;
+var
+  ErrorColor : TRedFoxColor;
+begin
+  if aSampleRegion.IsInOtherKeyGroup = false
+    then result := Color_Region
+    else result := Color_OtherKeyGroup;
+
+  if (aSampleRegion.IsDragSelected)
+    or (aSampleRegion.IsFocused)
+    or (aSampleRegion.IsSelected)
+    then result := Color_RegionFocused;
+
+  if aSampleRegion.IsSampleError then
+  begin
+    ErrorColor := Color_RegionError;
+    ErrorColor := ColorFadeF(result, ErrorColor, 0.3);
+    ErrorColor.A := result.A;
+    result := ErrorColor;
+  end;
 end;
 
 function TVamSampleMap.CalcRegionHandleBounds(const aRegion: TVamSampleRegion; const HandleIndex: TRegionHandleID): TRectF;
