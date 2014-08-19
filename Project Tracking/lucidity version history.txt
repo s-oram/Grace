@@ -10,6 +10,9 @@ bug
 
 == Finished for the next release ==
 
+=== BETA v0.0.1.45 (19-Aug-2014) ===
+Bug Fix:
+- filter parameters didn't update correctly when changing key groups.
 
 === BETA v0.0.1.44 (19-Aug-2014) ===
 Change:
