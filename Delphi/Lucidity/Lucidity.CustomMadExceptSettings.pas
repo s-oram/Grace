@@ -159,11 +159,11 @@ initialization
   MESettings.ShowRelativeLines := false;
 
   {$IFDEF Debug}
-    MESettings.CrashOnOverrun  := true;
-    MESettings.CrashOnUnderrun := true;
+    //MESettings.CrashOnOverrun  := true;
+    //MESettings.CrashOnUnderrun := true;
   {$ELSE}
-    MESettings.CrashOnOverrun  := false;
-    MESettings.CrashOnUnderrun := false;
+    //MESettings.CrashOnOverrun  := false;
+    //MESettings.CrashOnUnderrun := false;
   {$ENDIF}
 
 
