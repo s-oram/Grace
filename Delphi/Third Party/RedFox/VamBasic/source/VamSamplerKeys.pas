@@ -188,17 +188,13 @@ begin
       RootKeyDragActive := true;
       RootKeyDragIndex  := Index;
       RootKeyDragOffset := 0;
-    end else
-    begin
-      IsMouseDownActive := true;
-      MouseDownKeyIndex := Index;
     end;
 
-
+    IsMouseDownActive := true;
+    MouseDownKeyIndex := Index;
 
     Invalidate;
   end;
-
 end;
 
 procedure TVamSamplerKeys.MouseMove(Shift: TShiftState; X, Y: Integer);

@@ -9,6 +9,12 @@ bug
 
 
 == Finished for the next release ==
+New:
+
+Change:
+
+Bug Fix:
+- Pressing the root note key on the sample map editor didn't trigger the sample.
 
 === BETA v0.0.1.45 (19-Aug-2014) ===
 Bug Fix:
