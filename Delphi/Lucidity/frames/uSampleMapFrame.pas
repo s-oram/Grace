@@ -407,9 +407,14 @@ begin
           then DisplayRegion.IsInOtherKeyGroup := false
           else DisplayRegion.IsInOtherKeyGroup := true;
 
+        // TODO:MED what am I going to do about this visible property. is it needed. Is it a good
+        // idea to set it here?
+        DisplayRegion.IsVisible := true;
+        {
         if (NameA = NameB)
           then DisplayRegion.IsVisible := true
           else DisplayRegion.IsVisible := false;
+        }
       end;
     end;
   finally
@@ -594,6 +599,14 @@ begin
 end;
 
 procedure TSampleMapFrame.UpdateRegionInfoDisplay;
+  procedure SetRegionInfoControlVisibility(const IsVisible : boolean);
+  begin
+    LowVelKnob.Visible   := IsVisible;
+    HighVelKnob.Visible  := IsVisible;
+    LowNoteKnob.Visible  := IsVisible;
+    HighNoteKnob.Visible := IsVisible;
+    RootNoteKnob.Visible := IsVisible;
+  end;
 var
   DragSelectedCount : integer;
   SelectedCount     : integer;
@@ -607,7 +620,7 @@ begin
 
   if (DragSelectedCount = -1) and (MouseOverRegionInfo.IsValid) then
   begin
-    RegionInfoBox.Visible := true;
+    SetRegionInfoControlVisibility(true);
 
     Info := MouseOverRegionInfo;
 
@@ -621,18 +634,17 @@ begin
 
   if (DragSelectedCount = -1) and (SelectedCount = 0) and (MouseOverRegionInfo.IsValid = false) then
   begin
-    RegionInfoBox.Visible := false;
+    SetRegionInfoControlVisibility(false);
     UpdateRegionInfoControls('', '', '', '', '', '');
   end;
 
   if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
   begin
-    //TODO:HIGH AVBug #3
     Info := SampleMap.GetDisplayInfo;
 
     if Info.IsValid then
     begin
-      RegionInfoBox.Visible := true;
+      SetRegionInfoControlVisibility(true);
 
       SampleNameText := ExtractFilename(Info.FileName);
       UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
@@ -641,7 +653,7 @@ begin
 
   if (DragSelectedCount = -1) and (SelectedCount > 1) and (MouseOverRegionInfo.IsValid = false) then
   begin
-    RegionInfoBox.Visible := true;
+    SetRegionInfoControlVisibility(true);
 
     SampleNameText := '(' + IntToStr(SelectedCount) + ' regions selected)';
     UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
@@ -649,7 +661,7 @@ begin
 
   if (DragSelectedCount > 0) and (MouseOverRegionInfo.IsValid = false) then
   begin
-    RegionInfoBox.Visible := true;
+    SetRegionInfoControlVisibility(true);
 
     if DragSelectedCount = 1
       then SampleNameText := '(' + IntToStr(DragSelectedCount) + ' region selected)'
@@ -657,7 +669,6 @@ begin
 
     UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
   end;
-
 
   UpdateRootNoteKeys; // Don't delete.
 end;
