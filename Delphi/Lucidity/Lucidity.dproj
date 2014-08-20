@@ -413,6 +413,7 @@
 			<RcCompile Include="VersionInfo.rc">
 				<Form>VersionInfo.res</Form>
 			</RcCompile>
+			<DCCReference Include="Lucidity.CustomMadExceptSettings.pas"/>
 			<DCCReference Include="eePluginGui.pas">
 				<Form>PluginGui</Form>
 			</DCCReference>

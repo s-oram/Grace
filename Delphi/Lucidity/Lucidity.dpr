@@ -16,6 +16,7 @@ uses
   MadExcept,
   SysUtils,
   Classes,
+  Lucidity.CustomMadExceptSettings in 'Lucidity.CustomMadExceptSettings.pas',
   eePluginGui in 'eePluginGui.pas' {PluginGui},
   uDataFolderUtils in 'uDataFolderUtils.pas',
   uSampleMapFrame in 'frames\uSampleMapFrame.pas' {SampleMapFrame: TFrame},
@@ -177,6 +178,7 @@ uses
   Lucidity.SampleMap in 'Lucidity.SampleMap.pas',
   AudioIO in '..\Third Party\AudioIO\source\AudioIO.pas';
 
+
 {$R *.res}
 
 var
@@ -185,8 +187,6 @@ var
 function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
   ReportMemoryLeaksOnShutDown := True;
-
-  //LogMemoryUsage('VST Main Begin');
 
   SendMsg_StartProfiling;
 
@@ -215,8 +215,6 @@ begin
     raise;
     {$ENDIF}
   end;
-
-  //LogMemoryUsage('VST Main End');
 end;
 
 // NOTE: The Main function is exported twice, once using 'main', the original name, and 'VSTPluginMain' as
