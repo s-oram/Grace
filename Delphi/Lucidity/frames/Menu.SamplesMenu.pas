@@ -29,13 +29,12 @@ type
     procedure MenuSelectPos(aMenu: TMenu; ItemPos: UINT; out CanClose: Boolean);
     procedure MenuSelectID(aMenu: TMenu; ItemID: UINT; out CanClose: Boolean);
   protected
-    Menu : TPopUpMenu;
     AppHandle : HWND;
     x : integer;
 
     procedure SampleClicked(Sender : TObject);
   public
-    constructor Create(aAppHandle : HWND);
+    constructor Create(aAppHandle : HWND); reintroduce;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -55,17 +54,16 @@ uses
 
 constructor TSamplesMenu.Create(aAppHandle : HWND);
 begin
+  inherited Create;
+
   AppHandle := aAppHandle;
 
   fMsgHandlerHWND := AllocateHWnd(WndMethod);
-
-  Menu := TPopupMenu.Create(nil);
 end;
 
 destructor TSamplesMenu.Destroy;
 begin
   DeallocateHWnd(fMsgHandlerHWND);
-  Menu.Free;
   inherited;
 end;
 

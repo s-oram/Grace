@@ -11,15 +11,13 @@ type
   private
   protected
     CurrentGroup : string;
-    Menu : TPopUpMenu;
-
     procedure CreateNewKeyGroup(Sender : TObject);
     procedure DeleteKeyGroup(Sender : TObject);
     procedure FocusKeyGroup(Sender : TObject);
     procedure CopyKeyGroupParameters(Sender : TObject);
     procedure PasteKeyGroupParameters(Sender : TObject);
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -38,14 +36,13 @@ uses
 
 constructor TGroupsMenu.Create;
 begin
-  Menu := TPopupMenu.Create(nil);
-
+  inherited;
 
 end;
 
 destructor TGroupsMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 

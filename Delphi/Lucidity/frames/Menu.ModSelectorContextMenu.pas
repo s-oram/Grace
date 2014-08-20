@@ -12,7 +12,6 @@ type
   TModSelectorContextMenu = class(TCustomPopupMenu)
   private
   protected
-    Menu : TPopUpMenu;
     ModSourceMenu : TModSourceMenu;
     ModViaMenu    : TModSourceMenu;
     ModSlotIndex  : integer;
@@ -25,7 +24,7 @@ type
 
     procedure Init;
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const aModSlotIndex : integer; const x, y : integer);
@@ -42,13 +41,13 @@ uses
 
 constructor TModSelectorContextMenu.Create;
 begin
+  inherited;
 end;
 
 destructor TModSelectorContextMenu.Destroy;
 begin
-  ModSourceMenu.Free;
-  ModViaMenu.Free;
-  Menu.Free;
+  if assigned(ModSourceMenu) then FreeAndNil(ModSourceMenu);
+  if assigned(ModViaMenu)    then FreeAndNil(ModViaMenu);
   inherited;
 end;
 
@@ -58,7 +57,6 @@ var
 begin
   if assigned(ModSourceMenu) then FreeAndNil(ModSourceMenu);
   if assigned(ModViaMenu)    then FreeAndNil(ModViaMenu);
-  if assigned(Menu)          then FreeAndNil(Menu);
 
   ModSourceMenu := TEnumMenu<TModSource>.Create(TModSourceHelper);
   ModSourceMenu.Items.Caption := 'Mod Source';
@@ -68,7 +66,8 @@ begin
   ModViaMenu.Items.Caption := 'Mod Via';
   ModViaMenu.OnItemSelected := Handle_ModViaSelected;
 
-  Menu := TPopUpMenu.Create(nil);
+  //TODO:HIGH need to use new TxPopupMenu here. //don't destroy the menu. just clear it.
+  Menu.Items.Clear;
   Menu.Items.Add(ModSourceMenu.Items);
   Menu.Items.Add(ModViaMenu.Items);
 

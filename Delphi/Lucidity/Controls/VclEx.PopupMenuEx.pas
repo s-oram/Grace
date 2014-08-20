@@ -37,7 +37,7 @@ implementation
 
 uses
   Controls, Windows,
-  Messages, Forms, Menus;
+  Messages, Forms;
 
 {TIXPopupMenu}
 

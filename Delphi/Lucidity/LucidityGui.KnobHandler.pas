@@ -20,7 +20,6 @@ uses
 type
   TKnobContextMenu = class(TCustomPopupMenu)
   private
-    Menu : TPopUpMenu;
     fTargetParameterName: string;
   protected
     procedure Handle_RemoveCurrentModulation(Sender:TObject);
@@ -30,7 +29,7 @@ type
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -463,12 +462,12 @@ end;
 
 constructor TKnobContextMenu.Create;
 begin
-  Menu := TPopUpMenu.Create(nil);
+  inherited;
 end;
 
 destructor TKnobContextMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 

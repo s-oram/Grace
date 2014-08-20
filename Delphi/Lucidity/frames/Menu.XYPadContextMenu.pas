@@ -17,7 +17,6 @@ uses
 type
   TXYPadContextMenu = class(TCustomPopupMenu)
   private
-    Menu : TPopUpMenu;
     fTargetXYPadIndex: integer;
     fPlugin: TeePlugin;
   protected
@@ -27,7 +26,7 @@ type
 
     function GetPluginParameterName(const PadIndex, Axis : integer):string;
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -50,12 +49,12 @@ uses
 
 constructor TXYPadContextMenu.Create;
 begin
-  Menu := TPopUpMenu.Create(nil);
+  inherited;
 end;
 
 destructor TXYPadContextMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 

@@ -13,7 +13,6 @@ type
   TMainMenu = class(TCustomPopupMenu)
   private
   protected
-    Menu : TPopUpMenu;
     procedure MenuItemClicked(Sender : TObject);
     procedure OpenKeyFile(Sender : TObject);
     procedure ShowAboutBox(Sender : TObject);
@@ -24,7 +23,7 @@ type
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -49,12 +48,12 @@ uses
 
 constructor TMainMenu.Create;
 begin
-  Menu := TPopupMenu.Create(nil);
+  inherited;
 end;
 
 destructor TMainMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 

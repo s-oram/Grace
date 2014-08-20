@@ -9,11 +9,11 @@ uses
 type
   TMissingSampleContextMenu = class(TCustomPopupMenu)
   private
-    Menu : TPopUpMenu;
+
   protected
     procedure HandleEvent_LocateMissingSample(Sender : TObject);
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -35,12 +35,12 @@ uses
 
 constructor TMissingSampleContextMenu.Create;
 begin
-  Menu := TPopUpMenu.Create(nil);
+  inherited;
 end;
 
 destructor TMissingSampleContextMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 

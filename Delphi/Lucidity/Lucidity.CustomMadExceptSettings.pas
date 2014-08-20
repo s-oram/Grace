@@ -5,7 +5,6 @@ unit Lucidity.CustomMadExceptSettings;
 {$IFNDEF MadExcept}
 interface
 implementation
-end.
 {$ELSE}
 
 interface
@@ -28,7 +27,6 @@ uses
 
 procedure CustomExceptionHandler(const exceptIntf : IMEException; var handled : boolean);
 var
-  BugReport : string;
   BuildDetails : string;
   fn : string;
 begin
@@ -169,8 +167,8 @@ initialization
 
 finalization
 
-
-end.
 {$ENDIF}
+end.
+
 
 

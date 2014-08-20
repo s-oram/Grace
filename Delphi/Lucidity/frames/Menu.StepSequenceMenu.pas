@@ -10,14 +10,13 @@ type
   TStepSequenceMenu = class(TCustomPopupMenu)
   private
   protected
-    Menu : TPopUpMenu;
     SequenceIndex : integer;
 
     procedure EventHandle_ResetSteps(Sender : TObject);
     procedure EventHandle_RandomizeSteps(Sender : TObject);
 
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer; const aSequenceIndex : integer);
@@ -41,12 +40,12 @@ uses
 
 constructor TStepSequenceMenu.Create;
 begin
-  Menu := TPopupMenu.Create(nil);
+  inherited;
 end;
 
 destructor TStepSequenceMenu.Destroy;
 begin
-  Menu.Free;
+
   inherited;
 end;
 
