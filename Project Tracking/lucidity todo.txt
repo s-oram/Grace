@@ -24,11 +24,6 @@ Bug
 - Andy reports the Voice Mod frame tab text is too large and overflows 
   over the tabs.
 
-bug: 
-- confirm these SFZ patches should work.
-- These Patches work. Email Reuse Noise with new build.
-thunderlink://messageid=CAG2OC0_N-2Hht0urZ4qMTNSxVxdfsEPuY06PgmfyAWMzvoz+Kw@mail.gmail.com
-
 bug
 - play length indicator is incorrect when trigger mode is one shot or loop off.
   the play length indicator shows the looped area. 
@@ -36,6 +31,17 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+- Feature requests from Yann.
+  "open sample in external audio editor"
+  "copy a sample into a new group"
+  waveshaperkit@gmail.com
+  thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
+
+  * « open sample in_audio editor _»
+- requested by yann
+- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+
 - ensure loop point data is loaded and saved when saving regular Lucidity format files.
 
 - a merge all key groups command would be ace!
@@ -80,6 +86,11 @@ Make video explaining modulation source. Send to Spacedad.
 
 - need a "Move Sample To New Key Group..." command. 
 
+Feature request from BETA tester. 
+Another feature we use very much is lfo sync to song position.
+  hugocaldeiravinagre@gmail.com
+  thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
+
 Maybe need a slope envelope LFO.
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
@@ -118,17 +129,6 @@ Installer needs option to put data folder
 - in VST Plugin directory
 - or custom location.
 
-=============================================================================
-> is it possible to layer groups and use different Amp, Filter, 
-> Mod settings for each group? The knobs seem to change from group to 
-> group but as soon as I edit something all groups are affected the 
-> same. 
-It should be possible to use different amp, filter and mod settings for each group. It might be a bug. I'll take a look. 
-
-Send this dude a new build and check if he can now use different settings for each group.
-
-=============================================================================
-
 
 =============================================================================
      TODO MED
@@ -151,7 +151,14 @@ Send this dude a new build and check if he can now use different settings for ea
    that belong to this loop. 
    Instead. Each voice should be pointed to an output buffer. Voices could
    then be processed in one group. 
---------------------------------------------------------------------------------  
+-------------------------------------------------------------------------------- 
+
+
+key shortcuts for the sample map editor [ctrl+C] [ctrl+V] [ctrl+Z] and others. 
+thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
+  
+- Add WavPack support.  (Feature request from michaelreed@crucialflow.com)
+  thunderlink://messageid=1378193079-1408369307-cardhu_decombobulator_blackberry.rim.net-1240400847-@b27.c6.bise6.blackberry 
 
 
 Create a free sample resources page
@@ -168,6 +175,10 @@ Create a free sample resources page
 - Have a "Loading Sample" popup show when trying to load a sample.
 
 - A "Swap Effect Order" command
+
+"filter bypass" Filter A/B/Off  
+  waveshaperkit@gmail.com
+  thunderlink://messageid=CAP8CW6N8h-iaP=UQfzbfu1+cGEn2LuG77H+znficVWU2d68wrw@mail.gmail.com
 
 - sample map trigger display should have a minimum trigger time so it's not 
   epilisy inducing.  
@@ -213,9 +224,20 @@ Right Click and Hold for sample zoom with mouse
 
 - key zone context menu needs a 'Move Key Zone to New Key Group'
 
-* « open sample in_audio editor _»
-- requested by yann
-- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+
+
+
+-- Able to save samples in project file.
+Saving the samples inside the project file is a very important feature for me and my friends,  since we remix each other and exchange sequencer project files. Having external wav file dependencies is a no go for us. We tried it before and it didnt work. There were always files missing. Saving multi gigabyte sample libraries inside fxp doesnt make any sense, but we make our own patches and the size never exceeds 10 or 20 mb. Currently we are using directwave,  wich works as we want,  but lately its been feeling kind of bloated and that is why we are looking for an alternative.
+hugocaldeiravinagre@gmail.com
+thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
+
+
+- More Filters
+  -- A distortion/drive 
+     thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
+
+
 
 =============================================================================
      TODO LOW

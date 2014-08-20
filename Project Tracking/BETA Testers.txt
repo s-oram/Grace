@@ -14,21 +14,31 @@ waveshaperkit@gmail.com
     BETA Testers 
 =================================================================================================
 
-Chris Holmes
+Goran Podrugovic
+goran.podrugovic@gmail.com
+- interested in testing Lucidity
+  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
+
+  
+
+Chris Holmes (Good Tester)
 futuresproof@gmail.com
   response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
   BETA Send History:
     - Lucidity 0.0.1.33
       thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
-    Sent Lucidity 0.0.1.44  
+    Sent Lucidity 0.0.1.44 
+      thunderlink://messageid=CABntTF6+1ttnyxM=HGX0Pm-D5TpTS4GX6t4kDVonRbB66r-H3Q@mail.gmail.com   
 
-Hugo Caldeira Vinagre
+Hugo Caldeira Vinagre (good tester)
 hugocaldeiravinagre@gmail.com
 Interested in testing Lucidity
+- NOTES: does collaborative projects with friends. 
 thunderlink://messageid=CAPN=qRy34C0H800GCOSVQsSnyxq4ZrJT7JMbbd8BQv27VuZasQ@mail.gmail.com
 - Sent Lucidity 0.0.1.44
+  thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
 
-Andrea Biasior - Reuse Noise
+Andrea Biasior - Reuse Noise (good tester)
 reusenoise@gmail.com
 - Been using lucidity. 
 - Sent Lucidity 0.0.1.41
