@@ -85,6 +85,8 @@ type
 
     OverlayContainer : TVamPanel;
 
+    procedure WndProc(var Message: TMessage) ; override;
+
     procedure ShowSampleMapEdit;
     procedure HideSampleMapEdit;
     procedure ShowAboutDialog;
@@ -971,6 +973,12 @@ begin
 end;
 
 
+
+procedure TPluginGui.WndProc(var Message: TMessage);
+begin
+
+  inherited;
+end;
 
 procedure TPluginGui.DoShowDialogArea(Sender: TObject);
 begin
