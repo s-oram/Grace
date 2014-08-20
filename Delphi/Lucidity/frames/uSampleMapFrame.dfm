@@ -143,9 +143,9 @@ object SampleMapFrame: TSampleMapFrame
         Align = alBottom
         Visible = True
         object RegionInfoBox: TVamPanel
-          Left = 25
+          Left = 32
           Top = 19
-          Width = 496
+          Width = 396
           Height = 28
           Opacity = 255
           Text = 'RegionInfoBox'
@@ -155,7 +155,7 @@ object SampleMapFrame: TSampleMapFrame
           Visible = True
           object LowNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 298
+            Left = 198
             Top = 3
             Width = 61
             Height = 22
@@ -179,10 +179,11 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 298
           end
           object HighNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 365
+            Left = 265
             Top = 3
             Width = 61
             Height = 22
@@ -206,10 +207,11 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 365
           end
           object LowVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 164
+            Left = 64
             Top = 3
             Width = 61
             Height = 22
@@ -233,10 +235,11 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 164
           end
           object HighVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 231
+            Left = 131
             Top = 3
             Width = 61
             Height = 22
@@ -260,10 +263,11 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 231
           end
           object RootNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
-            Left = 432
+            Left = 332
             Top = 3
             Width = 61
             Height = 22
@@ -287,6 +291,7 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
+            ExplicitLeft = 432
           end
         end
         object CloseSampleMapButton: TVamTextBox
