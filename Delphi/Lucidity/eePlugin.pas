@@ -959,7 +959,6 @@ begin
     // signal to the GUI that the focus has changed.
 
     RefreshManagedPluginParameterValues;
-    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -989,8 +988,6 @@ begin
     end;
 
     RefreshManagedPluginParameterValues;
-    // signal to the GUI that the focus has changed.
-    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
@@ -1011,8 +1008,6 @@ begin
     SampleMap.FocusRegion(aRegionID);
 
     RefreshManagedPluginParameterValues;
-    // signal to the GUI that the focus has changed.
-    //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
   end;
 end;
 
