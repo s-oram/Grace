@@ -10,6 +10,7 @@ bug
 
 == Finished for the next release ==
 New:
+- Can now see all key groups in the sample map editor.   
 
 Change:
 - Tweaked error reporting code. Error reports now saved as "LudicityDataDir\Error Reports\Lucidity Bug Report.txt"
@@ -17,6 +18,7 @@ Change:
 
 Bug Fix:
 - Pressing the root note key on the sample map editor didn't trigger the sample.
+- Attempt to fix a crash related to the sample map. Needs testing.
 
 === BETA v0.0.1.45 (19-Aug-2014) ===
 Bug Fix:

@@ -247,6 +247,7 @@ type
     property Color_RegionError           : TRedFoxColorString index 7 read GetColors write SetColors;
     property Color_OtherKeyGroup         : TRedFoxColorString index 8 read GetColors write SetColors;
     property Color_OtherKeyGroupSelected : TRedFoxColorString index 9 read GetColors write SetColors;
+
   published
     property Zoom   : single read fZoom   write SetZoom;   //Range 0..1. 0=Show all keys, 1=Show minimum keys.
     property Offset : single read fOffset write SetOffset; //Range 0..1  0=Show lowest keys, 1=show highest keys.

@@ -79,6 +79,7 @@ type
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure UpdateGroupVisibility;
   protected
     MessageOverlay         : TVamShortMessageOverlay;
     MessageOverlayAnimateID : TUniqueID;
@@ -297,6 +298,9 @@ begin
 
   //UpperPanelArea.Color := kColor_LcdDark1;
   UpperPanelArea.Color := kPanelLight;
+
+
+  UpdateGroupVisibility;
 end;
 
 
@@ -312,20 +316,31 @@ end;
 
 procedure TSampleMapFrame.GroupVisibilityButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  //
+  if Button = mbLeft then
+  begin
+    case Plugin.Globals.GuiState.SampleMapGroupVisibility of
+      TGroupVisibility.AllGroups:     Plugin.Globals.GuiState.SampleMapGroupVisibility := TGroupVisibility.SelectedGroup;
+      TGroupVisibility.SelectedGroup: Plugin.Globals.GuiState.SampleMapGroupVisibility := TGroupVisibility.AllGroups;
+    else
+      raise Exception.Create('type not handled.');
+    end;
+
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GroupVisibilityChanged);
+  end;
 end;
 
 procedure TSampleMapFrame.GroupVisibilityButtonMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  // TODO:HIGH  I've made a menu here but it's not even needed!
-
-  if not assigned(GroupVisibilityMenu) then
+  if Button = TMouseButton.mbRight then
   begin
-    GroupVisibilityMenu := TGroupVisibilityMenu.Create;
-    GroupVisibilityMenu.Initialize(Plugin, nil);
-  end;
+    if not assigned(GroupVisibilityMenu) then
+    begin
+      GroupVisibilityMenu := TGroupVisibilityMenu.Create;
+      GroupVisibilityMenu.Initialize(Plugin, nil);
+    end;
 
-  GroupVisibilityMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+    GroupVisibilityMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
 end;
 
 procedure TSampleMapFrame.SetMotherShipReference(aMotherShip: IMothership);
@@ -443,14 +458,15 @@ begin
           then DisplayRegion.IsInOtherKeyGroup := false
           else DisplayRegion.IsInOtherKeyGroup := true;
 
-        // TODO:MED what am I going to do about this visible property. is it needed. Is it a good
-        // idea to set it here?
-        DisplayRegion.IsVisible := true;
-        {
-        if (NameA = NameB)
-          then DisplayRegion.IsVisible := true
-          else DisplayRegion.IsVisible := false;
-        }
+        if Plugin.Globals.GuiState.SampleMapGroupVisibility = TGroupVisibility.AllGroups then
+        begin
+          DisplayRegion.IsVisible := true;
+        end else
+        begin
+          if (NameA = NameB)
+            then DisplayRegion.IsVisible := true
+            else DisplayRegion.IsVisible := false;
+        end;
       end;
     end;
   finally
@@ -596,17 +612,7 @@ begin
     UpdateSampleRegions;
   end;
 
-  if MsgID = TLucidMsgID.GroupVisibilityChanged then
-  begin
-    case Plugin.Globals.GuiState.SampleMapGroupVisibility of
-      TGroupVisibility.AllGroups:     GroupVisibilityButton.Text := 'All Groups';
-      TGroupVisibility.SelectedGroup: GroupVisibilityButton.Text := 'Cur Group';
-    else
-      raise Exception.Create('type not handled.');
-    end;
-  end;
-
-
+  if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
 
 end;
 
@@ -1014,6 +1020,18 @@ begin
   LowVelKnob.KnobCustomText   := LowVel;
   HighVelKnob.KnobCustomText  := HighVel;
   RootNoteKnob.KnobCustomText := RootNote;
+end;
+
+procedure TSampleMapFrame.UpdateGroupVisibility;
+begin
+  case Plugin.Globals.GuiState.SampleMapGroupVisibility of
+    TGroupVisibility.AllGroups:     GroupVisibilityButton.Text := 'All Groups';
+    TGroupVisibility.SelectedGroup: GroupVisibilityButton.Text := 'Cur Group';
+  else
+    raise Exception.Create('type not handled.');
+  end;
+
+  UpdateSampleRegions;
 end;
 
 procedure TSampleMapFrame.UpdateRegionInfoControls(const SampleName: string; const LowNote, HighNote, LowVel, HighVel, RootNote: integer);

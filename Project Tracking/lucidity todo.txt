@@ -44,9 +44,13 @@ bug
 - replace sample with SFZ file. 
   there is an unsupported file format error, but a region is still created.
 
+
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- showing/hiding the sample map is really slow. It
+
 
 - error region colors need to be more obvious!
 

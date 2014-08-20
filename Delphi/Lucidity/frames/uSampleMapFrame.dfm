@@ -353,6 +353,7 @@ object SampleMapFrame: TSampleMapFrame
           ImageOverlayOffsetX = 0
           ImageOverlayOffsetY = 0
           Visible = True
+          OnMouseDown = GroupVisibilityButtonMouseDown
           OnMouseUp = GroupVisibilityButtonMouseUp
         end
       end

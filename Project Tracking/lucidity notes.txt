@@ -220,3 +220,18 @@ Marketing Tag - WHAT DO YOU WANT TO SAMPLE?
 
 Listen to "Sea See" by machine drum. Listen to the background textures. 
 recreate with Lucidity. (Tempo synced LFOs)
+
+
+
+
+================================================================================
+               Error Reports
+================================================================================
+
+Lucidity will auto generate an error report if a problem is encounted. 
+
+The error report will be called "Lucidity Bug Report.txt"
+
+
+
+
