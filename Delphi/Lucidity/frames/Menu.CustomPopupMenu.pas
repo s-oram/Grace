@@ -13,7 +13,7 @@ type
     fPlugin: TeePlugin;
     fDialogDisplayArea: TDialogDisplayArea;
   protected
-    Menu : TPopUpMenu;
+    Menu : TxPopUpMenu;
     property Plugin : TeePlugin read fPlugin;
     property DialogDisplay : TDialogDisplayArea read fDialogDisplayArea;
   public
@@ -29,7 +29,7 @@ implementation
 
 constructor TCustomPopupMenu.Create;
 begin
-  Menu := TPopupMenu.Create(nil);
+  Menu := TxPopupMenu.Create(nil);
 end;
 
 destructor TCustomPopupMenu.Destroy;
