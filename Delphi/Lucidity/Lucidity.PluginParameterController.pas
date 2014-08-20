@@ -156,6 +156,7 @@ begin
       TPluginParameter.VoiceMode:
       begin
         Plugin.VoiceMode  := TVoiceModeHelper.ToEnum(ParValue);
+        // TODO:HIGH remove all MsgVclTS calls from the plugin parameter controller.
         Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
       end;
       TPluginParameter.VoiceGlide:    Plugin.VoiceGlide := ParValue;
