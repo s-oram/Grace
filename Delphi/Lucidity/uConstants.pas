@@ -47,7 +47,8 @@ type
     ModAmountChanged                 = 13;
     GUILayoutChanged                 = 14;
     VstParameterChanged              = 15;
-    Command                          = VstParameterChanged + 1;
+    GroupVisibilityChanged           = 16;
+    Command                          = GroupVisibilityChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;

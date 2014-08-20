@@ -7,6 +7,7 @@ interface
 uses
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
+  Menu.GroupVisibility,
   Menu.SampleMapContextMenu, eeGuiStandardv2,
   eePlugin, Lucidity.Interfaces, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -64,6 +65,10 @@ type
       Value: Boolean);
     procedure SampleMapDblClick(Sender: TObject);
     procedure CloseSampleMapButtonClick(Sender: TObject);
+    procedure GroupVisibilityButtonMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure GroupVisibilityButtonMouseUp(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -80,6 +85,7 @@ type
 
     KeyStateTrackerOverlay : TKeyStateTrackerOverlay;
     SampleMapMenu : TSampleMapContextMenu;
+    GroupVisibilityMenu : TGroupVisibilityMenu; 
 
     ThrottleID : TUniqueID;
     procedure ScrollPosChanged;
@@ -119,6 +125,7 @@ uses
   VamLib.Utils,
   SampleMapFrame.Extra,
   Lucidity.Types,
+  uLucidityEnums,
   eeVstXml,
   RedFoxColor, eePitch,
   VamLayoutWizard,
@@ -178,6 +185,9 @@ begin
   KeyStateTrackerOverlay.Free;
   SampleMapMenu.Free;
 
+  if assigned(GroupVisibilityMenu) then GroupVisibilityMenu.Free;
+  
+
   inherited;
 end;
 
@@ -187,11 +197,6 @@ begin
   UpdateSampleRegions;
 
   SampleMapMenu.Initialize(aPlugin);
-
-
-  GuiStandard_RegisterMenuButton(aGuiStandard, GroupVisibilityButton, TPluginParameter.FilterRouting);
-
-
 
   UpperPanelArea.Height := 24;
 
@@ -303,6 +308,24 @@ end;
 function TSampleMapFrame.GetScrollPosY: single;
 begin
   result := ScrollBox.ScrollYPos;
+end;
+
+procedure TSampleMapFrame.GroupVisibilityButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  //
+end;
+
+procedure TSampleMapFrame.GroupVisibilityButtonMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  // TODO:HIGH  I've made a menu here but it's not even needed!
+
+  if not assigned(GroupVisibilityMenu) then
+  begin
+    GroupVisibilityMenu := TGroupVisibilityMenu.Create;
+    GroupVisibilityMenu.Initialize(Plugin, nil);
+  end;
+
+  GroupVisibilityMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
 procedure TSampleMapFrame.SetMotherShipReference(aMotherShip: IMothership);
@@ -572,6 +595,17 @@ begin
     UpdateRegionInfoDisplay;
     UpdateSampleRegions;
   end;
+
+  if MsgID = TLucidMsgID.GroupVisibilityChanged then
+  begin
+    case Plugin.Globals.GuiState.SampleMapGroupVisibility of
+      TGroupVisibility.AllGroups:     GroupVisibilityButton.Text := 'All Groups';
+      TGroupVisibility.SelectedGroup: GroupVisibilityButton.Text := 'Cur Group';
+    else
+      raise Exception.Create('type not handled.');
+    end;
+  end;
+
 
 
 end;

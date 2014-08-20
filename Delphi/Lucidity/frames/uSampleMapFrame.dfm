@@ -334,7 +334,7 @@ object SampleMapFrame: TSampleMapFrame
           Margins.Right = 0
           Margins.Bottom = 0
           Opacity = 255
-          Text = 'Close'
+          Text = 'All Groups'
           HitTest = True
           AutoTrimText = False
           Color = '$FF3E3E3E'
@@ -353,7 +353,7 @@ object SampleMapFrame: TSampleMapFrame
           ImageOverlayOffsetX = 0
           ImageOverlayOffsetY = 0
           Visible = True
-          OnClick = CloseSampleMapButtonClick
+          OnMouseUp = GroupVisibilityButtonMouseUp
         end
       end
     end

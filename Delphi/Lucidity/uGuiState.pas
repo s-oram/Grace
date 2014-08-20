@@ -18,6 +18,7 @@ type
     fIsModDestAutoSelectEnabled: boolean;
     fMainGuiLayout: TMainGuiLayout;
     fActiveVstPluginParameterID: TPluginParameterId;
+    fSampleMapGroupVisibility: TGroupVisibility;
     procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
   public
     constructor Create;
@@ -46,6 +47,8 @@ type
     // received back from the host. ActiveVstPluginParameterID stores the currently active parameter on the GUI.
     // The plugin can then use this to filter out the echoed parameter changes.
     property ActiveVstPluginParameterID : TPluginParameterId read fActiveVstPluginParameterID write SetActiveVstPluginParameterID;
+
+    property SampleMapGroupVisibility : TGroupVisibility read fSampleMapGroupVisibility write fSampleMapGroupVisibility;
   end;
 
 implementation

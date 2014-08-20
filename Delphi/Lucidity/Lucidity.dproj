@@ -621,6 +621,7 @@
 			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO.pas"/>
 			<DCCReference Include="Controls\VclEx.PopupListEx.pas"/>
 			<DCCReference Include="Controls\VclEx.PopupMenuEx.pas"/>
+			<DCCReference Include="frames\Menu.GroupVisibility.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

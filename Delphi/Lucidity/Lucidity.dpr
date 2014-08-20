@@ -178,7 +178,8 @@ uses
   Lucidity.SampleMap in 'Lucidity.SampleMap.pas',
   AudioIO in '..\Third Party\AudioIO\source\AudioIO.pas',
   VclEx.PopupListEx in 'Controls\VclEx.PopupListEx.pas',
-  VclEx.PopupMenuEx in 'Controls\VclEx.PopupMenuEx.pas';
+  VclEx.PopupMenuEx in 'Controls\VclEx.PopupMenuEx.pas',
+  Menu.GroupVisibility in 'frames\Menu.GroupVisibility.pas';
 
 {$R *.res}
 
