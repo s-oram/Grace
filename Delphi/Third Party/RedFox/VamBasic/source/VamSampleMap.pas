@@ -2184,6 +2184,7 @@ begin
   begin
     result.IsValid  := true;
 
+    //TODO:HIGH AVBug #4
     s := aRegion.FileName; //sometimes the region will not be assigned here for some reason...
     result.FileName := s;
 

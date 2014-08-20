@@ -560,6 +560,7 @@ end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);
 begin
+  //TODO:HIGH AVBug #2
   UpdateRegionInfoDisplay;
 end;
 
@@ -626,6 +627,7 @@ begin
 
   if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
   begin
+    //TODO:HIGH AVBug #3
     Info := SampleMap.GetDisplayInfo;
 
     if Info.IsValid then
