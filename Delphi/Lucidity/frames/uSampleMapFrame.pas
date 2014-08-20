@@ -33,6 +33,7 @@ type
     HighVelKnob: TVamCompoundNumericKnob;
     RootNoteKnob: TVamCompoundNumericKnob;
     CloseSampleMapButton: TVamTextBox;
+    GroupVisibilityButton: TVamTextBox;
     procedure ScrollBoxScroll(Sender: TObject; Kind: TScrollEventKind; ScrollPos: Single);
     procedure SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
     procedure SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -122,6 +123,7 @@ uses
   RedFoxColor, eePitch,
   VamLayoutWizard,
   VamKeyStateTracker, GuidEx,
+  Lucidity.PluginParameters,
   uConstants, Lucidity.SampleMap, Lucidity.KeyGroup;
 
 {$R *.dfm}
@@ -186,6 +188,11 @@ begin
 
   SampleMapMenu.Initialize(aPlugin);
 
+
+  GuiStandard_RegisterMenuButton(aGuiStandard, GroupVisibilityButton, TPluginParameter.FilterRouting);
+
+
+
   UpperPanelArea.Height := 24;
 
   RegionInfoBox.AlignWithMargins := true;
@@ -204,6 +211,12 @@ begin
   CloseSampleMapButton.Align := alRight;
   CloseSampleMapButton.Width := 80;
   GuiSetup.StyleButton_CommandButton_Bright(CloseSampleMapButton);
+
+  GuiSetup.StyleButton_SelectorButton(GroupVisibilityButton);
+  GroupVisibilityButton.Align := alClient;
+  GroupVisibilityButton.Width := 80;
+  GroupVisibilityButton.Margins.SetBounds(4,0,4,0);
+  GroupVisibilityButton.AlignWithMargins := true;
 
 
 

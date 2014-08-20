@@ -13,6 +13,7 @@ New:
 
 Change:
 - Tweaked error reporting code. Error reports now saved as "LudicityDataDir\Error Reports\Lucidity Bug Report.txt"
+- Tweaked the sample map editing control visibility.
 
 Bug Fix:
 - Pressing the root note key on the sample map editor didn't trigger the sample.

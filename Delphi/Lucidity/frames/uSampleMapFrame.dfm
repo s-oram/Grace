@@ -179,7 +179,6 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
-            ExplicitLeft = 298
           end
           object HighNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
@@ -207,7 +206,6 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
-            ExplicitLeft = 365
           end
           object LowVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
@@ -235,7 +233,6 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
-            ExplicitLeft = 164
           end
           object HighVelKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
@@ -263,7 +260,6 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
-            ExplicitLeft = 231
           end
           object RootNoteKnob: TVamCompoundNumericKnob
             AlignWithMargins = True
@@ -291,7 +287,6 @@ object SampleMapFrame: TSampleMapFrame
             KnobSensitivity = 0.300000011920929000
             Align = alRight
             Visible = True
-            ExplicitLeft = 432
           end
         end
         object CloseSampleMapButton: TVamTextBox
@@ -299,6 +294,39 @@ object SampleMapFrame: TSampleMapFrame
           AlignWithMargins = True
           Left = 548
           Top = 16
+          Width = 80
+          Height = 22
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'Close'
+          HitTest = True
+          AutoTrimText = False
+          Color = '$FF3E3E3E'
+          ColorMouseOver = '$FF3E3E3E'
+          ColorBorder = '$00000000'
+          ShowBorder = False
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImageOverlayVertAlign = AlignCenter
+          ImageOverlayHorzAlign = AlignCenter
+          ImageOverlayOffsetX = 0
+          ImageOverlayOffsetY = 0
+          Visible = True
+          OnClick = CloseSampleMapButtonClick
+        end
+        object GroupVisibilityButton: TVamTextBox
+          Tag = 10
+          AlignWithMargins = True
+          Left = 452
+          Top = 24
           Width = 80
           Height = 22
           Margins.Left = 0

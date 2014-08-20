@@ -270,6 +270,13 @@ type
 
   TMainGuiLayout = (Default, SampleZoom, MapEdit);
 
+  TGroupVisibility = (AllGroups, SelectedGroup);
+  TGroupVisibilityHelper = class(TEnumHelper<TGroupVisibility>)
+  public
+    class function ToFullGuiString(aEnum : TGroupVisibility):string; override;
+    class function ToShortGuiString(aEnum : TGroupVisibility):string; override;
+  end;
+
 
 implementation
 
@@ -810,6 +817,29 @@ begin
   end;
 end;
 
+
+{ TGroupVisibilityHelper }
+
+class function TGroupVisibilityHelper.ToFullGuiString(aEnum: TGroupVisibility): string;
+begin
+  case aEnum of
+    TGroupVisibility.AllGroups:     result := 'All Groups Visible';
+    TGroupVisibility.SelectedGroup: result := 'Current Group Visible';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+class function TGroupVisibilityHelper.ToShortGuiString(aEnum: TGroupVisibility): string;
+begin
+  case aEnum of
+    TGroupVisibility.AllGroups:     result := 'All Groups';
+    TGroupVisibility.SelectedGroup: result := 'Cur Group';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+
+end;
 
 end.
 
