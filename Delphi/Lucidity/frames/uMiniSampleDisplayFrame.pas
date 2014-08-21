@@ -89,6 +89,7 @@ type
 
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
+
   protected
     CurrentSample : TSampleDisplayFrameInfo;
 
@@ -357,11 +358,15 @@ begin
   if MsgID = TLucidMsgID.LoopTypeChanged                 then UpdateSampleDisplayInfo;
   if MsgID = TLucidMsgID.Command_UpdateSampleDisplay     then UpdateSampleDisplay;
   if MsgID = TLucidMsgID.Command_UpdateSampleInfo        then UpdateSampleDisplayInfo;
-  if MsgID = TLucidMsgID.Command then
-
 
   if MsgID = TLucidMsgID.Command_ShowReplaceRegionMessage then SampleOverlay.LargeTextMessage := 'Replace Sample';
   if MsgID = TLucidMsgID.Command_HideReplaceRegionMessage then SampleOverlay.LargeTextMessage := '';
+
+  if MsgID = TLucidMsgID.Command_Sample_ZoomToSampleStart  then ZoomToSampleMarker(self, TDialogSampleMarker.SampleStart);
+  if MsgID = TLucidMsgID.Command_Sample_ZoomToSampleEnd    then ZoomToSampleMarker(self, TDialogSampleMarker.SampleEnd);
+  if MsgID = TLucidMsgID.Command_Sample_ZoomToLoopStart    then ZoomToSampleMarker(self, TDialogSampleMarker.LoopStart);
+  if MsgID = TLucidMsgID.Command_Sample_ZoomToLoopEnd      then ZoomToSampleMarker(self, TDialogSampleMarker.LoopEnd);
+
 
   if MsgID = TLucidMsgID.Command_Sample_ZoomIn then
   begin
@@ -1208,9 +1213,6 @@ begin
 end;
 
 
-
-
-
 procedure TMiniSampleDisplayFrame.ZoomToSampleMarker(Sender: TObject; Marker: TDialogSampleMarker);
 var
   CurRegion : IRegion;
@@ -1319,5 +1321,6 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
   end;
 end;
+
 
 end.

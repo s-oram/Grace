@@ -68,8 +68,12 @@ type
     Command_Sample_ZoomIn            = Command + 17;
     Command_Sample_ZoomOut           = Command + 18;
     Command_Sample_ZoomOutFull       = Command + 19;
-    Command_ShowParChangeInfo        = Command + 20;
-    Command_HideParChangeInfo        = Command + 21;
+    Command_Sample_ZoomToSampleStart = Command + 20;
+    Command_Sample_ZoomToSampleEnd   = Command + 21;
+    Command_Sample_ZoomToLoopStart   = Command + 22;
+    Command_Sample_ZoomToLoopEnd     = Command + 23;
+    Command_ShowParChangeInfo        = Command + 24;
+    Command_HideParChangeInfo        = Command + 25;
     Actions                          = Command_HideParChangeInfo + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;

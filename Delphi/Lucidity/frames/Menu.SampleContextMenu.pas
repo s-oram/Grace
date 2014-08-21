@@ -108,6 +108,30 @@ begin
   mi.OnClick := EventHandle_ZoomSample;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom To Sample Start';
+  mi.Tag := 4;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom To Sample End';
+  mi.Tag := 5;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom To Loop Start';
+  mi.Tag := 6;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Zoom To Loop End';
+  mi.Tag := 7;
+  mi.OnClick := EventHandle_ZoomSample;
+  Menu.Items.Add(mi);
+
 
   //=== spacer ====
   mi := TMenuItem.Create(Menu);
@@ -291,10 +315,16 @@ var
 begin
   Tag := (Sender as TMenuItem).Tag;
 
+
+
   case Tag of
     1:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomIn, @MouseDownSamplePos);
     2:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOut, @MouseDownSamplePos);
     3:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOutFull, @MouseDownSamplePos);
+    4:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleStart, @MouseDownSamplePos);
+    5:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleEnd, @MouseDownSamplePos);
+    6:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopStart, @MouseDownSamplePos);
+    7:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopEnd, @MouseDownSamplePos);
   else
     raise Exception.Create('Index not handled.');
   end;
