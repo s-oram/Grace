@@ -14,6 +14,8 @@ New:
 
 Change:
 - Lucidity now has 64 preset FXP slots.
+- Removed the alternative sample zoom in view. Now the sample is zoomed in place without 
+  changing the GUI layout. 
 
 Bug Fix:
 

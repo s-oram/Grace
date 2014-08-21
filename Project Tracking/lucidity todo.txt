@@ -50,10 +50,8 @@ bug
      TODO HIGH
 =============================================================================
 
-- Feature requests from Hugo hugocaldeiravinagre@gmail.com	
-	- i dont like the way the sample zoom works because it takes you to another view.
-	thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com
-
+- loop markers should show all the time, even when they aren't being used. 
+- Check how native instruments set's it's loop markers. Is it voice or region level.
 
 - error region colors need to be more obvious!
 
@@ -68,7 +66,6 @@ bug
   * « open sample in_audio editor _»
 - requested by yann
 - thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
-
 
 - ensure loop point data is loaded and saved when saving regular Lucidity format files.
 
