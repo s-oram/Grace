@@ -22,6 +22,7 @@ type
     procedure EventHandle_ImportSFZ(Sender : TObject);
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
+    procedure EventHandle_OpenDataFoler(Sender : TObject);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -35,6 +36,7 @@ uses
   XPLAT.Dialogs,
   Windows,
   ShellApi,
+  eeWinEx,
   eePluginDataDir,
   uLucidityEnums,
   uAboutDialog,
@@ -217,6 +219,11 @@ begin
   mi.OnClick := EventHandle_OpenManual;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Open Data Folder...';
+  mi.OnClick := EventHandle_OpenDataFoler;
+  Menu.Items.Add(mi);
+
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'About...';
@@ -312,5 +319,18 @@ procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
 begin
   Plugin.SaveProgramAsDefault;
 end;
+
+procedure TMainMenu.EventHandle_OpenDataFoler(Sender: TObject);
+begin
+  if (PluginDataDir^.Exists) then
+  begin
+    ShowFolder(PluginDataDir^.Path);
+  end else
+  begin
+    ShowMessage('Data Directory not found. Please reinstall Lucidity.');
+  end;
+end;
+
+
 
 end.

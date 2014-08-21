@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Windows, ShellApi, ShlObj, ActiveX;
 
-
+//TODO:MED these functions could be moved to VamLib.WinUtils
 
 function WindowsMessageIdToStr(MsgId:Cardinal):string;
 
@@ -16,7 +16,6 @@ function OpenFolderAndSelectFile(const FileName: string): boolean;
 function ShowInWindowsExplorer(const FileName: string): boolean;
 
 procedure ShellOpenFileWith(Filename:string; EditApp:string);
-
 
 const
   OFASI_EDIT = $0001;
@@ -31,11 +30,23 @@ procedure ILFree(pidl: PItemIDList) stdcall; external shell32;
 function SHOpenFolderAndSelectItems(pidlFolder: PItemIDList; cidl: Cardinal; apidl: pointer; dwFlags: DWORD): HRESULT; stdcall; external shell32;
 
 
+procedure ShowFolder(const strFolder: string);
 
 implementation
 
 uses
   eeStringConversion;
+
+
+procedure ShowFolder(const strFolder: string);
+begin
+  ShellExecute(0,
+    PChar('explore'),
+    PChar(strFolder),
+    nil,
+    nil,
+    SW_SHOWNORMAL);
+end;
 
 
 procedure ShellOpenFileWith(Filename:string; EditApp:string);

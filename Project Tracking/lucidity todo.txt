@@ -50,6 +50,8 @@ bug
      TODO HIGH
 =============================================================================
 
+add a command to Lucidity menu to open the data folder.
+
 - Feature requests from Hugo hugocaldeiravinagre@gmail.com
 	- lucidity has only one fxp preset slot. having more is very important for live use so that you can change instruments \ drums with midi commands.
 	- i dont like the way the sample zoom works because it takes you to another view.

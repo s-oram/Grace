@@ -10,6 +10,14 @@ bug
 
 == Finished for the next release ==
 New:
+- Add "Oped Data Folder..." command to Lucidity's main menu.
+
+Change:
+
+Bug Fix:
+
+=== BETA v0.0.1.46 (21-Aug-2014) ===
+New:
 - Can now see all key groups in the sample map editor.   
 
 Change:
