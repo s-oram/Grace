@@ -1,0 +1,38 @@
+=========================================================
+    Promo Video
+=========================================================
+
+Features to show:
+
+- Show loading samples from the browser
+- Show loading multiple samples to the sample map.
+- Show loading samples from Cubase or Reaper. 
+
+- Show the sample map editor. Vertical snapping!
+
+- Show the modulation system. 
+
+- Show the ADSR, LFO and Filter sections in action. Show
+  the sample display area with the information overlay. 
+
+- Show the XY Pads! Maybe modulating the sample loop points. 
+
+
+Reference Videos. 
+
+The Mangle - Granular Sampler
+https://www.youtube.com/watch?v=DjKu8hd3Z_E
+
+DSI Pro 2 
+https://www.youtube.com/watch?v=vNp85kiMXK0
+
+
+
+emails from andy.
+thunderlink://messageid=CAAE3Tr+YY-w6sirD6CoUUY7H3g=NSzePn1RCKXH-fV9RMLYTig@mail.gmail.com
+thunderlink://messageid=CAAE3TrJ8_=ySKa9GsSwoN=bN3e=p42WcD_C5+2Ch1mOCEyJFOA@mail.gmail.com
+
+
+
+
+
