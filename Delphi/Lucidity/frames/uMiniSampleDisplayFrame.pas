@@ -368,7 +368,7 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
     try
       Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
-      Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
+      //Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
 
       SamplePos := Integer(Data^);
 
@@ -396,7 +396,7 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
     try
       Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
-      Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
+      //Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
 
       SamplePos := Integer(Data^);
 
@@ -1181,7 +1181,7 @@ begin
 
     if Tag = 8 then
     begin
-      Zoom := 0;
+      //Zoom := 0;
       UpdateSampleDisplay;
 
       //CalcZoomBounds(0, 0, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
