@@ -92,7 +92,6 @@ type
   protected
     CurrentSample : TSampleDisplayFrameInfo;
 
-    Zoom, Offset : single;
     fSampleOverlay : TLuciditySampleOverlay;
 
     SampleOverlayClickPos : TPoint;
@@ -162,9 +161,6 @@ begin
   inherited;
 
   UpdateSampleDisplayThottleToken.Init;
-
-  Zoom   := 0;
-  Offset := 0;
 
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
   fSampleOverlay.Parent  := SampleDisplay;
@@ -345,6 +341,7 @@ procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data
 var
   SamplePos : integer;
   zx : single;
+  Zoom, Offset : single;
 begin
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
@@ -370,6 +367,9 @@ begin
   begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
     try
+      Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
+      Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
+
       SamplePos := Integer(Data^);
 
       //Zoom In!
@@ -379,6 +379,9 @@ begin
       // Update the offset.
       zx := SamplePos / CurrentSample.Info.SampleFrames;
       Offset := Clamp(zx, 0, 1);
+
+      Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+      Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
       // Update the GUI.
       UpdateSampleDisplay;
@@ -392,14 +395,22 @@ begin
   begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
     try
+      Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
+      Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
+
       SamplePos := Integer(Data^);
+
       //Zoom In!
       zx := Zoom  - 0.2;
+      if zx < 0.05 then zx := 0;
       Zoom := Clamp(zx, 0, 1);
 
       // Update the offset.
       zx := SamplePos / CurrentSample.Info.SampleFrames;
       Offset := Clamp(zx, 0, 1);
+
+      Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+      Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
       UpdateSampleDisplay;
       UpdateZoomSlider;
@@ -410,8 +421,10 @@ begin
 
   if MsgID = TLucidMsgID.Command_Sample_ZoomOutFull then
   begin
-    if Command.AreSampleZoomControlsVisible(Plugin)
-      then Command.ToggleSampleZoom(Plugin);
+    Plugin.Globals.GuiState.SampleDisplayZoom   := 0;
+
+    UpdateSampleDisplay;
+    UpdateZoomSlider;
   end;
 
 end;
@@ -473,12 +486,15 @@ var
   xSampleImage : IInterfacedBitmap;
   Par:TSampleRenderParameters;
   FlexPar:TFlexRenderPar;
+  Zoom, Offset : single;
 begin
+  Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
+  Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
   CurrentSample.Region := Region;
 
   if (assigned(Region)) then
   begin
-    if (Region.GetSample^.Properties.IsValid) and (self.Zoom > 0) then
+    if (Region.GetSample^.Properties.IsValid) and (Zoom > 0) then
     begin
       FlexPar.BackgroundColor := kColor_LcdDark1;
       FlexPar.LineColor       := kColor_SampleDisplayLine;
@@ -493,7 +509,7 @@ begin
 
       SampleOverlay.SetZoomOffset(Zoom, Offset);
     end else
-    if (Region.GetSample^.Properties.IsValid) and (self.Zoom = 0) then
+    if (Region.GetSample^.Properties.IsValid) and (Zoom = 0) then
     begin
       Par.BackgroundColor := kColor_LcdDark1;
       Par.LineColor       := kColor_SampleDisplayLine;
@@ -853,8 +869,9 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayZoomChanged(Sender: TObject; aZoom, aOffset: single);
 begin
-  Zoom   := aZoom;
-  Offset := aOffset;
+  Plugin.Globals.GuiState.SampleDisplayZoom   := aZoom;
+  Plugin.Globals.GuiState.SampleDisplayOffset := aOffset;
+
   UpdateSampleDisplayInfo;
 end;
 
@@ -1083,6 +1100,9 @@ end;
 procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
+
+  //TODO:HIGH code clean up required here. the xZoom and xOffset variables needs to be deleted.
+  Zoom, Offset : single;
   xZoom, xOffset : double;
   //SampleFrames, DisplayPixelWidth : integer;
   //IndexA, IndexB : single;
@@ -1091,6 +1111,9 @@ begin
   if not assigned(CurrentSample.Region) then exit;
 
   Tag := (Sender as TVamTextBox).Tag;
+
+  Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
+  Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
 
   if Button = mbLeft then
   begin
@@ -1110,6 +1133,10 @@ begin
 
       Zoom := xZoom;
       Offset := xOffset;
+
+      Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+      Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
+
       UpdateSampleDisplay;
 
 
@@ -1133,6 +1160,10 @@ begin
 
       Zoom := xZoom;
       Offset := xOffset;
+
+      Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+      Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
+
       UpdateSampleDisplay;
 
       //CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
@@ -1187,6 +1218,7 @@ var
   SampleFrames : integer;
   DisplayPixelWidth : integer;
   ZoomPos : TZoomPos;
+  Zoom, Offset : single;
 begin
   if not assigned(Plugin)         then exit;
 
@@ -1214,6 +1246,10 @@ begin
   //== Set a bunch of zoom/offset values ==
   Zoom   := ZoomPos.Zoom;
   Offset := ZoomPos.Offset;
+
+  Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+  Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
+
   UpdateSampleDisplay;
 
   //Debounce(SampleUpdateDebounceID, 25, deLeading, UpdateSampleDisplay);
@@ -1225,15 +1261,23 @@ end;
 procedure TMiniSampleDisplayFrame.UpdateZoomSlider;
 var
   ZoomSize : single;
+  Zoom, Offset : single;
 begin
+  Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
+  Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
+
   ZoomSize := 1 - (Zoom * 0.9);
+
   ZoomScrollBar.IndexSize := ZoomSize;
   ZoomScrollBar.IndexPos  := Offset;
 end;
 
 procedure TMiniSampleDisplayFrame.ZoomScrollBarChanged(Sender: TObject);
+var
+  Offset : single;
 begin
   Offset := (Sender as TVamScrollBar).IndexPos;
+  Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
   Throttle(UpdateSampleDisplayThottleToken, 25, procedure
   begin
@@ -1265,8 +1309,10 @@ begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
     Command.ShowSampleZoom(Plugin);
-    self.Zoom := Zoom;
-    self.Offset := Offset;
+
+    Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
+    Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
+
     UpdateSampleDisplay;
     UpdateZoomSlider;
   finally

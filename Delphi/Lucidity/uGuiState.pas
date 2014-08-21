@@ -19,6 +19,8 @@ type
     fMainGuiLayout: TMainGuiLayout;
     fActiveVstPluginParameterID: TPluginParameterId;
     fSampleMapGroupVisibility: TGroupVisibility;
+    fSampleDisplayOffset: single;
+    fSampleDisplayZoom: single;
     procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
   public
     constructor Create;
@@ -34,7 +36,8 @@ type
     property MainGuiLayout : TMainGuiLayout read fMainGuiLayout   write fMainGuiLayout;
     property LowerTabState : TLowerTabOptions read fLowerTabState write fLowerTabState;
 
-    //property SampleDisplayZoom : single read fSampleDisplayZ
+    property SampleDisplayZoom   : single read fSampleDisplayZoom   write fSampleDisplayZoom;   //range 0..1
+    property SampleDisplayOffset : single read fSampleDisplayOffset write fSampleDisplayOffset; //range 0..1
 
 
     // NOTE:

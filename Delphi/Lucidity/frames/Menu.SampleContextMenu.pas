@@ -93,7 +93,7 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Zoom Out';
   mi.Tag := 2;
-  if Command.AreSampleZoomControlsVisible(Plugin)
+  if Plugin.Globals.GuiState.SampleDisplayZoom > 0
     then mi.Enabled := true
     else mi.Enabled := false;
   mi.OnClick := EventHandle_ZoomSample;
@@ -102,7 +102,7 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Zoom Out Full';
   mi.Tag := 3;
-  if Command.AreSampleZoomControlsVisible(Plugin)
+  if Plugin.Globals.GuiState.SampleDisplayZoom > 0
     then mi.Enabled := true
     else mi.Enabled := false;
   mi.OnClick := EventHandle_ZoomSample;
