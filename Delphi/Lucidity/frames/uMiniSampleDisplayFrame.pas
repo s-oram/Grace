@@ -25,8 +25,6 @@ uses
   VamCompoundNumericKnob, VamScrollBar, VamTextBox, Vcl.ExtCtrls;
 
 type
-  TUsageContext = (General, SampleZoom);
-
   TDialogSampleMarker = (SampleStart, SampleEnd, LoopStart, LoopEnd);
 
 
@@ -84,10 +82,10 @@ type
     procedure SampleOverlay_ZoomChanged(Sender : TObject; Zoom, Offset : single);
   private
     FMotherShip : IMothership;
-    fSampleDisplayContext: TUsageContext;
+
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
-    procedure SetSampleDisplayContext(const Value: TUsageContext);
+    procedure SetSampleDisplayContext;
 
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
@@ -139,8 +137,6 @@ type
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property SampleOverlay : TLuciditySampleOverlay read fSampleOverlay;
-
-    property UsageContext : TUsageContext read fSampleDisplayContext write SetSampleDisplayContext;
   end;
 
 implementation
@@ -266,8 +262,6 @@ begin
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
   Scope.ColorForeground := '$FFCCDFFF';
 
-  UsageContext := TUsageContext.General;
-
   SampleInfoBox.Height := 25;
   InfoDiv.Align := alClient;
 
@@ -334,8 +328,6 @@ begin
   ZoomLoopEndButton.Width := kZoomButtonWidth;
   ZoomApplyButton.Align := TAlign.alClient;
 
-
-
   Timer1.Enabled := true;
   Timer1.Interval := 25;
 
@@ -343,6 +335,10 @@ begin
   UpdateControlVisibility;
   UpdateModulation;
   UpdateSampleDisplay;
+
+  //TODO:HIGH this method needs to be renamed. it's a relic left over
+  // from the old zoom in "zoom context" approach.
+  SetSampleDisplayContext;
 end;
 
 procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -376,9 +372,6 @@ begin
     try
       SamplePos := Integer(Data^);
 
-      if not Command.AreSampleZoomControlsVisible(Plugin)
-        then Command.ToggleSampleZoom(Plugin);
-
       //Zoom In!
       zx := Zoom  + 0.2;
       Zoom := Clamp(zx, 0, 1);
@@ -408,15 +401,8 @@ begin
       zx := SamplePos / CurrentSample.Info.SampleFrames;
       Offset := Clamp(zx, 0, 1);
 
-      if Zoom > 0 then
-      begin
-        // Update the GUI.
-        UpdateSampleDisplay;
-        UpdateZoomSlider;
-      end else
-      begin
-        Command.ToggleSampleZoom(Plugin);
-      end;
+      UpdateSampleDisplay;
+      UpdateZoomSlider;
     finally
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
     end;
@@ -492,7 +478,7 @@ begin
 
   if (assigned(Region)) then
   begin
-    if (Region.GetSample^.Properties.IsValid) and (UsageContext = TUsageContext.SampleZoom) then
+    if (Region.GetSample^.Properties.IsValid) and (self.Zoom > 0) then
     begin
       FlexPar.BackgroundColor := kColor_LcdDark1;
       FlexPar.LineColor       := kColor_SampleDisplayLine;
@@ -507,7 +493,7 @@ begin
 
       SampleOverlay.SetZoomOffset(Zoom, Offset);
     end else
-    if (Region.GetSample^.Properties.IsValid) and (UsageContext = TUsageContext.General) then
+    if (Region.GetSample^.Properties.IsValid) and (self.Zoom = 0) then
     begin
       Par.BackgroundColor := kColor_LcdDark1;
       Par.LineColor       := kColor_SampleDisplayLine;
@@ -1060,61 +1046,30 @@ end;
 
 
 
-procedure TMiniSampleDisplayFrame.SetSampleDisplayContext(const Value: TUsageContext);
+procedure TMiniSampleDisplayFrame.SetSampleDisplayContext;
 begin
-  fSampleDisplayContext := Value;
-
   SampleDisplay.Align := TAlign.alClient;
   InsidePanel.AlignWithMargins := true;
 
+  InsidePanel.Align := TAlign.alClient;
+  InsidePanel.Margins.Bottom := 0;
+  InsidePanel.CornerRadius3 := 3;
+  InsidePanel.CornerRadius4 := 3;
 
+  ZoomControlsDiv.Align := TAlign.alBottom;
+  ZoomControlsDiv.Visible := false;
 
-  case Value of
-    TUsageContext.General:
-    begin
-      InsidePanel.Align := TAlign.alClient;
-      InsidePanel.Margins.Bottom := 0;
-      InsidePanel.CornerRadius3 := 3;
-      InsidePanel.CornerRadius4 := 3;
+  ZoomScrollBar.Align := TAlign.alBottom;
+  ZoomScrollBar.AlignWithMargins := true;
+  ZoomScrollBar.Margins.Bottom := 0;
+  ZoomScrollBar.Height := 18;
+  ZoomScrollBar.Top := 0;
+  ZoomScrollBar.Visible := true;
+  ZoomScrollBar.BringToFront;
 
-      ZoomScrollBar.Visible := false;
-      ZoomControlsDiv.Visible := false;
-
-      SampleOverlay.BringToFront;
-
-      Zoom := 0;
-      //Offset
-    end;
-
-    TUsageContext.SampleZoom:
-    begin
-      InsidePanel.Align := TAlign.alClient;
-      InsidePanel.CornerRadius3 := 0;
-      InsidePanel.CornerRadius4 := 0;
-
-      ZoomControlsDiv.Align := TAlign.alBottom;
-      ZoomControlsDiv.Visible := true;
-
-
-      ZoomScrollBar.Align := TAlign.alBottom;
-      ZoomScrollBar.AlignWithMargins := true;
-      ZoomScrollBar.Margins.Bottom := 4;
-      ZoomScrollBar.Height := 22;
-      ZoomScrollBar.Top := 0;
-      ZoomScrollBar.Visible := true;
-      ZoomScrollBar.BringToFront;
-
-      UpdateZoomSlider;
-
-      SampleOverlay.BringToFront;
-    end;
-  else
-    raise Exception.Create('Type not handled.');
-  end;
-
-  //Scope.Layout.
+  UpdateZoomSlider;
+  SampleOverlay.BringToFront;
   Scope.BringToFront;
-
   UpdateSampleDisplay;
 end;
 

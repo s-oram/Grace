@@ -13,6 +13,7 @@ New:
 - Add "Oped Data Folder..." command to Lucidity's main menu.
 
 Change:
+- Lucidity now has 64 preset FXP slots.
 
 Bug Fix:
 

@@ -908,8 +908,7 @@ begin
   case Plugin.Globals.GuiState.MainGuiLayout of
     TMainGuiLayout.Default:
     begin
-      MiniSampleDisplayFrame.UsageContext := TUsageContext.General;
-      MainTop.Height         := 208;
+      MainTop.Height := 226;
 
       MainTop.Visible := true;
 
@@ -921,7 +920,6 @@ begin
       MainMenuBar.Top := 1;
       MainMenuBar.Left := 1;
 
-
       MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
       VoiceControlDiv.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
       TabPanel.Layout.Anchor(VoiceControlDiv).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
@@ -930,29 +928,26 @@ begin
 
     TMainGuiLayout.SampleZoom:
     begin
-      MiniSampleDisplayFrame.UsageContext := TUsageContext.SampleZoom;
-      MainTop.Height := 208 + 80 + 2 + 70 + 2;
+      MainTop.Height := 226;
 
-
-      MainTop.Visible := true;
       SampleMapDiv.Visible    := false;
-      VoiceControlDiv.Visible := false;
+      VoiceControlDiv.Visible := true;
       TabPanel.Visible        := true;
-      ModSystem2Div.Visible := false;
+      ModSystem2Div.Visible   := true;
 
       MainMenuBar.Top := 1;
       MainMenuBar.Left := 1;
 
       MainTop.Layout.Anchor(MainMenuBar).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
-      TabPanel.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      VoiceControlDiv.Layout.Anchor(MainTop).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
+      TabPanel.Layout.Anchor(VoiceControlDiv).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
       ModSystem2Div.Layout.Anchor(TabPanel).SnapToEdge(VamLayoutWizard.TControlFeature.BottomEdge).Move(0,2);
     end;
 
     TMainGuiLayout.MapEdit:
     begin
       //==========================================================================
-      MiniSampleDisplayFrame.UsageContext := TUsageContext.General;
-      MainTop.Height         := 208;
+      MainTop.Height := 226;
 
       SampleMapDiv.Visible    := true;
       VoiceControlDiv.Visible := false;

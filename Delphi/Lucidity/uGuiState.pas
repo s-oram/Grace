@@ -31,8 +31,10 @@ type
 
     property FocusedControl : TControl read fFocusedControl write fFocusedControl;
 
-    property MainGuiLayout : TMainGuiLayout read fMainGuiLayout write fMainGuiLayout;
-    property LowerTabState : TLowerTabOptions read fLowerTabState      write fLowerTabState;
+    property MainGuiLayout : TMainGuiLayout read fMainGuiLayout   write fMainGuiLayout;
+    property LowerTabState : TLowerTabOptions read fLowerTabState write fLowerTabState;
+
+    //property SampleDisplayZoom : single read fSampleDisplayZ
 
 
     // NOTE:

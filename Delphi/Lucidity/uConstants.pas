@@ -410,11 +410,11 @@ begin
     Global_Info.PluginVersion      := kProductVersion;
     Global_Info.VstUniqueId        := '52Tw';
 
-    Global_Info.NumberOfPrograms   := 1;
+    Global_Info.NumberOfPrograms   := 64;
     Global_Info.UseHostGui         := false;
 
     Global_Info.InitialGuiWidth    := 980;
-    Global_Info.InitialGuiHeight   := 654;
+    Global_Info.InitialGuiHeight   := 672;
 
     Global_Info.IsSynth            := true;
     Global_Info.PresetsAreChunks   := true;

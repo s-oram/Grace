@@ -49,8 +49,8 @@ type
 
     property NumberOfPrograms      : integer read fNumberOfPrograms     write fNumberOfPrograms;
 
-    property VstPlugCatagory       : longint read fVstPlugCatagory      write fVstPlugCatagory;
-    property VstUniqueId           : Ansistring  read fVstUniqueId          write fVstUniqueId;
+    property VstPlugCatagory       : longint    read fVstPlugCatagory   write fVstPlugCatagory;
+    property VstUniqueId           : Ansistring read fVstUniqueId       write fVstUniqueId;
 
     property HasMidiIn             : boolean read fHasMidiIn            write fHasMidiIn;
     property HasMidiOut            : boolean read fHasMidiOut           write fHasMidiOut;
@@ -92,7 +92,7 @@ begin
   PluginVersion         := 'Version 1';
   PluginReleaseVersion  := '0.1';
 
-  NumberOfPrograms      := 1;
+  NumberOfPrograms      := 64;
 
   VstPlugCatagory       := 0;
   VstUniqueId           := 'Plug';
