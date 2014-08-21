@@ -49,7 +49,11 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- showing/hiding the sample map is really slow. It
+
+- Feature requests from Hugo hugocaldeiravinagre@gmail.com
+	- lucidity has only one fxp preset slot. having more is very important for live use so that you can change instruments \ drums with midi commands.
+	- i dont like the way the sample zoom works because it takes you to another view.
+	thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com
 
 
 - error region colors need to be more obvious!
@@ -57,6 +61,8 @@ bug
 - Feature requests from Yann.
   "open sample in external audio editor"
   "copy a sample into a new group"
+  "destructive file renaming"
+  "short cut keys"
   waveshaperkit@gmail.com
   thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
 
@@ -156,6 +162,11 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+
+
+create new screen shot without the drum loop. The amen loop is misleading 
+because Lucidity isn't a loop sampler. 
+
 
 --------Optimisation Ideas----------------------------------------------------
 -- instead of caluclating the LFO, Env and Seq values each step, maybe 
@@ -259,6 +270,17 @@ thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail
 - More Filters
   -- A distortion/drive 
      thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
+
+
+-----------------------------------------------
+requests from Hugo - hugocaldeiravinagre@gmail.com
+- knobs should show values.
+- make browser hideable. 
+- buttons for next/prev sample. Patch etc. 
+- if you expand a folder in the browser by clicking the "+" symbol, it wont change to "-".
+- add filter fx distortion
+thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com
+-----------------------------------------------
 
 
 
