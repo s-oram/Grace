@@ -47,11 +47,22 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+- zooming in shouldn't close the sample map.
+
+- changing sample focus in the sample map should zoom all the way out. (Send a message I think)
+
 - error region colors need to be more obvious!
 
+- smart loading of multiple samples. Samples should be mapped according to their root note if
+  it is detected in the filename. 
+  -- this will require a dialog popping up in the Lucidity GUI. 
+
+- have a command to select all samples.
+- have a command to reset region root notes to those found in the sample filename.
 
 [FEATURE REQUEST] Ask Yann about this command. What should it do. Why not copy and move to new group. 
 "copy a sample into a new group" 
+"rename all selected samples" would be good feature to have two. the rename would add the root key.
 waveshaperkit@gmail.com
 thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
 
@@ -106,14 +117,6 @@ Another feature we use very much is lfo sync to song position.
 Maybe need a slope envelope LFO.
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?
-
-- Bug: Crash after loading program via drag and drop. (can't reproduce reliably yet.)
-
-- Need to test SFZ import.
-
-- Filter Gain needs more bite. 
-- rethink the filter gain. try adding the gain stage before the filter.
--- maybe it's ok. I could try an additional gain stage before the filter.
 
 - Add a contact support command.
 -- Email
