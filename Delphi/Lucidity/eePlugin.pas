@@ -225,6 +225,7 @@ type
 
     procedure ReloadRegion(const TargetRegion : IRegion);
     procedure ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string);
+    procedure RenameInUseSample(const NewFileName, OldFileName : string);
 
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
     procedure DuplicateSelectedRegions;
@@ -715,6 +716,11 @@ begin
     // TODO:HIGH Need to show a message here to say that
     // the sample couldn't be loaded.
   end;
+end;
+
+procedure TeePlugin.RenameInUseSample(const NewFileName, OldFileName: string);
+begin
+  assert(false, 'TODO');
 end;
 
 procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);

@@ -537,13 +537,63 @@ end;
 
 procedure TSampleContextMenu.EventHandler_ReloadSampleFile(Sender: TObject);
 begin
+  if not assigned(CurrentRegion) then exit;
   Plugin.ReloadRegion(CurrentRegion);
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);
+var
+  InputBox : TxpInputBox;
+  fn : string;
+  Dir : string;
+  extA : string;
+  ExtB : string;
+
+  OldFileName : string;
+  NewFileName : string;
 begin
-  //
+  if not assigned(CurrentRegion) then exit;
+
+  InputBox := TxpInputBox.Create(nil);
+  AutoFree(@InputBox);
+
+  OldFileName := CurrentRegion.GetProperties^.SampleFileName;
+
+  fn := ExtractFileName(CurrentRegion.GetProperties^.SampleFileName);
+  extA := ExtractFileExt(CurrentRegion.GetProperties^.SampleFileName);
+  Dir  := ExtractFileDir(CurrentRegion.GetProperties^.SampleFileName);
+
+  InputBox.Caption := 'Rename File';
+  InputBox.Prompt  := 'Rename File';
+  InputBox.InitialValue := fn;
+
+  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  begin
+    fn := IncludeTrailingPathDelimiter(Dir) + InputBox.ResultText;
+    extB := ExtractFileExt(fn);
+    if SameText(extA, extB) = false then
+    begin
+      fn := fn + extA;
+    end;
+    NewFileName := fn;
+
+    if FileExists(NewFileName) then
+    begin
+      // TODO:MED it would be nice to send an error message to
+      // the GUI instead of using a modal dialog box. Sometimes
+      // these modal dialog boxes make the plugin look like it has
+      // hung.
+      ShowMessage('Error: "' + NewFileName + '" already exists."');
+      exit;
+    end;
+
+
+
+    Plugin.RenameInUseSample(NewFileName, OldFileName);
+  end;
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 
