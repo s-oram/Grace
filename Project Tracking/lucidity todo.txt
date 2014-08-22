@@ -44,12 +44,6 @@ bug
 - replace sample with SFZ file. 
   there is an unsupported file format error, but a region is still created.
 
-bug
-- loop points aren't being read correctly from some files.
-  reusenoise@gmail.com
-  thunderlink://messageid=CAG2OC092X_zbD0ofQ81u9pUq9fv2skF-nMg4JNfLHsEzj9UVmw@mail.gmail.com
-  - I think this might have been fixed. please confirm.
-
 =============================================================================
      TODO HIGH
 =============================================================================

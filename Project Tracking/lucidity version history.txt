@@ -23,6 +23,7 @@ Change:
 
 Bug Fix:
 - Loop points weren't being read correctly. This fixed needs to be confirmed. 
+  thunderlink://messageid=CAG2OC092X_zbD0ofQ81u9pUq9fv2skF-nMg4JNfLHsEzj9UVmw@mail.gmail.com
 
 === BETA v0.0.1.46 (21-Aug-2014) ===
 New:
