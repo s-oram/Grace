@@ -719,8 +719,25 @@ begin
 end;
 
 procedure TeePlugin.RenameInUseSample(const NewFileName, OldFileName: string);
+var
+  c1: Integer;
+  srcFN : string;
+  rg : IRegion;
 begin
-  assert(false, 'TODO');
+  if RenameFile(OldFileName, NewFileName) then
+  begin
+    for c1 := SampleMap.RegionCount-1 downto 0 do
+    begin
+      rg := SampleMap.Regions[c1];
+
+      srcFN := rg.GetProperties^.SampleFileName;
+      if sameText(srcFN, OldFileName) then
+      begin
+        rg.GetProperties^.SampleFileName := NewFilename;
+      end;
+    end;
+  end;
+
 end;
 
 procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);

@@ -55,8 +55,7 @@ bug
 waveshaperkit@gmail.com
 thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
 
-[FEATURE REQUEST] from Yann.  
-  "destructive file renaming"
+[FEATURE REQUEST] from Yann.    
   "short cut keys"
   waveshaperkit@gmail.com
   thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP

@@ -16,6 +16,7 @@ New:
 - "Rename Key Group" command added.
 - "Open Sample" with external audio editor command added to the sample display context menu.
 - "Reload Sample" command added.
+- Rename sample file command added. (This is a destructive file rename.)
 
 Change:
 - ADSR envelopes now have a 0ms minimum attack time. Previously it was ~3ms. 
