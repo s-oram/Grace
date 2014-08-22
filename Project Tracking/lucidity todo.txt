@@ -55,9 +55,6 @@ bug
 =============================================================================
 - default loop mode should be Loop Off or Note. 
 
-- SFZ import. Should check if the source sample contains any loop points, if it
-  does, change the group loop mode to Loop Continuous.
-
 - error region colors need to be more obvious!
 
 - Feature requests from Yann.

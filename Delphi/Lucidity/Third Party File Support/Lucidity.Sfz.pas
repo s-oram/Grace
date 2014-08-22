@@ -39,17 +39,19 @@ type
     procedure Event_OnRegionEnd(Sender : TObject);
     procedure Event_OnRegionOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
   protected
+    SourceFileName : string;
     procedure GenerateModMatrixPatchData;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure ConvertFile(SourceFileName : string; out Dest : TNativeXML);
+    procedure ConvertFile(aSourceFileName : string; out Dest : TNativeXML);
   end;
 
 implementation
 
 uses
+  AudioIO,
   VamLib.Utils,
   SysUtils,
   NativeXmlEx,
@@ -78,9 +80,11 @@ begin
   inherited;
 end;
 
-procedure TSfzImporter.ConvertFile(SourceFileName: string; out Dest: TNativeXML);
+procedure TSfzImporter.ConvertFile(aSourceFileName: string; out Dest: TNativeXML);
 begin
   if assigned(Dest) then raise Exception.Create('Dest should not be assigned.');
+
+  SourceFileName := aSourceFileName;
 
   Dest := TNativeXML.CreateName('root');
 
@@ -100,7 +104,7 @@ begin
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceMode').ValueUnicode := 'Poly';
     NodeWiz(Dest.Root).CreateNode('GlobalParameters/VoiceGlide').ValueUnicode := '0';
 
-    Parser.ParseFile(SourceFileName);
+    Parser.ParseFile(aSourceFileName);
 
     //do some further post-processing after parsing the raw file..
 
@@ -129,14 +133,35 @@ end;
 procedure TSfzImporter.Event_OnGroupEnd(Sender: TObject);
 var
   TargetNode : TXmlNode;
+  NodeValue : string;
+  fn : string;
+  Dir : string;
+  LoopStart, LoopEnd : integer;
 begin
   //****************************************************************************
   // Do some final adjustments here...
   TargetNode := CurrentGroup;
 
-  if GroupLoadData.IsLoopModeSet
-    then NodeWiz(TargetNode).FindOrCreateNode('SfzImport/LoopModeSpecified').ValueUnicode := DataIO_BoolToStr(true)
-    else NodeWiz(TargetNode).FindOrCreateNode('SfzImport/LoopModeSpecified').ValueUnicode := DataIO_BoolToStr(false);
+
+  if GroupLoadData.IsLoopModeSet = false then
+  begin
+    // If the loop mode hasn't been set, we look for the first sample in the region. If we can
+    // find it, and if it has loop points set in the the source file, we set the
+    // loop mode to "Loop Continuous". We do this because SFZ doesn't need
+    // to specify a loop mode. Nor does it specify what the default loop mode
+    // setting should be.
+    if NodeWiz(TargetNode).FindNodeValue('Region/SampleProperties/SampleFileName', NodeValue) then
+    begin
+      Dir := ExtractFileDir(SourceFileName);
+      fn := IncludeTrailingPathDelimiter(Dir) + NodeValue;
+      if (FileExists(fn)) and (AudioIO.ReadLoopPoints(fn, LoopStart, LoopEnd)) then
+      begin
+        NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := TKeyGroupTriggerModeHelper.ToUnicodeString(TKeyGroupTriggerMode.LoopContinuous);
+      end;
+    end;
+  end;
+
+
 
   //===============================================================================
   if (GroupLoadData.IsCutoffSet) then

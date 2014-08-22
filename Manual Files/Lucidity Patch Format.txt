@@ -56,3 +56,9 @@ These opcodes are only supported when used as part of a <region>
 
 
 
+
+== If the loop mode isn't specified for a key group ==
+If the loop mode hasn't been set for a key group, we look for the first sample in the region. 
+If we can find it, and if it has loop points set in the the source file, we set the
+loop mode to "Loop Continuous". We do this because SFZ doesn't need to specify a loop 
+mode. Nor does the SFZ format specify what the default loop mode setting should be.
