@@ -719,6 +719,8 @@ end;
 
 procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);
 begin
+  // Look at ReloadSample() for inspiration.
+  // remove the SampleMap.ReplaceSample() method after completing.
   assert(false, 'TODO');
 end;
 
