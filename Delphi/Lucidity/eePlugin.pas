@@ -697,7 +697,10 @@ begin
   end;
 
 
+  // TODO:MED - NOTE: Rather than call self.NewRegion() it might be better to call SampleMap.NewRegion()
+  // directly and avoid any potential side-effects present at self.NewRegion().
   rg := NewRegion(CreateInfo);
+
   if (assigned(rg)) and (rg.GetProperties^.IsSampleError = false) then
   begin
     FocusRegion(rg.GetProperties^.UniqueID);
@@ -712,9 +715,6 @@ begin
     // TODO:HIGH Need to show a message here to say that
     // the sample couldn't be loaded.
   end;
-
-
-
 end;
 
 procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);

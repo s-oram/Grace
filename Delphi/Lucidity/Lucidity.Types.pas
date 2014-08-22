@@ -103,8 +103,8 @@ type
     RootNote       : integer;
 
     //== Markers ==
-    SampleStart : integer;
-    SampleEnd   : integer;
+    SampleStart    : integer;
+    SampleEnd      : integer;
     RefLoopStart   : integer; // Loop start from source sample file.
     RefLoopEnd     : integer; // loop end from source sample file.
     UserLoopStart  : integer; // Loop start/end specified by user. This overrides
@@ -115,12 +115,13 @@ type
     SamplePan     : single;  // range -100..+100 (%)
     SampleTune    : integer; // Semitones. -24..+24
     SampleFine    : integer; // FineTune - Cents -100..100
-    //SamplePitch   : double;  // In Semitones. -24..+24
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
 
 
     procedure GetRegionLoopPoints(out aLoopStart, aLoopEnd : integer);
   end;
+
+
 
   TKeyGroupID = TUniqueID;
 

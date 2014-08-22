@@ -538,6 +538,7 @@ end;
 procedure TSampleContextMenu.EventHandler_ReloadSampleFile(Sender: TObject);
 begin
   Plugin.ReloadRegion(CurrentRegion);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);

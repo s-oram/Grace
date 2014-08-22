@@ -46,6 +46,9 @@ type
     destructor Destroy; override;
 
     function LoadSample(const SampleFileName : string):boolean;
+
+    // TODO:HIGH i think this ReplaceSample() method needs to be removed. The whole entire region
+    // should be replaced. Not just replacing the sample.
     function ReplaceSample(const SampleFileName : string):boolean;
 
     function GetDbLevelAt(SamplePoint:integer):single;
@@ -60,6 +63,9 @@ type
     property PeakBuffer    : IPeakBuffer          read fPeakBuffer;
   end;
 
+  // TODO:MED TRegionCreateInfo contains much of the same data as TRegionProperties in Lucidity.Types.pas
+  // I wonder if there is a way to at least put these type declarations in the same unit
+  // if they can't be shared.
   TRegionCreateInfo = record
     //Required
     KeyGroup      : IKeyGroup;
@@ -69,6 +75,14 @@ type
     LowVelocity   : integer;
     HighVelocity  : integer;
     RootNote      : integer;
+
+    //== Sample ==
+    SampleVolume  : single;  //For values ranges see TRegionProperties.
+    SamplePan     : single;  //For values ranges see TRegionProperties.
+    SampleTune    : integer; //For values ranges see TRegionProperties.
+    SampleFine    : integer; //For values ranges see TRegionProperties.
+    SampleBeats   : integer; //For values ranges see TRegionProperties.
+
     procedure Init;
     procedure AssignFrom(Source : TRegion); overload;
     procedure AssignFrom(Source : IRegion); overload;
@@ -325,11 +339,7 @@ begin
     begin
       if self.Sample.ReserveSampleMemory(Info.Channels, Info.SampleFrames) then
       begin
-        self.Properties^.SampleVolume := 0;
-        self.Properties^.SamplePan    := 0;
-        self.Properties^.SampleTune   := 0;
-        self.Properties^.SampleFine   := 0;
-        self.Properties^.SampleBeats  := 4;
+        //TODO:HIGH where should SampleStart/End values be set?
         self.Properties^.SampleStart := 0;
         self.Properties^.SampleEnd   := Info.SampleFrames-1;
 
@@ -603,6 +613,12 @@ begin
   rx.Properties^.RefLoopEnd       := -1;
   rx.Properties^.UserLoopStart    := -1;
   rx.Properties^.UserLoopEnd      := -1;
+  rx.Properties^.SampleVolume     := CreateInfo.SampleVolume;
+  rx.Properties^.SamplePan        := CreateInfo.SamplePan;
+  rx.Properties^.SampleTune       := CreateInfo.SampleTune;
+  rx.Properties^.SampleFine       := CreateInfo.SampleFine;
+  rx.Properties^.SampleBeats      := CreateInfo.SampleBeats;
+
   rx.KeyGroup := CreateInfo.KeyGroup;
   //====================
 
@@ -949,7 +965,13 @@ begin
   self.HighNote      := 127;
   self.LowVelocity   := 0;
   self.HighVelocity  := 127;
-  self.RootNote      := 60; //who knows what MIDI note that is?....
+  self.RootNote      := 60; //who knows what MIDI note that is?.... //TODO:MED find out!
+
+  self.SampleVolume  := 0;
+  self.SamplePan     := 0;
+  self.SampleTune    := 0;
+  self.SampleFine    := 0;
+  self.SampleBeats   := 4;
 end;
 
 procedure TRegionCreateInfo.AssignFrom(Source: TRegion);
@@ -961,6 +983,12 @@ begin
   self.LowVelocity   := source.Properties^.LowVelocity;
   self.HighVelocity  := source.Properties^.HighVelocity;
   self.RootNote      := source.Properties^.RootNote;
+
+  self.SampleVolume  := source.Properties^.SampleVolume;
+  self.SamplePan     := source.Properties^.SamplePan;
+  self.SampleTune    := source.Properties^.SampleTune;
+  self.SampleFine    := source.Properties^.SampleFine;
+  self.SampleBeats   := source.Properties^.SampleBeats;
 end;
 
 procedure TRegionCreateInfo.AssignFrom(Source: IRegion);
@@ -972,6 +1000,12 @@ begin
   self.LowVelocity   := source.GetProperties^.LowVelocity;
   self.HighVelocity  := source.GetProperties^.HighVelocity;
   self.RootNote      := source.GetProperties^.RootNote;
+
+  self.SampleVolume  := source.GetProperties^.SampleVolume;
+  self.SamplePan     := source.GetProperties^.SamplePan;
+  self.SampleTune    := source.GetProperties^.SampleTune;
+  self.SampleFine    := source.GetProperties^.SampleFine;
+  self.SampleBeats   := source.GetProperties^.SampleBeats;
 end;
 
 

@@ -15,6 +15,7 @@ New:
 - "Merge All Key Groups" command added. 
 - "Rename Key Group" command added.
 - "Open Sample" with external audio editor command added to the sample display context menu.
+- "Reload Sample" command added.
 
 Change:
 - ADSR envelopes now have a 0ms minimum attack time. Previously it was ~3ms. 
