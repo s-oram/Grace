@@ -63,10 +63,6 @@ bug
 
 - ensure loop point data is loaded and saved when saving regular Lucidity format files.
 
-- a merge all key groups command would be ace!
-
-- a show all key groups in the key map editor would be ace!
-
 - a hotkey to press when changing a parameter to "set all groups" value would
   be ace!
 
