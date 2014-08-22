@@ -32,6 +32,7 @@ type
   TKeyGroupManager = class(TZeroObject)
   private
     function GetSampleGroupCount: integer;
+    function GetKeyGroup(Index: integer): IKeyGroup;
   protected
     // Instead of using the one list lock it might be possible
     // to use two locks, one would be a "write" lock to prevent changes,
@@ -76,6 +77,8 @@ type
     procedure DeleteKeyGroup(aName : string);
 
     procedure FindKeyGroups(var DestList : TInterfaceList);
+
+    property KeyGroup[Index : integer]:IKeyGroup read GetKeyGroup; default;
 
     procedure FastControlProcess; inline;
     procedure SlowControlProcess; inline;
@@ -163,6 +166,11 @@ begin
   end;
 
   result := aInfo;
+end;
+
+function TKeyGroupManager.GetKeyGroup(Index: integer): IKeyGroup;
+begin
+  result := fList[Index] as IKeyGroup;
 end;
 
 function TKeyGroupManager.GetSampleGroupCount: integer;

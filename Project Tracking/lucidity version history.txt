@@ -12,6 +12,7 @@ bug
 New:
 - Add "Oped Data Folder..." command to Lucidity's main menu.
 - The SFZ import now attempts to detect if looping should be enabled for a key group. 
+- "Merge All Keygroups" command added. 
 
 Change:
 - ADSR envelopes now have a 0ms minimum attack time. Previously it was ~3ms. 

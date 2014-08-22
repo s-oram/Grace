@@ -223,10 +223,12 @@ type
     procedure ClearSelected;
     procedure SelectRegion(aRegionID : TGUID);
 
+
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
     procedure DuplicateSelectedRegions;
     procedure DeleteSelectedRegions;
     procedure DeleteKeyGroup(const aKeyGroupName : string);
+    procedure MergeAllKeyGroups;
 
     procedure MoveRootKey(const RootKeyOffset : integer);
 
@@ -1110,6 +1112,30 @@ begin
   // signal to the GUI that the focus has changed.
   Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
 end;
+
+procedure TeePlugin.MergeAllKeyGroups;
+var
+  c1 : integer;
+  KG : IKeyGroup;
+  kgName : string;
+begin
+  KG := self.KeyGroups.FindFirstKeyGroup;
+  if not assigned(KG) then exit;
+  SampleMap.MoveAllRegionsToKeygroup(KG);
+  SampleMap.DeselectAllRegions;
+
+  for c1 := KeyGroups.Count-1 downto 1 do
+  begin
+    kgName := KeyGroups[c1].GetName;
+    KeyGroups.DeleteKeyGroup(kgName);
+  end;
+
+  FocusKeyGroup(KG.GetName);
+
+  RefreshManagedPluginParameterValues;
+end;
+
+
 
 function TeePlugin.NewRegion(CreateInfo: TRegionCreateInfo): IRegion;
 var

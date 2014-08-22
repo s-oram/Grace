@@ -13,6 +13,7 @@ type
     CurrentGroup : string;
     procedure CreateNewKeyGroup(Sender : TObject);
     procedure DeleteKeyGroup(Sender : TObject);
+    procedure MergeAllKeyGroups(Sender : TObject);
     procedure FocusKeyGroup(Sender : TObject);
     procedure CopyKeyGroupParameters(Sender : TObject);
     procedure PasteKeyGroupParameters(Sender : TObject);
@@ -111,6 +112,12 @@ begin
   if CurrentGroup = '' then mi.Enabled := false;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Merge All Key Groups';
+  mi.OnClick := MergeAllKeyGroups;
+  if CurrentGroup = '' then mi.Enabled := false;
+  Menu.Items.Add(mi);
+
   //====== spacer ==================
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
@@ -167,6 +174,20 @@ begin
   Text := (Sender as TMenuItem).Hint;
   Plugin.FocusKeyGroup(Text);
 
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
+  try
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
+  finally
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_EndGuiUpdate);
+  end;
+end;
+
+procedure TGroupsMenu.MergeAllKeyGroups(Sender: TObject);
+begin
+  Plugin.MergeAllKeyGroups;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try

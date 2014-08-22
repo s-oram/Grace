@@ -105,6 +105,7 @@ type
     procedure DeselectOtherRegions(UniqueID : TGUID);
     procedure DeselectAllRegions;
 
+    procedure MoveAllRegionsToKeygroup(const aKeyGroup : IKeyGroup);
     procedure MoveSelectedRegionsToKeyGoup(aKeyGroup : IKeyGroup);
     procedure DuplicateSelectedRegions;
     procedure DeleteSelectedRegions;
@@ -796,6 +797,16 @@ begin
     begin
       DeleteRegion(c1);
     end;
+  end;
+end;
+
+procedure TSampleMap.MoveAllRegionsToKeygroup(const aKeyGroup: IKeyGroup);
+var
+  c1: Integer;
+begin
+  for c1 := RegionCount-1 downto 0 do
+  begin
+    (Regions[c1].GetObject as TRegion).KeyGroup := aKeyGroup;
   end;
 end;
 
