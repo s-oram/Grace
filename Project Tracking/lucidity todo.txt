@@ -54,10 +54,6 @@ bug
      TODO HIGH
 =============================================================================
 
-- Hugo requests 0 attack time for ADSR envelope.  
-  thunderlink://messageid=CAPN=qRx_KKrug4Vss_qBL=yCn=CK-a=XS=RqQQaQ5pmJmN0RYg@mail.gmail.com
-
-
 - loop markers should show all the time, even when they aren't being used. 
 - Check how native instruments set's it's loop markers. Is it voice or region level.
 

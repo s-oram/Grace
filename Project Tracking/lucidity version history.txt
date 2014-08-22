@@ -13,6 +13,7 @@ New:
 - Add "Oped Data Folder..." command to Lucidity's main menu.
 
 Change:
+- ADSR envelopes now have a 0ms minimum attack time. Previously it was ~3ms. 
 - Lucidity now has 64 preset FXP slots.
 - Removed the alternative sample zoom in view. Now the sample is zoomed in place without 
   changing the GUI layout. 
