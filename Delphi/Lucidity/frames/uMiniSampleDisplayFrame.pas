@@ -560,6 +560,7 @@ procedure TMiniSampleDisplayFrame.InternalUpdateSampleInfo(const Region: IRegion
 var
   px : PRegionProperties;
   s : string;
+  RegionLoopStart, RegionLoopEnd : integer;
 begin
   if (assigned(Region)) then
   begin
@@ -571,12 +572,21 @@ begin
 
       //== Sample Overlay ==
       fSampleOverlay.SetSampleInfo(true, CurrentSample.Info.SampleFrames);
+
       fSampleOverlay.SampleStart := Region.GetProperties^.SampleStart;
       fSampleOverlay.SampleEnd   := Region.GetProperties^.SampleEnd;
-      fSampleOverlay.LoopStart   := Region.GetProperties^.LoopStart;
-      fSampleOverlay.LoopEnd     := Region.GetProperties^.LoopEnd;
 
-      fSampleOverlay.ShowLoopPoints := ShowLoopMarkers(Region);
+      if ShowLoopMarkers(Region, RegionLoopStart, RegionLoopEnd) then
+      begin
+        fSampleOverlay.ShowLoopPoints := true;
+        fSampleOverlay.LoopStart   := RegionLoopStart;
+        fSampleOverlay.LoopEnd     := RegionLoopEnd;
+      end else
+      begin
+        fSampleOverlay.ShowLoopPoints := false;
+        fSampleOverlay.LoopStart      := RegionLoopStart;
+        fSampleOverlay.LoopEnd        := RegionLoopEnd;
+      end;
 
       fSampleOverlay.IsCurrentSampleMissing := false;
     end else
@@ -814,16 +824,20 @@ end;
 procedure TMiniSampleDisplayFrame.SampleMarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
 var
   CurRegion : IRegion;
+  sf : integer;
 begin
   if not assigned(Plugin) then exit;
 
   CurRegion := Plugin.FocusedRegion;
 
+  sf := CurRegion.GetSample^.Properties.SampleFrames;
+  NewPosition := Clamp(NewPosition, 0, sf-1);
+
   case Marker of
-    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
-    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
-    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
-    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
+    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart   := NewPosition;
+    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd     := NewPosition;
+    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.UserLoopStart := NewPosition;
+    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.UserLoopEnd   := NewPosition;
   end;
 
   UpdateSampleDisplayInfo;
@@ -1221,6 +1235,7 @@ var
   DisplayPixelWidth : integer;
   ZoomPos : TZoomPos;
   Zoom, Offset : single;
+  RegionLoopStart, RegionLoopEnd : integer;
 begin
   if not assigned(Plugin)         then exit;
 
@@ -1230,11 +1245,13 @@ begin
   // Safty check: Check the current sample is loaded and is valid.
   assert(CurRegion.GetSample^.Properties.IsValid);
 
+  CurRegion.GetProperties^.GetRegionLoopPoints(RegionLoopStart, RegionLoopEnd);
+
   case Marker of
     TDialogSampleMarker.SampleStart: TargetSampleFrame := CurRegion.GetProperties^.SampleStart;
     TDialogSampleMarker.SampleEnd:   TargetSampleFrame := CurRegion.GetProperties^.SampleEnd;
-    TDialogSampleMarker.LoopStart:   TargetSampleFrame := CurRegion.GetProperties^.LoopStart;
-    TDialogSampleMarker.LoopEnd:     TargetSampleFrame := CurRegion.GetProperties^.LoopEnd;
+    TDialogSampleMarker.LoopStart:   TargetSampleFrame := RegionLoopStart;
+    TDialogSampleMarker.LoopEnd:     TargetSampleFrame := RegionLoopEnd;
   else
     raise Exception.Create('Marker type not handled.');
   end;
@@ -1290,16 +1307,20 @@ end;
 procedure TMiniSampleDisplayFrame.SampleOverlay_MarkerChanged(Sender: TObject; Marker: TSampleMarker; NewPosition: integer);
 var
   CurRegion : IRegion;
+  sf : integer;
 begin
   if not assigned(Plugin) then exit;
 
   CurRegion := Plugin.FocusedRegion;
 
+  sf := CurRegion.GetSample^.Properties.SampleFrames;
+  NewPosition := Clamp(NewPosition, 0, sf-1);
+
   case Marker of
-    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart := NewPosition;
-    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd   := NewPosition;
-    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.LoopStart   := NewPosition;
-    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.LoopEnd     := NewPosition;
+    TSampleMarker.smSampleStartMarker: CurRegion.GetProperties^.SampleStart   := NewPosition;
+    TSampleMarker.smSampleEndMarker:   CurRegion.GetProperties^.SampleEnd     := NewPosition;
+    TSampleMarker.smLoopStartMarker:   CurRegion.GetProperties^.UserLoopStart := NewPosition;
+    TSampleMarker.smLoopEndMarker:     CurRegion.GetProperties^.UserLoopEnd   := NewPosition;
   end;
 
   GuiEvent_SampleMakersChanged;

@@ -105,8 +105,10 @@ type
     //== Markers ==
     SampleStart : integer;
     SampleEnd   : integer;
-    LoopStart   : integer;
-    LoopEnd     : integer;
+    RefLoopStart   : integer; // Loop start from source sample file.
+    RefLoopEnd     : integer; // loop end from source sample file.
+    UserLoopStart  : integer; // Loop start/end specified by user. This overrides
+    UserLoopEnd    : integer; // the source sample file loop points.
 
     //== Sample ==
     SampleVolume  : single;  // In db. Range -96..+12
@@ -115,6 +117,9 @@ type
     SampleFine    : integer; // FineTune - Cents -100..100
     //SamplePitch   : double;  // In Semitones. -24..+24
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
+
+
+    procedure GetRegionLoopPoints(out aLoopStart, aLoopEnd : integer);
   end;
 
   TKeyGroupID = TUniqueID;
@@ -177,6 +182,37 @@ function TParModulationData.GetModulatedParameterPointer(const Par: TPluginParam
 begin
   // TODO: check asm for stack juggling.
   result := @Raw[GetModParIndex(Par)];
+end;
+
+{ TRegionProperties }
+
+procedure TRegionProperties.GetRegionLoopPoints(out aLoopStart, aLoopEnd: integer);
+begin
+  //=== loop start ===
+  if (self.UserLoopStart <> -1) then
+  begin
+    aLoopStart := self.UserLoopStart;
+  end else
+  if (self.RefLoopStart <> -1) then
+  begin
+    aLoopStart := self.RefLoopStart;
+  end else
+  begin
+    aLoopStart := -1;
+  end;
+
+  //=== loop end ===
+  if (self.UserLoopEnd <> -1) then
+  begin
+    aLoopEnd := self.UserLoopEnd;
+  end else
+  if (self.RefLoopEnd <> -1) then
+  begin
+    aLoopEnd := self.RefLoopEnd;
+  end else
+  begin
+    aLoopEnd := -1;
+  end;
 end;
 
 end.

@@ -489,8 +489,8 @@ begin
       RegionPropertiesNode.NodeNew('RootNote').ValueUnicode       := DataIO_IntToStr(RegionList[c2].GetProperties^.RootNote);
       RegionPropertiesNode.NodeNew('SampleStart').ValueUnicode    := DataIO_IntToStr(RegionList[c2].GetProperties^.SampleStart);
       RegionPropertiesNode.NodeNew('SampleEnd').ValueUnicode      := DataIO_IntToStr(RegionList[c2].GetProperties^.SampleEnd);
-      RegionPropertiesNode.NodeNew('LoopStart').ValueUnicode      := DataIO_IntToStr(RegionList[c2].GetProperties^.LoopStart);
-      RegionPropertiesNode.NodeNew('LoopEnd').ValueUnicode        := DataIO_IntToStr(RegionList[c2].GetProperties^.LoopEnd);
+      RegionPropertiesNode.NodeNew('LoopStart').ValueUnicode      := DataIO_IntToStr(RegionList[c2].GetProperties^.UserLoopStart);
+      RegionPropertiesNode.NodeNew('LoopEnd').ValueUnicode        := DataIO_IntToStr(RegionList[c2].GetProperties^.UserLoopEnd);
       RegionPropertiesNode.NodeNew('SampleBeats').ValueUnicode    := DataIO_IntToStr(RegionList[c2].GetProperties^.SampleBeats);
       RegionPropertiesNode.NodeNew('SampleVolume').ValueUnicode   := DataIO_FloatToStr(RegionList[c2].GetProperties^.SampleVolume);
       RegionPropertiesNode.NodeNew('SamplePan').ValueUnicode      := DataIO_FloatToStr(RegionList[c2].GetProperties^.SamplePan);
@@ -943,13 +943,24 @@ begin
   aRegion.Properties^.RootNote       := RegionLoadInfo.RootNote;
   aRegion.Properties^.SampleStart    := RegionLoadInfo.SampleStart;
   aRegion.Properties^.SampleEnd      := RegionLoadInfo.SampleEnd;
-  aRegion.Properties^.LoopStart      := RegionLoadInfo.LoopStart;
-  aRegion.Properties^.LoopEnd        := RegionLoadInfo.LoopEnd;
+  aRegion.Properties^.UserLoopStart  := RegionLoadInfo.LoopStart;
+  aRegion.Properties^.UserLoopEnd    := RegionLoadInfo.LoopEnd;
   aRegion.Properties^.SampleVolume   := RegionLoadInfo.SampleVolume;
   aRegion.Properties^.SampleTune     := RegionLoadInfo.SampleTune;
   aRegion.Properties^.SampleFine     := RegionLoadInfo.SampleFine;
   aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
   aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
+
+  fn := RegionLoadInfo.SampleFileName;
+  if (FileExists(fn)) and (ReadLoopPoints(fn, SourceSampleLoopStart, SourceSampleLoopEnd)) then
+  begin
+    aRegion.Properties^.RefLoopStart := SourceSampleLoopStart;
+    aRegion.Properties^.RefLoopEnd   := SourceSampleLoopEnd;
+  end else
+  begin
+    aRegion.Properties^.RefLoopStart := -1;
+    aRegion.Properties^.RefLoopEnd   := -1;
+  end;
 
 
   //============================================================================
@@ -963,31 +974,22 @@ begin
     if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
     if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
 
-    fn := RegionLoadInfo.SampleFileName;
-    if (FileExists(fn)) and (ReadLoopPoints(fn, SourceSampleLoopStart, SourceSampleLoopEnd)) then
-    begin
-      if aRegion.Properties^.LoopStart = -1
-        then aRegion.Properties^.LoopStart := SourceSampleLoopStart;
-
-      if aRegion.Properties^.LoopEnd = -0
-        then aRegion.Properties^.LoopEnd := SourceSampleLoopEnd;
-    end;
-
-
-
+    //=========================================================================================================================
     // NOTE: When loop mode isn't defined, reset it in a way that is compatible with the SFZ format.
     // If loop_start is not specified and the sample has a loop defined, the sample start point will be used.
     // If loop_start is specified, it will overwrite the loop start point defined in the sample.
     // If loop_end is not specified and the sample have a loop defined, the sample loop end point will be used.
     // If loop_end is specified, it will overwrite the loop end point defined in the sample.
-    if aRegion.Properties^.LoopStart < 0   then aRegion.Properties^.LoopStart   := aRegion.Properties^.SampleStart;
-    if aRegion.Properties^.LoopEnd < 0     then aRegion.Properties^.LoopEnd     := aRegion.Properties^.SampleEnd;
+
+    // TODO:HIGH what happens here when importing SFZ files. Need to satisfy the above conditions.
+    //if aRegion.Properties^.UserLoopStart < 0   then aRegion.Properties^.UserLoopStart   := aRegion.Properties^.SampleStart;
+    //if aRegion.Properties^.UserLoopEnd < 0     then aRegion.Properties^.UserLoopEnd     := aRegion.Properties^.SampleEnd;
+    //=========================================================================================================================
+
 
     // Clamp start/end points to fit inside sample boundaries.
     aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
     aRegion.Properties^.SampleEnd   := Clamp(aRegion.Properties^.SampleEnd, 0, SampleFrames-1);
-    aRegion.Properties^.LoopStart   := Clamp(aRegion.Properties^.LoopStart, 0, SampleFrames-1);
-    aRegion.Properties^.LoopEnd     := Clamp(aRegion.Properties^.LoopEnd, 0, SampleFrames-1);
   end;
   //============================================================================
 

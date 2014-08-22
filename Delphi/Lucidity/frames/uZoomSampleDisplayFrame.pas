@@ -2,6 +2,8 @@ unit uZoomSampleDisplayFrame;
 
 interface
 
+//TODO:HIGH I don't think this zoom sample frame unit is needed anymore. Delete!
+
 uses
   Math,
   LuciditySampleOverlay,
@@ -138,6 +140,8 @@ var
   xSampleImage : IInterfacedBitmap;
   //Par:TSampleRenderParameters;
   FlexPar:TFlexRenderPar;
+
+  RegionLoopStart, RegionLoopEnd : integer;
 begin
   if not assigned(Plugin) then exit;
 
@@ -183,13 +187,20 @@ begin
     //== Sample Overlay ==
     SampleOverlay.BeginUpdate;
     try
+      CurRegion.GetProperties^.GetRegionLoopPoints(RegionLoopStart, RegionLoopEnd);
+      if RegionLoopStart = -1 then RegionLoopStart := CurRegion.GetProperties^.SampleStart;
+      if RegionLoopEnd = -1   then RegionLoopEnd   := CurRegion.GetProperties^.SampleEnd;
+
       SampleOverlay.Visible     := true;
       SampleOverlay.SetSampleInfo(true, CurRegion.GetSample^.Properties.SampleFrames);
       SampleOverlay.SampleStart := CurRegion.GetProperties^.SampleStart;
       SampleOverlay.SampleEnd   := CurRegion.GetProperties^.SampleEnd;
-      SampleOverlay.LoopStart   := CurRegion.GetProperties^.LoopStart;
-      SampleOverlay.LoopEnd     := CurRegion.GetProperties^.LoopEnd;
-      SampleOverlay.ShowLoopPoints := ShowLoopMarkers(CurRegion);
+      SampleOverlay.LoopStart   := RegionLoopStart;
+      SampleOverlay.LoopEnd     := RegionLoopEnd;
+
+      //SampleOverlay.ShowLoopPoints := ShowLoopMarkers(CurRegion);
+      SampleOverlay.ShowLoopPoints := true;
+
       SampleOverlay.SetZoomOffset(Zoom, Offset);
     finally
       SampleOverlay.EndUpdate;

@@ -70,6 +70,7 @@ var
   RegionProps : PRegionProperties;
   SampleX1 : single;
   SampleX2 : single;
+  RegionLoopStart, RegionLoopEnd : integer;
   LoopX1, LoopX2 : single;
   SampleStart, SampleEnd : integer;
   LoopStart, LoopEnd : integer;
@@ -83,8 +84,7 @@ var
   Index4 : integer;
 begin
   RegionProps := aSampleRegion.GetProperties;
-
-  SampleFrames        := aSampleRegion.GetSample^.Properties.SampleFrames;
+  SampleFrames := aSampleRegion.GetSample^.Properties.SampleFrames;
 
   Index1 := GetModParIndex(TPluginParameter.SampleStart);
   Index2 := GetModParIndex(TPluginParameter.SampleEnd);
@@ -111,14 +111,22 @@ begin
     SampleX2 := RegionProps^.SampleStart + (SampleStartMod * SampleFrames);
   end;
 
-  if RegionProps^.LoopStart < RegionProps^.LoopEnd then
+  RegionProps^.GetRegionLoopPoints(RegionLoopStart, RegionLoopEnd);
+  if RegionLoopStart = -1 then RegionLoopStart := 0;
+  if RegionLoopEnd   = -1 then RegionLoopEnd   := SampleFrames-1;
+
+  // TODO:HIGH I don't think this conditional assignment is needed.
+  // The modulation can reverse the positions of loop start and loop end
+  // anyway. The loop start/end markers must be getting checked again
+  // later.
+  if RegionLoopStart < RegionLoopEnd then
   begin
-    LoopX1 := RegionProps^.LoopStart + (LoopStartMod * SampleFrames);
-    LoopX2 := RegionProps^.LoopEnd   + (LoopEndMod   * SampleFrames);
+    LoopX1 := RegionLoopStart + (LoopStartMod * SampleFrames);
+    LoopX2 := RegionLoopEnd   + (LoopEndMod   * SampleFrames);
   end else
   begin
-    LoopX1 := RegionProps^.LoopEnd   + (LoopEndMod   * SampleFrames);
-    LoopX2 := RegionProps^.LoopStart + (LoopStartMod * SampleFrames);
+    LoopX1 := RegionLoopEnd   + (LoopEndMod   * SampleFrames);
+    LoopX2 := RegionLoopStart + (LoopStartMod * SampleFrames);
   end;
 
   SampleStart := round(SampleX1);
@@ -127,7 +135,7 @@ begin
   LoopStart := round(LoopX1);
   LoopEnd   := round(LoopX2);
 
-
+  // TODO:MED Make this "force to zero crossing optional"
   if (aSampleRegion.GetDbLevelAt(SampleStart) > -96) then
   begin
     aSampleRegion.GetZeroCrossings.FindNearestZeroCrossingIndex(SampleStart, NextIndex, PrevIndex, NearestIndex, FarIndex);

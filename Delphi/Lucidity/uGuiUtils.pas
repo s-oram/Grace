@@ -48,7 +48,10 @@ type
 
 function FindRegionToDisplay(const Plugin : TeePlugin):TRegionDisplayResult;
 
-function ShowLoopMarkers(const aRegion : IRegion):boolean;
+
+// ShowLoopMarkers() should only be used when finding the loop positions for GUI display.
+// It shouldn't be used for anything in the audio engine.
+function ShowLoopMarkers(const aRegion : IRegion; out aLoopStart, aLoopEnd:integer):boolean;
 
 procedure SpreadControls_Horz(Controls:TArray<TControl>; const Parent : TWinControl);
 
@@ -125,6 +128,7 @@ uses
   Effect.MidiAutomation,
   RedFoxColor,
   VamGuiControlInterfaces,
+  VamLib.Utils,
   eeDsp,
   eeSampleFloat,
   uConstants,
@@ -371,29 +375,43 @@ begin
   result.Message := rs;
 end;
 
-function ShowLoopMarkers(const aRegion : IRegion):boolean;
+function ShowLoopMarkers(const aRegion : IRegion; out aLoopStart, aLoopEnd:integer):boolean;
 var
   kg : TKeyGroup;
+  sf : integer;
 begin
   kg := (aRegion.GetKeyGroup.GetObject as TKeyGroup);
-  case kg.VoiceParameters.SamplePlaybackType of
-    TSamplePlaybackType.NoteSampler,
-    TSamplePlaybackType.LoopSampler,
-    TSamplePlaybackType.OneShotSampler:
+
+  aRegion.GetProperties^.GetRegionLoopPoints(aLoopStart, aLoopEnd);
+
+  case kg.VoiceParameters.SamplerTriggerMode of
+    TKeyGroupTriggerMode.OneShot,
+    TKeyGroupTriggerMode.LoopOff:
     begin
-      if kg.VoiceParameters.SamplerLoopBounds = TSamplerLoopBounds.LoopSample then exit(false);
-      if kg.VoiceParameters.SamplerTriggerMode = TKeyGroupTriggerMode.OneShot  then exit(false);
-      if kg.VoiceParameters.SamplerTriggerMode = TKeyGroupTriggerMode.LoopOff  then exit(false);
-      // result is true if we make it this far.
-      result := true;
+      if (aLoopStart = -1) and (aLoopEnd = -1)
+        then result := false
+        else result := true;
     end;
 
-    TSamplePlaybackType.GrainStretch: result := true;
-    TSamplePlaybackType.WaveOsc:      result := true;
+    TKeyGroupTriggerMode.LoopContinuous,
+    TKeyGroupTriggerMode.LoopSustain:
+    begin
+      result := true;
+    end
   else
-    raise Exception.Create('Unexpected Sample playback type.');
+    raise Exception.Create('type not handled.');
   end;
 
+  if result = true then
+  begin
+    sf := aRegion.GetSample^.Properties.SampleFrames;
+
+    if aLoopStart = -1 then aLoopStart := 0;
+    if aLoopEnd   = -1 then aLoopEnd   := sf-1;
+
+    aLoopStart := Clamp(aLoopStart, 0, sf-1);
+    aLoopEnd   := Clamp(aLoopEnd, 0, sf-1);
+  end;
 end;
 
 procedure SpreadControls_Horz(Controls:TArray<TControl>; const Parent : TWinControl);
@@ -909,10 +927,10 @@ begin
   Region := Plugin.FocusedRegion;
 
   case Marker of
-    TSampleMarker.smSampleStartMarker: Region.GetProperties^.SampleStart := NewSamplePos;
-    TSampleMarker.smSampleEndMarker:   Region.GetProperties^.SampleEnd   := NewSamplePos;
-    TSampleMarker.smLoopStartMarker:   Region.GetProperties^.LoopStart   := NewSamplePos;
-    TSampleMarker.smLoopEndMarker:     Region.GetProperties^.LoopEnd     := NewSamplePos;
+    TSampleMarker.smSampleStartMarker: Region.GetProperties^.SampleStart   := NewSamplePos;
+    TSampleMarker.smSampleEndMarker:   Region.GetProperties^.SampleEnd     := NewSamplePos;
+    TSampleMarker.smLoopStartMarker:   Region.GetProperties^.UserLoopStart := NewSamplePos;
+    TSampleMarker.smLoopEndMarker:     Region.GetProperties^.UserLoopEnd   := NewSamplePos;
   end;
 
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.SampleMarkersChanged);

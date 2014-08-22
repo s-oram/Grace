@@ -694,7 +694,7 @@ begin
   if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
   begin
     Info := SampleMap.GetDisplayInfo;
-
+    //AV Here
     if Info.IsValid then
     begin
       SetRegionInfoControlVisibility(true);

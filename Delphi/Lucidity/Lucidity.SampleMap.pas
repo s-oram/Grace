@@ -335,12 +335,12 @@ begin
         LoopDataFound := ReadLoopPoints(SampleFileName, LoopStart, LoopEnd);
         if LoopDataFound then
         begin
-          self.Properties^.LoopStart   := LoopStart;
-          self.Properties^.LoopEnd     := LoopEnd;
+          self.Properties^.RefLoopStart   := LoopStart;
+          self.Properties^.RefLoopEnd     := LoopEnd;
         end else
         begin
-          self.Properties^.LoopStart   := 0;
-          self.Properties^.LoopEnd     := Info.SampleFrames-1;
+          self.Properties^.RefLoopStart   := -1;
+          self.Properties^.RefLoopEnd     := -1;
         end;
 
         if self.Sample.LoadFromFile(SampleFileName) = true then
@@ -598,15 +598,14 @@ begin
   rx.Properties^.LowVelocity      := CreateInfo.LowVelocity;
   rx.Properties^.HighVelocity     := CreateInfo.HighVelocity;
   rx.Properties^.RootNote         := CreateInfo.RootNote;
-  rx.Properties^.LoopStart        := -1;
-  rx.Properties^.LoopEnd          := -1;
+  rx.Properties^.RefLoopStart     := -1;
+  rx.Properties^.RefLoopEnd       := -1;
+  rx.Properties^.UserLoopStart    := -1;
+  rx.Properties^.UserLoopEnd      := -1;
   rx.KeyGroup := CreateInfo.KeyGroup;
   //====================
 
-
   rx.LoadSample(CreateInfo.AudioFileName);
-
-
 
   // TODO:HIGH Regions are always added. What happens if I try loading an
   // unsupported file format? ie. .FLAC or something else.
@@ -848,8 +847,8 @@ begin
     ChildNode.AddValue('RootNote', Props^.RootNote);
     ChildNode.AddValue('SampleStart', Props^.SampleStart);
     ChildNode.AddValue('SampleEnd', Props^.SampleEnd);
-    ChildNode.AddValue('LoopStart', Props^.LoopStart);
-    ChildNode.AddValue('LoopEnd', Props^.LoopEnd);
+    ChildNode.AddValue('LoopStart', Props^.RefLoopStart);
+    ChildNode.AddValue('LoopEnd', Props^.RefLoopEnd);
   end;
 end;
 
@@ -881,8 +880,8 @@ begin
       begin
         aSampleRegion.GetProperties^.SampleStart := ChildNode.GetValue('LoopStart', -1);
         aSampleRegion.GetProperties^.SampleEnd   := ChildNode.GetValue('LoopStart', -1);
-        aSampleRegion.GetProperties^.LoopStart   := ChildNode.GetValue('LoopStart', -1);
-        aSampleRegion.GetProperties^.LoopEnd     := ChildNode.GetValue('LoopStart', -1);
+        aSampleRegion.GetProperties^.RefLoopStart   := ChildNode.GetValue('LoopStart', -1);
+        aSampleRegion.GetProperties^.RefLoopEnd     := ChildNode.GetValue('LoopStart', -1);
       end;
     end;
   end;
