@@ -16,6 +16,11 @@ type
     Menu : TPopUpMenu;
     MouseDownSamplePos : integer;
 
+    // TODO:HIGH CurrentRegion needs to be set to nil when the region is closed.
+    CurrentRegion : IRegion;
+
+    procedure EventHandler_RenameSampleFile(Sender : TObject);
+    procedure EventHandler_ReloadSampleFile(Sender : TObject);
     procedure EventHandler_OpenWithUnknownApp(Sender : TObject);
     procedure EventHandler_OpenWith(Sender : TObject);
     procedure EventHandle_NormaliseSample(Sender : TObject);
@@ -31,9 +36,10 @@ type
 
     procedure Initialize(aPlugin : TeePlugin);
 
-    procedure Popup(const x, y : integer; const aMouseDownSamplePos : integer);
+    procedure Popup(const x, y : integer; const aMouseDownSamplePos : integer; const aCurrentRegion : IRegion);
 
     property LoopPointsVisible : boolean read fLoopPointsVisible write fLoopPointsVisible;
+
   end;
 
 implementation
@@ -79,13 +85,15 @@ begin
   Plugin := aPlugin;
 end;
 
-procedure TSampleContextMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer);
+procedure TSampleContextMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer; const aCurrentRegion : IRegion);
 var
   c1 : integer;
   mi : TMenuItem;
   Childmi : TMenuItem;
   Tag : integer;
 begin
+  CurrentRegion := aCurrentRegion;
+
   Menu.Items.Clear;
 
   MouseDownSamplePos := aMouseDownSamplePos;
@@ -173,6 +181,18 @@ begin
   mi.Caption := 'Show in Windows Exporer...';
   mi.OnClick := EventHandle_ShowInWindowsExplorer;
   Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Rename Sample File...';
+  mi.OnClick := EventHandler_RenameSampleFile;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Reload Sample';
+  mi.OnClick := EventHandler_ReloadSampleFile;
+  Menu.Items.Add(mi);
+
+
 
   {
   mi := TMenuItem.Create(Menu);
@@ -367,7 +387,7 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-  Region := Plugin.FocusedRegion;
+  Region := CurrentRegion;
 
   if assigned(Region) then
   begin
@@ -435,7 +455,7 @@ var
   Tag : integer;
   SoundEditorApp : string;
 begin
-  fn := Plugin.FocusedRegion.GetProperties^.SampleFileName;
+  fn := CurrentRegion.GetProperties^.SampleFileName;
   if FileExists(fn) = false then
   begin
     ShowMessage('"' + fn + '" is not found.');
@@ -461,7 +481,7 @@ var
   OD : TxpFileOpenDialog;
   SoundEditorApp : string;
 begin
-  fn := Plugin.FocusedRegion.GetProperties^.SampleFileName;
+  fn := CurrentRegion.GetProperties^.SampleFileName;
   if FileExists(fn) = false then
   begin
     ShowMessage('"' + fn + '" is not found.');
@@ -514,6 +534,18 @@ begin
   ModParIndex := GetModParIndex(TPluginParameter.LoopEnd);
   Command.ClearCurrentModulationForParameter_OLD(Plugin, ModParIndex);
 end;
+
+procedure TSampleContextMenu.EventHandler_ReloadSampleFile(Sender: TObject);
+begin
+  Plugin.ReloadRegion(CurrentRegion);
+end;
+
+procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);
+begin
+  //
+end;
+
+
 
 
 

@@ -223,6 +223,8 @@ type
     procedure ClearSelected;
     procedure SelectRegion(aRegionID : TGUID);
 
+    procedure ReloadRegion(const TargetRegion : IRegion);
+    procedure ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string);
 
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
     procedure DuplicateSelectedRegions;
@@ -676,6 +678,49 @@ end;
 
 
 
+
+procedure TeePlugin.ReloadRegion(const TargetRegion: IRegion);
+var
+  CreateInfo: TRegionCreateInfo;
+  rg : IRegion;
+  fn : string;
+begin
+  CreateInfo.AssignFrom(TargetRegion);
+
+  fn := TargetRegion.GetProperties^.SampleFileName;
+
+  if FileExists(fn) = false then
+  begin
+    // TODO:HIGH send error message here saying the sample can't be loaded
+    // as it doesn't exist.
+    exit;
+  end;
+
+
+  rg := NewRegion(CreateInfo);
+  if (assigned(rg)) and (rg.GetProperties^.IsSampleError = false) then
+  begin
+    FocusRegion(rg.GetProperties^.UniqueID);
+    SampleMap.DeleteRegion(TargetRegion);
+  end else
+  if (assigned(rg)) and (rg.GetProperties^.IsSampleError = true) then
+  begin
+    SampleMap.DeleteRegion(rg);
+    rg := nil;
+  end else
+  begin
+    // TODO:HIGH Need to show a message here to say that
+    // the sample couldn't be loaded.
+  end;
+
+
+
+end;
+
+procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);
+begin
+  assert(false, 'TODO');
+end;
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;
 begin

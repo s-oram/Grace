@@ -707,6 +707,7 @@ begin
       RegionCreateInfo.HighVelocity  := CurRegion.GetProperties^.HighVelocity;
       RegionCreateInfo.RootNote      := CurRegion.GetProperties^.RootNote;
 
+      // replace this code with some replace region code.
       aRegion := Plugin.NewRegion(RegionCreateInfo);
       if (assigned(aRegion)) and (aRegion.GetProperties^.IsSampleError = false) then
       begin
@@ -803,7 +804,7 @@ begin
     begin
       SampleContextMenu.LoopPointsVisible := fSampleOverlay.ShowLoopPoints;
       MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
-      SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos);
+      SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos, CurRegion);
     end else
     if (CurrentSample.Region.GetProperties^.IsSampleError) and (CurrentSample.Region.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
     begin
