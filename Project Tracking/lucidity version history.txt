@@ -21,6 +21,7 @@ Change:
 - Changed the way loop points are handled. (Attempting to make the handling more transparent and intuitive.)
 
 Bug Fix:
+- Loop points weren't being read correctly. This fixed needs to be confirmed. 
 
 === BETA v0.0.1.46 (21-Aug-2014) ===
 New:

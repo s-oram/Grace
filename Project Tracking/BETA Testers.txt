@@ -17,9 +17,7 @@ waveshaperkit@gmail.com
 Goran Podrugovic
 goran.podrugovic@gmail.com
 - interested in testing Lucidity
-  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
-
-  
+  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com  
 
 Chris Holmes (Good Tester)
 futuresproof@gmail.com
@@ -39,7 +37,7 @@ thunderlink://messageid=CAPN=qRy34C0H800GCOSVQsSnyxq4ZrJT7JMbbd8BQv27VuZasQ@mail
   thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
   thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com 
 
-Andrea Biasior - Reuse Noise (good tester)
+Andrea Biasior - Reuse Noise (good tester +3)
 reusenoise@gmail.com
 - Been using lucidity. 
 - Sent Lucidity 0.0.1.41
@@ -52,14 +50,6 @@ NNecaise@live.com
 thunderlink://messageid=BLU436-SMTP16377750A546910B9CDAC3FBBEB0@phx.gbl
 - Sent Lucidity 0.0.1.41
 
-Ian Halbwachs
-preferred.nomenclature@gmail.com
-- Keen to test Lucidity.
-thunderlink://messageid=CA+8c1wQ=vr+MBU5ZC8TuCBSv+6Yoo2F9_WN8B660QX_RTQaL4Q@mail.gmail.com
-- Sent Lucidity 0.0.1.41
-  thunderlink://messageid=908A3565-3FD0-4C6E-89D2-541D22074AA8@gmail.com
-
-
 Joseph
 stereovegan@mm.st
 - is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
@@ -69,8 +59,6 @@ thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengi
   - Lucidity 0.0.1.33
     thunderlink://messageid=1406820798.1919228.147723018.23527BC8@webmail.messagingengine.com
   - Lucidity 0.0.1.44
-
-
 
 Scott Conway (Great Tester!)
 viscience1@yahoo.co.uk
@@ -115,7 +103,7 @@ thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail
 Ryu Beats <rsbeats@hotmail.com>
 thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
   BETA Send History:
-    - Lucidity 0.0.1.33    
+    - Lucidity 0.0.1.33 
 
 
 
@@ -147,6 +135,17 @@ christianscheggia@gmail.com
 =================================================================================================
     Inactive Testers 
 =================================================================================================
+
+Ian Halbwachs
+preferred.nomenclature@gmail.com
+- Keen to test Lucidity.
+thunderlink://messageid=CA+8c1wQ=vr+MBU5ZC8TuCBSv+6Yoo2F9_WN8B660QX_RTQaL4Q@mail.gmail.com
+- Sent Lucidity 0.0.1.41
+  thunderlink://messageid=908A3565-3FD0-4C6E-89D2-541D22074AA8@gmail.com
+  thunderlink://messageid=CA+8c1wQQWYAT+cJ2-deFYw+tCGetv_HCK7FWQG1ugO1m0pbmHA@mail.gmail.com
+  - DO NOT SEND any more releases unless requested.    
+
+
 Julian Clapham
 stoolzo@gmail.com
 - no time for testing. 
