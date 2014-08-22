@@ -15,6 +15,8 @@ type
     function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
     function ValueUnicode(ChildPath : string):string;
+
+    function FindNodeValue(const NodePath : string; out NodeValue : string):boolean;
   end;
 
   TNodeWiz = class(TInterfacedObject, INodeWiz)
@@ -23,15 +25,12 @@ type
   public
     constructor Create(aAnchorNode : TXmlNode);
 
-
     function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
 
     // Navigates to the final child node, giving preference to existing nodes.
     // Non-existing nodes will be created.
     function FindOrCreateNode(ChildPath : string):TXmlNode;
-
-
 
     //function CreateNode()
     // Navigates to the final child node, giving preference to existing nodes.
@@ -40,6 +39,10 @@ type
     function CreateNode(ChildPath : string):TXmlNode;
 
     function ValueUnicode(ChildPath : string):string;
+
+
+    // FindNodeValue() returns true if the child node exists, false if not.
+    function FindNodeValue(const NodePath : string; out NodeValue : string):boolean;
   end;
 
 
@@ -103,6 +106,22 @@ begin
   end;
 
   result := RefNode;
+end;
+
+function TNodeWiz.FindNodeValue(const NodePath: string; out NodeValue: string): boolean;
+var
+  aNode : TXmlNode;
+begin
+  aNode :=  self.Child(NodePath);
+  if assigned(aNode) then
+  begin
+    NodeValue := aNode.ValueUnicode;
+    result := true
+  end else
+  begin
+    NodeValue := '';
+    result := false;
+  end;
 end;
 
 function TNodeWiz.FindOrCreateNode(ChildPath: string): TXmlNode;

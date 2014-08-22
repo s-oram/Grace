@@ -19,6 +19,7 @@ type
   TSfzGroupLoadData = record
   public
     IsCutoffSet : boolean;
+    IsLoopModeSet : boolean;
     procedure Reset;
   end;
 
@@ -116,6 +117,7 @@ begin
     GroupLoadData.Reset;
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
+    CurrentGroup.NodeNew('SfzImport'); //Add a node to indicate the source is an imported SFZ file. This will allow some custom handling as the group is loaded.
     inc(GroupCount);
 
     //== default voice parameters ==
@@ -132,6 +134,9 @@ begin
   // Do some final adjustments here...
   TargetNode := CurrentGroup;
 
+  if GroupLoadData.IsLoopModeSet
+    then NodeWiz(TargetNode).FindOrCreateNode('SfzImport/LoopModeSpecified').ValueUnicode := DataIO_BoolToStr(true)
+    else NodeWiz(TargetNode).FindOrCreateNode('SfzImport/LoopModeSpecified').ValueUnicode := DataIO_BoolToStr(false);
 
   //===============================================================================
   if (GroupLoadData.IsCutoffSet) then
@@ -221,7 +226,11 @@ begin
     TSfzOpcode.offset_ccN: ;
     TSfzOpcode.sample_end: ;
     TSfzOpcode.count: ;
-    TSfzOpcode.loop_mode: NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    TSfzOpcode.loop_mode:
+    begin
+      GroupLoadData.IsLoopModeSet := true;
+      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/SamplerTriggerMode').ValueUnicode := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    end;
     TSfzOpcode.loop_start: ;
     TSfzOpcode.loop_end: ;
     TSfzOpcode.sync_beats: ;
@@ -699,6 +708,7 @@ end;
 procedure TSfzGroupLoadData.Reset;
 begin
   IsCutoffSet := false;
+  IsLoopModeSet := false;
 end;
 
 end.
