@@ -534,7 +534,7 @@ begin
     TPluginParameter.SamplePlaybackType:       result.DefaultValue := 0;
     TPluginParameter.SampleResetClockSource:   result.DefaultValue := 0;
     TPluginParameter.SamplerLoopBounds:        result.DefaultValue := 1;
-    TPluginParameter.SamplerTriggerMode:       result.DefaultValue := 0;
+    TPluginParameter.SamplerTriggerMode:       result.DefaultValue := TKeyGroupTriggerModeHelper.ToSingle(TKeyGroupTriggerMode.LoopOff);
     TPluginParameter.OutputGain:               result.DefaultValue := 0.5;
     TPluginParameter.OutputPan:                result.DefaultValue := 0.5;
     TPluginParameter.VoicePitchOne:            result.DefaultValue := 0.5;

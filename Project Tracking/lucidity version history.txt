@@ -19,6 +19,7 @@ Change:
 - Removed the alternative sample zoom in view. Now the sample is zoomed in place without 
   changing the GUI layout. 
 - Changed the way loop points are handled. (Attempting to make the handling more transparent and intuitive.)
+- Default key group trigger mode is now "NOTE". (Looping is off by default.)
 
 Bug Fix:
 - Loop points weren't being read correctly. This fixed needs to be confirmed. 
