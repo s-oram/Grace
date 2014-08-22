@@ -16,6 +16,8 @@ type
     Menu : TPopUpMenu;
     MouseDownSamplePos : integer;
 
+    procedure EventHandler_OpenWithUnknownApp(Sender : TObject);
+    procedure EventHandler_OpenWith(Sender : TObject);
     procedure EventHandle_NormaliseSample(Sender : TObject);
     procedure EventHandle_ZoomSample(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
@@ -37,6 +39,9 @@ type
 implementation
 
 uses
+  Dialogs,
+  XPLAT.Dialogs,
+  VamLib.Utils,
   uLucidityEnums,
   Lucidity.PluginParameters,
   Lucidity.Types,
@@ -76,6 +81,7 @@ end;
 
 procedure TSampleContextMenu.Popup(const x, y: integer; const aMouseDownSamplePos : integer);
 var
+  c1 : integer;
   mi : TMenuItem;
   Childmi : TMenuItem;
   Tag : integer;
@@ -143,6 +149,22 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Normalise Sample';
   mi.OnClick := EventHandle_NormaliseSample;
+  Menu.Items.Add(mi);
+
+  // Add menu commands for existing sound editors.
+  for c1 := 0 to Plugin.Globals.Options.SoundEditors.Count-1 do
+  begin
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Open With ' + Plugin.Globals.Options.SoundEditors[c1].ApplicationName;
+    mi.Tag     := c1;
+    mi.OnClick := EventHandler_OpenWith;
+    Menu.Items.Add(mi);
+  end;
+
+  // Add the Open With X command.
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Open With...';
+  mi.OnClick := EventHandler_OpenWithUnknownApp;
   Menu.Items.Add(mi);
 
 
@@ -406,6 +428,58 @@ begin
 
 end;
 
+
+procedure TSampleContextMenu.EventHandler_OpenWith(Sender: TObject);
+var
+  fn : string;
+  Tag : integer;
+  SoundEditorApp : string;
+begin
+  fn := Plugin.FocusedRegion.GetProperties^.SampleFileName;
+  if FileExists(fn) = false then
+  begin
+    ShowMessage('"' + fn + '" is not found.');
+    exit;
+  end;
+
+  Tag := (Sender as TMenuItem).Tag;
+
+  SoundEditorApp := Plugin.Globals.Options.SoundEditors[Tag].ApplicationExe;
+
+  if FileExists(SoundEditorApp) then
+  begin
+    ShellOpenFileWith(fn, SoundEditorApp);
+  end else
+  begin
+    ShowMessage('"' + SoundEditorApp + '" is not found.');
+  end;
+end;
+
+procedure TSampleContextMenu.EventHandler_OpenWithUnknownApp(Sender: TObject);
+var
+  fn : string;
+  OD : TxpFileOpenDialog;
+  SoundEditorApp : string;
+begin
+  fn := Plugin.FocusedRegion.GetProperties^.SampleFileName;
+  if FileExists(fn) = false then
+  begin
+    ShowMessage('"' + fn + '" is not found.');
+    exit;
+  end;
+
+  OD := TxpFileOpenDialog.Create(nil);
+  AutoFree(@OD);
+
+  OD.Filter := 'Executable|*.exe';
+
+  if od.Execute then
+  begin
+    SoundEditorApp := od.FileName;
+    Plugin.Globals.Options.AddNewSoundEditor(SoundEditorApp);
+    ShellOpenFileWith(fn, SoundEditorApp);
+  end;
+end;
 
 procedure TSampleContextMenu.EventHandle_ClearAllModulationForAllSamplePoints(Sender: TObject);
 var

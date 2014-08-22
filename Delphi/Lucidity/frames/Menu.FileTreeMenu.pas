@@ -301,7 +301,7 @@ begin
     ShellOpenFileWith(NodeFileName, SoundEditorApp);
   end else
   begin
-    // TODO: add a message say app not found.
+    ShowMessage('"' + SoundEditorApp + '" is not found.');
   end;
 end;
 
@@ -334,8 +334,8 @@ begin
   InputBox := TxpInputBox.Create(nil);
   AutoFree(@InputBox);
 
-  InputBox.Caption := 'Rename';
-  InputBox.Prompt  := 'Rename';
+  InputBox.Caption := 'Rename Directory';
+  InputBox.Prompt  := 'Rename Directory';
   InputBox.InitialValue := FocusedNode.Caption;
 
   if (InputBox.Execute) and (InputBox.ResultText <> '') then

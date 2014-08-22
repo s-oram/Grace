@@ -47,21 +47,21 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+- reload sample command.
+
 - error region colors need to be more obvious!
 
-- Feature requests from Yann.
-  "open sample in external audio editor"
-  "copy a sample into a new group"
+
+[FEATURE REQUEST] Ask Yann about this command. What should it do. Why not copy and move to new group. 
+"copy a sample into a new group" 
+waveshaperkit@gmail.com
+thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
+
+[FEATURE REQUEST] from Yann.  
   "destructive file renaming"
   "short cut keys"
   waveshaperkit@gmail.com
   thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
-
-  * « open sample in_audio editor _»
-- requested by yann
-- thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
-
-- ensure loop point data is loaded and saved when saving regular Lucidity format files.
 
 - a hotkey to press when changing a parameter to "set all groups" value would
   be ace!

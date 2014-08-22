@@ -17,6 +17,7 @@ type
     procedure FocusKeyGroup(Sender : TObject);
     procedure CopyKeyGroupParameters(Sender : TObject);
     procedure PasteKeyGroupParameters(Sender : TObject);
+    procedure RenameKeyGroup(Sender : TObject);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -27,6 +28,7 @@ type
 implementation
 
 uses
+  XPLAT.Dialogs,
   Lucidity.SampleMap, SysUtils,
   eePluginEx,
   Lucidity.KeyGroupManager,
@@ -118,6 +120,12 @@ begin
   if CurrentGroup = '' then mi.Enabled := false;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Rename Key Group...';
+  mi.OnClick := RenameKeyGroup;
+  if CurrentGroup = '' then mi.Enabled := false;
+  Menu.Items.Add(mi);
+
   //====== spacer ==================
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
@@ -139,6 +147,29 @@ begin
 
 
   Menu.Popup(X, Y);
+end;
+
+procedure TGroupsMenu.RenameKeyGroup(Sender: TObject);
+var
+  InputBox : TxpInputBox;
+  kg : IKeyGroup;
+begin
+  kg := Plugin.KeyGroups.FindSampleGroup(CurrentGroup);
+  if not assigned(kg) then exit;
+
+  InputBox := TxpInputBox.Create(nil);
+  AutoFree(@InputBox);
+
+  InputBox.Caption := 'Rename Key Group';
+  InputBox.Prompt  := 'Rename Key Group';
+  InputBox.InitialValue := kg.GetName;
+
+  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  begin
+    Plugin.KeyGroups.RenameKeyGroup(kg, InputBox.ResultText);
+  end;
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TGroupsMenu.CreateNewKeyGroup(Sender: TObject);

@@ -75,6 +75,7 @@ type
     function FindFirstKeyGroup:IKeyGroup;
     function FindSampleGroup(aName : string):IKeyGroup; overload;
     procedure DeleteKeyGroup(aName : string);
+    procedure RenameKeyGroup(const kg : IKeyGroup; const NewName : string);
 
     procedure FindKeyGroups(var DestList : TInterfaceList);
 
@@ -265,6 +266,22 @@ begin
   finally
     ListLock.Release;
   end;
+end;
+
+procedure TKeyGroupManager.RenameKeyGroup(const kg: IKeyGroup; const NewName: string);
+var
+  TestName : string;
+  TestIndex : integer;
+begin
+  TestIndex := 1;
+  TestName := NewName;
+  while IsKeyGroupNameUnique(TestName) = false do
+  begin
+    TestName := NewName + ' (' + IntToStr(TestIndex) + ')';
+    inc(TestIndex);
+  end;
+
+  kg.SetName(TestName);
 end;
 
 function TKeyGroupManager.Request(const KeyGroupID: TKeyGroupID): IKeyGroup;
