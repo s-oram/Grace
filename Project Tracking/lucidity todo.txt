@@ -47,7 +47,7 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- zooming in shouldn't close the sample map.
+- The mod slot needs something to indicate the mod slot is being used.
 
 - changing sample focus in the sample map should zoom all the way out. (Send a message I think)
 
@@ -91,8 +91,6 @@ thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
 - Add a "Save Patch" command.
 
 - horziontal snapping should be disabled when placing multiple samples.
-
-- The mod slot needs something to indicate the mod slot is being used.
 
 - Lucidity Patch Format  
   -- what happens when loading incomplete patch files. IE. patch files with not
