@@ -205,12 +205,14 @@ begin
 
 
 
+  //=== spacer ====
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
   Menu.Items.Add(mi);
+  //=====================
 
 
-
+  {
   Tag := SampleStartTag;
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Sample Start';
@@ -321,7 +323,7 @@ begin
       ChildMi.Tag := Tag;
       mi.Add(ChildMi);
   end;
-
+  }
 
   //=== spacer ====
   mi := TMenuItem.Create(Menu);
@@ -329,7 +331,7 @@ begin
   Menu.Items.Add(mi);
   //=====================
 
-
+  {
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Clear All Modulation';
   mi.OnClick := EventHandle_ClearAllModulationForAllSamplePoints;
@@ -339,7 +341,43 @@ begin
   mi.Caption := 'Clear Current Modulation';
   mi.OnClick := EventHandle_ClearCurrentModulationForAllSamplePoints;
   Menu.Items.Add(mi);
+  }
 
+
+  Tag := SampleStartTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear All Sample Start Modulation';
+  mi.Hint    := Caption_ClearAllModulation;
+  mi.Tag     := Tag;
+  mi.OnClick := EventHandle_ModulationCommand;
+  Menu.Items.Add(mi);
+
+  Tag := SampleEndTag;
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear All Sample End Modulation';
+  mi.Hint    := Caption_ClearAllModulation;
+  mi.Tag     := Tag;
+  mi.OnClick := EventHandle_ModulationCommand;
+  Menu.Items.Add(mi);
+
+  if LoopPointsVisible then
+  begin
+    Tag := LoopStartTag;
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Clear All Loop Start Modulation';
+    mi.Hint    := Caption_ClearAllModulation;
+    mi.Tag     := Tag;
+    mi.OnClick := EventHandle_ModulationCommand;
+    Menu.Items.Add(mi);
+
+    Tag := LoopEndTag;
+    mi := TMenuItem.Create(Menu);
+    mi.Caption := 'Clear All Loop End Modulation';
+    mi.Hint    := Caption_ClearAllModulation;
+    mi.Tag     := Tag;
+    mi.OnClick := EventHandle_ModulationCommand;
+    Menu.Items.Add(mi);
+  end;
 
 
   Menu.Popup(x, y);
