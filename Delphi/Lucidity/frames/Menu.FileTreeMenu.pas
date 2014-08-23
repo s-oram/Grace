@@ -257,7 +257,7 @@ begin
     for c1 := 0 to Plugin.Globals.Options.SoundEditors.Count-1 do
     begin
       mi := TMenuItem.Create(Menu);
-      mi.Caption := 'Open With ' + Plugin.Globals.Options.SoundEditors[c1].ApplicationName;
+      mi.Caption := 'Open With ' + Plugin.Globals.Options.SoundEditors[c1].ApplicationName + '...';
       mi.Tag     := c1;
       mi.OnClick := EventHandler_OpenWith;
       Menu.Items.Add(mi);
