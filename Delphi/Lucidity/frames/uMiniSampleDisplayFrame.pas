@@ -1321,8 +1321,6 @@ procedure TMiniSampleDisplayFrame.SampleOverlay_ZoomChanged(Sender: TObject; Zoo
 begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
-    Command.ShowSampleZoom(Plugin);
-
     Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
     Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 

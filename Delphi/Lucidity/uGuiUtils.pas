@@ -100,7 +100,6 @@ type
 
     class procedure ToggleSampleZoom(const Plugin : TeePlugin); static; //TODO:HIGH delete this method. no longer needed. i think.
     class procedure ToggleSampleMapVisibility(const Plugin : TeePlugin); static;
-    class procedure ShowSampleZoom(const Plugin : TeePlugin); static; //TODO:HIGH delete this method. no longer needed. i think.
 
     //TODO:HIGH delete this method. no longer needed.
     class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
@@ -661,15 +660,6 @@ begin
   if (Error = true) then
   begin
     ShowMessage('Error: ' + ErrorMessage);
-  end;
-end;
-
-class procedure Command.ShowSampleZoom(const Plugin: TeePlugin);
-begin
-  if Plugin.Globals.GuiState.MainGuiLayout <> TMainGuiLayout.SampleZoom then
-  begin
-    Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.SampleZoom;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
   end;
 end;
 
