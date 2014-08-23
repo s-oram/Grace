@@ -113,7 +113,6 @@ type
 
     procedure SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure SampleOverlayZoomChanged(Sender : TObject; aZoom, aOffset : single);
     procedure SampleOverlayMouseOverMarkerChanged(Sender : TObject);
 
     procedure SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
@@ -172,7 +171,6 @@ begin
   fSampleOverlay.OnMouseDown := SampleOverlayMouseDown;
   fSampleOverlay.OnMouseUp   := SampleOverlayMouseUp;
   fSampleOverlay.OnSampleMarkerChanged := SampleMarkerChanged;
-  fSampleOverlay.OnZoomChanged := SampleOverlayZoomChanged;
   fSampleOverlay.OnMouseOverMakerChanged := SampleOverlayMouseOverMarkerChanged;
   fSampleOverlay.OnSampleMarkerChanged := SampleOverlay_MarkerChanged;
   fSampleOverlay.OnZoomChanged         := SampleOverlay_ZoomChanged;
@@ -883,15 +881,6 @@ end;
 
 procedure TMiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;
 begin
-  UpdateSampleDisplayInfo;
-end;
-
-
-procedure TMiniSampleDisplayFrame.SampleOverlayZoomChanged(Sender: TObject; aZoom, aOffset: single);
-begin
-  Plugin.Globals.GuiState.SampleDisplayZoom   := aZoom;
-  Plugin.Globals.GuiState.SampleDisplayOffset := aOffset;
-
   UpdateSampleDisplayInfo;
 end;
 
