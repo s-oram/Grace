@@ -47,7 +47,6 @@ type
     SampleNameLabel: TVamLabel;
     SampleFineKnob: TVamCompoundNumericKnob;
     SampleTuneKnob: TVamCompoundNumericKnob;
-    ZoomScrollBar: TVamScrollBar;
     ZoomControlsDiv: TVamDiv;
     ZoomOutButton: TVamTextBox;
     ZoomInButton: TVamTextBox;
@@ -59,6 +58,8 @@ type
     Zoom100Button: TVamTextBox;
     ZoomLoopEndButton: TVamTextBox;
     Timer1: TTimer;
+    ScrollBarDiv: TVamDiv;
+    ZoomScrollBar: TVamScrollBar;
     procedure SampleKnobChanged(Sender: TObject);
     procedure SampleDisplayResize(Sender: TObject);
     procedure InfoDivResize(Sender: TObject);
@@ -305,6 +306,14 @@ begin
   //SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
 
 
+  ScrollBarDiv.Align := alBottom;
+  ScrollBarDiv.Height := 18;
+  //ScrollBarDiv.AlignWithMargins := true;
+  //ScrollBarDiv.Margins :=
+
+  ZoomScrollBar.Align := alClient;
+
+
 
   GuiSetup.StyleButton_CommandButton(Zoom100Button);
   GuiSetup.StyleButton_CommandButton(ZoomSampleStartButton);
@@ -326,7 +335,34 @@ begin
   Timer1.Enabled := true;
   Timer1.Interval := 25;
 
+
+
+
+  SampleDisplay.Align := TAlign.alClient;
+  InsidePanel.AlignWithMargins := true;
+
+  InsidePanel.Align := TAlign.alClient;
+  InsidePanel.Margins.Bottom := 0;
+  InsidePanel.CornerRadius3 := 3;
+  InsidePanel.CornerRadius4 := 3;
+
+  ZoomControlsDiv.Align := TAlign.alBottom;
+  ZoomControlsDiv.Visible := false;
+
+  ZoomScrollBar.Align := TAlign.alBottom;
+  ZoomScrollBar.AlignWithMargins := true;
+  ZoomScrollBar.Margins.Bottom := 0;
+  ZoomScrollBar.Height := 18;
+  ZoomScrollBar.Top := 0;
+  ZoomScrollBar.Visible := true;
+  ZoomScrollBar.BringToFront;
+
+
+  SampleOverlay.BringToFront;
+  Scope.BringToFront;
+
   //== finally, call the message handlers to ensure everything is up to date ===
+  UpdateZoomSlider;
   UpdateControlVisibility;
   UpdateModulation;
   UpdateSampleDisplay;
@@ -1074,29 +1110,10 @@ end;
 
 procedure TMiniSampleDisplayFrame.SetSampleDisplayContext;
 begin
-  SampleDisplay.Align := TAlign.alClient;
-  InsidePanel.AlignWithMargins := true;
+  // TODO:HIGH this SetSampleDisplayContext() method call isn't needed anymore
+  // because the display context no longer changes.
+  // This control setup stuff should be move to initialise frame.
 
-  InsidePanel.Align := TAlign.alClient;
-  InsidePanel.Margins.Bottom := 0;
-  InsidePanel.CornerRadius3 := 3;
-  InsidePanel.CornerRadius4 := 3;
-
-  ZoomControlsDiv.Align := TAlign.alBottom;
-  ZoomControlsDiv.Visible := false;
-
-  ZoomScrollBar.Align := TAlign.alBottom;
-  ZoomScrollBar.AlignWithMargins := true;
-  ZoomScrollBar.Margins.Bottom := 0;
-  ZoomScrollBar.Height := 18;
-  ZoomScrollBar.Top := 0;
-  ZoomScrollBar.Visible := true;
-  ZoomScrollBar.BringToFront;
-
-  UpdateZoomSlider;
-  SampleOverlay.BringToFront;
-  Scope.BringToFront;
-  UpdateSampleDisplay;
 end;
 
 

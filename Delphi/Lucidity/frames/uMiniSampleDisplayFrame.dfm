@@ -29,7 +29,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
       object InsidePanel: TVamPanel
         AlignWithMargins = True
         Left = 16
-        Top = 80
+        Top = 16
         Width = 790
         Height = 251
         Margins.Left = 0
@@ -66,6 +66,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Align = alClient
           Visible = True
           OnResize = SampleDisplayResize
+          ExplicitTop = 1
         end
         object SampleInfoBox: TVamDiv
           Left = 4
@@ -76,6 +77,8 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           HitTest = True
           Align = alBottom
           Visible = True
+          ExplicitLeft = 7
+          ExplicitTop = 176
           object InfoDiv: TVamDiv
             AlignWithMargins = True
             Left = 0
@@ -91,6 +94,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             Align = alTop
             Visible = True
             OnResize = InfoDivResize
+            ExplicitTop = -8
             object SampleNameLabel: TVamLabel
               AlignWithMargins = True
               Left = 0
@@ -301,28 +305,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             end
           end
         end
-      end
-      object ZoomScrollBar: TVamScrollBar
-        Left = 3
-        Top = 350
-        Width = 827
-        Height = 33
-        Margins.Left = 0
-        Margins.Top = 0
-        Margins.Right = 0
-        Margins.Bottom = 0
-        Opacity = 255
-        Text = 'ZoomScrollBar'
-        HitTest = True
-        IndexSize = 0.250000000000000000
-        Color_Border = '$FF000000'
-        Color_Background = '$FF888888'
-        Color_Foreground = '$FFCCCCCC'
-        SliderStyle = RoundCorners
-        SliderType = stHorizontal
-        OnChanged = ZoomScrollBarChanged
-        Align = alBottom
-        Visible = True
       end
       object ZoomControlsDiv: TVamDiv
         AlignWithMargins = True
@@ -628,11 +610,42 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Visible = True
         end
       end
+      object ScrollBarDiv: TVamDiv
+        Left = 17
+        Top = 296
+        Width = 785
+        Height = 49
+        Opacity = 255
+        Text = 'ScrollBarDiv'
+        HitTest = True
+        Visible = True
+        object ZoomScrollBar: TVamScrollBar
+          Left = 19
+          Top = 16
+          Width = 616
+          Height = 25
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'ZoomScrollBar'
+          HitTest = True
+          IndexSize = 0.250000000000000000
+          Color_Border = '$FF000000'
+          Color_Background = '$FF888888'
+          Color_Foreground = '$FFCCCCCC'
+          SliderStyle = RoundCorners
+          SliderType = stHorizontal
+          OnChanged = ZoomScrollBarChanged
+          Visible = True
+        end
+      end
     end
   end
   object Timer1: TTimer
     OnTimer = Timer1Timer
-    Left = 512
-    Top = 32
+    Left = 776
+    Top = 24
   end
 end
