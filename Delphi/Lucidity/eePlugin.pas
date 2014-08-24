@@ -1098,19 +1098,13 @@ end;
 procedure TeePlugin.ClearFocus;
 begin
   SampleMap.ClearFocus;
-
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.ClearSelected;
 begin
   SampleMap.DeselectAllRegions;
-
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteKeyGroup(const aKeyGroupName: string);
@@ -1124,26 +1118,18 @@ begin
   KeyGroups.DeleteKeyGroup(aKeyGroupName);
 
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DeleteSelectedRegions;
 begin
   SampleMap.DeleteSelectedRegions;
-
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TeePlugin.DuplicateSelectedRegions;
 begin
   SampleMap.DuplicateSelectedRegions;
-
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  //Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -1166,7 +1152,7 @@ begin
   end;
 
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil); //TODO:HIGH try to remove this call.
 end;
 
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
@@ -1180,7 +1166,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil); //TODO:HIGH try to remove this call.
 end;
 
 procedure TeePlugin.MergeAllKeyGroups;
