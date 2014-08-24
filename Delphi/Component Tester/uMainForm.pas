@@ -53,12 +53,6 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
-    VamPanel1: TVamPanel;
-    VamKnob1: TVamKnob;
-    VamLabel1: TVamLabel;
-    VamLabel2: TVamLabel;
-    VamTextBox1: TVamTextBox;
-    Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     Edit1: TEdit;
     FileOpenDialog1: TFileOpenDialog;
     VamTextBox2: TVamTextBox;
@@ -173,20 +167,10 @@ begin
 
   Delete(xs, Length(xs), 1);
 
-  VamLabel1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
-
-  VamTextBox1.AutoTrimText := true;
-  VamTextBox1.TextPadding.Left := 8;
-  VamTextBox1.TextPadding.Right := 24;
-
-  VamTextBox1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
-
-  VamKnob1.KnobMode := TKnobMode.ModEdit;
-
-  VamTextBox2.CornerRadius[0] := 0;
-  VamTextBox2.CornerRadius[1] := 0;
-  VamTextBox2.CornerRadius[2] := 0;
-  VamTextBox2.CornerRadius[3] := 5;
+  VamTextBox2.CornerRadius[0] := 150;
+  VamTextBox2.CornerRadius[1] := 3;
+  VamTextBox2.CornerRadius[2] := 3;
+  VamTextBox2.CornerRadius[3] := 150;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -228,16 +212,7 @@ end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
-  VamLabel1.Text := 'Message A';
 
-  Sleep(2000);
-  VamLabel1.Text := 'Message B';
-
-  Sleep(2000);
-  VamLabel1.Text := 'Message C';
-
-  Sleep(2000);
-  VamLabel1.Text := 'Message D';
 end;
 
 
@@ -263,7 +238,7 @@ end;
 
 procedure TForm1.HandleTimerEvent(Sender: TObject);
 begin
-  VamLabel2.Text :=  IntToStr(Random(4000));
+
 end;
 
 

@@ -25,160 +25,35 @@ object Form1: TForm1
     OnClick = Button1Click
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 25
-    Top = 8
-    Width = 592
-    Height = 425
+    Left = 80
+    Top = 24
+    Width = 377
+    Height = 393
     Color = '$FFCCCCCC'
-    object VamPanel1: TVamPanel
+    object VamTextBox2: TVamTextBox
       Left = 32
-      Top = 75
-      Width = 505
-      Height = 313
+      Top = 72
+      Width = 217
+      Height = 113
       Opacity = 255
-      Text = 'VamPanel1'
       HitTest = True
-      Color = '$FFCCCCCC'
-      Transparent = False
+      AutoTrimText = False
+      Color = '$FF3E3E3E'
+      ColorMouseOver = '$FF3E3E3E'
+      ColorBorder = '$00000000'
+      ShowBorder = False
+      TextAlign = AlignNear
+      TextVAlign = AlignNear
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ImageOverlayVertAlign = AlignCenter
+      ImageOverlayHorzAlign = AlignCenter
+      ImageOverlayOffsetX = 0
+      ImageOverlayOffsetY = 0
       Visible = True
-      object VamKnob1: TVamKnob
-        Left = 64
-        Top = 136
-        Width = 65
-        Height = 65
-        Opacity = 255
-        Text = 'VamKnob1'
-        HitTest = True
-        ModLineDist = 17.000000000000000000
-        ModLineWidth = 3.000000000000000000
-        ModLineColor = '$FFFF0000'
-        ModLineOffColor = '$FFC0C0C0'
-        IndicatorSize = 2.500000000000000000
-        IndicatorDist = 9.000000000000000000
-        IsBipolarKnob = False
-        IsKnobEnabled = True
-        KnobMode = PositionEdit
-        ModEditRadius = 0.600000023841857900
-        VisibleSteps = 0
-        ParameterIndex = 0
-        OnKnobPosChanged = VamKnob1KnobPosChanged
-        Visible = True
-      end
-      object VamLabel1: TVamLabel
-        Left = 168
-        Top = 80
-        Width = 193
-        Height = 65
-        Opacity = 255
-        Text = 'Test'
-        HitTest = True
-        AutoTrimText = True
-        AutoSize = False
-        TextAlign = AlignCenter
-        TextVAlign = AlignCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Visible = True
-      end
-      object VamLabel2: TVamLabel
-        Left = 168
-        Top = 176
-        Width = 193
-        Height = 65
-        Opacity = 255
-        Text = 'Test'
-        HitTest = True
-        AutoTrimText = False
-        AutoSize = False
-        TextAlign = AlignCenter
-        TextVAlign = AlignCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Visible = True
-      end
-      object VamTextBox1: TVamTextBox
-        Left = 74
-        Top = 17
-        Width = 113
-        Height = 57
-        Opacity = 255
-        Text = 'Info'
-        HitTest = True
-        AutoTrimText = False
-        Color = '$FF3E3E3E'
-        ColorMouseOver = '$FF3E3E3E'
-        ColorBorder = '$00000000'
-        ShowBorder = False
-        TextAlign = AlignCenter
-        TextVAlign = AlignCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = 18
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageOverlayVertAlign = AlignCenter
-        ImageOverlayHorzAlign = AlignCenter
-        ImageOverlayOffsetX = 0
-        ImageOverlayOffsetY = 0
-        Visible = True
-      end
-      object Filter2KeyTrackKnob: TVamCompoundNumericKnob
-        Left = 56
-        Top = 259
-        Width = 73
-        Height = 17
-        Opacity = 255
-        Text = 'Key'
-        HitTest = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Units = '%'
-        Color_Background = '$00000000'
-        Color_Label = clGray
-        Color_Numeric = clBlack
-        Color_Arrows1 = '$cc000000'
-        Color_Arrows2 = '$FF000000'
-        KnobMin = 0
-        KnobMax = 100
-        KnobNumericStyle = nsInteger
-        KnobDecimalPlaces = 2
-        KnobSensitivity = 1.000000000000000000
-        Visible = True
-      end
-      object VamTextBox2: TVamTextBox
-        Left = 304
-        Top = 24
-        Width = 153
-        Height = 81
-        Opacity = 255
-        HitTest = True
-        AutoTrimText = False
-        Color = '$FF3E3E3E'
-        ColorMouseOver = '$FF3E3E3E'
-        ColorBorder = '$00000000'
-        ShowBorder = False
-        TextAlign = AlignNear
-        TextVAlign = AlignNear
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageOverlayVertAlign = AlignCenter
-        ImageOverlayHorzAlign = AlignCenter
-        ImageOverlayOffsetX = 0
-        ImageOverlayOffsetY = 0
-        Visible = True
-      end
     end
   end
   object Button2: TButton
