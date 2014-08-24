@@ -443,7 +443,7 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged, nil);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged, nil);
     end);
   end;
 end;

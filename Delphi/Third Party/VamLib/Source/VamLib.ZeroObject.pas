@@ -168,9 +168,6 @@ type
     fIsGuiOpen: boolean;
     procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
-
-
-
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
     procedure SetIsGuiOpen(const Value: boolean);
