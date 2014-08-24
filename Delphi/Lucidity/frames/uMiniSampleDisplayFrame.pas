@@ -192,8 +192,6 @@ begin
   ZoomInButton.OnMouseDown          := ZoomButtonMouseDown;
   ZoomOutFullButton.OnMouseDown     := ZoomButtonMouseDown;
 
-  ZoomScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
-
   Scope := TLucidityScope.Create(AOwner);
   Scope.Visible := true;
   Scope.Parent := InsidePanel;

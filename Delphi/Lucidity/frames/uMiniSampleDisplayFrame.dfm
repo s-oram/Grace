@@ -327,7 +327,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Color_Border = '$FF000000'
           Color_Background = '$FF888888'
           Color_Foreground = '$FFCCCCCC'
-          SliderStyle = RoundCorners
           SliderType = stHorizontal
           OnChanged = ZoomScrollBarChanged
           Visible = True
@@ -430,7 +429,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
-          ExplicitLeft = 716
         end
       end
     end
