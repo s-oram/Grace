@@ -296,7 +296,7 @@ begin
   //ScrollBarDiv.AlignWithMargins := true;
   //ScrollBarDiv.Margins :=
 
-  ZoomScrollBar.Align := alClient;
+
 
   ZoomInButton.Width := 18;
   ZoomOutButton.Width := 18;
@@ -305,6 +305,9 @@ begin
   GuiSetup.StyleButton_CommandButton(ZoomOutButton);
   GuiSetup.StyleButton_CommandButton(ZoomInButton);
   GuiSetup.StyleButton_CommandButton(ZoomOutFullButton);
+
+  ZoomOutButton.AlignWithMargins := true;
+  ZoomOutButton.Margins.SetBounds(0,0,-1,0);
 
   ZoomInButton.CornerRadius[2]      := 3;
   ZoomOutFullButton.CornerRadius[3] := 3;
@@ -320,11 +323,11 @@ begin
   InsidePanel.CornerRadius3 := 3;
   InsidePanel.CornerRadius4 := 3;
 
-  ZoomScrollBar.Align := TAlign.alClient;
-  ZoomScrollBar.AlignWithMargins := false;
+  ZoomScrollBar.Align := alClient;
+  ZoomScrollBar.AlignWithMargins := true;
+  ZoomScrollBar.Margins.SetBounds(-1, 0 , -1, 0);
   ZoomScrollBar.Visible := true;
   ZoomScrollBar.BringToFront;
-
 
   SampleOverlay.BringToFront;
   Scope.BringToFront;

@@ -41,8 +41,6 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
         Color = '$FF000000'
         CornerRadius1 = 3.000000000000000000
         CornerRadius2 = 3.000000000000000000
-        CornerRadius3 = 3.000000000000000000
-        CornerRadius4 = 3.000000000000000000
         Transparent = False
         Visible = True
         OnResize = InsidePanelResize

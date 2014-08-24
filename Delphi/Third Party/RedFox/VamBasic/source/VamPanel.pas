@@ -135,6 +135,11 @@ begin
   BackBuffer.BufferInterface.FillColor := fColor.AsAggRgba8;
 
 
+  //BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3]);
+  BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, CornerRadius1,CornerRadius2,CornerRadius3,CornerRadius4);
+
+
+  {
   rc := TAggRoundedRect.Create;
   Path := TAggPathStorage.Create;
   try
@@ -149,6 +154,7 @@ begin
     rc.Free;
     Path.Free;
   end;
+  }
 end;
 
 
