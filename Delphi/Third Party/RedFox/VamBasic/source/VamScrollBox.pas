@@ -90,13 +90,11 @@ begin
 
   fHorzScrollBar := TVamScrollBar.Create(self);
   HorzScrollBar.SliderType := TVamSliderType.stHorizontal;
-  HorzScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
   HorzScrollBar.Parent := self;
   HorzScrollBar.OnChanged := EventHandler_ScrollBarChanged;
 
   fVertScrollBar := TVamScrollBar.Create(self);
   VertScrollBar.SliderType := TVamSliderType.stVertical;
-  VertScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersLeft;
   VertScrollBar.Parent := self;
   VertScrollBar.OnChanged := EventHandler_ScrollBarChanged;
 end;

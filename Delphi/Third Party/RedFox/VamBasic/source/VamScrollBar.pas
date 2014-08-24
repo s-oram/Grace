@@ -21,18 +21,20 @@ type
     fColor_Foreground: TRedFoxColor;
     fColor_Background: TRedFoxColor;
     fColor_Border: TRedFoxColor;
-    fSliderStyle: TVamScrollBarStyle;
     procedure SetIndexPos(Value: single);
     procedure SetIndexSize(Value: single);
     procedure SetSliderType(const Value: TVamSliderType);
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
-    procedure SetSliderStyle(const Value: TVamScrollBarStyle);
     function GetColor(const Index: Integer): TRedFoxColorString;
+    function GetCornerRadius(Index: integer): double;
+    procedure SetCornerRadius(Index: integer; const Value: double);
   protected
     IndexRect: TSingleRect;
     IsGrabbed : boolean;
     GrabbedMouseOffset : single;
     GrabbedPixelOffset : single;
+    fCornerRadius : array[0..3] of single;
+    UseRoundCorners : boolean;
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -47,6 +49,8 @@ type
     function PixelToSliderPos(Pixel : single): single;
     function SliderPosToPixel(SliderPos : single) : single;
 
+    property CornerRadius[Index : integer]: double read GetCornerRadius write SetCornerRadius;
+
   published
     property IndexPos : single read fIndexPos write SetIndexPos; //range 0..1
     property IndexSize : single read fIndexSize write SetIndexSize; //range 0..1
@@ -55,7 +59,6 @@ type
     property Color_Background : TRedFoxColorString index 1 read GetColor write SetColors;
     property Color_Foreground : TRedFoxColorString index 2 read GetColor write SetColors;
 
-    property SliderStyle : TVamScrollBarStyle read fSliderStyle write SetSliderStyle;
     property SliderType : TVamSliderType read fSliderType write SetSliderType;
 
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
@@ -87,6 +90,12 @@ begin
 
   IndexSize := 0.25;
   IndexPos  := 0;
+
+  fCornerRadius[0] := 0;
+  fCornerRadius[1] := 0;
+  fCornerRadius[2] := 0;
+  fCornerRadius[3] := 0;
+  UseRoundCorners := false;
 
 end;
 
@@ -120,6 +129,26 @@ begin
   end;
 end;
 
+procedure TVamScrollBar.SetCornerRadius(Index: integer; const Value: double);
+var
+  c1: Integer;
+begin
+  assert(Value >= 0);
+  fCornerRadius[Index] := Value;
+
+  UseRoundCorners := false;
+  for c1 := 0 to 3 do
+  begin
+    if fCornerRadius[c1] > 0 then
+    begin
+      UseRoundCorners := true;
+      break;
+    end;
+  end;
+
+  Invalidate;
+end;
+
 function TVamScrollBar.GetColor(const Index: Integer): TRedFoxColorString;
 begin
   case Index of
@@ -134,6 +163,11 @@ end;
 
 
 
+
+function TVamScrollBar.GetCornerRadius(Index: integer): double;
+begin
+
+end;
 
 procedure TVamScrollBar.SetIndexPos(Value: single);
 begin
@@ -155,16 +189,6 @@ begin
   if Value <> fIndexSize then
   begin
     fIndexSize := Value;
-    Invalidate;
-  end;
-end;
-
-
-procedure TVamScrollBar.SetSliderStyle(const Value: TVamScrollBarStyle);
-begin
-  if Value <> fSliderStyle then
-  begin
-    fSliderStyle := Value;
     Invalidate;
   end;
 end;
@@ -338,16 +362,9 @@ begin
   BackBuffer.BufferInterface.LineColor := fColor_Border;
   BackBuffer.BufferInterface.FillColor := fColor_Background;
 
-  case SliderStyle of
-    TVamScrollBarStyle.SquareCorners:      BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
-    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 0,3,3,0);
-    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, 0,0,3,3);
-  else
-    raise Exception.Create('Slider style not handled.');
-  end;
-
-
+  if UseRoundCorners
+    then BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+    else BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
 
   //===== Draw the handle ====
   case SliderType of
@@ -384,14 +401,9 @@ begin
 
   BackBuffer.BufferInterface.FillColor := fColor_Foreground;
 
-  case SliderStyle of
-    TVamScrollBarStyle.SquareCorners:      BackBuffer.BufferInterface.Rectangle(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5);
-    TVamScrollBarStyle.RoundCorners:       BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersLeft:   BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
-    TVamScrollBarStyle.RoundCornersBottom: BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, 3,3,3,3);
-  else
-    raise Exception.Create('Slider style not handled.');
-  end;
+  if UseRoundCorners
+    then BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+    else BackBuffer.BufferInterface.Rectangle(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5);
 
 end;
 
