@@ -245,42 +245,39 @@ procedure TAggRoundedRect.NormalizeRadius;
 var
   Delta: TPointDouble;
   K, T: Double;
+  TempSum : single;
 begin
   Delta.X := Abs(FPoint[1].Y - FPoint[0].Y);
   Delta.Y := Abs(FPoint[1].X - FPoint[0].X);
 
   K := 1.0;
 
-  try
-    T := Delta.X / (FRadius[0].X + FRadius[1].X);
-
-    if T < K then
-      K := T;
-  except
+  TempSum := (FRadius[0].X + FRadius[1].X);
+  if TempSum > 0 then
+  begin
+    T := Delta.X / TempSum;
+    if T < K then K := T;
   end;
 
-  try
-    T := Delta.X / (FRadius[2].X + FRadius[3].X);
-
-    if T < K then
-      K := T;
-  except
+  TempSum := (FRadius[2].X + FRadius[3].X);
+  if TempSum > 0 then
+  begin
+    T := Delta.X / TempSum;
+    if T < K then K := T;
   end;
 
-  try
-    T := Delta.Y / (FRadius[0].Y + FRadius[1].Y);
-
-    if T < K then
-      K := T;
-  except
+  TempSum := (FRadius[0].Y + FRadius[1].Y);
+  if TempSum > 0 then
+  begin
+    T := Delta.Y / TempSum;
+    if T < K then K := T;
   end;
 
-  try
-    T := Delta.Y / (FRadius[2].Y + FRadius[3].Y);
-
-    if T < K then
-      K := T;
-  except
+  TempSum := (FRadius[2].Y + FRadius[3].Y);
+  if TempSum > 0 then
+  begin
+    T := Delta.Y / TempSum;
+    if T < K then K := T;
   end;
 
   if K < 1.0 then
