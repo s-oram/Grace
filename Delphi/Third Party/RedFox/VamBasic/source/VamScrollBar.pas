@@ -50,7 +50,6 @@ type
     function SliderPosToPixel(SliderPos : single) : single;
 
     property CornerRadius[Index : integer]: double read GetCornerRadius write SetCornerRadius;
-
   published
     property IndexPos : single read fIndexPos write SetIndexPos; //range 0..1
     property IndexSize : single read fIndexSize write SetIndexSize; //range 0..1
@@ -166,7 +165,7 @@ end;
 
 function TVamScrollBar.GetCornerRadius(Index: integer): double;
 begin
-
+  result := fCornerRadius[Index];
 end;
 
 procedure TVamScrollBar.SetIndexPos(Value: single);
