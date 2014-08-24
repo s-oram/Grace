@@ -36,7 +36,7 @@ type
     TriggeredVoiceStack : TLucidityVoiceList; // Keeps track of last triggerered voice.
 
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
 
     procedure PolyTrigger(const Data1, Data2 : byte);
     procedure PolyRelease(const Data1, Data2 : byte);
@@ -134,7 +134,7 @@ end;
 
 
 
-procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   pVoice : PLucidityVoice;
   c1: Integer;

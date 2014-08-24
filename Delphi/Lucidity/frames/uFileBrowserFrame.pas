@@ -47,7 +47,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
   protected
     IsManualScroll : boolean;
     FileBrowserAddon : TFileBrowserAddon;
@@ -123,7 +123,7 @@ begin
   inherited;
 end;
 
-procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   CurrentFocus_ParName : string;
   b : boolean;

@@ -32,7 +32,7 @@ type
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
   protected
     StepSequenceMenu : TStepSequenceMenu;
     property Plugin:TeePlugin read fPlugin;
@@ -188,7 +188,7 @@ begin
   StepSequenceMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, fSequencerIndex);
 end;
 
-procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   kg : IKeyGroup;
 begin

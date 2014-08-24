@@ -73,6 +73,7 @@ object SequencerFrame: TSequencerFrame
             Opacity = 255
             Text = 'Sequencer'
             HitTest = True
+            AutoTrimText = False
             AutoSize = False
             TextAlign = AlignNear
             TextVAlign = AlignCenter

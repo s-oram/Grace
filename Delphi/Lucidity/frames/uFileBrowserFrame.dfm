@@ -159,8 +159,9 @@ object FileBrowserFrame: TFileBrowserFrame
             IndicatorSize = 2.500000000000000000
             IndicatorDist = 9.000000000000000000
             IsBipolarKnob = False
-            KnobMode = PositionEdit
             IsKnobEnabled = True
+            KnobMode = PositionEdit
+            ModEditRadius = 0.600000023841857900
             VisibleSteps = 0
             ParameterIndex = 0
             Visible = True

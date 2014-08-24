@@ -66,7 +66,7 @@ type
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
 
     procedure ApplyAllParSmoothingNow;
   protected
@@ -407,7 +407,7 @@ begin
 end;
 
 
-procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   ptr  : pointer;
   kgID : TKeyGroupID;

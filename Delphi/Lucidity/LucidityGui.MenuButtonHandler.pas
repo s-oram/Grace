@@ -31,7 +31,7 @@ type
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -87,7 +87,7 @@ begin
   ControlList.Remove(c);
 end;
 
-procedure TMenuButtonHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TMenuButtonHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
   inherited;
 

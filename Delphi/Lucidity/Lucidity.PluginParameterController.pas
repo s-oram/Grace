@@ -157,7 +157,7 @@ begin
       begin
         Plugin.VoiceMode  := TVoiceModeHelper.ToEnum(ParValue);
         // TODO:HIGH remove all MsgVclTS calls from the plugin parameter controller.
-        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
+        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
       end;
       TPluginParameter.VoiceGlide:    Plugin.VoiceGlide := ParValue;
       TPluginParameter.PreviewVolume: Plugin.PreviewVolume := ParValue;
@@ -550,23 +550,25 @@ begin
 
   if IsModPar(Par) then exit;
 
+  // TODO:HIGH try to have all these MsgVclTS() calls removed. the GUI should send these messages at the calling site
+  // where ever possible.
   case Par of
     TPluginParameter.FilterRouting:
     begin
-      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
-      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope);
+      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
+      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateScope, nil);
     end;
-    TPluginParameter.PitchTracking:      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
-    TPluginParameter.SamplerLoopBounds:  Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateSampleInfo);
-    TPluginParameter.SamplePlaybackType: Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged);
-    TPluginParameter.Filter1Type:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
-    TPluginParameter.Filter2Type:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
-    TPluginParameter.Lfo1Shape:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.Lfo2Shape:          Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.Lfo1FreqMode:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.Lfo2FreqMode:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged);
-    TPluginParameter.SamplerTriggerMode:    Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
-    TPluginParameter.VoiceMode:          Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
+    TPluginParameter.PitchTracking:       Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
+    TPluginParameter.SamplerLoopBounds:   Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateSampleInfo, nil);
+    TPluginParameter.SamplePlaybackType:  Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged, nil);
+    TPluginParameter.Filter1Type:         Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
+    TPluginParameter.Filter2Type:         Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
+    TPluginParameter.Lfo1Shape:           Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
+    TPluginParameter.Lfo2Shape:           Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
+    TPluginParameter.Lfo1FreqMode:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
+    TPluginParameter.Lfo2FreqMode:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
+    TPluginParameter.SamplerTriggerMode:  Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
+    TPluginParameter.VoiceMode:           Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
   end;
 end;
 

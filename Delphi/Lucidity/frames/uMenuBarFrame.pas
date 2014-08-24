@@ -41,7 +41,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
 
     procedure SampleFocusChanged; // Called when the sample focus changes...
 
@@ -238,7 +238,7 @@ begin
   Command.ToggleSampleMapVisibility(Plugin);
 end;
 
-procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   ParID : TPluginParameterID;
 begin

@@ -59,7 +59,7 @@ type
     procedure Handle_KnobPosChanged(Sender: TObject);
     procedure Handle_ModAmountChanged(Sender: TObject);
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
 
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
   public
@@ -102,7 +102,7 @@ begin
   inherited;
 end;
 
-procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   c1: Integer;
 begin
@@ -443,7 +443,7 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged);
+      Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.ModAmountChanged, nil);
     end);
   end;
 end;

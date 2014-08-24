@@ -83,10 +83,14 @@ type
 
   IMotherShip = interface;
 
+  IZeroMessageData = interface
+    ['{6D90ECB8-9EC8-40E6-8908-AB4C7CCF9C15}']
+  end;
+
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);
     function ClassType: TClass;
   end;
 
@@ -105,7 +109,7 @@ type
 
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgVclTS(MsgID : cardinal);
+    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     procedure LogAudioObjects;
     procedure LogMainObjects;
@@ -122,7 +126,7 @@ type
     function _AddRef: Integer; virtual; stdcall;
     function _Release: Integer; virtual; stdcall;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); virtual;
   public
     destructor Destroy; override;
   end;
@@ -133,7 +137,7 @@ type
     FMotherShip : IMotherShip;
   protected
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); virtual;
   public
     destructor Destroy; override;
   end;
@@ -143,6 +147,7 @@ type
   private type
     TMessageData = record
       MsgID   : cardinal;
+      DataB   : IZeroMessageData;
     end;
   private
     AudioObjects : TList;
@@ -166,7 +171,7 @@ type
 
 
 
-    procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer);
+    procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
     procedure SetIsGuiOpen(const Value: boolean);
   public
@@ -184,7 +189,7 @@ type
 
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
-    procedure MsgVclTS(MsgID : cardinal);
+    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
@@ -241,7 +246,7 @@ begin
   result := -1;
 end;
 
-procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
 end;
 
@@ -259,7 +264,7 @@ begin
 end;
 
 
-procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
 
 end;
@@ -424,7 +429,7 @@ begin
 
 
   //VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
-  SendMessageToList(AudioObjects, MsgID, Data);
+  SendMessageToList(AudioObjects, MsgID, Data, nil);
 
 end;
 
@@ -436,17 +441,17 @@ end;
 procedure TMotherShip.MsgMain(MsgID: cardinal);
 begin
   MsgMain(MsgID, nil);
-  MsgVclTS(MsgID);
+  MsgVclTS(MsgID, nil);
 end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
   //VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
-  SendMessageToList(MainObjects, MsgID, Data);
+  SendMessageToList(MainObjects, MsgID, Data, nil);
 
   if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
   begin
-    SendMessageToList(VclObjects, MsgID, Data);
+    SendMessageToList(VclObjects, MsgID, Data, nil);
   end else
   begin
     // TODO: probably should log a warning here.
@@ -459,7 +464,7 @@ begin
   begin
     if (MainThreadID = GetCurrentThreadId) then
     begin
-      SendMessageToList(VclObjects, MsgID, nil);
+      SendMessageToList(VclObjects, MsgID, nil, nil);
     end else
     begin
       // TODO:MED probably should log a warning or raise an error here.
@@ -476,7 +481,7 @@ begin
   begin
     if (MainThreadID = GetCurrentThreadId) then
     begin
-      SendMessageToList(VclObjects, MsgID, Data);
+      SendMessageToList(VclObjects, MsgID, Data, nil);
     end else
     begin
       // TODO:MED probably should log a warning or raise an error here.
@@ -485,7 +490,7 @@ begin
   end;
 end;
 
-procedure TMotherShip.MsgVclTS(MsgID: cardinal);
+procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
 var
   msgData : TMessageData;
   QueueValue : TOmniValue;
@@ -494,13 +499,14 @@ begin
   begin
     if (MainThreadID = GetCurrentThreadId) then
     begin
-      SendMessageToList(VclObjects, MsgID, nil);
+      SendMessageToList(VclObjects, MsgID, nil, nil);
     end else
     begin
       // TODO: a possible improvement would be to check the calling thread id. If
       // it's the VCL thread, dispatch the message immediatly. If not, queue the
       // message for later processing.
       msgData.MsgID   := MsgID;
+      msgData.DataB   := DataB;
       QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
       VclMessageQueue.Enqueue(QueueValue);
     end;
@@ -517,11 +523,11 @@ begin
   while VclMessageQueue.TryDequeue(QueueValue) do
   begin
     MsgData := QueueValue.ToRecord<TMessageData>;
-    SendMessageToList(VclObjects, msgData.MsgID, nil);
+    SendMessageToList(VclObjects, msgData.MsgID, nil, msgData.DataB);
   end;
 end;
 
-procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer);
+procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer; DataB:IZeroMessageData);
 var
   LastIndex : integer;
   c1: Integer;
@@ -546,7 +552,7 @@ begin
       begin
         LastIndex := c1;
         zo := IZeroObject(ObjectList[c1]);
-        zo.ProcessZeroObjectMessage(MsgID, Data);
+        zo.ProcessZeroObjectMessage(MsgID, Data, nil);
       end;
     except
       zo := IZeroObject(ObjectList[LastIndex]);

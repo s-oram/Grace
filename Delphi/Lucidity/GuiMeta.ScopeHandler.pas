@@ -52,7 +52,7 @@ type
     procedure UpdateScope(const ScopeFocus : TScopeFocus); overload;
     procedure UpdateScope(const FocusParName : string); overload;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
 
     procedure HandleUpdateTimer(Sender : TObject);
   public
@@ -183,7 +183,7 @@ begin
     then UpdateScope(LastScopeFocus);
 end;
 
-procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 const
   DebounceTime = 200; //milliseconds,
 var

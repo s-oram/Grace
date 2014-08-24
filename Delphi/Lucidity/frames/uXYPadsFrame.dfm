@@ -49,6 +49,7 @@ object XYPadsFrame: TXYPadsFrame
           Opacity = 255
           Text = 'XY PADS'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -152,6 +153,7 @@ object XYPadsFrame: TXYPadsFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -170,6 +172,7 @@ object XYPadsFrame: TXYPadsFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -188,6 +191,7 @@ object XYPadsFrame: TXYPadsFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter
@@ -206,6 +210,7 @@ object XYPadsFrame: TXYPadsFrame
           Opacity = 255
           Text = 'P4'
           HitTest = True
+          AutoTrimText = False
           AutoSize = False
           TextAlign = AlignCenter
           TextVAlign = AlignCenter

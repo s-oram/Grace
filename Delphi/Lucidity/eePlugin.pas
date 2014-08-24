@@ -1166,7 +1166,7 @@ begin
   end;
 
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
 end;
 
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
@@ -1180,7 +1180,7 @@ begin
 
   RefreshManagedPluginParameterValues;
   // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
 end;
 
 procedure TeePlugin.MergeAllKeyGroups;
@@ -1429,15 +1429,16 @@ begin
 
   RefreshManagedPluginParameterValues;
 
-  //TODO: These send message calls could be replaced by...
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleMarkersChanged);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged);
+  // TODO:HIGH Try to have these messages removed. The gui should send these where possible
+  // at the calling site.
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleMarkersChanged, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
   // this one call here perhaps.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI, nil);
 end;
 
 procedure TeePlugin.SaveMIDIMapAsDefault;
@@ -1498,7 +1499,7 @@ begin
 
   PresetName := RemoveFileExt(FileName);
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
   {$ENDIF}
 end;
 
@@ -1568,7 +1569,7 @@ begin
     end;
   end;
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
 end;
 
 procedure TeePlugin.VstParameterChanged(Index: integer; Value: single);
@@ -1617,7 +1618,7 @@ end;
 procedure TeePlugin.ClearPreviewInfo;
 begin
   PreviewInfo^.Clear;
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
 end;
 
 procedure TeePlugin.TriggerNoteOn(const MidiNote, MidiVelocity: integer);
@@ -1627,7 +1628,7 @@ begin
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
   MidiInputProcessor.NoteOn(MidiNote, MidiVelocity);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
 end;
 
 procedure TeePlugin.TriggerNoteOff(const MidiNote, MidiVelocity: integer);
@@ -1637,7 +1638,7 @@ begin
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   MidiInputProcessor.NoteOff(MidiNote, MidiVelocity);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
 end;
 
 procedure TeePlugin.Event_MidiAutomation_Message(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
@@ -1680,7 +1681,7 @@ begin
   begin
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
     inc(GlobalModPoints.Source_TriggeredNoteCount);
   end;
 
@@ -1688,7 +1689,7 @@ begin
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged);
+    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
   end;
 
   if IsControlChange(Event) then

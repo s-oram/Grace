@@ -67,7 +67,7 @@ type
     FMotherShip : IMotherShip;
     procedure SetMotherShipReference(aMotherShip : IMothership);
   protected
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  virtual;
   public
     destructor Destroy; override;
   end;
@@ -287,7 +287,7 @@ begin
   FMotherShip := aMotherShip;
 end;
 
-procedure TManagedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TManagedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
   // override this method to respond to zero object messages.
 end;

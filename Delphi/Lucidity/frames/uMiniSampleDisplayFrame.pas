@@ -78,7 +78,7 @@ type
     FMotherShip : IMothership;
 
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);
 
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
@@ -335,7 +335,7 @@ begin
   UpdateSampleDisplay;
 end;
 
-procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   SamplePos : integer;
   zx : single;

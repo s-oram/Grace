@@ -62,7 +62,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
@@ -482,7 +482,7 @@ begin
   Manually := false;
 end;
 
-procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
   if MsgID = TLucidMsgId.SampleFocusChanged then
   begin

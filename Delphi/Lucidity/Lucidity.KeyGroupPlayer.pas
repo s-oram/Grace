@@ -26,7 +26,7 @@ type
   protected
     Globals : TGlobals;
     KeyGroupManager : TKeyGroupManager;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
   public
     constructor Create(const aGlobals : TGlobals; const aKeyGroupManager : TKeyGroupManager);
     destructor Destroy; override;
@@ -68,7 +68,7 @@ begin
   ActiveRegions.Clear;
 end;
 
-procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer);
+procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer; DataB:IZeroMessageData);
 var
   c1 : integer;
   pKG : pointer;

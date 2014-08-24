@@ -323,7 +323,7 @@ begin
         // there references.
         Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
         Globals.MotherShip.MsgMain(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
-        Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup);
+        Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup, nil);
 
         kg := nil;
       end;

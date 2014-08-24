@@ -78,7 +78,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
     procedure UpdateGroupVisibility;
   protected
     MessageOverlay         : TVamShortMessageOverlay;
@@ -579,7 +579,7 @@ begin
   SampleMapKeys.Invalidate;
 end;
 
-procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 var
   aniObj : TByteAnimation;
 begin
@@ -1076,7 +1076,7 @@ begin
   // It's not a showstopper bug but would be great to fix.
   Throttle(ThrottleID, 25, procedure
   begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
 
 end;
@@ -1111,7 +1111,7 @@ begin
   //TODO: It would be handy to have a thread safe throttle.
   Throttle(ThrottleID, 25, procedure
   begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged);
+    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
 end;
 

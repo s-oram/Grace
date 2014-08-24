@@ -28,7 +28,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
   protected
     SampleRenderer : TSampleImageRenderer;
     FlexSampleRender : TFlexSampleImageRenderer;
@@ -230,7 +230,7 @@ begin
   end;
 end;
 
-procedure TZoomSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
+procedure TZoomSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
 
 end;
