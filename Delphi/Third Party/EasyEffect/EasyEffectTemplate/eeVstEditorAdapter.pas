@@ -160,7 +160,6 @@ begin
       PluginGuiMeta := TPluginGuiMeta.Create(Plugin, PluginGui, SystemWindow);
 
       // finally...
-      Plugin.IsGuiOpen := true;
       Plugin.Globals.IsGuiOpen := true;
     finally
       UseCount := 1;
@@ -176,7 +175,6 @@ begin
   if (UseCount > 0) then
   begin
     Plugin.Globals.IsGuiOpen := false;
-    Plugin.IsGuiOpen := false;
     systemWindow := 0;
     UseCount := 0;
 

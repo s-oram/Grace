@@ -33,7 +33,6 @@ type
     fDefaultOutputCount: integer;
     fSetParameter: TSetParameterProcedure;
     fSetParameterAutomated: TSetParameterProcedure;
-    fIsGuiOpen: boolean;
     fIsSuspended:boolean;
     fOnResizeGuiWindow: TResizeGuiWindowEvent;
     fHostPlayState: THostPlayState;
@@ -107,7 +106,6 @@ type
     property Settings:TeePluginSettings read GetSettings;
 
     //Plugin Wrapper needs to set these properties so the plugin knows about it's enviroment.
-    property IsGuiOpen:boolean read fIsGuiOpen write fIsGuiOpen;
     property HostPlayState:THostPlayState read fHostPlayState write SetHostPlayState;  //Depreciated.
 
       //These function pointers allow the plugin to access methods in the plugin wrapper.
@@ -155,8 +153,6 @@ begin
   AudioEffect := TVstAudioEffect.Create;
 
   fIsSuspended := true;
-
-  IsGuiOpen    := false;
 
   //Setup input/output pointers.
   SetInitialInputCount(Settings.InitialInputCount);
