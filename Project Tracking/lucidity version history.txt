@@ -10,6 +10,12 @@ bug
 
 == Finished for the next release ==
 New:
+Change:
+Bug Fix:
+
+
+=== BETA v0.0.1.47 (24-Aug-2014) ===
+New:
 - Add "Oped Data Folder..." command to Lucidity's main menu.
 - The SFZ import now attempts to detect if looping should be enabled for a key group. 
 - "Merge All Key Groups" command added. 
