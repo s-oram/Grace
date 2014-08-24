@@ -65,8 +65,6 @@ MsgVclTS() messages to allow for sending messages with parameters.
 
 - The mod slot needs something to indicate the mod slot is being used.
 
-- changing sample focus in the sample map should zoom all the way out. (Send a message I think)
-
 - error region colors need to be more obvious!
 
 - smart loading of multiple samples. Samples should be mapped according to their root note if
@@ -163,9 +161,13 @@ Installer needs option to put data folder
      TODO MED
 =============================================================================
 
+- sample context menus 'clear MARKER modulation' should be grayed out if 
+  no modulation is active.
 
 create new screen shot without the drum loop. The amen loop is misleading 
 because Lucidity isn't a loop sampler. 
+
+- changing sample focus in the sample map should zoom all the way out. (by sending a zero object message)
 
 
 --------Optimisation Ideas----------------------------------------------------

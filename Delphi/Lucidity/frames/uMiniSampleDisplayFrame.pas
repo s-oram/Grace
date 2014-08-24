@@ -86,7 +86,6 @@ type
 
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer);
-    procedure SetSampleDisplayContext;
 
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
@@ -366,10 +365,6 @@ begin
   UpdateControlVisibility;
   UpdateModulation;
   UpdateSampleDisplay;
-
-  //TODO:HIGH this method needs to be renamed. it's a relic left over
-  // from the old zoom in "zoom context" approach.
-  SetSampleDisplayContext;
 end;
 
 procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer);
@@ -1104,16 +1099,6 @@ begin
   end;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName);
-end;
-
-
-
-procedure TMiniSampleDisplayFrame.SetSampleDisplayContext;
-begin
-  // TODO:HIGH this SetSampleDisplayContext() method call isn't needed anymore
-  // because the display context no longer changes.
-  // This control setup stuff should be move to initialise frame.
-
 end;
 
 

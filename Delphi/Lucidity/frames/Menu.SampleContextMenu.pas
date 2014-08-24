@@ -89,7 +89,6 @@ procedure TSampleContextMenu.Popup(const x, y: integer; const aMouseDownSamplePo
 var
   c1 : integer;
   mi : TMenuItem;
-  Childmi : TMenuItem;
   Tag : integer;
 begin
   CurrentRegion := aCurrentRegion;
