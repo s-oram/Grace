@@ -88,6 +88,12 @@ type
     function GetObject : TObject;
   end;
 
+  TCustomZeroMessageData = class(TInterfacedObject, IZeroMessageData)
+  private
+  public
+    function GetObject : TObject;
+  end;
+
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     procedure SetMotherShipReference(aMotherShip : IMothership);
@@ -621,5 +627,12 @@ end;
 
 
 
+
+{ TCustomZeroMessageData }
+
+function TCustomZeroMessageData.GetObject: TObject;
+begin
+  result := self;
+end;
 
 end.
