@@ -48,6 +48,9 @@ bug
      TODO HIGH
 =============================================================================
 [BIG TASK]
+- need a frame work for putting dialogs on the GUI.
+
+[BIG TASK]
 - need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.

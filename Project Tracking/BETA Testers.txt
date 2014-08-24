@@ -13,6 +13,9 @@ waveshaperkit@gmail.com
 =================================================================================================
     BETA Testers 
 =================================================================================================
+James Ulph <james.ulph@btinternet.com>
+- interested in testing Lucidity
+thunderlink://messageid=1408741888.13332.YahooMailNeo@web186102.mail.ir2.yahoo.com
 
 Goran Podrugovic
 goran.podrugovic@gmail.com
@@ -43,6 +46,7 @@ reusenoise@gmail.com
 - Sent Lucidity 0.0.1.41
   -- a number of responses. Good tester!
 - Sent Lucidity 0.0.1.44
+- Sent Lucidity 0.0.1.47
 
 Nicholas Necaise
 NNecaise@live.com
