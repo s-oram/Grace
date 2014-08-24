@@ -63,6 +63,8 @@ alternative form of registering a timer request.
 ZeroObject. It might be possible to send a IZeroMessageData object instance with
 MsgVclTS() messages to allow for sending messages with parameters. 
 
+- finish the drawing of the sample zoom in/out/out full buttons and zoom slider.
+
 - The mod slot needs something to indicate the mod slot is being used.
 
 - error region colors need to be more obvious!

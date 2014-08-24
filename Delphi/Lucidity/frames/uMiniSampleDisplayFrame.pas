@@ -47,19 +47,12 @@ type
     SampleNameLabel: TVamLabel;
     SampleFineKnob: TVamCompoundNumericKnob;
     SampleTuneKnob: TVamCompoundNumericKnob;
-    ZoomControlsDiv: TVamDiv;
-    ZoomOutButton: TVamTextBox;
-    ZoomInButton: TVamTextBox;
-    ZoomApplyButton: TVamTextBox;
-    ZoomLoopStartButton: TVamTextBox;
-    ZoomSampleEndButton: TVamTextBox;
-    ZoomSampleStartButton: TVamTextBox;
-    VamLabel2: TVamLabel;
-    Zoom100Button: TVamTextBox;
-    ZoomLoopEndButton: TVamTextBox;
     Timer1: TTimer;
     ScrollBarDiv: TVamDiv;
     ZoomScrollBar: TVamScrollBar;
+    ZoomInButton: TVamTextBox;
+    ZoomOutButton: TVamTextBox;
+    ZoomOutFullButton: TVamTextBox;
     procedure SampleKnobChanged(Sender: TObject);
     procedure SampleDisplayResize(Sender: TObject);
     procedure InfoDivResize(Sender: TObject);
@@ -195,14 +188,9 @@ begin
 
   SampleRenderer := TSampleImageRenderer.Create;
 
-  Zoom100Button.OnMouseDown         := ZoomButtonMouseDown;
-  ZoomSampleStartButton.OnMouseDown := ZoomButtonMouseDown;
-  ZoomSampleEndButton.OnMouseDown   := ZoomButtonMouseDown;
-  ZoomLoopStartButton.OnMouseDown   := ZoomButtonMouseDown;
-  ZoomLoopEndButton.OnMouseDown     := ZoomButtonMouseDown;
   ZoomOutButton.OnMouseDown         := ZoomButtonMouseDown;
   ZoomInButton.OnMouseDown          := ZoomButtonMouseDown;
-  ZoomApplyButton.OnMouseDown       := ZoomButtonMouseDown;
+  ZoomOutFullButton.OnMouseDown     := ZoomButtonMouseDown;
 
   ZoomScrollBar.SliderStyle := TVamScrollBarStyle.RoundCornersBottom;
 
@@ -312,30 +300,16 @@ begin
 
   ZoomScrollBar.Align := alClient;
 
+  ZoomInButton.Width := 18;
+  ZoomOutButton.Width := 18;
+  ZoomOutFullButton.Width := 18;
 
-
-  GuiSetup.StyleButton_CommandButton(Zoom100Button);
-  GuiSetup.StyleButton_CommandButton(ZoomSampleStartButton);
-  GuiSetup.StyleButton_CommandButton(ZoomSampleEndButton);
-  GuiSetup.StyleButton_CommandButton(ZoomLoopStartButton);
-  GuiSetup.StyleButton_CommandButton(ZoomLoopEndButton);
   GuiSetup.StyleButton_CommandButton(ZoomOutButton);
   GuiSetup.StyleButton_CommandButton(ZoomInButton);
-  GuiSetup.StyleButton_CommandButton(ZoomInButton);
-  GuiSetup.StyleButton_CommandButton_Bright(ZoomApplyButton);
-
-  Zoom100Button.Width := kZoomButtonWidth;
-  ZoomSampleStartButton.Width := kZoomButtonWidth;
-  ZoomSampleEndButton.Width := kZoomButtonWidth;
-  ZoomLoopStartButton.Width := kZoomButtonWidth;
-  ZoomLoopEndButton.Width := kZoomButtonWidth;
-  ZoomApplyButton.Align := TAlign.alClient;
+  GuiSetup.StyleButton_CommandButton(ZoomOutFullButton);
 
   Timer1.Enabled := true;
   Timer1.Interval := 25;
-
-
-
 
   SampleDisplay.Align := TAlign.alClient;
   InsidePanel.AlignWithMargins := true;
@@ -345,14 +319,8 @@ begin
   InsidePanel.CornerRadius3 := 3;
   InsidePanel.CornerRadius4 := 3;
 
-  ZoomControlsDiv.Align := TAlign.alBottom;
-  ZoomControlsDiv.Visible := false;
-
-  ZoomScrollBar.Align := TAlign.alBottom;
-  ZoomScrollBar.AlignWithMargins := true;
-  ZoomScrollBar.Margins.Bottom := 0;
-  ZoomScrollBar.Height := 18;
-  ZoomScrollBar.Top := 0;
+  ZoomScrollBar.Align := TAlign.alClient;
+  ZoomScrollBar.AlignWithMargins := false;
   ZoomScrollBar.Visible := true;
   ZoomScrollBar.BringToFront;
 
@@ -1128,9 +1096,6 @@ begin
 
   if Button = mbLeft then
   begin
-    //SampleFrames      := CurrentSample.Info.SampleFrames;
-    //DisplayPixelWidth := SampleDisplay.Width;
-
     if Tag = 1 then
     begin
       //Zoom in.
@@ -1149,12 +1114,6 @@ begin
       Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
       UpdateSampleDisplay;
-
-
-      //CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
-      //SampleZoomControl.IndexA := IndexA;
-      //SampleZoomControl.IndexB := IndexB;
-      //SampleZoomControl.Invalidate;
     end;
 
     if Tag = 2 then
@@ -1176,40 +1135,13 @@ begin
       Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
       UpdateSampleDisplay;
-
-      //CalcZoomBounds(xZoom, xOffset, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
-      //SampleZoomControl.IndexA := IndexA;
-      //SampleZoomControl.IndexB := IndexB;
-      //SampleZoomControl.Invalidate;
     end;
 
-
-    if Tag = 3 then ZoomToSampleMarker(self, TDialogSampleMarker.SampleStart);
-    if Tag = 4 then ZoomToSampleMarker(self, TDialogSampleMarker.SampleEnd);
-    if Tag = 5 then ZoomToSampleMarker(self, TDialogSampleMarker.LoopStart);
-    if Tag = 6 then ZoomToSampleMarker(self, TDialogSampleMarker.LoopEnd);
-    //if Tag = 7 then ZoomMarkerMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
-
-    if Tag = 8 then
+    if Tag = 3 then
     begin
-      //Zoom := 0;
+      //Zoom out full
+      Plugin.Globals.GuiState.SampleDisplayZoom   := 0;
       UpdateSampleDisplay;
-
-      //CalcZoomBounds(0, 0, SampleFrames, DisplayPixelWidth, IndexA, IndexB);
-      //SampleZoomControl.IndexA := IndexA;
-      //SampleZoomControl.IndexB := IndexB;
-      //SampleZoomControl.Invalidate;
-    end;
-
-
-    if Tag = 10 then
-    begin
-      // Hide the sample zoom controls here.
-      if Plugin.Globals.GuiState.MainGuiLayout = TMainGuiLayout.SampleZoom then
-      begin
-        Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
-        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
-      end;
     end;
 
     // Finally....
@@ -1262,11 +1194,6 @@ begin
   Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
   UpdateSampleDisplay;
-
-  //Debounce(SampleUpdateDebounceID, 25, deLeading, UpdateSampleDisplay);
-  //SampleZoomControl.IndexA := ZoomPos.IndexA;
-  //SampleZoomControl.IndexB := ZoomPos.IndexB;
-  //SampleZoomControl.Invalidate;
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateZoomSlider;
