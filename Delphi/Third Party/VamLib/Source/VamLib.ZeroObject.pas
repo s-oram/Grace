@@ -172,7 +172,10 @@ type
     // a Process Messages loop.... I'm not sure of the exact terminolgy.
     VclMessageQueue : TOmniQueue;
     VclMessageTimer : TTimer;
-    fIsGuiOpen: boolean;
+
+    IsGuiOpen: boolean;
+    IsGuiOpenLock : TFixedCriticalSection;
+
     procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
     procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
@@ -194,8 +197,6 @@ type
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
-
-    property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
     procedure LogAudioObjects;
     procedure LogMainObjects;
@@ -282,6 +283,8 @@ end;
 
 constructor TMotherShip.Create;
 begin
+  IsGuiOpenLock := TFixedCriticalSection.Create;
+
   MainThreadID := 0;
 
   DisableMessageSending := false;
@@ -318,6 +321,8 @@ begin
   FreeAndNil(AudioObjects);
   FreeAndNil(MainObjects);
   FreeAndNil(VclObjects);
+
+  IsGuiOpenLock.Free;
 
   inherited;
 end;
@@ -408,33 +413,33 @@ procedure TMotherShip.SetIsGuiOpen(const Value: boolean);
 var
   QueueValue : TOmniValue;
 begin
-  fIsGuiOpen := Value;
+  IsGuiOpenLock.Acquire;
+  try
+    IsGuiOpen := Value;
 
-  if fIsGuiOpen = true then
-  begin
-    MainThreadID := GetCurrentThreadId;
-    VclMessageTimer.Enabled := true;
-  end else
-  begin
-    VclMessageTimer.Enabled := false;
-    MainThreadID := 0;
-
-    //=== clear the VCL message queue ===
-    while VclMessageQueue.TryDequeue(QueueValue) do
+    if IsGuiOpen = true then
     begin
-      //do nothing, we're just clearing the queue.
-    end;
-  end;
+      MainThreadID := GetCurrentThreadId;
+      VclMessageTimer.Enabled := true;
+    end else
+    begin
+      VclMessageTimer.Enabled := false;
+      MainThreadID := 0;
 
+      //=== clear the VCL message queue ===
+      while VclMessageQueue.TryDequeue(QueueValue) do
+      begin
+        //do nothing, we're just clearing the queue.
+      end;
+    end;
+  finally
+    IsGuiOpenLock.Release;
+  end;
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 begin
-
-
-  //VamLib.LoggingProxy.Log.LogMessage('Audio MsgID = ' + IntToStr(MsgID));
   SendMessageToList(AudioObjects, MsgID, Data, nil);
-
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal);
@@ -450,47 +455,63 @@ end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
-  //VamLib.LoggingProxy.Log.LogMessage('Main MsgID = ' + IntToStr(MsgID));
   SendMessageToList(MainObjects, MsgID, Data, nil);
 
-  if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
-  begin
-    SendMessageToList(VclObjects, MsgID, Data, nil);
-  end else
-  begin
-    // TODO: probably should log a warning here.
+  IsGuiOpenLock.Acquire;
+  try
+    if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
+    begin
+      SendMessageToList(VclObjects, MsgID, Data, nil);
+    end else
+    begin
+      // TODO:HIGH probably should log a warning here.
+      // or raise an error.
+      // or remove MsgMain.
+    end;
+  finally
+    IsGuiOpenLock.Release;
   end;
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal);
 begin
-  if (IsGuiOpen)  then
-  begin
-    if (MainThreadID = GetCurrentThreadId) then
+  IsGuiOpenLock.Acquire;
+  try
+    if (IsGuiOpen)  then
     begin
-      SendMessageToList(VclObjects, MsgID, nil, nil);
-    end else
-    begin
-      // TODO:MED probably should log a warning or raise an error here.
-      //SendMessageToList(VclObjects, MsgID, nil);
-      Log.LogError('MsgVCL Wrong Thread.');
+      if (MainThreadID = GetCurrentThreadId) then
+      begin
+        SendMessageToList(VclObjects, MsgID, nil, nil);
+      end else
+      begin
+        // TODO:MED probably should log a warning or raise an error here.
+        //SendMessageToList(VclObjects, MsgID, nil);
+        Log.LogError('MsgVCL Wrong Thread.');
+      end;
     end;
+  finally
+    IsGuiOpenLock.Release;
   end;
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer);
 begin
-  // TODO: need to check calling thread ID.
-  if (IsGuiOpen) then
-  begin
-    if (MainThreadID = GetCurrentThreadId) then
+  // TODO:HIGH need to check calling thread ID.
+  IsGuiOpenLock.Acquire;
+  try
+    if (IsGuiOpen) then
     begin
-      SendMessageToList(VclObjects, MsgID, Data, nil);
-    end else
-    begin
-      // TODO:MED probably should log a warning or raise an error here.
-      Log.LogError('MsgVCL Wrong Thread.');
+      if (MainThreadID = GetCurrentThreadId) then
+      begin
+        SendMessageToList(VclObjects, MsgID, Data, nil);
+      end else
+      begin
+        // TODO:MED probably should log a warning or raise an error here.
+        Log.LogError('MsgVCL Wrong Thread.');
+      end;
     end;
+  finally
+    IsGuiOpenLock.Release;
   end;
 end;
 
@@ -499,21 +520,26 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  if IsGuiOpen then
-  begin
-    if (MainThreadID = GetCurrentThreadId) then
+  IsGuiOpenLock.Acquire;
+  try
+    if IsGuiOpen then
     begin
-      SendMessageToList(VclObjects, MsgID, nil, DataB);
-    end else
-    begin
-      // TODO: a possible improvement would be to check the calling thread id. If
-      // it's the VCL thread, dispatch the message immediatly. If not, queue the
-      // message for later processing.
-      msgData.MsgID   := MsgID;
-      msgData.DataB   := DataB;
-      QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-      VclMessageQueue.Enqueue(QueueValue);
+      if (MainThreadID = GetCurrentThreadId) then
+      begin
+        SendMessageToList(VclObjects, MsgID, nil, DataB);
+      end else
+      begin
+        // TODO: a possible improvement would be to check the calling thread id. If
+        // it's the VCL thread, dispatch the message immediatly. If not, queue the
+        // message for later processing.
+        msgData.MsgID   := MsgID;
+        msgData.DataB   := DataB;
+        QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
+        VclMessageQueue.Enqueue(QueueValue);
+      end;
     end;
+  finally
+    IsGuiOpenLock.Release;
   end;
 end;
 
@@ -522,12 +548,19 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  MainThreadID := GetCurrentThreadId;
-
-  while VclMessageQueue.TryDequeue(QueueValue) do
-  begin
-    MsgData := QueueValue.ToRecord<TMessageData>;
-    SendMessageToList(VclObjects, msgData.MsgID, nil, msgData.DataB);
+  IsGuiOpenLock.Acquire;
+  try
+    MainThreadID := GetCurrentThreadId;
+    while VclMessageQueue.TryDequeue(QueueValue) do
+    begin
+      if IsGuiOpen then
+      begin
+        MsgData := QueueValue.ToRecord<TMessageData>;
+        SendMessageToList(VclObjects, msgData.MsgID, nil, msgData.DataB);
+      end;
+    end;
+  finally
+    IsGuiOpenLock.Release;
   end;
 end;
 
