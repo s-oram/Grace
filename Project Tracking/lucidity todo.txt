@@ -47,20 +47,10 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-
-- need to ensure any pending thread safe VCL messages sent via the zero object
-  are canceled when the GUI is closed.
-
 [BIG TASK]
 - need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.
-
-[BIG TASK]
-Instead of using individual timers on the GUI to drive repeating tasks. I should have
-one master timer that can either send out 'pings' via the zero object system. Or some
-alternative form of registering a timer request. 
--- What about targets requiring different timer rates.
 
 - finish the drawing of the sample zoom in/out/out full buttons and zoom slider.
 
@@ -161,6 +151,12 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+[BIG TASK]
+Instead of using individual timers on the GUI to drive repeating tasks. I should have
+one master timer that can either send out 'pings' via the zero object system. Or some
+alternative form of registering a timer request. 
+-- What about targets requiring different timer rates.
+
 
 - sample context menus 'clear MARKER modulation' should be grayed out if 
   no modulation is active.
