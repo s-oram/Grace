@@ -85,6 +85,7 @@ type
 
   IZeroMessageData = interface
     ['{6D90ECB8-9EC8-40E6-8908-AB4C7CCF9C15}']
+    function GetObject : TObject;
   end;
 
   IZeroObject = interface
@@ -496,7 +497,7 @@ begin
   begin
     if (MainThreadID = GetCurrentThreadId) then
     begin
-      SendMessageToList(VclObjects, MsgID, nil, nil);
+      SendMessageToList(VclObjects, MsgID, nil, DataB);
     end else
     begin
       // TODO: a possible improvement would be to check the calling thread id. If
@@ -549,7 +550,7 @@ begin
       begin
         LastIndex := c1;
         zo := IZeroObject(ObjectList[c1]);
-        zo.ProcessZeroObjectMessage(MsgID, Data, nil);
+        zo.ProcessZeroObjectMessage(MsgID, Data, DataB);
       end;
     except
       zo := IZeroObject(ObjectList[LastIndex]);
