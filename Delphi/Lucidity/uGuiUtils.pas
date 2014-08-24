@@ -1032,6 +1032,11 @@ begin
   Button.Color          := kColor_LcdDark1;
   Button.ColorMouseOver := kColor_ButtonMouseOver;
   Button.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
+
+  Button.CornerRadius[0] := 3;
+  Button.CornerRadius[1] := 3;
+  Button.CornerRadius[2] := 3;
+  Button.CornerRadius[3] := 3;
 end;
 
 end.

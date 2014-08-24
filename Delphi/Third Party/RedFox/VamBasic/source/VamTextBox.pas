@@ -45,8 +45,12 @@ type
     function GetParameterName: string;
     procedure SetAutoTrimText(const Value: boolean);
     function GetMenuItemSelectedCallback: TNotifyEvent;
+    function GetCornerRadius(Index: integer): double;
+    procedure SetCornerRadius(Index: integer; const Value: double);
   protected
     DisplayText : string;
+    fCornerRadius : array[0..3] of single;
+    UseRoundCorners : boolean;
 
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -62,6 +66,7 @@ type
     // ParameterName is a 'Tag' type property used to store a VST parameter name.
     property ParameterName  : string  read GetParameterName  write SetParameterName;
 
+    property CornerRadius[Index : integer]: double read GetCornerRadius write SetCornerRadius;
 
     property MenuItemSelectedCallback : TNotifyEvent read GetMenuItemSelectedCallback write fMenuItemSelectedCallback;
   published
@@ -133,6 +138,12 @@ begin
 
   ImageOverlayVertAlign := TRedFoxAlign.AlignCenter;
   ImageOverlayHorzAlign := TRedFoxAlign.AlignCenter;
+
+  fCornerRadius[0] := 0;
+  fCornerRadius[1] := 0;
+  fCornerRadius[2] := 0;
+  fCornerRadius[3] := 0;
+  UseRoundCorners := false;
 end;
 
 destructor TVamTextBox.Destroy;
@@ -159,6 +170,11 @@ end;
 function TVamTextBox.GetColorMouseOver: TRedFoxColorString;
 begin
   result := fColorMouseOver.AsString;
+end;
+
+function TVamTextBox.GetCornerRadius(Index: integer): double;
+begin
+  result := fCornerRadius[Index];
 end;
 
 function TVamTextBox.GetMenuItemSelectedCallback: TNotifyEvent;
@@ -223,6 +239,28 @@ begin
     fColorMouseOver.SetColor(Value);
     Invalidate;
   end;
+end;
+
+procedure TVamTextBox.SetCornerRadius(Index: integer; const Value: double);
+var
+  c1: Integer;
+begin
+  assert(Value >= 0);
+  fCornerRadius[Index] := Value;
+
+  UseRoundCorners := false;
+  for c1 := 0 to 3 do
+  begin
+    if fCornerRadius[c1] > 0 then
+    begin
+      UseRoundCorners := true;
+      break;
+    end;
+  end;
+
+  UseRoundCorners := true;
+
+  Invalidate;
 end;
 
 procedure TVamTextBox.SetImageOverlay(const Value: TBitmap);
@@ -313,16 +351,25 @@ begin
     else aColor := fColorMouseOver;
 
   //== draw the background ==
+  BackBuffer.BufferInterface.FillColor := aColor.AsAggRgba8;
   if ShowBorder then
   begin
     BackBuffer.BufferInterface.LineColor := fColorBorder;
     BackBuffer.BufferInterface.LineWidth := 1;
+    if UseRoundCorners
+      then BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+      else BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
   end else
   begin
     BackBuffer.BufferInterface.NoLine;
+    if UseRoundCorners
+      then BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+      else BackBuffer.BufferInterface.Rectangle(0, 0, Width, Height);
   end;
-  BackBuffer.BufferInterface.FillColor := aColor.AsAggRgba8;
-  BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
+
+
+
+
 
   //== draw the text ==
   //TODO: see if text draw can be improved by incorporating RedFoxTextBuffer.

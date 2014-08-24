@@ -31,8 +31,8 @@ object Form1: TForm1
     Height = 425
     Color = '$FFCCCCCC'
     object VamPanel1: TVamPanel
-      Left = 48
-      Top = 80
+      Left = 32
+      Top = 75
       Width = 505
       Height = 313
       Opacity = 255
@@ -56,8 +56,9 @@ object Form1: TForm1
         IndicatorSize = 2.500000000000000000
         IndicatorDist = 9.000000000000000000
         IsBipolarKnob = False
-        KnobMode = PositionEdit
         IsKnobEnabled = True
+        KnobMode = PositionEdit
+        ModEditRadius = 0.600000023841857900
         VisibleSteps = 0
         ParameterIndex = 0
         OnKnobPosChanged = VamKnob1KnobPosChanged
@@ -151,6 +152,31 @@ object Form1: TForm1
         KnobNumericStyle = nsInteger
         KnobDecimalPlaces = 2
         KnobSensitivity = 1.000000000000000000
+        Visible = True
+      end
+      object VamTextBox2: TVamTextBox
+        Left = 304
+        Top = 24
+        Width = 153
+        Height = 81
+        Opacity = 255
+        HitTest = True
+        AutoTrimText = False
+        Color = '$FF3E3E3E'
+        ColorMouseOver = '$FF3E3E3E'
+        ColorBorder = '$00000000'
+        ShowBorder = False
+        TextAlign = AlignNear
+        TextVAlign = AlignNear
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageOverlayVertAlign = AlignCenter
+        ImageOverlayHorzAlign = AlignCenter
+        ImageOverlayOffsetX = 0
+        ImageOverlayOffsetY = 0
         Visible = True
       end
     end

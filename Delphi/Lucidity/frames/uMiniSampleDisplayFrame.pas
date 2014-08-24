@@ -306,6 +306,12 @@ begin
   GuiSetup.StyleButton_CommandButton(ZoomInButton);
   GuiSetup.StyleButton_CommandButton(ZoomOutFullButton);
 
+  ZoomOutButton.CornerRadius[2]     := 2;
+  //ZoomOutFullButton.CornerRadius[0] := 2;
+  //ZoomOutFullButton.CornerRadius[1] := 2;
+  //ZoomOutFullButton.CornerRadius[2] := 2;
+  ZoomOutFullButton.CornerRadius[0] := 2;
+
   Timer1.Enabled := true;
   Timer1.Interval := 25;
 

@@ -150,14 +150,26 @@ begin
   MainSelector.TextVAlign := TRedFoxAlign.AlignCenter;
   MainSelector.ShowBorder := true;
   MainSelector.ColorBorder := kColor_LcdDark1;
+  MainSelector.CornerRadius[0] := 2;
+  MainSelector.CornerRadius[1] := 2;
+  MainSelector.CornerRadius[2] := 2;
+  MainSelector.CornerRadius[3] := 2;
 
   ForwardSelector.Text := '>';
   ForwardSelector.TextAlign := TRedFoxAlign.AlignCenter;
   ForwardSelector.TextVAlign := TRedFoxAlign.AlignCenter;
+  ForwardSelector.CornerRadius[0] := 2;
+  ForwardSelector.CornerRadius[1] := 2;
+  ForwardSelector.CornerRadius[2] := 2;
+  ForwardSelector.CornerRadius[3] := 2;
 
   BackwardSelector.Text := '<';
   BackwardSelector.TextAlign := TRedFoxAlign.AlignCenter;
   BackwardSelector.TextVAlign := TRedFoxAlign.AlignCenter;
+  BackwardSelector.CornerRadius[0] := 2;
+  BackwardSelector.CornerRadius[1] := 2;
+  BackwardSelector.CornerRadius[2] := 2;
+  BackwardSelector.CornerRadius[3] := 2;
 
   MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark5);
   BackwardSelector.Font.Color := GetRedFoxColor(kColor_LcdDark5);
@@ -222,6 +234,8 @@ begin
   fGuiStandard := aGuiStandard;
 
   ModContextMenu.Initialize(aPlugin, aDialogDisplayArea);
+
+
 
   // finally
   UpdateModulation;

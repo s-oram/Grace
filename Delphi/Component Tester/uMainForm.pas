@@ -61,6 +61,7 @@ type
     Filter2KeyTrackKnob: TVamCompoundNumericKnob;
     Edit1: TEdit;
     FileOpenDialog1: TFileOpenDialog;
+    VamTextBox2: TVamTextBox;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -181,6 +182,11 @@ begin
   VamTextBox1.Text := 'James Brown Went To The Shop To Eat Some Pizza';
 
   VamKnob1.KnobMode := TKnobMode.ModEdit;
+
+  VamTextBox2.CornerRadius[0] := 0;
+  VamTextBox2.CornerRadius[1] := 0;
+  VamTextBox2.CornerRadius[2] := 0;
+  VamTextBox2.CornerRadius[3] := 5;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);

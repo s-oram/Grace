@@ -362,7 +362,7 @@ begin
   BackBuffer.BufferInterface.FillColor := fColor_Background;
 
   if UseRoundCorners
-    then BackBuffer.BufferInterface.RoundedRect(0.5, 0.5, Width-0.5, Height-0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+    then BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
     else BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
 
   //===== Draw the handle ====
@@ -401,7 +401,7 @@ begin
   BackBuffer.BufferInterface.FillColor := fColor_Foreground;
 
   if UseRoundCorners
-    then BackBuffer.BufferInterface.RoundedRect(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+    then BackBuffer.BufferInterface.RoundedRectEx(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
     else BackBuffer.BufferInterface.Rectangle(IndexRect.x1-0.5, IndexRect.y1-0.5, IndexRect.x2+0.5, IndexRect.y2+0.5);
 
 end;
