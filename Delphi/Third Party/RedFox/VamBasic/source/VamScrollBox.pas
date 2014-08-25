@@ -89,11 +89,16 @@ begin
   fScrollBarWidth := 16;
 
   fHorzScrollBar := TVamScrollBar.Create(self);
+  HorzScrollBar.CornerRadius[2] := 3;
+  HorzScrollBar.CornerRadius[3] := 3;
   HorzScrollBar.SliderType := TVamSliderType.stHorizontal;
   HorzScrollBar.Parent := self;
   HorzScrollBar.OnChanged := EventHandler_ScrollBarChanged;
 
+
   fVertScrollBar := TVamScrollBar.Create(self);
+  VertScrollBar.CornerRadius[1] := 3;
+  VertScrollBar.CornerRadius[2] := 3;
   VertScrollBar.SliderType := TVamSliderType.stVertical;
   VertScrollBar.Parent := self;
   VertScrollBar.OnChanged := EventHandler_ScrollBarChanged;

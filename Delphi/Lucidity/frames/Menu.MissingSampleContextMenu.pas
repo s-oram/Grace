@@ -23,6 +23,7 @@ type
 implementation
 
 uses
+  SysUtils,
   XPLAT.Dialogs,
   Dialogs,
   VamLib.Utils,
@@ -62,17 +63,23 @@ procedure TMissingSampleContextMenu.HandleEvent_LocateMissingSample(Sender: TObj
 var
   FileOpenDialog : TxpFileOpenDialog;
   rx : IRegion;
+  fn : string;
 begin
   rx := Plugin.FocusedRegion;
+
   if not assigned(rx) then exit;
   if rx.GetProperties^.SampleDataLoaded = true then exit;
   if rx.GetProperties^.SampleErrorType <> TSampleError.FileNotFound then exit;
-
 
   FileOpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@FileOpenDialog);
 
   SetupFileOpenDialog(FileOpenDialog, TDialogTarget.dtAudioFile);
+
+  fn := rx.GetProperties^.SampleFileName;
+  fn := ExtractFileName(fn);
+  FileOpenDialog.FileName := fn;
+
 
   if FileOpenDialog.Execute then
   begin

@@ -808,6 +808,11 @@ begin
   ClearPadding(ModSystem2Frame.BackgroundPanel);
 
 
+  MainPanel.CornerRadius1 := 0;
+  MainPanel.CornerRadius2 := 0;
+  MainPanel.CornerRadius3 := 0;
+  MainPanel.CornerRadius4 := 0;
+
   //============================================================================
   // Set padding and margins so there is a two pixel space between
   // all panel components.
