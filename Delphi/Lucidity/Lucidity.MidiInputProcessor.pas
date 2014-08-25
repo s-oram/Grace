@@ -242,10 +242,6 @@ begin
         if NoteStack.Count > 0 then
         begin
           MidiNote_Target  := NoteStack.LastNote^.Data1;
-
-          NoteMsgData.Data1 := NoteStack.LastNote^.Data1;
-          NoteMsgData.Data2 := NoteStack.LastNote^.Data2;
-          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteTrigger, @NoteMsgData);
         end else
         begin
           NoteMsgData.Data1 := Data1;

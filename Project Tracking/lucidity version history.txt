@@ -15,6 +15,7 @@ Change:
 - double clicking on a sample map item doesn't close the sample map.
 
 Bug Fix:
+- Legato mode reset the sample playback position when a note was released. 
 
 === BETA v0.0.1.48 (25-Aug-2014) ===
 Change:
