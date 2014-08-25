@@ -10,12 +10,12 @@ bug
 
 == Finished for the next release ==
 New:
-
 Change:
-- some tweaks to the GUI styling.
-
 Bug Fix:
 
+=== BETA v0.0.1.48 (25-Aug-2014) ===
+Change:
+- some tweaks to the GUI styling.
 
 === BETA v0.0.1.47 (24-Aug-2014) ===
 New:

@@ -54,7 +54,7 @@ NNecaise@live.com
 thunderlink://messageid=BLU436-SMTP16377750A546910B9CDAC3FBBEB0@phx.gbl
 - Sent Lucidity 0.0.1.41
 
-Joseph
+Joseph   -- GIVE LUCIDITY LICENSE
 stereovegan@mm.st
 - is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
 - no email acess at OS level. 
