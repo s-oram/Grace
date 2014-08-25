@@ -18,7 +18,6 @@ uses
   Lucidity.Types,
   LucidityModConnections,
   Lucidity.Env.ADSR,
-  Lucidity.Env.ASR,
   Lucidity.Osc.OneShotSampler,
   Lucidity.Osc.OneShotSampler.SubOsc,
   Lucidity.Osc.LoopSampler,

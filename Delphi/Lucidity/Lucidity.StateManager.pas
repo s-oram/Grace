@@ -207,7 +207,6 @@ begin
     xml.SaveToFile('D:\temp\Lucidity\test.lpg');
     {$ENDIF}
 
-    // TODO:HIGH - whats going on here.
     CheckPatchFormatVersion(XML);
     MakeSampleFileNamesAbsolute(Xml.Root, FileName);
     ReadStateFromXML(XML);
@@ -962,7 +961,6 @@ begin
     aRegion.Properties^.RefLoopEnd   := -1;
   end;
 
-
   //============================================================================
   // Perform some sanitisation after the sample has been loaded.
   if (aRegion.Sample.Properties.IsValid) then
@@ -974,27 +972,11 @@ begin
     if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
     if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
 
-    //=========================================================================================================================
-    // NOTE: When loop mode isn't defined, reset it in a way that is compatible with the SFZ format.
-    // If loop_start is not specified and the sample has a loop defined, the sample start point will be used.
-    // If loop_start is specified, it will overwrite the loop start point defined in the sample.
-    // If loop_end is not specified and the sample have a loop defined, the sample loop end point will be used.
-    // If loop_end is specified, it will overwrite the loop end point defined in the sample.
-
-    // TODO:HIGH what happens here when importing SFZ files. Need to satisfy the above conditions.
-    //if aRegion.Properties^.UserLoopStart < 0   then aRegion.Properties^.UserLoopStart   := aRegion.Properties^.SampleStart;
-    //if aRegion.Properties^.UserLoopEnd < 0     then aRegion.Properties^.UserLoopEnd     := aRegion.Properties^.SampleEnd;
-    //=========================================================================================================================
-
-
     // Clamp start/end points to fit inside sample boundaries.
     aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
     aRegion.Properties^.SampleEnd   := Clamp(aRegion.Properties^.SampleEnd, 0, SampleFrames-1);
   end;
   //============================================================================
-
-
-
 
   Plugin.SampleMap.AddRegion(aRegion);
 end;

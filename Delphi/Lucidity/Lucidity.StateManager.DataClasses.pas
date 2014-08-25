@@ -112,16 +112,6 @@ uses
 
 procedure TRegionLoadInfo.ResetToDefaultValues;
 begin
-  // TODO:HIGH These are default values.
-  // Some of these values won't be appropitate. I should
-  // change the way they work so when a new region is created
-  // I knob what values have been ---
-  // Maybe that can be done as part of the sanitisation stage.
-
-  // TODO:HIGH I wonder if other classes will need to have this
-  // same default load state applied.
-
-
   LowNote        := 0;
   HighNote       := 127;
   LowVelocity    := 0;

@@ -191,7 +191,7 @@ begin
     Par := PluginParFromName(Parname);
     ParID := PluginParToID(Par);
 
-    // TODO: It might be handy to have a IsParNameValid() function here
+    // TODO:MED It might be handy to have a IsParNameValid() function here
     // to assert that parameter names are correct.
     ParValue := Plugin.GetPluginParameter(ParID);
 
