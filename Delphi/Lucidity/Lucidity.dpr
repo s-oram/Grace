@@ -95,7 +95,6 @@ uses
   Lucidity.Globals in 'Lucidity.Globals.pas',
   uLucidityExtra in 'uLucidityExtra.pas',
   Menu.SampleMapContextMenu in 'frames\Menu.SampleMapContextMenu.pas',
-  Lucidity.Env.ASR in 'SoundObjects\Lucidity.Env.ASR.pas',
   uDialogDisplayArea in 'frames\uDialogDisplayArea.pas',
   Menu.CustomPopupMenu in 'frames\Menu.CustomPopupMenu.pas',
   uAboutDialog in 'Dialogs\uAboutDialog.pas' {AboutDialogForm},

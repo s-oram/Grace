@@ -521,7 +521,6 @@
 			<DCCReference Include="Lucidity.Globals.pas"/>
 			<DCCReference Include="uLucidityExtra.pas"/>
 			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
-			<DCCReference Include="SoundObjects\Lucidity.Env.ASR.pas"/>
 			<DCCReference Include="frames\uDialogDisplayArea.pas"/>
 			<DCCReference Include="frames\Menu.CustomPopupMenu.pas"/>
 			<DCCReference Include="Dialogs\uAboutDialog.pas">
