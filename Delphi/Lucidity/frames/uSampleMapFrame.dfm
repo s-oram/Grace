@@ -118,7 +118,6 @@ object SampleMapFrame: TSampleMapFrame
             OnRegionInfoChanged = SampleMapRegionInfoChanged
             Align = alClient
             Visible = True
-            OnDblClick = SampleMapDblClick
           end
         end
       end

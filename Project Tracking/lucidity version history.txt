@@ -10,7 +10,10 @@ bug
 
 == Finished for the next release ==
 New:
+
 Change:
+- double clicking on a sample map item doesn't close the sample map.
+
 Bug Fix:
 
 === BETA v0.0.1.48 (25-Aug-2014) ===

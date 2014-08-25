@@ -47,9 +47,19 @@ bug
 bug
 - lucidity sometimes hangs when closing. add some logging to see where it hangs. 
 
+
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- there might be a problem with the legato mode.
+-- play one note (hold)
+   play second note
+   release second note.
+   release first note.
+
+
+
 [BIG TASK]
 - need a frame work for putting dialogs on the GUI.
 

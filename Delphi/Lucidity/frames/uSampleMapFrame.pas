@@ -63,7 +63,6 @@ type
       APoint: TPoint; var Effect: Integer; Data: IVamDragData);
     procedure SampleMapShowReplaceRegionMessage(Sender: TObject;
       Value: Boolean);
-    procedure SampleMapDblClick(Sender: TObject);
     procedure CloseSampleMapButtonClick(Sender: TObject);
     procedure GroupVisibilityButtonMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -516,11 +515,6 @@ begin
   SG := Plugin.FocusedKeyGroup;
   Plugin.SampleMap.DeselectOtherRegions(aRegion.UniqueID);
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-end;
-
-procedure TSampleMapFrame.SampleMapDblClick(Sender: TObject);
-begin
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideSampleMapEdit);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
