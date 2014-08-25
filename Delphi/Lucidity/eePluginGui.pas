@@ -834,7 +834,7 @@ begin
   FileBrowserFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   SampleMapFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   MiniSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
-  MiniSampleDisplayFrame.InsidePanel.Padding.SetBounds(4,4,4,4);
+  MiniSampleDisplayFrame.InsidePanel.Padding.SetBounds(4,4,4,2);
   AboutFrame.BackgroundPanel.Padding.SetBounds(16,16,16,16);
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);

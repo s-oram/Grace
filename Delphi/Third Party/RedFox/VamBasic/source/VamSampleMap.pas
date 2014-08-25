@@ -948,12 +948,16 @@ begin
 
   x1 := KeyZone[LowKey].Bounds.Left;
   x2 := KeyZone[HighKey].Bounds.Right+1;
+  if x2 >= Width then x2 := Width - 0.5;
 
   y1 := (1 - ((HighVelocity + 1) / 128)) * (Height);
   y2 := (1 - (LowVelocity        / 128)) * (Height);
   y1 := round(y1) + 0.5;
   y2 := round(y2) + 0.5;
   if y2 >= Height then y2 := Height - 0.5;
+
+
+
 
   result := RectF(x1, y1, x2, y2);
 end;

@@ -286,25 +286,18 @@ begin
   SampleVolumeKnob.Margins.SetBounds(0,0,20,0);
   SamplePanKnob.Margins.SetBounds(0,0,20,0);
 
-
   StoredImage.GetObject.Resize(kSampleImageWidth, kSampleImageHeight);
-  //SampleDisplay.Layout.SetPos(0,0).SetSize(kSampleImageWidth, kSampleImageHeight);
-
 
   ScrollBarDiv.Align := alBottom;
   ScrollBarDiv.Height := 18;
-  //ScrollBarDiv.AlignWithMargins := true;
-  //ScrollBarDiv.Margins :=
-
-
 
   ZoomInButton.Width := 18;
   ZoomOutButton.Width := 18;
   ZoomOutFullButton.Width := 18;
 
-  GuiSetup.StyleButton_CommandButton(ZoomOutButton);
-  GuiSetup.StyleButton_CommandButton(ZoomInButton);
-  GuiSetup.StyleButton_CommandButton(ZoomOutFullButton);
+  GuiSetup.StyleButton_SliderButton(ZoomOutButton);
+  GuiSetup.StyleButton_SliderButton(ZoomInButton);
+  GuiSetup.StyleButton_SliderButton(ZoomOutFullButton);
 
   ZoomOutButton.AlignWithMargins := true;
   ZoomOutButton.Margins.SetBounds(0,0,-1,0);
@@ -316,12 +309,12 @@ begin
   Timer1.Interval := 25;
 
   SampleDisplay.Align := TAlign.alClient;
-  InsidePanel.AlignWithMargins := true;
 
+  InsidePanel.AlignWithMargins := true;
   InsidePanel.Align := TAlign.alClient;
   InsidePanel.Margins.Bottom := 0;
-  InsidePanel.CornerRadius3 := 3;
-  InsidePanel.CornerRadius4 := 3;
+  InsidePanel.CornerRadius3 := 0;
+  InsidePanel.CornerRadius4 := 0;
 
   ZoomScrollBar.Align := alClient;
   ZoomScrollBar.AlignWithMargins := true;

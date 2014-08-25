@@ -237,8 +237,6 @@ const
   kColor_ToggleButtonOffMouseOver = '$FFFAECE6';
   kColor_ToggleButtonBorder       = '$FF242B39';
 
-
-
   kModLineColorOff = '$ffA5A5A5';
 
   //kModLineColorA = '$ffFAFAFA';
@@ -252,10 +250,6 @@ const
 
   kArrowColor1 = '$33FFFFFF';
   kArrowColor2 = '$ccFFFFFF';
-
-
-
-
 
 
 

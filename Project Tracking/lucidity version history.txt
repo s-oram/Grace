@@ -10,7 +10,10 @@ bug
 
 == Finished for the next release ==
 New:
+
 Change:
+- some tweaks to the GUI styling.
+
 Bug Fix:
 
 

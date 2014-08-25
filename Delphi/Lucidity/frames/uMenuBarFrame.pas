@@ -138,13 +138,15 @@ begin
   MapEditButton.ImageOverlayHorzAlign := TRedFoxAlign.AlignNear;
   MapEditButton.ImageOverlayOffsetX := 2;
 
-
-
   GroupMenuButton.Width := 116;
   SampleMenuButton.Width := 136;
 
   InfoDisplay.Align := alClient;
   InfoDisplay.Text := '';
+
+
+  GuiSetup.StyleButton_CommandButton_Bright(MainMenuButton);
+  GuiSetup.StyleButton_CommandButton_Bright(MapEditButton);
 
 
   //===

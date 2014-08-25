@@ -113,6 +113,7 @@ type
   end;
 
   GuiSetup = record
+    class procedure StyleButton_SliderButton(const Button : TVamTextBox); static;
     class procedure StyleButton_CommandButton(const Button : TVamTextBox); static;
     class procedure StyleButton_CommandButton_Bright(const Button : TVamTextBox); static;
     class procedure StyleButton_SelectorButton(const Button : TVamTextBox); static;
@@ -1025,6 +1026,11 @@ begin
   Button.Font.Color      := GetRedFoxColor('$ff242B39');
 
   Button.ShowBorder := true;
+
+  Button.CornerRadius[0] := 2;
+  Button.CornerRadius[1] := 2;
+  Button.CornerRadius[2] := 2;
+  Button.CornerRadius[3] := 2;
 end;
 
 class procedure GuiSetup.StyleButton_SelectorButton(const Button: TVamTextBox);
@@ -1037,6 +1043,22 @@ begin
   Button.CornerRadius[1] := 3;
   Button.CornerRadius[2] := 3;
   Button.CornerRadius[3] := 3;
+end;
+
+class procedure GuiSetup.StyleButton_SliderButton(const Button: TVamTextBox);
+begin
+  Button.Font.Color     := GetRedFoxColor(kColor_LcdDark1);
+
+  Button.Color          := kPanelLight;
+  Button.ColorMouseOver := '$ffE3EEFF';
+
+  Button.ColorBorder     :=  '$ff000000';
+  Button.ShowBorder := true;
+
+  Button.CornerRadius[0] := 0;
+  Button.CornerRadius[1] := 0;
+  Button.CornerRadius[2] := 0;
+  Button.CornerRadius[3] := 0;
 end;
 
 end.

@@ -44,16 +44,16 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
         Transparent = False
         Visible = True
         OnResize = InsidePanelResize
-        Padding.Left = 4
-        Padding.Top = 4
-        Padding.Right = 4
-        Padding.Bottom = 4
+        Padding.Left = 8
+        Padding.Top = 8
+        Padding.Right = 8
+        Padding.Bottom = 8
         object SampleDisplay: TVamSampleDisplay
           AlignWithMargins = True
-          Left = 4
-          Top = 4
-          Width = 782
-          Height = 196
+          Left = 8
+          Top = 8
+          Width = 774
+          Height = 188
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -64,21 +64,28 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           Align = alClient
           Visible = True
           OnResize = SampleDisplayResize
+          ExplicitLeft = 4
+          ExplicitTop = 4
+          ExplicitWidth = 782
+          ExplicitHeight = 200
         end
         object SampleInfoBox: TVamDiv
-          Left = 4
-          Top = 200
-          Width = 782
+          Left = 8
+          Top = 196
+          Width = 774
           Height = 47
           Opacity = 255
           HitTest = True
           Align = alBottom
           Visible = True
+          ExplicitLeft = 4
+          ExplicitTop = 204
+          ExplicitWidth = 782
           object InfoDiv: TVamDiv
             AlignWithMargins = True
             Left = 0
             Top = 0
-            Width = 782
+            Width = 774
             Height = 27
             Margins.Left = 0
             Margins.Top = 0
@@ -89,6 +96,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             Align = alTop
             Visible = True
             OnResize = InfoDivResize
+            ExplicitWidth = 782
             object SampleNameLabel: TVamLabel
               AlignWithMargins = True
               Left = 0
@@ -116,7 +124,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
             end
             object SampleBeatsKnob: TVamCompoundNumericKnob
               Tag = 4
-              Left = 714
+              Left = 706
               Top = 0
               Width = 68
               Height = 27
@@ -145,11 +153,12 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 714
             end
             object SampleVolumeKnob: TVamCompoundNumericKnob
               Tag = 1
               AlignWithMargins = True
-              Left = 378
+              Left = 370
               Top = 0
               Width = 78
               Height = 27
@@ -183,11 +192,12 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 378
             end
             object SamplePanKnob: TVamCompoundNumericKnob
               Tag = 2
               AlignWithMargins = True
-              Left = 466
+              Left = 458
               Top = 0
               Width = 62
               Height = 27
@@ -221,11 +231,12 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 466
             end
             object SampleFineKnob: TVamCompoundNumericKnob
               Tag = 6
               AlignWithMargins = True
-              Left = 626
+              Left = 618
               Top = 0
               Width = 78
               Height = 27
@@ -258,11 +269,12 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 626
             end
             object SampleTuneKnob: TVamCompoundNumericKnob
               Tag = 5
               AlignWithMargins = True
-              Left = 538
+              Left = 530
               Top = 0
               Width = 78
               Height = 27
@@ -296,6 +308,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              ExplicitLeft = 538
             end
           end
         end
