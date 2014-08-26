@@ -327,6 +327,9 @@ begin
 
     IsMute := ModConnections.GetModMute(c1);
     ModSelectors[c1].ShowMuteIcon := IsMute;
+
+    // TODO:HIGH find a way to dectect when this property should be true.
+    ModSelectors[c1].ShowModulationActiveIcon := false;
   end;
 
 

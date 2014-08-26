@@ -31,6 +31,7 @@ type
     fShowMuteIcon: boolean;
     fModAmountX2: single;
     fOnShowContextMenu: TNotifyEvent;
+    fShowModulationActiveIcon: boolean;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -51,6 +52,7 @@ type
     procedure SetShowModAmount(const Value: boolean);
     procedure SetShowMuteIcon(const Value: boolean);
     procedure SetModAmountX2(const Value: single);
+    procedure SetShowModulationActiveIcon(const Value: boolean);
 
   protected type
       TActiveControlRegion = (ModDisplay, ViaDisplay);
@@ -71,6 +73,7 @@ type
     procedure Draw_Text(TextAreaBounds : TRect);
     procedure Draw_ModAmountSlider(SliderBounds : TRect);
     procedure Draw_MuteIcon(TextAreaBounds : TRect);
+    procedure Draw_ModSlotActiveIcon(TextAreaBounds : TRect);
 
     procedure EventHandle_TextPaddingChange(Sender : TObject);
   public
@@ -101,6 +104,7 @@ type
     property ModAmountX1 : single read fModAmountX1 write SetModAmountX1;
     property ModAmountX2 : single read fModAmountX2 write SetModAmountX2;
     property ShowMuteIcon : boolean read fShowMuteIcon write SetShowMuteIcon;
+    property ShowModulationActiveIcon : boolean read fShowModulationActiveIcon write SetShowModulationActiveIcon;
 
     property OnShowContextMenu   : TNotifyEvent read fOnShowContextMenu   write fOnShowContextMenu;
     property OnShowModSourceMenu : TNotifyEvent read fOnShowModSourceMenu write fOnShowModSourceMenu;
@@ -301,6 +305,14 @@ begin
   end;
 end;
 
+procedure TVamModSelector.SetShowModulationActiveIcon(const Value: boolean);
+begin
+  if fShowModulationActiveIcon <> Value then
+  begin
+    fShowModulationActiveIcon := Value;
+  end;
+end;
+
 procedure TVamModSelector.SetShowMuteIcon(const Value: boolean);
 begin
   if Value <> fShowMuteIcon then
@@ -391,8 +403,13 @@ begin
   TextBounds.Left   := TextPadding.Left;
   TextBounds.Right  := Width - TextPadding.Right;
   Draw_Text(TextBounds);
+
+  if ShowModulationActiveIcon
+    then Draw_ModSlotActiveIcon(TextBounds);
+
   if ShowMuteIcon
     then Draw_MuteIcon(TextBounds);
+
 
   //== draw the mod amount ==
   if (ShowModAmount) then
@@ -418,8 +435,6 @@ begin
 
     BackBuffer.TransformImage(ImageOverlay, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
   end;
-
-
 
 
   //== draw the border ==
@@ -485,6 +500,19 @@ begin
   BackBuffer.BufferInterface.RoundedRect(SliderBounds.Left-0.5, SliderBounds.Top-0.5, SliderBounds.Right+0.5, SliderBounds.Bottom+0.5, 1.5);
 end;
 
+procedure TVamModSelector.Draw_ModSlotActiveIcon(TextAreaBounds: TRect);
+var
+  ptx, pty : single;
+  ElementBounds : TRect;
+begin
+  pty := TextAreaBounds.Top + TextAreaBounds.Height * 0.5 + 1;
+  ptx := TextAreaBounds.Left + TextAreaBounds.Width * 1/6;
+
+  BackBuffer.BufferInterface.NoLine;
+  BackBuffer.BufferInterface.FillColor := GetAggColor(clGreen);
+  BackBuffer.BufferInterface.Circle(ptx, pty, 3);
+end;
+
 procedure TVamModSelector.Draw_MuteIcon(TextAreaBounds: TRect);
 const
   //TODO:MED HACK: This color is hard coded because it doesn't corrospond to
@@ -496,7 +524,6 @@ var
 begin
   pty := TextAreaBounds.Top + TextAreaBounds.Height * 0.5;
   ptx := TextAreaBounds.Left + TextAreaBounds.Width * 1/5;
-
 
   BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := GetAggColor(clRed);
