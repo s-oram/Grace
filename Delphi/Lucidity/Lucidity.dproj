@@ -593,11 +593,6 @@
 			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>
 			<DCCReference Include="Lucidity.MidiInputProcessor.pas"/>
 			<DCCReference Include="Lucidity.VoiceController.pas"/>
-			<DCCReference Include="frames\uZoomSampleDisplayFrame.pas">
-				<Form>ZoomSampleDisplayFrame</Form>
-				<FormType>dfm</FormType>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="frames\uXYPadsFrame.pas">
 				<Form>XYPadsFrame</Form>
 				<FormType>dfm</FormType>

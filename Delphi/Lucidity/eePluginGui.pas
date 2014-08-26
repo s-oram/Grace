@@ -21,7 +21,6 @@ uses
   uConstants, uGuiFeedbackData,
   uSampleMapFrame, uFileBrowserFrame, uVoiceControlFrame,
   uMenuBarFrame,
-  uZoomSampleDisplayFrame,
   uModControlFrame, uMiniSampleDisplayFrame,
   eeFileBrowserAddon, eeRedFoxDropFileTarget,
   eePlugin,

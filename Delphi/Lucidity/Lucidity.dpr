@@ -159,7 +159,6 @@ uses
   Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',
   Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',
   Lucidity.VoiceController in 'Lucidity.VoiceController.pas',
-  uZoomSampleDisplayFrame in 'frames\uZoomSampleDisplayFrame.pas' {ZoomSampleDisplayFrame: TFrame},
   uXYPadsFrame in 'frames\uXYPadsFrame.pas' {XYPadsFrame: TFrame},
   Menu.XYPadContextMenu in 'frames\Menu.XYPadContextMenu.pas',
   eeParSmoother in 'EasyEffectTemplate\eeParSmoother.pas',
