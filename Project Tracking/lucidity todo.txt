@@ -60,6 +60,8 @@ bug
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.
 
+- Lucidity should reload samples if changes are detected. Should just check last save date to begin with. Not too complicated!
+
 - The mod slot needs something to indicate the mod slot is being used.
 
 - error region colors need to be more obvious!
@@ -153,6 +155,7 @@ Installer needs option to put data folder
 - in VST Plugin directory
 - or custom location.
 
+- document what the installer does. 
 
 =============================================================================
      TODO MED

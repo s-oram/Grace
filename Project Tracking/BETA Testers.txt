@@ -8,6 +8,7 @@ juanjo@walnutdoor.net
 Yann
 waveshaperkit@gmail.com
 - thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
+- Sent Lucidity 0.0.1.49 
 
 
 =================================================================================================
@@ -16,11 +17,14 @@ waveshaperkit@gmail.com
 James Ulph <james.ulph@btinternet.com>
 - interested in testing Lucidity
 thunderlink://messageid=1408741888.13332.YahooMailNeo@web186102.mail.ir2.yahoo.com
+  - Sent Lucidity 0.0.1.49 
+
 
 Goran Podrugovic
 goran.podrugovic@gmail.com
 - interested in testing Lucidity
-  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com  
+  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
+  - Sent Lucidity 0.0.1.49 
 
 Chris Holmes (Good Tester)
 futuresproof@gmail.com
@@ -38,7 +42,9 @@ Interested in testing Lucidity **PROMISED LICENSE**
 thunderlink://messageid=CAPN=qRy34C0H800GCOSVQsSnyxq4ZrJT7JMbbd8BQv27VuZasQ@mail.gmail.com
 - Sent Lucidity 0.0.1.44
   thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
-  thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com 
+  thunderlink://messageid=CAPN=qRz2fj+s+8MzidoMnNkxxArL8xnjVPQ988whZ3cuhv-ypA@mail.gmail.com
+- Sent Lucidity 0.0.1.49
+
 
 Andrea Biasior - Reuse Noise (good tester +3)
 reusenoise@gmail.com
