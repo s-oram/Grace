@@ -25,69 +25,59 @@ object Form1: TForm1
     OnClick = Button1Click
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 80
-    Top = 24
-    Width = 377
-    Height = 393
+    Left = 25
+    Top = 16
+    Width = 609
+    Height = 440
     Color = '$FFCCCCCC'
-    object VamTextBox2: TVamTextBox
-      Left = 32
-      Top = 72
-      Width = 217
-      Height = 113
+    object VamPanel1: TVamPanel
+      AlignWithMargins = True
+      Left = 8
+      Top = 8
+      Width = 593
+      Height = 424
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Opacity = 255
+      Text = 'VamPanel1'
       HitTest = True
-      AutoTrimText = False
-      Color = '$FF3E3E3E'
-      ColorMouseOver = '$FF3E3E3E'
-      ColorBorder = '$00000000'
-      ShowBorder = False
-      TextAlign = AlignNear
-      TextVAlign = AlignNear
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ImageOverlayVertAlign = AlignCenter
-      ImageOverlayHorzAlign = AlignCenter
-      ImageOverlayOffsetX = 0
-      ImageOverlayOffsetY = 0
+      Color = '$FFCCCCCC'
+      Transparent = False
+      Align = alClient
       Visible = True
+      object VamTreeView1: TVamTreeView
+        Left = 18
+        Top = 3
+        Width = 471
+        Height = 406
+        Opacity = 255
+        Text = 'VamTreeView1'
+        HitTest = True
+        SelectedNodeColor = clBlack
+        SelectedNodeAlpha = 35
+        ChildIndent = 12
+        DefaultNodeHeight = 16
+        Options = []
+        RootIndent = 4
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Visible = True
+      end
     end
   end
   object Button2: TButton
-    Left = 23
-    Top = 503
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 3
-  end
-  object Button3: TButton
-    Left = 104
-    Top = 503
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 4
-  end
-  object Button4: TButton
     Left = 185
-    Top = 503
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 5
-  end
-  object Button5: TButton
-    Left = 185
-    Top = 463
+    Top = 462
     Width = 139
     Height = 25
-    Caption = 'Button1'
-    TabOrder = 6
-    OnClick = Button5Click
+    Caption = 'Button2'
+    TabOrder = 3
+    OnClick = Button2Click
   end
   object Memo1: TMemo
     Left = 640
@@ -103,7 +93,7 @@ object Form1: TForm1
     Top = 55
     Width = 401
     Height = 22
-    TabOrder = 7
+    TabOrder = 4
     Text = '<region> sample=tom one.wav lokey=12'
   end
   object FileOpenDialog1: TFileOpenDialog

@@ -5,6 +5,7 @@ interface
 
 
 uses
+  eeFileBrowserAddon,
   wmfintf,
   ACS_MemFloat,
   ACS_Wave,
@@ -50,18 +51,18 @@ type
     Memo1: TMemo;
     RedFoxContainer1: TRedFoxContainer;
     Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
-    Button5: TButton;
     Edit1: TEdit;
     FileOpenDialog1: TFileOpenDialog;
-    VamTextBox2: TVamTextBox;
+    VamPanel1: TVamPanel;
+    VamTreeView1: TVamTreeView;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
+    FileBrowserAddon : TFileBrowserAddon;
+
     MotherShip : TMotherShip;
     OscPhase : TOscPhaseCounter;
     StepSize : TOscPhaseCounter;
@@ -167,53 +168,29 @@ begin
 
   Delete(xs, Length(xs), 1);
 
-  VamTextBox2.CornerRadius[0] := 150;
-  VamTextBox2.CornerRadius[1] := 3;
-  VamTextBox2.CornerRadius[2] := 3;
-  VamTextBox2.CornerRadius[3] := 150;
+  FileBrowserAddon := TFileBrowserAddon.Create(VamTreeView1);
+  FileBrowserAddon.AddRootNode('d:\', 'd');
+  FileBrowserAddon.UpdateRootNodes;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Timer.Free;
   BackBuffer.Free;
+  FileBrowserAddon.Free;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
-// c:\test1\test2\
-var
-  Mp3In : TMP3In;
-  wavOut : TWaveOut;
-  MemFloatOut : TMemFloatOut;
 begin
-  mp3In := TMp3In.Create(nil);
-  wavOut := TWaveOut.Create(nil);
-  memFloatOut := TMemFloatOut.Create(nil);
-
-  try
-    if FileOpenDialog1.Execute then
-    begin
-      mp3In.FileName := FileOpenDialog1.FileName;
-
-      //wavOut.Input := mp3In;
-      //wavOut.FileName := 'D:\A WAve Convert Test.wav';
-      //WavOut.BlockingRun;
-
-      MemFloatOut.Input := mp3In;
-      MemFloatOut.BlockingRun;
-      //MemFloatOut.SampleData[0,0] := 1;
-    end;
-  finally
-    mp3In.free;
-    WavOut.Free;
-    MemFloatOut.Free;
-  end;
+  //
+  FileBrowserAddon.UpdateRootNodes;
 end;
 
-procedure TForm1.Button5Click(Sender: TObject);
+procedure TForm1.Button2Click(Sender: TObject);
 begin
-
+  //
 end;
+
 
 
 procedure TForm1.UpdateLabel;

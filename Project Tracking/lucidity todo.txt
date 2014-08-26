@@ -162,6 +162,12 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+
+TDynArray. This is a wrapper around delphi's dynamic arrays. It might be useful to use.
+It might also be useful for inspiration for my own TSimpleList classes in VamLib.Collections.lists.pas.
+http://blog.synopse.info/post/2011/03/12/TDynArray-and-Record-compare/load/save-using-fast-RTTI
+
+
 [BIG TASK]
 Instead of using individual timers on the GUI to drive repeating tasks. I should have
 one master timer that can either send out 'pings' via the zero object system. Or some

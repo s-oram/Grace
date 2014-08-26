@@ -249,12 +249,7 @@ begin
       ChildData^.CanExpand   := false;
     end;
 
-
-
-
   end;
-
-
 end;
 
 
