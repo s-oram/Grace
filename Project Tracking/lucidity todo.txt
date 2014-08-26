@@ -52,8 +52,6 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-browser needs to not refresh when drop source is itself.
-
 [BIG TASK]
 - need a frame work for putting dialogs on the GUI.
 

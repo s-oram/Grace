@@ -153,6 +153,8 @@ begin
     PreviewInfoChanged;
   end;
 
+
+
 end;
 
 
@@ -205,7 +207,7 @@ begin
   PreviewOnOffButton.Layout.Anchor(PreviewVolumeKnob).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
 
   //======================================
-  RefreshFileBrowser; //Update some GUI controls...
+  SampleDirectoriesChanged;
   PreviewInfoChanged; //Update some GUI controls...
 end;
 
@@ -513,13 +515,7 @@ end;
 
 procedure TFileBrowserFrame.RefreshFileBrowser;
 begin
-  //TODO:
-  // Here we need to refresh the file browser.
-  // this is desired because it would be good if the browser refreshed after saving
-  // a new program to disk. Currently it doesn't show up until the patch browser node
-  // is closed and re-opended.
-
-  SampleDirectoriesChanged;
+  FileBrowserAddon.RefreshTreeView;
 end;
 
 procedure TFileBrowserFrame.FileTreeViewOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
@@ -529,8 +525,10 @@ var
   fn : string;
   DirPath, DirName : string;
   Ext : string;
+  DirectoryRefreshNeeded : boolean;
 begin
   //=== Check drag and dropped files for directories. Add any directories to the browser =====
+  DirectoryRefreshNeeded := false;
   Files := Data.GetFiles;
   if assigned(Files) then
   begin
@@ -545,9 +543,12 @@ begin
         DirPath := ExtractFileDir(fn);
         DirPath := IncludeTrailingPathDelimiter(DirPath) + DirName;
         Plugin.SampleDirectories.AddSampleDirectory(DirName, DirPath);
+        DirectoryRefreshNeeded := true;
       end;
     end;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
+
+    if DirectoryRefreshNeeded
+      then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
   end;
 end;
 

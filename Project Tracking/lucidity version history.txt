@@ -13,6 +13,7 @@ New:
 
 Change:
 - double clicking on a sample map item doesn't close the sample map.
+- improved the browser. It would collapse whenever it was refreshed. 
 
 Bug Fix:
 - Legato mode reset the sample playback position when a note was released. 
