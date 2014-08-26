@@ -528,17 +528,14 @@ var
   c1: Integer;
   nd, Data, ChildData : PNodeData;
   ChildNode : TVamTreeViewNode;
-
   FolderResults, FileResults : TStringList;
   Dir : string;
-  s : string;
 begin
   for c1 := Node.ChildCount-1 downto 0 do
   begin
     if Node.Child[c1].Expanded
       then RefreshNode(Node.Child[c1]);
   end;
-
 
   //TODO:HIGH currently the refresh node only refreshes files. it should be updated to refresh
   // folders as well.
