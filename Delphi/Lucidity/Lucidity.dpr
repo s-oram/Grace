@@ -23,7 +23,6 @@ uses
   uFileBrowserFrame in 'frames\uFileBrowserFrame.pas' {FileBrowserFrame: TFrame},
   uVoiceControlFrame in 'frames\uVoiceControlFrame.pas' {VoiceControlFrame: TFrame},
   uModControlFrame in 'frames\uModControlFrame.pas' {ModControlFrame: TFrame},
-  uScrollPanelFrame in 'frames\uScrollPanelFrame.pas' {ScrollPanelFrame: TFrame},
   Lucidity.KeyGroup in 'SoundObjects\Lucidity.KeyGroup.pas',
   soLucidityVoice in 'SoundObjects\soLucidityVoice.pas',
   soADSR in 'SoundObjects\soADSR.pas',

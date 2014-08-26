@@ -434,10 +434,6 @@
 				<Form>ModControlFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="frames\uScrollPanelFrame.pas">
-				<Form>ScrollPanelFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="SoundObjects\Lucidity.KeyGroup.pas"/>
 			<DCCReference Include="SoundObjects\soLucidityVoice.pas"/>
 			<DCCReference Include="SoundObjects\soADSR.pas"/>
