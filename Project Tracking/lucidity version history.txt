@@ -10,7 +10,11 @@ bug
 
 == Finished for the next release ==
 New:
+Change:
+Bug Fix:
 
+
+=== BETA v0.0.1.49 (26-Aug-2014) ===
 Change:
 - double clicking on a sample map item doesn't close the sample map.
 - improved the browser. It would collapse whenever it was refreshed. 
