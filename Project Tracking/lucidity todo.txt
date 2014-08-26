@@ -60,9 +60,6 @@ bug
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.
 
-browser needs ability to save/load it's open directories. 
--- then it needs the ability to refresh without completely closing.     
-
 - The mod slot needs something to indicate the mod slot is being used.
 
 - error region colors need to be more obvious!
@@ -160,6 +157,11 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+the browser should save it's state when the GUI is closed and reopended.
+-- it should also refresh itself after being reopened. 
+
+the browser + icons used to show folders don't change to - icons when a folder
+is expanded. (They should!)
 
 TDynArray. This is a wrapper around delphi's dynamic arrays. It might be useful to use.
 It might also be useful for inspiration for my own TSimpleList classes in VamLib.Collections.lists.pas.
