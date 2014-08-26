@@ -102,8 +102,6 @@ type
 
     procedure UpdateSampleDisplayInfo;
 
-    procedure SampleOverlayDblClicked(Sender : TObject);
-
     procedure SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SampleOverlayMouseOverMarkerChanged(Sender : TObject);
@@ -171,8 +169,6 @@ begin
   fSampleOverlay.OnOleDragDrop  := SampleDisplayOleDragDrop;
   fSampleOverlay.OnOleDragOver  := SampleDisplayOleDragOver;
   fSampleOverlay.OnOleDragLeave := SampleDisplayOleDragLeave;
-
-  fSampleOverlay.OnDblClick := SampleOverlayDblClicked;
 
   CurrentSample.Info.IsValid := false;
 
@@ -776,12 +772,6 @@ begin
   UpdateControlVisibility;
   UpdateSampleDisplay;
   UpdateSampleDisplayInfo;
-end;
-
-procedure TMiniSampleDisplayFrame.SampleOverlayDblClicked(Sender: TObject);
-begin
-  if not assigned(Plugin) then exit;
-  Command.ToggleSampleZoom(Plugin);
 end;
 
 procedure TMiniSampleDisplayFrame.SampleOverlayMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
