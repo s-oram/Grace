@@ -5,6 +5,7 @@ interface
 
 
 uses
+  SynCommons,
   eeFileBrowserAddon,
   wmfintf,
   ACS_MemFloat,
@@ -189,6 +190,7 @@ end;
 procedure TForm1.Button2Click(Sender: TObject);
 begin
   //
+
 end;
 
 
