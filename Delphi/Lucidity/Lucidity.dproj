@@ -485,10 +485,6 @@
 			</DCCReference>
 			<DCCReference Include="Lucidity.KeyGroupManager.pas"/>
 			<DCCReference Include="frames\Menu.KeyGroupsMenu.pas"/>
-			<DCCReference Include="frames\uRegionInfoFrame.pas">
-				<Form>RegionInfoFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="frames\Menu.SamplesMenu.pas"/>
 			<DCCReference Include="eePluginEx.pas"/>
 			<DCCReference Include="GuiComponents\uKeyStateTrackerOverlay.pas"/>

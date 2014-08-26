@@ -68,7 +68,6 @@ uses
   uMenuBarFrame in 'frames\uMenuBarFrame.pas' {MenuBarFrame: TFrame},
   Lucidity.KeyGroupManager in 'Lucidity.KeyGroupManager.pas',
   Menu.KeyGroupsMenu in 'frames\Menu.KeyGroupsMenu.pas',
-  uRegionInfoFrame in 'frames\uRegionInfoFrame.pas' {RegionInfoFrame: TFrame},
   Menu.SamplesMenu in 'frames\Menu.SamplesMenu.pas',
   eePluginEx in 'eePluginEx.pas',
   uKeyStateTrackerOverlay in 'GuiComponents\uKeyStateTrackerOverlay.pas',
