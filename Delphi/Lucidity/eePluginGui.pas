@@ -13,7 +13,7 @@ uses
   VamLib.ZeroObject,
   uXYPadsFrame,
   uSequencerFrame,
-  OtlComm, uModSystem2Frame,
+  OtlComm, uModSystemFrame,
   uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
@@ -76,7 +76,7 @@ type
     VoiceControlFrame      : TVoiceControlFrame;
     ModControlFrame        : TModControlFrame;
     AboutFrame             : TAboutFrame;
-    ModSystem2Frame        : TModSystem2Frame;
+    ModSystem2Frame        : TModSystemFrame;
     SequencerFrame         : TSequencerFrame;
     VoiceSetupFrame        : TXYPadsFrame;
 
@@ -221,7 +221,7 @@ begin
   AboutFrame.BackgroundPanel.Visible := false;
 
 
-  ModSystem2Frame := TModSystem2Frame.Create(self.Owner);
+  ModSystem2Frame := TModSystemFrame.Create(self.Owner);
   ModSystem2Frame.BackgroundPanel.Align := alClient;
   ModSystem2Frame.BackgroundPanel.Visible := true;
   ModSystem2Frame.BackgroundPanel.Parent := ModSystem2Div;

@@ -114,7 +114,7 @@ uses
   eeVstEditorAdapter in '..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas',
   Lucidity.SampleImageRenderer in 'Lucidity.SampleImageRenderer.pas',
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
-  uModSystem2Frame in 'frames\uModSystem2Frame.pas' {ModSystem2Frame: TFrame},
+  uModSystemFrame in 'frames\uModSystemFrame.pas' {ModSystemFrame: TFrame},
   eePlugin in 'eePlugin.pas',
   LucidityUtils in 'LucidityUtils.pas',
   Lucidity.Types in 'Lucidity.Types.pas',

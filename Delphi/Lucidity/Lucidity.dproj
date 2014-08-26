@@ -536,8 +536,8 @@
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas"/>
 			<DCCReference Include="Lucidity.SampleImageRenderer.pas"/>
 			<DCCReference Include="Lucidity.FlexSampleRenderer.pas"/>
-			<DCCReference Include="frames\uModSystem2Frame.pas">
-				<Form>ModSystem2Frame</Form>
+			<DCCReference Include="frames\uModSystemFrame.pas">
+				<Form>ModSystemFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="eePlugin.pas"/>

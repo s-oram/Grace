@@ -1,4 +1,4 @@
-                                                                                             unit uVoiceControlFrame;
+unit uVoiceControlFrame;
 
 interface
 
