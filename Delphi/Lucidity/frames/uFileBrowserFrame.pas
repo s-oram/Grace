@@ -47,7 +47,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);
   protected
     IsManualScroll : boolean;
     FileBrowserAddon : TFileBrowserAddon;
@@ -153,11 +153,7 @@ begin
     PreviewInfoChanged;
   end;
 
-
-
 end;
-
-
 
 
 procedure TFileBrowserFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
@@ -182,7 +178,6 @@ begin
   PreviewVolumeKnob.Top := 0;
   PreviewVolumeKnob.Layout.SetSize(TGuiConst.KnobWidth, TGuiConst.KnobHeight);
   PreviewVolumeKnob.Layout.SnapToParentEdge(TControlFeature.RightEdge).Move(-7,4);
-
 
   //==== Parameters ====
   GuiStandard_RegisterControl(aGuiStandard, PreviewVolumeKnob,         TPluginParameter.PreviewVolume);
@@ -401,7 +396,6 @@ begin
     end;
   end;
 
-
   // remove un-supported audio format files.
   for c1 := FileNodes.Count-1  downto 0 do
   begin
@@ -411,10 +405,7 @@ begin
       FileNodes.Delete(c1);
     end;
   end;
-
 end;
-
-
 
 procedure TFileBrowserFrame.Command_ReplaceLoad;
 var
@@ -452,8 +443,6 @@ begin
     begin
       Plugin.ImportProgram(NodeData.FileName);
     end;
-
-
   end;
 end;
 
@@ -492,28 +481,17 @@ begin
     exit; //=====================================================================>>exit>>========>>
   end;
 
-
   if IsSupportedAudioFormat(NodeFileName) then
   begin
     Bitmap := Plugin.Globals.SkinImageLoader.GetImage('Browser_AudioIcon');
     exit; //=====================================================================>>exit>>========>>
   end;
 
-
   if IsSupportedProgramFormat(NodeFileName) then
   begin
     Bitmap := Plugin.Globals.SkinImageLoader.GetImage('Browser_ProgramIcon');
     exit; //=====================================================================>>exit>>========>>
   end;
-
-
-
-
-
-
-
-
-  //Plugin.Globals.
 end;
 
 procedure TFileBrowserFrame.PreviewOnOffButtonChanged(Sender: TObject);
@@ -572,9 +550,6 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
   end;
 end;
-
-
-
 
 
 

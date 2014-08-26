@@ -52,6 +52,8 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+browser needs to not refresh when drop source is itself.
+
 [BIG TASK]
 - need a frame work for putting dialogs on the GUI.
 
@@ -60,7 +62,8 @@ bug
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.
 
-- finish the drawing of the sample zoom in/out/out full buttons and zoom slider.
+browser needs ability to save/load it's open directories. 
+-- then it needs the ability to refresh without completely closing.     
 
 - The mod slot needs something to indicate the mod slot is being used.
 

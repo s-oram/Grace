@@ -112,49 +112,16 @@ begin
 end;
 
 procedure TVamPanel.Paint;
-var
-  Rc: TAggRoundedRect;
-  Path: TAggPathStorage;
 begin
   inherited;
 
   BackBuffer.BufferInterface.ClearAll(fColor.WithAlpha(0));
   BackBuffer.BufferInterface.BlendMode := TAggBlendMode.bmSourceOver;
 
-  {
-    TAggBlendMode = (bmClear, bmSource, bmDestination, bmSourceOver,
-      bmDestinationOver, bmSourceIn, bmDestinationIn, bmSourceOut,
-      bmDestinationOut, bmSourceATop, bmDestinationATop, bmXor, bmPlus, bmMinus,
-      bmMultiply, bmScreen, bmOverlay, bmDarken, bmLighten, bmColorDodge,
-      bmColorBurn, bmHardLight, bmSoftLight, bmDifference, bmExclusion,
-      bmContrast, bmInvert, bmInvertRgb, bmAlpha);
-  }
-
-
   BackBuffer.BufferInterface.NoLine;
   BackBuffer.BufferInterface.FillColor := fColor.AsAggRgba8;
 
-
-  //BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3]);
   BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, CornerRadius1,CornerRadius2,CornerRadius3,CornerRadius4);
-
-
-  {
-  rc := TAggRoundedRect.Create;
-  Path := TAggPathStorage.Create;
-  try
-    rc.Rect(0,0,Width,Height);
-    rc.Radius(CornerRadius1, CornerRadius1, CornerRadius2, CornerRadius2, CornerRadius3, CornerRadius3, CornerRadius4, CornerRadius4);
-    Path.AddPath(rc);
-
-    BackBuffer.BufferInterface.ResetPath;
-    BackBuffer.BufferInterface.AddPath(Path);
-    BackBuffer.BufferInterface.DrawPath;
-  finally
-    rc.Free;
-    Path.Free;
-  end;
-  }
 end;
 
 

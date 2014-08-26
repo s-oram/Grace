@@ -317,7 +317,6 @@ begin
     DropFileSource.Execute(true);
   end;
 
-
 end;
 
 procedure TFileBrowserAddon.Command_BrowserUp;
