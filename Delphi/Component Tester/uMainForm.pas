@@ -56,11 +56,13 @@ type
     FileOpenDialog1: TFileOpenDialog;
     VamPanel1: TVamPanel;
     VamTreeView1: TVamTreeView;
+    Button3: TButton;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     FileBrowserAddon : TFileBrowserAddon;
 
@@ -188,12 +190,25 @@ begin
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
+var
+  ms : TMemoryStream;
 begin
-  //
-
+  ms := TMemoryStream.Create;
+  try
+    VamTreeView1.SaveToStream(ms);
+    VamTreeView1.Clear;
+    ms.Position := 0;
+    VamTreeView1.LoadFromStream(ms);
+    VamTreeView1.Invalidate;
+  finally
+    ms.Free;
+  end;
 end;
 
-
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  FileBrowserAddon.RefreshTreeView;
+end;
 
 procedure TForm1.UpdateLabel;
 begin

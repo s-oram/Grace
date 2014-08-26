@@ -8,6 +8,7 @@ uses
   VamTreeViewNode;
 
 type
+  TNodeIOEvent = procedure(Sender : TObject; Node:TVamTreeViewNode; var NodeData : RawByteString);
   TNodeEvent = procedure(Sender:TObject; Node:TVamTreeViewNode) of object;
   TBooleanNodeEvent = procedure(Sender:TObject; Node:TVamTreeViewNode; var Allowed:boolean) of object;
 
@@ -118,7 +119,6 @@ end;
 
 procedure TVamCustomTreeView.Clear;
 begin
-
   if MasterNode.HasChildren then DeleteChildNodes(MasterNode, false);
   CalcTreeDimensions;
   Invalidate;
@@ -523,6 +523,10 @@ var
   c1,ChildCount:integer;
 begin
   Node.SaveToStream(Stream);
+
+
+
+
   //Save node child count.
   ChildCount := Node.ChildCount;
   Stream.Write(ChildCount,SizeOf(ChildCount));
@@ -535,8 +539,6 @@ begin
 
 
 end;
-
-
 
 
 

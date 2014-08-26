@@ -65,9 +65,13 @@ type
     procedure EventHandle_OnBeginNodeDrag(Sender : TObject);
 
     procedure NodeFocusedChanged;
+
+    procedure RefreshNode(Node : TVamTreeViewNode);
   public
     constructor Create(aTreeView:TVamTreeView);
     destructor Destroy; override;
+
+    procedure RefreshTreeView;
 
     procedure AddRootNode(Dir, Name : string);
     procedure ClearRootNodes;
@@ -502,5 +506,115 @@ begin
       then OnGetNodeBitmap(self, NodeData.FileName, Bitmap);
   end;
 end;
+
+procedure TFileBrowserAddon.RefreshTreeView;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to TreeView.RootNodeCount-1 do
+  begin
+    if TreeView.RootNodes[c1].Expanded then
+    begin
+      RefreshNode(TreeView.RootNodes[c1]);
+    end;
+  end;
+
+  TreeView.CalcTreeDimensions;
+  TreeView.Invalidate;
+end;
+
+procedure TFileBrowserAddon.RefreshNode(Node: TVamTreeViewNode);
+var
+  c1: Integer;
+  nd, Data, ChildData : PNodeData;
+  ChildNode : TVamTreeViewNode;
+
+  FolderResults, FileResults : TStringList;
+  Dir : string;
+  s : string;
+begin
+  for c1 := Node.ChildCount-1 downto 0 do
+  begin
+    if Node.Child[c1].Expanded
+      then RefreshNode(Node.Child[c1]);
+  end;
+
+
+  //TODO:HIGH currently the refresh node only refreshes files. it should be updated to refresh
+  // folders as well.
+  // Maybe a simple way to go about refreshing the folder list would be to search
+  // for folders, filter etc. Then check if the folder nodes are different to the
+  // actual found folder count and folder names. If they are different then we
+  // refresh the folders as well.
+
+  // === First delete all the "file" nodes ====
+
+  for c1 := Node.ChildCount-1 downto 0 do
+  begin
+    ChildNode := Node.Child[c1];
+
+    nd := ChildNode.Data;
+    if nd^.NodeType = TNodeType.ntFile then
+    begin
+      TreeView.DeleteNode(ChildNode, false);
+    end;
+  end;
+
+  // === Look for files on disk. ====
+
+  FolderResults  := TStringList.Create;
+  FolderResults.Sorted := true;
+  FolderResults.CaseSensitive := false;
+  AutoFree(@FolderResults);
+
+  FileResults := TStringList.Create;
+  FileResults.Sorted := true;
+  FileResults.CaseSensitive := false;
+  AutoFree(@FileResults);
+
+  Data := Node.Data;
+  Dir := includeTrailingPathDelimiter(Data^.FileName);
+
+
+
+  // First find the folders.
+  FindOnlyFolders(Dir, FolderResults);
+  FindOnlyFiles(Dir, FileResults,'*.*');
+
+  if assigned(OnFilterNodes) then
+  begin
+    OnfilterNodes(self, Dir, FolderResults, FileResults);
+  end;
+
+  {
+  for c1 := 0 to FolderResults.Count - 1 do
+  begin
+    ChildNode := TreeView.CreateNode(Node);
+    ChildNode.Caption := FolderResults[c1];
+
+    ChildData              := ChildNode.Data;
+    s := IncludeTrailingPathDelimiter(Dir + FolderResults[c1]);
+    ChildData^.FileName    := s;
+    ChildData^.NodeType    := ntFolder;
+    ChildData^.CanExpand   := true;
+  end;
+  }
+
+  for c1 := 0 to FileResults.Count - 1 do
+  begin
+    ChildNode := TreeView.CreateNode(Node);
+    ChildNode.Caption := FileResults[c1];
+
+    ChildData              := ChildNode.Data;
+    ChildData^.FileName    := Dir + FileResults[c1];
+    ChildData^.NodeType    := ntFile;
+    ChildData^.CanExpand   := false;
+  end;
+
+end;
+
+
+
+
 
 end.

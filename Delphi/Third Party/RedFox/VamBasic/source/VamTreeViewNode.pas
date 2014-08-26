@@ -154,15 +154,6 @@ begin
   Stream.Read(s[1],i);
   Caption := string(s);
 
-  //read the data size.
-  if assigned(fData) then
-  begin
-    assert(false, 'TODO');
-    //Load custom node data here....
-    // will have to be an event/callback...
-  end;
-
-
   //Load the node state.
   Stream.Read(b,SizeOf(b));
   Expanded := b;
@@ -184,14 +175,6 @@ begin
   i := Length(s) * StringElementSize(s);
   Stream.Write(i,SizeOf(i));
   Stream.Write(s[1],i);
-
-  //Store the data.
-  if assigned(fData) then
-  begin
-    assert(false, 'TODO');
-    // store custom node data here....
-    // will have to be an event/callback...
-  end;
 
   //Store the node state
   b := Expanded;

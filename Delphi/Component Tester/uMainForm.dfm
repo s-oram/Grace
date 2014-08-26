@@ -96,6 +96,15 @@ object Form1: TForm1
     TabOrder = 4
     Text = '<region> sample=tom one.wav lokey=12'
   end
+  object Button3: TButton
+    Left = 330
+    Top = 462
+    Width = 139
+    Height = 25
+    Caption = 'Button3'
+    TabOrder = 5
+    OnClick = Button3Click
+  end
   object FileOpenDialog1: TFileOpenDialog
     FavoriteLinks = <>
     FileTypes = <>
