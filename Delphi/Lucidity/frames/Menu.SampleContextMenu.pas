@@ -397,13 +397,13 @@ begin
 
 
   case Tag of
-    1:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomIn, @MouseDownSamplePos);
-    2:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOut, @MouseDownSamplePos);
-    3:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOutFull, @MouseDownSamplePos);
-    4:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleStart, @MouseDownSamplePos);
-    5:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleEnd, @MouseDownSamplePos);
-    6:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopStart, @MouseDownSamplePos);
-    7:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopEnd, @MouseDownSamplePos);
+    1:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomIn, @MouseDownSamplePos, nil);
+    2:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOut, @MouseDownSamplePos, nil);
+    3:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomOutFull, @MouseDownSamplePos, nil);
+    4:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleStart, @MouseDownSamplePos, nil);
+    5:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToSampleEnd, @MouseDownSamplePos, nil);
+    6:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopStart, @MouseDownSamplePos, nil);
+    7:Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_Sample_ZoomToLoopEnd, @MouseDownSamplePos, nil);
   else
     raise Exception.Create('Index not handled.');
   end;

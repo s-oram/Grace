@@ -1120,7 +1120,7 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName, nil);
 end;
 
 

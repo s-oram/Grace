@@ -115,7 +115,7 @@ type
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
 
     procedure MsgVcl(MsgID : cardinal); overload;
-    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
     procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     procedure LogAudioObjects;
@@ -195,7 +195,7 @@ type
     procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
 
     procedure MsgVcl(MsgID : cardinal); overload;
-    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
     procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     procedure LogAudioObjects;
@@ -494,7 +494,7 @@ begin
   end;
 end;
 
-procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer);
+procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
   // TODO:HIGH need to check calling thread ID.
   IsGuiOpenLock.Acquire;
@@ -503,7 +503,7 @@ begin
     begin
       if (MainThreadID = GetCurrentThreadId) then
       begin
-        SendMessageToList(VclObjects, MsgID, Data, nil);
+        SendMessageToList(VclObjects, MsgID, Data, DataB);
       end else
       begin
         // TODO:MED probably should log a warning or raise an error here.

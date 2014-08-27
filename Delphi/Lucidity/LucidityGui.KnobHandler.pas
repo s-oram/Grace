@@ -289,7 +289,7 @@ begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName, nil);
   end;
 end;
 
@@ -301,7 +301,7 @@ begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName);
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlLeave, @ParName, nil);
   end;
 end;
 
@@ -320,11 +320,11 @@ begin
     Par := Plugin.PluginParameters.FindByName(ParName);
     assert(assigned(Par));
 
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName);
+    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName, nil);
 
     if (Button = TMouseButton.mbLeft) then
     begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
     end;
 
     if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
@@ -416,7 +416,7 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
     end);
   end;
@@ -443,7 +443,7 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged, nil);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged, nil, nil);
     end);
   end;
 end;

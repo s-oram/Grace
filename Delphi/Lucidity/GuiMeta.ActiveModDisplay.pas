@@ -49,7 +49,7 @@ begin
     if s <> CurrentFocus_ParName then
     begin
       CurrentFocus_ParName := s;
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName, nil);
     end;
   end;
 
@@ -59,7 +59,7 @@ begin
     if s = CurrentFocus_ParName then
     begin
       CurrentFocus_ParName := '';
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnActiveParameterChanged, @CurrentFocus_ParName, nil);
     end;
   end;
 end;
