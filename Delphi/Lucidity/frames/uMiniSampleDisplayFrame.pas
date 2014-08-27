@@ -338,7 +338,7 @@ begin
   if MsgID = TLucidMsgId.SampleRegionChanged then
   begin
     // TODO:HIGH I'm not sure if the sample display needs to be updated on SampleRegionChanged messages.
-    UpdateSampleDisplay;
+    //UpdateSampleDisplay;
   end;
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
@@ -704,6 +704,7 @@ begin
       if assigned(NewRegion) then
       begin
         Plugin.FocusRegion(NewRegion.GetProperties^.UniqueID);
+        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
       end;
     end else
     begin
@@ -729,9 +730,10 @@ begin
         // TODO:HIGH Need to show a message here to say that
         // the sample couldn't be loaded.
       end;
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     end;
 
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+
   end;
 
 
