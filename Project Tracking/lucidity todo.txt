@@ -73,11 +73,6 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 bug
 - the error loop bug Andrea has found keeps rearing it's head. 
 
-bug
-- open sample map.
-- drag and drop sample to replace an existing sample.
-- notice the sample display now shows error despite the sample loading works. 
-
 
 =============================================================================
      TODO HIGH

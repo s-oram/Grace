@@ -933,6 +933,11 @@ begin
     NewRG := Plugin.ReplaceSample(CurRG, fn);
     if assigned(NewRegion) then
     begin
+      // The current region has been replaced, so lets assume the mouse over region
+      // has changed as well.
+      Plugin.Globals.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
+
+      // Focus the new region.
       Plugin.FocusRegion(NewRG.GetProperties^.UniqueID);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
     end else

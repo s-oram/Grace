@@ -115,13 +115,14 @@ type
     property GuiStandard : TGuiStandard read fGuiStandard write SetGuiStandard;
 
     procedure UpdateZoomSlider;
+    procedure UpdateSampleDisplay;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure GuiEvent_SampleMakersChanged;
 
-    procedure UpdateSampleDisplay;
+
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);

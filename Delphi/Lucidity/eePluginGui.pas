@@ -675,8 +675,9 @@ begin
       begin
         Plugin.FocusRegion(aRegion.GetProperties^.UniqueID);
 
-        // trigger extra updates to avoid the message queue latency.
-        MiniSampleDisplayFrame.UpdateSampleDisplay;
+        //TODO:MED this would more appropiiately be a Commmand_UpdateSampleDisplayFocus
+        // to say the GUI needs to reconsider what region should be in focus.
+        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
       end;
     end;
   end;
