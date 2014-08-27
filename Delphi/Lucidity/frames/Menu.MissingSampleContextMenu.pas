@@ -64,6 +64,7 @@ var
   FileOpenDialog : TxpFileOpenDialog;
   rx : IRegion;
   fn : string;
+  newRG : IRegion;
 begin
   rx := Plugin.FocusedRegion;
 
@@ -83,8 +84,10 @@ begin
 
   if FileOpenDialog.Execute then
   begin
-    if rx.ReplaceSample(FileOpenDialog.FileName) then
+    newRG := Plugin.ReplaceSample(rx, FileOpenDialog.FileName);
+    if assigned(newRG) then
     begin
+      Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
     end;
