@@ -83,12 +83,12 @@ type
 
   IMotherShip = interface;
 
-  IZeroMessageData = interface
+  IZeroMessageData = interface(IInterface)
     ['{6D90ECB8-9EC8-40E6-8908-AB4C7CCF9C15}']
     function GetObject : TObject;
   end;
 
-  TCustomZeroMessageData = class(TInterfacedObject, IZeroMessageData)
+  TCustomZeroMessageData = class(TInterfacedObject, IInterface, IZeroMessageData)
   private
   public
     function GetObject : TObject;
@@ -97,7 +97,7 @@ type
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
     function ClassType: TClass;
   end;
 
@@ -133,7 +133,7 @@ type
     function _AddRef: Integer; virtual; stdcall;
     function _Release: Integer; virtual; stdcall;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual; abstract;
   public
     destructor Destroy; override;
   end;
@@ -144,7 +144,7 @@ type
     FMotherShip : IMotherShip;
   protected
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual; abstract;
   public
     destructor Destroy; override;
   end;
@@ -251,10 +251,6 @@ begin
   result := -1;
 end;
 
-procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
-begin
-end;
-
 { TRefCountedZeroObject }
 
 destructor TRefCountedZeroObject.Destroy;
@@ -266,12 +262,6 @@ begin
   end;
 
   inherited;
-end;
-
-
-procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
-begin
-
 end;
 
 procedure TRefCountedZeroObject.SetMotherShipReference(aMotherShip: IMothership);

@@ -70,7 +70,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
 
     procedure EventHandle_LoopModeSelected(Sender : TObject);
   protected
@@ -139,7 +139,7 @@ begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.LoopTypeChanged);
 end;
 
-procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 var
   NameA, NameB : string;
   PMenu : ^TMenu;

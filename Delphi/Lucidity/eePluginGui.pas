@@ -61,7 +61,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
@@ -481,7 +481,7 @@ begin
   Manually := false;
 end;
 
-procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 begin
   if MsgID = TLucidMsgId.MidiKeyChanged then
   begin

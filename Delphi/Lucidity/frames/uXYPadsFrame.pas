@@ -36,7 +36,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
   protected
     Plugin : TeePlugin;
     PadContextMenu : TXYPadContextMenu;
@@ -122,7 +122,7 @@ begin
 end;
 
 
-procedure TXYPadsFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+procedure TXYPadsFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 begin
 
 end;

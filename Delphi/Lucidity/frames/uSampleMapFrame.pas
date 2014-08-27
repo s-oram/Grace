@@ -77,7 +77,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData); 
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
     procedure UpdateGroupVisibility;
   protected
     MessageOverlay         : TVamShortMessageOverlay;
@@ -574,7 +574,7 @@ begin
   SampleMapKeys.Invalidate;
 end;
 
-procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 var
   aniObj : TByteAnimation;
 begin

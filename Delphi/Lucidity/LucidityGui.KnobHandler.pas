@@ -59,7 +59,7 @@ type
     procedure Handle_KnobPosChanged(Sender: TObject);
     procedure Handle_ModAmountChanged(Sender: TObject);
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IZeroMessageData);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
 
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
   public
@@ -102,7 +102,7 @@ begin
   inherited;
 end;
 
-procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 var
   c1: Integer;
 begin
