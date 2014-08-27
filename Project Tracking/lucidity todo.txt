@@ -84,6 +84,13 @@ bug
 =============================================================================
 Instead of the gui polling the plugin to see what region/key group is in focus
 in multiple places, I should use the messaging system to trigger a focus change.
+-- work in progress. 
+   -- the Plugin.FocusedKeyGroup and Plugin.FocusedRegion should be members of the GUI state I believe. 
+-- NOTE: I'm not sure if this is a good idea. Maybing I'm making busy work. 
+   -- but then I think it is, because the all parts of the GUI would always know what the focused regions 
+      are, by keeping a record of those regions. The GUI then could broadcast changes of focus. Individual 
+      parts of the GUI can update themselves if the focused region is different. Otherwise they can ignore 
+      the change.
 
 
 [BIG TASK]
