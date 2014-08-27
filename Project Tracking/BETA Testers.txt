@@ -18,6 +18,7 @@ James Ulph <james.ulph@btinternet.com>
 - interested in testing Lucidity
 thunderlink://messageid=1408741888.13332.YahooMailNeo@web186102.mail.ir2.yahoo.com
   - Sent Lucidity 0.0.1.49 
+      thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
 
 
 Goran Podrugovic
@@ -25,6 +26,7 @@ goran.podrugovic@gmail.com
 - interested in testing Lucidity
   thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
   - Sent Lucidity 0.0.1.49 
+    thunderlink://messageid=CALtz9GKpMKvSFDdjxPexC7RnEci8rAwHBnjJ3fKdASV-R+B-1w@mail.gmail.com
 
 Chris Holmes (Good Tester)
 futuresproof@gmail.com
@@ -46,13 +48,14 @@ thunderlink://messageid=CAPN=qRy34C0H800GCOSVQsSnyxq4ZrJT7JMbbd8BQv27VuZasQ@mail
 - Sent Lucidity 0.0.1.49
 
 
-Andrea Biasior - Reuse Noise (good tester +3)
+Andrea Biasior - Reuse Noise (good tester +4) (Must send thank you gift)
 reusenoise@gmail.com
 - Been using lucidity. 
 - Sent Lucidity 0.0.1.41
   -- a number of responses. Good tester!
 - Sent Lucidity 0.0.1.44
 - Sent Lucidity 0.0.1.47
+  thunderlink://messageid=CAG2OC0-XcjNRMnfq3vTGxERUrPsWL+ZmpKi5RG_Exqaw=NQKWw@mail.gmail.com
 
 Nicholas Necaise
 NNecaise@live.com
