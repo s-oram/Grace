@@ -647,9 +647,8 @@ end;
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
 var
   RegionCreateInfo : TRegionCreateInfo;
-  aRegion : IRegion;
-  CurRegion : IRegion;
-  NewRegion : IRegion;
+  curRG : IRegion;
+  newRG : IRegion;
   kg : IKeyGroup;
   OwningSampleGroup : IKeyGroup;
   fn : string;
@@ -696,14 +695,14 @@ begin
   if (fn <> '') and (IsSupportedAudioFormat(fn)) then
   begin
     kg := Plugin.FocusedKeyGroup;
-    CurRegion := Plugin.FocusedRegion;
+    curRG := Plugin.FocusedRegion;
 
-    if assigned(CurRegion) then
+    if assigned(curRG) then
     begin
-      NewRegion := Plugin.ReplaceSample(CurRegion, fn);
-      if assigned(NewRegion) then
+      newRG := Plugin.ReplaceSample(curRG, fn);
+      if assigned(newRG) then
       begin
-        Plugin.FocusRegion(NewRegion.GetProperties^.UniqueID);
+        Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
         Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
       end;
     end else
@@ -716,15 +715,15 @@ begin
       RegionCreateInfo.HighVelocity  := 127;
       RegionCreateInfo.RootNote      := 60; //MIDI c4.
 
-      aRegion := Plugin.NewRegion(RegionCreateInfo);
-      if (assigned(aRegion)) and (aRegion.GetProperties^.IsSampleError = false) then
+      newRG := Plugin.NewRegion(RegionCreateInfo);
+      if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = false) then
       begin
-        Plugin.FocusRegion(aRegion.GetProperties^.UniqueID);
+        Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
       end else
-      if (assigned(aRegion)) and (aRegion.GetProperties^.IsSampleError = true) then
+      if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = true) then
       begin
-        Plugin.SampleMap.DeleteRegion(aRegion);
-        aRegion := nil;
+        Plugin.SampleMap.DeleteRegion(newRG);
+        newRG := nil;
       end else
       begin
         // TODO:HIGH Need to show a message here to say that
