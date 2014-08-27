@@ -650,7 +650,6 @@ var
   curRG : IRegion;
   newRG : IRegion;
   kg : IKeyGroup;
-  OwningSampleGroup : IKeyGroup;
   fn : string;
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;
