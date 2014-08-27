@@ -224,7 +224,7 @@ type
     procedure SelectRegion(aRegionID : TGUID);
 
     procedure ReloadRegion(const TargetRegion : IRegion);
-    procedure ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string);
+    function ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string):IRegion;
     procedure RenameInUseSample(const NewFileName, OldFileName : string);
 
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
@@ -718,6 +718,45 @@ begin
   end;
 end;
 
+function TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string):IRegion;
+var
+  CreateInfo: TRegionCreateInfo;
+  rg : IRegion;
+begin
+  CreateInfo.AssignFrom(TargetRegion);
+  CreateInfo.AudioFileName := SampleFileName;
+
+  if FileExists(SampleFileName) = false then
+  begin
+    // TODO:HIGH send error message here saying the sample can't be loaded
+    // as it doesn't exist.
+    exit(nil);
+  end;
+
+  // TODO:MED - NOTE: Rather than call self.NewRegion() it might be better to call SampleMap.NewRegion()
+  // directly and avoid any potential side-effects present at self.NewRegion().
+  rg := NewRegion(CreateInfo);
+
+  if (assigned(rg)) and (rg.GetProperties^.IsSampleError = false) then
+  begin
+    FocusRegion(rg.GetProperties^.UniqueID);
+    SampleMap.DeleteRegion(TargetRegion);
+  end else
+  if (assigned(rg)) and (rg.GetProperties^.IsSampleError = true) then
+  begin
+    SampleMap.DeleteRegion(rg);
+    rg := nil;
+  end else
+  begin
+    // TODO:HIGH Need to show a message here to say that
+    // the sample couldn't be loaded.
+  end;
+
+  result := rg;
+end;
+
+
+
 procedure TeePlugin.RenameInUseSample(const NewFileName, OldFileName: string);
 var
   c1: Integer;
@@ -738,13 +777,6 @@ begin
     end;
   end;
 
-end;
-
-procedure TeePlugin.ReplaceSample(const TargetRegion: IRegion; const SampleFileName: string);
-begin
-  // Look at ReloadSample() for inspiration.
-  // remove the SampleMap.ReplaceSample() method after completing.
-  assert(false, 'TODO');
 end;
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;

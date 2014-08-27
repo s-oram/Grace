@@ -631,6 +631,7 @@ var
   RegionCreateInfo : TRegionCreateInfo;
   aRegion : IRegion;
   CurRegion : IRegion;
+  NewRegion : IRegion;
   kg : IKeyGroup;
   OwningSampleGroup : IKeyGroup;
   fn : string;
@@ -673,8 +674,53 @@ begin
   end;
 
 
+  // Assume file is an audio sample and attempt to load. TODO: should also check if file is supported audio format here...
+  if (fn <> '') and (IsSupportedAudioFormat(fn)) then
+  begin
+    kg := Plugin.FocusedKeyGroup;
+    CurRegion := Plugin.FocusedRegion;
 
-  // Asume file is an audio sample and attempt to load. TODO: should also check if file is supported audio format here...
+    if assigned(CurRegion) then
+    begin
+      NewRegion := Plugin.ReplaceSample(CurRegion, fn);
+      if assigned(NewRegion) then
+      begin
+        Plugin.FocusRegion(NewRegion.GetProperties^.UniqueID);
+      end;
+    end else
+    begin
+      RegionCreateInfo.KeyGroup      := kg;
+      RegionCreateInfo.AudioFileName := fn;
+      RegionCreateInfo.LowNote       := 0;
+      RegionCreateInfo.HighNote      := 127;
+      RegionCreateInfo.LowVelocity   := 0;
+      RegionCreateInfo.HighVelocity  := 127;
+      RegionCreateInfo.RootNote      := 60; //MIDI c4.
+
+      aRegion := Plugin.NewRegion(RegionCreateInfo);
+      if (assigned(aRegion)) and (aRegion.GetProperties^.IsSampleError = false) then
+      begin
+        Plugin.FocusRegion(aRegion.GetProperties^.UniqueID);
+      end else
+      if (assigned(aRegion)) and (aRegion.GetProperties^.IsSampleError = true) then
+      begin
+        Plugin.SampleMap.DeleteRegion(aRegion);
+        aRegion := nil;
+      end else
+      begin
+        // TODO:HIGH Need to show a message here to say that
+        // the sample couldn't be loaded.
+      end;
+    end;
+
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  end;
+
+
+
+
+  {
+  // Assume file is an audio sample and attempt to load. TODO: should also check if file is supported audio format here...
   if (fn <> '') then
   begin
     // TODO:HIGH This code requires a few changes.
@@ -743,6 +789,8 @@ begin
 
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   end;
+  }
+
 end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragLeave(Sender: TObject);

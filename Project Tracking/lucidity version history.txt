@@ -12,7 +12,7 @@ bug
 New:
 Change:
 Bug Fix:
-
+- replace sample function now works again. It seems I broke it in a recent update.
 
 === BETA v0.0.1.49 (26-Aug-2014) ===
 Change:

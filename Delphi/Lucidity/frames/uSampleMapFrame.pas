@@ -125,6 +125,7 @@ uses
   VamLib.Utils,
   SampleMapFrame.Extra,
   Lucidity.Types,
+  uLucidityExtra,
   uLucidityEnums,
   eeVstXml,
   RedFoxColor, eePitch,
@@ -885,12 +886,16 @@ type
   TDropType = (dtFiles, dtVstXml);
 var
   RegionCreateInfo : TRegionCreateInfo;
+  fn : string;
   DropType : TDropType;
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;
   NewSR : IRegion;
+  curRG : IRegion;
+  newRG : IRegion;
 begin
   if not assigned(Plugin) then exit;
+  if not assigned(OldRegion) then exit;
 
   Plugin.StopPreview;
 
@@ -901,39 +906,35 @@ begin
     then DropType := TDropType.dtVstXml
     else DropType := TDropType.dtFiles;
 
-  RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
-  RegionCreateInfo.LowNote       := NewRegion.LowKey;
-  RegionCreateInfo.HighNote      := NewRegion.HighKey;
-  RegionCreateInfo.LowVelocity   := NewRegion.LowVelocity;
-  RegionCreateInfo.HighVelocity  := NewRegion.HighVelocity;
-  RegionCreateInfo.RootNote      := NewRegion.RootNote;
-
   case DropType of
     dtFiles:
     begin
-      RegionCreateInfo.AudioFileName := Data.GetFiles[0];
+      fn := Data.GetFiles[0];
     end;
-
     dtVstXml:
     begin
       XmlRegionInfo := GetVstXmlRegionInfo(0, Data.GetText);
-      RegionCreateInfo.AudioFileName := XmlRegionInfo.FileName;
+      fn := XmlRegionInfo.FileName;
     end
   else
     raise Exception.Create('Drop type not handled.');
   end;
 
-  NewSR := Plugin.NewRegion(RegionCreateInfo);
+  curRg := Plugin.SampleMap.FindRegionByUniqueID(OldRegion.UniqueID);
+  if not assigned(CurRG) then exit;
 
-  if (assigned(NewSR)) and (NewSR.GetProperties^.IsSampleError = false) then
+  if IsSupportedAudioFormat(fn) then
   begin
-    Plugin.ClearSelected;
-    Plugin.FocusRegion(NewSR.GetProperties^.UniqueID);
-    Plugin.SampleMap.DeleteRegion(OldRegion.UniqueID);
+    NewRG := Plugin.ReplaceSample(CurRG, fn);
+    if assigned(NewRegion) then
+    begin
+      Plugin.FocusRegion(NewRG.GetProperties^.UniqueID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    end else
+    begin
+      // TODO:HIGH display error message here.
+    end;
   end;
-
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
-
 end;
 
 
