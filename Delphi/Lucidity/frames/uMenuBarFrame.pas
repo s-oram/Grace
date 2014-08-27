@@ -244,7 +244,7 @@ procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer;
 var
   ParID : TPluginParameterID;
 begin
-  if MsgID = TLucidmsgID.SampleFocusChanged then
+  if MsgID = TLucidmsgID.SampleFocusChanged_OLD then
   begin
     SampleFocusChanged;
   end;

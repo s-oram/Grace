@@ -145,7 +145,7 @@ begin
   mi.Checked := not mi.Checked;
   guid := StringToGuid((Sender as TMenuItem).Hint);
   Plugin.FocusRegion(guid);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
 
   //if FPopupWindowHandle <> 0
   //  then InvalidateRect(FPopupWindowHandle, nil, False);

@@ -478,7 +478,7 @@ end;
 procedure TSampleMapFrame.SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
 begin
   Plugin.SampleMap.SelectRegion(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
 end;
 
 procedure TSampleMapFrame.SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -502,7 +502,7 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectRegion(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
 end;
 
 
@@ -515,7 +515,7 @@ begin
 
   SG := Plugin.FocusedKeyGroup;
   Plugin.SampleMap.DeselectOtherRegions(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
@@ -523,7 +523,7 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectAllRegions;
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
 end;
 
 procedure TSampleMapFrame.SampleMapShowRegionContextMenu(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -601,7 +601,7 @@ begin
     MidiKeyChanged;
   end;
 
-  if MsgID = TLucidMsgID.SampleFocusChanged then
+  if MsgID = TLucidMsgID.SampleFocusChanged_OLD then
   begin
     UpdateRegionInfoDisplay;
     UpdateSampleRegions;
@@ -877,7 +877,7 @@ begin
       end;
     end;
 
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
   finally
     SetLength(NewRegions, 0);
   end;
@@ -936,7 +936,7 @@ begin
     if assigned(NewRegion) then
     begin
       Plugin.FocusRegion(NewRG.GetProperties^.UniqueID);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
     end else
     begin
       // TODO:HIGH display error message here.

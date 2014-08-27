@@ -35,9 +35,10 @@ type
   TLucidMsgID = record
   const
     //----- Gui Messages---------------
-    SampleFocusChanged               = 1; //sent when the region or sample group focus changes..
-    SampleRegionChanged              = 2; //sent when something about a region has changed. ie. the region has moved.
-    MouseOverSampleRegionChanged     = 3;
+    SampleFocusChanged_NEW           = 1;  //sent when the region or sample group focus changes..
+    SampleFocusChanged_OLD           = 17; //sent when the region or sample group focus changes.. //TODO:HIGH delete this once it is refactored away!
+    MouseOverSampleRegionChanged     = 2;
+    SampleRegionChanged              = 3; //sent when something about a region has changed. ie. the region has moved.
     MidiKeyChanged                   = 4;
     PreviewInfoChanged               = 5;
     SampleMarkersChanged             = 6;
@@ -51,7 +52,7 @@ type
     GUILayoutChanged                 = 14;
     VstParameterChanged              = 15;
     GroupVisibilityChanged           = 16;
-    Command                          = GroupVisibilityChanged + 1;
+    Command                          = GroupVisibilityChanged + 2; //TODO:HIGH - reset to "GroupVisibilityChanged + 1" as soon as "SampleFocusChanged_OLD" has been deleted.
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
@@ -61,7 +62,7 @@ type
     Command_UpdateModMatrix          = Command + 7;
     Command_ShowReplaceRegionMessage = Command + 8;
     Command_HideReplaceRegionMessage = Command + 9;
-    Command_UpdateSampleDisplay      = Command + 10;
+    Command_UpdateSampleDisplay      = Command + 10; //TODO:HIGH minimise where and how often UpdateSampleDisplay is called.
     Command_UpdateSampleInfo         = Command + 11;
     Command_UpdateScope              = Command + 12;
     Command_DisposeKeyGroup          = Command + 13;
@@ -437,7 +438,7 @@ end;
 
 function LucidMsgIDToStr(const ID : cardinal):string;
 begin
-  if ID = TLucidMsgID.SampleFocusChanged                 then exit('SampleFocusChanged');
+  if ID = TLucidMsgID.SampleFocusChanged_OLD                 then exit('SampleFocusChanged');
   if ID = TLucidMsgID.SampleRegionChanged                then exit('SampleRegionChanged');
   if ID = TLucidMsgID.MouseOverSampleRegionChanged       then exit('MouseOverSampleRegionChanged');
   if ID = TLucidMsgID.MidiKeyChanged                     then exit('MidiKeyChanged');
