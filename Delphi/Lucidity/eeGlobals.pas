@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Lucidity.Interfaces,
   eeCpuMonitor,
   SysUtils,
   ExtCtrls,
