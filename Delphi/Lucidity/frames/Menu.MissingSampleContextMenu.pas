@@ -88,7 +88,7 @@ begin
     if assigned(newRG) then
     begin
       Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
     end;
   end;

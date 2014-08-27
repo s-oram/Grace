@@ -85,7 +85,7 @@ type
 
     KeyStateTrackerOverlay : TKeyStateTrackerOverlay;
     SampleMapMenu : TSampleMapContextMenu;
-    GroupVisibilityMenu : TGroupVisibilityMenu; 
+    GroupVisibilityMenu : TGroupVisibilityMenu;
 
     ThrottleID : TUniqueID;
     procedure ScrollPosChanged;
@@ -187,7 +187,7 @@ begin
   SampleMapMenu.Free;
 
   if assigned(GroupVisibilityMenu) then GroupVisibilityMenu.Free;
-  
+
 
   inherited;
 end;
@@ -478,7 +478,7 @@ end;
 procedure TSampleMapFrame.SampleMapSelectRegion(const Sender: TObject; aRegion: TVamSampleRegion);
 begin
   Plugin.SampleMap.SelectRegion(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapFocusRegion(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -502,7 +502,7 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectRegion(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 
@@ -515,7 +515,7 @@ begin
 
   SG := Plugin.FocusedKeyGroup;
   Plugin.SampleMap.DeselectOtherRegions(aRegion.UniqueID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapDeselectAllRegions(Sender: TObject);
@@ -523,7 +523,7 @@ begin
   if not assigned(Plugin) then exit;
 
   Plugin.SampleMap.DeselectAllRegions;
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapShowRegionContextMenu(const Sender: TObject; aRegion: TVamSampleRegion);
@@ -601,7 +601,7 @@ begin
     MidiKeyChanged;
   end;
 
-  if MsgID = TLucidMsgID.SampleFocusChanged_OLD then
+  if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
     UpdateRegionInfoDisplay;
     UpdateSampleRegions;
@@ -877,7 +877,7 @@ begin
       end;
     end;
 
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   finally
     SetLength(NewRegions, 0);
   end;
@@ -939,7 +939,7 @@ begin
 
       // Focus the new region.
       Plugin.FocusRegion(NewRG.GetProperties^.UniqueID);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     end else
     begin
       // TODO:HIGH display error message here.

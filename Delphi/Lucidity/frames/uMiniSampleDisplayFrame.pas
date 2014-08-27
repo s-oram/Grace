@@ -342,7 +342,7 @@ begin
     //UpdateSampleDisplay;
   end;
 
-  if MsgID = TLucidMsgID.SampleFocusChanged_OLD then
+  if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
     UpdateControlVisibility;
     UpdateSampleDisplay;
@@ -686,7 +686,7 @@ begin
   if (fn <> '') and (IsSupportedProgramFormat(fn)) then
   begin
     Plugin.ImportProgram(fn);
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     exit; //====================================================exit======>>
   end;
 
@@ -703,7 +703,7 @@ begin
       if assigned(newRG) then
       begin
         Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
-        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
       end;
     end else
     begin
@@ -729,7 +729,7 @@ begin
         // TODO:HIGH Need to show a message here to say that
         // the sample couldn't be loaded.
       end;
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     end;
 
 

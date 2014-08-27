@@ -169,7 +169,7 @@ begin
     Plugin.KeyGroups.RenameKeyGroup(kg, InputBox.ResultText);
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
 end;
 
 procedure TGroupsMenu.CreateNewKeyGroup(Sender: TObject);
@@ -179,7 +179,7 @@ begin
   kg := Plugin.KeyGroups.NewKeyGroup;
   Plugin.FocusKeyGroup(kg.GetName);
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
 end;
@@ -190,7 +190,7 @@ begin
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
   finally
@@ -208,7 +208,7 @@ begin
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
   finally
@@ -222,7 +222,7 @@ begin
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
   finally
@@ -241,7 +241,7 @@ begin
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_BeginGuiUpdate);
   try
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged);
   finally

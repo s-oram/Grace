@@ -72,7 +72,7 @@ begin
   if Tag = 1 then
   begin
     Plugin.InitializeState;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged_OLD);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
   end;
 
   if Tag = 2 then

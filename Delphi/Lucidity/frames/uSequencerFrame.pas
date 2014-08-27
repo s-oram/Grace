@@ -210,7 +210,7 @@ begin
       else StepSeqControl.SequenceData := nil;
   end;
 
-  if MsgID = TLucidMsgID.SampleFocusChanged_OLD then
+  if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
     kg := Plugin.FocusedKeyGroup;
     if assigned(kg)

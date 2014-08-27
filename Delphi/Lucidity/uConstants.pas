@@ -35,8 +35,7 @@ type
   TLucidMsgID = record
   const
     //----- Gui Messages---------------
-    SampleFocusChanged_NEW           = 1;  //sent when the region or sample group focus changes..
-    SampleFocusChanged_OLD           = 17; //sent when the region or sample group focus changes.. //TODO:HIGH delete this once it is refactored away!
+    SampleFocusChanged               = 1; //sent when the region or sample group focus changes..
     MouseOverSampleRegionChanged     = 2;
     SampleRegionChanged              = 3; //sent when something about a region has changed. ie. the region has moved.
     MidiKeyChanged                   = 4;
@@ -52,7 +51,7 @@ type
     GUILayoutChanged                 = 14;
     VstParameterChanged              = 15;
     GroupVisibilityChanged           = 16;
-    Command                          = GroupVisibilityChanged + 2; //TODO:HIGH - reset to "GroupVisibilityChanged + 1" as soon as "SampleFocusChanged_OLD" has been deleted.
+    Command                          = GroupVisibilityChanged + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
@@ -438,7 +437,7 @@ end;
 
 function LucidMsgIDToStr(const ID : cardinal):string;
 begin
-  if ID = TLucidMsgID.SampleFocusChanged_OLD                 then exit('SampleFocusChanged');
+  if ID = TLucidMsgID.SampleFocusChanged                 then exit('SampleFocusChanged');
   if ID = TLucidMsgID.SampleRegionChanged                then exit('SampleRegionChanged');
   if ID = TLucidMsgID.MouseOverSampleRegionChanged       then exit('MouseOverSampleRegionChanged');
   if ID = TLucidMsgID.MidiKeyChanged                     then exit('MidiKeyChanged');
