@@ -892,12 +892,10 @@ procedure TSampleMapFrame.SampleMapReplaceRegion(Sender: TObject; const NewRegio
 type
   TDropType = (dtFiles, dtVstXml);
 var
-  RegionCreateInfo : TRegionCreateInfo;
   fn : string;
   DropType : TDropType;
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;
-  NewSR : IRegion;
   curRG : IRegion;
   newRG : IRegion;
 begin

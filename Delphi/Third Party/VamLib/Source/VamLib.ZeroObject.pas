@@ -133,7 +133,7 @@ type
     function _AddRef: Integer; virtual; stdcall;
     function _Release: Integer; virtual; stdcall;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual; abstract;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual;
   public
     destructor Destroy; override;
   end;
@@ -144,7 +144,7 @@ type
     FMotherShip : IMotherShip;
   protected
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual; abstract;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual;
   public
     destructor Destroy; override;
   end;
@@ -234,6 +234,11 @@ begin
   FMotherShip := aMotherShip;
 end;
 
+procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+begin
+
+end;
+
 function TZeroObject.QueryInterface(const IID: TGUID; out Obj): HResult;
 begin
   if GetInterface(IID, Obj)
@@ -262,6 +267,11 @@ begin
   end;
 
   inherited;
+end;
+
+procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+begin
+
 end;
 
 procedure TRefCountedZeroObject.SetMotherShipReference(aMotherShip: IMothership);

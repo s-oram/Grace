@@ -16,6 +16,8 @@ type
     fSampleRate: single;
     DecayCoefficient : single;
     procedure SetSampleRate(const Value: single);
+  protected
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
   public
     constructor Create;
     destructor Destroy; override;
@@ -77,6 +79,10 @@ begin
   end;
 end;
 
+procedure TLevelMonitor.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+begin
+  inherited;
 
+end;
 
 end.

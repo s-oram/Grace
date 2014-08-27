@@ -142,6 +142,8 @@ type
     // the plugin GUI focus changes. If not, the managed plugin values will become
     // out of sync with the audio engine.
     procedure RefreshManagedPluginParameterValues;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -572,6 +574,13 @@ begin
 
   inherited;
 end;
+
+procedure TeePlugin.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+begin
+  inherited;
+
+end;
+
 
 procedure TeePlugin.Clear;
 begin

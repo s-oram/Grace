@@ -503,7 +503,6 @@ end;
 procedure TVamModSelector.Draw_ModSlotActiveIcon(TextAreaBounds: TRect);
 var
   ptx, pty : single;
-  ElementBounds : TRect;
 begin
   pty := TextAreaBounds.Top + TextAreaBounds.Height * 0.5 + 1;
   ptx := TextAreaBounds.Left + TextAreaBounds.Width * 1/6;
