@@ -132,6 +132,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eeTypes,
   VamLib.Utils,
   VamLib.Graphics,
@@ -458,10 +459,15 @@ var
   rd:TRegionDisplayResult;
 begin
   if not assigned(Plugin) then exit;
+
+  LogMain.EnterMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
+
   rd := FindRegionToDisplay(Plugin);
 
   InternalUpdateSampleDisplay(rd.Region, rd.Message);
   InternalUpdateSampleInfo(rd.Region, rd.Message);
+
+  LogMain.LeaveMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateSampleDisplayInfo;

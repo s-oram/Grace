@@ -74,7 +74,9 @@ bug
 - the error loop bug Andrea has found keeps rearing it's head. 
 
 bug
-- drag and drop sample replace isn't working.
+- open sample map.
+- drag and drop sample to replace an existing sample.
+- notice the sample display now shows error despite the sample loading works. 
 
 
 =============================================================================
