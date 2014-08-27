@@ -483,28 +483,9 @@ end;
 
 procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
-  if MsgID = TLucidMsgId.SampleFocusChanged then
-  begin
-    SampleMapFrame.UpdateSampleRegions;
-    MiniSampleDisplayFrame.UpdateSampleDisplay;
-  end;
-
-  if MsgID = TLucidMsgId.SampleRegionChanged then
-  begin
-    SampleMapFrame.UpdateSampleRegions;
-    SampleMapFrame.UpdateRootNoteKeys;
-    SampleMapFrame.UpdateRegionInfoDisplay;
-    MiniSampleDisplayFrame.UpdateSampleDisplay;
-  end;
-
   if MsgID = TLucidMsgId.MidiKeyChanged then
   begin
     SampleMapFrame.MidiKeyChanged;
-  end;
-
-  if MsgID = TLucidMsgId.MouseOverSampleRegionChanged then
-  begin
-    MiniSampleDisplayFrame.UpdateSampleDisplay;
   end;
 
   if MsgID = TLucidMsgID.PreviewInfoChanged then

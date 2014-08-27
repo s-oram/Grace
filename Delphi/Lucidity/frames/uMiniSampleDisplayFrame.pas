@@ -335,12 +335,24 @@ var
   zx : single;
   Zoom, Offset : single;
 begin
+  if MsgID = TLucidMsgId.SampleRegionChanged then
+  begin
+    // TODO:HIGH I'm not sure if the sample display needs to be updated on SampleRegionChanged messages.
+    UpdateSampleDisplay;
+  end;
+
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
     UpdateControlVisibility;
     UpdateSampleDisplay;
     UpdateSampleDisplayInfo;
   end;
+
+  if MsgID = TLucidMsgId.MouseOverSampleRegionChanged then
+  begin
+    UpdateSampleDisplay;
+  end;
+
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateModMatrix         then UpdateModulation;
   if MsgID = TLucidMsgID.ModSlotChanged                  then UpdateModulation;

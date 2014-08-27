@@ -29,6 +29,9 @@ var
   function LucidMsgIDToStr(const ID : cardinal):string;
 
 type
+  // TLucidMsgID.SampleFocusChanged
+  // TLucidMsgID.Command_UpdateSampleDisplay
+
   TLucidMsgID = record
   const
     //----- Gui Messages---------------

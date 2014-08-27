@@ -607,6 +607,13 @@ begin
     UpdateSampleRegions;
   end;
 
+  if MsgID = TLucidMsgId.SampleRegionChanged then
+  begin
+    UpdateSampleRegions;
+    UpdateRootNoteKeys;
+    UpdateRegionInfoDisplay;
+  end;
+
   if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
 
 end;
