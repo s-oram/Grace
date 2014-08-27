@@ -82,6 +82,10 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+Instead of the gui polling the plugin to see what region/key group is in focus
+in multiple places, I should use the messaging system to trigger a focus change.
+
+
 [BIG TASK]
 - need a frame work for putting dialogs on the GUI.
 
