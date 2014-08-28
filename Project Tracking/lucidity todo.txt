@@ -73,19 +73,19 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 bug
 - the error loop bug Andrea has found keeps rearing it's head. 
 
+bug
+- the comb filter does sound good when modulated from one of the pads! There are crackles.
+  it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
+
+bug 
+= can't load new empty sample on sample map. 
 
 =============================================================================
      TODO HIGH
 =============================================================================
-Instead of the gui polling the plugin to see what region/key group is in focus
-in multiple places, I should use the messaging system to trigger a focus change.
--- work in progress. 
-   -- the Plugin.FocusedKeyGroup and Plugin.FocusedRegion should be members of the GUI state I believe. 
--- NOTE: I'm not sure if this is a good idea. Maybing I'm making busy work. 
-   -- but then I think it is, because the all parts of the GUI would always know what the focused regions 
-      are, by keeping a record of those regions. The GUI then could broadcast changes of focus. Individual 
-      parts of the GUI can update themselves if the focused region is different. Otherwise they can ignore 
-      the change.
+
+Loop point modulation should be unique to the region. Then have an option
+to apply loop modulation to all regions in the key group. 
 
 
 [BIG TASK]
@@ -206,6 +206,17 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+Instead of the gui polling the plugin to see what region/key group is in focus
+in multiple places, I should use the messaging system to trigger a focus change.
+-- work in progress. 
+   -- the Plugin.FocusedKeyGroup and Plugin.FocusedRegion should be members of the GUI state I believe. 
+-- NOTE: I'm not sure if this is a good idea. Maybing I'm making busy work. 
+   -- but then I think it is, because the all parts of the GUI would always know what the focused regions 
+      are, by keeping a record of those regions. The GUI then could broadcast changes of focus. Individual 
+      parts of the GUI can update themselves if the focused region is different. Otherwise they can ignore 
+      the change.
+
+
 the browser should save it's state when the GUI is closed and reopended.
 -- it should also refresh itself after being reopened. 
 
@@ -686,10 +697,11 @@ thunderlink://messageid=CAPN=qRxpBH2y9W-drXAywXh1OGu6M-zRPMVL2xyFSaarwe+Wbg@mail
 
 
 =============================================================================
-                          VERSION 2.0 IDEAS
+     POSSIBLE NEW FEATURES AND CHANGES
 =============================================================================
 
 
+-----------------------------------------------------------------------------
 == Meta control parameter mapping ==
 
 Control is needed for music creation. It's not enough to have a static patch. 
@@ -704,6 +716,37 @@ advanced by allowing more meta controllers. Also, lfos could be used for meta co
 as well. 
 
 Current examples are Mutable Instruments Frames. The exp-map in Alchemy.
+-----------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------
+Maybe all the filters should have a filter mix amount know by default
+in file parameter position four.
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Maybe instead of using key groups with completely independent voice settings
+I could use four "sources" like in Alchemy. The routing would be fairly 
+different. Four sources would be blended into one pair of filters.
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+A "Whoosh" envelope. 
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+=============================================================================
+                          VERSION 2.0 IDEAS
+=============================================================================
+
+
 
 
 
