@@ -713,6 +713,7 @@ begin
       end;
     end else
     begin
+      RegionCreateInfo.Init;
       RegionCreateInfo.KeyGroup      := kg;
       RegionCreateInfo.AudioFileName := fn;
       RegionCreateInfo.LowNote       := 0;

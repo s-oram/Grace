@@ -827,6 +827,7 @@ begin
 
     for c1 := 0 to aRegions.Count-1 do
     begin
+      RegionCreateInfo.Init;
       RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
       RegionCreateInfo.LowNote       := aRegions[c1].LowKey;
       RegionCreateInfo.HighNote      := aRegions[c1].HighKey;
@@ -966,6 +967,7 @@ begin
     //====== Load the new regions ==============================================
     for c1 := 0 to aRegions.Count-1 do
     begin
+      RegionCreateInfo.Init;
       RegionCreateInfo.KeyGroup      := Plugin.FocusedKeyGroup;
       RegionCreateInfo.LowNote       := aRegions[c1].MovedLowKey;
       RegionCreateInfo.HighNote      := aRegions[c1].MovedHighKey;

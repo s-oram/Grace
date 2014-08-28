@@ -78,7 +78,8 @@ bug
   it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
 
 bug 
-= can't load new empty sample on sample map. 
+- sample volume indicator doesn't drop back to zero. Either the voice is still
+  playing or the indicator isn't updated when the voice stops.
 
 =============================================================================
      TODO HIGH
