@@ -81,13 +81,31 @@ bug
 - sample volume indicator doesn't drop back to zero. Either the voice is still
   playing or the indicator isn't updated when the voice stops.
 
+bug
+ If i play a key, hold it, then play another key (while sustaining the previous one), the first key played key will stop.
+ thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
+
+
+bug
+> If i load 12 instantes of Lucidity in renoise and then quit renoise,  it 
+> Will crash at exiting with several error msgs. If i load only 8 
+> instantes of Lucidity this wont happen. You can download renoise and 
+> check it. The renoise demo is fully functional.
+thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
+
+
+bug - Andrea - waveforms don't load.
+Found a minor bug in the .fxp patches
+thunderlink://messageid=CAG2OC09=XCZuHebxcYkyL+jMhvk49xcEQ74vyVu-GrxjQ61f-w@mail.gmail.com
+
+bug - Hugo
+fxp slots don't actually work! (doh)
+thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
+
+
 =============================================================================
      TODO HIGH
 =============================================================================
-
-Loop point modulation should be unique to the region. Then have an option
-to apply loop modulation to all regions in the key group. 
-
 
 [BIG TASK]
 - need a frame work for putting dialogs on the GUI.
@@ -102,6 +120,9 @@ to apply loop modulation to all regions in the key group.
 - The mod slot needs something to indicate the mod slot is being used.
 
 - error region colors need to be more obvious!
+
+Loop point modulation should be unique to the region. Then have an option
+to apply loop modulation to all regions in the key group. 
 
 - smart loading of multiple samples. Samples should be mapped according to their root note if
   it is detected in the filename. 
@@ -737,7 +758,13 @@ A "Whoosh" envelope.
 -----------------------------------------------------------------------------
 
 
+-----------------------------------------------------------------------------
+Change voice structure so Lucidity is using 4 key groups or "sources" 
+like Alchemy. Use cross fading etc.
 
+Details of possible change are sent in an email to Yann. waveshaperkit@gmail.com
+thunderlink://messageid=E92D00E87CD9463DB8547220385DBC83@YannHP
+-----------------------------------------------------------------------------
 
 
 
