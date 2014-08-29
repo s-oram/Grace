@@ -1704,7 +1704,7 @@ var
 begin
   inherited;
 
-  //LogMain.LogMessage('Midi Event. Data1=' + IntToStr(Event.Data1) + ' Data2=' + IntToStr(Event.Data2)  );
+
 
   if IsNoteOn(Event) then
   begin
@@ -1732,6 +1732,12 @@ begin
     pba := GetPitchBendAmount(Event);
     assert(InRange(pba,-1,1));
     MidiInputProcessor.PitchBend(pba);
+  end else
+  if IsProgramChange(Event) then
+  begin
+    {$IFDEF Logging}
+      LogMain.LogMessage('MIDI Program Change. Program=' + IntToStr(Event.Data1));
+    {$ENDIF}
   end;
 
 end;

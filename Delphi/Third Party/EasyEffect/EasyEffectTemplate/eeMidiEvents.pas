@@ -30,6 +30,7 @@ const
   kNoteOff       = $80;
   kControlChange = $B0;
   kPitchBend     = $E0;
+  kProgramChange = $C0;
 
   {
   MidiEvent Status values.
@@ -124,6 +125,7 @@ function IsControlChange(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsMidiPanic(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsPitchBend(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsModWheel(MidiEvent:TeeMidiEvent):boolean; inline;
+function IsProgramChange(MidiEvent : TeeMidiEvent):boolean; inline;
 
 //GetPitchBendAmount() result range is -1..1
 function GetPitchBendAmount(MidiEvent:TeeMidiEvent):single; inline;
@@ -171,6 +173,13 @@ end;
 function IsModWheel(MidiEvent:TeeMidiEvent):boolean; inline;
 begin
   if (MidiEvent.Status = kControlChange) and (MidiEvent.Data1 = 1)
+    then result := true
+    else result := false;
+end;
+
+function IsProgramChange(MidiEvent : TeeMidiEvent):boolean; inline;
+begin
+  if (MidiEvent.Status = kProgramChange)
     then result := true
     else result := false;
 end;
