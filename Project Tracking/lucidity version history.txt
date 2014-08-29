@@ -1,18 +1,18 @@
 ==Notify On Update==
-Now using new XP compatible dialogs. 
-thunderlink://messageid=1406820958.1920048.147734482.78E9326E@webmail.messagingengine.com
-
-bug
-	I noticed it's Lucidity.key,but I need to rename to Lucidity.dat to work properly.
-	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
-	http://www.reusenoise.com
-
 
 == Finished for the next release ==
 New:
 Change:
+- Lucidity now only has one FXP slot.
+
 Bug Fix:
 - load sample function now works again. I broke this recently as well!
+- possible fix for "access violation error" that sometimes
+  occurs when mousing over the sample map. This error often results in
+  an infinute loop of error messages. This fix needs to be tested to 
+  be confirmed.
+
+
 
 === BETA v0.0.1.50 (28-Aug-2014) ===
 Bug Fix:

@@ -1704,6 +1704,8 @@ var
 begin
   inherited;
 
+  //LogMain.LogMessage('Midi Event. Data1=' + IntToStr(Event.Data1) + ' Data2=' + IntToStr(Event.Data2)  );
+
   if IsNoteOn(Event) then
   begin
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);

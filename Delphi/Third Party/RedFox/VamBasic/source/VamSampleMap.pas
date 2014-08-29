@@ -791,7 +791,6 @@ begin
       then CurrentRegion.HighKey := RightRegion.LowKey - 1;
   end;
 
-
 end;
 
 procedure TVamSampleMap.UpdateRegionInfoData;

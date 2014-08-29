@@ -47,16 +47,13 @@ bug
 bug
 - lucidity sometimes hangs when closing. add some logging to see where it hangs. 
 
-
 bug
  > Loading a loop and setting the track mode to "BPM" and trigger with 
   > keyboard and nothing plays until the Beats # setting is changed.
 thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
 
-
 bug AV error when playing back sample
 thunderlink://messageid=1409091659.89758.YahooMailNeo@web186104.mail.ir2.yahoo.com
-
 
 bug 
 - need to look into what the fxp patch stuff is doing. do I need to keep all patches in memory? 
@@ -71,7 +68,7 @@ bug
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
 bug
-- the error loop bug Andrea has found keeps rearing it's head. 
+- the error loop bug Andrea has found keeps rearing it's head. (possibly fixed. needs to be confirmed.)
 
 bug
 - the comb filter does sound good when modulated from one of the pads! There are crackles.
@@ -84,7 +81,7 @@ bug
 bug
  If i play a key, hold it, then play another key (while sustaining the previous one), the first key played key will stop.
  thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
-
+ -- I can't reproduce. sent follow up message asking for more details. 
 
 bug
 > If i load 12 instantes of Lucidity in renoise and then quit renoise,  it 
@@ -98,14 +95,17 @@ bug - Andrea - waveforms don't load.
 Found a minor bug in the .fxp patches
 thunderlink://messageid=CAG2OC09=XCZuHebxcYkyL+jMhvk49xcEQ74vyVu-GrxjQ61f-w@mail.gmail.com
 
-bug - Hugo
-fxp slots don't actually work! (doh)
-thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
 
 
 =============================================================================
      TODO HIGH
 =============================================================================
+Polyphony task
+- when re-triggering an already existing note, lucidity currently just
+  plays another one so that it overlaps. Perhaps it would
+  be better to do a slow release. Maybe half current release time 
+  or something. 
+
 Sample Map editor
 - the selected region data doesn't show in the info bar. (root note etc)\
 - the proposed sample region doesn't show in the info bar. (root note etc)\
@@ -119,6 +119,9 @@ Sample Map editor
 - need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
   -- I need a backbone that can run from a thread. display messages on the GUI etc. 
      The backbone needs to be able to pause while the dialog is shown.
+
+Allow Lucidity to respond to MIDI program change commands. request from Hugo
+thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
 
 - Lucidity should reload samples if changes are detected. Should just check last save date to begin with. Not too complicated!
 
