@@ -107,13 +107,14 @@ uses
   {$ELSE}
     Dialogs, SysUtils,
   {$ENDIF}
+  VamLib.Types,
   eeCustomGlobals,
   SyncObjs,
   eeTypes, eeFunctions, eePluginSettings, eeVstExtra,
   eeGlobals;
 
 var
-  DispatchEffectLock : TMutex;
+  DispatchEffectLock : TFixedCriticalSection;
 
 
 procedure ProcessClassReplacing_SplitBuffer(e: PAEffect; Inputs, Outputs: PPSingle; SampleFrames: VstInt32); cdecl;
@@ -273,7 +274,7 @@ begin
   end;
 
   if assigned(MidiOutBuffer) then FreeAndNil(MidiOutBuffer);
-  if assigned(Plugin)        then FreeAndNil(Plugin);
+  if assigned(Plugin)        then FreeAndNil(Plugin);   //There's an AV error here when free 12+ instances in reaper. Need to check to see what is going on.
   if assigned(ChunkData)     then FreeAndNil(ChunkData);
 
   ProcessControllerV2.Free;
@@ -731,7 +732,7 @@ begin
 end;
 
 initialization
-  DispatchEffectLock := TMutex.Create(false);
+  DispatchEffectLock := TFixedCriticalSection.Create;
 finalization
   OutputDebugString(PWideChar('Finalize eeVstAdapter.pas'));
   DispatchEffectLock.Free;
