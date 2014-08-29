@@ -147,7 +147,7 @@ constructor TeePluginBase.Create;
 begin
   fPublishedVstParameters := TPublishedVstParameterController.Create;
 
-  Globals     := TGlobals.Create;
+  Globals := TGlobals.Create;
   Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.Main);
 
   AudioEffect := TVstAudioEffect.Create;
