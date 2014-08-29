@@ -31,13 +31,16 @@ type
   end;
 
   TVamSampleMapDisplayInfo = record
+  public
     IsValid         : boolean;
+    UniqueID        : TGUID;
     FileName        : string;  // for selected region
     RootNote        : byte;    // for selected region
     LowKey          : byte;    // for selected region
     HighKey         : byte;    // for selected region
     LowVelocity     : byte;    // for selected region
     HighVelocity    : byte;    // for selected region
+    function UpdateFromRegion(const Source : TVamSampleRegion):boolean;
   end;
 
   TVamSampleRegion = class
@@ -127,6 +130,8 @@ type
     function GetColors(const Index: Integer): TRedFoxColorString;
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
+    MouseOverRegionDisplayInfo : TVamSampleMapDisplayInfo;
+    SelectedRegionDisplayInfo  : TVamSampleMapDisplayInfo;
 
     MouseOverRegion       : TVamSampleRegion;
     MouseOverRegionHandle : TRegionHandleID;
@@ -159,13 +164,16 @@ type
 
     KeyZone : array [0..127] of TVamSampleMapKeyZone;
 
+
+
     ProposedMapInfo : record
       IsFullKeyboardSpread : boolean;
     end;
 
+
+    procedure UpdateRegionInfoData;
+
     procedure ZoomOffsetChanged;
-    procedure RegionInfoChanged;
-    procedure MouseOverRegionChanged(aRegion:TVamSampleRegion);
 
     function PixelToSampleMapPos(Pixel : TPoint):TPoint;
 
@@ -230,11 +238,12 @@ type
 
     procedure MoveRegionToFront(aRegion : TVamSampleRegion);
 
-    function GetDisplayInfo : TVamSampleMapDisplayInfo;
-
     function GetDragSelectCount : integer;
     function GetSelectedCount   : integer;
+
+    function GetSelectedRegionInfo  : TVamSampleMapDisplayInfo;
     function GetMouseOverRegionInfo : TVamSampleMapDisplayInfo;
+
 
 
     property Color_Background            : TRedFoxColorString index 0 read GetColors write SetColors;
@@ -292,8 +301,8 @@ type
 implementation
 
 uses
-  VamLib.LoggingProxy,
   SysUtils,
+  VamLib.LoggingProxy,
   VamLib.WinUtils,
   VamLib.Utils,
   VamSampleMap.Sorting,
@@ -485,6 +494,8 @@ end;
 constructor TVamSampleMap.Create(AOwner: TComponent);
 begin
   inherited;
+  MouseOverRegionDisplayInfo.IsValid := false;
+  SelectedRegionDisplayInfo.IsValid := false;
   MouseOverRegion := nil;
   MouseOverRegionHandle := rhNone;
 
@@ -541,18 +552,6 @@ begin
   ProposedSampleRegions.Free;
   inherited;
 end;
-
-procedure TVamSampleMap.RegionInfoChanged;
-begin
-  if assigned(OnRegionInfoChanged) then OnRegionInfoChanged(self);
-end;
-
-procedure TVamSampleMap.MouseOverRegionChanged(aRegion: TVamSampleRegion);
-begin
-  if assigned(OnMouseOverRegionChanged) then OnMouseOverRegionChanged(self, aRegion);
-end;
-
-
 
 procedure TVamSampleMap.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 begin
@@ -699,7 +698,7 @@ begin
     ShowReplaceRegionMessage(false);
     MouseOverRegion := nil;
     MouseOverRegionHandle := rhNone;
-    MouseOverRegionChanged(nil);
+    UpdateRegionInfoData;
   end else
   begin
     UpdateProposedRegions_RegionReplace(DropPoint);
@@ -707,7 +706,7 @@ begin
     ShowReplaceRegionMessage(true);
     MouseOverRegion := RegionAtDropPoint;
     MouseOverRegionHandle := rhNone;
-    MouseOverRegionChanged(MouseOverRegion);
+    UpdateRegionInfoData;
   end;
 end;
 
@@ -793,6 +792,23 @@ begin
   end;
 
 
+end;
+
+procedure TVamSampleMap.UpdateRegionInfoData;
+begin
+  //TODO:MED
+
+  // This method checks if the MouseOverRegionInfo has changed. If it has it
+  // fires off an event. This method is doing something, or causing an event
+  // to fire that is too slow to process and the GUI changes are really blocky.
+  // EDIT - More research done, I think it is the code that is being
+  // called in the event handler..
+
+  if (MouseOverRegionDisplayInfo.UpdateFromRegion(MouseOverRegion)) then
+  begin
+    if assigned(OnRegionInfoChanged)      then OnRegionInfoChanged(self); //TODO:HIGH this should only be calling MouseOverRegionChanged()
+    if assigned(OnMouseOverRegionChanged) then OnMouseOverRegionChanged(self, MouseOverRegion);
+  end;
 end;
 
 procedure TVamSampleMap.UpdateProposedRegions_MultiFileDrop(DropPoint: TPoint; NewRegionCount: integer);
@@ -986,7 +1002,7 @@ begin
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
-  RegionInfoChanged;
+  UpdateRegionInfoData;
 
   if assigned(OnOleDragEnter)
     then OnOleDragEnter(Sender, ShiftState, aPoint, Effect, Data);
@@ -999,7 +1015,7 @@ begin
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
-  RegionInfoChanged;
+  UpdateRegionInfoData;
 end;
 
 procedure TVamSampleMap.OleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
@@ -1031,7 +1047,7 @@ begin
   IsDragDropSamplesActive := false;
 
   Invalidate;
-  RegionInfoChanged;
+  UpdateRegionInfoData;
   ShowReplaceRegionMessage(false);
 end;
 
@@ -1042,10 +1058,9 @@ begin
 
   MouseOverRegion := nil;
   MouseOverRegionHandle := rhNone;
-  MouseOverRegionChanged(nil);
+  UpdateRegionInfoData;
 
   Invalidate;
-  RegionInfoChanged;
   ShowReplaceRegionMessage(false);
 end;
 
@@ -1413,7 +1428,7 @@ begin
     end;
   end;
 
-  RegionInfoChanged;
+  UpdateRegionInfoData;
 end;
 
 
@@ -1461,7 +1476,7 @@ begin
       MoveSelectedRegions(MouseDownRegion, ProposedSampleRegions, DistKey, DistVelocity, IsSnapping);
 
       Invalidate;
-      RegionInfoChanged;
+      UpdateRegionInfoData;
     end;
   end;
 
@@ -1483,9 +1498,8 @@ begin
       LastDistVelocity := DistVelocity;
 
       MoveSelectedRegions(MouseDownRegion, SampleRegions, DistKey, DistVelocity, IsSnapping);
-
       Invalidate;
-      RegionInfoChanged;
+      UpdateRegionInfoData;
     end;
   end;
 
@@ -1507,9 +1521,8 @@ begin
       LastDistVelocity := DistVelocity;
 
       ResizeSelectedRegions(MouseDownRegion, SampleRegions, DistKey, DistVelocity, MouseDownRegionHandle, IsSnapping);
-
       Invalidate;
-      RegionInfoChanged;
+      UpdateRegionInfoData;
     end;
   end;
 
@@ -1586,8 +1599,7 @@ begin
     begin
       MouseOverRegion := aRegion;
       Invalidate;
-      RegionInfoChanged;
-      MouseOverRegionChanged(MouseOverRegion);
+      UpdateRegionInfoData;
     end;
 
     aHandle := GetRegionHandleAt(X, Y);
@@ -1738,15 +1750,14 @@ begin
   end;
 
   Invalidate;
-  RegionInfoChanged;
-
+  UpdateRegionInfoData;
   SortSampleRegionList;
 end;
 
 procedure TVamSampleMap.MouseEnter;
 begin
   inherited;
-  RegionInfoChanged;
+  UpdateRegionInfoData;
 end;
 
 procedure TVamSampleMap.MouseLeave;
@@ -1766,11 +1777,10 @@ begin
   begin
     MouseOverRegion := nil;
     MouseOverRegionHandle := rhNone;
-    MouseOverRegionChanged(nil);
+    UpdateRegionInfoData;
   end;
 
   Invalidate;
-  RegionInfoChanged;
 
   Cursor := crDefault;
 end;
@@ -2147,12 +2157,14 @@ begin
   result := HandleBounds;
 end;
 
-function TVamSampleMap.GetDisplayInfo: TVamSampleMapDisplayInfo;
+function TVamSampleMap.GetSelectedRegionInfo: TVamSampleMapDisplayInfo;
 var
   c1: Integer;
   aRegion : TVamSampleRegion;
   s : string;
 begin
+  result := SelectedRegionDisplayInfo;
+  {
   try
     // This method returns information about the current state of the sample map display.
     // The GUI can use this information to sync other GUI components to reflect the current
@@ -2241,7 +2253,41 @@ begin
     else
       raise;
   end;
+  }
 end;
+
+function TVamSampleMap.GetMouseOverRegionInfo: TVamSampleMapDisplayInfo;
+begin
+  result := MouseOverRegionDisplayInfo;
+  {
+  if not assigned(MouseOverRegion) then
+  begin
+    result.IsValid := false;
+  end else
+  begin
+    result.IsValid := true;
+
+    result.FileName     := MouseOverRegion.FileName;
+
+    if MouseOverRegion.IsMoving = false then
+    begin
+      result.RootNote     := MouseOverRegion.RootNote;
+      result.LowKey       := MouseOverRegion.LowKey;
+      result.HighKey      := MouseOverRegion.HighKey;
+      result.LowVelocity  := MouseOverRegion.LowVelocity;
+      result.HighVelocity := MouseOverRegion.HighVelocity;
+    end else
+    begin
+      result.RootNote     := MouseOverRegion.MovedRootNote;
+      result.LowKey       := MouseOverRegion.MovedLowKey;
+      result.HighKey      := MouseOverRegion.MovedHighKey;
+      result.LowVelocity  := MouseOverRegion.MovedLowVelocity;
+      result.HighVelocity := MouseOverRegion.MovedHighVelocity;
+    end;
+  end;
+  }
+end;
+
 
 
 
@@ -2274,35 +2320,6 @@ begin
   end else
   begin
     result := -1;
-  end;
-end;
-
-function TVamSampleMap.GetMouseOverRegionInfo: TVamSampleMapDisplayInfo;
-begin
-  if not assigned(MouseOverRegion) then
-  begin
-    result.IsValid := false;
-  end else
-  begin
-    result.IsValid := true;
-
-    result.FileName     := MouseOverRegion.FileName;
-
-    if MouseOverRegion.IsMoving = false then
-    begin
-      result.RootNote     := MouseOverRegion.RootNote;
-      result.LowKey       := MouseOverRegion.LowKey;
-      result.HighKey      := MouseOverRegion.HighKey;
-      result.LowVelocity  := MouseOverRegion.LowVelocity;
-      result.HighVelocity := MouseOverRegion.HighVelocity;
-    end else
-    begin
-      result.RootNote     := MouseOverRegion.MovedRootNote;
-      result.LowKey       := MouseOverRegion.MovedLowKey;
-      result.HighKey      := MouseOverRegion.MovedHighKey;
-      result.LowVelocity  := MouseOverRegion.MovedLowVelocity;
-      result.HighVelocity := MouseOverRegion.MovedHighVelocity;
-    end;
   end;
 end;
 
@@ -2346,5 +2363,97 @@ end;
 
 
 
+
+{ TVamSampleMapDisplayInfo }
+
+function TVamSampleMapDisplayInfo.UpdateFromRegion(const Source: TVamSampleRegion): boolean;
+var
+  IsUpdateRequired : boolean;
+  xRootNote, xLowKey, xHighKey, xLowVel, xHighVel : byte;
+begin
+  if (assigned(Source)) and (Source.IsMoving) then
+  begin
+    xRootNote := Source.MovedRootNote;
+    xLowKey   := Source.MovedLowKey;
+    xHighKey  := Source.MovedHighKey;
+    xLowVel   := Source.MovedLowVelocity;
+    xHighVel  := Source.MovedHighVelocity;
+  end else
+  if (assigned(Source)) and (not Source.IsMoving) then
+  begin
+    xRootNote := Source.RootNote;
+    xLowKey   := Source.LowKey;
+    xHighKey  := Source.HighKey;
+    xLowVel   := Source.LowVelocity;
+    xHighVel  := Source.HighVelocity;
+  end else
+  begin
+    xRootNote := 0;
+    xLowKey   := 0;
+    xHighKey  := 0;
+    xLowVel   := 0;
+    xHighVel  := 0;
+  end;
+
+  if (assigned(Source)) and (self.UniqueID <> source.UniqueID) then
+  begin
+    self.IsValid      := true;
+    self.UniqueID     := Source.UniqueID;
+    self.FileName     := Source.FileName;
+    self.RootNote     := xRootNote;
+    self.LowKey       := xLowKey;
+    self.HighKey      := xHighKey;
+    self.LowVelocity  := xLowVel;
+    self.HighVelocity := xHighVel;
+
+    // something has changed, return true
+    result := true;
+  end else
+  if (assigned(Source)) and (self.UniqueID = source.UniqueID) then
+  begin
+    IsUpdateRequired := false;
+
+    if self.FileName     <> Source.FileName then IsUpdateRequired := true;
+    if self.RootNote     <> xRootNote       then IsUpdateRequired := true;
+    if self.LowKey       <> xLowKey         then IsUpdateRequired := true;
+    if self.HighKey      <> xHighKey        then IsUpdateRequired := true;
+    if self.LowVelocity  <> xLowVel         then IsUpdateRequired := true;
+    if self.HighVelocity <> xHighVel        then IsUpdateRequired := true;
+
+    if IsUpdateRequired then
+    begin
+      self.FileName     := Source.FileName;
+      self.RootNote     := xRootNote;
+      self.LowKey       := xLowKey;
+      self.HighKey      := xHighKey;
+      self.LowVelocity  := xLowVel;
+      self.HighVelocity := xHighVel;
+
+      // something has changed, return true
+      result := true;
+    end else
+    begin
+      result := false;
+    end;
+  end else
+  if (not assigned(Source)) and (self.IsValid <> false) then
+  begin
+    self.IsValid      := false;
+    self.UniqueID     := GuidEx.EmptyGuid;
+    self.FileName     := '';
+    self.RootNote     := 0;
+    self.LowKey       := 0;
+    self.HighKey      := 0;
+    self.LowVelocity  := 0;
+    self.HighVelocity := 0;
+
+    // something has changed, return true
+    result := true;
+  end else
+  begin
+    // nothing has changed, return false.
+    result := false;
+  end;
+end;
 
 end.

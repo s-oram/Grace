@@ -1,5 +1,8 @@
 unit GuidEx;
 
+// TODO:HIGH this unit has been deprecated. These GUID functions have
+// been moved to VamLib.Utils.pas
+
 {
 
 TGuidEx - Delphi class for manipulating Guid values
@@ -29,6 +32,8 @@ type
     class function FromString(Value : string) : TGuid;
     class function EqualGuids(Guid1, Guid2 : TGuid) : boolean;
   end;
+
+
 
 implementation
 

@@ -673,6 +673,43 @@ begin
   SelectedCount       := SampleMap.GetSelectedCount;
   MouseOverRegionInfo := SampleMap.GetMouseOverRegionInfo;
 
+  try
+    if (DragSelectedCount > 0) and (MouseOverRegionInfo.IsValid = false) then
+    begin
+      SetRegionInfoControlVisibility(true);
+      if DragSelectedCount = 1
+        then SampleNameText := '(' + IntToStr(DragSelectedCount) + ' region selected)'
+        else SampleNameText := '(' + IntToStr(DragSelectedCount) + ' regions selected)';
+      UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
+    end else
+    if (SelectedCount > 1) and (MouseOverRegionInfo.IsValid = false) then
+    begin
+      SetRegionInfoControlVisibility(true);
+      SampleNameText := '(' + IntToStr(SelectedCount) + ' regions selected)';
+      UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
+    end else
+    begin
+      if SampleMap.GetMouseOverRegionInfo.IsValid
+        then Info := SampleMap.GetMouseOverRegionInfo
+        else Info := SampleMap.GetSelectedRegionInfo;
+      if Info.IsValid then
+      begin
+        SetRegionInfoControlVisibility(true);
+        SampleNameText := ExtractFilename(Info.FileName);
+        UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
+      end else
+      begin
+        SetRegionInfoControlVisibility(false);
+        UpdateRegionInfoControls('', '', '', '', '', '');
+      end;
+    end;
+  finally
+    UpdateRootNoteKeys; // Don't delete.
+  end;
+
+
+
+  {
   if (DragSelectedCount = -1) and (MouseOverRegionInfo.IsValid) then
   begin
     SetRegionInfoControlVisibility(true);
@@ -695,12 +732,13 @@ begin
 
   if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
   begin
-    Info := SampleMap.GetDisplayInfo;
+    if SampleMap.GetMouseOverRegionInfo.IsValid
+      then Info := SampleMap.GetMouseOverRegionInfo
+      else Info := SampleMap.GetSelectedRegionInfo;
 
     if Info.IsValid then
     begin
       SetRegionInfoControlVisibility(true);
-
       SampleNameText := ExtractFilename(Info.FileName);
       UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
     end;
@@ -726,6 +764,9 @@ begin
   end;
 
   UpdateRootNoteKeys; // Don't delete.
+  }
+
+  //UpdateRootNoteKeys; // Don't delete.
 end;
 
 

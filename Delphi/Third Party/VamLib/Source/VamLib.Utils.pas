@@ -92,6 +92,20 @@ function MemoryUsed: cardinal;
 
 function BytesToMegaBytes(const Value : single):single;
 
+
+
+
+type
+  GuidEx = record
+    class function NewGuid : TGuid; static;
+    class function EmptyGuid : TGuid; static;
+    class function IsEmptyGuid(Guid : TGuid) : boolean; static;
+    class function ToUnicodeString(Guid : TGuid) : string; static;
+    class function ToQuotedString(Guid : TGuid) : string; static;
+    class function FromString(Value : string) : TGuid; static;
+    class function EqualGuids(Guid1, Guid2 : TGuid) : boolean; static;
+  end;
+
 //==============================================================
 //    Enum Helpers
 //==============================================================
@@ -685,6 +699,49 @@ end;
 procedure Sanitise(var Value : single;  const LowValue, HighValue : single);
 begin
   Value := Clamp(Value, LowValue, HighValue);
+end;
+
+
+{ GuidEx }
+
+{ TGuidEx }
+
+class function GuidEx.EmptyGuid: TGuid;
+begin
+  result := FromString('{00000000-0000-0000-0000-000000000000}');
+end;
+
+class function GuidEx.EqualGuids(Guid1, Guid2: TGuid): boolean;
+begin
+  result := IsEqualGUID(Guid1, Guid2);
+end;
+
+class function GuidEx.FromString(Value: string): TGuid;
+begin
+  result := StringToGuid(Value);
+end;
+
+class function GuidEx.IsEmptyGuid(Guid : TGuid): boolean;
+begin
+  result := EqualGuids(Guid,EmptyGuid);
+end;
+
+class function GuidEx.NewGuid: TGuid;
+var
+  Guid : TGuid;
+begin
+  CreateGUID(Guid);
+  Result := Guid;
+end;
+
+class function GuidEx.ToQuotedString(Guid: TGuid): string;
+begin
+  result := QuotedStr(ToUnicodeString(Guid));
+end;
+
+class function GuidEx.ToUnicodeString(Guid: TGuid): string;
+begin
+  result := GuidToString(Guid);
 end;
 
 
