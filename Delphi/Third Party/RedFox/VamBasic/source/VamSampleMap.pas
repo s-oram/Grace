@@ -746,7 +746,6 @@ begin
   AboveRegion := FindRegionAbove(LowKey, HighKey, LowVelocity, HighVelocity);
   BelowRegion := FindRegionBelow(LowKey, HighKey, LowVelocity, HighVelocity);
 
-
   if (assigned(AboveRegion)) and (not assigned(BelowRegion)) then
   begin
     CurrentRegion.LowKey       := AboveRegion.LowKey;
@@ -769,12 +768,10 @@ begin
     CurrentRegion.HighVelocity := AboveRegion.LowVelocity  - 1;
   end;
 
-
   LowKey       := kp.X;
   HighKey      := kp.X;
   LowVelocity  := CurrentRegion.LowVelocity;
   HighVelocity := CurrentRegion.HighVelocity;
-
 
   LeftRegion  := FindRegionLeft(LowKey, HighKey, LowVelocity, HighVelocity);
   RightRegion := FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity);
