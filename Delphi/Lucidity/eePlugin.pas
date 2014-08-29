@@ -1712,25 +1712,21 @@ begin
     MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
     Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
     inc(GlobalModPoints.Source_TriggeredNoteCount);
-  end;
-
+  end else
   if IsNoteOff(Event) then
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
     Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
-  end;
-
+  end else
   if IsControlChange(Event) then
   begin
     MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
-  end;
-
+  end else
   if IsModWheel(Event) then
   begin
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
-  end;
-
+  end else
   if IsPitchBend(Event) then
   begin
     pba := GetPitchBendAmount(Event);
