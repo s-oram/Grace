@@ -145,8 +145,6 @@ begin
 
   DebugTag := aDebugTag;
 
-  Log.LogMessage('KeyGroup Created ID = (' + DebugTag + ')');
-
   ParSmoother := TParSmoother.Create;
 
   for c1 := 0 to kModulatedParameterCount-1 do
@@ -185,9 +183,6 @@ destructor TKeyGroup.Destroy;
 begin
   Globals.RemoveEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
   Globals.RemoveEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
-
-  Log.LogMessage('KeyGroup Destroyed ID =  (' + DebugTag + ')');
-  LogStackTrace;
 
   FSeq1Data.Free;
   FSeq2Data.Free;
