@@ -39,6 +39,8 @@ type
 
     procedure Init;
     procedure Clear;
+
+    function AsString : string;
   end;
 
 
@@ -58,6 +60,11 @@ procedure TUniqueID.Init;
 begin
   Part1 := InterlockedIncrement(GlobalCount);
   Part2 := Now;
+end;
+
+function TUniqueID.AsString: string;
+begin
+  result :=  IntToStr(Part1) + '-' + FloatToStr(Part2);
 end;
 
 procedure TUniqueID.Clear;
