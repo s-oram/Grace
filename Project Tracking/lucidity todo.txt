@@ -96,6 +96,13 @@ Found a minor bug in the .fxp patches
 thunderlink://messageid=CAG2OC09=XCZuHebxcYkyL+jMhvk49xcEQ74vyVu-GrxjQ61f-w@mail.gmail.com
 
 
+bug report (Andrea)
+1-load a sample lile piano-B2
+2-set root note (B2) lo A2-hi C3
+play midi note B2 and it's play some tones below
+See screencapture to better understand
+thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail.gmail.com
+
 
 =============================================================================
      TODO HIGH

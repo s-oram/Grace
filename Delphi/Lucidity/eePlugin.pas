@@ -144,6 +144,9 @@ type
     procedure RefreshManagedPluginParameterValues;
 
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
+
+
+    procedure LoadMIDIProgram(const ProgramIndex : integer);
   public
     constructor Create; override;
 	  destructor Destroy; override;
@@ -1542,6 +1545,41 @@ begin
   {$ENDIF}
 end;
 
+procedure TeePlugin.LoadMIDIProgram(const ProgramIndex: integer);
+var
+  MidiProgramDir : string;
+  fn : string;
+begin
+  //TODO:HIGH complete this function.
+  {
+  if not PluginDataDir.Exists then
+  begin
+    // TODO:HIGH it would be better to raise an error here without actually raising an exception.
+    // it would be better to put something on the GUI.
+    raise Exception.Create('Lucidity Error: Data Directory not found. Please reinstall.');
+  end;
+
+  if PluginDataDir.Exists then
+  begin
+    MidiProgramDir := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Midi Programs');
+
+    if DirectoryExists(MidiProgramDir) then
+    begin
+      fn := FindLucidityProgramUsingIndex(MidiProgramDir, ProgramIndex);
+      ImportProgram(fn);
+    end else
+    begin
+      // TODO:HIGH it would be better to raise an error here without actually raising an exception.
+      // it would be better to put something on the GUI.
+      raise Exception.Create('Lucidity Error: Midi Program Directory not found. Please reinstall.');
+    end;
+  end;
+  }
+
+end;
+
+
+
 
 
 function TeePlugin.GetVoiceGlide: single;
@@ -1735,9 +1773,7 @@ begin
   end else
   if IsProgramChange(Event) then
   begin
-    {$IFDEF Logging}
-      LogMain.LogMessage('MIDI Program Change. Program=' + IntToStr(Event.Data1));
-    {$ENDIF}
+    LoadMidiProgram(Event.Data1);
   end;
 
 end;

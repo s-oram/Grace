@@ -13,21 +13,25 @@ procedure SendMsg_StartProfiling;
 procedure SendMsg_StopProfiling;
 
 procedure SetUpLogging;
-
 procedure LogMemoryUsage(const LogTag : string = '');
-
-
 procedure LogStackTrace;
+
+
+// This method has been added to allow Lucidity to load a patch from a directory
+// using MIDI program change commands.
+function FindLucidityProgramUsingIndex(const Dir : string; const ProgramIndex : integer):string;
 
 implementation
 
 uses
+  Classes,
   {$IFDEF MadExcept}
   MadStackTrace,
   {$ENDIF}
   VamLib.Utils,
   VamLib.LoggingProxy,
   SmartInspectLogging,
+  uFindFiles,
   Windows,
   AudioIO,
   SysUtils;
@@ -106,6 +110,40 @@ end;
 procedure LogStackTrace;
 begin
   LogMain.LogText('Stack Trace', MadStackTrace.StackTrace);
+end;
+
+
+function FindLucidityProgramUsingIndex(const Dir : string; const ProgramIndex : integer):string;
+var
+  FileResults : TStringList;
+  PrunedFileName : string;
+  c1: Integer;
+begin
+  assert(false, 'TODO');
+  FileResults := TStringList.Create;
+  FileResults.Sorted := true;
+  FileResults.CaseSensitive := false;
+  AutoFree(@FileResults);
+
+  FindOnlyFiles(Dir, FileResults,'*.lpg');
+
+
+  for c1 := 0 to FileResults.Count-1 do
+  begin
+    //PrunedFileName := ExtractFileName(
+
+    // TODO:HIGH finish this method.
+
+    {
+      - prune the file name
+      - extract the first three charactors
+      - convert to an integer.
+      - see if it matches the program index, load.
+    }
+  end;
+
+
+
 end;
 
 

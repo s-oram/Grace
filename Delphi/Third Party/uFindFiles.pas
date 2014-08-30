@@ -4,6 +4,8 @@ interface
 
 {$WARN SYMBOL_PLATFORM OFF}
 
+// TODO:MED it would probably be good to add this functionality to VamLib.
+
 uses
   SysUtils, Classes;
 
