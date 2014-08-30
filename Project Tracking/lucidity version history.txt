@@ -3,6 +3,10 @@
 == Finished for the next release ==
 New:
 Change:
+Bug Fix:
+
+=== BETA v0.0.1.51 (30-Aug-2014) ===
+Change:
 - Lucidity now only has one FXP slot.
 
 Bug Fix:
@@ -11,8 +15,8 @@ Bug Fix:
   occurs when mousing over the sample map. This error often results in
   an infinute loop of error messages. This fix needs to be tested to 
   be confirmed.
-
-
+- Renoise: Lucidity would crash on exit in Renoise when using more than
+  12 Lucidity instances in a project. 
 
 === BETA v0.0.1.50 (28-Aug-2014) ===
 Bug Fix:

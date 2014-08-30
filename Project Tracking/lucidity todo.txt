@@ -83,14 +83,6 @@ bug
  thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
  -- I can't reproduce. sent follow up message asking for more details. 
 
-bug
-> If i load 12 instantes of Lucidity in renoise and then quit renoise,  it 
-> Will crash at exiting with several error msgs. If i load only 8 
-> instantes of Lucidity this wont happen. You can download renoise and 
-> check it. The renoise demo is fully functional.
-thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
-
-
 bug - Andrea - waveforms don't load.
 Found a minor bug in the .fxp patches
 thunderlink://messageid=CAG2OC09=XCZuHebxcYkyL+jMhvk49xcEQ74vyVu-GrxjQ61f-w@mail.gmail.com
@@ -102,6 +94,7 @@ bug report (Andrea)
 play midi note B2 and it's play some tones below
 See screencapture to better understand
 thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail.gmail.com
+- I can't reproduce this one yet. 
 
 
 =============================================================================
