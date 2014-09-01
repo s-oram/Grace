@@ -84,10 +84,6 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 bug
 - tuning info display doesn't always disolve. 
 
-bug 
-- sample volume indicator doesn't drop back to zero. Either the voice is still
-  playing or the indicator isn't updated when the voice stops.
-
 =============================================================================
      TODO HIGH
 =============================================================================
