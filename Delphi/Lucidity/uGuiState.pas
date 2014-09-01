@@ -21,6 +21,7 @@ type
     fSampleMapGroupVisibility: TGroupVisibility;
     fSampleDisplayOffset: single;
     fSampleDisplayZoom: single;
+    fIsAutoSelectActive: boolean;
     procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
   public
     constructor Create;
@@ -54,6 +55,8 @@ type
     property ActiveVstPluginParameterID : TPluginParameterId read fActiveVstPluginParameterID write SetActiveVstPluginParameterID;
 
     property SampleMapGroupVisibility : TGroupVisibility read fSampleMapGroupVisibility write fSampleMapGroupVisibility;
+
+    property IsAutoSelectActive : boolean read fIsAutoSelectActive write fIsAutoSelectActive;
   end;
 
 implementation
@@ -76,6 +79,8 @@ begin
 
   fIsModDestAutoSelectEnabled := true;
   fMainGuiLayout := TMainGuiLayout.Default;
+
+  IsAutoSelectActive := true;
 end;
 
 destructor TGuiState.Destroy;

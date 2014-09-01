@@ -1755,7 +1755,7 @@ begin
     //================================================================================
     // TODO:MED it would be interesting to profile this bit of code. How long does
     // it take. Does NoteTriggerData need to pulled from an object queue.
-    if (not Globals.TransportPlaying) then
+    if (not Globals.TransportPlaying) and (Globals.GuiState.IsAutoSelectActive) then
     begin
       NoteTriggerData := TMsgData_MidiNoteTriggered.Create;
       NoteTriggerData.Data1 := Event.Data1;

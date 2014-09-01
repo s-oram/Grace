@@ -23,6 +23,7 @@ type
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
     procedure EventHandle_OpenDataFoler(Sender : TObject);
+    procedure EventHandle_AutoSelectChange(Sender : TObject);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -189,9 +190,22 @@ begin
   //=========================
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Edit Sample Map...';
-  mi.OnClick := EventHandle_EditSampleMap;
+  mi.Caption := 'Auto Select On';
+  mi.OnClick := EventHandle_AutoSelectChange;
+  mi.Tag     := 1;
+  if Plugin.Globals.GuiState.IsAutoSelectActive
+    then mi.Checked := true;
   Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Auto Select Off';
+  mi.OnClick := EventHandle_AutoSelectChange;
+  mi.Tag     := 2;
+  if not Plugin.Globals.GuiState.IsAutoSelectActive
+    then mi.Checked := true;
+  Menu.Items.Add(mi);
+
+
 
 
   //==== insert a spacer =====
@@ -343,6 +357,23 @@ begin
     ShowMessage('Data Directory not found. Please reinstall Lucidity.');
   end;
 end;
+
+procedure TMainMenu.EventHandle_AutoSelectChange(Sender: TObject);
+var
+  Tag : integer;
+begin
+  Tag := (Sender as TMenuItem).Tag;
+
+  case Tag of
+    1: Plugin.Globals.GuiState.IsAutoSelectActive := true;
+    2: Plugin.Globals.GuiState.IsAutoSelectActive := false;
+  else
+    raise Exception.Create('Unexpected tag value.');
+
+  end;
+end;
+
+
 
 
 
