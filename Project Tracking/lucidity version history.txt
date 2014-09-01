@@ -3,6 +3,9 @@
 == Finished for the next release ==
 New:
 Change:
+- Added some more error handling to the "Show Manual" and "Show Data Folder"
+  commands. 
+
 Bug Fix:
 - GUI now updates when loading FXP patches. 
 - Tweaked the sample map GUI elements. They now show the 

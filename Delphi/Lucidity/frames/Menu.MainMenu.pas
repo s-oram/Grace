@@ -33,6 +33,7 @@ type
 implementation
 
 uses
+  VamLib.WinUtils,
   XPLAT.Dialogs,
   Windows,
   ShellApi,
@@ -293,13 +294,20 @@ end;
 procedure TMainMenu.EventHandle_OpenManual(Sender: TObject);
 var
   fn : string;
+  seResult : integer;
+  ErrMsg : string;
 begin
   if PluginDataDir.Exists then
   begin
     fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Manual') + 'Lucidity Manual.html';
     if FileExists(fn) then
     begin
-      ShellExecute(0, 'OPEN', PChar(fn), '', '', SW_SHOWNORMAL);
+      seResult := ShellExecute(0, 'OPEN', PChar(fn), '', '', SW_SHOWNORMAL);
+      if seResult <= 32 then
+      begin
+        ErrMsg := ShellExecuteErrorCodeToString(seResult);
+        ShowMessage('Lucidity Error: ' + ErrMsg);
+      end;
     end else
     begin
       ShowMessage('Manual not found. Please contact support.');
@@ -321,10 +329,15 @@ begin
 end;
 
 procedure TMainMenu.EventHandle_OpenDataFoler(Sender: TObject);
+var
+  ErrMsg : string;
 begin
   if (PluginDataDir^.Exists) then
   begin
-    ShowFolder(PluginDataDir^.Path);
+    if not ShowDirectoryInWindowsExplorer(PluginDataDir^.Path, ErrMsg) then
+    begin
+      ShowMessage('Lucidity Error: ' + ErrMsg);
+    end;
   end else
   begin
     ShowMessage('Data Directory not found. Please reinstall Lucidity.');

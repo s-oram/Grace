@@ -67,10 +67,6 @@ bug
 - the comb filter does sound good when modulated from one of the pads! There are crackles.
   it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
 
-bug 
-- sample volume indicator doesn't drop back to zero. Either the voice is still
-  playing or the indicator isn't updated when the voice stops.
-
 bug
  If i play a key, hold it, then play another key (while sustaining the previous one), the first key played key will stop.
  thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
@@ -85,10 +81,27 @@ See screencapture to better understand
 thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail.gmail.com
 - I can't reproduce this one yet. 
 
+bug
+- tuning info display doesn't always disolve. 
+
+bug 
+- sample volume indicator doesn't drop back to zero. Either the voice is still
+  playing or the indicator isn't updated when the voice stops.
 
 =============================================================================
      TODO HIGH
 =============================================================================
+Update the step sequencer divisions to match the LFO step divisions. 
+
+> Also, could i ask some more in-depth info about the 2pole filter 
+> "gain" knob ?
+The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
+
+[FEATURE REQUEST]
+- give the step sequencers a 'free running' mode like the LFO's.
+thunderlink://messageid=CAP8CW6MvAKMy0T5nY+tEdVxxXgpvGFxDxMxodqEkXNrriNjMZA@mail.gmail.com
+
+
 Polyphony task
 - when re-triggering an already existing note, lucidity currently just
   plays another one so that it overlaps. Perhaps it would
@@ -225,6 +238,13 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+
+[FEATURE REQUEST] Yann
+1 - Would it be possible to navigate in the keymapper using key arrows ( left/right to skip to previous / next sample, and up/down to skip to the other veolicty layer). It would speed up the workflow, allowing 2 hands work.
+thunderlink://messageid=CAP8CW6NnWZzV_EBtdXFSP2UV8h7RWD5Jfg0bMNRMd0QMw3Codw@mail.gmail.com
+
+
+
 Instead of the gui polling the plugin to see what region/key group is in focus
 in multiple places, I should use the messaging system to trigger a focus change.
 -- work in progress. 
