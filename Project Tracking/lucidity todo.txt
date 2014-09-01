@@ -81,8 +81,8 @@ See screencapture to better understand
 thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail.gmail.com
 - I can't reproduce this one yet. 
 
-bug
-- tuning info display doesn't always disolve. 
+
+
 
 =============================================================================
      TODO HIGH

@@ -46,6 +46,7 @@ type
     procedure SampleFocusChanged; // Called when the sample focus changes...
 
     procedure ShowParameterChangeInfo(const ParameterID : TPluginParameterID);
+    procedure UpdateParameterChangeInfo(const ParameterID : TPluginParameterID);
     procedure HideParameterChangeInfo;
   public
     constructor Create(AOwner: TComponent); override;
@@ -255,6 +256,12 @@ begin
     ShowParameterChangeInfo(ParID);
   end;
 
+  if MsgID = TLucidMsgID.Command_UpdateParChangeInfo then
+  begin
+    ParID := TPluginParameterID(Data^);
+    UpdateParameterChangeInfo(ParID);
+  end;
+
   if MsgID = TLucidMsgID.Command_HideParChangeInfo
     then HideParameterChangeInfo;
 
@@ -265,7 +272,13 @@ end;
 procedure TMenuBarFrame.ShowParameterChangeInfo(const ParameterID: TPluginParameterID);
 begin
   InfoDisplay.Text := Command.GetParDisplayInfo(self.Plugin, ParameterID);
+  InfoDisplay.Invalidate;
   InfoDisplay.Visible := true;
+end;
+
+procedure TMenuBarFrame.UpdateParameterChangeInfo(const ParameterID: TPluginParameterID);
+begin
+  InfoDisplay.Text := Command.GetParDisplayInfo(self.Plugin, ParameterID);
   InfoDisplay.Invalidate;
 end;
 

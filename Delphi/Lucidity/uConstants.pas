@@ -77,7 +77,8 @@ type
     Command_Sample_ZoomToLoopStart   = Command + 22;
     Command_Sample_ZoomToLoopEnd     = Command + 23;
     Command_ShowParChangeInfo        = Command + 24;
-    Command_HideParChangeInfo        = Command + 25;
+    Command_UpdateParChangeInfo      = Command + 25;
+    Command_HideParChangeInfo        = Command + 26;
     Actions                          = Command_HideParChangeInfo + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;

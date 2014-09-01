@@ -416,7 +416,7 @@ begin
     Throttle(ThrottleHandle, 25,
     procedure
     begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
     end);
   end;
