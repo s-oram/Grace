@@ -54,6 +54,7 @@ uses
 
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
+  VamLib.ZeroObject,
   uConstants;
 
 var
@@ -158,6 +159,7 @@ begin
 
       // IMPORTANT: Create the PluginGuiMeta class after creating and setting up the GUI window.
       PluginGuiMeta := TPluginGuiMeta.Create(Plugin, PluginGui, SystemWindow);
+      Plugin.Globals.MotherShip.RegisterZeroObject(PluginGuiMeta, TZeroObjectRank.VCL);
 
       // finally...
       Plugin.Globals.IsGuiOpen := true;

@@ -507,7 +507,6 @@ begin
     kg := TriggerItem.KeyGroup as IKeyGroup;
 
 
-
     //==== Trigger the Voice ====
     // triggers the voice's envelopes etc.
     (KG.GetObject as TKeyGroup).VoiceParameters.ApplyParametersToVoice(aVoice);

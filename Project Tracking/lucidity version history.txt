@@ -2,6 +2,8 @@
 
 == Finished for the next release ==
 New:
+- Add select region with MIDI input.
+
 Change:
 - Added some more error handling to the "Show Manual" and "Show Data Folder"
   commands. 

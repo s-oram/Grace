@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   VamLib.MoreTypes,
   //Lucidity.PluginParameters,
   SysUtils,
@@ -52,7 +53,8 @@ type
     VstParameterChanged              = 15;
     GroupVisibilityChanged           = 16;
     NewPatchLoaded                   = 17;
-    Command                          = NewPatchLoaded + 1;
+    MidiNoteTriggered                = 18;
+    Command                          = MidiNoteTriggered + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
@@ -126,6 +128,12 @@ type
   public
     MenuName : string;
     Menu     : Pointer;
+  end;
+
+  TMsgData_MidiNoteTriggered = class(TCustomZeroMessageData)
+  public
+    Data1 : byte;
+    Data2 : byte;
   end;
 
 

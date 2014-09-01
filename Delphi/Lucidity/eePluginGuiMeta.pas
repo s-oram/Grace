@@ -2,7 +2,10 @@ unit eePluginGuiMeta;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
+  VamLib.ZeroObject,
   WinApi.Windows,
   eePlugin, eePluginGui,
   GuiMeta.ActiveModDisplay,
@@ -12,7 +15,7 @@ type
   ///  The TPluginGuiMeta class adds some additional functionality
   ///  to the GUI.
 
-  TPluginGuiMeta = class
+  TPluginGuiMeta = class(TZeroObject)
   private
   protected
     Plugin       : TeePlugin;
@@ -21,22 +24,32 @@ type
 
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
+
+    procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
   public
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy; override;
+
+
   end;
 
 implementation
 
 uses
-  VamLib.ZeroObject,
+  SysUtils,
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   VamQuery,
   Classes,
   Controls,
   LucidityGui.Scope,
   VamKnob,
   VamTextBox,
-  VamButton;
+  VamButton,
+  uConstants,
+  Lucidity.Interfaces,
+  Lucidity.SampleMap;
 
 { TPluginGuiMeta }
 
@@ -67,5 +80,41 @@ begin
   ScopeHandler.Free;
   ActiveModDetector.Free;
 end;
+
+procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+var
+  MidiNoteTriggerData : TMsgData_MidiNoteTriggered;
+begin
+  if MsgID = TLucidMsgID.MidiNoteTriggered then
+  begin
+    MidiNoteTriggerData := (DataB as IZeroMessageData).GetObject as TMsgData_MidiNoteTriggered;
+    EventHandled_MidiNoteTriggered(MidiNoteTriggerData.Data1, MidiNoteTriggerData.Data2);
+  end;
+
+end;
+
+procedure TPluginGuiMeta.EventHandled_MidiNoteTriggered(const MidiData1, MidiData2: byte);
+var
+  c1 : integer;
+  rg : IRegion;
+  kg : IKeygroup;
+begin
+  // TODO:HIGH instead of checking for a new region to focus, I should check if
+  // the currently focused region is among the triggered items. If not, then look
+  // for an item to trigger.
+  for c1 := Plugin.SampleMap.RegionCount-1 downto 0 do
+  begin
+    rg := Plugin.SampleMap.Regions[c1];
+    kg := rg.GetKeyGroup;
+    if (IsNoteInsideRegion(rg, MidiData1, MidiData2)) then
+    begin
+      Plugin.FocusRegion(rg.GetProperties^.UniqueID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+      break;
+    end;
+  end;
+end;
+
+
 
 end.

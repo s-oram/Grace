@@ -4,7 +4,7 @@ interface
 
 {$INCLUDE Defines.inc}
 
-{$M+}
+{_$M+} // maybe this isn't needed?
 
 uses
   VamLib.UniqueID,
@@ -1741,10 +1741,9 @@ const
   OneOver127 = 1 / 127;
 var
   pba : single;
+  NoteTriggerData : TMsgData_MidiNoteTriggered;
 begin
   inherited;
-
-
 
   if IsNoteOn(Event) then
   begin
@@ -1752,6 +1751,18 @@ begin
     MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
     Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
     inc(GlobalModPoints.Source_TriggeredNoteCount);
+
+    //================================================================================
+    // TODO:MED it would be interesting to profile this bit of code. How long does
+    // it take. Does NoteTriggerData need to pulled from an object queue.
+    if (not Globals.TransportPlaying) then
+    begin
+      NoteTriggerData := TMsgData_MidiNoteTriggered.Create;
+      NoteTriggerData.Data1 := Event.Data1;
+      NoteTriggerData.Data2 := Event.Data2;
+      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiNoteTriggered, NoteTriggerData);
+    end;
+    //================================================================================
   end else
   if IsNoteOff(Event) then
   begin
