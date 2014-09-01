@@ -153,11 +153,9 @@ begin
     NameA := PMsgData_ShowMenuEvent(Data)^.MenuName;
     PMenu := PMsgData_ShowMenuEvent(Data)^.Menu;
 
-
     NameB := PluginParToName(TPluginParameter.SamplePlaybackType);
     if NameA = NameB
       then ShowPlayTypeMenuCallBack(PMenu^);
-
 
     NameB := PluginParToName(TPluginParameter.SampleResetClockSource);
     if NameA = NameB
