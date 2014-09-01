@@ -28,8 +28,6 @@ bug
 - play length indicator is incorrect when trigger mode is one shot or loop off.
   the play length indicator shows the looped area. 
 
-
-
 bug 
 - Look at SFZ loading for "Yamaha C7 Piano.sfz"
   The group opcodes are also applied to all the sub-region opcodes. How can this behaviour be
@@ -55,11 +53,6 @@ thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.c
 bug AV error when playing back sample
 thunderlink://messageid=1409091659.89758.YahooMailNeo@web186104.mail.ir2.yahoo.com
 
-bug 
-- need to look into what the fxp patch stuff is doing. do I need to keep all patches in memory? 
-- what does kontakt do? 
-thunderlink://messageid=CAPN=qRxpBH2y9W-drXAywXh1OGu6M-zRPMVL2xyFSaarwe+Wbg@mail.gmail.com
-
 bug
 - > I'll found another thing,It,s not properly a bug:When you save a 
 > patch,just to say Supersaw.lpg,making some tweak,save with another 
@@ -82,10 +75,6 @@ bug
  If i play a key, hold it, then play another key (while sustaining the previous one), the first key played key will stop.
  thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
  -- I can't reproduce. sent follow up message asking for more details. 
-
-bug - Andrea - waveforms don't load.
-Found a minor bug in the .fxp patches
-thunderlink://messageid=CAG2OC09=XCZuHebxcYkyL+jMhvk49xcEQ74vyVu-GrxjQ61f-w@mail.gmail.com
 
 
 bug report (Andrea)

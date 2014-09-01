@@ -144,6 +144,7 @@ var
   NameA, NameB : string;
   PMenu : ^TMenu;
 begin
+  if MsgID = TLucidMsgID.NewPatchLoaded                  then UpdateControlVisibility;
   if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
 

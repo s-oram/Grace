@@ -337,10 +337,11 @@ var
   zx : single;
   Zoom, Offset : single;
 begin
-  if MsgID = TLucidMsgId.SampleRegionChanged then
+  if MsgID = TLucidMsgID.NewPatchLoaded then
   begin
-    // TODO:HIGH I'm not sure if the sample display needs to be updated on SampleRegionChanged messages.
-    //UpdateSampleDisplay;
+    UpdateControlVisibility;
+    UpdateSampleDisplay;
+    UpdateSampleDisplayInfo;
   end;
 
   if MsgID = TLucidMsgID.SampleFocusChanged then

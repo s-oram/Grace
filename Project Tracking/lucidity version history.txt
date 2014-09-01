@@ -4,6 +4,7 @@
 New:
 Change:
 Bug Fix:
+- GUI now updates when loading FXP patches. 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===
 Change:

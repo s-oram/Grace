@@ -121,7 +121,6 @@ begin
   XYPadsContainer.Layout.AlignWithinParent(TRedFoxAlign.AlignCenter, TRedFoxAlign.AlignNear).Move(0,8);
 end;
 
-
 procedure TXYPadsFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 begin
 

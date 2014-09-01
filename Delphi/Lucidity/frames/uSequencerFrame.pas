@@ -192,13 +192,13 @@ procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointe
 var
   kg : IKeyGroup;
 begin
+  // TODO:MED There is a bit of code repetition here. It could be consolidated.
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin
     kg := Plugin.FocusedKeyGroup;
     if assigned(kg)
       then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
       else StepSeqControl.SequenceData := nil;
-
     StepSeqControl.Invalidate;
   end;
 
@@ -208,6 +208,7 @@ begin
     if assigned(kg)
       then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
       else StepSeqControl.SequenceData := nil;
+    StepSeqControl.Invalidate;
   end;
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
@@ -216,6 +217,16 @@ begin
     if assigned(kg)
       then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
       else StepSeqControl.SequenceData := nil;
+    StepSeqControl.Invalidate;
+  end;
+
+  if MsgID = TLucidMsgID.NewPatchLoaded then
+  begin
+    kg := Plugin.FocusedKeyGroup;
+    if assigned(kg)
+      then StepSeqControl.SequenceData := kg.GetSequenceData(fSequencerIndex)
+      else StepSeqControl.SequenceData := nil;
+    StepSeqControl.Invalidate;
   end;
 
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then

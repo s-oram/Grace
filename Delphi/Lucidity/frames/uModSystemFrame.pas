@@ -203,6 +203,7 @@ procedure TModSystemFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointe
 var
   s : string;
 begin
+  if MsgID = TLucidMsgID.NewPatchLoaded           then UpdateModulation;
   if MsgID = TLucidMsgID.SampleFocusChanged       then UpdateModulation;
   if MsgID = TLucidMsgID.Command_UpdateGUI        then UpdateModulation;
   if MsgID = TLucidMsgID.ModSlotChanged           then UpdateModulation;

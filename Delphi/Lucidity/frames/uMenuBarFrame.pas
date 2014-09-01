@@ -244,21 +244,10 @@ procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer;
 var
   ParID : TPluginParameterID;
 begin
-  if MsgID = TLucidmsgID.SampleFocusChanged then
-  begin
-    SampleFocusChanged;
-  end;
-
-  if MsgID = TLucidmsgID.MouseOverSampleRegionChanged then
-  begin
-    SampleFocusChanged;
-  end;
-
-  if MsgID = TLucidmsgID.SampleRegionChanged then
-  begin
-    SampleFocusChanged;
-  end;
-
+  if MsgID = TLucidmsgID.NewPatchLoaded               then SampleFocusChanged;
+  if MsgID = TLucidmsgID.SampleFocusChanged           then SampleFocusChanged;
+  if MsgID = TLucidmsgID.MouseOverSampleRegionChanged then SampleFocusChanged;
+  if MsgID = TLucidmsgID.SampleRegionChanged          then SampleFocusChanged;
 
   if MsgID = TLucidMsgID.Command_ShowParChangeInfo then
   begin

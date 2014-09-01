@@ -1466,9 +1466,11 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix, nil);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
-  // this one call here perhaps.
+  // this one call here perhaps...
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded, nil);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI, nil);
+  // ... this might be the one consolidated call.
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.NewPatchLoaded, nil);
 end;
 
 procedure TeePlugin.SaveMIDIMapAsDefault;

@@ -51,7 +51,8 @@ type
     GUILayoutChanged                 = 14;
     VstParameterChanged              = 15;
     GroupVisibilityChanged           = 16;
-    Command                          = GroupVisibilityChanged + 1;
+    NewPatchLoaded                   = 17;
+    Command                          = NewPatchLoaded + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
     Command_ShowAboutDialog          = Command + 3;
