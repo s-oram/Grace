@@ -130,7 +130,7 @@ uses
   eeVstXml,
   RedFoxColor, eePitch,
   VamLayoutWizard,
-  VamKeyStateTracker, GuidEx,
+  VamKeyStateTracker,
   Lucidity.PluginParameters,
   uConstants, Lucidity.SampleMap, Lucidity.KeyGroup;
 
@@ -395,13 +395,15 @@ var
   DisplayRegion : TVamSampleRegion;
   MapRegion     : IRegion;
   c1: Integer;
-  id : TGUID;
   KG : IKeyGroup;
   NameA, NameB : string;
-
   Text : string;
+  id : TGUID; //TODO:MED replace usuages of TGUID with TUniqueID.
+  FocusedRegionID : TGUID;
 begin
   if not assigned(Plugin) then exit;
+
+  FocusedRegionID := GUIDEx.EmptyGuid;
 
   SampleMap.BeginUpdate;
   try
@@ -447,6 +449,7 @@ begin
         DisplayRegion.IsSelected    := MapRegion.GetProperties^.IsSelected;
         DisplayRegion.IsFocused     := MapRegion.GetProperties^.IsFocused;
 
+
         Text := IntToStr(MapRegion.GetProperties^.LowNote) + ' ' + IntToStr(MapRegion.GetProperties^.HighNote)  + ' ' + IntToStr(MapRegion.GetProperties^.LowVelocity)  + ' ' + IntToStr(MapRegion.GetProperties^.HighVelocity);
         Text := 'Region Bounds (' + IntToStr(c1 + 1) + ') ' + Text;
 
@@ -467,8 +470,15 @@ begin
             then DisplayRegion.IsVisible := true
             else DisplayRegion.IsVisible := false;
         end;
+
+        if MapRegion.GetProperties^.IsFocused then
+        begin
+          FocusedRegionID := MapRegion.GetProperties^.UniqueID;
+        end;
       end;
     end;
+
+    SampleMap.FocusRegionByUniqueID(FocusedRegionID);
   finally
     SampleMap.EndUpdate;
     SampleMap.Invalidate;
@@ -603,7 +613,6 @@ begin
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
-    UpdateRegionInfoDisplay;
     UpdateSampleRegions;
   end;
 
@@ -611,7 +620,6 @@ begin
   begin
     UpdateSampleRegions;
     UpdateRootNoteKeys;
-    UpdateRegionInfoDisplay;
   end;
 
   if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
@@ -630,10 +638,11 @@ begin
 
   if assigned(aRegion)
     then Plugin.Globals.GuiState.MouseOverRegionID := aRegion.UniqueID
-    else Plugin.Globals.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
+    else Plugin.Globals.GuiState.MouseOverRegionID := GuidEx.EmptyGuid;
 
-  UpdateRegionInfoDisplay;
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.MouseOverSampleRegionChanged);
+
+  //UpdateRegionInfoDisplay;
 end;
 
 
@@ -666,15 +675,19 @@ var
   DragSelectedCount : integer;
   SelectedCount     : integer;
   Info : TVamSampleMapDisplayInfo;
+  FocusedRegionInfo  : TVamSampleMapDisplayInfo;
   MouseOverRegionInfo : TVamSampleMapDisplayInfo;
   SampleNameText : string;
 begin
   DragSelectedCount   := SampleMap.GetDragSelectCount;
   SelectedCount       := SampleMap.GetSelectedCount;
+
+  FocusedRegionInfo  := SampleMap.GetFocusedRegionInfo;
   MouseOverRegionInfo := SampleMap.GetMouseOverRegionInfo;
 
+
   try
-    if (DragSelectedCount > 0) and (MouseOverRegionInfo.IsValid = false) then
+    if (DragSelectedCount > 0) then
     begin
       SetRegionInfoControlVisibility(true);
       if DragSelectedCount = 1
@@ -682,91 +695,33 @@ begin
         else SampleNameText := '(' + IntToStr(DragSelectedCount) + ' regions selected)';
       UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
     end else
-    if (SelectedCount > 1) and (MouseOverRegionInfo.IsValid = false) then
+    if MouseOverRegionInfo.IsValid then
+    begin
+      Info := MouseOverRegionInfo;
+      SetRegionInfoControlVisibility(true);
+      SampleNameText := ExtractFilename(Info.FileName);
+      UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
+    end else
+    if (SelectedCount > 1) then
     begin
       SetRegionInfoControlVisibility(true);
       SampleNameText := '(' + IntToStr(SelectedCount) + ' regions selected)';
       UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
     end else
+    if FocusedRegionInfo.IsValid then
     begin
-      if SampleMap.GetMouseOverRegionInfo.IsValid
-        then Info := SampleMap.GetMouseOverRegionInfo
-        else Info := SampleMap.GetSelectedRegionInfo;
-      if Info.IsValid then
-      begin
-        SetRegionInfoControlVisibility(true);
-        SampleNameText := ExtractFilename(Info.FileName);
-        UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
-      end else
-      begin
-        SetRegionInfoControlVisibility(false);
-        UpdateRegionInfoControls('', '', '', '', '', '');
-      end;
+      Info := FocusedRegionInfo;
+      SetRegionInfoControlVisibility(true);
+      SampleNameText := ExtractFilename(Info.FileName);
+      UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
+    end else
+    begin
+      SetRegionInfoControlVisibility(false);
+      UpdateRegionInfoControls('', '', '', '', '', '');
     end;
   finally
     UpdateRootNoteKeys; // Don't delete.
   end;
-
-
-
-  {
-  if (DragSelectedCount = -1) and (MouseOverRegionInfo.IsValid) then
-  begin
-    SetRegionInfoControlVisibility(true);
-
-    Info := MouseOverRegionInfo;
-
-    if SelectedCount <= 1
-      then SampleNameText := ExtractFilename(Info.FileName)
-      else SampleNameText := ExtractFilename(Info.FileName) + '  (' + IntToStr(SelectedCount) + ' regions selected)';
-
-    UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
-  end;
-
-
-  if (DragSelectedCount = -1) and (SelectedCount = 0) and (MouseOverRegionInfo.IsValid = false) then
-  begin
-    SetRegionInfoControlVisibility(false);
-    UpdateRegionInfoControls('', '', '', '', '', '');
-  end;
-
-  if (DragSelectedCount = -1) and (SelectedCount = 1) and (MouseOverRegionInfo.IsValid = false) then
-  begin
-    if SampleMap.GetMouseOverRegionInfo.IsValid
-      then Info := SampleMap.GetMouseOverRegionInfo
-      else Info := SampleMap.GetSelectedRegionInfo;
-
-    if Info.IsValid then
-    begin
-      SetRegionInfoControlVisibility(true);
-      SampleNameText := ExtractFilename(Info.FileName);
-      UpdateRegionInfoControls(SampleNameText, Info.LowKey, Info.HighKey, Info.LowVelocity, Info.HighVelocity, Info.RootNote);
-    end;
-  end;
-
-  if (DragSelectedCount = -1) and (SelectedCount > 1) and (MouseOverRegionInfo.IsValid = false) then
-  begin
-    SetRegionInfoControlVisibility(true);
-
-    SampleNameText := '(' + IntToStr(SelectedCount) + ' regions selected)';
-    UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
-  end;
-
-  if (DragSelectedCount > 0) and (MouseOverRegionInfo.IsValid = false) then
-  begin
-    SetRegionInfoControlVisibility(true);
-
-    if DragSelectedCount = 1
-      then SampleNameText := '(' + IntToStr(DragSelectedCount) + ' region selected)'
-      else SampleNameText := '(' + IntToStr(DragSelectedCount) + ' regions selected)';
-
-    UpdateRegionInfoControls(SampleNameText, '-', '-', '-', '-', '-');
-  end;
-
-  UpdateRootNoteKeys; // Don't delete.
-  }
-
-  //UpdateRootNoteKeys; // Don't delete.
 end;
 
 
@@ -977,7 +932,7 @@ begin
     begin
       // The current region has been replaced, so lets assume the mouse over region
       // has changed as well.
-      Plugin.Globals.GuiState.MouseOverRegionID := TGuidEx.EmptyGuid;
+      Plugin.Globals.GuiState.MouseOverRegionID := GuidEx.EmptyGuid;
 
       // Focus the new region.
       Plugin.FocusRegion(NewRG.GetProperties^.UniqueID);

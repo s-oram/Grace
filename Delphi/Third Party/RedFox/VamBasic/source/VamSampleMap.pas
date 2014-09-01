@@ -131,7 +131,7 @@ type
     procedure SetColors(const Index: Integer; const Value: TRedFoxColorString);
   protected
     MouseOverRegionDisplayInfo : TVamSampleMapDisplayInfo;
-    SelectedRegionDisplayInfo  : TVamSampleMapDisplayInfo;
+    FocusedRegionDisplayInfo  : TVamSampleMapDisplayInfo;
 
     MouseOverRegion       : TVamSampleRegion;
     MouseOverRegionHandle : TRegionHandleID;
@@ -150,6 +150,7 @@ type
 
     DeselectOthersOnMouseUp : boolean;
     MouseDownPos : TPoint;
+    FocusedRegion         : TVamSampleRegion;
     MouseDownRegion       : TVamSampleRegion;
     MouseDownRegionHandle : TRegionHandleID;
     OriginKey        : integer;
@@ -164,19 +165,15 @@ type
 
     KeyZone : array [0..127] of TVamSampleMapKeyZone;
 
-
-
     ProposedMapInfo : record
       IsFullKeyboardSpread : boolean;
     end;
-
 
     procedure UpdateRegionInfoData;
 
     procedure ZoomOffsetChanged;
 
     function PixelToSampleMapPos(Pixel : TPoint):TPoint;
-
 
     function CalcRegionColor(const aSampleRegion : TVamSampleRegion):TRedFoxColor;
     function CalcSampleRegionBounds(aSampleRegion : TVamSampleRegion; const CalcMovingBounds : boolean = false):TRectF;
@@ -220,6 +217,8 @@ type
     function FindRegionRight(LowKey, HighKey, LowVelocity, HighVelocity : integer):TVamSampleRegion;
 
     procedure DeselectOtherRegions(const TargetRegion : TVamSampleRegion);
+
+    procedure DoFocusRegion(const aRegion : TVamSampleRegion);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -235,13 +234,14 @@ type
     property ProposedSampleRegions : TVamSampleRegionList read fProposedSampleRegions write fProposedSampleRegions;
 
     function FindRegionByUniqueID(UniqueID : TGUID):TVamSampleRegion;
+    procedure FocusRegionByUniqueID(UniqueID : TGUID);
 
     procedure MoveRegionToFront(aRegion : TVamSampleRegion);
 
     function GetDragSelectCount : integer;
     function GetSelectedCount   : integer;
 
-    function GetSelectedRegionInfo  : TVamSampleMapDisplayInfo;
+    function GetFocusedRegionInfo  : TVamSampleMapDisplayInfo;
     function GetMouseOverRegionInfo : TVamSampleMapDisplayInfo;
 
 
@@ -495,7 +495,7 @@ constructor TVamSampleMap.Create(AOwner: TComponent);
 begin
   inherited;
   MouseOverRegionDisplayInfo.IsValid := false;
-  SelectedRegionDisplayInfo.IsValid := false;
+  FocusedRegionDisplayInfo.IsValid := false;
   MouseOverRegion := nil;
   MouseOverRegionHandle := rhNone;
 
@@ -532,6 +532,25 @@ begin
   }
 end;
 
+destructor TVamSampleMap.Destroy;
+begin
+  SampleRegions.Free;
+  ProposedSampleRegions.Free;
+  inherited;
+end;
+
+procedure TVamSampleMap.DoFocusRegion(const aRegion: TVamSampleRegion);
+begin
+  if FocusedRegion <> aRegion then
+  begin
+    FocusedRegion := aRegion;
+
+    UpdateRegionInfoData;
+
+    if assigned(OnFocusRegion) then OnFocusRegion(self, aRegion);
+  end;
+end;
+
 procedure TVamSampleMap.DeselectOtherRegions(const TargetRegion: TVamSampleRegion);
 var
   c1: Integer;
@@ -544,13 +563,6 @@ begin
     end;
 
   end;
-end;
-
-destructor TVamSampleMap.Destroy;
-begin
-  SampleRegions.Free;
-  ProposedSampleRegions.Free;
-  inherited;
 end;
 
 procedure TVamSampleMap.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
@@ -791,6 +803,8 @@ begin
 end;
 
 procedure TVamSampleMap.UpdateRegionInfoData;
+var
+  IsRegionInfoChanged : boolean;
 begin
   //TODO:MED
 
@@ -800,10 +814,22 @@ begin
   // EDIT - More research done, I think it is the code that is being
   // called in the event handler..
 
+  IsRegionInfoChanged := false;
+
+  if (FocusedRegionDisplayInfo.UpdateFromRegion(FocusedRegion)) then
+  begin
+    IsRegionInfoChanged := true;
+  end;
+
   if (MouseOverRegionDisplayInfo.UpdateFromRegion(MouseOverRegion)) then
   begin
-    if assigned(OnRegionInfoChanged)      then OnRegionInfoChanged(self); //TODO:HIGH this should only be calling MouseOverRegionChanged()
+    IsRegionInfoChanged := true;
     if assigned(OnMouseOverRegionChanged) then OnMouseOverRegionChanged(self, MouseOverRegion);
+  end;
+
+  if IsRegionInfoChanged then
+  begin
+    if assigned(OnRegionInfoChanged) then OnRegionInfoChanged(self);
   end;
 end;
 
@@ -1178,7 +1204,40 @@ begin
   result := aRegion;
 end;
 
+procedure TVamSampleMap.FocusRegionByUniqueID(UniqueID: TGUID);
+var
+  c1: Integer;
+  aRegion : TVamSampleRegion;
+  IsInvalidateRequired : boolean;
+begin
+  IsInvalidateRequired := false;
+  aRegion := nil;
 
+  for c1 := 0 to SampleRegions.Count-1 do
+  begin
+    if (SampleRegions[c1].UniqueID = UniqueID) then
+    begin
+      aRegion := SampleRegions[c1];
+
+      if not SampleRegions[c1].IsFocused then
+      begin
+        SampleRegions[c1].IsFocused := true;
+        IsInvalidateRequired := true;
+      end;
+    end else
+    begin
+      if SampleRegions[c1].IsFocused then
+      begin
+        SampleRegions[c1].IsFocused := false;
+        IsInvalidateRequired := true;
+      end;
+    end;
+  end;
+
+  if IsInvalidateRequired then Invalidate;
+
+  DoFocusRegion(aRegion);
+end;
 
 function TVamSampleMap.FindRegionByUniqueID(UniqueID: TGUID): TVamSampleRegion;
 var
@@ -1340,11 +1399,11 @@ begin
         else if (MouseDownRegion.IsSelected) then
         begin
           DeselectOthersOnMouseUp := true;
-          if assigned(OnFocusRegion) then OnFocusRegion(self, MouseDownRegion);
+          DoFocusRegion(MouseDownRegion);
         end
         else if (MouseDownRegion.IsSelected = false) then
         begin
-          if assigned(OnFocusRegion)  then OnFocusRegion(self, MouseDownRegion);
+          DoFocusRegion(MouseDownRegion);
           if assigned(OnSelectRegion) then OnSelectRegion(self, MouseDownRegion);
           if assigned(OnDeselectOtherRegions) then OnDeselectOtherRegions(self, MouseDownRegion);
         end;
@@ -1396,7 +1455,7 @@ begin
         end;
 
 
-        if assigned(OnFocusRegion)        then OnFocusRegion(self, nil);
+        DoFocusRegion(nil);
         if assigned(OnDeselectAllRegions) then OnDeselectAllRegions(self);
         if assigned(OnDragSelectStart)    then OnDragSelectStart(self);
       end;
@@ -1413,11 +1472,11 @@ begin
 
       if (MouseDownRegion.IsSelected) and (MouseDownRegion.IsFocused = false) then
       begin
-        if assigned(OnFocusRegion) then OnFocusRegion(self, MouseDownRegion);
+        DoFocusRegion(MouseDownRegion);
       end else
       if (MouseDownRegion.IsSelected = false) then
       begin
-        if assigned(OnFocusRegion)  then OnFocusRegion(self, MouseDownRegion);
+        DoFocusRegion(MouseDownRegion);
         if assigned(OnSelectRegion) then OnSelectRegion(self, MouseDownRegion);
         if assigned(OnDeselectOtherRegions) then OnDeselectOtherRegions(self, MouseDownRegion);
       end;
@@ -1662,7 +1721,7 @@ begin
 
     if FocusIndex <> -1 then
     begin
-      if assigned(OnFocusRegion)  then OnFocusRegion(self, SampleRegions[FocusIndex]);
+      DoFocusRegion(SampleRegions[FocusIndex]);
     end;
 
     IsDragSelectActive := false;
@@ -2153,13 +2212,13 @@ begin
   result := HandleBounds;
 end;
 
-function TVamSampleMap.GetSelectedRegionInfo: TVamSampleMapDisplayInfo;
+function TVamSampleMap.GetFocusedRegionInfo: TVamSampleMapDisplayInfo;
 var
   c1: Integer;
   aRegion : TVamSampleRegion;
   s : string;
 begin
-  result := SelectedRegionDisplayInfo;
+  result := FocusedRegionDisplayInfo;
   {
   try
     // This method returns information about the current state of the sample map display.
@@ -2451,5 +2510,8 @@ begin
     result := false;
   end;
 end;
+
+
+
 
 end.

@@ -5,6 +5,9 @@ New:
 Change:
 Bug Fix:
 - GUI now updates when loading FXP patches. 
+- Tweaked the sample map GUI elements. They now show the 
+  region bounds for the selected region again. This used
+  to work but was broken in the previous version. 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===
 Change:
