@@ -124,6 +124,7 @@ implementation
 uses
   AudioIO,
   NativeXmlEx,
+  Lucidity.StateManager.PatchVersionUpdater,
   Lucidity.SequencerDataObject,
   LucidityUtils,
   Lucidity.StateHelpers,
@@ -136,7 +137,7 @@ uses
   Lucidity.Sfz;
 
 const
-  kCurrentFileVersion : integer = 1;
+  kCurrentPatchFileVersion : integer = 3;
 
 { TLucidityStatemanager }
 
@@ -1053,14 +1054,12 @@ begin
   assert(assigned(RootNode));
 
   aNode := RootNode.NodeNew('PatchFileFormatVersion');
-  aNode.ValueUnicode := DataIO_IntToStr(3);
+  aNode.ValueUnicode := DataIO_IntToStr(kCurrentPatchFileVersion);
 
   RootNode.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
 end;
 
 procedure TLucidityStatemanager.CheckPatchFormatVersion(var XML: TNativeXML);
-const
-  CurrentPatchFormatVersion : integer = 1;
 var
   RootNode : TXMLNode;
   aNode : TXmlNode;
@@ -1074,11 +1073,16 @@ begin
   begin
     PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1);
 
-    if (PatchFormatVersion > 0) and (PatchFormatVersion < CurrentPatchFormatVersion) then
+    case PatchFormatVersion of
+      2: UpdatePatchVersionFrom2To3(XML);
+    end;
+
+    {
+    if (PatchFormatVersion > 0) and (PatchFormatVersion < kCurrentPatchFileVersion) then
     begin
       // Update patch file!
     end;
-
+    }
   end;
 
 end;

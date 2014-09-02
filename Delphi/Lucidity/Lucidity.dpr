@@ -175,7 +175,8 @@ uses
   AudioIO in '..\Third Party\AudioIO\source\AudioIO.pas',
   VclEx.PopupListEx in 'Controls\VclEx.PopupListEx.pas',
   VclEx.PopupMenuEx in 'Controls\VclEx.PopupMenuEx.pas',
-  Menu.GroupVisibility in 'frames\Menu.GroupVisibility.pas';
+  Menu.GroupVisibility in 'frames\Menu.GroupVisibility.pas',
+  Lucidity.StateManager.PatchVersionUpdater in 'Lucidity.StateManager.PatchVersionUpdater.pas';
 
 {$R *.res}
 

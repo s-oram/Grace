@@ -608,6 +608,7 @@
 			<DCCReference Include="Controls\VclEx.PopupListEx.pas"/>
 			<DCCReference Include="Controls\VclEx.PopupMenuEx.pas"/>
 			<DCCReference Include="frames\Menu.GroupVisibility.pas"/>
+			<DCCReference Include="Lucidity.StateManager.PatchVersionUpdater.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
