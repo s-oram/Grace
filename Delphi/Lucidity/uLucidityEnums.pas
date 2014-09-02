@@ -59,7 +59,7 @@ type
   TLfoFreqMode = (Fixed100Millisecond, Fixed1Second, Fixed10Second, Sync1_32, Sync1_16, Sync1_8, Sync1_4, Sync1_2, Sync1_1,
   Sync1_32Dot, Sync1_16Dot, Sync1_8Dot, Sync1_4Dot, Sync1_2Dot, Sync1_1Dot,
   Sync1_32Triple, Sync1_16Triple, Sync1_8Triple, Sync1_4Triple, Sync1_2Triple, Sync1_1Triple,
-  Sync2_1, Sync3_1, Sync4_1, Sync5, Sync6_1, Sync7_1, Sync8_1
+  Sync2_1, Sync3_1, Sync4_1, Sync5_1, Sync6_1, Sync7_1, Sync8_1
   );
 
   TLfoFreqModeHelper = class(TEnumHelper<TLfoFreqMode>)
@@ -162,6 +162,33 @@ type
     SampleLoop
   );
   TClockSourceHelper = class(TEnumHelper<TClockSource>);
+    {
+    Sync1_32,
+    Sync1_16,
+    Sync1_8,
+    Sync1_4,
+    Sync1_2,
+    Sync1_1,
+    Sync1_32Dot,
+    Sync1_16Dot,
+    Sync1_8Dot,
+    Sync1_4Dot,
+    Sync1_2Dot,
+    Sync1_1Dot,
+    Sync1_32Triple,
+    Sync1_16Triple,
+    Sync1_8Triple,
+    Sync1_4Triple,
+    Sync1_2Triple,
+    Sync1_1Triple,
+    Sync2_1,
+    Sync3_1,
+    Sync4_1,
+    Sync5,
+    Sync6_1,
+    Sync7_1,
+    Sync8_1,
+    }
 
   TSequencerClock = (
     Div_1,
@@ -786,7 +813,7 @@ begin
     TLfoFreqMode.Sync2_1:        result := '2/1';
     TLfoFreqMode.Sync3_1:        result := '3/1';
     TLfoFreqMode.Sync4_1:        result := '4/1';
-    TLfoFreqMode.Sync5:          result := '5/1';
+    TLfoFreqMode.Sync5_1:        result := '5/1';
     TLfoFreqMode.Sync6_1:        result := '6/1';
     TLfoFreqMode.Sync7_1:        result := '7/1';
     TLfoFreqMode.Sync8_1:        result := '8/1';

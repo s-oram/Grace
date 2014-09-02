@@ -143,7 +143,7 @@ begin
     TLfoFreqMode.Sync2_1:        MaxLfoFreq := SyncToFreq(2, BPM);
     TLfoFreqMode.Sync3_1:        MaxLfoFreq := SyncToFreq(3, BPM);
     TLfoFreqMode.Sync4_1:        MaxLfoFreq := SyncToFreq(4, BPM);
-    TLfoFreqMode.Sync5:          MaxLfoFreq := SyncToFreq(5, BPM);
+    TLfoFreqMode.Sync5_1:          MaxLfoFreq := SyncToFreq(5, BPM);
     TLfoFreqMode.Sync6_1:        MaxLfoFreq := SyncToFreq(6, BPM);
     TLfoFreqMode.Sync7_1:        MaxLfoFreq := SyncToFreq(7, BPM);
     TLfoFreqMode.Sync8_1:        MaxLfoFreq := SyncToFreq(8, BPM);
