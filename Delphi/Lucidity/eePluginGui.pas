@@ -66,7 +66,6 @@ type
     Manually:boolean;
     GuiStandard : TGuiStandard;
     DialogDisplayArea : TDialogDisplayArea;
-    VstWindow : Hwnd;
     DropFileTarget : TRedFoxDropFileTarget;
 
     MenuBarFrame           : TMenuBarFrame;
@@ -292,8 +291,6 @@ var
   MenuHandler : TMenuButtonHandler;
 begin
   assert(assigned(Plugin));
-
-  VstWindow := aVstWindow;
 
   GuiStandard := TGuiStandard.Create;
 
