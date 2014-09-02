@@ -162,6 +162,11 @@ type
     SampleLoop
   );
   TClockSourceHelper = class(TEnumHelper<TClockSource>);
+
+
+
+    //TODO:MED - It would be good to update the step sequencer clock
+    // divisions so they match the LFO rates.
     {
     Sync1_32,
     Sync1_16,
@@ -184,7 +189,7 @@ type
     Sync2_1,
     Sync3_1,
     Sync4_1,
-    Sync5,
+    Sync5_1,
     Sync6_1,
     Sync7_1,
     Sync8_1,
