@@ -89,6 +89,10 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 =============================================================================
 Update the step sequencer divisions to match the LFO step divisions. 
 
+Auto region select causes the sample display to flicker when not actually changing
+what controls are visible. 
+
+
 > Also, could i ask some more in-depth info about the 2pole filter 
 > "gain" knob ?
 The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 

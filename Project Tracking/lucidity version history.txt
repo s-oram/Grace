@@ -7,6 +7,8 @@ New:
 Change:
 - Added some more error handling to the "Show Manual" and "Show Data Folder"
   commands. 
+- Changes to the internal messaging system. (MotherShip now has list locks
+  for each zero object list.)
 
 Bug Fix:
 - GUI now updates when loading FXP patches. 
