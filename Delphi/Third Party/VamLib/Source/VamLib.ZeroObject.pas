@@ -161,8 +161,10 @@ type
     MainObjects  : TList;
     VclObjects   : TList;
 
-    MessageLock : TFixedCriticalSection;
-    //MessageLock : TFakeCriticalSection;
+    AudioListLock : TMultiReadSingleWrite;
+    MainListLock  : TMultiReadSingleWrite;
+    VclListLock   : TMultiReadSingleWrite;
+
     DisableMessageSending : boolean;
 
     MainThreadID : cardinal;
@@ -178,7 +180,7 @@ type
 
     procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
-    procedure SendMessageToList(const ObjectList : TList; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
+    procedure SendMessageToList(const ObjectList : TList; const ListLock : TMultiReadSingleWrite; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
     procedure SetIsGuiOpen(const Value: boolean);
   public
@@ -191,8 +193,8 @@ type
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
 
-    procedure MsgMain(MsgID : cardinal); overload;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgMain(MsgID : cardinal); overload; deprecated;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; deprecated;
 
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
@@ -289,8 +291,9 @@ begin
 
   DisableMessageSending := false;
 
-  MessageLock := TFixedCriticalSection.Create;
-  //MessageLock := TFakeCriticalSection.Create;
+  AudioListLock := TMultiReadSingleWrite.Create(false);
+  MainListLock  := TMultiReadSingleWrite.Create(false);
+  VclListLock   := TMultiReadSingleWrite.Create(false);
 
   AudioObjects := TList.Create;
   MainObjects  := TList.Create;
@@ -305,6 +308,8 @@ end;
 
 destructor TMotherShip.Destroy;
 begin
+  VclMessageTimer.Enabled := false;
+
   if AudioObjects.Count > 0
     then Log.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
 
@@ -313,14 +318,19 @@ begin
 
   ClearMotherShipReferences;
 
-
+  // Important - free the timer first.
   VclMessageTimer.Free;
-  VclMessageQueue.Free;
-  MessageLock.Free;
 
-  FreeAndNil(AudioObjects);
-  FreeAndNil(MainObjects);
-  FreeAndNil(VclObjects);
+  // then free the other object.s
+  VclMessageQueue.Free;
+
+  AudioObjects.Free;
+  MainObjects.Free;
+  VclObjects.Free;
+
+  AudioListLock.Free;
+  MainListLock.Free;
+  VclListLock.Free;
 
   IsGuiOpenLock.Free;
 
@@ -354,26 +364,38 @@ begin
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(self);
 
-  case Rank of
-    TZeroObjectRank.Audio:
-    begin
-      if AudioObjects.IndexOf(ptr) = -1
-        then AudioObjects.Add(ptr);
-    end;
+  try
+    // TODO:MED instead of locking all locks, we could lock the
+    // relevant list lock only.
+    AudioListLock.BeginWrite;
+    VclListLock.BeginWrite;
+    MainListLock.BeginWrite;
 
-    TZeroObjectRank.Main:
-    begin
-      if MainObjects.IndexOf(ptr) = -1
-        then MainObjects.Add(ptr);
-    end;
+    case Rank of
+      TZeroObjectRank.Audio:
+      begin
+        if AudioObjects.IndexOf(ptr) = -1
+          then AudioObjects.Add(ptr);
+      end;
 
-    TZeroObjectRank.VCL:
-    begin
-      if VclObjects.IndexOf(ptr) = -1
-        then VclObjects.Add(ptr);
+      TZeroObjectRank.Main:
+      begin
+        if MainObjects.IndexOf(ptr) = -1
+          then MainObjects.Add(ptr);
+      end;
+
+      TZeroObjectRank.VCL:
+      begin
+        if VclObjects.IndexOf(ptr) = -1
+          then VclObjects.Add(ptr);
+      end;
+    else
+      raise Exception.Create('Rank not supported.');
     end;
-  else
-    raise Exception.Create('Rank not supported.');
+  finally
+    AudioListLock.EndWrite;
+    VclListLock.EndWrite;
+    MainListLock.EndWrite;
   end;
 
 end;
@@ -387,22 +409,35 @@ begin
   obj.SetMotherShipReference(nil);
   IsD := false;
 
-  if MainObjects.IndexOf(ptr) <> -1 then
-  begin
-    MainObjects.Remove(ptr);
-    IsD := true;
-  end;
+  try
+    // TODO:MED instead of locking all locks, we could lock the
+    // relevant list lock only.
+    AudioListLock.BeginWrite;
+    VclListLock.BeginWrite;
+    MainListLock.BeginWrite;
 
-  if AudioObjects.IndexOf(ptr) <> -1 then
-  begin
-    AudioObjects.Remove(ptr);
-    IsD := true;
-  end;
+    if MainObjects.IndexOf(ptr) <> -1 then
+    begin
+      MainObjects.Remove(ptr);
+      IsD := true;
+    end;
 
-  if VclObjects.IndexOf(ptr) <> -1 then
-  begin
-    VclObjects.Remove(ptr);
-    IsD := true;
+    if AudioObjects.IndexOf(ptr) <> -1 then
+    begin
+      AudioObjects.Remove(ptr);
+      IsD := true;
+    end;
+
+    if VclObjects.IndexOf(ptr) <> -1 then
+    begin
+      VclObjects.Remove(ptr);
+      IsD := true;
+    end;
+
+  finally
+    AudioListLock.EndWrite;
+    VclListLock.EndWrite;
+    MainListLock.EndWrite;
   end;
 
   if IsD = false
@@ -439,7 +474,7 @@ end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
 begin
-  SendMessageToList(AudioObjects, MsgID, Data, nil);
+  SendMessageToList(AudioObjects, AudioListLock, MsgID, Data, nil);
 end;
 
 procedure TMotherShip.MsgAudio(MsgID: cardinal);
@@ -455,13 +490,13 @@ end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
-  SendMessageToList(MainObjects, MsgID, Data, nil);
+  SendMessageToList(MainObjects, MainListLock, MsgID, Data, nil);
 
   IsGuiOpenLock.Acquire;
   try
     if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
     begin
-      SendMessageToList(VclObjects, MsgID, Data, nil);
+      SendMessageToList(VclObjects, VclListLock, MsgID, Data, nil);
     end else
     begin
       // TODO:HIGH probably should log a warning here.
@@ -481,7 +516,7 @@ begin
     begin
       if (MainThreadID = GetCurrentThreadId) then
       begin
-        SendMessageToList(VclObjects, MsgID, nil, nil);
+        SendMessageToList(VclObjects, VclListLock, MsgID, nil, nil);
       end else
       begin
         // TODO:MED probably should log a warning or raise an error here.
@@ -496,6 +531,14 @@ end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
+
+  if (MainThreadID <> GetCurrentThreadId)
+    then raise Exception.Create('MsgVCL has been called from non-vcl thread.');
+
+  SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
+
+
+  {
   // TODO:HIGH need to check calling thread ID.
   IsGuiOpenLock.Acquire;
   try
@@ -503,7 +546,7 @@ begin
     begin
       if (MainThreadID = GetCurrentThreadId) then
       begin
-        SendMessageToList(VclObjects, MsgID, Data, DataB);
+        SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
       end else
       begin
         // TODO:MED probably should log a warning or raise an error here.
@@ -513,6 +556,8 @@ begin
   finally
     IsGuiOpenLock.Release;
   end;
+  }
+
 end;
 
 procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
@@ -520,6 +565,14 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
+  // Always add messages to the queue even if GUI isn't opened.
+  msgData.MsgID   := MsgID;
+  msgData.DataB   := DataB;
+  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
+  VclMessageQueue.Enqueue(QueueValue);
+
+
+  {
   IsGuiOpenLock.Acquire;
   try
     if IsGuiOpen then
@@ -541,6 +594,7 @@ begin
   finally
     IsGuiOpenLock.Release;
   end;
+  }
 end;
 
 procedure TMotherShip.Handle_VclMessageTimerEvent(Sender: TObject);
@@ -556,7 +610,7 @@ begin
       if IsGuiOpen then
       begin
         MsgData := QueueValue.ToRecord<TMessageData>;
-        SendMessageToList(VclObjects, msgData.MsgID, nil, msgData.DataB);
+        SendMessageToList(VclObjects, VclListLock, msgData.MsgID, nil, msgData.DataB);
       end;
     end;
   finally
@@ -564,7 +618,7 @@ begin
   end;
 end;
 
-procedure TMotherShip.SendMessageToList(const ObjectList: TList; const MsgID: cardinal; const Data: Pointer; DataB:IZeroMessageData);
+procedure TMotherShip.SendMessageToList(const ObjectList: TList; const ListLock : TMultiReadSingleWrite; const MsgID: cardinal; const Data: Pointer; DataB:IZeroMessageData);
 var
   LastIndex : integer;
   c1: Integer;
@@ -572,18 +626,11 @@ var
   LogMsg : string;
   aClass : TClass;
 begin
-  LastIndex := -1;
+  if DisableMessageSending then exit;
 
-  MessageLock.Enter;
+  ListLock.BeginRead;
   try
-    if ObjectList = MainObjects then LogMsg := 'ZeroObject.MsgMain(MsgID = ' + IntToStr(MsgID) + ')'
-    else
-    if ObjectList = AudioObjects then LogMsg := 'ZeroObject.MsgAudio(MsgID = ' + IntToStr(MsgID) + ')'
-    else
-      LogMsg := 'Error : Unknown Object List';
-
-    if DisableMessageSending then exit;
-
+    LastIndex := -1;
     try
       for c1 := 0 to ObjectList.Count - 1 do
       begin
@@ -602,7 +649,7 @@ begin
     end;
 
   finally
-    MessageLock.Leave;
+    ListLock.EndRead;
   end;
 end;
 
