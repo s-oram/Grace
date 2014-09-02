@@ -150,7 +150,6 @@ begin
   begin
     try
       PluginGuiMeta := TPluginGuiMeta.Create(Plugin, nil, SystemWindow);
-      Plugin.Globals.MotherShip.RegisterZeroObject(PluginGuiMeta, TZeroObjectRank.VCL);
 
       PluginGUI := TPluginGui.CreateParented(SystemWindow);
       PluginGUI.Width  := PluginInfo.InitialGuiWidth;

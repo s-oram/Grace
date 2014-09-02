@@ -61,6 +61,10 @@ begin
   Plugin       := aPlugin;
   SystemWindow := aSystemWindow;
 
+  // Register self to mother ship.
+  Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
+
+
   ScopeHandler := TScopeHandler.Create(Plugin);
   Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, TZeroObjectRank.VCL);
 

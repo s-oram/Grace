@@ -294,6 +294,9 @@ begin
 
   GuiStandard := TGuiStandard.Create;
 
+  // register self to mother ship.
+  Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
+
   KnobHandler := TKnobHandler.Create(Plugin);
   GuiStandard.RegisterHandler('KnobHandler', KnobHandler);
   Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.VCL);
@@ -303,7 +306,7 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.VCL);
 
 
-  Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
+
 
   //==== Load the key hook config ==============================================
   if Plugin.Globals.FindConfigFile('KeyHook.xml', fn) then
