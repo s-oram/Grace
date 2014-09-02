@@ -149,17 +149,15 @@ begin
   if (UseCount = 0) then
   begin
     try
-      //Plugin.Globals.MotherShip.LogMainObjects;
-      //Plugin.Globals.MotherShip.LogAudioObjects;
+      PluginGuiMeta := TPluginGuiMeta.Create(Plugin, nil, SystemWindow);
+      Plugin.Globals.MotherShip.RegisterZeroObject(PluginGuiMeta, TZeroObjectRank.VCL);
 
       PluginGUI := TPluginGui.CreateParented(SystemWindow);
       PluginGUI.Width  := PluginInfo.InitialGuiWidth;
       PluginGUI.Height := PluginInfo.InitialGuiHeight;
       PluginGUI.Plugin := self.Plugin;
 
-      // IMPORTANT: Create the PluginGuiMeta class after creating and setting up the GUI window.
-      PluginGuiMeta := TPluginGuiMeta.Create(Plugin, PluginGui, SystemWindow);
-      Plugin.Globals.MotherShip.RegisterZeroObject(PluginGuiMeta, TZeroObjectRank.VCL);
+      PluginGuiMeta.PostCreate(PluginGui);
 
       // finally...
       Plugin.Globals.IsGuiOpen := true;

@@ -87,6 +87,8 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 =============================================================================
      TODO HIGH
 =============================================================================
+opening/closing the sample map window is slow!!! 
+
 Update the step sequencer divisions to match the LFO step divisions. 
 
 Auto region select causes the sample display to flicker when not actually changing

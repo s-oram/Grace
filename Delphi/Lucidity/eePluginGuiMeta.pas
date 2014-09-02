@@ -32,6 +32,8 @@ type
     constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
     destructor Destroy; override;
 
+    procedure PostCreate(const aGui : TPluginGui);
+
 
   end;
 
@@ -55,21 +57,12 @@ uses
 
 
 constructor TPluginGuiMeta.Create(aPlugin: TeePlugin; aGui: TPluginGui; aSystemWindow: hwnd);
-var
-  c : TControl;
 begin
   Plugin       := aPlugin;
-  Gui          := aGui;
   SystemWindow := aSystemWindow;
 
   ScopeHandler := TScopeHandler.Create(Plugin);
   Plugin.Globals.MotherShip.RegisterZeroObject(ScopeHandler, TZeroObjectRank.VCL);
-
-  c := FindControlbyName(Gui, 'Scope');
-  if assigned(c) then
-  begin
-    ScopeHandler.ScopeControl := c as TLucidityScope;
-  end;
 
   ActiveModDetector := TActiveParameterDetector.Create(Plugin);
   aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, TZeroObjectRank.VCL);
@@ -79,6 +72,21 @@ destructor TPluginGuiMeta.Destroy;
 begin
   ScopeHandler.Free;
   ActiveModDetector.Free;
+end;
+
+procedure TPluginGuiMeta.PostCreate(const aGui: TPluginGui);
+var
+  c : TControl;
+begin
+  Gui := aGui;
+
+  c := FindControlbyName(Gui, 'Scope');
+  if assigned(c) then
+  begin
+    ScopeHandler.ScopeControl := c as TLucidityScope;
+  end;
+
+
 end;
 
 procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
