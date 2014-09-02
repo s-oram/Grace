@@ -23,6 +23,8 @@ type
   private
     AnchorNode : TXmlNode;
   public
+    // Example Node Path = "FirstNode/SecondNode/ThirdNode"
+
     constructor Create(aAnchorNode : TXmlNode);
 
     function Exists(NodePath : string):boolean;
