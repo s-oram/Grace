@@ -1053,7 +1053,7 @@ begin
   assert(assigned(RootNode));
 
   aNode := RootNode.NodeNew('PatchFileFormatVersion');
-  aNode.ValueUnicode := DataIO_IntToStr(2);
+  aNode.ValueUnicode := DataIO_IntToStr(3);
 
   RootNode.NodeNew('PatchFileType').ValueUnicode := 'LucidityPatchFile';
 end;
