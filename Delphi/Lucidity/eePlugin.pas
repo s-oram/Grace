@@ -21,6 +21,7 @@ uses
   eeMidiAutomationV2,
   eeAudioFilePreviewPlayer,
   eeSimpleGate,
+  eeGlobals,
   Lucidity.MidiInputProcessor,
   Lucidity.PluginParameters,
   Lucidity.VoiceController,
@@ -148,7 +149,7 @@ type
 
     procedure LoadMIDIProgram(const ProgramIndex : integer);
   public
-    constructor Create; override;
+    constructor Create(const aGlobals : TGlobals); override;
 	  destructor Destroy; override;
 
     // SetPluginParameter() receives a parameter change notification. It stores the new parameter value and
@@ -295,7 +296,7 @@ const
 
 { TeePlugin }
 
-constructor TeePlugin.Create;
+constructor TeePlugin.Create(const aGlobals : TGlobals);
 var
   //DefaultMidiMapFileName : string; //TODO:
   c1 : integer;

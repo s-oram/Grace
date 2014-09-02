@@ -15,7 +15,9 @@ interface
 uses
   eeProcessController,
   Windows,
-  eePluginGui, eePlugin, // <-- It is important for these file to be project specific.
+  eePluginGui,
+  eeGlobals,
+  eePlugin, // <-- It is important for these file to be project specific.
   eeVstEditorAdapter, eeMidiEvents,
   Classes, VamLib.MoreTypes, uConstants,
   DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX;
@@ -34,6 +36,7 @@ type
   TeeVstAdapter = class(AudioEffectX)
   private
   protected
+    Globals:TGlobals;
     ChunkData:TMemoryStream;
     Plugin:TeePlugin;
     ParametersHaveChanged:boolean;
@@ -110,8 +113,7 @@ uses
   VamLib.Types,
   eeCustomGlobals,
   SyncObjs,
-  eeTypes, eeFunctions, eePluginSettings, eeVstExtra,
-  eeGlobals;
+  eeTypes, eeFunctions, eePluginSettings, eeVstExtra;
 
 var
   DispatchEffectLock : TFixedCriticalSection;
@@ -189,26 +191,30 @@ constructor TeeVstAdapter.Create(audioMaster: TAudioMasterCallbackFunc; numProgr
 var
   UniqueId:AnsiString;
 begin
-  //Create the plugin.
-  Plugin := TeePlugin.Create;
-  Plugin.OnPresetNameChanged := EventHandler_PresetNameChanged;
+  Globals := TGlobals.Create;
 
   // Assign global VST method references so that the GUI can set/get parameter information.
-  Plugin.Globals.VstMethods^.SetParameterAutomated := self.SetParameterAutomated;
-  Plugin.Globals.VstMethods^.GetParameter          := self.GetParameter;
-  Plugin.Globals.VstMethods^.BeginParameterEdit    := self.BeginEdit;
-  Plugin.Globals.VstMethods^.EndParameterEdit      := self.EndEdit;
+  Globals.VstMethods^.SetParameterAutomated := self.SetParameterAutomated;
+  Globals.VstMethods^.GetParameter          := self.GetParameter;
+  Globals.VstMethods^.BeginParameterEdit    := self.BeginEdit;
+  Globals.VstMethods^.EndParameterEdit      := self.EndEdit;
+  // Update plugin with some host properties.
+  Globals.HostProperties^.HostName    := GetReportedHostName;
+  Globals.HostProperties^.HostVersion := GetHostVendorVersion;
+
+
+  //Create the plugin.
+  Plugin := TeePlugin.Create(Globals);
+  Plugin.OnPresetNameChanged := EventHandler_PresetNameChanged;
+
   Plugin.Globals.VstMethods^.GetParameterDisplay   := Plugin.GetParameterDisplay;
   Plugin.Globals.VstMethods^.GetParameterLabel     := Plugin.GetParameterLabel;
+
 
   ProcessControllerV2 := TProcessController.Create(Plugin);
   ProcessControllerV2.TimeInfoMethod := self.GetTimeInfo;
 
   inherited Create(audioMaster, Plugin.Settings.NumberOfPrograms, Plugin.PublishedVstParameters.Count);
-
-  // Update plugin with some host properties.
-  Plugin.Globals.HostProperties^.HostName    := GetReportedHostName;
-  Plugin.Globals.HostProperties^.HostVersion := GetHostVendorVersion;
 
   if Plugin.Settings.UseHostGui <> true
     then self.Editor := TVstEditor.Create(self, Plugin)
@@ -251,8 +257,8 @@ begin
   Suspend;
   Randomize;
 
-  Plugin.Globals.TriggerEvent(TPluginEvent.SampleRateChanged);
-  Plugin.Globals.TriggerEvent(TPluginEvent.BlockSizeChanged);
+  Globals.TriggerEvent(TPluginEvent.SampleRateChanged);
+  Globals.TriggerEvent(TPluginEvent.BlockSizeChanged);
 
   //Plugin.InitializeState;
 
@@ -278,6 +284,8 @@ begin
   if assigned(ChunkData)     then FreeAndNil(ChunkData);
 
   ProcessControllerV2.Free;
+
+  Globals.Free;
   inherited;
 end;
 
@@ -617,7 +625,7 @@ end;
 procedure TeeVstAdapter.Suspend;
 begin
   inherited;
-  Plugin.Globals.TriggerVstSuspendEvent;
+  Globals.TriggerVstSuspendEvent;
   Plugin.Suspend;
 end;
 
@@ -641,9 +649,9 @@ begin
 
 
 
-  if Plugin.Globals.BlockSize   <> bs then Plugin.Globals.BlockSize   := bs;
+  if Globals.BlockSize   <> bs then Globals.BlockSize   := bs;
 
-  Plugin.Globals.UpdateSampleRates(sr, cr, cr);
+  Globals.UpdateSampleRates(sr, cr, cr);
 
   ProcessControllerV2.Resume(BlockSize, round(SampleRate), Plugin.Settings.OverSampleFactor, Effect.numInputs, Effect.numOutputs);
 
@@ -654,7 +662,7 @@ begin
   ChunkData.Clear;
 
   Plugin.Resume;
-  Plugin.Globals.TriggerVstResumeEvent;
+  Globals.TriggerVstResumeEvent;
 end;
 
 
@@ -664,16 +672,16 @@ var
 begin
   if (TimeInfo^.flags and kVstTempoValid) >=1 then
   begin
-    if TimeInfo^.Tempo <> Plugin.Globals.Tempo then Plugin.Globals.Tempo := TimeInfo^.Tempo;
+    if TimeInfo^.Tempo <> Globals.Tempo then Globals.Tempo := TimeInfo^.Tempo;
   end;
 
-  if (TimeInfo^.Flags and kVstPpqPosValid) >= 1 then Plugin.Globals.ppqPos             := TimeInfo^.ppqPos;
-  if (TimeInfo^.Flags and kVstBarsValid)   >= 1 then Plugin.Globals.BarStartPos        := TimeInfo^.barStartPos;
+  if (TimeInfo^.Flags and kVstPpqPosValid) >= 1 then Globals.ppqPos             := TimeInfo^.ppqPos;
+  if (TimeInfo^.Flags and kVstBarsValid)   >= 1 then Globals.BarStartPos        := TimeInfo^.barStartPos;
 
   {$IFDEF OverSampleEnabled}
-    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock * Plugin.Settings.OverSampleFactor;
+    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock * Plugin.Settings.OverSampleFactor;
   {$ELSE}
-    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock;
+    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock;
   {$ENDIF}
 
 
@@ -697,13 +705,13 @@ begin
       then Recording := true
       else Recording := false;
 
-    Plugin.Globals.UpdateTransportState(Playing, CycleActive, Recording);
+    Globals.UpdateTransportState(Playing, CycleActive, Recording);
   end;
 
-  Plugin.Globals.TimeSigNumerator   := TimeInfo^.timeSigNumerator;
-  Plugin.Globals.TimeSigDenominator := TimeInfo^.timeSigDenominator;
+  Globals.TimeSigNumerator   := TimeInfo^.timeSigNumerator;
+  Globals.TimeSigDenominator := TimeInfo^.timeSigDenominator;
 
-  Plugin.Globals.UpdateSyncInfo;
+  Globals.UpdateSyncInfo;
 end;
 
 

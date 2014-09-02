@@ -56,7 +56,7 @@ type
     Inputs  : TArrayOfPSingle;
     Outputs : TArrayOfPSingle;
 
-    constructor Create; virtual;
+    constructor Create(const aGlobals : TGlobals); virtual;
 	  destructor Destroy; override;
 
       //Not all plugin hosts support changing the input/output configuration once
@@ -101,7 +101,7 @@ type
 
     property PresetName:string read fPresetName write SetPresetName;
 
-    property Globals:TGlobals  read fGlobals write fGlobals;
+    property Globals:TGlobals read fGlobals;
 
     property Settings:TeePluginSettings read GetSettings;
 
@@ -143,11 +143,11 @@ uses
 { TeePluginBase }
 
 
-constructor TeePluginBase.Create;
+constructor TeePluginBase.Create(const aGlobals : TGlobals);
 begin
   fPublishedVstParameters := TPublishedVstParameterController.Create;
 
-  Globals := TGlobals.Create;
+  fGlobals := aGlobals;
 
   // NOTE: An object can't seem to register itself as a ZeroObject if it also creates the
   // MotherShip class. I'm not sure why. But when using 12 or more instances in
@@ -174,7 +174,6 @@ begin
   SetLength(Outputs,0);
 
   AudioEffect.Free;
-  Globals.Free;
   fPublishedVstParameters.Free;
   inherited;
 end;
