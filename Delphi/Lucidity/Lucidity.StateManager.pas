@@ -1074,17 +1074,13 @@ begin
     PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1);
 
     case PatchFormatVersion of
-      2: UpdatePatchVersionFrom2To3(XML);
+      // Very old format patches. There shouldn't be any of these in the wild.
+      0: UpdatePatchVersionFrom2To3(XML);
+      1: UpdatePatchVersionFrom2To3(XML);
+      // Patch backwards compatibility is being maintained from version 2 onwards.
+      2: UpdatePatchVersionFrom2To3(XML); //TODO:MED this method returns false if the patch conversion fails.
     end;
-
-    {
-    if (PatchFormatVersion > 0) and (PatchFormatVersion < kCurrentPatchFileVersion) then
-    begin
-      // Update patch file!
-    end;
-    }
   end;
-
 end;
 
 

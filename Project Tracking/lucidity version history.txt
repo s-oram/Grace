@@ -9,6 +9,8 @@ Change:
   commands. 
 - Changes to the internal messaging system. (MotherShip now has list locks
   for each zero object list.)
+- Due to a bug fix the Lucidity patch file format is now version 3. 
+  Backwards compatibility with version 2 patches has been maintained. 
 
 Bug Fix:
 - GUI now updates when loading FXP patches. 
@@ -16,6 +18,7 @@ Bug Fix:
   region bounds for the selected region again. This used
   to work but was broken in the previous version. 
 - the parameter amount display didn't disolve when finished holding a knob. 
+
 
 === BETA v0.0.1.51 (30-Aug-2014) ===
 Change:
