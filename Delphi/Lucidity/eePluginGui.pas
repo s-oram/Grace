@@ -323,9 +323,6 @@ begin
     PluginHotkeys.LoadFromXML(fn);
   end;
 
-  // TODO:MED Delete this AddWindowsMessageLister(). It's been superceded by the ZeroObject stuff.
-  Plugin.Globals.AddWindowsMessageListener(self.Handle);
-
   //====== Register frames as zero objects =====================================
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, TZeroObjectRank.VCL);

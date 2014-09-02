@@ -87,8 +87,6 @@ begin
   begin
     ScopeHandler.ScopeControl := c as TLucidityScope;
   end;
-
-
 end;
 
 procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
