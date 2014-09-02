@@ -158,6 +158,11 @@ begin
   mi.OnClick := EventHandle_NormaliseSample;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Reload Sample';
+  mi.OnClick := EventHandler_ReloadSampleFile;
+  Menu.Items.Add(mi);
+
   // Add menu commands for existing sound editors.
   for c1 := 0 to Plugin.Globals.Options.SoundEditors.Count-1 do
   begin
@@ -186,10 +191,7 @@ begin
   mi.OnClick := EventHandler_RenameSampleFile;
   Menu.Items.Add(mi);
 
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Reload Sample';
-  mi.OnClick := EventHandler_ReloadSampleFile;
-  Menu.Items.Add(mi);
+
 
 
 
