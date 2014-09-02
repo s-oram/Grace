@@ -29,12 +29,10 @@ type
 
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
   public
-    constructor Create(aPlugin : TeePlugin; aGui : TPluginGui; aSystemWindow : hwnd);
+    constructor Create(const aPlugin : TeePlugin; const aSystemWindow : hwnd);
     destructor Destroy; override;
 
     procedure PostCreate(const aGui : TPluginGui);
-
-
   end;
 
 implementation
@@ -56,7 +54,7 @@ uses
 { TPluginGuiMeta }
 
 
-constructor TPluginGuiMeta.Create(aPlugin: TeePlugin; aGui: TPluginGui; aSystemWindow: hwnd);
+constructor TPluginGuiMeta.Create(const aPlugin: TeePlugin; const aSystemWindow: hwnd);
 begin
   Plugin       := aPlugin;
   SystemWindow := aSystemWindow;

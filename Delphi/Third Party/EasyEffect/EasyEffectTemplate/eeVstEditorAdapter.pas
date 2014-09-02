@@ -149,7 +149,7 @@ begin
   if (UseCount = 0) then
   begin
     try
-      PluginGuiMeta := TPluginGuiMeta.Create(Plugin, nil, SystemWindow);
+      PluginGuiMeta := TPluginGuiMeta.Create(Plugin, SystemWindow);
 
       PluginGUI := TPluginGui.CreateParented(SystemWindow);
       PluginGUI.Width  := PluginInfo.InitialGuiWidth;
