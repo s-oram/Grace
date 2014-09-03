@@ -436,8 +436,8 @@ begin
   TabPanel.Invalidate;
   //==============
 
-  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
-  Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);
+  //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
+  //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);
 end;
 
 procedure TPluginGui.BeforeClose;

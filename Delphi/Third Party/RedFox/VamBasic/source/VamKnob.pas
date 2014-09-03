@@ -224,6 +224,8 @@ constructor TVamKnob.Create(AOwner: TComponent);
 begin
   inherited;
 
+  fKnobMode := TKnobMode.PositionEdit;
+
   fModEditRadius := 0.6;
   fVisibleSteps := 0;
   fIsKnobEnabled := true;

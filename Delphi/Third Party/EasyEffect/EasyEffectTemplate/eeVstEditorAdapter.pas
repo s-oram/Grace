@@ -135,6 +135,9 @@ begin
       //PluginGUI.PostCreate(SystemWindow);
       PluginGUI.UpdateGui(nil);
       PluginGUI.Visible := true;
+
+      Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
+      Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);
     end else
     begin
       PluginGUI.UpdateGui(nil);
@@ -156,8 +159,8 @@ begin
       PluginGUI.Height := PluginInfo.InitialGuiHeight;
       PluginGUI.Plugin := self.Plugin;
 
-      PluginGuiMeta.PostCreate(PluginGui);
       PluginGui.PostCreate(SystemWindow);
+      PluginGuiMeta.PostCreate(PluginGui);
 
       // finally...
       Plugin.Globals.IsGuiOpen := true;
