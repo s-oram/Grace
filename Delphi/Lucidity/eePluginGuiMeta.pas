@@ -72,8 +72,11 @@ end;
 
 destructor TPluginGuiMeta.Destroy;
 begin
+  Plugin.Globals.MotherShip.DeregisterZeroObject(self);
+
   ScopeHandler.Free;
   ActiveModDetector.Free;
+  inherited;
 end;
 
 procedure TPluginGuiMeta.PostCreate(const aGui: TPluginGui);

@@ -132,7 +132,7 @@ begin
     if PluginGUI.Visible = false then
     begin
       //=== VCL GUI =======
-      PluginGUI.PostCreate(SystemWindow);
+      //PluginGUI.PostCreate(SystemWindow);
       PluginGUI.UpdateGui(nil);
       PluginGUI.Visible := true;
     end else
@@ -157,6 +157,7 @@ begin
       PluginGUI.Plugin := self.Plugin;
 
       PluginGuiMeta.PostCreate(PluginGui);
+      PluginGui.PostCreate(SystemWindow);
 
       // finally...
       Plugin.Globals.IsGuiOpen := true;

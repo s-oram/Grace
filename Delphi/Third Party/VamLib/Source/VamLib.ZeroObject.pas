@@ -176,7 +176,7 @@ type
     VclMessageTimer : TTimer;
 
     IsGuiOpen: boolean;
-    IsGuiOpenLock : TFixedCriticalSection;
+    IsGuiOpenLock : TMultiReadSingleWrite;
 
     procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
@@ -285,7 +285,7 @@ end;
 
 constructor TMotherShip.Create;
 begin
-  IsGuiOpenLock := TFixedCriticalSection.Create;
+  IsGuiOpenLock := TMultiReadSingleWrite.Create;
 
   MainThreadID := 0;
 
@@ -448,7 +448,7 @@ procedure TMotherShip.SetIsGuiOpen(const Value: boolean);
 var
   QueueValue : TOmniValue;
 begin
-  IsGuiOpenLock.Acquire;
+  IsGuiOpenLock.BeginWrite;
   try
     IsGuiOpen := Value;
 
@@ -468,7 +468,7 @@ begin
       end;
     end;
   finally
-    IsGuiOpenLock.Release;
+    IsGuiOpenLock.EndWrite;
   end;
 end;
 
@@ -492,7 +492,7 @@ procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
 begin
   SendMessageToList(MainObjects, MainListLock, MsgID, Data, nil);
 
-  IsGuiOpenLock.Acquire;
+  IsGuiOpenLock.BeginRead;
   try
     if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
     begin
@@ -504,13 +504,13 @@ begin
       // or remove MsgMain.
     end;
   finally
-    IsGuiOpenLock.Release;
+    IsGuiOpenLock.EndRead;
   end;
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal);
 begin
-  IsGuiOpenLock.Acquire;
+  IsGuiOpenLock.BeginRead;
   try
     if (IsGuiOpen)  then
     begin
@@ -525,17 +525,35 @@ begin
       end;
     end;
   finally
-    IsGuiOpenLock.Release;
+    IsGuiOpenLock.EndRead;
   end;
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
 begin
-
   if (MainThreadID <> GetCurrentThreadId)
     then raise Exception.Create('MsgVCL has been called from non-vcl thread.');
 
-  SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
+  IsGuiOpenLock.BeginRead;
+  try
+    if (IsGuiOpen)  then
+    begin
+      if (MainThreadID = GetCurrentThreadId) then
+      begin
+        //SendMessageToList(VclObjects, VclListLock, MsgID, nil, nil);
+        SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
+      end else
+      begin
+        // TODO:MED probably should log a warning or raise an error here.
+        //SendMessageToList(VclObjects, MsgID, nil);
+        Log.LogError('MsgVCL Wrong Thread.');
+      end;
+    end;
+  finally
+    IsGuiOpenLock.EndRead;
+  end;
+
+
 
 
   {
@@ -565,21 +583,22 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
+  {
   // Always add messages to the queue even if GUI isn't opened.
   msgData.MsgID   := MsgID;
   msgData.DataB   := DataB;
   QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
   VclMessageQueue.Enqueue(QueueValue);
+  }
 
 
-  {
-  IsGuiOpenLock.Acquire;
+  IsGuiOpenLock.BeginRead;
   try
     if IsGuiOpen then
     begin
       if (MainThreadID = GetCurrentThreadId) then
       begin
-        SendMessageToList(VclObjects, MsgID, nil, DataB);
+        SendMessageToList(VclObjects, VclListLock, MsgID, nil, DataB);
       end else
       begin
         // TODO: a possible improvement would be to check the calling thread id. If
@@ -592,9 +611,9 @@ begin
       end;
     end;
   finally
-    IsGuiOpenLock.Release;
+    IsGuiOpenLock.EndRead;
   end;
-  }
+
 end;
 
 procedure TMotherShip.Handle_VclMessageTimerEvent(Sender: TObject);
@@ -602,7 +621,7 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  IsGuiOpenLock.Acquire;
+  IsGuiOpenLock.BeginRead;
   try
     MainThreadID := GetCurrentThreadId;
     while VclMessageQueue.TryDequeue(QueueValue) do
@@ -614,7 +633,7 @@ begin
       end;
     end;
   finally
-    IsGuiOpenLock.Release;
+    IsGuiOpenLock.EndRead;
   end;
 end;
 
@@ -632,6 +651,13 @@ begin
   try
     LastIndex := -1;
     try
+      //if ObjectList = AudioObjects then Log.LogMessage('Audio SendMessage ID = ' + IntToStr(MsgID));
+      if ObjectList = VclObjects then Log.LogMessage('Vcl SendMessage ID = ' + IntToStr(MsgID));
+      if ObjectList = MainObjects then Log.LogMessage('Main SendMessage ID = ' + IntToStr(MsgID));
+
+
+
+
       for c1 := 0 to ObjectList.Count - 1 do
       begin
         LastIndex := c1;
