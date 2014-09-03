@@ -87,6 +87,11 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 =============================================================================
      TODO HIGH
 =============================================================================
+the locate missing samples dialog should by default show the location at the
+patch file. (then in the next sample directory.)
+
+why aren't samples found for yann's patches?
+
 opening/closing the sample map window is slow!!! 
 
 Update the step sequencer divisions to match the LFO step divisions. 
