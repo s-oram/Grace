@@ -47,7 +47,7 @@ type
     property Bpm          : single read fBpm           write fBpm;
     property SampleRate   : single read fSampleRate    write SetSampleRate;
 
-    property Freq         : single read fFreq          write fFreq;       // LFO frequency in hertz. xx
+    property Freq         : single read fFreq          write fFreq;       // LFO frequency in hertz.
     property Density      : single read fDensity       write fDensity;    // Range 0..1,   how regularly a new step is caluclated.
     property Flux         : single read fFlux          write fFlux;      // Range 0..1,   how much a step changes by.
 
@@ -91,12 +91,26 @@ end;
 procedure TRandomLfo.UpdateStepSize;
 const
   MinTime = 25;
+var
+  aTimeMS : single;
 begin
   StepSize := 1 / SampleRate * Freq;
 
   case WaveShape of
     TRandomLfoShape.RandomStepped: Lowpass.SetTransitionTime(MinTime, SampleRate);
-    TRandomLfoShape.RandomSmooth:  Lowpass.SetTransitionTime(1000 / Freq * 2, SampleRate);
+    TRandomLfoShape.RandomSmooth:
+    begin
+      if Freq > 1 then
+      begin
+        aTimeMS := 1000 / Freq * 2;
+        if aTimeMs < MinTime then aTimeMS := MinTime;
+      end else
+      begin
+        aTimeMS := 2000;
+      end;
+
+      Lowpass.SetTransitionTime(aTimeMs, SampleRate);
+    end;
   end;
 end;
 
