@@ -227,8 +227,6 @@ begin
     raise Exception.Create('Type not handled.');
   end;
 
-
-
   case Value of
     TLfoShape.SawUp:         WaveTableLfo.WaveShape := TWaveTableLfoShape.Saw;
     TLfoShape.SawDown:       WaveTableLfo.WaveShape := TWaveTableLfoShape.Ramp;
