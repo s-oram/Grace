@@ -288,7 +288,7 @@ var
 begin
   smp := self.GetSample;
 
-  if assigned(smp) and (smp^.Properties.IsValid) and (smp^.Properties.SampleFrames > SamplePoint) then
+  if assigned(smp) and (smp^.Properties.IsValid) and (SamplePoint >= 0) and (SamplePoint < smp^.Properties.SampleFrames) then
   begin
     if smp^.Properties.ChannelCount = 1 then
     begin

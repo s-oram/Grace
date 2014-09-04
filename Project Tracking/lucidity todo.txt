@@ -91,9 +91,6 @@ possible bug
 thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
 
 
-bug (crash)
-- modulat loop start/loop end to before the sample start. 
-
 
 =============================================================================
      TODO HIGH
