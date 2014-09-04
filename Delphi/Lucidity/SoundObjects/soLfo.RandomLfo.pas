@@ -47,7 +47,7 @@ type
     property Bpm          : single read fBpm           write fBpm;
     property SampleRate   : single read fSampleRate    write SetSampleRate;
 
-    property Freq         : single read fFreq          write fFreq;       // LFO frequency in hertz.
+    property Freq         : single read fFreq          write fFreq;       // LFO frequency in hertz. xx
     property Density      : single read fDensity       write fDensity;    // Range 0..1,   how regularly a new step is caluclated.
     property Flux         : single read fFlux          write fFlux;      // Range 0..1,   how much a step changes by.
 
