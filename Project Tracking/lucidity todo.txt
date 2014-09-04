@@ -82,11 +82,35 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 - I can't reproduce this one yet. 
 
 
+bug
+- the 64bit installer doesn't create a data directory. 
+
+
+possible bug
+- loop playback won't start until you change beat number in sample window
+thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
+
+
+possible bug 
+- delete focused region in sample map. Does the sample display update?
+
+bug (crash)
+- modulat loop start/loop end to before the sample start. 
+
+
+bug 
+- think the comb filter delay buffer needs to be reset when retriggering a 
+  sample.
 
 
 =============================================================================
      TODO HIGH
 =============================================================================
+
+Check out asyn calls.
+http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
+
+
 the locate missing samples dialog should by default show the location at the
 patch file. (then in the next sample directory.)
 

@@ -34,6 +34,7 @@ goran.podrugovic@gmail.com
   thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
   - Sent Lucidity 0.0.1.49 
     thunderlink://messageid=CALtz9GKpMKvSFDdjxPexC7RnEci8rAwHBnjJ3fKdASV-R+B-1w@mail.gmail.com
+    thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
 
 Chris Holmes (Good Tester)
 futuresproof@gmail.com
