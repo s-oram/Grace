@@ -95,11 +95,6 @@ bug (crash)
 - modulat loop start/loop end to before the sample start. 
 
 
-bug 
-- think the comb filter delay buffer needs to be reset when retriggering a 
-  sample.
-
-
 =============================================================================
      TODO HIGH
 =============================================================================

@@ -136,11 +136,13 @@ procedure TLucidityFilter.ResetAndMakeActive;
 begin
   fIsActive := true;
 
+  // TODO:HIGH obvious optimisation here.
   DistortionA.Reset;
   RingModA.Reset;
   BlueFilter.Reset;
   MoogLadder.Reset;
   OptimisedFilter.Reset;
+  CombA.Reset;
 
   UpdateFilterParameters;
 end;

@@ -19,6 +19,8 @@ Bug Fix:
   to work but was broken in the previous version. 
 - the parameter amount display didn't disolve when finished holding a knob. 
 - Random Smooth LFO output was out of range. 
+- The comb filter delay buffer wasn't being cleared when triggering a 
+  new voice. The old audio data would be recycled into the new voice.   
 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===
