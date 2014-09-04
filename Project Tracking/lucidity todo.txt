@@ -1,25 +1,6 @@
 =============================================================================
      BUGS
 =============================================================================
-- Bug: 
-  - Create cubase project
-  - add multiple Lucidity instances.
-  - create and activate new cubase project.
-  - close first cubase project
-  - there is a bug somewhere round here.
-
-Bug
-	Lucidity,I tray to load SFZ file,but there is an error,In attachment the scrrenshot.
-	Anyway,these sampler it's a great potential tool.
-	thunderlink://messageid=CAG2OC09=uo=5facLYp+dQC+zDDQVi=-r0Sf34XKZJM-BCR0J6w@mail.gmail.com
-	http://www.reusenoise.com
-
-bug 
- - some wavefiles from Joesph don't load. 
- - Now Avoided: The changes I made to REAPER's configuration
-   were disabling all instances of "anticipative FX processing".  
-   thunderlink://messageid=1407526910.2254955.150695977.6DD3CC0A@webmail.messagingengine.com
-
 Bug
 - Andy reports the Voice Mod frame tab text is too large and overflows 
   over the tabs.
