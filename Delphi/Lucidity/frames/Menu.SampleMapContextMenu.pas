@@ -141,6 +141,7 @@ begin
     begin
       Plugin.DeleteSelectedRegions;
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
     end;
 
     2:
@@ -148,6 +149,7 @@ begin
       KeyGroupName := (Sender as TMenuItem).Hint;
       Plugin.MoveSelectedRegionsToKeyGroup(KeyGroupName);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
     end;
   else
     raise Exception.Create('Unexpected tag value.');

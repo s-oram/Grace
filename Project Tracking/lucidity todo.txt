@@ -91,9 +91,6 @@ possible bug
 thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
 
 
-possible bug 
-- delete focused region in sample map. Does the sample display update?
-
 bug (crash)
 - modulat loop start/loop end to before the sample start. 
 
@@ -109,6 +106,7 @@ bug
 
 Check out asyn calls.
 http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
+http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html
 
 
 the locate missing samples dialog should by default show the location at the

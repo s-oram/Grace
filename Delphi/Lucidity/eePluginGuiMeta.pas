@@ -102,6 +102,15 @@ begin
     EventHandled_MidiNoteTriggered(MidiNoteTriggerData.Data1, MidiNoteTriggerData.Data2);
   end;
 
+
+  if MsgID = TLucidMsgID.CheckForSampleFocusChange then
+  begin
+    // TODO:HIGH here we need to check what the sample focus should be, and check if it's
+    // changed. If so send SampleFocusChanged message. Right now we just send the message
+    // by default. (It's a chance for future optimisation.)
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  end;
+
 end;
 
 procedure TPluginGuiMeta.EventHandled_MidiNoteTriggered(const MidiData1, MidiData2: byte);

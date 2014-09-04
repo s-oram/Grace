@@ -244,7 +244,6 @@ type
     procedure TriggerNoteOn(const MidiNote, MidiVelocity : integer);  //intended for use by the GUI.
     procedure TriggerNoteOff(const MidiNote, MidiVelocity : integer); //intended for use by the GUI.
 
-
     function NewRegion(CreateInfo : TRegionCreateInfo):IRegion;
 
     procedure GetGuiFeedBack(const FeedbackData:TGuiFeedBackData);
