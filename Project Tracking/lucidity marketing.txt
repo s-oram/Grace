@@ -41,3 +41,25 @@ thunderlink://messageid=CAAE3TrJ8_=ySKa9GsSwoN=bN3e=p42WcD_C5+2Ch1mOCEyJFOA@mail
 
 Look at this site. Minimum content and feature list. Looks good.
 http://www.audiofile-engineering.com/samplemanager/
+
+
+
+=========================================================
+    Lucidity Script
+=========================================================
+
+
+- Drag and drop sample loading. 
+-- Drop in the sample display for quick instrument creation
+-- Use the sample map for detailed mapping.
+- Drag from Cubase, Reaper and other supported hosts. 
+- Powerful modulation system
+-- Modulation souces incluced two AHDSR envelopes.
+-- Two LFOs
+-- Two step sequencers 
+-- Four XY pads for macro patch control. 
+- Sample markers can be modulated with minimal clicking.
+- Two filters with multiple filter types.
+
+
+
