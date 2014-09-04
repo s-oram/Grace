@@ -86,12 +86,6 @@ bug
 - the 64bit installer doesn't create a data directory. 
 
 
-possible bug
-- loop playback won't start until you change beat number in sample window
-thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
-
-
-
 =============================================================================
      TODO HIGH
 =============================================================================
