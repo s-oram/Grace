@@ -43,9 +43,6 @@ bug
   there is an unsupported file format error, but a region is still created.
 
 bug
-- lucidity sometimes hangs when closing. add some logging to see where it hangs. 
-
-bug
  > Loading a loop and setting the track mode to "BPM" and trigger with 
   > keyboard and nothing plays until the Beats # setting is changed.
 thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
