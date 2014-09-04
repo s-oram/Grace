@@ -61,9 +61,6 @@ bug
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
 bug
-- the error loop bug Andrea has found keeps rearing it's head. (possibly fixed. needs to be confirmed.)
-
-bug
 - the comb filter does sound good when modulated from one of the pads! There are crackles.
   it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
 
