@@ -89,8 +89,6 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-added "remove all sample modulation" command to sample context menu.
-
 Check out asyn calls.
 http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
 http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html

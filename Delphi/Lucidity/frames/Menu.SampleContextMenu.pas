@@ -90,6 +90,11 @@ var
   c1 : integer;
   mi : TMenuItem;
   Tag : integer;
+  IsSampleStartModulated : boolean;
+  IsSampleEndModulated   : boolean;
+  IsLoopStartModulated   : boolean;
+  IsLoopEndModulated     : boolean;
+  IsAnythingModulated    : boolean;
 begin
   CurrentRegion := aCurrentRegion;
 
@@ -334,15 +339,22 @@ begin
 
   {
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Clear All Modulation';
-  mi.OnClick := EventHandle_ClearAllModulationForAllSamplePoints;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
   mi.Caption := 'Clear Current Modulation';
   mi.OnClick := EventHandle_ClearCurrentModulationForAllSamplePoints;
   Menu.Items.Add(mi);
   }
+
+
+
+
+  IsSampleStartModulated := Command.IsParameterModulated(Plugin, 'SampleStart');
+  IsSampleEndModulated   := Command.IsParameterModulated(Plugin, 'SampleEnd');
+  IsLoopStartModulated   := Command.IsParameterModulated(Plugin, 'LoopStart');
+  IsLoopEndModulated     := Command.IsParameterModulated(Plugin, 'LoopEnd');
+
+  if IsSampleStartModulated or IsSampleEndModulated or IsLoopStartModulated or IsLoopEndModulated
+    then IsAnythingModulated := true
+    else IsAnythingModulated := false;
 
 
   Tag := SampleStartTag;
@@ -351,6 +363,7 @@ begin
   mi.Hint    := Caption_ClearAllModulation;
   mi.Tag     := Tag;
   mi.OnClick := EventHandle_ModulationCommand;
+  mi.Enabled := IsSampleStartModulated;
   Menu.Items.Add(mi);
 
   Tag := SampleEndTag;
@@ -359,6 +372,7 @@ begin
   mi.Hint    := Caption_ClearAllModulation;
   mi.Tag     := Tag;
   mi.OnClick := EventHandle_ModulationCommand;
+  mi.Enabled := IsSampleEndModulated;
   Menu.Items.Add(mi);
 
   if LoopPointsVisible then
@@ -369,6 +383,7 @@ begin
     mi.Hint    := Caption_ClearAllModulation;
     mi.Tag     := Tag;
     mi.OnClick := EventHandle_ModulationCommand;
+    mi.Enabled := IsLoopStartModulated;
     Menu.Items.Add(mi);
 
     Tag := LoopEndTag;
@@ -377,8 +392,15 @@ begin
     mi.Hint    := Caption_ClearAllModulation;
     mi.Tag     := Tag;
     mi.OnClick := EventHandle_ModulationCommand;
+    mi.Enabled := IsLoopEndModulated;
     Menu.Items.Add(mi);
   end;
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear All Modulation';
+  mi.OnClick := EventHandle_ClearAllModulationForAllSamplePoints;
+  mi.Enabled := IsAnythingModulated;
+  Menu.Items.Add(mi);
 
 
   Menu.Popup(x, y);
