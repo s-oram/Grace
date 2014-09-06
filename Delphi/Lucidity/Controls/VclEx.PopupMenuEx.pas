@@ -19,36 +19,60 @@ unit VclEx.PopupMenuEx;
 interface
 
 uses
+  Classes,
   Menus;
 
 type
-  TxPopupMenuEvent = procedure(Sender: TObject; Cancelled: Boolean) of object;
+  TPopupMenuDismissedEvent = procedure(Sender: TObject; Cancelled: Boolean) of object;
 
-  TxPopupMenu = class(TPopupMenu)
+  TPopupMenuEx = class(TPopupMenu)
   private
-    eOnDismissed: TxPopupMenuEvent;
+    eOnDismissed: TPopupMenuDismissedEvent;
   public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
     procedure Popup(X, Y: Integer); override;
   published
-    property OnDismissed: TxPopupMenuEvent read eOnDismissed write eOnDismissed;
+    property OnDismissed: TPopupMenuDismissedEvent read eOnDismissed write eOnDismissed;
   end;
 
 implementation
 
 uses
+  SysUtils,
+  Dialogs,
   Controls, Windows,
   Messages, Forms;
 
 {TIXPopupMenu}
 
-procedure TxPopupMenu.Popup(X, Y: Integer);
-var
-  msg: tagMSG;
+
+constructor TPopupMenuEx.Create(AOwner: TComponent);
 begin
   inherited;
+end;
+
+
+
+destructor TPopupMenuEx.Destroy;
+begin
+
+  inherited;
+end;
+
+
+procedure TPopupMenuEx.Popup(X, Y: Integer);
+var
+  msg: tagMSG;
+  c1: Integer;
+begin
+  inherited;
+
   if Assigned(OnDismissed) then
     OnDismissed(Self, PeekMessage(msg, PopupList.Window, WM_COMMAND,
       WM_COMMAND, PM_NOREMOVE) = FALSE);
 end;
+
 
 end.

@@ -363,14 +363,14 @@ var
   Tag : integer;
 begin
   Tag := (Sender as TMenuItem).Tag;
-
   case Tag of
     1: Plugin.Globals.GuiState.IsAutoSelectActive := true;
     2: Plugin.Globals.GuiState.IsAutoSelectActive := false;
   else
     raise Exception.Create('Unexpected tag value.');
-
   end;
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshParDisplay);
 end;
 
 

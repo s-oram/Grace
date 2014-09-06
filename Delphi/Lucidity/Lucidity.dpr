@@ -176,7 +176,8 @@ uses
   VclEx.PopupListEx in 'Controls\VclEx.PopupListEx.pas',
   VclEx.PopupMenuEx in 'Controls\VclEx.PopupMenuEx.pas',
   Menu.GroupVisibility in 'frames\Menu.GroupVisibility.pas',
-  Lucidity.StateManager.PatchVersionUpdater in 'Lucidity.StateManager.PatchVersionUpdater.pas';
+  Lucidity.StateManager.PatchVersionUpdater in 'Lucidity.StateManager.PatchVersionUpdater.pas',
+  Menu.AutoSelectMenu in 'frames\Menu.AutoSelectMenu.pas';
 
 {$R *.res}
 

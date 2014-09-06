@@ -56,6 +56,8 @@ type
     procedure ShowParameterChangeInfo(const ParameterID : TPluginParameterID);
     procedure UpdateParameterChangeInfo(const ParameterID : TPluginParameterID);
     procedure HideParameterChangeInfo;
+
+    procedure RefreshParDisplay;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -80,6 +82,7 @@ uses
   VamLayoutWizard,
   uGuiUtils,
   uConstants,
+  Menu.AutoSelectMenu,
   Lucidity.PluginParameters,
   Lucidity.SampleMap,
   Lucidity.Interfaces;
@@ -181,10 +184,15 @@ begin
 end;
 
 procedure TMenuBarFrame.AutoSelectButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Menu : TAutoSelectMenu;
 begin
   if Button = mbLeft then
   begin
-    //TODO:HIGH
+    Menu := TAutoSelectMenu.Create;
+    Menu.AutoFreeMenu := true;
+    Menu.Initialize(self.Plugin, nil);
+    Menu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
 end;
 
@@ -313,6 +321,12 @@ procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer;
 var
   ParID : TPluginParameterID;
 begin
+  if MsgID = TLucidmsgID.Command_UpdateGUI then
+  begin
+    SampleFocusChanged;
+    RefreshParDisplay;
+  end;
+
   if MsgID = TLucidmsgID.NewPatchLoaded               then SampleFocusChanged;
   if MsgID = TLucidmsgID.SampleFocusChanged           then SampleFocusChanged;
   if MsgID = TLucidmsgID.MouseOverSampleRegionChanged then SampleFocusChanged;
@@ -333,7 +347,7 @@ begin
   if MsgID = TLucidMsgID.Command_HideParChangeInfo
     then HideParameterChangeInfo;
 
-  //TODO: will maybe need to respond when hiding the sample map edit.
+  if MsgID = TLucidMsgID.Cmd_RefreshParDisplay then RefreshParDisplay;
 
 end;
 
@@ -354,6 +368,15 @@ procedure TMenuBarFrame.HideParameterChangeInfo;
 begin
   InfoDisplay.Visible := false;
 end;
+
+procedure TMenuBarFrame.RefreshParDisplay;
+begin
+  if Plugin.Globals.GuiState.IsAutoSelectActive
+    then AutoSelectButton.IsOn := true
+    else AutoSelectButton.IsOn := false;
+end;
+
+
 
 
 
