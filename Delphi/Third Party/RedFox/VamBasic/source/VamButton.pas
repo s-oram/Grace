@@ -10,6 +10,8 @@ uses
 type
   TVamButtonState = (bsOff, bsOn);
 
+  TVamButtonBehaviour = (bbAuto, bbManual);
+
   TVamButton = class(TVamWinControl)
   private
     fOnChanged: TNotifyEvent;
@@ -21,6 +23,7 @@ type
     fColor_Border: TRedFoxColorString;
     fImageOn: TBitmap;
     fImageOff: TBitmap;
+    fButtonBehaviour: TVamButtonBehaviour;
     procedure SetText(const Value: string);
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
@@ -39,6 +42,8 @@ type
     procedure SetImageOff(const Value: TBitmap);
     function GetIsOn: boolean;
     procedure SetIsOn(const Value: boolean);
+    function GetCornerRadius(Index: integer): double;
+    procedure SetCornerRadius(Index: integer; const Value: double);
   protected
     IsGrabbed : boolean;
     IsMouseOver : boolean;
@@ -47,6 +52,11 @@ type
     fColorOnB  : TRedFoxColor;
     fColorOffA : TRedFoxColor;
     fColorOffB : TRedFoxColor;
+
+    fCornerRadius : array[0..3] of single;
+    UseRoundCorners : boolean;
+
+    function CalcButtonColor:TRedFoxColor;
 
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -64,7 +74,10 @@ type
 
     property IsOn : boolean read GetIsOn write SetIsOn;
 
+    property CornerRadius[Index : integer]: double read GetCornerRadius write SetCornerRadius;
+
   published
+    property ButtonBehaviour : TVamButtonBehaviour read fButtonBehaviour write fButtonBehaviour;
     property ShowBorder : boolean read fShowBorder write SetShowBroder;
     property Color_Border : TRedFoxColorString read fColor_Border write SetColor_Border;
 
@@ -100,6 +113,8 @@ constructor TVamButton.Create(AOwner: TComponent);
 begin
   inherited;
 
+  ButtonBehaviour := TVamButtonBehaviour.bbAuto;
+
   fShowBorder := false;
   fColor_Border := '$FF242B39';
 
@@ -107,6 +122,12 @@ begin
   fColorOffB.SetColor('$FFF96969');
   fColorOnA.SetColor('$FF96F9D3');
   fColorOnB.SetColor('$FF59F9BC');
+
+  fCornerRadius[0] := 2;
+  fCornerRadius[1] := 2;
+  fCornerRadius[2] := 2;
+  fCornerRadius[3] := 2;
+  UseRoundCorners := true;
 end;
 
 destructor TVamButton.Destroy;
@@ -133,6 +154,11 @@ end;
 function TVamButton.GetColorOnB: TRedFoxColorString;
 begin
   result := fColorOnB.AsString;
+end;
+
+function TVamButton.GetCornerRadius(Index: integer): double;
+begin
+  result := fCornerRadius[Index];
 end;
 
 function TVamButton.GetIsOn: boolean;
@@ -212,8 +238,7 @@ begin
   begin
     IsGrabbed := false;
 
-
-    if InRect(x,y, Rect(0,0,Width, Height)) then
+    if (ButtonBehaviour = TVamButtonBehaviour.bbAuto) and (InRect(x,y, Rect(0,0,Width, Height))) then
     begin
       case fButtonState of
         bsOff: fButtonState := bsOn;
@@ -280,6 +305,28 @@ begin
     fColor_Border := Value;
     Invalidate;
   end;
+end;
+
+procedure TVamButton.SetCornerRadius(Index: integer; const Value: double);
+var
+  c1: Integer;
+begin
+  assert(Value >= 0);
+  fCornerRadius[Index] := Value;
+
+  UseRoundCorners := false;
+  for c1 := 0 to 3 do
+  begin
+    if fCornerRadius[c1] > 0 then
+    begin
+      UseRoundCorners := true;
+      break;
+    end;
+  end;
+
+  UseRoundCorners := true;
+
+  Invalidate;
 end;
 
 procedure TVamButton.SetImageOff(const Value: TBitmap);
@@ -351,6 +398,60 @@ begin
   end;
 end;
 
+function TVamButton.CalcButtonColor: TRedFoxColor;
+begin
+  if (ButtonBehaviour = TVamButtonBehaviour.bbManual)
+  then
+  begin
+    if (ButtonState = bsOn) then
+    begin
+      //== Button Is On ===
+      if IsMouseOver
+        then result := fColorOnA
+        else result := fColorOnB;
+    end else
+    begin
+      //== Button Is Off ===
+      if IsMouseOver
+        then result := fColorOffA
+        else result := fColorOffB;
+    end;
+  end else
+  begin
+    if (ButtonState = bsOn) then
+    begin
+      //== Button Is On ===
+      if (IsGrabbed) then
+      begin
+        if IsMouseOver
+          then result := fColorOffB
+          else result := fColorOnB;
+      end else
+      begin
+        if IsMouseOver = false
+          then result := fColorOnA
+          else result := fColorOnB;
+      end;
+    end else
+    begin
+      //== Button Is Off ===
+      if (IsGrabbed) then
+      begin
+        if IsMouseOver
+          then result := fColorOnB
+          else result := fColorOffB;
+      end else
+      begin
+        if IsMouseOver = false
+          then result := fColorOffA
+          else result := fColorOffB;
+      end;
+    end;
+  end;
+end;
+
+
+
 procedure TVamButton.Paint;
 var
   TextBounds : TRect;
@@ -361,50 +462,25 @@ var
 begin
   inherited;
 
-  if ButtonState = bsOn then
-  begin
-    //== Button Is On ===
-    if (IsGrabbed) then
-    begin
-      if IsMouseOver
-        then ButtonColor := fColorOffB
-        else ButtonColor := fColorOnB;
-    end else
-    begin
-      if IsMouseOver = false
-        then ButtonColor := fColorOnA
-        else ButtonColor := fColorOnB;
-    end;
-  end else
-  begin
-    //== Button Is Off ===
-    if (IsGrabbed) then
-    begin
-      if IsMouseOver
-        then ButtonColor := fColorOnB
-        else ButtonColor := fColorOffB;
-    end else
-    begin
-      if IsMouseOver = false
-        then ButtonColor := fColorOffA
-        else ButtonColor := fColorOffB;
-    end;
-  end;
-
+  ButtonColor := CalcButtonColor;
 
   BackBuffer.BufferInterface.ClearAll(255,255,255,0);
 
-  BackBuffer.BufferInterface.NoLine;
+  //== draw the background ==
   BackBuffer.BufferInterface.FillColor := ButtonColor.AsAggRgba8;
-  BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
-
   if ShowBorder then
   begin
-    BackBuffer.BufferInterface.NoFill;
     BackBuffer.BufferInterface.LineColor := TRedFoxColor(Color_Border);
     BackBuffer.BufferInterface.LineWidth := 1;
-
-    BackBuffer.BufferInterface.RoundedRect(0, 0, Width, Height, 3);
+    if UseRoundCorners
+      then BackBuffer.BufferInterface.RoundedRectEx(0.5, 0.5, Width-0.5, Height-0.5, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+      else BackBuffer.BufferInterface.Rectangle(0.5, 0.5, Width-0.5, Height-0.5);
+  end else
+  begin
+    BackBuffer.BufferInterface.NoLine;
+    if UseRoundCorners
+      then BackBuffer.BufferInterface.RoundedRectEx(0, 0, Width, Height, fCornerRadius[0],fCornerRadius[1],fCornerRadius[2],fCornerRadius[3])
+      else BackBuffer.BufferInterface.Rectangle(0, 0, Width, Height);
   end;
 
   //== draw the button text ====
@@ -429,39 +505,6 @@ begin
 
     BackBuffer.TransformImage(aImage, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
   end;
-
-
-  {
-  if (ButtonState = bsOn) and (assigned(ImageOn)) then
-  begin
-    SrcRect.Left   := 0;
-    SrcRect.Width  := ImageOn.Width;
-    SrcRect.Top    := 0;
-    SrcRect.Bottom := ImageOn.Height;
-
-    DstRect.Left   := (Width - SrcRect.Width)   div 2;
-    DstRect.Right  := DstRect.Left + SrcRect.Width;
-    DstRect.Top    := (Height - SrcRect.Height) div 2;
-    DstRect.Bottom := DstRect.Top + SrcRect.Height;
-
-    BackBuffer.TransformImage(ImageOn, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
-  end;
-
-  if (ButtonState = bsOff) and (assigned(ImageOff)) then
-  begin
-    SrcRect.Left   := 0;
-    SrcRect.Width  := ImageOff.Width;
-    SrcRect.Top    := 0;
-    SrcRect.Bottom := ImageOff.Height;
-
-    DstRect.Left   := (Width - SrcRect.Width)   div 2;
-    DstRect.Right  := DstRect.Left + SrcRect.Width;
-    DstRect.Top    := (Height - SrcRect.Height) div 2;
-    DstRect.Bottom := DstRect.Top + SrcRect.Height;
-
-    BackBuffer.TransformImage(ImageOff, SrcRect.Left, SrcRect.Top, SrcRect.Right, SrcRect.Bottom, DstRect.Left, DstRect.Top);
-  end;
-  }
 end;
 
 end.

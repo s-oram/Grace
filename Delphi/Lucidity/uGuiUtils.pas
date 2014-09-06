@@ -21,7 +21,7 @@ uses
   Lucidity.Interfaces,
   Lucidity.Types,
   Lucidity.SampleMap, eePlugin,
-  VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel,
+  VamLabel, VamTextBox, VamWinControl, RedFoxContainer, VamPanel, VamButton,
   Controls;
 
 type
@@ -117,6 +117,7 @@ type
     class procedure StyleButton_CommandButton(const Button : TVamTextBox); static;
     class procedure StyleButton_CommandButton_Bright(const Button : TVamTextBox); static;
     class procedure StyleButton_SelectorButton(const Button : TVamTextBox); static;
+    class procedure StyleButton_OnOffButton(const Button : TVamButton); static;
   end;
 
 
@@ -1031,6 +1032,18 @@ begin
   Button.CornerRadius[1] := 2;
   Button.CornerRadius[2] := 2;
   Button.CornerRadius[3] := 2;
+end;
+
+class procedure GuiSetup.StyleButton_OnOffButton(const Button: TVamButton);
+begin
+  Button.ShowBorder   := true;
+  Button.Color_Border := kColor_ToggleButtonBorder;
+  Button.ColorOnA     := kColor_ToggleButtonOn;
+  Button.ColorOnB     := kColor_ToggleButtonOnMouseOver;
+  Button.ColorOffA    := kColor_ToggleButtonOff;
+  Button.ColorOffB    := kColor_ToggleButtonOffMouseOver;
+
+  Button.Font.Color     := GetRedFoxColor('$ff242B39');
 end;
 
 class procedure GuiSetup.StyleButton_SelectorButton(const Button: TVamTextBox);

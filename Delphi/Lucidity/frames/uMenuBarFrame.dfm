@@ -39,15 +39,16 @@ object MenuBarFrame: TMenuBarFrame
         Opacity = 255
         HitTest = True
         Visible = True
+        OnResize = ContainerDivResize
         object SampleMenuButton: TVamTextBox
           AlignWithMargins = True
-          Left = 536
+          Left = 456
           Top = 0
           Width = 105
           Height = 37
           Margins.Left = 0
           Margins.Top = 0
-          Margins.Right = 0
+          Margins.Right = 4
           Margins.Bottom = 0
           Opacity = 255
           Text = 'Sample'
@@ -70,11 +71,11 @@ object MenuBarFrame: TMenuBarFrame
           ImageOverlayOffsetY = 0
           Align = alRight
           Visible = True
-          OnClick = SampleMenuButtonClick
+          OnMouseDown = SampleMenuButtonMouseDown
         end
         object GroupMenuButton: TVamTextBox
           AlignWithMargins = True
-          Left = 456
+          Left = 376
           Top = 0
           Width = 76
           Height = 37
@@ -103,7 +104,7 @@ object MenuBarFrame: TMenuBarFrame
           ImageOverlayOffsetY = 0
           Align = alRight
           Visible = True
-          OnClick = GroupMenuButtonClick
+          OnMouseDown = GroupMenuButtonMouseDown
         end
         object MainMenuButton: TVamTextBox
           AlignWithMargins = True
@@ -136,7 +137,7 @@ object MenuBarFrame: TMenuBarFrame
           ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
-          OnClick = MainMenuButtonClick
+          OnMouseDown = MainMenuButtonMouseDown
         end
         object MapEditButton: TVamTextBox
           AlignWithMargins = True
@@ -169,7 +170,7 @@ object MenuBarFrame: TMenuBarFrame
           ImageOverlayOffsetY = 0
           Align = alLeft
           Visible = True
-          OnClick = MapEditButtonClick
+          OnMouseDown = MapEditButtonMouseDown
         end
         object InfoDisplay: TVamLabel
           Left = 248
@@ -189,6 +190,38 @@ object MenuBarFrame: TMenuBarFrame
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           Visible = True
+        end
+        object AutoSelectButton: TVamButton
+          AlignWithMargins = True
+          Left = 565
+          Top = 0
+          Width = 76
+          Height = 37
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Opacity = 255
+          Text = 'A'
+          HitTest = True
+          ButtonBehaviour = bbManual
+          ShowBorder = False
+          Color_Border = '$FF242B39'
+          ColorOnA = '$FF96F9D3'
+          ColorOnB = '$FF59F9BC'
+          ColorOffA = '$FFF99595'
+          ColorOffB = '$FFF96969'
+          ButtonState = bsOff
+          TextAlign = AlignCenter
+          TextVAlign = AlignCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Align = alRight
+          Visible = True
+          OnMouseDown = AutoSelectButtonMouseDown
         end
       end
     end

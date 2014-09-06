@@ -196,14 +196,10 @@ begin
 
   PreviewOnOffButton.Text := '';
   PreviewOnOffButton.Layout.SetSize(18,18);
-  PreviewOnOffButton.Color_Border := kColor_ToggleButtonBorder;
-  PreviewOnOffButton.ColorOnA     := kColor_ToggleButtonOn;
-  PreviewOnOffButton.ColorOnB     := kColor_ToggleButtonOnMouseOver;
-  PreviewOnOffButton.ColorOffA    := kColor_ToggleButtonOff;
-  PreviewOnOffButton.ColorOffB    := kColor_ToggleButtonOffMouseOver;
+
+  GuiSetup.StyleButton_OnOffButton(PreviewOnOffButton);
   PreviewOnOffButton.ImageOn      := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
   PreviewOnOffButton.ImageOff     := Plugin.Globals.SkinImageLoader.GetImage('Preview_Icon');
-
   PreviewOnOffButton.Layout.Anchor(PreviewVolumeKnob).SnapToEdge(TControlFeature.LeftEdge).Move(0,0);
 
   //======================================

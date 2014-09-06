@@ -64,10 +64,11 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+Resave Waveshapers drum kits with release times set to max!
+
 Check out asyn calls.
 http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
 http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html
-
 
 the locate missing samples dialog should by default show the location at the
 patch file. (then in the next sample directory.)

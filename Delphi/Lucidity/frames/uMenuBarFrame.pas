@@ -12,7 +12,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamDiv, RedFoxGraphicControl,
-  VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu, VamLabel;
+  VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu, VamLabel, VamButton;
 
 type
   TMenuBarFrame = class(TFrame, IZeroObject)
@@ -24,12 +24,20 @@ type
     MainMenuButton: TVamTextBox;
     MapEditButton: TVamTextBox;
     InfoDisplay: TVamLabel;
+    AutoSelectButton: TVamButton;
     procedure SampleMapButtonClick(Sender: TObject);
-    procedure GroupMenuButtonClick(Sender: TObject);
-    procedure SampleMenuButtonClick(Sender: TObject);
-    procedure MainMenuButtonClick(Sender: TObject);
     procedure SampleEditButtonClick(Sender: TObject);
-    procedure MapEditButtonClick(Sender: TObject);
+    procedure ContainerDivResize(Sender: TObject);
+    procedure MainMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure MapEditButtonMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure SampleMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure AutoSelectButtonMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -69,6 +77,7 @@ uses
   RedFoxColor,
   uLucidityEnums,
   VamQuery,
+  VamLayoutWizard,
   uGuiUtils,
   uConstants,
   Lucidity.PluginParameters,
@@ -95,6 +104,8 @@ begin
   AddDisplayClass(MapEditButton, dcGUIMenuButton);
   AddDisplayClass(GroupMenuButton, dcGUIMenuButton);
   AddDisplayClass(SampleMenuButton, dcGUIMenuButton);
+
+
 end;
 
 destructor TMenuBarFrame.Destroy;
@@ -124,6 +135,8 @@ begin
   GuiSetup.StyleButton_SelectorButton(GroupMenuButton);
   GuiSetup.StyleButton_SelectorButton(SampleMenuButton);
 
+  GuiSetup.StyleButton_OnOffButton(AutoSelectButton);
+
   GuiSetup.StyleButton_CommandButton(MainMenuButton);
   MainMenuButton.Width := 86;
 
@@ -139,22 +152,66 @@ begin
   MapEditButton.ImageOverlayHorzAlign := TRedFoxAlign.AlignNear;
   MapEditButton.ImageOverlayOffsetX := 2;
 
+
+  AutoSelectButton.Align := alNone;
+  GroupMenuButton.Align  := alNone;
+  SampleMenuButton.Align := alNone;
+
+  AutoSelectButton.Width  := 18;
   GroupMenuButton.Width := 116;
   SampleMenuButton.Width := 136;
 
+  {
+
+  AutoSelectButton.Align := alRight;
+  SampleMenuButton.Align := alRight;
+  GroupMenuButton.Align  := alRight;
+
   InfoDisplay.Align := alClient;
   InfoDisplay.Text := '';
-
+  }
 
   GuiSetup.StyleButton_CommandButton_Bright(MainMenuButton);
   GuiSetup.StyleButton_CommandButton_Bright(MapEditButton);
-
 
   //===
 
   SampleFocusChanged;
 
 end;
+
+procedure TMenuBarFrame.AutoSelectButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbLeft then
+  begin
+    //TODO:HIGH
+  end;
+end;
+
+procedure TMenuBarFrame.ContainerDivResize(Sender: TObject);
+begin
+  AutoSelectButton.Height := ContainerDiv.Height;
+  SampleMenuButton.Height := ContainerDiv.Height;
+  GroupMenuButton.Height := ContainerDiv.Height;
+
+  AutoSelectButton.Top := 0;
+  SampleMenuButton.Top := 0;
+  GroupMenuButton.Top := 0;
+
+  AutoSelectButton.Width := ContainerDiv.Height;
+
+  AutoSelectButton.Layout.SnapToParentEdge(TControlFeature.RightEdge);
+  SampleMenuButton.Layout.Anchor(AutoSelectButton).SnapToEdge(TControlFeature.LeftEdge).Move(-4, 0);
+  GroupMenuButton.Layout.Anchor(SampleMenuButton).SnapToEdge(TControlFeature.LeftEdge).Move(-4, 0);
+
+  InfoDisplay.Layout.Anchor(MapEditButton).SnapToEdge(TControlFeature.RightEdge).Move(4,0);
+  InfoDisplay.Top := 0;
+  InfoDisplay.Height := ContainerDiv.Height;
+  InfoDisplay.Width := GroupMenuButton.Left - InfoDisplay.Left - 4;
+  InfoDisplay.Text := '';
+end;
+
+
 
 
 
@@ -169,20 +226,25 @@ begin
   Command.ToggleSampleMapVisibility(Plugin);
 end;
 
-procedure TMenuBarFrame.SampleMenuButtonClick(Sender: TObject);
+procedure TMenuBarFrame.SampleMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  SamplesMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  if Button = mbLeft then
+  begin
+    SamplesMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
 end;
-
 
 procedure TMenuBarFrame.SetMotherShipReference(aMotherShip: IMothership);
 begin
   FMotherShip := aMothership;
 end;
 
-procedure TMenuBarFrame.GroupMenuButtonClick(Sender: TObject);
+procedure TMenuBarFrame.GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  GroupsMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  if Button = mbLeft then
+  begin
+    GroupsMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
 end;
 
 procedure TMenuBarFrame.SampleFocusChanged;
@@ -222,9 +284,12 @@ begin
   if SampleMenuButton.Text <> Text then SampleMenuButton.Text := Text;
 end;
 
-procedure TMenuBarFrame.MainMenuButtonClick(Sender: TObject);
+procedure TMenuBarFrame.MainMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  MainMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  if Button = mbLeft then
+  begin
+    MainMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
 end;
 
 procedure TMenuBarFrame.SampleEditButtonClick(Sender: TObject);
@@ -235,10 +300,13 @@ begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
 end;
 
-procedure TMenuBarFrame.MapEditButtonClick(Sender: TObject);
+procedure TMenuBarFrame.MapEditButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if not assigned(Plugin) then exit;
-  Command.ToggleSampleMapVisibility(Plugin);
+  if Button = mbLeft then
+  begin
+    Command.ToggleSampleMapVisibility(Plugin);
+  end;
 end;
 
 procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
