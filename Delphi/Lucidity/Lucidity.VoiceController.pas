@@ -70,6 +70,8 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   SysUtils,
   VamLib.Utils,
   Lucidity.KeyGroupManager,
@@ -145,46 +147,55 @@ begin
 
   if MsgID = TLucidMsgID.Audio_PolyNoteTrigger then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.PolyTrigger');{$ENDIF}
     PolyTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_PolyNoteRelease then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.PolyRelease');{$ENDIF}
     PolyRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_MonoNoteTrigger then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.MonoTrigger');{$ENDIF}
     MonoTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_MonoNoteRelease then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.MonoRelease');{$ENDIF}
     MonoRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LegatoNoteTrigger then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LegatoTrigger');{$ENDIF}
     MonoTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LegatoNoteRelease then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LegatoRelease');{$ENDIF}
     MonoRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LatchNoteTrigger then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LatchTrigger');{$ENDIF}
     LatchTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
   end;
 
   if MsgID = TLucidMsgID.Audio_LatchNoteRelease then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LatchRelease');{$ENDIF}
     LatchRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
   end;
 
   if MsgID = TLucidMsgID.AudioCommand_QuickReleaseAllNotes then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.QuickReleaseAllNotes');{$ENDIF}
     for c1 := ReleasedVoices.Count-1 downto 0 do
     begin
       ReleasedVoices[c1].QuickRelease;
@@ -206,6 +217,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceFinished then
   begin
+    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.VoiceFinished');{$ENDIF}
     pVoice := Data;
 
     if ActiveVoices.IndexOf(pVoice^) <> -1
