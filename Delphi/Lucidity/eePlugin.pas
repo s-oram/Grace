@@ -1342,6 +1342,8 @@ var
 begin
   inherited;
 
+  {$IFDEF Logging}LogMain.EnterMethod('Plugin.SetPreset');{$ENDIF}
+
   PreLoadProgram;
 
   StateManager := TLucidityStateManager.Create(self);
@@ -1353,6 +1355,7 @@ begin
 
   PostLoadProgram;
 
+  {$IFDEF Logging}LogMain.LeaveMethod('Plugin.SetPreset');{$ENDIF}
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);

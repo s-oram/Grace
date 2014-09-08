@@ -61,9 +61,19 @@ bug
 - the 64bit installer doesn't create a data directory. 
 
 
+bug
+- the modulation depth amounts don't update after loading a patch.
+
+bug
+- I'm seeing a patch behave with mono behaviour while still showing poly. usully
+after loading a patch. will need to investigate more.
+
+
 =============================================================================
      TODO HIGH
 =============================================================================
+
+
 Resave Waveshapers drum kits with release times set to max!
 
 Check out asyn calls.
