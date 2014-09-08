@@ -12,6 +12,7 @@ Change:
 - Due to a bug fix the Lucidity patch file format is now version 3. 
   Backwards compatibility with version 2 patches has been maintained. 
 - tweaked sample context menu commands for removing modulation.
+- Save program dialog is now initialised with the current filename.   
 
 Bug Fix:
 - GUI now updates when loading FXP patches. 

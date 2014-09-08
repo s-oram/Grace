@@ -62,7 +62,7 @@ procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array
 type
   TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile);
 
-procedure SetupFileSaveDialog_Program(var SaveDialog : TxpFileSaveDialog);
+procedure SetupFileSaveDialog_Program(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog);
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog);
 procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
 
@@ -256,7 +256,6 @@ begin
     (aControl as TVamPanel).CornerRadius3 := 3;
     (aControl as TVamPanel).CornerRadius4 := 3;
   end;
-
 end;
 
 procedure ClearPadding(aControl : TRedFoxContainer); overload;
@@ -267,8 +266,26 @@ begin
 end;
 
 
-procedure SetupFileSaveDialog_Program(var SaveDialog : TxpFileSaveDialog);
+procedure SetupFileSaveDialog_Program(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog);
+var
+  PatchFileName : string;
+  DirName : string;
 begin
+  DirName := ExtractFileDir(Plugin.Globals.PatchInfo.PatchFileName);
+
+  if Plugin.PresetName <> ''then
+  begin
+    PatchFileName := Plugin.PresetName + kLucidityProgramFileExtension;
+    SaveDialog.FileName := PatchFileName;
+  end else
+  begin
+    SaveDialog.FileName := '';
+  end;
+
+  if (DirName <> '') and (DirectoryExists(DirName)) then
+  begin
+    SaveDialog.InitialDir := DirName;
+  end else
   if (Lucidity.Globals.LastProgramSaveDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
   begin
     SaveDialog.InitialDir := Lucidity.Globals.LastProgramSaveDir;

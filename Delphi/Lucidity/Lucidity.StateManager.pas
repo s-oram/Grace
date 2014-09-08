@@ -45,7 +45,7 @@ type
 
     // "Preset Info" is an extra chunk of data used when the saving/restoring from within
     // a host application.
-    procedure ReadPresetInfoFromXML(var XML : TNativeXML);
+    procedure ReadPresetInfoFromXML(var XML : TNativeXML); //TODO:HIGH rename to Read/WriteExtraPatchInfoForHost
     procedure WritePresetInfoToXML(var XML : TNativeXML);
 
     procedure ReadMidiMapFromXML(var XML : TNativeXML);
@@ -995,16 +995,15 @@ begin
   RootNode := xml.Root;
   assert(assigned(RootNode));
 
-  PresetName := '';
-  PresetInfoNode := RootNode.FindNode('PresetInfo');
-  if assigned(PresetInfoNode) then
-  begin
-    aNode := PresetInfoNode.FindNode('PresetName');
-    if assigned(aNode)
-      then PresetName := aNode.ValueUnicode;
-  end;
+  aNode := NodeWiz(RootNode).Find('PresetInfo/PresetName');
+  if assigned(aNode)
+    then Plugin.PresetName := aNode.ValueUnicode
+    else Plugin.PresetName := '';
 
-  Plugin.PresetName := PresetName;
+  aNode := NodeWiz(RootNode).Find('PresetInfo/PresetFileName');
+  if assigned(aNode)
+    then Plugin.Globals.PatchInfo.PatchFileName := aNode.ValueUnicode
+    else Plugin.Globals.PatchInfo.PatchFileName := '';
 end;
 
 
@@ -1017,6 +1016,7 @@ begin
   assert(assigned(RootNode));
   aNode := RootNode.NodeNew('PresetInfo');
   aNode.NodeNew('PresetName').ValueUnicode := Plugin.PresetName;
+  aNode.NodeNew('PresetFileName').ValueUnicode := Plugin.Globals.PatchInfo.PatchFileName;
 end;
 
 procedure TLucidityStatemanager.WriteMidiMapToXML(var XML: TNativeXML);

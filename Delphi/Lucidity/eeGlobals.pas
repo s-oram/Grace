@@ -16,6 +16,14 @@ uses
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 
 type
+  TPatchInfo = class
+  private
+    fPatchFileName: string;
+  public
+    property PatchFileName : string read fPatchFileName write fPatchFileName; //full path patch file name.
+  end;
+
+
   TGlobals = class(TCustomGlobals)
   private
     fKeyData: TLucidityKey;
@@ -34,6 +42,7 @@ type
     fCpuSampleRate: integer;
     fUserConfigDir: string;
     fDefaultConfigDir: string;
+    fPatchInfo: TPatchInfo;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
@@ -60,6 +69,8 @@ type
 
     property Options : TOptions read fOptions;
 
+
+    // TODO:MED the selected stuff below probably show go into the GUI state.
     // SelectedModSlot shows which mod slot is active. valid range is -1..7.
     //   -1 indicates that the "Main" is selected and no mod slot is being edited.
     //   0..7 indicates that the X mod slot is being edited. It should be displayed.
@@ -70,6 +81,7 @@ type
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
     property GuiState : TGuiState read fGuiState;
+    property PatchInfo : TPatchInfo read fPatchInfo;
 
 
     // TODO:MED AudioActions isn't being used at all. The role of audio actions,
@@ -114,6 +126,7 @@ begin
   fAudioActions := TStoredActions.Create;
 
   fGuiState := TGuiState.Create;
+  fPatchInfo := TPatchInfo.Create;
 
   VclTaskRunner := TTaskRunner.Create;
   VclTaskTimer  := TTimer.Create(nil);
@@ -194,6 +207,7 @@ begin
   VclTaskTimer.Free;
   VclTaskRunner.Free;
   fGuiState.Free;
+  fPatchInfo.Free;
   fAudioActions.Free;
   inherited;
 end;

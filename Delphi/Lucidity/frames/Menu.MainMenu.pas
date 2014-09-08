@@ -82,9 +82,7 @@ begin
     SaveDialog := TxpFileSaveDialog.Create(nil);
     AutoFree(@SaveDialog);
 
-    SetupFileSaveDialog_Program(SaveDialog);
-
-    SaveDialog.FileName := Plugin.PresetName + kLucidityProgramFileExtension;
+    SetupFileSaveDialog_Program(Plugin, SaveDialog);
 
     if SaveDialog.Execute then
     begin

@@ -874,6 +874,8 @@ var
 begin
   inherited;
 
+  Globals.PatchInfo.PatchFileName := '';
+
   VoiceMode := TVoiceMode.Poly;
   VoiceGlide := 0;
 
@@ -1405,6 +1407,7 @@ begin
   PostLoadProgram;
 
   PresetName := RemoveFileExt(FileName);
+  Globals.PatchInfo.PatchFileName := FileName;
   {$ENDIF}
 end;
 
@@ -1516,7 +1519,12 @@ var
   StateManager : TLucidityStateManager;
 begin
   {$IFNDEF Demo}
-  //TODO:MED Add Message here perhaps explain demo limitation.
+    //TODO:MED Add Message here perhaps explain demo limitation.
+    // Maybe not needed.
+  {$ENDIF}
+
+  PresetName := RemoveFileExt(FileName);
+  Globals.PatchInfo.PatchFileName := FileName;
 
   Lucidity.Globals.LastProgramSaveDir := ExtractFileDir(FileName);
 
@@ -1529,10 +1537,7 @@ begin
     StateManager.Free;
   end;
 
-  PresetName := RemoveFileExt(FileName);
-
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
-  {$ENDIF}
 end;
 
 procedure TeePlugin.SaveProgramAsDefault;
@@ -1540,11 +1545,13 @@ var
   fnA : string;
 begin
   {$IFNDEF Demo}
-  //TODO:MED Add Message here perhaps explain demo limitation.
+    //TODO:MED Add Message here perhaps explain demo limitation.
+    // Maybe not needed.
+  {$ENDIF}
+
   fnA := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + IncludeTrailingPathDelimiter('User');
   fnA := fnA + 'Default.lpg';
   SaveProgramToFile(fnA);
-  {$ENDIF}
 end;
 
 procedure TeePlugin.LoadMIDIProgram(const ProgramIndex: integer);
