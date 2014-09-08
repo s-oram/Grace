@@ -153,7 +153,8 @@ begin
       Result := obj.dispatcher(opCode, index, value, ptr, opt);
     end else
     begin
-      DispatchEffectLock.Acquire;
+      // TODO:MED Do we need a critical section here? Perhaps a Multireader lock would be better, if a lock is needed at all.
+      DispatchEffectLock.Enter;
       try
         obj := e^.vObject;
         if opCode = effClose then
@@ -166,7 +167,7 @@ begin
           Result := obj.dispatcher(opCode, index, value, ptr, opt);
         end;
       finally
-        DispatchEffectLock.Release;
+        DispatchEffectLock.Leave;
       end;
     end;
   except
