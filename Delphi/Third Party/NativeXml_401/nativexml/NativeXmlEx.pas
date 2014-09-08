@@ -9,13 +9,12 @@ uses
 type
   INodeWiz = interface
     ['{AF6571F5-A2AB-410D-A322-A2C8220AEC67}']
-    function FindOrCreateNode(ChildPath : string):TXmlNode;
-    function CreateNode(ChildPath : string):TXmlNode;
-
     function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
+    function Find(NodePath : string):TXmlNode;
+    function FindOrCreateNode(ChildPath : string):TXmlNode;
+    function CreateNode(ChildPath : string):TXmlNode;
     function ValueUnicode(ChildPath : string):string;
-
     function FindNodeValue(const NodePath : string; out NodeValue : string):boolean;
   end;
 
@@ -29,6 +28,11 @@ type
 
     function Exists(NodePath : string):boolean;
     function Child(ChildPath:string):TXmlNode;
+
+    // Navigates to the specified node. Always choosing the first node when
+    // multiple nodes of the same name are found.
+    // Returns nil if the node cannot be found.
+    function Find(NodePath : string):TXmlNode;
 
     // Navigates to the final child node, giving preference to existing nodes.
     // Non-existing nodes will be created.
@@ -166,6 +170,11 @@ end;
 
 
 
+function TNodeWiz.Find(NodePath: string): TXmlNode;
+begin
+  result := Child(NodePath);
+end;
+
 function TNodeWiz.Child(ChildPath: string): TXmlNode;
 var
   Elements : TStringDynArray;
@@ -173,6 +182,8 @@ var
   c1 : integer;
   NodeName : UTF8String;
 begin
+  if ChildPath = '' then exit(nil);
+
   RefNode := AnchorNode;
 
   Elements := SplitString(ChildPath, '/');
@@ -185,6 +196,10 @@ begin
       then break;
   end;
 
+  //TODO:MED I always do a double take when looking at this method.
+  // On first impression it seems like it shouldn't work but
+  // on closer inspection it is correct. Perhaps I should re-write the
+  // method so that it is more evidently correct.
   result := RefNode;
 end;
 
