@@ -100,12 +100,12 @@ end;
 
 procedure TBufferedEventList.LockList;
 begin
-  cs.Acquire;
+  cs.Enter;
 end;
 
 procedure TBufferedEventList.UnlockList;
 begin
-  cs.Release;
+  cs.Leave;
 end;
 
 procedure TBufferedEventList.ResetEventCount;

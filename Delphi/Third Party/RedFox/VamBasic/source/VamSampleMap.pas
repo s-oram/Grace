@@ -2213,134 +2213,13 @@ begin
 end;
 
 function TVamSampleMap.GetFocusedRegionInfo: TVamSampleMapDisplayInfo;
-var
-  c1: Integer;
-  aRegion : TVamSampleRegion;
-  s : string;
 begin
   result := FocusedRegionDisplayInfo;
-  {
-  try
-    // This method returns information about the current state of the sample map display.
-    // The GUI can use this information to sync other GUI components to reflect the current
-    // state of the sample map.
-    aRegion := nil;
-
-    if (not assigned(aRegion)) and (ProposedSampleRegions.Count > 0) then
-    begin
-      aRegion := ProposedSampleRegions[0];
-    end;
-
-    if (not assigned(aRegion)) and (not(IsGrabbedByLeft or IsGrabbedByRight)) and (assigned(MouseOverRegion)) then
-    begin
-      aRegion := MouseOverRegion;
-    end;
-
-    if (not assigned(aRegion)) and (assigned(MouseDownRegion)) then
-    begin
-      aRegion := MouseDownRegion;
-    end;
-
-    if (not assigned(aRegion)) then
-    begin
-      for c1 := 0 to SampleRegions.Count-1 do
-      begin
-        if SampleRegions[c1].IsFocused then
-        begin
-          aRegion := SampleRegions[c1];
-          break;
-        end;
-      end;
-    end;
-
-    if assigned(aRegion) then
-    begin
-      result.IsValid  := true;
-
-      //TODO:HIGH AVBug #4
-      s := aRegion.FileName; //sometimes the region will not be assigned here for some reason...
-      result.FileName := s;
-
-      if aRegion.IsMoving = false then
-      begin
-        result.RootNote     := aRegion.RootNote;
-        result.LowKey       := aRegion.LowKey;
-        result.HighKey      := aRegion.HighKey;
-        result.LowVelocity  := aRegion.LowVelocity;
-        result.HighVelocity := aRegion.HighVelocity;
-      end else
-      begin
-        result.RootNote     := aRegion.MovedRootNote;
-        result.LowKey       := aRegion.MovedLowKey;
-        result.HighKey      := aRegion.MovedHighKey;
-        result.LowVelocity  := aRegion.MovedLowVelocity;
-        result.HighVelocity := aRegion.MovedHighVelocity;
-      end;
-    end else
-    begin
-      result.IsValid := false;
-      result.FileName := '';
-      result.RootNote := 0;
-      result.LowKey   := 0;
-      result.HighKey  := 0;
-      result.LowVelocity := 0;
-      result.HighVelocity := 0;
-    end;
-  except
-    //TODO:MED
-    // for some reason I am randomly seeing this method raise AV errors. I'm not sure
-    // of the conditions arising to do this. It seems to happen while loadin SFZ files.
-    // I'm not sure if catching this exception here and ignoring it is a "fix"
-    // or just masking a underlying problem.
-    // I would rather do something to avoid the AV error here altogether but I'm
-    // not sure what that actually would be. I will leave this try..except block
-    // in and send Lucidity out for some more testing.
-    on EAccessViolation do
-    begin
-      result.IsValid := false;
-      result.FileName := '';
-      result.RootNote := 0;
-      result.LowKey   := 0;
-      result.HighKey  := 0;
-      result.LowVelocity := 0;
-      result.HighVelocity := 0;
-    end;
-    else
-      raise;
-  end;
-  }
 end;
 
 function TVamSampleMap.GetMouseOverRegionInfo: TVamSampleMapDisplayInfo;
 begin
   result := MouseOverRegionDisplayInfo;
-  {
-  if not assigned(MouseOverRegion) then
-  begin
-    result.IsValid := false;
-  end else
-  begin
-    result.IsValid := true;
-
-    result.FileName     := MouseOverRegion.FileName;
-
-    if MouseOverRegion.IsMoving = false then
-    begin
-      result.RootNote     := MouseOverRegion.RootNote;
-      result.LowKey       := MouseOverRegion.LowKey;
-      result.HighKey      := MouseOverRegion.HighKey;
-      result.LowVelocity  := MouseOverRegion.LowVelocity;
-      result.HighVelocity := MouseOverRegion.HighVelocity;
-    end else
-    begin
-      result.RootNote     := MouseOverRegion.MovedRootNote;
-      result.LowKey       := MouseOverRegion.MovedLowKey;
-      result.HighKey      := MouseOverRegion.MovedHighKey;
-      result.LowVelocity  := MouseOverRegion.MovedLowVelocity;
-      result.HighVelocity := MouseOverRegion.MovedHighVelocity;
-    end;
-  end;
-  }
 end;
 
 

@@ -65,10 +65,8 @@ end;
 procedure TPopupMenuEx.Popup(X, Y: Integer);
 var
   msg: tagMSG;
-  c1: Integer;
 begin
   inherited;
-
   if Assigned(OnDismissed) then
     OnDismissed(Self, PeekMessage(msg, PopupList.Window, WM_COMMAND,
       WM_COMMAND, PM_NOREMOVE) = FALSE);

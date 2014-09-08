@@ -64,7 +64,7 @@ procedure TStoredActions.Add(const ID: cardinal; const Action: TProc);
 var
   NewAction : TStoredAction;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     if fIsProcessingActive then
     begin
@@ -79,7 +79,7 @@ begin
       Action();
     end;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -87,7 +87,7 @@ procedure TStoredActions.Run;
 var
   c1: Integer;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := 0 to Actions.Count-1 do
     begin
@@ -101,17 +101,17 @@ begin
 
     Actions.Clear;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
 procedure TStoredActions.SetIsProcessingActive(const Value: boolean);
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     fIsProcessingActive := true;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 

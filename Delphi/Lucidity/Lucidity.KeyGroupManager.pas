@@ -41,7 +41,7 @@ type
     // the list, but only allow one section of code at a time to write
     // changes to the list.
     // TODO:It might be better to get rid of this critical section and go for
-    // a lock free approach.
+    // a lock free approach. or one of the multi-reader locks.
     ListLock : TFixedCriticalSection;
 
     fList : TInterfaceList;
@@ -159,11 +159,11 @@ var
 begin
   aInfo := TKeyGroupsInfo.Create;
 
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     aInfo.AssignFrom(self);
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 
   result := aInfo;
@@ -190,7 +190,7 @@ var
   c1: Integer;
   sg : IKeyGroup;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     result := nil;
 
@@ -201,7 +201,7 @@ begin
     end;
 
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -242,7 +242,7 @@ var
   zo : IZeroObject;
   UniqueName : string;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     if aName <> ''
       then UniqueName := aName
@@ -264,7 +264,7 @@ begin
 
     result := kg;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -288,7 +288,7 @@ function TKeyGroupManager.Request(const KeyGroupID: TKeyGroupID): IKeyGroup;
 var
   c1: Integer;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := 0 to fList.Count-1 do
     begin
@@ -296,7 +296,7 @@ begin
         then exit(fList[c1] as IKeyGroup);
     end;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
   //== no match found ==
   result := nil;
@@ -308,7 +308,7 @@ var
   kg : IKeyGroup;
   kgID : TKeyGroupID;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := fList.Count-1 downto 0 do
     begin
@@ -329,20 +329,20 @@ begin
       end;
     end;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
 function TKeyGroupManager.FindFirstKeyGroup: IKeyGroup;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     if fList.Count > 0
       then result := fList[0] as IKeyGroup
       else result := nil;
 
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -351,7 +351,7 @@ var
   c1: Integer;
   sg : IKeyGroup;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := 0 to fList.Count-1 do
     begin
@@ -362,7 +362,7 @@ begin
     //If we've made it this far, no sample group is found.
     result := nil;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -444,14 +444,14 @@ var
 begin
   assert(assigned(DestList));
 
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := fList.Count-1 downto 0 do
     begin
       DestList.Add(fList[c1]);
     end;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
