@@ -160,6 +160,10 @@ var
   XML : TNativeXML;
   fn : string;
 begin
+ {$IFDEF Logging}
+   LogMain.LogMessage('StateManager.SetPreset (Sanity Check)');
+ {$ENDIF}
+
   // TODO:HIGH why isn't this saving files in Cubase on my other computer. Need to add logging to check file is being loaded.
   // check data path is being loaded correctly.
   {$IFDEF Logging}LogMain.EnterMethod('StateManager.SetPreset');{$ENDIF}
@@ -1085,18 +1089,23 @@ begin
   assert(assigned(RootNode));
 
   aNode := RootNode.FindNode('PatchFileFormatVersion');
-  if assigned(aNode) then
-  begin
-    PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1);
+  if assigned(aNode)
+    then PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1)
+    else PatchFormatVersion := -1;
 
-    case PatchFormatVersion of
-      // Very old format patches. There shouldn't be any of these in the wild.
-      0: UpdatePatchVersionFrom2To3(XML);
-      1: UpdatePatchVersionFrom2To3(XML);
-      // Patch backwards compatibility is being maintained from version 2 onwards.
-      2: UpdatePatchVersionFrom2To3(XML); //TODO:MED this method returns false if the patch conversion fails.
-    end;
+ {$IFDEF Logging}
+   LogMain.LogMessage('Loading Patch Format Version = ' + IntToStr(PatchFormatVersion));
+ {$ENDIF}
+
+  case PatchFormatVersion of
+    // Very old format patches. There shouldn't be any of these in the wild.
+    -1: UpdatePatchVersionFrom2To3(XML);
+    0: UpdatePatchVersionFrom2To3(XML);
+    1: UpdatePatchVersionFrom2To3(XML);
+    // Patch backwards compatibility is being maintained from version 2 onwards.
+    2: UpdatePatchVersionFrom2To3(XML); //TODO:MED this method returns false if the patch conversion fails.
   end;
+
 end;
 
 
