@@ -140,6 +140,7 @@ procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Point
 var
   pVoice : PLucidityVoice;
   c1: Integer;
+  Text : string;
 begin
   inherited;
 
@@ -147,7 +148,12 @@ begin
 
   if MsgID = TLucidMsgID.Audio_PolyNoteTrigger then
   begin
-    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.PolyTrigger');{$ENDIF}
+    {$IFDEF Logging}
+      Text := 'Active Voice Count = ' + IntToStr(ActiveVoices.Count);
+      Text := Text + EndOfLine;
+      Text := Text + 'Inactive Voice Count = ' + IntToStr(InactiveVoices.Count);
+      LogMain.LogText('TVoiceController.PolyTrigger', Text);
+    {$ENDIF}
     PolyTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
   end;
 
@@ -217,7 +223,6 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceFinished then
   begin
-    {$IFDEF Logging}LogMain.LogMessage('TVoiceController.VoiceFinished');{$ENDIF}
     pVoice := Data;
 
     if ActiveVoices.IndexOf(pVoice^) <> -1
@@ -231,6 +236,18 @@ begin
     // return the voice to the inactive list.
     if InactiveVoices.IndexOf(pVoice^) = -1
       then InactiveVoices.Add(pVoice^);
+
+    {$IFDEF Logging}
+      Text := '';
+      Text := Text + 'Active Voice Count = ' + IntToStr(ActiveVoices.Count);
+      Text := Text + EndOfLine;
+      Text := Text + 'Released Voice Count = ' + IntToStr(ReleasedVoices.Count);
+      Text := Text + EndOfLine;
+      Text := Text + 'Triggered Voice Stack Count = ' + IntToStr(TriggeredVoiceStack.Count);
+      Text := Text + EndOfLine;
+      Text := Text + 'Inactive Voice Count = ' + IntToStr(InactiveVoices.Count);
+      LogMain.LogText('TVoiceController.VoiceFinished', Text);
+    {$ENDIF}
   end;
 end;
 

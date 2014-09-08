@@ -5,6 +5,11 @@ interface
 uses
   Classes;
 
+const
+  // NOTE: End of line definition sourced from http://stackoverflow.com/a/254997/395461
+  EndOfLine = {$IFDEF LINUX} AnsiChar(#10) {$ENDIF}
+              {$IFDEF MSWINDOWS} AnsiString(#13#10) {$ENDIF};
+
 type
   PObject = ^TObject;
 
