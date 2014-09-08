@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   Classes,
   Generics.Collections,
   Math,
@@ -57,7 +58,7 @@ type
   // so that interfaces can be used without reference counting.
   // The voice logic class requires an interface to the Voice class
   // to be passed in.
-  TLucidityVoice = class(TPureInterfacedObject, IVoiceStateInfo)
+  TLucidityVoice = class(TZeroObject, IVoiceStateInfo)
   private
     fAmpEnv : TLucidityADSR;
     fTriggerNote: byte;
@@ -145,6 +146,8 @@ type
     property OscModule : TOscModule read fOscModule write fOscModule;
 
     procedure UpdateOscPitch;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -216,7 +219,6 @@ implementation
 
 
 uses
-  VamLib.ZeroObject,
   {$IFDEF Logging}
   SmartInspectLogging,
   VamLib.LoggingProxy,
@@ -726,6 +728,24 @@ begin
 
   // Important: Clear voice resources...
   CleanUp;
+end;
+
+procedure TLucidityVoice.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+var
+  kgID : TKeyGroupID;
+begin
+  inherited;
+
+  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
+  begin
+    kgID := TKeyGroupID(Data^);
+
+    if self.KeyGroupID = kgID then
+    begin
+      QuickRelease;
+    end;
+  end;
+
 end;
 
 procedure TLucidityVoice.CleanUp;

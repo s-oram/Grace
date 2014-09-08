@@ -181,6 +181,10 @@ end;
 
 destructor TKeyGroup.Destroy;
 begin
+  {$IFDEF Logging}
+    LogMain.LogMessage('TKeyGroup.Destroy');
+  {$ENDIF}
+
   Globals.RemoveEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);
   Globals.RemoveEventListener(TPluginEvent.BlockSizeChanged, BlockSizeChanged);
 

@@ -25,6 +25,9 @@ Bug Fix:
   new voice. The old audio data would be recycled into the new voice.   
 - Modulating the loop points could lead to a crash if the modulation point
   was outside the sample bounds. 
+- Sometimes Lucidity would behave as if it was using Mono whilst in Poly
+  voice mode. Lucidity wasn't releasing active voices when loading new
+  programs. 
 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===

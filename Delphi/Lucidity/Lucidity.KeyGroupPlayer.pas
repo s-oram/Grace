@@ -110,6 +110,7 @@ begin
   end;
 
 
+  {
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
     kgID := TKeyGroupID(Data^);
@@ -122,6 +123,7 @@ begin
       end;
     end;
   end;
+  }
 end;
 
 

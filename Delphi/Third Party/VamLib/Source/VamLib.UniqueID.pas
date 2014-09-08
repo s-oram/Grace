@@ -75,10 +75,6 @@ end;
 
 class operator TUniqueID.Equal(a, b: TUniqueID): boolean;
 begin
-  // Check that the id's have been initialised.
-  assert((a.Part1 <> 0) and (a.Part2 <> 0));
-  assert((b.Part1 <> 0) and (b.Part2 <> 0));
-
   if (a.Part1 = b.Part1) and (a.Part2 = b.Part2)
     then result := true
     else result := false;
@@ -86,10 +82,6 @@ end;
 
 class operator TUniqueID.NotEqual(a, b: TUniqueID): boolean;
 begin
-  // Check that the id's have been initialised.
-  assert((a.Part1 <> 0) and (a.Part2 <> 0));
-  assert((b.Part1 <> 0) and (b.Part2 <> 0));
-
   if (a.Part1 = b.Part1) and (a.Part2 = b.Part2)
     then result := false
     else result := true;

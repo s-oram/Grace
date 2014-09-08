@@ -416,6 +416,7 @@ begin
   begin
     Voices[c1] := TLucidityVoice.Create('VoiceClass', @GlobalModPoints, Globals);
     Voices[c1].VoiceID := c1;
+    Globals.MotherShip.RegisterZeroObject(Voices[c1], TZeroObjectRank.Audio);
 
     // TODO: OnFinish handling will need to be
     // replaced with a mother ship message.
