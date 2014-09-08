@@ -108,11 +108,12 @@ type
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj:IZeroObject);
 
+    //TODO:HIGH remove msgMain()
+    procedure MsgMain(MsgID : cardinal); overload; //deprecated;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; //deprecated;
+
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
-
-    procedure MsgMain(MsgID : cardinal); overload; deprecated;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; deprecated;
 
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
@@ -190,11 +191,12 @@ type
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj: IZeroObject);
 
+    //TODO:HIGH remove MsgMain().
+    procedure MsgMain(MsgID : cardinal); overload; //deprecated;
+    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; //deprecated;
+
     procedure MsgAudio(MsgID : cardinal); overload;
     procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
-
-    procedure MsgMain(MsgID : cardinal); overload; deprecated;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; deprecated;
 
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;

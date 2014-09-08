@@ -115,7 +115,7 @@ type
 
     EmptyKeyGroup : IKeyGroup;
 
-    ThrottleID_VSTParChange : TUniqueID;
+    ThrottleID_VSTParChange : TUniqueID; //TODO:HIGH this isn't used.
 
     CopiedKeyGroupValues : TKeyGroupStateBuffer;
 
@@ -310,7 +310,6 @@ begin
   ThrottleID_VSTParChange.Init;
 
   fPluginParameters := TPluginParameterManager.Create;
-
 
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceGlide);

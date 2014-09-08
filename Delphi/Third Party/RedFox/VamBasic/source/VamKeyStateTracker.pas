@@ -56,13 +56,13 @@ procedure TKeyStateTracker.NoteOn(const Data1, Data2: byte);
 var
   ks : TKeyState;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     ks.Note := Data1;
     ks.Velocity := Data2;
     List.Add(ks);
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -70,14 +70,14 @@ procedure TKeyStateTracker.NoteOff(const Data1, Data2: byte);
 var
   c1: Integer;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     for c1 := List.Count-1 downto 0 do
     begin
       if List.Items[c1].Note = Data1 then List.Delete(c1);
     end;
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
@@ -85,7 +85,7 @@ procedure TKeyStateTracker.GetData(out Data: TKeyStateData);
 var
   c1: Integer;
 begin
-  ListLock.Acquire;
+  ListLock.Enter;
   try
     SetLength(Data, List.Count);
 
@@ -96,7 +96,7 @@ begin
     end;
 
   finally
-    ListLock.Release;
+    ListLock.Leave;
   end;
 end;
 
