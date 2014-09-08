@@ -35,6 +35,12 @@ thunderlink://messageid=CAAE3TrJ8_=ySKa9GsSwoN=bN3e=p42WcD_C5+2Ch1mOCEyJFOA@mail
 
 
 
+source video
+
+Night sky time lapse 2012
+http://vimeo.com/56843215
+
+
 =========================================================
     Website Update
 =========================================================
@@ -63,3 +69,65 @@ http://www.audiofile-engineering.com/samplemanager/
 
 
 
+
+Demo Video sound track will be at 128bpm
+
+1 bar  = 3.75 seconds
+2 bar  = 7.5 seconds
+4 bars = 15 seconds.
+
+
+
+== Scene #1 (1 Bar) ==
+Title Shot "Lucidity VST Plugin Sampler"
+Show stock background. 
+
+== Scene #2 (1 Bar) ==
+Intro shot of GUI. 
+- Show GUI for the first time. Show the ADSR modulation
+
+== Scene #3 (1 Bar) ==
+Quick drag and drop sample loading
+- show samples being dropped on GUI.
+
+== Scene #4 (1 Bar) ==
+Sample map editor for more detailed layout editing when needed. 
+
+== Scene #5 (3-4 Bars?) ==
+Lots of Modulation 
+- 2 AHDSR Envelopes
+- 2 LFOs
+- 2 Step Sequencers
+
+Lots of destinations
+- show some modulation
+
+== Scene #6 (1 Bars) ==
+breakdown for audio FX sound
+
+== Scene #7 (1 Bars) ==
+Sample loop point modulation with minimal clicking. 
+
+== Scene #8 (2 Bars) ==
+Dual Filters
+- show filter types.
+- show filter routing. 
+
+== Scene #9 (1 Bars) ==
+Fade out "Lucidity - Coming Soon"
+music...
+
+
+Total Lenght 11 bars - 40 seconds of video.
+
+
+
+
+
+
+
+
+
+
+
+  
