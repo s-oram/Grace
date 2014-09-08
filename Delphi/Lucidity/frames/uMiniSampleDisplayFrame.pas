@@ -346,7 +346,6 @@ begin
 
   if MsgID = TLucidMsgID.SampleFocusChanged then
   begin
-    LogMain.LogMessage('SampleFocusChanged');
     UpdateControlVisibility;
     UpdateSampleDisplay;
     UpdateSampleDisplayInfo;
