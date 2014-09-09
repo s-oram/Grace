@@ -291,6 +291,16 @@ begin
     ParName  := KnobControl.GetParameterName;
     Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName, nil);
   end;
+
+
+  // HACK: The mod slot sends a message when the mouse is not mousing over it.
+  // This message is sent with a small delay. The delay avoids flickering when quickly
+  // mousing between mod slots. The problem is when quickly mousing over a knob.
+  // The knob will show a modulation display as if the moused over mod slot
+  // was actually selected. This looks pretty crap and unprofessional so i've
+  // added this hack here to ensure the mouse over knob behaviour is correct.
+  Plugin.Globals.IsMouseOverModSlot := false;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
 end;
 
 procedure TKnobHandler.Handle_MouseLeave(Sender: TObject);
