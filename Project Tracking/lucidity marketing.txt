@@ -76,8 +76,6 @@ Demo Video sound track will be at 128bpm
 2 bar  = 7.5 seconds
 4 bars = 15 seconds.
 
-
-
 == Scene #1 (1 Bar) ==
 Title Shot "Lucidity VST Plugin Sampler"
 Show stock background. 

@@ -60,13 +60,8 @@ thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail
 bug
 - the 64bit installer doesn't create a data directory. 
 
-
 bug
 - the modulation depth amounts don't update after loading a patch.
-
-bug
-- I'm seeing a patch behave with mono behaviour while still showing poly. usully
-after loading a patch. will need to investigate more.
 
 
 =============================================================================
@@ -79,9 +74,6 @@ Resave Waveshapers drum kits with release times set to max!
 Check out asyn calls.
 http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
 http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html
-
-the locate missing samples dialog should by default show the location at the
-patch file. (then in the next sample directory.)
 
 why aren't samples found for yann's patches?
 
