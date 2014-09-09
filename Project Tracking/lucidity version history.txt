@@ -28,6 +28,7 @@ Bug Fix:
 - Sometimes Lucidity would behave as if it was using Mono whilst in Poly
   voice mode. Lucidity wasn't releasing active voices when loading new
   programs. 
+- the modulation depth amounts don't update after loading a patch.
 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===
