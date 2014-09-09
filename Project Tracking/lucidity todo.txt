@@ -28,8 +28,6 @@ bug
   > keyboard and nothing plays until the Beats # setting is changed.
 thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
 
-bug AV error when playing back sample
-thunderlink://messageid=1409091659.89758.YahooMailNeo@web186104.mail.ir2.yahoo.com
 
 bug
 - > I'll found another thing,It,s not properly a bug:When you save a 
@@ -42,23 +40,12 @@ bug
 - the comb filter does sound good when modulated from one of the pads! There are crackles.
   it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
 
-bug
- If i play a key, hold it, then play another key (while sustaining the previous one), the first key played key will stop.
- thunderlink://messageid=2C06406834C44F889340D3221A8BB186@YannHP
- -- I can't reproduce. sent follow up message asking for more details. 
-
-
-bug report (Andrea)
-1-load a sample lile piano-B2
-2-set root note (B2) lo A2-hi C3
-play midi note B2 and it's play some tones below
-See screencapture to better understand
-thunderlink://messageid=CAG2OC08kpQ+L+oFRDh3jDk7B0DrYJSLQB-uWdn-ngj+K9RRQVw@mail.gmail.com
-- I can't reproduce this one yet. 
-
 
 bug
 - the 64bit installer doesn't create a data directory. 
+
+bug
+- load replace with enter key doesn't work.
 
 =============================================================================
      TODO HIGH
