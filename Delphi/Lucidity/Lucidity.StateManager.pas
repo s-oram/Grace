@@ -555,6 +555,8 @@ begin
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq2Clock');
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'Seq2Direction');
     SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'StepSeq2Length');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'AmpEnvSnap');
+    SaveObjectPropertyToXML(VoiceParNode, KeyGroupStateInfo, 'ModEnvSnap');
 
 
     // NOTE: Patch Format Version 1 vs Version 2
@@ -800,6 +802,8 @@ begin
       LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq2Clock');
       LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'Seq2Direction');
       LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'StepSeq2Length');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'AmpEnvSnap');
+      LoadObjectPropertyFromXML(VoiceParNode, KeyGroupLoadInfo, 'ModEnvSnap');
     end;
 
 

@@ -75,6 +75,8 @@ type
     fSeq1Direction: TStepSequencerDirection;
     fSampleReset: TClockSource;
     fLfoFreqMode1: TLfoFreqMode;
+    fModEnvSnap: TEnvSnap;
+    fAmpEnvSnap: TEnvSnap;
   public
     procedure ResetToDefaultValues;
     procedure SanitiseData; // call after reading data from a save file.
@@ -90,6 +92,8 @@ type
     property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write fFilter2KeyFollow; //range 0..1
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write fAmpVelocityDepth;
     property ModVelocityDepth         : TEnvVelocityDepth                  read fModVelocityDepth        write fModVelocityDepth;
+    property AmpEnvSnap               : TEnvSnap                           read fAmpEnvSnap              write fAmpEnvSnap;
+    property ModEnvSnap               : TEnvSnap                           read fModEnvSnap              write fModEnvSnap;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write fLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write fLfoShape2;
     property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write fLfoFreqMode1;
@@ -150,10 +154,30 @@ end;
 
 procedure TKeyGroupStateInfo.ResetToDefaultValues;
 begin
- SamplerTriggerMode := TKeyGroupTriggerMode.LoopOff;
- SamplerLoopBounds  := TSamplerLoopBounds.LoopPoints;
- PitchTracking := TPitchTracking.Note;
- SampleReset := TClockSource.None;
+  SamplerTriggerMode := TKeyGroupTriggerMode.LoopOff;
+  SamplerLoopBounds  := TSamplerLoopBounds.LoopPoints;
+  PitchTracking := TPitchTracking.Note;
+  SampleReset := TClockSource.None;
+  AmpEnvSnap := TEnvSnap.SnapOff;
+  ModEnvSnap := TEnvSnap.SnapOff;
+
+  FilterRouting            := TFilterRouting.Serial;
+  Filter1Type              := TFilterType.ftNone;
+  Filter2Type              := TFilterType.ftNone;
+  Filter1KeyFollow         := 0.5;
+  Filter2KeyFollow         := 0.5;
+  AmpVelocityDepth         := TEnvVelocityDepth.Vel80;
+  ModVelocityDepth         := TEnvVelocityDepth.Vel80;
+  LfoShape1                := TLfoShape.Triangle;
+  LfoShape2                := TLfoShape.Triangle;
+  LfoFreqMode1             := TLfoFreqMode.Fixed100Millisecond;
+  LfoFreqMode2             := TLfoFreqMode.Fixed100Millisecond;
+  Seq1Clock                := TSequencerClock.Div_4;
+  Seq1Direction            := TStepSequencerDirection.Forwards;
+  StepSeq1Length           := TStepSequencerLength.Sixteen;
+  Seq2Clock                := TSequencerClock.Div_4;
+  Seq2Direction            := TStepSequencerDirection.Forwards;
+  StepSeq2Length           := TStepSequencerLength.Sixteen;
 end;
 
 procedure TKeyGroupStateInfo.SanitiseData;

@@ -461,6 +461,8 @@ begin
   VoiceParameters.Seq2Clock                := Source.Seq2Clock;
   VoiceParameters.Seq2Direction            := Source.Seq2Direction;
   VoiceParameters.StepSeq2Length           := Source.StepSeq2Length;
+  VoiceParameters.AmpEnvSnap               := Source.AmpEnvSnap;
+  VoiceParameters.ModEnvSnap               := Source.ModEnvSnap;
 end;
 
 procedure TKeyGroup.SaveState(var Dest: TKeyGroupStateInfo);
@@ -486,6 +488,8 @@ begin
   Dest.Seq2Clock          := VoiceParameters.Seq2Clock;
   Dest.Seq2Direction      := VoiceParameters.Seq2Direction;
   Dest.StepSeq2Length     := VoiceParameters.StepSeq2Length;
+  Dest.AmpEnvSnap         := VoiceParameters.AmpEnvSnap;
+  Dest.ModEnvSnap         := VoiceParameters.ModEnvSnap;
 end;
 
 procedure TKeyGroup.FastControlProcess;
