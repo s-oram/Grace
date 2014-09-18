@@ -654,10 +654,6 @@ end;
 
 procedure TMiniSampleDisplayFrame.SampleDisplayOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData);
 var
-  RegionCreateInfo : TRegionCreateInfo;
-  curRG : IRegion;
-  newRG : IRegion;
-  kg : IKeyGroup;
   fn : string;
   XmlRegionCount : integer;
   XmlRegionInfo : TVstXmlRegion;

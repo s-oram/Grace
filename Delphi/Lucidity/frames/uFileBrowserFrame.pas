@@ -408,8 +408,6 @@ end;
 procedure TFileBrowserFrame.Command_ReplaceLoad;
 var
   NodeData : PNodeData;
-  CurRegion : IRegion;
-  NewRegion : IRegion;
 begin
   if not assigned(Plugin) then exit;
 
