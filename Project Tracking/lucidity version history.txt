@@ -3,6 +3,9 @@
 == Finished for the next release ==
 New:
 - Add select region with MIDI input.
+- The AHDSR envelopes now have a "snap" mode. Snap mode allows for 
+  instaneous attack and release times, which will cause clicks with some
+  material. 
 
 Change:
 - Added some more error handling to the "Show Manual" and "Show Data Folder"
