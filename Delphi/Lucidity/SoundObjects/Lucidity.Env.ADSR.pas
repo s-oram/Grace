@@ -119,8 +119,11 @@ procedure TLucidityADSR.SetAttackTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fAttackTime := Value;
-  //fADSR.AttackTime := Value * Value * Value * 8000 + 3;
-  fADSR.AttackTime := Value * Value * Value * 8000;
+
+  if EnvSnap = TEnvSnap.SnapOn
+    then fADSR.AttackTime := Value * Value * Value * 8000
+    else fADSR.AttackTime := Value * Value * Value * 8000 + 3;
+
   //TODO:MED Maybe this should be marked as zero attack time and the attack stage is skipped.
 end;
 
@@ -135,8 +138,10 @@ procedure TLucidityADSR.SetDecayTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fDecayTime := Value;
-  //fADSR.DecayTime := Value * Value * Value * 8000 + 6;
-  fADSR.DecayTime := Value * Value * Value * 8000;
+
+  if EnvSnap = TEnvSnap.SnapOn
+    then fADSR.DecayTime := Value * Value * Value * 8000
+    else fADSR.DecayTime := Value * Value * Value * 8000 + 6;
 end;
 
 procedure TLucidityADSR.SetSustainLevel(const Value: single);
@@ -150,8 +155,10 @@ procedure TLucidityADSR.SetReleaseTime(const Value: single);
 begin
   assert((Value >= 0) and (Value <= 1));
   fReleaseTime := Value;
-  //fADSR.ReleaseTime := Value * Value * Value * 8000 + 6;
-  fADSR.ReleaseTime := Value * Value * Value * 8000;
+
+  if EnvSnap = TEnvSnap.SnapOn
+    then fADSR.ReleaseTime := Value * Value * Value * 8000
+    else fADSR.ReleaseTime := Value * Value * Value * 8000 + 6;
 end;
 
 procedure TLucidityADSR.SetSampleRate(const Value: integer);

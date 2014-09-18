@@ -544,6 +544,8 @@ begin
   Self.Filter2KeyFollow         := Source.Filter2KeyFollow;
   Self.AmpVelocityDepth         := Source.AmpVelocityDepth;
   Self.ModVelocityDepth         := Source.ModVelocityDepth;
+  Self.AmpEnvSnap               := Source.AmpEnvSnap;
+  Self.ModEnvSnap               := Source.ModEnvSnap;
   Self.LfoShape1                := Source.LfoShape1;
   Self.LfoShape2                := Source.LfoShape2;
   Self.LfoFreqMode1             := Source.LfoFreqMode1;
@@ -578,6 +580,8 @@ begin
   aVoice.FilterTwo.KeyFollow             := Filter2KeyFollow;
   aVoice.AmpEnv.VelocityDepth            := AmpVelocityDepth;
   aVoice.ModEnv.VelocityDepth            := ModVelocityDepth;
+  aVoice.AmpEnv.EnvSnap                  := AmpEnvSnap;
+  aVoice.ModEnv.EnvSnap                  := ModEnvSnap;
   aVoice.LfoA.Shape                      := LfoShape1;
   aVoice.LfoB.Shape                      := LfoShape2;
   aVoice.LfoA.FreqMode                   := LfoFreqMode1;
