@@ -44,8 +44,6 @@ bug
 bug
 - the 64bit installer doesn't create a data directory. 
 
-bug
-- load replace with enter key doesn't work.
 
 =============================================================================
      TODO HIGH

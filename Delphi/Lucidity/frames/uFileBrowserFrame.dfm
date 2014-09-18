@@ -174,6 +174,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Opacity = 255
             Text = 'A'
             HitTest = True
+            ButtonBehaviour = bbAuto
             ShowBorder = True
             Color_Border = '$FF242B39'
             ColorOnA = '$FF7AA3E9'

@@ -701,46 +701,7 @@ begin
   // Assume file is an audio sample and attempt to load. TODO: should also check if file is supported audio format here...
   if (fn <> '') and (IsSupportedAudioFormat(fn)) then
   begin
-    kg := Plugin.FocusedKeyGroup;
-    curRG := Plugin.FocusedRegion;
-
-    if assigned(curRG) then
-    begin
-      newRG := Plugin.ReplaceSample(curRG, fn);
-      if assigned(newRG) then
-      begin
-        Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
-        Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-      end;
-    end else
-    begin
-      RegionCreateInfo.Init;
-      RegionCreateInfo.KeyGroup      := kg;
-      RegionCreateInfo.AudioFileName := fn;
-      RegionCreateInfo.LowNote       := 0;
-      RegionCreateInfo.HighNote      := 127;
-      RegionCreateInfo.LowVelocity   := 0;
-      RegionCreateInfo.HighVelocity  := 127;
-      RegionCreateInfo.RootNote      := 60; //MIDI c4.
-
-      newRG := Plugin.NewRegion(RegionCreateInfo);
-      if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = false) then
-      begin
-        Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
-      end else
-      if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = true) then
-      begin
-        Plugin.SampleMap.DeleteRegion(newRG);
-        newRG := nil;
-      end else
-      begin
-        // TODO:HIGH Need to show a message here to say that
-        // the sample couldn't be loaded.
-      end;
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-    end;
-
-
+    Command.ReplaceLoadCurrentRegion(self.Plugin, fn);
   end;
 
 

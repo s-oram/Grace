@@ -418,30 +418,18 @@ begin
   NodeData := FileBrowserAddOn.GetFocusedNodeData;
   if (assigned(NodeData)) and (FileExists(NodeData.FileName)) then
   begin
-    if IsSupportedAudioFormat(NodeData.FileName) then
+    if (IsSupportedAudioFormat(NodeData.FileName)) then
     begin
-      CurRegion := Plugin.FocusedRegion;
-
-      if not assigned(CurRegion) then
-      begin
-        NewRegion := Plugin.SampleMap.LoadSample(NodeData.FileName, Plugin.FocusedKeyGroup);
-      end else
-      begin
-        NewRegion := Plugin.SampleMap.ReplaceSample(NodeData.FileName, CurRegion);
-      end;
-
-      if assigned(NewRegion) then
-      begin
-        Plugin.FocusRegion(NewRegion.GetProperties^.UniqueID);
-      end;
+      Command.ReplaceLoadCurrentRegion(Plugin, NodeData.FileName);
     end;
-
 
     if IsSupportedProgramFormat(NodeData.FileName) then
     begin
       Plugin.ImportProgram(NodeData.FileName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     end;
   end;
+
 end;
 
 procedure TFileBrowserFrame.FileTreeViewNodeRightClicked(Sender: TObject; Node: TVamTreeViewNode);

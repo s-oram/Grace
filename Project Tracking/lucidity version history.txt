@@ -32,6 +32,7 @@ Bug Fix:
   voice mode. Lucidity wasn't releasing active voices when loading new
   programs. 
 - the modulation depth amounts don't update after loading a patch.
+- The [ENTER] key now loads the selected sample in the browser. 
 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===

@@ -76,6 +76,7 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
+    class procedure ReplaceLoadCurrentRegion(const Plugin : TeePlugin; const AudioFileName : string); static;
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
 
@@ -88,7 +89,7 @@ type
 
     class function GetModSlotSource(const Plugin : TeePlugin; const ModSlot : integer):string; static;
 
-    // TODO: delete these old parameters.
+    // TODO:HIGH delete these old parameters.
     class procedure ClearCurrentModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
     class procedure ClearAllModulationForParameter_OLD(const Plugin : TeePlugin; const ModParIndex : integer); static;
 
@@ -132,9 +133,11 @@ uses
   VamLib.Utils,
   eeDsp,
   eeSampleFloat,
+  eeVstXml,
   uConstants,
   LucidityModConnections,
   GuidEx,
+  uLucidityExtra,
   Lucidity.Globals,
   Lucidity.KeyGroup,
   eeGuiStandardv2,
@@ -626,6 +629,58 @@ begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
 end;
 
+
+class procedure Command.ReplaceLoadCurrentRegion(const Plugin: TeePlugin; const AudioFileName: string);
+//NOTES: Replaces the current selected region with a new sample.
+var
+  RegionCreateInfo : TRegionCreateInfo;
+  curRG : IRegion;
+  newRG : IRegion;
+  kg : IKeyGroup;
+  XmlRegionCount : integer;
+  XmlRegionInfo : TVstXmlRegion;
+begin
+  assert(IsSupportedAudioFormat(AudioFileName));
+
+  kg := Plugin.FocusedKeyGroup;
+  curRG := Plugin.FocusedRegion;
+
+  if assigned(curRG) then
+  begin
+    newRG := Plugin.ReplaceSample(curRG, AudioFileName);
+    if assigned(newRG) then
+    begin
+      Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    end;
+  end else
+  begin
+    RegionCreateInfo.Init;
+    RegionCreateInfo.KeyGroup      := kg;
+    RegionCreateInfo.AudioFileName := AudioFileName;
+    RegionCreateInfo.LowNote       := 0;
+    RegionCreateInfo.HighNote      := 127;
+    RegionCreateInfo.LowVelocity   := 0;
+    RegionCreateInfo.HighVelocity  := 127;
+    RegionCreateInfo.RootNote      := 60; //MIDI c4.
+
+    newRG := Plugin.NewRegion(RegionCreateInfo);
+    if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = false) then
+    begin
+      Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
+    end else
+    if (assigned(newRG)) and (newRG.GetProperties^.IsSampleError = true) then
+    begin
+      Plugin.SampleMap.DeleteRegion(newRG);
+      newRG := nil;
+    end else
+    begin
+      // TODO:HIGH Need to show a message here to say that
+      // the sample couldn't be loaded.
+    end;
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  end;
+end;
 
 class procedure Command.SetMidiCCForParameter(const Plugin: TeePlugin; const TargetParameterName: string);
 var
