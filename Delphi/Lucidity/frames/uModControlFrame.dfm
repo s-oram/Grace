@@ -993,7 +993,7 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
         object ModEnvVelocityButton: TVamTextBox
-          Left = 38
+          Left = 99
           Top = 70
           Width = 40
           Height = 16
@@ -1272,7 +1272,7 @@ object ModControlFrame: TModControlFrame
         end
         object AmpEnvReleaseLabel: TVamLabel
           Left = 122
-          Top = 60
+          Top = 48
           Width = 32
           Height = 16
           Opacity = 255
@@ -1439,7 +1439,7 @@ object ModControlFrame: TModControlFrame
         end
         object AmpEnvReleaseKnob: TVamKnob
           Left = 122
-          Top = 30
+          Top = 18
           Width = 32
           Height = 32
           Opacity = 255
@@ -1486,8 +1486,8 @@ object ModControlFrame: TModControlFrame
           Visible = True
         end
         object AmpVelocityButton: TVamTextBox
-          Left = 38
-          Top = 70
+          Left = 102
+          Top = 82
           Width = 40
           Height = 16
           Opacity = 255
