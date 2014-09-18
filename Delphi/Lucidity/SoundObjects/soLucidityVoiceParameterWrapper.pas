@@ -49,6 +49,8 @@ type
     fFilterRouting: TFilterRouting;
     fLfoShape2: TLfoShape;
     fLfoShape1: TLfoShape;
+    fModEnvSnap: TEnvSnap;
+    fAmpEnvSnap: TEnvSnap;
     procedure SetFilter1Type(const Value: TFilterType);
     procedure SetFilter2Type(const Value: TFilterType);
     procedure SetLfoShape1(const Value: TLfoShape);
@@ -73,6 +75,8 @@ type
     procedure SetLfoFreqMode1(const Value: TLfoFreqMode);
     procedure SetLfoFreqMode2(const Value: TLfoFreqMode);
     procedure SetFilterRouting(const Value: TFilterRouting);
+    procedure SetAmpEnvSnap(const Value: TEnvSnap);
+    procedure SetModEnvSnap(const Value: TEnvSnap);
   protected
     OwningSampleGroup : Pointer; //weak reference to IKeyGroup
     Voices : PArrayOfLucidityVoice;
@@ -114,6 +118,8 @@ type
     property Filter2KeyFollow         : single                             read fFilter2KeyFollow        write SetFilter2KeyFollow; //range 0..1
     property AmpVelocityDepth         : TEnvVelocityDepth                  read fAmpVelocityDepth        write SetAmpVelocityDepth;
     property ModVelocityDepth         : TEnvVelocityDepth                  read fModVelocityDepth        write SetModVelocityDepth;
+    property AmpEnvSnap               : TEnvSnap                           read fAmpEnvSnap              write SetAmpEnvSnap;
+    property ModEnvSnap               : TEnvSnap                           read fModEnvSnap              write SetModEnvSnap;
     property LfoShape1                : TLfoShape                          read fLfoShape1               write SetLfoShape1;
     property LfoShape2                : TLfoShape                          read fLfoShape2               write SetLfoShape2;
     property LfoFreqMode1             : TLfoFreqMode                       read fLfoFreqMode1            write SetLfoFreqMode1;
@@ -179,6 +185,18 @@ begin
     procedure(v:PLucidityVoice)
     begin
       v^.ModMatrix.UpdateModConnections;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetAmpEnvSnap(const Value: TEnvSnap);
+begin
+  fAmpEnvSnap := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.AmpEnv.EnvSnap := Value;
     end
   );
 end;
@@ -257,6 +275,18 @@ begin
     procedure(v:PLucidityVoice)
     begin
       v^.FilterRouting := Value;
+    end
+  );
+end;
+
+procedure TLucidityVoiceParameterWrapper.SetModEnvSnap(const Value: TEnvSnap);
+begin
+  fModEnvSnap := Value;
+
+  UpdateActiveVoices(
+    procedure(v:PLucidityVoice)
+    begin
+      v^.ModEnv.EnvSnap := Value;
     end
   );
 end;

@@ -1000,12 +1000,14 @@ begin
   PasteParameter(TPluginParameter.AmpSustain, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.AmpRelease, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.AmpVelocity, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.AmpEnvSnap, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModAttack, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModHold, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModDecay, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModSustain, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModRelease, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.ModVelocity, CopiedKeyGroupValues);
+  PasteParameter(TPluginParameter.ModEnvSnap, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.FilterRouting, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.FilterOutputBlend, CopiedKeyGroupValues);
   PasteParameter(TPluginParameter.Filter1Type, CopiedKeyGroupValues);

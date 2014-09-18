@@ -152,12 +152,14 @@ type
     AmpSustain,
     AmpRelease,
     AmpVelocity,
+    AmpEnvSnap,
     ModAttack,
     ModHold,
     ModDecay,
     ModSustain,
     ModRelease,
     ModVelocity,
+    ModEnvSnap,
     FilterRouting,
     FilterOutputBlend,
     Filter1Type,
@@ -226,54 +228,56 @@ type
     AmpSustain              = 18;
     AmpRelease              = 19;
     AmpVelocity             = 20;
-    ModAttack               = 21;
-    ModHold                 = 22;
-    ModDecay                = 23;
-    ModSustain              = 24;
-    ModRelease              = 25;
-    ModVelocity             = 26;
-    FilterRouting           = 27;
-    FilterOutputBlend       = 28;
-    Filter1Type             = 29;
-    Filter2Type             = 30;
-    Filter1KeyFollow        = 31;
-    Filter2KeyFollow        = 32;
-    Filter1Par1             = 33;
-    Filter1Par2             = 34;
-    Filter1Par3             = 35;
-    Filter1Par4             = 36;
-    Filter2Par1             = 37;
-    Filter2Par2             = 38;
-    Filter2Par3             = 39;
-    Filter2Par4             = 40;
-    Lfo1Shape               = 41;
-    Lfo2Shape               = 42;
-    Lfo1FreqMode            = 43;
-    Lfo2FreqMode            = 44;
-    Lfo1Par1                = 45;
-    Lfo1Par2                = 46;
-    Lfo1Par3                = 47;
-    Lfo2Par1                = 48;
-    Lfo2Par2                = 49;
-    Lfo2Par3                = 50;
-    Seq1Clock               = 51;
-    Seq1Direction           = 52;
-    Seq1Length              = 53;
-    Seq2Clock               = 54;
-    Seq2Direction           = 55;
-    Seq2Length              = 56;
-    PreviewVolume           = 57;
-    Preview                 = 58;
-    PadX1                   = 59;
-    PadY1                   = 60;
-    PadX2                   = 61;
-    PadY2                   = 62;
-    PadX3                   = 63;
-    PadY3                   = 64;
-    PadX4                   = 65;
-    PadY4                   = 66;
+    AmpEnvSnap              = 21;
+    ModAttack               = 22;
+    ModHold                 = 23;
+    ModDecay                = 24;
+    ModSustain              = 25;
+    ModRelease              = 26;
+    ModVelocity             = 27;
+    ModEnvSnap              = 28;
+    FilterRouting           = 29;
+    FilterOutputBlend       = 30;
+    Filter1Type             = 31;
+    Filter2Type             = 32;
+    Filter1KeyFollow        = 33;
+    Filter2KeyFollow        = 34;
+    Filter1Par1             = 35;
+    Filter1Par2             = 36;
+    Filter1Par3             = 37;
+    Filter1Par4             = 38;
+    Filter2Par1             = 39;
+    Filter2Par2             = 40;
+    Filter2Par3             = 41;
+    Filter2Par4             = 42;
+    Lfo1Shape               = 43;
+    Lfo2Shape               = 44;
+    Lfo1FreqMode            = 45;
+    Lfo2FreqMode            = 46;
+    Lfo1Par1                = 47;
+    Lfo1Par2                = 48;
+    Lfo1Par3                = 49;
+    Lfo2Par1                = 50;
+    Lfo2Par2                = 51;
+    Lfo2Par3                = 52;
+    Seq1Clock               = 53;
+    Seq1Direction           = 54;
+    Seq1Length              = 55;
+    Seq2Clock               = 56;
+    Seq2Direction           = 57;
+    Seq2Length              = 58;
+    PreviewVolume           = 59;
+    Preview                 = 60;
+    PadX1                   = 61;
+    PadY1                   = 62;
+    PadX2                   = 63;
+    PadY2                   = 64;
+    PadX3                   = 65;
+    PadY3                   = 66;
+    PadX4                   = 67;
+    PadY4                   = 68;
     //=========================
-    ParameterCount          = 67;
+    ParameterCount          = 69;
     //=========================
   end;
 
@@ -925,12 +929,14 @@ initialization
     assert(kPluginParameterID.AmpSustain                   = Integer(TPluginParameter.AmpSustain));
     assert(kPluginParameterID.AmpRelease                   = Integer(TPluginParameter.AmpRelease));
     assert(kPluginParameterID.AmpVelocity                  = Integer(TPluginParameter.AmpVelocity));
+    assert(kPluginParameterID.AmpEnvSnap                   = Integer(TPluginParameter.AmpEnvSnap));
     assert(kPluginParameterID.ModAttack                    = Integer(TPluginParameter.ModAttack));
     assert(kPluginParameterID.ModHold                      = Integer(TPluginParameter.ModHold));
     assert(kPluginParameterID.ModDecay                     = Integer(TPluginParameter.ModDecay));
     assert(kPluginParameterID.ModSustain                   = Integer(TPluginParameter.ModSustain));
     assert(kPluginParameterID.ModRelease                   = Integer(TPluginParameter.ModRelease));
     assert(kPluginParameterID.ModVelocity                  = Integer(TPluginParameter.ModVelocity));
+    assert(kPluginParameterID.ModEnvSnap                   = Integer(TPluginParameter.ModEnvSnap));
     assert(kPluginParameterID.FilterRouting                = Integer(TPluginParameter.FilterRouting));
     assert(kPluginParameterID.FilterOutputBlend            = Integer(TPluginParameter.FilterOutputBlend));
     assert(kPluginParameterID.Filter1Type                  = Integer(TPluginParameter.Filter1Type));

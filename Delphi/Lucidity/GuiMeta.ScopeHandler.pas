@@ -109,12 +109,14 @@ begin
     TPluginParameter.AmpSustain:        result := TScopeFocus.AmpEnv;
     TPluginParameter.AmpRelease:        result := TScopeFocus.AmpEnv;
     TPluginParameter.AmpVelocity:       result := TScopeFocus.AmpEnv;
+    TPluginParameter.AmpEnvSnap:        result := TScopeFocus.AmpEnv;
     TPluginParameter.ModAttack:         result := TScopeFocus.ModEnv;
     TPluginParameter.ModHold:           result := TScopeFocus.ModEnv;
     TPluginParameter.ModDecay:          result := TScopeFocus.ModEnv;
     TPluginParameter.ModSustain:        result := TScopeFocus.ModEnv;
     TPluginParameter.ModRelease:        result := TScopeFocus.ModEnv;
     TPluginParameter.ModVelocity:       result := TScopeFocus.ModEnv;
+    TPluginParameter.ModEnvSnap:        result := TScopeFocus.ModEnv;
     TPluginParameter.FilterRouting:     result := TScopeFocus.FilterBlend;
     TPluginParameter.FilterOutputBlend: result := TScopeFocus.FilterBlend;
     TPluginParameter.Filter1Type:       result := TScopeFocus.Filter1;

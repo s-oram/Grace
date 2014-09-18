@@ -107,6 +107,8 @@ begin
       TPluginParameter.SamplerTriggerMode:     result := TKeyGroupTriggerModeHelper.ToSingle(VoicePar.SamplerTriggerMode);
       TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.AmpVelocityDepth);
       TPluginParameter.ModVelocity:            result := TEnvVelocityDepthHelper.ToSingle(VoicePar.ModVelocityDepth);
+      TPluginParameter.AmpEnvSnap:             result := TEnvSnapHelper.ToSingle(VoicePar.AmpEnvSnap);
+      TPluginParameter.ModEnvSnap:             result := TEnvSnapHelper.ToSingle(VoicePar.ModEnvSnap);
       TPluginParameter.FilterRouting:          result := TFilterRoutingHelper.ToSingle(VoicePar.FilterRouting);
       TPluginParameter.Filter1Type:            result := TFilterTypeHelper.ToSingle(VoicePar.Filter1Type);
       TPluginParameter.Filter2Type:            result := TFilterTypeHelper.ToSingle(VoicePar.Filter2Type);
@@ -239,6 +241,8 @@ begin
       TPluginParameter.SamplerTriggerMode:     VoicePar.SamplerTriggerMode  := TKeyGroupTriggerModeHelper.ToEnum(ParValue);
       TPluginParameter.AmpVelocity:            VoicePar.AmpVelocityDepth    := TEnvVelocityDepthHelper.ToEnum(ParValue);
       TPluginParameter.ModVelocity:            VoicePar.ModVelocityDepth    := TEnvVelocityDepthHelper.ToEnum(ParValue);
+      TPluginParameter.AmpEnvSnap:             VoicePar.AmpEnvSnap          := TEnvSnapHelper.ToEnum(ParValue);
+      TPluginParameter.ModEnvSnap:             VoicePar.ModEnvSnap          := TEnvSnapHelper.ToEnum(ParValue);
       TPluginParameter.FilterRouting:          VoicePar.FilterRouting       := TFilterRoutingHelper.ToEnum(ParValue);
       TPluginParameter.Filter1Type:            VoicePar.Filter1Type         := TFilterTypeHelper.ToEnum(ParValue);
       TPluginParameter.Filter2Type:            VoicePar.Filter2Type         := TFilterTypeHelper.ToEnum(ParValue);
@@ -406,12 +410,14 @@ begin
     TPluginParameter.AmpSustain:              result.Name := 'Amp Sustain';
     TPluginParameter.AmpRelease:              result.Name := 'Amp Release';
     TPluginParameter.AmpVelocity:             result.Name := 'Amp Velocity';
+    TPluginParameter.AmpEnvSnap:              result.Name := 'Amp Snap';
     TPluginParameter.ModAttack:               result.Name := 'Mod Attack';
     TPluginParameter.ModHold:                 result.Name := 'Mod Hold';
     TPluginParameter.ModDecay:                result.Name := 'Mod Decay';
     TPluginParameter.ModSustain:              result.Name := 'Mod Sustain';
     TPluginParameter.ModRelease:              result.Name := 'Mod Release';
     TPluginParameter.ModVelocity:             result.Name := 'Mod Velocity';
+    TPluginParameter.ModEnvSnap:              result.Name := 'Mod Snap';
     TPluginParameter.FilterRouting:           result.Name := 'FilterRouting';
     TPluginParameter.FilterOutputBlend:       result.Name := 'FilterOutput Blend';
     TPluginParameter.Filter1Type:             result.Name := 'Filter1 Type';
@@ -480,12 +486,14 @@ begin
     TPluginParameter.AmpSustain:              result.ShortName := 'Amp S';
     TPluginParameter.AmpRelease:              result.ShortName := 'Amp R';
     TPluginParameter.AmpVelocity:             result.ShortName := 'Amp Vel';
+    TPluginParameter.AmpEnvSnap:              result.ShortName := 'Amp Snap';
     TPluginParameter.ModAttack:               result.ShortName := 'Mod A';
     TPluginParameter.ModHold:                 result.ShortName := 'Mod H';
     TPluginParameter.ModDecay:                result.ShortName := 'Mod D';
     TPluginParameter.ModSustain:              result.ShortName := 'Mod S';
     TPluginParameter.ModRelease:              result.ShortName := 'Mod R';
     TPluginParameter.ModVelocity:             result.ShortName := 'Mod Vel';
+    TPluginParameter.ModEnvSnap:              result.ShortName := 'Mod Snap';
     TPluginParameter.FilterRouting:           result.ShortName := 'Flt Rout';
     TPluginParameter.FilterOutputBlend:       result.ShortName := 'Flt Blnd';
     TPluginParameter.Filter1Type:             result.ShortName := 'Flt1 Typ';

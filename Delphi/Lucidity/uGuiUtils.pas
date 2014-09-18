@@ -999,6 +999,8 @@ begin
     TPluginParameter.SamplerTriggerMode:     result := TKeyGroupTriggerModeHelper;
     TPluginParameter.AmpVelocity:            result := TEnvVelocityDepthHelper;
     TPluginParameter.ModVelocity:            result := TEnvVelocityDepthHelper;
+    TPluginParameter.AmpEnvSnap:             result := TEnvSnapHelper;
+    TPluginParameter.ModEnvSnap:             result := TEnvSnapHelper;
     TPluginParameter.FilterRouting:          result := TFilterRoutingHelper;
     TPluginParameter.Filter1Type:            result := TFilterTypeHelper;
     TPluginParameter.Filter2Type:            result := TFilterTypeHelper;

@@ -282,6 +282,13 @@ type
     class function ToShortGuiString(aEnum : TEnvVelocityDepth):string; override;
   end;
 
+  TEnvSnap = (SnapOff, SnapOn);
+  TEnvSnapHelper = class(TEnumHelper<TEnvSnap>)
+  public
+    class function ToFullGuiString(aEnum : TEnvSnap):string; override;
+    class function ToShortGuiString(aEnum : TEnvSnap):string; override;
+  end;
+
   TLowerTabOptions = (TabMain, TabSeq1, TabSeq2, TabSetup);
 
   TKeyCommand = (
@@ -870,7 +877,28 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+end;
 
+{ TEnvSnapHelper }
+
+class function TEnvSnapHelper.ToFullGuiString(aEnum: TEnvSnap): string;
+begin
+  case aEnum of
+    TEnvSnap.SnapOff: result := 'Snap Off';
+    TEnvSnap.SnapOn:  result := 'Snap On';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
+end;
+
+class function TEnvSnapHelper.ToShortGuiString(aEnum: TEnvSnap): string;
+begin
+  case aEnum of
+    TEnvSnap.SnapOff: result := 'Snap Off';
+    TEnvSnap.SnapOn:  result := 'Snap On';
+  else
+    raise Exception.Create('Type not handled.');
+  end;
 end;
 
 end.

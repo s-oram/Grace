@@ -26,6 +26,7 @@ type
     fPar1: PSynthPar;
     fPar4: PSynthPar;
     fPar5: PSynthPar;
+    fEnvSnap: TEnvSnap;
     function GetEnvStage: TEnvelopeStage;
     function GetEnvValue: single;
     procedure SetAttackTime(const Value: single);
@@ -75,6 +76,7 @@ type
     property SampleRate      :integer        read fSampleRate write SetSampleRate;
 
     property VelocityDepth : TEnvVelocityDepth read fVelocityDepth write fVelocityDepth;
+    property EnvSnap       : TEnvSnap          read fEnvSnap       write fEnvSnap;
   end;
 
 implementation

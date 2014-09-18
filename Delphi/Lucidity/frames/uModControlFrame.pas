@@ -132,6 +132,8 @@ type
     LfoBKnob3: TVamKnob;
     LfoBLabel3: TVamLabel;
     LfoBFreqModeSelector: TVamTextBox;
+    AmpEnvSnapButton: TVamTextBox;
+    ModEnvSnapButton: TVamTextBox;
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -465,6 +467,9 @@ begin
 
   AmpVelocityButton.Layout.Anchor(AmpEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
   AmpVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+
+  AmpEnvSnapButton.Layout.Anchor(AmpEnvAttackLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  AmpEnvSnapButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
   //==================================================
 
 
@@ -487,6 +492,9 @@ begin
 
   ModEnvVelocityButton.Layout.Anchor(ModEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
   ModEnvVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+
+  ModEnvSnapButton.Layout.Anchor(ModEnvAttackLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
+  ModEnvSnapButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
   //==================================================
 
 
@@ -557,7 +565,9 @@ begin
 
   //=== colors ===
   GuiSetup.StyleButton_SelectorButton(AmpVelocityButton);
+  GuiSetup.StyleButton_SelectorButton(AmpEnvSnapButton);
   GuiSetup.StyleButton_SelectorButton(ModEnvVelocityButton);
+  GuiSetup.StyleButton_SelectorButton(ModEnvSnapButton);
   GuiSetup.StyleButton_SelectorButton(FilterRoutingButton);
   GuiSetup.StyleButton_SelectorButton(Filter1TypeTextBox);
   GuiSetup.StyleButton_SelectorButton(Filter2TypeTextBox);
