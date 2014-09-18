@@ -314,6 +314,8 @@ begin
   GuiStandard_RegisterMenuButton(aGuiStandard, Filter2TypeTextBox,     TPluginParameter.Filter2Type);
   GuiStandard_RegisterMenuButton(aGuiStandard, AmpVelocityButton,      TPluginParameter.AmpVelocity);
   GuiStandard_RegisterMenuButton(aGuiStandard, ModEnvVelocityButton,   TPluginParameter.ModVelocity);
+  GuiStandard_RegisterMenuButton(aGuiStandard, AmpEnvSnapButton,       TPluginParameter.AmpEnvSnap);
+  GuiStandard_RegisterMenuButton(aGuiStandard, ModEnvSnapButton,       TPluginParameter.ModEnvSnap);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1ClockTextBox,       TPluginParameter.Seq1Clock);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1DirectionTextBox,   TPluginParameter.Seq1Direction);
   GuiStandard_RegisterMenuButton(aGuiStandard, Seq1StepsTextBox,       TPluginParameter.Seq1Length);
@@ -465,11 +467,12 @@ begin
   AmpEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
   AmpEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(AmpEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
 
-  AmpVelocityButton.Layout.Anchor(AmpEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  AmpVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+  AmpEnvSnapButton.Layout.SetSize(58, TGuiConst.SelectorButtonHeight);
+  AmpVelocityButton.Layout.SetSize(58, TGuiConst.SelectorButtonHeight);
 
-  AmpEnvSnapButton.Layout.Anchor(AmpEnvAttackLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  AmpEnvSnapButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+  AmpVelocityButton.Layout.AlignWithinParent(TRedFoxAlign.AlignFar, TRedFoxAlign.AlignFar);
+  AmpEnvSnapButton.Layout.Anchor(AmpVelocityButton).SnapToEdge(TControlFeature.LeftEdge).Move(-4, 0);
+
   //==================================================
 
 
@@ -490,11 +493,11 @@ begin
   ModEnvSustainLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvSustainKnob).SnapToEdge(TControlFeature.BottomEdge);
   ModEnvReleaseLabel.Layout.SetSize(kw, TGuiConst.KnobLabelHeight).Anchor(ModEnvReleaseKnob).SnapToEdge(TControlFeature.BottomEdge);
 
-  ModEnvVelocityButton.Layout.Anchor(ModEnvSustainLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  ModEnvVelocityButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+  ModEnvSnapButton.Layout.SetSize(58, TGuiConst.SelectorButtonHeight);
+  ModEnvVelocityButton.Layout.SetSize(58, TGuiConst.SelectorButtonHeight);
 
-  ModEnvSnapButton.Layout.Anchor(ModEnvAttackLabel).MatchWidth.SnapToEdge(TControlFeature.BottomEdge);
-  ModEnvSnapButton.Layout.SetSize(60, TGuiConst.SelectorButtonHeight);
+  ModEnvVelocityButton.Layout.AlignWithinParent(TRedFoxAlign.AlignFar, TRedFoxAlign.AlignFar);
+  ModEnvSnapButton.Layout.Anchor(ModEnvVelocityButton).SnapToEdge(TControlFeature.LeftEdge).Move(-4, 0);
   //==================================================
 
 

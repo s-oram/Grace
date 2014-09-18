@@ -284,9 +284,10 @@ begin
 
   if DoException then
   begin
-    // TODO: this exception should probably not be raised in release builds. Perhaps
+    // TODO:HIGH this exception should probably not be raised in release builds. Perhaps
     // try to log the exception instead. It would be good to raise the exception
     // in beta builds. (Fail fast!)
+    // NOTE: I have seen exceptions raised here.
     raise EAnimationException.Create('There was an animation error.');
   end;
 end;
