@@ -126,6 +126,8 @@ type
     procedure PreLoadProgram;
     procedure PostLoadProgram;
 
+    procedure UpdateMidiBindingIDs;
+
     procedure Clear;
 
     procedure Event_MidiAutomation_Message(Sender : TObject; const MidiData1, MidiData2 : integer; const Binding : ICustomMidiBinding);
@@ -184,6 +186,9 @@ type
 
     procedure LoadDefaultMIDIMap;
     procedure SaveMIDIMapAsDefault;
+    procedure SaveMidiMap(const FileName : string);
+    procedure LoadMidiMap(const FileName : string);
+    procedure ClearMidiMap;
 
     procedure SetPreset(var ms:TMemoryStream); override;
     procedure GetPreset(var ms:TMemoryStream); override;
@@ -506,11 +511,13 @@ begin
       Globals.LoadRegistrationKeyFile(fn);
     end;
   end;
+  //=====================
 
+  //=====================
   LoadDefaultMIDIMap;
+  //=====================
 
   //==== default patch stuff ====
-
   IsDefaultPatchLoaded := false;
 
   // Now load default patch if it exists.
@@ -1149,6 +1156,11 @@ begin
   RefreshManagedPluginParameterValues;
 end;
 
+procedure TeePlugin.ClearMidiMap;
+begin
+  MidiAutomation.Clear;
+end;
+
 procedure TeePlugin.ClearSelected;
 begin
   SampleMap.DeselectAllRegions;
@@ -1434,22 +1446,7 @@ var
   ParName : string;
   ParID : TPluginParameterID;
 begin
-  //=============================================================
-  // Update MIDI Automation Parameter IDs. This
-  // is because MIDI maps are saved with parameter names, not IDs.
-  // IDs are used internally when mapping a binding to a parameter.
-  // IDs can change between plugin updates. Parameter names
-  // changes can be more easily allowed for when loading older plugins.
-  for c1 := 0 to MidiAutomation.BindingCount-1 do
-  begin
-    mb := MidiAutomation.Binding[c1];
-    // TODO:MED this might be a good place to use a "Is Valid Parameter Name" check
-    // and ignore any non-valid parameter names.
-    ParName := mb.GetParName;
-    ParID := PluginParNameToID(ParName);
-    mb.SetParID(ParID);
-  end;
-  //=============================================================
+  UpdateMidiBindingIDs;
 
   if KeyGroups.GetInfo.GetKeyGroupCount = 0 then
   begin
@@ -1481,20 +1478,27 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.NewPatchLoaded, nil);
 end;
 
+procedure TeePlugin.SaveMidiMap(const FileName: string);
+var
+  StateManager : TLucidityStateManager;
+begin
+  StateManager := TLucidityStateManager.Create(self);
+  try
+    StateManager.SaveMidiMapToFile(FileName);
+  finally
+    StateManager.Free;
+  end;
+end;
+
 procedure TeePlugin.SaveMIDIMapAsDefault;
 var
   DataDir : string;
   fnA : string;
-  StateManager : TLucidityStateManager;
 begin
-  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override');
-  fnA := DataDir + 'Default MIDI Map.xml';
-
-  StateManager := TLucidityStateManager.Create(self);
-  try
-    StateManager.SaveMidiMapToFile(fnA);
-  finally
-    StateManager.Free;
+  if GetPluginMidiMapsDir(DataDir) then
+  begin
+    fnA := DataDir + 'Default MIDI Map.xml';
+    SaveMidiMap(fnA);
   end;
 end;
 
@@ -1502,21 +1506,29 @@ procedure TeePlugin.LoadDefaultMIDIMap;
 var
   DataDir : string;
   fnA : string;
-  StateManager : TLucidityStateManager;
 begin
-  DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Config User Override');
-  fnA := DataDir + 'Default MIDI Map.xml';
-
-  if FileExists(fnA) then
+  if GetPluginMidiMapsDir(DataDir) then
   begin
-    StateManager := TLucidityStateManager.Create(self);
-    try
-      StateManager.LoadMidiMapFromFile(fnA);
-    finally
-      StateManager.Free;
-    end;
+    fnA := DataDir + 'Default MIDI Map.xml';
+    if FileExists(fnA) then LoadMidiMap(fnA);
   end;
 end;
+
+procedure TeePlugin.LoadMidiMap(const FileName: string);
+var
+  StateManager : TLucidityStateManager;
+begin
+  StateManager := TLucidityStateManager.Create(self);
+  try
+    StateManager.LoadMidiMapFromFile(FileName);
+  finally
+    StateManager.Free;
+  end;
+
+  UpdateMidiBindingIDs;
+end;
+
+
 
 
 procedure TeePlugin.SaveProgramToFile(const FileName: string);
@@ -1651,6 +1663,32 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
 end;
 
+procedure TeePlugin.UpdateMidiBindingIDs;
+var
+  c1 : integer;
+  aRegionID : TGUID;
+  mb : IMidiBinding;
+  ParName : string;
+  ParID : TPluginParameterID;
+begin
+  //=============================================================
+  // Update MIDI Automation Parameter IDs. This
+  // is because MIDI maps are saved with parameter names, not IDs.
+  // IDs are used internally when mapping a binding to a parameter.
+  // IDs can change between plugin updates. Parameter names
+  // changes can be more easily allowed for when loading older plugins.
+  for c1 := 0 to MidiAutomation.BindingCount-1 do
+  begin
+    mb := MidiAutomation.Binding[c1];
+    // TODO:MED this might be a good place to use a "Is Valid Parameter Name" check
+    // and ignore any non-valid parameter names.
+    ParName := mb.GetParName;
+    ParID := PluginParNameToID(ParName);
+    mb.SetParID(ParID);
+  end;
+  //=============================================================
+end;
+
 procedure TeePlugin.VstParameterChanged(Index: integer; Value: single);
 var
   ParID : TPluginParameterID;
@@ -1745,7 +1783,8 @@ begin
     then raise Exception.Create('Error setting MIDI Learn Parameter ID. (Error Code 703)');
 
   // remove any existing bindings with this parameter name.
-  MidiAutomation.ClearBinding(mb.GetParName);
+  MidiAutomation.ClearBindingByName(mb.GetParName);
+  MidiAutomation.ClearBindingByCC(MidiData1);
 end;
 
 procedure TeePlugin.ProcessMidiEvent(Event: TeeMidiEvent);

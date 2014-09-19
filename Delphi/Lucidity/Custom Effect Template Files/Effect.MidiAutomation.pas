@@ -45,7 +45,8 @@ type
     procedure WriteStateToXML(var XML : TXmlNode);
 
     function FindBinding(const ParName : string):IMidiBinding;
-    procedure ClearBinding(const ParName : string);
+    procedure ClearBindingByName(const ParName : string);
+    procedure ClearBindingByCC(const MidiCC : integer);
   end;
 
 implementation
@@ -108,7 +109,7 @@ begin
   result := BindingList[Index] as IMidiBinding;
 end;
 
-procedure TMidiAutomation.ClearBinding(const ParName: string);
+procedure TMidiAutomation.ClearBindingByName(const ParName: string);
 var
   c1 : integer;
 begin
@@ -117,11 +118,28 @@ begin
     if (BindingList[c1] as IMidiBinding).GetParName = ParName then
     begin
       BindingList.Delete(c1);
-      //TODO: possible need to make this thread-safe - maybe by executing in
+      // TODO:MED possible need to make this thread-safe - maybe by executing in
       // the audio thread actions...
     end;
   end;
 end;
+
+procedure TMidiAutomation.ClearBindingByCC(const MidiCC: integer);
+var
+  c1 : integer;
+begin
+  for c1 := BindingList.Count-1 downto 0 do
+  begin
+    if (BindingList[c1] as IMidiBinding).GetMidiCC = MidiCC then
+    begin
+      BindingList.Delete(c1);
+      // TODO:MED possible need to make this thread-safe - maybe by executing in
+      // the audio thread actions...
+    end;
+  end;
+end;
+
+
 
 
 procedure TMidiAutomation.WriteStateToXML(var XML: TXmlNode);

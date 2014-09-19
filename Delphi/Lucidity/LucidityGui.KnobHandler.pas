@@ -603,7 +603,7 @@ end;
 
 procedure TKnobContextMenu.Handle_MidiUnlearn(Sender: TObject);
 begin
-  Plugin.MidiAutomation.ClearBinding(TargetParametername);
+  Plugin.MidiAutomation.ClearBindingByName(TargetParametername);
 end;
 
 procedure TKnobContextMenu.Handle_SetMidiCC(Sender: TObject);

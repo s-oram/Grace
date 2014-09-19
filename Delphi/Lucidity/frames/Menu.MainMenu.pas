@@ -21,7 +21,13 @@ type
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ImportSFZ(Sender : TObject);
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
+
+    procedure EventHandle_SaveMidiMapAs(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
+    procedure EventHandle_LoadMidiMap(Sender : TObject);
+    procedure EventHandle_LoadDefaultMidiMap(Sender : TObject);
+    procedure EventHandle_ClearMidiMap(Sender : TObject);
+
     procedure EventHandle_OpenDataFoler(Sender : TObject);
     procedure EventHandle_AutoSelectChange(Sender : TObject);
   public
@@ -203,9 +209,6 @@ begin
     then mi.Checked := true;
   Menu.Items.Add(mi);
 
-
-
-
   //==== insert a spacer =====
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
@@ -213,9 +216,35 @@ begin
   //=========================
 
   mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Save MIDI Map As...';
+  mi.OnClick := EventHandle_SaveMidiMapAs;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
   mi.Caption := 'Save MIDI Map As Default';
   mi.OnClick := EventHandle_SaveMidiMapAsDefault;
   Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Load MIDI Map...';
+  mi.OnClick := EventHandle_LoadMidiMap;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Load Default MIDI Map';
+  mi.OnClick := EventHandle_LoadDefaultMidiMap;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Clear MIDI Map';
+  mi.OnClick := EventHandle_ClearMidiMap;
+  Menu.Items.Add(mi);
+
+  //==== insert a spacer =====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
 
   if Plugin.Globals.KeyData.IsKeyChecksumValid = false then
   begin
@@ -330,11 +359,6 @@ begin
   end;
 end;
 
-procedure TMainMenu.EventHandle_SaveMidiMapAsDefault(Sender: TObject);
-begin
-
-end;
-
 procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
 begin
   Plugin.SaveProgramAsDefault;
@@ -369,6 +393,53 @@ begin
   end;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshParDisplay);
+end;
+
+procedure TMainMenu.EventHandle_ClearMidiMap(Sender: TObject);
+begin
+  Plugin.ClearMidiMap;
+end;
+
+procedure TMainMenu.EventHandle_SaveMidiMapAsDefault(Sender: TObject);
+begin
+  Plugin.SaveMIDIMapAsDefault;
+end;
+
+procedure TMainMenu.EventHandle_SaveMidiMapAs(Sender: TObject);
+var
+  SaveDialog : TxpFileSaveDialog;
+begin
+  SaveDialog := TxpFileSaveDialog.Create(nil);
+  AutoFree(@SaveDialog);
+
+  SetupFileSaveDialog(Plugin, SaveDialog, TDialogTarget.dtMidiMap);
+
+  if SaveDialog.Execute then
+  begin
+    Plugin.SaveMidiMap(SaveDialog.FileName);
+  end;
+end;
+
+procedure TMainMenu.EventHandle_LoadDefaultMidiMap(Sender: TObject);
+begin
+  Plugin.LoadDefaultMIDIMap;
+end;
+
+procedure TMainMenu.EventHandle_LoadMidiMap(Sender: TObject);
+var
+  OpenDialog : TxpFileOpenDialog;
+begin
+  OpenDialog := TxpFileOpenDialog.Create(nil);
+  AutoFree(@OpenDialog);
+
+  SetupFileOpenDialog(OpenDialog, TDialogTarget.dtMidiMap);
+
+  OpenDialog.FileName := ''; //TODO:
+
+  if OpenDialog.Execute then
+  begin
+    Plugin.LoadMidiMap(OpenDialog.FileName);
+  end;
 end;
 
 

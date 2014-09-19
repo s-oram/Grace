@@ -6,6 +6,10 @@ New:
 - The AHDSR envelopes now have a "snap" mode. Snap mode allows for 
   instaneous attack and release times, which will cause clicks with some
   material. 
+- Improved MIDI Map handling.
+  -- default MIDI Map is now loaded on start up.
+  -- added commands to the main menu to load and save MIDI maps. 
+- MIDI Map Directory is now "LucidityData\Midi Maps"
 
 Change:
 - Added some more error handling to the "Show Manual" and "Show Data Folder"
@@ -16,6 +20,7 @@ Change:
   Backwards compatibility with version 2 patches has been maintained. 
 - tweaked sample context menu commands for removing modulation.
 - Save program dialog is now initialised with the current filename.   
+
 
 Bug Fix:
 - GUI now updates when loading FXP patches. 

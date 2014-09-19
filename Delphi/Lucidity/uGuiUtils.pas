@@ -60,10 +60,12 @@ procedure UpdateFilterControls(var Knobs : array of TControl; var Labels : array
 
 
 type
-  TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile);
+  TDialogTarget = (dtLucidityProgram, dtSfzProgram, dtAudioFile, dtMidiMap);
 
 procedure SetupFileSaveDialog_Program(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog);
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog);
+
+procedure SetupFileSaveDialog(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog; const Target : TDialogTarget);
 procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
 
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
@@ -137,6 +139,7 @@ uses
   uConstants,
   LucidityModConnections,
   GuidEx,
+  eePluginDataDir,
   uLucidityExtra,
   Lucidity.Globals,
   Lucidity.KeyGroup,
@@ -538,7 +541,43 @@ begin
 
 end;
 
+procedure SetupFileSaveDialog(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog; const Target : TDialogTarget);
+var
+  Dir : string;
+begin
+  case Target of
+    dtLucidityProgram:
+    begin
+      assert(false, 'TODO');
+    end;
+
+    dtSfzProgram:
+    begin
+      assert(false, 'TODO');
+    end;
+
+    dtAudioFile:
+    begin
+      assert(false, 'TODO');
+    end;
+
+    dtMidiMap:
+    begin
+      if GetPluginMidiMapsDir(Dir)
+        then SaveDialog.InitialDir := Dir
+        else SaveDialog.InitialDir := '';
+
+      SaveDialog.Filter := 'Lucidity MIDI Map|*.xml';
+      SaveDialog.DefaultExt := 'xml';
+    end;
+  else
+    raise Exception.Create('type not handled.');
+  end;
+end;
+
 procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
+var
+  Dir : string;
 begin
   case Target of
     dtLucidityProgram:
@@ -564,7 +603,17 @@ begin
     begin
       OpenDialog.Filter := 'Audio Files|*.wav; *.aif; *.aiff; *.snd|Any Type|*.*';
       OpenDialog.DefaultExt := '';
-    end
+    end;
+
+    dtMidiMap:
+    begin
+      if GetPluginMidiMapsDir(Dir)
+        then OpenDialog.InitialDir := Dir
+        else OpenDialog.InitialDir := '';
+
+      OpenDialog.Filter := 'Lucidity MIDI Map|*.xml';
+      OpenDialog.DefaultExt := 'xml';
+    end;
   else
     raise Exception.Create('Target type not handled.');
   end;
@@ -721,7 +770,7 @@ begin
     if (Error = false) and (MidiCC >= 0) and (MidiCC <= 127) then
     begin
       // Set the midi binding for the current parameter.
-      Plugin.MidiAutomation.ClearBinding(TargetParameterName);
+      Plugin.MidiAutomation.ClearBindingByName(TargetParameterName);
 
       MidiBinding := TMidiBinding.Create;
       MidiBinding.SetParName(TargetParameterName);

@@ -13,16 +13,19 @@ const
 type
   PObject = ^TObject;
 
-function AutoFree(const aObject: PObject): IUnknown;
 
+
+
+//==============================================================
+//    General Utility Functions
+//==============================================================
 function LowestValue(const x1, x2 : integer):integer;
 function HighestValue(const x1, x2 : integer):integer; overload;
 function HighestValue(const x1, x2 : single):single; overload;
 
-
 // a couple of methods to help with removing the 'combining signed and unsigned' types...
-function CastToInteger(Value : cardinal):integer;
-function CastToCardinal(Value : integer):cardinal;
+function CastToInteger(Value : cardinal):integer;  //Is this needed?
+function CastToCardinal(Value : integer):cardinal; //Is this needed?
 
 function Clamp(const Value, MinValue, MaxValue : integer):integer; overload; inline;
 function Clamp(const Value, MinValue, MaxValue : single):single; overload; inline;
@@ -44,7 +47,6 @@ function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 //==============================================================
 //    String Handling
 //==============================================================
-
 function TrimFileExt(FileName:string):string;
 
 function IntToStrB(Int:integer; MinDigits:integer):string;
@@ -70,9 +72,9 @@ procedure Sanitise(var Value : integer; const LowValue, HighValue : integer); ov
 procedure Sanitise(var Value : single;  const LowValue, HighValue : single); overload;
 
 function IsIntegerString(const Value : string):boolean;
-function IsMidiKeyNameString(Value : string):boolean; overload; 
+function IsMidiKeyNameString(Value : string):boolean; overload;
 function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boolean; overload;
-function MidiKeyNameToNoteNumber(Value : string):integer; 
+function MidiKeyNameToNoteNumber(Value : string):integer;
 
 
 
@@ -93,9 +95,13 @@ function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer
 //    Utilities
 //==============================================================
 
-function MemoryUsed: cardinal;
+function AutoFree(const aObject: PObject): IUnknown;
 
+function MemoryUsed: cardinal;
 function BytesToMegaBytes(const Value : single):single;
+
+
+
 
 
 
@@ -260,10 +266,8 @@ begin
 
   result := MinValue + round(Dist * Value);
 
-
   assert(result >= MinValue);
   assert(result <= MaxValue);
-
 end;
 
 function MemoryUsed: cardinal;
@@ -283,10 +287,6 @@ begin
   // http://www.matisse.net/bitcalc/?input_amount=1&input_units=megabytes&notation=legacy
   result := Value / 1048576;
 end;
-
-
-
-
 
 function TrimFileExt(FileName:string):string;
 var

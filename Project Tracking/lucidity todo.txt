@@ -49,6 +49,8 @@ bug
      TODO HIGH
 =============================================================================
 
+- currently working on save/load MIDI map functionality.
+
 
 Resave Waveshapers drum kits with release times set to max!
 

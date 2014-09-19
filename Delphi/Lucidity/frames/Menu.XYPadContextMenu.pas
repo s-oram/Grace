@@ -105,7 +105,7 @@ var
 begin
   Tag := (Sender as TMenuItem).Tag;
   TargetParameterName := GetPluginParameterName(TargetXYPadIndex, Tag);
-  Plugin.MidiAutomation.ClearBinding(TargetParametername);
+  Plugin.MidiAutomation.ClearBindingByName(TargetParametername);
 end;
 
 procedure TXYPadContextMenu.Handle_SetMidiCC(Sender: TObject);
