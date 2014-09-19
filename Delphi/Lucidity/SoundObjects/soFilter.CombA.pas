@@ -21,18 +21,22 @@ type
     procedure SetPar3(const Value: single);
   protected
     DelayBuffer : TStereoDelayBuffer;
-    DelayInSamples : single;
+    CurrentDelayInSamples : single;
+    TargetDelayInSamples  : single;
 
     FeedbackFactor : single;
 
     MixWet, MixDry : single;
+
+    DelayChangeCoefficient : single;
   public
     constructor Create;
     destructor Destroy; override;
 
     procedure Reset;
 
-    procedure ControlRateStep; inline;
+    procedure FastControlProcess; inline;
+
     procedure AudioRateStep(var x1, x2 : single); inline;
 
     property SampleRate : single read fSampleRate write SetSampleRate;
@@ -63,14 +67,18 @@ const
 constructor TCombA.Create;
 begin
   fSampleRate := 44100;
+
   DelayBuffer := TStereoDelayBuffer.Create;
   DelayBuffer.BufferSize := round(((kMaxDelay * 3) / 1000) * fSampleRate);
   DelayBuffer.Clear;
-  DelayInSamples := 100;
+  CurrentDelayInSamples := 100;
+  TargetDelayInSamples  := 100;
 
   Par1 := 0.6;
   Par2 := 0.6;
   Par3 := 0.6;
+
+  DelayChangeCoefficient := CalcRcEnvelopeCoefficient(10, fSampleRate);
 end;
 
 destructor TCombA.Destroy;
@@ -82,12 +90,14 @@ end;
 procedure TCombA.Reset;
 begin
   DelayBuffer.Clear;
+  CurrentDelayInSamples := TargetDelayInSamples;
 end;
 
 procedure TCombA.SetSampleRate(const Value: single);
 begin
   fSampleRate := value;
   DelayBuffer.BufferSize := round(((kMaxDelay * 3) / 1000) * fSampleRate);
+  DelayChangeCoefficient := CalcRcEnvelopeCoefficient(10, fSampleRate);
 end;
 
 procedure TCombA.SetPar1(const Value: single);
@@ -102,10 +112,9 @@ begin
   DelayTimeMS := kMinDelay + (1-Value) * (kMaxDelay - kMinDelay);
   DelayTimeMS := DelayTimeMS * (1/KeyFollowFreqMultiplier);
   DelayTimeMS := Clamp(DelayTimeMS, kMinDelay, kMaxDelay);
-  DelayInSamples := MillisecondsToSamples(DelayTimeMS, SampleRate);
+  TargetDelayInSamples := MillisecondsToSamples(DelayTimeMS, SampleRate);
   //if DelayInSamples <= 1 then DelayInSamples := 2;
-  assert(DelayInSamples > 1);
-
+  assert(CurrentDelayInSamples > 1);
 end;
 
 procedure TCombA.SetPar2(const Value: single);
@@ -128,19 +137,19 @@ begin
     MixDry := Sqrt(1 - MixAmount);
     MixWet := Sqrt(MixAmount);
   end;
-
 end;
 
-procedure TCombA.ControlRateStep;
+procedure TCombA.FastControlProcess;
 begin
   //TODO: DelayInSamples needs to be smoothed.
+  CurrentDelayInSamples := RcEnvFilter(CurrentDelayInSamples, TargetDelayInSamples, DelayChangeCoefficient);
 end;
 
 procedure TCombA.AudioRateStep(var x1, x2: single);
 var
   tx1, tx2 : single;
 begin
-  DelayBuffer.ReadRelativeTap(DelayInSamples, tx1, tx2);
+  DelayBuffer.ReadRelativeTap(CurrentDelayInSamples, tx1, tx2);
   DelayBuffer.StepInput(x1 + tx1 * FeedbackFactor, x2 + tx2 * FeedbackFactor);
   x1 := (x1 * MixDry) + (tx1 * MixWet);
   x2 := (x2 * MixDry) + (tx2 * MixWet);

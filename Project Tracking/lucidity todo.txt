@@ -37,13 +37,7 @@ bug
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
 bug
-- the comb filter does sound good when modulated from one of the pads! There are crackles.
-  it does sound ok when modulated by one of the LFOs. Maybe the MIDI input need to be smoothed more.
-
-
-bug
 - the 64bit installer doesn't create a data directory. 
-
 
 =============================================================================
      TODO HIGH

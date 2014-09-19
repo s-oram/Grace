@@ -84,10 +84,6 @@ type
     //==== Parameters ====
     property FilterType : TFilterType read fFilterType write SetFilterType;
     property KeyFollow  : single      read fKeyFollow  write SetKeyFollow;  //range 0..1.
-
-
-
-
   end;
 
 implementation
@@ -297,6 +293,10 @@ end;
 procedure TLucidityFilter.FastControlProcess;
 begin
   UpdateFilterParameters;
+
+  case FilterType of
+    ftCombA: CombA.FastControlProcess;
+  end;
 end;
 
 procedure TLucidityFilter.SlowControlProcess;
