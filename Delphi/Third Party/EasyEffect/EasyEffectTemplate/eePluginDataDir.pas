@@ -21,10 +21,23 @@ type
     function SkinsDir    : string;
   end;
 
-function PluginDataDir : PPluginDataDirInfo;
-
 function PluginDataSubDirExists(SubDirName:string):boolean;
 function GetPluginDataSubDir(SubDirName:string):string;
+
+
+//============ OLD CODE ABOVE -- NEW CODE BELOW ====================
+
+// TODO:HIGH this unit is a mess. It's confusing to look at. It's confusing to extend
+// and I'm sure there is code all over the place that isn't using it.
+
+function GetPluginDataDir(out Dir : string):boolean; // New get data dir method.
+function GetPluginMidiMapsDir(out Dir : string):boolean;
+
+//=============
+// This is a private function - it should be used only in this unit.
+function PluginDataDir : PPluginDataDirInfo;
+//=============
+
 
 implementation
 
@@ -150,6 +163,41 @@ begin
     then raise Exception.Create('Data directory (' + SubDirName + ') not found and could not be created.');
 
   result := Dir;
+end;
+
+
+
+//==============================================================================
+function GetPluginDataDir(out Dir : string):boolean;
+begin
+  if PluginDataDir.Exists then
+  begin
+    Dir := PluginDataDir.Path;
+    result := true;
+  end else
+  begin
+    Dir := '';
+    result := false;
+  end;
+end;
+
+function GetPluginMidiMapsDir(out Dir : string):boolean;
+var
+  s : string;
+begin
+  if PluginDataDir.Exists then
+  begin
+    s := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Midi Maps');
+    if (DirectoryExists(s)) or (ForceDirectories(s)) then
+    begin
+      Dir := s;
+      exit(True); //==============>>exit=========>>
+    end;
+  end;
+
+  //== if we make it this far, the directory hasn't been found. ==
+  Dir := '';
+  result := false;
 end;
 
 
