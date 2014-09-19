@@ -21,7 +21,6 @@ Change:
 - tweaked sample context menu commands for removing modulation.
 - Save program dialog is now initialised with the current filename.   
 
-
 Bug Fix:
 - GUI now updates when loading FXP patches. 
 - Tweaked the sample map GUI elements. They now show the 
@@ -39,6 +38,8 @@ Bug Fix:
 - the modulation depth amounts don't update after loading a patch.
 - The [ENTER] key now loads the selected sample in the browser. 
 - The comb filter had artifacts when changing the delay time
+- 64bit installer put data files in the wrong location. It was placing them 
+  in c:\ instead of c:\ProgramData\One Small Clue\Lucidity x64
 
 
 === BETA v0.0.1.51 (30-Aug-2014) ===

@@ -42,7 +42,7 @@ function GetDataDir(Param: String): String;
 begin
   if (Param = 'DataDir') and ('{#MyAppPlatform}' = '32bit')
     then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x32') 
-  else if (Param = 'DataDir') and ('{#MyAppPlatform}' = '64Bbt')
+  else if (Param = 'DataDir') and ('{#MyAppPlatform}' = '64bit')
     then Result := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x64')
   else if Param = 'VstDir' 
     then Result := VstDirPage.Values[0];
@@ -65,13 +65,13 @@ begin
     DestFileFullPath := GetDataDir('VstDir') + ExpandConstant('{\}{#MyAppName} ') + 'Setup Log.txt';    
     FileCopy(SourceFileFullPath, DestFileFullPath, false);
     
-    if '{#MyAppPlatform}' = 'Win32' then
+    if '{#MyAppPlatform}' = '32bit' then
     begin
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', GetDataDir('VstDir'));
     end;
     
-    if '{#MyAppPlatform}' = 'Win64' then
+    if '{#MyAppPlatform}' = '64bit' then
     begin
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir', GetDataDir('VstDir'));
@@ -94,4 +94,3 @@ begin
 
   result := s;
 end;
-
