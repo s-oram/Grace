@@ -352,7 +352,10 @@ begin
     TLfoFreqMode.Sync7_1,
     TLfoFreqMode.Sync8_1:
     begin
-      x := Frac(ppqPos / SyncPhaseDivider);
+      if Par1^ > 0
+        then x := ppqPos * (Par1^ / 1)
+        else x := 0;
+      x := Frac(x / SyncPhaseDivider);
       //x := x - Floor(x);
       //x := x / SyncPhaseDivider;
       //===========================
