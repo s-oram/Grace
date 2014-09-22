@@ -53,6 +53,9 @@ type
 
     MaxLfoFreq : single;
 
+    SyncPhaseDivider : single;
+    SyncPhaseOffset  : single;
+
     procedure UpdateLfoParameters; inline;
     procedure UpdateMaxLfoFreq; inline;
   public
@@ -78,7 +81,7 @@ type
     //==== reset methods ====
     procedure ZeroOutput;
     procedure StepResetA;
-    procedure StepResetB;
+    procedure StepResetB(const ppqPos : double);
     //=======================
 
     procedure FastControlProcess;
@@ -122,31 +125,31 @@ begin
     TLfoFreqMode.Fixed100Millisecond: MaxLfoFreq := 15;
     TLfoFreqMode.Fixed1Second:        MaxLfoFreq := 1;
     TLfoFreqMode.Fixed10Second:       MaxLfoFreq := 0.1;
-    TLfoFreqMode.Sync1_32:       MaxLfoFreq := SyncToFreq(1/32, BPM);
-    TLfoFreqMode.Sync1_16:       MaxLfoFreq := SyncToFreq(1/16, BPM);
-    TLfoFreqMode.Sync1_8:        MaxLfoFreq := SyncToFreq(1/8, BPM);
-    TLfoFreqMode.Sync1_4:        MaxLfoFreq := SyncToFreq(1/4, BPM);
-    TLfoFreqMode.Sync1_2:        MaxLfoFreq := SyncToFreq(1/2, BPM);
-    TLfoFreqMode.Sync1_1:        MaxLfoFreq := SyncToFreq(1, BPM);
-    TLfoFreqMode.Sync1_32Dot:    MaxLfoFreq := SyncToFreq(1/32*Dot, BPM);
-    TLfoFreqMode.Sync1_16Dot:    MaxLfoFreq := SyncToFreq(1/16*Dot, BPM);
-    TLfoFreqMode.Sync1_8Dot:     MaxLfoFreq := SyncToFreq(1/8*Dot, BPM);
-    TLfoFreqMode.Sync1_4Dot:     MaxLfoFreq := SyncToFreq(1/4*Dot, BPM);
-    TLfoFreqMode.Sync1_2Dot:     MaxLfoFreq := SyncToFreq(1/2*Dot, BPM);
-    TLfoFreqMode.Sync1_1Dot:     MaxLfoFreq := SyncToFreq(1*Dot, BPM);
-    TLfoFreqMode.Sync1_32Triple: MaxLfoFreq := SyncToFreq(1/32*Triple, BPM);
-    TLfoFreqMode.Sync1_16Triple: MaxLfoFreq := SyncToFreq(1/16*Triple, BPM);
-    TLfoFreqMode.Sync1_8Triple:  MaxLfoFreq := SyncToFreq(1/8*Triple, BPM);
-    TLfoFreqMode.Sync1_4Triple:  MaxLfoFreq := SyncToFreq(1/4*Triple, BPM);
-    TLfoFreqMode.Sync1_2Triple:  MaxLfoFreq := SyncToFreq(1/2*Triple, BPM);
-    TLfoFreqMode.Sync1_1Triple:  MaxLfoFreq := SyncToFreq(1*Triple, BPM);
-    TLfoFreqMode.Sync2_1:        MaxLfoFreq := SyncToFreq(2, BPM);
-    TLfoFreqMode.Sync3_1:        MaxLfoFreq := SyncToFreq(3, BPM);
-    TLfoFreqMode.Sync4_1:        MaxLfoFreq := SyncToFreq(4, BPM);
-    TLfoFreqMode.Sync5_1:          MaxLfoFreq := SyncToFreq(5, BPM);
-    TLfoFreqMode.Sync6_1:        MaxLfoFreq := SyncToFreq(6, BPM);
-    TLfoFreqMode.Sync7_1:        MaxLfoFreq := SyncToFreq(7, BPM);
-    TLfoFreqMode.Sync8_1:        MaxLfoFreq := SyncToFreq(8, BPM);
+    TLfoFreqMode.Sync1_32:            MaxLfoFreq := SyncToFreq(1/32, BPM);
+    TLfoFreqMode.Sync1_16:            MaxLfoFreq := SyncToFreq(1/16, BPM);
+    TLfoFreqMode.Sync1_8:             MaxLfoFreq := SyncToFreq(1/8, BPM);
+    TLfoFreqMode.Sync1_4:             MaxLfoFreq := SyncToFreq(1/4, BPM);
+    TLfoFreqMode.Sync1_2:             MaxLfoFreq := SyncToFreq(1/2, BPM);
+    TLfoFreqMode.Sync1_1:             MaxLfoFreq := SyncToFreq(1, BPM);
+    TLfoFreqMode.Sync1_32Dot:         MaxLfoFreq := SyncToFreq(1/32*Dot, BPM);
+    TLfoFreqMode.Sync1_16Dot:         MaxLfoFreq := SyncToFreq(1/16*Dot, BPM);
+    TLfoFreqMode.Sync1_8Dot:          MaxLfoFreq := SyncToFreq(1/8*Dot, BPM);
+    TLfoFreqMode.Sync1_4Dot:          MaxLfoFreq := SyncToFreq(1/4*Dot, BPM);
+    TLfoFreqMode.Sync1_2Dot:          MaxLfoFreq := SyncToFreq(1/2*Dot, BPM);
+    TLfoFreqMode.Sync1_1Dot:          MaxLfoFreq := SyncToFreq(1*Dot, BPM);
+    TLfoFreqMode.Sync1_32Triple:      MaxLfoFreq := SyncToFreq(1/32*Triple, BPM);
+    TLfoFreqMode.Sync1_16Triple:      MaxLfoFreq := SyncToFreq(1/16*Triple, BPM);
+    TLfoFreqMode.Sync1_8Triple:       MaxLfoFreq := SyncToFreq(1/8*Triple, BPM);
+    TLfoFreqMode.Sync1_4Triple:       MaxLfoFreq := SyncToFreq(1/4*Triple, BPM);
+    TLfoFreqMode.Sync1_2Triple:       MaxLfoFreq := SyncToFreq(1/2*Triple, BPM);
+    TLfoFreqMode.Sync1_1Triple:       MaxLfoFreq := SyncToFreq(1*Triple, BPM);
+    TLfoFreqMode.Sync2_1:             MaxLfoFreq := SyncToFreq(2, BPM);
+    TLfoFreqMode.Sync3_1:             MaxLfoFreq := SyncToFreq(3, BPM);
+    TLfoFreqMode.Sync4_1:             MaxLfoFreq := SyncToFreq(4, BPM);
+    TLfoFreqMode.Sync5_1:             MaxLfoFreq := SyncToFreq(5, BPM);
+    TLfoFreqMode.Sync6_1:             MaxLfoFreq := SyncToFreq(6, BPM);
+    TLfoFreqMode.Sync7_1:             MaxLfoFreq := SyncToFreq(7, BPM);
+    TLfoFreqMode.Sync8_1:             MaxLfoFreq := SyncToFreq(8, BPM);
   else
     raise Exception.Create('Type not handled.');
   end;
@@ -195,9 +198,48 @@ begin
 end;
 
 procedure TLucidityLfo.SetFreqMode(const Value: TLfoFreqMode);
+const
+  Dot    = 1.5;
+  Triple = 0.3333333;
 begin
   fFreqMode := Value;
   UpdateMaxLfoFreq;
+
+  // Update tempo sync phase reference
+
+  case Value of
+    TLfoFreqMode.Fixed100Millisecond: SyncPhaseDivider := 1;
+    TLfoFreqMode.Fixed1Second:        SyncPhaseDivider := 1;
+    TLfoFreqMode.Fixed10Second:       SyncPhaseDivider := 1;
+    TLfoFreqMode.Sync1_32:            SyncPhaseDivider := 1/8;
+    TLfoFreqMode.Sync1_16:            SyncPhaseDivider := 1/4;
+    TLfoFreqMode.Sync1_8:             SyncPhaseDivider := 1/2;
+    TLfoFreqMode.Sync1_4:             SyncPhaseDivider := 1; //corrosponds to 4/4 kick drum.
+    TLfoFreqMode.Sync1_2:             SyncPhaseDivider := 1*2;
+    TLfoFreqMode.Sync1_1:             SyncPhaseDivider := 1*4;
+    TLfoFreqMode.Sync1_32Dot:         SyncPhaseDivider := 1/8*Dot;
+    TLfoFreqMode.Sync1_16Dot:         SyncPhaseDivider := 1/4*Dot;
+    TLfoFreqMode.Sync1_8Dot:          SyncPhaseDivider := 1/2*Dot;
+    TLfoFreqMode.Sync1_4Dot:          SyncPhaseDivider := 1/1*Dot;
+    TLfoFreqMode.Sync1_2Dot:          SyncPhaseDivider := 1*2*Dot;
+    TLfoFreqMode.Sync1_1Dot:          SyncPhaseDivider := 1*4*Dot;
+    TLfoFreqMode.Sync1_32Triple:      SyncPhaseDivider := 1/8*Triple;
+    TLfoFreqMode.Sync1_16Triple:      SyncPhaseDivider := 1/4*Triple;
+    TLfoFreqMode.Sync1_8Triple:       SyncPhaseDivider := 1/2*Triple;
+    TLfoFreqMode.Sync1_4Triple:       SyncPhaseDivider := 1/1*Triple;
+    TLfoFreqMode.Sync1_2Triple:       SyncPhaseDivider := 1*2*Triple;
+    TLfoFreqMode.Sync1_1Triple:       SyncPhaseDivider := 1*4*Triple;
+    TLfoFreqMode.Sync2_1:             SyncPhaseDivider := 1*4*2;
+    TLfoFreqMode.Sync3_1:             SyncPhaseDivider := 1*4*3;
+    TLfoFreqMode.Sync4_1:             SyncPhaseDivider := 1*4*4;
+    TLfoFreqMode.Sync5_1:             SyncPhaseDivider := 1*4*5;
+    TLfoFreqMode.Sync6_1:             SyncPhaseDivider := 1*4*6;
+    TLfoFreqMode.Sync7_1:             SyncPhaseDivider := 1*4*7;
+    TLfoFreqMode.Sync8_1:             SyncPhaseDivider := 1*4*8;
+  else
+    raise Exception.Create('type not handled.');
+  end;
+
 end;
 
 procedure TLucidityLfo.SetSampleRate(const Value: single);
@@ -266,11 +308,62 @@ end;
 
 procedure TLucidityLfo.StepResetA;
 begin
+  SyncPhaseOffset := 0;
+
   UpdateLfoParameters;
 end;
 
-procedure TLucidityLfo.StepResetB;
+procedure TLucidityLfo.StepResetB(const ppqPos : double);
+var
+  x : single;
 begin
+  //=============================================
+  // Update Sync phase offset.
+  case FreqMode of
+    TLfoFreqMode.Fixed100Millisecond,
+    TLfoFreqMode.Fixed1Second,
+    TLfoFreqMode.Fixed10Second:
+    begin
+      SyncPhaseOffset := 0;
+    end;
+    TLfoFreqMode.Sync1_32,
+    TLfoFreqMode.Sync1_16,
+    TLfoFreqMode.Sync1_8,
+    TLfoFreqMode.Sync1_4,
+    TLfoFreqMode.Sync1_2,
+    TLfoFreqMode.Sync1_1,
+    TLfoFreqMode.Sync1_32Dot,
+    TLfoFreqMode.Sync1_16Dot,
+    TLfoFreqMode.Sync1_8Dot,
+    TLfoFreqMode.Sync1_4Dot,
+    TLfoFreqMode.Sync1_2Dot,
+    TLfoFreqMode.Sync1_1Dot,
+    TLfoFreqMode.Sync1_32Triple,
+    TLfoFreqMode.Sync1_16Triple,
+    TLfoFreqMode.Sync1_8Triple,
+    TLfoFreqMode.Sync1_4Triple,
+    TLfoFreqMode.Sync1_2Triple,
+    TLfoFreqMode.Sync1_1Triple,
+    TLfoFreqMode.Sync2_1,
+    TLfoFreqMode.Sync3_1,
+    TLfoFreqMode.Sync4_1,
+    TLfoFreqMode.Sync5_1,
+    TLfoFreqMode.Sync6_1,
+    TLfoFreqMode.Sync7_1,
+    TLfoFreqMode.Sync8_1:
+    begin
+      x := Frac(ppqPos / SyncPhaseDivider);
+      //x := x - Floor(x);
+      //x := x / SyncPhaseDivider;
+      //===========================
+      SyncPhaseOffset := x;
+      assert(InRange(SyncPhaseOffset, 0, 1));
+    end
+  else
+    raise Exception.Create('type not handled.');
+  end;
+
+  //=============================================
   UpdateLfoParameters;
 end;
 
@@ -285,7 +378,7 @@ begin
     TActiveLFO.WaveTable:
     begin
       WaveTableLfo.Freq          := Par1^ * MaxLfoFreq;
-      WaveTableLFO.PhaseOffset   := Par2^;
+      WaveTableLFO.PhaseOffset   := Par2^ + SyncPhaseOffset;
       WaveTableLFO.Symmetry      := Par3^;
       WaveTableLFO.UpdateStepSize;
     end;

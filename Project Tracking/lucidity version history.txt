@@ -1,5 +1,13 @@
 ==Notify On Update==
 
+FINISHED
+  Feature request - lfo sync to song position.
+  hugocaldeiravinagre@gmail.com
+  thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
+
+
+
+
 == Finished for the next release ==
 New:
 - Add select region with MIDI input.
@@ -20,6 +28,7 @@ Change:
   Backwards compatibility with version 2 patches has been maintained. 
 - tweaked sample context menu commands for removing modulation.
 - Save program dialog is now initialised with the current filename.   
+- Tempo synced LFOs now sync to song position and tempo.
 
 Bug Fix:
 - GUI now updates when loading FXP patches. 

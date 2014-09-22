@@ -169,6 +169,7 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  Math,
   eeTypes,
   VamQuery,
   RedFox,
@@ -671,7 +672,7 @@ end;
 
 procedure TModControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
-
+  //FilterOneContainerLabel.Text := FloatToStr(Floor(Plugin.Globals.ppqPos));
 end;
 
 procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);

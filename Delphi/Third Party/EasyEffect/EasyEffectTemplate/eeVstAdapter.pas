@@ -203,14 +203,12 @@ begin
   Globals.HostProperties^.HostName    := GetReportedHostName;
   Globals.HostProperties^.HostVersion := GetHostVendorVersion;
 
-
   //Create the plugin.
   Plugin := TeePlugin.Create(Globals);
   Plugin.OnPresetNameChanged := EventHandler_PresetNameChanged;
 
   Plugin.Globals.VstMethods^.GetParameterDisplay   := Plugin.GetParameterDisplay;
   Plugin.Globals.VstMethods^.GetParameterLabel     := Plugin.GetParameterLabel;
-
 
   ProcessControllerV2 := TProcessController.Create(Plugin);
   ProcessControllerV2.TimeInfoMethod := self.GetTimeInfo;

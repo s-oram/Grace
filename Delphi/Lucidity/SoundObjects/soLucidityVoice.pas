@@ -669,8 +669,8 @@ begin
   ModMatrix.FastControlProcess;
   ModMatrix.SlowControlProcess;
 
-  LfoA.StepResetB;
-  LfoB.StepResetB;
+  LfoA.StepResetB(Globals.ppqPos);
+  LfoB.StepResetB(Globals.ppqPos);
   StepSeqOne.StepResetB;
   StepSeqTwo.StepResetB;
 

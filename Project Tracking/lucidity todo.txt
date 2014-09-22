@@ -160,11 +160,6 @@ Make video explaining modulation source. Send to Spacedad.
 
 - need a "Move Sample To New Key Group..." command. 
 
-Feature request from BETA tester. 
-Another feature we use very much is lfo sync to song position.
-  hugocaldeiravinagre@gmail.com
-  thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
-
 Maybe need a slope envelope LFO.
 
 - Is the comb filter reseting it's delay buffer? when be retriggered?

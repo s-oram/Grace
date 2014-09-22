@@ -175,8 +175,6 @@ type
 
     property SyncKeeper : Pointer read fSyncKeeper write fSyncKeeper;
 
-
-
     // VstMethods holds pointers to some standard VST methods that are used by the GUI.
     property VstMethods : PVstMethodReferences read fVstMethods;
 

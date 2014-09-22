@@ -56,6 +56,8 @@ type
   TLfoMode = (Free, Sync, Tempo);
   TLfoModeHelper = class(TEnumHelper<TLfoMode>);
 
+
+  // NOTE: Sync1_4 = 4/4 kick drum.
   TLfoFreqMode = (Fixed100Millisecond, Fixed1Second, Fixed10Second, Sync1_32, Sync1_16, Sync1_8, Sync1_4, Sync1_2, Sync1_1,
   Sync1_32Dot, Sync1_16Dot, Sync1_8Dot, Sync1_4Dot, Sync1_2Dot, Sync1_1Dot,
   Sync1_32Triple, Sync1_16Triple, Sync1_8Triple, Sync1_4Triple, Sync1_2Triple, Sync1_1Triple,

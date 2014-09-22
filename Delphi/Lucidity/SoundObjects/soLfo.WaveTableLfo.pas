@@ -41,7 +41,7 @@ type
     property SampleRate    : single read fSampleRate    write fSampleRate;
 
     property Freq          : single read fFreq          write fFreq;          // LFO frequency in hertz.
-    property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // Range 0..1
+    property PhaseOffset   : single read fPhaseOffset   write fPhaseOffset;   // 0..1 = 0-360 degrees phase. range can be outside this AFAIK
     property Symmetry      : single read fSymmetry      write fSymmetry;      // Range 0..1, with 0.5 being the default position.
 
     property WaveShape : TWaveTableLfoShape read fWaveShape write fWaveShape;
