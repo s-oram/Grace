@@ -36,15 +36,9 @@ bug
 > created by Lucidity,
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
-bug
-- the 64bit installer doesn't create a data directory. 
-
 =============================================================================
      TODO HIGH
 =============================================================================
-
-- currently working on save/load MIDI map functionality.
-
 
 Resave Waveshapers drum kits with release times set to max!
 
