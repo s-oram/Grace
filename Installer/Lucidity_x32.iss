@@ -49,7 +49,120 @@ Root: HKLM; Subkey: "Software\{#MyAppPublisher}\{#MyAppName}"; Flags: uninsdelet
 
 
 [code]
-#include "Install Script Code.txt"
+//#include "Install Script Code.txt"
+
+var  
+  VstDirPage  : TInputDirWizardPage; 
+  Text1 : string;
+  Text2 : string;
+  Text3 : string;  
+
+  VstDirCaption : string;
+  DataDirCaption : string;
+  VstDir   : string;
+  DataDir  : string; 
+procedure InitializeWizard;
+var
+  SubKeyName : string; 
+  ValueName  : string;
+begin
+  //========================================================
+  //  Custom Page: VST Directory
+  //========================================================
+  Text1 := 'Installation Paths'; 
+  Text2 := 'Choose where to install files for Lucidity.';
+  Text3 := '';
+  
+  //Get the VST plugin directory as specified in the Windows registery.
+  if '{#MyAppPlatform}' = '32bit' then
+  begin
+    VstDirCaption  := '32-Bit VST 2 Plugins Directory';
+    DataDirCaption := 'Lucidity Data Directory'#13#10'(For skins, patches, configuration files etc.)'; 
+
+    VstDir := ''; 
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', VstDir);
+
+    DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x32');    
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+  end;
+  
+  if '{#MyAppPlatform}' = '64bit' then
+  begin
+    VstDirCaption  := '64-Bit VST 2 Plugins Directory';
+    DataDirCaption := 'Lucidity Data Directory (For skins, patches, configuration files etc.)'; 
+
+    VstDir := ''; 
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir',VstDir);
+
+    DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x64');    
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+  end;
+  
+  VstDirPage := CreateInputDirPage(wpWelcome, Text1, Text2,  Text3, False, '{#MyAppName}');
+
+  VstDirPage.Add(VstDirCaption);  
+  VstDirPage.Values[0] := VstDir;
+
+  VstDirPage.Add(DataDirCaption);  
+  VstDirPage.Values[1] := DataDir;
+end; 
+
+
+function GetDataDir(Param: String): String;
+begin  
+  if Param = 'VstDir' 
+    then Result := VstDirPage.Values[0]
+  else if (Param = 'DataDir') 
+    then Result := VstDirPage.Values[1];
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  DataDir    : string;
+  s          : string;
+  ReplacementString  : string;
+  SourceFileFullPath : string;
+  SourceFileName     : string;
+  DestFileFullPath   : string;     
+begin
+  if (CurStep = ssDone)  and (IsUninstaller = false) then
+  begin
+    //Copy the log file.   
+    SourceFileFullPath := ExpandConstant('{log}');
+    SourceFileName     := ExtractFileName(SourceFileFullPath);
+    DestFileFullPath := GetDataDir('VstDir') + ExpandConstant('{\}{#MyAppName} ') + 'Setup Log.txt';    
+    FileCopy(SourceFileFullPath, DestFileFullPath, false);
+    
+    if '{#MyAppPlatform}' = '32bit' then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', GetDataDir('VstDir'));
+    end;
+    
+    if '{#MyAppPlatform}' = '64bit' then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir', GetDataDir('VstDir'));
+    end;   
+  end;       
+end;
+
+function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
+var
+  s : string;
+begin
+  s := 'VST Plugin Directory' + ExpandConstant(#13#10); 
+  s := s + '   ' + GetDataDir('VstDir') + ExpandConstant(#13#10);
+  s := s + ExpandConstant(#13#10);
+  s := s + 'Plugin Data Directory'  + ExpandConstant(#13#10);
+  s := s + '   ' + GetDataDir('DataDir') + ExpandConstant(#13#10);
+  s := s + ExpandConstant(#13#10);  
+
+  result := s;
+end;
+
 
 
 
