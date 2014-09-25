@@ -38,6 +38,13 @@ Lucidity Project Setup.bat
 Lucidity Project Teardown.bat
 Lucidity Create Installers.bat
 
+### ignore media files because they are too big and will bloat the repos.
+*.aif
+*.aiff
+*.flac
+*.mp3
+*.wav
+
 
 ### ignore any generated DLLs.
 Lucidity.dll
