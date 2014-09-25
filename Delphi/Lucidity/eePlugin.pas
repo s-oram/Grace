@@ -4,8 +4,6 @@ interface
 
 {$INCLUDE Defines.inc}
 
-{_$M+} // maybe this isn't needed?
-
 uses
   VamLib.UniqueID,
   eeTypes,
