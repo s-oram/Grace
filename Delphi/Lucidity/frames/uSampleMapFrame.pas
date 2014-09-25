@@ -772,6 +772,7 @@ end;
 procedure TSampleMapFrame.SampleMapKeysRootKeyChanged(Sender: TObject; const RootKeyOffset: Integer);
 begin
   Plugin.MoveRootKey(RootKeyOffset);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
 end;
 
 procedure TSampleMapFrame.SampleMapKeysRootKeyChanging(Sender: TObject; const NewRootKey: Integer);

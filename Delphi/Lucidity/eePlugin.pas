@@ -115,8 +115,6 @@ type
 
     EmptyKeyGroup : IKeyGroup;
 
-    ThrottleID_VSTParChange : TUniqueID; //TODO:HIGH this isn't used.
-
     CopiedKeyGroupValues : TKeyGroupStateBuffer;
 
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
@@ -311,8 +309,6 @@ var
   IsDefaultPatchLoaded : boolean;
 begin
   inherited;
-
-  ThrottleID_VSTParChange.Init;
 
   fPluginParameters := TPluginParameterManager.Create;
 
@@ -648,7 +644,6 @@ begin
   // Store the changed value in the parameter manager class.
   PluginParameters.Raw[ParID].ParameterValue := ParValue;
 
-  // TODO:HIGH eventually we will trigger the parameter smoothing here.
   ApplyPluginParameterValue(ParID, ParValue, Scope);
 end;
 
@@ -1210,9 +1205,6 @@ begin
       aRegion.GetProperties^.RootNote := NewRoot;
     end;
   end;
-
-
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil); //TODO:HIGH try to remove this call.
 end;
 
 procedure TeePlugin.MoveSelectedRegionsToKeyGroup(const aKeyGroupName: string);
@@ -1225,8 +1217,6 @@ begin
   SampleMap.DeselectAllRegions;
 
   RefreshManagedPluginParameterValues;
-  // signal to the GUI that the focus has changed.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil); //TODO:HIGH try to remove this call.
 end;
 
 procedure TeePlugin.MergeAllKeyGroups;
@@ -1706,25 +1696,6 @@ begin
     msg := 'VST Change filtered. Value = ' + FloatToStr(Value);
     //Log.LogMessage(msg);
   end;
-
-  {
-  TODO:MED It would be ideal to have a throttler class in here. I would
-  send messages to the scope so that it could be updated when the parameter
-  changes. But the Trottle() method doesn't work in non-GUI threads or threads
-  with windows message processing.
-
-  I think I will change it so that the scope regularly updates on a timer. I
-  would prefer otherwise but it doesn't seem to want to work other wise.
-
-  Throttle(ThrottleID_VSTParChange, 100,
-  procedure
-  begin
-    LogMain.LogMessage('VstParameter Changed Throttle');
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.VstParameterChanged);
-  end);
-  }
-
-
 end;
 
 procedure TeePlugin.StopPreview;

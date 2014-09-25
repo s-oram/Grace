@@ -151,7 +151,7 @@ begin
     wvWinServer2008R2: result := TxpMode.WinVista;
     wvUnknown:         result := TxpMode.WinVista;
   else
-    //TODO:HIGH need to check for Windows 8.
+    //TODO:MED need to check for Windows 8.
     result := TxpMode.WinVista;
   end;
 end;

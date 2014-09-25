@@ -35,8 +35,8 @@ type
 
     procedure SetTransitionTime(const ms, SampleRate: single);
 
-    // TODO:HIGH it might make more sense to use one of the other filter forms here.
-    //TODO:MED Refactor TargetValue + CurrentValue into one "InOutValue" ...maybe
+    // TODO:MED might make more sense to use one of the other filter forms here.
+    // TODO:MED Refactor TargetValue + CurrentValue into one "InOutValue" ...maybe
     procedure Step_DirectForm1(const TargetValue : single; var CurrentValue : single; const State : PParSmootherState);
     procedure Step_DirectForm2(const TargetValue : single; var CurrentValue : single; const State : PParSmootherState);
     procedure Step_DirectForm2Transposed(const TargetValue : single; var CurrentValue : single; const State : PParSmootherState);
