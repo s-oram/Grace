@@ -9,6 +9,12 @@ FINISHED
 
 
 == Finished for the next release ==
+
+
+
+
+
+=== BETA v0.0.1.59 (25-Sep-2014) ===
 New:
 - Add select region with MIDI input.
 - The AHDSR envelopes now have a "snap" mode. Snap mode allows for 
