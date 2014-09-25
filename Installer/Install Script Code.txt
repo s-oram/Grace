@@ -46,7 +46,7 @@ begin
   //==== Data Dir ====
 
   DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName}');    
-  RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+  RegQueryStringValue(HKLM32, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
 
   //==================
   
@@ -86,16 +86,17 @@ begin
     FileCopy(SourceFileFullPath, DestFileFullPath, false);
     
     if '{#MyAppPlatform}' = '32bit' then
-    begin
-      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+    begin      
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', GetDataDir('VstDir'));
     end;
     
     if '{#MyAppPlatform}' = '64bit' then
-    begin
-      RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));
+    begin      
       RegWriteStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir', GetDataDir('VstDir'));
-    end;   
+    end; 
+
+
+    RegWriteStringValue(HKLM32, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', GetDataDir('DataDir'));  
   end;       
 end;
 
