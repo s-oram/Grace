@@ -19,6 +19,8 @@ begin
   Text1 := 'Installation Paths'; 
   Text2 := 'Choose where to install files for Lucidity.';
   Text3 := '';
+
+  //==== VST Plugins Dir ====
   
   //Get the VST plugin directory as specified in the Windows registery.
   if '{#MyAppPlatform}' = '32bit' then
@@ -28,10 +30,7 @@ begin
 
     VstDir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;
-    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', VstDir);
-
-    DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x32');    
-    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx86Dir', VstDir);    
   end;
   
   if '{#MyAppPlatform}' = '64bit' then
@@ -41,11 +40,15 @@ begin
 
     VstDir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;
-    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir',VstDir);
-
-    DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName} x64');    
-    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'Vstx64Dir',VstDir);    
   end;
+
+  //==== Data Dir ====
+
+  DataDir := ExpandConstant('{commonappdata}{\}{#MyAppPublisher}{\}{#MyAppName}');    
+  RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\{#MyAppPublisher}\{#MyAppName}', 'DataPath', DataDir);
+
+  //==================
   
   VstDirPage := CreateInputDirPage(wpWelcome, Text1, Text2,  Text3, False, '{#MyAppName}');
 
@@ -109,6 +112,8 @@ begin
 
   result := s;
 end;
+
+
 
 
 
