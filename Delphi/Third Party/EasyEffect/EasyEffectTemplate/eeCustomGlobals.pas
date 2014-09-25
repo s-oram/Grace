@@ -76,6 +76,8 @@ type
     fFastControlRate: integer;
     fSlowControlRate: integer;
     FMotherShip: TMotherShip;
+    fVstSystemWindow: Hwnd;
+    fTopGuiWindow: TObject;
     procedure SetBlockSize(const Value: integer);
     procedure SetTempo(const Value: single);
     procedure SetTransportPlaying(const Value: boolean);
@@ -178,6 +180,9 @@ type
     // VstMethods holds pointers to some standard VST methods that are used by the GUI.
     property VstMethods : PVstMethodReferences read fVstMethods;
 
+    property TopGuiWindow    : TObject read fTopGuiWindow write fTopGuiWindow;
+    property VstSystemWindow : Hwnd read fVstSystemWindow write fVstSystemWindow;
+
     property HostProperties : PHostProperties read GetHostProperties;
 
     // TODO: consider using a GUI mothership and a Audio Thread MotherShip.
@@ -232,6 +237,8 @@ uses
 constructor TCustomGlobals.Create;
 begin
   FMotherShip := TMotherShip.Create;
+
+  VstSystemWindow := 0;
 
   WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
 
