@@ -1,0 +1,14 @@
+Yann (Waveshaper) drup map conventions
+
+I try to stick to some "conventions" to map the samples :
+C is a bassdrum,
+C# is either a 2nd bassdrum or a rimshot
+D is a snare
+D# is either a clap or a 2nd snare
+E is another snare
+F, G, A, B are toms or percussive sounds (sometimes FX with low end)
+F#, G#, A# are hats (F# closed, A# open. G# is either a variation of F#, with accent or semi-open, or a casaba/maracas sound, depending on the sampled gear).
+Then, depending on what's left :
+upper C, D, E are SFX or percussion
+C# and D# are cymbs (ride / crash) or maracas/tamburine/casaba
+Many drum machines are mapped that way, so many people will "feel at home" with such a mapping. 

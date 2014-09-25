@@ -39,6 +39,7 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 =============================================================================
      TODO HIGH
 =============================================================================
+finish with the lucidity factory content installer.
 
 Resave Waveshapers drum kits with release times set to max!
 
