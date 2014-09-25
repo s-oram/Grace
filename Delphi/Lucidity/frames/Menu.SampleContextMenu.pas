@@ -77,6 +77,7 @@ end;
 destructor TSampleContextMenu.Destroy;
 begin
   Menu.Free;
+  CurrentRegion := nil;
   inherited;
 end;
 

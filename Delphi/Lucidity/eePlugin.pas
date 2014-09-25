@@ -1430,11 +1430,7 @@ end;
 
 procedure TeePlugin.PostLoadProgram;
 var
-  c1 : integer;
   aRegionID : TGUID;
-  mb : IMidiBinding;
-  ParName : string;
-  ParID : TPluginParameterID;
 begin
   UpdateMidiBindingIDs;
 
@@ -1656,7 +1652,6 @@ end;
 procedure TeePlugin.UpdateMidiBindingIDs;
 var
   c1 : integer;
-  aRegionID : TGUID;
   mb : IMidiBinding;
   ParName : string;
   ParID : TPluginParameterID;

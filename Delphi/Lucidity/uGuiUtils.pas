@@ -686,8 +686,6 @@ var
   curRG : IRegion;
   newRG : IRegion;
   kg : IKeyGroup;
-  XmlRegionCount : integer;
-  XmlRegionInfo : TVstXmlRegion;
 begin
   assert(IsSupportedAudioFormat(AudioFileName));
 

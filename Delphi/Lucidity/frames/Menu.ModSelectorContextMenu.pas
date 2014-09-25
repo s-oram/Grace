@@ -66,7 +66,6 @@ begin
   ModViaMenu.Items.Caption := 'Mod Via';
   ModViaMenu.OnItemSelected := Handle_ModViaSelected;
 
-  //TODO:HIGH need to use new TxPopupMenu here. //don't destroy the menu. just clear it.
   Menu.Items.Clear;
   Menu.Items.Add(ModSourceMenu.Items);
   Menu.Items.Add(ModViaMenu.Items);
