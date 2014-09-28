@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
-  TTestDialog = class(TluginDialog)
+  TTestDialog = class(TPluginDialog)
   private
   protected
     function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;

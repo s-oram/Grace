@@ -11,10 +11,10 @@ type
   IPluginDialog = interface(IInterface)
   end;
 
-  TluginDialog = class;
+  TPluginDialog = class;
   TPluginDialogForm = class;
 
-  TluginDialog = class(TInterfacedObject, IPluginDialog)
+  TPluginDialog = class(TInterfacedObject, IPluginDialog)
   private
     fDialogTop: integer;
     fDialogHeight: integer;
@@ -64,7 +64,7 @@ uses
 
 { TCustomPluginDialogData }
 
-constructor TluginDialog.Create;
+constructor TPluginDialog.Create;
 begin
   fUseCustomSize     := false;
   fUseCustomPosition := false;
@@ -74,14 +74,14 @@ begin
   fDialogWidth   := 0;
 end;
 
-destructor TluginDialog.Destroy;
+destructor TPluginDialog.Destroy;
 begin
   Log.LogMessage('TCustomPluginDialogData.Destroy');
 
   inherited;
 end;
 
-procedure TluginDialog.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
+procedure TPluginDialog.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
 var
   Region : HRGN;
   ModalShadow : TModalShadow;
