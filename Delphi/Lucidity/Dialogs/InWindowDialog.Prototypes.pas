@@ -9,7 +9,6 @@ uses
 
 type
   ICustomPluginDialog = interface(IInterface)
-    procedure ShowInWindow(const TopLevelForm : TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
   end;
 
   TCustomPluginDialogData = class;
@@ -28,7 +27,8 @@ type
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    procedure ShowInWindow(const TopLevelForm : TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
+
+    procedure ShowInWindow_WithAutoFree(const TopLevelForm : TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
 
     property UseCustomSize     : boolean read fUseCustomSize     write fUseCustomSize;
     property UseCustomPosition : boolean read fUseCustomPosition write fUseCustomPosition;
@@ -81,7 +81,7 @@ begin
   inherited;
 end;
 
-procedure TCustomPluginDialogData.ShowInWindow(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
+procedure TCustomPluginDialogData.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
 var
   Region : HRGN;
   ModalShadow : TModalShadow;
