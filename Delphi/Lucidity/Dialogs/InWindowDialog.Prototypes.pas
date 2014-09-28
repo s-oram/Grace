@@ -28,6 +28,7 @@ type
     constructor Create; virtual;
     destructor Destroy; override;
 
+    // This method sets up the auto free mechansim for the TPluginDialog object.
     procedure ShowInWindow_WithAutoFree(const TopLevelForm : TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
 
     property UseCustomSize     : boolean read fUseCustomSize     write fUseCustomSize;
@@ -76,7 +77,7 @@ end;
 
 destructor TPluginDialog.Destroy;
 begin
-  Log.LogMessage('TCustomPluginDialogData.Destroy');
+  Log.LogMessage('TPluginDialog.Destroy');
 
   inherited;
 end;
