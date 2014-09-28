@@ -39,11 +39,6 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 =============================================================================
      TODO HIGH
 =============================================================================
-- Working on creating a dialog system
--- This code here provides a way to do a semi-modal style shadow.
-   http://stackoverflow.com/questions/11867215/how-do-i-put-a-semi-transparent-layer-on-my-form
-
-
 Resave Waveshapers drum kits with release times set to max!
 
 Check out asyn calls.

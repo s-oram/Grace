@@ -48,7 +48,7 @@ object Form1: TForm1
       Align = alClient
       Visible = True
       object VamTreeView1: TVamTreeView
-        Left = 18
+        Left = 50
         Top = 3
         Width = 471
         Height = 406
@@ -104,6 +104,14 @@ object Form1: TForm1
     Caption = 'Button3'
     TabOrder = 5
     OnClick = Button3Click
+  end
+  object Panel1: TPanel
+    Left = 656
+    Top = 8
+    Width = 137
+    Height = 177
+    Caption = 'Panel1'
+    TabOrder = 6
   end
   object FileOpenDialog1: TFileOpenDialog
     FavoriteLinks = <>

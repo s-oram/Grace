@@ -177,7 +177,10 @@ uses
   VclEx.PopupMenuEx in 'Controls\VclEx.PopupMenuEx.pas',
   Menu.GroupVisibility in 'frames\Menu.GroupVisibility.pas',
   Lucidity.StateManager.PatchVersionUpdater in 'Lucidity.StateManager.PatchVersionUpdater.pas',
-  Menu.AutoSelectMenu in 'frames\Menu.AutoSelectMenu.pas';
+  Menu.AutoSelectMenu in 'frames\Menu.AutoSelectMenu.pas',
+  InWindowDialog.ModalShadow.Form in 'Dialogs\InWindowDialog.ModalShadow.Form.pas' {ModalShadow},
+  TestDialog in 'Dialogs\TestDialog.pas' {TestDialogForm},
+  InWindowDialog.Prototypes in 'Dialogs\InWindowDialog.Prototypes.pas';
 
 {$R *.res}
 

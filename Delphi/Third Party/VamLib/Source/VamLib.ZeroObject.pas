@@ -654,8 +654,8 @@ begin
     LastIndex := -1;
     try
       //if ObjectList = AudioObjects then Log.LogMessage('Audio SendMessage ID = ' + IntToStr(MsgID));
-      if ObjectList = VclObjects then Log.LogMessage('Vcl SendMessage ID = ' + IntToStr(MsgID));
-      if ObjectList = MainObjects then Log.LogMessage('Main SendMessage ID = ' + IntToStr(MsgID));
+      //if ObjectList = VclObjects then Log.LogMessage('Vcl SendMessage ID = ' + IntToStr(MsgID));
+      //if ObjectList = MainObjects then Log.LogMessage('Main SendMessage ID = ' + IntToStr(MsgID));
 
 
 

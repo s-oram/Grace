@@ -610,6 +610,15 @@
 			<DCCReference Include="frames\Menu.GroupVisibility.pas"/>
 			<DCCReference Include="Lucidity.StateManager.PatchVersionUpdater.pas"/>
 			<DCCReference Include="frames\Menu.AutoSelectMenu.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.ModalShadow.Form.pas">
+				<Form>ModalShadow</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Dialogs\TestDialog.pas">
+				<Form>TestDialogForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Dialogs\InWindowDialog.Prototypes.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

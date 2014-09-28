@@ -57,6 +57,7 @@ type
     VamPanel1: TVamPanel;
     VamTreeView1: TVamTreeView;
     Button3: TButton;
+    Panel1: TPanel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);

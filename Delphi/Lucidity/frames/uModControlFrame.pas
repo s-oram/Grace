@@ -137,6 +137,7 @@ type
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FilterOneContainerLabelClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     KnobList : TObjectList; //TODO:MED is this knob list being used?
@@ -169,6 +170,7 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  TestDialog,
   Math,
   eeTypes,
   VamQuery,
@@ -178,6 +180,7 @@ uses
   RedFoxColor, uLucidityEnums,
   uConstants, uGuiUtils,
   GuiDrawingRoutines,
+  InWindowDialog,
   Lucidity.KeyGroup,
   LucidityModConnections;
 
@@ -738,6 +741,8 @@ begin
 end;
 
 
+
+
 procedure TModControlFrame.Timer1Timer(Sender: TObject);
 begin
   //TODO:MED delete this timer.
@@ -823,6 +828,20 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
+end;
+
+procedure TModControlFrame.FilterOneContainerLabelClick(Sender: TObject);
+var
+  TestDialog : TTestDialog;
+begin
+  //TestDialog := TTestDialogForm.Create(TForm(Plugin.Globals.TopGuiWindow));
+  //TestDialog.Width  := 300;
+  //TestDialog.Height := 300;
+  //ShowInWindowDialog(TForm(Plugin.Globals.TopGuiWindow), TestDialog);
+
+
+  TestDialog := TTestDialog.Create;
+  TestDialog.ShowInWindow(TForm(Plugin.Globals.TopGuiWindow), false, false);
 end;
 
 end.
