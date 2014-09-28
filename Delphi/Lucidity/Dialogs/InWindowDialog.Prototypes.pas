@@ -82,11 +82,17 @@ begin
 end;
 
 procedure TPluginDialog.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
+// NOTE: This method sets up the mechansism to automatically free the TPluginDialog object when it is no longer
+// required. This absolves the calling code of it's normal responsibility of freeing the TPluginDialog object.
+// This mechanism works by using Interface reference counting.
+// NOTE: I think this technique could be better signafied in the code if this method
+// was a standalone method. However I like it being a member of the TPluginDialog object
+// because it also shows the tight coupling between the ShowInWindow() method and the TPluginDialog object. hmmm.....
 var
   Region : HRGN;
   ModalShadow : TModalShadow;
   DialogForm : TPluginDialogForm;
-  xLeft, xTop, xWidth, xHeight : integer; //TODO:MED rename these to dxLeft etc.
+  xLeft, xTop, xWidth, xHeight : integer;
 begin
   assert(assigned(TopLevelForm));
 
