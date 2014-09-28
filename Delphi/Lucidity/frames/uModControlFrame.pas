@@ -834,12 +834,6 @@ procedure TModControlFrame.FilterOneContainerLabelClick(Sender: TObject);
 var
   TestDialog : TTestDialog;
 begin
-  //TestDialog := TTestDialogForm.Create(TForm(Plugin.Globals.TopGuiWindow));
-  //TestDialog.Width  := 300;
-  //TestDialog.Height := 300;
-  //ShowInWindowDialog(TForm(Plugin.Globals.TopGuiWindow), TestDialog);
-
-
   TestDialog := TTestDialog.Create;
   TestDialog.ShowInWindow_WithAutoFree(TForm(Plugin.Globals.TopGuiWindow), false, false);
 end;
