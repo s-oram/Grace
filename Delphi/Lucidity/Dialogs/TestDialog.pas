@@ -8,16 +8,16 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
-  TTestDialog = class(TCustomPluginDialogData)
+  TTestDialog = class(TluginDialog)
   private
   protected
-    function CreateDialogForm(AOwner: TComponent) : TCustomPluginDialogForm; override;
+    function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;
   public
     constructor Create; override;
     destructor Destroy; override;
   end;
 
-  TTestDialogForm = class(TCustomPluginDialogForm)
+  TTestDialogForm = class(TPluginDialogForm)
     Panel1: TPanel;
     CancelButton: TButton;
     OkButton: TButton;
@@ -49,7 +49,7 @@ begin
   inherited;
 end;
 
-function TTestDialog.CreateDialogForm(AOwner: TComponent): TCustomPluginDialogForm;
+function TTestDialog.CreateDialogForm(AOwner: TComponent): TPluginDialogForm;
 var
   aForm : TTestDialogForm;
 begin

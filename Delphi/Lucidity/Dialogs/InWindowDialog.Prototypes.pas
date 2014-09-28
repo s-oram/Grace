@@ -8,13 +8,13 @@ uses
   InWindowDialog.ModalShadow.Form;
 
 type
-  ICustomPluginDialog = interface(IInterface)
+  IPluginDialog = interface(IInterface)
   end;
 
-  TCustomPluginDialogData = class;
-  TCustomPluginDialogForm = class;
+  TluginDialog = class;
+  TPluginDialogForm = class;
 
-  TCustomPluginDialogData = class(TInterfacedObject, ICustomPluginDialog)
+  TluginDialog = class(TInterfacedObject, IPluginDialog)
   private
     fDialogTop: integer;
     fDialogHeight: integer;
@@ -23,7 +23,7 @@ type
     fUseCustomSize: boolean;
     fUseCustomPosition: boolean;
   protected
-    function CreateDialogForm(AOwner: TComponent) : TCustomPluginDialogForm; virtual; abstract;
+    function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; virtual; abstract;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -39,9 +39,9 @@ type
     property DialogHeight : integer read fDialogHeight write fDialogHeight;
   end;
 
-  TCustomPluginDialogForm = class(TForm)
+  TPluginDialogForm = class(TForm)
   private
-    DialogDataReference : ICustomPluginDialog;
+    DialogDataReference : IPluginDialog;
     ModalShadow : TModalShadow;
   protected
     procedure DoClose(var Action: TCloseAction); override; final;
@@ -64,7 +64,7 @@ uses
 
 { TCustomPluginDialogData }
 
-constructor TCustomPluginDialogData.Create;
+constructor TluginDialog.Create;
 begin
   fUseCustomSize     := false;
   fUseCustomPosition := false;
@@ -74,18 +74,18 @@ begin
   fDialogWidth   := 0;
 end;
 
-destructor TCustomPluginDialogData.Destroy;
+destructor TluginDialog.Destroy;
 begin
   Log.LogMessage('TCustomPluginDialogData.Destroy');
 
   inherited;
 end;
 
-procedure TCustomPluginDialogData.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
+procedure TluginDialog.ShowInWindow_WithAutoFree(const TopLevelForm: TForm; const ShowModalShadow : boolean; const AllowModalCancel:boolean);
 var
   Region : HRGN;
   ModalShadow : TModalShadow;
-  DialogForm : TCustomPluginDialogForm;
+  DialogForm : TPluginDialogForm;
   xLeft, xTop, xWidth, xHeight : integer; //TODO:MED rename these to dxLeft etc.
 begin
   assert(assigned(TopLevelForm));
@@ -154,31 +154,31 @@ end;
 
 { TCustomPluginDialogForm }
 
-constructor TCustomPluginDialogForm.Create(AOwner: TComponent);
+constructor TPluginDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
 
 end;
 
-destructor TCustomPluginDialogForm.Destroy;
+destructor TPluginDialogForm.Destroy;
 begin
   DialogDataReference := nil;
 
   inherited;
 end;
 
-procedure TCustomPluginDialogForm.DoClose(var Action: TCloseAction);
+procedure TPluginDialogForm.DoClose(var Action: TCloseAction);
 begin
   inherited;
   Action := TCloseAction.caFree;
 end;
 
-procedure TCustomPluginDialogForm.EventHandle_ModalShadowClicked(Sender: TObject);
+procedure TPluginDialogForm.EventHandle_ModalShadowClicked(Sender: TObject);
 begin
   CloseDialog;
 end;
 
-procedure TCustomPluginDialogForm.CloseDialog;
+procedure TPluginDialogForm.CloseDialog;
 begin
   self.Close;
   if assigned(ModalShadow) then ModalShadow.Close;
