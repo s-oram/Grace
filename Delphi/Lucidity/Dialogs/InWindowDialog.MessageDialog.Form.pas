@@ -64,8 +64,8 @@ begin
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
   //BackPanel1.Color := GetRedfoxColor(clRed);
-  BackPanel2.Color := GetRedfoxColor(clWindow);
-  DialogTextControl.Color := GetRedfoxColor(clWindow);
+  BackPanel2.Color := GetRedfoxColor(cl3DLight);
+  DialogTextControl.Color := GetRedfoxColor(cl3DLight);
 end;
 
 destructor TMessageDialogForm.Destroy;
@@ -107,12 +107,9 @@ var
 begin
   fDialogText := Value;
 
-
   TextRect := CalcRequiredTextRect(DialogTextControl.Canvas.Handle, fDialogText, 700);
   TextWidth  := TextRect.Width;
   TextHeight := TextRect.Height;
-
-  DialogTextControl.Canvas.TextRect(TextRect, fDialogText, [tfCalcRect]);
 
   DialogTextControl.WordWrap := true;
   DialogTextControl.Caption := fDialogText;

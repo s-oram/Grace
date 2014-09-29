@@ -105,6 +105,16 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = Button3Click
   end
+  object Panel1: TPanel
+    Left = 560
+    Top = 368
+    Width = 145
+    Height = 145
+    Caption = 'Panel1'
+    Color = cl3DLight
+    ParentBackground = False
+    TabOrder = 6
+  end
   object FileOpenDialog1: TFileOpenDialog
     FavoriteLinks = <>
     FileTypes = <>

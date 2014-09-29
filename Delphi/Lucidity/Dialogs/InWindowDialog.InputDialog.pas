@@ -29,7 +29,7 @@ type
 implementation
 
 uses
-  InWindowDialog.InputBoxDialog.Form;
+  InWindowDialog.InputDialog.Form;
 
 { TInputBox }
 
