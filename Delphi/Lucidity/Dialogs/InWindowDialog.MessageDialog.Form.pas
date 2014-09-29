@@ -66,6 +66,9 @@ begin
   //BackPanel1.Color := GetRedfoxColor(clRed);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   DialogTextControl.Color := GetRedfoxColor(cl3DLight);
+
+  // Important: add controls to the alternative tab order list.
+  TabOrderControlList.Add(OkButton);
 end;
 
 destructor TMessageDialogForm.Destroy;

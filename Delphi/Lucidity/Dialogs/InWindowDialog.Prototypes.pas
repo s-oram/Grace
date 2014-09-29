@@ -45,6 +45,10 @@ type
     DialogDataReference : IPluginDialog;
     ModalShadow : TModalShadow;
   protected
+    // Delphi's existing TabOrder mechanism doesn't work with in-window dialogs.
+    // The focus is eventually passed to a control on the parent form/frame/panel.
+    // TPluginDialogForm implements a custom tab order mechanism. Add controls
+    // in the desired tab order to the TabOrderControlList to use.
     TabOrderControlList : TObjectList;
 
     procedure DoClose(var Action: TCloseAction); override; final;
@@ -57,7 +61,7 @@ type
     destructor Destroy; override;
 
     procedure FocusFirstControl;
-    procedure FocusNextControl;
+    procedure FocusNextControl; // Typically called when tabbing.
 
     // Closes the main dialog form and the modal shadow.
     procedure CloseDialog;
