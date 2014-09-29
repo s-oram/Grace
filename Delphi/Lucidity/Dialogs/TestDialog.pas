@@ -5,7 +5,8 @@ interface
 uses
   InWindowDialog, InWindowDialog.Prototypes,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.XPMan;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.XPMan,
+  VamButton, VamDiv, RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer;
 
 type
   TTestDialog = class(TPluginDialog)
@@ -18,9 +19,13 @@ type
   end;
 
   TTestDialogForm = class(TPluginDialogForm)
-    Panel1: TPanel;
-    CancelButton: TButton;
-    OkButton: TButton;
+    RedFoxContainer1: TRedFoxContainer;
+    VamPanel1: TVamPanel;
+    VamPanel2: TVamPanel;
+    VamDiv1: TVamDiv;
+    Button1: TButton;
+    Button2: TButton;
+    Label1: TLabel;
     procedure OkButtonClick(Sender: TObject);
   public
     constructor Create(AOwner: TComponent); override;

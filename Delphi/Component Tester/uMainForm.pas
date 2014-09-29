@@ -57,7 +57,6 @@ type
     VamPanel1: TVamPanel;
     VamTreeView1: TVamTreeView;
     Button3: TButton;
-    Panel1: TPanel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -104,7 +103,8 @@ uses
   Generics.Collections,
   VamLib.Threads,
   DateUtils,
-  ACS_MAD;
+  ACS_MAD,
+  InWindowsDialog.MessageDialog;
 
 type
   TProcDictionary = TDictionary<integer, TDateTime>;
@@ -187,23 +187,18 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   //
-  FileBrowserAddon.UpdateRootNodes;
+  //FileBrowserAddon.UpdateRootNodes;
+  //ShowMessage('bang');
+  InputBox('bang','bang','bang');
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  ms : TMemoryStream;
+  MessageDialog : TMessageDialog;
 begin
-  ms := TMemoryStream.Create;
-  try
-    VamTreeView1.SaveToStream(ms);
-    VamTreeView1.Clear;
-    ms.Position := 0;
-    VamTreeView1.LoadFromStream(ms);
-    VamTreeView1.Invalidate;
-  finally
-    ms.Free;
-  end;
+  MessageDialog := TMessageDialog.Create;
+  MessageDialog.Text := 'James brown is dead. Frozen sald is the best.' + EndOfLine + 'Jacob was first.' + EndOfLine + 'A fanzine (portmanteau of fan and magazine or -zine) is a nonprofessional and nonofficial publication produced by fans of a particular cultural phenomenon (such as a literary or musical genre) for the pleasure of others who share their interest.';
+  MessageDialog.ShowInWindow_WithAutoFree(self, true, true);
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);

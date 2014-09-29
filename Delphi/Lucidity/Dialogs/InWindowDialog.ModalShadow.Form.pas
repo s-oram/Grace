@@ -66,6 +66,8 @@ constructor TModalShadow.CreateShadow(AForm: TForm);
 begin
   inherited Create(AForm);
 
+  self.DoubleBuffered := true;
+
   Parent := AForm;
   PopupParent := AForm;
   FBmp := TBitmap.Create;
@@ -81,6 +83,15 @@ begin
   OldCreateOrder := False;
   PopupMode := pmExplicit;
   Position := poDesigned;
+
+
+
+  FBmp.Width  := AForm.Width;
+  FBmp.Height := AForm.Height;
+
+  PopupParent.PaintTo(fBmp.Canvas, 0, 0);
+
+  AdjustAlpha(fBmp);
 end;
 
 destructor TModalShadow.Destroy;
@@ -113,7 +124,6 @@ begin
 
   FBmp.Width  := r.Width;
   FBmp.Height := r.Height;
-
 
   PopupParent.PaintTo(fBmp.Canvas, 0, 0);
 

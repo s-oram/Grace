@@ -39,6 +39,9 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 =============================================================================
      TODO HIGH
 =============================================================================
+Plugin Delay compensation
+thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
+
 Resave Waveshapers drum kits with release times set to max!
 
 Check out asyn calls.
@@ -190,6 +193,11 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+
+Check out SVG Delphi component. Might be useful for creating resizable GUI's 
+and for styling delphi controls.
+http://www.riversoftavg.com/svg.htm
+
 
 [FEATURE REQUEST] Yann
 1 - Would it be possible to navigate in the keymapper using key arrows ( left/right to skip to previous / next sample, and up/down to skip to the other veolicty layer). It would speed up the workflow, allowing 2 hands work.

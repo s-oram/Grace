@@ -105,14 +105,6 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = Button3Click
   end
-  object Panel1: TPanel
-    Left = 656
-    Top = 8
-    Width = 137
-    Height = 177
-    Caption = 'Panel1'
-    TabOrder = 6
-  end
   object FileOpenDialog1: TFileOpenDialog
     FavoriteLinks = <>
     FileTypes = <>

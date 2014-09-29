@@ -139,8 +139,6 @@ begin
 
     if AllowModalCancel
       then ModalShadow.OnShadowClicked := DialogForm.EventHandle_ModalShadowClicked;
-
-    ModalShadow.ShowShadow;
   end;
 
   //== setup the main dialog form ==
@@ -152,8 +150,15 @@ begin
   DialogForm.Width  := xWidth;
   DialogForm.Height := xHeight;
   DialogForm.FormStyle := TFormStyle.fsStayOnTop;
-  Region := CreateRoundRectRgn(0, 0, xWidth, xHeight, 6, 6);
+  Region := CreateRoundRectRgn(0, 0, xWidth+1, xHeight+1, 4, 4);
   SetWindowRgn(DialogForm.Handle, Region, true);
+
+
+  //=== show the forms ====
+  if ShowModalShadow then
+  begin
+    ModalShadow.ShowShadow;
+  end;
   DialogForm.Visible := true;
   DialogForm.BringToFront;
 
@@ -164,6 +169,8 @@ end;
 constructor TPluginDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
+
+  DoubleBuffered := true;
 
 end;
 

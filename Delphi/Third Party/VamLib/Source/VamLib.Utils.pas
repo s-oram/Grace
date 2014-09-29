@@ -100,12 +100,6 @@ function AutoFree(const aObject: PObject): IUnknown;
 function MemoryUsed: cardinal;
 function BytesToMegaBytes(const Value : single):single;
 
-
-
-
-
-
-
 type
   GuidEx = record
     class function NewGuid : TGuid; static;
@@ -748,6 +742,8 @@ class function GuidEx.ToUnicodeString(Guid: TGuid): string;
 begin
   result := GuidToString(Guid);
 end;
+
+
 
 
 end.
