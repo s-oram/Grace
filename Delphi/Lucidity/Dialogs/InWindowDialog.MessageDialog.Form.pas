@@ -1,4 +1,4 @@
-unit InWindowsDialog.MessageDialog.Form;
+unit InWindowDialog.MessageDialog.Form;
 
 interface
 
@@ -39,8 +39,6 @@ type
     property ColorBackground : TColor read fColorBackground write SetColorBackground;
     property ColorBorder     : TColor read fColorBorder     write SetColorBorder;
     property ColorText       : TColor read fColorText       write SetColorText;
-
-
 
     property OnOkButton : TNotifyEvent read fOnOkayButton write fOnOkayButton;
   end;

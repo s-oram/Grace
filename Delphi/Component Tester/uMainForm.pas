@@ -104,7 +104,8 @@ uses
   VamLib.Threads,
   DateUtils,
   ACS_MAD,
-  InWindowsDialog.MessageDialog;
+  InWindowDialog.MessageDialog,
+  InWindowDialog.InputDialog;
 
 type
   TProcDictionary = TDictionary<integer, TDateTime>;
@@ -202,8 +203,14 @@ begin
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
+var
+  InputDialog : TInputDialog;
 begin
-  FileBrowserAddon.RefreshTreeView;
+  Inputdialog := TInputDialog.Create;
+  InputDialog.InputText := 'Text';
+  InputDialog.InputLabel := 'Label';
+  InputDialog.DefaultValue := 'Default Value';
+  InputDialog.ShowInWindow_WithAutoFree(self, true, true);
 end;
 
 procedure TForm1.UpdateLabel;

@@ -1,4 +1,4 @@
-unit InWindowsDialog.MessageDialog;
+unit InWindowDialog.MessageDialog;
 
 interface
 
@@ -11,8 +11,6 @@ type
   private
     fText: string;
     fColorBorder: TColor;
-    fColorText: TColor;
-    fColorBackground: TColor;
   protected
     function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;
 
@@ -22,15 +20,13 @@ type
     destructor Destroy; override;
 
     property Text : string read fText write fText;
-    property ColorBackground : TColor read fColorBackground write fColorBackground;
-    property ColorBorder     : TColor read fColorBorder     write fColorBorder;
-    property ColorText       : TColor read fColorText       write fColorText;
+    property ColorBorder : TColor read fColorBorder write fColorBorder;
   end;
 
 implementation
 
 uses
-  InWindowsDialog.MessageDialog.Form;
+  InWindowDialog.MessageDialog.Form;
 
 { TTestDialog }
 
@@ -38,10 +34,7 @@ constructor TMessageDialog.Create;
 begin
   inherited;
   Text := '';
-
-  ColorBackground := clGray;
-  ColorBorder     := clBlack;
-  ColorText       := clBlack;
+  ColorBorder := clBlack;
 end;
 
 destructor TMessageDialog.Destroy;

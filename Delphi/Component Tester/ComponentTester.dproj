@@ -97,13 +97,18 @@
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="..\Third Party\newAC\src\ACS_MemFloat.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowsDialog.MessageDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowsDialog.MessageDialog.Form.pas">
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.MessageDialog.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.MessageDialog.Form.pas">
 				<Form>MessageDialogForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.ModalShadow.Form.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.Prototypes.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputBoxDialog.Form.pas">
+				<Form>InputBoxDialogForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
