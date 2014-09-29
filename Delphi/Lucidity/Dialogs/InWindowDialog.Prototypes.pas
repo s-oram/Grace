@@ -3,8 +3,8 @@ unit InWindowDialog.Prototypes;
 interface
 
 uses
-  Classes,
-  Vcl.Forms,
+  Classes, Messages, Controls,
+  Vcl.Forms, Contnrs,
   InWindowDialog.ModalShadow.Form;
 
 type
@@ -45,12 +45,19 @@ type
     DialogDataReference : IPluginDialog;
     ModalShadow : TModalShadow;
   protected
+    TabOrderControlList : TObjectList;
+
     procedure DoClose(var Action: TCloseAction); override; final;
 
     procedure EventHandle_ModalShadowClicked(Sender : TObject);
+
+    procedure CMChildKey(var Message: TCMChildKey); message CM_CHILDKEY;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    procedure FocusFirstControl;
+    procedure FocusNextControl;
 
     // Closes the main dialog form and the modal shadow.
     procedure CloseDialog;
@@ -161,6 +168,7 @@ begin
   end;
   DialogForm.Visible := true;
   DialogForm.BringToFront;
+  DialogForm.FocusFirstControl;
 
 end;
 
@@ -172,12 +180,15 @@ begin
 
   DoubleBuffered := true;
 
+  TabOrderControlList := TObjectList.Create;
+  TabOrderControlList.OwnsObjects := false;
+
 end;
 
 destructor TPluginDialogForm.Destroy;
 begin
   DialogDataReference := nil;
-
+  TabOrderControlList.Free;
   inherited;
 end;
 
@@ -192,11 +203,73 @@ begin
   CloseDialog;
 end;
 
+procedure TPluginDialogForm.FocusFirstControl;
+var
+  c : TWinControl;
+begin
+  if TabOrderControlList.Count > 0 then
+  begin
+    c := TabOrderControlList[0] as TWinControl;
+    c.SetFocus;
+  end;
+end;
+
+procedure TPluginDialogForm.FocusNextControl;
+var
+  c : TWinControl;
+  c1 : integer;
+  FocusIndex : integer;
+begin
+  if TabOrderControlList.Count = 0 then exit;
+
+  FocusIndex := -1;
+
+  for c1 := 0 to TabOrderControlList.Count-1 do
+  begin
+    c := TabOrderControlList[c1] as TWinControl;
+    if c.Focused then
+    begin
+      FocusIndex := c1;
+      break; //===BREAK====>>
+    end;
+  end;
+
+  if FocusIndex = -1 then
+  begin
+    c := TabOrderControlList[0] as TWinControl;
+    c.SetFocus;
+  end else
+  if FocusIndex >= 0 then
+  begin
+    inc(FocusIndex);
+    if FocusIndex >= TabOrderControlList.Count then FocusIndex := 0;
+    c := TabOrderControlList[FocusIndex] as TWinControl;
+    c.SetFocus;
+  end;
+
+end;
+
+procedure TPluginDialogForm.CMChildKey(var Message: TCMChildKey);
+begin
+  if Message.CharCode = VK_TAB then
+  begin
+    FocusNextControl;
+    Message.Result := 1;
+  end else
+  begin
+    inherited;
+  end;
+end;
+
+
 procedure TPluginDialogForm.CloseDialog;
 begin
   self.Close;
   if assigned(ModalShadow) then ModalShadow.Close;
 end;
+
+
+
 
 
 

@@ -10,7 +10,11 @@ object InputDialogForm: TInputDialogForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
+  OnDeactivate = FormDeactivate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object RedFoxContainer1: TRedFoxContainer
@@ -72,6 +76,7 @@ object InputDialogForm: TInputDialogForm
             Height = 22
             Caption = 'OK'
             TabOrder = 0
+            OnClick = OkButtonClick
           end
           object CancelButton: TButton
             Left = 272
@@ -80,6 +85,7 @@ object InputDialogForm: TInputDialogForm
             Height = 22
             Caption = 'Cancel'
             TabOrder = 1
+            OnClick = CancelButtonClick
           end
         end
         object MainDialogArea: TVamDiv
@@ -125,13 +131,11 @@ object InputDialogForm: TInputDialogForm
             Left = 0
             Top = 3
             Width = 86
-            Height = 25
+            Height = 13
             Margins.Left = 0
             Margins.Right = 4
             Align = alLeft
             Caption = 'InputLabelControl'
-            ExplicitTop = 2
-            ExplicitHeight = 13
           end
           object InputEditControl: TEdit
             AlignWithMargins = True

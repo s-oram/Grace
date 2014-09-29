@@ -9,6 +9,8 @@ uses
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer;
 
 type
+  TStringEvent = procedure(Sender : TObject; Text : string) of object;
+
   TInputDialogForm = class(TPluginDialogForm)
     RedFoxContainer1: TRedFoxContainer;
     BackPanel1: TVamPanel;
@@ -22,15 +24,21 @@ type
     CancelButton: TButton;
     InputLabelControl: TLabel;
     procedure ButtonDivResize(Sender: TObject);
+    procedure OkButtonClick(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
-    fOnOkayButton: TNotifyEvent;
     fInputLabel: string;
     fDefaultValue: string;
     fInputText: string;
+    fOnDialogResult: TStringEvent;
     procedure SetDefaultValue(const Value: string);
     procedure SetInputLabel(const Value: string);
     procedure SetInputText(const Value: string);
-
+  protected
+    procedure CMChildKey(var Message: TCMChildKey); message CM_CHILDKEY;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -39,7 +47,7 @@ type
     property InputLabel   : string read fInputLabel   write SetInputLabel;
     property DefaultValue : string read fDefaultValue write SetDefaultValue;
 
-    property OnOkButton : TNotifyEvent read fOnOkayButton write fOnOkayButton;
+    property OnDialogResult : TStringEvent read fOnDialogResult write fOnDialogResult;
   end;
 
 
@@ -57,10 +65,11 @@ uses
 
 
 
+
+
 constructor TInputDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
-
 
   CancelButton.Width := OkButton.Width;
 
@@ -80,12 +89,41 @@ begin
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   InputLabelControl.Color := cl3DLight;
   DialogTextControl.Color := cl3DLight;
+
+
+  InputEditControl.TabOrder := 0;
+  OkButton.TabOrder         := 1;
+  CancelButton.TabOrder     := 2;
+
+
+  TabOrderControlList.Add(InputEditControl);
+  TabOrderControlList.Add(OkButton);
+  TabOrderControlList.Add(CancelButton);
+
+
 end;
 
 destructor TInputDialogForm.Destroy;
 begin
 
   inherited;
+end;
+
+
+
+procedure TInputDialogForm.FormDeactivate(Sender: TObject);
+begin
+  //showMessage('bang');
+end;
+
+procedure TInputDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  //ShowMessage('FormKeyDown');
+end;
+
+procedure TInputDialogForm.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  //ShowMessage('FormKeyPress');
 end;
 
 procedure TInputDialogForm.ButtonDivResize(Sender: TObject);
@@ -140,5 +178,24 @@ begin
   self.Width := AutoFormWidth;
   self.Height := AutoFormHeight;
 end;
+
+procedure TInputDialogForm.OkButtonClick(Sender: TObject);
+begin
+  if assigned(OnDialogResult) then OnDialogResult(self, InputEditControl.Text);
+  CloseDialog;
+end;
+
+procedure TInputDialogForm.CancelButtonClick(Sender: TObject);
+begin
+  CloseDialog;
+end;
+
+
+procedure TInputDialogForm.CMChildKey(var Message: TCMChildKey);
+begin
+  inherited;
+end;
+
+
 
 end.
