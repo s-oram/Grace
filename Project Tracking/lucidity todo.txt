@@ -39,6 +39,9 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 =============================================================================
      TODO HIGH
 =============================================================================
+Interesting artical for key processing.
+http://edn.embarcadero.com/article/38447
+
 Plugin Delay compensation
 thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
 

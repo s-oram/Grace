@@ -49,15 +49,13 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
-    Memo1: TMemo;
-    RedFoxContainer1: TRedFoxContainer;
     Button2: TButton;
-    Edit1: TEdit;
-    FileOpenDialog1: TFileOpenDialog;
-    VamPanel1: TVamPanel;
-    VamTreeView1: TVamTreeView;
     Button3: TButton;
     Panel1: TPanel;
+    Panel2: TPanel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -174,9 +172,7 @@ begin
 
   Delete(xs, Length(xs), 1);
 
-  FileBrowserAddon := TFileBrowserAddon.Create(VamTreeView1);
-  FileBrowserAddon.AddRootNode('d:\', 'd');
-  FileBrowserAddon.UpdateRootNodes;
+
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -200,7 +196,7 @@ var
 begin
   MessageDialog := TMessageDialog.Create;
   MessageDialog.Text := 'James brown is dead. Frozen sald is the best.' + EndOfLine + 'Jacob was first.' + EndOfLine + 'A fanzine (portmanteau of fan and magazine or -zine) is a nonprofessional and nonofficial publication produced by fans of a particular cultural phenomenon (such as a literary or musical genre) for the pleasure of others who share their interest.';
-  MessageDialog.ShowInWindow_WithAutoFree(self, true, true);
+  MessageDialog.ShowInWindow_WithAutoFree(self, false, true);
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -211,7 +207,15 @@ begin
   InputDialog.InputText := 'Text';
   InputDialog.InputLabel := 'Label';
   InputDialog.DefaultValue := 'Default Value';
-  InputDialog.ShowInWindow_WithAutoFree(self, true, true);
+
+  InputDialog.DialogResultHandler := procedure(InputText : string)
+  begin
+    ShowMessage(InputText);
+  end;
+
+  InputDialog.ShowInWindow_WithAutoFree(self, false, true);
+
+
 end;
 
 procedure TForm1.UpdateLabel;

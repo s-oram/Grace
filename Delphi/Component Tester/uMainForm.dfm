@@ -24,77 +24,14 @@ object Form1: TForm1
     TabOrder = 0
     OnClick = Button1Click
   end
-  object RedFoxContainer1: TRedFoxContainer
-    Left = 25
-    Top = 16
-    Width = 609
-    Height = 440
-    Color = '$FFCCCCCC'
-    object VamPanel1: TVamPanel
-      AlignWithMargins = True
-      Left = 8
-      Top = 8
-      Width = 593
-      Height = 424
-      Margins.Left = 8
-      Margins.Top = 8
-      Margins.Right = 8
-      Margins.Bottom = 8
-      Opacity = 255
-      Text = 'VamPanel1'
-      HitTest = True
-      Color = '$FFCCCCCC'
-      Transparent = False
-      Align = alClient
-      Visible = True
-      object VamTreeView1: TVamTreeView
-        Left = 50
-        Top = 3
-        Width = 471
-        Height = 406
-        Opacity = 255
-        Text = 'VamTreeView1'
-        HitTest = True
-        SelectedNodeColor = clBlack
-        SelectedNodeAlpha = 35
-        ChildIndent = 12
-        DefaultNodeHeight = 16
-        Options = []
-        RootIndent = 4
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Visible = True
-      end
-    end
-  end
   object Button2: TButton
     Left = 185
     Top = 462
     Width = 139
     Height = 25
     Caption = 'Button2'
-    TabOrder = 3
-    OnClick = Button2Click
-  end
-  object Memo1: TMemo
-    Left = 640
-    Top = 83
-    Width = 353
-    Height = 265
-    Lines.Strings = (
-      'Memo1')
     TabOrder = 1
-  end
-  object Edit1: TEdit
-    Left = 640
-    Top = 55
-    Width = 401
-    Height = 22
-    TabOrder = 4
-    Text = '<region> sample=tom one.wav lokey=12'
+    OnClick = Button2Click
   end
   object Button3: TButton
     Left = 330
@@ -102,24 +39,47 @@ object Form1: TForm1
     Width = 139
     Height = 25
     Caption = 'Button3'
-    TabOrder = 5
+    TabOrder = 2
     OnClick = Button3Click
   end
   object Panel1: TPanel
-    Left = 560
-    Top = 368
-    Width = 145
-    Height = 145
+    Left = 25
+    Top = 48
+    Width = 320
+    Height = 185
     Caption = 'Panel1'
-    Color = cl3DLight
-    ParentBackground = False
-    TabOrder = 6
+    TabOrder = 3
+    object Edit1: TEdit
+      Left = 64
+      Top = 32
+      Width = 89
+      Height = 22
+      TabOrder = 0
+      Text = 'Edit1'
+    end
+    object Edit2: TEdit
+      Left = 50
+      Top = 60
+      Width = 89
+      Height = 22
+      TabOrder = 1
+      Text = 'Edit1'
+    end
   end
-  object FileOpenDialog1: TFileOpenDialog
-    FavoriteLinks = <>
-    FileTypes = <>
-    Options = []
-    Left = 816
-    Top = 368
+  object Panel2: TPanel
+    Left = 377
+    Top = 48
+    Width = 320
+    Height = 185
+    Caption = 'Panel1'
+    TabOrder = 4
+    object Edit3: TEdit
+      Left = 34
+      Top = 44
+      Width = 89
+      Height = 22
+      TabOrder = 0
+      Text = 'Edit1'
+    end
   end
 end
