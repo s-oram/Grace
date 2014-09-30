@@ -136,6 +136,18 @@ begin
     xTop  := (TopLevelForm.Height - DialogForm.Height) div 5 * 2;
   end;
 
+  //== setup the main dialog form ==
+  DialogForm.BorderStyle := TFormBorderStyle.bsNone;
+  DialogForm.Position := TPosition.poDesigned;
+  DialogForm.Parent := TopLevelForm;
+  DialogForm.Left   := xLeft;
+  DialogForm.Top    := xTop;
+  DialogForm.Width  := xWidth;
+  DialogForm.Height := xHeight;
+  DialogForm.FormStyle := TFormStyle.fsStayOnTop;
+  Region := CreateRoundRectRgn(0, 0, xWidth+1, xHeight+1, 4, 4);
+  SetWindowRgn(DialogForm.Handle, Region, true);
+
   //== create and setup the modal shadow ==
   if ShowModalShadow then
   begin
@@ -150,26 +162,11 @@ begin
 
     if AllowModalCancel
       then ModalShadow.OnShadowClicked := DialogForm.EventHandle_ModalShadowClicked;
-  end;
 
-  //== setup the main dialog form ==
-  DialogForm.BorderStyle := TFormBorderStyle.bsNone;
-  DialogForm.Position := TPosition.poDesigned;
-  DialogForm.Parent := TopLevelForm;
-  DialogForm.Left   := xLeft;
-  DialogForm.Top    := xTop;
-  DialogForm.Width  := xWidth;
-  DialogForm.Height := xHeight;
-  DialogForm.FormStyle := TFormStyle.fsStayOnTop;
-  Region := CreateRoundRectRgn(0, 0, xWidth+1, xHeight+1, 4, 4);
-  SetWindowRgn(DialogForm.Handle, Region, true);
-
-
-  //=== show the forms ====
-  if ShowModalShadow then
-  begin
     ModalShadow.ShowShadow;
   end;
+
+  //== show the dialog form ==
   DialogForm.Visible := true;
   DialogForm.BringToFront;
   DialogForm.FocusFirstControl;
