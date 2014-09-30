@@ -223,8 +223,6 @@ begin
   begin
     Name := Plugin.SampleDirectories[c1].Name;
     Path := Plugin.SampleDirectories[c1].Path;
-
-    //if (Name <> '') and (DirectoryExists(Path)) then
     FileBrowserAddon.AddRootNode(Path, Name);
   end;
 

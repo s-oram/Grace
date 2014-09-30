@@ -132,6 +132,9 @@ end;
 
 procedure TFileBrowserAddon.AddRootNode(Dir, Name: string);
 begin
+  Name := Trim(Name);
+  if Name = '' then Name := '(No Name)';
+
   inc(RootNodeCount);
   SetLength(RootNodes, RootNodeCount);
   RootNodes[RootNodeCount-1].Dir  := Dir;
@@ -189,6 +192,7 @@ var
   Data, ChildData : PNodeData;
   FolderResults, FileResults : TStringList;
   Dir : string;
+  NodePath : string;
 begin
   Data := Node.Data;
 
@@ -196,7 +200,9 @@ begin
     then Allowed := true
     else Allowed := false;
 
-  if Data^.CanExpand then
+  NodePath := Data^.FileName;
+
+  if (Data^.CanExpand) and (DirectoryExists(NodePath)) then
   begin
     FolderResults  := TStringList.Create;
     FolderResults.Sorted := true;
@@ -252,8 +258,20 @@ begin
       ChildData^.NodeType    := ntSpecial;
       ChildData^.CanExpand   := false;
     end;
-
   end;
+
+
+  if (Data^.CanExpand) and (DirectoryExists(NodePath) = false) then
+  begin
+    ChildNode := TreeView.CreateNode(Node);
+    ChildNode.Caption := 'Error: Path not found.';
+
+    ChildData              := ChildNode.Data;
+    ChildData^.FileName    := '';
+    ChildData^.NodeType    := ntSpecial;
+    ChildData^.CanExpand   := false;
+  end;
+
 end;
 
 
