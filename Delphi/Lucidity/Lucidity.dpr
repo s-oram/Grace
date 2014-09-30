@@ -180,7 +180,11 @@ uses
   Menu.AutoSelectMenu in 'frames\Menu.AutoSelectMenu.pas',
   InWindowDialog.ModalShadow.Form in 'Dialogs\InWindowDialog.ModalShadow.Form.pas' {ModalShadow},
   TestDialog in 'Dialogs\TestDialog.pas' {TestDialogForm},
-  InWindowDialog.Prototypes in 'Dialogs\InWindowDialog.Prototypes.pas';
+  InWindowDialog.Prototypes in 'Dialogs\InWindowDialog.Prototypes.pas',
+  InWindowDialog.InputDialog in 'Dialogs\InWindowDialog.InputDialog.pas',
+  InWindowDialog.MessageDialog.Form in 'Dialogs\InWindowDialog.MessageDialog.Form.pas',
+  InWindowDialog.MessageDialog in 'Dialogs\InWindowDialog.MessageDialog.pas',
+  InWindowDialog.InputDialog.Form in 'Dialogs\InWindowDialog.InputDialog.Form.pas';
 
 {$R *.res}
 
