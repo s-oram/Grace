@@ -57,7 +57,6 @@ type
     Edit2: TEdit;
     Edit3: TEdit;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -180,14 +179,6 @@ begin
   Timer.Free;
   BackBuffer.Free;
   FileBrowserAddon.Free;
-end;
-
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-  //
-  //FileBrowserAddon.UpdateRootNodes;
-  //ShowMessage('bang');
-  InputBox('bang','bang','bang');
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);

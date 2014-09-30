@@ -92,7 +92,7 @@ type
   end;
 
 
-  TxpInputBox = class
+  TxpInputBox = class   // TODO:MED replace usage of this with input dialog.
   private
     //Owner : TComponent;
     //xpMode   : TxpMode;

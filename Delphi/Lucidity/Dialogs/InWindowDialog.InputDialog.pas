@@ -35,7 +35,7 @@ implementation
 uses
   InWindowDialog.InputDialog.Form;
 
-{ TInputBox }
+{ TInputDialog }
 
 constructor TInputDialog.Create;
 begin

@@ -732,58 +732,69 @@ end;
 
 class procedure Command.SetMidiCCForParameter(const Plugin: TeePlugin; const TargetParameterName: string);
 var
-  Value : string;
-  MidiCC : integer;
-  Error : boolean;
-  ErrorMessage : string;
-  MidiBinding : IMidiBinding;
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
 begin
-  Error := false;
+  Text         := 'Choose a MIDI Control Change Number (0-127)';
+  InputLabel   := 'MIDI CC#';
+  DefaultValue := '';
 
-  // TODO:HIGH replace this input box.
-  Value := InputBox('Set MIDI CC', 'Choose a MIDI CC# (0-127)', '');
-
-  if Value <> '' then
+  ResultHandler := procedure(Text : string)
+  var
+    Value : string;
+    MidiCC : integer;
+    Error : boolean;
+    ErrorMessage : string;
+    MidiBinding : IMidiBinding;
   begin
-    // 2: Check for valid MIDI CC index,
-    try
-      MidiCC := StrToInt(Value);
-    except
-      //Catch all exceptions. Assume an invalid integer value was entered.
-      Error := true;
-      ErrorMessage := '"' + Value + '" isn''t a valid integer.';
-      MidiCC := -1;
+    Value := Text;
+    Error := false;
+
+    if Value <> '' then
+    begin
+      // 2: Check for valid MIDI CC index,
+      try
+        MidiCC := StrToInt(Value);
+      except
+        //Catch all exceptions. Assume an invalid integer value was entered.
+        Error := true;
+        ErrorMessage := '"' + Value + '" isn''t a valid integer.';
+        MidiCC := -1;
+      end;
+
+      if (Error = false) and (MidiCC < 0) then
+      begin
+        Error := true;
+        ErrorMessage := 'The MIDI CC index you entered is too small.';
+      end;
+
+      if (Error = false) and (MidiCC > 127) then
+      begin
+        Error := true;
+        ErrorMessage := 'The MIDI CC index you entered is too big.';
+      end;
+
+      if (Error = false) and (MidiCC >= 0) and (MidiCC <= 127) then
+      begin
+        // Set the midi binding for the current parameter.
+        Plugin.MidiAutomation.ClearBindingByName(TargetParameterName);
+
+        MidiBinding := TMidiBinding.Create;
+        MidiBinding.SetParName(TargetParameterName);
+        MidiBinding.SetMidiCC(MidiCC);
+
+        Plugin.MidiAutomation.AddBinding(MidiBinding);
+      end;
     end;
 
-    if (Error = false) and (MidiCC < 0) then
+    if (Error = true) then
     begin
-      Error := true;
-      ErrorMessage := 'The MIDI CC index you entered is too small.';
-    end;
-
-    if (Error = false) and (MidiCC > 127) then
-    begin
-      Error := true;
-      ErrorMessage := 'The MIDI CC index you entered is too big.';
-    end;
-
-    if (Error = false) and (MidiCC >= 0) and (MidiCC <= 127) then
-    begin
-      // Set the midi binding for the current parameter.
-      Plugin.MidiAutomation.ClearBindingByName(TargetParameterName);
-
-      MidiBinding := TMidiBinding.Create;
-      MidiBinding.SetParName(TargetParameterName);
-      MidiBinding.SetMidiCC(MidiCC);
-
-      Plugin.MidiAutomation.AddBinding(MidiBinding);
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: ' + ErrorMessage);
     end;
   end;
 
-  if (Error = true) then
-  begin
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: ' + ErrorMessage);
-  end;
+
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
 end;
 
 class procedure Command.ToggleSampleMapVisibility(const Plugin: TeePlugin);

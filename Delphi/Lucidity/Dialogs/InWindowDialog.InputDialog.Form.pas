@@ -61,11 +61,7 @@ uses
 
 {$R *.dfm}
 
-{ TInputBoxDialogForm }
-
-
-
-
+{ TInputDialogForm }
 
 constructor TInputDialogForm.Create(AOwner: TComponent);
 begin
