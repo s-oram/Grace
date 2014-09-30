@@ -149,7 +149,7 @@ function TVstEditor.Open(ptr: Pointer): Longint;
 begin
   systemWindow := hwnd(ptr);
 
-  Plugin.Globals.VstSystemWindow := hwnd(ptr);
+  Plugin.Globals.TopLevelWindow := hwnd(ptr);
 
   if (UseCount = 0) then
   begin
@@ -161,7 +161,7 @@ begin
       PluginGUI.Height := PluginInfo.InitialGuiHeight;
       PluginGUI.Plugin := self.Plugin;
 
-      Plugin.Globals.TopGuiWindow := PluginGUI;
+      Plugin.Globals.TopLevelForm := PluginGUI;
 
       PluginGui.PostCreate(SystemWindow);
       PluginGuiMeta.PostCreate(PluginGui);

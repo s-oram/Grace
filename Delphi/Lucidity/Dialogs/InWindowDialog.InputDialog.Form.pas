@@ -113,17 +113,17 @@ end;
 
 procedure TInputDialogForm.FormDeactivate(Sender: TObject);
 begin
-  //showMessage('bang');
+  //
 end;
 
 procedure TInputDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  //ShowMessage('FormKeyDown');
+  //
 end;
 
 procedure TInputDialogForm.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-  //ShowMessage('FormKeyPress');
+  //
 end;
 
 procedure TInputDialogForm.ButtonDivResize(Sender: TObject);

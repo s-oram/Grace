@@ -55,6 +55,7 @@ type
 implementation
 
 uses
+  InWindowDialog,
   XPLAT.Dialogs,
   uLucidityExtra,
   SysUtils,
@@ -291,6 +292,7 @@ procedure TFileTreeViewNodeContextMenu.EventHandler_OpenWith(Sender: TObject);
 var
   Tag : integer;
   SoundEditorApp : string;
+  Msg : string;
 begin
   Tag := (Sender as TMenuItem).Tag;
 
@@ -301,7 +303,8 @@ begin
     ShellOpenFileWith(NodeFileName, SoundEditorApp);
   end else
   begin
-    ShowMessage('"' + SoundEditorApp + '" is not found.');
+    Msg := '"' + SoundEditorApp + '" is not found.';
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, Msg);
   end;
 end;
 

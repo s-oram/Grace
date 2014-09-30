@@ -184,7 +184,8 @@ uses
   InWindowDialog.InputDialog in 'Dialogs\InWindowDialog.InputDialog.pas',
   InWindowDialog.MessageDialog.Form in 'Dialogs\InWindowDialog.MessageDialog.Form.pas',
   InWindowDialog.MessageDialog in 'Dialogs\InWindowDialog.MessageDialog.pas',
-  InWindowDialog.InputDialog.Form in 'Dialogs\InWindowDialog.InputDialog.Form.pas';
+  InWindowDialog.InputDialog.Form in 'Dialogs\InWindowDialog.InputDialog.Form.pas',
+  InWindowDialog in 'Dialogs\InWindowDialog.pas';
 
 {$R *.res}
 

@@ -835,7 +835,7 @@ var
   TestDialog : TTestDialog;
 begin
   TestDialog := TTestDialog.Create;
-  TestDialog.ShowInWindow_WithAutoFree(TForm(Plugin.Globals.TopGuiWindow), false, false);
+  TestDialog.ShowInWindow_WithAutoFree(Plugin.Globals.TopLevelForm, false, false);
 end;
 
 end.
