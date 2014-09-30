@@ -608,18 +608,14 @@ end;
 procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);
 var
   InputBox : TxpInputBox;
-  fn : string;
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
+  OldFileName : string;
   Dir : string;
   extA : string;
-  ExtB : string;
-
-  OldFileName : string;
-  NewFileName : string;
+  fn : string;
 begin
   if not assigned(CurrentRegion) then exit;
-
-  InputBox := TxpInputBox.Create(nil);
-  AutoFree(@InputBox);
 
   OldFileName := CurrentRegion.GetProperties^.SampleFileName;
 
@@ -627,36 +623,42 @@ begin
   extA := ExtractFileExt(CurrentRegion.GetProperties^.SampleFileName);
   Dir  := ExtractFileDir(CurrentRegion.GetProperties^.SampleFileName);
 
-  InputBox.Caption := 'Rename File';
-  InputBox.Prompt  := 'Rename File';
-  InputBox.InitialValue := fn;
+  Text         := 'Rename File';
+  InputLabel   := '';
+  DefaultValue := fn;
 
-  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  ResultHandler := procedure(ResultText : string)
+  var
+    ExtB : string;
+    NewFileName : string;
   begin
-    fn := IncludeTrailingPathDelimiter(Dir) + InputBox.ResultText;
-    extB := ExtractFileExt(fn);
-    if SameText(extA, extB) = false then
+    if ResultText <> '' then
     begin
-      fn := fn + extA;
+      fn := IncludeTrailingPathDelimiter(Dir) + ResultText;
+      extB := ExtractFileExt(fn);
+      if SameText(extA, extB) = false then
+      begin
+        fn := fn + extA;
+      end;
+      NewFileName := fn;
+
+      if FileExists(NewFileName) then
+      begin
+        // TODO:MED it would be nice to send an error message to
+        // the GUI instead of using a modal dialog box. Sometimes
+        // these modal dialog boxes make the plugin look like it has
+        // hung.
+        InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: "' + NewFileName + '" already exists."');
+        exit;
+      end;
+
+      Plugin.RenameInUseSample(NewFileName, OldFileName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+      //TODO:HIGH refresh browser after renaming sample file incase sample file is visible in browser.
     end;
-    NewFileName := fn;
-
-    if FileExists(NewFileName) then
-    begin
-      // TODO:MED it would be nice to send an error message to
-      // the GUI instead of using a modal dialog box. Sometimes
-      // these modal dialog boxes make the plugin look like it has
-      // hung.
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: "' + NewFileName + '" already exists."');
-      exit;
-    end;
-
-
-
-    Plugin.RenameInUseSample(NewFileName, OldFileName);
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
 end;
 
 

@@ -40,6 +40,11 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
      TODO HIGH
 =============================================================================
 add dialogs to Lucidity. 
+- InputDialog 
+  -- need to hide label if it has no value.
+  -- arrow keys don't work to move the cursor in the tedit.
+  -- enter key to "OK"
+  -- escape key to "cancel"           
 
 Interesting artical for key processing.
 http://edn.embarcadero.com/article/38447
