@@ -5,7 +5,7 @@ interface
 uses
   eePlugin,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl, VamWinControl,
+  Vcl.Controls, Vcl.Forms, RedFoxWinControl, VamWinControl,
   VamPanel, RedFoxContainer, VamLabel, VamDiv, VamMultiLineTextBox, VamMemo;
 
 type
@@ -30,17 +30,12 @@ type
   TAboutDialog = class(TInterfacedObject, IAboutDialog)
   private
     Form : TAboutDialogForm;
-
     procedure LoadAboutText(const Text : TStrings);
-
     function AboutText: TStrings;
   public
     constructor Create;
     destructor Destroy; override;
     procedure Setup(ParentContainer : TWinControl);
-
-
-
   end;
 
 

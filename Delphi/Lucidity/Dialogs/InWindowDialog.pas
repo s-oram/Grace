@@ -14,6 +14,22 @@ procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
 procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResult);
 
 
+// TODO:HIGH need an InWindow about dialog to replace uAboutDialog.pas.
+
+
+{
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
+
+  Text         := 'Rename File';
+  InputLabel   := '';
+  DefaultValue := fn;
+  ResultHandler := procedure(ResultText : string)
+  var
+  begin
+  end;
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
+  }
 
 implementation
 

@@ -5,7 +5,7 @@ interface
 uses
   InWindowDialog, InWindowDialog.Prototypes,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.XPMan,
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.XPMan,
   VamButton, VamDiv, RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer;
 
 type

@@ -53,7 +53,7 @@ object TestDialogForm: TTestDialogForm
           AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 561
+          Width = 107
           Height = 16
           Align = alTop
           Alignment = taCenter
@@ -64,7 +64,6 @@ object TestDialogForm: TTestDialogForm
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 107
         end
         object VamDiv1: TVamDiv
           AlignWithMargins = True

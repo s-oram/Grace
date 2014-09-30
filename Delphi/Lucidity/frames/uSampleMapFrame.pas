@@ -11,7 +11,7 @@ uses
   Menu.SampleMapContextMenu, eeGuiStandardv2,
   eePlugin, Lucidity.Interfaces, uKeyStateTrackerOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.StdCtrls,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer, VamSampleMap,
   VamSamplerKeys, VamScrollBox, Vcl.Menus, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel, VamVisibleControl,

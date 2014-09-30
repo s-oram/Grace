@@ -19,7 +19,7 @@ uses
   Menu.MissingSampleContextMenu,
   eePlugin, uGuiFeedbackData, LuciditySampleOverlay,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamSampleDisplay, Vcl.Menus,
   RedFoxGraphicControl, VamGraphicControl, VamLabel, VamDiv, VamCompoundLabel,
   VamCompoundNumericKnob, VamScrollBar, VamTextBox, Vcl.ExtCtrls;

@@ -13,7 +13,7 @@ uses
   uGuiFeedbackData, Lucidity.Interfaces, VamStatusLed,
   eePlugin,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamKnob, VamModularJack, VamDiv, Vcl.Menus,
   VamTextBox, Menu.StepSequenceMenu, VamImage, VamButton,
