@@ -36,6 +36,10 @@ bug
 > created by Lucidity,
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
+
+TODO:BUG
+- renaming the root node doesn't work.
+
 =============================================================================
      TODO HIGH
 =============================================================================

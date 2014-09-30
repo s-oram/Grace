@@ -330,22 +330,23 @@ end;
 
 procedure TFileTreeViewNodeContextMenu.EventHandler_RenameRootNode(Sender: TObject);
 var
-  InputBox : TxpInputBox;
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
 begin
   if not (assigned(FocusedNode)) then exit;
 
-  InputBox := TxpInputBox.Create(nil);
-  AutoFree(@InputBox);
+  Text         := 'Rename Directory';
+  InputLabel   := '';
+  DefaultValue := FocusedNode.Caption;
 
-  InputBox.Caption := 'Rename Directory';
-  InputBox.Prompt  := 'Rename Directory';
-  InputBox.InitialValue := FocusedNode.Caption;
-
-  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  ResultHandler := procedure(ResultText : string)
   begin
-    Plugin.SampleDirectories.RenameSampleDirectory(FocusedNode.NodeIndex, InputBox.ResultText);
+    //TODO:HIGH TODO:BUG rename doesn't seem to work.
+    Plugin.SampleDirectories.RenameSampleDirectory(FocusedNode.NodeIndex, ResultText);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
   end;
+
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
 end;
 
 end.

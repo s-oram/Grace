@@ -607,7 +607,6 @@ end;
 
 procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);
 var
-  InputBox : TxpInputBox;
   Text, InputLabel, DefaultValue : string;
   ResultHandler : TInputDialogResult;
   OldFileName : string;

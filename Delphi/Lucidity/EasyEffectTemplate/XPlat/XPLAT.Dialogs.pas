@@ -115,6 +115,21 @@ type
   end;
 
 
+  {
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
+
+  Text         := 'Rename File';
+  InputLabel   := '';
+  DefaultValue := fn;
+  ResultHandler := procedure(ResultText : string)
+  var
+  begin
+  end;
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
+  }
+
+
 
 implementation
 
