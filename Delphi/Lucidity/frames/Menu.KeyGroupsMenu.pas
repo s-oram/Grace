@@ -28,6 +28,7 @@ type
 implementation
 
 uses
+  InWindowDialog,
   XPLAT.Dialogs,
   Lucidity.SampleMap, SysUtils,
   eePluginEx,
@@ -151,25 +152,27 @@ end;
 
 procedure TGroupsMenu.RenameKeyGroup(Sender: TObject);
 var
-  InputBox : TxpInputBox;
   kg : IKeyGroup;
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
 begin
   kg := Plugin.KeyGroups.FindSampleGroup(CurrentGroup);
   if not assigned(kg) then exit;
 
-  InputBox := TxpInputBox.Create(nil);
-  AutoFree(@InputBox);
+  Text         := 'Rename Key Group';
+  InputLabel   := '';
+  DefaultValue := kg.GetName;
 
-  InputBox.Caption := 'Rename Key Group';
-  InputBox.Prompt  := 'Rename Key Group';
-  InputBox.InitialValue := kg.GetName;
-
-  if (InputBox.Execute) and (InputBox.ResultText <> '') then
+  ResultHandler := procedure(ResultText : string)
   begin
-    Plugin.KeyGroups.RenameKeyGroup(kg, InputBox.ResultText);
+    if ResultText <> '' then
+    begin
+      Plugin.KeyGroups.RenameKeyGroup(kg, ResultText);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    end;
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
 end;
 
 procedure TGroupsMenu.CreateNewKeyGroup(Sender: TObject);
