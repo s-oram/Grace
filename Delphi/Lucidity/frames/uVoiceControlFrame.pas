@@ -7,7 +7,7 @@ uses
   eeGuiStandardv2,
   uGuiFeedbackData, eePlugin, Menus, uConstants,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamKnob, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamDiv, VamTextBox, VamImage, VamMiniLevelMeter,
   Vcl.ExtCtrls;

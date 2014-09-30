@@ -8,7 +8,7 @@ uses
   Menu.StepSequenceMenu,
   eePlugin, eeGuiStandardv2, uDialogDisplayArea, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, LucidityGui.DropBoxSelector,
   VamLabel, VamDiv, LucidityGui.VectorSequence;
 

@@ -12,7 +12,7 @@ uses
   uGuiFeedbackData, Menu.XYPadContextMenu,
   VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv, VamXYPad;
 
 type

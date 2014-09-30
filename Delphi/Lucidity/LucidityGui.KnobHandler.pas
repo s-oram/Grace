@@ -72,7 +72,6 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
-  Vcl.Dialogs,
   eeTypes,
   Effect.MidiAutomation,
   VamLib.Throttler,
