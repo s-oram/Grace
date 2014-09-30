@@ -177,6 +177,7 @@ begin
       SkinItemList.Add(SkinItem)
     end else
     begin
+      // TODO:HIGH - there is a showMessage()
       SkinItem.Free;
       if ShowWarningDialogs then ShowMessage('Could not find skin image \"' + ImageFileName + '\".');
     end;

@@ -41,6 +41,7 @@ implementation
 
 uses
   VamLib.WinUtils,
+  InWindowDialog,
   XPLAT.Dialogs,
   Windows,
   ShellApi,
@@ -51,7 +52,7 @@ uses
   SysUtils,
   uAutoFree,
   uGuiUtils,
-  Dialogs,
+  Dialogs, //delete this
   uConstants;
 
 { TMainMenu }
@@ -131,10 +132,10 @@ begin
 
     if Plugin.Globals.KeyData.IsKeyChecksumValid then
     begin
-      ShowMessage('Lucidity is now registered. Thank you for your support!');
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now registered. Thank you for your support!');
     end else
     begin
-      ShowMessage('ERROR: Unable to register. Please contact support.');
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'ERROR: Unable to register. Please contact support.');
     end;
 
   end;
@@ -347,15 +348,15 @@ begin
       if seResult <= 32 then
       begin
         ErrMsg := ShellExecuteErrorCodeToString(seResult);
-        ShowMessage('Lucidity Error: ' + ErrMsg);
+        InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity Error: ' + ErrMsg);
       end;
     end else
     begin
-      ShowMessage('Manual not found. Please contact support.');
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Manual not found. Please contact support.');
     end;
   end else
   begin
-    ShowMessage('Data directory not found. Please re-install Lucidity.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data directory not found. Please re-install Lucidity.');
   end;
 end;
 
@@ -372,11 +373,11 @@ begin
   begin
     if not ShowDirectoryInWindowsExplorer(PluginDataDir^.Path, ErrMsg) then
     begin
-      ShowMessage('Lucidity Error: ' + ErrMsg);
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity Error: ' + ErrMsg);
     end;
   end else
   begin
-    ShowMessage('Data Directory not found. Please reinstall Lucidity.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data Directory not found. Please reinstall Lucidity.');
   end;
 end;
 

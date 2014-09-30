@@ -6,6 +6,7 @@ interface
 
 
 uses
+  Dialogs, //TODO:HIGH delete this.
   eeGuiStandardv2,
   LucidityGui.KnobHandler,
   LucidityGui.MenuButtonHandler,
@@ -25,7 +26,7 @@ uses
   eeFileBrowserAddon, eeRedFoxDropFileTarget,
   eePlugin,
   Windows, Messages, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, RedFoxContainer, RedFoxWinControl, VamWinControl, VamPanel, VamDiv,
+  RedFoxContainer, RedFoxWinControl, VamWinControl, VamPanel, VamDiv,
   VamScrollBox, VamCustomTreeView, VamTreeView, RedFoxGraphicControl,
   VamGraphicControl, VamLabel, VamTabs, VamTabPanel, Vcl.ExtCtrls, VamScrollBar,
   VamMemo;

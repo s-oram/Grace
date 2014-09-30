@@ -9,11 +9,11 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  Dialogs, // TODO:HIGH delete this
   XPLAT.Dialogs,
   eeTypes,
   eeEnumHelper,
   Math,
-  Dialogs,
   VamKnob,
   eeGlobals,
   Lucidity.PluginParameters,
@@ -129,6 +129,7 @@ implementation
 
 uses
   SysUtils,
+  InWindowDialog,
   Effect.MidiAutomation,
   RedFoxColor,
   VamGuiControlInterfaces,
@@ -739,6 +740,7 @@ var
 begin
   Error := false;
 
+  // TODO:HIGH replace this input box.
   Value := InputBox('Set MIDI CC', 'Choose a MIDI CC# (0-127)', '');
 
   if Value <> '' then
@@ -780,7 +782,7 @@ begin
 
   if (Error = true) then
   begin
-    ShowMessage('Error: ' + ErrorMessage);
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: ' + ErrorMessage);
   end;
 end;
 

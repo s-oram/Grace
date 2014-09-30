@@ -3,8 +3,10 @@ unit uAboutFrame;
 interface
 
 uses
+  Dialogs, //delete this
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxWinControl,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer;
 
 type

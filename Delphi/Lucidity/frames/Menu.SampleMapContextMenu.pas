@@ -36,7 +36,7 @@ uses
   eeWinEx,
   uAutoFree,
   uGuiUtils,
-  Dialogs,
+  Dialogs, //delete this
   Lucidity.KeyGroupManager,
   uConstants;
 

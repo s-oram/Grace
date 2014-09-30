@@ -60,7 +60,7 @@ uses
   uLucidityExtra,
   SysUtils,
   uAutoFree,
-  Dialogs,
+  Dialogs, //delete this
   uConstants;
 
 

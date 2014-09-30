@@ -45,8 +45,9 @@ type
 implementation
 
 uses
-  Dialogs,
+  Dialogs, //TODO:HIGH delete this.
   XPLAT.Dialogs,
+  InWindowDialog,
   VamLib.Utils,
   uLucidityEnums,
   Lucidity.PluginParameters,
@@ -520,7 +521,7 @@ begin
   fn := CurrentRegion.GetProperties^.SampleFileName;
   if FileExists(fn) = false then
   begin
-    ShowMessage('"' + fn + '" is not found.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, '"' + fn + '" is not found.');
     exit;
   end;
 
@@ -533,7 +534,7 @@ begin
     ShellOpenFileWith(fn, SoundEditorApp);
   end else
   begin
-    ShowMessage('"' + SoundEditorApp + '" is not found.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, '"' + SoundEditorApp + '" is not found.');
   end;
 end;
 
@@ -546,7 +547,7 @@ begin
   fn := CurrentRegion.GetProperties^.SampleFileName;
   if FileExists(fn) = false then
   begin
-    ShowMessage('"' + fn + '" is not found.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, '"' + fn + '" is not found.');
     exit;
   end;
 
@@ -646,7 +647,7 @@ begin
       // the GUI instead of using a modal dialog box. Sometimes
       // these modal dialog boxes make the plugin look like it has
       // hung.
-      ShowMessage('Error: "' + NewFileName + '" already exists."');
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: "' + NewFileName + '" already exists."');
       exit;
     end;
 

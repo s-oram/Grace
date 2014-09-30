@@ -207,13 +207,8 @@ begin
 
   TUnitGen.AddUnitFooter(Text);
 
-
-
-
-  //ShowMessage(Text.Text);
   Text.SaveToFile(DestFN1);
   Text.SaveToFile(DestFN2);
-
 
 end;
 

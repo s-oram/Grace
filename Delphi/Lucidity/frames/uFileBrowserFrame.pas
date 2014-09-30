@@ -3,6 +3,7 @@ unit uFileBrowserFrame;
 interface
 
 uses
+  Dialogs, //delete this
   VamLib.UniqueID,
   VamLib.Debouncer,
   VamLib.ZeroObject,
@@ -12,7 +13,7 @@ uses
   eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandardv2,
   VamVisibleControl,
   Winapi.Windows, Winapi.Messages, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RedFoxContainer,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,
   RedFoxWinControl, VamWinControl, VamPanel, VamCustomTreeView, VamTreeView,
   VamScrollBox, RedFoxGraphicControl, VamGraphicControl, VamLabel, VamDiv,
   VamKnob, VamButton;
