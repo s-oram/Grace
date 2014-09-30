@@ -163,7 +163,9 @@ begin
   if Tag = 2 then
   begin
     NodeData := FocusedNode.Data;
-    OpenFolderAndSelectFile(NodeData^.FileName);
+    if (DirectoryExists(NodeData^.FileName)) or (FileExists(NodeData^.FileName))
+      then OpenFolderAndSelectFile(NodeData^.FileName)
+      else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'File not found.');
   end;
 
   //move up
@@ -204,6 +206,7 @@ procedure TFileTreeViewNodeContextMenu.Popup(const x, y: integer);
 var
   mi : TMenuItem;
   c1: Integer;
+  NodeData : PNodeData;
 begin
   Menu.Items.Clear;
 
@@ -279,6 +282,25 @@ begin
     mi.OnClick := MenuItemClicked;
     Menu.Items.Add(mi);
   end;
+
+  //==== Spacer ====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //================
+
+  if (assigned(FocusedNode)) and (FocusedNode.IsRootNode) then
+  begin
+    NodeData := FocusedNode.Data;
+
+    mi := TMenuItem.Create(Menu);
+    mi.Tag     := 2;
+    mi.Caption := NodeData^.FileName;
+    mi.OnClick := MenuItemClicked;
+    Menu.Items.Add(mi);
+  end;
+
+
 
 
 

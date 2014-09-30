@@ -39,6 +39,10 @@ thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail
 
 TODO:BUG
 - renaming the root node doesn't work.
+-- this is because there is a mismatch between the sample directory Node Index and the way 
+   the sample directory list is organised.
+   -- now need to show the node directory path when right clicking a node.
+   -- append and (Error: Not found.) to nodes with missing directorys.
 
 =============================================================================
      TODO HIGH

@@ -224,10 +224,8 @@ begin
     Name := Plugin.SampleDirectories[c1].Name;
     Path := Plugin.SampleDirectories[c1].Path;
 
-    if (Name <> '') and (DirectoryExists(Path)) then
-    begin
-      FileBrowserAddon.AddRootNode(Path, Name);
-    end;
+    //if (Name <> '') and (DirectoryExists(Path)) then
+    FileBrowserAddon.AddRootNode(Path, Name);
   end;
 
   FileBrowserAddon.UpdateRootNodes;
