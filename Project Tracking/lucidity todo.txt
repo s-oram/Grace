@@ -50,9 +50,9 @@ TODO:BUG
 add dialogs to Lucidity. 
 - InputDialog 
   -- need to hide label if it has no value.
-  -- arrow keys don't work to move the cursor in the tedit.
-  -- enter key to "OK"
-  -- escape key to "cancel"           
+  -- dialogs don't recieve TAB presses when used in a plugin. They
+     work fine when used in a regular application. The TAB key
+     is being captured somewhere.
 
 Interesting artical for key processing.
 http://edn.embarcadero.com/article/38447

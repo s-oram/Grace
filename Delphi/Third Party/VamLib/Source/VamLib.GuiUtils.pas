@@ -3,6 +3,7 @@ unit VamLib.GuiUtils;
 interface
 
 uses
+  Controls,
   SysUtils;
 
 procedure Wait(const MilliSeconds : Longint);
@@ -58,7 +59,7 @@ procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdg
 
 procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
 
-
+function FindFocusedControl(aControl : TWinControl):TWinControl;
 
 implementation
 
@@ -186,6 +187,35 @@ begin
     ThrottleToken.LastCallTime := Now;
     ThrottleToken.IsTrailingCallRequired := true;
   end;
+end;
+
+
+function FindFocusedControl(aControl : TWinControl):TWinControl;
+var
+  c1 : integer;
+  c : TControl;
+  wc : TWinControl;
+begin
+  if aControl.Focused then
+  begin
+    exit(aControl); //============== exit with focused control =====>>
+  end else
+  begin
+    for c1 := 0 to aControl.ControlCount-1 do
+    begin
+      c := aControl.Controls[c1];
+      if (c is TWinControl) then
+      begin
+        wc := FindFocusedControl(c as TWinControl);
+        if assigned(wc)
+          then exit(wc); //============== exit with focused control =====>>
+      end;
+    end;
+  end;
+
+  // if we make it this far, no control has focus.
+  result := nil;
+
 end;
 
 

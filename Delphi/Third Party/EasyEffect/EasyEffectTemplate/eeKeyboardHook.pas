@@ -1,3 +1,7 @@
+unit eeKeyboardHook;
+
+interface
+
 {
   This class creates a global key hook. Only one hook is created and is shared between application
   instances.
@@ -8,9 +12,7 @@
 
 }
 
-unit eeKeyboardHook;
-
-interface
+{$INCLUDE Defines.inc}
 
 uses
   {$IFDEF VER230}
@@ -34,6 +36,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Controls,
   {$ELSE}
@@ -53,6 +56,7 @@ var
 function ShouldMessageBeProcessed:boolean;
 var
   h:hwnd;
+  ActiveForm : TForm;
 begin
   if (GlobalEditorWindow = 0) then
   begin
@@ -83,10 +87,11 @@ begin
 
   // ==== NEW CODE: *Only* check if target is in focus ====
   h := GetForegroundWindow;
-  if (h <> 0) and (h = GlobalEditorWindow)
-    then result := true
-    else result := false;
+  if (h = 0) then exit(false); //No focused foreground window.
+  if (h <> GlobalEditorWindow) then exit(false); //Foreground window is not our plugin window.
 
+  // if we make it this far, return true.
+  result := true;
 end;
 
 

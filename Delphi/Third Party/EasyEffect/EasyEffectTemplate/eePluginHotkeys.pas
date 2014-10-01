@@ -2,11 +2,8 @@ unit eePluginHotkeys;
 
 interface
 
-
-
-
-
 uses
+  eeCustomGlobals,
   Generics.Collections, DAEffect, DAEffectX;
 
 type
@@ -93,6 +90,7 @@ type
     fOnCommandKeyDown: TCommandEvent;
     fOnCommandKeyUp: TCommandEvent;
   protected
+    Globals : TCustomGlobals;
     x : integer;
     AssignmentList : THotkeyAssignmentList;
 
@@ -100,8 +98,11 @@ type
     procedure CommandKeyUp(const CommandID : string);
 
     procedure AddHotkey(const CommandID, Key, WithShift, WithAlt, WithCtrl : string); overload;
+
+
+    function ShouldKeyBeProcessed:boolean;
   public
-    constructor Create;
+    constructor Create(const aGlobals : TCustomGlobals);
     destructor Destroy; override;
 
     procedure LoadFromXML(const fn:string);
@@ -118,10 +119,13 @@ type
 implementation
 
 uses
+  Vcl.Controls,
   Dialogs,
   NativeXML,
-  uAutoFree,
+  VamLib.GuiUtils,
+  VamLib.Utils,
   SysUtils,
+  InWindowDialog.Prototypes,
   eeFunctions;
 
 function IsValidVstKeyChar(Key : Ansistring):boolean;
@@ -730,8 +734,9 @@ end;
 
 { TPluginHotkeys }
 
-constructor TPluginHotkeys.Create;
+constructor TPluginHotkeys.Create(const aGlobals : TCustomGlobals);
 begin
+  Globals := aGlobals;
   AssignmentList := THotkeyAssignmentList.Create;
 end;
 
@@ -807,6 +812,8 @@ var
   IsAlt   : boolean;
   IsCtrl  : boolean;
 begin
+  if not ShouldKeyBeProcessed then exit(false);
+
   IsShift := (KeyCode.modifier and MODIFIER_SHIFT) > 0;
   IsAlt   := (KeyCode.modifier and MODIFIER_ALTERNATE) > 0;
   IsCtrl  := (KeyCode.modifier and MODIFIER_CONTROL) > 0;
@@ -833,6 +840,8 @@ var
   IsAlt   : boolean;
   IsCtrl  : boolean;
 begin
+  if not ShouldKeyBeProcessed then exit(false);
+
   IsShift := (KeyCode.modifier and MODIFIER_SHIFT) > 0;
   IsAlt   := (KeyCode.modifier and MODIFIER_ALTERNATE) > 0;
   IsCtrl  := (KeyCode.modifier and MODIFIER_CONTROL) > 0;
@@ -906,8 +915,31 @@ begin
       AddHotKey(hk.Command, hk.Key, hk.WithShift, hk.WithAlt, hk.WithCtrl);
     end;
   end;
+end;
 
+function TPluginHotkeys.ShouldKeyBeProcessed: boolean;
+///  NOTE: This bit is hacky. I check to see if the
+///  focused controll is owned by a TPluginDialogForm.
+///  If so, the key isn't processed as a hotkey.
+///  Processing keys as hotkeys while plugin dialogs
+///  were visible was preventing keys from being sent
+///  to the dialog and cause unintentional hotkeys
+///  to be fired.
+var
+  wc : TWinControl;
+begin
+  if (assigned(Globals.TopLevelForm)) then
+  begin
+    wc := FindFocusedControl(Globals.TopLevelForm);
+    if (assigned(wc)) and (assigned(wc.Owner)) then
+    begin
+      if wc.Owner is TPluginDialogForm
+        then exit(false); //================ exit =================>>
+    end;
+  end;
 
+  // if we make it this far, process the key press
+  result := true;
 end;
 
 end.

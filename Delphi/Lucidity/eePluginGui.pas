@@ -161,9 +161,6 @@ begin
   OverlayContainer.Color := '$cc000000';
   OverlayContainer.OnClick := OverlayContainerClicked;
 
-  PluginHotkeys := TPluginHotkeys.Create;
-  PluginHotkeys.OnCommandKeyDown := self.HotkeyEvent;
-
   FeedbackData := TGuiFeedBackData.Create;
 
   CurrentGuiState := TGuiState.Create;
@@ -273,7 +270,7 @@ begin
 
   DropFileTarget.Free;
   FeedBackData.Free;
-  PluginHotkeys.Free;
+  if assigned(fPluginHotkeys) then FreeAndNil(fPluginHotkeys);
   if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
   OverlayContainer.Free;
 end;
@@ -307,6 +304,8 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.VCL);
 
 
+  PluginHotkeys := TPluginHotkeys.Create(Plugin.Globals);
+  PluginHotkeys.OnCommandKeyDown := self.HotkeyEvent;
 
 
   //==== Load the key hook config ==============================================

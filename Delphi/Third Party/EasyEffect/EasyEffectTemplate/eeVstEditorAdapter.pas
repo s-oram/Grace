@@ -195,6 +195,10 @@ end;
 
 function TVstEditor.OnKeyDown(var KeyCode: VstKeyCode): boolean;
 begin
+  {$IFDEF Logging}
+  LogMain.LogMessage('Key Down ' + Char(KeyCode.character));
+  {$ENDIF}
+
   if assigned(PluginGui) then
   begin
     result := PluginGUI.PluginHotkeys.KeyDown(KeyCode);
