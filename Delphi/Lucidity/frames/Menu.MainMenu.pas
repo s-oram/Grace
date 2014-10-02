@@ -178,30 +178,6 @@ begin
   miRefA.Add(mi);
 
 
-
-
-  //==== insert a spacer =====
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := '-';
-  Menu.Items.Add(mi);
-  //=========================
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Auto Select On';
-  mi.OnClick := EventHandle_AutoSelectChange;
-  mi.Tag     := 1;
-  if Plugin.Globals.GuiState.IsAutoSelectActive
-    then mi.Checked := true;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Auto Select Off';
-  mi.OnClick := EventHandle_AutoSelectChange;
-  mi.Tag     := 2;
-  if not Plugin.Globals.GuiState.IsAutoSelectActive
-    then mi.Checked := true;
-  Menu.Items.Add(mi);
-
   //==== insert a spacer =====
   mi := TMenuItem.Create(Menu);
   mi.Caption := '-';
@@ -231,6 +207,28 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Clear MIDI Map';
   mi.OnClick := EventHandle_ClearMidiMap;
+  Menu.Items.Add(mi);
+
+  //==== insert a spacer =====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Auto Select On';
+  mi.OnClick := EventHandle_AutoSelectChange;
+  mi.Tag     := 1;
+  if Plugin.Globals.GuiState.IsAutoSelectActive
+    then mi.Checked := true;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Auto Select Off';
+  mi.OnClick := EventHandle_AutoSelectChange;
+  mi.Tag     := 2;
+  if not Plugin.Globals.GuiState.IsAutoSelectActive
+    then mi.Checked := true;
   Menu.Items.Add(mi);
 
   //==== insert a spacer =====

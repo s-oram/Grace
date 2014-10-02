@@ -252,6 +252,9 @@ end;
 
 procedure TPluginDialogForm.CMChildKey(var Message: TCMChildKey);
 begin
+  // Interesting artical for key processing.
+  // http://edn.embarcadero.com/article/38447
+
   if Message.CharCode = VK_TAB then
   begin
     FocusNextControl;
