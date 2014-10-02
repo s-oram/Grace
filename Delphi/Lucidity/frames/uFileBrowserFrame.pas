@@ -129,10 +129,10 @@ var
   CurrentFocus_ParName : string;
   b : boolean;
 begin
-  if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
+  if MsgID = TLucidMsgID.Cmd_RefreshBrowser       then RefreshFileBrowser;
+  if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged;
-
 
   if (MsgID = TLucidMsgID.OnActiveParameterChanged) then
   begin
@@ -153,9 +153,6 @@ begin
     // This is called here to update the preview volume text.
     PreviewInfoChanged;
   end;
-
-
-
 end;
 
 

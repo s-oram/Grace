@@ -15,7 +15,7 @@ New:
   show as pop up message dialog boxes. In some situations the messages
   would show behind the host application window giving the appearence 
   that the host application had crashed or frozen. 
-
+- Add rename program command (for internal use only.)
 
 
 

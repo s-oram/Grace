@@ -2,6 +2,7 @@ unit Menu.FileTreeMenu;
 
 interface
 
+{$INCLUDE Defines.inc}
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
@@ -40,6 +41,7 @@ type
     procedure EventHandler_OpenWithUnknownApp(Sender : TObject);
     procedure EventHandler_OpenWith(Sender : TObject);
     procedure EventHandler_RenameRootNode(Sender : TObject);
+    procedure EventHandler_RenameProgramFile(Sender : TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -55,9 +57,10 @@ type
 implementation
 
 uses
+  VamLib.Utils,
+  Lucidity.Utils,
   InWindowDialog,
   XPLAT.Dialogs,
-  Lucidity.Utils,
   SysUtils,
   uAutoFree,
   Dialogs, //delete this
@@ -236,11 +239,22 @@ begin
     Menu.Items.Add(mi);
   end;
 
+  {$IFDEF Debug}
+  // TODO:MED perhaps there needs to be an advanced options
+  // XML file. This could be an advanced options item.
+  // Show/Hide Lucidity program rename command.
   if (assigned(FocusedNode)) then
   begin
     NodeData := FocusedNode.Data;
-    //if (FileExists(NodeData^.FileName)) and ()
+    if (FileExists(NodeData^.FileName)) and (IsLucidityProgramFile(NodeData^.FileName)) then
+    begin
+      mi := TMenuItem.Create(Menu);
+      mi.Caption := 'Rename Program File... (Use With Caution)';
+      mi.OnClick := EventHandler_RenameProgramFile;
+      Menu.Items.Add(mi);
+    end;
   end;
+  {$ENDIF}
 
 
 
@@ -355,8 +369,6 @@ begin
   end;
 end;
 
-
-
 procedure TFileTreeViewNodeContextMenu.EventHandler_RenameRootNode(Sender: TObject);
 var
   Text, InputLabel, DefaultValue : string;
@@ -370,12 +382,44 @@ begin
 
   ResultHandler := procedure(ResultText : string)
   begin
-    //TODO:HIGH TODO:BUG rename doesn't seem to work.
     Plugin.SampleDirectories.RenameSampleDirectory(FocusedNode.NodeIndex, ResultText);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
   end;
 
   InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
 end;
+
+procedure TFileTreeViewNodeContextMenu.EventHandler_RenameProgramFile(Sender: TObject);
+var
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
+  NodeData : PNodeData;
+  Dir : string;
+  NewFileName : string;
+begin
+  if not (assigned(FocusedNode)) then exit;
+
+  NodeData := FocusedNode.Data;
+
+  Text         := 'Rename Program File';
+  InputLabel   := '';
+  DefaultValue := TrimFileExt(NodeData^.FileName);
+
+  ResultHandler := procedure(ResultText : string)
+  begin
+    Dir := ExtractFilePath(NodeData^.FileName);
+    NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
+
+    if Plugin.RenameProgramFile(NodeData^.FileName, NewFileName)
+      then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
+      else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
+
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Test');
+  end;
+
+  InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
+end;
+
+
 
 end.

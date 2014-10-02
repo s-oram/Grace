@@ -83,7 +83,8 @@ type
     Command_UpdateParChangeInfo      = Command + 25;
     Command_HideParChangeInfo        = Command + 26;
     Cmd_RefreshParDisplay            = Command + 27;
-    Actions                          = Cmd_RefreshParDisplay + 1;
+    Cmd_RefreshBrowser               = Command + 28;
+    Actions                          = Cmd_RefreshBrowser + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;

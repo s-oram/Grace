@@ -182,6 +182,8 @@ type
     procedure SaveProgramToFile(const FileName : string);
     procedure SaveProgramAsDefault;
 
+    function RenameProgramFile(const CurrentFileName, NewFileName : string):boolean;
+
     procedure LoadDefaultMIDIMap;
     procedure SaveMIDIMapAsDefault;
     procedure SaveMidiMap(const FileName : string);
@@ -791,6 +793,29 @@ begin
     end;
   end;
 
+end;
+
+function TeePlugin.RenameProgramFile(const CurrentFileName, NewFileName: string):boolean;
+var
+  OldDirName : string;
+  NewDirName : string;
+  r1, r2 : boolean;
+begin
+  OldDirName := ConvertProgramFileNameToSampleDirName(CurrentFileName);
+  NewDirName := ConvertProgramFileNameToSampleDirName(NewFileName);
+
+  if (FileExists(CurrentFileName)) and (not FileExists(NewFileName)) and (not DirectoryExists(NewDirName)) then
+  begin
+    r1 := RenameFile(CurrentFileName, NewFileName);
+    if (DirectoryExists(OldDirName)) then
+    begin
+      r2 := RenameFile(ExcludeTrailingPathDelimiter(OldDirName), ExcludeTrailingPathDelimiter(NewDirName));
+    end;
+  end;
+
+  if (r1 = true) and (r2 = true)
+    then result := true
+    else result := false;
 end;
 
 function TeePlugin.GetPluginParameterModAmount(const ParName: string; const ModSlot: integer): single;

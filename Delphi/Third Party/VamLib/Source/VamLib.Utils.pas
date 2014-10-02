@@ -48,6 +48,7 @@ function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 //    String Handling
 //==============================================================
 function TrimFileExt(FileName:string):string;
+function RemoveFileExt(FileName:string):string; deprecated;
 
 function IntToStrB(Int:integer; MinDigits:integer):string;
 function IncrementFileName(FileName:string; MinDigits:integer = 2):string;
@@ -306,6 +307,13 @@ begin
 
   result := FileName;
 end;
+
+function RemoveFileExt(FileName:string):string;
+begin
+  result := TrimFileExt(FileName);
+end;
+
+
 
 
 
