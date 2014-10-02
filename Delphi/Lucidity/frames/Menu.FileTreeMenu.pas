@@ -57,7 +57,7 @@ implementation
 uses
   InWindowDialog,
   XPLAT.Dialogs,
-  uLucidityExtra,
+  Lucidity.Utils,
   SysUtils,
   uAutoFree,
   Dialogs, //delete this
@@ -239,7 +239,7 @@ begin
   if (assigned(FocusedNode)) then
   begin
     NodeData := FocusedNode.Data;
-    if (FileExists(NodeData^.FileName)) and ()
+    //if (FileExists(NodeData^.FileName)) and ()
   end;
 
 

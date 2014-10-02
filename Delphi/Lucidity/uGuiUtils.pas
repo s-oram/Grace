@@ -141,7 +141,7 @@ uses
   LucidityModConnections,
   GuidEx,
   eePluginDataDir,
-  uLucidityExtra,
+  Lucidity.Utils,
   Lucidity.Globals,
   Lucidity.KeyGroup,
   eeGuiStandardv2,

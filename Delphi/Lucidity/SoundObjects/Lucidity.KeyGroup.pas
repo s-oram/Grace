@@ -129,7 +129,7 @@ implementation
 
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  uLucidityExtra,
+  Lucidity.Utils,
   VamLib.LoggingProxy,
   eeAudioBufferUtils,
   SysUtils, eeCustomGlobals;

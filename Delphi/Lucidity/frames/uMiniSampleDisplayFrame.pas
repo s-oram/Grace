@@ -142,7 +142,7 @@ uses
   VamLib.Throttler,
   eeDsp,
   eeVstXml, uLucidityEnums,
-  GuidEx, RedFoxColor, uLucidityExtra,
+  GuidEx, RedFoxColor, Lucidity.Utils,
   uGuiUtils, VamLayoutWizard,
   uConstants, Lucidity.KeyGroup;
 

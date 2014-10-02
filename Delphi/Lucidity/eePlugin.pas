@@ -283,7 +283,7 @@ uses
   eePluginDataDir, eePatchObject_XmlWrapper,
   eeSaveLoadFunctions,
   NativeXML, uAutoFree, eeFunctions, eeDsp,
-  uLucidityExtra,
+  Lucidity.Utils,
   LucidityParameterScaling,
   LucidityUtils,
   Lucidity.StateManager,

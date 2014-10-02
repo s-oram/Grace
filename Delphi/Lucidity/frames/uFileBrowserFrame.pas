@@ -88,7 +88,7 @@ uses
   VamLayoutWizard,
   uGuiUtils,
   Lucidity.PluginParameters,
-  eeFunctions, uLucidityExtra,
+  eeFunctions, Lucidity.Utils,
   Lucidity.SampleMap, RedFoxColor;
 
 {$R *.dfm}

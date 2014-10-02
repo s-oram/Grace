@@ -125,7 +125,7 @@ uses
   VamLib.Utils,
   SampleMapFrame.Extra,
   Lucidity.Types,
-  uLucidityExtra,
+  Lucidity.Utils,
   uLucidityEnums,
   eeVstXml,
   RedFoxColor, eePitch,
