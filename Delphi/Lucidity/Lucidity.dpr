@@ -116,7 +116,7 @@ uses
   Lucidity.FlexSampleRenderer in 'Lucidity.FlexSampleRenderer.pas',
   uModSystemFrame in 'frames\uModSystemFrame.pas' {ModSystemFrame: TFrame},
   eePlugin in 'eePlugin.pas',
-  LucidityUtils in 'LucidityUtils.pas',
+  Lucidity.Utils in 'Lucidity.Utils.pas',
   Lucidity.Types in 'Lucidity.Types.pas',
   SampleMapFrame.Extra in 'frames\SampleMapFrame.Extra.pas',
   Lucidity.FirstRun in 'Lucidity.FirstRun.pas',

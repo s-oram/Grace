@@ -231,11 +231,18 @@ begin
   if (assigned(FocusedNode)) and (FocusedNode.IsRootNode) then
   begin
     mi := TMenuItem.Create(Menu);
-    mi.Tag     := 1;
     mi.Caption := 'Rename...';
     mi.OnClick := EventHandler_RenameRootNode;
     Menu.Items.Add(mi);
   end;
+
+  if (assigned(FocusedNode)) then
+  begin
+    NodeData := FocusedNode.Data;
+    if (FileExists(NodeData^.FileName)) and ()
+  end;
+
+
 
   if (assigned(FocusedNode)) and (FocusedNode.IsRootNode) then
   begin

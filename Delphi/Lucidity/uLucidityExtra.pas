@@ -57,7 +57,6 @@ begin
   if SameText(ext, '.lpg')
     then result := true
     else result := false;
-
 end;
 
 function IsSupportedProgramFormat(const FileName : string): boolean;

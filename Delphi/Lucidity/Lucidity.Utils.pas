@@ -1,8 +1,6 @@
-unit LucidityUtils;
+unit Lucidity.Utils;
 
 interface
-
-
 
 implementation
 

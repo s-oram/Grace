@@ -542,7 +542,7 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="eePlugin.pas"/>
-			<DCCReference Include="LucidityUtils.pas"/>
+			<DCCReference Include="Lucidity.Utils.pas"/>
 			<DCCReference Include="Lucidity.Types.pas"/>
 			<DCCReference Include="frames\SampleMapFrame.Extra.pas"/>
 			<DCCReference Include="Lucidity.FirstRun.pas"/>
