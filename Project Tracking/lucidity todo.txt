@@ -51,24 +51,13 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-Plugin Delay compensation
-thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
+
 
 > Also, could i ask some more in-depth info about the 2pole filter 
 > "gain" knob ?
 The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
 
 Mix parameters for all the filter types? 
-
-add dialogs to Lucidity. 
-- InputDialog 
-  -- need to hide label if it has no value.
-  -- dialogs don't recieve TAB presses when used in a plugin. They
-     work fine when used in a regular application. The TAB key
-     is being captured somewhere.
-
-Interesting artical for key processing.
-http://edn.embarcadero.com/article/38447
 
 Resave Waveshapers drum kits with release times set to max!
 

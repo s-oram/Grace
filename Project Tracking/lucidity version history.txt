@@ -1,9 +1,9 @@
 ==Notify On Update==
 
 FINISHED
-  Feature request - lfo sync to song position.
-  hugocaldeiravinagre@gmail.com
-  thunderlink://messageid=CAPN=qRw7KvLkT4L4BMNNf3H5dVvZ5JKXz5OJa_9cFJ7zFg77=Q@mail.gmail.com
+
+Plugin Delay compensation
+thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
 
 
 
