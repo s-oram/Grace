@@ -44,6 +44,10 @@ TODO:BUG
    -- now need to show the node directory path when right clicking a node.
    -- append and (Error: Not found.) to nodes with missing directorys.
 
+Bug
+- re-saving a patch, if selected in the browser, will cause the browser selection
+  to jump up one item.
+
 =============================================================================
      TODO HIGH
 =============================================================================

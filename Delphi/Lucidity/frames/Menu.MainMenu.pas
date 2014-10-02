@@ -21,6 +21,8 @@ type
     procedure EventHandle_EditSampleMap(Sender : TObject);
     procedure EventHandle_ImportSFZ(Sender : TObject);
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
+    procedure EventHandle_SaveProgram(Sender : TObject);
+    procedure EventHandle_SaveProgramAs(Sender : TObject);
 
     procedure EventHandle_SaveMidiMapAs(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
@@ -71,7 +73,6 @@ end;
 procedure TMainMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
-  SaveDialog : TxpFileSaveDialog;
   OpenDialog : TxpFileOpenDialog;
 begin
   assert(Sender is TMenuItem);
@@ -82,19 +83,6 @@ begin
   begin
     Plugin.InitializeState;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-  end;
-
-  if Tag = 2 then
-  begin
-    SaveDialog := TxpFileSaveDialog.Create(nil);
-    AutoFree(@SaveDialog);
-
-    SetupFileSaveDialog_Program(Plugin, SaveDialog);
-
-    if SaveDialog.Execute then
-    begin
-      Plugin.SaveProgramToFile(SaveDialog.FileName);
-    end;
   end;
 
   if Tag = 3 then
@@ -157,9 +145,13 @@ begin
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
-  mi.Tag     := 2;
+  mi.Caption := 'Save Program';
+  mi.OnClick := EventHandle_SaveProgram;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
   mi.Caption := 'Save Program As...';
-  mi.OnClick := MenuItemClicked;
+  mi.OnClick := EventHandle_SaveProgramAs;
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
@@ -360,11 +352,6 @@ begin
   end;
 end;
 
-procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
-begin
-  Plugin.SaveProgramAsDefault;
-end;
-
 procedure TMainMenu.EventHandle_OpenDataFoler(Sender: TObject);
 var
   ErrMsg : string;
@@ -442,6 +429,41 @@ begin
     Plugin.LoadMidiMap(OpenDialog.FileName);
   end;
 end;
+
+procedure TMainMenu.EventHandle_SaveProgram(Sender: TObject);
+begin
+  if Plugin.SaveCurrentProgram = true then
+  begin
+    // TODO:MED show a fading message here.
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Program Saved');
+  end else
+  begin
+    EventHandle_SaveProgramAs(self);
+  end;
+  
+end;
+
+procedure TMainMenu.EventHandle_SaveProgramAs(Sender: TObject);
+var
+  SaveDialog : TxpFileSaveDialog;
+begin
+  SaveDialog := TxpFileSaveDialog.Create(nil);
+  AutoFree(@SaveDialog);
+
+  SetupFileSaveDialog_Program(Plugin, SaveDialog);
+
+  if SaveDialog.Execute then
+  begin
+    Plugin.SaveProgramToFile(SaveDialog.FileName);
+  end;
+end;
+
+procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
+begin
+  Plugin.SaveProgramAsDefault;
+end;
+
+
 
 
 

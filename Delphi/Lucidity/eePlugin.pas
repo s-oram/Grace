@@ -177,6 +177,8 @@ type
 
     procedure ImportProgram(const FileName : string); overload;
     procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat); overload;
+
+    function SaveCurrentProgram:boolean;
     procedure SaveProgramToFile(const FileName : string);
     procedure SaveProgramAsDefault;
 
@@ -1512,8 +1514,24 @@ begin
   UpdateMidiBindingIDs;
 end;
 
-
-
+function TeePlugin.SaveCurrentProgram: boolean;
+///  Method returns true when file is saved.
+///  Method returns false when target file doesn't exist.
+var
+  fn : string;
+begin
+  fn := Globals.PatchInfo.PatchFileName;
+  if FileExists(fn) then
+  begin
+    // TODO:MED Instead of automatically returning true here,
+    // we should only return true if the file gets saved.
+    SaveProgramToFile(fn);
+    result := true;
+  end else
+  begin
+    result := false;
+  end;
+end;
 
 procedure TeePlugin.SaveProgramToFile(const FileName: string);
 var
