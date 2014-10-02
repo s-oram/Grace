@@ -131,16 +131,17 @@ object InputDialogForm: TInputDialogForm
             Left = 0
             Top = 3
             Width = 86
-            Height = 13
+            Height = 25
             Margins.Left = 0
             Margins.Right = 4
             Align = alLeft
             Caption = 'InputLabelControl'
+            ExplicitHeight = 13
           end
           object InputEditControl: TEdit
             AlignWithMargins = True
             Left = 120
-            Top = 7
+            Top = 0
             Width = 161
             Height = 21
             Margins.Left = 0

@@ -312,7 +312,6 @@ begin
   if Plugin.Globals.FindConfigFile('KeyHook.xml', fn) then
   begin
     PluginKeyHook := TPluginKeyHook.Create(Plugin.Globals.HostProperties^.HostName, Plugin.Globals.HostProperties^.HostVersion, aVstWindow, fn);
-
     PluginKeyHook.OnKeyDown := PluginHotKeys.KeyDown;
     PluginKeyHook.OnKeyUp   := PluginHotKeys.KeyUp;
   end;

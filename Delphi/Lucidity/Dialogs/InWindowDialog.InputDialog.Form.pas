@@ -55,6 +55,7 @@ type
 implementation
 
 uses
+  {$IFDEF DEBUG}Dialogs,{$ENDIF DEBUG}
   RedFoxColor,
   VamLib.Graphics,
   VamLib.Utils;
@@ -112,15 +113,15 @@ begin
   //
 end;
 
-procedure TInputDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  //
-end;
+
 
 procedure TInputDialogForm.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   //
+  ShowMessage('gang');
 end;
+
+
 
 procedure TInputDialogForm.ButtonDivResize(Sender: TObject);
 var
@@ -189,9 +190,41 @@ end;
 
 procedure TInputDialogForm.CMChildKey(var Message: TCMChildKey);
 begin
-  inherited;
+  // NOTE: CMChildKey isn't called when dialog is used in a plugin.
+  // It does work in standalone mode.
+  if Message.CharCode = VK_RETURN then
+  begin
+    OkButtonclick(self);
+    Message.Result := 1;
+  end else
+  if Message.CharCode = VK_ESCAPE then
+  begin
+    CancelButtonClick(self);
+    Message.Result := 1;
+  end else
+  begin
+    inherited;
+  end;
 end;
 
-
+procedure TInputDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  // FormKeyDown is called when the dialog is used within a VST plugin.
+  if Key = VK_RETURN then
+  begin
+    OkButtonclick(self);
+    Key := 0;
+  end else
+  if Key = VK_ESCAPE then
+  begin
+    CancelButtonClick(self);
+    Key := 0;
+  end else
+  if Key = VK_TAB then
+  begin
+    FocusNextControl;
+    Key := 0;
+  end;
+end;
 
 end.

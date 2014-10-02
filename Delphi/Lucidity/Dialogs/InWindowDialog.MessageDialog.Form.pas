@@ -19,6 +19,7 @@ type
     DialogTextControl: TLabel;
     procedure OkButtonClick(Sender: TObject);
     procedure ButtonDivResize(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     fDialogText: string;
     fOnOkayButton: TNotifyEvent;
@@ -77,6 +78,8 @@ begin
   inherited;
 end;
 
+
+
 procedure TMessageDialogForm.ButtonDivResize(Sender: TObject);
 begin
   OkButton.Left := (ButtonDiv.Width - OkButton.Width) div 2;
@@ -132,6 +135,22 @@ procedure TMessageDialogForm.OkButtonClick(Sender: TObject);
 begin
   if assigned(OnOkButton) then OnOkButton(self);
   CloseDialog;
+end;
+
+procedure TMessageDialogForm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  // FormKeyDown is called when the dialog is used within a VST plugin.
+  if (Key = VK_RETURN) or (Key = VK_ESCAPE) then
+  begin
+    OkButtonclick(self);
+    Key := 0;
+  end else
+  if Key = VK_TAB then
+  begin
+    FocusNextControl;
+    Key := 0;
+  end;
 end;
 
 

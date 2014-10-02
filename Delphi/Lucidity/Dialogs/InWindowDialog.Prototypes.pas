@@ -179,11 +179,11 @@ constructor TPluginDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
 
+  KeyPreview := true;
   DoubleBuffered := true;
 
   TabOrderControlList := TObjectList.Create;
   TabOrderControlList.OwnsObjects := false;
-
 end;
 
 destructor TPluginDialogForm.Destroy;
