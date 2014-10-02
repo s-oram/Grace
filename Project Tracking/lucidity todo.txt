@@ -37,16 +37,11 @@ bug
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
 
-TODO:BUG
-- renaming the root node doesn't work.
--- this is because there is a mismatch between the sample directory Node Index and the way 
-   the sample directory list is organised.
-   -- now need to show the node directory path when right clicking a node.
-   -- append and (Error: Not found.) to nodes with missing directorys.
-
-Bug
+Bug 
+- refresh file browser doesn't maintain the browser node selection. the selection jumps.
 - re-saving a patch, if selected in the browser, will cause the browser selection
   to jump up one item.
+
 
 bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
@@ -56,6 +51,15 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+Plugin Delay compensation
+thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
+
+> Also, could i ask some more in-depth info about the 2pole filter 
+> "gain" knob ?
+The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
+
+Mix parameters for all the filter types? 
+
 add dialogs to Lucidity. 
 - InputDialog 
   -- need to hide label if it has no value.
@@ -65,9 +69,6 @@ add dialogs to Lucidity.
 
 Interesting artical for key processing.
 http://edn.embarcadero.com/article/38447
-
-Plugin Delay compensation
-thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
 
 Resave Waveshapers drum kits with release times set to max!
 
@@ -83,11 +84,6 @@ Update the step sequencer divisions to match the LFO step divisions.
 
 Auto region select causes the sample display to flicker when not actually changing
 what controls are visible. 
-
-> Also, could i ask some more in-depth info about the 2pole filter 
-> "gain" knob ?
-The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
-
 
 Polyphony task
 - when re-triggering an already existing note, lucidity currently just
