@@ -35,9 +35,11 @@ type
     procedure SetBlockSize(const Value: integer);
     procedure SetOutputChannelCount(const Value: integer);
     procedure SetOverSampleFactor(const Value: integer);
+
   protected
     // UpdateInternalBuffers() is called when OutputChannelCount, BlockSize or OverSamplefactor changes.
     procedure UpdateInternalBuffers; virtual; abstract;
+    function GetLatency: integer; virtual; abstract;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -46,6 +48,9 @@ type
     property OutputChannelCount : integer read fOutputChannelCount write SetOutputChannelCount;
     property BlockSize          : integer read fBlockSize          write SetBlockSize;
     property OverSampleFactor   : integer read fOverSampleFactor   write SetOverSampleFactor;
+
+    // reports latency in samples.
+    property Latency            : integer read GetLatency;
   end;
 
 implementation

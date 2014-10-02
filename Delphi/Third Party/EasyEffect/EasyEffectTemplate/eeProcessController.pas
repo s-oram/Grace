@@ -31,9 +31,11 @@ type
   private
     fPlugin: TeePlugin;
     fTimeInfoMethod: TTimeInfoMethod;
+    function GetTotalLatency: integer;
   protected
     CpuMonitor : TCpuMonitor;
 
+    fOversampleFactor : integer;
     fSampleRate : integer;
     fFastControlRateDivision : integer;
     fSlowControlRateDivision : integer;
@@ -75,6 +77,8 @@ type
     property Plugin : TeePlugin read fPlugin;
 
     property TimeInfoMethod : TTimeInfoMethod read fTimeInfoMethod write fTimeInfoMethod;
+
+    property TotalLatency : integer read GetTotalLatency;
   end;
 
 
@@ -185,6 +189,24 @@ end;
 function TProcessController.GetTimeInfo(Filter: VstInt32): PVstTimeInfo;
 begin
   result := fTimeInfoMethod(Filter);
+end;
+
+function TProcessController.GetTotalLatency: integer;
+var
+  x : integer;
+begin
+  x := 0;
+
+  {$IFDEF HasAudioIns}
+  // TODO: add input latency.
+  // but only if it should be included.
+  {$ENDIF}
+
+  {$IFDEF HasAudioOuts}
+  x := x + (VstOutputsController.Latency div fOverSampleFactor);
+  {$ENDIF}
+
+  result := x;
 end;
 
 function TProcessController.ProcessEvents(ev: PVstEvents): longint;
@@ -326,6 +348,7 @@ end;
 
 procedure TProcessController.Resume(const aBlockSize, aSampleRate, aOverSampleFactor, aInputCount, aOutputCount : integer);
 begin
+  fOverSampleFactor := aOverSampleFactor;
   fSampleRate := aSampleRate;
 
   fFastControlRateDivision := Plugin.Settings.FastControlRateDivision;

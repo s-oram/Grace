@@ -20,6 +20,7 @@ type
     Buffers : array of array of Single;
     
     procedure UpdateInternalBuffers; override;
+    function GetLatency: integer; override;
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -32,6 +33,7 @@ type
     property OutputChannelCount;
     property BlockSize;
     property OverSampleFactor;
+    property Latency;
   end;
 
 
@@ -64,6 +66,13 @@ begin
   SetLength(Buffers, 0);
 
   inherited;
+end;
+
+function TVstAudioOutputController.GetLatency: integer;
+begin
+  if Length(Resamplers) > 0
+    then result := Resamplers[0].Latency
+    else result := 0;
 end;
 
 procedure TVstAudioOutputController.Setup_PluginOutputBuffers(Outputs: PArrayOfPSingle);

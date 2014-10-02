@@ -633,6 +633,9 @@ var
   sr : integer;
   bs : integer;
   cr : integer;
+  {$IFDEF OverSampleEnabled}
+  smps : integer;
+  {$ENDIF}
 begin
   inherited;
 
@@ -653,6 +656,20 @@ begin
   Globals.UpdateSampleRates(sr, cr, cr);
 
   ProcessControllerV2.Resume(BlockSize, round(SampleRate), Plugin.Settings.OverSampleFactor, Effect.numInputs, Effect.numOutputs);
+
+  {$IFDEF OverSampleEnabled}
+  //=========================================================
+    // NOTE: Apparently setting the initial delay to report
+    // plugin latency can cause crashes. Use here for now and
+    // possibly change in future.
+    // http://www.kvraudio.com/forum/viewtopic.php?t=344990
+    smps := ProcessControllerV2.TotalLatency;
+    SetInitialDelay(smps);
+    IOChanged;
+    //=========================================================
+  {$ENDIF}
+
+
 
   // important for all plugins that want to receive MIDI!
   //wantEvents(1);
