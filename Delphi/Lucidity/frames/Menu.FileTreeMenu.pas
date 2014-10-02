@@ -413,8 +413,6 @@ begin
     if Plugin.RenameProgramFile(NodeData^.FileName, NewFileName)
       then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
       else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
-
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Test');
   end;
 
   InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
