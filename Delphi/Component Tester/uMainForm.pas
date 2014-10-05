@@ -41,6 +41,8 @@ uses
   VamCompoundLabel;
 
 type
+  TWinEventCallback = reference to procedure( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword) stdcall;
+
   TMyTestObject = class(TRefCountedZeroObject)
   public
     destructor Destroy; override;
@@ -56,12 +58,14 @@ type
     Edit1: TEdit;
     Edit2: TEdit;
     Edit3: TEdit;
+    Edit4: TEdit;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
   private
+    callBack : TWinEventCallBack;
     FileBrowserAddon : TFileBrowserAddon;
 
     MotherShip : TMotherShip;
@@ -78,11 +82,21 @@ type
     Timer : THighSpeedTimer;
     Token : TDebounceToken;
     KnobTT : TThrottleToken;
+
+
+    WinEventProcCallback_ObjectPointer : pointer;
+    hWinEventHook : NativeUInt;
+
     procedure UpdateLabel;
 
     procedure HandleTimerEvent(Sender : TObject);
+
   public
     procedure UpdateMemo;
+
+
+  published
+    procedure WinEventProcCallbackObject( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
   end;
 
 var
@@ -93,6 +107,8 @@ implementation
 {$R *.dfm}
 
 uses
+  //MadTools,
+  SmartInspectLogging,
   _DirectSound,
   VamGuiControlInterfaces,
   RedFoxColor,
@@ -151,6 +167,20 @@ end;
 
 //==============================================================================
 
+
+
+procedure WinEventProcCallback( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
+begin
+  LogMain.LogMessage('WinEvent ' + IntToStr(dwEvent));
+end;
+
+procedure TForm1.WinEventProcCallbackObject(hWinEventHook: NativeUInt; dwEvent: dword; handle: hwnd; idObject, idChild: Long; dwEventThread, dwmsEventTime: dword);
+begin
+  LogMain.LogMessage('WinEventxObj ' + IntToStr(dwEvent));
+end;
+
+
+
 procedure TForm1.FormCreate(Sender: TObject);
 const
   kDebugStr = '$11223344';
@@ -159,6 +189,8 @@ var
   x : integer;
   rc : TRedFoxColor;
   xs : string;
+  MyAddress : pointer;
+  m : TMethod;
 begin
   ThrottleID_VSTParChange.Init;
 
@@ -171,11 +203,31 @@ begin
 
   Delete(xs, Length(xs), 1);
 
+  callBack := procedure( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword) stdcall
+  begin
+
+  end;
+
+  //m := TMethod(self.WinEventProcCallbackObject);
+
+  MyAddress := self.MethodAddress('WinEventProcCallbackObject');
+
+  if MyAddress <> nil then
+  begin
+    WinEventProcCallback_ObjectPointer := MethodToProcedure(self, MyAddress, 7);
+    hWinEventHook := SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND , 0, WinEventProcCallback_ObjectPointer, 0, 0, 0);
+  end;
+
 
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  UnhookWinEvent(hWinEventHook);
+
+  // don't forget to free the allocated procedure
+  VirtualFree(WinEventProcCallback_ObjectPointer, 0, MEM_RELEASE);
+
   Timer.Free;
   BackBuffer.Free;
   FileBrowserAddon.Free;

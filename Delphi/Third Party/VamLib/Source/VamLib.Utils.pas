@@ -112,6 +112,27 @@ type
     class function EqualGuids(Guid1, Guid2 : TGuid) : boolean; static;
   end;
 
+
+// ***************************************************************
+
+// NOTE: ProcedureToMethod() and MethodToProcedure() have both been
+// copied from madTools.pas.
+// Documentation: http://help.madshi.net/MethodToProc.htm
+
+// converts a procedure/function to a method
+function ProcedureToMethod (self: TObject; procAddr: pointer) : TMethod;
+
+// converts a method to a procedure/function
+// CAUTION: this works only for stdcall methods!!
+// you should free the procedure pointer when you don't need it anymore using:
+//   VirtualFree(ProcedurePointer, 0, MEM_RELEASE);
+function MethodToProcedure (self: TObject; methodAddr: pointer; maxParamCount: integer = 32) : pointer; overload;
+function MethodToProcedure (method: TMethod; maxParamCount: integer = 32) : pointer; overload;
+
+// ***************************************************************
+
+
+
 //==============================================================
 //    Enum Helpers
 //==============================================================
@@ -128,6 +149,7 @@ uses
   {$ELSE}
   PerlRegEx,
   {$ENDIF}
+  Windows,
   Math,
   StrUtils,
   SysUtils;
@@ -752,7 +774,118 @@ begin
 end;
 
 
+// ***************************************************************
 
+{$ifdef win64}
+
+  function MethodToProcedure(self: TObject; methodAddr: pointer; maxParamCount: integer = 32) : pointer;
+  var stackSpace : integer;
+      s1, s2     : AnsiString;
+      pos        : integer;
+      i1         : integer;
+  begin
+    if maxParamCount < 4 then
+      maxParamCount := 4;
+    if odd(maxParamCount) then
+      stackSpace := (maxParamCount + 2) * 8   // parameters + self + localVar
+    else
+      stackSpace := (maxParamCount + 3) * 8;  // parameters + self + localVar + alignment
+    s1 := #$48 + #$81 + #$ec +        #0#0#0#0 +  // sub     rsp, $118
+          #$48 + #$89 + #$84 + #$24 + #0#0#0#0 +  // mov     [rsp+$110], rax
+          #$48 + #$8b + #$84 + #$24 + #0#0#0#0 +  // mov     rax, [rsp+$120]    // read 1st original stack parameter
+          #$48 + #$89 + #$44 + #$24 + #$08     +  // mov     [rsp+8], rax       // store as 2nd new stack parameter
+          #$48 + #$8b + #$84 + #$24 + #0#0#0#0 +  // mov     rax, [rsp+$128]    // read 2nd original stack parameter
+          #$48 + #$89 + #$44 + #$24 + #$10     +  // mov     [rsp+$10], rax     // store as 3rd new stack parameter
+          #$48 + #$8b + #$84 + #$24 + #0#0#0#0 +  // mov     rax, [rsp+$130]    // read 3rd original stack parameter
+          #$48 + #$89 + #$44 + #$24 + #$18     +  // mov     [rsp+$18], rax     // store as 4th new stack parameter
+          #$4c + #$89 + #$4c + #$24 + #$20     +  // mov     [rsp+$20], r9      // store 4th original register parameter as 5th new stack parameter
+          #$4d + #$89 + #$c1                   +  // mov     r9, r8             // cycle the register parameters (rcx -> rdx -> r8 -> r9)
+          #$49 + #$89 + #$d0                   +  // mov     r8, rdx
+          #$48 + #$89 + #$ca                   +  // mov     rdx, rcx
+          #$66 + #$0f + #$6f + #$da            +  // movdqa  xmm3, xmm2         // cycle the register parameters (xmm0 -> xmm1 -> xmm2 -> xmm3)
+          #$66 + #$0f + #$6f + #$d1            +  // movdqa  xmm2, xmm1
+          #$66 + #$0f + #$6f + #$c8;              // movdqa  xmm1, xmm0
+    integer(pointer(@s1[ 4])^) := stackSpace;
+    integer(pointer(@s1[12])^) := stackSpace -  $8;
+    integer(pointer(@s1[20])^) := stackSpace +  $8;
+    integer(pointer(@s1[33])^) := stackSpace + $10;
+    integer(pointer(@s1[46])^) := stackSpace + $18;
+    pos := Length(s1) + 1;
+    SetLength(s1, Length(s1) + (maxParamCount - 4) * 16);
+    s2 := #$48 + #$8b + #$84 + #$24 + #0#0#0#0 +  // mov     rax, [rsp+$140]
+          #$48 + #$89 + #$84 + #$24 + #0#0#0#0;   // mov     [rsp+$28], rax
+    for i1 := 1 to maxParamCount - 4 do begin
+      integer(pointer(@s2[ 5])^) := $20 + i1 * 8 + stackSpace;
+      integer(pointer(@s2[13])^) := $20 + i1 * 8;
+      Move(s2[1], s1[pos], Length(s2));
+      inc(pos, Length(s2));
+    end;
+    s2 := #$48 + #$8b + #$84 + #$24 + #0#0#0#0 +  // mov     rax, [rsp+$110]
+          #$48 + #$b9       + #0#0#0#0#0#0#0#0 +  // mov     rcx, methodAddr
+          #$48 + #$89 + #$8c + #$24 + #0#0#0#0 +  // mov     [rsp+$110], rcx
+          #$48 + #$b9       + #0#0#0#0#0#0#0#0 +  // mov     rcx, self
+          #$48 + #$89 + #$0c + #$24            +  // mov     [rsp], rcx         // store "self" as 1st new stack parameter
+          #$ff + #$94 + #$24        + #0#0#0#0 +  // call    [rsp+$110]
+          #$48 + #$81 + #$c4        + #0#0#0#0 +  // add     rsp, $118
+          #$c3;                                   // ret
+    integer(pointer(@s2[ 5])^) := stackSpace - $8;
+    pointer(pointer(@s2[11])^) := methodAddr;
+    integer(pointer(@s2[23])^) := stackSpace - $8;
+    pointer(pointer(@s2[29])^) := self;
+    integer(pointer(@s2[44])^) := stackSpace - $8;
+    integer(pointer(@s2[51])^) := stackSpace;
+    s1 := s1 + s2;
+    result := VirtualAlloc(nil, Length(s1), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+    Move(s1[1], result^, Length(s1));
+  end;
+
+{$else}
+
+  function MethodToProcedure(self: TObject; methodAddr: pointer; maxParamCount: integer = 32) : pointer;
+  type
+    TMethodToProc = packed record
+      popEax   : byte;                  // $58      pop EAX
+      pushSelf : record                 //          push self
+                   opcode  : byte;      // $B8
+                   self    : pointer;   // self
+                 end;
+      pushEax  : byte;                  // $50      push EAX
+      jump     : record                 //          jmp [target]
+                   opcode  : byte;      // $FF
+                   modRm   : byte;      // $25
+                   pTarget : ^pointer;  // @target
+                   target  : pointer;   //          @MethodAddr
+                 end;
+    end;
+  var mtp : ^TMethodToProc absolute result;
+  begin
+    mtp := VirtualAlloc(nil, sizeOf(mtp^), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+    with mtp^ do begin
+      popEax          := $58;
+      pushSelf.opcode := $68;
+      pushSelf.self   := self;
+      pushEax         := $50;
+      jump.opcode     := $FF;
+      jump.modRm      := $25;
+      jump.pTarget    := @jump.target;
+      jump.target     := methodAddr;
+    end;
+  end;
+
+{$endif}
+
+function MethodToProcedure(method: TMethod; maxParamCount: integer = 32) : pointer;
+begin
+  result := MethodToProcedure(TObject(method.data), method.code);
+end;
+
+function ProcedureToMethod(self: TObject; procAddr: pointer) : TMethod;
+begin
+  result.Data := self;
+  result.Code := procAddr;
+end;
+
+// ***************************************************************
 
 end.
 

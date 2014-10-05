@@ -148,7 +148,6 @@ end;
 function TVstEditor.Open(ptr: Pointer): Longint;
 begin
   systemWindow := hwnd(ptr);
-
   Plugin.Globals.TopLevelWindow := hwnd(ptr);
 
   if (UseCount = 0) then
@@ -201,7 +200,7 @@ begin
 
   if assigned(PluginGui) then
   begin
-    result := PluginGUI.PluginHotkeys.KeyDown(KeyCode);
+    result := PluginGUIMeta.PluginHotkeys.KeyDown(KeyCode);
   end else
   begin
     result := false;
@@ -212,7 +211,7 @@ function TVstEditor.OnKeyUp(var KeyCode: VstKeyCode): boolean;
 begin
   if assigned(PluginGui) then
   begin
-    result := PluginGUI.PluginHotkeys.KeyUp(KeyCode);
+    result := PluginGUIMeta.PluginHotkeys.KeyUp(KeyCode);
   end else
   begin
     result := false;

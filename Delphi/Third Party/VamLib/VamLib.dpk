@@ -54,6 +54,7 @@ contains
   VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas',
   VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas',
   VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas',
-  VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas';
+  VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas',
+  VamLib.WinHook in 'Source\VamLib.WinHook.pas';
 
 end.

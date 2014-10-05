@@ -56,8 +56,6 @@ type
     fPlugin: TeePlugin;
     fLowerTabState: TLowerTabOptions; //TODO:MED I think this can be deleted.
     fCurrentGuiState: TGuiState;
-    fPluginHotkeys: TPluginHotkeys;
-    fPluginKeyHook: TPluginKeyHook;
     procedure SetLowerTabState(const Value: TLowerTabOptions);
   private
     FMotherShip : IMothership;
@@ -108,8 +106,6 @@ type
     procedure UpdateGui(Sender:TObject);
 
     property Plugin:TeePlugin read fPlugin write fPlugin;
-    property PluginHotkeys : TPluginHotkeys read fPluginHotkeys write fPluginHotkeys;
-    property PluginKeyHook : TPluginKeyHook read fPluginKeyHook write fPluginKeyHook;
 
     procedure UpdateLayout;
 
@@ -270,8 +266,6 @@ begin
 
   DropFileTarget.Free;
   FeedBackData.Free;
-  if assigned(fPluginHotkeys) then FreeAndNil(fPluginHotkeys);
-  if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
   OverlayContainer.Free;
 end;
 
@@ -304,23 +298,9 @@ begin
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.VCL);
 
 
-  PluginHotkeys := TPluginHotkeys.Create(Plugin.Globals);
-  PluginHotkeys.OnCommandKeyDown := self.HotkeyEvent;
 
 
-  //==== Load the key hook config ==============================================
-  if Plugin.Globals.FindConfigFile('KeyHook.xml', fn) then
-  begin
-    PluginKeyHook := TPluginKeyHook.Create(Plugin.Globals.HostProperties^.HostName, Plugin.Globals.HostProperties^.HostVersion, aVstWindow, fn);
-    PluginKeyHook.OnKeyDown := PluginHotKeys.KeyDown;
-    PluginKeyHook.OnKeyUp   := PluginHotKeys.KeyUp;
-  end;
-
-  //==== Load the key commands config ==========================================
-  if Plugin.Globals.FindConfigFile('KeyCommands.xml', fn) then
-  begin
-    PluginHotkeys.LoadFromXML(fn);
-  end;
+  
 
   //====== Register frames as zero objects =====================================
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
@@ -455,10 +435,13 @@ begin
   //Update the gui elements here.
   Manually := true;
 
+  {
+  //TODO:HIGH need a way to refresh the keyhook target.
   if assigned(PluginKeyHook) then
   begin
     PluginKeyHook.RefreshKeyHookTarget;
   end;
+  }
 
   rd := FindRegionToDisplay(Plugin);
   FeedbackData.FocusedRegion := rd.Region;
@@ -599,6 +582,7 @@ procedure TPluginGui.HotkeyEvent(Sender: TObject; const CommandID: string);
 var
   KeyCommand : TKeyCommand;
 begin
+  {
   KeyCommand := TKeyCommandHelper.ToEnum(CommandID);
 
   case KeyCommand of
@@ -618,7 +602,7 @@ begin
   else
     raise Exception.Create('Error: Key command not handled.');
   end;
-
+  }
 end;
 
 procedure TPluginGui.FormResize(Sender: TObject);
