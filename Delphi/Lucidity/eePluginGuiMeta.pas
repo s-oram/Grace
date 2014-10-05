@@ -7,6 +7,7 @@ interface
 uses
   eePluginHotkeys,
   eePluginKeyHook,
+  VamLib.WinHook,
   VamLib.ZeroObject,
   WinApi.Windows,
   eePlugin, eePluginGui,
@@ -29,11 +30,16 @@ type
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
 
+
+
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
 
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
 
     procedure HotkeyEvent(Sender : TObject; const CommandID : string);
+  protected
+    WindowsEventHook : TWindowsEventHook;
+    procedure EventHandle_WindowsEvent(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
   public
     constructor Create(const aPlugin : TeePlugin; const aSystemWindow : hwnd);
     destructor Destroy; override;
@@ -79,10 +85,15 @@ begin
 
   ActiveModDetector := TActiveParameterDetector.Create(Plugin);
   aPlugin.Globals.MotherShip.RegisterZeroObject(ActiveModDetector, TZeroObjectRank.VCL);
+
+  WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
+  WindowsEventHook.OnWinEvent := EventHandle_WindowsEvent;
 end;
 
 destructor TPluginGuiMeta.Destroy;
 begin
+  if assigned(WindowsEventHook) then FreeAndNil(WindowsEventHook);
+
   Plugin.Globals.MotherShip.DeregisterZeroObject(self);
 
   ScopeHandler.Free;
@@ -175,6 +186,14 @@ begin
 end;
 
 
+procedure TPluginGuiMeta.EventHandle_WindowsEvent(Sender: TObject; Event, hwnd, idObject, idChild, EventThread, EventTime: cardinal);
+begin
+  if Event = EVENT_SYSTEM_FOREGROUND then
+  begin
+    if assigned(fPluginKeyHook) then fPluginKeyHook.RefreshKeyHookTarget;
+  end;
+
+end;
 
 procedure TPluginGuiMeta.HotkeyEvent(Sender: TObject; const CommandID: string);
 var
