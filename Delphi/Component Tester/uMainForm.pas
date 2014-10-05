@@ -5,6 +5,7 @@ interface
 
 
 uses
+  VamLib.WinHook,
   SynCommons,
   eeFileBrowserAddon,
   wmfintf,
@@ -65,7 +66,6 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
   private
-    callBack : TWinEventCallBack;
     FileBrowserAddon : TFileBrowserAddon;
 
     MotherShip : TMotherShip;
@@ -83,15 +83,16 @@ type
     Token : TDebounceToken;
     KnobTT : TThrottleToken;
 
-
-    WinEventProcCallback_ObjectPointer : pointer;
-    hWinEventHook : NativeUInt;
+    WindowsEventHook : TWindowsEventHook;
 
     procedure UpdateLabel;
 
     procedure HandleTimerEvent(Sender : TObject);
 
+    procedure WinEventHandler(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
+
   public
+
     procedure UpdateMemo;
 
 
@@ -174,9 +175,14 @@ begin
   LogMain.LogMessage('WinEvent ' + IntToStr(dwEvent));
 end;
 
+procedure TForm1.WinEventHandler(Sender: TObject; Event, hwnd, idObject, idChild, EventThread, EventTime: cardinal);
+begin
+  LogMain.LogMessage('WinEvent2xObj ' + IntToStr(Event));
+end;
+
 procedure TForm1.WinEventProcCallbackObject(hWinEventHook: NativeUInt; dwEvent: dword; handle: hwnd; idObject, idChild: Long; dwEventThread, dwmsEventTime: dword);
 begin
-  LogMain.LogMessage('WinEventxObj ' + IntToStr(dwEvent));
+
 end;
 
 
@@ -189,8 +195,7 @@ var
   x : integer;
   rc : TRedFoxColor;
   xs : string;
-  MyAddress : pointer;
-  m : TMethod;
+
 begin
   ThrottleID_VSTParChange.Init;
 
@@ -203,30 +208,13 @@ begin
 
   Delete(xs, Length(xs), 1);
 
-  callBack := procedure( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword) stdcall
-  begin
-
-  end;
-
-  //m := TMethod(self.WinEventProcCallbackObject);
-
-  MyAddress := self.MethodAddress('WinEventProcCallbackObject');
-
-  if MyAddress <> nil then
-  begin
-    WinEventProcCallback_ObjectPointer := MethodToProcedure(self, MyAddress, 7);
-    hWinEventHook := SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND , 0, WinEventProcCallback_ObjectPointer, 0, 0, 0);
-  end;
-
-
+  WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
+  WindowsEventHook.OnWinEvent := WinEventHandler;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  UnhookWinEvent(hWinEventHook);
-
-  // don't forget to free the allocated procedure
-  VirtualFree(WinEventProcCallback_ObjectPointer, 0, MEM_RELEASE);
+  WindowsEventHook.Free;
 
   Timer.Free;
   BackBuffer.Free;

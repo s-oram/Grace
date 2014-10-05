@@ -23,7 +23,11 @@ type
     CallbackMethodPointer : pointer;
     HookHandle : NativeUInt;
   public
+    //  MSDN Event constants:
+    //  - http://msdn.microsoft.com/en-us/library/windows/desktop/dd318066%28v=vs.85%29.aspx
+    //  idProcess, idThread. Use 0 for all processes and all threads.
     constructor Create(const EventMin, EventMax : cardinal; const idProcess : cardinal = 0; const idThread : cardinal = 0);
+
     destructor Destroy; override;
 
     property OnWinEvent : TWinEvent read fOnWinEvent write fOnWinEvent;
@@ -74,7 +78,7 @@ begin
   // MSDN WinEventProc callback function
   // http://msdn.microsoft.com/en-us/library/windows/desktop/dd373885%28v=vs.85%29.aspx
   if assigned(fOnWinEvent)
-    then fOnWinEvent(self, dwEvent, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
+    then fOnWinEvent(self, dwEvent, handle, idObject, idChild, dwEventThread, dwmsEventTime);
 end;
 
 end.
