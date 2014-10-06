@@ -92,8 +92,6 @@ type
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
     property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState; // TODO:MED: I'm not sure if the GUI needs a copy of the Current GUI state object anymore.
 
-    procedure HotkeyEvent(Sender : TObject; const CommandID : string);
-
     procedure OverlayContainerClicked(Sender : TObject);
 
     function DoGetDialogArea(Sender : TObject):TWinControl;
@@ -273,7 +271,6 @@ end;
 
 procedure TPluginGui.PostCreate(const aVstWindow : HWnd);
 var
-  fn : string;
   VQ : IVamQuery;
   c : TControl;
   bm1 : TBitmap;
@@ -571,38 +568,6 @@ begin
   self.LowerTabState := TabSelected;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.RefreshRequest_StepSeqDisplay);
-end;
-
-
-
-
-
-
-procedure TPluginGui.HotkeyEvent(Sender: TObject; const CommandID: string);
-var
-  KeyCommand : TKeyCommand;
-begin
-  {
-  KeyCommand := TKeyCommandHelper.ToEnum(CommandID);
-
-  case KeyCommand of
-    TKeyCommand.ContextUp,
-    TKeyCommand.ContextDown,
-    TKeyCommand.ContextLeft,
-    TKeyCommand.ContextRight,
-    TKeyCommand.PageUp,
-    TKeyCommand.PageDown,
-    TKeyCommand.SelectUp,
-    TKeyCommand.SelectDown,
-    TKeyCommand.ReplaceLoad:
-    begin
-      FileBrowserFrame.KeyCommand(KeyCommand);
-    end;
-
-  else
-    raise Exception.Create('Error: Key command not handled.');
-  end;
-  }
 end;
 
 procedure TPluginGui.FormResize(Sender: TObject);

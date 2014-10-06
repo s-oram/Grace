@@ -69,13 +69,13 @@ type
 
     procedure Command_ReplaceLoad;
     procedure RefreshFileBrowser;
+
+    procedure ProcessKeyCommand(Command:TKeyCommand);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
-
-    procedure KeyCommand(Command:TKeyCommand);
 
     procedure PreviewInfoChanged;
     procedure SampleDirectoriesChanged;
@@ -128,6 +128,7 @@ procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Poin
 var
   CurrentFocus_ParName : string;
   b : boolean;
+  KeyCommand : TKeyCommand;
 begin
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
   if MsgID = TLucidMsgID.Cmd_RefreshBrowser       then RefreshFileBrowser;
@@ -153,6 +154,13 @@ begin
     // This is called here to update the preview volume text.
     PreviewInfoChanged;
   end;
+
+  if MsgID = TLucidMsgID.Cmd_HotkeyDown then
+  begin
+    KeyCommand := TKeyCommand(Data^);
+    ProcessKeyCommand(KeyCommand);
+  end;
+
 end;
 
 
@@ -279,7 +287,7 @@ begin
   FMotherShip := aMothership;
 end;
 
-procedure TFileBrowserFrame.KeyCommand(Command: TKeyCommand);
+procedure TFileBrowserFrame.ProcessKeyCommand(Command: TKeyCommand);
 begin
   if not assigned(Plugin) then exit;
 

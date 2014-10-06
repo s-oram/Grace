@@ -306,6 +306,8 @@ type
   );
   TKeyCommandHelper = class(TEnumHelper<TKeyCommand>);
 
+  THotKeyContext = (None, FileBrowser, SampleMap);
+
   TProgramFormat = (Lucidity, Sfz);
 
 

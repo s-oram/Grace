@@ -3,7 +3,7 @@ unit soFilter.CombA;
 interface
 
 uses
-  Math,
+  Math, eeDsp,
   VamLib.MoreTypes,
   B2.DelayLine.StereoDelayBuffer;
 
@@ -55,8 +55,7 @@ type
 implementation
 
 uses
-  VamLib.Utils,
-  eeDsp;
+  VamLib.Utils;
 
 const
   kMinDelay = 1;   //milliseconds

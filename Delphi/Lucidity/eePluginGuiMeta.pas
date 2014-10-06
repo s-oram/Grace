@@ -199,28 +199,8 @@ procedure TPluginGuiMeta.HotkeyEvent(Sender: TObject; const CommandID: string);
 var
   KeyCommand : TKeyCommand;
 begin
-  ShowMessage('hk');
-  {
   KeyCommand := TKeyCommandHelper.ToEnum(CommandID);
-
-  case KeyCommand of
-    TKeyCommand.ContextUp,
-    TKeyCommand.ContextDown,
-    TKeyCommand.ContextLeft,
-    TKeyCommand.ContextRight,
-    TKeyCommand.PageUp,
-    TKeyCommand.PageDown,
-    TKeyCommand.SelectUp,
-    TKeyCommand.SelectDown,
-    TKeyCommand.ReplaceLoad:
-    begin
-      FileBrowserFrame.KeyCommand(KeyCommand);
-    end;
-
-  else
-    raise Exception.Create('Error: Key command not handled.');
-  end;
-  }
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.cmd_HotKeyDown, @KeyCommand, nil);
 end;
 
 end.
