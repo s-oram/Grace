@@ -51,18 +51,21 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-i've written a class to set a "WinEventHook". I should do the same for 
-the windows keyboard hook. Currently the windows keyboard hook is
-a bit messy and spread out over lots of code.
+- add demo functionality.
+- check the about box is working and fully populated.
+- finish the help doc.
+- finish renaming all the factory presets. 
+- ensure advanced 'debug' only features don't get added to the 'release' build.
 
+Mix parameters for all the filter types? 
 
 > Also, could i ask some more in-depth info about the 2pole filter 
 > "gain" knob ?
 The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
 
-Mix parameters for all the filter types? 
-
-Resave Waveshapers drum kits with release times set to max!
+i've written a class to set a "WinEventHook". I should do the same for 
+the windows keyboard hook. Currently the windows keyboard hook is
+a bit messy and spread out over lots of code.
 
 Check out asyn calls.
 http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
@@ -88,9 +91,6 @@ Sample Map editor
 - the proposed sample region doesn't show in the info bar. (root note etc)\
 - being copied regions don't show in the info bar. (root note etc)\
 
-
-[BIG TASK]
-- need a frame work for putting dialogs on the GUI.
 
 [BIG TASK]
 - need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
