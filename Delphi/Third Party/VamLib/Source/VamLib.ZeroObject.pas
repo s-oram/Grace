@@ -83,6 +83,8 @@ type
 
   IMotherShip = interface;
 
+  TMsgIdToStrFunction = reference to function(const ID : cardinal):string;
+
   IZeroMessageData = interface(IInterface)
     ['{6D90ECB8-9EC8-40E6-8908-AB4C7CCF9C15}']
     function GetObject : TObject;
@@ -103,6 +105,9 @@ type
 
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
+
+    procedure Inject_MsgIdToStr(const f : TMsgIdToStrFunction);
+
     procedure SetIsGuiOpen(const Value: boolean);
 
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
@@ -166,6 +171,8 @@ type
     MainListLock  : TMultiReadSingleWrite;
     VclListLock   : TMultiReadSingleWrite;
 
+    Injected_MsgIdToStr : TMsgIdToStrFunction;
+
     DisableMessageSending : boolean;
 
     MainThreadID : cardinal;
@@ -187,6 +194,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    procedure Inject_MsgIdToStr(const f : TMsgIdToStrFunction);
 
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj: IZeroObject);
@@ -287,6 +296,8 @@ end;
 
 constructor TMotherShip.Create;
 begin
+  Injected_MsgIdToStr := nil;
+
   IsGuiOpenLock := TMultiReadSingleWrite.Create;
 
   MainThreadID := 0;
@@ -310,6 +321,8 @@ end;
 
 destructor TMotherShip.Destroy;
 begin
+  Injected_MsgIdToStr := nil;
+
   VclMessageTimer.Enabled := false;
 
   if AudioObjects.Count > 0
@@ -639,6 +652,11 @@ begin
   end;
 end;
 
+procedure TMotherShip.Inject_MsgIdToStr(const f: TMsgIdToStrFunction);
+begin
+  Injected_MsgIdToStr := f;
+end;
+
 procedure TMotherShip.SendMessageToList(const ObjectList: TList; const ListLock : TMultiReadSingleWrite; const MsgID: cardinal; const Data: Pointer; DataB:IZeroMessageData);
 var
   LastIndex : integer;
@@ -658,8 +676,6 @@ begin
       //if ObjectList = MainObjects then Log.LogMessage('Main SendMessage ID = ' + IntToStr(MsgID));
 
 
-
-
       for c1 := 0 to ObjectList.Count - 1 do
       begin
         LastIndex := c1;
@@ -671,8 +687,13 @@ begin
       aClass := zo.ClassType;
       LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
 
+      if assigned(Injected_MsgIdToStr) then
+      begin
+        LogMsg := LogMsg + ' Msg = ' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
+      end;
+
       DisableMessageSending := true;
-      Log.LogError('ERROR' + LogMsg);
+      Log.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
       raise;
     end;
 
