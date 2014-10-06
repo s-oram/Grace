@@ -164,7 +164,6 @@ begin
     KeyCommand := TKeyCommand(Data^);
     ProcessKeyCommand(KeyCommand);
   end;
-
 end;
 
 
@@ -202,7 +201,6 @@ begin
   MainContextMenu.Initialize(aPlugin);
   NodeContextMenu.Initialize(aPlugin);
   //========================================
-
 
   PreviewOnOffButton.Text := '';
   PreviewOnOffButton.Layout.SetSize(18,18);

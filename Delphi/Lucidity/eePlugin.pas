@@ -312,6 +312,8 @@ var
 begin
   inherited;
 
+  aGlobals.MotherShip.Inject_MsgIdToStr(uConstants.LucidMsgIDToStr);
+
   fPluginParameters := TPluginParameterManager.Create;
 
   PublishPluginParameterAsVstParameter(TPluginParameter.VoiceMode);

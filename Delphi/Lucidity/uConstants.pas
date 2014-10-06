@@ -26,7 +26,6 @@ var
   VstPluginDir : string; //Location of the VST plugin dll.
   PresetsDir   : string; //Location of preset files...
 
-
   function LucidMsgIDToStr(const ID : cardinal):string;
 
 type
@@ -484,6 +483,16 @@ begin
   if ID = TLucidMsgID.Command_Sample_ZoomIn              then exit('Command_Sample_ZoomIn');
   if ID = TLucidMsgID.Command_Sample_ZoomOut             then exit('Command_Sample_ZoomOut');
   if ID = TLucidMsgID.Command_Sample_ZoomOutFull         then exit('Command_Sample_ZoomOutFull');
+  if ID = TLucidMsgID.Command_Sample_ZoomToSampleStart   then exit('Command_Sample_ZoomToSampleStart');
+  if ID = TLucidMsgID.Command_Sample_ZoomToSampleEnd     then exit('Command_Sample_ZoomToSampleEnd');
+  if ID = TLucidMsgID.Command_Sample_ZoomToLoopStart     then exit('Command_Sample_ZoomToLoopStart');
+  if ID = TLucidMsgID.Command_Sample_ZoomToLoopEnd       then exit('Command_Sample_ZoomToLoopEnd');
+  if ID = TLucidMsgID.Command_ShowParChangeInfo          then exit('Command_ShowParChangeInfo');
+  if ID = TLucidMsgID.Command_UpdateParChangeInfo        then exit('Command_UpdateParChangeInfo');
+  if ID = TLucidMsgID.Command_HideParChangeInfo          then exit('Command_HideParChangeInfo');
+  if ID = TLucidMsgID.Cmd_RefreshParDisplay              then exit('Cmd_RefreshParDisplay');
+  if ID = TLucidMsgID.Cmd_RefreshBrowser                 then exit('Cmd_RefreshBrowser');
+  if ID = TLucidMsgID.Cmd_HotkeyDown                     then exit('Cmd_HotkeyDown');
   if ID = TLucidMsgID.Actions                            then exit('Actions');
   if ID = TLucidMsgID.ProgramSavedToDisk                 then exit('ProgramSavedToDisk');
   if ID = TLucidMsgID.ProgramLoaded                      then exit('ProgramLoaded');

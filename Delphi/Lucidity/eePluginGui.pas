@@ -481,13 +481,8 @@ begin
 
   if MsgID = TLucidMsgID.GUILayoutChanged then UpdateLayout;
 
-  if MsgID = TLucidMsgID.Command_BeginGuiUpdate
-    then MainPanel.BeginUpdate;
-
-  if MsgID = TLucidMsgID.Command_EndGuiUpdate
-    then MainPanel.EndUpdate;
-
-
+  if MsgID = TLucidMsgID.Command_BeginGuiUpdate then MainPanel.BeginUpdate;
+  if MsgID = TLucidMsgID.Command_EndGuiUpdate   then MainPanel.EndUpdate;
 end;
 
 
