@@ -37,6 +37,11 @@ type
 
     procedure DoSelectionChange(aNode:TVamTreeViewNode);
     property MasterNode:TVamTreeViewNode read fMasterNode write fMasterNode;
+
+    // InitializeNode() is called after a new node has been created and added to the tree structure.
+    procedure InitializeNode(aNode:TVamTreeViewNode); virtual;
+    // FinalizeNode() is called just before a node is removed from the tree structure and deleted.
+    procedure FinalizeNode(aNode:TVamTreeViewNode); virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -149,12 +154,13 @@ end;
 
 procedure TVamCustomTreeView.DeleteNode(Node: TVamTreeViewNode; UpdateTreeDimensions:boolean = true);
 begin
+  FinalizeNode(Node);
+
   if (Node.ParentNode <> nil)
     then RemoveChildNode(Node.ParentNode, Node);
 
   if Node.HasChildren then DeleteChildNodes(Node, false);
 
-  if assigned(OnFinalizeNode) then OnFinalizeNode(self, Node);
   Node.Free;
 
   if UpdateTreeDimensions then CalcTreeDimensions;
@@ -173,15 +179,10 @@ begin
     if (Allowed) then
     begin
       aNode.Expanded := false;
-
       if assigned(fOnCollapsed) then OnCollapsed(Self, aNode);
-
       CalcTreeDimensions;
-
       Invalidate;
-
     end;
-
   end;
 end;
 
@@ -192,25 +193,25 @@ begin
   if aNode.Expanded = false then
   begin
     Allowed := (aNode.ChildCount > 0);
-
     if assigned(fOnAllowExpand) then OnAllowExpand(Self, aNode, Allowed);
-
     if (Allowed) then
     begin
       aNode.Expanded := true;
       if assigned(fOnExpanded) then OnExpanded(Self, aNode);
-
       CalcTreeDimensions;
-
       Invalidate;
     end;
-
   end;
 end;
 
 procedure TVamCustomTreeView.DoSelectionChange(aNode: TVamTreeViewNode);
 begin
   if assigned(fOnSelectionChange) then OnSelectionChange(self, aNode);
+end;
+
+procedure TVamCustomTreeView.FinalizeNode(aNode: TVamTreeViewNode);
+begin
+  if assigned(OnFinalizeNode) then OnFinalizeNode(self, aNode);
 end;
 
 function TVamCustomTreeView.GetFirstChild(aNode: TVamTreeViewNode): TVamTreeViewNode;
@@ -427,6 +428,11 @@ begin
   result := MasterNode.ChildCount;
 end;
 
+procedure TVamCustomTreeView.InitializeNode(aNode: TVamTreeViewNode);
+begin
+  if assigned(OnInitializeNode) then OnInitializeNode(self, aNode);
+end;
+
 function TVamCustomTreeView.CreateNode(aParent: TVamTreeViewNode): TVamTreeViewNode;
 var
   aNode:TVamTreeViewNode;
@@ -436,12 +442,11 @@ begin
   if aParent = fMasterNode
     then TVamTreeViewNodeHack(aNode).SetIsRootNode(true);
 
-
-  if assigned(OnInitializeNode) then OnInitializeNode(self, aNode);
-
   TETNodeEx(aParent).ChildList.Add(aNode);
   aNode.ParentNode := aParent;
   aNode.Depth := aParent.Depth + 1;
+
+  InitializeNode(aNode);
 
   result := aNode;
 end;

@@ -98,6 +98,7 @@ type
     property BufferNeedsUpdate:boolean read fBufferNeedsUpdate write fBufferNeedsUpdate;
     property From:TVamTreeViewNode read fFrom write fFrom;
 
+    procedure FinalizeNode(aNode:TVamTreeViewNode); override;
 
     //==== Drawing Methods =====================================================
     procedure Paint; override;
@@ -168,7 +169,6 @@ type
     property OnScrollYChange :TNotifyEvent     read fOnScrollYChange write fOnScrollYChange;
 
     property OnBeginNodeDrag : TNotifyEvent read fOnBeginNodeDrag write fOnBeginNodeDrag;
-
 
     property OnNodeRightClicked : TNodeEvent read fOnNodeRightClicked write fOnNodeRightClicked;
     property OnTreeRightClicked : TNotifyEvent read fOnTreeRightClicked write fOnTreeRightClicked;
@@ -671,6 +671,16 @@ begin
   Invalidate;
 end;
 
+procedure TVamTreeView.FinalizeNode(aNode: TVamTreeViewNode);
+begin
+  if FocusedNode = aNode then
+  begin
+    FocusedNode := nil;
+  end;
+
+  inherited;
+end;
+
 function TVamTreeView.FindNodeWithTopValue(NodeTopValue: integer): TVamTreeViewNode;
 var
   Node:TVamTreeViewNode;
@@ -963,11 +973,9 @@ begin
       FocusedNode := nil;
     end;
 
-
     BufferNeedsUpdate := true;
     DoSelectionChange(fFocusedNode);
   end;
-
 end;
 
 procedure TVamTreeView.SetSelectedNodeAlpha(const Value: byte);
