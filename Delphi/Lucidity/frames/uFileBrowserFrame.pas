@@ -70,6 +70,8 @@ type
     procedure Command_ReplaceLoad;
     procedure RefreshFileBrowser;
 
+    procedure RenameFocusedNode;
+
     procedure ProcessKeyCommand(Command:TKeyCommand);
   public
     constructor Create(AOwner: TComponent); override;
@@ -85,6 +87,8 @@ implementation
 
 uses
   FileCtrl, SysUtils,
+  InWindowDialog,
+  VamLib.Utils,
   VamLayoutWizard,
   uGuiUtils,
   Lucidity.PluginParameters,
@@ -301,8 +305,7 @@ begin
     TKeyCommand.SelectUp:     FileBrowserAddOn.Command_SelectUp;
     TKeyCommand.SelectDown:   FileBrowserAddOn.Command_SelectDown;
     TKeyCommand.ReplaceLoad:  Command_ReplaceLoad;
-  else
-    raise Exception.Create('Unexpected Command Value');
+    TKeyCommand.ContextRename: RenameFocusedNode;
   end;
 end;
 
@@ -535,6 +538,39 @@ begin
       then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleDirectoriesChanged);
   end;
 end;
+
+procedure TFileBrowserFrame.RenameFocusedNode;
+var
+  Text, InputLabel, DefaultValue : string;
+  ResultHandler : TInputDialogResult;
+  NodeData : PNodeData;
+  Dir : string;
+  NewFileName : string;
+begin
+  if not assigned(FileTreeView.FocusedNode) then exit;
+
+  NodeData := FileTreeView.FocusedNode.Data;
+
+  if (FileExists(NodeData^.FileName)) and (IsLucidityProgramFile(NodeData^.FileName)) then
+  begin
+    Text         := 'Rename Program File';
+    InputLabel   := '';
+    DefaultValue := TrimFileExt(NodeData^.FileName);
+
+    ResultHandler := procedure(ResultText : string)
+    begin
+      Dir := ExtractFilePath(NodeData^.FileName);
+      NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
+
+      if Plugin.RenameProgramFile(NodeData^.FileName, NewFileName)
+        then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
+        else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
+    end;
+
+    InWindow_InputDialog(Plugin.Globals.TopLevelForm, Text, InputLabel, DefaultValue, ResultHandler);
+  end;
+end;
+
 
 
 

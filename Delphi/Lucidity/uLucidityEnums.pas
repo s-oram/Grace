@@ -302,7 +302,8 @@ type
     PageDown,
     SelectUp,
     SelectDown,
-    ReplaceLoad
+    ReplaceLoad,
+    ContextRename
   );
   TKeyCommandHelper = class(TEnumHelper<TKeyCommand>);
 
