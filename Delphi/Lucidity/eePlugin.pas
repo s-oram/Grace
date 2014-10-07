@@ -1373,7 +1373,6 @@ var
 begin
   inherited;
 
-  {$IFDEF Logging}LogMain.EnterMethod('Plugin.SetPreset');{$ENDIF}
 
   PreLoadProgram;
 
@@ -1386,7 +1385,6 @@ begin
 
   PostLoadProgram;
 
-  {$IFDEF Logging}LogMain.LeaveMethod('Plugin.SetPreset');{$ENDIF}
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);
@@ -1421,7 +1419,6 @@ procedure TeePlugin.ImportProgram(const FileName: string; ProgramFormat : TProgr
 var
   StateManager : TLucidityStateManager;
 begin
-  {$IFNDEF Demo}
   Lucidity.Globals.LastProgramLoadDir := ExtractFileDir(FileName);
 
   PreLoadProgram;
@@ -1442,7 +1439,6 @@ begin
 
   PresetName := RemoveFileExt(FileName);
   Globals.PatchInfo.PatchFileName := FileName;
-  {$ENDIF}
 end;
 
 procedure TeePlugin.PreLoadProgram;
@@ -1564,11 +1560,6 @@ procedure TeePlugin.SaveProgramToFile(const FileName: string);
 var
   StateManager : TLucidityStateManager;
 begin
-  {$IFNDEF Demo}
-    //TODO:MED Add Message here perhaps explain demo limitation.
-    // Maybe not needed.
-  {$ENDIF}
-
   PresetName := RemoveFileExt(FileName);
   Globals.PatchInfo.PatchFileName := FileName;
 
@@ -1590,11 +1581,6 @@ procedure TeePlugin.SaveProgramAsDefault;
 var
   fnA : string;
 begin
-  {$IFNDEF Demo}
-    //TODO:MED Add Message here perhaps explain demo limitation.
-    // Maybe not needed.
-  {$ENDIF}
-
   fnA := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + IncludeTrailingPathDelimiter('User');
   fnA := fnA + 'Default.lpg';
   SaveProgramToFile(fnA);
