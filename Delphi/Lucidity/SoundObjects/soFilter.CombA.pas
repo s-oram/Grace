@@ -25,11 +25,8 @@ type
     DelayBuffer : TStereoDelayBuffer;
     CurrentDelayInSamples : single;
     TargetDelayInSamples  : single;
-
     FeedbackFactor : single;
-
     MixWet, MixDry : single;
-
     DelayChangeCoefficient : single;
   public
     constructor Create;
@@ -58,7 +55,8 @@ type
 implementation
 
 uses
-  VamLib.Utils;
+  VamLib.Utils,
+  Lucidity.Dsp;
 
 const
   kMinDelay = 1;   //milliseconds
@@ -78,7 +76,7 @@ begin
 
   Par1 := 0.6;
   Par2 := 0.6;
-  Par3 := 0.6;
+
 
   DelayChangeCoefficient := CalcRcEnvelopeCoefficient(10, fSampleRate);
 end;
@@ -121,11 +119,8 @@ end;
 
 procedure TCombA.SetPar2(const Value: single);
 begin
-  if Value <> fPar2 then
-  begin
-    fPar2 := Value;
-    FeedbackFactor := Value * (2 - Value);
-  end;
+  fPar2 := Value;
+  FeedbackFactor := Value * (2 - Value);
 end;
 
 procedure TCombA.SetPar3(const Value: single);
@@ -134,16 +129,9 @@ begin
 end;
 
 procedure TCombA.SetPar4(const Value: single);
-var
-  MixAmount : single;
 begin
-  if Value <> fPar4 then
-  begin
-    fPar4 := Value;
-    MixAmount := Value * Value;
-    MixDry := Sqrt(1 - MixAmount);
-    MixWet := Sqrt(MixAmount);
-  end;
+  fPar4 := Value;
+  ComputeMixBalance(Value, MixDry, MixWet);
 end;
 
 procedure TCombA.FastControlProcess;
@@ -160,8 +148,6 @@ begin
   DelayBuffer.StepInput(x1 + tx1 * FeedbackFactor, x2 + tx2 * FeedbackFactor);
   x1 := (x1 * MixDry) + (tx1 * MixWet);
   x2 := (x2 * MixDry) + (tx2 * MixWet);
-  //x1 := (x1 * MixDry);
-  //x2 := (x2 * MixDry);
 end;
 
 

@@ -504,7 +504,7 @@ begin
       FastUpdateControl(Knobs[0], Labels[0], 'SR');
       FastUpdateControl(Knobs[1], Labels[1], 'BITS');
       FastUpdateControl(Knobs[2], Labels[2], '');
-      FastUpdateControl(Knobs[3], Labels[3], '');
+      FastUpdateControl(Knobs[3], Labels[3], 'MIX');
     end;
 
     ftRingModA:
@@ -512,7 +512,7 @@ begin
       FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
       FastUpdateControl(Knobs[1], Labels[1], 'AMT');
       FastUpdateControl(Knobs[2], Labels[2], '');
-      FastUpdateControl(Knobs[3], Labels[3], '');
+      FastUpdateControl(Knobs[3], Labels[3], 'MIX');
     end;
 
     //ftDistA:
@@ -537,7 +537,7 @@ begin
       FastUpdateControl(Knobs[0], Labels[0], 'FREQ');
       FastUpdateControl(Knobs[1], Labels[1], 'RES');
       FastUpdateControl(Knobs[2], Labels[2], 'TONE');
-      FastUpdateControl(Knobs[3], Labels[3], '');
+      FastUpdateControl(Knobs[3], Labels[3], 'MIX');
     end;
   else
     raise Exception.Create('Type not handled.');

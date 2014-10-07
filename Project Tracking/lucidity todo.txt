@@ -54,8 +54,6 @@ bug
 - finish the help doc.
 - finish renaming all the factory presets. 
 
-Mix parameters for all the filter types? *** DO THIS NOW ***
-
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.

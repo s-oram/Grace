@@ -3,6 +3,7 @@ unit AudioEffect.Lofi;
 interface
 
 uses
+  Lucidity.Dsp,
   eeDsp,
   AudioEffect;
 
@@ -13,16 +14,17 @@ type
     fRateReduction: single;
     fBitReduction: single;
     fBitEmphasis: single;
+    fMix: single;
     procedure SetRateReduction(const Value: single);
     procedure SetBitReduction(const Value: single);
     procedure SetBitEmpahasis(const Value: single);
+    procedure SetMix(const Value: single);
   protected
+    MixWet, MixDry : single;
     FracCounter  : single;
     FracStepSize : single;
-
     OldX1, OldX2 : single;
     LastSampledX1, LastSampledX2 : single;
-
 
     SamplesSinceLast : single;
     SamplesToCountTarget : single;
@@ -43,6 +45,8 @@ type
     property RateReduction : single read fRateReduction write SetRateReduction; //range 0..1. 0 = min reduction, 1 = max reduction.
     property BitReduction  : single read fBitReduction  write SetBitReduction;  //range 0..1. 0 = min reduction, 1 = max reduction.
     property BitEmphasis   : single read fBitEmphasis   write SetBitEmpahasis;  //range 0..1.
+    property Mix           : single read fMix           write SetMix;
+
   end;
 
 function EmpFunction(const Input, CurveAmount : single):single;
@@ -119,41 +123,34 @@ procedure TLofi.SetBitEmpahasis(const Value: single);
 begin
   assert(Value >= 0);
   assert(Value <= 1);
-
-  if value <> fBitEmphasis then
-  begin
-    fBitEmphasis := Value;
-
-  end;
+  fBitEmphasis := Value;
 end;
 
 procedure TLofi.SetBitReduction(const Value: single);
 begin
   assert(Value >= 0);
   assert(Value <= 1);
-
   fBitReduction := Value;
-
   BitScaleUp := 4 + 512 * Value * Value;
   BitScaleDown := 1 / BitScaleUp;
+end;
+
+procedure TLofi.SetMix(const Value: single);
+begin
+  fMix := Value;
+  ComputeMixBalance(Value, MixDry, MixWet);
 end;
 
 procedure TLofi.SetRateReduction(const Value: single);
 begin
   assert(Value >= 0);
   assert(Value <= 1);
-
-
   fRateReduction := Value;
   SamplesToCountTarget := (1-Value) * 63 + 1;
 end;
 
 procedure TLofi.Step(var x1, x2: single);
 begin
-  //x1 := EmpFunction(x1, fBitEmphasis);
-  //x2 := EmpFunction(x2, fBitEmphasis);
-
-
   if SamplesToCount < SamplesSinceLast then
   begin
     LastSampledX1 := TotalX1 / SamplesToCount;
@@ -175,49 +172,8 @@ begin
 
   SamplesSinceLast := SamplesSinceLast + 1;
 
-
-  x1 := LastSampledX1;
-  x2 := LastSampledX2;
-
-
-
-
-
-  {
-  FracCounter := FracCounter + FracStepSize;
-  if FracCounter >= 1 then
-  begin
-    //x1 := EmpFunction(x1, fBitEmphasis);
-    //x2 := EmpFunction(x2, fBitEmphasis);
-
-    //x1 := round(x1 * BitScaleUp) * BitScaleDown;
-    //x2 := round(x2 * BitScaleUp) * BitScaleDown;
-
-    //x1 := DeEmpFunction(x1, fBitEmphasis);
-    //x2 := DeEmpFunction(x2, fBitEmphasis);
-
-    FracCounter := FracCounter-1;
-    LastSampledX1 := LinearInterpolation(Oldx1, x1, FracCounter);
-    LastSampledX2 := LinearInterpolation(Oldx2, x2, FracCounter);
-    OldX1 := x1;
-    OldX2 := x2;
-
-    //TODO: The sample rate reducer has jitter. It should interpolate to
-    // find the actual reduced sample position instead of taking the nearest
-    // integer value.
-
-
-
-  end else
-  begin
-    OldX1 := x1;
-    OldX2 := x2;
-
-    x1 := LastSampledX1;
-    x2 := LastSampledX2;
-  end;
-  }
-
+  x1 := (MixDry * x1) + (MixWet * LastSampledX1);
+  x2 := (MixDry * x1) + (MixWet * LastSampledX2);
 end;
 
 end.

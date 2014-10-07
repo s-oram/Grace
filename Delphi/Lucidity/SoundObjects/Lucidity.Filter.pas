@@ -231,6 +231,7 @@ begin
       LofiA.RateReduction := Par1^;
       LofiA.BitReduction  := Par2^;
       LofiA.BitEmphasis   := Par3^;
+      LofiA.Mix           := Par4^;
     end;
 
     ftRingModA:
