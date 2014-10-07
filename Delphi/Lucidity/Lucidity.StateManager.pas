@@ -140,7 +140,7 @@ uses
   Lucidity.Sfz;
 
 const
-  kCurrentPatchFileVersion : integer = 3;
+  kCurrentPatchFileVersion : integer = 4;
 
 { TLucidityStatemanager }
 
@@ -1101,15 +1101,8 @@ begin
    LogMain.LogMessage('Loading Patch Format Version = ' + IntToStr(PatchFormatVersion));
  {$ENDIF}
 
-  case PatchFormatVersion of
-    // Very old format patches. There shouldn't be any of these in the wild.
-    -1: UpdatePatchVersionFrom2To3(XML);
-    0: UpdatePatchVersionFrom2To3(XML);
-    1: UpdatePatchVersionFrom2To3(XML);
-    // Patch backwards compatibility is being maintained from version 2 onwards.
-    2: UpdatePatchVersionFrom2To3(XML); //TODO:MED this method returns false if the patch conversion fails.
-  end;
-
+ if PatchFormatVersion < 3 then UpdatePatchVersionFrom2To3(XML);
+ if PatchFormatVersion < 4 then UpdatePatchVersionFrom3To4(XML);
 end;
 
 
