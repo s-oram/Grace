@@ -277,7 +277,7 @@ begin
   AboutDialog.Setup(DialogDisplay.GetDisplayArea);
 
   if Plugin.Globals.CopyProtection.IsRegistered
-    then s := 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName
+    then s := 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>'
     else s := 'UNREGISTERED';
   AboutDialog.AboutText.Add(s);
 

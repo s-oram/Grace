@@ -8,6 +8,10 @@ uses
 type
   TWinControlEvent = function(Sender : TObject):TWinControl of object;
 
+
+  //TODO:HIGH this dialog display area stuff should be deleted. It's only being
+  // used by the about box at this stage. The about box should be changed to do similar
+  // to the other in window dialog classes.
   TDialogDisplayArea = class
   private
     fOnShowDialogArea: TNotifyEvent;

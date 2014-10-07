@@ -51,7 +51,6 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- check the about box is working and fully populated.
 - finish the help doc.
 - finish renaming all the factory presets. 
 - ensure advanced 'debug' only features don't get added to the 'release' build.
@@ -203,6 +202,13 @@ Installer needs option to put data folder
 - or custom location.
 
 - document what the installer does. 
+
+- The about box should be replaced with an InWindow dialog style about box.
+  -- The about box should be able to load  a block of text from a file an 
+    automatically line break the text to fit the about box.
+  -- the about box should have a scroll bar so all text can be read.
+  -- add thank you notes for all the beta testers.
+  -- add Steinberg Credit.
 
 =============================================================================
      TODO MED
