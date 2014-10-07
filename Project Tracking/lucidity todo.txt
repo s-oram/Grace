@@ -51,6 +51,8 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+filter mix parameter should be 100% by default.
+
 - finish the help doc.
 - finish renaming all the factory presets. 
 
