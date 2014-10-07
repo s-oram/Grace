@@ -21,6 +21,8 @@ New:
 - Now reports VST plugin latency. 
 - Add rename program command (for internal use only.)
 
+Change:
+- Filter GAIN is now Filter TONE.
 
 
 === BETA v0.0.1.59 (25-Sep-2014) ===

@@ -54,11 +54,7 @@ bug
 - finish the help doc.
 - finish renaming all the factory presets. 
 
-Mix parameters for all the filter types? 
-
-> Also, could i ask some more in-depth info about the 2pole filter 
-> "gain" knob ?
-The gain knob is pre-filter. The goal of the gain knob is to add some extra harmonics. Not adjust the gain so much. Thinking about it now, instead of gain, it might be better to label it "Timbre" or "Distortion" or something else. 
+Mix parameters for all the filter types? *** DO THIS NOW ***
 
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
