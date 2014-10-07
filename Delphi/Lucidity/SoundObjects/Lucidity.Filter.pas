@@ -267,6 +267,8 @@ begin
       cQ := (Par2^) * 0.98;
       Gain := Par3^;
       BlueFilter.UpdateParameters(cFreq, cQ, Gain);
+
+      BlueFilter.Mix := Par4^;
     end;
   end;
 

@@ -3,6 +3,7 @@ unit soFilter.BlueFilter;
 interface
 
 uses
+  Lucidity.Dsp,
   eeDsp,
   eeFastCode,
   FilterCore.SimperSVF;
@@ -13,7 +14,10 @@ type
     fSampleRate: single;
     fFreq: single;
     fInputGain: single;
+    fMix: single;
+    procedure SetMix(const Value: single);
   protected
+    MixWet, MixDry : single;
     GainIn  : double;
     GainOut : double;
     FilterData1 : TDualSimperSVFData;
@@ -41,6 +45,7 @@ type
     property SampleRate : single read fSampleRate write fSampleRate;
 
     property InputGain : single read fInputGain write fInputGain;
+    property Mix : single read fMix write SetMix;
   end;
 
 implementation
@@ -52,6 +57,7 @@ uses
 
 constructor TBlueFilter.Create;
 begin
+  Mix := 1;
 end;
 
 destructor TBlueFilter.Destroy;
@@ -66,10 +72,18 @@ begin
   FilterData2.Reset;
 end;
 
+procedure TBlueFilter.SetMix(const Value: single);
+begin
+  assert(Value >= 0);
+  assert(Value <= 1);
+  fMix := Value;
+  ComputeMixBalance(Value, MixDry, MixWet);
+end;
+
 procedure TBlueFilter.Step(var x1, x2: single);
 begin
-  FilterData1.Input[0] := x1 + kDenormal;
-  FilterData1.Input[1] := x2 + kDenormal;
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn + kDenormal;
 
   TSimperVCF.StepAsLowPass(FilterData1);
 
@@ -78,8 +92,8 @@ begin
 
   TSimperVCF.StepAsLowPass(FilterData2);
 
-  x1 := FilterData2.Ouput[0];
-  x2 := FilterData2.Ouput[1];
+  x1 := (MixDry * x1) + (MixWet * FilterData2.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData2.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.StepAsLowpass2P(var x1, x2: single);
@@ -89,19 +103,19 @@ begin
 
   TSimperVCF.StepAsLowPass(FilterData1);
 
-  x1 := FilterData1.Ouput[0] * GainOut;
-  x2 := FilterData1.Ouput[1] * GainOut;
+  x1 := (MixDry * x1) + (MixWet * FilterData1.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData1.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.StepAsBandpass2P(var x1, x2: single);
 begin
   FilterData1.Input[0] := x1 * GainIn + kDenormal;
-  FilterData1.Input[1] := x2 * GainIn  + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn + kDenormal;
 
   TSimperVCF.StepAsBandPass(FilterData1);
 
-  x1 := FilterData1.Ouput[0] * GainOut;
-  x2 := FilterData1.Ouput[1] * GainOut;
+  x1 := (MixDry * x1) + (MixWet * FilterData1.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData1.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.StepAsHighpass2P(var x1, x2: single);
@@ -111,8 +125,8 @@ begin
 
   TSimperVCF.StepAsHighPass(FilterData1);
 
-  x1 := FilterData1.Ouput[0] * GainOut;
-  x2 := FilterData1.Ouput[1] * GainOut;
+  x1 := (MixDry * x1) + (MixWet * FilterData1.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData1.Ouput[1] * GainOut);
 end;
 
 
@@ -128,14 +142,14 @@ begin
 
   TSimperVCF.StepAsLowPass(FilterData2);
 
-  x1 := FilterData2.Ouput[0] * GainOut;
-  x2 := FilterData2.Ouput[1] * GainOut;
+  x1 := (MixDry * x1) + (MixWet * FilterData2.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData2.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.StepAsBandpass4P(var x1, x2: single);
 begin
-  FilterData1.Input[0] := x1 + kDenormal;
-  FilterData1.Input[1] := x2 + kDenormal;
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn + kDenormal;
 
   TSimperVCF.StepAsBandPass(FilterData1);
 
@@ -144,14 +158,14 @@ begin
 
   TSimperVCF.StepAsBandPass(FilterData2);
 
-  x1 := FilterData2.Ouput[0];
-  x2 := FilterData2.Ouput[1];
+  x1 := (MixDry * x1) + (MixWet * FilterData2.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData2.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.StepAsHighpass4P(var x1, x2: single);
 begin
-  FilterData1.Input[0] := x1 + kDenormal;
-  FilterData1.Input[1] := x2 + kDenormal;
+  FilterData1.Input[0] := x1 * GainIn + kDenormal;
+  FilterData1.Input[1] := x2 * GainIn + kDenormal;
 
   TSimperVCF.StepAsHighPass(FilterData1);
 
@@ -160,8 +174,8 @@ begin
 
   TSimperVCF.StepAsHighPass(FilterData2);
 
-  x1 := FilterData2.Ouput[0];
-  x2 := FilterData2.Ouput[1];
+  x1 := (MixDry * x1) + (MixWet * FilterData2.Ouput[0] * GainOut);
+  x2 := (MixDry * x2) + (MixWet * FilterData2.Ouput[1] * GainOut);
 end;
 
 procedure TBlueFilter.UpdateParameters(const Freq, Q, InputGain: single);
