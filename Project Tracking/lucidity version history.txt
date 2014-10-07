@@ -10,6 +10,9 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 New:
+- Finalised copy protection. Lucidity will not restore it's state when 
+  a host project is loaded if it is not registered. 
+- The Lucidity key file now uses a DAT extension instead of KEY. 
 - Save Program Command added.
 - Message dialogs now show in the VST window. Previously they would 
   show as pop up message dialog boxes. In some situations the messages

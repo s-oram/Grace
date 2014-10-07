@@ -132,6 +132,9 @@ function MethodToProcedure (method: TMethod; maxParamCount: integer = 32) : poin
 // ***************************************************************
 
 
+function MoveFile(ExistingFileName, NewFileName:string):boolean;
+function CopyFile(ExistingFileName, NewFileName:string):boolean;
+
 
 //==============================================================
 //    Enum Helpers
@@ -886,6 +889,23 @@ begin
 end;
 
 // ***************************************************************
+
+
+function MoveFile(ExistingFileName, NewFileName:string):boolean;
+begin
+  result := Windows.MoveFile(@(ExistingFileName[1]), @(NewFileName[1]));
+end;
+
+function CopyFile(ExistingFileName, NewFileName:string):boolean;
+begin
+  if ExistingFileName = NewFileName then
+  begin
+    result := true;
+    exit;
+  end;
+
+  result := Windows.CopyFile(@(ExistingFileName[1]), @(NewFileName[1]), false);
+end;
 
 end.
 

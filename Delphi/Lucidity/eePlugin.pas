@@ -508,7 +508,11 @@ begin
     fn := IncludeTrailingPathDelimiter(Globals.UserConfigDir) + kKeyFileName;
     if FileExists(fn) then
     begin
-      Globals.LoadRegistrationKeyFile(fn);
+      Globals.CopyProtection.LoadRegistrationKeyFile(fn);
+      if Globals.CopyProtection.IsRegistered then
+      begin
+        //TODO:MED send out key data objects using the mother ship.
+      end;
     end;
   end;
   //=====================
@@ -1373,18 +1377,19 @@ var
 begin
   inherited;
 
-
   PreLoadProgram;
 
-  StateManager := TLucidityStateManager.Create(self);
-  try
-    StateManager.SetPreset(ms);
-  finally
-    StateManager.Free;
+  if Globals.CopyProtection.IsRegistered then
+  begin
+    StateManager := TLucidityStateManager.Create(self);
+    try
+      StateManager.SetPreset(ms);
+    finally
+      StateManager.Free;
+    end;
   end;
 
   PostLoadProgram;
-
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);

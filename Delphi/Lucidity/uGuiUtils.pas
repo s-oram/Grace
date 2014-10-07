@@ -78,6 +78,8 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
+    class function RegisterPlugin(const Plugin : TeePlugin; const aKeyFileName : string):boolean; static;
+
     class procedure ReplaceLoadCurrentRegion(const Plugin : TeePlugin; const AudioFileName : string); static;
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
     class procedure MoveSampleMarker(const Plugin : TeePlugin; const Marker : TSampleMarker; const NewSamplePos : integer); static;
@@ -128,6 +130,7 @@ type
 implementation
 
 uses
+  Lucidity.CopyProtection,
   SysUtils,
   InWindowDialog,
   Effect.MidiAutomation,
@@ -670,14 +673,46 @@ begin
     inc(ch2);
   end;
 
-
-
   MaxDB := LinearToDecibels(MaxSampleValue);
 
   Region.GetProperties^.SampleVolume := -MaxDB;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
 end;
+
+
+class function Command.RegisterPlugin(const Plugin: TeePlugin; const aKeyFileName: string):boolean;
+var
+  DestFileName : string;
+  KeyData : TLucidityKey;
+begin
+  KeyData.Clear;
+  KeyData.LoadFromFile(aKeyFileName);
+  if (KeyData.IsKeyChecksumValid) then
+  begin
+    if (Plugin.Globals.UserConfigDir <> '') then
+    begin
+      DestFileName   := IncludeTrailingPathDelimiter(Plugin.Globals.UserConfigDir) + kKeyFileName;
+      if aKeyFileName <> DestFileName then
+      begin
+        if not CopyFile(aKeyFileName, DestFileName) then
+        begin
+          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'ERROR: Unable to copy key file to user config directory.');
+          exit; //========================>> exit >>==========>>
+        end;
+
+        Plugin.Globals.CopyProtection.LoadRegistrationKeyFile(DestFileName);
+        if Plugin.Globals.CopyProtection.IsRegistered
+          then InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now unlocked. Thank you for your support!')
+          else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Please contact support. (ERROR 1053)');
+      end;
+    end;
+  end else
+  begin
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Lucidity. Key file is invalid.');
+  end;
+end;
+
 
 
 class procedure Command.ReplaceLoadCurrentRegion(const Plugin: TeePlugin; const AudioFileName: string);

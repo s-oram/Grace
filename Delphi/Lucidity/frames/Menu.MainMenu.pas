@@ -110,25 +110,14 @@ begin
   FileOpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@FileOpenDialog);
 
-  FileOpenDialog.FileName := kKeyFileName;
+  FileOpenDialog.FileName := '';
   FileOpenDialog.Title := 'Open Registration Key File...';
-  FileOpenDialog.Filter := 'Key Data File|*.key';
+  FileOpenDialog.Filter := 'Key Data File|*.dat';
 
   if FileOpenDialog.Execute then
   begin
-    Plugin.Globals.LoadRegistrationKeyFile(FileOpenDialog.FileName);
-
-    if Plugin.Globals.KeyData.IsKeyChecksumValid then
-    begin
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now registered. Thank you for your support!');
-    end else
-    begin
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'ERROR: Unable to register. Please contact support.');
-    end;
-
+    Command.RegisterPlugin(Plugin, FileOpenDialog.FileName);
   end;
-
-
 end;
 
 procedure TMainMenu.Popup(const x, y: integer);
@@ -237,7 +226,7 @@ begin
   Menu.Items.Add(mi);
   //=========================
 
-  if Plugin.Globals.KeyData.IsKeyChecksumValid = false then
+  if Plugin.Globals.CopyProtection.IsRegistered = false then
   begin
     // insert the register option...
     mi := TMenuItem.Create(Menu);
@@ -287,8 +276,8 @@ begin
   AboutDialog := TAboutDialog.Create;
   AboutDialog.Setup(DialogDisplay.GetDisplayArea);
 
-  if Plugin.Globals.KeyData.IsKeyChecksumValid = true
-    then s := 'Registered to ' + Plugin.Globals.KeyData.UserName
+  if Plugin.Globals.CopyProtection.IsRegistered
+    then s := 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName
     else s := 'UNREGISTERED';
   AboutDialog.AboutText.Add(s);
 

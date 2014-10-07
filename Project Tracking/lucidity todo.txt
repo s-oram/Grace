@@ -51,7 +51,6 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- add demo functionality.
 - check the about box is working and fully populated.
 - finish the help doc.
 - finish renaming all the factory presets. 

@@ -23,10 +23,22 @@ type
     property PatchFileName : string read fPatchFileName write fPatchFileName; //full path patch file name.
   end;
 
+  TCopyProtection = class
+  private
+    fKeyData: TLucidityKey;
+    fIsRegistered: boolean;
+  public
+    constructor Create;
+
+    procedure LoadRegistrationKeyFile(FileName : string);
+    property KeyData : TLucidityKey read fKeyData;
+
+    property IsRegistered : boolean read fIsRegistered;
+  end;
+
 
   TGlobals = class(TCustomGlobals)
   private
-    fKeyData: TLucidityKey;
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
     fSelectedModSlot: integer;
@@ -43,6 +55,7 @@ type
     fUserConfigDir: string;
     fDefaultConfigDir: string;
     fPatchInfo: TPatchInfo;
+    fCopyProtection: TCopyProtection;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
   protected
@@ -58,9 +71,7 @@ type
 
     procedure AddVclTask(aTask : TProc);
 
-    procedure LoadRegistrationKeyFile(FileName : string);
-
-    property KeyData : TLucidityKey read fKeyData;
+    property CopyProtection : TCopyProtection read fCopyProtection;
 
     property DefaultConfigDir : string read fDefaultConfigDir;
     property UserConfigDir    : string read fUserConfigDir;
@@ -106,8 +117,7 @@ implementation
 uses
   VamLib.ZeroObject,
   uConstants,
-  eePluginDataDir,
-  eeFunctions;
+  eePluginDataDir;
 
 
 { TGlobals }
@@ -123,6 +133,8 @@ var
 begin
   inherited;
 
+  fCopyProtection := TCopyProtection.Create;
+
   fAudioActions := TStoredActions.Create;
 
   fGuiState := TGuiState.Create;
@@ -135,8 +147,6 @@ begin
   VclTaskTimer.OnTimer := OnVclTimer;
 
   fSelectedModSlot := -1;
-
-  fKeyData.Clear;
 
   fDefaultConfigDir := '';
   fUserConfigDir    := '';
@@ -209,6 +219,7 @@ begin
   fGuiState.Free;
   fPatchInfo.Free;
   fAudioActions.Free;
+  fCopyProtection.Free;
   inherited;
 end;
 
@@ -242,31 +253,6 @@ begin
   // if still not found, it doesn't exist;
   FullPathLocation := '';
   result := false;
-end;
-
-procedure TGlobals.LoadRegistrationKeyFile(FileName: string);
-var
-  SourceFileName : string;
-  DestFileName   : string;
-begin
-  fKeyData.Clear;
-
-  if FileExists(FileName) then
-  begin
-    fKeyData.LoadFromFile(FileName);
-    if fKeyData.IsKeyChecksumValid then
-    begin
-      if (UserConfigDir <> '') then
-      begin
-        SourceFileName := FileName;
-        DestFileName   := IncludeTrailingPathDelimiter(UserConfigDir) + kKeyFileName;
-        CopyFile(SourceFileName, DestFileName);
-      end;
-    end else
-    begin
-      fKeyData.Clear;
-    end;
-  end;
 end;
 
 procedure TGlobals.SetIsGuiOpen(const Value: boolean);
@@ -311,6 +297,32 @@ begin
 end;
 
 
+
+
+{ TCopyProtection }
+
+constructor TCopyProtection.Create;
+begin
+  fIsRegistered := false;
+end;
+
+procedure TCopyProtection.LoadRegistrationKeyFile(FileName: string);
+begin
+  fKeyData.Clear;
+
+  if FileExists(FileName) then
+  begin
+    fKeyData.LoadFromFile(FileName);
+    if fKeyData.IsKeyChecksumValid then
+    begin
+      fIsRegistered := true;
+    end else
+    begin
+      fKeyData.Clear;
+      fIsRegistered := false;
+    end;
+  end;
+end;
 
 
 end.
