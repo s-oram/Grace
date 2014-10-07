@@ -10,11 +10,11 @@ uses
 type
   TCombA = class
   private
+    fKeyFollowFreqMultiplier: single;
     fSampleRate: single;
+    fPar1: single;
     fPar2: single;
     fPar3: single;
-    fPar1: single;
-    fKeyFollowFreqMultiplier: single;
     fPar4: single;
     procedure SetSampleRate(const Value: single);
     procedure SetPar1(const Value: single);
