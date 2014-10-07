@@ -143,7 +143,7 @@ begin
     end else
     if (assigned(FilterTypeNode)) and (not SameText('ftCombA', FilterTypeNode.ValueUnicode)) then
     begin
-      NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter1Par4').ValueUnicode := '0';
+      NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter1Par4').ValueUnicode := '1';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter1Par4/ModAmount1').ValueUnicode := '0';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter1Par4/ModAmount2').ValueUnicode := '0';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter1Par4/ModAmount3').ValueUnicode := '0';
@@ -165,7 +165,7 @@ begin
     end else
     if (assigned(FilterTypeNode)) and (not SameText('ftCombA', FilterTypeNode.ValueUnicode)) then
     begin
-      NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter2Par4').ValueUnicode := '0';
+      NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter2Par4').ValueUnicode := '1';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter2Par4/ModAmount1').ValueUnicode := '0';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter2Par4/ModAmount2').ValueUnicode := '0';
       NodeWiz(SampleGroupNode).FindOrCreateNode('VoiceParameters/Filter2Par4/ModAmount3').ValueUnicode := '0';
