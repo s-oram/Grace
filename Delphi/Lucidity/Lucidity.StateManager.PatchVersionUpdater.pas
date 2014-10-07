@@ -109,7 +109,7 @@ var
   SampleGroupNodeList : TsdNodeList;
   SampleGroupNode : TXmlNode;
   FilterTypeNode : TXmlNode;
-  Par3Node, Par4Node : TXmlNode;
+  Par2Node, Par3Node, Par4Node : TXmlNode;
 begin
   ///  Required changes:
   ///  All filters now MIX as the 4th parameter.
@@ -132,6 +132,7 @@ begin
     SampleGroupNode := SampleGroupNodeList[c1];
 
 
+
     //==== Check for filter 1 ====
     FilterTypeNode := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter1Type');
     if (assigned(FilterTypeNode)) and (SameText('ftCombA', FilterTypeNode.ValueUnicode)) then
@@ -139,7 +140,14 @@ begin
       Par3Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter1Par3');
       Par4Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter1Par4');
       if (assigned(Par3Node)) then Par3Node.Name := 'Filter1Par4';
-      if (assigned(Par4Node)) then Par4Node.Name := 'Filter1Par3';
+      if (assigned(Par4Node)) then Par4Node.Name := 'Filter1Par2';
+    end else
+    if (assigned(FilterTypeNode)) and (SameText('ftRingModA', FilterTypeNode.ValueUnicode)) then
+    begin
+      Par2Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter1Par2');
+      Par4Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter1Par4');
+      if (assigned(Par2Node)) then Par2Node.Name := 'Filter1Par4';
+      if (assigned(Par4Node)) then Par4Node.Name := 'Filter1Par2';
     end else
     if (assigned(FilterTypeNode)) and (not SameText('ftCombA', FilterTypeNode.ValueUnicode)) then
     begin
@@ -162,6 +170,13 @@ begin
       Par4Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter2Par4');
       if (assigned(Par3Node)) then Par3Node.Name := 'Filter2Par4';
       if (assigned(Par4Node)) then Par4Node.Name := 'Filter2Par3';
+    end else
+    if (assigned(FilterTypeNode)) and (SameText('ftRingModA', FilterTypeNode.ValueUnicode)) then
+    begin
+      Par2Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter2Par2');
+      Par4Node := NodeWiz(SampleGroupNode).Child('VoiceParameters/Filter2Par4');
+      if (assigned(Par2Node)) then Par2Node.Name := 'Filter2Par4';
+      if (assigned(Par4Node)) then Par4Node.Name := 'Filter2Par2';
     end else
     if (assigned(FilterTypeNode)) and (not SameText('ftCombA', FilterTypeNode.ValueUnicode)) then
     begin
