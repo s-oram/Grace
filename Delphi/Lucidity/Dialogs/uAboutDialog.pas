@@ -65,8 +65,8 @@ end;
 
 procedure TAboutDialog.LoadAboutText(const Text: TStrings);
 begin
-  Text.Add('Lucidity Vst Sampler By One Small Clue');
-  Text.Add('Version ' + GetBuildInfoAsString);
+
+
 end;
 
 procedure TAboutDialog.Setup(ParentContainer: TWinControl);

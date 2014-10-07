@@ -42,6 +42,7 @@ type
 implementation
 
 uses
+  eeVstExtra,
   VamLib.WinUtils,
   InWindowDialog,
   XPLAT.Dialogs,
@@ -275,6 +276,13 @@ var
 begin
   AboutDialog := TAboutDialog.Create;
   AboutDialog.Setup(DialogDisplay.GetDisplayArea);
+
+  AboutDialog.AboutText.Add('Lucidity Vst Sampler By One Small Clue');
+  {$IFDEF ReleaseBuild}
+  AboutDialog.AboutText.Add('Version ' + GetBuildInfoAsString + ' Release Build');
+  {$ELSE}
+  AboutDialog.AboutText.Add('Version ' + GetBuildInfoAsString + ' Debug Build');
+  {$ENDIF}
 
   if Plugin.Globals.CopyProtection.IsRegistered
     then s := 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>'

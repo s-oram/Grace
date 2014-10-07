@@ -1,3 +1,10 @@
+{$IFNDEF Debug}
+  {$DEFINE ReleaseBuild}
+{$ELSE}
+  {$UNDEF ReleaseBuild}
+{$ENDIF}
+
+
 {$DEFINE REQUIRE_TEMPLATE_VERSION_2}
 
 {.$DEFINE Demo}
@@ -17,8 +24,9 @@
 {$DEFINE UseASM}
 
 
-//== Release Defines ==
-{$IFNDEF Debug}
+
+{$IFDEF ReleaseBuild}
+  //== Release Defines ==
   {$DEFINE madExcept}
   {.$DEFINE Logging}
   {.$DEFINE LogToFile}
@@ -27,10 +35,8 @@
   {.$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
   {.$DEFINE AudioInline}
-{$ENDIF}
-
-//== Debug Defines ==
-{$IFDEF Debug}
+{$ELSE}
+  //== Debug Defines ==
   {$DEFINE madExcept}
   {$DEFINE Logging}
   {$DEFINE LogToFile}
@@ -41,6 +47,10 @@
   {.$DEFINE AudioInline}
 
   {.$DEFINE StrictDebugChecks}
+
+  // Development only features include a few advanced features only intended for
+  // use during development.
+  {.$DEFINE IncludeDevelopmentOnlyFeatures}
 {$ENDIF}
 
 

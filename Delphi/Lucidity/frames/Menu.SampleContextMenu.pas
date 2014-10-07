@@ -193,13 +193,13 @@ begin
   mi.OnClick := EventHandle_ShowInWindowsExplorer;
   Menu.Items.Add(mi);
 
+
+  {$IFDEF IncludeDevelopmentOnlyFeatures}
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Rename Sample File...';
+  mi.Caption := 'Rename Sample File... (CAUTION)';
   mi.OnClick := EventHandler_RenameSampleFile;
   Menu.Items.Add(mi);
-
-
-
+  {$ENDIF}
 
 
   {

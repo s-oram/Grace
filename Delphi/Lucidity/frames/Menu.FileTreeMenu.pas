@@ -239,17 +239,14 @@ begin
     Menu.Items.Add(mi);
   end;
 
-  {$IFDEF Debug}
-  // TODO:MED perhaps there needs to be an advanced options
-  // XML file. This could be an advanced options item.
-  // Show/Hide Lucidity program rename command.
+  {$IFDEF IncludeDevelopmentOnlyFeatures}
   if (assigned(FocusedNode)) then
   begin
     NodeData := FocusedNode.Data;
     if (FileExists(NodeData^.FileName)) and (IsLucidityProgramFile(NodeData^.FileName)) then
     begin
       mi := TMenuItem.Create(Menu);
-      mi.Caption := 'Rename Program File... (Use With Caution)';
+      mi.Caption := 'Rename Program File... (CAUTION)';
       mi.OnClick := EventHandler_RenameProgramFile;
       Menu.Items.Add(mi);
     end;
