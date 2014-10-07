@@ -17,6 +17,16 @@ uses
   NativeXML,
   NativeXmlEx;
 
+
+//===== public methods =======
+
+function CheckPatchVersionAndUpdateIfRequred(var XML: TNativeXML):boolean;
+
+
+//===== private methods =======
+
+// NOTE: Compatibility hasn't been maintained with version 0 or version 1 patches.
+// Instead I call UpdatePatch_2To3() and hope for the best!
 function UpdatePatchVersionFrom2To3(var XML: TNativeXML):boolean;
 function UpdatePatchVersionFrom3To4(var XML: TNativeXML):boolean;
 
@@ -25,6 +35,28 @@ implementation
 uses
   SysUtils,
   VamLib.Utils;
+
+
+
+function CheckPatchVersionAndUpdateIfRequred(var XML: TNativeXML):boolean;
+var
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+  PatchFormatVersion : integer;
+begin
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  aNode := RootNode.FindNode('PatchFileFormatVersion');
+  if assigned(aNode)
+    then PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1)
+    else PatchFormatVersion := -1;
+
+ if PatchFormatVersion < 3 then UpdatePatchVersionFrom2To3(XML);
+ if PatchFormatVersion < 4 then UpdatePatchVersionFrom3To4(XML);
+
+ result := true; //TODO:MED lets assume it always works for the time being.
+end;
 
 function UpdatePatchVersionFrom2To3(var XML: TNativeXML):boolean;
 var

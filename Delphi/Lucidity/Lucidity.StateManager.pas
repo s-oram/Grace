@@ -1084,25 +1084,8 @@ begin
 end;
 
 procedure TLucidityStatemanager.CheckPatchFormatVersion(var XML: TNativeXML);
-var
-  RootNode : TXMLNode;
-  aNode : TXmlNode;
-  PatchFormatVersion : integer;
 begin
-  RootNode := xml.Root;
-  assert(assigned(RootNode));
-
-  aNode := RootNode.FindNode('PatchFileFormatVersion');
-  if assigned(aNode)
-    then PatchFormatVersion := DataIO_StrToInt(aNode.ValueUnicode, -1)
-    else PatchFormatVersion := -1;
-
- {$IFDEF Logging}
-   LogMain.LogMessage('Loading Patch Format Version = ' + IntToStr(PatchFormatVersion));
- {$ENDIF}
-
- if PatchFormatVersion < 3 then UpdatePatchVersionFrom2To3(XML);
- if PatchFormatVersion < 4 then UpdatePatchVersionFrom3To4(XML);
+  CheckPatchVersionAndUpdateIfRequred(XML);
 end;
 
 
