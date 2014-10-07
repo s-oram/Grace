@@ -570,11 +570,11 @@ begin
     TPluginParameter.Filter1Par1:              result.DefaultValue := 0.5;
     TPluginParameter.Filter1Par2:              result.DefaultValue := 0.5;
     TPluginParameter.Filter1Par3:              result.DefaultValue := 0.5;
-    TPluginParameter.Filter1Par4:              result.DefaultValue := 0.5;
+    TPluginParameter.Filter1Par4:              result.DefaultValue := 1;
     TPluginParameter.Filter2Par1:              result.DefaultValue := 0.5;
     TPluginParameter.Filter2Par2:              result.DefaultValue := 0.5;
     TPluginParameter.Filter2Par3:              result.DefaultValue := 0.5;
-    TPluginParameter.Filter2Par4:              result.DefaultValue := 0.5;
+    TPluginParameter.Filter2Par4:              result.DefaultValue := 1;
     TPluginParameter.Lfo1Shape:                result.DefaultValue := TLfoShapeHelper.ToSingle(TLfoShape.Triangle);
     TPluginParameter.Lfo2Shape:                result.DefaultValue := TLfoShapeHelper.ToSingle(TLfoShape.Triangle);
     TPluginParameter.Lfo1FreqMode:             result.DefaultValue := 0;
