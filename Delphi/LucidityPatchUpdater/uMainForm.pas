@@ -36,7 +36,8 @@ var
 implementation
 
 uses
-  Lucidity.StateManager;
+  NativeXML,
+  Lucidity.StateManager.PatchVersionUpdater;
 
 {$R *.dfm}
 
@@ -44,6 +45,11 @@ procedure TForm3.FormCreate(Sender: TObject);
 begin
   SourceEdit.Text := '';
   DestEdit.Text   := '';
+
+  // TODO:LOW The patch updater should write the last used source/dest edit values
+  // to a config file.
+  // The config file should be a simple wrapper object around an xml file or something.
+  // something to generate key value pairs.
 end;
 
 procedure TForm3.FormDestroy(Sender: TObject);
@@ -65,22 +71,26 @@ begin
   begin
     DestEdit.Text := FileSaveDialog1.FileName;
   end;
-
 end;
 
 procedure TForm3.ConvertPatchButtonClick(Sender: TObject);
 var
   SourceFN, DestFN : string;
+  XML : TNativeXML;
 begin
   SourceFN := SourceEdit.Text;
   DestFN   := DestEdit.Text;
 
-
-
+  XML := TNativeXML.Create(nil);
+  try
+    XML.LoadFromFile(SourceFN);
+    CheckPatchVersionAndUpdateIfRequred(XML);
+    XML.XmlFormat := xfReadable;
+    XML.SaveToFile(DestFN);
+  finally
+    XML.Free;
+  end;
 end;
-
-
-
 
 
 end.

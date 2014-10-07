@@ -61,7 +61,7 @@
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_UsePackage>VamBasicRunXE2;madBasic_;AggPasRunXE2;LucidityBaseClasses;VamLib;vcldbx;frx16;TeeDB;Rave100VCL;vclib;Tee;inetdbbde;RedFoxDesXE2;AggPasDesXE2;madDisAsm_;svnui;LucidityGuiComponentsDesXE2;vclimg;fmi;intrawebdb_120_160;frxDB16;fs16;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;RedFoxRunXE2;vclie;madExcept_;vcltouch;Intraweb_120_160;websnap;vclribbon;VclSmp;frxe16;fsDB16;vcl;CodeSiteExpressPkg;dsnapcon;VamBasicDesXE2;vclx;webdsnap;svn;LucidityGuiComponentsRunXE2;OmniThreadLibraryRuntimeXE2;bdertl;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<Manifest_File>None</Manifest_File>
@@ -91,6 +91,7 @@
 				<Form>Form3</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
+			<DCCReference Include="..\Lucidity\Lucidity.StateManager.PatchVersionUpdater.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
