@@ -15,10 +15,12 @@ type
     fPar3: single;
     fPar1: single;
     fKeyFollowFreqMultiplier: single;
+    fPar4: single;
     procedure SetSampleRate(const Value: single);
     procedure SetPar1(const Value: single);
     procedure SetPar2(const Value: single);
     procedure SetPar3(const Value: single);
+    procedure SetPar4(const Value: single);
   protected
     DelayBuffer : TStereoDelayBuffer;
     CurrentDelayInSamples : single;
@@ -43,7 +45,8 @@ type
 
     property Par1 : single read fPar1 write SetPar1;  // Delay
     property Par2 : single read fPar2 write SetPar2;  // Feedback
-    property Par3 : single read fPar3 write SetPar3;  // mix
+    property Par3 : single read fPar3 write SetPar3;  // unused.
+    property Par4 : single read fPar4 write SetPar4;  // mix
 
     property KeyFollowFreqMultiplier : single read fKeyFollowFreqMultiplier write fKeyFollowFreqMultiplier;
 
@@ -126,12 +129,17 @@ begin
 end;
 
 procedure TCombA.SetPar3(const Value: single);
+begin
+  fPar3 := Value;
+end;
+
+procedure TCombA.SetPar4(const Value: single);
 var
   MixAmount : single;
 begin
-  if Value <> fPar3 then
+  if Value <> fPar4 then
   begin
-    fPar3 := Value;
+    fPar4 := Value;
     MixAmount := Value * Value;
     MixDry := Sqrt(1 - MixAmount);
     MixWet := Sqrt(MixAmount);

@@ -30,9 +30,9 @@ type
     fSampleRate: single;
     fFilterType: TFilterType;
     fKeyFollow: single;
+    fPar1: PSynthPar;
     fPar2: PSynthPar;
     fPar3: PSynthPar;
-    fPar1: PSynthPar;
     fPar4: PSynthPar;
     fKeyFollowFreqMultiplier: single;
     fIsActive: boolean;
@@ -270,7 +270,8 @@ begin
 
       CombA.Par1 := Par1^;
       CombA.Par2 := Par2^;
-      CombA.Par3 := Par3^;
+      //CombA.Par3 := Par3^; //NOTE: Par3 is unused for the comb filter.
+      CombA.Par4 := Par4^;
     end;
 
     ft2PoleLowPass,
