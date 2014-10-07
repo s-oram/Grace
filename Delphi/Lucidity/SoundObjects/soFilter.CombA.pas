@@ -130,6 +130,8 @@ end;
 
 procedure TCombA.SetPar4(const Value: single);
 begin
+  assert(Value >= 0);
+  assert(Value <= 1);
   fPar4 := Value;
   ComputeMixBalance(Value, MixDry, MixWet);
 end;

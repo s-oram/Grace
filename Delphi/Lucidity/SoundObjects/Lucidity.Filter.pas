@@ -241,28 +241,8 @@ begin
       cFreq := VoltsToFreq(15, CV)  * FreqMultFactor;
       cFreq := Clamp(cFreq, 15, 18000);   //TODO:MED this clamp might not be needed. Par1^ is already limited to a 0-1 range.
       RingModA.OscFreq := cFreq;
-
-      RingModA.Depth := Par2^;
+      RingModA.Mix := Par4^;
     end;
-
-
-    {
-    ftDistA:
-    begin
-      //==== Distortion A ====
-      px1 := Par1 + Par1Mod;
-      Clamp(px1, 0, 1);
-      DistortionA.Par1 := px1;
-
-      px2 := Par2 + Par2Mod;
-      clamp(px2, 0, 1);
-      DistortionA.Par2 := px2;
-
-      px3 := Par3 + Par3Mod;
-      clamp(px3, 0, 1);
-      DistortionA.Par3 := px3;
-    end;
-    }
 
     ftCombA:
     begin

@@ -137,6 +137,8 @@ end;
 
 procedure TLofi.SetMix(const Value: single);
 begin
+  assert(Value >= 0);
+  assert(Value <= 1);
   fMix := Value;
   ComputeMixBalance(Value, MixDry, MixWet);
 end;

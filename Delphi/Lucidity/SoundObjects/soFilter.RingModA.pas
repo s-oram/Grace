@@ -10,10 +10,10 @@ type
   private
     fSampleRate: single;
     fOscFreq: single;
-    fDepth: single;
-    procedure SetDepth(const Value: single);
+    fMix: single;
     procedure SetOscFreq(const Value: single);
     procedure SetSampleRate(const Value: single);
+    procedure SetMix(const Value: single);
   protected
     Osc : TSineOsc;
     MixDry, MixWet : single;
@@ -29,7 +29,7 @@ type
     property SampleRate : single read fSampleRate write SetSampleRate;
 
     property OscFreq : single read fOscFreq write SetOscFreq; // Freq set in Hz.
-    property Depth   : single read fDepth   write SetDepth;   //range 0..1.
+    property Mix     : single read fMix     write SetMix; //range 0..1.
   end;
 
 
@@ -56,15 +56,14 @@ begin
 
 end;
 
-procedure TRingModA.SetDepth(const Value: single);
+procedure TRingModA.SetMix(const Value: single);
 begin
   assert(Value >= 0);
   assert(Value <= 1);
 
-  fDepth := Value;
-
-  MixDry := (1 - fDepth);
-  MixWet := fDepth;
+  fMix := Value;
+  MixDry := (1 - Value);
+  MixWet := Value;
 end;
 
 procedure TRingModA.SetOscFreq(const Value: single);
