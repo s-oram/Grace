@@ -1,0 +1,41 @@
+
+
+==== Embed a form into an existing window by ====
+
+c = source form.
+h = parent window hand
+
+WinApi.Windows.SetParent(c.Handle, h);
+c.Visible := true;
+
+===================================================
+
+== Semi transparent layer on form ==
+
+http://stackoverflow.com/questions/11867215/how-do-i-put-a-semi-transparent-layer-on-my-form
+===================================================
+
+== Forms can free themselves ==
+
+http://stackoverflow.com/questions/708847/delphi-is-it-ok-for-a-form-to-free-it-self
+
+===============================
+
+forms with rounded corners
+http://delphiheaven.blogspot.com.au/2007/03/form-with-rounded-corners.html
+
+
+factory pattern
+http://wiert.me/2014/02/20/delphi-the-factory-pattern-with-virtual-create-constructors-via-what-design-patterns-do-you-implement-in-common-delphi-programming-stack-overflow/
+
+
+== Idea #1 ==
+The dialog code can be tied to a form. When it free's itself 
+it also nil's references to any support data, which would be implemented
+using interfaces, so the support data automatically cleans up itself as well.  
+
+===============================
+
+
+
+
