@@ -5,16 +5,49 @@
 * For Lucidity Version 0.x.x.x
 
 
-## Credits ##
-
-Thanks to the BETA Testers
-
-Steinberg credit etc.
-
-
 # Welcome to Lucidity #
 
-Lucidity is a VST Plugin Sampler. It's been designed for use with MIDI keyboards. As such it's ideal for playing back "melodic" samples. Pianos, keys, strings, synths etc. Some additions have been included for playback of loops to increase Lucidity versatility.
+Lucidity is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.  
+
+Lucidity's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow. I believe this is important as sampling is such an integral part of contemporary music.   
+
+Lucidity is a VST Plugin Sampler. It's been designed as a tool for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.
+
+
+Sampling is an integral part of contemporary music. Sometimes samples are obvious and listeners will be able to identify the original source. At the other end of the spectrum, sampled instruments provide a way for producers to use instruments they can't physically play or don't have access to. Pianos are large and expensive.
+
+Lucidity is a VST plugin sampler. It follows the mold established by many other samplers. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.
+
+It wants to be a tool that will allow you to impromptly
+
+Some samplers require a bunch of tedious steps to load an original sound. Other samplers are so powerful it's easy to become overwhelmed with patch design. Both of these things  
+
+so powerful and full featured that they become difficult to master.  
+
+Hardware samplers with ph      
+
+and are part of a collage of sound. Alternatively sampled instruments provide a way for produces to use instruments they don't have access to. Piano's  
+
+and are used as pieces in a collage of sound. Sometimes samples are used so musicians can write music  
+
+as pieces of a collage. Other times the 
+
+
+, as in some hip-hop. Other times sampling provides a way for musicians to work with sou 
+
+
+
+  Obviously hip-hop but also many other genres. Sometimes the mech
+
+In some case, like hip-hop, sampling is used to  
+
+
+
+ Sampling somethings     
+
+
+
+It's been designed for use with MIDI keyboards. As such it's ideal for playing back "melodic" samples. Pianos, keys, strings, synths etc. Some additions have been included for playback of loops to increase Lucidity versatility.
 
 Talk about where lucidity comes from, the eventual goal.   
 
@@ -22,12 +55,18 @@ sample playback instrument that follows in the footsteps of many other
 
 Development of Lucidity began at the end of 2012. I wanted to create a sampler 
 
-Thank you for purchasing Lucidity. Your support enables ongoing development of Lucidity and other software. I hope you enjoy using Lucidity!
+Thank you for purchasing Lucidity. Your support allows me to continue working on Lucidity and other music tools. I hope you enjoy using Lucidity!
 
 Yours Sincerely,<br> 
 Shannon Oram <br>
 One Small Clue <br> 
 shannon@onesmallclue.com <br>
+
+## Thanks ##
+
+Thanks to the BETA Testers
+
+Steinberg credit etc.
 
 
 # Installation and Setup #
