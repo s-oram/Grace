@@ -1,56 +1,61 @@
+Hi,
+
+
+
+
+
+
+=================================================================================================
+    People to give license and thank yous to
+=================================================================================================
+
+Licenses sent! Add thank your's to manual. 
+
+Juanjo 
+juanjo@walnutdoor.net
+Existing account
+
+Chris Holmes (Good Tester)
+futuresproof@gmail.com
+new account pass: redpizza88
+
+Hugo Caldeira Vinagre (good tester +1)
+hugocaldeiravinagre@gmail.com
+new account pass: haptapbap
+
+Goran Podrugovic
+goran.podrugovic@gmail.com
+Existing account
+
+Andrea Biasior - Reuse Noise (good tester +4) (Must send thank you gift)
+reusenoise@gmail.com
+- do you have a one small clue account already? What email address is it registered to? 
+
+Joseph   -- GIVE LUCIDITY LICENSE
+stereovegan@mm.st
+Existing account
+
+Terry Foster
+- terryfoster69@hotmail.com
+Existing account
+
+
+
+
+
+
 =================================================================================================
     Awesome Testers and Great Contacts for Providing Extended Feedback
 =================================================================================================
 Juanjo (JJ) (Great Tester!)
 juanjo@walnutdoor.net
 - thunderlink://messageid=526AB0C0.5010200@walnutdoor.net
+- Lucidity License added.
 
 Yann
 waveshaperkit@gmail.com
 - thunderlink://messageid=CAP8CW6NeN4AkV9awPK5kF8ut8EdycpTetVSObpWLQ=u_wChUaQ@mail.gmail.com
 - Sent Lucidity 0.0.1.49 
-
-
-=================================================================================================
-    BETA Testers 
-=================================================================================================
-
-Synthie Mental
-synthiemental@yahoo.com
-thunderlink://messageid=1411580959.27102.YahooMailNeo@web161906.mail.bf1.yahoo.com
-- Sent Lucidity 0.0.1.59
-
-Daniel Johnson
-danjohnny5@gmail.com
-- interested in Lucidity preview build. 
-thunderlink://messageid=CAFKHHRHFouVzhvsgtmP-1KqezV8n--mmpxy=iqs3boiOxh0yxQ@mail.gmail.com
-- Sent Lucidity 0.0.1.59
-
-
-James Ulph <james.ulph@btinternet.com>
-- interested in testing Lucidity
-thunderlink://messageid=1408741888.13332.YahooMailNeo@web186102.mail.ir2.yahoo.com
-  - Sent Lucidity 0.0.1.49 
-      thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
-
-
-Goran Podrugovic
-goran.podrugovic@gmail.com
-- interested in testing Lucidity
-  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
-  - Sent Lucidity 0.0.1.49 
-    thunderlink://messageid=CALtz9GKpMKvSFDdjxPexC7RnEci8rAwHBnjJ3fKdASV-R+B-1w@mail.gmail.com
-    thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
-
-Chris Holmes (Good Tester)
-futuresproof@gmail.com
-  response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
-  BETA Send History:
-    - Lucidity 0.0.1.33
-      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
-    - Sent Lucidity 0.0.1.44 
-      thunderlink://messageid=CABntTF6+1ttnyxM=HGX0Pm-D5TpTS4GX6t4kDVonRbB66r-H3Q@mail.gmail.com   
-    - Sent Lucidity 0.0.1.59
 
 Hugo Caldeira Vinagre (good tester +1)
 hugocaldeiravinagre@gmail.com
@@ -74,29 +79,40 @@ reusenoise@gmail.com
   thunderlink://messageid=CAG2OC0-XcjNRMnfq3vTGxERUrPsWL+ZmpKi5RG_Exqaw=NQKWw@mail.gmail.com
 - Sent Lucidity 0.0.1.59
 
-Nicholas Necaise
-NNecaise@live.com
-- Interested in taking Lucidity for a test run.
-thunderlink://messageid=BLU436-SMTP16377750A546910B9CDAC3FBBEB0@phx.gbl
-- Sent Lucidity 0.0.1.41
+=================================================================================================
+    Good Testers
+=================================================================================================
 
-Joseph   -- GIVE LUCIDITY LICENSE
-stereovegan@mm.st
-- is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
-- no email acess at OS level. 
-thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
+Goran Podrugovic
+goran.podrugovic@gmail.com
+- interested in testing Lucidity
+  thunderlink://messageid=CALtz9GKDo5JCEagU0xESDJweALsvGpO4SRxfo1jBOxwTu906Xg@mail.gmail.com
+  - Sent Lucidity 0.0.1.49 
+    thunderlink://messageid=CALtz9GKpMKvSFDdjxPexC7RnEci8rAwHBnjJ3fKdASV-R+B-1w@mail.gmail.com
+    thunderlink://messageid=CALtz9GKd5zZyrDXM1dFPQxNXDTvwiW4xacn09+2fOeuV8reh4Q@mail.gmail.com
+
+Chris Holmes (Good Tester)
+futuresproof@gmail.com
+  response - thunderlink://messageid=CABntTF4td_dBx5kEx8_utjc6ce9KVeHGwe85KxV8yW928COcyA@mail.gmail.com
   BETA Send History:
-  - Lucidity 0.0.1.33
-    thunderlink://messageid=1406820798.1919228.147723018.23527BC8@webmail.messagingengine.com
-  - Lucidity 0.0.1.44
+    - Lucidity 0.0.1.33
+      thunderlink://messageid=CABntTF5Xj36FjuSpJ72sjKxu69+JQd-AkysOskBS2LtJrR4k+w@mail.gmail.com
+    - Sent Lucidity 0.0.1.44 
+      thunderlink://messageid=CABntTF6+1ttnyxM=HGX0Pm-D5TpTS4GX6t4kDVonRbB66r-H3Q@mail.gmail.com   
+    - Sent Lucidity 0.0.1.59
 
 Scott Conway (Great Tester!)
 viscience1@yahoo.co.uk
 - Scott is a Controllerist.
 - interested in the latching feature.
 thunderlink://messageid=1384437336.34548.YahooMailNeo@web171506.mail.ir2.yahoo.com
-	BETA Send History:
+  BETA Send History:
     - Lucidity 0.0.1.33
+
+
+=================================================================================================
+    BETA Testers 
+=================================================================================================
 
 Terry Foster
 - terryfoster69@hotmail.com
@@ -105,35 +121,9 @@ Terry Foster
 	BETA Send History:
     - Lucidity 0.0.1.33
 
-Pete
-grabmyknee@gmail.com
-thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
-	BETA Send History:
-  - Lucidity 0.0.1.33
 
-Will Blake
-  - interested in looping capabilities
-  strajanka@gmail.com
-  thunderlink://messageid=-7130064992972917739@unknownmsgid  
-  BETA Send History:
-  - Lucidity 0.0.1.33
 
-Anthony Crayton
-tonecre8@comcast.net
-thunderlink://messageid=005001cf2845$45b0e8b0$d112ba10$@comcast.net
-	BETA Send History:
-    - Lucidity 0.0.1.33
 
-JC
-jshonuff@gmail.com
-thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail.gmail.com
-	BETA Send History:
-    - Lucidity 0.0.1.33
-
-Ryu Beats <rsbeats@hotmail.com>
-thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
-  BETA Send History:
-    - Lucidity 0.0.1.33 
 
 
 
@@ -165,6 +155,7 @@ Michael Reed (produces psy chill)
 	michaelreed@crucialflow.com
 	https://soundcloud.com/dreamflowsearcher
 	thunderlink://messageid=CAFgUs9aXH705Bs_9HFonnrJ1_YH39gqL2wd_yb2sxhdwALifzA@mail.gmail.com
+
 
 
 
@@ -215,3 +206,71 @@ thunderlink://messageid=58A0193A-0107-4E54-AF0A-DF34B488C328@gmail.com
 - Sent Lucidity 0.0.1.41
   thunderlink://messageid=856B01FB-34E5-4786-9675-56C67F0E424F@gmail.com
   **DO NOT SEND**
+
+  Synthie Mental
+synthiemental@yahoo.com
+thunderlink://messageid=1411580959.27102.YahooMailNeo@web161906.mail.bf1.yahoo.com
+- Sent Lucidity 0.0.1.59
+--- Never responded. 
+
+
+James Ulph <james.ulph@btinternet.com>
+- interested in testing Lucidity
+thunderlink://messageid=1408741888.13332.YahooMailNeo@web186102.mail.ir2.yahoo.com
+  - Sent Lucidity 0.0.1.49 
+      thunderlink://messageid=1409078241.92811.YahooMailNeo@web186103.mail.ir2.yahoo.com
+
+
+Daniel Johnson
+danjohnny5@gmail.com
+- interested in Lucidity preview build. 
+thunderlink://messageid=CAFKHHRHFouVzhvsgtmP-1KqezV8n--mmpxy=iqs3boiOxh0yxQ@mail.gmail.com
+- Sent Lucidity 0.0.1.59
+
+
+Nicholas Necaise
+NNecaise@live.com
+- Interested in taking Lucidity for a test run.
+thunderlink://messageid=BLU436-SMTP16377750A546910B9CDAC3FBBEB0@phx.gbl
+- Sent Lucidity 0.0.1.41
+
+
+Joseph   -- GIVE LUCIDITY LICENSE
+stereovegan@mm.st
+- is running Windows XP compatiblitlity mode on Wine. Ubuntu. 
+- no email acess at OS level. 
+thunderlink://messageid=1384807384.30406.49067585.3F4218B1@webmail.messagingengine.com
+  BETA Send History:
+  - Lucidity 0.0.1.33
+    thunderlink://messageid=1406820798.1919228.147723018.23527BC8@webmail.messagingengine.com
+  - Lucidity 0.0.1.44
+
+Pete
+grabmyknee@gmail.com
+thunderlink://messageid=CAGf6qC7kv0E5A_n6c6uzwQbZYVyTCMmLpz7vnEkwb9hrqBY+Ow@mail.gmail.com
+  BETA Send History:
+  - Lucidity 0.0.1.33
+
+Will Blake
+  - interested in looping capabilities
+  strajanka@gmail.com
+  thunderlink://messageid=-7130064992972917739@unknownmsgid  
+  BETA Send History:
+  - Lucidity 0.0.1.33
+
+Ryu Beats <rsbeats@hotmail.com>
+thunderlink://messageid=DUB109-W53474362780593954681CAAFEA0@phx.gbl
+  BETA Send History:
+    - Lucidity 0.0.1.33 
+
+Anthony Crayton
+tonecre8@comcast.net
+thunderlink://messageid=005001cf2845$45b0e8b0$d112ba10$@comcast.net
+  BETA Send History:
+    - Lucidity 0.0.1.33
+
+JC
+jshonuff@gmail.com
+thunderlink://messageid=CADCW+Za_JnnGCerdaGQuWdLFqpsRuO3pdqUCCXybZJMgftGOAQ@mail.gmail.com
+  BETA Send History:
+    - Lucidity 0.0.1.33
