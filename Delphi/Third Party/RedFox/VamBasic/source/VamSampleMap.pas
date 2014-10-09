@@ -1019,6 +1019,8 @@ procedure TVamSampleMap.OleDragEnter(Sender: TObject; ShiftState: TShiftState; A
 var
   NewRegionCount : integer;
 begin
+  inherited;
+
   IsDragDropSamplesActive := true;
 
   NewRegionCount := GetDragRegionCount(Data);
@@ -1034,6 +1036,8 @@ procedure TVamSampleMap.OleDragOver(Sender: TObject; ShiftState: TShiftState; AP
 var
   NewRegionCount : integer;
 begin
+  inherited;
+
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedRegions(aPoint, NewRegionCount);
   Invalidate;
@@ -1045,6 +1049,8 @@ var
   NewRegionCount : integer;
   RegionAtDropPoint : TVamSampleRegion;
 begin
+  inherited;
+
   NewRegionCount := GetDragRegionCount(Data);
   UpdateProposedRegions(aPoint, NewRegionCount);
 
@@ -1075,6 +1081,8 @@ end;
 
 procedure TVamSampleMap.OleDragLeave(Sender: TObject);
 begin
+  inherited;
+
   if ProposedSampleRegions.Count > 0 then ProposedSampleRegions.Clear;
   IsDragDropSamplesActive := false;
 
