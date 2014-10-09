@@ -303,7 +303,8 @@ type
     SelectUp,
     SelectDown,
     ReplaceLoad,
-    ContextRename
+    ContextRename,
+    ContextDelete
   );
   TKeyCommandHelper = class(TEnumHelper<TKeyCommand>);
 

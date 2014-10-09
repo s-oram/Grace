@@ -330,6 +330,7 @@ begin
       TKeyCommand.SelectDown:   FileBrowserAddOn.Command_SelectDown;
       TKeyCommand.ReplaceLoad:  Command_ReplaceLoad;
       TKeyCommand.ContextRename: RenameFocusedNode;
+      //TKeyCommand.ContextDelete: ShowMessage('bang'); //TODO:MED might be useful at a later stage.
     end;
   end;
 end;

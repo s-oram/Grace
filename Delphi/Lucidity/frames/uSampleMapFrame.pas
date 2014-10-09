@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  uLucidityEnums,
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.GroupVisibility,
@@ -99,6 +100,8 @@ type
 
     procedure Handle_KnobStepUp(Sender : TObject);
     procedure Handle_KnobStepDown(Sender : TObject);
+
+    procedure ProcessKeyCommand(Command:TKeyCommand);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -130,7 +133,6 @@ uses
   SampleMapFrame.Extra,
   Lucidity.Types,
   Lucidity.Utils,
-  uLucidityEnums,
   eeVstXml,
   RedFoxColor, eePitch,
   VamLayoutWizard,
@@ -627,6 +629,13 @@ begin
   end;
 
   if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
+
+
+  if (MsgID = TLucidMsgID.Cmd_HotkeyDown) and (Plugin.Globals.GuiState.HotkeyContext = THotkeyContext.SampleMap) then
+  begin
+    KeyCommand := TKeyCommand(Data^);
+    ProcessKeyCommand(KeyCommand);
+  end;
 
 end;
 
@@ -1138,6 +1147,24 @@ procedure TSampleMapFrame.CloseSampleMapButtonClick(Sender: TObject);
 begin
   Command.ToggleSampleMapVisibility(Plugin);
 end;
+
+procedure TSampleMapFrame.ProcessKeyCommand(Command: TKeyCommand);
+begin
+  case Command of
+    TKeyCommand.ContextUp: ;
+    TKeyCommand.ContextDown: ;
+    TKeyCommand.ContextLeft: ;
+    TKeyCommand.ContextRight: ;
+    TKeyCommand.PageUp: ;
+    TKeyCommand.PageDown: ;
+    TKeyCommand.SelectUp: ;
+    TKeyCommand.SelectDown: ;
+    TKeyCommand.ReplaceLoad: ;
+    TKeyCommand.ContextRename: ;
+    TKeyCommand.ContextDelete: ;
+  end;
+end;
+
 
 
 
