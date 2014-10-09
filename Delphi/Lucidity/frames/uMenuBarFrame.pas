@@ -75,7 +75,7 @@ uses
   uLucidityEnums,
   VamQuery,
   VamLayoutWizard,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   uConstants,
   Menu.AutoSelectMenu,
   Lucidity.PluginParameters,

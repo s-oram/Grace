@@ -67,7 +67,7 @@ implementation
 
 uses
   SysUtils,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   uConstants;
 
 

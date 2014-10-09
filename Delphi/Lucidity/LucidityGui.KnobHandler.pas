@@ -80,7 +80,7 @@ uses
   uLucidityEnums,
   Lucidity.Types,
   uConstants,
-  uGuiUtils;
+  Lucidity.GuiUtils;
 
 { TKnobHandler }
 

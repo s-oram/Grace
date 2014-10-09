@@ -145,7 +145,7 @@ uses
   eeDsp,
   eeVstXml, uLucidityEnums,
   GuidEx, RedFoxColor, Lucidity.Utils,
-  uGuiUtils, VamLayoutWizard,
+  Lucidity.GuiUtils, VamLayoutWizard,
   uConstants, Lucidity.KeyGroup;
 
 {$R *.dfm}

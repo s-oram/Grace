@@ -39,7 +39,7 @@ type
 implementation
 
 uses
-  uGuiUtils,
+  Lucidity.GuiUtils,
   SysUtils,
   VamLib.Utils,
   Lucidity.PluginParameters,

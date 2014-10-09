@@ -91,7 +91,7 @@ uses
   InWindowDialog,
   VamLib.Utils,
   VamLayoutWizard,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   Lucidity.PluginParameters,
   eeFunctions, Lucidity.Utils,
   Lucidity.SampleMap, RedFoxColor;

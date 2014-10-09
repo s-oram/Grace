@@ -119,7 +119,7 @@ uses
   GuidEx,
   eeGuiSetup,
   RedFoxColor,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   uLucidityData,
   SysUtils,
   VamQuery,

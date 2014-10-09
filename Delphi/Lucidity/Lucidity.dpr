@@ -46,7 +46,7 @@ uses
   FilterCore.SimperSVF in 'SoundObjects\FilterCore.SimperSVF.pas',
   uLucidity.Lfo in 'SoundObjects\uLucidity.Lfo.pas',
   soModMatrix in 'SoundObjects\soModMatrix.pas',
-  uGuiUtils in 'uGuiUtils.pas',
+  Lucidity.GuiUtils in 'Lucidity.GuiUtils.pas',
   SoundObjectTypes in 'SoundObjects\SoundObjectTypes.pas',
   SmartInspectLogging in 'SmartInspectLogging.pas',
   uGuiFeedbackData in 'uGuiFeedbackData.pas',

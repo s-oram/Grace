@@ -101,7 +101,7 @@ uses
   VamLayoutWizard,
   Lucidity.Interfaces,
   RedFoxColor,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   uLucidityEnums,
   Lucidity.KeyGroup;
 

@@ -125,7 +125,7 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
-  uGuiUtils,
+  Lucidity.GuiUtils,
   VamLib.Throttler,
   VamLib.Animation,
   VamLib.Threads,
@@ -593,6 +593,7 @@ end;
 procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 var
   aniObj : TByteAnimation;
+  KeyCommand : TKeyCommand;
 begin
   if MsgID = TLucidMsgID.Msg_XRegionsDuplicated then
   begin

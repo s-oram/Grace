@@ -458,7 +458,7 @@
 			<DCCReference Include="SoundObjects\FilterCore.SimperSVF.pas"/>
 			<DCCReference Include="SoundObjects\uLucidity.Lfo.pas"/>
 			<DCCReference Include="SoundObjects\soModMatrix.pas"/>
-			<DCCReference Include="uGuiUtils.pas"/>
+			<DCCReference Include="Lucidity.GuiUtils.pas"/>
 			<DCCReference Include="SoundObjects\SoundObjectTypes.pas"/>
 			<DCCReference Include="SmartInspectLogging.pas"/>
 			<DCCReference Include="uGuiFeedbackData.pas"/>

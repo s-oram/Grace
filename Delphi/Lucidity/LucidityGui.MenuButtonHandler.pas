@@ -48,7 +48,7 @@ uses
   Lucidity.Types,
   uLucidityEnums,
   uConstants,
-  uGuiUtils;
+  Lucidity.GuiUtils;
 
 { TMenuButtonHandler }
 
@@ -125,7 +125,7 @@ begin
     assert(ParValue >= 0);
     assert(ParValue <= 1);
 
-    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+    EnumHelper := Lucidity.GuiUtils.FindMenuHelperForParameter(Par);
     TextValue := EnumHelper.ToShortGuiString(ParValue);
     mc.SetMenuText(TextValue);
   end;
@@ -176,7 +176,7 @@ begin
       ParID    := PluginParNameToID(ParName);
       ParValue := Plugin.GetPluginParameter(ParID);
       Par := PluginParFromName(Parname);
-      EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+      EnumHelper := Lucidity.GuiUtils.FindMenuHelperForParameter(Par);
 
       ParValueAsInt := EnumHelper.ToInteger(ParValue);
       inc(ParValueAsInt);
@@ -212,7 +212,7 @@ begin
     ParID    := PluginParNameToID(ParName);
     ParValue := Plugin.GetPluginParameter(ParID);
     Par := PluginParFromName(Parname);
-    EnumHelper := uGuiUtils.FindMenuHelperForParameter(Par);
+    EnumHelper    := Lucidity.GuiUtils.FindMenuHelperForParameter(Par);
     ParValueAsInt := EnumHelper.ToInteger(ParValue);
 
     ItemSelectedCallback := procedure(SelectedItemIndex : integer)

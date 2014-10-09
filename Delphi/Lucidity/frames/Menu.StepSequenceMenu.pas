@@ -31,7 +31,7 @@ uses
   uAboutDialog,
   SysUtils,
   uAutoFree,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   Dialogs;
 
 

@@ -52,7 +52,7 @@ implementation
 uses
   Lucidity.Interfaces,
   Lucidity.PluginParameters,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   uLucidityEnums,
   RedFoxColor;
 

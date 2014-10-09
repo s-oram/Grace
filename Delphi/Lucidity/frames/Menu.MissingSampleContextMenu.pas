@@ -30,7 +30,7 @@ uses
   uConstants,
   Lucidity.Types,
   Lucidity.Interfaces,
-  uGuiUtils;
+  Lucidity.GuiUtils;
 
 { TMissingSampleContextMenu }
 

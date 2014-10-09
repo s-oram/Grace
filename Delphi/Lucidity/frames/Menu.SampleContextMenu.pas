@@ -52,7 +52,7 @@ uses
   uLucidityEnums,
   Lucidity.PluginParameters,
   Lucidity.Types,
-  uGuiUtils,
+  Lucidity.GuiUtils,
   SysUtils,
   eeWinEx,
   Lucidity.SampleMap,
