@@ -119,6 +119,7 @@ uses
   VamLib.Threads,
   DateUtils,
   ACS_MAD,
+  InWindowDialog,
   InWindowDialog.MessageDialog,
   InWindowDialog.InputDialog;
 
@@ -232,21 +233,14 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-  InputDialog : TInputDialog;
+  ResultHandler : TCustomDialogResult;
 begin
-  Inputdialog := TInputDialog.Create;
-  InputDialog.InputText := 'Text';
-  InputDialog.InputLabel := 'Label';
-  InputDialog.DefaultValue := 'Default Value';
-
-  InputDialog.DialogResultHandler := procedure(InputText : string)
+  ResultHandler := procedure(Text:string)
   begin
-    ShowMessage(InputText);
+    showMessage(Text);
   end;
 
-  InputDialog.ShowInWindow_WithAutoFree(self, false, true);
-
-
+  InWindow_CustomDialog(self, 'James Brown', ['Is', 'Dead'], ResultHandler);
 end;
 
 procedure TForm1.UpdateLabel;

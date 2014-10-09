@@ -5,16 +5,18 @@ interface
 uses
   {$IFDEF Debug}Vcl.Dialogs,{$ENDIF}
   Vcl.Forms,
-  InWindowDialog.MessageDialog, InWindowDialog.InputDialog;
+  InWindowDialog.CustomDialog,
+  InWindowDialog.MessageDialog,
+  InWindowDialog.InputDialog;
 
 type
-  TInputDialogResult = InWindowDialog.InputDialog.TDialogResult;
-
+  TInputDialogResult  = InWindowDialog.InputDialog.TDialogResult;
+  TCustomDialogResult = InWindowDialog.CustomDialog.TDialogResult;
 
 procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
 procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResult);
 
-procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string);
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResult);
 
 // TODO:HIGH need an InWindow about dialog to replace uAboutDialog.pas.
 
@@ -57,14 +59,15 @@ begin
   InputDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
-procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string);
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResult);
 var
-  c1: Integer;
+  CustomDialog : TCustomDialog;
 begin
-  for c1 := 0 to Length(Buttons)-1 do
-  begin
-    //ShowMessage(Buttons[c1]);
-  end;
+  CustomDialog := TCustomDialog.Create;
+  CustomDialog.Text := Msg;
+  CustomDialog.AddButtons(Buttons);
+  CustomDialog.DialogResultHandler := ResultHandler;
+  CustomDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
 end.

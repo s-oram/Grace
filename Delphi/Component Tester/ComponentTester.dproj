@@ -106,6 +106,9 @@
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.Prototypes.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputDialog.Form.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

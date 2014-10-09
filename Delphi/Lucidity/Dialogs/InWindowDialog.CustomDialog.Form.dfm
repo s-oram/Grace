@@ -66,15 +66,6 @@ object CustomDialogForm: TCustomDialogForm
           Align = alBottom
           Visible = True
           OnResize = ButtonDivResize
-          object OkButton: TButton
-            Left = 368
-            Top = 3
-            Width = 97
-            Height = 22
-            Caption = 'OK'
-            TabOrder = 0
-            OnClick = OkButtonClick
-          end
         end
         object MainDialogArea: TVamDiv
           AlignWithMargins = True

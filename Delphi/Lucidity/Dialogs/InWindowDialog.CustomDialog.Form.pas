@@ -9,39 +9,44 @@ uses
   VamWinControl, VamPanel, RedFoxContainer, Vcl.StdCtrls, VamLabel, VamDiv;
 
 type
+  TStringEvent = procedure(Sender : TObject; Text : string) of object;
+
   TCustomDialogForm = class(TPluginDialogForm)
     RedFoxContainer1: TRedFoxContainer;
     BackPanel1: TVamPanel;
     BackPanel2: TVamPanel;
     ButtonDiv: TVamDiv;
     MainDialogArea: TVamDiv;
-    OkButton: TButton;
     DialogTextControl: TLabel;
-    procedure OkButtonClick(Sender: TObject);
+
     procedure ButtonDivResize(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
+    fButtons : array of TButton;
     fDialogText: string;
-    fOnOkayButton: TNotifyEvent;
     fColorBorder: TColor;
     fColorText: TColor;
     fColorBackground: TColor;
+    fOnDialogResult: TStringEvent;
     procedure SetDialogText(const Value: string);
     procedure SetColorBackground(const Value: TColor);
     procedure SetColorBorder(const Value: TColor);
     procedure SetColorText(const Value: TColor);
 
+    procedure EventHandle_ButtonClick(Sender: TObject);
+
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
+    procedure AddButtons(const Buttons : array of string);
     property DialogText : string read fDialogText write SetDialogText;
 
     property ColorBackground : TColor read fColorBackground write SetColorBackground;
     property ColorBorder     : TColor read fColorBorder     write SetColorBorder;
     property ColorText       : TColor read fColorText       write SetColorText;
 
-    property OnOkButton : TNotifyEvent read fOnOkayButton write fOnOkayButton;
+    property OnDialogResult : TStringEvent read fOnDialogResult write fOnDialogResult;
   end;
 
 
@@ -63,31 +68,94 @@ constructor TCustomDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
 
+  SetLength(fButtons, 0);
+
   BackPanel1.Color := GetRedfoxColor(clWindowText);
   //BackPanel1.Color := GetRedfoxColor(clRed);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   DialogTextControl.Color := GetRedfoxColor(cl3DLight);
 
   // Important: add controls to the alternative tab order list.
-  TabOrderControlList.Add(OkButton);
+  //TabOrderControlList.Add(OkButton);
 end;
 
 destructor TCustomDialogForm.Destroy;
+var
+  c1 : integer;
 begin
+  if Length(fButtons) > 0 then
+  begin
+    for c1 := 0 to Length(fButtons)-1 do
+    begin
+      TabOrderControlList.Remove(fButtons[c1]);
+      fButtons[c1].Free;
+      fButtons[c1] := nil;
+    end;
+  end;
+
+  SetLength(fButtons, 0);
 
   inherited;
 end;
 
 
 
-procedure TCustomDialogForm.ButtonDivResize(Sender: TObject);
+procedure TCustomDialogForm.AddButtons(const Buttons: array of string);
+var
+  c1: Integer;
 begin
-  OkButton.Left := (ButtonDiv.Width - OkButton.Width) div 2;
-  OkButton.Top := 0;
-  OkButton.Height := ButtonDiv.Height;
+  //==== Free the old buttons ====
+  if Length(fButtons) > 0 then
+  begin
+    for c1 := 0 to Length(fButtons)-1 do
+    begin
+      TabOrderControlList.Remove(fButtons[c1]);
+      fButtons[c1].Free;
+      fButtons[c1] := nil;
+    end;
+  end;
+
+  //==== Add the new buttons =====
+  SetLength(fButtons, Length(Buttons));
+  for c1 := 0 to Length(fButtons)-1 do
+  begin
+    fButtons[c1] := TButton.Create(self.Owner);
+    fButtons[c1].Caption := Buttons[c1];
+    fButtons[c1].Parent := ButtonDiv;
+    fButtons[c1].Visible := true;
+    fButtons[c1].OnClick := EventHandle_ButtonClick;
+
+    TabOrderControlList.Add(fButtons[c1]);
+  end;
+
 end;
 
+procedure TCustomDialogForm.ButtonDivResize(Sender: TObject);
+const
+  kButtonWidth = 97;
+  kButtonSpace = 16;
+var
+  c1 : integer;
+  TotalButtonWidth : integer;
+  ButtonCount : integer;
+  LeftOffset  : integer;
+begin
+  ButtonCount := Length(fButtons);
 
+  if ButtonCount > 0 then
+  begin
+    TotalButtonWidth := (ButtonCount * kButtonWidth) + ((ButtonCount-1) * kButtonSpace);
+    LeftOffset := (ButtonDiv.Width - TotalButtonWidth) div 2;
+
+    for c1 := 0 to ButtonCount-1 do
+    begin
+       fButtons[c1].Width  := kButtonWidth;
+       fButtons[c1].Height := ButtonDiv.Height;
+       fButtons[c1].Top := 0;
+       fButtons[c1].Left := LeftOffset + c1 * (kButtonWidth + kButtonSpace);
+    end;
+  end;
+end;
 
 procedure TCustomDialogForm.SetColorBackground(const Value: TColor);
 begin
@@ -131,9 +199,12 @@ begin
   self.Height := AutoFormHeight;
 end;
 
-procedure TCustomDialogForm.OkButtonClick(Sender: TObject);
+procedure TCustomDialogForm.EventHandle_ButtonClick(Sender: TObject);
+var
+  Text : string;
 begin
-  if assigned(OnOkButton) then OnOkButton(self);
+  Text := (Sender as TButton).Caption;
+  if assigned(OnDialogResult) then OnDialogResult(self, Text);
   CloseDialog;
 end;
 
@@ -143,7 +214,7 @@ begin
   // FormKeyDown is called when the dialog is used within a VST plugin.
   if (Key = VK_RETURN) or (Key = VK_ESCAPE) then
   begin
-    OkButtonclick(self);
+    EventHandle_ButtonClick(self);
     Key := 0;
   end else
   if Key = VK_TAB then

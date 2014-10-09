@@ -11,7 +11,10 @@ uses
   InWindowDialog.ModalShadow.Form in '..\Lucidity\Dialogs\InWindowDialog.ModalShadow.Form.pas',
   InWindowDialog.Prototypes in '..\Lucidity\Dialogs\InWindowDialog.Prototypes.pas',
   InWindowDialog.InputDialog.Form in '..\Lucidity\Dialogs\InWindowDialog.InputDialog.Form.pas',
-  InWindowDialog.InputDialog in '..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas';
+  InWindowDialog.InputDialog in '..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas',
+  InWindowDialog.CustomDialog.Form in '..\Lucidity\Dialogs\InWindowDialog.CustomDialog.Form.pas',
+  InWindowDialog.CustomDialog in '..\Lucidity\Dialogs\InWindowDialog.CustomDialog.pas',
+  InWindowDialog in '..\Lucidity\Dialogs\InWindowDialog.pas';
 
 {$R *.res}
 
