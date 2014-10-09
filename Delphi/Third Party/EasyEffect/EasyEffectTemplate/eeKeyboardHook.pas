@@ -56,7 +56,6 @@ var
 function ShouldMessageBeProcessed:boolean;
 var
   h:hwnd;
-  ActiveForm : TForm;
 begin
   if (GlobalEditorWindow = 0) then
   begin

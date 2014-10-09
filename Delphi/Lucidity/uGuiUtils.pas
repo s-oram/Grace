@@ -698,18 +698,25 @@ begin
         if not CopyFile(aKeyFileName, DestFileName) then
         begin
           InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'ERROR: Unable to copy key file to user config directory.');
-          exit; //========================>> exit >>==========>>
+          exit(false); //========================>> exit >>==========>>
         end;
 
         Plugin.Globals.CopyProtection.LoadRegistrationKeyFile(DestFileName);
-        if Plugin.Globals.CopyProtection.IsRegistered
-          then InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now unlocked. Thank you for your support!')
-          else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Please contact support. (ERROR 1053)');
+        if Plugin.Globals.CopyProtection.IsRegistered then
+        begin
+          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now unlocked. Thank you for your support!');
+          result := true;
+        end else
+        begin
+          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Please contact support. (ERROR 1053)');
+          result := false;
+        end;
       end;
     end;
   end else
   begin
     InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Lucidity. Key file is invalid.');
+    result := true;
   end;
 end;
 
