@@ -106,6 +106,8 @@ type
     class procedure ToggleSampleZoom(const Plugin : TeePlugin); static; //TODO:HIGH delete this method. no longer needed. i think.
     class procedure ToggleSampleMapVisibility(const Plugin : TeePlugin); static;
 
+    class procedure DeleteRegionsSelectedInSampleMap(const Plugin : TeePlugin); static;
+
     //TODO:HIGH delete this method. no longer needed.
     class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
 
@@ -1031,6 +1033,16 @@ begin
   Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.ModAmountChanged);
 end;
 
+
+class procedure Command.DeleteRegionsSelectedInSampleMap(const Plugin: TeePlugin);
+begin
+  InWindow_CustomDialog(Plugin.Globals.TopLevelForm, 'Test', ['Ok','Cancel']);
+
+
+  //Plugin.DeleteSelectedRegions;
+  //Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+  //Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
+end;
 
 class function Command.GetModSlotSource(const Plugin: TeePlugin; const ModSlot: integer): string;
 var

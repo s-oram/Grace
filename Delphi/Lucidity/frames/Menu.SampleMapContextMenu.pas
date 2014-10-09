@@ -137,12 +137,7 @@ begin
   Tag := (Sender as TMenuItem).Tag;
 
   case Tag of
-    1:
-    begin
-      Plugin.DeleteSelectedRegions;
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
-    end;
+    1: Command.DeleteRegionsSelectedInSampleMap(Plugin);
 
     2:
     begin
