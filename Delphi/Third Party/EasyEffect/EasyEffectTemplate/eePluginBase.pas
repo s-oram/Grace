@@ -149,11 +149,6 @@ begin
 
   fGlobals := aGlobals;
 
-  // NOTE: An object can't seem to register itself as a ZeroObject if it also creates the
-  // MotherShip class. I'm not sure why. But when using 12 or more instances in
-  // Renoise, Lucidity will raise AV errors when being free'ed.
-  //Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.Main);
-
   AudioEffect := TVstAudioEffect.Create;
 
   fIsSuspended := true;
@@ -167,9 +162,6 @@ end;
 
 destructor TeePluginBase.Destroy;
 begin
-  // NOTE: see the create method for details
-  //Globals.MotherShip.DeregisterZeroObject(self);
-
   SetLength(Inputs,0);
   SetLength(Outputs,0);
 
