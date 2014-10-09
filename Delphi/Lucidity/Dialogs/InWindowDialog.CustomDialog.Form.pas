@@ -117,12 +117,12 @@ begin
     end;
   end;
 
-  {
+
   //==== Add the new buttons =====
   SetLength(fButtons, Length(Buttons));
   for c1 := 0 to Length(fButtons)-1 do
   begin
-    fButtons[c1] := TButton.Create(self.Owner);
+    fButtons[c1] := TButton.Create(self);
     fButtons[c1].Caption := Buttons[c1];
     fButtons[c1].Parent := ButtonDiv;
     fButtons[c1].Visible := true;
@@ -130,7 +130,6 @@ begin
 
     TabOrderControlList.Add(fButtons[c1]);
   end;
-  }
 end;
 
 procedure TCustomDialogForm.ButtonDivResize(Sender: TObject);
@@ -218,15 +217,12 @@ begin
   // FormKeyDown is called when the dialog is used within a VST plugin.
   if (Key = VK_RETURN) then
   begin
-    {
+    Key := 0;
     c := self.FindFocusedControl as TWinControl;
     if (assigned(c)) and (c is TButton) then
     begin
-      (c as TButton).Click;
+      EventHandle_ButtonClick(c);
     end;
-    }
-    Key := 0;
-    CloseDialog;
   end else
   if (Key = VK_ESCAPE) then
   begin
@@ -235,8 +231,8 @@ begin
   end else
   if Key = VK_TAB then
   begin
-    FocusNextControl;
     Key := 0;
+    FocusNextControl;
   end;
 end;
 
