@@ -3,6 +3,7 @@ unit InWindowDialog;
 interface
 
 uses
+  {$IFDEF Debug}Vcl.Dialogs,{$ENDIF}
   Vcl.Forms,
   InWindowDialog.MessageDialog, InWindowDialog.InputDialog;
 
@@ -13,6 +14,7 @@ type
 procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
 procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResult);
 
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string);
 
 // TODO:HIGH need an InWindow about dialog to replace uAboutDialog.pas.
 
@@ -33,6 +35,7 @@ procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabe
 
 implementation
 
+
 procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
 var
   MsgDialog : TMessageDialog;
@@ -52,6 +55,16 @@ begin
   InputDialog.DefaultValue := DefaultValue;
   InputDialog.DialogResultHandler := ResultHandler;
   InputDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
+end;
+
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string);
+var
+  c1: Integer;
+begin
+  for c1 := 0 to Length(Buttons)-1 do
+  begin
+    //ShowMessage(Buttons[c1]);
+  end;
 end;
 
 end.

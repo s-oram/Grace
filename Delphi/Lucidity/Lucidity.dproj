@@ -626,6 +626,8 @@
 			<DCCReference Include="Dialogs\InWindowDialog.InputDialog.Form.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.pas"/>
 			<DCCReference Include="Lucidity.Dsp.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
