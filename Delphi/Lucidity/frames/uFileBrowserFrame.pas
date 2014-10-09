@@ -291,20 +291,46 @@ begin
 end;
 
 procedure TFileBrowserFrame.ProcessKeyCommand(Command: TKeyCommand);
+  function CommandTriggersContextChange(Command : TKeyCommand):boolean;
+  begin
+    case Command of
+      TKeyCommand.ContextUp,
+      TKeyCommand.ContextDown,
+      TKeyCommand.ContextLeft,
+      TKeyCommand.ContextRight,
+      TKeyCommand.PageUp,
+      TKeyCommand.PageDown,
+      TKeyCommand.SelectUp,
+      TKeyCommand.SelectDown:   result := true;
+    else
+      result := false;
+    end;
+  end;
 begin
   if not assigned(Plugin) then exit;
 
-  case Command of
-    TKeyCommand.ContextUp:    FileBrowserAddOn.Command_BrowserUp;
-    TKeyCommand.ContextDown:  FileBrowserAddOn.Command_BrowserDown;
-    TKeyCommand.ContextLeft:  FileBrowserAddOn.Command_BrowserLeft;
-    TKeyCommand.ContextRight: FileBrowserAddOn.Command_BrowserRight;
-    TKeyCommand.PageUp:       FileBrowserAddOn.Command_PageUp;
-    TKeyCommand.PageDown:     FileBrowserAddOn.Command_PageDown;
-    TKeyCommand.SelectUp:     FileBrowserAddOn.Command_SelectUp;
-    TKeyCommand.SelectDown:   FileBrowserAddOn.Command_SelectDown;
-    TKeyCommand.ReplaceLoad:  Command_ReplaceLoad;
-    TKeyCommand.ContextRename: RenameFocusedNode;
+  // ==== IMPORTANT: Do first ====
+  if (Plugin.Globals.GuiState.HotkeyContext = THotKeyContext.None) and (CommandTriggersContextChange(Command)) then
+  begin
+    // NOTE: some key commands will cause the browser to automatically gain the hotkey focus.
+    Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.FileBrowser;
+  end;
+
+  // ==== IMPORTANT: Do second ====
+  if Plugin.Globals.GuiState.HotkeyContext = THotKeyContext.FileBrowser then
+  begin
+    case Command of
+      TKeyCommand.ContextUp:    FileBrowserAddOn.Command_BrowserUp;
+      TKeyCommand.ContextDown:  FileBrowserAddOn.Command_BrowserDown;
+      TKeyCommand.ContextLeft:  FileBrowserAddOn.Command_BrowserLeft;
+      TKeyCommand.ContextRight: FileBrowserAddOn.Command_BrowserRight;
+      TKeyCommand.PageUp:       FileBrowserAddOn.Command_PageUp;
+      TKeyCommand.PageDown:     FileBrowserAddOn.Command_PageDown;
+      TKeyCommand.SelectUp:     FileBrowserAddOn.Command_SelectUp;
+      TKeyCommand.SelectDown:   FileBrowserAddOn.Command_SelectDown;
+      TKeyCommand.ReplaceLoad:  Command_ReplaceLoad;
+      TKeyCommand.ContextRename: RenameFocusedNode;
+    end;
   end;
 end;
 

@@ -47,13 +47,14 @@ bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
   new key group parameters.
 
+bug:
+- lucidity froze when pressing enter to load a LPG file.
 
 =============================================================================
      TODO HIGH
 =============================================================================
 - finish the help doc.
 - finish renaming all the factory presets. 
-
 
 a) Steinberg’s copyright notice should be included in the documentation, regardless of the media used to supply the documentation. 
 Copyright notice:”VST is a trademark of Steinberg Media Technologies GmbH”
