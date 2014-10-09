@@ -53,6 +53,38 @@ bug:
 =============================================================================
      TODO HIGH
 =============================================================================
+Possible names
+- Kinematic
+- Chromatic 
+- Augment
+- Facet
+- Quadrant
+- Aspect
+- Schematik 
+- Doctrine
+- Multiplex
+- Multiplicity
+- Liberty
+- Kinesthetic
+- Structure
+- Strukture 
+- Refactor
+- Factor
+- Frakture 
+- Tangent
+- Symmetry
+- Geometry
+- Grace
+- Endemic
+- Pandemic 
+- Epicenter 
+- Entity
+- Authority
+- Aftermath
+- Clover
+- Propagate
+
+
 - finish the help doc.
 - finish renaming all the factory presets. 
 
