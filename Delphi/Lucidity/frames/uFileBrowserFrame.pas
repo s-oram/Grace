@@ -73,7 +73,7 @@ type
 
     procedure RenameFocusedNode;
 
-    procedure ProcessKeyCommand(Command:TKeyCommand);
+    procedure ProcessKeyCommand(KeyCommand:TKeyCommand);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -290,10 +290,10 @@ begin
   FMotherShip := aMothership;
 end;
 
-procedure TFileBrowserFrame.ProcessKeyCommand(Command: TKeyCommand);
-  function CommandTriggersContextChange(Command : TKeyCommand):boolean;
+procedure TFileBrowserFrame.ProcessKeyCommand(KeyCommand: TKeyCommand);
+  function CommandTriggersContextChange(KeyCommand : TKeyCommand):boolean;
   begin
-    case Command of
+    case KeyCommand of
       TKeyCommand.ContextUp,
       TKeyCommand.ContextDown,
       TKeyCommand.ContextLeft,
@@ -310,7 +310,7 @@ begin
   if not assigned(Plugin) then exit;
 
   // ==== IMPORTANT: Do first ====
-  if (Plugin.Globals.GuiState.HotkeyContext = THotKeyContext.None) and (CommandTriggersContextChange(Command)) then
+  if (Plugin.Globals.GuiState.HotkeyContext = THotKeyContext.None) and (CommandTriggersContextChange(KeyCommand)) then
   begin
     // NOTE: some key commands will cause the browser to automatically gain the hotkey focus.
     Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.FileBrowser;
@@ -319,7 +319,7 @@ begin
   // ==== IMPORTANT: Do second ====
   if Plugin.Globals.GuiState.HotkeyContext = THotKeyContext.FileBrowser then
   begin
-    case Command of
+    case KeyCommand of
       TKeyCommand.ContextUp:    FileBrowserAddOn.Command_BrowserUp;
       TKeyCommand.ContextDown:  FileBrowserAddOn.Command_BrowserDown;
       TKeyCommand.ContextLeft:  FileBrowserAddOn.Command_BrowserLeft;
