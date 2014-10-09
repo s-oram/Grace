@@ -369,7 +369,7 @@ end;
 procedure TFileTreeViewNodeContextMenu.EventHandler_RenameRootNode(Sender: TObject);
 var
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
 begin
   if not (assigned(FocusedNode)) then exit;
 
@@ -389,7 +389,7 @@ end;
 procedure TFileTreeViewNodeContextMenu.EventHandler_RenameProgramFile(Sender: TObject);
 var
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
   NodeData : PNodeData;
   Dir : string;
   NewFileName : string;

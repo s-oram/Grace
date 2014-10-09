@@ -608,7 +608,7 @@ end;
 procedure TSampleContextMenu.EventHandler_RenameSampleFile(Sender: TObject);
 var
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
   OldFileName : string;
   Dir : string;
   extA : string;

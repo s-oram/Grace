@@ -18,9 +18,8 @@ type
     ButtonDiv: TVamDiv;
     MainDialogArea: TVamDiv;
     DialogTextControl: TLabel;
-
     procedure ButtonDivResize(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     fButtons : array of TButton;
     fDialogText: string;
@@ -32,9 +31,10 @@ type
     procedure SetColorBackground(const Value: TColor);
     procedure SetColorBorder(const Value: TColor);
     procedure SetColorText(const Value: TColor);
-
     procedure EventHandle_ButtonClick(Sender: TObject);
-
+  protected
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CMChildKey(var Message: TCMChildKey); message CM_CHILDKEY;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -77,6 +77,8 @@ begin
 
   // Important: add controls to the alternative tab order list.
   //TabOrderControlList.Add(OkButton);
+
+  self.OnKeyDown := FormKeyDown;
 end;
 
 destructor TCustomDialogForm.Destroy;
@@ -115,6 +117,7 @@ begin
     end;
   end;
 
+  {
   //==== Add the new buttons =====
   SetLength(fButtons, Length(Buttons));
   for c1 := 0 to Length(fButtons)-1 do
@@ -127,7 +130,7 @@ begin
 
     TabOrderControlList.Add(fButtons[c1]);
   end;
-
+  }
 end;
 
 procedure TCustomDialogForm.ButtonDivResize(Sender: TObject);
@@ -208,14 +211,27 @@ begin
   CloseDialog;
 end;
 
-procedure TCustomDialogForm.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TCustomDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  c : TWinControl;
 begin
   // FormKeyDown is called when the dialog is used within a VST plugin.
-  if (Key = VK_RETURN) or (Key = VK_ESCAPE) then
+  if (Key = VK_RETURN) then
   begin
-    EventHandle_ButtonClick(self);
+    {
+    c := self.FindFocusedControl as TWinControl;
+    if (assigned(c)) and (c is TButton) then
+    begin
+      (c as TButton).Click;
+    end;
+    }
     Key := 0;
+    CloseDialog;
+  end else
+  if (Key = VK_ESCAPE) then
+  begin
+    Key := 0;
+    CloseDialog;
   end else
   if Key = VK_TAB then
   begin
@@ -223,6 +239,18 @@ begin
     Key := 0;
   end;
 end;
+
+procedure TCustomDialogForm.FormShow(Sender: TObject);
+begin
+  self.SetFocus;
+end;
+
+procedure TCustomDialogForm.CMChildKey(var Message: TCMChildKey);
+begin
+  inherited;
+end;
+
+
 
 
 

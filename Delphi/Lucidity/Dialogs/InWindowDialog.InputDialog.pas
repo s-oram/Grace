@@ -7,14 +7,14 @@ uses
   InWindowDialog.Prototypes;
 
 type
-  TDialogResult = reference to procedure(Text : string);
+  TDialogResultCallback = reference to procedure(Text : string);
 
   TInputDialog = class(TPluginDialog)
   private
     fInputLabel: string;
     fDefaultValue: string;
     fInputText: string;
-    fDialogResultHandler: TDialogResult;
+    fDialogResultHandler: TDialogResultCallback;
   protected
     function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;
 
@@ -27,7 +27,7 @@ type
     property InputLabel   : string read fInputLabel   write fInputLabel;
     property DefaultValue : string read fDefaultValue write fDefaultValue;
 
-    property DialogResultHandler : TDialogResult read fDialogResultHandler write fDialogResultHandler;
+    property DialogResultHandler : TDialogResultCallback read fDialogResultHandler write fDialogResultHandler;
   end;
 
 implementation

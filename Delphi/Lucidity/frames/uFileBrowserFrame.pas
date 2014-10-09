@@ -573,7 +573,7 @@ end;
 procedure TFileBrowserFrame.RenameFocusedNode;
 var
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
   NodeData : PNodeData;
   Dir : string;
   NewFileName : string;

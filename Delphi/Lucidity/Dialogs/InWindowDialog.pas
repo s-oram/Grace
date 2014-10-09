@@ -10,13 +10,13 @@ uses
   InWindowDialog.InputDialog;
 
 type
-  TInputDialogResult  = InWindowDialog.InputDialog.TDialogResult;
-  TCustomDialogResult = InWindowDialog.CustomDialog.TDialogResult;
+  TInputDialogResultCallback  = InWindowDialog.InputDialog.TDialogResultCallback;
+  TCustomDialogResultCallback = InWindowDialog.CustomDialog.TDialogResultCallback;
 
 procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
-procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResult);
+procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResultCallback);
 
-procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResult);
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResultCallback);
 
 // TODO:HIGH need an InWindow about dialog to replace uAboutDialog.pas.
 
@@ -47,7 +47,7 @@ begin
   MsgDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
-procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResult);
+procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResultCallback);
 var
   InputDialog : TInputDialog;
 begin
@@ -59,7 +59,7 @@ begin
   InputDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
-procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResult);
+procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResultCallback);
 var
   CustomDialog : TCustomDialog;
 begin

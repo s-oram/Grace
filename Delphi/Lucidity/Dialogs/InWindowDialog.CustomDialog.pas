@@ -7,14 +7,14 @@ uses
   InWindowDialog.Prototypes;
 
 type
-  TDialogResult = reference to procedure(Text : string);
+  TDialogResultCallback = reference to procedure(Text : string);
 
   TCustomDialog = class(TPluginDialog)
   private
     fButtons : array of string;
     fText: string;
     fColorBorder: TColor;
-    fDialogResultHandler: TDialogResult;
+    fDialogResultHandler: TDialogResultCallback;
   protected
     function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;
 
@@ -29,7 +29,7 @@ type
 
     property ColorBorder : TColor read fColorBorder write fColorBorder;
 
-    property DialogResultHandler : TDialogResult read fDialogResultHandler write fDialogResultHandler;
+    property DialogResultHandler : TDialogResultCallback read fDialogResultHandler write fDialogResultHandler;
   end;
 
 implementation

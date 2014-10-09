@@ -154,7 +154,7 @@ procedure TGroupsMenu.RenameKeyGroup(Sender: TObject);
 var
   kg : IKeyGroup;
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
 begin
   kg := Plugin.KeyGroups.FindSampleGroup(CurrentGroup);
   if not assigned(kg) then exit;

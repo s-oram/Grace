@@ -777,7 +777,7 @@ end;
 class procedure Command.SetMidiCCForParameter(const Plugin: TeePlugin; const TargetParameterName: string);
 var
   Text, InputLabel, DefaultValue : string;
-  ResultHandler : TInputDialogResult;
+  ResultHandler : TInputDialogResultCallback;
 begin
   Text         := 'Choose a MIDI Control Change Number (0-127)';
   InputLabel   := 'MIDI CC#';
@@ -1035,13 +1035,20 @@ end;
 
 
 class procedure Command.DeleteRegionsSelectedInSampleMap(const Plugin: TeePlugin);
+var
+  ResultCallback : TCustomDialogResultCallback;
 begin
-  InWindow_CustomDialog(Plugin.Globals.TopLevelForm, 'Test', ['Ok','Cancel']);
+  ResultCallback := procedure(ResultText : string)
+  begin
+    if SameText(ResultText, 'Yes') then
+    begin
+      Plugin.DeleteSelectedRegions;
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
+    end;
+  end;
 
-
-  //Plugin.DeleteSelectedRegions;
-  //Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
-  //Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.CheckForSampleFocusChange);
+  InWindow_CustomDialog(Plugin.Globals.TopLevelForm, 'Delete selected regions?', ['Yes','No'], ResultCallback);
 end;
 
 class function Command.GetModSlotSource(const Plugin: TeePlugin; const ModSlot: integer): string;

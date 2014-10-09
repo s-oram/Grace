@@ -11,7 +11,7 @@ object CustomDialogForm: TCustomDialogForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object RedFoxContainer1: TRedFoxContainer

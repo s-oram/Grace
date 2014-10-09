@@ -62,6 +62,7 @@ type
 
     procedure FocusFirstControl;
     procedure FocusNextControl; // Typically called when tabbing.
+    function FindFocusedControl:TObject;
 
     // Closes the main dialog form and the modal shadow.
     procedure CloseDialog;
@@ -204,6 +205,24 @@ begin
   CloseDialog;
 end;
 
+function TPluginDialogForm.FindFocusedControl: TObject;
+var
+  c1: Integer;
+  c : TWinControl;
+begin
+  for c1 := 0 to TabOrderControlList.Count-1 do
+  begin
+    c := TabOrderControlList[c1] as TWinControl;
+    if c.Focused then
+    begin
+      exit(c); //=======>> exit >>======>>
+    end;
+  end;
+
+  // if we make it this far no control has focus.
+  result := nil;
+end;
+
 procedure TPluginDialogForm.FocusFirstControl;
 var
   c : TWinControl;
@@ -254,7 +273,6 @@ procedure TPluginDialogForm.CMChildKey(var Message: TCMChildKey);
 begin
   // Interesting artical for key processing.
   // http://edn.embarcadero.com/article/38447
-
   if Message.CharCode = VK_TAB then
   begin
     FocusNextControl;
