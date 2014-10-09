@@ -68,6 +68,10 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure GroupVisibilityButtonMouseUp(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure SampleMapMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure SampleMapOleDragDrop(Sender: TObject; ShiftState: TShiftState;
+      APoint: TPoint; var Effect: Integer; Data: IVamDragData);
   private
     fPlugin: TeePlugin;
     function GetScrollPosX: single;
@@ -632,6 +636,11 @@ begin
   UpdateRegionInfoDisplay;
 end;
 
+procedure TSampleMapFrame.SampleMapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.SampleMap;
+end;
+
 procedure TSampleMapFrame.SampleMapMouseOverRegionChanged(const Sender: TObject; aRegion: TVamSampleRegion);
 begin
   if not assigned(Plugin) then exit;
@@ -879,6 +888,11 @@ begin
   finally
     SetLength(NewRegions, 0);
   end;
+end;
+
+procedure TSampleMapFrame.SampleMapOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
+begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.SampleMap;
 end;
 
 procedure TSampleMapFrame.SampleMapOleDragEnter(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);

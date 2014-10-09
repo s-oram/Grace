@@ -294,11 +294,6 @@ begin
   GuiStandard.RegisterHandler('MenuButtonHandler', MenuHandler);
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.VCL);
 
-
-
-
-  
-
   //====== Register frames as zero objects =====================================
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuBarFrame, TZeroObjectRank.VCL);
@@ -411,6 +406,8 @@ begin
 
   TabPanel.Invalidate;
   //==============
+
+  Plugin.Globals.GuiState.HotKeyContext := THotKeyContext.None;
 
   //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
   //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);

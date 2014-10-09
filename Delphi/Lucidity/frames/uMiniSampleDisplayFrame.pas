@@ -59,6 +59,8 @@ type
     procedure InsidePanelResize(Sender: TObject);
     procedure ZoomScrollBarChanged(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure GeneralMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     UpdateSampleDisplayThottleToken : TUniqueID;
 
@@ -462,7 +464,7 @@ end;
 
 procedure TMiniSampleDisplayFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
-  // TODO: The sample overlay will need to be updated some how.
+  // TODO:HIGH The sample overlay will need to be updated some how.
   // Currently it's being updated on timer and it's causing a lot of
   // unecessary drawing operations.
   fSampleOverlay.LinkToGuiFeedbackData(Feedback);
@@ -475,9 +477,11 @@ var
 begin
   if not assigned(Plugin) then exit;
 
-
   {$IFDEF Logging}
-    LogMain.EnterMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
+    // TODO:MED UpdateSampleDisplay() is being called a lot.
+    // See if it's possible to reduce.
+    //
+    //LogMain.EnterMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
   {$ENDIF}
 
   rd := FindRegionToDisplay(Plugin);
@@ -486,7 +490,7 @@ begin
   InternalUpdateSampleInfo(rd.Region, rd.Message);
 
   {$IFDEF Logging}
-    LogMain.LeaveMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
+    //LogMain.LeaveMethod('TMiniSampleDisplayFrame.UpdateSampleDisplay');
   {$ENDIF}
 end;
 
@@ -736,6 +740,8 @@ var
   CurRegion : IRegion;
   MouseDownSamplePos : integer;
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   CurRegion := Plugin.FocusedRegion;
   if CurRegion = nil then exit;
 
@@ -1023,13 +1029,14 @@ end;
 procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
-
   //TODO:HIGH code clean up required here. the xZoom and xOffset variables needs to be deleted.
   Zoom, Offset : single;
   xZoom, xOffset : double;
   //SampleFrames, DisplayPixelWidth : integer;
   //IndexA, IndexB : single;
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if not CurrentSample.Info.IsValid then exit;
   if not assigned(CurrentSample.Region) then exit;
 
@@ -1204,5 +1211,10 @@ begin
   end;
 end;
 
+
+procedure TMiniSampleDisplayFrame.GeneralMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+end;
 
 end.

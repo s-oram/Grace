@@ -28,16 +28,11 @@ type
     procedure SampleMapButtonClick(Sender: TObject);
     procedure SampleEditButtonClick(Sender: TObject);
     procedure ContainerDivResize(Sender: TObject);
-    procedure MainMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure MapEditButtonMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure SampleMenuButtonMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure AutoSelectButtonMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure MainMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure MapEditButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure SampleMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure AutoSelectButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -187,6 +182,8 @@ procedure TMenuBarFrame.AutoSelectButtonMouseDown(Sender: TObject; Button: TMous
 var
   Menu : TAutoSelectMenu;
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Button = mbLeft then
   begin
     Menu := TAutoSelectMenu.Create;
@@ -236,6 +233,8 @@ end;
 
 procedure TMenuBarFrame.SampleMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Button = mbLeft then
   begin
     SamplesMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
@@ -249,6 +248,8 @@ end;
 
 procedure TMenuBarFrame.GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Button = mbLeft then
   begin
     GroupsMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
@@ -294,6 +295,8 @@ end;
 
 procedure TMenuBarFrame.MainMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Button = mbLeft then
   begin
     MainMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
@@ -310,6 +313,7 @@ end;
 
 procedure TMenuBarFrame.MapEditButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
   if not assigned(Plugin) then exit;
   if Button = mbLeft then
   begin

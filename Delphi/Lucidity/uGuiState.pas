@@ -22,7 +22,9 @@ type
     fSampleDisplayOffset: single;
     fSampleDisplayZoom: single;
     fIsAutoSelectActive: boolean;
+    fHotkeyContext: THotKeyContext;
     procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
+    procedure SetHotkeyContext(const Value: THotKeyContext);
   public
     constructor Create;
     destructor Destroy; override;
@@ -57,12 +59,15 @@ type
     property SampleMapGroupVisibility : TGroupVisibility read fSampleMapGroupVisibility write fSampleMapGroupVisibility;
 
     property IsAutoSelectActive : boolean read fIsAutoSelectActive write fIsAutoSelectActive;
+
+    property HotkeyContext : THotKeyContext read fHotkeyContext write SetHotkeyContext;
   end;
 
 implementation
 
 uses
   SysUtils,
+  TypInfo,
  {$IFDEF Logging}
  SmartInspectLogging,
  VamLib.LoggingProxy,
@@ -92,6 +97,17 @@ end;
 procedure TGuiState.SetActiveVstPluginParameterID(const Value: TPluginParameterId);
 begin
   fActiveVstPluginParameterID := Value;
+end;
+
+procedure TGuiState.SetHotkeyContext(const Value: THotKeyContext);
+begin
+  if Value <> fHotkeyContext then
+  begin
+    {$IFDEF Logging}
+    LogMain.LogMessage('Hot Key Context Changed : ' + GetEnumName(TypeInfo(THotKeyContext),Integer(Value)));
+    {$ENDIF}
+    fHotkeyContext := Value;
+  end;
 end;
 
 end.

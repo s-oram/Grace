@@ -54,6 +54,17 @@ bug
 - finish the help doc.
 - finish renaming all the factory presets. 
 
+
+a) Steinberg’s copyright notice should be included in the documentation, regardless of the media used to supply the documentation. 
+Copyright notice:”VST is a trademark of Steinberg Media Technologies GmbH”
+
+
+c) In the ‘about box’ of the product in one of the following formats:
+	- VST PlugIn Technology by Steinberg, 
+- VST PlugIn Interface Technology by Steinberg Media Technologies GmbH.
+
+
+
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.

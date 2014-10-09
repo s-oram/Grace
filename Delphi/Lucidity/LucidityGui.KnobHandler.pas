@@ -77,6 +77,7 @@ uses
   VamLib.Throttler,
   VamKnob,
   VamGuiControlInterfaces,
+  uLucidityEnums,
   Lucidity.Types,
   uConstants,
   uGuiUtils;
@@ -322,6 +323,8 @@ var
   Par : TPluginParameterClass;
   ParID    : TPluginParameterID;
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;

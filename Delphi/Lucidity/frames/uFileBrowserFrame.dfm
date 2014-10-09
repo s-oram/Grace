@@ -253,6 +253,7 @@ object FileBrowserFrame: TFileBrowserFrame
             Font.Style = []
             Align = alClient
             Visible = True
+            OnClick = FileTreeViewClick
           end
         end
       end

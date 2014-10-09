@@ -98,6 +98,7 @@ object SampleMapFrame: TSampleMapFrame
             Margins.Top = 0
             Opacity = 255
             HitTest = True
+            OnOleDragDrop = SampleMapOleDragDrop
             OnOleDragEnter = SampleMapOleDragEnter
             OnFocusRegion = SampleMapFocusRegion
             OnSelectRegion = SampleMapSelectRegion
@@ -118,6 +119,7 @@ object SampleMapFrame: TSampleMapFrame
             OnRegionInfoChanged = SampleMapRegionInfoChanged
             Align = alClient
             Visible = True
+            OnMouseDown = SampleMapMouseDown
           end
         end
       end

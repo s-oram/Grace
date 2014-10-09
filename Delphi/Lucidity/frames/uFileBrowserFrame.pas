@@ -42,6 +42,7 @@ type
     procedure PreviewOnOffButtonChanged(Sender: TObject);
     procedure PreviewControlLabelClick(Sender: TObject);
     procedure FileTreeViewOleDragDrop(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data: IVamDragData);
+    procedure FileTreeViewClick(Sender: TObject);
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -431,6 +432,11 @@ begin
     end;
   end;
 
+end;
+
+procedure TFileBrowserFrame.FileTreeViewClick(Sender: TObject);
+begin
+  Plugin.Globals.GuiState.HotkeyContext := THotkeyContext.FileBrowser;
 end;
 
 procedure TFileBrowserFrame.FileTreeViewNodeRightClicked(Sender: TObject; Node: TVamTreeViewNode);

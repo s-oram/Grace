@@ -46,6 +46,7 @@ uses
   eeEnumHelper,
   Lucidity.PluginParameters,
   Lucidity.Types,
+  uLucidityEnums,
   uConstants,
   uGuiUtils;
 
@@ -164,6 +165,8 @@ var
   EnumHelper : TCustomEnumHelperClass;
   ParValueAsInt : integer;
 begin
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
+
   if Supports(Sender, IMenuControl, mc)  then
   begin
     if (Button = mbRight) then

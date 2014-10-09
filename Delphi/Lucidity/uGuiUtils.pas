@@ -845,10 +845,12 @@ begin
   begin
     Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.MapEdit;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+    Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.SampleMap;
   end else
   begin
     Plugin.Globals.GuiState.MainGuiLayout := TMainGuiLayout.Default;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.GUILayoutChanged);
+    Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
   end;
 end;
 

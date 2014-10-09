@@ -145,6 +145,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              OnMouseDown = GeneralMouseDown
             end
             object SampleVolumeKnob: TVamCompoundNumericKnob
               Tag = 1
@@ -183,6 +184,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              OnMouseDown = GeneralMouseDown
             end
             object SamplePanKnob: TVamCompoundNumericKnob
               Tag = 2
@@ -221,6 +223,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              OnMouseDown = GeneralMouseDown
             end
             object SampleFineKnob: TVamCompoundNumericKnob
               Tag = 6
@@ -258,6 +261,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              OnMouseDown = GeneralMouseDown
             end
             object SampleTuneKnob: TVamCompoundNumericKnob
               Tag = 5
@@ -296,6 +300,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
               Padding.Bottom = 3
               Align = alRight
               Visible = True
+              OnMouseDown = GeneralMouseDown
             end
           end
         end
@@ -328,6 +333,7 @@ object MiniSampleDisplayFrame: TMiniSampleDisplayFrame
           SliderType = stHorizontal
           OnChanged = ZoomScrollBarChanged
           Visible = True
+          OnMouseDown = GeneralMouseDown
         end
         object ZoomInButton: TVamTextBox
           Tag = 1
