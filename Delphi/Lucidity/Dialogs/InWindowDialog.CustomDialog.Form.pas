@@ -214,11 +214,12 @@ procedure TCustomDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: T
 var
   c : TWinControl;
 begin
+  c := self.FindFocusedControl as TWinControl;
+
   // FormKeyDown is called when the dialog is used within a VST plugin.
   if (Key = VK_RETURN) then
   begin
     Key := 0;
-    c := self.FindFocusedControl as TWinControl;
     if (assigned(c)) and (c is TButton) then
     begin
       EventHandle_ButtonClick(c);
@@ -233,7 +234,18 @@ begin
   begin
     Key := 0;
     FocusNextControl;
+  end else
+  if (Key = VK_RIGHT) and (assigned(c)) and (c is TButton) then
+  begin
+    Key := 0;
+    FocusNextControl;
+  end else
+  if (Key = VK_LEFT) and (assigned(c)) and (c is TButton) then
+  begin
+    Key := 0;
+    FocusPreviousControl;
   end;
+
 end;
 
 procedure TCustomDialogForm.FormShow(Sender: TObject);

@@ -61,6 +61,7 @@ type
     destructor Destroy; override;
 
     procedure FocusFirstControl;
+    procedure FocusPreviousControl;
     procedure FocusNextControl; // Typically called when tabbing.
     function FindFocusedControl:TObject;
 
@@ -234,6 +235,40 @@ begin
   end;
 end;
 
+procedure TPluginDialogForm.FocusPreviousControl;
+var
+  c : TWinControl;
+  c1 : integer;
+  FocusIndex : integer;
+begin
+  if TabOrderControlList.Count = 0 then exit;
+
+  FocusIndex := -1;
+
+  for c1 := 0 to TabOrderControlList.Count-1 do
+  begin
+    c := TabOrderControlList[c1] as TWinControl;
+    if c.Focused then
+    begin
+      FocusIndex := c1;
+      break; //===BREAK====>>
+    end;
+  end;
+
+  if FocusIndex = -1 then
+  begin
+    c := TabOrderControlList[0] as TWinControl;
+    c.SetFocus;
+  end else
+  if FocusIndex >= 0 then
+  begin
+    dec(FocusIndex);
+    if FocusIndex < 0 then FocusIndex := TabOrderControlList.Count-1;
+    c := TabOrderControlList[FocusIndex] as TWinControl;
+    c.SetFocus;
+  end;
+end;
+
 procedure TPluginDialogForm.FocusNextControl;
 var
   c : TWinControl;
@@ -266,7 +301,6 @@ begin
     c := TabOrderControlList[FocusIndex] as TWinControl;
     c.SetFocus;
   end;
-
 end;
 
 procedure TPluginDialogForm.CMChildKey(var Message: TCMChildKey);

@@ -1038,6 +1038,8 @@ class procedure Command.DeleteRegionsSelectedInSampleMap(const Plugin: TeePlugin
 var
   ResultCallback : TCustomDialogResultCallback;
 begin
+  //TODO:HIGH check how many regions are selected. If no regions are selected then exit.
+
   ResultCallback := procedure(ResultText : string)
   begin
     if SameText(ResultText, 'Yes') then
