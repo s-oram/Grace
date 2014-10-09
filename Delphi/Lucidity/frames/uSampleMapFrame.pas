@@ -101,7 +101,7 @@ type
     procedure Handle_KnobStepUp(Sender : TObject);
     procedure Handle_KnobStepDown(Sender : TObject);
 
-    procedure ProcessKeyCommand(Command:TKeyCommand);
+    procedure ProcessKeyCommand(KeyCommand:TKeyCommand);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -1149,9 +1149,9 @@ begin
   Command.ToggleSampleMapVisibility(Plugin);
 end;
 
-procedure TSampleMapFrame.ProcessKeyCommand(Command: TKeyCommand);
+procedure TSampleMapFrame.ProcessKeyCommand(KeyCommand: TKeyCommand);
 begin
-  case Command of
+  case KeyCommand of
     TKeyCommand.ContextUp: ;
     TKeyCommand.ContextDown: ;
     TKeyCommand.ContextLeft: ;
@@ -1162,7 +1162,7 @@ begin
     TKeyCommand.SelectDown: ;
     TKeyCommand.ReplaceLoad: ;
     TKeyCommand.ContextRename: ;
-    TKeyCommand.ContextDelete: ;
+    TKeyCommand.ContextDelete: Lucidity.GuiUtils.Command.DeleteRegionsSelectedInSampleMap(Plugin);
   end;
 end;
 
