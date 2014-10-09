@@ -27,8 +27,7 @@ type
     procedure OkButtonClick(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
-    procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+
   private
     fInputLabel: string;
     fDefaultValue: string;
@@ -39,6 +38,7 @@ type
     procedure SetInputText(const Value: string);
   protected
     procedure CMChildKey(var Message: TCMChildKey); message CM_CHILDKEY;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -98,6 +98,8 @@ begin
   TabOrderControlList.Add(CancelButton);
 
 
+
+  OnKeyDown := FormKeyDown;
 end;
 
 destructor TInputDialogForm.Destroy;
@@ -111,14 +113,6 @@ end;
 procedure TInputDialogForm.FormDeactivate(Sender: TObject);
 begin
   //
-end;
-
-
-
-procedure TInputDialogForm.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-  //
-  ShowMessage('gang');
 end;
 
 

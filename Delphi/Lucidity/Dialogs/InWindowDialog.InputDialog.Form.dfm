@@ -13,8 +13,6 @@ object InputDialogForm: TInputDialogForm
   KeyPreview = True
   OldCreateOrder = False
   OnDeactivate = FormDeactivate
-  OnKeyDown = FormKeyDown
-  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object RedFoxContainer1: TRedFoxContainer
