@@ -1036,9 +1036,13 @@ end;
 
 class procedure Command.DeleteRegionsSelectedInSampleMap(const Plugin: TeePlugin);
 var
+  SelectedRegionCount : integer;
+  msg : string;
   ResultCallback : TCustomDialogResultCallback;
 begin
-  //TODO:HIGH check how many regions are selected. If no regions are selected then exit.
+  SelectedRegionCount := Plugin.SampleMap.SelectedRegionCount;
+
+  if SelectedRegionCount = 0 then exit; //===============>> exit >>==============>>
 
   ResultCallback := procedure(ResultText : string)
   begin
@@ -1050,7 +1054,11 @@ begin
     end;
   end;
 
-  InWindow_CustomDialog(Plugin.Globals.TopLevelForm, 'Delete selected regions?', ['Yes','No'], ResultCallback);
+  if SelectedRegionCount = 1
+    then msg := 'Delete selected region?'
+    else msg := 'Delete ' + IntToStr(SelectedRegionCount) + ' selected regions?';
+
+  InWindow_CustomDialog(Plugin.Globals.TopLevelForm, msg, ['Yes','No'], ResultCallback);
 end;
 
 class function Command.GetModSlotSource(const Plugin: TeePlugin; const ModSlot: integer): string;
