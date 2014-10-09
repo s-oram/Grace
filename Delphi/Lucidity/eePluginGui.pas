@@ -6,7 +6,6 @@ interface
 
 
 uses
-  Dialogs, //TODO:HIGH delete this.
   eeGuiStandardv2,
   LucidityGui.KnobHandler,
   LucidityGui.MenuButtonHandler,
@@ -428,14 +427,6 @@ var
 begin
   //Update the gui elements here.
   Manually := true;
-
-  {
-  //TODO:HIGH need a way to refresh the keyhook target.
-  if assigned(PluginKeyHook) then
-  begin
-    PluginKeyHook.RefreshKeyHookTarget;
-  end;
-  }
 
   rd := FindRegionToDisplay(Plugin);
   FeedbackData.FocusedRegion := rd.Region;

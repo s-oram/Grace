@@ -45,7 +45,6 @@ type
 implementation
 
 uses
-  Dialogs, //TODO:HIGH delete this.
   XPLAT.Dialogs,
   InWindowDialog,
   VamLib.Utils,
@@ -653,7 +652,7 @@ begin
 
       Plugin.RenameInUseSample(NewFileName, OldFileName);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-      //TODO:HIGH refresh browser after renaming sample file incase sample file is visible in browser.
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser);
     end;
   end;
 

@@ -9,7 +9,6 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
-  Dialogs, // TODO:HIGH delete this
   XPLAT.Dialogs,
   eeTypes,
   eeEnumHelper,
@@ -108,15 +107,9 @@ type
 
     class procedure DeleteRegionsSelectedInSampleMap(const Plugin : TeePlugin); static;
 
-    //TODO:HIGH delete this method. no longer needed.
-    class function AreSampleZoomControlsVisible(const Plugin : TeePlugin):boolean; static;
-
-
     class procedure VstPar_BeginEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_EndEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_SetParameterAutomated(const Plugin : TeePlugin; const VstParameterIndex : integer; const ParValue : single); static;
-
-
   end;
 
   GuiSetup = record
@@ -945,13 +938,6 @@ begin
     if ModAmount <> 0
       then result := true
       else result := false;
-end;
-
-class function Command.AreSampleZoomControlsVisible(const Plugin: TeePlugin): boolean;
-begin
-  if Plugin.Globals.GuiState.MainGuiLayout = TMainGuiLayout.SampleZoom
-    then result := true
-    else result := false;
 end;
 
 class procedure Command.ClearAllModulationForParameter(const Plugin: TeePlugin; const ParName: string);

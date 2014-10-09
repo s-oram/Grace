@@ -125,6 +125,7 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  InWindowDialog,
   Lucidity.GuiUtils,
   VamLib.Throttler,
   VamLib.Animation,
@@ -642,7 +643,6 @@ end;
 
 procedure TSampleMapFrame.SampleMapRegionInfoChanged(Sender: TObject);
 begin
-  //TODO:HIGH AVBug #2
   UpdateRegionInfoDisplay;
 end;
 
@@ -964,7 +964,7 @@ begin
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
     end else
     begin
-      // TODO:HIGH display error message here.
+      Inwindow_ShowMessage(plugin.Globals.TopLevelForm, 'Error: Region couldn''t be replaced.');
     end;
   end;
 end;
