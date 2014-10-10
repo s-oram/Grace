@@ -723,8 +723,6 @@ begin
     aNode := SampleGroupNode.FindNode('Name');
     if assigned(aNode) then
     begin
-      // BUG HERE: This code causes a dead-lock when called from an action that
-      // is sent via the TMotherShip-Messaging system.
       if aNode.ValueUnicode <> ''
         then sgIntF := Plugin.KeyGroups.NewKeyGroup(aNode.ValueUnicode) /// BUG HERE
         else sgIntF := Plugin.KeyGroups.NewKeyGroup;
