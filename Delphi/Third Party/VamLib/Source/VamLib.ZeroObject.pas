@@ -163,6 +163,12 @@ type
       DataB   : IZeroMessageData;
     end;
   private
+    // TODO:MED it would be much better to have list objects
+    // that didn't require locks. Any message that triggers
+    // an object to be created or destroyed has a real potential
+    // to cause a deadlock. List objects are locked when sending messages.
+    // List objects are locked when adding/removing items.
+
     AudioObjects : TList;
     MainObjects  : TList;
     VclObjects   : TList;

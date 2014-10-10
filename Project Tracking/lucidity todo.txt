@@ -50,6 +50,9 @@ bug
 bug:
 - lucidity froze when pressing enter to load a LPG file.
 
+bug:
+- the comb filter pitch changes when a note is triggered.
+
 =============================================================================
      TODO HIGH
 =============================================================================

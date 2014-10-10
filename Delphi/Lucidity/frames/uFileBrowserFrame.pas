@@ -450,8 +450,7 @@ begin
     if (IsSupportedAudioFormat(NodeData.FileName)) then
     begin
       Command.ReplaceLoadCurrentRegion(Plugin, NodeData.FileName);
-    end;
-
+    end else
     if IsSupportedProgramFormat(NodeData.FileName) then
     begin
       Plugin.ImportProgram(NodeData.FileName);
