@@ -233,7 +233,7 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-  ResultHandler : TCustomDialogResult;
+  ResultHandler : TCustomDialogResultCallback;
 begin
   ResultHandler := procedure(Text:string)
   begin
