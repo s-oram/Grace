@@ -46,7 +46,7 @@ type
     CurveFactor : single;
 
 
-    procedure UpdateEnvStepSizes; //inline;
+    procedure UpdateEnvStepSizes; {$IFDEF AudioInline}inline;{$ENDIF}
   public
     constructor Create;
     destructor Destroy; override;
@@ -55,9 +55,8 @@ type
     procedure Release;
     procedure Kill;
 
-    //TODO:HIGH these methods should probably be inlined.
-    function Step(out CycleEnd : boolean): single; overload; // generate the next LFO output sample.
-    function Step: single; overload;
+    function Step(out CycleEnd : boolean): single; overload; {$IFDEF AudioInline}inline;{$ENDIF}
+    function Step: single; overload; {$IFDEF AudioInline}inline;{$ENDIF}
 
     property Bpm          : single read fBpm           write fBpm;
     property SampleRate   : single read fSampleRate    write SetSampleRate;
