@@ -132,7 +132,6 @@ begin
       UpdateModulation(ControlList[c1]);
     end;
   end;
-
 end;
 
 
@@ -141,6 +140,8 @@ procedure TKnobHandler.RegisterControl(const c: TObject);
 var
   KnobControl : IKnobControl;
 begin
+  assert(Supports(c, IKnobControl), 'Control doesn''t support IKnobControl.');
+
   if Supports(c, IKnobControl, KnobControl) then
   begin
     KnobControl.SetOnMouseEnter(Handle_MouseEnter);
@@ -150,19 +151,6 @@ begin
     KnobControl.SetOnKnobPosChanged(Handle_KnobPosChanged);
     KnobControl.SetOnModAmountChanged(Handle_ModAmountChanged);
   end;
-
-
-  {
-  assert(c is TVamKnob);
-  Knob := c as TVamKnob;
-
-  Knob.OnMouseEnter       := Handle_MouseEnter;
-  Knob.OnMouseLeave       := Handle_MouseLeave;
-  Knob.OnMouseDown        := Handle_MouseDown;
-  Knob.OnMouseUp          := Handle_MouseUp;
-  Knob.OnKnobPosChanged   := Handle_KnobPosChanged;
-  Knob.OnModAmountChanged := Handle_ModAmountChanged;
-  }
 
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
@@ -213,7 +201,6 @@ begin
       end;
     end;
   end;
-
 end;
 
 procedure TKnobHandler.UpdateModulation(const c: TObject);
