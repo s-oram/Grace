@@ -66,13 +66,14 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}
+  SmartInspectLogging,
+  VamLib.LoggingProxy,
+  {$ENDIF}
+  VamLib.Utils,
   SysUtils,
-  TypInfo,
- {$IFDEF Logging}
- SmartInspectLogging,
- VamLib.LoggingProxy,
- {$ENDIF}
-  GuidEx;
+  TypInfo;
+
 
 { TGuiState }
 
@@ -80,7 +81,7 @@ constructor TGuiState.Create;
 begin
   fLowerTabState := TLowerTabOptions.TabMain; // shows the main tab by default.
 
-  MouseOverRegionID := TGuidEx.EmptyGuid;
+  MouseOverRegionID := GuidEx.EmptyGuid;
 
   fIsModDestAutoSelectEnabled := true;
   fMainGuiLayout := TMainGuiLayout.Default;

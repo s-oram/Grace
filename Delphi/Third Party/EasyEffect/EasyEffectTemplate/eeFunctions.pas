@@ -84,6 +84,10 @@ function AddQuotes(Text:string):string;
 function ToPAnsiChar(stringVar : string) : PAnsiChar;
 //==============================================================
 
+
+// TODO:MED There are GUID functions in VamLib.Utils.
+// Perhaps these functions below should be removed and replaced with
+// the vamlib.Utils functions.
 function CreateGuidEx:TGUID;
 function GUIDAsString : string;
 

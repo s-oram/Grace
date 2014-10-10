@@ -115,7 +115,6 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eePluginDataDir,
   Lucidity.KeyGroup,
-  GuidEx,
   eeGuiSetup,
   RedFoxColor,
   Lucidity.GuiUtils,

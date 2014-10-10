@@ -10,7 +10,6 @@ type
   private
     fSkinItemList: TObjectList;
     fSkinDirectory: string;
-    fShowWarningDialogs: boolean;
   protected
     function LoadFromResource(ResourceName:string; var Dest:TBitmap):boolean;
     function LoadFromSkinDir(const SkinDir, ImageFileName:string; var Dest:TBitmap):boolean;
@@ -27,13 +26,12 @@ type
     function GetImage(ImageID:string):TBitmap;
 
     property SkinDirectory:string read fSkinDirectory write fSkinDirectory;
-
-    property ShowWarningDialogs : boolean read fShowWarningDialogs write fShowWarningDialogs;
   end;
 
 implementation
 
 uses
+  VamLib.LoggingProxy,
   Vcl.Imaging.PngImage, SysUtils, Classes, uAutoFree,
   Dialogs;
 
@@ -99,7 +97,6 @@ constructor TSkinImageLoader.Create;
 begin
   inc(GlobalInstanceCount);
   SkinItemList := GlobalSkinItemList;
-  ShowWarningDialogs := false;
 end;
 
 destructor TSkinImageLoader.Destroy;
@@ -177,9 +174,8 @@ begin
       SkinItemList.Add(SkinItem)
     end else
     begin
-      // TODO:HIGH - there is a showMessage()
+      Log.LogError('TSkinImageLoader.LoadImage() - Could not find skin image \"' + ImageFileName + '\".');
       SkinItem.Free;
-      if ShowWarningDialogs then ShowMessage('Could not find skin image \"' + ImageFileName + '\".');
     end;
   end;
 

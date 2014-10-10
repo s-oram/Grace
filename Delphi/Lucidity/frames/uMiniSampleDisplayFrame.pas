@@ -144,7 +144,7 @@ uses
   VamLib.Throttler,
   eeDsp,
   eeVstXml, uLucidityEnums,
-  GuidEx, RedFoxColor, Lucidity.Utils,
+  RedFoxColor, Lucidity.Utils,
   Lucidity.GuiUtils, VamLayoutWizard,
   uConstants, Lucidity.KeyGroup;
 

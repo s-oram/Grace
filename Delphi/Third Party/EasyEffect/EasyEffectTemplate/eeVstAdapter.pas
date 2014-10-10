@@ -279,7 +279,7 @@ begin
   end;
 
   if assigned(MidiOutBuffer) then FreeAndNil(MidiOutBuffer);
-  if assigned(Plugin)        then FreeAndNil(Plugin);   //TODO:HIGH There's an AV error here when free 12+ instances in reaper. Need to check to see what is going on.
+  if assigned(Plugin)        then FreeAndNil(Plugin);
   if assigned(ChunkData)     then FreeAndNil(ChunkData);
 
   ProcessControllerV2.Free;

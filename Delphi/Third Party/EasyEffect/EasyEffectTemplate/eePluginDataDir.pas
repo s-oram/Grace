@@ -27,7 +27,7 @@ function GetPluginDataSubDir(SubDirName:string):string;
 
 //============ OLD CODE ABOVE -- NEW CODE BELOW ====================
 
-// TODO:HIGH this unit is a mess. It's confusing to look at. It's confusing to extend
+// TODO:MED this unit is a mess. It's confusing to look at. It's confusing to extend
 // and I'm sure there is code all over the place that isn't using it.
 
 function GetPluginDataDir(out Dir : string):boolean; // New get data dir method.

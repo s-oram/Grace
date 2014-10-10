@@ -137,7 +137,6 @@ uses
   eeVstXml,
   uConstants,
   LucidityModConnections,
-  GuidEx,
   eePluginDataDir,
   Lucidity.Utils,
   Lucidity.Globals,
@@ -364,7 +363,7 @@ begin
     end;
   end else
   begin
-    if (Plugin.Globals.GuiState.MouseOverRegionID <> TGuidEx.EmptyGuid) then
+    if (Plugin.Globals.GuiState.MouseOverRegionID <> GuidEx.EmptyGuid) then
     begin
       rx := Plugin.SampleMap.FindRegionByUniqueID(Plugin.Globals.GuiState.MouseOverRegionID);
       if not assigned(rx) then rs := 'ERROR';
