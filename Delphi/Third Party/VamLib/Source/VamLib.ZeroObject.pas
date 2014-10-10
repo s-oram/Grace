@@ -168,6 +168,18 @@ type
     // an object to be created or destroyed has a real potential
     // to cause a deadlock. List objects are locked when sending messages.
     // List objects are locked when adding/removing items.
+    //
+    // I can't find any Lock-free list objects online. It might be
+    // possible to write one specifically for this context.
+    // I think my requirements are limited so it might be possible.
+    // Maybe a lock-free linked list might be suitable. Or some
+    // setup that allows objects to be added to a list.
+    //
+    // The MultiReadSingleWrite lock falls back to a critical section
+    // on Windows XP. The critical section isn't great if I remember correctly.
+    // I think it can cause crackles as the multiple threads can be trying
+    // send messages and that can block the audio thread.
+    //
 
     AudioObjects : TList;
     MainObjects  : TList;
@@ -381,16 +393,22 @@ end;
 procedure TMotherShip.RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
 var
   ptr : Pointer;
+  ListLock : TMultiReadSingleWrite;
 begin
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(self);
 
+
+  case Rank of
+    TZeroObjectRank.Audio: ListLock := AudioListLock;
+    TZeroObjectRank.Main:  ListLock := MainListLock;
+    TZeroObjectRank.VCL:   ListLock := VclListLock;
+  else
+    raise Exception.Create('unexpected value and not handled.');
+  end;
+
   try
-    // TODO:MED instead of locking all locks, we could lock the
-    // relevant list lock only.
-    AudioListLock.BeginWrite;
-    VclListLock.BeginWrite;
-    MainListLock.BeginWrite;
+    ListLock.BeginWrite;
 
     case Rank of
       TZeroObjectRank.Audio:
@@ -414,9 +432,7 @@ begin
       raise Exception.Create('Rank not supported.');
     end;
   finally
-    AudioListLock.EndWrite;
-    VclListLock.EndWrite;
-    MainListLock.EndWrite;
+    ListLock.EndWrite;
   end;
 
 end;
@@ -424,45 +440,68 @@ end;
 procedure TMotherShip.DeregisterZeroObject(const obj: IZeroObject);
 var
   ptr : Pointer;
-  IsD : boolean;
+  IsVclObject   : boolean;
+  IsAudioObject : boolean;
+  IsMainObject  : boolean;
+
 begin
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(nil);
-  IsD := false;
 
+
+
+  //=== first find which list the object's belong to.
+  AudioListLock.BeginRead;
+  VclListLock.BeginRead;
+  MainListLock.BeginRead;
   try
-    // TODO:MED instead of locking all locks, we could lock the
-    // relevant list lock only.
-    AudioListLock.BeginWrite;
-    VclListLock.BeginWrite;
-    MainListLock.BeginWrite;
+    if MainObjects.IndexOf(ptr) = -1
+      then IsMainObject := false
+      else IsMainObject := true;
 
-    if MainObjects.IndexOf(ptr) <> -1 then
-    begin
-      MainObjects.Remove(ptr);
-      IsD := true;
-    end;
+    if AudioObjects.IndexOf(ptr) = -1
+      then IsAudioObject := false
+      else IsAudioObject := true;
 
-    if AudioObjects.IndexOf(ptr) <> -1 then
-    begin
-      AudioObjects.Remove(ptr);
-      IsD := true;
-    end;
-
-    if VclObjects.IndexOf(ptr) <> -1 then
-    begin
-      VclObjects.Remove(ptr);
-      IsD := true;
-    end;
-
+    if VclObjects.IndexOf(ptr) = -1
+      then IsVclObject := false
+      else IsVclObject := true;
   finally
-    AudioListLock.EndWrite;
-    VclListLock.EndWrite;
-    MainListLock.EndWrite;
+    AudioListLock.EndRead;
+    VclListLock.EndRead;
+    MainListLock.EndRead;
   end;
 
-  if IsD = false
-    then raise Exception.Create('ZeroObject faided to deregister itself.');
+
+  if (IsMainObject) then
+  begin
+    MainListLock.BeginWrite;
+    try
+      if MainObjects.IndexOf(ptr) <> -1 then MainObjects.Remove(ptr);
+    finally
+      MainListLock.EndWrite;
+    end;
+  end;
+
+  if (IsVclObject) then
+  begin
+    VclListLock.BeginWrite;
+    try
+      if VclObjects.IndexOf(ptr) <> -1 then VclObjects.Remove(ptr);
+    finally
+      VclListLock.EndWrite;
+    end;
+  end;
+
+  if (IsAudioObject) then
+  begin
+    AudioListLock.BeginWrite;
+    try
+      if AudioObjects.IndexOf(ptr) <> -1 then AudioObjects.Remove(ptr);
+    finally
+      AudioListLock.EndWrite;
+    end;
+  end;
 end;
 
 procedure TMotherShip.SetIsGuiOpen(const Value: boolean);
