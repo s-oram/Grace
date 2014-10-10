@@ -58,6 +58,10 @@ type
     fCopyProtection: TCopyProtection;
     procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
+    function GetLastProgramLoadDir: string;
+    function GetLastProgramSaveDir: string;
+    procedure SetLastProgramLoadDir(const Value: string);
+    procedure SetLastProgramSaveDir(const Value: string);
   protected
   protected
     VclTaskRunner : TTaskRunner;
@@ -110,7 +114,13 @@ type
 
     property CpuSampleFrames : integer read fCpuSampleFrames write fCpuSampleFrames;
     property CpuSampleRate   : integer read fCpuSampleRate   write fCpuSampleRate;
+
+    property LastProgramLoadDir : string read GetLastProgramLoadDir write SetLastProgramLoadDir;
+    property LastProgramSaveDir : string read GetLastProgramSaveDir write SetLastProgramSaveDir;
   end;
+
+
+
 
 implementation
 
@@ -118,6 +128,11 @@ uses
   VamLib.ZeroObject,
   uConstants,
   eePluginDataDir;
+
+var
+  Global_LastProgramLoadDir : string;
+  Global_LastProgramSaveDir : string;
+
 
 
 { TGlobals }
@@ -255,6 +270,26 @@ begin
   result := false;
 end;
 
+function TGlobals.GetLastProgramLoadDir: string;
+begin
+  result := Global_LastProgramLoadDir;
+end;
+
+function TGlobals.GetLastProgramSaveDir: string;
+begin
+  result := Global_LastProgramSaveDir;
+end;
+
+procedure TGlobals.SetLastProgramLoadDir(const Value: string);
+begin
+  Global_LastProgramLoadDir := Value;
+end;
+
+procedure TGlobals.SetLastProgramSaveDir(const Value: string);
+begin
+  Global_LastProgramSaveDir := Value;
+end;
+
 procedure TGlobals.SetIsGuiOpen(const Value: boolean);
 begin
   fIsGuiOpen := Value;
@@ -323,6 +358,14 @@ begin
     end;
   end;
 end;
+
+
+
+initialization
+  Global_LastProgramLoadDir := '';
+  Global_LastProgramSaveDir := '';
+
+finalization
 
 
 end.

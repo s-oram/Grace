@@ -129,7 +129,7 @@ uses
   NativeXmlEx,
   Lucidity.StateManager.PatchVersionUpdater,
   Lucidity.SequencerDataObject,
-  LucidityUtils,
+  Lucidity.Utils,
   Lucidity.StateHelpers,
   uAutoFree,
   uConstants,

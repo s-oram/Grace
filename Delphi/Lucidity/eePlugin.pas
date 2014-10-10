@@ -287,9 +287,7 @@ uses
   NativeXML, uAutoFree, eeFunctions, eeDsp,
   Lucidity.Utils,
   LucidityParameterScaling,
-  LucidityUtils,
   Lucidity.StateManager,
-  Lucidity.Globals,
   Lucidity.StateHelpers;
 
 
@@ -455,18 +453,18 @@ begin
       then SampleDirectories.ReadDirectoryInfoFromfile(DataFileName);
 
     //===== set the last used directories variable to something useful ====
-    if LastProgramLoadDir = '' then
+    if Globals.LastProgramLoadDir = '' then
     begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
-      if DirectoryExists(DataDir) then LastProgramLoadDir := DataDir;
+      if DirectoryExists(DataDir) then Globals.LastProgramLoadDir := DataDir;
     end;
 
-    if LastProgramSaveDir = '' then
+    if Globals.LastProgramSaveDir = '' then
     begin
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Patches';
       DataDir := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'User';
-      if DirectoryExists(DataDir) then LastProgramSaveDir := DataDir;
+      if DirectoryExists(DataDir) then Globals.LastProgramSaveDir := DataDir;
     end;
   end;
 
@@ -1424,7 +1422,7 @@ procedure TeePlugin.ImportProgram(const FileName: string; ProgramFormat : TProgr
 var
   StateManager : TLucidityStateManager;
 begin
-  Lucidity.Globals.LastProgramLoadDir := ExtractFileDir(FileName);
+  Globals.LastProgramLoadDir := ExtractFileDir(FileName);
 
   PreLoadProgram;
 
@@ -1568,7 +1566,7 @@ begin
   PresetName := RemoveFileExt(FileName);
   Globals.PatchInfo.PatchFileName := FileName;
 
-  Lucidity.Globals.LastProgramSaveDir := ExtractFileDir(FileName);
+  Globals.LastProgramSaveDir := ExtractFileDir(FileName);
 
   SaveSamplesToDisk(FileName, SampleMap);
 

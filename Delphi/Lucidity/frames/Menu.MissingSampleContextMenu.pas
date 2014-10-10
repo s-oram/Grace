@@ -75,7 +75,7 @@ begin
   FileOpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@FileOpenDialog);
 
-  SetupFileOpenDialog(FileOpenDialog, TDialogTarget.dtAudioFile);
+  SetupFileOpenDialog(Plugin, FileOpenDialog, TDialogTarget.dtAudioFile);
 
   fn := rx.GetProperties^.SampleFileName;
   fn := ExtractFileName(fn);

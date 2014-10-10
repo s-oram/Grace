@@ -65,7 +65,7 @@ procedure SetupFileSaveDialog_Program(const Plugin : TeePlugin; var SaveDialog :
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog);
 
 procedure SetupFileSaveDialog(const Plugin : TeePlugin; var SaveDialog : TxpFileSaveDialog; const Target : TDialogTarget);
-procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
+procedure SetupFileOpenDialog(const Plugin : TeePlugin; var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
 
 procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
 procedure GuiStandard_RegisterMenuButton(const GuiStandard : TObject; const Control : TObject; const Par : TPluginParameter);
@@ -139,7 +139,6 @@ uses
   LucidityModConnections,
   eePluginDataDir,
   Lucidity.Utils,
-  Lucidity.Globals,
   Lucidity.KeyGroup,
   eeGuiStandardv2,
   VamCompoundNumericKnob;
@@ -290,9 +289,9 @@ begin
   begin
     SaveDialog.InitialDir := DirName;
   end else
-  if (Lucidity.Globals.LastProgramSaveDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+  if (Plugin.Globals.LastProgramSaveDir <> '') and (DirectoryExists(Plugin.Globals.LastProgramSaveDir)) then
   begin
-    SaveDialog.InitialDir := Lucidity.Globals.LastProgramSaveDir;
+    SaveDialog.InitialDir := Plugin.Globals.LastProgramSaveDir;
   end;
 
   SaveDialog.Filter := 'Lucidity Program|*.lpg';
@@ -301,10 +300,7 @@ end;
 
 procedure SetupFileOpenDialog_Program(var OpenDialog : TxpFileOpenDialog); overload;
 begin
-  if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramLoadDir)) then
-  begin
-    OpenDialog.InitialDir := Lucidity.Globals.LastProgramLoadDir;
-  end;
+  // TODO:HIGH remove this method. It's been replace by the other one.
   OpenDialog.Filter := 'Lucidity Program|*.lpg|All Files|*.*';
 end;
 
@@ -573,16 +569,16 @@ begin
   end;
 end;
 
-procedure SetupFileOpenDialog(var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
+procedure SetupFileOpenDialog(const Plugin : TeePlugin; var OpenDialog : TxpFileOpenDialog; const Target : TDialogTarget);
 var
   Dir : string;
 begin
   case Target of
     dtLucidityProgram:
     begin
-      if (Lucidity.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Lucidity.Globals.LastProgramSaveDir)) then
+      if (Plugin.Globals.LastProgramLoadDir <> '') and (DirectoryExists(Plugin.Globals.LastProgramSaveDir)) then
       begin
-        OpenDialog.InitialDir := Lucidity.Globals.LastProgramLoadDir;
+        OpenDialog.InitialDir := Plugin.Globals.LastProgramLoadDir;
       end;
 
       OpenDialog.Filter := 'Lucidity Program|*.lpg|Any Type|*.*';

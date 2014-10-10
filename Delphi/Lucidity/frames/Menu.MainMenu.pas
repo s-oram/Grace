@@ -310,7 +310,7 @@ begin
   OpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@OpenDialog);
 
-  SetupFileOpenDialog(OpenDialog, TDialogTarget.dtSfzProgram);
+  SetupFileOpenDialog(Plugin, OpenDialog, TDialogTarget.dtSfzProgram);
 
   OpenDialog.FileName := ''; //TODO:
 
@@ -415,7 +415,7 @@ begin
   OpenDialog := TxpFileOpenDialog.Create(nil);
   AutoFree(@OpenDialog);
 
-  SetupFileOpenDialog(OpenDialog, TDialogTarget.dtMidiMap);
+  SetupFileOpenDialog(Plugin, OpenDialog, TDialogTarget.dtMidiMap);
 
   OpenDialog.FileName := ''; //TODO:
 

@@ -73,8 +73,7 @@ implementation
 
 uses
   VamLib.LoggingProxy,
-  WinApi.Windows,
-  InWindowDialog.ModalShadow;
+  WinApi.Windows;
 
 { TCustomPluginDialogData }
 
