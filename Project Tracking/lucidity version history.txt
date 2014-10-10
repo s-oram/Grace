@@ -25,6 +25,9 @@ New:
 Change:
 - Filter GAIN is now Filter TONE.
 
+Bug Fix:
+- Lucidity would freeze if loading a patch file using the ENTER key.   
+
 
 === BETA v0.0.1.59 (25-Sep-2014) ===
 New:
