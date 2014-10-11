@@ -33,11 +33,6 @@ type
     constructor Create;
     destructor Destroy; override;
 
-
-
-
-
-
     property MouseOverRegionID : TGUID read fMouseOverRegionID write fMouseOverRegionID;
 
     property ModDestTarget : TModDest read fCurrentModDestTarget write fCurrentModDestTarget;
