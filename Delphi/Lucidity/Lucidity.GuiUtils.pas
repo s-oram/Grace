@@ -1125,12 +1125,12 @@ begin
   if (Control is TVamKnob) then
   begin
     (Control as TVamKnob).ParameterName := PluginParToName(Par);
-    gs.RegisterControl('KnobHandler', Control);
+    gs.KnobHandler.RegisterControl(Control);
   end else
   if (Control is TVamCompoundNumericKnob) then
   begin
     (Control as TVamCompoundNumericKnob).ParameterName := PluginParToName(Par);
-    gs.RegisterControl('KnobHandler', Control);
+    gs.KnobHandler.RegisterControl(Control);
   end else
   begin
     raise Exception.Create('type not handled.');
@@ -1149,7 +1149,7 @@ begin
   if Supports(Control, IMenuControl, mc)  then
   begin
     mc.SetParameterName(PluginParToName(Par));
-    gs.RegisterControl('MenuButtonHandler', Control);
+    gs.MenuHandler.RegisterControl(Control);
   end else
   begin
     raise Exception.Create('type not handled.');

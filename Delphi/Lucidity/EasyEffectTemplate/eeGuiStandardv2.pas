@@ -6,7 +6,6 @@ uses
   eePlugin,
   LucidityGui.MenuButtonHandler,
   LucidityGui.KnobHandler,
-  eeTemp,
   Contnrs,
   VamLib.ZeroObject;
 
@@ -20,9 +19,6 @@ type
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
-
-    procedure RegisterControl(const HandlerName : string; const c : TObject);
-    procedure DeregisterControl(const c : TObject);
 
     procedure UpdateControls;
 
@@ -48,26 +44,15 @@ end;
 
 destructor TGuiStandard.Destroy;
 begin
-  fKnobHandler.Free;
-  fMenuHandler.Free;
+  FreeAndNil(fKnobHandler);
+  FreeAndNil(fMenuHandler);
   inherited;
-end;
-
-procedure TGuiStandard.RegisterControl(const HandlerName : string; const c : TObject);
-begin
-
-end;
-
-procedure TGuiStandard.DeregisterControl(const c: TObject);
-begin
-
 end;
 
 procedure TGuiStandard.UpdateControls;
 begin
-
+  KnobHandler.UpdateAllControls;
+  MenuHandler.UpdateAllControls;
 end;
-
-
 
 end.

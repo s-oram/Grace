@@ -185,8 +185,7 @@ uses
   InWindowDialog in 'Dialogs\InWindowDialog.pas',
   Lucidity.Dsp in 'Lucidity.Dsp.pas',
   InWindowDialog.CustomDialog in 'Dialogs\InWindowDialog.CustomDialog.pas',
-  InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas',
-  eeTemp in 'eeTemp.pas';
+  InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas';
 
 {$R *.res}
 

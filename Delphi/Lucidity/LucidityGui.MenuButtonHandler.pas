@@ -3,7 +3,6 @@ unit LucidityGui.MenuButtonHandler;
 interface
 
 uses
-  eeTemp,
   VamGuiControlInterfaces,
   eeGuiStandardv2_MenuBuilder,
   Contnrs,
@@ -13,18 +12,14 @@ uses
   VamLib.ZeroObject;
 
 type
-  TMenuButtonHandler = class(TZeroObject, IStandardControlHandler)
+  TMenuButtonHandler = class(TZeroObject)
   private
   protected
     ControlList : TObjectList;
     Plugin : TeePlugin;
     MenuBuilder  : TGuiMenuBuilder;
 
-    procedure UpdateAllControls;
-
     procedure UpdateControl(const c : TObject);
-    procedure RegisterControl(const c : TObject);
-    procedure DeregisterControl(const c : TObject);
 
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
@@ -35,6 +30,10 @@ type
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
+
+    procedure UpdateAllControls;
+    procedure RegisterControl(const c : TObject);
+    procedure DeregisterControl(const c : TObject);
   end;
 
 implementation

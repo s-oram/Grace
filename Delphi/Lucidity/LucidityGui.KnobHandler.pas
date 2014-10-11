@@ -5,7 +5,6 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  eeTemp,
   Vcl.Menus,
   Menu.CustomPopupMenu,
   VamLib.UniqueID,
@@ -37,7 +36,7 @@ type
     property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
   end;
 
-  TKnobHandler = class(TZeroObject, IStandardControlHandler)
+  TKnobHandler = class(TZeroObject)
   private
   protected
     ControlList : TObjectList;
@@ -45,12 +44,9 @@ type
     KnobContextMenu : TKnobContextMenu;
     Plugin : TeePlugin;
 
-    procedure UpdateAllControls;
     procedure UpdateModulation(const c : TObject);
 
     procedure UpdateControl(const c : TObject);
-    procedure RegisterControl(const c : TObject);
-    procedure DeregisterControl(const c : TObject);
 
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
@@ -65,6 +61,11 @@ type
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
+
+
+    procedure RegisterControl(const c : TObject);
+    procedure DeregisterControl(const c : TObject);
+    procedure UpdateAllControls;
   end;
 
 implementation
