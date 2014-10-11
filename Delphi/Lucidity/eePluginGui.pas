@@ -31,8 +31,6 @@ uses
   VamGraphicControl, VamLabel, VamTabs, VamTabPanel, Vcl.ExtCtrls, VamScrollBar,
   VamMemo;
 
-
-
 type
   TPluginGui = class(TForm, IZeroObject)
     RedFoxContainer: TRedFoxContainer;
@@ -570,11 +568,9 @@ begin
   //============================================================================
   //         Colors
   //============================================================================
-
   TitlePanel.Color := kPanelLight;
   MenuBarFrame.BackgroundPanel.Color := kPanelLight;
   FileBrowserFrame.BackgroundPanel.Color := kPanelLight;
-
 
   SampleMapFrame.BackgroundPanel.Color         := kPanelLight;
   MiniSampleDisplayFrame.BackgroundPanel.Color := kPanelLight;
@@ -584,26 +580,21 @@ begin
   VoiceControlFrame.BackgroundPanel.Color      := kPanelLight;
   ModSystem2Frame.BackgroundPanel.Color        := kPanelLight;
 
-
   FileBrowserFrame.InsidePanel.Color := kColor_LcdDark1;
   MiniSampleDisplayFrame.InsidePanel.Color := kColor_LcdDark1;
   SampleMapFrame.InsidePanel.Color := kColor_LcdDark1;
-
 
   //FileBrowserFrame.FileTreeView.Font.Name := 'Tondo';
   FileBrowserFrame.FileTreeView.Font.Name := 'Tahoma';
   FileBrowserFrame.FileTreeView.Font.Size := 9;
   FileBrowserFrame.FileTreeView.Font.Color := GetRedFoxColor(kColor_LcdDark5);
 
-
   TabPanel.Color_Background := kPanelDark;
   TabPanel.Color_TabOff     := kPanelDark;
   TabPanel.Color_TabOn      := kPanelLight;
 
-
   //============== Static GUI Setup ================================
   SidePanel.Align := alClient;
-
 
   //============================================================================
   // Reset margins and paddings for all the container panels.
@@ -631,7 +622,6 @@ begin
   ClearPadding(VoiceSetupFrame.BackgroundPanel);
   ClearPadding(ModSystem2Frame.BackgroundPanel);
 
-
   MainPanel.CornerRadius1 := 0;
   MainPanel.CornerRadius2 := 0;
   MainPanel.CornerRadius3 := 0;
@@ -651,11 +641,6 @@ begin
   TitlePanel.Margins.SetBounds(0,1,0,1);
   SidePanel.Margins.SetBounds(0,1,0,1);
 
-
-
-
-  //== Main Work Area Panels ==
-
   //============================================================================
   // Set internal padding of a few panels to ensure consistenency.
   //============================================================================
@@ -667,7 +652,6 @@ begin
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModSystem2Frame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
-
 
   //============================================================================
   //   A little more tweaking...
@@ -693,10 +677,6 @@ begin
   TabPanel.CornerRadius3 := 3;
   TabPanel.CornerRadius4 := 3;
 
-  //============== Set main panels to correct dimensions ================================
-
-
-
   //============================================================================
   //============== Dynamic GUI Setup ================================
   //============================================================================
@@ -711,7 +691,6 @@ begin
   TabPanel.Left        := MainWorkArea.Padding.Left;
   ModSystem2Div.Left   := MainWorkArea.Padding.Left;
 
-
   MainMenuBar.Width     := WorkAreaWidth;
   SampleMapDiv.Width    := WorkAreaWidth;
   MainTop.Width         := WorkAreaWidth;
@@ -725,19 +704,12 @@ begin
   VoiceControlDiv.Height := 80;
   TabPanel.Height        := 252;
   ModSystem2Div.Height   := 70;
-
-
-
-  //SampleMapDiv.Height    := 258;
   SampleMapDiv.Height    := 406;
-
-
 
   case Plugin.Globals.GuiState.MainGuiLayout of
     TMainGuiLayout.Default:
     begin
-      MainTop.Height := 226;
-
+      MainTop.Height  := 226;
       MainTop.Visible := true;
 
       SampleMapDiv.Visible    := false;
@@ -782,7 +754,6 @@ begin
       TabPanel.Visible        := false;
       ModSystem2Div.Visible   := false;
 
-
       MainMenuBar.Top := 1;
       MainMenuBar.Left := 1;
       Erector.Init(MainMenuBar, MainTop).SnapToEdge(cfBottomEdge).Move(0,2);
@@ -792,7 +763,6 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
-
 end;
 
 

@@ -27,12 +27,10 @@ uses
 type
   TDialogSampleMarker = (SampleStart, SampleEnd, LoopStart, LoopEnd);
 
-
   TSampleDisplayFrameInfo = record
     Region     : IRegion;
     Info : TSampleDisplayInfo;
   end;
-
 
   TMiniSampleDisplayFrame = class(TFrame, IZeroObject)
     Panel: TRedFoxContainer;
