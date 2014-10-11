@@ -7,7 +7,7 @@ interface
 uses
   eeTypes,
   VamLib.ZeroObject,
-  eeGuiStandardv2, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
+  Lucidity.GuiStandard, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamDiv, RedFoxGraphicControl,

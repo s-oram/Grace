@@ -1,4 +1,4 @@
-unit eeGuiStandardv2;
+unit Lucidity.GuiStandard;
 
 interface
 

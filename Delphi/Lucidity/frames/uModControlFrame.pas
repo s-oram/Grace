@@ -6,7 +6,7 @@ interface
 
 uses
   Lucidity.PluginParameters,
-  eeGuiStandardv2,
+  Lucidity.GuiStandard,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
   uGuiFeedbackData, Lucidity.Interfaces, VamStatusLed,
@@ -158,7 +158,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
@@ -265,7 +265,7 @@ begin
   inherited;
 end;
 
-procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
+procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
 const
   kContainerWidth  = 600;
   kContainerHeight = 322;

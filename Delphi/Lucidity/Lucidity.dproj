@@ -568,7 +568,7 @@
 			<DCCReference Include="eeEnumHelper.pas"/>
 			<DCCReference Include="uLucidityEnums.pas"/>
 			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
-			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2.pas"/>
+			<DCCReference Include="Lucidity.GuiStandard.pas"/>
 			<DCCReference Include="Lucidity.PluginParameterController.pas"/>
 			<DCCReference Include="LucidityGui.KnobHandler.pas"/>
 			<DCCReference Include="Lucidity.PluginParameters.pas"/>

@@ -10,7 +10,7 @@ interface
 
 uses
   uGuiFeedbackData, Menu.XYPadContextMenu,
-  VamLib.ZeroObject, eePlugin, eeGuiStandardv2,
+  VamLib.ZeroObject, eePlugin, Lucidity.GuiStandard,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv, VamXYPad;
@@ -44,7 +44,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
 
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
   end;
@@ -87,7 +87,7 @@ begin
   FMotherShip := aMotherShip;
 end;
 
-procedure TXYPadsFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: eeGuiStandardv2.TGuiStandard);
+procedure TXYPadsFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard:TGuiStandard);
 const
   PadWidth = 120;
   PadHeight = 120;

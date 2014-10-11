@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   uConstants,
   Menu.StepSequenceMenu,
-  eePlugin, eeGuiStandardv2, uGuiFeedbackData,
+  eePlugin, Lucidity.GuiStandard, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, LucidityGui.DropBoxSelector,

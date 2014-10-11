@@ -10,7 +10,7 @@ uses
   uLucidityEnums,
   Lucidity.Interfaces,
   Menu.FileTreeMenu,
-  eeFileBrowserAddon, uConstants, eePlugin, eeGuiStandardv2,
+  eeFileBrowserAddon, uConstants, eePlugin, Lucidity.GuiStandard,
   VamVisibleControl,
   Winapi.Windows, Winapi.Messages, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,

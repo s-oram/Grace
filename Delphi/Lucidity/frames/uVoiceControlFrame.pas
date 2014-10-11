@@ -4,7 +4,7 @@ interface
 
 uses
   VamLib.ZeroObject,
-  eeGuiStandardv2,
+  Lucidity.GuiStandard,
   uGuiFeedbackData, eePlugin, Menus, uConstants,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxContainer,

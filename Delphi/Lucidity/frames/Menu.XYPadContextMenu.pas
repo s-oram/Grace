@@ -12,7 +12,7 @@ uses
   eePlugin,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
-  eeGuiStandardv2;
+  Lucidity.GuiStandard;
 
 type
   TXYPadContextMenu = class(TCustomPopupMenu)

@@ -7,7 +7,7 @@ interface
 {$SCOPEDENUMS ON}
 
 uses
-  eeGuiStandardv2,
+  Lucidity.GuiStandard,
   VamLib.UniqueID,
   VamLib.ZeroObject, Math,
   VamVisibleControl, Lucidity.SampleImageRenderer,

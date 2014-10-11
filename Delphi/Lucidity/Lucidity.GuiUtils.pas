@@ -140,7 +140,7 @@ uses
   eePluginDataDir,
   Lucidity.Utils,
   Lucidity.KeyGroup,
-  eeGuiStandardv2,
+  Lucidity.GuiStandard,
   VamCompoundNumericKnob;
 
 
@@ -1119,8 +1119,8 @@ procedure GuiStandard_RegisterControl(const GuiStandard : TObject; const Control
 var
   gs : TGuiStandard;
 begin
-  assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
-  gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
+  assert(GuiStandard is TGuiStandard);
+  gs := GuiStandard as TGuiStandard;
 
   if (Control is TVamKnob) then
   begin
@@ -1143,8 +1143,8 @@ var
   gs : TGuiStandard;
   mc : IMenuControl;
 begin
-  assert(GuiStandard is eeGuiStandardv2.TGuiStandard);
-  gs := GuiStandard as eeGuiStandardv2.TGuiStandard;
+  assert(GuiStandard is TGuiStandard);
+  gs := GuiStandard as TGuiStandard;
 
   if Supports(Control, IMenuControl, mc)  then
   begin

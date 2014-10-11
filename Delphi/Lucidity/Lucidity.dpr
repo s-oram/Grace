@@ -141,7 +141,7 @@ uses
   eeEnumHelper in 'eeEnumHelper.pas',
   uLucidityEnums in 'uLucidityEnums.pas',
   Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas',
-  eeGuiStandardv2 in 'EasyEffectTemplate\eeGuiStandardv2.pas',
+  Lucidity.GuiStandard in 'Lucidity.GuiStandard.pas',
   Lucidity.PluginParameterController in 'Lucidity.PluginParameterController.pas',
   LucidityGui.KnobHandler in 'LucidityGui.KnobHandler.pas',
   Lucidity.PluginParameters in 'Lucidity.PluginParameters.pas',
