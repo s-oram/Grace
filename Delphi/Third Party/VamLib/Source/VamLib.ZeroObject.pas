@@ -14,6 +14,9 @@ uses
 
 {$SCOPEDENUMS ON}
 
+{.$DEFINE ExtraLogging}
+{$IFDEF ExtraLogging}{$ENDIF}
+
 type
   {
     TZeroObject and TMotherShip are implementations of
@@ -394,10 +397,26 @@ procedure TMotherShip.RegisterZeroObject(const obj: IZeroObject; const Rank : TZ
 var
   ptr : Pointer;
   ListLock : TMultiReadSingleWrite;
+  LogMsg : string;
 begin
+  //============================================================================
+  {$IFDEF ExtraLogging}
+  LogMsg := ' ClassName = ' + obj.ClassType.ClassName;
+  case Rank of
+    TZeroObjectRank.Audio: LogMsg := LogMsg + ' (Audio Rank)';
+    TZeroObjectRank.Main:  LogMsg := LogMsg + ' (Main Rank)';
+    TZeroObjectRank.VCL:   LogMsg := LogMsg + ' (VCL Rank)';
+  else
+    LogMsg := LogMsg + ' (Unknown Rank)';
+  end;
+  Log.TrackMethod('MotherShip.RegisterZeroObject(' + LogMsg + ')');
+  {$ENDIF}
+  //============================================================================
+
+
+
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(self);
-
 
   case Rank of
     TZeroObjectRank.Audio: ListLock := AudioListLock;
@@ -434,7 +453,6 @@ begin
   finally
     ListLock.EndWrite;
   end;
-
 end;
 
 procedure TMotherShip.DeregisterZeroObject(const obj: IZeroObject);
@@ -443,12 +461,17 @@ var
   IsVclObject   : boolean;
   IsAudioObject : boolean;
   IsMainObject  : boolean;
-
+  LogMsg : string;
 begin
+  //============================================================================
+  {$IFDEF ExtraLogging}
+  LogMsg := obj.ClassType.ClassName;
+  Log.TrackMethod('MotherShip.DeregisterZeroObject(' + LogMsg + ')');
+  {$ENDIF}
+  //============================================================================
+
   ptr := Pointer(obj); //Weak reference to zero object
   obj.SetMotherShipReference(nil);
-
-
 
   //=== first find which list the object's belong to.
   AudioListLock.BeginRead;
@@ -712,15 +735,24 @@ var
 begin
   if DisableMessageSending then exit;
 
+  //=================================================================================
+  {$IFDEF ExtraLogging}
+    if ObjectList = AudioObjects then LogMsg := 'Audio SendMessage ID = '
+    else if ObjectList = VclObjects   then LogMsg := 'Vcl SendMessage ID = '
+    else if ObjectList = MainObjects  then LogMsg := 'Main SendMessage ID = '
+    else LogMsg := 'ERROR - No matching list lock. ';
+    if assigned(Injected_MsgIdToStr) then
+    begin
+      LogMsg := LogMsg + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
+    end;
+    Log.TrackMethod('MotherShip.SendMessageToList() ' + LogMsg);
+  {$ENDIF}
+  //=================================================================================
+
   ListLock.BeginRead;
   try
     LastIndex := -1;
     try
-      //if ObjectList = AudioObjects then Log.LogMessage('Audio SendMessage ID = ' + IntToStr(MsgID));
-      //if ObjectList = VclObjects then Log.LogMessage('Vcl SendMessage ID = ' + IntToStr(MsgID));
-      //if ObjectList = MainObjects then Log.LogMessage('Main SendMessage ID = ' + IntToStr(MsgID));
-
-
       for c1 := 0 to ObjectList.Count - 1 do
       begin
         LastIndex := c1;
@@ -730,18 +762,15 @@ begin
     except
       zo := IZeroObject(ObjectList[LastIndex]);
       aClass := zo.ClassType;
-      LogMsg := LogMsg + ' ClassName = ' + aClass.ClassName;
-
+      LogMsg := ' ClassName = ' + aClass.ClassName;
       if assigned(Injected_MsgIdToStr) then
       begin
         LogMsg := LogMsg + ' Msg = ' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
       end;
-
       DisableMessageSending := true;
       Log.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
       raise;
     end;
-
   finally
     ListLock.EndRead;
   end;
