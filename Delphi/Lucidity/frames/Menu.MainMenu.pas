@@ -42,12 +42,13 @@ type
 implementation
 
 uses
-  eeVstExtra,
-  VamLib.WinUtils,
-  InWindowDialog,
-  XPLAT.Dialogs,
   Windows,
   ShellApi,
+  VamLib.Utils,
+  VamLib.WinUtils,
+  eeVstExtra,
+  InWindowDialog,
+  XPLAT.Dialogs,
   eeWinEx,
   eePluginDataDir,
   uLucidityEnums,
@@ -269,32 +270,30 @@ begin
 end;
 
 procedure TMainMenu.ShowAboutBox(Sender: TObject);
-var
-  AboutDialog : IAboutDialog;
-  CloseCallback : TProc;
-  s : string;
 begin
-  AboutDialog := TAboutDialog.Create;
-  AboutDialog.Setup(DialogDisplay.GetDisplayArea);
+  //TODO:MED The about box is a small message box. It would be better to have a nice big window with full credits etc.
 
-  AboutDialog.AboutText.Add('Lucidity Vst Sampler By One Small Clue');
+  s := 'Lucidity Vst Sampler By One Small Clue' + EndOfLine;
+
+  s := s + EndOfLine;
+
   {$IFDEF ReleaseBuild}
-  AboutDialog.AboutText.Add('Version ' + GetBuildInfoAsString + ' Release Build');
+  s := s + 'Version ' + GetBuildInfoAsString + ' Release Build' + EndOfLine;
   {$ELSE}
-  AboutDialog.AboutText.Add('Version ' + GetBuildInfoAsString + ' Debug Build');
+  s := s + 'Version ' + GetBuildInfoAsString + ' Debug Build' + EndOfLine;
   {$ENDIF}
 
   if Plugin.Globals.CopyProtection.IsRegistered
-    then s := 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>'
-    else s := 'UNREGISTERED';
-  AboutDialog.AboutText.Add(s);
+    then s := s + 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>' + EndOfLine
+    else s := s + 'UNREGISTERED' + EndOfLine;
 
-  CloseCallback := procedure
-  begin
-    AboutDialog := nil;
-  end;
+  s := s + EndOfLine;
 
-  DialogDisplay.Show(true, CloseCallback);
+  s := s + 'VST PlugIn Technology by Steinberg';
+
+  s := s + EndOfLine;
+
+  InWindow_ShowMessage(Plugin.Globals.TopLevelForm, s);
 end;
 
 procedure TMainMenu.EventHandle_EditSampleMap(Sender: TObject);
