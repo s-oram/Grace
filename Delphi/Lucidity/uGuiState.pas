@@ -14,7 +14,6 @@ type
     fLowerTabState: TLowerTabOptions;
     fMouseOverRegionID: TGUID;
     fCurrentModDestTarget: TModDest;
-    fFocusedControl: TControl;
     fIsModDestAutoSelectEnabled: boolean;
     fMainGuiLayout: TMainGuiLayout;
     fActiveVstPluginParameterID: TPluginParameterId;
@@ -36,8 +35,6 @@ type
 
     property ModDestTarget : TModDest read fCurrentModDestTarget write fCurrentModDestTarget;
     property IsModDestAutoSelectEnabled : boolean read fIsModDestAutoSelectEnabled write fIsModDestAutoSelectEnabled;
-
-    property FocusedControl : TControl read fFocusedControl write fFocusedControl;
 
     property MainGuiLayout : TMainGuiLayout read fMainGuiLayout   write fMainGuiLayout;
     property LowerTabState : TLowerTabOptions read fLowerTabState write fLowerTabState;
