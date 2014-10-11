@@ -28,7 +28,6 @@ uses
   uConstants,
   Lucidity.Interfaces,
   Lucidity.KeyGroup,
-  uAboutDialog,
   SysUtils,
   uAutoFree,
   Lucidity.GuiUtils,

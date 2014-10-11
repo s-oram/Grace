@@ -17,8 +17,6 @@ procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabe
 
 procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResultCallback);
 
-// TODO:MED need an InWindow about dialog to replace uAboutDialog.pas.
-
 implementation
 
 

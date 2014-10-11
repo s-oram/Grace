@@ -52,7 +52,6 @@ uses
   eeWinEx,
   eePluginDataDir,
   uLucidityEnums,
-  uAboutDialog,
   SysUtils,
   uAutoFree,
   Lucidity.GuiUtils,
@@ -270,6 +269,8 @@ begin
 end;
 
 procedure TMainMenu.ShowAboutBox(Sender: TObject);
+var
+  s : string;
 begin
   //TODO:MED The about box is a small message box. It would be better to have a nice big window with full credits etc.
 
