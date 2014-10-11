@@ -30,9 +30,7 @@ type
   public
     constructor Create; override;
     destructor Destroy; override;
-
     procedure Popup(const x, y : integer);
-
     property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
   end;
 
@@ -61,7 +59,6 @@ type
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
-
 
     procedure RegisterControl(const c : TObject);
     procedure DeregisterControl(const c : TObject);
