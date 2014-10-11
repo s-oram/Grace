@@ -57,9 +57,9 @@ type
     Command                          = MidiNoteTriggered + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?
     Command_HideSampleMapEdit        = Command + 2;  // Maybe this commands can be deleted?
-    Command_ShowAboutDialog          = Command + 3; //delete this.
-    //Command_ShowLoopEditFrame        = Command + 4;
-    Command_CloseCurrentDialog       = Command + 5; //delete this.
+                                     // 3
+                                     // 4
+                                     // 5
     Command_UpdateControlVisibility  = Command + 6; //something has changed, check to see if any controls need to be visible/invisible.
     Command_UpdateModMatrix          = Command + 7;
     Command_ShowReplaceRegionMessage = Command + 8;
@@ -467,8 +467,6 @@ begin
   if ID = TLucidMsgID.Command                            then exit('Command');
   if ID = TLucidMsgID.Command_ShowSampleMapEdit          then exit('Command_ShowSampleMapEdit');
   if ID = TLucidMsgID.Command_HideSampleMapEdit          then exit('Command_HideSampleMapEdit');
-  if ID = TLucidMsgID.Command_ShowAboutDialog            then exit('Command_ShowAboutDialog');
-  if ID = TLucidMsgID.Command_CloseCurrentDialog         then exit('Command_CloseCurrentDialog');
   if ID = TLucidMsgID.Command_UpdateControlVisibility    then exit('Command_UpdateControlVisibility');
   if ID = TLucidMsgID.Command_UpdateModMatrix            then exit('Command_UpdateModMatrix');
   if ID = TLucidMsgID.Command_ShowReplaceRegionMessage   then exit('Command_ShowReplaceRegionMessage');
