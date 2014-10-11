@@ -185,7 +185,8 @@ uses
   InWindowDialog in 'Dialogs\InWindowDialog.pas',
   Lucidity.Dsp in 'Lucidity.Dsp.pas',
   InWindowDialog.CustomDialog in 'Dialogs\InWindowDialog.CustomDialog.pas',
-  InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas';
+  InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas',
+  LucidityGUI.XYPadHandler in 'LucidityGUI.XYPadHandler.pas';
 
 {$R *.res}
 

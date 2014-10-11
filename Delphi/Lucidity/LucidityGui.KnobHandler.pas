@@ -39,8 +39,8 @@ type
   protected
     ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
-    KnobContextMenu : TKnobContextMenu;
     Plugin : TeePlugin;
+    KnobContextMenu : TKnobContextMenu;
 
     procedure UpdateModulation(const c : TObject);
 
