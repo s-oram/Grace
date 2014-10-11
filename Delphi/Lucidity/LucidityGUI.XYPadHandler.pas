@@ -4,8 +4,19 @@ interface
 
 {$INCLUDE Defines.inc}
 
+{
+  TODO: The other handlers all use interfaces, but it turns out my code
+  has become very Lucidity centric, rather than the general purpose code i
+  wanted it to be. Because of that I'm going to change tack with this handler.
+  Rather than interfaces, I'll use duck typing to interact with the
+  registered controls. This will allow similar flexibility to using interfaces,
+  but the code will be in one less place. (Control + Handler) instead
+  of (Control + Interface + Hander).
+}
+
+
 uses
-  Duck,
+  VamLib.DuckType,
   Contnrs,
   Controls,
   Classes,
@@ -92,6 +103,8 @@ var
 begin
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
+
+
 
   SetMethodProp(c, 'OnChanged', GetEventHandler(@self, 'EventHandle_XYPadChanged'));
 end;

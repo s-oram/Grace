@@ -65,6 +65,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     FileBrowserAddon : TFileBrowserAddon;
 
@@ -92,11 +93,9 @@ type
     procedure WinEventHandler(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
 
   public
-
     procedure UpdateMemo;
-
-
   published
+    procedure MyTestHandler2(Sender : TObject);
     procedure WinEventProcCallbackObject( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
   end;
 
@@ -108,6 +107,7 @@ implementation
 {$R *.dfm}
 
 uses
+  VamLib.DuckType,
   //MadTools,
   SmartInspectLogging,
   _DirectSound,
@@ -118,7 +118,6 @@ uses
   Generics.Collections,
   VamLib.Threads,
   DateUtils,
-  ACS_MAD,
   InWindowDialog,
   InWindowDialog.MessageDialog,
   InWindowDialog.InputDialog;
@@ -211,6 +210,13 @@ begin
 
   WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
   WindowsEventHook.OnWinEvent := WinEventHandler;
+
+
+  //Button1.Duck.SetEvent('OnClick', @self, 'MyTestHandler2');
+  Button1.Duck.ClearEvent('OnClick');
+
+  //if Panel2.Duck.HasEvent('OnMouseDown') then ShowMessage('bang1');
+  //if Panel2.Duck.HasProperty('OnMouseDown') then ShowMessage('bang2');
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -220,6 +226,12 @@ begin
   Timer.Free;
   BackBuffer.Free;
   FileBrowserAddon.Free;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  //
+  Panel2.Duck.SetProperty('Color', clGreen);
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -271,6 +283,11 @@ end;
 
 
 
+
+procedure TForm1.MyTestHandler2(Sender: TObject);
+begin
+  showmessage('I''m the king!');
+end;
 
 { TMyTestObject }
 

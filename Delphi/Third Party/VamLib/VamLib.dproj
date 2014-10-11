@@ -118,6 +118,7 @@
 			<DCCReference Include="Source\VamLib.EnumHelper.pas"/>
 			<DCCReference Include="Source\VamLib.GuiUtils.pas"/>
 			<DCCReference Include="Source\VamLib.WinHook.pas"/>
+			<DCCReference Include="Source\VamLib.DuckType.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
