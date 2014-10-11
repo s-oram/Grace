@@ -7,6 +7,7 @@ type
     ['{1751C9A9-DC7E-4BF5-ABDD-66F7876C5163}']
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
+    procedure TrackMethod(const aMethodName : string);
   end;
 
 
@@ -19,6 +20,7 @@ type
 
     class procedure LogMessage(const aTitle : string);
     class procedure LogError(const aTitle : string);
+    class procedure TrackMethod(const aMethodName : string);
   end;
 
 
@@ -37,6 +39,7 @@ type
   private
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
+    procedure TrackMethod(const aMethodName : string);
   end;
 
 
@@ -51,6 +54,11 @@ begin
 end;
 
 
+
+procedure TDoNothingProxy.TrackMethod(const aMethodName: string);
+begin
+
+end;
 
 //==============================================================================
 //==============================================================================
@@ -70,6 +78,10 @@ begin
   GlobalProxy := TDoNothingProxy.Create;
 end;
 
+class procedure Log.TrackMethod(const aMethodName: string);
+begin
+  GlobalProxy.TrackMethod(aMethodName);
+end;
 
 class procedure Log.LogError(const aTitle: string);
 begin

@@ -17,6 +17,7 @@ type
   private
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
+    procedure TrackMethod(const aMethodName : string);
   end;
 
 implementation
@@ -37,6 +38,11 @@ end;
 procedure TSmartInspectProxy.LogMessage(const aTitle: string);
 begin
   VamLibLog.LogMessage(aTitle);
+end;
+
+procedure TSmartInspectProxy.TrackMethod(const aMethodName: string);
+begin
+  VamLibLog.TrackMethod(aMethodName);
 end;
 
 initialization
