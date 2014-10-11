@@ -37,7 +37,7 @@ type
     property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
   end;
 
-  TKnobHandler = class(TRefCountedZeroObject, IStandardControlHandler)
+  TKnobHandler = class(TZeroObject, IStandardControlHandler)
   private
   protected
     ControlList : TObjectList;

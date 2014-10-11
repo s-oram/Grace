@@ -13,7 +13,7 @@ uses
   VamLib.ZeroObject;
 
 type
-  TMenuButtonHandler = class(TRefCountedZeroObject, IStandardControlHandler)
+  TMenuButtonHandler = class(TZeroObject, IStandardControlHandler)
   private
   protected
     ControlList : TObjectList;

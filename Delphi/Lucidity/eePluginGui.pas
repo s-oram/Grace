@@ -239,7 +239,7 @@ var
 begin
   assert(assigned(Plugin));
 
-  GuiStandard := TGuiStandard.Create;
+  GuiStandard := TGuiStandard.Create(Plugin);
 
   // register self to mother ship.
   Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
@@ -368,9 +368,6 @@ begin
   //==============
 
   Plugin.Globals.GuiState.HotKeyContext := THotKeyContext.None;
-
-  //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
-  //Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);
 end;
 
 procedure TPluginGui.BeforeClose;
