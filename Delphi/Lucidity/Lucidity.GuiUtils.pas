@@ -971,7 +971,7 @@ begin
   ModParIndex := GetModParIndex(Par);
   if ModParIndex = -1 then exit;
 
-  CurrentModSlot := Plugin.Globals.SelectedModSlot;
+  CurrentModSlot := Plugin.Globals.GuiState.SelectedModSlot;
   if CurrentModSlot = -1 then exit;
 
   kg.SetModParModAmount(ModParIndex, CurrentModSlot, 0);
@@ -985,7 +985,7 @@ var
   ModSlot : integer;
   kg : IKeyGroup;
 begin
-  ModSlot := Plugin.Globals.SelectedModSlot;
+  ModSlot := Plugin.Globals.GuiState.SelectedModSlot;
 
   if ModSlot <> -1 then
   begin

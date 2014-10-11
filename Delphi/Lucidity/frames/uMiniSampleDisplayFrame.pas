@@ -907,9 +907,9 @@ var
   Index3 : integer;
   Index4 : integer;
 begin
-  if Plugin.Globals.IsMouseOverModSlot
-    then ModSlot := Plugin.Globals.MouseOverModSlot
-    else ModSlot := Plugin.Globals.SelectedModSlot;
+  if Plugin.Globals.GuiState.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.GuiState.MouseOverModSlot
+    else ModSlot := Plugin.Globals.GuiState.SelectedModSlot;
 
   kg := Plugin.ActiveKeyGroup;
   if not assigned(kg) then exit;
@@ -968,9 +968,9 @@ var
   kg : IKeyGroup;
   Index : integer;
 begin
-  if Plugin.Globals.IsMouseOverModSlot
-    then ModSlot := Plugin.Globals.MouseOverModSlot
-    else ModSlot := Plugin.Globals.SelectedModSlot;
+  if Plugin.Globals.GuiState.IsMouseOverModSlot
+    then ModSlot := Plugin.Globals.GuiState.MouseOverModSlot
+    else ModSlot := Plugin.Globals.GuiState.SelectedModSlot;
 
   if ModSlot <> -1 then
   begin

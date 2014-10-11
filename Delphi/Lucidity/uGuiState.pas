@@ -23,6 +23,9 @@ type
     fSampleDisplayZoom: single;
     fIsAutoSelectActive: boolean;
     fHotkeyContext: THotKeyContext;
+    fIsMouseOverModSlot: boolean;
+    fMouseOverModSlot: integer;
+    fSelectedModSlot: integer;
     procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
     procedure SetHotkeyContext(const Value: THotKeyContext);
   public
@@ -61,6 +64,10 @@ type
     property IsAutoSelectActive : boolean read fIsAutoSelectActive write fIsAutoSelectActive;
 
     property HotkeyContext : THotKeyContext read fHotkeyContext write SetHotkeyContext;
+
+    property SelectedModSlot    : integer read fSelectedModSlot    write fSelectedModSlot;  //valid range is -1..7,
+    property MouseOverModSlot   : integer read fMouseOverModSlot   write fMouseOverModSlot; //valid range is -1..7, same as SelectedModSlot.
+    property IsMouseOverModSlot : boolean read fIsMouseOverModSlot write fIsMouseOverModSlot;
   end;
 
 implementation
@@ -87,6 +94,11 @@ begin
   fMainGuiLayout := TMainGuiLayout.Default;
 
   IsAutoSelectActive := true;
+
+  SelectedModSlot    := -1;
+  MouseOverModSlot   := -1;
+  IsMouseOverModSlot := false;
+
 end;
 
 destructor TGuiState.Destroy;

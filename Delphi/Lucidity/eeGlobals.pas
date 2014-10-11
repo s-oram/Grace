@@ -41,9 +41,6 @@ type
   private
     fSkinImageLoader: TSkinImageLoader;
     fOptions: TOptions;
-    fSelectedModSlot: integer;
-    fIsMouseOverModSlot: boolean;
-    fMouseOverModSlot: integer;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
     fAudioActions: TStoredActions;
@@ -56,7 +53,6 @@ type
     fDefaultConfigDir: string;
     fPatchInfo: TPatchInfo;
     fCopyProtection: TCopyProtection;
-    procedure SetSelectedModSlot(const Value: integer);
     procedure SetIsGuiOpen(const Value: boolean);
     function GetLastProgramLoadDir: string;
     function GetLastProgramSaveDir: string;
@@ -83,15 +79,6 @@ type
     property SkinImageLoader : TSkinImageLoader read fSkinImageLoader;
 
     property Options : TOptions read fOptions;
-
-
-    // TODO:MED the selected stuff below probably show go into the GUI state.
-    // SelectedModSlot shows which mod slot is active. valid range is -1..7.
-    //   -1 indicates that the "Main" is selected and no mod slot is being edited.
-    //   0..7 indicates that the X mod slot is being edited. It should be displayed.
-    property SelectedModSlot    : integer read fSelectedModSlot    write SetSelectedModSlot;
-    property IsMouseOverModSlot : boolean read fIsMouseOverModSlot write fIsMouseOverModSlot;
-    property MouseOverModSlot   : integer read fMouseOverModSlot   write fMouseOverModSlot; //valid range is -1..7, same as SelectedModSlot.
 
     property IsGuiOpen : boolean read fIsGuiOpen write SetIsGuiOpen;
 
@@ -160,8 +147,6 @@ begin
   VclTaskTimer.Enabled := false;
   VclTaskTimer.Interval := 25;
   VclTaskTimer.OnTimer := OnVclTimer;
-
-  fSelectedModSlot := -1;
 
   fDefaultConfigDir := '';
   fUserConfigDir    := '';
@@ -305,17 +290,6 @@ begin
     VclTaskRunner.Clear;
 
     MotherShip.SetIsGuiOpen(false);
-  end;
-end;
-
-procedure TGlobals.SetSelectedModSlot(const Value: integer);
-begin
-  assert(Value >= -1);
-  assert(Value <= kModSlotCount-1);
-
-  if Value <> fSelectedModSlot then
-  begin
-    fSelectedModSlot := Value;
   end;
 end;
 

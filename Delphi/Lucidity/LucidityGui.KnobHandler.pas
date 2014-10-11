@@ -190,9 +190,9 @@ begin
 
     if IsModPar(Par) then
     begin
-      if Plugin.Globals.IsMouseOverModSlot
-        then ModIndex := Plugin.Globals.MouseOverModSlot
-        else ModIndex := Plugin.Globals.SelectedModSlot;
+      if Plugin.Globals.GuiState.IsMouseOverModSlot
+        then ModIndex := Plugin.Globals.GuiState.MouseOverModSlot
+        else ModIndex := Plugin.Globals.GuiState.SelectedModSlot;
 
       if (ModIndex <> -1) then
       begin
@@ -222,9 +222,9 @@ begin
       assert(KnobControl.GetKnobMode = TKnobMode.PositionEdit);
     end else
     begin
-      if Plugin.Globals.IsMouseOverModSlot
-        then ModIndex := Plugin.Globals.MouseOverModSlot
-        else ModIndex := Plugin.Globals.SelectedModSlot;
+      if Plugin.Globals.GuiState.IsMouseOverModSlot
+        then ModIndex := Plugin.Globals.GuiState.MouseOverModSlot
+        else ModIndex := Plugin.Globals.GuiState.SelectedModSlot;
 
       if (ModIndex <> -1) then
       begin
@@ -286,7 +286,7 @@ begin
   // The knob will show a modulation display as if the moused over mod slot
   // was actually selected. This looks pretty crap and unprofessional so i've
   // added this hack here to ensure the mouse over knob behaviour is correct.
-  Plugin.Globals.IsMouseOverModSlot := false;
+  Plugin.Globals.GuiState.IsMouseOverModSlot := false;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
 end;
 
@@ -432,7 +432,7 @@ begin
   begin
     ParName  := KnobControl.GetParameterName;
     ModAmountValue := KnobControl.GetModAmountValue;
-    ModIndex := Plugin.Globals.SelectedModSlot;
+    ModIndex := Plugin.Globals.GuiState.SelectedModSlot;
 
     if ModIndex <> -1 then
     begin
@@ -488,7 +488,7 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Remove Current Modulation';
   mi.OnClick := Handle_RemoveCurrentModulation;
-  if (Plugin.Globals.SelectedModSlot <> -1) and (Command.IsParameterModulated(Plugin, TargetParameterName))
+  if (Plugin.Globals.GuiState.SelectedModSlot <> -1) and (Command.IsParameterModulated(Plugin, TargetParameterName))
     then mi.Enabled := true
     else mi.Enabled := false;
   Menu.Items.Add(mi);

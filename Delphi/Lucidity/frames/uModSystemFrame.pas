@@ -250,7 +250,7 @@ begin
   if Button = mbLeft then
   begin
     Index := (Sender as TVamModSelector).Tag;
-    Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.GuiState.SelectedModSlot := Index;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
@@ -259,7 +259,7 @@ procedure TModSystemFrame.Handle_MainSelectorMouseDown(Sender: TObject; Button: 
 begin
   if Button = mbLeft then
   begin
-    Plugin.Globals.SelectedModSlot := -1;
+    Plugin.Globals.GuiState.SelectedModSlot := -1;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
@@ -271,9 +271,9 @@ var
 begin
   if Button = mbLeft then
   begin
-    Index := Plugin.Globals.SelectedModSlot - 1;
+    Index := Plugin.Globals.GuiState.SelectedModSlot - 1;
     if Index < -1 then Index := 7;
-    Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.GuiState.SelectedModSlot := Index;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
@@ -284,9 +284,9 @@ var
 begin
   if Button = mbLeft then
   begin
-    Index := Plugin.Globals.SelectedModSlot + 1;
+    Index := Plugin.Globals.GuiState.SelectedModSlot + 1;
     if Index > 7 then Index := -1;
-    Plugin.Globals.SelectedModSlot := Index;
+    Plugin.Globals.GuiState.SelectedModSlot := Index;
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
   end;
 end;
@@ -349,7 +349,7 @@ begin
 
 
 
-  case Plugin.Globals.SelectedModSlot of
+  case Plugin.Globals.GuiState.SelectedModSlot of
     -1 :
     begin
       MainSelector.Font.Color     := GetRedFoxColor(kColor_LcdDark1);
@@ -359,7 +359,7 @@ begin
 
     0..7:
     begin
-      c1 := Plugin.Globals.SelectedModSlot;
+      c1 := Plugin.Globals.GuiState.SelectedModSlot;
       ModSelectors[c1].Font.Color     := GetRedFoxColor(kColor_LcdDark1);
       ModSelectors[c1].Color           := kColor_LcdDark5;
       ModSelectors[c1].ColorMouseOver  := kColor_LcdDark6;
@@ -390,8 +390,8 @@ begin
     then Index := -1
     else Index := (Sender as TVamModSelector).Tag;
 
-  Plugin.Globals.MouseOverModSlot := Index;
-  Plugin.Globals.IsMouseOverModSlot := true;
+  Plugin.Globals.GuiState.MouseOverModSlot := Index;
+  Plugin.Globals.GuiState.IsMouseOverModSlot := true;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
 end;
 
@@ -405,7 +405,7 @@ begin
     begin
       CurrentMouseOverControl := nil;
 
-      Plugin.Globals.IsMouseOverModSlot := false;
+      Plugin.Globals.GuiState.IsMouseOverModSlot := false;
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModSlotChanged);
     end;
   end;
