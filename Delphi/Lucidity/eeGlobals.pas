@@ -11,7 +11,7 @@ uses
   ExtCtrls,
   eeStoredActionList,
   VamLib.ManagedObject,
-  uGuiState,
+  Lucidity.GuiState,
   Lucidity.Options, eeTaskRunner,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 

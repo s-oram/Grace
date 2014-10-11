@@ -62,7 +62,7 @@ uses
   uLucidityVoiceAmp in 'SoundObjects\uLucidityVoiceAmp.pas',
   uLucidityVCA in 'SoundObjects\uLucidityVCA.pas',
   uLucidityPanner in 'SoundObjects\uLucidityPanner.pas',
-  uGuiState in 'uGuiState.pas',
+  Lucidity.GuiState in 'Lucidity.GuiState.pas',
   uLucidityXYPads in 'SoundObjects\uLucidityXYPads.pas',
   soLucidityVoiceParameterWrapper in 'SoundObjects\soLucidityVoiceParameterWrapper.pas',
   uMenuBarFrame in 'frames\uMenuBarFrame.pas' {MenuBarFrame: TFrame},

@@ -477,7 +477,7 @@
 			<DCCReference Include="SoundObjects\uLucidityVoiceAmp.pas"/>
 			<DCCReference Include="SoundObjects\uLucidityVCA.pas"/>
 			<DCCReference Include="SoundObjects\uLucidityPanner.pas"/>
-			<DCCReference Include="uGuiState.pas"/>
+			<DCCReference Include="Lucidity.GuiState.pas"/>
 			<DCCReference Include="SoundObjects\uLucidityXYPads.pas"/>
 			<DCCReference Include="SoundObjects\soLucidityVoiceParameterWrapper.pas"/>
 			<DCCReference Include="frames\uMenuBarFrame.pas">
