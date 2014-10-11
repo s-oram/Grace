@@ -39,6 +39,7 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
   protected
     Plugin : TeePlugin;
+    GuiStandard : TGuiStandard;
     PadContextMenu : TXYPadContextMenu;
   public
     constructor Create(AOwner: TComponent); override;
@@ -94,6 +95,7 @@ const
   PadXOffset = 24;
 begin
   Plugin := aPlugin;
+  GuiStandard := aGuiStandard;
 
   PadContextMenu.Plugin := aPlugin;
 
@@ -114,6 +116,12 @@ begin
   PadLabel2.Text := 'XY Pad 2';
   PadLabel3.Text := 'XY Pad 3';
   PadLabel4.Text := 'XY Pad 4';
+
+  //======================
+  GuiStandard.XyPadHandler.RegisterControl(XyPad1);
+  GuiStandard.XyPadHandler.RegisterControl(XyPad2);
+  GuiStandard.XyPadHandler.RegisterControl(XyPad3);
+  GuiStandard.XyPadHandler.RegisterControl(XyPad4);
 end;
 
 procedure TXYPadsFrame.BackgroundPanelResize(Sender: TObject);

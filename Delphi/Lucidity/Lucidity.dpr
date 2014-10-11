@@ -186,7 +186,8 @@ uses
   Lucidity.Dsp in 'Lucidity.Dsp.pas',
   InWindowDialog.CustomDialog in 'Dialogs\InWindowDialog.CustomDialog.pas',
   InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas',
-  LucidityGUI.XYPadHandler in 'LucidityGUI.XYPadHandler.pas';
+  LucidityGUI.XYPadHandler in 'LucidityGUI.XYPadHandler.pas',
+  duck in '..\Third Party\DuckDuckDelphi\duck.pas';
 
 {$R *.res}
 
@@ -234,5 +235,6 @@ exports
 
 begin
 end.
+
 
 

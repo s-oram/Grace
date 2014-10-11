@@ -624,6 +624,7 @@
 			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
 			<DCCReference Include="LucidityGUI.XYPadHandler.pas"/>
+			<DCCReference Include="..\Third Party\DuckDuckDelphi\duck.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
