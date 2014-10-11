@@ -30,8 +30,6 @@ type
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
 
-
-
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
 
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
