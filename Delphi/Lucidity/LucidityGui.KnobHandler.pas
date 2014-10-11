@@ -92,7 +92,7 @@ begin
   ThrottleHandle.Init;
 
   KnobContextMenu := TKnobContextMenu.Create;
-  KnobContextMenu.Initialize(aPlugin, nil);
+  KnobContextMenu.Initialize(aPlugin);
 end;
 
 destructor TKnobHandler.Destroy;

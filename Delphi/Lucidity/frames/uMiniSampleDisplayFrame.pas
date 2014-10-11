@@ -248,7 +248,7 @@ begin
   InfoDiv.Align := alClient;
 
   SampleContextMenu.Initialize(aPlugin);
-  MissingSampleContextMenu.Initialize(Plugin, nil);
+  MissingSampleContextMenu.Initialize(Plugin);
 
   SampleNameLabel.AutoSize := false;
   SampleNameLabel.Align := alLeft;

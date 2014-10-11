@@ -9,7 +9,6 @@ uses
   eeGuiStandardv2,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
-  uDialogDisplayArea,
   uGuiFeedbackData, Lucidity.Interfaces, VamStatusLed,
   eePlugin,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -159,7 +158,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
@@ -266,7 +265,7 @@ begin
   inherited;
 end;
 
-procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+procedure TModControlFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:eeGuiStandardv2.TGuiStandard);
 const
   kContainerWidth  = 600;
   kContainerHeight = 322;
@@ -281,7 +280,7 @@ begin
 
   fPlugin := aPlugin;
 
-  StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
+  StepSequenceMenu.Initialize(aPlugin);
 
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvAttackKnob,                TPluginParameter.AmpAttack);
   GuiStandard_RegisterControl(aGuiStandard, AmpEnvHoldKnob,                  TPluginParameter.AmpHold);

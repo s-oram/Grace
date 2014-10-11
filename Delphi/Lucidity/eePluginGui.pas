@@ -14,7 +14,7 @@ uses
   uXYPadsFrame,
   uSequencerFrame,
   OtlComm, uModSystemFrame,
-  uAboutFrame, Lucidity.SampleMap, uDialogDisplayArea,
+  uAboutFrame, Lucidity.SampleMap,
   eeEnumHelper, uLucidityEnums,
   DAEffect, DAEffectX, eePluginKeyHook,
   uGuiState, eePluginHotkeys,
@@ -63,7 +63,6 @@ type
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
-    DialogDisplayArea : TDialogDisplayArea;
     DropFileTarget : TRedFoxDropFileTarget;
 
     MenuBarFrame           : TMenuBarFrame;
@@ -72,31 +71,19 @@ type
     FileBrowserFrame       : TFileBrowserFrame;
     VoiceControlFrame      : TVoiceControlFrame;
     ModControlFrame        : TModControlFrame;
-    AboutFrame             : TAboutFrame;
     ModSystem2Frame        : TModSystemFrame;
     SequencerFrame         : TSequencerFrame;
     VoiceSetupFrame        : TXYPadsFrame;
 
     FeedbackData : TGuiFeedBackData;
 
-    OverlayContainer : TVamPanel;
-
     procedure WndProc(var Message: TMessage) ; override;
 
     procedure ShowSampleMapEdit;
     procedure HideSampleMapEdit;
-    procedure ShowAboutDialog;
-    procedure CloseCurrentDialog;
 
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
     property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState; // TODO:MED: I'm not sure if the GUI needs a copy of the Current GUI state object anymore.
-
-    procedure OverlayContainerClicked(Sender : TObject);
-
-    function DoGetDialogArea(Sender : TObject):TWinControl;
-    procedure DoShowDialogArea(Sender : TObject);
-    procedure DoHideDialogArea(Sender : TObject);
-
   public
     procedure PostCreate(const aVstWindow : HWnd);
     procedure BeforeClose;
@@ -136,22 +123,6 @@ const
   kScrollPanelWidth = 635;
 begin
   MainPanel.AlignWithMargins := false;
-
-  DialogDisplayArea := TDialogDisplayArea.Create;
-  DialogDisplayArea.OnShowDialogArea := DoShowDialogArea;
-  DialogDisplayArea.OnHideDialogArea := DoHideDialogArea;
-  DialogDisplayArea.OnGetDisplayArea := DoGetDialogArea;
-
-  OverlayContainer := TVamPanel.Create(self);
-  OverlayContainer.HitTest := true;
-  OverlayContainer.Parent := RedFoxContainer;
-  OverlayContainer.Visible := false;
-  OverlayContainer.Left := 0;
-  OverlayContainer.Top  := 0;
-  OverlayContainer.Width :=  self.Width;
-  OverlayContainer.Height := self.Height;
-  OverlayContainer.Color := '$cc000000';
-  OverlayContainer.OnClick := OverlayContainerClicked;
 
   FeedbackData := TGuiFeedBackData.Create;
 
@@ -204,12 +175,6 @@ begin
   FileBrowserFrame.BackgroundPanel.Align  := alClient;
   FileBrowserFrame.BackgroundPanel.Visible := true;
 
-  AboutFrame := TAboutFrame.Create(self.Owner);
-  AboutFrame.BackgroundPanel.Align := alNone;
-  AboutFrame.BackgroundPanel.Parent := OverlayContainer;
-  AboutFrame.BackgroundPanel.Visible := false;
-
-
   ModSystem2Frame := TModSystemFrame.Create(self.Owner);
   ModSystem2Frame.BackgroundPanel.Align := alClient;
   ModSystem2Frame.BackgroundPanel.Visible := true;
@@ -246,7 +211,6 @@ begin
   if assigned(GuiStandard)
     then GuiStandard.Free;
 
-  DialogDisplayArea.Free;
   CurrentGuiState.Free;
 
   FreeAndNil(MenuBarFrame);
@@ -257,12 +221,10 @@ begin
   FreeAndNil(ModControlFrame);
   FreeAndNil(ModSystem2Frame);
   FreeAndNil(SequencerFrame);
-  FreeAndNil(AboutFrame);
   FreeAndNil(VoiceSetupFrame);
 
   DropFileTarget.Free;
   FeedBackData.Free;
-  OverlayContainer.Free;
 end;
 
 
@@ -306,11 +268,11 @@ begin
   // Initalize all the frame controls...
   MiniSampleDisplayFrame.InitializeFrame(Plugin, GuiStandard);
   FileBrowserFrame.InitializeFrame(Plugin, GuiStandard);
-  MenuBarFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  MenuBarFrame.InitializeFrame(Plugin, GuiStandard);
   SampleMapFrame.InitializeFrame(Plugin, GuiStandard);
-  ModControlFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-  ModSystem2Frame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
-  SequencerFrame.InitializeFrame(Plugin, GuiStandard, DialogDisplayArea);
+  ModControlFrame.InitializeFrame(Plugin, GuiStandard);
+  ModSystem2Frame.InitializeFrame(Plugin, GuiStandard);
+  SequencerFrame.InitializeFrame(Plugin, GuiStandard);
   VoiceSetupFrame.InitializeFrame(Plugin, GuiStandard);
   VoiceControlFrame.InitializeFrame(Plugin, GuiStandard);
 
@@ -463,9 +425,6 @@ begin
   if MsgID = TLucidMsgID.Command_ShowSampleMapEdit then ShowSampleMapEdit;
   if MsgID = TLucidMsgID.Command_HideSampleMapEdit then HideSampleMapEdit;
 
-  if MsgID = TLucidMsgID.Command_ShowAboutDialog then ShowAboutDialog;
-  if MsgID = TLucidMsgID.Command_CloseCurrentDialog then CloseCurrentDialog;
-
   if MsgID = TLucidMsgID.GUILayoutChanged then UpdateLayout;
 
   if MsgID = TLucidMsgID.Command_BeginGuiUpdate then MainPanel.BeginUpdate;
@@ -554,13 +513,7 @@ end;
 
 procedure TPluginGui.FormResize(Sender: TObject);
 begin
-  if assigned(OverlayContainer) then
-  begin
-    OverlayContainer.Left := 0;
-    OverlayContainer.Top  := 0;
-    OverlayContainer.Width :=  self.Width;
-    OverlayContainer.Height := self.Height;
-  end;
+
 end;
 
 procedure TPluginGui.ShowSampleMapEdit;
@@ -607,34 +560,6 @@ begin
         Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
       end;
     end;
-  end;
-end;
-
-procedure TPluginGui.ShowAboutDialog;
-var
-  aW, aH, aT, aL : integer;
-begin
-  OverlayContainer.Visible := true;
-  AboutFrame.BackgroundPanel.Visible := true;
-
-  aW := round(OverlayContainer.Width * (2/3));
-  aH := round(OverlayContainer.Height * (2/3));
-  aL := round((OverlayContainer.Width  - aW)  * (1/2));
-  aT := round((OverlayContainer.Height - aH) * (1/3));
-
-  AboutFrame.BackgroundPanel.Resize(aL, aT, aW, aH);
-  AboutFrame.BackgroundPanel.Invalidate;
-  OverlayContainer.Invalidate;
-end;
-
-
-
-procedure TPluginGui.CloseCurrentDialog;
-begin
-  if assigned(OverlayContainer) then
-  begin
-    OverlayContainer.Visible    := false;
-    AboutFrame.BackgroundPanel.Visible    := false;
   end;
 end;
 
@@ -708,7 +633,6 @@ begin
   ClearPadding(MiniSampleDisplayFrame.BackgroundPanel);
   ClearPadding(SampleMapFrame.BackgroundPanel);
   ClearPadding(FileBrowserFrame.BackgroundPanel);
-  ClearPadding(AboutFrame.BackgroundPanel);
   ClearPadding(VoiceControlFrame.BackgroundPanel);
   ClearPadding(ModControlFrame.BackgroundPanel);
   ClearPadding(SequencerFrame.BackgroundPanel);
@@ -748,7 +672,6 @@ begin
   SampleMapFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   MiniSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(4,4,4,4);
   MiniSampleDisplayFrame.InsidePanel.Padding.SetBounds(4,4,4,2);
-  AboutFrame.BackgroundPanel.Padding.SetBounds(16,16,16,16);
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModControlFrame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
   ModSystem2Frame.BackgroundPanel.Padding.SetBounds(16,8,16,8);
@@ -887,31 +810,6 @@ begin
 
   inherited;
 end;
-
-procedure TPluginGui.DoShowDialogArea(Sender: TObject);
-begin
-  OverlayContainer.Visible := true;
-end;
-
-procedure TPluginGui.DoHideDialogArea(Sender: TObject);
-begin
-  OverlayContainer.Visible := false;
-end;
-
-function TPluginGui.DoGetDialogArea(Sender: TObject): TWinControl;
-begin
-  result := OverlayContainer;
-end;
-
-procedure TPluginGui.OverlayContainerClicked(Sender: TObject);
-begin
-  if DialogDisplayArea.AllowClose then
-  begin
-    DialogDisplayArea.Hide;
-  end;
-end;
-
-
 
 
 

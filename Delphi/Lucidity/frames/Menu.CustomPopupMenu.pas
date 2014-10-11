@@ -5,26 +5,24 @@ interface
 uses
   Vcl.Menus,
   VclEx.PopupMenuEx,
-  eePlugin, uDialogDisplayArea;
+  eePlugin;
 
 type
   TCustomPopupMenu = class
   private
     fPlugin: TeePlugin;
-    fDialogDisplayArea: TDialogDisplayArea;
     fAutoFreeMenu: boolean;
   protected
     Menu : TPopupMenuEx;
 
     property Plugin : TeePlugin read fPlugin;
-    property DialogDisplay : TDialogDisplayArea read fDialogDisplayArea;
 
     procedure EventHandle_MenuClosed(Sender: TObject; Cancelled: Boolean); virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
 
-    procedure Initialize(aPlugin : TeePlugin; aDialogDisplayArea: TDialogDisplayArea);
+    procedure Initialize(aPlugin : TeePlugin);
 
     // TODO:MED = An AutoFreeMenu property would be really good to have.
     // A menu can free itself if it is dismissed by the OnDismissed event handle.
@@ -65,10 +63,9 @@ begin
     then self.Free;
 end;
 
-procedure TCustomPopupMenu.Initialize(aPlugin: TeePlugin; aDialogDisplayArea: TDialogDisplayArea);
+procedure TCustomPopupMenu.Initialize(aPlugin: TeePlugin);
 begin
   fPlugin := aPlugin;
-  fDialogDisplayArea := aDialogDisplayArea;
 end;
 
 end.

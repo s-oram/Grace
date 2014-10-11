@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   uConstants,
   Menu.StepSequenceMenu,
-  eePlugin, eeGuiStandardv2, uDialogDisplayArea, uGuiFeedbackData,
+  eePlugin, eeGuiStandardv2, uGuiFeedbackData,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
   VamWinControl, VamPanel, RedFoxContainer, LucidityGui.DropBoxSelector,
@@ -41,7 +41,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property SequencerIndex : integer read fSequencerIndex write SetSequencerIndex;
@@ -85,14 +85,14 @@ begin
 end;
 
 
-procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea: TDialogDisplayArea);
+procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
 
-  StepSequenceMenu.Initialize(aPlugin, aDialogDisplayArea);
+  StepSequenceMenu.Initialize(aPlugin);
 
   StepSeqControl.Align := alClient;
   StepSeqControl.Color_Background := kColor_LcdDark1;

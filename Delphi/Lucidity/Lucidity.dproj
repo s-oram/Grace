@@ -513,11 +513,7 @@
 			<DCCReference Include="SoundObjects\Lucidity.Env.ADSR.pas"/>
 			<DCCReference Include="uLucidityExtra.pas"/>
 			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
-			<DCCReference Include="frames\uDialogDisplayArea.pas"/>
 			<DCCReference Include="frames\Menu.CustomPopupMenu.pas"/>
-			<DCCReference Include="Dialogs\uAboutDialog.pas">
-				<Form>AboutDialogForm</Form>
-			</DCCReference>
 			<DCCReference Include="eeGlobals.pas"/>
 			<DCCReference Include="eeLogging.pas"/>
 			<DCCReference Include="SoundObjects\soNoteStack.pas"/>

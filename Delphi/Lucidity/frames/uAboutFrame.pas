@@ -11,6 +11,8 @@ uses
 
 type
 
+  //TODO:HIGH delete this unit.
+
 
   TAboutFrame = class(TFrame)
     Panel: TRedFoxContainer;

@@ -3,7 +3,6 @@ unit uModSystemFrame;
 interface
 
 uses
-  uDialogDisplayArea,
   Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
   uLucidityEnums, Lucidity.Interfaces,
@@ -52,7 +51,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
   end;
 
 implementation
@@ -227,14 +226,14 @@ begin
   FMotherShip := aMothership;
 end;
 
-procedure TModSystemFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+procedure TModSystemFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
 
   fPlugin := aPlugin;
   fGuiStandard := aGuiStandard;
 
-  ModContextMenu.Initialize(aPlugin, aDialogDisplayArea);
+  ModContextMenu.Initialize(aPlugin);
 
 
 

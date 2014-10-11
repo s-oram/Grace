@@ -343,7 +343,7 @@ begin
     if not assigned(GroupVisibilityMenu) then
     begin
       GroupVisibilityMenu := TGroupVisibilityMenu.Create;
-      GroupVisibilityMenu.Initialize(Plugin, nil);
+      GroupVisibilityMenu.Initialize(Plugin);
     end;
 
     GroupVisibilityMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);

@@ -7,7 +7,6 @@ interface
 uses
   eeTypes,
   VamLib.ZeroObject,
-  uDialogDisplayArea,
   eeGuiStandardv2, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,
@@ -36,8 +35,6 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
-    fDialogDisplayArea : TDialogDisplayArea;
-
     MainMenu : TMainMenu;
     GroupsMenu : TGroupsMenu;
     SamplesMenu : TSamplesMenu;
@@ -57,7 +54,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+    procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
 
     property Plugin:TeePlugin read fPlugin;
@@ -120,15 +117,14 @@ begin
   inherited;
 end;
 
-procedure TMenuBarFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard; aDialogDisplayArea : TDialogDisplayArea);
+procedure TMenuBarFrame.InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
 begin
   fPlugin            := aPlugin;
   fGuiStandard       := aGuiStandard;
-  fDialogDisplayArea := aDialogDisplayArea;
 
-  GroupsMenu.Initialize(aPlugin, aDialogDisplayArea);
-  SamplesMenu.Initialize(aPlugin, aDialogDisplayArea);
-  MainMenu.Initialize(aPlugin, aDialogDisplayArea);
+  GroupsMenu.Initialize(aPlugin);
+  SamplesMenu.Initialize(aPlugin);
+  MainMenu.Initialize(aPlugin);
 
   GuiSetup.StyleButton_SelectorButton(GroupMenuButton);
   GuiSetup.StyleButton_SelectorButton(SampleMenuButton);
@@ -188,7 +184,7 @@ begin
   begin
     Menu := TAutoSelectMenu.Create;
     Menu.AutoFreeMenu := true;
-    Menu.Initialize(self.Plugin, nil);
+    Menu.Initialize(self.Plugin);
     Menu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
 end;
