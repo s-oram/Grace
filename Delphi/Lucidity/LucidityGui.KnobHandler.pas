@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  eeTemp,
   Vcl.Menus,
   Menu.CustomPopupMenu,
   VamLib.UniqueID,
@@ -14,7 +15,6 @@ uses
   eePlugin,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
-  eeGuiStandardv2,
   Lucidity.PluginParameters;
 
 type

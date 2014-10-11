@@ -14,7 +14,6 @@ object PluginGui: TPluginGui
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object RedFoxContainer: TRedFoxContainer

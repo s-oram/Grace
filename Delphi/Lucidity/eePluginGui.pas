@@ -51,7 +51,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LowerTabsChanged(Sender: TObject);
-    procedure FormResize(Sender: TObject);
   private
     fPlugin: TeePlugin;
     fLowerTabState: TLowerTabOptions; //TODO:MED I think this can be deleted.
@@ -237,8 +236,6 @@ var
   bm1 : TBitmap;
   bm2 : TBitmap;
   bm3 : TBitmap;
-  KnobHandler : TKnobHandler;
-  MenuHandler : TMenuButtonHandler;
 begin
   assert(assigned(Plugin));
 
@@ -247,6 +244,7 @@ begin
   // register self to mother ship.
   Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);
 
+  {
   KnobHandler := TKnobHandler.Create(Plugin);
   GuiStandard.RegisterHandler('KnobHandler', KnobHandler);
   Plugin.Globals.MotherShip.RegisterZeroObject(KnobHandler, TZeroObjectRank.VCL);
@@ -254,6 +252,7 @@ begin
   MenuHandler := TMenuButtonHandler.Create(Plugin);
   GuiStandard.RegisterHandler('MenuButtonHandler', MenuHandler);
   Plugin.Globals.MotherShip.RegisterZeroObject(MenuHandler, TZeroObjectRank.VCL);
+  }
 
   //====== Register frames as zero objects =====================================
   Plugin.Globals.MotherShip.RegisterZeroObject(FileBrowserFrame, TZeroObjectRank.VCL);
@@ -510,11 +509,6 @@ begin
   self.LowerTabState := TabSelected;
 
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.RefreshRequest_StepSeqDisplay);
-end;
-
-procedure TPluginGui.FormResize(Sender: TObject);
-begin
-
 end;
 
 procedure TPluginGui.ShowSampleMapEdit;

@@ -3,14 +3,14 @@ unit LucidityGui.MenuButtonHandler;
 interface
 
 uses
+  eeTemp,
   VamGuiControlInterfaces,
   eeGuiStandardv2_MenuBuilder,
   Contnrs,
   Controls,
   Classes,
   eePlugin,
-  VamLib.ZeroObject,
-  eeGuiStandardv2;
+  VamLib.ZeroObject;
 
 type
   TMenuButtonHandler = class(TRefCountedZeroObject, IStandardControlHandler)
