@@ -299,15 +299,12 @@ begin
     begin
       Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
       Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
-      //LogMain.LogMessage('Begin Edit ' + IntToStr(Par.VstParameterIndex));
     end;
-
 
     if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
     begin
       Plugin.ResetPluginParameter(TParChangeScope.psFocused, ParName);
     end;
-
 
     if (Button = TMouseButton.mbRight) and (Sender is TVamKnob) then
     begin
@@ -395,9 +392,6 @@ begin
   KnobContextMenu.Popup(x, y);
 end;
 
-
-
-
 { TKnobContextMenu }
 
 constructor TKnobContextMenu.Create;
@@ -422,9 +416,6 @@ var
   ModSlotInfo : string;
 begin
   Menu.Items.Clear;
-
-
-
 
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Remove Current Modulation';
