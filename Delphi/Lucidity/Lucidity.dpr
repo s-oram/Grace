@@ -187,7 +187,8 @@ uses
   InWindowDialog.CustomDialog in 'Dialogs\InWindowDialog.CustomDialog.pas',
   InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas',
   LucidityGUI.XYPadHandler in 'LucidityGUI.XYPadHandler.pas',
-  duck in '..\Third Party\DuckDuckDelphi\duck.pas';
+  duck in '..\Third Party\DuckDuckDelphi\duck.pas',
+  Lucidity.CustomControlHandler in 'Lucidity.CustomControlHandler.pas';
 
 {$R *.res}
 

@@ -20,6 +20,7 @@ interface
 
 
 uses
+  Lucidity.CustomControlHandler,
   VamLib.DuckType,
   Contnrs,
   Controls,
@@ -36,7 +37,7 @@ uses
 {+M}
 
 type
-  TXYPadHandler = class(TZeroObject)
+  TXYPadHandler = class(TCustomControlHandler)
   private
   protected
     Plugin : TeePlugin;
@@ -46,13 +47,12 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
     procedure UpdateControl(const c : TObject);
   public
-    constructor Create(const aPlugin : TeePlugin);
+    constructor Create(const aPlugin : TeePlugin); override;
     destructor Destroy; override;
 
     procedure RegisterControl(const c : TObject);
     procedure DeregisterControl(const c : TObject);
     procedure UpdateAllControls;
-
   published
     // publish the event handlers so they can be accessed using the RTTI.
     procedure EventHandle_XYPadChanged(Sender: TObject);
@@ -66,29 +66,14 @@ uses
   VamXYPad,
   SysUtils,
   VamLib.PatchUtils,
-  Vcl.Dialogs,
-  TypInfo,
-  System.Rtti;
-
-
-type
-  PObject = ^TObject;
-
-function GetEventHandler(obj : PObject; MethodName : string):TMethod;
-var
-  m : TMethod;
-begin
-  m.Data := obj;
-  m.Code := obj^.MethodAddress(MethodName);
-  result := m;
-end;
-
-
+  Vcl.Dialogs;
 
 { TXYPadHandler }
 
 constructor TXYPadHandler.Create(const aPlugin: TeePlugin);
 begin
+  inherited;
+
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
@@ -114,14 +99,6 @@ type
   TNotifyEventReference = reference to procedure(Sender : TObject);
 
 procedure TXYPadHandler.RegisterControl(const c: TObject);
-var
-  v : TValue;
-  Prop: TRttiProperty;
-  RttiContext : TRtticontext;
-
-  p : TNotifyEventReference;
-  Proc : pointer;
-  m :TMethod;
 begin
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
