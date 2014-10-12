@@ -11,8 +11,7 @@ uses
   Classes,
   eePlugin,
   VamLib.ZeroObject,
-  eeMidiAutomationV2,
-  Lucidity.GuiStandard;
+  eeMidiAutomationV2;
 
 type
   TXYPadContextMenu = class(TCustomPopupMenu)

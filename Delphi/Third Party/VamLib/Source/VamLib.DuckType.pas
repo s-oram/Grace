@@ -163,7 +163,7 @@ begin
   if not assigned(Obj) then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
   if MethodAddress = nil then raise Exception.Create('TDuck.SetEvent() MethodAddress is not assigned.');
   m.Code := MethodAddress;
-  m.Data := @Obj;
+  m.Data := Obj;
   SetMethodProp(FOwner, EventName, m);
   result := self;
 end;
@@ -175,7 +175,7 @@ var
 begin
   if fRequireTarget then EnsurePropertyExists(EventName);
   if not assigned(Obj) then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
-  m.Data := @Obj;
+  m.Data := Obj;
   m.Code := Obj.MethodAddress(MethodName);
   if m.Code = nil then raise Exception.Create('TDuck.SetEvent() Method address not found.');
   SetMethodProp(FOwner, EventName, m);

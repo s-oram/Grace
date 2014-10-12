@@ -14,6 +14,10 @@ interface
   of (Control + Interface + Hander).
 }
 
+// TODO:HIGH
+// The XY Pads don't broadcast BeginEdit, EndEdit and SetParameterAutomated
+// so they can't be linked into the host automation. This needs to change.
+
 
 uses
   VamLib.DuckType,
@@ -24,6 +28,7 @@ uses
   Menu.CustomPopupMenu,
   VamLib.UniqueID,
   VamLib.ZeroObject,
+  Menu.XYPadContextMenu,
   eePlugin,
   eeMidiAutomationV2,
   Lucidity.PluginParameters;
@@ -34,9 +39,10 @@ type
   TXYPadHandler = class(TZeroObject)
   private
   protected
+    Plugin : TeePlugin;
+    PadContextMenu : TXYPadContextMenu;
     ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
-    Plugin : TeePlugin;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
   public
     constructor Create(const aPlugin : TeePlugin);
@@ -54,6 +60,8 @@ type
 implementation
 
 uses
+  eeTypes,
+  VamXYPad,
   SysUtils,
   VamLib.PatchUtils,
   Vcl.Dialogs,
@@ -83,11 +91,13 @@ begin
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
   ThrottleHandle.Init;
+  PadContextMenu := TXYPadContextMenu.Create;
 end;
 
 destructor TXYPadHandler.Destroy;
 begin
   ControlList.Free;
+  PadContextMenu.Free;
   inherited;
 end;
 
@@ -108,6 +118,7 @@ var
 
   p : TNotifyEventReference;
   Proc : pointer;
+  m :TMethod;
 begin
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
@@ -124,19 +135,116 @@ end;
 
 procedure TXYPadHandler.UpdateAllControls;
 begin
+  assert(assigned(Plugin));
 
+  {
+  if XYPad1.PosX <> Plugin.XYPads.PadX1 then XYPad1.PosX := Plugin.XYPads.PadX1;
+  if XYPad2.PosX <> Plugin.XYPads.PadX2 then XYPad2.PosX := Plugin.XYPads.PadX2;
+  if XYPad3.PosX <> Plugin.XYPads.PadX3 then XYPad3.PosX := Plugin.XYPads.PadX3;
+  if XYPad4.PosX <> Plugin.XYPads.PadX4 then XYPad4.PosX := Plugin.XYPads.PadX4;
+
+  if XYPad1.PosY <> Plugin.XYPads.PadY1 then XYPad1.PosY := Plugin.XYPads.PadY1;
+  if XYPad2.PosY <> Plugin.XYPads.PadY2 then XYPad2.PosY := Plugin.XYPads.PadY2;
+  if XYPad3.PosY <> Plugin.XYPads.PadY3 then XYPad3.PosY := Plugin.XYPads.PadY3;
+  if XYPad4.PosY <> Plugin.XYPads.PadY4 then XYPad4.PosY := Plugin.XYPads.PadY4;
+  }
 end;
 
 
 
 procedure TXYPadHandler.EventHandle_XYPadChanged(Sender: TObject);
+var
+  Tag : integer;
+  PadX, PadY : single;
 begin
-  showMessage('bang');
+  assert(assigned(Plugin));
+
+  Tag := (Sender as TVamXYPad).Tag;
+
+  PadX := (Sender as TVamXYPad).PosX;
+  PadY := (Sender as TVamXYPad).PosY;
+
+  case Tag of
+    1:
+    begin
+      Plugin.XYPads.PadX1 := PadX;
+      Plugin.XYPads.PadY1 := PadY;
+    end;
+
+    2:
+    begin
+      Plugin.XYPads.PadX2 := PadX;
+      Plugin.XYPads.PadY2 := PadY;
+    end;
+
+    3:
+    begin
+      Plugin.XYPads.PadX3 := PadX;
+      Plugin.XYPads.PadY3 := PadY;
+    end;
+
+    4:
+    begin
+      Plugin.XYPads.PadX4 := PadX;
+      Plugin.XYPads.PadY4 := PadY;
+    end;
+  else
+    raise Exception.Create('Index not handled.');
+  end;
 end;
 
 procedure TXYPadHandler.EventHandle_XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Tag : integer;
+  Name1, Name2 : string;
+  ptr : Pointer;
 begin
+  assert(assigned(Plugin));
 
+  if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+  begin
+    Tag := (Sender as TVamXYPad).Tag;
+
+    case Tag of
+      1:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX1);
+        Name2 := PluginParToName(TPluginParameter.PadY1);
+      end;
+
+      2:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX2);
+        Name2 := PluginParToName(TPluginParameter.PadY2);
+      end;
+
+      3:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX3);
+        Name2 := PluginParToName(TPluginParameter.PadY3);
+      end;
+
+      4:
+      begin
+        Name1 := PluginParToName(TPluginParameter.PadX4);
+        Name2 := PluginParToName(TPluginParameter.PadY4);
+      end;
+    else
+      Name1 := '';
+      Name2 := '';
+      raise Exception.Create('Tag not handled.');
+    end;
+
+    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name1);
+    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name2);
+  end;
+
+  if Button = TMouseButton.mbRight then
+  begin
+    Tag := (Sender as TVamXYPad).Tag;
+    PadContextMenu.TargetXYPadIndex := Tag - 1; //NOTE: The (Tag-1) is because the pads are numbered 1 to 4.
+    PadContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  end;
 end;
 
 
