@@ -40,19 +40,15 @@ type
   TXYPadHandler = class(TCustomControlHandler)
   private
   protected
-    Plugin : TeePlugin;
     PadContextMenu : TXYPadContextMenu;
-    ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
-    procedure UpdateControl(const c : TObject);
+    procedure UpdateControl(const c : TObject); override;
   public
     constructor Create(const aPlugin : TeePlugin); override;
     destructor Destroy; override;
 
-    procedure RegisterControl(const c : TObject);
-    procedure DeregisterControl(const c : TObject);
-    procedure UpdateAllControls;
+    procedure RegisterControl(const c : TObject); override;
   published
     // publish the event handlers so they can be accessed using the RTTI.
     procedure EventHandle_XYPadChanged(Sender: TObject);
@@ -73,10 +69,6 @@ uses
 constructor TXYPadHandler.Create(const aPlugin: TeePlugin);
 begin
   inherited;
-
-  Plugin := aPlugin;
-  ControlList := TObjectList.Create;
-  ControlList.OwnsObjects := false;
   ThrottleHandle.Init;
   PadContextMenu := TXYPadContextMenu.Create;
   PadContextMenu.Plugin := aPlugin;
@@ -84,7 +76,6 @@ end;
 
 destructor TXYPadHandler.Destroy;
 begin
-  ControlList.Free;
   PadContextMenu.Free;
   inherited;
 end;
@@ -100,27 +91,10 @@ type
 
 procedure TXYPadHandler.RegisterControl(const c: TObject);
 begin
-  if ControlList.IndexOf(c) = -1
-    then ControlList.Add(c);
-
+  inherited;
   //==== check for requirements ====
   c.Duck.RequireTarget.SetEvent('OnChanged', self, 'EventHandle_XYPadChanged');
   c.Duck.RequireTarget.SetEvent('OnMouseDown', self, 'EventHandle_XYPadMouseDown');
-end;
-
-procedure TXYPadHandler.DeregisterControl(const c: TObject);
-begin
-  ControlList.Remove(c);
-end;
-
-procedure TXYPadHandler.UpdateAllControls;
-var
-  c1: Integer;
-begin
-  for c1 := 0 to ControlList.Count-1 do
-  begin
-    UpdateControl(ControlList[c1]);
-  end;
 end;
 
 procedure TXYPadHandler.UpdateControl(const c: TObject);
@@ -128,6 +102,8 @@ var
   Pad : TVamXYPad;
   PadX, PadY : single;
 begin
+  inherited;
+
   assert(c is TVamXyPad);
   Pad := (c as TVamXyPad);
 
