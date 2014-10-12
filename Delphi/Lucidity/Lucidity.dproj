@@ -511,7 +511,6 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="SoundObjects\Lucidity.Env.ADSR.pas"/>
-			<DCCReference Include="uLucidityExtra.pas"/>
 			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
 			<DCCReference Include="frames\Menu.CustomPopupMenu.pas"/>
 			<DCCReference Include="eeGlobals.pas"/>
