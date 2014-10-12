@@ -19,6 +19,9 @@ type
     ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
     procedure UpdateControl(const c : TObject); virtual; abstract;
+
+
+    procedure PluginParameterChanged(const ParName : string; ParValue : single);
   public
     constructor Create(const aPlugin : TeePlugin); virtual;
     destructor Destroy; override;
@@ -29,6 +32,13 @@ type
   end;
 
 implementation
+
+uses
+  uConstants,
+  VamLib.Throttler,
+  eeTypes,
+  Lucidity.GuiUtils,
+  Lucidity.PluginParameters;
 
 { TCustomControlHandler }
 
@@ -44,6 +54,41 @@ destructor TCustomControlHandler.Destroy;
 begin
   ControlList.Free;
   inherited;
+end;
+
+procedure TCustomControlHandler.PluginParameterChanged(const ParName: string; ParValue: single);
+var
+  ParID    : TPluginParameterID;
+  Par : TPluginParameterClass;
+begin
+  assert(ParValue >= 0);
+  assert(ParValue <= 1);
+
+  ParID    := PluginParNameToID(ParName);
+
+  Par := Plugin.PluginParameters.FindByName(ParName);
+  assert(assigned(Par));
+
+  if Par.IsQuantised then
+  begin
+    ParValue := QuantiseParameterValue(ParValue, Par.QuantisedMin, Par.QuantisedMax);
+  end;
+
+  if Par.IsPublishedVstParameter then
+  begin
+    Command.VstPar_SetParameterAutomated(Plugin, Par.VstParameterIndex, ParValue);
+    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+  end else
+  begin
+    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+  end;
+
+  Throttle(ThrottleHandle, 25,
+  procedure
+  begin
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
+  end);
 end;
 
 procedure TCustomControlHandler.RegisterControl(const c: TObject);
