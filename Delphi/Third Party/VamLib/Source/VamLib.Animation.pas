@@ -131,6 +131,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   DateUtils;
 
 var
@@ -284,11 +285,10 @@ begin
 
   if DoException then
   begin
-    // TODO:HIGH this exception should probably not be raised in release builds. Perhaps
-    // try to log the exception instead. It would be good to raise the exception
-    // in beta builds. (Fail fast!)
-    // NOTE: I have seen exceptions raised here.
+    Log.LogError('Exception Error (88412) - There was an animation error.');
+    {$IFDEF Debug}
     raise EAnimationException.Create('There was an animation error.');
+    {$ENDIF}
   end;
 end;
 
