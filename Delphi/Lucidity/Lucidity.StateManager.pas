@@ -158,29 +158,24 @@ end;
 procedure TLucidityStateManager.SetPreset(var ms: TMemoryStream);
 var
   XML : TNativeXML;
-  fn : string;
+  //fn : string;
 begin
- {$IFDEF Logging}
-   LogMain.LogMessage('StateManager.SetPreset (Sanity Check)');
- {$ENDIF}
+  {$IFDEF Logging}
+  LogMain.LogMessage('StateManager.SetPreset (Sanity Check)');
+  {$ENDIF}
 
-  // TODO:HIGH why isn't this saving files in Cubase on my other computer. Need to add logging to check file is being loaded.
-  // check data path is being loaded correctly.
   {$IFDEF Logging}LogMain.EnterMethod('StateManager.SetPreset');{$ENDIF}
 
   XML := TNativeXML.Create(nil);
   try
     XML.LoadFromStream(ms);
 
-    fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
-    xml.XmlFormat := TXmlFormatType.xfReadable;
-    XML.SaveToFile(fn);
-    {$IFDEF Logging}LogMain.LogMessage('test fn = ' + fn);{$ENDIF}
+    //fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
+    //xml.XmlFormat := TXmlFormatType.xfReadable;
+    //XML.SaveToFile(fn);
+    //{$IFDEF Logging}LogMain.LogMessage('test fn = ' + fn);{$ENDIF}
 
     CheckPatchFormatVersion(XML);
-
-    // TODO: add Preset version info check. if the check is out of date will
-    // need to update file format.
     ReadStateFromXML(XML);
     ReadPresetInfoFromXML(XML);
     ReadMidiMapFromXML(XML);

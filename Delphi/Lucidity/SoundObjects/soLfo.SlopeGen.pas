@@ -108,7 +108,7 @@ begin
   begin
     TotalTime := fMinTotalTime / fEnvRate;
     TotalTime := TotalTime;
-    assert(TotalTime > 0, 'Total Time is smaller than zero!'); //TODO:HIGH this feels hacky need to test.
+    assert(TotalTime > 0, 'Total Time is smaller than zero!');
 
     ModBias := Bias * 0.8 + 0.1;
 

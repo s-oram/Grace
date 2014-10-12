@@ -14,7 +14,7 @@ procedure Wait(const MilliSeconds : Longint);
 //function GuiDebounce(const MilliSeconds : integer; var ReferenceTime : Int64):boolean;
 
 {
-  TODO:HIGH i think it should be possible to debounce and throttle functions using
+  TODO:MED i think it should be possible to debounce and throttle functions using
   the wait method above, and using a technique similar to how Javascript debounce
   functions work, (in the sense they wrap the function to be debounced and return
   another function.
