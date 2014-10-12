@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Lucidity.CustomControlHandler,
   Vcl.Menus,
   Menu.CustomPopupMenu,
   VamLib.UniqueID,
@@ -15,6 +16,8 @@ uses
   VamLib.ZeroObject,
   eeMidiAutomationV2,
   Lucidity.PluginParameters;
+
+{+M} // required for the knob handler RTTI.
 
 type
   TKnobContextMenu = class(TCustomPopupMenu)
@@ -34,35 +37,27 @@ type
     property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
   end;
 
-  TKnobHandler = class(TZeroObject)
+  TKnobHandler = class(TCustomControlHandler)
   private
   protected
-    ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
-    Plugin : TeePlugin;
     KnobContextMenu : TKnobContextMenu;
-
+    procedure UpdateControl(const c : TObject); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
     procedure UpdateModulation(const c : TObject);
+  public
+    constructor Create(const aPlugin : TeePlugin); override;
+    destructor Destroy; override;
 
-    procedure UpdateControl(const c : TObject);
-
+    procedure RegisterControl(const c : TObject); override;
+  published
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_KnobPosChanged(Sender: TObject);
     procedure Handle_ModAmountChanged(Sender: TObject);
-
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
-
-    procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
-  public
-    constructor Create(const aPlugin : TeePlugin);
-    destructor Destroy; override;
-
-    procedure RegisterControl(const c : TObject);
-    procedure DeregisterControl(const c : TObject);
-    procedure UpdateAllControls;
   end;
 
 implementation
@@ -84,18 +79,14 @@ uses
 
 constructor TKnobHandler.Create(const aPlugin : TeePlugin);
 begin
-  Plugin := aPlugin;
-  ControlList := TObjectList.Create;
-  ControlList.OwnsObjects := false;
+  inherited;
   ThrottleHandle.Init;
-
   KnobContextMenu := TKnobContextMenu.Create;
   KnobContextMenu.Initialize(aPlugin);
 end;
 
 destructor TKnobHandler.Destroy;
 begin
-  ControlList.Free;
   KnobContextMenu.Free;
   inherited;
 end;
@@ -138,6 +129,8 @@ procedure TKnobHandler.RegisterControl(const c: TObject);
 var
   KnobControl : IKnobControl;
 begin
+  inherited;
+
   assert(Supports(c, IKnobControl), 'Control doesn''t support IKnobControl.');
 
   if Supports(c, IKnobControl, KnobControl) then
@@ -149,14 +142,6 @@ begin
     KnobControl.SetOnKnobPosChanged(Handle_KnobPosChanged);
     KnobControl.SetOnModAmountChanged(Handle_ModAmountChanged);
   end;
-
-  if ControlList.IndexOf(c) = -1
-    then ControlList.Add(c);
-end;
-
-procedure TKnobHandler.DeregisterControl(const c: TObject);
-begin
-  ControlList.Remove(c);
 end;
 
 procedure TKnobHandler.UpdateControl(const c: TObject);
@@ -169,6 +154,8 @@ var
   ModIndex       : integer;
   ModAmountValue : single;
 begin
+  inherited;
+
   if Supports(c, IKnobControl, KnobControl) then
   begin
     //TODO:HIGH Instead of getting the parameter name from the knob,
@@ -251,19 +238,6 @@ begin
   end;
 
 end;
-
-
-
-procedure TKnobHandler.UpdateAllControls;
-var
-  c1: Integer;
-begin
-  for c1 := 0 to ControlList.Count-1 do
-  begin
-    UpdateControl(ControlList[c1]);
-  end;
-end;
-
 
 
 procedure TKnobHandler.Handle_MouseEnter(Sender: TObject);
