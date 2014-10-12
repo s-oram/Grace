@@ -3,6 +3,7 @@ unit LucidityGui.MenuButtonHandler;
 interface
 
 uses
+  Lucidity.CustomControlHandler,
   VamGuiControlInterfaces,
   eeGuiStandardv2_MenuBuilder,
   Contnrs,
@@ -11,29 +12,24 @@ uses
   eePlugin,
   VamLib.ZeroObject;
 
+{+M} // required for the knob handler RTTI.
+
 type
-  TMenuButtonHandler = class(TZeroObject)
+  TMenuButtonHandler = class(TCustomControlHandler)
   private
   protected
-    ControlList : TObjectList;
-    Plugin : TeePlugin;
     MenuBuilder  : TGuiMenuBuilder;
-
-    procedure UpdateControl(const c : TObject);
-
+    procedure UpdateControl(const c : TObject); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+  public
+    constructor Create(const aPlugin : TeePlugin); override;
+    destructor Destroy; override;
+    procedure RegisterControl(const c : TObject); override;
+  published
     procedure Handle_MouseEnter(Sender : TObject);
     procedure Handle_MouseLeave(Sender : TObject);
     procedure Handle_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
-  public
-    constructor Create(const aPlugin : TeePlugin);
-    destructor Destroy; override;
-
-    procedure UpdateAllControls;
-    procedure RegisterControl(const c : TObject);
-    procedure DeregisterControl(const c : TObject);
   end;
 
 implementation
@@ -53,15 +49,12 @@ uses
 
 constructor TMenuButtonHandler.Create(const aPlugin: TeePlugin);
 begin
-  Plugin := aPlugin;
-  ControlList := TObjectList.Create;
-  ControlList.OwnsObjects := false;
+  inherited;
   MenuBuilder := TGuiMenuBuilder.Create;
 end;
 
 destructor TMenuButtonHandler.Destroy;
 begin
-  ControlList.Free;
   MenuBuilder.Free;
   inherited;
 end;
@@ -70,37 +63,20 @@ procedure TMenuButtonHandler.RegisterControl(const c: TObject);
 var
   mc : IMenuControl;
 begin
+  inherited;
+
   if Supports(c, IMenuControl, mc)  then
   begin
     mc.SetOnMouseEnter(Handle_MouseEnter);
     mc.SetOnMouseLeave(Handle_MouseLeave);
     mc.SetOnMouseDown(Handle_MouseDown);
     mc.SetOnMouseUp(Handle_MouseUp);
-
-    if ControlList.IndexOf(c) = -1
-      then ControlList.Add(c);
   end;
-end;
-
-procedure TMenuButtonHandler.DeregisterControl(const c: TObject);
-begin
-  ControlList.Remove(c);
 end;
 
 procedure TMenuButtonHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 begin
   inherited;
-
-end;
-
-procedure TMenuButtonHandler.UpdateAllControls;
-var
-  c1: Integer;
-begin
-  for c1 := 0 to ControlList.Count-1 do
-  begin
-    UpdateControl(ControlList[c1]);
-  end;
 end;
 
 procedure TMenuButtonHandler.UpdateControl(const c: TObject);
@@ -113,6 +89,8 @@ var
   TextValue : string;
   mc : IMenuControl;
 begin
+  inherited;
+
   if Supports(c, IMenuControl, mc)  then
   begin
     ParName  := mc.GetParameterName;
