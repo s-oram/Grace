@@ -56,6 +56,7 @@ contains
   VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas',
   VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas',
   VamLib.WinHook in 'Source\VamLib.WinHook.pas',
-  VamLib.DuckType in 'Source\VamLib.DuckType.pas';
+  VamLib.DuckType in 'Source\VamLib.DuckType.pas',
+  VamLib.PatchUtils in 'Source\VamLib.PatchUtils.pas';
 
 end.

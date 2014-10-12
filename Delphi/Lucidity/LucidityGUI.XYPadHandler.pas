@@ -37,10 +37,7 @@ type
     ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
     Plugin : TeePlugin;
-
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
-
-
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -49,6 +46,7 @@ type
     procedure DeregisterControl(const c : TObject);
     procedure UpdateAllControls;
   published
+    // publish the event handlers so they can be accessed using the RTTI.
     procedure EventHandle_XYPadChanged(Sender: TObject);
     procedure EventHandle_XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   end;
@@ -56,6 +54,8 @@ type
 implementation
 
 uses
+  SysUtils,
+  VamLib.PatchUtils,
   Vcl.Dialogs,
   TypInfo,
   System.Rtti;
@@ -72,6 +72,8 @@ begin
   m.Code := obj^.MethodAddress(MethodName);
   result := m;
 end;
+
+
 
 { TXYPadHandler }
 
@@ -95,18 +97,24 @@ begin
 
 end;
 
+type
+  TNotifyEventReference = reference to procedure(Sender : TObject);
+
 procedure TXYPadHandler.RegisterControl(const c: TObject);
 var
   v : TValue;
   Prop: TRttiProperty;
   RttiContext : TRtticontext;
+
+  p : TNotifyEventReference;
+  Proc : pointer;
 begin
   if ControlList.IndexOf(c) = -1
     then ControlList.Add(c);
 
-
-
-  SetMethodProp(c, 'OnChanged', GetEventHandler(@self, 'EventHandle_XYPadChanged'));
+  //==== check for requirements ====
+  c.Duck.RequireTarget.SetEvent('OnChanged', @self, 'EventHandle_XYPadChanged');
+  c.Duck.RequireTarget.SetEvent('OnMouseDown', @self, 'EventHandle_XYPadMouseDown');
 end;
 
 procedure TXYPadHandler.DeregisterControl(const c: TObject);
