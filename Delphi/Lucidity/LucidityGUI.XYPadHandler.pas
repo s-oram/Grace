@@ -113,8 +113,8 @@ begin
     then ControlList.Add(c);
 
   //==== check for requirements ====
-  c.Duck.RequireTarget.SetEvent('OnChanged', @self, 'EventHandle_XYPadChanged');
-  c.Duck.RequireTarget.SetEvent('OnMouseDown', @self, 'EventHandle_XYPadMouseDown');
+  c.Duck.RequireTarget.SetEvent('OnChanged', self, 'EventHandle_XYPadChanged');
+  c.Duck.RequireTarget.SetEvent('OnMouseDown', self, 'EventHandle_XYPadMouseDown');
 end;
 
 procedure TXYPadHandler.DeregisterControl(const c: TObject);

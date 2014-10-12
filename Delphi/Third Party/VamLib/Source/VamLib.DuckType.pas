@@ -60,8 +60,8 @@ type
 
     function SetProperty(const PropertyName : string; Value : TValue):IDuck;
     function SetEvent(const EventName : string; Handler : TMethod):IDuck; overload;
-    function SetEvent(const EventName : string; Obj, MethodAddress : Pointer):IDuck; overload;
-    function SetEvent(const EventName : string; Obj : Pointer; MethodName : string):IDuck; overload;
+    function SetEvent(const EventName : string; Obj : TObject; MethodAddress : Pointer):IDuck; overload;
+    function SetEvent(const EventName : string; Obj : TObject; MethodName : string):IDuck; overload;
     function ClearEvent(const EventName : string):IDuck; //removes an event handler.
   end;
 
@@ -94,8 +94,8 @@ type
 
     function SetProperty(const PropertyName : string; Value : TValue):IDuck;
     function SetEvent(const EventName : string; Handler : TMethod):IDuck; overload;
-    function SetEvent(const EventName : string; Obj, MethodAddress : Pointer):IDuck; overload;
-    function SetEvent(const EventName : string; Obj : Pointer; MethodName : string):IDuck; overload;
+    function SetEvent(const EventName : string; Obj : TObject; MethodAddress : Pointer):IDuck; overload;
+    function SetEvent(const EventName : string; Obj : TObject; MethodName : string):IDuck; overload;
     function ClearEvent(const EventName : string):IDuck;
   public
      constructor Create(AOwner: TObject); virtual;
@@ -155,28 +155,28 @@ begin
   result := self;
 end;
 
-function TDuck.SetEvent(const EventName: string; Obj, MethodAddress: Pointer): IDuck;
+function TDuck.SetEvent(const EventName: string; Obj : TObject; MethodAddress: Pointer): IDuck;
 var
   m : TMethod;
 begin
   if fRequireTarget then EnsurePropertyExists(EventName);
-  if Obj = nil           then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
+  if not assigned(Obj) then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
   if MethodAddress = nil then raise Exception.Create('TDuck.SetEvent() MethodAddress is not assigned.');
   m.Code := MethodAddress;
-  m.Data := Obj;
+  m.Data := @Obj;
   SetMethodProp(FOwner, EventName, m);
   result := self;
 end;
 
-function TDuck.SetEvent(const EventName: string; Obj: Pointer; MethodName: string): IDuck;
+function TDuck.SetEvent(const EventName: string; Obj: TObject; MethodName: string): IDuck;
 // IMPORTANT: The MethodName target must be published with runtime type information enabled. {+M}
 var
   m : TMethod;
 begin
   if fRequireTarget then EnsurePropertyExists(EventName);
-  if Obj = nil then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
-  m.Data := Obj;
-  m.Code := TObject(Obj^).MethodAddress(MethodName);
+  if not assigned(Obj) then raise Exception.Create('TDuck.SetEvent() Obj is not assigned.');
+  m.Data := @Obj;
+  m.Code := Obj.MethodAddress(MethodName);
   if m.Code = nil then raise Exception.Create('TDuck.SetEvent() Method address not found.');
   SetMethodProp(FOwner, EventName, m);
   result := self;
