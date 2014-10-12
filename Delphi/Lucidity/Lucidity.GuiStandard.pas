@@ -59,6 +59,7 @@ procedure TGuiStandard.UpdateControls;
 begin
   KnobHandler.UpdateAllControls;
   MenuHandler.UpdateAllControls;
+  XYPadHandler.UpdateAllControls;
 end;
 
 end.

@@ -44,6 +44,7 @@ type
     ControlList : TObjectList;
     ThrottleHandle : TUniqueID;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure UpdateControl(const c : TObject);
   public
     constructor Create(const aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -51,6 +52,7 @@ type
     procedure RegisterControl(const c : TObject);
     procedure DeregisterControl(const c : TObject);
     procedure UpdateAllControls;
+
   published
     // publish the event handlers so they can be accessed using the RTTI.
     procedure EventHandle_XYPadChanged(Sender: TObject);
@@ -92,6 +94,7 @@ begin
   ControlList.OwnsObjects := false;
   ThrottleHandle.Init;
   PadContextMenu := TXYPadContextMenu.Create;
+  PadContextMenu.Plugin := aPlugin;
 end;
 
 destructor TXYPadHandler.Destroy;
@@ -134,23 +137,54 @@ begin
 end;
 
 procedure TXYPadHandler.UpdateAllControls;
+var
+  c1: Integer;
 begin
-  assert(assigned(Plugin));
-
-  {
-  if XYPad1.PosX <> Plugin.XYPads.PadX1 then XYPad1.PosX := Plugin.XYPads.PadX1;
-  if XYPad2.PosX <> Plugin.XYPads.PadX2 then XYPad2.PosX := Plugin.XYPads.PadX2;
-  if XYPad3.PosX <> Plugin.XYPads.PadX3 then XYPad3.PosX := Plugin.XYPads.PadX3;
-  if XYPad4.PosX <> Plugin.XYPads.PadX4 then XYPad4.PosX := Plugin.XYPads.PadX4;
-
-  if XYPad1.PosY <> Plugin.XYPads.PadY1 then XYPad1.PosY := Plugin.XYPads.PadY1;
-  if XYPad2.PosY <> Plugin.XYPads.PadY2 then XYPad2.PosY := Plugin.XYPads.PadY2;
-  if XYPad3.PosY <> Plugin.XYPads.PadY3 then XYPad3.PosY := Plugin.XYPads.PadY3;
-  if XYPad4.PosY <> Plugin.XYPads.PadY4 then XYPad4.PosY := Plugin.XYPads.PadY4;
-  }
+  for c1 := 0 to ControlList.Count-1 do
+  begin
+    UpdateControl(ControlList[c1]);
+  end;
 end;
 
+procedure TXYPadHandler.UpdateControl(const c: TObject);
+var
+  Pad : TVamXYPad;
+  PadX, PadY : single;
+begin
+  assert(c is TVamXyPad);
+  Pad := (c as TVamXyPad);
 
+  case Pad.Tag of
+    1:
+    begin
+      PadX := Plugin.XYPads.PadX1;
+      PadY := Plugin.XYPads.PadY1;
+    end;
+
+    2:
+    begin
+      PadX := Plugin.XYPads.PadX2;
+      PadY := Plugin.XYPads.PadY2;
+    end;
+
+    3:
+    begin
+      PadX := Plugin.XYPads.PadX3;
+      PadY := Plugin.XYPads.PadY3;
+    end;
+
+    4:
+    begin
+      PadX := Plugin.XYPads.PadX4;
+      PadY := Plugin.XYPads.PadY4;
+    end;
+  else
+    raise Exception.Create('Index not handled.');
+  end;
+
+  Pad.PosX := PadX;
+  Pad.PosY := PadY;
+end;
 
 procedure TXYPadHandler.EventHandle_XYPadChanged(Sender: TObject);
 var
