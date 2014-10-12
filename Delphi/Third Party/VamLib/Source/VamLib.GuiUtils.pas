@@ -8,7 +8,7 @@ uses
 
 procedure Wait(const MilliSeconds : Longint);
 
-// TODO:HIGH write a GuiDebouce and/or GuiThrottle methods based
+// TODO:MED write a GuiDebouce and/or GuiThrottle methods based
 // on code in wait().
 
 //function GuiDebounce(const MilliSeconds : integer; var ReferenceTime : Int64):boolean;
@@ -55,7 +55,6 @@ type
   TDebounceEdge = (deLeading, deTrailing, deBoth);
 
 procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
-
 
 procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
 

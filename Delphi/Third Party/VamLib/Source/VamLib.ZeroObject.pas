@@ -15,7 +15,7 @@ uses
 {$SCOPEDENUMS ON}
 
 {.$DEFINE ExtraLogging}
-{$IFDEF ExtraLogging}{$ENDIF}
+//{$IFDEF ExtraLogging}{$ENDIF}
 
 type
   {
@@ -582,9 +582,7 @@ begin
       SendMessageToList(VclObjects, VclListLock, MsgID, Data, nil);
     end else
     begin
-      // TODO:HIGH probably should log a warning here.
-      // or raise an error.
-      // or remove MsgMain.
+      Log.LogError('MsgVCL Wrong Thread.');
     end;
   finally
     IsGuiOpenLock.EndRead;
@@ -602,8 +600,6 @@ begin
         SendMessageToList(VclObjects, VclListLock, MsgID, nil, nil);
       end else
       begin
-        // TODO:MED probably should log a warning or raise an error here.
-        //SendMessageToList(VclObjects, MsgID, nil);
         Log.LogError('MsgVCL Wrong Thread.');
       end;
     end;
@@ -635,30 +631,6 @@ begin
   finally
     IsGuiOpenLock.EndRead;
   end;
-
-
-
-
-  {
-  // TODO:HIGH need to check calling thread ID.
-  IsGuiOpenLock.Acquire;
-  try
-    if (IsGuiOpen) then
-    begin
-      if (MainThreadID = GetCurrentThreadId) then
-      begin
-        SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
-      end else
-      begin
-        // TODO:MED probably should log a warning or raise an error here.
-        Log.LogError('MsgVCL Wrong Thread.');
-      end;
-    end;
-  finally
-    IsGuiOpenLock.Release;
-  end;
-  }
-
 end;
 
 procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
@@ -666,15 +638,6 @@ var
   msgData : TMessageData;
   QueueValue : TOmniValue;
 begin
-  {
-  // Always add messages to the queue even if GUI isn't opened.
-  msgData.MsgID   := MsgID;
-  msgData.DataB   := DataB;
-  QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-  VclMessageQueue.Enqueue(QueueValue);
-  }
-
-
   IsGuiOpenLock.BeginRead;
   try
     if IsGuiOpen then
@@ -696,7 +659,6 @@ begin
   finally
     IsGuiOpenLock.EndRead;
   end;
-
 end;
 
 procedure TMotherShip.Handle_VclMessageTimerEvent(Sender: TObject);

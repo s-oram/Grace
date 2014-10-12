@@ -147,7 +147,7 @@ var
   wd : TCpuWatchData;
 }
 begin
-  // TODO:HIGH add conditional defines so all this is optional.
+  // TODO:MED add conditional defines so all this is optional.
   {
   wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
   wd.MaxTime := MaxProcessTime;
@@ -164,7 +164,7 @@ var
   xLoad : string;
 }
 begin
-  // TODO:HIGH add conditional defines so all this is optional.
+  // TODO:MED add conditional defines so all this is optional.
   {
   wd := CpuOverloadWatch_FindOrCreateWatch(WatchName);
   QueryPerformanceCounter(wd.EndTime);
