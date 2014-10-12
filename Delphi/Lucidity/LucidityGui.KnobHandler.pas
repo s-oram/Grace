@@ -46,6 +46,8 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
     procedure UpdateModulation(const c : TObject);
+
+    procedure PluginParameterChanged(const ParName : string; ParValue : single);
   public
     constructor Create(const aPlugin : TeePlugin); override;
     destructor Destroy; override;
@@ -352,46 +354,55 @@ end;
 
 procedure TKnobHandler.Handle_KnobPosChanged(Sender: TObject);
 var
-  KnobControl : IKnobControl;
   ParName  : string;
-  ParID    : TPluginParameterID;
   ParValue : single;
-  Par : TPluginParameterClass;
+  KnobControl : IKnobControl;
 begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    ParID    := PluginParNameToID(ParName);
     ParValue := KnobControl.GetKnobValue;
 
-    assert(ParValue >= 0);
-    assert(ParValue <= 1);
-
-    Par := Plugin.PluginParameters.FindByName(ParName);
-    assert(assigned(Par));
-
-    if Par.IsQuantised then
-    begin
-      ParValue := QuantiseParameterValue(ParValue, Par.QuantisedMin, Par.QuantisedMax);
-    end;
-
-    if Par.IsPublishedVstParameter then
-    begin
-      Command.VstPar_SetParameterAutomated(Plugin, Par.VstParameterIndex, ParValue);
-      Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
-    end else
-    begin
-      Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
-    end;
-
-    Throttle(ThrottleHandle, 25,
-    procedure
-    begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
-    end);
+    self.PluginParameterChanged(ParName, ParValue);
   end;
 end;
+
+procedure TKnobHandler.PluginParameterChanged(const ParName: string; ParValue: single);
+var
+  ParID    : TPluginParameterID;
+  Par : TPluginParameterClass;
+begin
+  assert(ParValue >= 0);
+  assert(ParValue <= 1);
+
+  ParID    := PluginParNameToID(ParName);
+
+  Par := Plugin.PluginParameters.FindByName(ParName);
+  assert(assigned(Par));
+
+  if Par.IsQuantised then
+  begin
+    ParValue := QuantiseParameterValue(ParValue, Par.QuantisedMin, Par.QuantisedMax);
+  end;
+
+  if Par.IsPublishedVstParameter then
+  begin
+    Command.VstPar_SetParameterAutomated(Plugin, Par.VstParameterIndex, ParValue);
+    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+  end else
+  begin
+    Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
+  end;
+
+  Throttle(ThrottleHandle, 25,
+  procedure
+  begin
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
+  end);
+end;
+
+
 
 procedure TKnobHandler.Handle_ModAmountChanged(Sender: TObject);
 var
