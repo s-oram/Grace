@@ -8,6 +8,7 @@ uses
   eePlugin,
   Classes,
   Contnrs,
+  VamLib.UniqueID,
   VamLib.ZeroObject;
 
 type
@@ -16,6 +17,7 @@ type
   protected
     Plugin : TeePlugin;
     ControlList : TObjectList;
+    ThrottleHandle : TUniqueID;
     procedure UpdateControl(const c : TObject); virtual; abstract;
   public
     constructor Create(const aPlugin : TeePlugin); virtual;
@@ -35,6 +37,7 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
+  ThrottleHandle.Init;
 end;
 
 destructor TCustomControlHandler.Destroy;

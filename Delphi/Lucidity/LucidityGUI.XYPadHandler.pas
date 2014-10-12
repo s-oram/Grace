@@ -27,7 +27,6 @@ uses
   Classes,
   Vcl.Menus,
   Menu.CustomPopupMenu,
-  VamLib.UniqueID,
   VamLib.ZeroObject,
   Menu.XYPadContextMenu,
   eePlugin,
@@ -41,7 +40,6 @@ type
   private
   protected
     PadContextMenu : TXYPadContextMenu;
-    ThrottleHandle : TUniqueID;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
     procedure UpdateControl(const c : TObject); override;
   public
@@ -70,7 +68,6 @@ uses
 constructor TXYPadHandler.Create(const aPlugin: TeePlugin);
 begin
   inherited;
-  ThrottleHandle.Init;
   PadContextMenu := TXYPadContextMenu.Create;
   PadContextMenu.Plugin := aPlugin;
 end;

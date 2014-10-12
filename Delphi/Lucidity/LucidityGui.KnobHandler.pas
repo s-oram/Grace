@@ -8,7 +8,6 @@ uses
   Lucidity.CustomControlHandler,
   Vcl.Menus,
   Menu.CustomPopupMenu,
-  VamLib.UniqueID,
   Contnrs,
   Controls,
   Classes,
@@ -40,7 +39,6 @@ type
   TKnobHandler = class(TCustomControlHandler)
   private
   protected
-    ThrottleHandle : TUniqueID;
     KnobContextMenu : TKnobContextMenu;
     procedure UpdateControl(const c : TObject); override;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
@@ -82,7 +80,6 @@ uses
 constructor TKnobHandler.Create(const aPlugin : TeePlugin);
 begin
   inherited;
-  ThrottleHandle.Init;
   KnobContextMenu := TKnobContextMenu.Create;
   KnobContextMenu.Initialize(aPlugin);
 end;
