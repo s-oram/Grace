@@ -62,6 +62,7 @@ uses
   VamXYPad,
   SysUtils,
   VamLib.PatchUtils,
+  uLucidityEnums,
   Vcl.Dialogs;
 
 { TXYPadHandler }
@@ -187,6 +188,8 @@ var
   ptr : Pointer;
 begin
   assert(assigned(Plugin));
+
+  Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
 
   if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
   begin
