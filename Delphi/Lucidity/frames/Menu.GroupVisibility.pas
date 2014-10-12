@@ -17,7 +17,7 @@ implementation
 
 uses
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   SysUtils,
   Menus;
 

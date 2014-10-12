@@ -62,7 +62,7 @@ uses
   VamXYPad,
   SysUtils,
   VamLib.PatchUtils,
-  uLucidityEnums,
+  Lucidity.Enums,
   Vcl.Dialogs;
 
 { TXYPadHandler }

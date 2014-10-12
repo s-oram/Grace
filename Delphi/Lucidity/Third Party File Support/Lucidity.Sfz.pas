@@ -7,7 +7,7 @@ interface
 
 uses
   SfzParser, SfzParser.SfzOpcodes,
-  uLucidityEnums,
+  Lucidity.Enums,
   NativeXML,
   Contnrs;
 

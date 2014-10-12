@@ -102,7 +102,7 @@ uses
   Lucidity.Interfaces,
   RedFoxColor,
   Lucidity.GuiUtils,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.KeyGroup;
 
 { TVoiceControlFrame }

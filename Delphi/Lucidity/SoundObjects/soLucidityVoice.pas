@@ -14,7 +14,7 @@ uses
   eeTypes, eeVirtualCV,
   eeGlobals, eeVoiceLogic,
   eeCounter,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Interfaces,
   Lucidity.Types,
   LucidityModConnections,

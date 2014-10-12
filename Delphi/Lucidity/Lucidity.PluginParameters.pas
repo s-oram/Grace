@@ -3,7 +3,7 @@ unit Lucidity.PluginParameters;
 interface
 
 uses
-  uLucidityEnums,
+  Lucidity.Enums,
   uConstants,
   eeTypes,
   eeEnumHelper;

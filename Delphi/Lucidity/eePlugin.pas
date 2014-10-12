@@ -33,7 +33,7 @@ uses
   Generics.Defaults,
   Generics.Collections,
   OtlSync,
-  uLucidityEnums, uLucidityData,
+  Lucidity.Enums, uLucidityData,
   Math, VamLib.MoreTypes, VamKeyStateTracker,
   uConstants, uLucidityXYPads,
   SyncObjs,

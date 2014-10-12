@@ -46,7 +46,7 @@ uses
   SysUtils,
   soLucidityVoiceParameterWrapper,
   Lucidity.KeyGroup,
-  uLucidityEnums,
+  Lucidity.Enums,
   eePlugin;
 
 { TPluginParameterController }

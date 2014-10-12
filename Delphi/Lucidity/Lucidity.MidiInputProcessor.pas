@@ -11,7 +11,7 @@ uses
   soNoteStack,
   uConstants,
   Lucidity.Types,
-  uLucidityEnums;
+  Lucidity.Enums;
 
 type
   TMidiInputProcessor = class(TZeroObject)

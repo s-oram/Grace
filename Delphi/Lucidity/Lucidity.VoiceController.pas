@@ -12,7 +12,7 @@ uses
   uConstants,
   VamLib.ZeroObject,
   soLucidityVoice,
-  uLucidityEnums,
+  Lucidity.Enums,
   eeGlobals;
 
 type

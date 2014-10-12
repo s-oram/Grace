@@ -16,7 +16,7 @@ uses
   VamKnob,
   eeGlobals,
   Lucidity.PluginParameters,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Interfaces,
   Lucidity.Types,
   Lucidity.SampleMap, eePlugin,

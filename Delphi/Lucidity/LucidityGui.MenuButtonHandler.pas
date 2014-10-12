@@ -41,7 +41,7 @@ uses
   eeEnumHelper,
   Lucidity.PluginParameters,
   Lucidity.Types,
-  uLucidityEnums,
+  Lucidity.Enums,
   uConstants,
   Lucidity.GuiUtils;
 

@@ -7,7 +7,7 @@ uses
   VamLib.UniqueID,
   VamLib.Debouncer,
   VamLib.ZeroObject,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Interfaces,
   Menu.FileTreeMenu,
   eeFileBrowserAddon, uConstants, eePlugin, Lucidity.GuiStandard,

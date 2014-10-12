@@ -7,7 +7,7 @@ interface
 uses
   uConstants,
   Lucidity.Types,
-  VamLib.MoreTypes, soADSR, {eeFunctions,} uLucidityEnums, eeDsp;
+  VamLib.MoreTypes, soADSR, {eeFunctions,} Lucidity.Enums, eeDsp;
 
 type
   TEnvelopeStage = soADSR.TEnvelopeStage;

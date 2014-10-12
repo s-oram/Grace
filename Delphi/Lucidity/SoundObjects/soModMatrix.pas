@@ -8,7 +8,7 @@ uses
   VamLib.Utils,
   VamLib.MoreTypes, LucidityModConnections,
   Lucidity.Types,
-  uConstants, uLucidityEnums,
+  uConstants, Lucidity.Enums,
   SoundObjectTypes;
 
   {$SCOPEDENUMS ON}

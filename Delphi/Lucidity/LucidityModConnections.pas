@@ -6,7 +6,8 @@ uses
   Classes,
   VamLib.Collections.Lists,
   VamLib.MoreTypes,
-  uConstants, uLucidityEnums;
+  Lucidity.Enums,
+  uConstants;
 
 {$SCOPEDENUMS ON}
 

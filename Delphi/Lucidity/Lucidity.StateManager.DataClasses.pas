@@ -7,7 +7,7 @@ interface
 {$M+}
 
 uses
-  uLucidityEnums;
+  Lucidity.Enums;
 
 type
   TRegionLoadInfo = class

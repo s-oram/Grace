@@ -10,7 +10,7 @@ uses
   // NOTE: Any Lucidity specific units must be
   // drawn from the Ludcidity Base Classes project.
   // I want to avoid circural type depencies where
-  uLucidityEnums,
+  Lucidity.Enums,
   //=================================================
   LucidityGui.Scope.FreqAnalyzer,
   LucidityGui.Scope.SignalRecorder,

@@ -68,7 +68,7 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
   VamLib.Throttler,
-  uLucidityEnums,
+  Lucidity.Enums,
   VamQuery,
   VamWinControl,
   uConstants,

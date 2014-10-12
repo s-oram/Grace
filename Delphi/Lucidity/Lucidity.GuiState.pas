@@ -7,7 +7,7 @@ interface
 uses
   //LucidityGui.KnobHandler,
   //LucidityGui.MenuButtonHandler,
-  uConstants, uLucidityEnums, Classes, Controls,
+  uConstants, Lucidity.Enums, Classes, Controls,
   eeTypes;
 
 type

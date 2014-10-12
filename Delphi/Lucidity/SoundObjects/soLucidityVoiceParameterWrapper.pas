@@ -6,7 +6,7 @@ uses
   VamLib.ZeroObject,
   LucidityGui.VectorSequence,
   LucidityModConnections,
-  uConstants, uLucidityEnums, soModMatrix,
+  uConstants, Lucidity.Enums, soModMatrix,
   Lucidity.Interfaces,
   soLucidityVoice;
 

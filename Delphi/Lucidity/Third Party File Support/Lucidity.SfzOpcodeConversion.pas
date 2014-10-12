@@ -3,7 +3,7 @@ unit Lucidity.SfzOpcodeConversion;
 interface
 
 uses
-  uLucidityEnums,
+  Lucidity.Enums,
   SfzParser.SfzOpcodes;
 
 //================================================================================

@@ -3,7 +3,7 @@ unit Menu.ModSelectorContextMenu;
 interface
 
 uses
-  eeEnumMenu, uLucidityEnums,
+  eeEnumMenu, Lucidity.Enums,
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
 type

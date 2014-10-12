@@ -53,7 +53,7 @@ uses
   Lucidity.Interfaces,
   Lucidity.PluginParameters,
   Lucidity.GuiUtils,
-  uLucidityEnums,
+  Lucidity.Enums,
   RedFoxColor;
 
 {$R *.dfm}

@@ -10,7 +10,7 @@ uses
   soGateEnvelope, soStepInFilter,
   eeCounter,
   Lucidity.Osc.FadeOutSampler,
-  uConstants, uLucidityEnums,
+  uConstants, Lucidity.Enums,
   eeSampleFloat,
   uGuiFeedbackData,
   uLucidityClock;

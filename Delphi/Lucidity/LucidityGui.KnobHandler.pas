@@ -70,7 +70,7 @@ uses
   VamLib.Throttler,
   VamKnob,
   VamGuiControlInterfaces,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Types,
   uConstants,
   Lucidity.GuiUtils;

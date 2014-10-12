@@ -15,7 +15,7 @@ uses
   uSequencerFrame,
   OtlComm, uModSystemFrame,
   uAboutFrame, Lucidity.SampleMap,
-  eeEnumHelper, uLucidityEnums,
+  eeEnumHelper, Lucidity.Enums,
   DAEffect, DAEffectX, eePluginKeyHook,
   Lucidity.GuiState,
   eePluginHotkeys,

@@ -1,4 +1,4 @@
-unit uLucidityEnums;
+unit Lucidity.Enums;
 
 interface
 

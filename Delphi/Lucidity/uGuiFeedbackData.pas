@@ -5,7 +5,7 @@ interface
 uses
   Lucidity.Interfaces,
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.SampleMap;
 
 type

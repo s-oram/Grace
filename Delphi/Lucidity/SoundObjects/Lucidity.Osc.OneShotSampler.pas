@@ -8,7 +8,7 @@ uses
   Lucidity.Interfaces,
   Classes,
   VamLib.MoreTypes, Lucidity.SampleMap, uLucidityCustomSampleOsc, soGateEnvelope,
-  uConstants, uLucidityEnums, eeSampleFloat, uLucidityClock,
+  uConstants, Lucidity.Enums, eeSampleFloat, uLucidityClock,
   eeCounter,
   soStepInFilter,
   Lucidity.Osc.FadeOutSampler,

@@ -16,7 +16,7 @@ uses
   Lucidity.Interfaces, LucidityModConnections,
   Lucidity.StateManager.DataClasses,
   VamLib.MoreTypes, eeGlobals,
-  uLucidityEnums,
+  Lucidity.Enums,
   eeVoiceLogic,
   eePatchObject,
   uConstants,

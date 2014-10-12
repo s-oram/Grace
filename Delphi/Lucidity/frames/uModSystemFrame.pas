@@ -5,7 +5,7 @@ interface
 uses
   Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
-  uLucidityEnums, Lucidity.Interfaces,
+  Lucidity.Enums, Lucidity.Interfaces,
   uConstants, eePlugin, Lucidity.GuiStandard, eeEnumMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, RedFoxWinControl,

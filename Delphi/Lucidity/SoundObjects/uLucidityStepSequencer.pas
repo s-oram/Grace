@@ -9,7 +9,7 @@ uses
   VamGuiControlInterfaces,
   B2.Filter.CriticallyDampedLowpass, eeBiquadFilterCore,
   VamLib.MoreTypes,
-  uLucidityEnums,
+  Lucidity.Enums,
   uLucidityClock,
   uConstants;
 

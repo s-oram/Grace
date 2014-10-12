@@ -51,7 +51,7 @@ uses
   XPLAT.Dialogs,
   eeWinEx,
   eePluginDataDir,
-  uLucidityEnums,
+  Lucidity.Enums,
   SysUtils,
   uAutoFree,
   Lucidity.GuiUtils,

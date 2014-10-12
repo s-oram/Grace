@@ -11,7 +11,7 @@ uses
   eeDsp,
   B2.Filter.CriticallyDampedLowpass,
   VamLib.MoreTypes, eeBiquadFilterCore, eeBiquadFilters,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Types,
   B2.MovingAverageFilter,
   soLfo.WaveTableLfo,

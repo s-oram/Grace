@@ -10,7 +10,7 @@ uses
   //Lucidity.PluginParameters,
   SysUtils,
   eeEnumHelper,
-  uLucidityEnums,
+  Lucidity.Enums,
   Messages, eePluginSettings;
 
 const

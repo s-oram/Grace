@@ -62,7 +62,7 @@ uses
   VamTextBox,
   VamButton,
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.Interfaces,
   Lucidity.SampleMap;
 

@@ -4,7 +4,7 @@ interface
 
 uses
   Lucidity.Interfaces,
-  VamLib.MoreTypes, uLucidityEnums,
+  VamLib.MoreTypes, Lucidity.Enums,
   Lucidity.SampleMap, soGateEnvelope,
   uConstants, eeSampleFloat,
   Math, eeDsp, eeFunctions,

@@ -48,7 +48,7 @@ uses
   XPLAT.Dialogs,
   InWindowDialog,
   VamLib.Utils,
-  uLucidityEnums,
+  Lucidity.Enums,
   Lucidity.PluginParameters,
   Lucidity.Types,
   Lucidity.GuiUtils,

@@ -5,7 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  uLucidityEnums,
+  Lucidity.Enums,
   VamLib.UniqueID,
   VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.GroupVisibility,

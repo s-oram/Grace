@@ -5,7 +5,7 @@ interface
 uses
   eeSampleFloat,
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   VamSampleDisplayBackBuffer,
   VamSamplePeakBuffer,
   Lucidity.Types,

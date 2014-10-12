@@ -139,7 +139,7 @@ uses
   LucidityGui.Scope.SignalRecorder in 'GuiComponents\LucidityGui.Scope.SignalRecorder.pas',
   LucidityGui.Scope.FreqAnalyzer in 'GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas',
   eeEnumHelper in 'eeEnumHelper.pas',
-  uLucidityEnums in 'uLucidityEnums.pas',
+  Lucidity.Enums in 'Lucidity.Enums.pas',
   Lucidity.KeyGroupPlayer in 'Lucidity.KeyGroupPlayer.pas',
   Lucidity.GuiStandard in 'Lucidity.GuiStandard.pas',
   Lucidity.PluginParameterController in 'Lucidity.PluginParameterController.pas',

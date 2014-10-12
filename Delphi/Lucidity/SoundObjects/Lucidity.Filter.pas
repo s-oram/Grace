@@ -9,7 +9,7 @@ uses
   VamLib.MoreTypes,
   B2.DelayLine.StereoDelayBuffer,
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   Math,
   Lucidity.Types,
   eeVirtualCV,

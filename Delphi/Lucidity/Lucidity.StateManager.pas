@@ -14,7 +14,7 @@ uses
   VamGuiControlInterfaces,
   LucidityModConnections,
   Lucidity.PluginParameters,
-  uLucidityEnums, soModMatrix,
+  Lucidity.Enums, soModMatrix,
   SysUtils, Lucidity.KeyGroup,
   eePlugin, Classes, NativeXML,
   eeTypes,

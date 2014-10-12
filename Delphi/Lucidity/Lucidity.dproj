@@ -566,7 +566,7 @@
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.SignalRecorder.pas"/>
 			<DCCReference Include="GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas"/>
 			<DCCReference Include="eeEnumHelper.pas"/>
-			<DCCReference Include="uLucidityEnums.pas"/>
+			<DCCReference Include="Lucidity.Enums.pas"/>
 			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
 			<DCCReference Include="Lucidity.GuiStandard.pas"/>
 			<DCCReference Include="Lucidity.PluginParameterController.pas"/>

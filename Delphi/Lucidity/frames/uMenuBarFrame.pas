@@ -69,7 +69,7 @@ uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   RedFox,
   RedFoxColor,
-  uLucidityEnums,
+  Lucidity.Enums,
   VamQuery,
   VamLayoutWizard,
   Lucidity.GuiUtils,

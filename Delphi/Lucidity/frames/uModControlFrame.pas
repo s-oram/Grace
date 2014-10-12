@@ -176,7 +176,7 @@ uses
   RedFox,
   MadExcept,
   VamLayoutWizard,
-  RedFoxColor, uLucidityEnums,
+  RedFoxColor, Lucidity.Enums,
   uConstants, Lucidity.GuiUtils,
   GuiDrawingRoutines,
   InWindowDialog,

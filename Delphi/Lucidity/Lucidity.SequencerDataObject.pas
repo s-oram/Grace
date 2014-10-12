@@ -5,7 +5,7 @@ interface
 uses
   VamGuiControlInterfaces,
   uConstants,
-  uLucidityEnums,
+  Lucidity.Enums,
   VamLib.ZeroObject;
 
 type
