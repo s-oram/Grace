@@ -179,8 +179,9 @@ type
     procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat); overload;
 
     function SaveCurrentProgram:boolean;
-    procedure SaveProgramToFile(const FileName : string);
-    procedure SaveProgramAsDefault;
+    procedure SaveCurrentProgramAsDefault;
+    procedure SaveProgramToFileWithoutSamples(const FileName : string);
+    procedure SaveProgramToFileWithSamples(const FileName : string);
 
     function RenameProgramFile(const CurrentFileName, NewFileName : string):boolean;
 
@@ -1551,7 +1552,7 @@ begin
   begin
     // TODO:MED Instead of automatically returning true here,
     // we should only return true if the file gets saved.
-    SaveProgramToFile(fn);
+    SaveProgramToFileWithSamples(fn);
     result := true;
   end else
   begin
@@ -1559,7 +1560,7 @@ begin
   end;
 end;
 
-procedure TeePlugin.SaveProgramToFile(const FileName: string);
+procedure TeePlugin.SaveProgramToFileWithSamples(const FileName: string);
 var
   StateManager : TLucidityStateManager;
 begin
@@ -1580,13 +1581,36 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
 end;
 
-procedure TeePlugin.SaveProgramAsDefault;
+procedure TeePlugin.SaveProgramToFileWithoutSamples(const FileName: string);
+var
+  StateManager : TLucidityStateManager;
+begin
+  PresetName := RemoveFileExt(FileName);
+  Globals.PatchInfo.PatchFileName := FileName;
+
+  Globals.LastProgramSaveDir := ExtractFileDir(FileName);
+
+  //SaveSamplesToDisk(FileName, SampleMap);
+
+  StateManager := TLucidityStateManager.Create(self);
+  try
+    StateManager.SavePesetToFile(FileName);
+  finally
+    StateManager.Free;
+  end;
+
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
+end;
+
+
+
+procedure TeePlugin.SaveCurrentProgramAsDefault;
 var
   fnA : string;
 begin
   fnA := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Patches') + IncludeTrailingPathDelimiter('User');
   fnA := fnA + 'Default.lpg';
-  SaveProgramToFile(fnA);
+  SaveProgramToFileWithSamples(fnA);
 end;
 
 procedure TeePlugin.LoadMIDIProgram(const ProgramIndex: integer);

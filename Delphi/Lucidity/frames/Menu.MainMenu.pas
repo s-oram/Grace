@@ -23,6 +23,7 @@ type
     procedure EventHandle_SaveProgramAsDefault(Sender : TObject);
     procedure EventHandle_SaveProgram(Sender : TObject);
     procedure EventHandle_SaveProgramAs(Sender : TObject);
+    procedure EventHandle_SaveProgramAsWithSamples(Sender : TObject);
 
     procedure EventHandle_SaveMidiMapAs(Sender : TObject);
     procedure EventHandle_SaveMidiMapAsDefault(Sender : TObject);
@@ -134,6 +135,39 @@ begin
   mi.OnClick := MenuItemClicked;
   Menu.Items.Add(mi);
 
+  //==== insert a spacer =====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
+
+  mi := TMenuItem.Create(Menu);
+  mi.Tag     := 3;
+  mi.Caption := 'Load Program...';
+  mi.OnClick := MenuItemClicked;
+  Menu.Items.Add(mi);
+
+  {
+  // Import program menu
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Import Program';
+  Menu.Items.Add(mi);
+  miRefA := mi;
+  }
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Import SFZ...';
+  mi.OnClick := EventHandle_ImportSFZ;
+  Menu.Items.Add(mi);
+  //miRefA.Add(mi);
+
+
+    //==== insert a spacer =====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
+
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Save Program';
   mi.OnClick := EventHandle_SaveProgram;
@@ -145,28 +179,14 @@ begin
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Save Program As Default';
+  mi.Caption := 'Save Program + Samples As...';
+  mi.OnClick := EventHandle_SaveProgramAsWithSamples;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Save Current Program As Default';
   mi.OnClick := EventHandle_SaveProgramAsDefault;
   Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
-  mi.Tag     := 3;
-  mi.Caption := 'Load Program...';
-  mi.OnClick := MenuItemClicked;
-  Menu.Items.Add(mi);
-
-
-  // Import program menu
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Import Program';
-  Menu.Items.Add(mi);
-  miRefA := mi;
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Import SFZ...';
-  mi.OnClick := EventHandle_ImportSFZ;
-  miRefA.Add(mi);
-
 
   //==== insert a spacer =====
   mi := TMenuItem.Create(Menu);
@@ -175,13 +195,8 @@ begin
   //=========================
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Save MIDI Map As...';
-  mi.OnClick := EventHandle_SaveMidiMapAs;
-  Menu.Items.Add(mi);
-
-  mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Save MIDI Map As Default';
-  mi.OnClick := EventHandle_SaveMidiMapAsDefault;
+  mi.Caption := 'Clear MIDI Map';
+  mi.OnClick := EventHandle_ClearMidiMap;
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
@@ -195,8 +210,13 @@ begin
   Menu.Items.Add(mi);
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Clear MIDI Map';
-  mi.OnClick := EventHandle_ClearMidiMap;
+  mi.Caption := 'Save MIDI Map As...';
+  mi.OnClick := EventHandle_SaveMidiMapAs;
+  Menu.Items.Add(mi);
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Save MIDI Map As Default';
+  mi.OnClick := EventHandle_SaveMidiMapAsDefault;
   Menu.Items.Add(mi);
 
   //==== insert a spacer =====
@@ -449,19 +469,28 @@ begin
 
   if SaveDialog.Execute then
   begin
-    Plugin.SaveProgramToFile(SaveDialog.FileName);
+    Plugin.SaveProgramToFileWithoutSamples(SaveDialog.FileName);
   end;
 end;
 
 procedure TMainMenu.EventHandle_SaveProgramAsDefault(Sender: TObject);
 begin
-  Plugin.SaveProgramAsDefault;
+  Plugin.SaveCurrentProgramAsDefault;
 end;
 
+procedure TMainMenu.EventHandle_SaveProgramAsWithSamples(Sender: TObject);
+var
+  SaveDialog : TxpFileSaveDialog;
+begin
+  SaveDialog := TxpFileSaveDialog.Create(nil);
+  AutoFree(@SaveDialog);
 
+  SetupFileSaveDialog_Program(Plugin, SaveDialog);
 
-
-
-
+  if SaveDialog.Execute then
+  begin
+    Plugin.SaveProgramToFileWithSamples(SaveDialog.FileName);
+  end;
+end;
 
 end.

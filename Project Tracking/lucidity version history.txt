@@ -20,6 +20,7 @@ New:
 - Now reports VST plugin latency. 
 - XY Pads now boardcast parameter changes to the host so changes 
   can be recorded as automation. 
+- Can now save a program without including the samples. 
 - Add rename program command (for internal use only.)
 
 Change:

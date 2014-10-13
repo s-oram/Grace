@@ -71,7 +71,7 @@ begin
   end;
 
 
-  // TODO: This method has only been sketched out. It needs to handle
+  // TODO:HIGH This method has only been sketched out. It needs to handle
   // what happens when the samples directory contains foiegn files.
   // Should they be deleted? possibly.
 
