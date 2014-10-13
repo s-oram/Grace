@@ -1,8 +1,12 @@
+unit eePluginDataDir;
+
 {
   Unit to encapsulate finding the plugin data directory.
+
+  TODO:MED something about this isn't right. It feels messy.
 }
 
-unit eePluginDataDir;
+
 
 
 interface
@@ -24,7 +28,6 @@ type
 function PluginDataSubDirExists(SubDirName:string):boolean;
 function GetPluginDataSubDir(SubDirName:string):string;
 
-
 //============ OLD CODE ABOVE -- NEW CODE BELOW ====================
 
 // TODO:MED this unit is a mess. It's confusing to look at. It's confusing to extend
@@ -33,8 +36,10 @@ function GetPluginDataSubDir(SubDirName:string):string;
 function GetPluginDataDir(out Dir : string):boolean; // New get data dir method.
 function GetPluginMidiMapsDir(out Dir : string):boolean;
 
+
 //=============
-// This is a private function - it should be used only in this unit.
+// This is a private function - it should be used only in this unit but clearly it is being used in
+// other units. TODO:MED
 function PluginDataDir : PPluginDataDirInfo;
 //=============
 
@@ -47,6 +52,8 @@ uses
 var
   IsDataDirInfoValid : boolean;
   DataDirInfo : TPluginDataDirInfo;
+
+
 
 
 function PluginDataDir : PPluginDataDirInfo;

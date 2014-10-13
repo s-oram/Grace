@@ -39,7 +39,7 @@ begin
 
       //===== Version Info ==============
 
-      BuildDetails := BuildDetails + 'Application Name: ' + 'Lucidity' + sLineBreak;
+      BuildDetails := BuildDetails + 'Application Name: ' + kProductName + sLineBreak;
       BuildDetails := BuildDetails + 'Module: ' + GetDLLFilename + sLineBreak;
 
       BuildDetails := BuildDetails + 'Module File Version: ' +  GetBuildVersionAsString;
@@ -138,7 +138,7 @@ initialization
   begin
     fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + 'Error Reports';
     if not DirectoryExists(fn) then CreateDir(fn);
-    fn := IncludeTrailingPathDelimiter(fn) + 'Lucidity Bug Report.txt';
+    fn := IncludeTrailingPathDelimiter(fn) + kProductName + ' Bug Report.txt';
 
     MESettings.BugReportFile := fn;
     MESettings.AppendBugReports := true;

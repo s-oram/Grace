@@ -315,7 +315,7 @@ var
 begin
   //TODO:MED The about box is a small message box. It would be better to have a nice big window with full credits etc.
 
-  s := 'Lucidity Vst Sampler By One Small Clue' + EndOfLine;
+  s := kProductName + ' Vst Sampler By One Small Clue' + EndOfLine;
 
   s := s + EndOfLine;
 
@@ -369,14 +369,14 @@ var
 begin
   if PluginDataDir.Exists then
   begin
-    fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Manual') + 'Lucidity Manual.html';
+    fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Manual') + 'Grace Manual.html';
     if FileExists(fn) then
     begin
       seResult := ShellExecute(0, 'OPEN', PChar(fn), '', '', SW_SHOWNORMAL);
       if seResult <= 32 then
       begin
         ErrMsg := ShellExecuteErrorCodeToString(seResult);
-        InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity Error: ' + ErrMsg);
+        InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: ' + ErrMsg);
       end;
     end else
     begin
@@ -384,7 +384,7 @@ begin
     end;
   end else
   begin
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data directory not found. Please re-install Lucidity.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data directory not found. Please re-install.');
   end;
 end;
 
@@ -396,11 +396,11 @@ begin
   begin
     if not ShowDirectoryInWindowsExplorer(PluginDataDir^.Path, ErrMsg) then
     begin
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity Error: ' + ErrMsg);
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error: ' + ErrMsg);
     end;
   end else
   begin
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data Directory not found. Please reinstall Lucidity.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data Directory not found. Please reinstall.');
   end;
 end;
 
@@ -476,7 +476,7 @@ begin
   begin
     EventHandle_SaveProgramAs(self);
   end;
-  
+
 end;
 
 procedure TMainMenu.EventHandle_SaveProgramAs(Sender: TObject);

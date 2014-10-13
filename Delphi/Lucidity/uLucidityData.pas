@@ -93,6 +93,7 @@ type
 implementation
 
 uses
+  uConstants,
   uAutoFree,
   SysUtils, uDataFolderUtils,
   eeSaveLoadFunctions,
@@ -115,7 +116,7 @@ var
 begin
   GlobalDataConfig.IsInitialized := true;
 
-  Dir := LocateDataFolder('One Small Clue', 'Lucidity x32');
+  Dir := LocateDataFolder('One Small Clue', kProductName);
 
   if DirectoryExists(Dir) = false then
   begin

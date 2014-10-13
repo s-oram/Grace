@@ -15,11 +15,10 @@ uses
 
 const
   kCompany = 'One Small Clue';
-  kProduct = 'Lucidity';
+  kProductName = 'Grace';
+  kProduct = 'Grace';
   kProductVersion = '1.0';
-
-const
-  kKeyFileName = 'LucidityKey.dat';
+  kKeyFileName = 'GraceKey.dat';
 
 var
   AppDataDir   : string; //As specified by windows.

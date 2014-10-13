@@ -99,6 +99,7 @@ uses
   InWindowDialog,
   VamLayoutWizard,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  InWindowDialog,
   eePluginDataDir,
   Lucidity.KeyGroup,
   eeGuiSetup,
@@ -404,6 +405,11 @@ end;
 
 procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
 begin
+  if (MsgID = TLucidMsgID.OnPostCreateFinished) and (not PluginDataDir^.Exists) then
+  begin
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Data directory not found. Please re-install.');
+  end;
+
   if MsgID = TLucidMsgId.MidiKeyChanged then
   begin
     SampleMapFrame.MidiKeyChanged;
@@ -416,7 +422,6 @@ begin
 
   if MsgID = TLucidMsgID.SampleMarkersChanged then MiniSampleDisplayFrame.GuiEvent_SampleMakersChanged;
   if MsgID = TLucidMsgID.SampleOscTypeChanged then VoiceControlFrame.PlaybackTypeChanged;
-
 
   if MsgID = TLucidMsgID.Command_ShowSampleMapEdit then ShowSampleMapEdit;
   if MsgID = TLucidMsgID.Command_HideSampleMapEdit then HideSampleMapEdit;
