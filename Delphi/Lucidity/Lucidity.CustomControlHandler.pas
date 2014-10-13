@@ -26,8 +26,8 @@ type
 
 
     procedure PluginParameterBeginEdit(const ParName : string); overload;
-    procedure PluginParameterEndEdit(const ParName : string); overload;
     procedure PluginParameterBeginEdit(const ParName1, ParName2: string); overload;
+    procedure PluginParameterEndEdit(const ParName : string); overload;
     procedure PluginParameterEndEdit(const ParName1, ParName2: string); overload;
     procedure PluginParameterReset(const ParName : string);
     procedure PluginParameterChanged(const ParName : string; ParValue : single);
