@@ -1027,11 +1027,7 @@ end;
 procedure TMiniSampleDisplayFrame.ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
-  //TODO:HIGH code clean up required here. the xZoom and xOffset variables needs to be deleted.
   Zoom, Offset : single;
-  xZoom, xOffset : double;
-  //SampleFrames, DisplayPixelWidth : integer;
-  //IndexA, IndexB : single;
 begin
   Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
 
@@ -1048,16 +1044,13 @@ begin
     if Tag = 1 then
     begin
       //Zoom in.
-      xZoom   := Zoom + ((1 - Zoom) * 0.25);
-      xOffset := Offset;
+      Zoom   := Zoom + ((1 - Zoom) * 0.25);
+      Offset := Offset;
 
-      assert(xZoom >= 0);
-      assert(xZoom <= 1);
-      assert(xOffset >= 0);
-      assert(xOffset <= 1);
-
-      Zoom := xZoom;
-      Offset := xOffset;
+      assert(Zoom >= 0);
+      assert(Zoom <= 1);
+      assert(Offset >= 0);
+      assert(Offset <= 1);
 
       Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
       Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
@@ -1068,17 +1061,17 @@ begin
     if Tag = 2 then
     begin
       //Zoom out.
-      xZoom   := Zoom - ((1 - Zoom) * 0.5);
-      if xZoom <= 0.15 then xZoom := 0;
-      xOffset := Offset;
+      Zoom   := Zoom - ((1 - Zoom) * 0.5);
+      if Zoom <= 0.15 then Zoom := 0;
+      Offset := Offset;
 
-      assert(xZoom >= 0);
-      assert(xZoom <= 1);
-      assert(xOffset >= 0);
-      assert(xOffset <= 1);
+      assert(Zoom >= 0);
+      assert(Zoom <= 1);
+      assert(Offset >= 0);
+      assert(Offset <= 1);
 
-      Zoom := xZoom;
-      Offset := xOffset;
+      Zoom := Zoom;
+      Offset := Offset;
 
       Plugin.Globals.GuiState.SampleDisplayZoom   := Zoom;
       Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
