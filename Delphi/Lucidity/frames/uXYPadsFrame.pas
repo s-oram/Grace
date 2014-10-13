@@ -106,7 +106,17 @@ begin
   PadLabel3.Text := 'XY Pad 3';
   PadLabel4.Text := 'XY Pad 4';
 
-  //======================
+  // == set pad parameter names ==
+  XYPad1.ParameterNameX := PluginParToName(TPluginParameter.PadX1);
+  XYPad1.ParameterNameY := PluginParToName(TPluginParameter.PadY1);
+  XYPad2.ParameterNameX := PluginParToName(TPluginParameter.PadX2);
+  XYPad2.ParameterNameY := PluginParToName(TPluginParameter.PadY2);
+  XYPad3.ParameterNameX := PluginParToName(TPluginParameter.PadX3);
+  XYPad3.ParameterNameY := PluginParToName(TPluginParameter.PadY3);
+  XYPad4.ParameterNameX := PluginParToName(TPluginParameter.PadX4);
+  XYPad4.ParameterNameY := PluginParToName(TPluginParameter.PadY4);
+
+  // == register the pads to the handler ==
   GuiStandard.XyPadHandler.RegisterControl(XyPad1);
   GuiStandard.XyPadHandler.RegisterControl(XyPad2);
   GuiStandard.XyPadHandler.RegisterControl(XyPad3);

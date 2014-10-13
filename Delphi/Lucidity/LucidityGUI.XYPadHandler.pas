@@ -4,21 +4,6 @@ interface
 
 {$INCLUDE Defines.inc}
 
-{
-  TODO: The other handlers all use interfaces, but it turns out my code
-  has become very Lucidity centric, rather than the general purpose code i
-  wanted it to be. Because of that I'm going to change tack with this handler.
-  Rather than interfaces, I'll use duck typing to interact with the
-  registered controls. This will allow similar flexibility to using interfaces,
-  but the code will be in one less place. (Control + Handler) instead
-  of (Control + Interface + Hander).
-}
-
-// TODO:HIGH
-// The XY Pads don't broadcast BeginEdit, EndEdit and SetParameterAutomated
-// so they can't be linked into the host automation. This needs to change.
-
-
 uses
   Lucidity.CustomControlHandler,
   VamLib.DuckType,
@@ -51,6 +36,7 @@ type
     // publish the event handlers so they can be accessed using the RTTI.
     procedure EventHandle_XYPadChanged(Sender: TObject);
     procedure EventHandle_XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure EventHandle_XYPadMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   end;
 
 implementation
@@ -90,9 +76,14 @@ type
 procedure TXYPadHandler.RegisterControl(const c: TObject);
 begin
   inherited;
-  //==== check for requirements ====
+
+  // requirement
+  assert(c is TVamXYPad);
+
+  //==== assign event handlers ====
   c.Duck.RequireTarget.SetEvent('OnChanged', self, 'EventHandle_XYPadChanged');
   c.Duck.RequireTarget.SetEvent('OnMouseDown', self, 'EventHandle_XYPadMouseDown');
+  c.Duck.RequireTarget.SetEvent('OnMouseUp', self, 'EventHandle_XYPadMouseUp');
 end;
 
 procedure TXYPadHandler.UpdateControl(const c: TObject);
@@ -139,91 +130,41 @@ end;
 
 procedure TXYPadHandler.EventHandle_XYPadChanged(Sender: TObject);
 var
-  Tag : integer;
   PadX, PadY : single;
+  Name1, Name2 : string;
 begin
   assert(assigned(Plugin));
 
-  Tag := (Sender as TVamXYPad).Tag;
+  Name1 := (Sender as TVamXYPad).ParameterNameX;
+  Name2 := (Sender as TVamXYPad).ParameterNameY;
 
   PadX := (Sender as TVamXYPad).PosX;
   PadY := (Sender as TVamXYPad).PosY;
 
-  case Tag of
-    1:
-    begin
-      Plugin.XYPads.PadX1 := PadX;
-      Plugin.XYPads.PadY1 := PadY;
-    end;
-
-    2:
-    begin
-      Plugin.XYPads.PadX2 := PadX;
-      Plugin.XYPads.PadY2 := PadY;
-    end;
-
-    3:
-    begin
-      Plugin.XYPads.PadX3 := PadX;
-      Plugin.XYPads.PadY3 := PadY;
-    end;
-
-    4:
-    begin
-      Plugin.XYPads.PadX4 := PadX;
-      Plugin.XYPads.PadY4 := PadY;
-    end;
-  else
-    raise Exception.Create('Index not handled.');
-  end;
+  PluginParameterChanged((Sender as TVamXYPad).ParameterNameX, PadX);
+  PluginParameterChanged((Sender as TVamXYPad).ParameterNameY, PadY);
 end;
 
 procedure TXYPadHandler.EventHandle_XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   Tag : integer;
   Name1, Name2 : string;
-  ptr : Pointer;
 begin
   assert(assigned(Plugin));
 
+  Name1 := (Sender as TVamXYPad).ParameterNameX;
+  Name2 := (Sender as TVamXYPad).ParameterNameY;
+
   Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
 
-  if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
+  if (Button = TMouseButton.mbLeft) then
   begin
-    Tag := (Sender as TVamXYPad).Tag;
-
-    case Tag of
-      1:
-      begin
-        Name1 := PluginParToName(TPluginParameter.PadX1);
-        Name2 := PluginParToName(TPluginParameter.PadY1);
-      end;
-
-      2:
-      begin
-        Name1 := PluginParToName(TPluginParameter.PadX2);
-        Name2 := PluginParToName(TPluginParameter.PadY2);
-      end;
-
-      3:
-      begin
-        Name1 := PluginParToName(TPluginParameter.PadX3);
-        Name2 := PluginParToName(TPluginParameter.PadY3);
-      end;
-
-      4:
-      begin
-        Name1 := PluginParToName(TPluginParameter.PadX4);
-        Name2 := PluginParToName(TPluginParameter.PadY4);
-      end;
-    else
-      Name1 := '';
-      Name2 := '';
-      raise Exception.Create('Tag not handled.');
+    PluginParameterBeginEdit(Name1, Name2);
+    if (ssCtrl in Shift) then
+    begin
+      PluginParameterReset(Name1);
+      PluginParameterReset(Name2);
     end;
-
-    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name1);
-    Plugin.ResetPluginParameter(TParChangeScope.psFocused, Name2);
   end;
 
   if Button = TMouseButton.mbRight then
@@ -234,6 +175,16 @@ begin
   end;
 end;
 
-
+procedure TXYPadHandler.EventHandle_XYPadMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Name1, Name2 : string;
+begin
+  if (Button = TMouseButton.mbLeft) then
+  begin
+    Name1 := (Sender as TVamXYPad).ParameterNameX;
+    Name2 := (Sender as TVamXYPad).ParameterNameY;
+    PluginParameterEndEdit(Name1, Name2);
+  end;
+end;
 
 end.

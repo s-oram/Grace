@@ -90,16 +90,6 @@ Possible names
 - finish the help doc.
 - finish renaming all the factory presets. 
 
-a) Steinberg’s copyright notice should be included in the documentation, regardless of the media used to supply the documentation. 
-Copyright notice:”VST is a trademark of Steinberg Media Technologies GmbH”
-
-
-c) In the ‘about box’ of the product in one of the following formats:
-	- VST PlugIn Technology by Steinberg, 
-- VST PlugIn Interface Technology by Steinberg Media Technologies GmbH.
-
-
-
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.
@@ -127,7 +117,6 @@ Sample Map editor
 - the selected region data doesn't show in the info bar. (root note etc)\
 - the proposed sample region doesn't show in the info bar. (root note etc)\
 - being copied regions don't show in the info bar. (root note etc)\
-
 
 [BIG TASK]
 - need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
@@ -172,7 +161,6 @@ thunderlink://messageid=63A36A5AF10F4EA0AA6391C36C37892A@YannHP
 - option to disable zero crossing for sample start and sample end points, as you mentioned before. 
 - Add project collaboration folder (see details at bottom of this document).
 thunderlink://messageid=CAPN=qRxpBH2y9W-drXAywXh1OGu6M-zRPMVL2xyFSaarwe+Wbg@mail.gmail.com
-
 
 - a hotkey to press when changing a parameter to "set all groups" value would
   be ace!

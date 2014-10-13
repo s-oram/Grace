@@ -24,6 +24,8 @@ type
     fColor_Border: TRedFoxColorString;
     fCornerRadius: single;
     fColor_Puck: TRedFoxColorString;
+    fParameterNameX: string;
+    fParameterNameY: string;
     procedure SetPosX(const Value: single);
     procedure SetPosY(const Value: single);
     procedure SetIsMouseOverPuck(const Value: boolean);
@@ -66,6 +68,10 @@ type
     //Used by Gui Standard for automatic VST parameter linking.
     property PadX_VstParameterIndex : integer read fPadX_VstParameterIndex write fPadX_VstParameterIndex;
     property PadY_VstParameterIndex : integer read fPadY_VstParameterIndex write fPadY_VstParameterIndex;
+
+    // typically used to store the linked parameter name.
+    property ParameterNameX  : string  read fParameterNameX  write fParameterNameX;
+    property ParameterNameY  : string  read fParameterNameY  write fParameterNameY;
 
     {$INCLUDE TControlProperties.inc}
     property OnChanged : TNotifyEvent read fOnChanged write fOnChanged;
