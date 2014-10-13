@@ -14,6 +14,9 @@ uses
 type
   TCustomControlHandler = class(TZeroObject)
   private
+    procedure LowLevel_ParmeterBeginEdit(const ParName : string);
+    procedure LowLevel_ParmeterEndEdit(const ParName : string);
+
   protected
     Plugin : TeePlugin;
     ControlList : TObjectList;
@@ -21,9 +24,12 @@ type
     procedure UpdateControl(const c : TObject); virtual; abstract;
 
 
+
+    procedure PluginParameterBeginEdit(const ParName : string); overload;
+    procedure PluginParameterEndEdit(const ParName : string); overload;
+    procedure PluginParameterBeginEdit(const ParName1, ParName2: string); overload;
+    procedure PluginParameterEndEdit(const ParName1, ParName2: string); overload;
     procedure PluginParameterReset(const ParName : string);
-    procedure PluginParameterBeginEdit(const ParName : string);
-    procedure PluginParameterEndEdit(const ParName : string);
     procedure PluginParameterChanged(const ParName : string; ParValue : single);
 
   public
@@ -61,39 +67,63 @@ begin
 end;
 
 procedure TCustomControlHandler.PluginParameterBeginEdit(const ParName: string);
+begin
+  assert(IsValidPluginParName(ParName));
+  Plugin.Globals.GuiState.ActivePluginParameterID1 := PluginParNameToID(ParName);
+  Plugin.Globals.GuiState.ActivePluginParameterID2 := -1;
+  LowLevel_ParmeterBeginEdit(ParName);
+end;
+
+procedure TCustomControlHandler.PluginParameterEndEdit(const ParName: string);
+begin
+  assert(IsValidPluginParName(ParName));
+  Plugin.Globals.GuiState.ActivePluginParameterID1 := -1;
+  Plugin.Globals.GuiState.ActivePluginParameterID2 := -1;
+  LowLevel_ParmeterEndEdit(ParName);
+end;
+
+procedure TCustomControlHandler.PluginParameterBeginEdit(const ParName1, ParName2: string);
+begin
+  assert(IsValidPluginParName(ParName1));
+  assert(IsValidPluginParName(ParName2));
+  Plugin.Globals.GuiState.ActivePluginParameterID1 := PluginParNameToID(ParName1);
+  Plugin.Globals.GuiState.ActivePluginParameterID2 := PluginParNameToID(ParName2);
+  LowLevel_ParmeterBeginEdit(ParName1);
+  LowLevel_ParmeterBeginEdit(ParName2);
+end;
+
+procedure TCustomControlHandler.PluginParameterEndEdit(const ParName1, ParName2: string);
+begin
+  assert(IsValidPluginParName(ParName1));
+  assert(IsValidPluginParName(ParName2));
+  Plugin.Globals.GuiState.ActivePluginParameterID1 := -1;
+  Plugin.Globals.GuiState.ActivePluginParameterID2 := -1;
+  LowLevel_ParmeterEndEdit(ParName1);
+  LowLevel_ParmeterEndEdit(ParName2);
+end;
+
+procedure TCustomControlHandler.LowLevel_ParmeterBeginEdit(const ParName: string);
 var
   Par : TPluginParameterClass;
   ParID    : TPluginParameterID;
 begin
   ParID    := PluginParNameToID(ParName);
   Par := Plugin.PluginParameters.FindByName(ParName);
-
-  assert(assigned(Par));
-
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName, nil);
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
-
-  if (Par.IsPublishedVstParameter) then
-  begin
-    Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
-    Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
-  end;
+  if (Par.IsPublishedVstParameter) then Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
 end;
 
-procedure TCustomControlHandler.PluginParameterEndEdit(const ParName: string);
+procedure TCustomControlHandler.LowLevel_ParmeterEndEdit(const ParName: string);
 var
   Par : TPluginParameterClass;
 begin
   Par := Plugin.PluginParameters.FindByName(ParName);
-  assert(assigned(Par));
-
-  if (Par.IsPublishedVstParameter) then
-  begin
-    Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
-    Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
-  end;
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideParChangeInfo);
+  if (Par.IsPublishedVstParameter) then Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
 end;
+
+
 
 procedure TCustomControlHandler.PluginParameterChanged(const ParName: string; ParValue: single);
 var
@@ -132,6 +162,8 @@ end;
 
 procedure TCustomControlHandler.PluginParameterReset(const ParName: string);
 begin
+  // TODO:HIGH this reset value isn't ultimately sent via SetParameterAutomated()
+  // so the host application will not see it for parameter automation.
   Plugin.ResetPluginParameter(TParChangeScope.psFocused, ParName);
 end;
 

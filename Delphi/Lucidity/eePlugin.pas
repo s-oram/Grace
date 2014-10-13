@@ -1712,7 +1712,7 @@ var
   msg : string;
 begin
   ParID := PublishedVstParameters.FindParameterID(Index);
-  if ParID <> Globals.GuiState.ActiveVstPluginParameterID
+  if (ParID <> Globals.GuiState.ActivePluginParameterID1) or (ParID <> Globals.GuiState.ActivePluginParameterID2)
     then SetPluginParameter(ParID, Value, TParChangeScope.psGlobal)
 end;
 

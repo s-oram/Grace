@@ -18,7 +18,8 @@ type
     fCurrentModDestTarget: TModDest;
     fIsModDestAutoSelectEnabled: boolean;
     fMainGuiLayout: TMainGuiLayout;
-    fActiveVstPluginParameterID: TPluginParameterId;
+    fActivePluginParameterID1: TPluginParameterId;
+    fActivePluginParameterID2: TPluginParameterId;
     fSampleMapGroupVisibility: TGroupVisibility;
     fSampleDisplayOffset: single;
     fSampleDisplayZoom: single;
@@ -27,7 +28,6 @@ type
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
     fSelectedModSlot: integer;
-    procedure SetActiveVstPluginParameterID(const Value: TPluginParameterId);
     procedure SetHotkeyContext(const Value: THotKeyContext);
   public
     constructor Create;
@@ -46,17 +46,11 @@ type
 
 
     // NOTE:
-    // Normally calling SetParameterAutomated() when GUI controls are automated is the prefered way to update parameters that
-    // are visible to the host application (as a VST Plugin Parameter). The host will echo the parameter change back to the
-    // plugin so it can than update it's internal state. This works well with most plugins. However in the case of
-    // multi-timbral plugins where a GUI control is "focused" on a particalar layer, GUI control changes are normally intended
-    // to changed the "focused" element, where as, VST Plugin Parameter changes normally change all elements. (In truth this
-    // depends on how the plugin developer decides to respond to plugin parameter changes. Making Vst Plugin Parameter changes
-    // "Global" seems to be appropiate in my experience.)
-    // Because of the above we need some way to apply parameter changes whilst filtering out the echo parameter change that is
-    // received back from the host. ActiveVstPluginParameterID stores the currently active parameter on the GUI.
-    // The plugin can then use this to filter out the echoed parameter changes.
-    property ActiveVstPluginParameterID : TPluginParameterId read fActiveVstPluginParameterID write SetActiveVstPluginParameterID;
+    // When published VST parameters are changed (via SetParameterAutomated()) the changes
+    // are sent to the host and echo'd back to the plugin. Because of Lucidity's architecture
+    // we need to filter these changes out.
+    property ActivePluginParameterID1 : TPluginParameterId read fActivePluginParameterID1 write fActivePluginParameterID1;
+    property ActivePluginParameterID2 : TPluginParameterId read fActivePluginParameterID2 write fActivePluginParameterID2;
 
     property SampleMapGroupVisibility : TGroupVisibility read fSampleMapGroupVisibility write fSampleMapGroupVisibility;
 
@@ -104,11 +98,6 @@ destructor TGuiState.Destroy;
 begin
 
   inherited;
-end;
-
-procedure TGuiState.SetActiveVstPluginParameterID(const Value: TPluginParameterId);
-begin
-  fActiveVstPluginParameterID := Value;
 end;
 
 procedure TGuiState.SetHotkeyContext(const Value: THotKeyContext);
