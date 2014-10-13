@@ -6,8 +6,6 @@ Plugin Delay compensation
 thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
 
 
-
-
 == Finished for the next release ==
 New:
 - All filters now have a MIX parameter. 
@@ -20,6 +18,8 @@ New:
   would show behind the host application window giving the appearence 
   that the host application had crashed or frozen. 
 - Now reports VST plugin latency. 
+- XY Pads now boardcast parameter changes to the host so changes 
+  can be recorded as automation. 
 - Add rename program command (for internal use only.)
 
 Change:
@@ -27,7 +27,6 @@ Change:
 
 Bug Fix:
 - Lucidity would freeze if loading a patch file using the ENTER key.   
-
 
 === BETA v0.0.1.59 (25-Sep-2014) ===
 New:

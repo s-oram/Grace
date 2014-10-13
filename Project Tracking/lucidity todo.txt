@@ -36,12 +36,10 @@ bug
 > created by Lucidity,
 thunderlink://messageid=CAG2OC0-Nx=YdBRHvYBaz4SiLQBdJzXEhFNQy7-ofrkMrT==y2w@mail.gmail.com
 
-
 Bug 
 - refresh file browser doesn't maintain the browser node selection. the selection jumps.
 - re-saving a patch, if selected in the browser, will cause the browser selection
   to jump up one item.
-
 
 bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
@@ -86,9 +84,10 @@ Possible names
 - Clover
 - Propagate
 
-
 - finish the help doc.
 - finish renaming all the factory presets. 
+
+- Save Patch command to save patch without samples. 
 
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
@@ -178,8 +177,6 @@ thunderlink://messageid=CAPN=qRxpBH2y9W-drXAywXh1OGu6M-zRPMVL2xyFSaarwe+Wbg@mail
   - detect root note with regards to sample boundary.
 
 - it would be nice to have a bulk SFZ conversion.
-
-- Add a "Save Patch" command.
 
 - horziontal snapping should be disabled when placing multiple samples.
 
