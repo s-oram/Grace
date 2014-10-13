@@ -1712,17 +1712,8 @@ var
   msg : string;
 begin
   ParID := PublishedVstParameters.FindParameterID(Index);
-
-  if ParID <> Globals.GuiState.ActiveVstPluginParameterID then
-  begin
-    msg := 'VST Change. Value = ' + FloatToStr(Value);
-    //Log.LogMessage(msg);
-    SetPluginParameter(ParID, Value, TParChangeScope.psGlobal)
-  end else
-  begin
-    msg := 'VST Change filtered. Value = ' + FloatToStr(Value);
-    //Log.LogMessage(msg);
-  end;
+  if ParID <> Globals.GuiState.ActiveVstPluginParameterID
+    then SetPluginParameter(ParID, Value, TParChangeScope.psGlobal)
 end;
 
 procedure TeePlugin.StopPreview;

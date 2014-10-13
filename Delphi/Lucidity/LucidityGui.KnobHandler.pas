@@ -284,31 +284,15 @@ begin
   if Supports(Sender, IKnobControl, KnobControl) then
   begin
     ParName  := KnobControl.GetParameterName;
-    ParID    := PluginParNameToID(ParName);
-    Par := Plugin.PluginParameters.FindByName(ParName);
-    assert(assigned(Par));
-
-    Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnParControlEnter, @ParName, nil);
 
     if (Button = TMouseButton.mbLeft) then
     begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
-    end;
-
-    if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
-    begin
-      Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
-      Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
-    end;
-
-    if (Button = TMouseButton.mbLeft) and (ssCtrl in Shift) then
-    begin
-      Plugin.ResetPluginParameter(TParChangeScope.psFocused, ParName);
-    end;
-
+      PluginParameterBeginEdit(ParName);
+      if (ssCtrl in Shift) then PluginParameterReset(ParName);
+    end else
     if (Button = TMouseButton.mbRight) and (Sender is TVamKnob) then
     begin
-      // NOTE: Only show context menus for TVamKnob here as that is the only
+      // HACK: NOTE: Only show context menus for TVamKnob here as that is the only
       // requirement. Numeric knobs don't use a context menu at the moment.
       ShowControlContextMenu(Mouse.CursorPos.X, Mouse.CursorPos.Y, ParName);
     end;
@@ -321,23 +305,10 @@ var
   ParName  : string;
   Par : TPluginParameterClass;
 begin
-  if Supports(Sender, IKnobControl, KnobControl) then
+  if (Button = TMouseButton.mbLeft) and (Supports(Sender, IKnobControl, KnobControl)) then
   begin
     ParName  := KnobControl.GetParameterName;
-    Par := Plugin.PluginParameters.FindByName(ParName);
-    assert(assigned(Par));
-
-    if (Button = TMouseButton.mbLeft) and (Par.IsPublishedVstParameter) then
-    begin
-      Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
-      Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
-      //LogMain.LogMessage('End Edit ' + IntToStr(Par.VstParameterIndex));
-    end;
-
-    if (Button = TMouseButton.mbLeft) then
-    begin
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideParChangeInfo);
-    end;
+    PluginParameterEndEdit(ParName);
   end;
 
   // TODO:MED the last eeGuiStandard had an "Active Controls" list. Active Controls

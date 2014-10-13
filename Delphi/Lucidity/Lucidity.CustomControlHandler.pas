@@ -21,7 +21,11 @@ type
     procedure UpdateControl(const c : TObject); virtual; abstract;
 
 
+    procedure PluginParameterReset(const ParName : string);
+    procedure PluginParameterBeginEdit(const ParName : string);
+    procedure PluginParameterEndEdit(const ParName : string);
     procedure PluginParameterChanged(const ParName : string; ParValue : single);
+
   public
     constructor Create(const aPlugin : TeePlugin); virtual;
     destructor Destroy; override;
@@ -54,6 +58,41 @@ destructor TCustomControlHandler.Destroy;
 begin
   ControlList.Free;
   inherited;
+end;
+
+procedure TCustomControlHandler.PluginParameterBeginEdit(const ParName: string);
+var
+  Par : TPluginParameterClass;
+  ParID    : TPluginParameterID;
+begin
+  ParID    := PluginParNameToID(ParName);
+  Par := Plugin.PluginParameters.FindByName(ParName);
+
+  assert(assigned(Par));
+
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName, nil);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_ShowParChangeInfo, @ParID, nil);
+
+  if (Par.IsPublishedVstParameter) then
+  begin
+    Plugin.Globals.GuiState.ActiveVstPluginParameterID := PluginParNameToID(ParName);
+    Command.VstPar_BeginEdit(Plugin, Par.VstParameterIndex);
+  end;
+end;
+
+procedure TCustomControlHandler.PluginParameterEndEdit(const ParName: string);
+var
+  Par : TPluginParameterClass;
+begin
+  Par := Plugin.PluginParameters.FindByName(ParName);
+  assert(assigned(Par));
+
+  if (Par.IsPublishedVstParameter) then
+  begin
+    Command.VstPar_EndEdit(Plugin, Par.VstParameterIndex);
+    Plugin.Globals.GuiState.ActiveVstPluginParameterID := -1;
+  end;
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HideParChangeInfo);
 end;
 
 procedure TCustomControlHandler.PluginParameterChanged(const ParName: string; ParValue: single);
@@ -89,6 +128,11 @@ begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateScope);
   end);
+end;
+
+procedure TCustomControlHandler.PluginParameterReset(const ParName: string);
+begin
+  Plugin.ResetPluginParameter(TParChangeScope.psFocused, ParName);
 end;
 
 procedure TCustomControlHandler.RegisterControl(const c: TObject);
