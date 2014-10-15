@@ -1378,16 +1378,17 @@ begin
   result := AudioPreviewPlayer.Volume;
 end;
 
-funciton TeePlugin.SaveLastPresetToFile(const FileName: string):boolean;
+function TeePlugin.SaveLastPresetToFile(const FileName: string):boolean;
 var
   StateManager : TLucidityStateManager;
 begin
   result := false;
 
-  if LastPreset.Size > 0 then
+  if (assigned(LastPreset)) and (LastPreset.Size > 0) then
   begin
     StateManager := TLucidityStateManager.Create(self);
     try
+      LastPreset.Position := 0;
       StateManager.SavePresetDataToFile(LastPreset, FileName);
     finally
       StateManager.Free;

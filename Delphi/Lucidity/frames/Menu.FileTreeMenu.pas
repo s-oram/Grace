@@ -37,7 +37,6 @@ type
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
     procedure MenuItemClicked(Sender : TObject);
-
     procedure EventHandler_OpenWithUnknownApp(Sender : TObject);
     procedure EventHandler_OpenWith(Sender : TObject);
     procedure EventHandler_RenameRootNode(Sender : TObject);

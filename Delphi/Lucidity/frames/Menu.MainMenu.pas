@@ -506,8 +506,26 @@ begin
 end;
 
 procedure TMainMenu.ShowLastLoadedProgramFile(Sender: TObject);
+var
+  fn : string;
+  ErrMsg : string;
 begin
+  fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
+  if Plugin.SaveLastPresetToFile(fn) then
+  begin
+    if FileExists(fn) then
+    begin
+      //if not ExecuteFile(fn, ErrMsg) then InWindow_ShowMessage(Plugin.Globals.TopLevelForm, ErrMsg);
+      ShowFileInWindowsExplorer(fn);
+    end else
+    begin
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Prest Data file hasn''t been saved. Something went wrong somewhere.');
+    end;
 
+  end else
+  begin
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'There was no preset data or something went wrong.');
+  end;
 end;
 
 
