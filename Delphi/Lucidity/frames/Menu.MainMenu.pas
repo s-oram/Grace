@@ -16,6 +16,7 @@ type
     procedure MenuItemClicked(Sender : TObject);
     procedure OpenKeyFile(Sender : TObject);
     procedure ShowAboutBox(Sender : TObject);
+    procedure ShowLastLoadedProgramFile(Sender : TObject);
 
     procedure EventHandle_OpenManual(Sender : TObject);
     procedure EventHandle_EditSampleMap(Sender : TObject);
@@ -273,6 +274,17 @@ begin
   mi.OnClick := ShowAboutBox;
   Menu.Items.Add(mi);
 
+  //==== insert a spacer =====
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := '-';
+  Menu.Items.Add(mi);
+  //=========================
+
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Show Last Loaded Program File...';
+  mi.OnClick := ShowLastLoadedProgramFile;
+  Menu.Items.Add(mi);
+
   //NOTE: Not sure if I want to inlude a 'Registered To...' item. hmmm.
   {
   if Plugin.Globals.KeyData.IsKeyChecksumValid = true then
@@ -492,5 +504,12 @@ begin
     Plugin.SaveProgramToFileWithSamples(SaveDialog.FileName);
   end;
 end;
+
+procedure TMainMenu.ShowLastLoadedProgramFile(Sender: TObject);
+begin
+
+end;
+
+
 
 end.
