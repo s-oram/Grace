@@ -69,6 +69,8 @@ type
 
     procedure GetPreset(var ms: TMemoryStream); //called when host saves the plugins state.
     procedure SetPreset(var ms: TMemoryStream); //called when host restores the plugins state.
+
+    procedure SavePresetDataToFile(var ms : TMemoryStream; const FileName : string);
   end;
 
 
@@ -153,6 +155,20 @@ destructor TLucidityStateManager.Destroy;
 begin
 
   inherited;
+end;
+
+procedure TLucidityStateManager.SavePresetDataToFile(var ms: TMemoryStream; const FileName: string);
+var
+  XML : TNativeXML;
+begin
+  XML := TNativeXML.Create(nil);
+  try
+    XML.LoadFromStream(ms);
+    xml.XmlFormat := TXmlFormatType.xfReadable;
+    XML.SaveToFile(FileName);
+  finally
+    XML.Free;
+  end;
 end;
 
 procedure TLucidityStateManager.SetPreset(var ms: TMemoryStream);
