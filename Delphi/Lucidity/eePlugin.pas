@@ -115,6 +115,8 @@ type
 
     CopiedKeyGroupValues : TKeyGroupStateBuffer;
 
+    LastPreset : TMemoryStream;
+
     property AudioPreviewPlayer : TAudioFilePreviewPlayer read fAudioPreviewPlayer write fAudioPreviewPlayer;
 
     procedure EventHandle_SampleRateChanged(Sender:TObject);
@@ -549,6 +551,8 @@ begin
   if assigned(CopiedKeyGroupValues)
     then CopiedKeyGroupValues.Free;
 
+  if assigned(LastPreset)
+    then LastPreset.Free;
 
   Clear;
 
@@ -1373,8 +1377,18 @@ end;
 procedure TeePlugin.SetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
+  RefPos : cardinal;
 begin
   inherited;
+
+  //==== copy preset data =====
+  if not assigned(LastPreset) then LastPreset := TMemoryStream.Create;
+  LastPreset.Clear;
+  RefPos := ms.Position;
+  LastPreset.CopyFrom(ms, ms.Size - ms.Position);
+  LastPreset.Position := 0;
+  ms.Position := RefPos;
+  //===========================
 
   PreLoadProgram;
 
