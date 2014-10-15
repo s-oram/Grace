@@ -78,7 +78,7 @@ object PluginGui: TPluginGui
             Width = 289
             Height = 49
             Opacity = 255
-            Text = 'LUCIDITY'
+            Text = 'GRACE'
             HitTest = True
             AutoTrimText = False
             AutoSize = False
