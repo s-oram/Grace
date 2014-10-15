@@ -196,6 +196,10 @@ type
     procedure SetPreset(var ms:TMemoryStream); override;
     procedure GetPreset(var ms:TMemoryStream); override;
 
+    // save the last preset loaded with SetPreset() to a file. This is
+    // useful for debugging purposes.
+    function SaveLastPresetToFile(const FileName : string):boolean;
+
     procedure ProcessMidiEvent(Event:TeeMidiEvent); override;
 
     procedure AudioProcess(Sampleframes:integer); override; // processes audio.
@@ -1373,6 +1377,27 @@ function TeePlugin.GetPreviewVolume: single;
 begin
   result := AudioPreviewPlayer.Volume;
 end;
+
+funciton TeePlugin.SaveLastPresetToFile(const FileName: string):boolean;
+var
+  StateManager : TLucidityStateManager;
+begin
+  result := false;
+
+  if LastPreset.Size > 0 then
+  begin
+    StateManager := TLucidityStateManager.Create(self);
+    try
+      StateManager.SavePresetDataToFile(LastPreset, FileName);
+    finally
+      StateManager.Free;
+    end;
+
+    result := true;
+  end;
+end;
+
+
 
 procedure TeePlugin.SetPreset(var ms: TMemoryStream);
 var
