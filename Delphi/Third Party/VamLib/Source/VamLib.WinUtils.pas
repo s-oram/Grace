@@ -13,9 +13,19 @@ function ShellExecuteErrorCodeToString(const ErrorCode : integer):string;
 
 function ShowDirectoryInWindowsExplorer(const Dir : string; out ErrMsg : string):boolean;
 
+
+// Execute or open a file according to its extension.
+function ExecuteFile(const FileName : string; out ErrMsg : string):boolean; overload;
+function ExecuteFile(const FileName : string):boolean; overload;
+
+function ShowFileInWindowsExplorer(const FileName: string): boolean;
+
+
+
 implementation
 
 uses
+  ShlObj,
   SysUtils,
   VamLib.DebugString,
   WinApi.ShellApi,
@@ -90,5 +100,49 @@ begin
     result := true;  // ShellExecute() ran without errors.
   end;
 end;
+
+function ExecuteFile(const FileName : string; out ErrMsg : string):boolean;
+var
+  seResult : integer;
+begin
+  seResult := ShellExecute(0, PChar('open'), PChar(FileName), nil, nil, SW_SHOWNORMAL);
+  if seResult <= 32 then
+  begin
+    ErrMsg := ShellExecuteErrorCodeToString(seResult);
+    result := false; // ShellExecute() ran with errors.
+  end else
+  begin
+    ErrMsg := '';
+    result := true;  // ShellExecute() ran without errors.
+  end;
+end;
+
+function ExecuteFile(const FileName : string):boolean; overload;
+var
+  ErrMsg : string;
+begin
+  result := ExecuteFile(FileName, ErrMsg);
+end;
+
+// function OpenFolderAndSelectFile()
+// Source:
+// - http://stackoverflow.com/q/15300999/395461
+// - http://stackoverflow.com/a/15301028/395461
+function ShowFileInWindowsExplorer(const FileName: string): boolean;
+var
+  IIDL: PItemIDList;
+begin
+  result := false;
+  IIDL := ILCreateFromPath(PChar(FileName));
+  if IIDL <> nil then
+    try
+      result := SHOpenFolderAndSelectItems(IIDL, 0, nil, 0) = S_OK;
+    finally
+      ILFree(IIDL);
+    end;
+end;
+
+
+
 
 end.
