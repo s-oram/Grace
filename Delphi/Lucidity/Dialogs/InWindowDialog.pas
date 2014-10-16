@@ -4,6 +4,7 @@ interface
 
 uses
   Vcl.Forms,
+  InWindowDialog.SampleFinderDialog,
   InWindowDialog.CustomDialog,
   InWindowDialog.MessageDialog,
   InWindowDialog.InputDialog;
@@ -16,6 +17,8 @@ procedure InWindow_ShowMessage(const TopLevelForm : TForm; const Msg : string);
 procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabel, DefaultValue : string; ResultHandler : TInputDialogResultCallback);
 
 procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResultCallback);
+
+procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm);
 
 implementation
 
@@ -50,6 +53,14 @@ begin
   CustomDialog.AddButtons(Buttons);
   CustomDialog.DialogResultHandler := ResultHandler;
   CustomDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
+end;
+
+procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm);
+var
+  SampleFinderDialog : TSampleFinderDialog;
+begin
+  SampleFinderDialog := TSampleFinderDialog.Create;
+  SampleFinderDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
 end.

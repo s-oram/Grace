@@ -71,7 +71,6 @@ begin
   SetLength(fButtons, 0);
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
-  //BackPanel1.Color := GetRedfoxColor(clRed);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   DialogTextControl.Color := GetRedfoxColor(cl3DLight);
 

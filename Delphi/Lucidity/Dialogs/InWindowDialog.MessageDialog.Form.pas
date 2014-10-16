@@ -30,7 +30,6 @@ type
     procedure SetColorBackground(const Value: TColor);
     procedure SetColorBorder(const Value: TColor);
     procedure SetColorText(const Value: TColor);
-
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -62,9 +61,7 @@ uses
 constructor TMessageDialogForm.Create(AOwner: TComponent);
 begin
   inherited;
-
   BackPanel1.Color := GetRedfoxColor(clWindowText);
-  //BackPanel1.Color := GetRedfoxColor(clRed);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   DialogTextControl.Color := GetRedfoxColor(cl3DLight);
 

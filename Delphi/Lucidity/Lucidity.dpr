@@ -187,7 +187,9 @@ uses
   InWindowDialog.CustomDialog.Form in 'Dialogs\InWindowDialog.CustomDialog.Form.pas',
   LucidityGUI.XYPadHandler in 'LucidityGUI.XYPadHandler.pas',
   duck in '..\Third Party\DuckDuckDelphi\duck.pas',
-  Lucidity.CustomControlHandler in 'Lucidity.CustomControlHandler.pas';
+  Lucidity.CustomControlHandler in 'Lucidity.CustomControlHandler.pas',
+  InWindowDialog.SampleFinderDialog in 'Dialogs\InWindowDialog.SampleFinderDialog.pas',
+  InWindowDialog.SampleFinderDialog.Form in 'Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm};
 
 {$R *.res}
 
