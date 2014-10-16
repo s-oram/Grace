@@ -57,6 +57,7 @@ contains
   VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas',
   VamLib.WinHook in 'Source\VamLib.WinHook.pas',
   VamLib.DuckType in 'Source\VamLib.DuckType.pas',
-  VamLib.PatchUtils in 'Source\VamLib.PatchUtils.pas';
+  VamLib.PatchUtils in 'Source\VamLib.PatchUtils.pas',
+  AsyncCalls in 'Source\ThirdParty\Async Calls\AsyncCalls.pas';
 
 end.
