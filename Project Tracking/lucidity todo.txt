@@ -51,6 +51,15 @@ bug:
 =============================================================================
      TODO HIGH
 =============================================================================
+Threads
+- need a way to start
+- send update messages. (would have to sync with the main thread.)
+- able to be interupted and killed early. 
+- notify on finish.
+
+
+
+
 - check if running the demo on start up. 
 - "Lucidity is unregistered. Project loading has been disabled."
 
