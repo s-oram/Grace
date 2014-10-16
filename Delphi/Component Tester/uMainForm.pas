@@ -285,12 +285,8 @@ begin
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
-var
-  MessageDialog : TMessageDialog;
 begin
-  MessageDialog := TMessageDialog.Create;
-  MessageDialog.Text := 'James brown is dead. Frozen sald is the best.' + EndOfLine + 'Jacob was first.' + EndOfLine + 'A fanzine (portmanteau of fan and magazine or -zine) is a nonprofessional and nonofficial publication produced by fans of a particular cultural phenomenon (such as a literary or musical genre) for the pleasure of others who share their interest.';
-  MessageDialog.ShowInWindow_WithAutoFree(self, false, true);
+  InWindow_SampleFinderDialog(self);
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);

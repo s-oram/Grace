@@ -109,6 +109,10 @@
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.pas"/>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Form.pas">
+				<Form>SampleFinderDialogForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

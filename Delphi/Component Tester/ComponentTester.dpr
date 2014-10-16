@@ -14,7 +14,9 @@ uses
   InWindowDialog.InputDialog in '..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas',
   InWindowDialog.CustomDialog.Form in '..\Lucidity\Dialogs\InWindowDialog.CustomDialog.Form.pas',
   InWindowDialog.CustomDialog in '..\Lucidity\Dialogs\InWindowDialog.CustomDialog.pas',
-  InWindowDialog in '..\Lucidity\Dialogs\InWindowDialog.pas';
+  InWindowDialog in '..\Lucidity\Dialogs\InWindowDialog.pas',
+  InWindowDialog.SampleFinderDialog.Form in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
+  InWindowDialog.SampleFinderDialog in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.pas';
 
 {$R *.res}
 
