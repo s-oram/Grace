@@ -5,6 +5,7 @@ interface
 
 
 uses
+  AsyncCalls,
   VamLib.WinHook,
   SynCommons,
   eeFileBrowserAddon,
@@ -14,7 +15,6 @@ uses
   ACS_smpeg,
   SfzParser,
   NativeXML,
-  Lucidity.Sfz,
   VamLib.Utils,
   VamLib.Debouncer,
   VamLib.GuiUtils,
@@ -67,6 +67,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
+    a: IAsyncCall;
     FileBrowserAddon : TFileBrowserAddon;
 
     MotherShip : TMotherShip;
@@ -91,7 +92,6 @@ type
     procedure HandleTimerEvent(Sender : TObject);
 
     procedure WinEventHandler(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
-
   public
     procedure UpdateMemo;
   published
@@ -108,13 +108,10 @@ implementation
 
 uses
   VamLib.DuckType,
-  //MadTools,
-  SmartInspectLogging,
   _DirectSound,
   VamGuiControlInterfaces,
   RedFoxColor,
   VamLib.Throttler,
-  //eeEnumHelper,
   Generics.Collections,
   VamLib.Threads,
   DateUtils,
@@ -172,12 +169,12 @@ end;
 
 procedure WinEventProcCallback( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
 begin
-  LogMain.LogMessage('WinEvent ' + IntToStr(dwEvent));
+  //LogMain.LogMessage('WinEvent ' + IntToStr(dwEvent));
 end;
 
 procedure TForm1.WinEventHandler(Sender: TObject; Event, hwnd, idObject, idChild, EventThread, EventTime: cardinal);
 begin
-  LogMain.LogMessage('WinEvent2xObj ' + IntToStr(Event));
+  //LogMain.LogMessage('WinEvent2xObj ' + IntToStr(Event));
 end;
 
 procedure TForm1.WinEventProcCallbackObject(hWinEventHook: NativeUInt; dwEvent: dword; handle: hwnd; idObject, idChild: Long; dwEventThread, dwmsEventTime: dword);
@@ -210,13 +207,6 @@ begin
 
   WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
   WindowsEventHook.OnWinEvent := WinEventHandler;
-
-
-  //Button1.Duck.SetEvent('OnClick', @self, 'MyTestHandler2');
-  Button1.Duck.ClearEvent('OnClick');
-
-  //if Panel2.Duck.HasEvent('OnMouseDown') then ShowMessage('bang1');
-  //if Panel2.Duck.HasProperty('OnMouseDown') then ShowMessage('bang2');
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -228,10 +218,70 @@ begin
   FileBrowserAddon.Free;
 end;
 
+{
+procedure SlowAction;
+    procedure Start;
+    begin
+      Edit4.Text := 'Working...';
+    end;
+    procedure Finished;
+    begin
+      Edit4.Text := 'Done';
+    end;
+  var
+    c1: Integer;
+  begin
+    LocalAsyncVclCall(@Start); // blocking
+    for c1 := 0 to 100 do
+    begin
+      sleep(20);
+    end;
+    LocalVclCall(@Finished); // blocking
+  end;
+}
+
+procedure SlowAction(ar: IAsyncCall; x : TObject; Id : string); cdecl;
+  var
+    c1: Integer;
+
+    procedure Start;
+    begin
+      (x as TForm1).Edit4.Text := Id + ' Working...';
+    end;
+    procedure Finished;
+    begin
+      (x as TForm1).Edit4.Text := Id + ' Done';
+    end;
+    procedure UpdateText;
+    begin
+      (x as TForm1).Edit4.Text := Id + ' Working... ' + IntToStr(c1);
+    end;
+
+  begin
+    LocalAsyncVclCall(@Start);
+    for c1 := 0 to 10 do
+    begin
+      sleep(250);
+      LocalAsyncVclCall(@UpdateText);
+    end;
+    LocalVclCall(@Finished); // blocking
+  end;
+
+
+
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  //
-  Panel2.Duck.SetProperty('Color', clGreen);
+  if assigned(a) then a.CancelInvocation;
+
+  a := AsyncCall(@SlowAction, [self, RandomString(4)]);
+  //TAsyncCalls.Invoke(SlowAction);
+  //a := AsyncCall(@SlowAction, 10);
+  //a.ForceDifferentThread;
+  //a.Sync;
+  //a.ForceDifferentThread; // Do not execute in the main thread because this will
+                          // change LocalAyncVclCall into a blocking LocalVclCall
+  // do something
+  //a.Sync; The Compiler will call this for us in the Interface._Release method
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -288,6 +338,8 @@ procedure TForm1.MyTestHandler2(Sender: TObject);
 begin
   showmessage('I''m the king!');
 end;
+
+
 
 { TMyTestObject }
 
