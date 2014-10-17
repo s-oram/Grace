@@ -5,6 +5,7 @@ interface
 
 
 uses
+  MyWorker,
   AsyncCalls,
   VamLib.WinHook,
   SynCommons,
@@ -67,6 +68,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
+    Worker : TWorker;
     a: IAsyncCall;
     FileBrowserAddon : TFileBrowserAddon;
 
@@ -193,6 +195,9 @@ var
   rc : TRedFoxColor;
   xs : string;
 begin
+  Worker := TWorker.Create;
+
+
   ThrottleID_VSTParChange.Init;
 
   Timer := THighSpeedTimer.Create;
@@ -210,6 +215,7 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  Worker.Free;
   WindowsEventHook.Free;
 
   Timer.Free;
@@ -217,40 +223,49 @@ begin
   FileBrowserAddon.Free;
 end;
 
-procedure SlowAction(ar: IAsyncCall; x : TObject; Id : string); cdecl;
-  var
-    c1: Integer;
+procedure SlowAction(x : TObject); cdecl;
+const
+  ID = 'TEST';
+var
+  c1: Integer;
 
-    procedure Start;
-    begin
-      (x as TForm1).Edit4.Text := Id + ' Working...';
-    end;
-    procedure Finished;
-    begin
-      (x as TForm1).Edit4.Text := Id + ' Done';
-    end;
-    procedure UpdateText;
-    begin
-      (x as TForm1).Edit4.Text := Id + ' Working... ' + IntToStr(c1);
-    end;
-
+  procedure Start;
   begin
-    LocalAsyncVclCall(@Start);
-    for c1 := 0 to 10 do
-    begin
-      sleep(250);
-      LocalAsyncVclCall(@UpdateText);
-    end;
-    LocalVclCall(@Finished); // blocking
+    (x as TForm1).Edit4.Text := Id + ' Working...';
+  end;
+  procedure Finished;
+  begin
+    (x as TForm1).Edit4.Text := Id + ' Done';
+  end;
+  procedure UpdateText;
+  begin
+    (x as TForm1).Edit4.Text := Id + ' Working... ' + IntToStr(c1);
   end;
 
+begin
+  LocalAsyncVclCall(@Start);
+  for c1 := 0 to 10 do
+  begin
+    sleep(250);
+    LocalAsyncVclCall(@UpdateText);
+  end;
+  LocalVclCall(@Finished); // blocking
+end;
 
+
+
+procedure Bang;
+begin
+  ShowMessage('beep');
+end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  if assigned(a) then a.CancelInvocation;
-  a := AsyncCall(@SlowAction, [self, RandomString(4)]);
-  a.ForceDifferentThread;
+  Worker.Run(Bang);
+
+  //if assigned(a) then a.CancelInvocation;
+  //a := AsyncCall(@SlowAction, [self]);
+  //a.ForceDifferentThread;
   //TAsyncCalls.Invoke(SlowAction);
   //a := AsyncCall(@SlowAction, 10);
   //a.ForceDifferentThread;

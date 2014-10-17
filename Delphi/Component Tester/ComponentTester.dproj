@@ -114,6 +114,7 @@
 			</DCCReference>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
 			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
+			<DCCReference Include="MyWorker.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

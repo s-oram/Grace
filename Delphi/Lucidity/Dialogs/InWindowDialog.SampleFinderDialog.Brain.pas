@@ -72,8 +72,8 @@ type
     CancelCurrentSearch : boolean;
   end;
 
-  procedure AutoFileSearch(Token : TAutoFileSearchToken);
 
+  procedure AutoFileSearch(Token : TAutoFileSearchToken); cdecl;
 
 implementation
 
@@ -232,6 +232,7 @@ begin
   end;
 end;
 
+
 procedure TSampleFinderBrain.SearchForMissingFileIn(const MissingFileName, SearchPath: string);
 begin
   if assigned(CallRef) then
@@ -252,12 +253,10 @@ end;
 //================================================================================================
 //================================================================================================
 
-procedure AutoFileSearch(Token : TAutoFileSearchToken);
+
+procedure AutoFileSearch(Token : TAutoFileSearchToken); cdecl;
 begin
   Token.CancelCurrentSearch := false;
-
-
-
 end;
 
 
