@@ -3,12 +3,7 @@ unit VamLib.Utils;
 interface
 
 uses
-  VamLib.Utils.ObjectEnumerator,
   Classes;
-
-type
-  // redeclared types
-  IObjectEnumerator = VamLib.Utils.ObjectEnumerator.IObjectEnumerator;
 
 const
   // NOTE: End of line definition sourced from http://stackoverflow.com/a/254997/395461
@@ -97,9 +92,7 @@ function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer
 //==============================================================
 //    Utilities
 //==============================================================
-
-// Use ObjectEnumerator() to wrap an enumerator around arrays for "for-in" loops.
-function ObjectEnumerator(const objs : array of TObject):IObjectEnumerator;
+function ObjectArray(const objs : array of TObject):TArray<TObject>;
 
 function AutoFree(const aObject: PObject): IUnknown;
 
@@ -188,17 +181,15 @@ begin
   inherited;
 end;
 
-function ObjectEnumerator(const objs : array of TObject):IObjectEnumerator;
+function ObjectArray(const objs : array of TObject):TArray<TObject>;
+var
+  c1: Integer;
 begin
-  {
-  ==== Object Enumerator Example ====
-  for Obj in ObjectEnumerator([MyObject1, MyObject2, MyObject3]) do
+  SetLength(result, Length(Objs));
+  for c1 := 0 to Length(objs)-1 do
   begin
-    (Obj as TControl).Height := 20;
-    (Obj as TControl).Width := 100;
+    result[c1] := objs[c1];
   end;
-  }
-  result := TObjectEnumerator.Create(objs);
 end;
 
 
