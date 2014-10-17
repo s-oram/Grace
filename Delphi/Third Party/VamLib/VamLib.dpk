@@ -30,7 +30,8 @@ package VamLib;
 requires
   rtl,
   vcl,
-  OmniThreadLibraryRuntimeXE2;
+  OmniThreadLibraryRuntimeXE2,
+  ThirdPartyLibs;
 
 contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',

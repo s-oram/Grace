@@ -95,6 +95,7 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="OmniThreadLibraryRuntimeXE2.dcp"/>
+			<DCCReference Include="ThirdPartyLibs.dcp"/>
 			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
 			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.pas"/>
