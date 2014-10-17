@@ -58,6 +58,7 @@ type
     WinXP    : TOpenDialog;
     WinVista : TFileOpenDialog;
     Owner : TComponent;
+    procedure EventHandle_WinVistaSelectionChange(Sender : TObject);
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -117,6 +118,8 @@ type
 implementation
 
 uses
+  Controls,
+  System.UITypes,
   SysUtils,
   JclSysInfo,
   Vcl.FileCtrl,
@@ -190,6 +193,22 @@ begin
   inherited;
 end;
 
+procedure TxpFileOpenDialog.EventHandle_WinVistaSelectionChange(Sender: TObject);
+var
+  x : string;
+  Dialog : TFileOpenDialog;
+begin
+  Dialog := (Sender as TFileOpenDialog);
+  x :=  Dialog.FileName;
+  if FileExists(x) then
+  begin
+    // TODO:MED Enable the dialog open button here.
+  end else
+  begin
+   // TODO:MED disable the dialog open button here.
+  end;
+end;
+
 function TxpFileOpenDialog.Execute: boolean;
 var
   FileTypesList : TStringList;
@@ -224,6 +243,7 @@ begin
       WinXP.InitialDir := FInitialDir;
       WinXP.DefaultExt := FDefaultExt;
       WinXP.Title      := FTitle;
+      WinXP.Options    := [TOpenOption.ofFileMustExist];
 
       if WinXP.Execute then
       begin
@@ -239,6 +259,8 @@ begin
     TxpMode.WinVista:
     begin
       //======= Setup File Tpes ========================
+      WinVista.OnSelectionChange := self.EventHandle_WinVistaSelectionChange;
+      WinVista.Options := [TFileDialogOption.fdoFileMustExist];
       WinVista.FileTypes.Clear;
       FileTypesList := TStringList.Create;
       try

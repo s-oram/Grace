@@ -233,6 +233,7 @@ var
   c1:integer;
   LocalDir:string;
 begin
+  FullPath := '';
   result := false;
 
   // Check to see if we should cancel the search.
