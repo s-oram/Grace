@@ -591,7 +591,6 @@
 			<DCCReference Include="AudioEffects\AudioEffect.Lofi.pas"/>
 			<DCCReference Include="frames\Menu.MissingSampleContextMenu.pas"/>
 			<DCCReference Include="GuiDrawingRoutines.pas"/>
-			<DCCReference Include="EasyEffectTemplate\XPlat\XPLAT.Dialogs.pas"/>
 			<DCCReference Include="Lucidity.StateManager.DataClasses.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas"/>
 			<DCCReference Include="Third Party File Support\Lucidity.SfzOpcodeConversion.pas"/>

@@ -61,6 +61,7 @@ contains
   VamLib.PatchUtils in 'Source\VamLib.PatchUtils.pas',
   AsyncCalls in 'Source\ThirdParty\Async Calls\AsyncCalls.pas',
   VamLib.VclLayout in 'Source\VamLib.VclLayout.pas',
-  VamLib.Utils.ObjectEnumerator in 'Source\VamLib.Utils.ObjectEnumerator.pas';
+  VamLib.Utils.ObjectEnumerator in 'Source\VamLib.Utils.ObjectEnumerator.pas',
+  XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas';
 
 end.

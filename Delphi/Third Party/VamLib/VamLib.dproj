@@ -61,7 +61,7 @@
 			<DCC_UsePackage>vcl;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -124,6 +124,7 @@
 			<DCCReference Include="Source\ThirdParty\Async Calls\AsyncCalls.pas"/>
 			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
+			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
