@@ -24,11 +24,10 @@ type
     procedure MainDialogAreaResize(Sender: TObject);
   private
     SkipButton : TButton;
-    SkipAllButton : TButton;
     LocateButton  : TButton;
     SearchInButton : TButton;
     AutoSearchButton : TButton;
-
+    CloseDialogButton : TButton;
     Brain : TSampleFinderBrain;
 
     procedure EventHandle_SearchFinished(Sender : TObject);
@@ -78,9 +77,6 @@ begin
   SkipButton := TButton.Create(self);
   SkipButton.Caption := 'Skip';
 
-  SkipAllButton := TButton.Create(self);
-  SkipAllButton.Caption := 'Skip All';
-
   LocateButton  := TButton.Create(self);
   LocateButton.Caption := 'Locate...';
 
@@ -89,15 +85,23 @@ begin
 
   AutoSearchButton := TButton.Create(self);
   AutoSearchButton.Caption := 'Auto-Search';
+  AutoSearchButton.Enabled := false;
+  //TODO:HIGH AutoSearch button needs to be enabled.
+
+  CloseDialogButton := TButton.Create(self);
+  CloseDialogButton.Caption := 'Close';
 
   //== set common properties for all buttons ==
-  for obj in ObjectArray([SkipButton, SkipAllButton, LocateButton, SearchInButton, AutoSearchButton]) do
+  for obj in ObjectArray([SkipButton, LocateButton, SearchInButton, AutoSearchButton, CloseDialogButton]) do
   begin
     (obj as TControl).Parent  := ButtonDiv;
     (obj as TControl).Visible := true;
     (obj as TControl).Height  := kButtonHeight;
     (obj as TButton).OnClick := EventHandle_ButtonClick;
   end;
+
+
+  AutoSearchButton.Visible := false; //TODO:HIGH delete this when auto search is implemented.
 
   ButtonDiv.Height := kButtonHeight;
 
@@ -133,13 +137,14 @@ begin
   VclLayout(FullPathLabel, FullPathEdit).SnapToBottomEdge.Move(0, 2);
 
 
-  VclLayout([SkipButton, SkipAllButton, LocateButton, SearchInButton, AutoSearchButton]).FitToParentWidth(16);
+  //VclLayout([SkipButton, LocateButton, SearchInButton, AutoSearchButton, CloseDialogButton]).FitToParentWidth(16);
+  VclLayout([SkipButton, LocateButton, SearchInButton, CloseDialogButton]).FitToParentWidth(16);
 
   SkipButton.Top := 0;
-  SkipAllButton.Top := 0;
   LocateButton.Top := 0;
   SearchInButton.Top := 0;
   AutoSearchButton.Top := 0;
+  CloseDialogButton.Top := 0;
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_UpdateAllControls(Sender: TObject);
@@ -158,10 +163,6 @@ begin
   begin
     Brain.Skip;
   end else
-  if Sender = SkipAllButton then
-  begin
-    self.CloseDialog;
-  end else
   if Sender = LocateButton then
   begin
     Brain.LocateFile;
@@ -172,7 +173,11 @@ begin
   end else
   if Sender = AutoSearchButton then
   begin
-
+    //TODO:HIGH
+  end else
+  if Sender = CloseDialogButton then
+  begin
+    CloseDialog;
   end;
 end;
 
@@ -180,8 +185,17 @@ procedure TSampleFinderDialogForm.EventHandle_SearchFinished(Sender: TObject);
 begin
   EventHandle_UpdateAllControls(self);
 
+  SkipButton.Enabled := false;
+  LocateButton.Enabled := false;
+  SearchInButton.Enabled := false;
+  AutoSearchButton.Enabled := false;
 
-  //CloseDialog;
+  CloseDialogButton.SetFocus;
+
+  FullPathLabel.Caption := 'Finished';
+
+  // TODO:HIGH - the full path label shouldn't be getting reused for the status updates.
+  // need to add another control to the GUI.
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);
