@@ -125,6 +125,7 @@
 			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
 			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
+			<DCCReference Include="Source\VamLib.FindFiles.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

@@ -62,6 +62,7 @@ contains
   AsyncCalls in 'Source\ThirdParty\Async Calls\AsyncCalls.pas',
   VamLib.VclLayout in 'Source\VamLib.VclLayout.pas',
   VamLib.Utils.ObjectEnumerator in 'Source\VamLib.Utils.ObjectEnumerator.pas',
-  XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas';
+  XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas',
+  VamLib.FindFiles in 'Source\VamLib.FindFiles.pas';
 
 end.
