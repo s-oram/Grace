@@ -147,7 +147,7 @@ begin
     else MissingFileCountLabel.Caption := IntToStr(Brain.CurrentMissingFileCount) + ' files remaing.';
 
   FileNameEdit.Text := Brain.CurrentMissingFileName;
-  FullPathEdit.Text := Brain.CurrentMissingFileFullPath;
+  FullPathEdit.Text := ExtractFilePath(Brain.CurrentMissingFileFullPath);
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_ButtonClick(Sender: TObject);
@@ -162,7 +162,7 @@ begin
   end else
   if Sender = LocateButton then
   begin
-
+    Brain.LocateFile;
   end else
   if Sender = SearchInButton then
   begin
