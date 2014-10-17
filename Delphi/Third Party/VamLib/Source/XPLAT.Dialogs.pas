@@ -77,7 +77,7 @@ type
     property InitialDir: string   read FInitialDir  write FInitialDir;
   end;
 
-  TxpBrowserSelectDialog = class
+  TxpDirectorySelectDialog = class
   private
     Owner : TComponent;
     xpMode   : TxpMode;
@@ -277,7 +277,7 @@ end;
 
 { TxpBrowserSelectDialog }
 
-constructor TxpBrowserSelectDialog.Create(AOwner: TComponent);
+constructor TxpDirectorySelectDialog.Create(AOwner: TComponent);
 begin
   {$IFDEF ForceWinXPMode}
     xpMode := TxpMode.WinXP;
@@ -289,14 +289,14 @@ begin
   fFileName := '';
 end;
 
-destructor TxpBrowserSelectDialog.Destroy;
+destructor TxpDirectorySelectDialog.Destroy;
 begin
   if assigned(WinVista) then WinVista.Free;
 
   inherited;
 end;
 
-function TxpBrowserSelectDialog.Execute: boolean;
+function TxpDirectorySelectDialog.Execute: boolean;
 var
   //== WinXP ==
   Root, Directory : string;
@@ -340,7 +340,7 @@ begin
   end;
 end;
 
-function TxpBrowserSelectDialog.FileName: string;
+function TxpDirectorySelectDialog.FileName: string;
 begin
   result := fFileName;
 end;
