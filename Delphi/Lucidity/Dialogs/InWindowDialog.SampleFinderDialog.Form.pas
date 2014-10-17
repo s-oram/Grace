@@ -34,6 +34,7 @@ type
     procedure EventHandle_SearchFinished(Sender : TObject);
     procedure EventHandle_UpdateAllControls(Sender : TObject);
     procedure EventHandle_ButtonClick(Sender : TObject);
+    procedure EventHandle_SearchPathChanged(Sender : TObject; NewPath : string);
   public
     constructor Create(AOwner: TComponent; var MissingFiles, SearchPaths : TStringList); reintroduce;
     destructor Destroy; override;
@@ -61,6 +62,7 @@ begin
   Brain := TSampleFinderBrain.Create(MissingFiles, SearchPaths);
   Brain.OnUpdateMainView := EventHandle_UpdateAllControls;
   Brain.OnSearchFinished := EventHandle_SearchFinished;
+  Brain.OnSearchPathChanged := EventHandle_SearchPathChanged;
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
@@ -177,6 +179,11 @@ end;
 procedure TSampleFinderDialogForm.EventHandle_SearchFinished(Sender: TObject);
 begin
   CloseDialog;
+end;
+
+procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);
+begin
+  FullPathLabel.Caption := NewPath;
 end;
 
 end.

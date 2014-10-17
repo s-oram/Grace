@@ -11,21 +11,23 @@ uses
   Classes;
 
 type
-  TAutoFileSearchToken = class;
+  TFileSearchToken = class;
 
   TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string) of object;
+  TStringEvent = procedure(Sender : TObject; Str:string) of object;
 
   TSampleFinderBrain = class
   private
     fOnUpdateMainView: TNotifyEvent;
     fOnSearchFinished: TNotifyEvent;
     fOnFileFound: TFileFoundEvent;
+    fOnSearchPathChanged: TStringEvent;
     function GetCurrentMissingFileFullPath: string;
     function GetCurrentMissingFileName: string;
     function GetCurrentMissingFileCount: integer;
   protected
     CallRef : IAsyncCall;
-    SearchToken : TAutoFileSearchToken;
+    SearchToken : TFileSearchToken;
 
     PreviousFindLocations : TStringList;
 
@@ -41,6 +43,8 @@ type
     procedure UpdateMainView;
     procedure SearchFinished;
     procedure FileFound(const MissingIndex : integer; const OldFileName, NewFileName : string);
+    procedure SearchPathChanged(NewPath : string);
+
   public
     constructor Create(var MissingFiles, SearchPaths : TStringList);
     destructor Destroy; override;
@@ -53,6 +57,7 @@ type
     property CurrentMissingFileName     : string read GetCurrentMissingFileName;
     property CurrentMissingFileFullPath : string read GetCurrentMissingFileFullPath;
 
+    property OnSearchPathChanged : TStringEvent read fOnSearchPathChanged write fOnSearchPathChanged;
     property OnUpdateMainView : TNotifyEvent read fOnUpdateMainView write fOnUpdateMainView;
     property OnSearchFinished : TNotifyEvent read fOnSearchFinished write fOnSearchFinished;
     property OnFileFound      : TFileFoundEvent read fOnFileFound write fOnFileFound;
@@ -63,21 +68,23 @@ type
   //=====================================================================================
   //================== Below here is for private internal usage =========================
   //=====================================================================================
-  TAutoFileSearchToken = class(TObject)
+  TFileSearchToken = class(TObject)
   private
   protected
   public
+    Brain          : TSampleFinderBrain;
     TargetFileName : string;
     SearchPath     : string;
     CancelCurrentSearch : boolean;
   end;
 
 
-  procedure AutoFileSearch(Token : TAutoFileSearchToken); cdecl;
+  procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
 
 implementation
 
 uses
+  VamLib.FindFiles,
   Dialogs,
   XPlat.Dialogs,
   SysUtils;
@@ -93,7 +100,8 @@ begin
 
   PreviousFindLocations := TStringList.Create;
 
-  SearchToken := TAutoFileSearchToken.Create;
+  SearchToken := TFileSearchToken.Create;
+  SearchToken.Brain := self;
 end;
 
 destructor TSampleFinderBrain.Destroy;
@@ -233,6 +241,11 @@ begin
 end;
 
 
+procedure TSampleFinderBrain.SearchPathChanged(NewPath: string);
+begin
+  if assigned(OnSearchPathChanged) then OnSearchPathChanged(self, NewPath);
+end;
+
 procedure TSampleFinderBrain.SearchForMissingFileIn(const MissingFileName, SearchPath: string);
 begin
   if assigned(CallRef) then
@@ -245,7 +258,7 @@ begin
   SearchToken.TargetFileName := MissingFileName;
   SearchToken.SearchPath     := SearchPath;
 
-  CallRef := AsyncCall(@AutoFileSearch, [SearchToken]);
+  CallRef := AsyncCall(@SingleFileSearch, [SearchToken]);
 end;
 
 
@@ -253,10 +266,40 @@ end;
 //================================================================================================
 //================================================================================================
 
-
-procedure AutoFileSearch(Token : TAutoFileSearchToken); cdecl;
+procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
+var
+  FullPathResult : string;
+  SearchPathChangedCallback : TStringProcReference;
+  CancelSearchCallback : TBooleanFuncReference;
+  spcAdapter : TProc;
 begin
   Token.CancelCurrentSearch := false;
+
+
+
+
+  SearchPathChangedCallback := procedure(NewPath : string)
+  begin
+    EnterMainThread;
+    try
+      Token.Brain.SearchPathChanged(NewPath);
+    finally
+      LeaveMainThread;
+    end;
+  end;
+
+  CancelSearchCallback := function : boolean
+  begin
+    result := Token.CancelCurrentSearch;
+  end;
+
+  if SearchForFile(Token.SearchPath, Token.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then
+  begin
+    ShowMessage(FullPathResult);
+  end else
+  begin
+    ShowMessage('file not found');
+  end;
 end;
 
 

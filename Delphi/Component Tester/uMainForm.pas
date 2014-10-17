@@ -197,7 +197,6 @@ var
 begin
   Worker := TWorker.Create;
 
-
   ThrottleID_VSTParChange.Init;
 
   Timer := THighSpeedTimer.Create;
