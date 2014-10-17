@@ -623,13 +623,13 @@
 			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
 			<DCCReference Include="LucidityGUI.XYPadHandler.pas"/>
-			<DCCReference Include="..\Third Party\DuckDuckDelphi\duck.pas"/>
 			<DCCReference Include="Lucidity.CustomControlHandler.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Form.pas">
 				<Form>SampleFinderDialogForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
+			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
