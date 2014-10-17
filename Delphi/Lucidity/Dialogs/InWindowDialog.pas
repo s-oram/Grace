@@ -3,6 +3,7 @@ unit InWindowDialog;
 interface
 
 uses
+  Classes,
   Vcl.Forms,
   InWindowDialog.SampleFinderDialog,
   InWindowDialog.CustomDialog,
@@ -18,7 +19,7 @@ procedure InWindow_InputDialog(const TopLevelForm : TForm; const Text, InputLabe
 
 procedure InWindow_CustomDialog(const TopLevelForm : TForm; const Msg : string; const Buttons : array of string; ResultHandler : TCustomDialogResultCallback);
 
-procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm);
+procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm; const MissingSamples, SearchPaths : TStringList);
 
 implementation
 
@@ -55,11 +56,13 @@ begin
   CustomDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 
-procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm);
+procedure InWindow_SampleFinderDialog(const TopLevelForm : TForm; const MissingSamples, SearchPaths : TStringList);
 var
   SampleFinderDialog : TSampleFinderDialog;
 begin
   SampleFinderDialog := TSampleFinderDialog.Create;
+  SampleFinderDialog.AddMissingFiles(MissingSamples);
+  SampleFinderDialog.AddSearchPaths(SearchPaths);
   SampleFinderDialog.ShowInWindow_WithAutoFree(TopLevelForm, true, true);
 end;
 

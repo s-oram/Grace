@@ -285,8 +285,22 @@ begin
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
+var
+  MissingSamples, SearchPaths : TStringList;
 begin
-  InWindow_SampleFinderDialog(self);
+  MissingSamples := TStringList.Create;
+  SearchPaths    := TStringList.Create;
+  try
+    MissingSamples.Add('D:\Audio\Data\Samples\Drum Machines\Casio MT-100\00.wav');
+    MissingSamples.Add('D:\Audio\Data\Samples\Drum Machines\Casio MT-100\01.wav');
+    MissingSamples.Add('02.wav');
+    SearchPaths.Add('D:\Audio\Data\Poise Drum Kits 2');
+    SearchPaths.Add('D:\Audio\Data\Samples (Instruments)');
+    InWindow_SampleFinderDialog(self, MissingSamples, SearchPaths);
+  finally
+    MissingSamples.Free;
+    SearchPaths.Free;
+  end;
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);

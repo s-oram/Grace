@@ -51,13 +51,11 @@ bug:
 =============================================================================
      TODO HIGH
 =============================================================================
-Threads
+Threads:
 - need a way to start
 - send update messages. (would have to sync with the main thread.)
 - able to be interupted and killed early. 
 - notify on finish.
-
-
 
 
 - check if running the demo on start up. 

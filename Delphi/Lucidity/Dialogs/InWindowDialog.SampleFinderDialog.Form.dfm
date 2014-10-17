@@ -84,9 +84,9 @@ object SampleFinderDialogForm: TSampleFinderDialogForm
           object DialogTextControl: TLabel
             Left = 16
             Top = 16
-            Width = 86
+            Width = 67
             Height = 13
-            Caption = 'DialogTextControl'
+            Caption = 'Sample Finder'
           end
           object FilenameLabel: TLabel
             Left = 16
@@ -98,9 +98,17 @@ object SampleFinderDialogForm: TSampleFinderDialogForm
           object FullPathLabel: TLabel
             Left = 16
             Top = 128
-            Width = 78
+            Width = 99
             Height = 13
-            Caption = 'Missing File Path'
+            Caption = 'Last Known File Path'
+          end
+          object MissingFileCountLabel: TLabel
+            Left = 500
+            Top = 72
+            Width = 85
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Missing File Count'
           end
           object FilenameEdit: TEdit
             Left = 16
