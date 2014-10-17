@@ -166,7 +166,7 @@ begin
   end else
   if Sender = SearchInButton then
   begin
-
+    Brain.SearchIn;
   end else
   if Sender = AutoSearchButton then
   begin

@@ -192,7 +192,6 @@ var
   x : integer;
   rc : TRedFoxColor;
   xs : string;
-
 begin
   ThrottleID_VSTParChange.Init;
 
@@ -217,28 +216,6 @@ begin
   BackBuffer.Free;
   FileBrowserAddon.Free;
 end;
-
-{
-procedure SlowAction;
-    procedure Start;
-    begin
-      Edit4.Text := 'Working...';
-    end;
-    procedure Finished;
-    begin
-      Edit4.Text := 'Done';
-    end;
-  var
-    c1: Integer;
-  begin
-    LocalAsyncVclCall(@Start); // blocking
-    for c1 := 0 to 100 do
-    begin
-      sleep(20);
-    end;
-    LocalVclCall(@Finished); // blocking
-  end;
-}
 
 procedure SlowAction(ar: IAsyncCall; x : TObject; Id : string); cdecl;
   var
@@ -272,8 +249,8 @@ procedure SlowAction(ar: IAsyncCall; x : TObject; Id : string); cdecl;
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   if assigned(a) then a.CancelInvocation;
-
   a := AsyncCall(@SlowAction, [self, RandomString(4)]);
+  a.ForceDifferentThread;
   //TAsyncCalls.Invoke(SlowAction);
   //a := AsyncCall(@SlowAction, 10);
   //a.ForceDifferentThread;

@@ -7,9 +7,12 @@ unit InWindowDialog.SampleFinderDialog.Brain;
 interface
 
 uses
+  ASyncCalls,
   Classes;
 
 type
+  TAutoFileSearchToken = class;
+
   TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string) of object;
 
   TSampleFinderBrain = class
@@ -21,6 +24,9 @@ type
     function GetCurrentMissingFileName: string;
     function GetCurrentMissingFileCount: integer;
   protected
+    CallRef : IAsyncCall;
+    SearchToken : TAutoFileSearchToken;
+
     PreviousFindLocations : TStringList;
 
     fMissingFiles : TStringList;
@@ -28,6 +34,8 @@ type
 
     MissingIndex : integer;
 
+
+    procedure SearchForMissingFileIn(const MissingFileName, SearchPath : string);
     procedure IncrementMissingIndex;
 
     procedure UpdateMainView;
@@ -39,6 +47,7 @@ type
 
     procedure Skip;
     procedure LocateFile;
+    procedure SearchIn;
 
     property CurrentMissingFileCount    : integer read GetCurrentMissingFileCount;
     property CurrentMissingFileName     : string read GetCurrentMissingFileName;
@@ -48,6 +57,23 @@ type
     property OnSearchFinished : TNotifyEvent read fOnSearchFinished write fOnSearchFinished;
     property OnFileFound      : TFileFoundEvent read fOnFileFound write fOnFileFound;
   end;
+
+
+
+  //=====================================================================================
+  //================== Below here is for private internal usage =========================
+  //=====================================================================================
+  TAutoFileSearchToken = class(TObject)
+  private
+  protected
+  public
+    TargetFileName : string;
+    SearchPath     : string;
+    CancelCurrentSearch : boolean;
+  end;
+
+  procedure AutoFileSearch(Token : TAutoFileSearchToken);
+
 
 implementation
 
@@ -66,11 +92,26 @@ begin
   MissingIndex := 0;
 
   PreviousFindLocations := TStringList.Create;
+
+  SearchToken := TAutoFileSearchToken.Create;
 end;
 
 destructor TSampleFinderBrain.Destroy;
 begin
+  {
+  if assigned(CallRef) then
+  begin
+
+    CallRef.CancelInvocation;
+    CallRef.Sync;
+  end;
+  }
+  SearchToken.CancelCurrentSearch := true;
+  CallRef := nil;
+
   PreviousFindLocations.Free;
+  SearchToken.Free;
+
   inherited;
 end;
 
@@ -142,6 +183,19 @@ begin
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
 
+  if DirectoryExists(Dir) = false then
+  begin
+    // TODO:MED jump up the file path until
+    // a directory is found that exists.
+
+    // TODO:MED even better would be to search for a
+    // roughly equal file path. Perhaps this method could be useful.
+    //
+    // How do you implement Levenshtein distance in Delphi?
+    // http://stackoverflow.com/q/54797/395461
+  end;
+
+
   OpenDialog := TxpFileOpenDialog.Create(nil);
   try
     OpenDialog.Title := 'Open File';
@@ -157,6 +211,55 @@ begin
     OpenDialog.Free;
   end;
 end;
+
+procedure TSampleFinderBrain.SearchIn;
+var
+  fn : string;
+  Dir : string;
+  DirSelectDialog : TxpDirectorySelectDialog;
+begin
+  fn  := ExtractFileName(CurrentMissingFileFullPath);
+  Dir := ExtractFilePath(CurrentMissingFileFullPath);
+
+  DirSelectDialog := TxpDirectorySelectDialog.Create(nil);
+  try
+    if DirSelectDialog.Execute then
+    begin
+      SearchForMissingFileIn(fn, DirSelectDialog.FileName);
+    end;
+  finally
+    DirSelectDialog.Free;
+  end;
+end;
+
+procedure TSampleFinderBrain.SearchForMissingFileIn(const MissingFileName, SearchPath: string);
+begin
+  if assigned(CallRef) then
+  begin
+    SearchToken.CancelCurrentSearch := true;
+    CallRef.CancelInvocation;
+    CallRef.Sync;
+  end;
+
+  SearchToken.TargetFileName := MissingFileName;
+  SearchToken.SearchPath     := SearchPath;
+
+  CallRef := AsyncCall(@AutoFileSearch, [SearchToken]);
+end;
+
+
+//================================================================================================
+//================================================================================================
+//================================================================================================
+
+procedure AutoFileSearch(Token : TAutoFileSearchToken);
+begin
+  Token.CancelCurrentSearch := false;
+
+
+
+end;
+
 
 
 
