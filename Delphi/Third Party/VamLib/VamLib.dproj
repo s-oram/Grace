@@ -122,6 +122,7 @@
 			<DCCReference Include="Source\VamLib.PatchUtils.pas"/>
 			<DCCReference Include="Source\ThirdParty\Async Calls\AsyncCalls.pas"/>
 			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
+			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">
