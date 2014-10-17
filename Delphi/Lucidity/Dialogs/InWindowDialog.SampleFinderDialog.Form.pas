@@ -61,7 +61,7 @@ begin
 
   Brain := TSampleFinderBrain.Create(MissingFiles, SearchPaths);
   Brain.OnUpdateMainView := EventHandle_UpdateAllControls;
-  Brain.OnSearchFinished := EventHandle_SearchFinished;
+  Brain.OnFinished := EventHandle_SearchFinished;
   Brain.OnSearchPathChanged := EventHandle_SearchPathChanged;
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
@@ -178,7 +178,10 @@ end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchFinished(Sender: TObject);
 begin
-  CloseDialog;
+  EventHandle_UpdateAllControls(self);
+
+
+  //CloseDialog;
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);

@@ -19,7 +19,7 @@ type
   TSampleFinderBrain = class
   private
     fOnUpdateMainView: TNotifyEvent;
-    fOnSearchFinished: TNotifyEvent;
+    fOnFinished: TNotifyEvent;
     fOnFileFound: TFileFoundEvent;
     fOnSearchPathChanged: TStringEvent;
     function GetCurrentMissingFileFullPath: string;
@@ -36,13 +36,12 @@ type
 
     MissingIndex : integer;
 
-
     procedure SearchForMissingFileIn(const MissingFileName, SearchPath : string);
     procedure IncrementMissingIndex;
 
     procedure UpdateMainView;
-    procedure SearchFinished;
-    procedure FileFound(const MissingIndex : integer; const OldFileName, NewFileName : string);
+    procedure Finished; //Call to signal that all missing files have been processed.
+    procedure FileFound(const NewFileName : string);
     procedure SearchPathChanged(NewPath : string);
 
   public
@@ -58,12 +57,10 @@ type
     property CurrentMissingFileFullPath : string read GetCurrentMissingFileFullPath;
 
     property OnSearchPathChanged : TStringEvent read fOnSearchPathChanged write fOnSearchPathChanged;
-    property OnUpdateMainView : TNotifyEvent read fOnUpdateMainView write fOnUpdateMainView;
-    property OnSearchFinished : TNotifyEvent read fOnSearchFinished write fOnSearchFinished;
-    property OnFileFound      : TFileFoundEvent read fOnFileFound write fOnFileFound;
+    property OnUpdateMainView    : TNotifyEvent read fOnUpdateMainView write fOnUpdateMainView;
+    property OnFinished          : TNotifyEvent read fOnFinished write fOnFinished;
+    property OnFileFound         : TFileFoundEvent read fOnFileFound write fOnFileFound;
   end;
-
-
 
   //=====================================================================================
   //================== Below here is for private internal usage =========================
@@ -77,7 +74,6 @@ type
     SearchPath     : string;
     CancelCurrentSearch : boolean;
   end;
-
 
   procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
 
@@ -106,14 +102,6 @@ end;
 
 destructor TSampleFinderBrain.Destroy;
 begin
-  {
-  if assigned(CallRef) then
-  begin
-
-    CallRef.CancelInvocation;
-    CallRef.Sync;
-  end;
-  }
   SearchToken.CancelCurrentSearch := true;
   CallRef := nil;
 
@@ -123,16 +111,19 @@ begin
   inherited;
 end;
 
-procedure TSampleFinderBrain.FileFound(const MissingIndex: integer; const OldFileName, NewFileName: string);
+procedure TSampleFinderBrain.FileFound(const NewFileName: string);
 var
   Dir : string;
+  OldFileName : string;
 begin
+  OldFileName := CurrentMissingFileFullPath;
   Dir := ExtractFilePath(NewFileName);
   if PreviousFindLocations.IndexOf(Dir) = -1 then
   begin
     PreviousFindLocations.Add(Dir);
   end;
   if assigned(OnFileFound) then OnFileFound(self, MissingIndex, OldFileName, NewFileName);
+  IncrementMissingIndex;
 end;
 
 function TSampleFinderBrain.GetCurrentMissingFileCount: integer;
@@ -154,21 +145,42 @@ begin
     else result := '';
 end;
 
-procedure TSampleFinderBrain.SearchFinished;
+procedure TSampleFinderBrain.Finished;
 begin
-  if assigned(OnSearchFinished) then OnSearchFinished(Self);
-
+  if assigned(OnFinished) then OnFinished(Self);
 end;
 
 procedure TSampleFinderBrain.IncrementMissingIndex;
-begin
-  if MissingIndex < fMissingFiles.Count-1 then
+  function QuickSearchForCurrentFileInPreviousLocations:boolean;
+  var
+    Dir : string;
+    fn : string;
+    c1 : integer;
+    FullPathResult : string;
   begin
-    inc(MissingIndex);
-    UpdateMainView;
+    fn := ExtractFileName(CurrentMissingFileName);
+    for c1 := 0 to PreviousFindLocations.Count-1 do
+    begin
+      Dir := PreviousFindLocations[c1];
+      if SearchForFile(Dir, fn, false, FullPathResult, nil, nil) then
+      begin
+        FileFound(FullPathResult);
+        exit(true); //====================>>exit>>===============>>
+      end;
+    end;
+    //if we make it this far, no file found...
+    result := false;
+  end;
+begin
+  inc(MissingIndex);
+
+  if MissingIndex < fMissingFiles.Count then
+  begin
+    if QuickSearchForCurrentFileInPreviousLocations = false
+      then UpdateMainView;
   end else
   begin
-    SearchFinished;
+    Finished;
   end;
 end;
 
@@ -188,6 +200,8 @@ var
   fn : string;
   Dir : string;
 begin
+  SearchToken.CancelCurrentSearch := true;
+
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
 
@@ -209,12 +223,7 @@ begin
     OpenDialog.Title := 'Open File';
     if DirectoryExists(Dir) then OpenDialog.InitialDir := Dir;
     OpenDialog.FileName := fn;
-
-    if OpenDialog.Execute then
-    begin
-      FileFound(MissingIndex, CurrentMissingFileFullPath, OpenDialog.FileName);
-      IncrementMissingIndex;
-    end;
+    if OpenDialog.Execute then FileFound(OpenDialog.FileName);
   finally
     OpenDialog.Free;
   end;
@@ -275,9 +284,6 @@ var
 begin
   Token.CancelCurrentSearch := false;
 
-
-
-
   SearchPathChangedCallback := procedure(NewPath : string)
   begin
     EnterMainThread;
@@ -295,7 +301,12 @@ begin
 
   if SearchForFile(Token.SearchPath, Token.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then
   begin
-    ShowMessage(FullPathResult);
+    EnterMainThread;
+    try
+      Token.Brain.FileFound(FullPathResult);
+    finally
+      LeaveMainThread;
+    end;
   end else
   begin
     ShowMessage('file not found');
