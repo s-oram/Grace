@@ -27,11 +27,13 @@ var
   sr:TSearchRec;
 begin
   Dir := IncludeTrailingPathDelimiter(Dir) + LimitType;
-
-  if FindFirst(Dir, 0,sr) = 0 then
-  begin
-    repeat Results.Add(sr.Name);
-    until FindNext(sr) <> 0;
+  try
+    if FindFirst(Dir, 0,sr) = 0 then
+    begin
+      repeat Results.Add(sr.Name);
+      until FindNext(sr) <> 0;
+    end;
+  finally
     FindClose(sr);
   end;
 end;
@@ -43,18 +45,21 @@ var
 begin
   Path := IncludeTrailingPathDelimiter(Dir) + '*.*';
   //find all the folders first.
-  if FindFirst(Path, faDirectory,sr) = 0 then
-  begin
-    repeat
+  try
+    if FindFirst(Path, faDirectory,sr) = 0 then
     begin
-      if (sr.Attr and faDirectory <> 0)
-        and (sr.Attr and faHidden = 0)
-        and (sr.Name <> '.')
-        and (sr.Name <> '..')
-        then Results.Add(sr.Name);
+      repeat
+      begin
+        if (sr.Attr and faDirectory <> 0)
+          and (sr.Attr and faHidden = 0)
+          and (sr.Name <> '.')
+          and (sr.Name <> '..')
+          then Results.Add(sr.Name);
 
-    end
-    until FindNext(sr) <> 0;
+      end
+      until FindNext(sr) <> 0;
+    end;
+  finally
     FindClose(sr);
   end;
 end;
@@ -78,33 +83,39 @@ begin
       DirList.Delete(0);
 
       //Find the files...
-      if FindFirst(CurDir + LimitType, 0,sr) = 0 then
-      begin
-        repeat Results.Add(CurDir + sr.Name);
-        until FindNext(sr) <> 0;
+      try
+        if FindFirst(CurDir + LimitType, 0,sr) = 0 then
+        begin
+          repeat Results.Add(CurDir + sr.Name);
+          until FindNext(sr) <> 0;
+        end;
+      finally
         FindClose(sr);
       end;
+
 
       //Find the child directories...
-      if FindFirst(CurDir + '*.*', faDirectory, sr) = 0 then
-      begin
-        repeat
+      try
+        if FindFirst(CurDir + '*.*', faDirectory, sr) = 0 then
         begin
-          if (sr.Attr and faDirectory <> 0)
-            and (sr.Attr and faHidden = 0)
-            and (sr.Name <> '.')
-            and (sr.Name <> '..')
-            then
-            begin
-              s := CurDir + sr.Name;
-              s := IncludeTrailingPathDelimiter(s);
-              DirList.Add(s);
-            end;
-        end
-        until FindNext(sr) <> 0;
+          repeat
+          begin
+            if (sr.Attr and faDirectory <> 0)
+              and (sr.Attr and faHidden = 0)
+              and (sr.Name <> '.')
+              and (sr.Name <> '..')
+              then
+              begin
+                s := CurDir + sr.Name;
+                s := IncludeTrailingPathDelimiter(s);
+                DirList.Add(s);
+              end;
+          end
+          until FindNext(sr) <> 0;
+        end;
+      finally
         FindClose(sr);
       end;
-
     end;
   finally
     DirList.Free;
@@ -128,24 +139,29 @@ begin
   Path := IncludeTrailingPathDelimiter(Dir) + '*.*';
 
   //find all the folders first.
-  if FindFirst(Path, faDirectory,sr) = 0 then
-  begin
-    repeat
+  try
+    if FindFirst(Path, faDirectory,sr) = 0 then
     begin
-      if (sr.Attr and faDirectory = 0)
-        and (sr.Attr and faHidden = 0)
-        and (sr.Name <> '.')
-        and (sr.Name <> '..')
-        then Results.Add(sr.Name);
-    end
-    until FindNext(sr) <> 0;
+      repeat
+      begin
+        if (sr.Attr and faDirectory = 0)
+          and (sr.Attr and faHidden = 0)
+          and (sr.Name <> '.')
+          and (sr.Name <> '..')
+          then Results.Add(sr.Name);
+      end
+      until FindNext(sr) <> 0;
+    end;
+  finally
     FindClose(sr);
   end;
+
 
   //then find the files.
   for c1 := 0 to FileTypes.Count-1 do
   begin
     Path := IncludeTrailingPathDelimiter(Dir) + FileTypes.Strings[c1];
+    try
     if FindFirst(Path, 0,sr) = 0 then
     begin
       repeat
@@ -154,6 +170,8 @@ begin
           then Results.Add(sr.Name);
       end
       until FindNext(sr) <> 0;
+    end;
+    finally
       FindClose(sr);
     end;
   end;
@@ -176,24 +194,28 @@ begin
 
   Result := Filename;
 
-  if FindFirst(Path + LimitType, faAnyFile,sr) = 0 then
-  begin
-    if sr.Name = Fn then result := FileName
-    else
+  try
+    if FindFirst(Path + LimitType, faAnyFile,sr) = 0 then
     begin
-      repeat
+      if sr.Name = Fn then result := FileName
+      else
       begin
-        LastFile := sr.Name;
-        c1 := FindNext(sr);
-      end
-      until (c1 <> 0) or (sr.Name = fn);
+        repeat
+        begin
+          LastFile := sr.Name;
+          c1 := FindNext(sr);
+        end
+        until (c1 <> 0) or (sr.Name = fn);
 
-      if c1 = 0
-        then Result := Path + LastFile
-        else Result := Filename;
+        if c1 = 0
+          then Result := Path + LastFile
+          else Result := Filename;
+      end;
     end;
+  finally
+    FindClose(sr);
   end;
-  FindClose(sr);
+
 end;
 
 
@@ -211,19 +233,21 @@ begin
 
   Result := Filename;
 
-  if FindFirst(Path + LimitType, faAnyFile,sr) = 0 then
-  begin
+  try
+    if FindFirst(Path + LimitType, faAnyFile,sr) = 0 then
+    begin
 
-    if sr.Name <> Fn then
-      repeat c1 := FindNext(sr);
-      until (c1 <> 0) or (sr.Name = fn);
+      if sr.Name <> Fn then
+        repeat c1 := FindNext(sr);
+        until (c1 <> 0) or (sr.Name = fn);
 
-    if (sr.Name <> Fn) or (FindNext(sr) <> 0)
-      then Result := Filename
-      else Result := Path + Sr.Name;
+      if (sr.Name <> Fn) or (FindNext(sr) <> 0)
+        then Result := Filename
+        else Result := Path + Sr.Name;
+    end;
+  finally
+    FindClose(sr);
   end;
-  FindClose(sr);
-
 end;
 
 //Use AbFindFile to find the location of a particular file.
@@ -247,45 +271,53 @@ begin
   Dir := IncludeTrailingPathDelimiter(Dir);
 
   //Attempt to find the file in the given directory.
-  if FindFirst(Dir + Filename, faAnyFile, sr) = 0 then
-  begin
-    if sr.Name <> FileName then
-      repeat c1 := FindNext(sr);
-      until (c1 <> 0) or (sr.Name = FileName);
-
-    if sr.Name = FileName then
+  try
+    if FindFirst(Dir + Filename, faAnyFile, sr) = 0 then
     begin
-      FullPath := Dir + sr.Name;
-      result := true;
+      if sr.Name <> FileName then
+        repeat c1 := FindNext(sr);
+        until (c1 <> 0) or (sr.Name = FileName);
+
+      if sr.Name = FileName then
+      begin
+        FullPath := Dir + sr.Name;
+        result := true;
+      end;
     end;
+  finally
+    FindClose(sr);
   end;
-  FindClose(sr);
+
 
   //If the file isn't found, do we need to search subfolders?
   if (result = false) and (SearchSubfolders) then
   begin
     //Seach for folders. For some reason this just picks up all files. not just directories... ???  :(
-    c1 := FindFirst(Dir  + '*.*', faDirectory, sr);
-    while c1 = 0 do
-    begin
-
-      //If it is a valid folder, search that folder for the same file. This method gets recursive here.
-      if ((sr.Attr and faDirectory) = faDirectory) and (sr.Name <> '.') and (sr.Name <> '..') then
+    try
+      c1 := FindFirst(Dir  + '*.*', faDirectory, sr);
+      while c1 = 0 do
       begin
-        LocalDir := IncludeTrailingPathDelimiter(Dir) + sr.Name;
-        result := SearchForFile(LocalDir, Filename, true, FullPath, SearchPathChangedCallback, CancelSearchCallBack);
+        // Check to see if we should cancel the search.
+        if (assigned(CancelSearchCallback)) and (CancelSearchCallback() = true)
+          then exit(false);
+
+        //If it is a valid folder, search that folder for the same file. This method gets recursive here.
+        if ((sr.Attr and faDirectory) = faDirectory) and (sr.Name <> '.') and (sr.Name <> '..') then
+        begin
+          LocalDir := IncludeTrailingPathDelimiter(Dir) + sr.Name;
+          result := SearchForFile(LocalDir, Filename, true, FullPath, SearchPathChangedCallback, CancelSearchCallBack);
+        end;
+
+        //If the file was found, we can finish looking, else continue search subfolders.
+        if Result = true
+          then c1 := -1
+          else c1 := FindNext(sr);
+
       end;
-
-      //If the file was found, we can finish looking, else continue search subfolders.
-      if Result = true
-        then c1 := -1
-        else c1 := FindNext(sr);
-
+    finally
+      FindClose(sr);
     end;
-    FindClose(sr);
   end;
-
-
 end;
 
 end.
