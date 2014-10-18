@@ -572,17 +572,26 @@ begin
 end;
 
 procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
+var
+  LogMsg : string;
 begin
   SendMessageToList(MainObjects, MainListLock, MsgID, Data, nil);
 
   IsGuiOpenLock.BeginRead;
   try
-    if (IsGuiOpen) and (MainThreadID = GetCurrentThreadId) then
+    if (IsGuiOpen) then
     begin
-      SendMessageToList(VclObjects, VclListLock, MsgID, Data, nil);
-    end else
-    begin
-      Log.LogError('MsgVCL Wrong Thread.');
+      if (MainThreadID = GetCurrentThreadId) then
+      begin
+        SendMessageToList(VclObjects, VclListLock, MsgID, Data, nil);
+      end else
+      begin
+        // TODO:HIGH - i think this is another reason to remove the MsgMain. Should stuff be sent to the GUI thread.
+        if assigned(Injected_MsgIdToStr)
+          then LogMsg := 'MsgMain Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
+          else LogMsg := 'MsgMain Wrong Thread. ID = ' + IntToStr(MsgID);
+        Log.LogError(LogMsg);
+      end;
     end;
   finally
     IsGuiOpenLock.EndRead;
@@ -590,6 +599,8 @@ begin
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal);
+var
+  LogMsg : string;
 begin
   IsGuiOpenLock.BeginRead;
   try
@@ -600,7 +611,10 @@ begin
         SendMessageToList(VclObjects, VclListLock, MsgID, nil, nil);
       end else
       begin
-        Log.LogError('MsgVCL Wrong Thread.');
+        if assigned(Injected_MsgIdToStr)
+          then LogMsg := 'MsgVCL Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
+          else LogMsg := 'MsgVCL Wrong Thread. ID = ' + IntToStr(MsgID);
+        Log.LogError(LogMsg);
       end;
     end;
   finally
@@ -609,6 +623,8 @@ begin
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer; DataB:IZeroMessageData);
+var
+  LogMsg : string;
 begin
   if (MainThreadID <> GetCurrentThreadId)
     then raise Exception.Create('MsgVCL has been called from non-vcl thread.');
@@ -623,9 +639,10 @@ begin
         SendMessageToList(VclObjects, VclListLock, MsgID, Data, DataB);
       end else
       begin
-        // TODO:MED probably should log a warning or raise an error here.
-        //SendMessageToList(VclObjects, MsgID, nil);
-        Log.LogError('MsgVCL Wrong Thread.');
+        if assigned(Injected_MsgIdToStr)
+          then LogMsg := 'MsgVCL Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
+          else LogMsg := 'MsgVCL Wrong Thread. ID = ' + IntToStr(MsgID);
+        Log.LogError(LogMsg);
       end;
     end;
   finally
