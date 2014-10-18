@@ -88,7 +88,7 @@ end;
 procedure TFileTreeViewMainContextMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
-  OD : TxpBrowserSelectDialog;
+  OD : TxpDirectorySelectDialog;
   DirName, DirPath : string;
 begin
   assert(Sender is TMenuItem);
@@ -97,7 +97,7 @@ begin
 
   if Tag = 1 then
   begin
-    OD := TxpBrowserSelectDialog.Create(nil);
+    OD := TxpDirectorySelectDialog.Create(nil);
     AutoFree(@OD);
     if OD.Execute then
     begin
@@ -147,7 +147,7 @@ procedure TFileTreeViewNodeContextMenu.MenuItemClicked(Sender: TObject);
 var
   Tag : integer;
   NodeData  : PNodeData;
-  OD : TxpBrowserSelectDialog;
+  OD : TxpDirectorySelectDialog;
   DirName, DirPath : string;
 begin
   assert(Sender is TMenuItem);
@@ -186,7 +186,7 @@ begin
 
   if Tag = 5 then
   begin
-    OD := TxpBrowserSelectDialog.Create(nil);
+    OD := TxpDirectorySelectDialog.Create(nil);
     AutoFree(@OD);
 
     // NOTE: Using file open dialog to select folders.
