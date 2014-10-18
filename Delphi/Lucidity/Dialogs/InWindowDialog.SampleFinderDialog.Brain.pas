@@ -193,6 +193,7 @@ end;
 
 procedure TSampleFinderBrain.Skip;
 begin
+  SearchToken.CancelCurrentSearch := true;
   IncrementMissingIndex;
 end;
 
@@ -247,6 +248,8 @@ var
   Dir : string;
   DirSelectDialog : TxpDirectorySelectDialog;
 begin
+  SearchToken.CancelCurrentSearch := true;
+
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
 
@@ -299,11 +302,11 @@ begin
 
   SearchPathChangedCallback := procedure(NewPath : string)
   begin
-    EnterMainThread;
+    //EnterMainThread;
     try
       Token.Brain.TriggerEvent_SearchPathChanged(NewPath);
     finally
-      LeaveMainThread;
+      //LeaveMainThread;
     end;
   end;
 
@@ -316,19 +319,19 @@ begin
 
   if SearchForFile(Token.SearchPath, Token.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then
   begin
-    EnterMainThread;
+    //EnterMainThread;
     try
       Token.Brain.TriggerEvent_FileFound(FullPathResult);
     finally
-      LeaveMainThread;
+      //LeaveMainThread;
     end;
   end else
   begin
-    EnterMainThread;
+    //EnterMainThread;
     try
       Token.Brain.TriggerEvent_SearchFinished_FileNotFound;
     finally
-      LeaveMainThread;
+      //LeaveMainThread;
     end;
   end;
 end;
