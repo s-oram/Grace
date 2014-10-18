@@ -287,7 +287,7 @@ begin
     MissingSamples.Add('02.wav');
     SearchPaths.Add('D:\Audio\Data\Poise Drum Kits 2');
     SearchPaths.Add('D:\Audio\Data\Samples (Instruments)');
-    InWindow_SampleFinderDialog(self, MissingSamples, SearchPaths);
+    InWindow_SampleFinderDialog(self, MissingSamples, SearchPaths, nil);
   finally
     MissingSamples.Free;
     SearchPaths.Free;
