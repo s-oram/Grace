@@ -52,6 +52,7 @@ type
 implementation
 
 uses
+  VamLib.LoggingProxy,
   VamLib.Utils,
   VamLib.VclLayout,
   RedFoxColor;
@@ -247,6 +248,7 @@ end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);
 begin
+  Log.LogMessage('New Search Path ' + NewPath);
   StatusLabel1.Caption := 'Searching...';
   StatusLabel2.Caption := NewPath;
 end;

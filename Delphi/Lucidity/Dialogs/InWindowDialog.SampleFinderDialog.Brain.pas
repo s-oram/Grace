@@ -276,8 +276,9 @@ begin
     CallRef.Sync;
   end;
 
-  SearchToken.TargetFileName := MissingFileName;
-  SearchToken.SearchPath     := SearchPath;
+  SearchToken.CancelCurrentSearch := false;
+  SearchToken.TargetFileName      := MissingFileName;
+  SearchToken.SearchPath          := SearchPath;
 
   CallRef := AsyncCall(@SingleFileSearch, [SearchToken]);
 end;
@@ -308,7 +309,9 @@ begin
 
   CancelSearchCallback := function : boolean
   begin
-    result := Token.CancelCurrentSearch;
+    if Token.CancelCurrentSearch
+      then result := true
+      else result := false;
   end;
 
   if SearchForFile(Token.SearchPath, Token.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then

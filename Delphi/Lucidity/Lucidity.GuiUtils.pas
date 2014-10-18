@@ -110,6 +110,8 @@ type
     class procedure VstPar_BeginEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_EndEdit(const Plugin : TeePlugin; const VstParameterIndex : integer); static;
     class procedure VstPar_SetParameterAutomated(const Plugin : TeePlugin; const VstParameterIndex : integer; const ParValue : single); static;
+
+    class procedure FindMissingSamples(const Plugin : TeePlugin); static;
   end;
 
   GuiSetup = record
@@ -125,6 +127,7 @@ type
 implementation
 
 uses
+  Classes,
   Lucidity.CopyProtection,
   SysUtils,
   InWindowDialog,
@@ -1040,6 +1043,49 @@ begin
     else msg := 'Delete ' + IntToStr(SelectedRegionCount) + ' selected regions?';
 
   InWindow_CustomDialog(Plugin.Globals.TopLevelForm, msg, ['Yes','No'], ResultCallback);
+end;
+
+class procedure Command.FindMissingSamples(const Plugin: TeePlugin);
+var
+  rx : IRegion;
+  c1: Integer;
+  fn : string;
+  MissingSamples : TStringList;
+  SearchPaths    : TStringList;
+  FileFoundCallback : TFileFoundCallback;
+begin
+  MissingSamples := TStringList.Create;
+  AutoFree(@MissingSamples);
+
+  SearchPaths := TStringList.Create;
+  AutoFree(@SearchPaths);
+
+  // TODO:MED WARNING - using the sample map region count property
+  // here probably isn't thread safe. I dunno what to do about that.
+  // Instead of searching for missing samples, I could have a list of
+  // missing samples that is generated when loading patches.
+  for c1 := Plugin.SampleMap.RegionCount-1 downto 0 do
+  begin
+    rx := Plugin.SampleMap.Regions[c1];
+    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    begin
+      if rx.GetProperties^.SampleFileFullPath <> ''
+        then fn := rx.GetProperties^.SampleFileFullPath
+        else fn := rx.GetProperties^.SampleFileName;
+
+      if (MissingSamples.IndexOf(fn) = -1) and (FileExists(fn) = false)
+        then MissingSamples.Add(fn);
+    end;
+  end;
+
+  FileFoundCallback := procedure(const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean; var AcceptMessage : string)
+  begin
+
+  end;
+
+  if MissingSamples.Count > 0
+    then InWindow_SampleFinderDialog(Plugin.Globals.TopLevelForm, MissingSamples, SearchPaths, FileFoundCallback)
+    else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'All samples present.');
 end;
 
 class function Command.GetModSlotSource(const Plugin: TeePlugin; const ModSlot: integer): string;

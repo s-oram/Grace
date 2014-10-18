@@ -34,6 +34,7 @@ type
 
     procedure EventHandle_OpenDataFoler(Sender : TObject);
     procedure EventHandle_AutoSelectChange(Sender : TObject);
+    procedure EventHandle_FindMissingSamples(Sender : TObject);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -285,6 +286,11 @@ begin
   mi.OnClick := ShowLastLoadedProgramFile;
   Menu.Items.Add(mi);
 
+  mi := TMenuItem.Create(Menu);
+  mi.Caption := 'Locate Missing Samples...';
+  mi.OnClick := EventHandle_FindMissingSamples;
+  Menu.Items.Add(mi);
+
   //NOTE: Not sure if I want to inlude a 'Registered To...' item. hmmm.
   {
   if Plugin.Globals.KeyData.IsKeyChecksumValid = true then
@@ -527,6 +533,13 @@ begin
     InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'There was no preset data or something went wrong.');
   end;
 end;
+
+procedure TMainMenu.EventHandle_FindMissingSamples(Sender: TObject);
+begin
+  Command.FindMissingSamples(Plugin);
+end;
+
+
 
 
 

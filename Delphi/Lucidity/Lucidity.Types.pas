@@ -85,12 +85,13 @@ type
 
   PRegionProperties = ^TRegionProperties;
   TRegionProperties = record
-    UniqueID         : TGuid;
-    SampleFileName   : string;
-    SampleDataLoaded : boolean;
-    IsSampleError    : boolean;
-    SampleErrorType  : TSampleError;
-    ErrorMessage     : string;
+    UniqueID           : TGuid;
+    SampleFileName     : string;
+    SampleFileFullPath : string; //TODO:HIGH this should be the last known full path.
+    SampleDataLoaded   : boolean;
+    IsSampleError      : boolean;
+    SampleErrorType    : TSampleError;
+    ErrorMessage       : string;
 
     IsSelected     : boolean; //Multiple regions can be selected.
     IsFocused      : boolean; //only a single region should be 'focused' at once.
@@ -116,7 +117,6 @@ type
     SampleTune    : integer; // Semitones. -24..+24
     SampleFine    : integer; // FineTune - Cents -100..100
     SampleBeats   : integer; // Length of sample in beats. Beats are used for looping.
-
 
     procedure GetRegionLoopPoints(out aLoopStart, aLoopEnd : integer);
   end;
