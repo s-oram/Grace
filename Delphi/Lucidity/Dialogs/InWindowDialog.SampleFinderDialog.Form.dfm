@@ -64,6 +64,7 @@ object SampleFinderDialogForm: TSampleFinderDialogForm
           HitTest = True
           Align = alBottom
           Visible = True
+          OnResize = ButtonDivResize
         end
         object MainDialogArea: TVamDiv
           AlignWithMargins = True
@@ -109,6 +110,20 @@ object SampleFinderDialogForm: TSampleFinderDialogForm
             Height = 13
             Alignment = taRightJustify
             Caption = 'Missing File Count'
+          end
+          object StatusLabel1: TLabel
+            Left = 16
+            Top = 160
+            Width = 37
+            Height = 13
+            Caption = 'Status1'
+          end
+          object StatusLabel2: TLabel
+            Left = 16
+            Top = 176
+            Width = 37
+            Height = 13
+            Caption = 'Status2'
           end
           object FilenameEdit: TEdit
             Left = 16

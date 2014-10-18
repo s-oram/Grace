@@ -1,4 +1,4 @@
-unit InWindowDialog.SampleFinderDialog.Brain;
+﻿unit InWindowDialog.SampleFinderDialog.Brain;
 
 {
   The sample finder brain wraps up all the searching functionality.
@@ -22,6 +22,7 @@ type
     fOnFinished: TNotifyEvent;
     fOnFileFound: TFileFoundEvent;
     fOnSearchPathChanged: TStringEvent;
+    fOnSearchFinished_FileNotFound: TNotifyEvent;
     function GetCurrentMissingFileFullPath: string;
     function GetCurrentMissingFileName: string;
     function GetCurrentMissingFileCount: integer;
@@ -40,10 +41,10 @@ type
     procedure IncrementMissingIndex;
 
     procedure UpdateMainView;
-    procedure Finished; //Call to signal that all missing files have been processed.
-    procedure FileFound(const NewFileName : string);
-    procedure SearchPathChanged(NewPath : string);
-
+    procedure TriggerEvent_Finished; //Call to signal that all missing files have been processed.
+    procedure TriggerEvent_FileFound(const NewFileName : string);
+    procedure TriggerEvent_SearchPathChanged(NewPath : string);
+    procedure TriggerEvent_SearchFinished_FileNotFound;
   public
     constructor Create(var MissingFiles, SearchPaths : TStringList);
     destructor Destroy; override;
@@ -56,6 +57,7 @@ type
     property CurrentMissingFileName     : string read GetCurrentMissingFileName;
     property CurrentMissingFileFullPath : string read GetCurrentMissingFileFullPath;
 
+    property OnSearchFinished_FileNotFound : TNotifyEvent read fOnSearchFinished_FileNotFound write fOnSearchFinished_FileNotFound;
     property OnSearchPathChanged : TStringEvent read fOnSearchPathChanged write fOnSearchPathChanged;
     property OnUpdateMainView    : TNotifyEvent read fOnUpdateMainView write fOnUpdateMainView;
     property OnFinished          : TNotifyEvent read fOnFinished write fOnFinished;
@@ -111,7 +113,7 @@ begin
   inherited;
 end;
 
-procedure TSampleFinderBrain.FileFound(const NewFileName: string);
+procedure TSampleFinderBrain.TriggerEvent_FileFound(const NewFileName: string);
 var
   Dir : string;
   OldFileName : string;
@@ -145,7 +147,7 @@ begin
     else result := '';
 end;
 
-procedure TSampleFinderBrain.Finished;
+procedure TSampleFinderBrain.TriggerEvent_Finished;
 begin
   if assigned(OnFinished) then OnFinished(Self);
 end;
@@ -164,7 +166,7 @@ procedure TSampleFinderBrain.IncrementMissingIndex;
       Dir := PreviousFindLocations[c1];
       if SearchForFile(Dir, fn, false, FullPathResult, nil, nil) then
       begin
-        FileFound(FullPathResult);
+        TriggerEvent_FileFound(FullPathResult);
         exit(true); //====================>>exit>>===============>>
       end;
     end;
@@ -180,13 +182,18 @@ begin
       then UpdateMainView;
   end else
   begin
-    Finished;
+    TriggerEvent_Finished;
   end;
 end;
 
 procedure TSampleFinderBrain.Skip;
 begin
   IncrementMissingIndex;
+end;
+
+procedure TSampleFinderBrain.TriggerEvent_SearchFinished_FileNotFound;
+begin
+  if assigned(OnSearchFinished_FileNotFound) then OnSearchFinished_FileNotFound(self);
 end;
 
 procedure TSampleFinderBrain.UpdateMainView;
@@ -223,7 +230,7 @@ begin
     OpenDialog.Title := 'Open File';
     if DirectoryExists(Dir) then OpenDialog.InitialDir := Dir;
     OpenDialog.FileName := fn;
-    if OpenDialog.Execute then FileFound(OpenDialog.FileName);
+    if OpenDialog.Execute then TriggerEvent_FileFound(OpenDialog.FileName);
   finally
     OpenDialog.Free;
   end;
@@ -250,7 +257,7 @@ begin
 end;
 
 
-procedure TSampleFinderBrain.SearchPathChanged(NewPath: string);
+procedure TSampleFinderBrain.TriggerEvent_SearchPathChanged(NewPath: string);
 begin
   if assigned(OnSearchPathChanged) then OnSearchPathChanged(self, NewPath);
 end;
@@ -288,7 +295,7 @@ begin
   begin
     EnterMainThread;
     try
-      Token.Brain.SearchPathChanged(NewPath);
+      Token.Brain.TriggerEvent_SearchPathChanged(NewPath);
     finally
       LeaveMainThread;
     end;
@@ -303,13 +310,18 @@ begin
   begin
     EnterMainThread;
     try
-      Token.Brain.FileFound(FullPathResult);
+      Token.Brain.TriggerEvent_FileFound(FullPathResult);
     finally
       LeaveMainThread;
     end;
   end else
   begin
-    ShowMessage('file not found');
+    EnterMainThread;
+    try
+      Token.Brain.TriggerEvent_SearchFinished_FileNotFound;
+    finally
+      LeaveMainThread;
+    end;
   end;
 end;
 

@@ -21,7 +21,10 @@ type
     FilenameEdit: TEdit;
     FullPathEdit: TEdit;
     MissingFileCountLabel: TLabel;
+    StatusLabel1: TLabel;
+    StatusLabel2: TLabel;
     procedure MainDialogAreaResize(Sender: TObject);
+    procedure ButtonDivResize(Sender: TObject);
   private
     SkipButton : TButton;
     LocateButton  : TButton;
@@ -34,6 +37,7 @@ type
     procedure EventHandle_UpdateAllControls(Sender : TObject);
     procedure EventHandle_ButtonClick(Sender : TObject);
     procedure EventHandle_SearchPathChanged(Sender : TObject; NewPath : string);
+    procedure EventHandle_SearchFinished_FileNotFound(Sender : TObject);
   public
     constructor Create(AOwner: TComponent; var MissingFiles, SearchPaths : TStringList); reintroduce;
     destructor Destroy; override;
@@ -62,14 +66,25 @@ begin
   Brain.OnUpdateMainView := EventHandle_UpdateAllControls;
   Brain.OnFinished := EventHandle_SearchFinished;
   Brain.OnSearchPathChanged := EventHandle_SearchPathChanged;
+  Brain.OnSearchFinished_FileNotFound := EventHandle_SearchFinished_FileNotFound;
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
   DialogTextControl.Color := GetRedfoxColor(cl3DLight);
+  DialogTextControl.AutoSize := false;
+  DialogTextControl.Alignment := TAlignment.taCenter;
+  DialogTextControl.Font.Style := [fsBold];
 
   FileNameLabel.Color := GetRedfoxColor(cl3DLight);
   FullPathLabel.Color := GetRedfoxColor(cl3DLight);
   MissingFileCountLabel.Color := GetRedfoxColor(cl3DLight);
+  StatusLabel1.Color := GetRedfoxColor(cl3DLight);
+  StatusLabel2.Color := GetRedfoxColor(cl3DLight);
+
+  StatusLabel1.Left := 0;
+  StatusLabel2.Left := 0;
+  StatusLabel1.AutoSize := false;
+  StatusLabel2.AutoSize := false;
 
   MissingFileCountLabel.AutoSize := false;
   MissingFileCountLabel.Width    := 300;
@@ -100,12 +115,14 @@ begin
     (obj as TButton).OnClick := EventHandle_ButtonClick;
   end;
 
-
   AutoSearchButton.Visible := false; //TODO:HIGH delete this when auto search is implemented.
 
   ButtonDiv.Height := kButtonHeight;
 
   EventHandle_UpdateAllControls(self);
+
+  //StatusLabel1.Caption := '';
+  //StatusLabel2.Caption := '';
 end;
 
 destructor TSampleFinderDialogForm.Destroy;
@@ -118,34 +135,44 @@ procedure TSampleFinderDialogForm.MainDialogAreaResize(Sender: TObject);
 begin
   DialogTextControl.Top := 0;
   DialogTextControl.Left := 0;
+  DialogTextControl.Width := MainDialogArea.Width;
+
+  FileNameLabel.Left := 0;
+  VclLayout(FileNameLabel, DialogTextControl).SnapToBottomEdge.Move(0, 16);
+
+  MissingFileCountLabel.Left := MainDialogArea.Width - MissingFileCountLabel.Width;
+  VclLayout(MissingFileCountLabel, DialogTextControl).SnapToBottomEdge.Move(0, 16);
 
   FileNameEdit.Width := MainDialogArea.Width;
   FileNameEdit.Left := 0;
-  VclLayout(FileNameEdit, DialogTextControl).SnapToBottomEdge.Move(0, 16);
+  VclLayout(FileNameEdit, FileNameLabel).SnapToBottomEdge.Move(0, 4);
 
-  FileNameLabel.Left := 2;
-  VclLayout(FileNameLabel, FileNameEdit).SnapToBottomEdge.Move(0, 2);
-
-  MissingFileCountLabel.Left := MainDialogArea.Width - MissingFileCountLabel.Width;
-  VclLayout(MissingFileCountLabel, FileNameEdit).SnapToBottomEdge.Move(0, 2);
+  FullPathLabel.Left := 0;
+  VclLayout(FullPathLabel, FileNameEdit).SnapToBottomEdge.Move(0, 16);
 
   FullPathEdit.Width := MainDialogArea.Width;
   FullPathEdit.Left := 0;
-  VclLayout(FullPathEdit, FileNameLabel).SnapToBottomEdge.Move(0, 16);
+  VclLayout(FullPathEdit, FullPathLabel).SnapToBottomEdge.Move(0, 4);
 
-  FullPathLabel.Left := 2;
-  VclLayout(FullPathLabel, FullPathEdit).SnapToBottomEdge.Move(0, 2);
+  VclLayout(StatusLabel1, FullPathEdit).SnapToBottomEdge.Move(0, 16);
+  VclLayout(StatusLabel2, StatusLabel1).SnapToBottomEdge.Move(0, 2);
 
+  StatusLabel1.Width := MainDialogArea.Width;
+  StatusLabel2.Width := MainDialogArea.Width;
+end;
 
+procedure TSampleFinderDialogForm.ButtonDivResize(Sender: TObject);
+begin
   //VclLayout([SkipButton, LocateButton, SearchInButton, AutoSearchButton, CloseDialogButton]).FitToParentWidth(16);
   VclLayout([SkipButton, LocateButton, SearchInButton, CloseDialogButton]).FitToParentWidth(16);
-
   SkipButton.Top := 0;
   LocateButton.Top := 0;
   SearchInButton.Top := 0;
   AutoSearchButton.Top := 0;
   CloseDialogButton.Top := 0;
 end;
+
+
 
 procedure TSampleFinderDialogForm.EventHandle_UpdateAllControls(Sender: TObject);
 begin
@@ -155,6 +182,12 @@ begin
 
   FileNameEdit.Text := Brain.CurrentMissingFileName;
   FullPathEdit.Text := ExtractFilePath(Brain.CurrentMissingFileFullPath);
+
+  // HACK: I'm just assuming this is a good place to have some status labels updated.
+  // what probably needs to happen is to have status information provided by the brain
+  // instead of just guessing from the outside.
+  StatusLabel1.Caption := '';
+  StatusLabel2.Caption := '';
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_ButtonClick(Sender: TObject);
@@ -192,15 +225,23 @@ begin
 
   CloseDialogButton.SetFocus;
 
-  FullPathLabel.Caption := 'Finished';
+  StatusLabel1.Caption := 'Finished';
+  StatusLabel2.Caption := '';
 
-  // TODO:HIGH - the full path label shouldn't be getting reused for the status updates.
-  // need to add another control to the GUI.
+  // TODO:MED it would look better if the finished status message said all files found
+  // or 7 of 7 files found.
+end;
+
+procedure TSampleFinderDialogForm.EventHandle_SearchFinished_FileNotFound(Sender: TObject);
+begin
+  StatusLabel1.Caption := 'Search finished. File not found.';
+  StatusLabel2.Caption := '';
 end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);
 begin
-  FullPathLabel.Caption := NewPath;
+  StatusLabel1.Caption := 'Searching...';
+  StatusLabel2.Caption := NewPath;
 end;
 
 end.
