@@ -260,7 +260,7 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  Worker.Run(Bang);
+  Worker.Run;
 
   //if assigned(a) then a.CancelInvocation;
   //a := AsyncCall(@SlowAction, [self]);
@@ -296,14 +296,15 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-  ResultHandler : TCustomDialogResultCallback;
+  Task : TProc;
 begin
-  ResultHandler := procedure(Text:string)
+  Task := procedure
+  var
+    c1: Integer;
   begin
-    showMessage(Text);
+    Sleep(1000);
+    //ShowMessage('fin');
   end;
-
-  InWindow_CustomDialog(self, 'James Brown', ['Is', 'Dead'], ResultHandler);
 end;
 
 procedure TForm1.UpdateLabel;
