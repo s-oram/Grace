@@ -13,7 +13,7 @@ uses
 type
   TFileSearchToken = class;
 
-  TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string) of object;
+  TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean) of object;
   TStringEvent = procedure(Sender : TObject; Str:string) of object;
 
   TSampleFinderBrain = class
@@ -117,6 +117,7 @@ procedure TSampleFinderBrain.TriggerEvent_FileFound(const NewFileName: string);
 var
   Dir : string;
   OldFileName : string;
+  Accept : boolean;
 begin
   OldFileName := CurrentMissingFileFullPath;
   Dir := ExtractFilePath(NewFileName);
@@ -124,8 +125,12 @@ begin
   begin
     PreviousFindLocations.Add(Dir);
   end;
-  if assigned(OnFileFound) then OnFileFound(self, MissingIndex, OldFileName, NewFileName);
-  IncrementMissingIndex;
+
+  Accept := true;
+  if assigned(OnFileFound) then OnFileFound(self, MissingIndex, OldFileName, NewFileName, Accept);
+
+  if Accept
+    then IncrementMissingIndex;
 end;
 
 function TSampleFinderBrain.GetCurrentMissingFileCount: integer;

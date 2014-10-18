@@ -9,6 +9,8 @@ uses
   VamWinControl, VamPanel, RedFoxContainer;
 
 type
+  TSampleFinderFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean; var AcceptMessage : string) of object;
+
   TSampleFinderDialogForm = class(TPluginDialogForm)
     RedFoxContainer1: TRedFoxContainer;
     BackPanel1: TVamPanel;
@@ -32,15 +34,19 @@ type
     AutoSearchButton : TButton;
     CloseDialogButton : TButton;
     Brain : TSampleFinderBrain;
+    fOnFileFound: TSampleFinderFileFoundEvent;
 
     procedure EventHandle_SearchFinished(Sender : TObject);
     procedure EventHandle_UpdateAllControls(Sender : TObject);
     procedure EventHandle_ButtonClick(Sender : TObject);
     procedure EventHandle_SearchPathChanged(Sender : TObject; NewPath : string);
     procedure EventHandle_SearchFinished_FileNotFound(Sender : TObject);
+    procedure EventHandle_FileFound(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean);
   public
     constructor Create(AOwner: TComponent; var MissingFiles, SearchPaths : TStringList); reintroduce;
     destructor Destroy; override;
+
+    property OnFileFound : TSampleFinderFileFoundEvent read fOnFileFound write fOnFileFound;
   end;
 
 implementation
@@ -67,6 +73,7 @@ begin
   Brain.OnFinished := EventHandle_SearchFinished;
   Brain.OnSearchPathChanged := EventHandle_SearchPathChanged;
   Brain.OnSearchFinished_FileNotFound := EventHandle_SearchFinished_FileNotFound;
+  Brain.OnFileFound := EventHandle_FileFound;
 
   BackPanel1.Color := GetRedfoxColor(clWindowText);
   BackPanel2.Color := GetRedfoxColor(cl3DLight);
@@ -243,5 +250,22 @@ begin
   StatusLabel1.Caption := 'Searching...';
   StatusLabel2.Caption := NewPath;
 end;
+
+procedure TSampleFinderDialogForm.EventHandle_FileFound(Sender: TObject; const MissingIndex: integer; const OldFileName, NewFileName: string; var Accept: boolean);
+var
+  AcceptMessage : string;
+begin
+  AcceptMessage := '';
+  if assigned(OnFileFound) then OnFileFound(self, MissingIndex, OldFileName, NewFileName, Accept, AcceptMessage);
+
+  if Accept = false then
+  begin
+    StatusLabel1.Caption := AcceptMessage;
+    StatusLabel2.Caption := '';
+  end;
+
+end;
+
+
 
 end.

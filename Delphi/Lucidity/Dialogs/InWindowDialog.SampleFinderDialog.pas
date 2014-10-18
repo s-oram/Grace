@@ -7,20 +7,27 @@ uses
   InWindowDialog.Prototypes;
 
 type
+  TFileFoundCallback = reference to procedure(const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean; var AcceptMessage : string);
+
   TSampleFinderDialog = class(TPluginDialog)
   private
     fText: string;
     fColorBorder: TColor;
+    fFileFoundCallback: TFileFoundCallback;
   protected
     fMissingFiles : TStringList;
     fSearchPaths : TStringList;
     function CreateDialogForm(AOwner: TComponent) : TPluginDialogForm; override;
+
+    procedure EventHandle_FileFound(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean; var AcceptMessage : string);
   public
     constructor Create; override;
     destructor Destroy; override;
 
     procedure AddMissingFiles(const FullPathFilenames : TStringList);
     procedure AddSearchPaths(const SearchPaths : TStringList);
+
+    property FileFoundCallback : TFileFoundCallback read fFileFoundCallback write fFileFoundCallback;
   end;
 
 implementation
@@ -59,9 +66,15 @@ var
   aForm : TSampleFinderDialogForm;
 begin
   aForm := TSampleFinderDialogForm.Create(AOwner, fMissingFiles, fSearchPaths);
-  //aForm.DialogText := Text;
-
+  aForm.OnFileFound := self.EventHandle_FileFound;
   result := aForm;
 end;
+
+procedure TSampleFinderDialog.EventHandle_FileFound(Sender: TObject; const MissingIndex: integer; const OldFileName, NewFileName: string; var Accept: boolean; var AcceptMessage: string);
+begin
+  if assigned(FileFoundCallback) then FileFoundCallback(MissingIndex, OldFileName, NewFileName, Accept, AcceptMessage);
+end;
+
+
 
 end.
