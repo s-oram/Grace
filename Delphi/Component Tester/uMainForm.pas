@@ -50,6 +50,8 @@ type
     destructor Destroy; override;
   end;
 
+  TFancyUpdater = class;
+
 
   TForm1 = class(TForm)
     Button1: TButton;
@@ -68,6 +70,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
+    Updater : TFancyUpdater;
     Worker : TWorker;
     a: IAsyncCall;
     FileBrowserAddon : TFileBrowserAddon;
@@ -99,6 +102,17 @@ type
   published
     procedure MyTestHandler2(Sender : TObject);
     procedure WinEventProcCallbackObject( hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
+  end;
+
+
+  TFancyUpdater = class(TWorker)
+  private
+    fForm: TForm1;
+  protected
+    procedure Task; override;
+  public
+    property Form : TForm1 read fForm write fForm;
+
   end;
 
 var
@@ -195,6 +209,8 @@ var
   rc : TRedFoxColor;
   xs : string;
 begin
+  Updater := TFancyUpdater.Create;
+
   Worker := TWorker.Create;
 
   ThrottleID_VSTParChange.Init;
@@ -214,6 +230,7 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  Updater.Free;
   Worker.Free;
   WindowsEventHook.Free;
 
@@ -260,7 +277,11 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  Worker.Run;
+  Updater.Stop;
+  Updater.Form := self;
+  Updater.Run;
+
+  //Worker.Run;
 
   //if assigned(a) then a.CancelInvocation;
   //a := AsyncCall(@SlowAction, [self]);
@@ -349,6 +370,29 @@ destructor TMyTestObject.Destroy;
 begin
 
   inherited;
+end;
+
+{ TFancyUpdater }
+
+procedure TFancyUpdater.Task;
+var
+  c1: Integer;
+begin
+  inherited;
+
+  for c1 := 0 to 100 do
+  begin
+    if IsCanceled then exit;
+    Sleep(250);
+    if IsCanceled then exit;
+
+    self.Synchronize(procedure
+    begin
+      Form.Edit4.Text := IntToStr(c1);
+    end);
+  end;
+
+
 end;
 
 initialization

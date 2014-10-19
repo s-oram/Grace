@@ -15,6 +15,8 @@ type
     Thread : TWorkerThread;
     procedure EventHandle_ThreadTerminated(Sender: TObject);
   protected
+    IsCanceled : boolean;
+
     procedure Queue(AMethod: TThreadMethod); overload;
     procedure Queue(AThreadProc: TThreadProcedure); overload;
     procedure Synchronize(AMethod: TThreadMethod); overload;
@@ -82,6 +84,8 @@ begin
     FreeAndNil(Thread);
   end;
 
+  IsCanceled := false;
+
   if not (assigned(Thread)) then
   begin
     Thread := TWorkerThread.Create(true);
@@ -95,6 +99,8 @@ end;
 
 procedure TWorker.Cancel;
 begin
+  IsCanceled := true;
+
   if (assigned(Thread)) then
   begin
     if not Thread.Finished then
@@ -106,6 +112,8 @@ end;
 
 procedure TWorker.Stop;
 begin
+  IsCanceled := true;
+
   if (assigned(Thread)) then
   begin
     if not Thread.Finished then
