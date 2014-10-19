@@ -170,7 +170,19 @@ end;
 
 procedure TPluginGuiMeta.EventHandle_CSTEvent(Sender: TObject);
 begin
+  // It's important to call CheckSynchronize for any TThreads that want to
+  // use their Synchroize() or Queue() methods. CheckSynchronize isn't called
+  // in DLLs by default. Perhaps this could be called from the VST GUI idle function.
+  // dunno.
+  // TODO:MED this works for now but seems to be a heavy handed way.
   Classes.CheckSynchronize(10)
+
+  // TODO:MED look at the comment for Classes.WakeMainThread variable.
+  // this seems to suggest I need to have a global meta GUI class that
+  // is dedicated to calling  Classes.CheckSynchronize(). It would
+  // also assign a method to the Classes.WakeMainThread() variable.
+  // There is also the WaitForMultipleObjects reference that suggests calling
+  // CheckSynchronize() every 50ms is not the most efficient way to all this.
 end;
 
 
