@@ -7,14 +7,17 @@
 interface
 
 uses
-  ASyncCalls,
+  VamLib.Threads,
+  ASyncCalls, // TODO:HIGH delete this reference.
   Classes;
 
 type
   TFileSearchToken = class;
+  TFileSearchMotile = class;
 
   TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean) of object;
   TStringEvent = procedure(Sender : TObject; Str:string) of object;
+
 
   TSampleFinderBrain = class
   private
@@ -29,6 +32,7 @@ type
   protected
     CallRef : IAsyncCall;
     SearchToken : TFileSearchToken;
+    FileSearchMotile : TFileSearchMotile;
 
     PreviousFindLocations : TStringList;
 
@@ -77,6 +81,18 @@ type
     CancelCurrentSearch : boolean;
   end;
 
+  TFileSearchMotile = class(TCustomMotile)
+  private
+  protected
+    procedure Task; override;
+    procedure TaskFinished; override;
+  public
+    Brain          : TSampleFinderBrain;
+    TargetFileName : string;
+    SearchPath     : string;
+    CancelCurrentSearch : boolean;
+  end;
+
   procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
 
 implementation
@@ -100,6 +116,8 @@ begin
 
   SearchToken := TFileSearchToken.Create;
   SearchToken.Brain := self;
+
+  FileSearchMotile := TFileSearchMotile.Create;
 end;
 
 destructor TSampleFinderBrain.Destroy;
@@ -109,6 +127,7 @@ begin
 
   PreviousFindLocations.Free;
   SearchToken.Free;
+  FileSearchMotile.Free;
 
   inherited;
 end;
@@ -338,5 +357,19 @@ end;
 
 
 
+
+{ TFileSearchMotile }
+
+procedure TFileSearchMotile.Task;
+begin
+  inherited;
+
+end;
+
+procedure TFileSearchMotile.TaskFinished;
+begin
+  inherited;
+
+end;
 
 end.
