@@ -5,6 +5,7 @@ interface
 
 
 uses
+  VamLib.Threads,
   MyWorker,
   AsyncCalls,
   VamLib.WinHook,
@@ -71,7 +72,6 @@ type
     procedure Button1Click(Sender: TObject);
   private
     Updater : TFancyUpdater;
-    Worker : TWorker;
     a: IAsyncCall;
     FileBrowserAddon : TFileBrowserAddon;
 
@@ -105,7 +105,7 @@ type
   end;
 
 
-  TFancyUpdater = class(TWorker)
+  TFancyUpdater = class(TCustomMotile)
   private
     fForm: TForm1;
   protected
@@ -129,7 +129,6 @@ uses
   RedFoxColor,
   VamLib.Throttler,
   Generics.Collections,
-  VamLib.Threads,
   DateUtils,
   InWindowDialog,
   InWindowDialog.MessageDialog,
@@ -211,8 +210,6 @@ var
 begin
   Updater := TFancyUpdater.Create;
 
-  Worker := TWorker.Create;
-
   ThrottleID_VSTParChange.Init;
 
   Timer := THighSpeedTimer.Create;
@@ -231,7 +228,7 @@ end;
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Updater.Free;
-  Worker.Free;
+
   WindowsEventHook.Free;
 
   Timer.Free;
