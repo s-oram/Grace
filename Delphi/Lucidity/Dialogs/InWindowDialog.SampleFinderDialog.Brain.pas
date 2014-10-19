@@ -12,7 +12,6 @@ uses
   Classes;
 
 type
-  TFileSearchToken = class;
   TFileSearchMotile = class;
 
   TFileFoundEvent = procedure(Sender : TObject; const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean) of object;
@@ -30,8 +29,6 @@ type
     function GetCurrentMissingFileName: string;
     function GetCurrentMissingFileCount: integer;
   protected
-    CallRef : IAsyncCall;
-    SearchToken : TFileSearchToken;
     FileSearchMotile : TFileSearchMotile;
 
     PreviousFindLocations : TStringList;
@@ -71,16 +68,6 @@ type
   //=====================================================================================
   //================== Below here is for private internal usage =========================
   //=====================================================================================
-  TFileSearchToken = class(TObject)
-  private
-  protected
-  public
-    Brain          : TSampleFinderBrain;
-    TargetFileName : string;
-    SearchPath     : string;
-    CancelCurrentSearch : boolean;
-  end;
-
   TFileSearchMotile = class(TCustomMotile)
   private
   protected
@@ -90,10 +77,9 @@ type
     Brain          : TSampleFinderBrain;
     TargetFileName : string;
     SearchPath     : string;
-    CancelCurrentSearch : boolean;
   end;
 
-  procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
+
 
 implementation
 
@@ -114,21 +100,14 @@ begin
 
   PreviousFindLocations := TStringList.Create;
 
-  SearchToken := TFileSearchToken.Create;
-  SearchToken.Brain := self;
-
   FileSearchMotile := TFileSearchMotile.Create;
+  FileSearchMotile.Brain := self;
 end;
 
 destructor TSampleFinderBrain.Destroy;
 begin
-  SearchToken.CancelCurrentSearch := true;
-  CallRef := nil;
-
-  PreviousFindLocations.Free;
-  SearchToken.Free;
   FileSearchMotile.Free;
-
+  PreviousFindLocations.Free;
   inherited;
 end;
 
@@ -212,7 +191,7 @@ end;
 
 procedure TSampleFinderBrain.Skip;
 begin
-  SearchToken.CancelCurrentSearch := true;
+  FileSearchMotile.Cancel;
   IncrementMissingIndex;
 end;
 
@@ -232,7 +211,7 @@ var
   fn : string;
   Dir : string;
 begin
-  SearchToken.CancelCurrentSearch := true;
+  FileSearchMotile.Cancel;
 
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
@@ -267,7 +246,7 @@ var
   Dir : string;
   DirSelectDialog : TxpDirectorySelectDialog;
 begin
-  SearchToken.CancelCurrentSearch := true;
+  FileSearchMotile.Cancel;
 
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
@@ -291,18 +270,12 @@ end;
 
 procedure TSampleFinderBrain.SearchForMissingFileIn(const MissingFileName, SearchPath: string);
 begin
-  if assigned(CallRef) then
-  begin
-    SearchToken.CancelCurrentSearch := true;
-    CallRef.CancelInvocation;
-    CallRef.Sync;
-  end;
+  FileSearchMotile.Stop;
 
-  SearchToken.CancelCurrentSearch := false;
-  SearchToken.TargetFileName      := MissingFileName;
-  SearchToken.SearchPath          := SearchPath;
+  FileSearchMotile.TargetFileName      := MissingFileName;
+  FileSearchMotile.SearchPath          := SearchPath;
 
-  CallRef := AsyncCall(@SingleFileSearch, [SearchToken]);
+  FileSearchMotile.Run;
 end;
 
 
@@ -310,61 +283,43 @@ end;
 //================================================================================================
 //================================================================================================
 
-procedure SingleFileSearch(Token : TFileSearchToken); cdecl;
+{ TFileSearchMotile }
+
+procedure TFileSearchMotile.Task;
 var
   FullPathResult : string;
   SearchPathChangedCallback : TStringProcReference;
   CancelSearchCallback : TBooleanFuncReference;
   spcAdapter : TProc;
 begin
-  Token.CancelCurrentSearch := false;
-
   SearchPathChangedCallback := procedure(NewPath : string)
   begin
-    //EnterMainThread;
-    try
-      Token.Brain.TriggerEvent_SearchPathChanged(NewPath);
-    finally
-      //LeaveMainThread;
-    end;
+    self.Queue(procedure
+    begin
+      Self.Brain.TriggerEvent_SearchPathChanged(NewPath);
+    end);
   end;
 
   CancelSearchCallback := function : boolean
   begin
-    if Token.CancelCurrentSearch
-      then result := true
-      else result := false;
+    result := Self.IsCanceled;
   end;
 
-  if SearchForFile(Token.SearchPath, Token.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then
+  if SearchForFile(Self.SearchPath, Self.TargetFileName, true, FullPathResult, SearchPathChangedCallback, CancelSearchCallback) then
   begin
-    //EnterMainThread;
-    try
-      Token.Brain.TriggerEvent_FileFound(FullPathResult);
-    finally
-      //LeaveMainThread;
-    end;
+    self.Synchronize(procedure
+    begin
+      self.Brain.TriggerEvent_FileFound(FullPathResult);
+    end);
   end else
   begin
-    //EnterMainThread;
-    try
-      Token.Brain.TriggerEvent_SearchFinished_FileNotFound;
-    finally
-      //LeaveMainThread;
-    end;
+    self.Synchronize(procedure
+    begin
+      Self.Brain.TriggerEvent_SearchFinished_FileNotFound;
+    end);
   end;
 end;
 
-
-
-
-{ TFileSearchMotile }
-
-procedure TFileSearchMotile.Task;
-begin
-  inherited;
-
-end;
 
 procedure TFileSearchMotile.TaskFinished;
 begin

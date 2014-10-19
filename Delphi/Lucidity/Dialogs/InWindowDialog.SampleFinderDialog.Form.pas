@@ -28,13 +28,15 @@ type
     procedure MainDialogAreaResize(Sender: TObject);
     procedure ButtonDivResize(Sender: TObject);
   private
+    Brain : TSampleFinderBrain;
+    fOnFileFound: TSampleFinderFileFoundEvent;
+
     SkipButton : TButton;
     LocateButton  : TButton;
     SearchInButton : TButton;
     AutoSearchButton : TButton;
     CloseDialogButton : TButton;
-    Brain : TSampleFinderBrain;
-    fOnFileFound: TSampleFinderFileFoundEvent;
+
 
     procedure EventHandle_SearchFinished(Sender : TObject);
     procedure EventHandle_UpdateAllControls(Sender : TObject);
@@ -248,7 +250,7 @@ end;
 
 procedure TSampleFinderDialogForm.EventHandle_SearchPathChanged(Sender: TObject; NewPath: string);
 begin
-  Log.LogMessage('New Search Path ' + NewPath);
+  //Log.LogMessage('New Search Path ' + NewPath);
   StatusLabel1.Caption := 'Searching...';
   StatusLabel2.Caption := NewPath;
 end;

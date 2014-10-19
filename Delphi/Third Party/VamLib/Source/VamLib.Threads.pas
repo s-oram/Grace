@@ -2,6 +2,16 @@ unit VamLib.Threads;
 
 interface
 
+// DLL, Form and Thread (all in one) problem in delphi
+// http://stackoverflow.com/q/5792573/395461
+
+// CheckSynchronize().
+// http://www.delphifaq.com/faq/delphi/vcl/f270.shtml
+
+
+
+
+
 uses
   Classes,
   SysUtils,

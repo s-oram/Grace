@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Vcl.ExtCtrls,
   eePluginHotkeys,
   eePluginKeyHook,
   VamLib.WinHook,
@@ -26,6 +27,7 @@ type
     Plugin       : TeePlugin;
     Gui          : TPluginGUI;
     SystemWindow : hwnd;
+    cst          : TTimer;
 
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
@@ -35,6 +37,7 @@ type
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
 
     procedure HotkeyEvent(Sender : TObject; const CommandID : string);
+    procedure EventHandle_CSTEvent(Sender : TObject);
   protected
     WindowsEventHook : TWindowsEventHook;
     procedure EventHandle_WindowsEvent(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
@@ -71,6 +74,11 @@ uses
 
 constructor TPluginGuiMeta.Create(const aPlugin: TeePlugin; const aSystemWindow: hwnd);
 begin
+  cst := TTimer.Create(nil);
+  cst.OnTimer := EventHandle_CSTEvent;
+  cst.Interval := 50;
+  cst.Enabled := true;
+
   Plugin       := aPlugin;
   SystemWindow := aSystemWindow;
 
@@ -99,6 +107,9 @@ begin
 
   if assigned(fPluginHotkeys) then FreeAndNil(fPluginHotkeys);
   if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
+
+  cst.Free;
+
   inherited;
 end;
 
@@ -134,10 +145,6 @@ begin
   begin
     PluginHotkeys.LoadFromXML(fn);
   end;
-
-
-
-
 end;
 
 procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
@@ -160,6 +167,12 @@ begin
   end;
 
 end;
+
+procedure TPluginGuiMeta.EventHandle_CSTEvent(Sender: TObject);
+begin
+  Classes.CheckSynchronize(10)
+end;
+
 
 procedure TPluginGuiMeta.EventHandled_MidiNoteTriggered(const MidiData1, MidiData2: byte);
 var
