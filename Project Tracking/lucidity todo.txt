@@ -45,15 +45,9 @@ bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
   new key group parameters.
 
-bug:
-- the comb filter pitch changes when a note is triggered.
-
 =============================================================================
      TODO HIGH
 =============================================================================
-- check if running the demo on start up. 
-- "Lucidity is unregistered. Project loading has been disabled."
-
 - When not registered, store the loaded project state into an object
   that will be saved when the project is saved. This will prevent data loss
   if accidently saving an existing project whilst running the demo of Lucidiyt.

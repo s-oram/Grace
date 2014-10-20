@@ -28,10 +28,13 @@ type
     fIsMouseOverModSlot: boolean;
     fMouseOverModSlot: integer;
     fSelectedModSlot: integer;
+    fIsGuiFirstOpen: boolean;
     procedure SetHotkeyContext(const Value: THotKeyContext);
   public
     constructor Create;
     destructor Destroy; override;
+
+    property IsGuiFirstOpen : boolean read fIsGuiFirstOpen write fIsGuiFirstOpen;
 
     property MouseOverRegionID : TGUID read fMouseOverRegionID write fMouseOverRegionID;
 
@@ -92,6 +95,7 @@ begin
   MouseOverModSlot   := -1;
   IsMouseOverModSlot := false;
 
+  fIsGuiFirstOpen := true;
 end;
 
 destructor TGuiState.Destroy;

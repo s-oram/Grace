@@ -96,6 +96,7 @@ type
 implementation
 
 uses
+  InWindowDialog,
   VamLayoutWizard,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   eePluginDataDir,
@@ -424,6 +425,14 @@ begin
 
   if MsgID = TLucidMsgID.Command_BeginGuiUpdate then MainPanel.BeginUpdate;
   if MsgID = TLucidMsgID.Command_EndGuiUpdate   then MainPanel.EndUpdate;
+
+  if (MsgID = TLucidMsgID.OnPostCreateFinished) then
+  begin
+    if Plugin.Globals.CopyProtection.IsRegistered = false then
+    begin
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Grace is unregistered. Project loading is disabled.');
+    end;
+  end;
 end;
 
 

@@ -132,12 +132,15 @@ begin
     if PluginGUI.Visible = false then
     begin
       //=== VCL GUI =======
-      //PluginGUI.PostCreate(SystemWindow);
+      // PluginGUI.PostCreate(SystemWindow);
       PluginGUI.UpdateGui(nil);
       PluginGUI.Visible := true;
 
       Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.OnPostCreateFinished);
       Plugin.Globals.MotherShip.MsgVCL(TLucidMsgID.Command_UpdateGUI);
+
+      // Important: set IsFirstOpen to false last.
+      Plugin.Globals.GuiState.IsGuiFirstOpen := false;
     end else
     begin
       PluginGUI.UpdateGui(nil);
