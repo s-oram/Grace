@@ -48,51 +48,12 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- When not registered, store the loaded project state into an object
-  that will be saved when the project is saved. This will prevent data loss
-  if accidently saving an existing project whilst running the demo of Lucidiyt.
-
-Possible names
-- Grace
-- Kinectic 
-- Kinematic
-- Chromatic 
-- Augment
-- Facet
-- Quadrant
-- Aspect
-- Schematik 
-- Doctrine
-- Multiplex
-- Multiplicity
-- Liberty
-- Kinesthetic
-- Structure
-- Strukture 
-- Refactor
-- Factor
-- Frakture 
-- Tangent
-- Symmetry
-- Geometry
-- Grace
-- Endemic
-- Pandemic 
-- Epicenter 
-- Entity
-- Authority
-- Aftermath
-- Clover
-- Propagate
-
 - finish the help doc.
 - finish renaming all the factory presets. 
 
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.
-
-why aren't samples found for yann's patches?
 
 opening/closing the sample map window is slow!!! 
 
