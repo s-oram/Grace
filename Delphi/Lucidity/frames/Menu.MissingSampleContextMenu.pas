@@ -11,7 +11,7 @@ type
   private
 
   protected
-    procedure HandleEvent_LocateMissingSample(Sender : TObject);
+    procedure HandleEvent_LocateMissingSamples(Sender : TObject);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -24,8 +24,6 @@ implementation
 
 uses
   SysUtils,
-  XPLAT.Dialogs,
-  Dialogs, //delete this
   VamLib.Utils,
   uConstants,
   Lucidity.Types,
@@ -52,48 +50,16 @@ begin
   Menu.Items.Clear;
 
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Locate Missing Sample...';
-  mi.OnClick := HandleEvent_LocateMissingSample;
+  mi.Caption := 'Locate Missing Samples...';
+  mi.OnClick := HandleEvent_LocateMissingSamples;
   Menu.Items.Add(mi);
 
   Menu.Popup(x, y);
 end;
 
-procedure TMissingSampleContextMenu.HandleEvent_LocateMissingSample(Sender: TObject);
-var
-  FileOpenDialog : TxpFileOpenDialog;
-  rx : IRegion;
-  fn : string;
-  newRG : IRegion;
+procedure TMissingSampleContextMenu.HandleEvent_LocateMissingSamples(Sender: TObject);
 begin
-  rx := Plugin.FocusedRegion;
-
-  if not assigned(rx) then exit;
-  if rx.GetProperties^.SampleDataLoaded = true then exit;
-  if rx.GetProperties^.SampleErrorType <> TSampleError.FileNotFound then exit;
-
-  FileOpenDialog := TxpFileOpenDialog.Create(nil);
-  AutoFree(@FileOpenDialog);
-
-  SetupFileOpenDialog(Plugin, FileOpenDialog, TDialogTarget.dtAudioFile);
-
-  fn := rx.GetProperties^.SampleFileName;
-  fn := ExtractFileName(fn);
-  FileOpenDialog.FileName := fn;
-
-
-  if FileOpenDialog.Execute then
-  begin
-    newRG := Plugin.ReplaceSample(rx, FileOpenDialog.FileName);
-    if assigned(newRG) then
-    begin
-      Plugin.FocusRegion(newRG.GetProperties^.UniqueID);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleRegionChanged);
-    end;
-  end;
+  Command.FindMissingSamples(Plugin);
 end;
-
-
 
 end.
