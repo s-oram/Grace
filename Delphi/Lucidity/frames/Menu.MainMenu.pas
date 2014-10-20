@@ -120,7 +120,8 @@ begin
 
   if FileOpenDialog.Execute then
   begin
-    Command.RegisterPlugin(Plugin, FileOpenDialog.FileName);
+    if Command.RegisterPlugin(Plugin, FileOpenDialog.FileName)
+      then Plugin.LoadLastProgram;
   end;
 end;
 

@@ -180,6 +180,8 @@ type
     procedure ImportProgram(const FileName : string); overload;
     procedure ImportProgram(const FileName : string; ProgramFormat : TProgramFormat); overload;
 
+    procedure LoadLastProgram;
+
     function SaveCurrentProgram:boolean;
     procedure SaveCurrentProgramAsDefault;
     procedure SaveProgramToFileWithoutSamples(const FileName : string);
@@ -304,6 +306,18 @@ uses
 const
   kCurrentPatchFormat  = 'Lucidity';
   kCurrentPatchVersion = 1;
+
+procedure CloneMemoryStream(var Dest, Source : TMemoryStream);
+var
+  RefPos : integer;
+begin
+  Dest.Clear;
+  RefPos := Source.Position;
+  Source.Position := 0;
+  Dest.CopyFrom(Source, Source.Size);
+  Dest.Position := 0;
+  Source.Position := RefPos;
+end;
 
 
 { TeePlugin }
@@ -1382,20 +1396,7 @@ begin
   end;
 end;
 
-procedure TeePlugin.GetPreset(var ms: TMemoryStream);
-var
-  StateManager : TLucidityStateManager;
-begin
-  inherited;
 
-  StateManager := TLucidityStateManager.Create(self);
-  try
-    StateManager.GetPreset(ms);
-  finally
-    StateManager.Free;
-  end;
-
-end;
 
 function TeePlugin.GetPreviewVolume: single;
 begin
@@ -1422,37 +1423,75 @@ begin
   end;
 end;
 
+procedure TeePlugin.LoadLastProgram;
+var
+  StateManager : TLucidityStateManager;
+begin
+  StateManager := TLucidityStateManager.Create(self);
+  AutoFree(@StateManager);
 
+  if (assigned(LastPreset)) and (LastPreset.Size > 0) then
+  begin
+    LastPreset.Position := 0;
+    PreLoadProgram;
+    StateManager.SetPreset(LastPreset);
+    PostLoadProgram;
+  end;
+
+
+end;
+
+
+
+procedure TeePlugin.GetPreset(var ms: TMemoryStream);
+var
+  StateManager : TLucidityStateManager;
+begin
+  assert(ms.Position = 0, 'Memory stream is not zero.');
+
+  StateManager := TLucidityStateManager.Create(self);
+  AutoFree(@StateManager);
+
+  if (assigned(LastPreset)) and (LastPreset.Size > 0) then
+  begin
+    // Lucidity will not restore saved programs if it isn't registered.
+    // But we don't want to the user to lose data if they accidentally
+    // load a old project whilst Lucidity isn't registered. In that case
+    // we re-save the last loaded program discarding all changes.
+    CloneMemoryStream(ms, LastPreset);
+  end else
+  begin
+    StateManager.GetPreset(ms);
+  end;
+
+end;
 
 procedure TeePlugin.SetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
-  RefPos : cardinal;
 begin
-  inherited;
+  assert(ms.Position = 0, 'Memory stream is not zero.');
 
-  //==== copy preset data =====
-  if not assigned(LastPreset) then LastPreset := TMemoryStream.Create;
-  LastPreset.Clear;
-  RefPos := ms.Position;
-  LastPreset.CopyFrom(ms, ms.Size - ms.Position);
-  LastPreset.Position := 0;
-  ms.Position := RefPos;
-  //===========================
+  StateManager := TLucidityStateManager.Create(self);
+  AutoFree(@StateManager);
 
-  PreLoadProgram;
-
-  if Globals.CopyProtection.IsRegistered then
+  if (Globals.CopyProtection.IsRegistered) then
   begin
-    StateManager := TLucidityStateManager.Create(self);
-    try
-      StateManager.SetPreset(ms);
-    finally
-      StateManager.Free;
-    end;
-  end;
+    if assigned(LastPreset) then LastPreset.Clear;
 
-  PostLoadProgram;
+    PreLoadProgram;
+    StateManager.SetPreset(ms);
+    PostLoadProgram;
+  end else
+  begin
+    //==== copy preset data =====
+    if not assigned(LastPreset) then LastPreset := TMemoryStream.Create;
+    CloneMemoryStream(LastPreset, ms);
+    //===========================
+
+    // Not registered so initialize back to a blank slate.
+    InitializeState;
+  end;
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);
@@ -1601,7 +1640,6 @@ begin
   finally
     StateManager.Free;
   end;
-
   UpdateMidiBindingIDs;
 end;
 

@@ -84,8 +84,8 @@ type
     procedure FastControlProcess; virtual; abstract;       // processes fast modulation here. (high bandwidth modulation)
     procedure SlowControlProcess; virtual; abstract;       // processes slow modulation here. (low bandwidth modulation
 
-    procedure SetPreset(var ms:TMemoryStream); virtual;
-    procedure GetPreset(var ms:TMemoryStream); virtual;
+    procedure SetPreset(var ms:TMemoryStream); virtual; abstract;
+    procedure GetPreset(var ms:TMemoryStream); virtual; abstract;
 
     procedure InitializeState; virtual;
 
@@ -294,10 +294,6 @@ begin
   end;
 end;
 
-procedure TeePluginBase.GetPreset(var ms: TMemoryStream);
-begin
-end;
-
 procedure TeePluginBase.SetPresetName(const Value: string);
 begin
   fPresetName := Value;
@@ -310,12 +306,6 @@ begin
   //PluginInfo is a global variable that is automatically created.
   result := PluginInfo;
 end;
-
-procedure TeePluginBase.SetPreset(var ms: TMemoryStream);
-begin
-
-end;
-
 
 procedure TeePluginBase.Suspend;
 begin

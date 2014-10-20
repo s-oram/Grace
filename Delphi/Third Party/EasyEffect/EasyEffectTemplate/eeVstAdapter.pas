@@ -612,6 +612,7 @@ begin
   try
     Plugin.SetPreset(ChunkData);
   except
+    //TODO:MED should log exceptions here.
   end;
 
   ChunkData.Clear;
