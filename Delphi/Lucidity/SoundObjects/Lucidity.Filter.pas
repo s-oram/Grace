@@ -141,6 +141,8 @@ begin
   CombA.Reset;
 
   UpdateFilterParameters;
+
+  CombA.Reset;
 end;
 
 function TLucidityFilter.GetModPointer(const Name: string): PSingle;

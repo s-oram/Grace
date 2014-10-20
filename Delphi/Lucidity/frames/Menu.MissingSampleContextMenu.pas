@@ -16,7 +16,6 @@ type
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
-
   end;
 
 implementation
