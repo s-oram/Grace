@@ -1080,7 +1080,15 @@ begin
 
   FileFoundCallback := procedure(const MissingIndex : integer; const OldFileName, NewFileName : string; var Accept : boolean; var AcceptMessage : string)
   begin
-
+    if not IsSupportedAudioFormat(NewFileName) then
+    begin
+      Accept := false;
+      AcceptMessage := 'Audio file format not supported.';
+    end else
+    begin
+      Plugin.ReplaceSample(MissingIndex, OldFileName, NewFileName);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateSampleDisplay);
+    end;
   end;
 
   if MissingSamples.Count > 0

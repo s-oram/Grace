@@ -242,8 +242,11 @@ type
     procedure SelectRegion(aRegionID : TGUID);
 
     procedure ReloadRegion(const TargetRegion : IRegion);
-    function ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string):IRegion;
     procedure RenameInUseSample(const NewFileName, OldFileName : string);
+    function ReplaceSample(const TargetRegion : IRegion; const SampleFileName : string):IRegion; overload;
+    function ReplaceSample(const MissingIndex : integer; const OldFileName, NewFileName : string):IRegion; overload;
+
+
 
     procedure MoveSelectedRegionsToKeyGroup(const aKeyGroupName : string);
     procedure DuplicateSelectedRegions;
@@ -784,7 +787,28 @@ begin
   result := rg;
 end;
 
-
+function TeePlugin.ReplaceSample(const MissingIndex: integer; const OldFileName, NewFileName: string): IRegion;
+var
+  rg : IRegion;
+  c1: Integer;
+begin
+  // TODO:MED This ReplaceSample() method has been made to work with the Locate All Samples command.
+  // It currently looks for all missing samples with matching filenames. All matches will be replaced
+  // with the new sample. It would be better to use the Missing Index to replace specific layers.
+  // I think the best solution would be to create a list of missing files when a patch is loaded.
+  // The missing samples would have a reference to their owning regions.
+  for c1 := self.SampleMap.RegionCount-1 downto 0 do
+  begin
+    rg := SampleMap.Regions[c1];
+    if (rg.GetProperties^.IsSampleError) and (rg.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    begin
+      if (rg.GetProperties^.SampleFileName = OldFileName) or (rg.GetProperties^.SampleFileFullPath = OldFileName) then
+      begin
+        result := ReplaceSample(rg, NewFileName);
+      end;
+    end;
+  end;
+end;
 
 procedure TeePlugin.RenameInUseSample(const NewFileName, OldFileName: string);
 var
