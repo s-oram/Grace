@@ -21,7 +21,8 @@ New:
 - XY Pads now boardcast parameter changes to the host so changes 
   can be recorded as automation. 
 - Can now save a program without including the samples. 
-- Add rename program command (for internal use only.)
+- rename program command (for internal use only.)
+- Missing sample file search.
 
 Change:
 - Filter GAIN is now Filter TONE.

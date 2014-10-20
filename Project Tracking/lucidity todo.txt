@@ -51,13 +51,6 @@ bug:
 =============================================================================
      TODO HIGH
 =============================================================================
-Threads:
-- need a way to start
-- send update messages. (would have to sync with the main thread.)
-- able to be interupted and killed early. 
-- notify on finish.
-
-
 - check if running the demo on start up. 
 - "Lucidity is unregistered. Project loading has been disabled."
 
@@ -104,10 +97,6 @@ Possible names
 i've written a class to set a "WinEventHook". I should do the same for 
 the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.
-
-Check out asyn calls.
-http://andy.jgknet.de/blog/bugfix-units/asynccalls-29-asynchronous-function-calls/
-http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html
 
 why aren't samples found for yann's patches?
 
