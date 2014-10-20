@@ -285,8 +285,10 @@ begin
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Show Last Loaded Program File...';
   mi.OnClick := ShowLastLoadedProgramFile;
+  mi.Visible := false; //TODO:MED this would be a handy feature for a debugging build.
   Menu.Items.Add(mi);
 
+  // TODO:HIGH this command should be disabled if no samples are missing.
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Locate Missing Samples...';
   mi.OnClick := EventHandle_FindMissingSamples;
