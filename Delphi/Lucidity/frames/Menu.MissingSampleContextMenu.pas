@@ -9,7 +9,6 @@ uses
 type
   TMissingSampleContextMenu = class(TCustomPopupMenu)
   private
-
   protected
     procedure HandleEvent_LocateMissingSamples(Sender : TObject);
   public
