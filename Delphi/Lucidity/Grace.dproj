@@ -1,0 +1,685 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{bb25291a-f885-48fc-86ac-5972b0704d1c}</ProjectGuid>
+			<MainSource>Grace.dpr</MainSource>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>EasyEffectTemplate.dll</DCC_DependencyCheckOutputName>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>3</TargetedPlatforms>
+			<AppType>Library</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='ReleaseAsDemo' or '$(Cfg_3)'!=''">
+			<Cfg_3>true</Cfg_3>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_3)'=='true') or '$(Cfg_3_Win64)'!=''">
+			<Cfg_3_Win64>true</Cfg_3_Win64>
+			<CfgParent>Cfg_3</CfgParent>
+			<Cfg_3>true</Cfg_3>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_3)'=='true') or '$(Cfg_3_Win32)'!=''">
+			<Cfg_3_Win32>true</Cfg_3_Win32>
+			<CfgParent>Cfg_3</CfgParent>
+			<Cfg_3>true</Cfg_3>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='ReleaseAsFull' or '$(Cfg_4)'!=''">
+			<Cfg_4>true</Cfg_4>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_4)'=='true') or '$(Cfg_4_Win64)'!=''">
+			<Cfg_4_Win64>true</Cfg_4_Win64>
+			<CfgParent>Cfg_4</CfgParent>
+			<Cfg_4>true</Cfg_4>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_4)'=='true') or '$(Cfg_4_Win32)'!=''">
+			<Cfg_4_Win32>true</Cfg_4_Win32>
+			<CfgParent>Cfg_4</CfgParent>
+			<Cfg_4>true</Cfg_4>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='ForLocal' or '$(Cfg_6)'!=''">
+			<Cfg_6>true</Cfg_6>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_6)'=='true') or '$(Cfg_6_Win64)'!=''">
+			<Cfg_6_Win64>true</Cfg_6_Win64>
+			<CfgParent>Cfg_6</CfgParent>
+			<Cfg_6>true</Cfg_6>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_6)'=='true') or '$(Cfg_6_Win32)'!=''">
+			<Cfg_6_Win32>true</Cfg_6_Win32>
+			<CfgParent>Cfg_6</CfgParent>
+			<Cfg_6>true</Cfg_6>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='ForHostSystem' or '$(Cfg_7)'!=''">
+			<Cfg_7>true</Cfg_7>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_7)'=='true') or '$(Cfg_7_Win64)'!=''">
+			<Cfg_7_Win64>true</Cfg_7_Win64>
+			<CfgParent>Cfg_7</CfgParent>
+			<Cfg_7>true</Cfg_7>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_7)'=='true') or '$(Cfg_7_Win32)'!=''">
+			<Cfg_7_Win32>true</Cfg_7_Win32>
+			<CfgParent>Cfg_7</CfgParent>
+			<Cfg_7>true</Cfg_7>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+			<Cfg_2_Win64>true</Cfg_2_Win64>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='DebugForLocal' or '$(Cfg_8)'!=''">
+			<Cfg_8>true</Cfg_8>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_8)'=='true') or '$(Cfg_8_Win64)'!=''">
+			<Cfg_8_Win64>true</Cfg_8_Win64>
+			<CfgParent>Cfg_8</CfgParent>
+			<Cfg_8>true</Cfg_8>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_8)'=='true') or '$(Cfg_8_Win32)'!=''">
+			<Cfg_8_Win32>true</Cfg_8_Win32>
+			<CfgParent>Cfg_8</CfgParent>
+			<Cfg_8>true</Cfg_8>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='DebugForHostSystem' or '$(Cfg_9)'!=''">
+			<Cfg_9>true</Cfg_9>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_9)'=='true') or '$(Cfg_9_Win64)'!=''">
+			<Cfg_9_Win64>true</Cfg_9_Win64>
+			<CfgParent>Cfg_9</CfgParent>
+			<Cfg_9>true</Cfg_9>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_9)'=='true') or '$(Cfg_9_Win32)'!=''">
+			<Cfg_9_Win32>true</Cfg_9_Win32>
+			<CfgParent>Cfg_9</CfgParent>
+			<Cfg_9>true</Cfg_9>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='DebugAsFull' or '$(Cfg_5)'!=''">
+			<Cfg_5>true</Cfg_5>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_5)'=='true') or '$(Cfg_5_Win64)'!=''">
+			<Cfg_5_Win64>true</Cfg_5_Win64>
+			<CfgParent>Cfg_5</CfgParent>
+			<Cfg_5>true</Cfg_5>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_5)'=='true') or '$(Cfg_5_Win32)'!=''">
+			<Cfg_5_Win32>true</Cfg_5_Win32>
+			<CfgParent>Cfg_5</CfgParent>
+			<Cfg_5>true</Cfg_5>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\BuildCommands.optset')" Project="BuildOptionSets\BuildCommands.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\Basic Paths.optset')" Project="..\Basic Paths.optset"/>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
+			<DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
+			<Manifest_File>None</Manifest_File>
+			<DCC_BplOutput>$(DelphiCompiledLib)\bpl\$(PLATFORM)</DCC_BplOutput>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<GenDll>true</GenDll>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</CfgDependentOn>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_ExeOutput>D:\Audio\Apps\VST Plugins x64</DCC_ExeOutput>
+			<DCC_UnitSearchPath>C:\Program Files (x86)\Dew Research\Compiled\DSPMaster\Delphi2012\Win64\Lib;C:\Program Files (x86)\Dew Research\Compiled\MtxVec\Delphi2012\Win64\Lib;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
+			<DCC_ExeOutput>D:\Audio\Apps\VST Plugins x86</DCC_ExeOutput>
+			<DCC_UnitSearchPath>C:\Program Files (x86)\Dew Research\Compiled\DSPMaster\Delphi2012\Win32\Lib;C:\Program Files (x86)\Dew Research\Compiled\MtxVec\Delphi2012\Win32\Lib;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<Import Condition="'$(Cfg_1)'!='' And Exists('BuildOptionSets\ReleaseOptions.optset')" Project="BuildOptionSets\ReleaseOptions.optset"/>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Version>7.0</Version>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<CfgDependentOn>BuildOptionSets\ReleaseOptions.optset</CfgDependentOn>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_3)'!=''">
+			<DCC_ExeOutput>$(LucidityProjectDir)\Bin\Lucidity_$(PLATFORM)_Demo\</DCC_ExeOutput>
+			<DCC_Define>DEMO;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_3_Win64)'!=''">
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_3_Win32)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Debugger_IncludeSystemVars>true</Debugger_IncludeSystemVars>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=EasyEffectTemplate;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_4)'!=''">
+			<DCC_ExeOutput>$(LucidityProjectDir)\Bin\Lucidity_$(PLATFORM)_Full\</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_4_Win64)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_4_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_6_Win64)'!=''">
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Manifest_File>None</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_6_Win32)'!=''">
+			<Debugger_HostApplication>D:\Audio\Apps\energyXT\sa 1.4 b16\energyxt.exe</Debugger_HostApplication>
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_7_Win64)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_ExeOutput>Y:\Apps\VST Plugins x64</DCC_ExeOutput>
+			<Manifest_File>None</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_7_Win32)'!=''">
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_ExeOutput>Y:\Apps\VST Plugins x86</DCC_ExeOutput>
+		</PropertyGroup>
+		<Import Condition="'$(Cfg_2)'!='' And Exists('BuildOptionSets\DebugOptions.optset')" Project="BuildOptionSets\DebugOptions.optset"/>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Version>7.0</Version>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<CfgDependentOn>BuildOptionSets\DebugOptions.optset</CfgDependentOn>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Manifest_File>None</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+			<DCC_TypedAtParameter>true</DCC_TypedAtParameter>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_8_Win64)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Debugger_HostApplication>C:\Program Files\Steinberg\Cubase 5\Cubase5.exe</Debugger_HostApplication>
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_8_Win32)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+			<Debugger_HostApplication>D:\Audio\Apps\energyXT\sa 1.4 b16\energyxt.exe</Debugger_HostApplication>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_9)'!=''">
+			<DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_9_Win64)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_ExeOutput>Y:\Apps\VST Plugins x64</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_9_Win32)'!=''">
+			<DCC_AssertionsAtRuntime>true</DCC_AssertionsAtRuntime>
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_ExeOutput>Y:\Apps\VST Plugins x86</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_5)'!=''">
+			<DCC_ExeOutput>$(LucidityProjectDir)\Bin\Lucidity_$(PLATFORM)_Full\</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_5_Win64)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_5_Win32)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\Paths.optset')" Project="BuildOptionSets\Paths.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset')" Project="..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>VCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">Grace.dpr</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\LucidityGuiComponentsDesXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">OmniThreadLibrary designtime</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\DragDropDXE2.bpl">Drag and Drop Component Suite</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">True</Platform>
+					<Platform value="OSX32">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>True</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<RcCompile Include="resources.rc">
+				<Form>resources.res</Form>
+			</RcCompile>
+			<RcCompile Include="VersionInfo.rc">
+				<Form>VersionInfo.res</Form>
+			</RcCompile>
+			<DCCReference Include="Lucidity.CustomMadExceptSettings.pas"/>
+			<DCCReference Include="eePluginGui.pas">
+				<Form>PluginGui</Form>
+			</DCCReference>
+			<DCCReference Include="uDataFolderUtils.pas"/>
+			<DCCReference Include="frames\uSampleMapFrame.pas">
+				<Form>SampleMapFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="frames\uFileBrowserFrame.pas">
+				<Form>FileBrowserFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="frames\uVoiceControlFrame.pas">
+				<Form>VoiceControlFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="frames\uModControlFrame.pas">
+				<Form>ModControlFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SoundObjects\Lucidity.KeyGroup.pas"/>
+			<DCCReference Include="SoundObjects\soLucidityVoice.pas"/>
+			<DCCReference Include="SoundObjects\soADSR.pas"/>
+			<DCCReference Include="SoundObjects\uSamplePhaseCounter.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Osc.OneShotSampler.pas"/>
+			<DCCReference Include="SoundObjects\soCustomSynthFilter.pas"/>
+			<DCCReference Include="SoundObjects\SynthModule_Custom.pas"/>
+			<DCCReference Include="SoundObjects\SynthModule_LowPass12.pas"/>
+			<DCCReference Include="SoundObjects\uModularConnectionManager.pas"/>
+			<DCCReference Include="GuiComponents\LuciditySampleOverlay.pas"/>
+			<DCCReference Include="SoundObjects\soLucidityWaveOsc.pas"/>
+			<DCCReference Include="SoundObjects\uBlitOsc.pas"/>
+			<DCCReference Include="SoundObjects\soDynamicWaveTableOsc.pas"/>
+			<DCCReference Include="SoundObjects\soDynamicWaveTableOsc.WaveGen.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Osc.OneShotSampler.SubOsc.pas"/>
+			<DCCReference Include="SoundObjects\soSawSquareOsc.pas"/>
+			<DCCReference Include="SoundObjects\uHarmonicWaveTableGen.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Filter.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.Test.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.BlueFilter.pas"/>
+			<DCCReference Include="SoundObjects\FilterCore.SimperSVF.pas"/>
+			<DCCReference Include="SoundObjects\uLucidity.Lfo.pas"/>
+			<DCCReference Include="SoundObjects\soModMatrix.pas"/>
+			<DCCReference Include="Lucidity.GuiUtils.pas"/>
+			<DCCReference Include="SoundObjects\SoundObjectTypes.pas"/>
+			<DCCReference Include="SmartInspectLogging.pas"/>
+			<DCCReference Include="uGuiFeedbackData.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityStepSequencer.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityClock.pas"/>
+			<DCCReference Include="SoundObjects\soGateEnvelope.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Osc.GrainStretch.pas"/>
+			<DCCReference Include="SoundObjects\soGrainStretchSubOsc.pas"/>
+			<DCCReference Include="SoundObjects\SampleOscUtils.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityCustomSampleOsc.pas"/>
+			<DCCReference Include="frames\uMiniSampleDisplayFrame.pas">
+				<Form>MiniSampleDisplayFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SoundObjects\soFivePointEnvelope.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityVoiceAmp.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityVCA.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityPanner.pas"/>
+			<DCCReference Include="Lucidity.GuiState.pas"/>
+			<DCCReference Include="SoundObjects\uLucidityXYPads.pas"/>
+			<DCCReference Include="SoundObjects\soLucidityVoiceParameterWrapper.pas"/>
+			<DCCReference Include="frames\uMenuBarFrame.pas">
+				<Form>MenuBarFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Lucidity.KeyGroupManager.pas"/>
+			<DCCReference Include="frames\Menu.KeyGroupsMenu.pas"/>
+			<DCCReference Include="frames\Menu.SamplesMenu.pas"/>
+			<DCCReference Include="eePluginEx.pas"/>
+			<DCCReference Include="GuiComponents\uKeyStateTrackerOverlay.pas"/>
+			<DCCReference Include="uLucidityData.pas"/>
+			<DCCReference Include="frames\Menu.SampleContextMenu.pas"/>
+			<DCCReference Include="frames\uLucidityPopUpMenu.pas"/>
+			<DCCReference Include="SoundObjects\uOutputMixer.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Osc.LoopSampler.pas"/>
+			<DCCReference Include="SoundObjects\soSineOsc.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.RingModA.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.DistortionA.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.CombA.pas"/>
+			<DCCReference Include="uSampleZeroCrossings.pas"/>
+			<DCCReference Include="SoundObjects\soStepFilter.pas"/>
+			<DCCReference Include="SoundObjects\soStepInFilter.pas"/>
+			<DCCReference Include="SoundObjects\soStepOutFilter.pas"/>
+			<DCCReference Include="SoundObjects\Lucidity.Osc.FadeOutSampler.pas"/>
+			<DCCReference Include="Lucidity.StateManager.pas"/>
+			<DCCReference Include="frames\Menu.MainMenu.pas"/>
+			<DCCReference Include="frames\Menu.FileTreeMenu.pas"/>
+			<DCCReference Include="frames\uAboutFrame.pas">
+				<Form>AboutFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SoundObjects\Lucidity.Env.ADSR.pas"/>
+			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
+			<DCCReference Include="frames\Menu.CustomPopupMenu.pas"/>
+			<DCCReference Include="eeGlobals.pas"/>
+			<DCCReference Include="eeLogging.pas"/>
+			<DCCReference Include="SoundObjects\soNoteStack.pas"/>
+			<DCCReference Include="Lucidity.StateHelpers.pas"/>
+			<DCCReference Include="frames\Menu.StepSequenceMenu.pas"/>
+			<DCCReference Include="LucidityParameterScaling.pas"/>
+			<DCCReference Include="Controls\LucidityControl.ModSection.pas"/>
+			<DCCReference Include="LucidityModConnections.pas"/>
+			<DCCReference Include="Lucidity.Options.pas"/>
+			<DCCReference Include="Third Party File Support\Lucidity.Sfz.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstAdapter.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffect.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffectX.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas"/>
+			<DCCReference Include="Lucidity.SampleImageRenderer.pas"/>
+			<DCCReference Include="Lucidity.FlexSampleRenderer.pas"/>
+			<DCCReference Include="frames\uModSystemFrame.pas">
+				<Form>ModSystemFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="eePlugin.pas"/>
+			<DCCReference Include="Lucidity.Utils.pas"/>
+			<DCCReference Include="Lucidity.Types.pas"/>
+			<DCCReference Include="frames\SampleMapFrame.Extra.pas"/>
+			<DCCReference Include="Lucidity.FirstRun.pas"/>
+			<DCCReference Include="eePluginGuiMeta.pas"/>
+			<DCCReference Include="GuiMeta.ScopeHandler.pas"/>
+			<DCCReference Include="SoundObjects\soSignalRecorder.pas"/>
+			<DCCReference Include="frames\uSequencerFrame.pas">
+				<Form>SequencerFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SoundObjects\soLfo.WaveTableLfo.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\eeGen\eeOscPhaseCounter.pas"/>
+			<DCCReference Include="SoundObjects\soLfo.RandomLfo.pas"/>
+			<DCCReference Include="SoundObjects\soLfo.SlopeGen.pas"/>
+			<DCCReference Include="GuiMeta.ActiveModDisplay.pas"/>
+			<DCCReference Include="frames\Menu.ModSelectorContextMenu.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.MoogLadder.pas"/>
+			<DCCReference Include="SoundObjects\FilterCore.MoogLadder.pas"/>
+			<DCCReference Include="SoundObjects\soFreqAnalyzer.pas"/>
+			<DCCReference Include="Lucidity.SequencerDataObject.pas"/>
+			<DCCReference Include="uConstants.pas"/>
+			<DCCReference Include="SoundObjects\soFilter.OptimisedFilter.pas"/>
+			<DCCReference Include="SoundObjects\soLevelMeter.pas"/>
+			<DCCReference Include="Lucidity.Interfaces.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.SignalRecorder.pas"/>
+			<DCCReference Include="GuiComponents\LucidityGui.Scope.FreqAnalyzer.pas"/>
+			<DCCReference Include="eeEnumHelper.pas"/>
+			<DCCReference Include="Lucidity.Enums.pas"/>
+			<DCCReference Include="Lucidity.KeyGroupPlayer.pas"/>
+			<DCCReference Include="Lucidity.GuiStandard.pas"/>
+			<DCCReference Include="Lucidity.PluginParameterController.pas"/>
+			<DCCReference Include="LucidityGui.KnobHandler.pas"/>
+			<DCCReference Include="Lucidity.PluginParameters.pas"/>
+			<DCCReference Include="LucidityGui.MenuButtonHandler.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eePublishedVstParameters.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeTaskRunner.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeStoredActionList.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeMidiAutomationV2.pas"/>
+			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>
+			<DCCReference Include="Lucidity.MidiInputProcessor.pas"/>
+			<DCCReference Include="Lucidity.VoiceController.pas"/>
+			<DCCReference Include="frames\uXYPadsFrame.pas">
+				<Form>XYPadsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="frames\Menu.XYPadContextMenu.pas"/>
+			<DCCReference Include="EasyEffectTemplate\eeParSmoother.pas"/>
+			<DCCReference Include="AudioEffects\AudioEffect.pas"/>
+			<DCCReference Include="AudioEffects\AudioEffect.Lofi.pas"/>
+			<DCCReference Include="frames\Menu.MissingSampleContextMenu.pas"/>
+			<DCCReference Include="GuiDrawingRoutines.pas"/>
+			<DCCReference Include="Lucidity.StateManager.DataClasses.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.SfzOpcodes.pas"/>
+			<DCCReference Include="Third Party File Support\Lucidity.SfzOpcodeConversion.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\ThirdParty\SfzParser.pas"/>
+			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_Mp3.pas"/>
+			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO_WavPack.pas"/>
+			<DCCReference Include="Lucidity.SampleMap.pas"/>
+			<DCCReference Include="..\Third Party\AudioIO\source\AudioIO.pas"/>
+			<DCCReference Include="Controls\VclEx.PopupListEx.pas"/>
+			<DCCReference Include="Controls\VclEx.PopupMenuEx.pas"/>
+			<DCCReference Include="frames\Menu.GroupVisibility.pas"/>
+			<DCCReference Include="Lucidity.StateManager.PatchVersionUpdater.pas"/>
+			<DCCReference Include="frames\Menu.AutoSelectMenu.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.ModalShadow.Form.pas">
+				<Form>ModalShadow</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Dialogs\TestDialog.pas">
+				<Form>TestDialogForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Dialogs\InWindowDialog.Prototypes.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.InputDialog.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.MessageDialog.Form.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.MessageDialog.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.InputDialog.Form.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.pas"/>
+			<DCCReference Include="Lucidity.Dsp.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
+			<DCCReference Include="LucidityGUI.XYPadHandler.pas"/>
+			<DCCReference Include="Lucidity.CustomControlHandler.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
+			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Form.pas">
+				<Form>SampleFinderDialogForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
+			<None Include="Thank You Texts.txt"/>
+			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
+			<None Include="ModelSupport_Lucidity\default.txvpck"/>
+			<None Include="Defines.inc"/>
+			<None Include="FastMM4Options.inc"/>
+			<None Include="Profiling\AQtimeModule1.aqt"/>
+			<None Include="..\Third Party\AudioIO\source\AudioIO.inc"/>
+			<None Include="ModelSupport_Grace\default.txvpck"/>
+			<BuildConfiguration Include="ReleaseAsFull">
+				<Key>Cfg_4</Key>
+				<CfgParent>Cfg_1</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="DebugAsFull">
+				<Key>Cfg_5</Key>
+				<CfgParent>Cfg_2</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="ForLocal">
+				<Key>Cfg_6</Key>
+				<CfgParent>Cfg_1</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="ForHostSystem">
+				<Key>Cfg_7</Key>
+				<CfgParent>Cfg_1</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+				<DependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</DependentOn>
+			</BuildConfiguration>
+			<BuildConfiguration Include="DebugForHostSystem">
+				<Key>Cfg_9</Key>
+				<CfgParent>Cfg_2</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+				<DependentOn>BuildOptionSets\DebugOptions.optset</DependentOn>
+			</BuildConfiguration>
+			<BuildConfiguration Include="ReleaseAsDemo">
+				<Key>Cfg_3</Key>
+				<CfgParent>Cfg_1</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="DebugForLocal">
+				<Key>Cfg_8</Key>
+				<CfgParent>Cfg_2</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+				<DependentOn>BuildOptionSets\ReleaseOptions.optset</DependentOn>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ItemGroup/>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
