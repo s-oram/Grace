@@ -17,7 +17,7 @@ begin
   //  Custom Page: VST Directory
   //========================================================
   Text1 := 'Installation Paths'; 
-  Text2 := 'Choose where to install files for Lucidity.';
+  Text2 := 'Choose where to install files for Grace.';
   Text3 := '';
 
   //==== VST Plugins Dir ====
@@ -25,8 +25,8 @@ begin
   //Get the VST plugin directory as specified in the Windows registery.
   if '{#MyAppPlatform}' = '32bit' then
   begin
-    VstDirCaption  := '32-Bit VST 2 Plugins Directory';
-    DataDirCaption := 'Lucidity Data Directory'#13#10'-For skins, patches, configuration files etc.'; 
+    VstDirCaption  := '32-Bit VST2 Plugins Directory';
+    DataDirCaption := 'Grace Data Directory'#13#10'-For skins, patches, configuration files etc.'; 
 
     VstDir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;
@@ -35,8 +35,8 @@ begin
   
   if '{#MyAppPlatform}' = '64bit' then
   begin
-    VstDirCaption  := '64-Bit VST 2 Plugins Directory';
-    DataDirCaption := 'Lucidity Data Directory'#13#10'-For skins, patches, configuration files etc.'; 
+    VstDirCaption  := '64-Bit VST2 Plugins Directory';
+    DataDirCaption := 'Grace Data Directory'#13#10'-For skins, patches, configuration files etc.'; 
 
     VstDir := ''; 
     RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\VST', 'VSTPluginsPath', VstDir);;

@@ -1,7 +1,7 @@
 [Setup]
-#define VersionReference "S:\Installer\Vst32 Dir\Lucidity.dll"
+#define VersionReference "S:\Installer\Vst32 Dir\Grace.dll"
 #define MyAppPublisher "One Small Clue"
-#define MyAppName "Lucidity"
+#define MyAppName "Grace"
 #define MyAppURL "http://www.onesmallclue.com/"
 #define MyAppPlatform "32bit"
 
@@ -36,7 +36,7 @@ DisableProgramGroupPage=yes
 Name: "{code:GetDataDir|DataDir}"; Permissions: everyone-modify;
 
 [Files]
-Source: "Vst32 Dir\Lucidity.dll"; DestDir: "{code:GetDataDir|VstDir}";  Flags: ignoreversion;
+Source: "Vst32 Dir\Grace.dll";    DestDir: "{code:GetDataDir|VstDir}";  Flags: ignoreversion;
 Source: "Data Dir\*";             DestDir: "{code:GetDataDir|DataDir}"; Flags: ignoreversion recursesubdirs;
 Source: "System32\*";             DestDir: "{sys}"; Flags: 32bit;
 
