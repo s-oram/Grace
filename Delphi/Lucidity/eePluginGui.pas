@@ -99,7 +99,6 @@ uses
   InWindowDialog,
   VamLayoutWizard,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  InWindowDialog,
   eePluginDataDir,
   Lucidity.KeyGroup,
   eeGuiSetup,
