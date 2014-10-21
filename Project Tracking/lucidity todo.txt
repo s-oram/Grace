@@ -45,9 +45,14 @@ bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
   new key group parameters.
 
+bug
+- reseting the program doesn't clear the sampler root note display.
+
 =============================================================================
      TODO HIGH
 =============================================================================
+Give Kieran a license to Lucidity once released.
+
 - finish the help doc.
 - finish renaming all the factory presets. 
 
