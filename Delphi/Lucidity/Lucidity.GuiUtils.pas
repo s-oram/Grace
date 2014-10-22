@@ -697,7 +697,7 @@ begin
         Plugin.Globals.CopyProtection.LoadRegistrationKeyFile(DestFileName);
         if Plugin.Globals.CopyProtection.IsRegistered then
         begin
-          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Lucidity is now unlocked. Thank you for your support!');
+          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Grace is now unlocked. Thank you for your support!');
           result := true;
         end else
         begin
@@ -708,7 +708,7 @@ begin
     end;
   end else
   begin
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Lucidity. Key file is invalid.');
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Grace. Key file is invalid.');
     result := true;
   end;
 end;
