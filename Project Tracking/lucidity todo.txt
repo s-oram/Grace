@@ -48,9 +48,22 @@ bug
 bug
 - reseting the program doesn't clear the sampler root note display.
 
+bug
+- Unlock message uses 'Lucidity'
+
+bug
+- SFZ import. regions might be defaulting to the wrong pitch when 
+  no pitch is specified. Check out the camel audio factory patches.
+
 =============================================================================
      TODO HIGH
 =============================================================================
+- the sample display overlay shouldn't darken the sample text.
+
+- locate missing samples needs to be grayed out when no samples are missing. 
+
+- add new hotkey definites to installer.
+
 Give Kieran a license to Lucidity once released.
 
 - finish the help doc.
