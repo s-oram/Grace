@@ -5,7 +5,10 @@ unit Lucidity.Sfz;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
+  VamLib.KeyValueStore,
   SfzParser, SfzParser.SfzOpcodes,
   Lucidity.Enums,
   NativeXML,
@@ -32,6 +35,7 @@ type
     GroupCount : integer;
     SupportedOpcodeList : TObjectList;
     GroupLoadData : TSfzGroupLoadData;
+    GlobalGroupValues : TKeyValueStore;
     procedure Event_OnGroupStart(Sender : TObject);
     procedure Event_OnGroupEnd(Sender : TObject);
     procedure Event_OnGroupOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
@@ -51,6 +55,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   AudioIO,
   VamLib.Utils,
   SysUtils,
@@ -71,12 +76,15 @@ begin
   Parser.OnRegionStart  := Event_OnRegionStart;
   Parser.OnRegionEnd    := Event_OnRegionEnd;
   Parser.OnRegionOpcode := Event_OnRegionOpcode;
+
+  GlobalGroupValues := TKeyValueStore.Create;
 end;
 
 destructor TSfzImporter.Destroy;
 begin
   SupportedOpcodeList.Free;
   Parser.Free;
+  GlobalGroupValues.Free;
   inherited;
 end;
 
@@ -113,8 +121,11 @@ end;
 
 procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
 begin
+  LogMain.LogMessage('Event_OnGroupStart');
+
   if not assigned(CurrentGroup) then
   begin
+    GlobalGroupValues.Clear;
     GroupLoadData.Reset;
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
@@ -135,6 +146,8 @@ var
   Dir : string;
   LoopStart, LoopEnd : integer;
 begin
+  LogMain.LogMessage('Event_OnGroupEnd');
+
   //****************************************************************************
   // Do some final adjustments here...
   TargetNode := CurrentGroup;
@@ -206,15 +219,17 @@ procedure TSfzImporter.Event_OnGroupOpcode(Sender: TObject; Opcode : TSfzOpcode;
 var
   TargetNode : TXmlNode;
 begin
+  //LogMain.LogMessage('Event_OnGroupOpcode');
+
   if not assigned(CurrentGroup) then exit;
   TargetNode := CurrentGroup;
 
   case Opcode of
-    TSfzOpcode.lokey: ;
-    TSfzOpcode.hikey: ;
-    TSfzOpcode.key: ;
-    TSfzOpcode.lovel: ;
-    TSfzOpcode.hivel: ;
+    TSfzOpcode.lokey: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.hikey: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.key:   GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.lovel: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.hivel: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
     TSfzOpcode.lobend: ;
     TSfzOpcode.hibend: ;
     TSfzOpcode.lochanaft: ;
@@ -259,7 +274,7 @@ begin
     TSfzOpcode.sync_offset: ;
     TSfzOpcode.transpose: ; //TODO:HIGH
     TSfzOpcode.tune: ; //TODO:HIGH
-    TSfzOpcode.pitch_keycenter: ;
+    TSfzOpcode.pitch_keycenter: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
     TSfzOpcode.pitch_keytrack: ;
     TSfzOpcode.pitch_veltrack: ;
     TSfzOpcode.pitch_random: ;
@@ -419,6 +434,7 @@ end;
 
 procedure TSfzImporter.Event_OnRegionStart(Sender: TObject);
 begin
+  LogMain.LogMessage('Event_OnRegionStart');
   if assigned(CurrentGroup) then
   begin
     CurrentRegion := NodeWiz(CurrentGroup).CreateNode('Region');
@@ -426,7 +442,24 @@ begin
 end;
 
 procedure TSfzImporter.Event_OnRegionEnd(Sender: TObject);
+var
+  c1 : integer;
+  KeyName, KeyValue : string;
 begin
+  LogMain.LogMessage('Event_OnRegionEnd');
+
+  //****************************************************************************
+  // apply global group values
+  for c1 := 0 to GlobalGroupValues.KeyCount-1 do
+  begin
+    GlobalGroupValues.KeyByIndex(c1, KeyName, KeyValue);
+    self.Event_OnRegionOpcode(self, StrToSfzOpcode(KeyName), KeyValue);
+    LogMain.LogMessage('-- Global Key Value = ' + KeyName + ' ' + KeyValue);
+  end;
+
+  //****************************************************************************
+
+
   // TODO:MED - Check the filenames are relative. put them into a form Lucidity can understand.
   // TODO:MED - check that all regions have region bounds. (low key, hi key, low vel, high vel, root note etc).
   if NodeWiz(CurrentRegion).Exists('RegionProperties/RootNote') = false then
