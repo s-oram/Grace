@@ -1599,7 +1599,6 @@ object ModControlFrame: TModControlFrame
           Font.Style = [fsBold]
           Align = alTop
           Visible = True
-          OnClick = FilterOneContainerLabelClick
         end
         object Filter1P3Label: TVamLabel
           Left = 61

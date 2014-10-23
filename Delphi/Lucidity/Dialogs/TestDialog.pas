@@ -1,5 +1,7 @@
 unit TestDialog;
 
+// TODO:HIGH delete this test dialog. it's no longer needed.
+
 interface
 
 uses

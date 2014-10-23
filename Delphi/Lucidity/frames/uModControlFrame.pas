@@ -136,7 +136,6 @@ type
     procedure FilterKnobMouseEnter(Sender: TObject);
     procedure FilterKnobMouseLeave(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure FilterOneContainerLabelClick(Sender: TObject);
   private
     fPlugin: TeePlugin;
     KnobList : TObjectList; //TODO:MED is this knob list being used?
@@ -827,14 +826,6 @@ begin
   else
     raise Exception.Create('Type not handled.');
   end;
-end;
-
-procedure TModControlFrame.FilterOneContainerLabelClick(Sender: TObject);
-var
-  TestDialog : TTestDialog;
-begin
-  TestDialog := TTestDialog.Create;
-  TestDialog.ShowInWindow_WithAutoFree(Plugin.Globals.TopLevelForm, false, false);
 end;
 
 end.
