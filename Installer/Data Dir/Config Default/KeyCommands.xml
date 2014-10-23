@@ -141,6 +141,14 @@
         <WithCtrl>false</WithCtrl>
     </KeyCommand>
 
+    <KeyCommand>
+        <Command>ContextDelete</Command>
+        <Key>Delete</Key>
+        <WithShift>false</WithShift>
+        <WithAlt>false</WithAlt>
+        <WithCtrl>false</WithCtrl>
+    </KeyCommand>   
+
 
     
 </root>

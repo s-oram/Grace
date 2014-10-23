@@ -19,12 +19,13 @@ New:
   that the host application had crashed or frozen. 
 - Now reports VST plugin latency. 
 - XY Pads now boardcast parameter changes to the host so changes 
-  can be recorded as automation. 
+  can be recorded as VST parameter automation. 
 - Can now save a program without including the samples. 
 - rename program command (for internal use only.)
 - Missing sample file search.
 - Improved SFZ import: Sample regions now use values defined in the <group> opcode. Previously
   <group> opcodes were ignored. 
+- New hotkey : DELETE to delete currently selected sample regions in sample map.
 
 Change:
 - Filter GAIN is now Filter TONE.

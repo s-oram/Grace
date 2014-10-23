@@ -48,13 +48,9 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- add new hotkey definites to installer.
-
 - sample map should have zoom buttons like the sample display.
 
 - the sample display overlay shouldn't darken the sample text.
-
-
 
 Give Kieran a license to Lucidity once released.
 
@@ -70,6 +66,8 @@ the windows keyboard hook. Currently the windows keyboard hook is
 a bit messy and spread out over lots of code.
 
 opening/closing the sample map window is slow!!! 
+
+add more hotkey support to navigate around in the sample map display. 
 
 Update the step sequencer divisions to match the LFO step divisions. 
 
