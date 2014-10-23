@@ -397,7 +397,7 @@ procedure TMotherShip.RegisterZeroObject(const obj: IZeroObject; const Rank : TZ
 var
   ptr : Pointer;
   ListLock : TMultiReadSingleWrite;
-  LogMsg : string;
+  {$IFDEF ExtraLogging}LogMsg : string;{$ENDIF}
 begin
   //============================================================================
   {$IFDEF ExtraLogging}
@@ -461,7 +461,7 @@ var
   IsVclObject   : boolean;
   IsAudioObject : boolean;
   IsMainObject  : boolean;
-  LogMsg : string;
+  {$IFDEF ExtraLogging}LogMsg : string;{$ENDIF}
 begin
   //============================================================================
   {$IFDEF ExtraLogging}
