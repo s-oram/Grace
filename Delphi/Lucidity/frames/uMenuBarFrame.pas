@@ -327,7 +327,7 @@ begin
     RefreshParDisplay;
   end;
 
-  if MsgID = TLucidmsgID.NewPatchLoaded               then SampleFocusChanged;
+  if MsgID = TLucidmsgID.NewProgramLoaded             then SampleFocusChanged;
   if MsgID = TLucidmsgID.SampleFocusChanged           then SampleFocusChanged;
   if MsgID = TLucidmsgID.MouseOverSampleRegionChanged then SampleFocusChanged;
   if MsgID = TLucidmsgID.SampleRegionChanged          then SampleFocusChanged;

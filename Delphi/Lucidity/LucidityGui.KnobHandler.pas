@@ -110,7 +110,7 @@ begin
     end;
   end;
 
-  if (MsgID = TLucidMsgID.OnPostCreateFinished) or (MsgID = TLucidMsgID.NewPatchLoaded) then
+  if (MsgID = TLucidMsgID.OnPostCreateFinished) or (MsgID = TLucidMsgID.NewProgramLoaded) then
   begin
     for c1 := 0 to ControlList.Count-1 do
     begin

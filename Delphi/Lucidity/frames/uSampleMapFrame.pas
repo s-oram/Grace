@@ -630,6 +630,12 @@ begin
     UpdateRootNoteKeys;
   end;
 
+  if MsgID = TLucidMsgID.NewProgramLoaded then
+  begin
+    UpdateSampleRegions;
+    UpdateRootNoteKeys;
+  end;
+
   if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
 
 

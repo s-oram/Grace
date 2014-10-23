@@ -51,7 +51,7 @@ type
     GUILayoutChanged                 = 15;
     VstParameterChanged              = 16;
     GroupVisibilityChanged           = 17;
-    NewPatchLoaded                   = 18;
+    NewProgramLoaded                 = 18;
     MidiNoteTriggered                = 19;
     Command                          = MidiNoteTriggered + 1;
     Command_ShowSampleMapEdit        = Command + 1;  // Maybe this commands can be deleted?

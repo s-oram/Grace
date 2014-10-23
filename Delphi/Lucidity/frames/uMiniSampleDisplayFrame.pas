@@ -337,7 +337,7 @@ var
   zx : single;
   Zoom, Offset : single;
 begin
-  if MsgID = TLucidMsgID.NewPatchLoaded then
+  if MsgID = TLucidMsgID.NewProgramLoaded then
   begin
     UpdateControlVisibility;
     UpdateSampleDisplay;

@@ -1591,7 +1591,7 @@ begin
   Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded, nil);
   Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI, nil);
   // ... this might be the one consolidated call.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.NewPatchLoaded, nil);
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.NewProgramLoaded, nil);
 end;
 
 procedure TeePlugin.SaveMidiMap(const FileName: string);

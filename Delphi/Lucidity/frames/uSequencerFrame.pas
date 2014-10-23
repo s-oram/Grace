@@ -220,7 +220,7 @@ begin
     StepSeqControl.Invalidate;
   end;
 
-  if MsgID = TLucidMsgID.NewPatchLoaded then
+  if MsgID = TLucidMsgID.NewProgramLoaded then
   begin
     kg := Plugin.FocusedKeyGroup;
     if assigned(kg)
