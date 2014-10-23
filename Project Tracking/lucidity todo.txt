@@ -48,13 +48,13 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+- add new hotkey definites to installer.
+
 - sample map should have zoom buttons like the sample display.
 
 - the sample display overlay shouldn't darken the sample text.
 
-- locate missing samples needs to be grayed out when no samples are missing. 
 
-- add new hotkey definites to installer.
 
 Give Kieran a license to Lucidity once released.
 

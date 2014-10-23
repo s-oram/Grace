@@ -127,6 +127,8 @@ procedure TMainMenu.Popup(const x, y: integer);
 var
   mi     : TMenuItem;
   miRefA : TMenuItem;
+  MissingSampleCount : integer;
+  MissingSampleText  : string;
 begin
   Menu.Items.Clear;
 
@@ -287,9 +289,18 @@ begin
   Menu.Items.Add(mi);
 
   // TODO:HIGH this command should be disabled if no samples are missing.
+  MissingSampleCount := Command.GetNumberOfMissingSamples(Plugin);
+  if MissingSampleCount = 0
+    then MissingSampleText := ''
+    else MissingSampleText := '(' + IntToStr(MissingSampleCount) + ' missing)';
+
   mi := TMenuItem.Create(Menu);
-  mi.Caption := 'Locate Missing Samples...';
+  if MissingSampleCount > 0
+    then mi.Enabled := true
+    else mi.Enabled := false;
+  mi.Caption := 'Locate Missing Samples... ' + MissingSampleText;
   mi.OnClick := EventHandle_FindMissingSamples;
+
   Menu.Items.Add(mi);
 
   //NOTE: Not sure if I want to inlude a 'Registered To...' item. hmmm.

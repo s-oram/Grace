@@ -23,6 +23,8 @@ New:
 - Can now save a program without including the samples. 
 - rename program command (for internal use only.)
 - Missing sample file search.
+- Improved SFZ import: Sample regions now use values defined in the <group> opcode. Previously
+  <group> opcodes were ignored. 
 
 Change:
 - Filter GAIN is now Filter TONE.

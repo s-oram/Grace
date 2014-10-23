@@ -112,6 +112,7 @@ type
     class procedure VstPar_SetParameterAutomated(const Plugin : TeePlugin; const VstParameterIndex : integer; const ParValue : single); static;
 
     class procedure FindMissingSamples(const Plugin : TeePlugin); static;
+    class function GetNumberOfMissingSamples(const Plugin: TeePlugin): integer; static;
   end;
 
   GuiSetup = record
@@ -1045,6 +1046,39 @@ begin
   InWindow_CustomDialog(Plugin.Globals.TopLevelForm, msg, ['Yes','No'], ResultCallback);
 end;
 
+class function Command.GetNumberOfMissingSamples(const Plugin: TeePlugin): integer;
+var
+  rx : IRegion;
+  c1: Integer;
+  fn : string;
+  MissingSamples : TStringList;
+  SearchPaths    : TStringList;
+  FileFoundCallback : TFileFoundCallback;
+begin
+  MissingSamples := TStringList.Create;
+  AutoFree(@MissingSamples);
+
+  // TODO:HIGH WARNING - using the sample map region count property
+  // here probably isn't thread safe. I dunno what to do about that.
+  // Instead of searching for missing samples, I could have a list of
+  // missing samples that is generated when loading patches.
+  for c1 := Plugin.SampleMap.RegionCount-1 downto 0 do
+  begin
+    rx := Plugin.SampleMap.Regions[c1];
+    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    begin
+      if rx.GetProperties^.SampleFileFullPath <> ''
+        then fn := rx.GetProperties^.SampleFileFullPath
+        else fn := rx.GetProperties^.SampleFileName;
+
+      if (MissingSamples.IndexOf(fn) = -1) and (FileExists(fn) = false)
+        then MissingSamples.Add(fn);
+    end;
+  end;
+
+  result := MissingSamples.Count;
+end;
+
 class procedure Command.FindMissingSamples(const Plugin: TeePlugin);
 var
   rx : IRegion;
@@ -1060,7 +1094,7 @@ begin
   SearchPaths := TStringList.Create;
   AutoFree(@SearchPaths);
 
-  // TODO:MED WARNING - using the sample map region count property
+  // TODO:HIGH WARNING - using the sample map region count property
   // here probably isn't thread safe. I dunno what to do about that.
   // Instead of searching for missing samples, I could have a list of
   // missing samples that is generated when loading patches.
