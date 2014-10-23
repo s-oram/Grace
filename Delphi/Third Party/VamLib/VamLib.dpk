@@ -63,6 +63,7 @@ contains
   VamLib.VclLayout in 'Source\VamLib.VclLayout.pas',
   VamLib.Utils.ObjectEnumerator in 'Source\VamLib.Utils.ObjectEnumerator.pas',
   XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas',
-  VamLib.FindFiles in 'Source\VamLib.FindFiles.pas';
+  VamLib.FindFiles in 'Source\VamLib.FindFiles.pas',
+  VamLib.KeyValueStore in 'Source\VamLib.KeyValueStore.pas';
 
 end.
