@@ -48,10 +48,6 @@ bug
 bug
 - reseting the program doesn't clear the sampler root note display.
 
-bug
-- SFZ import. regions might be defaulting to the wrong pitch when 
-  no pitch is specified. Check out the camel audio factory patches.
-
 =============================================================================
      TODO HIGH
 =============================================================================

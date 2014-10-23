@@ -107,9 +107,6 @@ begin
     Parser.ParseFile(aSourceFileName);
 
     //do some further post-processing after parsing the raw file..
-
-    // - Check the filenames are relative. put them into a form Lucidity can understand.
-    // - check that all regions have region bounds. (low key, hi key, low vel, high vel, root note etc).
   end;
 end;
 
@@ -430,6 +427,13 @@ end;
 
 procedure TSfzImporter.Event_OnRegionEnd(Sender: TObject);
 begin
+  // TODO:MED - Check the filenames are relative. put them into a form Lucidity can understand.
+  // TODO:MED - check that all regions have region bounds. (low key, hi key, low vel, high vel, root note etc).
+  if NodeWiz(CurrentRegion).Exists('RegionProperties/RootNote') = false then
+  begin
+    NodeWiz(CurrentRegion).CreateNode('RegionProperties/RootNote').ValueUnicode := ConvertOpcodeToPatchValue(TSfzOpcode.pitch_keycenter, 'c4');
+  end;
+
   CurrentRegion := nil;
 end;
 

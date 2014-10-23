@@ -29,6 +29,8 @@ Change:
 
 Bug Fix:
 - Lucidity would freeze if loading a patch file using the ENTER key.   
+- SFZ Import: Lucidity now uses a default key center value if none is
+  specified. 
 
 === BETA v0.0.1.59 (25-Sep-2014) ===
 New:
