@@ -86,7 +86,7 @@ begin
   if Tag = 1 then
   begin
     Plugin.InitializeState;
-    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.NewProgramLoaded);
   end;
 
   if Tag = 3 then
@@ -103,8 +103,6 @@ begin
       Plugin.ImportProgram(OpenDialog.FileName);
     end;
   end;
-
-
 end;
 
 procedure TMainMenu.OpenKeyFile(Sender: TObject);
