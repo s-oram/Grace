@@ -11,8 +11,6 @@ uses
 type
   TSfzTokenType = (Unknown, Comment, Group, Region, MultipleOpcodes, Opcode);
 
-
-
   // Events
   TOpcodeEvent = procedure(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string) of object;
 
@@ -54,12 +52,7 @@ type
     property OnRegionOpcode : TOpcodeEvent read fOnRegionOpcode write fOnRegionOpcode;
   end;
 
-
-
 procedure ExplodeSfzString(s : string; var Results : TStringList);
-
-
-
 
 implementation
 
@@ -71,7 +64,6 @@ uses
 
 const
   kMaxInt = High(Integer);
-
 
 procedure ExplodeSfzString(s : string; var Results : TStringList);
 var
@@ -260,6 +252,12 @@ procedure TSfzParser.ProcessGroup(s: string);
 begin
   if IsGroupOpen then
   begin
+    if IsRegionOpen then
+    begin
+      if assigned(OnRegionEnd)   then OnRegionEnd(self);
+      IsRegionOpen := false;
+    end;
+
     if assigned(OnGroupEnd)   then OnGroupEnd(self);
     if assigned(OnGroupStart) then OnGroupStart(self);
   end else
