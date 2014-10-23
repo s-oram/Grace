@@ -15,10 +15,11 @@ type
 
   TWinEvent = procedure(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal) of object;
 
+
+  {$M+}
   TWindowsEventHook = class
   private
     fOnWinEvent: TWinEvent;
-
   protected
     CallbackMethodPointer : pointer;
     HookHandle : NativeUInt;
@@ -35,6 +36,7 @@ type
     // Published but only intended for internal usage.
     procedure WinHookCallback(hWinEventHook : NativeUInt; dwEvent:dword; handle : hwnd; idObject, idChild : Long; dwEventThread, dwmsEventTime : dword); stdcall;
   end;
+  {$M-}
 
 
 implementation
