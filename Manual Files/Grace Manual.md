@@ -5,11 +5,14 @@
 
 # Welcome to Grace #
 
-Grace is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.  
+Thank you for purchasing Grace. Your support allows me to continue developing music software. 
 
-Grace's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow. 
+Grace is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well. 
+Grace's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow.
 
-Thank you for purchasing Grace. Your support allows me to continue working on it and other music tools. I hope you enjoy using Grace!
+I hope you enjoy using Grace! Please do not hesitate to get in touch via the support forum or email if you have any questions.   
+
+
 
 Yours Sincerely<br> 
 Shannon Oram <br>

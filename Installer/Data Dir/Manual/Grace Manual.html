@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lucidity Manual</title>
+<title>Grace Manual</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,54 +291,54 @@ img {
 </style>
 </head>
 <body>
-<h1>Lucidity Manual</h1>
+<h1>Grace Manual</h1>
 <ul>
-<li>Last Updated 8th October 2014</li>
-<li>For Lucidity Version 1.0</li>
+<li>Last Updated 25th October 2014</li>
+<li>For Grace Version 1.0</li>
 </ul>
-<h1>Welcome to Lucidity</h1>
-<p>Lucidity is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.  </p>
-<p>Lucidity's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow. I believe this is important as sampling is such an integral part of contemporary music.</p>
-<p>Thank you for purchasing Lucidity. Your support allows me to continue working on it and other music tools. I hope you enjoy using Lucidity!</p>
-<p>Yours Sincerely,<br> 
+<h1>Welcome to Grace</h1>
+<p>Thank you for purchasing Grace. Your support allows me to continue developing music software. </p>
+<p>Grace is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well. 
+Grace's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow.</p>
+<p>I hope you enjoy using Grace! Please do not hesitate to get in touch via the support forum or email if you have any questions.   </p>
+<p>Yours Sincerely<br> 
 Shannon Oram <br>
 One Small Clue <br> 
 shannon@onesmallclue.com <br></p>
 <h3>Thank You</h3>
-<p>A huge thanks to the early users and beta testers. Aside from finding lots of bugs and being patient with crashy, incomplete builds. They've provided lots of input that has helped refine Lucidity's functionality. Lucidity is a much better instrument for it. </p>
-<p>Andy Brader<br>
-Damien Sutton<br>
-Juanjo Cotado<br>
-Chris Holmes<br>
-Hugo Vinagre<br>
-Lowkey<br>
-Biasior Andrea<br>
-Goran Podrugovic (G-Roove)<br>
-Joseph<br>
-Tooshka<br></p>
-<p>Urs Heckmann for copy protection tips.<br></p>
-<p>Andrew Simper and Vadim Zavalishin for sharing filter information. </p>
-<p>Everyone on Music-DSP email list and the KVR DSP and Plug-In Development forum.</p>
+<p>A huge thanks to everyone who's helped with Grace's development in one way or another. <br>
+- Andy Brader<br>
+- Damien Sutton<br>
+- Yann SNK<br>
+- Juanjo Cotado<br>
+- Chris Holmes<br>
+- Hugo Vinagre<br>
+- Lowkey<br>
+- Biasior Andrea<br>
+- Goran Podrugovic (G-Roove)<br>
+- Joseph<br>
+- Tooshka<br>
+- Lilly<br></p>
 <h3>Trademark</h3>
 <p>VST is a trademark of Steinberg Media Technologies GmbH</p>
 <h1>Installation</h1>
-<p>1) Visit www.onesmallclue.com/lucidity.php
+<p>1) Visit www.onesmallclue.com/grace.php
 2) Download and run the installer.</p>
 <h2>Installation Troubleshooting</h2>
-<p>If Lucidity doesn't show in your DAW or VST host after installing. Try:</p>
+<p>If Grace doesn't show in your DAW or VST host after installing. Try:</p>
 <ul>
-<li>Check the Lucidity.dll plugin file was installed into the correct VST plugin directory. Many hosts use different default locations for VST plugins and you may have several plugin directories on your hard drive. </li>
+<li>Check the Grace.dll plugin file was installed into the correct VST plugin directory. Many hosts use different default locations for VST plugins and you may have several plugin directories on your hard drive. </li>
 <li>Check you installed the correct version. 32bit DAWs require 32bit plugins. 64bit DAWs require 64bit plugins.  </li>
-<li>Check you only have one Lucidity.dll file in your VST pluging directories.</li>
+<li>Check you only have one Grace.dll file in your VST pluging directories.</li>
 <li>Use the &quot;rescan plugin directory&quot; command in your DAW.</li>
 <li>Try uninstalling and reinstalling. </li>
 <li>Contact support if none of the above work. </li>
 </ul>
 <h2>Installation Effects</h2>
 <p>The installer will place files into two locations. Your VST plugin directory and a data directory. The data directory can be specified when running the installer. The default location is:<br> 
-&nbsp;&nbsp;C:\ProgramData\One Small Clue\Lucidity<br></p>
-<p>The data directory contains files essential to Lucidity and Lucidity will not run properly without it. </p>
-<p>The installer will store the installation paths in the Windows registry. These are used by the Lucidity installer when running updates.  </p>
+&nbsp;&nbsp;C:\ProgramData\One Small Clue\Grace<br></p>
+<p>The data directory contains files essential to Grace and Grace will not run properly without it. </p>
+<p>The installer will store the installation paths in the Windows registry. These are used by the Grace installer when running updates.  </p>
 <h1>Interface Elements</h1>
 <p><img src="images/MainInterfaceDescription.png"></p>
 <h2>File Browser</h2>
@@ -388,7 +388,7 @@ Tooshka<br></p>
 </ul>
 <p><strong>Glide:</strong> Controls the pitch slew rate when using MONO or LEGATO voice modes. </p>
 <h3>The Filter Section</h3>
-<p>Lucidity features two flexible filter slots. Each filter slot can load one of several different filter types. The two filters can be routed in a serial or parallel configuration. </p>
+<p>Grace features two flexible filter slots. Each filter slot can load one of several different filter types. The two filters can be routed in a serial or parallel configuration. </p>
 <p><img src="images/FilterControls.png" ></p>
 <p><strong>Filter Type Selector:</strong> Choose the type of filter.</p>
 <p><strong>Filter Key Follow:</strong> Controls how much the filter frequency will track the MIDI Input.  </p>
@@ -400,7 +400,7 @@ Tooshka<br></p>
 </ul>
 <p>BLEND will control the balance of the two filters in both FILTER ROUTING modes. Ensure the BLEND knob is fully CW for the classic serial mode filter routing. Other values will allow some of filter one to be heard in the output.  </p>
 <h3>The AHDSR Envelope Section</h3>
-<p>Lucidity has two clasic AHDSR envelopes. The <strong>AMP ENVELOPE</strong> is always routed to the voice amplitude (volume). The <strong>MOD ENVELOPE</strong> is freely assignable to any destination via the modulation matrix.  </p>
+<p>Grace has two clasic AHDSR envelopes. The <strong>AMP ENVELOPE</strong> is always routed to the voice amplitude (volume). The <strong>MOD ENVELOPE</strong> is freely assignable to any destination via the modulation matrix.  </p>
 <p><img src="images/EnvelopeControls.png" ></p>
 <p><strong>A:</strong> Attack envelope time.<br> 
 <strong>H:</strong> Hold envelope time.<br>
@@ -411,7 +411,7 @@ Tooshka<br></p>
 SNAP OFF envelopes will always have smooth attack, decay and release stages. This prevents clicks when envelopes open and close too quickly. This is the default behaviour and recommended for most situations.    </p>
 <p><strong>Velocity Sensitivity:</strong> Controls how much the MIDI velocity input level affects the amplitude of the envelope.  At 0% the envelope will always rise to the full envelope value. At 100% the envelope will be scaled by the velocity value. Lower velocity values will trigger correspondingly smaller envelope signals.   </p>
 <h3>The LFO Section</h3>
-<p>Lucidity has two Low Frequency Oscillators (LFO) with the usual selection of triangle, square and ramp wave shapes. There are some more exotic selections as well. </p>
+<p>Grace has two Low Frequency Oscillators (LFO) with the usual selection of triangle, square and ramp wave shapes. There are some more exotic selections as well. </p>
 <p><img src="images/LfoControls.png" ></p>
 <p><strong>LFO Shape:</strong> Selects the LFO waveform shape. The function of the three LFO knobs will vary depending on the LFO shape. </p>
 <p><strong>LFO Range:</strong> Select the LFO timing range. </p>
@@ -441,7 +441,7 @@ SNAP OFF envelopes will always have smooth attack, decay and release stages. Thi
 <p><strong>Attack-Decay</strong> and <strong>Attack-Release</strong> will trigger once at the beginning of a note then stop. They are not true LFOs because they do not oscillate. They are included here because it's sometime useful to have an extra envelope.</p>
 <p><strong>Attack-Decay-Cycle</strong> will trigger at the beginning of the note and continue cycling like a regular LFO. This shape is very similar to the Triange LFO shape but it reacts different when it's controls are modulated.</p>
 <h3>The Sequencer Section</h3>
-<p>Lucidity also features two step sequencers for maximum modulation possibilities!</p>
+<p>Grace also features two step sequencers for maximum modulation possibilities!</p>
 <p><img src="images/SequencerControls.png" ></p>
 <p><strong>Clock:</strong> Controls the speed of the sequencer. <br>
 <strong>Mode:</strong> Controls the direction of the sequencer. <br> 
@@ -449,16 +449,16 @@ SNAP OFF envelopes will always have smooth attack, decay and release stages. Thi
 <p>A sequencer context menu has commands to RESET or RANDOMISE the steps.</p>
 <h3>The XY Pads</h3>
 <p>The XY Pads provide another modulation source similar to the Mod Envelope or the LFOs. The XY Pads can modulate multiple parameters at once using the Modulation Matrix.</p>
-<p>Most commonly the XY Pads will be linked to your MIDI controller knobs. They provide an important interface point between your MIDI controller and Lucidity's parameters.</p>
+<p>Most commonly the XY Pads will be linked to your MIDI controller knobs. They provide an important interface point between your MIDI controller and Grace's parameters.</p>
 <p><img src="images/XyPadControls.png" ></p>
 <p>Right click an XY Pad to show the context menu with commands for MIDI Learn etc.       </p>
 <h2>Filters</h2>
 <p>(Details about the individual filter types goes here!)   </p>
 <h2>Modulation</h2>
-<p>The Modulation Matrix routes signals from the modulation sources (LFOs, Envelopes, XY Pads, MIDI Input etc) to Lucidity's parameters. It is the heart of Lucidity's modulation system.   </p>
+<p>The Modulation Matrix routes signals from the modulation sources (LFOs, Envelopes, XY Pads, MIDI Input etc) to Grace's parameters. It is the heart of Grace's modulation system.   </p>
 <p><img src="images/ModMatrix.png" ></p>
 <p><strong>Main:</strong> Modulation Matrix editing is disabled when the MAIN button is selected (as shown in the image above).</p>
-<p><strong>Mod Shots:</strong> Lucidity features 8 MOD SLOTS. Each MOD SLOT provides a way to route one modulation source to multiple destinations. </p>
+<p><strong>Mod Shots:</strong> Grace features 8 MOD SLOTS. Each MOD SLOT provides a way to route one modulation source to multiple destinations. </p>
 <p><strong>Prev/Next Mod Slot:</strong> These buttons select the previous or next MOD SLOT. Off course you don't have to use these buttons. You may simply click on the desired MOD SLOT to select it.</p>
 <h3>How To Internally Modulate a Parameter</h3>
 <p><img src="images/InternalModulationSetup_Step1.png" ></p>
@@ -471,7 +471,7 @@ SNAP OFF envelopes will always have smooth attack, decay and release stages. Thi
 <h1>The Mapping Editor</h1>
 <p>Samples, which are audio files, are made playable by creating Regions. Regions are mapped to a location on a keyboard. Each region contains 1 sample.  </p>
 <p><img src="images/SampleMapEditDisplay.png" ></p>
-<p>One or more sample files may be dropped on the mapping display to add more sample regions. Audio samples can dragged from Lucidity's browser, Windows' file explore or from within some hosts. (Reaper, Cubase and many others support audio being dragged directly from the project timeline to VST Plugins.)</p>
+<p>One or more sample files may be dropped on the mapping display to add more sample regions. Audio samples can dragged from Grace's browser, Windows' file explore or from within some hosts. (Reaper, Cubase and many others support audio being dragged directly from the project timeline to VST Plugins.)</p>
 <h1>Keyboard Shortcuts</h1>
 <p>Hotkey support is fairly limited at this time and will slowly improve in future updates. </p>
 <p><strong>Up/Down/Left/Right:</strong> Navigate the browser.<br>
