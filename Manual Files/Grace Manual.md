@@ -1,43 +1,36 @@
-# Lucidity Manual #
+# Grace Manual #
 
-* Last Updated 8th October 2014
-* For Lucidity Version 1.0
+* Last Updated 25th October 2014
+* For Grace Version 1.0
 
-# Welcome to Lucidity #
+# Welcome to Grace #
 
-Lucidity is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.  
+Grace is a VST Plugin Sampler. It's ideal for playing melodic samples. Pianos, keys, strings etc. Creative producers and musicians will find a host of other uses as well.  
 
-Lucidity's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow. I believe this is important as sampling is such an integral part of contemporary music.
+Grace's main goal is to make using original samples in your music as simple as possible. It wants to be the tool that will let you load a sample mid composition with minimal disruptions to your creative flow. 
 
-Thank you for purchasing Lucidity. Your support allows me to continue working on it and other music tools. I hope you enjoy using Lucidity!
+Thank you for purchasing Grace. Your support allows me to continue working on it and other music tools. I hope you enjoy using Grace!
 
-Yours Sincerely,<br> 
+Yours Sincerely<br> 
 Shannon Oram <br>
 One Small Clue <br> 
 shannon@onesmallclue.com <br>
 
 ### Thank You ###
 
-A huge thanks to the early users and beta testers. Aside from finding lots of bugs and being patient with crashy, incomplete builds. They've provided lots of input that has helped refine Lucidity's functionality. Lucidity is a much better instrument for it. 
-
-Andy Brader<br>
-Damien Sutton<br>
-Juanjo Cotado<br>
-Chris Holmes<br>
-Hugo Vinagre<br>
-Lowkey<br>
-Biasior Andrea<br>
-Goran Podrugovic (G-Roove)<br>
-Joseph<br>
-Tooshka<br>
-
-Urs Heckmann for copy protection tips.<br>
-
-Andrew Simper and Vadim Zavalishin for sharing filter information. 
-
-Everyone on Music-DSP email list and the KVR DSP and Plug-In Development forum.
-
-
+A huge thanks to everyone who's helped with Grace's development in one way or another. <br>
+- Andy Brader<br>
+- Damien Sutton<br>
+- Yann SNK<br>
+- Juanjo Cotado<br>
+- Chris Holmes<br>
+- Hugo Vinagre<br>
+- Lowkey<br>
+- Biasior Andrea<br>
+- Goran Podrugovic (G-Roove)<br>
+- Joseph<br>
+- Tooshka<br>
+- Lilly<br>
 
 ### Trademark ###
 
@@ -49,16 +42,16 @@ VST is a trademark of Steinberg Media Technologies GmbH
 
 # Installation #
 
-1) Visit www.onesmallclue.com/lucidity.php
+1) Visit www.onesmallclue.com/grace.php
 2) Download and run the installer.
 
 ## Installation Troubleshooting ##
 
-If Lucidity doesn't show in your DAW or VST host after installing. Try:
+If Grace doesn't show in your DAW or VST host after installing. Try:
 
-* Check the Lucidity.dll plugin file was installed into the correct VST plugin directory. Many hosts use different default locations for VST plugins and you may have several plugin directories on your hard drive. 
+* Check the Grace.dll plugin file was installed into the correct VST plugin directory. Many hosts use different default locations for VST plugins and you may have several plugin directories on your hard drive. 
 * Check you installed the correct version. 32bit DAWs require 32bit plugins. 64bit DAWs require 64bit plugins.  
-* Check you only have one Lucidity.dll file in your VST pluging directories.
+* Check you only have one Grace.dll file in your VST pluging directories.
 * Use the "rescan plugin directory" command in your DAW.
 * Try uninstalling and reinstalling. 
 * Contact support if none of the above work. 
@@ -68,11 +61,11 @@ If Lucidity doesn't show in your DAW or VST host after installing. Try:
 ## Installation Effects ##
 
 The installer will place files into two locations. Your VST plugin directory and a data directory. The data directory can be specified when running the installer. The default location is:<br> 
-&nbsp;&nbsp;C:\ProgramData\One Small Clue\Lucidity<br>
+&nbsp;&nbsp;C:\ProgramData\One Small Clue\Grace<br>
 
-The data directory contains files essential to Lucidity and Lucidity will not run properly without it. 
+The data directory contains files essential to Grace and Grace will not run properly without it. 
 
-The installer will store the installation paths in the Windows registry. These are used by the Lucidity installer when running updates.  
+The installer will store the installation paths in the Windows registry. These are used by the Grace installer when running updates.  
  
 
 
@@ -164,7 +157,7 @@ Looping using **SAMPLE** bounds is useful when modulating the sample start and e
 
 ### The Filter Section ###
 
-Lucidity features two flexible filter slots. Each filter slot can load one of several different filter types. The two filters can be routed in a serial or parallel configuration. 
+Grace features two flexible filter slots. Each filter slot can load one of several different filter types. The two filters can be routed in a serial or parallel configuration. 
 
 <img src="images/FilterControls.png" >
 
@@ -184,7 +177,7 @@ BLEND will control the balance of the two filters in both FILTER ROUTING modes. 
 
 ### The AHDSR Envelope Section ###
  
-Lucidity has two clasic AHDSR envelopes. The **AMP ENVELOPE** is always routed to the voice amplitude (volume). The **MOD ENVELOPE** is freely assignable to any destination via the modulation matrix.  
+Grace has two clasic AHDSR envelopes. The **AMP ENVELOPE** is always routed to the voice amplitude (volume). The **MOD ENVELOPE** is freely assignable to any destination via the modulation matrix.  
 
 <img src="images/EnvelopeControls.png" >
 
@@ -203,7 +196,7 @@ SNAP OFF envelopes will always have smooth attack, decay and release stages. Thi
 
 ### The LFO Section ###
 
-Lucidity has two Low Frequency Oscillators (LFO) with the usual selection of triangle, square and ramp wave shapes. There are some more exotic selections as well. 
+Grace has two Low Frequency Oscillators (LFO) with the usual selection of triangle, square and ramp wave shapes. There are some more exotic selections as well. 
 
 <img src="images/LfoControls.png" >
   
@@ -246,7 +239,7 @@ These selections are not regular LFO shapes in the traditional sense. They are b
 
 ### The Sequencer Section ###
 
-Lucidity also features two step sequencers for maximum modulation possibilities!
+Grace also features two step sequencers for maximum modulation possibilities!
 
 <img src="images/SequencerControls.png" >
 
@@ -260,7 +253,7 @@ A sequencer context menu has commands to RESET or RANDOMISE the steps.
 
 The XY Pads provide another modulation source similar to the Mod Envelope or the LFOs. The XY Pads can modulate multiple parameters at once using the Modulation Matrix.
 
-Most commonly the XY Pads will be linked to your MIDI controller knobs. They provide an important interface point between your MIDI controller and Lucidity's parameters.
+Most commonly the XY Pads will be linked to your MIDI controller knobs. They provide an important interface point between your MIDI controller and Grace's parameters.
 
 <img src="images/XyPadControls.png" >
 
@@ -272,13 +265,13 @@ Right click an XY Pad to show the context menu with commands for MIDI Learn etc.
 
 ## Modulation ##
 
-The Modulation Matrix routes signals from the modulation sources (LFOs, Envelopes, XY Pads, MIDI Input etc) to Lucidity's parameters. It is the heart of Lucidity's modulation system.   
+The Modulation Matrix routes signals from the modulation sources (LFOs, Envelopes, XY Pads, MIDI Input etc) to Grace's parameters. It is the heart of Grace's modulation system.   
 
 <img src="images/ModMatrix.png" >
 
 **Main:** Modulation Matrix editing is disabled when the MAIN button is selected (as shown in the image above).
 
-**Mod Shots:** Lucidity features 8 MOD SLOTS. Each MOD SLOT provides a way to route one modulation source to multiple destinations. 
+**Mod Shots:** Grace features 8 MOD SLOTS. Each MOD SLOT provides a way to route one modulation source to multiple destinations. 
 
 **Prev/Next Mod Slot:** These buttons select the previous or next MOD SLOT. Off course you don't have to use these buttons. You may simply click on the desired MOD SLOT to select it.
 
@@ -306,7 +299,7 @@ Samples, which are audio files, are made playable by creating Regions. Regions a
 
 <img src="images/SampleMapEditDisplay.png" >
 
-One or more sample files may be dropped on the mapping display to add more sample regions. Audio samples can dragged from Lucidity's browser, Windows' file explore or from within some hosts. (Reaper, Cubase and many others support audio being dragged directly from the project timeline to VST Plugins.)
+One or more sample files may be dropped on the mapping display to add more sample regions. Audio samples can dragged from Grace's browser, Windows' file explore or from within some hosts. (Reaper, Cubase and many others support audio being dragged directly from the project timeline to VST Plugins.)
 
 
 # Keyboard Shortcuts #
