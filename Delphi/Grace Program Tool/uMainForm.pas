@@ -11,12 +11,18 @@ type
   TForm4 = class(TForm)
     Edit1: TEdit;
     Memo1: TMemo;
+    RenameAllSampleButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure RenameAllSampleButtonClick(Sender: TObject);
   private
+    CurrentProgramFile : string;
+
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
 
     procedure FilesDropped(Files : TStringList);
+
+    procedure RefreshDetails;
   public
     { Public declarations }
   end;
@@ -27,6 +33,7 @@ var
 implementation
 
 uses
+  XPlat.Dialogs,
   Lucidity.ProgramFileUtils,
   Lucidity.Utils,
   VamLib.Utils;
@@ -37,7 +44,7 @@ uses
 
 procedure TForm4.FormCreate(Sender: TObject);
 begin
-  //
+  RefreshDetails;
   DragAcceptFiles(self.Handle, true);
 end;
 
@@ -45,6 +52,8 @@ procedure TForm4.FormDestroy(Sender: TObject);
 begin
   DragAcceptFiles(self.Handle, false);
 end;
+
+
 
 procedure TForm4.WMDropFiles(var Msg: TWMDropFiles);
 var
@@ -96,19 +105,37 @@ end;
 procedure TForm4.FilesDropped(Files: TStringList);
 var
   s, fn : string;
+begin
+  fn := Files[0];
+  if IsLucidityProgramFile(fn)
+    then CurrentProgramFile := fn
+    else CurrentProgramFile := '';
+
+  RefreshDetails;
+end;
+
+procedure TForm4.RefreshDetails;
+var
+  s : string;
+  c1 : integer;
   Samples : TStringList;
-  c1: Integer;
 begin
   Samples := TStringList.Create;
   AutoFree(@Samples);
 
-  fn := Files[0];
-  if IsLucidityProgramFile(fn) then
+  if CurrentProgramFile = '' then
   begin
-    Edit1.Text := fn;
+    Edit1.Text := CurrentProgramFile;
+    Memo1.Clear;
+  end;
+
+
+  if CurrentProgramFile <> '' then
+  begin
+    Edit1.Text := CurrentProgramFile;
     Memo1.Clear;
 
-    s := 'Lucidity Program Format = ' + IntToStr(GetProgramFileFormat(fn));
+    s := 'Lucidity Program Format = ' + IntToStr(GetProgramFileFormatVersion(CurrentProgramFile));
     Memo1.Lines.Add(s);
 
     s := '';
@@ -119,15 +146,32 @@ begin
     s := '=======';
     Memo1.Lines.Add(s);
 
-    GetUsedSamples(fn, Samples);
+    GetSampleFileNameReferences(CurrentProgramFile, Samples);
 
     for c1 := 0 to Samples.Count-1 do
     begin
       Memo1.Lines.Add(Samples[c1]);
     end;
   end;
-
 end;
+
+procedure TForm4.RenameAllSampleButtonClick(Sender: TObject);
+var
+  ProgramFileName : string;
+  NewFileName : string;
+  FileNameRoot : string;
+begin
+  ProgramFileName := CurrentProgramFile;
+  if FileExists(CurrentProgramFile) then
+  begin
+    FileNameRoot := InputBox('Sample Name Root', 'Root', '');
+    if FileNameRoot <> ''
+      then RenameAllUsedSampleFiles(ProgramFileName, FileNameRoot);
+    RefreshDetails;
+  end;
+end;
+
+
 
 
 

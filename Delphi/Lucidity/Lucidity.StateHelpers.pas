@@ -19,6 +19,7 @@ procedure MakeSampleFileNamesAbsolute(const RootNode : TXmlNode; const ProgramFi
 implementation
 
 uses
+  Lucidity.ProgramFileUtils,
   uAutoFree,
   eeFunctions,
   StrUtils,
@@ -83,26 +84,16 @@ var
   NodeList : TsdNodeList;
   c1: Integer;
   fn : string;
-  ProgramPath : string;
-  SamplesDir : string;
 begin
   NodeList := TsdNodeList.Create(false);
   AutoFree(@NodeList);
-
-  ProgramPath := ExtractFilePath(ProgramFileName);
-  SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + RemoveFileExt(ProgramFileName) + ' Samples';
-  SamplesDir  := IncludeTrailingPathDelimiter(SamplesDir); // IMPORTANT: include the trailing path delimiter so that it is stripped away from the filename later.
 
   FindNodes(RootNode,'/Region/SampleProperties/SampleFileName', NodeList);
 
   for c1 := 0 to NodeList.Count-1 do
   begin
     fn := NodeList[c1].ValueUnicode;
-
-    if StartsText(SamplesDir, fn)
-      then fn := ReplaceText(fn, SamplesDir, '')
-      else fn := ExtractRelativePath(ProgramPath, fn);
-
+    fn := MakeRelativeSamplePath(ProgramFileName, fn);
     NodeList[c1].ValueUnicode := fn;
   end;
 end;
@@ -114,6 +105,7 @@ var
   fn : string;
   ProgramPath : string;
   SamplesDir : string;
+  AbsoluteSamplePath : string;
 begin
   NodeList := TsdNodeList.Create(false);
   AutoFree(@NodeList);
@@ -127,23 +119,11 @@ begin
   begin
     // First attempt: look for sample in "program samples" dir
     fn := NodeList[c1].ValueUnicode;
-    if (FileExists(fn) = false) then
-    begin
-      fn := IncludeTrailingPathDelimiter(SamplesDir) + ExtractFileName(fn);
-    end;
 
-    // second attempt: if the file doesn't exists, check if it's relative to the program directory.
-    if (FileExists(fn) = false) and (IsRelativePath(NodeList[c1].ValueUnicode)) then
+    if FindAbsoluteSamplePath(ProgramFileName, fn, AbsoluteSamplePath) then
     begin
-      fn := NodeList[c1].ValueUnicode;
-      fn := IncludeTrailingPathDelimiter(ProgramPath) + fn;
-      fn := ExpandFileName(fn);
-    end;
-
-    // If the file exists, update the node with the absolute filename.
-    if FileExists(fn) then
-    begin
-      NodeList[c1].ValueUnicode := fn;
+      // If the file exists, update the node with the absolute filename.
+      NodeList[c1].ValueUnicode := AbsoluteSamplePath;
     end;
   end;
 end;

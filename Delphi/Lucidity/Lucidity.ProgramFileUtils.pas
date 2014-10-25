@@ -5,17 +5,43 @@ interface
 uses
   Types, Classes;
 
-function GetProgramFileFormat(fn : string):integer;
+function GetProgramFileFormatVersion(const ProgramFileName : string):integer;
 
-procedure GetUsedSamples(const fn : string; var SampleFileNames : TStringList);
+
+
+
+// Takes a sample file path and a program file name and attempts to figure out the absolute sample path.
+// The sample filename may have been saved as an absolute path, a relative path or no path at all
+// depending on how the program file was saved and where the samples files were in relation to
+// the program file.
+function FindAbsoluteSamplePath(const ProgramFileName : string; const SampleFileName : string; out AbsoluteSamplePath : string):boolean;
+
+// takes a sample file name and makes it relative to the program file.
+function MakeRelativeSamplePath(const ProgramFileName : string; const SampleFileName : string):string;
+
+
+// rename a sample file used in an existing program file. Use with caution. The target sample file
+// may be used in multiple program files.
+procedure RenameUsedSampleFile(const ProgramFileName, OldSampleFileName, NewSampleFileName : string);
+
+
+// rename all sample files used in a program file. Use with caution. The target sample files
+// may be used in multiple program files.
+procedure RenameAllUsedSampleFiles(const ProgramFileName, NewSampleFileNameRoot : string);
+
+// get all the sample file names referenced in the program file. Sample files may or may not
+// exist on disk.
+procedure GetSampleFileNameReferences(const ProgramFileName : string; var SampleFileNames : TStringList);
 
 implementation
 
 uses
+  StrUtils,
+  SysUtils,
   VamLib.Utils,
   NativeXML, NativeXMLEx;
 
-function GetProgramFileFormat(fn : string):integer;
+function GetProgramFileFormatVersion(const ProgramFileName : string):integer;
 var
   xml : TNativeXML;
   RootNode : TXMLNode;
@@ -24,7 +50,7 @@ var
 begin
   xml := TNativeXML.Create(nil);
   autoFree(@xml);
-  xml.LoadFromFile(fn);
+  xml.LoadFromFile(ProgramFileName);
 
   RootNode := xml.Root;
   assert(assigned(RootNode));
@@ -37,7 +63,7 @@ begin
  result := PatchFormatVersion;
 end;
 
-procedure GetUsedSamples(const fn : string; var SampleFileNames : TStringList);
+procedure GetSampleFileNameReferences(const ProgramFileName : string; var SampleFileNames : TStringList);
 var
   xml : TNativeXML;
   RootNode : TXMLNode;
@@ -47,10 +73,11 @@ var
   Nodes : TList;
   c1: Integer;
   p : Pointer;
+  fn : string;
 begin
   xml := TNativeXML.Create(nil);
   autoFree(@xml);
-  xml.LoadFromFile(fn);
+  xml.LoadFromFile(ProgramFileName);
 
   Nodes := TList.Create;
   AutoFree(@Nodes);
@@ -63,10 +90,156 @@ begin
   for c1 := 0 to Nodes.Count-1 do
   begin
     nd := TXmlNode(Nodes.Items[c1]);
-    SampleFileNames.Add(nd.ValueUnicode);
+    fn := nd.ValueUnicode;
+    if SampleFileNames.IndexOf(fn) = -1
+      then SampleFileNames.Add(fn);
+  end;
+end;
+
+procedure RenameUsedSampleFile(const ProgramFileName, OldSampleFileName, NewSampleFileName : string);
+var
+  xml : TNativeXML;
+  RootNode : TXMLNode;
+  aNode : TXmlNode;
+  PatchFormatVersion : integer;
+  nd : TXmlNode;
+  Nodes : TList;
+  c1: Integer;
+  p : Pointer;
+  fn : string;
+  NewFN : string;
+  OldAbsFileName : string;
+  NewAbsFileName : string;
+  IsFileRenameSuccess : boolean;
+begin
+  xml := TNativeXML.Create(nil);
+  autoFree(@xml);
+  xml.LoadFromFile(ProgramFileName);
+
+  Nodes := TList.Create;
+  AutoFree(@Nodes);
+
+  RootNode := xml.Root;
+  assert(assigned(RootNode));
+
+  FindNodes(RootNode, 'SampleFileName', Nodes);
+
+  IsFileRenameSuccess := false;
+
+  for c1 := 0 to Nodes.Count-1 do
+  begin
+    nd := TXmlNode(Nodes.Items[c1]);
+    fn := nd.ValueUnicode;
+    if EndsText(OldSampleFileName, fn) then
+    begin
+      if (FindAbsoluteSamplePath(ProgramFileName, fn, OldAbsFileName)) and (not IsFileRenameSuccess) then
+      begin
+        assert(FileExists(OldAbsFileName));
+        NewAbsFileName := StringReplace(OldAbsFileName, OldSampleFileName, NewSampleFileName, [rfReplaceAll, rfIgnoreCase]);
+        if (not FileExists(NewAbsFilename)) then
+        begin
+          IsFileRenameSuccess := RenameFile(OldAbsFileName, NewAbsFileName);
+        end;
+      end;
+
+      if IsFileRenameSuccess then
+      begin
+        NewFN := StringReplace(fn, OldSampleFileName, NewSampleFileName, [rfReplaceAll, rfIgnoreCase]);
+        nd.ValueUnicode := NewFN;
+      end;
+    end;
+  end;
+
+  xml.XmlFormat := xfReadable;
+  xml.SaveToFile(ProgramFileName);
+end;
+
+
+function FindAbsoluteSamplePath(const ProgramFileName : string; const SampleFileName : string; out AbsoluteSamplePath : string):boolean;
+var
+  fn : string;
+  path : string;
+begin
+
+  // Check if the sample file name is an absolute file name and exists on disk already.
+  if FileExists(SampleFileName) then
+  begin
+    AbsoluteSamplePath := SampleFileName;
+    exit(true); //===============================>> exit >>====================>>
   end;
 
 
+  // check in a child 'samples' directory.
+  path := ExtractFilePath(ProgramFileName);
+  path := IncludeTrailingPathDelimiter(path) + RemoveFileExt(ProgramFileName) + ' Samples';
+  path := IncludeTrailingPathDelimiter(path);
+  fn   := ExtractFileName(SampleFileName);
+  if FileExists(path + fn) then
+  begin
+    AbsoluteSamplePath := (path + fn);
+    exit(true); //===============================>> exit >>====================>>
+  end;
+
+
+
+  // check if the sample is relative to the program file.
+  path := ExtractFilePath(ProgramFileName);
+  fn   := IncludeTrailingPathDelimiter(path) + SampleFileName;
+  fn   := ExpandFileName(fn);
+  if FileExists(fn) then
+  begin
+    AbsoluteSamplePath := fn;
+    exit(true); //===============================>> exit >>====================>>
+  end;
+
+
+  // the file has not been found.
+  AbsoluteSamplePath := '';
+  exit(false); //===============================>> exit >>====================>>
 end;
+
+
+function MakeRelativeSamplePath(const ProgramFileName : string; const SampleFileName : string):string;
+var
+  fn : string;
+  ProgramPath : string;
+  SamplesDir : string;
+begin
+  ProgramPath := ExtractFilePath(ProgramFileName);
+  SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + RemoveFileExt(ProgramFileName) + ' Samples';
+  SamplesDir  := IncludeTrailingPathDelimiter(SamplesDir); // IMPORTANT: include the trailing path delimiter so that it is stripped away from the filename later.
+
+  fn := SampleFileName;
+
+  if StartsText(SamplesDir, fn)
+      then fn := ReplaceText(fn, SamplesDir, '')
+      else fn := ExtractRelativePath(ProgramPath, fn);
+
+  result := fn;
+end;
+
+
+procedure RenameAllUsedSampleFiles(const ProgramFileName, NewSampleFileNameRoot : string);
+var
+  c1 : integer;
+  SampleFileNames : TStringList;
+  OldFileName : string;
+  NewFileName : string;
+begin
+  SampleFileNames := TStringList.Create;
+  AutoFree(@SampleFileNames);
+
+  GetSampleFileNameReferences(ProgramFileName, SampleFileNames);
+
+  for c1 := 0 to SampleFileNames.Count-1 do
+  begin
+    OldFileName := SampleFileNames[c1];
+    NewFileName := NewSampleFileNameRoot + ' ' + IntToStrB(c1 + 1, 2) + ExtractFileExt(OldFileName);
+    RenameUsedSampleFile(ProgramFileName, OldFileName, NewFileName);
+  end;
+
+end;
+
+
 
 end.
