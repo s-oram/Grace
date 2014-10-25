@@ -26,10 +26,7 @@ type
   TOleDragEvent      = procedure(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData) of object;
   TOleDragLeaveEvent = procedure(Sender: TObject) of object;
 
-
   TShowContextMenuEvent = procedure(Sender : TObject; X, Y:integer) of object;
-
-
 
 implementation
 

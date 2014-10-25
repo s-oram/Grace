@@ -85,11 +85,6 @@ Sample Map editor
 - the proposed sample region doesn't show in the info bar. (root note etc)\
 - being copied regions don't show in the info bar. (root note etc)\
 
-[BIG TASK]
-- need a way to display dialogs on the GUI for 'error loading samples', missing samples etc.
-  -- I need a backbone that can run from a thread. display messages on the GUI etc. 
-     The backbone needs to be able to pause while the dialog is shown.
-
 Allow Lucidity to respond to MIDI program change commands. request from Hugo
 thunderlink://messageid=CAPN=qRyAa3iMp+W-pP+BLL-9Jgx0=rmhqV=eB8_WPK_V9-afsA@mail.gmail.com
 

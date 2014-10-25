@@ -3,10 +3,12 @@ unit NativeXmlEx;
 interface
 
 uses
-  Classes,
+  Classes, Contnrs,
   NativeXml;
 
 type
+  TArrayOfXmlNodes = array of TXmlNode;
+
   INodeWiz = interface
     ['{AF6571F5-A2AB-410D-A322-A2C8220AEC67}']
     function Exists(NodePath : string):boolean;
@@ -33,6 +35,8 @@ type
     // multiple nodes of the same name are found.
     // Returns nil if the node cannot be found.
     function Find(NodePath : string):TXmlNode;
+
+    procedure FindAll(NodePath: string; var Nodes : TObjectList);
 
     // Navigates to the final child node, giving preference to existing nodes.
     // Non-existing nodes will be created.
@@ -173,6 +177,11 @@ end;
 function TNodeWiz.Find(NodePath: string): TXmlNode;
 begin
   result := Child(NodePath);
+end;
+
+procedure TNodeWiz.FindAll(NodePath: string; var Nodes : TObjectList);
+begin
+
 end;
 
 function TNodeWiz.Child(ChildPath: string): TXmlNode;

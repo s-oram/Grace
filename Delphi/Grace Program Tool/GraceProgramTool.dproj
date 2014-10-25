@@ -1,14 +1,14 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{F648A616-8E27-4367-B7C9-BA0247C10CE8}</ProjectGuid>
-			<MainSource>VamLib.dpk</MainSource>
+			<ProjectGuid>{DF4C8953-E18E-4AE0-87AA-F55FD2C1D125}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
-			<FrameworkType>None</FrameworkType>
+			<FrameworkType>VCL</FrameworkType>
+			<MainSource>GraceProgramTool.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>1</TargetedPlatforms>
-			<AppType>Package</AppType>
+			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -39,37 +39,33 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset')" Project="D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\Basic Paths.optset')" Project="..\Basic Paths.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
-			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+			<Manifest_File>None</Manifest_File>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_ExeOutput>S:\Bin\</DCC_ExeOutput>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-			<GenPackage>true</GenPackage>
-			<DCC_CBuilderOutput>All</DCC_CBuilderOutput>
-			<GenDll>true</GenDll>
-			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
+			<DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;FMXTee;bindengine;soaprtl;CustomIPTransport;dsnap;fmxase;IndyCore;CloudService;FmxTeeUI;inet;fmxobj;inetdbxpress;fmxdae;IPIndyImpl;dbexpress;$(DCC_UsePackage)</DCC_UsePackage>
+			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_E>false</DCC_E>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset</CfgDependentOn>
+			<CfgDependentOn>..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<DCC_UsePackage>vcl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>VamBasicRunXE2;LucidityBaseClasses;TeeDB;vclib;Tee;vclimg;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;RedFoxRunXE2;vclie;vcltouch;websnap;vclribbon;VclSmp;vcl;dsnapcon;vclx;webdsnap;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;$(DCC_UsePackage)</DCC_UsePackage>
-			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_UsePackage>VamBasicRunXE2;madBasic_;AggPasRunXE2;LucidityBaseClasses;VamLib;vcldbx;frx16;TeeDB;Rave100VCL;vclib;Tee;inetdbbde;ThirdPartyLibs;RedFoxDesXE2;AggPasDesXE2;madDisAsm_;svnui;LucidityGuiComponentsDesXE2;vclimg;fmi;intrawebdb_120_160;frxDB16;fs16;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;RedFoxRunXE2;vclie;madExcept_;vcltouch;Intraweb_120_160;websnap;vclribbon;VclSmp;frxe16;fsDB16;vcl;CodeSiteExpressPkg;dsnapcon;VamBasicDesXE2;vclx;webdsnap;svn;LucidityGuiComponentsRunXE2;OmniThreadLibraryRuntimeXE2;bdertl;adortl;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
@@ -77,12 +73,9 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
@@ -92,51 +85,18 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="vcl.dcp"/>
-			<DCCReference Include="OmniThreadLibraryRuntimeXE2.dcp"/>
-			<DCCReference Include="ThirdPartyLibs.dcp"/>
-			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
-			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.pas"/>
-			<DCCReference Include="Source\VamLib.Graphics.pas"/>
-			<DCCReference Include="Source\VamLib.Debouncer.pas"/>
-			<DCCReference Include="Source\VamLib.Threads.pas"/>
-			<DCCReference Include="Source\VamLib.Collections.Lists.pas"/>
-			<DCCReference Include="Source\VamLib.PerformanceTuning.pas"/>
-			<DCCReference Include="Source\VamLib.WinUtils.pas"/>
-			<DCCReference Include="Source\VamLib.MultiEvent.pas"/>
-			<DCCReference Include="Source\VamLib.Throttler.pas"/>
-			<DCCReference Include="Source\VamLib.Types.pas"/>
-			<DCCReference Include="Source\VamLib.DebugString.pas"/>
-			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
-			<DCCReference Include="Source\VamLib.Animation.pas"/>
-			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
-			<DCCReference Include="Source\VamLib.HighSpeedTimer.pas"/>
-			<DCCReference Include="Source\VamLib.LoggingProxy.pas"/>
-			<DCCReference Include="Source\VamLib.ManagedObject.pas"/>
-			<DCCReference Include="Source\VamLib.CpuOverloadWatcher.pas"/>
-			<DCCReference Include="Source\VamLib.EnumHelper.pas"/>
-			<DCCReference Include="Source\VamLib.GuiUtils.pas"/>
-			<DCCReference Include="Source\VamLib.WinHook.pas"/>
-			<DCCReference Include="Source\VamLib.DuckType.pas"/>
-			<DCCReference Include="Source\VamLib.PatchUtils.pas"/>
-			<DCCReference Include="Source\ThirdParty\Async Calls\AsyncCalls.pas"/>
-			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
-			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
-			<DCCReference Include="Source\VamLib.FindFiles.pas"/>
-			<DCCReference Include="Source\VamLib.KeyValueStore.pas"/>
-			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
-			<None Include="ModelSupport_VamLib\default.txaPackage"/>
-			<None Include="Source\InterlockedAPIs.inc"/>
+			<DCCReference Include="uMainForm.pas">
+				<Form>Form4</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="..\Lucidity\Lucidity.ProgramFileUtils.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset</DependentOn>
+				<DependentOn>..\Basic Paths.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
@@ -145,14 +105,11 @@
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
-			<Borland.ProjectType>Package</Borland.ProjectType>
+			<Borland.ProjectType/>
 			<BorlandProject>
 				<Delphi.Personality>
-					<Source>
-						<Source Name="MainSource">VamLib.dpk</Source>
-					</Source>
 					<VersionInfo>
-						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
@@ -178,8 +135,16 @@
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">GraceProgramTool.dpr</Source>
+					</Source>
 					<Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">Drag and Drop Component Suite</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">OmniThreadLibrary designtime</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\DragDropDXE2.bpl">Drag and Drop Component Suite</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
@@ -187,10 +152,8 @@
 				<Deployment/>
 				<Platforms>
 					<Platform value="Win64">False</Platform>
-					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
-				<ModelSupport>True</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

@@ -183,7 +183,8 @@ uses
   Lucidity.CustomControlHandler in 'Lucidity.CustomControlHandler.pas',
   InWindowDialog.SampleFinderDialog in 'Dialogs\InWindowDialog.SampleFinderDialog.pas',
   InWindowDialog.SampleFinderDialog.Form in 'Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
-  InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas';
+  InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
+  Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas';
 
 {$R *.res}
 
