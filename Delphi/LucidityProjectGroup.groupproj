@@ -63,9 +63,6 @@
 			<Projects Include="ASM Tester\AsmTester.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ParName Unit Generator\ParNameUnitGen.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="ProcessKiller\ProcessKiller.dproj">
 				<Dependencies/>
 			</Projects>
@@ -266,15 +263,6 @@
 		<Target Name="AsmTester:Make">
 			<MSBuild Targets="Make" Projects="ASM Tester\AsmTester.dproj"/>
 		</Target>
-		<Target Name="ParNameUnitGen">
-			<MSBuild Projects="ParName Unit Generator\ParNameUnitGen.dproj"/>
-		</Target>
-		<Target Name="ParNameUnitGen:Clean">
-			<MSBuild Targets="Clean" Projects="ParName Unit Generator\ParNameUnitGen.dproj"/>
-		</Target>
-		<Target Name="ParNameUnitGen:Make">
-			<MSBuild Targets="Make" Projects="ParName Unit Generator\ParNameUnitGen.dproj"/>
-		</Target>
 		<Target Name="ProcessKiller">
 			<MSBuild Projects="ProcessKiller\ProcessKiller.dproj"/>
 		</Target>
@@ -312,13 +300,13 @@
 			<MSBuild Targets="Make" Projects="LucidityPatchUpdater\LucidityPatchUpdater.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;ThirdPartyLibs;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;CodeGen;ComponentTester;AsmTester;ParNameUnitGen;ProcessKiller;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater"/>
+			<CallTarget Targets="Spring_Base;Spring_Core;Spring_Extensions;OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;ThirdPartyLibs;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;CodeGen;ComponentTester;AsmTester;ProcessKiller;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;ThirdPartyLibs:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ParNameUnitGen:Clean;ProcessKiller:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean"/>
+			<CallTarget Targets="Spring_Base:Clean;Spring_Core:Clean;Spring_Extensions:Clean;OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;ThirdPartyLibs:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ProcessKiller:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;ThirdPartyLibs:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ParNameUnitGen:Make;ProcessKiller:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make"/>
+			<CallTarget Targets="Spring_Base:Make;Spring_Core:Make;Spring_Extensions:Make;OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;ThirdPartyLibs:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ProcessKiller:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
