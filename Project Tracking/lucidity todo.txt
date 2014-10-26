@@ -48,6 +48,29 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
+- Update the members page.
+-- add download links for latest version.
+-- add download links for sample content.
+- Members system needs to have an extry added for Grace.
+- All Lucidity licenses need to be translated to Grace licenses. 
+- Ensure the Grace IPN stuff works. I think the database creditials are wrong and
+  need to be updated.
+- test both 32 and 64 bit installers.
+- Send out release candidate updates to BETA testers
+-- WaveShaper
+-- Hugo
+-- Breakmixer
+-- maybe others.
+- Update the KVR product page.
+- the old lucidity page needs to redirect to Grace.
+- Send a message out over the Grace mailing list.
+- Create a forum post on KVR announcing Grace
+- review bug report submission guidelines. 
+
+
+
+
+
 - sample map should have zoom buttons like the sample display.
 
 - the sample display overlay shouldn't darken the sample text.
