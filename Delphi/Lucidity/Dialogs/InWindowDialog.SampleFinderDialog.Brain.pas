@@ -8,7 +8,6 @@ interface
 
 uses
   VamLib.Threads,
-  ASyncCalls, // TODO:HIGH delete this reference.
   Classes;
 
 type
