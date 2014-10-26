@@ -121,7 +121,7 @@ end;
 
 procedure TSfzImporter.Event_OnGroupStart(Sender: TObject);
 begin
-  LogMain.LogMessage('Event_OnGroupStart');
+  //LogMain.LogMessage('Event_OnGroupStart');
 
   if not assigned(CurrentGroup) then
   begin
@@ -146,7 +146,7 @@ var
   Dir : string;
   LoopStart, LoopEnd : integer;
 begin
-  LogMain.LogMessage('Event_OnGroupEnd');
+  //LogMain.LogMessage('Event_OnGroupEnd');
 
   //****************************************************************************
   // Do some final adjustments here...
@@ -434,7 +434,7 @@ end;
 
 procedure TSfzImporter.Event_OnRegionStart(Sender: TObject);
 begin
-  LogMain.LogMessage('Event_OnRegionStart');
+  //LogMain.LogMessage('Event_OnRegionStart');
   if assigned(CurrentGroup) then
   begin
     CurrentRegion := NodeWiz(CurrentGroup).CreateNode('Region');
@@ -446,7 +446,7 @@ var
   c1 : integer;
   KeyName, KeyValue : string;
 begin
-  LogMain.LogMessage('Event_OnRegionEnd');
+  //LogMain.LogMessage('Event_OnRegionEnd');
 
   //****************************************************************************
   // apply global group values
@@ -454,7 +454,7 @@ begin
   begin
     GlobalGroupValues.KeyByIndex(c1, KeyName, KeyValue);
     self.Event_OnRegionOpcode(self, StrToSfzOpcode(KeyName), KeyValue);
-    LogMain.LogMessage('-- Global Key Value = ' + KeyName + ' ' + KeyValue);
+    //LogMain.LogMessage('-- Global Key Value = ' + KeyName + ' ' + KeyValue);
   end;
 
   //****************************************************************************
