@@ -7,6 +7,8 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 
 == Finished for the next release ==
+
+=== v1.0 (26-Oct-2014) Release Candidate 1 ===
 New:
 - All filters now have a MIX parameter. 
 - Finalised copy protection. Lucidity will not restore it's state when 
