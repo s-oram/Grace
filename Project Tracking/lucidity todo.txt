@@ -75,8 +75,11 @@ Installers
 (done) - Create a forum post on KVR announcing Grace
 - Ensure the Grace IPN stuff works. I think the database creditials are wrong and
   need to be updated.
+-- Need to check the purchase follow up email stuff is working.  
 - review bug report submission guidelines. 
 - update Grace page with sample content details with sound demos.
+
+
 
 
 - sample map should have zoom buttons like the sample display.
