@@ -1,3 +1,6 @@
+http://static.onesmallclue.com/public/grace/setup_grace_32bit_full_1-0_windows.zip
+http://static.onesmallclue.com/public/grace/setup_grace_64bit_full_1-0_windows.zip
+
 =============================================================================
      BUGS
 =============================================================================
@@ -48,27 +51,32 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- Update the members page.
--- add download links for latest version.
--- add download links for sample content.
-- Members system needs to have an extry added for Grace.
-- All Lucidity licenses need to be translated to Grace licenses. 
+(done) Test Lucidity at non 44100 sample rates.
+
+Installers
+(done) - test both 32 and 64 bit installers.
+(done) -- Need a decent default patch. 
+-- Debug build shows in ABout dialog for some reason.
+
+(done) - Grace page needs google tracking added.
+
+(done) - Update the members page.
+(done) -- add download links for latest version.
+(done) -- add download links for sample content.
+(done) - Members system needs to have an extry added for Grace.
+(done) - All Lucidity licenses need to be translated to Grace licenses. 
+(done) - Update the KVR product page.
+(done) - the old lucidity page needs to redirect to Grace.
+(done) - Send out release candidate updates to BETA testers
+(done) -- WaveShaper
+(done) -- Hugo
+(done) -- Breakmixer
+(done) - Send a message out over the Grace mailing list.
+(done) - Create a forum post on KVR announcing Grace
 - Ensure the Grace IPN stuff works. I think the database creditials are wrong and
   need to be updated.
-- test both 32 and 64 bit installers.
-- Send out release candidate updates to BETA testers
--- WaveShaper
--- Hugo
--- Breakmixer
--- maybe others.
-- Update the KVR product page.
-- the old lucidity page needs to redirect to Grace.
-- Send a message out over the Grace mailing list.
-- Create a forum post on KVR announcing Grace
 - review bug report submission guidelines. 
-
-
-
+- update Grace page with sample content details with sound demos.
 
 
 - sample map should have zoom buttons like the sample display.
