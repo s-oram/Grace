@@ -57,9 +57,7 @@ Installers
 (done) - test both 32 and 64 bit installers.
 (done) -- Need a decent default patch. 
 -- Debug build shows in ABout dialog for some reason.
-
 (done) - Grace page needs google tracking added.
-
 (done) - Update the members page.
 (done) -- add download links for latest version.
 (done) -- add download links for sample content.
@@ -73,13 +71,13 @@ Installers
 (done) -- Breakmixer
 (done) - Send a message out over the Grace mailing list.
 (done) - Create a forum post on KVR announcing Grace
-- Ensure the Grace IPN stuff works. I think the database creditials are wrong and
-  need to be updated.
+- Ensure the Grace IPN stuff works. 
 -- Need to check the purchase follow up email stuff is working.  
+-- While here check that the Poise purchase emails are going out. I though
+   the poise purchase emails had Bcc headers added but I didn't receive anything
+   when somebody bought some. I may need to remake the buttons. 
 - review bug report submission guidelines. 
 - update Grace page with sample content details with sound demos.
-
-
 
 
 - sample map should have zoom buttons like the sample display.
