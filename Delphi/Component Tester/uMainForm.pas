@@ -86,16 +86,12 @@ type
     ID : TUniqueID;
     KnobValue : single;
     TimeReference : TDateTime;
-    Timer : THighSpeedTimer;
     Token : TDebounceToken;
     KnobTT : TThrottleToken;
 
     WindowsEventHook : TWindowsEventHook;
 
     procedure UpdateLabel;
-
-    procedure HandleTimerEvent(Sender : TObject);
-
     procedure WinEventHandler(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
   public
     procedure UpdateMemo;
@@ -212,11 +208,6 @@ begin
 
   ThrottleID_VSTParChange.Init;
 
-  Timer := THighSpeedTimer.Create;
-  Timer.Interval := 300;
-  Timer.OnTimer := self.HandleTimerEvent;
-  Timer.Enabled := false;
-
   xs := 'James Brown';
 
   Delete(xs, Length(xs), 1);
@@ -231,7 +222,6 @@ begin
 
   WindowsEventHook.Free;
 
-  Timer.Free;
   BackBuffer.Free;
   FileBrowserAddon.Free;
 end;
@@ -321,7 +311,10 @@ begin
   var
     c1: Integer;
   begin
-    Edit4.Text := 'jb is dead';
+    TThread.Queue(nil, procedure
+    begin
+      Edit4.Text := 'jb is dead';
+    end);
     Sleep(2000);
   end;
 
@@ -352,14 +345,6 @@ var
 begin
 
 end;
-
-procedure TForm1.HandleTimerEvent(Sender: TObject);
-begin
-
-end;
-
-
-
 
 
 procedure TForm1.MyTestHandler2(Sender: TObject);
