@@ -5,7 +5,6 @@ interface
 uses
   ExtCtrls,
   SysUtils,
-  VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.Collections.Lists;
 
@@ -40,7 +39,6 @@ type
   TThrottleController = class
   private
     TaskList : TInfoList;
-    //TODO: Use high speed timer here.
     Timer : TTimer;
     procedure HandleTimerEvent(Sender : TObject);
   public

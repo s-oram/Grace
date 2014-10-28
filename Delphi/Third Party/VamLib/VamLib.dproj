@@ -112,7 +112,6 @@
 			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
 			<DCCReference Include="Source\VamLib.Animation.pas"/>
 			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
-			<DCCReference Include="Source\VamLib.HighSpeedTimer.pas"/>
 			<DCCReference Include="Source\VamLib.LoggingProxy.pas"/>
 			<DCCReference Include="Source\VamLib.ManagedObject.pas"/>
 			<DCCReference Include="Source\VamLib.CpuOverloadWatcher.pas"/>

@@ -23,7 +23,6 @@ uses
   VamLib.GuiUtils,
   eeOscPhaseCounter,
   RedFoxImageBuffer,
-  VamLib.HighSpeedTimer,
   VamLib.UniqueID,
   VamLib.ZeroObject,
   VamLib.Collections.Lists,
