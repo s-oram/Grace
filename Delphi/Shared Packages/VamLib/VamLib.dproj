@@ -39,7 +39,7 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset')" Project="D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('SharedPackage.optset')" Project="SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
@@ -55,13 +55,13 @@
 			<DCC_S>false</DCC_S>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset</CfgDependentOn>
+			<CfgDependentOn>SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<DCC_UsePackage>vcl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>vcl;vclx;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;vclx;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -88,6 +88,7 @@
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset')" Project="D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset"/>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
@@ -119,7 +120,6 @@
 			<DCCReference Include="Source\VamLib.WinHook.pas"/>
 			<DCCReference Include="Source\VamLib.DuckType.pas"/>
 			<DCCReference Include="Source\VamLib.PatchUtils.pas"/>
-			<DCCReference Include="Source\ThirdParty\Async Calls\AsyncCalls.pas"/>
 			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
 			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
@@ -134,7 +134,7 @@
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset</DependentOn>
+				<DependentOn>SharedPackage.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>

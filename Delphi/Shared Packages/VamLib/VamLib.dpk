@@ -1,0 +1,67 @@
+package VamLib;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  vclx;
+
+contains
+  VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',
+  VamLib.MoreTypes in 'Source\VamLib.MoreTypes.pas',
+  VamLib.Utils in 'Source\VamLib.Utils.pas',
+  VamLib.Graphics in 'Source\VamLib.Graphics.pas',
+  VamLib.Debouncer in 'Source\VamLib.Debouncer.pas',
+  VamLib.Threads in 'Source\VamLib.Threads.pas',
+  VamLib.Collections.Lists in 'Source\VamLib.Collections.Lists.pas',
+  VamLib.PerformanceTuning in 'Source\VamLib.PerformanceTuning.pas',
+  VamLib.WinUtils in 'Source\VamLib.WinUtils.pas',
+  VamLib.MultiEvent in 'Source\VamLib.MultiEvent.pas',
+  VamLib.Throttler in 'Source\VamLib.Throttler.pas',
+  VamLib.Types in 'Source\VamLib.Types.pas',
+  VamLib.DebugString in 'Source\VamLib.DebugString.pas',
+  VamLib.ZeroObject in 'Source\VamLib.ZeroObject.pas',
+  VamLib.Animation in 'Source\VamLib.Animation.pas',
+  VamLib.UniqueID in 'Source\VamLib.UniqueID.pas',
+  VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas',
+  VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas',
+  VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas',
+  VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas',
+  VamLib.GuiUtils in 'Source\VamLib.GuiUtils.pas',
+  VamLib.WinHook in 'Source\VamLib.WinHook.pas',
+  VamLib.DuckType in 'Source\VamLib.DuckType.pas',
+  VamLib.PatchUtils in 'Source\VamLib.PatchUtils.pas',
+  VamLib.VclLayout in 'Source\VamLib.VclLayout.pas',
+  VamLib.Utils.ObjectEnumerator in 'Source\VamLib.Utils.ObjectEnumerator.pas',
+  XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas',
+  VamLib.FindFiles in 'Source\VamLib.FindFiles.pas',
+  VamLib.KeyValueStore in 'Source\VamLib.KeyValueStore.pas',
+  VamLib.Win.DragDrop in 'Source\VamLib.Win.DragDrop.pas';
+
+end.

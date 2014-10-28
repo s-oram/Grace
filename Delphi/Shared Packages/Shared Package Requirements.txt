@@ -1,0 +1,23 @@
+===========================
+Delphi Enviroment Variables
+===========================
+
+"DelphiCompiledLib" 
+It points to the output location for compiled files. DCU/DCP/BPL 
+Example S:\Bin\DelphiXE2
+
+"SharedPackages" 
+Points to the root shared directory for all shared packages. 
+Example S:\Delphi\Shared Packages
+
+
+
+
+
+================
+Project Settings
+================
+DCP Output Directory: $(DelphiCompiledLib)\dcp\$(PLATFORM)
+Package Output Directory: $(DelphiCompiledLib)\bpl\$(PLATFORM)
+Unit Output Directory: $(DelphiCompiledLib)\dcu\$(PLATFORM)
+Search Path: $(DelphiCompiledLib)\bpl\$(PLATFORM);$(DelphiCompiledLib)\dcu\$(PLATFORM);$(DelphiCompiledLib)\dcp\$(PLATFORM); 

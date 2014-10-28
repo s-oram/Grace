@@ -24,8 +24,8 @@
 			<Projects Include="Third Party\ThirdPartyLibs\ThirdPartyLibs.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Third Party\VamLib\VamLib.dproj">
-				<Dependencies>Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj</Dependencies>
+			<Projects Include="Shared Packages\VamLib\VamLib.dproj">
+				<Dependencies/>
 			</Projects>
 			<Projects Include="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj">
 				<Dependencies/>
@@ -34,7 +34,7 @@
 				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj">
-				<Dependencies>Third Party\VamLib\VamLib.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
+				<Dependencies>Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Third Party\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj">
 				<Dependencies>Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
@@ -149,14 +149,14 @@
 		<Target Name="ThirdPartyLibs:Make">
 			<MSBuild Targets="Make" Projects="Third Party\ThirdPartyLibs\ThirdPartyLibs.dproj"/>
 		</Target>
-		<Target Name="VamLib" DependsOnTargets="OmniThreadLibraryRuntimeXE2">
-			<MSBuild Projects="Third Party\VamLib\VamLib.dproj"/>
+		<Target Name="VamLib">
+			<MSBuild Projects="Shared Packages\VamLib\VamLib.dproj"/>
 		</Target>
-		<Target Name="VamLib:Clean" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Third Party\VamLib\VamLib.dproj"/>
+		<Target Name="VamLib:Clean">
+			<MSBuild Targets="Clean" Projects="Shared Packages\VamLib\VamLib.dproj"/>
 		</Target>
-		<Target Name="VamLib:Make" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Make">
-			<MSBuild Targets="Make" Projects="Third Party\VamLib\VamLib.dproj"/>
+		<Target Name="VamLib:Make">
+			<MSBuild Targets="Make" Projects="Shared Packages\VamLib\VamLib.dproj"/>
 		</Target>
 		<Target Name="AggPasRunXE2">
 			<MSBuild Projects="Third Party\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
@@ -176,13 +176,13 @@
 		<Target Name="AggPasDesXE2:Make" DependsOnTargets="AggPasRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxRunXE2" DependsOnTargets="VamLib;AggPasRunXE2">
+		<Target Name="RedFoxRunXE2" DependsOnTargets="AggPasRunXE2;AggPasRunXE2">
 			<MSBuild Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxRunXE2:Clean" DependsOnTargets="VamLib:Clean;AggPasRunXE2:Clean">
+		<Target Name="RedFoxRunXE2:Clean" DependsOnTargets="AggPasRunXE2:Clean;AggPasRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
-		<Target Name="RedFoxRunXE2:Make" DependsOnTargets="VamLib:Make;AggPasRunXE2:Make">
+		<Target Name="RedFoxRunXE2:Make" DependsOnTargets="AggPasRunXE2:Make;AggPasRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxDesXE2" DependsOnTargets="RedFoxRunXE2">
