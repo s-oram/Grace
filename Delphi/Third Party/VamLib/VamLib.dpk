@@ -30,7 +30,6 @@ package VamLib;
 requires
   rtl,
   vcl,
-  ThirdPartyLibs,
   vclx;
 
 contains
