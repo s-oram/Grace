@@ -8,39 +8,28 @@ interface
 // CheckSynchronize().
 // http://www.delphifaq.com/faq/delphi/vcl/f270.shtml
 
-
-
-
-
 uses
   Classes,
-  SysUtils,
-  OtlParallel,
-  OtlTaskControl;
+  SysUtils;
 
-// I wrote the RunTask() procedures before finding the OTL Async() procedure which
-// does the same thing (but probably better). I've rewritten the RunTask() methods
-// as wrappers around the Async() procedure.
-procedure RunTask(aTask : TProc); overload;
-procedure RunTask(aTask, FinishedCallback : TProc); overload;
-procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
+
+procedure RunTask(aTask, FinishedCallback : TThreadProcedure);
 
 // Action's are executed in the main thead (usually GUI afaik).
-procedure DelayedAction(const Delay : integer; Action : TProc);
-
-
+// TODO:HIGH there probably needs to be a way to ensure the delayed action always works.
+// I think there is a real chance of AV errors happening if the action is slow and
+// the GUI is closed.
+procedure DelayedAction(const Delay : integer; Action : TThreadProcedure);
 
 
 type
   // TODO:MED I wonder if it would be possible to have TCustomMotile descend from
   // TThread instead of encapsulating the TThread behaviour.
-  //
 
   //===== forward declarations ========
   TCustomMotile = class;
   TMotileThread = class;
   //===================================
-
 
   // TCustomMotile is a base class for creating "threaded tasks". The custom motile
   // descendent will represent a specific task that will be run in a seperate thread.
@@ -84,18 +73,54 @@ type
     property Task : TProc read fTask write fTask;
   end;
 
+  //===== forward declarations ========
+  TAsyncTask = class;
+  TAsyncTaskThread = class;
+  IAwait = interface;
+  //===================================
+
+  //==== private and for internal usage only. ========
+  IAwait = interface
+    procedure Run;
+    procedure Await(proc: TThreadProcedure);
+  end; { IOmniAwait }
+
+  //==== private and for internal usage only. ========
+  TAsyncTask = class(TInterfacedObject, IAwait)
+  private
+  protected
+     AsyncThread : TAsyncTaskThread;
+  public
+    constructor Create(aTask: TThreadProcedure);
+    destructor Destroy; override;
+
+    procedure Await(proc: TThreadProcedure);
+    procedure Run;
+  end;
+
+  //==== private and for internal usage only. ========
+  TAsyncTaskThread = class(TThread)
+  private
+  protected
+    FTask     : TThreadProcedure;
+    FSyncTask : TThreadProcedure;
+    procedure Execute; override;
+  public
+    destructor Destroy; override;
+  end;
+
+
+
+
+
+function Async(Task: TThreadProcedure): IAwait;
+
 implementation
 
 uses
-  ExtCtrls,
-  OtlTask;
+  ExtCtrls;
 
-procedure RunTask(aTask : TProc);
-begin
-  Async(aTask);
-end;
-
-procedure RunTask(aTask, FinishedCallback : TProc);
+procedure RunTask(aTask, FinishedCallback : TThreadProcedure);
 begin
   // NOTE: FinishedCallBack will always be executed in the same thread as the calling code. This makes
   // it useful for updating GUI components as it will be thread safe.
@@ -103,30 +128,10 @@ begin
   Async(aTask).Await(FinishedCallback);
 end;
 
-procedure RunTask(aTask : TProc; aTaskStartDelay : integer; FinishedCallback : TProc); overload;
+
+procedure DelayedAction(const Delay : integer; Action : TThreadProcedure);
 var
-  Delegate : TProc;
-begin
-  // NOTE: FinishedCallBack will always be executed in the same thread as the calling code. This makes
-  // it useful for updating GUI components as it will be thread safe.
-
-  Delegate := procedure
-  begin
-    if aTaskStartDelay > 0
-      then Sleep(aTaskStartDelay);
-    aTask;
-  end;
-
-  if assigned(FinishedCallback)
-    then Async(Delegate).Await(FinishedCallback)
-    else Async(Delegate);
-end;
-
-
-
-procedure DelayedAction(const Delay : integer; Action : TProc);
-var
-  Delegate : TProc;
+  Delegate : TThreadProcedure;
 begin
   Delegate := procedure
   begin
@@ -263,5 +268,61 @@ begin
   end;
   ReturnValue := 1;
 end;
+
+{ TAsyncTask }
+
+constructor TAsyncTask.Create(aTask: TThreadProcedure);
+begin
+  AsyncThread := TAsyncTaskThread.Create(true);
+  AsyncThread.FreeOnTerminate := true;
+  AsyncThread.FTask := aTask;
+end;
+
+destructor TAsyncTask.Destroy;
+begin
+  if assigned(AsyncThread)
+    then AsyncThread.Free;
+
+  inherited;
+end;
+
+procedure TAsyncTask.Await(proc: TThreadProcedure);
+begin
+  AsyncThread.FSyncTask := proc;
+  AsyncThread.Start;
+  AsyncThread := nil;
+end;
+
+procedure TAsyncTask.Run;
+begin
+  AsyncThread.Start;
+  AsyncThread := nil;
+end;
+
+{ TAsyncTaskThread }
+
+destructor TAsyncTaskThread.Destroy;
+begin
+  FTask := nil;
+  FSyncTask := nil;
+  inherited;
+end;
+
+procedure TAsyncTaskThread.Execute;
+begin
+  inherited;
+  if assigned(FTask)
+    then FTask();
+  if assigned(FSyncTask)
+    then Synchronize(FSyncTask);
+end;
+
+
+function Async(Task: TThreadProcedure): IAwait;
+begin
+  result := TAsyncTask.Create(Task);
+end;
+
+
 
 end.
