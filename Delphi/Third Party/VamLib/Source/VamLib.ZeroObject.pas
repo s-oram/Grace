@@ -8,8 +8,6 @@ uses
   Classes,
   ExtCtrls,
   Contnrs,
-  OtlCommon,
-  OtlContainers,
   VamLib.Types;
 
 {$SCOPEDENUMS ON}
@@ -160,11 +158,6 @@ type
 
   // TMotherShip is not reference counted.
   TMotherShip = class(TPureInterfacedObject, IMotherShip)
-  private type
-    TMessageData = record
-      MsgID   : cardinal;
-      DataB   : IZeroMessageData;
-    end;
   private
     // TODO:MED it would be much better to have list objects
     // that didn't require locks. Any message that triggers
@@ -198,16 +191,8 @@ type
 
     MainThreadID : cardinal;
 
-    // TODO: Instead of using a timer, it might be better to try and implement a
-    // background window handle or something similer so the window handle has
-    // a Process Messages loop.... I'm not sure of the exact terminolgy.
-    VclMessageQueue : TOmniQueue;
-    VclMessageTimer : TTimer;
-
     IsGuiOpen: boolean;
     IsGuiOpenLock : TMultiReadSingleWrite;
-
-    procedure Handle_VclMessageTimerEvent(Sender : TObject);
 
     procedure SendMessageToList(const ObjectList : TList; const ListLock : TMultiReadSingleWrite; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
@@ -242,7 +227,6 @@ implementation
 
 uses
   Windows,
-  OtlParallel,
   VamLib.WinUtils,
   VamLib.LoggingProxy;
 
@@ -332,19 +316,11 @@ begin
   AudioObjects := TList.Create;
   MainObjects  := TList.Create;
   VclObjects   := TList.Create;
-
-  VclMessageQueue := TOmniQueue.Create;
-  VclMessageTimer := TTimer.Create(nil);
-  VclMessageTimer.Interval := 25;
-  VclMessageTimer.OnTimer := Handle_VclMessageTimerEvent;
-  VclMessageTimer.Enabled := true;
 end;
 
 destructor TMotherShip.Destroy;
 begin
   Injected_MsgIdToStr := nil;
-
-  VclMessageTimer.Enabled := false;
 
   if AudioObjects.Count > 0
     then Log.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
@@ -353,12 +329,6 @@ begin
     then Log.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
 
   ClearMotherShipReferences;
-
-  // Important - free the timer first.
-  VclMessageTimer.Free;
-
-  // then free the other object.s
-  VclMessageQueue.Free;
 
   AudioObjects.Free;
   MainObjects.Free;
@@ -528,28 +498,13 @@ begin
 end;
 
 procedure TMotherShip.SetIsGuiOpen(const Value: boolean);
-var
-  QueueValue : TOmniValue;
 begin
   IsGuiOpenLock.BeginWrite;
   try
     IsGuiOpen := Value;
-
-    if IsGuiOpen = true then
-    begin
-      MainThreadID := GetCurrentThreadId;
-      VclMessageTimer.Enabled := true;
-    end else
-    begin
-      VclMessageTimer.Enabled := false;
-      MainThreadID := 0;
-
-      //=== clear the VCL message queue ===
-      while VclMessageQueue.TryDequeue(QueueValue) do
-      begin
-        //do nothing, we're just clearing the queue.
-      end;
-    end;
+    if IsGuiOpen = true
+      then MainThreadID := GetCurrentThreadId
+      else MainThreadID := 0;
   finally
     IsGuiOpenLock.EndWrite;
   end;
@@ -651,9 +606,6 @@ begin
 end;
 
 procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
-var
-  msgData : TMessageData;
-  QueueValue : TOmniValue;
 begin
   IsGuiOpenLock.BeginRead;
   try
@@ -664,34 +616,10 @@ begin
         SendMessageToList(VclObjects, VclListLock, MsgID, nil, DataB);
       end else
       begin
-        // TODO: a possible improvement would be to check the calling thread id. If
-        // it's the VCL thread, dispatch the message immediatly. If not, queue the
-        // message for later processing.
-        msgData.MsgID   := MsgID;
-        msgData.DataB   := DataB;
-        QueueValue := TOmniValue.FromRecord<TMessageData>(msgData);
-        VclMessageQueue.Enqueue(QueueValue);
-      end;
-    end;
-  finally
-    IsGuiOpenLock.EndRead;
-  end;
-end;
-
-procedure TMotherShip.Handle_VclMessageTimerEvent(Sender: TObject);
-var
-  msgData : TMessageData;
-  QueueValue : TOmniValue;
-begin
-  IsGuiOpenLock.BeginRead;
-  try
-    MainThreadID := GetCurrentThreadId;
-    while VclMessageQueue.TryDequeue(QueueValue) do
-    begin
-      if IsGuiOpen then
-      begin
-        MsgData := QueueValue.ToRecord<TMessageData>;
-        SendMessageToList(VclObjects, VclListLock, msgData.MsgID, nil, msgData.DataB);
+        TThread.Queue(nil, procedure
+        begin
+          SendMessageToList(VclObjects, VclListLock, MsgID, nil, DataB);
+        end);
       end;
     end;
   finally
