@@ -42,6 +42,9 @@
 		<Import Condition="'$(Base)'!='' And Exists('..\..\SharedPackage.optset')" Project="..\..\SharedPackage.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\..\RedFox.optset')" Project="..\..\RedFox.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<GenPackage>true</GenPackage>
+			<GenDll>true</GenDll>
+			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_Namespace>Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;System.Win;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
