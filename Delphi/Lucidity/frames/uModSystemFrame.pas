@@ -396,7 +396,7 @@ end;
 
 procedure TModSystemFrame.Handle_ModSelectorMouseLeave(Sender: TObject);
 var
-  LeaveControl : TProc;
+  LeaveControl : TThreadProcedure;
 begin
   LeaveControl := procedure
   begin
