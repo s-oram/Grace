@@ -136,7 +136,6 @@
 			<DCCReference Include="..\source\VamModSelector.pas"/>
 			<DCCReference Include="..\source\VamGuiControlInterfaces.pas"/>
 			<DCCReference Include="..\source\VamShortMessageOverlay.pas"/>
-			<DCCReference Include="..\source\VamKnobSmoother.pas"/>
 			<DCCReference Include="..\source\VamSliderSwitch.pas"/>
 			<DCCReference Include="..\source\VamSampleMap.Movement.pas"/>
 			<DCCReference Include="..\source\VamMiniLevelMeter.pas"/>
