@@ -121,7 +121,7 @@ uses
   Controls,
   System.UITypes,
   SysUtils,
-  JclSysInfo,
+  JclSysInfo,  //TODO:HIGH remove dependence on JCL here.
   Vcl.FileCtrl,
   VamLib.Utils;
 
