@@ -34,7 +34,7 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('..\..\..\..\Basic Paths.optset')" Project="..\..\..\..\Basic Paths.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('S:\Delphi\Shared Packages\RedFox\SharedPackage.optset')" Project="S:\Delphi\Shared Packages\RedFox\SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -50,7 +50,7 @@
 			<DCC_S>false</DCC_S>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>..\..\..\..\Basic Paths.optset</CfgDependentOn>
+			<CfgDependentOn>S:\Delphi\Shared Packages\RedFox\SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_UsePackage>RedFoxRunXE2;RedFoxDesignXE2;VamBasicRunXE2;AggPasRunXE2;RedFoxDesXE2;$(DCC_UsePackage)</DCC_UsePackage>
@@ -78,6 +78,7 @@
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('..\..\..\..\Basic Paths.optset')" Project="..\..\..\..\Basic Paths.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\..\RedFox.optset')" Project="..\..\RedFox.optset"/>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -97,7 +98,7 @@
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>..\..\..\..\Basic Paths.optset</DependentOn>
+				<DependentOn>S:\Delphi\Shared Packages\RedFox\SharedPackage.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
