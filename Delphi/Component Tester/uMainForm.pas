@@ -6,6 +6,7 @@ interface
 
 uses
   VamLib.Threads,
+  //OtlParallel,
   MyWorker,
   AsyncCalls,
   VamLib.WinHook,
@@ -314,15 +315,23 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-  Task : TProc;
+  Task : TThreadProcedure;
+  Fin  : TThreadProcedure;
 begin
   Task := procedure
   var
     c1: Integer;
   begin
-    Sleep(1000);
-    //ShowMessage('fin');
+    Edit4.Text := 'jb is dead';
+    Sleep(2000);
   end;
+
+  Fin := procedure
+  begin
+    Edit4.Text := 'Go home';
+  end;
+
+  Async(Task).Await(Fin);
 end;
 
 procedure TForm1.UpdateLabel;
