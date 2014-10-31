@@ -202,8 +202,29 @@ begin
 end;
 
 procedure TForm4.RenameProgramFileAndSampleDirButtonClick(Sender: TObject);
+var
+  NewProgramFileName : string;
+  fn : string;
+  Dir : string;
 begin
-  // TODO
+  if FileExists(CurrentProgramFile) = false then exit;
+
+  fn := RemoveFileExt(CurrentProgramFile);
+  Dir := ExtractFilePath(CurrentProgramFile);
+
+  NewProgramFileName := InputBox('Rename Program File & Samples Directory', 'New Program File Name', fn);
+
+  if NewProgramFileName <> fn then
+  begin
+    NewProgramFileName := IncludeTrailingPathDelimiter(Dir) + NewProgramFileName + '.lpg';
+    RenameProgramFile(NewProgramFileName, CurrentProgramFile);
+
+    if FileExists(NewProgramFileName) then
+    begin
+      CurrentProgramFile := NewProgramFileName;
+      RefreshDetails;
+    end;
+  end;
 end;
 
 
