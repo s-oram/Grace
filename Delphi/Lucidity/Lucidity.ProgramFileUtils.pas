@@ -33,6 +33,8 @@ procedure RenameAllUsedSampleFiles(const ProgramFileName, NewSampleFileNameRoot 
 // exist on disk.
 procedure GetSampleFileNameReferences(const ProgramFileName : string; var SampleFileNames : TStringList);
 
+procedure RenameProgramFileOnly(const NewProgramFileName, OldProgramFileName : string);
+
 implementation
 
 uses
@@ -238,6 +240,38 @@ begin
     RenameUsedSampleFile(ProgramFileName, OldFileName, NewFileName);
   end;
 
+end;
+
+procedure RenameProgramFileOnly(const NewProgramFileName, OldProgramFileName : string);
+var
+  xml : TNativeXML;
+  RootNode : TXMLNode;
+  ProgramPath : string;
+  SamplesDir : string;
+begin
+  xml := TNativeXML.Create(nil);
+  autoFree(@xml);
+  xml.LoadFromFile(OldProgramFileName);
+
+  RootNode := xml.Root;
+  if not assigned(RootNode) then raise Exception.Create('Root node doesn''t exist in file.');
+
+  if NodeWiz(RootNode).Exists('AlternateSampleDirectory') = false then
+  begin
+    ProgramPath := ExtractFilePath(OldProgramFileName);
+    SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + RemoveFileExt(OldProgramFileName) + ' Samples';
+
+    if DirectoryExists(SamplesDir) then
+    begin
+      SamplesDir := ExtractFileName(SamplesDir);
+      NodeWiz(RootNode).CreateNode('AlternateSampleDirectory').ValueUnicode := SamplesDir;
+    end;
+  end;
+
+  xml.XmlFormat := xfReadable;
+  xml.SaveToFile(OldProgramFileName);
+
+  RenameFile(OldProgramFilename, NewProgramFileName);
 end;
 
 
