@@ -48,7 +48,7 @@ function GetAlternateSamplesDirectory(const ProgramFileName : string):string;
 
 function ConvertProgramFileNameToSampleDirName(const ProgramFileName : string):string;
 
-function RenameProgramFile(const CurrentFileName, NewFileName : string):boolean;
+function RenameProgramFile(const CurrentProgramFileName, NewProgramFileName : string):boolean;
 
 implementation
 
@@ -337,18 +337,18 @@ begin
   result := dir;
 end;
 
-function RenameProgramFile(const CurrentFileName, NewFileName : string):boolean;
+function RenameProgramFile(const CurrentProgramFileName, NewProgramFileName : string):boolean;
 var
   OldDirName : string;
   NewDirName : string;
   r1, r2 : boolean;
 begin
-  OldDirName := ConvertProgramFileNameToSampleDirName(CurrentFileName);
-  NewDirName := ConvertProgramFileNameToSampleDirName(NewFileName);
+  OldDirName := ConvertProgramFileNameToSampleDirName(CurrentProgramFileName);
+  NewDirName := ConvertProgramFileNameToSampleDirName(NewProgramFileName);
 
-  if (FileExists(CurrentFileName)) and (not FileExists(NewFileName)) and (not DirectoryExists(NewDirName)) then
+  if (FileExists(CurrentProgramFileName)) and (not FileExists(NewProgramFileName)) and (not DirectoryExists(NewDirName)) then
   begin
-    r1 := RenameFile(CurrentFileName, NewFileName);
+    r1 := RenameFile(CurrentProgramFileName, NewProgramFileName);
     if (DirectoryExists(OldDirName)) then
     begin
       r2 := RenameFile(ExcludeTrailingPathDelimiter(OldDirName), ExcludeTrailingPathDelimiter(NewDirName));
