@@ -12,9 +12,11 @@ type
     Edit1: TEdit;
     Memo1: TMemo;
     RenameAllSampleButton: TButton;
+    RenameProgramFileButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure RenameAllSampleButtonClick(Sender: TObject);
+    procedure RenameProgramFileButtonClick(Sender: TObject);
   private
     CurrentProgramFile : string;
 
@@ -171,8 +173,30 @@ begin
   end;
 end;
 
+procedure TForm4.RenameProgramFileButtonClick(Sender: TObject);
+var
+  NewProgramFileName : string;
+  fn : string;
+  Dir : string;
+begin
+  if FileExists(CurrentProgramFile) = false then exit;
 
+  fn := RemoveFileExt(CurrentProgramFile);
+  Dir := ExtractFilePath(CurrentProgramFile);
 
+  NewProgramFileName := InputBox('Rename Program File Only', 'New Program File Name', fn);
 
+  if NewProgramFileName <> fn then
+  begin
+    NewProgramFileName := IncludeTrailingPathDelimiter(Dir) + NewProgramFileName + '.lpg';
+    RenameProgramFileOnly(NewProgramFileName, CurrentProgramFile);
+
+    if FileExists(NewProgramFileName) then
+    begin
+      CurrentProgramFile := NewProgramFileName;
+      RefreshDetails;
+    end;
+  end;
+end;
 
 end.

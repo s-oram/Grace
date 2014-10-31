@@ -26,7 +26,6 @@ object Form4: TForm4
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     Text = 'Edit1'
-    ExplicitWidth = 762
   end
   object Memo1: TMemo
     Left = 6
@@ -37,8 +36,6 @@ object Form4: TForm4
     Lines.Strings = (
       'Memo1')
     TabOrder = 1
-    ExplicitWidth = 762
-    ExplicitHeight = 310
   end
   object RenameAllSampleButton: TButton
     Left = 8
@@ -49,5 +46,15 @@ object Form4: TForm4
     Caption = 'Rename All Samples'
     TabOrder = 2
     OnClick = RenameAllSampleButtonClick
+  end
+  object RenameProgramFileButton: TButton
+    Left = 183
+    Top = 316
+    Width = 169
+    Height = 25
+    Anchors = [akLeft, akBottom]
+    Caption = 'Rename Program File'
+    TabOrder = 3
+    OnClick = RenameProgramFileButtonClick
   end
 end
