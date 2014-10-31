@@ -1,6 +1,3 @@
-http://static.onesmallclue.com/public/grace/setup_grace_32bit_full_1-0_windows.zip
-http://static.onesmallclue.com/public/grace/setup_grace_64bit_full_1-0_windows.zip
-
 =============================================================================
      BUGS
 =============================================================================
@@ -51,7 +48,12 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-(done) Test Lucidity at non 44100 sample rates.
+- Make hidden directory names function.
+- Disable current hiding.
+- work out how to delete existing file names.
+- rename all kit files.
+- install.. test it works.
+- create a new system to allow hiding of arbitary directories.
 
 Installers
 (done) - test both 32 and 64 bit installers.
@@ -79,6 +81,11 @@ Installers
 - review bug report submission guidelines. 
 - update Grace page with sample content details with sound demos.
 
+- Put Grace version history online.
+
+Rename the sample library files.
+- work out how to make the installer delete the old ones.
+- provide a way to hide the sample folders.
 
 - sample map should have zoom buttons like the sample display.
 
@@ -232,6 +239,10 @@ Installer needs option to put data folder
 =============================================================================
      TODO MED
 =============================================================================
+
+Back and forth looping 
+Requested by: skyliner.dnb@gmail.com
+thunderlink://messageid=CA+BAoCq8AOE4z0fQ4tVA5o0pMjsEmARcej95EVWu9QeO5sat3w@mail.gmail.com
 
 Check out SVG Delphi component. Might be useful for creating resizable GUI's 
 and for styling delphi controls.
