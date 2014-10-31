@@ -289,6 +289,7 @@ uses
   SysUtils,
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  Lucidity.ProgramFileUtils,
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
   eeCustomGlobals,

@@ -46,6 +46,9 @@ procedure RenameProgramFileOnly(const NewProgramFileName, OldProgramFileName : s
 // node value and returns an empty string.
 function GetAlternateSamplesDirectory(const ProgramFileName : string):string;
 
+
+function ConvertProgramFileNameToSampleDirName(const ProgramFileName : string):string;
+
 implementation
 
 uses
@@ -320,5 +323,18 @@ begin
     result := '';
   end;
 end;
+
+
+function ConvertProgramFileNameToSampleDirName(const ProgramFileName : string):string;
+var
+  fn : string;
+  dir : string;
+begin
+  fn := TrimFileExt(ProgramFileName);
+  dir := ExtractFilePath(ProgramFileName);
+  dir := IncludeTrailingPathDelimiter(dir) + IncludeTrailingPathDelimiter(fn + ' Samples');
+  result := dir;
+end;
+
 
 end.

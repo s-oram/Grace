@@ -20,8 +20,6 @@ procedure LogStackTrace;
 // using MIDI program change commands.
 function FindLucidityProgramUsingIndex(const Dir : string; const ProgramIndex : integer):string;
 
-function ConvertProgramFileNameToSampleDirName(const ProgramFileName : string):string;
-
 implementation
 
 uses
@@ -144,16 +142,6 @@ begin
 
 end;
 
-function ConvertProgramFileNameToSampleDirName(const ProgramFileName : string):string;
-var
-  fn : string;
-  dir : string;
-begin
-  fn := TrimFileExt(ProgramFileName);
-  dir := ExtractFilePath(ProgramFileName);
-  dir := IncludeTrailingPathDelimiter(dir) + IncludeTrailingPathDelimiter(fn + ' Samples');
-  result := dir;
-end;
 
 initialization
   GlobalMemUsageTag := 0;
