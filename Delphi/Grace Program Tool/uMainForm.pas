@@ -12,11 +12,13 @@ type
     Edit1: TEdit;
     Memo1: TMemo;
     RenameAllSampleButton: TButton;
-    RenameProgramFileButton: TButton;
+    RenameProgramFileOnlyButton: TButton;
+    RenameProgramFileAndSampleDirButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure RenameAllSampleButtonClick(Sender: TObject);
-    procedure RenameProgramFileButtonClick(Sender: TObject);
+    procedure RenameProgramFileOnlyButtonClick(Sender: TObject);
+    procedure RenameProgramFileAndSampleDirButtonClick(Sender: TObject);
   private
     CurrentProgramFile : string;
 
@@ -173,7 +175,7 @@ begin
   end;
 end;
 
-procedure TForm4.RenameProgramFileButtonClick(Sender: TObject);
+procedure TForm4.RenameProgramFileOnlyButtonClick(Sender: TObject);
 var
   NewProgramFileName : string;
   fn : string;
@@ -198,5 +200,12 @@ begin
     end;
   end;
 end;
+
+procedure TForm4.RenameProgramFileAndSampleDirButtonClick(Sender: TObject);
+begin
+  // TODO
+end;
+
+
 
 end.
