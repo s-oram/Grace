@@ -62,8 +62,9 @@ uses
   XPLAT.Dialogs,
   SysUtils,
   uAutoFree,
-  Dialogs, //delete this
-  uConstants;
+  Dialogs, // TODO:HIGH delete this
+  uConstants,
+  Lucidity.ProgramFileUtils;
 
 
 
@@ -406,7 +407,7 @@ begin
     Dir := ExtractFilePath(NodeData^.FileName);
     NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
 
-    if Plugin.RenameProgramFile(NodeData^.FileName, NewFileName)
+    if RenameProgramFile(NodeData^.FileName, NewFileName)
       then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
       else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
   end;

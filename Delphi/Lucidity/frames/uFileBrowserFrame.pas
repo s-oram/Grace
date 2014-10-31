@@ -94,7 +94,8 @@ uses
   Lucidity.GuiUtils,
   Lucidity.PluginParameters,
   eeFunctions, Lucidity.Utils,
-  Lucidity.SampleMap, RedFoxColor;
+  Lucidity.SampleMap, RedFoxColor,
+  Lucidity.ProgramFileUtils;
 
 {$R *.dfm}
 
@@ -565,7 +566,7 @@ begin
       Dir := ExtractFilePath(NodeData^.FileName);
       NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
 
-      if Plugin.RenameProgramFile(NodeData^.FileName, NewFileName)
+      if RenameProgramFile(NodeData^.FileName, NewFileName)
         then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
         else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
     end;
