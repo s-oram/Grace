@@ -9,6 +9,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  Classes,
   XPLAT.Dialogs,
   eeTypes,
   eeEnumHelper,
@@ -113,6 +114,8 @@ type
 
     class procedure FindMissingSamples(const Plugin : TeePlugin); static;
     class function GetNumberOfMissingSamples(const Plugin: TeePlugin): integer; static;
+
+    class procedure FilterBrowserNodes(const Plugin : TeePlugin; const RootDir: string; var FolderNodes, FileNodes: TStringList);
   end;
 
   GuiSetup = record
@@ -128,7 +131,6 @@ type
 implementation
 
 uses
-  Classes,
   Lucidity.CopyProtection,
   SysUtils,
   InWindowDialog,
@@ -1077,6 +1079,42 @@ begin
   end;
 
   result := MissingSamples.Count;
+end;
+
+class procedure Command.FilterBrowserNodes(const Plugin: TeePlugin; const RootDir: string; var FolderNodes, FileNodes: TStringList);
+var
+  c1 : integer;
+  ext : string;
+  DataFolderName : string;
+  Index : integer;
+  fn : string;
+begin
+  // TODO:HIGH re-enable filtering.
+  {
+  // Remove any program sample data folders from the folder listing.
+  for c1 := 0 to FileNodes.Count-1 do
+  begin
+    ext := ExtractFileExt(FileNodes[c1]);
+    if SameText(ext, '.lpg') then
+    begin
+      DataFolderName := RemoveFileExt(FileNodes[c1]) + ' Samples';
+      Index := FolderNodes.IndexOf(DataFoldername);
+      if Index <> -1 then FolderNodes.Delete(Index);
+    end;
+  end;
+
+  // remove un-supported audio format files.
+  for c1 := FileNodes.Count-1  downto 0 do
+  begin
+    fn := IncludeTrailingPathDelimiter(RootDir) + FileNodes[c1];
+    if (IsSupportedAudioFormat(fn) = false) and (IsSupportedProgramFormat(fn) = false) then
+    begin
+      FileNodes.Delete(c1);
+    end;
+  end;
+  }
+
+
 end;
 
 class procedure Command.FindMissingSamples(const Plugin: TeePlugin);

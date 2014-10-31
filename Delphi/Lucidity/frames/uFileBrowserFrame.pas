@@ -399,41 +399,14 @@ begin
         then Plugin.TriggerPreview(NodeData.FileName)
         else Plugin.ClearPreviewInfo;
     end;
-
   end;
 
   Debounce(PreviewDebounceID, 150, TDebounceEdge.deTrailing, Proc);
 end;
 
 procedure TFileBrowserFrame.EventHandle_FilterNodes(Sender: TObject; const RootDir: string; var FolderNodes, FileNodes: TStringList);
-var
-  c1 : integer;
-  ext : string;
-  DataFolderName : string;
-  Index : integer;
-  fn : string;
 begin
-  // Remove any program sample data folders from the folder listing.
-  for c1 := 0 to FileNodes.Count-1 do
-  begin
-    ext := ExtractFileExt(FileNodes[c1]);
-    if SameText(ext, '.lpg') then
-    begin
-      DataFolderName := RemoveFileExt(FileNodes[c1]) + ' Samples';
-      Index := FolderNodes.IndexOf(DataFoldername);
-      if Index <> -1 then FolderNodes.Delete(Index);
-    end;
-  end;
-
-  // remove un-supported audio format files.
-  for c1 := FileNodes.Count-1  downto 0 do
-  begin
-    fn := IncludeTrailingPathDelimiter(RootDir) + FileNodes[c1];
-    if (IsSupportedAudioFormat(fn) = false) and (IsSupportedProgramFormat(fn) = false) then
-    begin
-      FileNodes.Delete(c1);
-    end;
-  end;
+  Command.FilterBrowserNodes(Plugin, RootDir, FolderNodes, FileNodes);
 end;
 
 procedure TFileBrowserFrame.Command_ReplaceLoad;
