@@ -33,7 +33,18 @@ procedure RenameAllUsedSampleFiles(const ProgramFileName, NewSampleFileNameRoot 
 // exist on disk.
 procedure GetSampleFileNameReferences(const ProgramFileName : string; var SampleFileNames : TStringList);
 
+
+// RenameProgramFileOnly() renames the program file but doesn't change the name of the sample directory.
+// This is useful if the program file of an existing drum kit needs to change without breaking
+// user song projects that may be using the sample file paths in saved projects.
 procedure RenameProgramFileOnly(const NewProgramFileName, OldProgramFileName : string);
+
+// After using the RenameProgramFileOnly() procedure, the program file will contain
+// the old samples directory in XMLDoc/Root/AlternateSampleDirectory
+// GetAlternateSamplesDirectory() reads that node value. It returns a full path
+// string if the directory exists on disk, else it ignores the <AlternateSampleDirectory>
+// node value and returns an empty string.
+function GetAlternateSamplesDirectory(const ProgramFileName : string):string;
 
 implementation
 
@@ -195,6 +206,16 @@ begin
   end;
 
 
+  // Check if the drum kit is using an alternately named samples directory.
+  Path := GetAlternateSamplesDirectory(ProgramFileName);
+  fn := IncludeTrailingPathDelimiter(path) + SampleFileName;
+  if FileExists(fn) then
+  begin
+    AbsoluteSamplePath := fn;
+    exit(true); //===============================>> exit >>====================>>
+  end;
+
+
   // the file has not been found.
   AbsoluteSamplePath := '';
   exit(false); //===============================>> exit >>====================>>
@@ -274,6 +295,30 @@ begin
   RenameFile(OldProgramFilename, NewProgramFileName);
 end;
 
+function GetAlternateSamplesDirectory(const ProgramFileName : string):string;
+var
+  xml : TNativeXML;
+  RootNode : TXMLNode;
+  ProgramPath : string;
+  SamplesDir : string;
+begin
+  xml := TNativeXML.Create(nil);
+  autoFree(@xml);
+  xml.LoadFromFile(ProgramFileName);
 
+  RootNode := xml.Root;
+  if not assigned(RootNode) then raise Exception.Create('Root node doesn''t exist in file.');
+
+  if NodeWiz(RootNode).Exists('AlternateSampleDirectory') then
+  begin
+    ProgramPath := IncludeTrailingPathDelimiter(ExtractFilePath(ProgramFileName));
+    SamplesDir := NodeWiz(RootNode).Child('AlternateSampleDirectory').ValueUnicode;
+    SamplesDir := ProgramPath + IncludeTrailingPathDelimiter(SamplesDir);
+    result := SamplesDir;
+  end else
+  begin
+    result := '';
+  end;
+end;
 
 end.

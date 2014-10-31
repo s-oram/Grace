@@ -115,7 +115,7 @@ type
     class procedure FindMissingSamples(const Plugin : TeePlugin); static;
     class function GetNumberOfMissingSamples(const Plugin: TeePlugin): integer; static;
 
-    class procedure FilterBrowserNodes(const Plugin : TeePlugin; const RootDir: string; var FolderNodes, FileNodes: TStringList);
+    class procedure FilterBrowserNodes(const Plugin : TeePlugin; const RootDir: string; var FolderNodes, FileNodes: TStringList); static;
   end;
 
   GuiSetup = record
@@ -1113,8 +1113,6 @@ begin
     end;
   end;
   }
-
-
 end;
 
 class procedure Command.FindMissingSamples(const Plugin: TeePlugin);
