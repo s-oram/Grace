@@ -48,12 +48,18 @@ bug
 =============================================================================
      TODO HIGH
 =============================================================================
-- Make hidden directory names function.
-- Disable current hiding.
-- work out how to delete existing file names.
-- rename all kit files.
+(done) - Make hidden directory names function.
+(done) - Disable current hiding.
+(done) - work out how to delete existing file names.
+- work out a way to rename program files whilst maintaining old sample directory
+  locations.
+(done) - rename all kit files.
 - install.. test it works.
 - create a new system to allow hiding of arbitary directories.
+
+The factory content installer should have a check to ensure it's being installed 
+into the correct location.
+
 
 Installers
 (done) - test both 32 and 64 bit installers.
