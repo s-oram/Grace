@@ -1088,9 +1088,11 @@ var
   DataFolderName : string;
   Index : integer;
   fn : string;
+  Dir : string;
+  HiddenDir : TStringList;
 begin
   // TODO:HIGH re-enable filtering.
-  {
+
   // Remove any program sample data folders from the folder listing.
   for c1 := 0 to FileNodes.Count-1 do
   begin
@@ -1112,7 +1114,26 @@ begin
       FileNodes.Delete(c1);
     end;
   end;
-  }
+
+  fn := IncludeTrailingPathDelimiter(RootDir) + 'HiddenDirectories.txt';
+
+  if FileExists(fn) then
+  begin
+    HiddenDir := TStringList.Create;
+    AutoFree(@HiddenDir);
+    HiddenDir.LoadFromFile(fn);
+
+    for c1 := FolderNodes.Count-1 downto 0 do
+    begin
+      Dir := FolderNodes[c1];
+      if HiddenDir.IndexOf(Dir) <> -1 then
+      begin
+        FolderNodes.Delete(c1);
+      end;
+    end;
+  end;
+
+
 end;
 
 class procedure Command.FindMissingSamples(const Plugin: TeePlugin);

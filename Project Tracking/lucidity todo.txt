@@ -54,8 +54,19 @@ bug
 - work out a way to rename program files whilst maintaining old sample directory
   locations.
 (done) - rename all kit files.
+(done) - create a new system to allow hiding of arbitary directories.
 - install.. test it works.
-- create a new system to allow hiding of arbitary directories.
+- need to send a test version to yann to check the hidden directory stuff works. 
+
+--- The allowing program files to be renamed whilst preserving the samples directory 
+    name works using <AlternateSampleDirectory> nodes work. But it's a bit hacky. 
+    Consider adding an auto search for missing samples function. The auto search  
+    would run as soon as a patch finished loading and missing samples were detected. 
+    Missing samples would automatically be found and loaded while the user was 
+    busy doing other things. On opening the GUI, Grace would need to show a dialog 
+    showing the auto search sample focus. 
+
+
 
 The factory content installer should have a check to ensure it's being installed 
 into the correct location.
@@ -89,9 +100,9 @@ Installers
 
 - Put Grace version history online.
 
-Rename the sample library files.
-- work out how to make the installer delete the old ones.
-- provide a way to hide the sample folders.
+Change "Open with..." command to "Edit with..."
+
+A way to drag samples from Grace to other apps would be good.
 
 - sample map should have zoom buttons like the sample display.
 
@@ -241,6 +252,10 @@ Installer needs option to put data folder
   -- the about box should have a scroll bar so all text can be read.
   -- add thank you notes for all the beta testers.
   -- add Steinberg Credit.
+
+
+Feature Request: Add TUN Microtuning support
+thunderlink://messageid=000801cff4f6$f2400dd0$d6c02970$@ligon@northstate.net
 
 =============================================================================
      TODO MED
