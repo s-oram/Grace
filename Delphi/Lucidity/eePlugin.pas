@@ -319,6 +319,25 @@ begin
 end;
 
 
+// 56 51 59 5E
+procedure MarkerCryptStart;
+asm
+  push esi
+	push ecx
+	pop ecx
+	pop esi
+end;
+
+// 57 51 59 5F
+procedure MarkerCryptEnd;
+asm
+  push edi
+	push ecx
+	pop ecx
+	pop edi
+end;
+
+
 { TeePlugin }
 
 constructor TeePlugin.Create(const aGlobals : TGlobals);
