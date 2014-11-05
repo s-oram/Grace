@@ -399,12 +399,6 @@ const
   //TODO: is this still being used?
   LfoControlDisplayClass = 'LfoControl';
 
-
-
-resourcestring
-    GraceWaterMark = 'watertoice____________________________________________________________________________________________________________________________________XXXX';
-
-
 implementation
 
 uses
