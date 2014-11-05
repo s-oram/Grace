@@ -15,6 +15,19 @@ object Form1: TForm1
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 14
+  object Label1: TLabel
+    Left = 424
+    Top = 279
+    Width = 45
+    Height = 15
+    Caption = 'GRACE'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Liberation Sans'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Button1: TButton
     Left = 25
     Top = 462
@@ -91,16 +104,16 @@ object Form1: TForm1
     Text = 'Edit1'
   end
   object RedFoxContainer1: TRedFoxContainer
-    Left = 288
-    Top = 96
+    Left = 499
+    Top = 222
     Width = 625
     Height = 265
     Color = '$FFEEEEEE'
     object VamPanel1: TVamPanel
-      Left = 42
-      Top = 40
-      Width = 409
-      Height = 193
+      Left = 3
+      Top = 0
+      Width = 70
+      Height = 137
       Opacity = 255
       Text = 'VamPanel1'
       HitTest = True
@@ -108,12 +121,12 @@ object Form1: TForm1
       Transparent = False
       Visible = True
       object VamLabel1: TVamLabel
-        Left = 40
-        Top = 48
-        Width = 345
+        Left = 3
+        Top = 3
+        Width = 60
         Height = 121
         Opacity = 255
-        Text = 'Test'
+        Text = 'GRACE'
         HitTest = True
         AutoTrimText = False
         AutoSize = False
@@ -121,9 +134,9 @@ object Form1: TForm1
         TextVAlign = AlignCenter
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
+        Font.Height = -13
+        Font.Name = 'Liberation Sans'
+        Font.Style = [fsBold]
         Visible = True
       end
     end

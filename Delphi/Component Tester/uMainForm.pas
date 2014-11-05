@@ -65,6 +65,7 @@ type
     RedFoxContainer1: TRedFoxContainer;
     VamPanel1: TVamPanel;
     VamLabel1: TVamLabel;
+    Label1: TLabel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -250,8 +251,8 @@ begin
   fn := IncludeTrailingPathDelimiter(Dir) + 'resources\westwood.ttf';
   if FileExists(fn) then
   begin
-    //AddFontResource(pWideChar(fn)) ;
-    //SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+    AddFontResource(pWideChar(fn)) ;
+    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
   end else
   begin
     raise Exception.Create('file does not exist.');
