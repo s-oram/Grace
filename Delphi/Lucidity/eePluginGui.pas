@@ -40,7 +40,7 @@ type
     SampleMapDiv: TVamDiv;
     SideWorkArea: TVamDiv;
     TitlePanel: TVamPanel;
-    VamLabel1: TVamLabel;
+    MainTitleLabel: TVamLabel;
     VoiceControlDiv: TVamDiv;
     TabPanel: TVamTabPanel;
     SidePanel: TVamDiv;
@@ -197,6 +197,25 @@ begin
 
   // Finally...
   UpdateLayout;
+
+  //=== update the font for all controls ===
+  MainTitleLabel.Font.Name := 'Liberation Sans';
+  MainTitleLabel.Font.Size := 18;
+
+  self.Font.Name := 'Liberation Sans';
+  self.Font.Size := 10;
+  self.Font.Style := [];
+
+  ApplyFontValues(MainTitleLabel);
+
+  ApplyToAllControls(self, procedure(const c:TControl)
+  begin
+    ApplyFontValues(c);
+  end);
+
+  // Set form scaling to false to ignore Windows DPI changes.
+  // http://stackoverflow.com/a/8298713/395461
+  self.Scaled := false;
 end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);

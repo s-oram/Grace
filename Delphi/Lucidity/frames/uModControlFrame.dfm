@@ -3,6 +3,12 @@ object ModControlFrame: TModControlFrame
   Top = 0
   Width = 789
   Height = 638
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Westwood LET'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object Panel: TRedFoxContainer
     AlignWithMargins = True

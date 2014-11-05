@@ -58,6 +58,8 @@ type
     function HasEvent(const EventName : string):boolean;
     function HasMethod(const MethodName : string):boolean;
 
+    function GetProperty(const PropertyName : string):TValue;
+
     function SetProperty(const PropertyName : string; Value : TValue):IDuck;
     function SetEvent(const EventName : string; Handler : TMethod):IDuck; overload;
     function SetEvent(const EventName : string; Obj : TObject; MethodAddress : Pointer):IDuck; overload;
@@ -91,6 +93,8 @@ type
     function HasProperty(const Propertyname : string):boolean;
     function HasEvent(const EventName : string):boolean;
     function HasMethod(const MethodName : string):boolean;
+
+    function GetProperty(const PropertyName : string):TValue;
 
     function SetProperty(const PropertyName : string; Value : TValue):IDuck;
     function SetEvent(const EventName : string; Handler : TMethod):IDuck; overload;
@@ -145,6 +149,21 @@ function TDuck.HasProperty(const Propertyname: string): boolean;
 begin
   result := TRttiWrapper.IsProperty(FOwner, PropertyName);
 end;
+
+function TDuck.GetProperty(const PropertyName: string): TValue;
+var
+  cxt : TRTTIContext;
+  prop : TRttiProperty;
+begin
+  Result := nil;
+  prop := cxt.GetType(FOwner.ClassInfo).GetProperty(PropertyName);
+  if prop <> nil then
+  begin
+    Result := prop.GetValue(FOwner);
+  end;
+end;
+
+
 
 function TDuck.SetEvent(const EventName: string; Handler: TMethod): IDuck;
 begin

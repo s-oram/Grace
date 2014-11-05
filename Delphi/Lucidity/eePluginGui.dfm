@@ -72,7 +72,7 @@ object PluginGui: TPluginGui
           Transparent = False
           Align = alTop
           Visible = True
-          object VamLabel1: TVamLabel
+          object MainTitleLabel: TVamLabel
             Left = 0
             Top = 0
             Width = 289
@@ -87,7 +87,7 @@ object PluginGui: TPluginGui
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -19
-            Font.Name = 'Tahoma'
+            Font.Name = 'Source Sans Pro'
             Font.Style = [fsBold]
             Align = alClient
             Visible = True

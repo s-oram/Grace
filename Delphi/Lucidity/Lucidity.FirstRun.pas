@@ -7,16 +7,30 @@ procedure FirstRunSetup;
 implementation
 
 uses
+  WinApi.Windows,
+  WinApi.Messages,
   SysUtils,
   eePluginDataDir,
   uLucidityData,
   VamLib.Utils;
+
+procedure InstallFont(FontFile : string);
+var
+  fn : string absolute FontFile;
+begin
+  if FileExists(fn) then
+  begin
+    AddFontResource(pWideChar(fn)) ;
+    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+  end;
+end;
 
 procedure FirstRunSetup;
 var
   SampleDirectories: TSampleDirectories;
   DataFileName : string;
   DataDir : string;
+  fn : string;
 begin
   if (PluginDataDir^.Exists) then
   begin
@@ -50,10 +64,11 @@ begin
       SampleDirectories.WriteDirectoryInfoToFile(DataFilename);
     end;
 
+    fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Regular.ttf';
+    InstallFont(fn);
 
-
-
-
+    fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Bold.ttf';
+    InstallFont(fn);
   end;
 end;
 

@@ -248,7 +248,6 @@ begin
   LfoBShapeSelector.ParameterName    := PluginParToName(TPluginParameter.Lfo2Shape);
   LfoBFreqModeSelector.ParameterName := PluginParToName(TPluginParameter.Lfo2FreqMode);
 
-
 end;
 
 destructor TModControlFrame.Destroy;

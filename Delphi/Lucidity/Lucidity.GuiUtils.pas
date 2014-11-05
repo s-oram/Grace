@@ -9,6 +9,8 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  SysUtils,
+  Graphics,
   Classes,
   XPLAT.Dialogs,
   eeTypes,
@@ -126,13 +128,22 @@ type
     class procedure StyleButton_OnOffButton(const Button : TVamButton); static;
   end;
 
+  function GetLabelFontValues : TFont;
+
+  //procedure ApplyFontValues(const c : TControl; const AppFontStyle : TAppFontStyle);
+  procedure ApplyFontValues(const c : TControl);
+
+type
+  TApplyToControlMethod = reference to procedure(const c : TControl);
+
+  procedure ApplyToAllControls(const c : TControl; Apply : TApplyToControlMethod);
 
 
 implementation
 
 uses
+  VamLib.DuckType,
   Lucidity.CopyProtection,
-  SysUtils,
   InWindowDialog,
   Effect.MidiAutomation,
   RedFoxColor,
@@ -1406,6 +1417,48 @@ begin
   Button.CornerRadius[2] := 0;
   Button.CornerRadius[3] := 0;
 end;
+
+function GetLabelFontValues : TFont;
+begin
+  result.Name := 'Westwood LET';
+end;
+
+procedure ApplyFontValues(const c : TControl);
+var
+  Font : TFont;
+begin
+  if c.Duck.HasProperty('Font') then
+  begin
+    Font := (c.Duck.GetProperty('Font')).AsType<TFont>;
+    Font.Name := 'Liberation Sans';
+    //Font.Size := 9;
+    //Font.Style := [];
+    //Font.Name := 'Tahoma';
+    //Font.Name := 'Segoe UI';
+    //Font.Name := 'Droid Sans';
+    //Font.Name := 'Verdana';
+    //Font.Name := 'Source Sans Pro';
+  end;
+end;
+
+
+procedure ApplyToAllControls(const c : TControl; Apply : TApplyToControlMethod);
+var
+  c1 : integer;
+  wc : TWinControl;
+begin
+  Apply(c);
+
+  if (c is TWinControl) then
+  begin
+    wc := (c as TWinControl);
+    for c1 := 0 to wc.ControlCount-1 do
+    begin
+      ApplyToAllControls(wc.Controls[c1], Apply);
+    end;
+  end;
+end;
+
 
 end.
 
