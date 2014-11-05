@@ -128,8 +128,6 @@ type
     class procedure StyleButton_OnOffButton(const Button : TVamButton); static;
   end;
 
-  function GetLabelFontValues : TFont;
-
   //procedure ApplyFontValues(const c : TControl; const AppFontStyle : TAppFontStyle);
   procedure ApplyFontValues(const c : TControl);
 
@@ -1418,11 +1416,6 @@ begin
   Button.CornerRadius[3] := 0;
 end;
 
-function GetLabelFontValues : TFont;
-begin
-  result.Name := 'Westwood LET';
-end;
-
 procedure ApplyFontValues(const c : TControl);
 var
   Font : TFont;
@@ -1440,7 +1433,6 @@ begin
     //Font.Name := 'Source Sans Pro';
   end;
 end;
-
 
 procedure ApplyToAllControls(const c : TControl; Apply : TApplyToControlMethod);
 var
