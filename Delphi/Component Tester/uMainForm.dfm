@@ -90,4 +90,42 @@ object Form1: TForm1
     TabOrder = 5
     Text = 'Edit1'
   end
+  object RedFoxContainer1: TRedFoxContainer
+    Left = 288
+    Top = 96
+    Width = 625
+    Height = 265
+    Color = '$FFEEEEEE'
+    object VamPanel1: TVamPanel
+      Left = 42
+      Top = 40
+      Width = 409
+      Height = 193
+      Opacity = 255
+      Text = 'VamPanel1'
+      HitTest = True
+      Color = '$FFCCCCCC'
+      Transparent = False
+      Visible = True
+      object VamLabel1: TVamLabel
+        Left = 40
+        Top = 48
+        Width = 345
+        Height = 121
+        Opacity = 255
+        Text = 'Test'
+        HitTest = True
+        AutoTrimText = False
+        AutoSize = False
+        TextAlign = AlignCenter
+        TextVAlign = AlignCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Visible = True
+      end
+    end
+  end
 end

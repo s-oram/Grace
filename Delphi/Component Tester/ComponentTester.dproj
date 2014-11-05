@@ -92,6 +92,9 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<RcCompile Include="AppRes.rc">
+				<Form>AppRes.res</Form>
+			</RcCompile>
 			<DCCReference Include="uMainForm.pas">
 				<Form>Form1</Form>
 				<FormType>dfm</FormType>

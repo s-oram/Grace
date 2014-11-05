@@ -2,6 +2,10 @@ program ComponentTester;
 
 
 
+
+
+{$R 'AppRes.res' 'AppRes.rc'}
+
 uses
   Vcl.Forms,
   uMainForm in 'uMainForm.pas' {Form1},

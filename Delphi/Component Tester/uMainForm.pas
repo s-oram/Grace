@@ -8,9 +8,7 @@ uses
   VamLib.Threads,
   //OtlParallel,
   MyWorker,
-  AsyncCalls,
   VamLib.WinHook,
-  SynCommons,
   eeFileBrowserAddon,
   wmfintf,
   ACS_MemFloat,
@@ -64,6 +62,9 @@ type
     Edit2: TEdit;
     Edit3: TEdit;
     Edit4: TEdit;
+    RedFoxContainer1: TRedFoxContainer;
+    VamPanel1: TVamPanel;
+    VamLabel1: TVamLabel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -72,7 +73,6 @@ type
     procedure Button1Click(Sender: TObject);
   private
     Updater : TFancyUpdater;
-    a: IAsyncCall;
     FileBrowserAddon : TFileBrowserAddon;
 
     MotherShip : TMotherShip;
@@ -142,6 +142,43 @@ type
   public
   end;
 
+const
+    MM_MAX_NUMAXES = 16;
+type
+  PDesignVector = ^TDesignVector;
+  TDesignVector = packed record
+    dvReserved: DWORD;
+    dvNumAxes: DWORD;
+    dvValues: array[0..MM_MAX_NUMAXES-1] of Longint;
+  end;
+
+//function AddFontMemResourceEx(p1: Pointer; p2: DWORD; p3: PDesignVector; p4: LPDWORD): THandle; external 'gdi32.dll' name 'AddFontMemResourceEx'; stdcall;
+//function RemoveFontMemResourceEx(p1: THandle): BOOL; external 'gdi32.dll' name 'RemoveFontMemResourceEx'; stdcall;
+
+procedure LoadFontFromRes(FontName: PWideChar);
+var
+  ResHandle: HRSRC;
+  ResSize, NbFontAdded: Cardinal;
+  ResAddr: HGLOBAL;
+begin
+  ResHandle := FindResource(HINSTANCE, FontName, RT_FONT);
+
+  {
+  if ResHandle = 0 then
+    RaiseLastOSError;
+  ResAddr := LoadResource(HINSTANCE, ResHandle);
+  if ResAddr = 0 then
+    RaiseLastOSError;
+  ResSize := SizeOfResource(, ResHandle);
+  if ResSize = 0 then
+    RaiseLastOSError;
+  if 0 = AddFontMemResourceEx(Pointer(ResAddr), ResSize, nil, @NbFontAdded) then
+    RaiseLastOSError;
+  }
+end;
+
+
+
 procedure DrawKnob_ModEditOverlay(Sender: TObject);
   procedure CalcStartSweep(const Angle1, Angle2 : single; out Start, Sweep : single);
   begin
@@ -203,7 +240,24 @@ var
   x : integer;
   rc : TRedFoxColor;
   xs : string;
+  ResHandle: HRSRC;
+  ResSize, NbFontAdded: Cardinal;
+  ResAddr: HGLOBAL;
+  Dir : string;
+  fn : string;
 begin
+  Dir := ExtractFilePath(Application.ExeName);
+  fn := IncludeTrailingPathDelimiter(Dir) + 'resources\westwood.ttf';
+  if FileExists(fn) then
+  begin
+    //AddFontResource(pWideChar(fn)) ;
+    //SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+  end else
+  begin
+    raise Exception.Create('file does not exist.');
+  end;
+
+
   Updater := TFancyUpdater.Create;
 
   ThrottleID_VSTParChange.Init;
@@ -214,10 +268,29 @@ begin
 
   WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
   WindowsEventHook.OnWinEvent := WinEventHandler;
+
+  VamLabel1.Font.Name := 'Westwood LET';
+  VamLabel1.Font.Size := 72;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
+var
+  Dir : string;
+  fn : string;
 begin
+  Dir := ExtractFilePath(Application.ExeName);
+  fn := IncludeTrailingPathDelimiter(Dir) + 'resources\westwood.ttf';
+  if FileExists(fn) then
+  begin
+    RemoveFontResource(PWideChar(fn));
+    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+  end else
+  begin
+    raise Exception.Create('file does not exist.');
+  end;
+
+
+
   Updater.Free;
 
   WindowsEventHook.Free;
@@ -227,32 +300,8 @@ begin
 end;
 
 procedure SlowAction(x : TObject); cdecl;
-const
-  ID = 'TEST';
-var
-  c1: Integer;
-
-  procedure Start;
-  begin
-    (x as TForm1).Edit4.Text := Id + ' Working...';
-  end;
-  procedure Finished;
-  begin
-    (x as TForm1).Edit4.Text := Id + ' Done';
-  end;
-  procedure UpdateText;
-  begin
-    (x as TForm1).Edit4.Text := Id + ' Working... ' + IntToStr(c1);
-  end;
-
 begin
-  LocalAsyncVclCall(@Start);
-  for c1 := 0 to 10 do
-  begin
-    sleep(250);
-    LocalAsyncVclCall(@UpdateText);
-  end;
-  LocalVclCall(@Finished); // blocking
+
 end;
 
 
