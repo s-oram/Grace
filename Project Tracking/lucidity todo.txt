@@ -1,3 +1,10 @@
+Grace Threads
+
+http://www.kvraudio.com/forum/viewtopic.php?f=1&t=423453&start=15
+http://www.kvraudio.com/forum/viewtopic.php?f=1&t=423453&p=5920022#p5920022
+http://www.kvraudio.com/forum/viewtopic.php?f=131&t=423507&p=5919980#p5919980
+http://forum.cockos.com/showthread.php?t=148395&highlight=grace
+
 =============================================================================
      BUGS
 =============================================================================
@@ -45,6 +52,10 @@ bug
 - two key groups. Delete the focused key group. GUI doesn't update with 
   new key group parameters.
 
+bug report
+- text renders too big in tabs and is not accounted for with the pop up message.
+thunderlink://messageid=CAGf6qC5icMhx2wGE4vsh7v5Kkq-3HaRs4BqP7sUnNimA+JM5Fg@mail.gmail.com
+
 =============================================================================
      TODO HIGH
 =============================================================================
@@ -66,11 +77,8 @@ bug
     busy doing other things. On opening the GUI, Grace would need to show a dialog 
     showing the auto search sample focus. 
 
-
-
 The factory content installer should have a check to ensure it's being installed 
 into the correct location.
-
 
 Installers
 (done) - test both 32 and 64 bit installers.
@@ -110,8 +118,19 @@ A way to drag samples from Grace to other apps would be good.
 
 Give Kieran a license to Lucidity once released.
 
+feature request: 
+- Mouse wheel for zoom.
+- alt click to set start-end sample points (more info needed.)
+4mica1@gmail.com
+thunderlink://messageid=CA+3BhD2gHUCSPhcV0pCACsQinTaL0=x47kZV1COpq0g3WLm=iA@mail.gmail.com
+
+
 Give this dude a lucidity License.
 thunderlink://messageid=CA+WXPKJM6_2EJAt6pbd=_8rY26kP56RvuGMhPL3dHCa-9NB=nw@mail.gmail.com
+
+Feature Request: Add TUN Microtuning support
+thunderlink://messageid=000801cff4f6$f2400dd0$d6c02970$@ligon@northstate.net
+thunderlink://messageid=000001cff5bb$7e6d5e60$7b481b20$@ligon@northstate.net
 
 
 - finish the help doc.
@@ -254,8 +273,7 @@ Installer needs option to put data folder
   -- add Steinberg Credit.
 
 
-Feature Request: Add TUN Microtuning support
-thunderlink://messageid=000801cff4f6$f2400dd0$d6c02970$@ligon@northstate.net
+
 
 =============================================================================
      TODO MED
