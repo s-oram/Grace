@@ -18,6 +18,8 @@ FileCopy($SourceFile, $DestFile, 1);
 ;; Execute the Inno Setup compile scripts. 
 ExecuteInnoSetupScript("S:\Installer\Lucidity_x32.iss");
 ExecuteInnoSetupScript("S:\Installer\Lucidity_x64.iss");
+ExecuteInnoSetupScript("S:\Installer\Lucidity_demo_x32.iss");
+ExecuteInnoSetupScript("S:\Installer\Lucidity_demo_x64.iss");
 
 ;; Zip all the created setup files.
 ZipAllFilesInDirectory("S:\Bin\Installers\");
