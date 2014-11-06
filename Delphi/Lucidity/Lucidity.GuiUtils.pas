@@ -1424,7 +1424,7 @@ begin
   begin
     Font := (c.Duck.GetProperty('Font')).AsType<TFont>;
     Font.Name := 'Liberation Sans';
-    //Font.Size := 9;
+    Font.Size := 8;
     //Font.Style := [];
     //Font.Name := 'Tahoma';
     //Font.Name := 'Segoe UI';
