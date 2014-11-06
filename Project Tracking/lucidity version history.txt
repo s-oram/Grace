@@ -11,6 +11,10 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 New: 
 - Grace can load program files that use an <AlternateSampleDirectory> node.
 
+Bug Fix:
+- Grace now works correctly when using large fonts in Windows. Previously 
+  some text would be mis-sized.
+
 
 
 === v1.0 (26-Oct-2014) Release Candidate 1 ===
