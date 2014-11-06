@@ -215,7 +215,12 @@ begin
 
   // Set form scaling to false to ignore Windows DPI changes.
   // http://stackoverflow.com/a/8298713/395461
+  self.PixelsPerInch := 96;
   self.Scaled := false;
+
+
+  
+
 end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);
@@ -386,6 +391,11 @@ begin
   //==============
 
   Plugin.Globals.GuiState.HotKeyContext := THotKeyContext.None;
+
+  //self.TabPanel.Font.PixelsPerInch := 96;
+
+  //self.TabPanel.Font.PixelsPerInch := 200;
+  //self.TabPanel.Font.Size := 10;
 end;
 
 procedure TPluginGui.BeforeClose;

@@ -3,40 +3,45 @@ object PluginGui: TPluginGui
   Top = 0
   BorderStyle = bsNone
   Caption = 'PluginGui'
-  ClientHeight = 802
-  ClientWidth = 989
+  ClientHeight = 1296
+  ClientWidth = 1598
   Color = 15506170
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -17
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 144
+  TextHeight = 21
   object RedFoxContainer: TRedFoxContainer
     Left = 0
     Top = 0
-    Width = 989
-    Height = 802
+    Width = 1598
+    Height = 1296
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
     Color = '$FF000000'
     Align = alClient
-    Padding.Left = 2
-    Padding.Top = 2
-    Padding.Right = 2
-    Padding.Bottom = 2
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
     object MainPanel: TVamPanel
       AlignWithMargins = True
-      Left = 10
-      Top = 10
-      Width = 969
-      Height = 782
-      Margins.Left = 8
-      Margins.Top = 8
-      Margins.Right = 8
-      Margins.Bottom = 8
+      Left = 16
+      Top = 16
+      Width = 1566
+      Height = 1264
+      Margins.Left = 13
+      Margins.Top = 13
+      Margins.Right = 13
+      Margins.Bottom = 13
       Opacity = 255
       Text = 'MainPanel'
       HitTest = True
@@ -47,8 +52,12 @@ object PluginGui: TPluginGui
       object SideWorkArea: TVamDiv
         Left = 0
         Top = 0
-        Width = 289
-        Height = 782
+        Width = 468
+        Height = 1264
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
         Opacity = 255
         HitTest = True
         Align = alClient
@@ -57,11 +66,12 @@ object PluginGui: TPluginGui
           AlignWithMargins = True
           Left = 0
           Top = 0
-          Width = 289
-          Height = 49
+          Width = 468
+          Height = 79
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
+          Margins.Bottom = 5
           Opacity = 255
           HitTest = True
           Color = '$FFCCCCCC'
@@ -75,8 +85,12 @@ object PluginGui: TPluginGui
           object MainTitleLabel: TVamLabel
             Left = 0
             Top = 0
-            Width = 289
-            Height = 49
+            Width = 468
+            Height = 79
+            Margins.Left = 5
+            Margins.Top = 5
+            Margins.Right = 5
+            Margins.Bottom = 5
             Opacity = 255
             Text = 'GRACE'
             HitTest = True
@@ -86,7 +100,7 @@ object PluginGui: TPluginGui
             TextVAlign = AlignCenter
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -19
+            Font.Height = -32
             Font.Name = 'Source Sans Pro'
             Font.Style = [fsBold]
             Align = alClient
@@ -95,37 +109,38 @@ object PluginGui: TPluginGui
         end
         object SidePanel: TVamDiv
           AlignWithMargins = True
-          Left = 24
-          Top = 72
-          Width = 155
-          Height = 480
-          Margins.Left = 2
+          Left = 39
+          Top = 116
+          Width = 250
+          Height = 776
           Margins.Top = 0
-          Margins.Right = 2
-          Margins.Bottom = 2
           Opacity = 255
           HitTest = True
           Visible = True
-          Padding.Left = 4
-          Padding.Top = 4
-          Padding.Right = 4
-          Padding.Bottom = 4
+          Padding.Left = 6
+          Padding.Top = 6
+          Padding.Right = 6
+          Padding.Bottom = 6
         end
       end
       object MainWorkArea: TVamDiv
-        Left = 289
+        Left = 468
         Top = 0
-        Width = 680
-        Height = 782
+        Width = 1098
+        Height = 1264
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
         Opacity = 255
         HitTest = True
         Align = alRight
         Visible = True
         object MainTop: TVamDiv
-          Left = 48
-          Top = 60
-          Width = 521
-          Height = 80
+          Left = 78
+          Top = 97
+          Width = 841
+          Height = 129
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -135,10 +150,10 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object MainMenuBar: TVamDiv
-          Left = 48
-          Top = 7
-          Width = 521
-          Height = 33
+          Left = 78
+          Top = 11
+          Width = 841
+          Height = 54
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -148,10 +163,10 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object SampleMapDiv: TVamDiv
-          Left = 48
-          Top = 244
-          Width = 521
-          Height = 80
+          Left = 78
+          Top = 394
+          Width = 841
+          Height = 129
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
@@ -161,19 +176,27 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object VoiceControlDiv: TVamDiv
-          Left = 48
-          Top = 348
-          Width = 521
-          Height = 80
+          Left = 78
+          Top = 562
+          Width = 841
+          Height = 129
+          Margins.Left = 5
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
           Opacity = 255
           HitTest = True
           Visible = True
         end
         object TabPanel: TVamTabPanel
-          Left = 56
-          Top = 448
-          Width = 513
-          Height = 89
+          Left = 90
+          Top = 724
+          Width = 829
+          Height = 143
+          Margins.Left = 5
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
           Opacity = 255
           Text = 'TabPanel'
           HitTest = True
@@ -187,7 +210,7 @@ object PluginGui: TPluginGui
           TabPosition = tpBelowCenter
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -20
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           TabIndex = -1
@@ -200,10 +223,10 @@ object PluginGui: TPluginGui
           Visible = True
         end
         object ModSystem2Div: TVamDiv
-          Left = 48
-          Top = 568
-          Width = 521
-          Height = 49
+          Left = 78
+          Top = 918
+          Width = 841
+          Height = 79
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
