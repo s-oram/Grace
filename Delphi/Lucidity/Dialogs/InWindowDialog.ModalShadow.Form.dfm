@@ -12,6 +12,7 @@ object ModalShadow: TModalShadow
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Scaled = False
   OnClick = FormClick
   PixelsPerInch = 96
   TextHeight = 13

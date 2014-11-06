@@ -12,6 +12,7 @@ object InputDialogForm: TInputDialogForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Scaled = False
   OnDeactivate = FormDeactivate
   PixelsPerInch = 96
   TextHeight = 13

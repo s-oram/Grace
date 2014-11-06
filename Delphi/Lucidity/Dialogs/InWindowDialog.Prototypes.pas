@@ -332,9 +332,11 @@ procedure TPluginDialogForm.AfterConstruction;
 begin
   inherited;
 
-  assert(self.Scaled = false, 'Dialog form is scaled. (' + self.ClassName + ')' );
+  if (self.Scaled) then
+  begin
+    raise Exception.Create('Dialog form is scaled. (' + self.ClassName + ')' );
+  end;
 
-  //Self.ScaleBy(Screen.PixelsPerInch, 96);
 end;
 
 procedure TPluginDialogForm.CloseDialog;
