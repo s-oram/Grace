@@ -58,7 +58,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies>LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="ASM Tester\AsmTester.dproj">
 				<Dependencies/>
@@ -248,13 +248,13 @@
 		<Target Name="CodeGen:Make">
 			<MSBuild Targets="Make" Projects="Code Gen\CodeGen.dproj"/>
 		</Target>
-		<Target Name="ComponentTester" DependsOnTargets="LucidityGuiComponentsRunXE2">
+		<Target Name="ComponentTester" DependsOnTargets="VamLib;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean" DependsOnTargets="LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make" DependsOnTargets="LucidityGuiComponentsRunXE2:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="AsmTester">
