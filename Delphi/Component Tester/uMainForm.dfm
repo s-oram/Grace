@@ -2,233 +2,64 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 689
-  ClientWidth = 1292
+  ClientHeight = 291
+  ClientWidth = 438
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -15
+  Font.Height = -12
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 120
-  TextHeight = 18
-  object Label1: TLabel
-    Left = 114
-    Top = 367
-    Width = 59
-    Height = 19
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Caption = 'GRACE'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -17
-    Font.Name = 'Liberation Sans'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object Button1: TButton
-    Left = 32
-    Top = 594
-    Width = 179
-    Height = 32
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Caption = 'Button1'
-    TabOrder = 0
-    OnClick = Button1Click
-  end
-  object Button2: TButton
-    Left = 238
-    Top = 594
-    Width = 179
-    Height = 32
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Caption = 'Button2'
-    TabOrder = 1
-    OnClick = Button2Click
-  end
-  object Button3: TButton
-    Left = 424
-    Top = 594
-    Width = 179
-    Height = 32
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Caption = 'Button3'
-    TabOrder = 2
-    OnClick = Button3Click
-  end
-  object Panel1: TPanel
-    Left = 32
-    Top = 62
-    Width = 412
-    Height = 238
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Caption = 'Panel1'
-    TabOrder = 3
-    object Edit1: TEdit
-      Left = 82
-      Top = 41
-      Width = 115
-      Height = 26
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      TabOrder = 0
-      Text = 'Edit1'
-    end
-    object Edit2: TEdit
-      Left = 64
-      Top = 77
-      Width = 115
-      Height = 26
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      TabOrder = 1
-      Text = 'Edit1'
-    end
-  end
-  object Panel2: TPanel
-    Left = 485
-    Top = 62
-    Width = 411
-    Height = 238
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Caption = 'Panel1'
-    TabOrder = 4
-    object Edit3: TEdit
-      Left = 44
-      Top = 57
-      Width = 114
-      Height = 26
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      TabOrder = 0
-      Text = 'Edit1'
-    end
-  end
-  object Edit4: TEdit
-    Left = 44
-    Top = 509
-    Width = 626
-    Height = 26
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    TabOrder = 5
-    Text = 'Edit1'
-  end
+  PixelsPerInch = 96
+  TextHeight = 14
   object RedFoxContainer1: TRedFoxContainer
-    Left = 283
-    Top = 171
-    Width = 790
-    Height = 364
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 32
+    Top = 40
+    Width = 321
+    Height = 209
     Color = '$FFEEEEEE'
-    object VamPanel1: TVamPanel
-      Left = 4
-      Top = 0
-      Width = 90
-      Height = 176
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Opacity = 255
-      Text = 'VamPanel1'
-      HitTest = True
-      Color = '$FFCCCCCC'
-      Transparent = False
-      Visible = True
-      object VamLabel1: TVamLabel
-        Left = 4
-        Top = 4
-        Width = 77
-        Height = 155
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Opacity = 255
-        Text = 'GRACE'
-        HitTest = True
-        AutoTrimText = False
-        AutoSize = False
-        TextAlign = AlignCenter
-        TextVAlign = AlignCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -17
-        Font.Name = 'Liberation Sans'
-        Font.Style = [fsBold]
-        Visible = True
-      end
-    end
     object VamPanel2: TVamPanel
-      Left = 112
-      Top = 16
-      Width = 441
-      Height = 305
+      Left = 24
+      Top = 26
+      Width = 233
+      Height = 143
+      Margins.Left = 2
+      Margins.Top = 2
+      Margins.Right = 2
+      Margins.Bottom = 2
       Opacity = 255
       Text = 'VamPanel2'
       HitTest = True
       Color = '$FFCCCCCC'
       Transparent = False
       Visible = True
-      object VamTabPanel1: TVamTabPanel
-        Left = 72
-        Top = 32
-        Width = 225
-        Height = 241
+      object VamTextBox1: TVamTextBox
+        Left = 35
+        Top = 18
+        Width = 161
+        Height = 49
         Opacity = 255
-        Text = 'VamTabPanel1'
+        Text = 'TEST'
         HitTest = True
-        Color_Background = '$ff777776'
-        Color_TabOff = '$ffC0C0C0'
-        Color_TabOn = '$ffD3D3D3'
-        TabHeight = 24
-        TabOffset = 8
-        TabPadding = 16
-        TabSpace = 8
-        TabPosition = tpAboveLeft
+        AutoTrimText = False
+        Color = '$FF3E3E3E'
+        ColorMouseOver = '$FF3E3E3E'
+        ColorBorder = '$00000000'
+        ShowBorder = False
+        TextAlign = AlignCenter
+        TextVAlign = AlignCenter
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
+        Font.Color = clWhite
+        Font.Height = -11
         Font.Name = 'Tahoma'
         Font.Style = []
-        TabIndex = -1
-        Tabs.Strings = (
-          'Test 1'
-          'James Brown'
-          'Is'
-          'Dead')
+        ImageOverlayVertAlign = AlignCenter
+        ImageOverlayHorzAlign = AlignCenter
+        ImageOverlayOffsetX = 0
+        ImageOverlayOffsetY = 0
         Visible = True
       end
     end

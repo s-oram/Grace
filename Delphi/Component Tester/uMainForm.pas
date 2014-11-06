@@ -53,26 +53,13 @@ type
 
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Panel1: TPanel;
-    Panel2: TPanel;
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Edit4: TEdit;
     RedFoxContainer1: TRedFoxContainer;
-    VamPanel1: TVamPanel;
-    VamLabel1: TVamLabel;
-    Label1: TLabel;
     VamPanel2: TVamPanel;
-    VamTabPanel1: TVamTabPanel;
+    VamTextBox1: TVamTextBox;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
     Updater : TFancyUpdater;
@@ -257,7 +244,7 @@ begin
     SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
   end else
   begin
-    raise Exception.Create('file does not exist.');
+    //raise Exception.Create('file does not exist.');
   end;
 
 
@@ -272,8 +259,9 @@ begin
   WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
   WindowsEventHook.OnWinEvent := WinEventHandler;
 
-  VamLabel1.Font.Name := 'Westwood LET';
-  VamLabel1.Font.Size := 72;
+  
+
+  self.Scaled := false;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -289,7 +277,7 @@ begin
     SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
   end else
   begin
-    raise Exception.Create('file does not exist.');
+    //raise Exception.Create('file does not exist.');
   end;
 
 
@@ -354,30 +342,6 @@ begin
   end;
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
-var
-  Task : TThreadProcedure;
-  Fin  : TThreadProcedure;
-begin
-  Task := procedure
-  var
-    c1: Integer;
-  begin
-    TThread.Queue(nil, procedure
-    begin
-      Edit4.Text := 'jb is dead';
-    end);
-    Sleep(2000);
-  end;
-
-  Fin := procedure
-  begin
-    Edit4.Text := 'Go home';
-  end;
-
-  Async(Task).Await(Fin);
-end;
-
 procedure TForm1.UpdateLabel;
 begin
 
@@ -421,19 +385,6 @@ var
   c1: Integer;
 begin
   inherited;
-
-  for c1 := 0 to 100 do
-  begin
-    if IsCanceled then exit;
-    Sleep(250);
-    if IsCanceled then exit;
-
-    self.Synchronize(procedure
-    begin
-      Form.Edit4.Text := IntToStr(c1);
-    end);
-  end;
-
 
 end;
 
