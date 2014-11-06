@@ -262,6 +262,7 @@ begin
   
 
   self.Scaled := false;
+  VamTextBox1.Font.Size := 8;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
