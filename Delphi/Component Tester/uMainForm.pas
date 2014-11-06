@@ -66,6 +66,8 @@ type
     VamPanel1: TVamPanel;
     VamLabel1: TVamLabel;
     Label1: TLabel;
+    VamPanel2: TVamPanel;
+    VamTabPanel1: TVamTabPanel;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

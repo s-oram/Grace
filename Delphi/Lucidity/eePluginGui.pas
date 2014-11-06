@@ -395,7 +395,8 @@ begin
   //self.TabPanel.Font.PixelsPerInch := 96;
 
   //self.TabPanel.Font.PixelsPerInch := 200;
-  //self.TabPanel.Font.Size := 10;
+  self.TabPanel.Font.Size := 8;
+  self.Scaled := false;
 end;
 
 procedure TPluginGui.BeforeClose;

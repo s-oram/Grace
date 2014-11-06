@@ -15,7 +15,7 @@ object PluginGui: TPluginGui
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 144
+  PixelsPerInch = 96
   TextHeight = 21
   object RedFoxContainer: TRedFoxContainer
     Left = 0
@@ -210,7 +210,7 @@ object PluginGui: TPluginGui
           TabPosition = tpBelowCenter
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -20
+          Font.Height = 13
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           TabIndex = -1

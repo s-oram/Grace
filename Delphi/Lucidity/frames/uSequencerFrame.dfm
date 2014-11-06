@@ -79,8 +79,8 @@ object SequencerFrame: TSequencerFrame
             TextVAlign = AlignCenter
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
+            Font.Height = -15
+            Font.Name = 'MS UI Gothic'
             Font.Style = []
             Align = alLeft
             Visible = True

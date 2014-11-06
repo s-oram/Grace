@@ -607,15 +607,12 @@ begin
   BufferInterface.Text(xPos, yPos, AnsiString(Text));
 end;
 
-
-
-
 procedure TRedFoxImageBuffer.UpdateFont(Source: TFont);
   function CalcFontHeight(const FontSize : integer):integer;
   const
     PixelsPerInch = 96;
   begin
-    result := round(abs(FontSize * PixelsPerInch / 72));
+    result := round(abs(FontSize * PixelsPerInch / 96));
     //result := 14;
   end;
 var
@@ -637,8 +634,8 @@ begin
   BufferInterface.FillColor := GetAggColor(Source.Color);
   IsItalic := (TFontStyle.fsItalic in Source.Style);
   IsBold   := (TFontStyle.fsBold   in Source.Style);
-  //BufferInterface.Font(ToPAnsiChar(Source.Name), abs(Source.Height), IsBold, IsItalic, TAggFontCache.fcRaster, 0);
-  BufferInterface.Font(ToPAnsiChar(Source.Name), CalcFontHeight(Source.Size), IsBold, IsItalic, TAggFontCache.fcRaster, 0);
+  BufferInterface.Font(ToPAnsiChar(Source.Name), abs(Source.Height), IsBold, IsItalic, TAggFontCache.fcRaster, 0);
+  //BufferInterface.Font(ToPAnsiChar(Source.Name), CalcFontHeight(Source.Size), IsBold, IsItalic, TAggFontCache.fcRaster, 0);
   BufferInterface.FlipText  := true;
 end;
 
