@@ -56,9 +56,13 @@ type
     procedure EventHandle_ModalShadowClicked(Sender : TObject);
 
     procedure CMChildKey(var Message: TCMChildKey); message CM_CHILDKEY;
+
+    procedure Resizing(State: TWindowState); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    procedure AfterConstruction; override;
 
     procedure FocusFirstControl;
     procedure FocusPreviousControl;
@@ -72,6 +76,8 @@ type
 implementation
 
 uses
+  Dialogs,
+  SysUtils,
   VamLib.LoggingProxy,
   WinApi.Windows;
 
@@ -268,6 +274,11 @@ begin
   end;
 end;
 
+procedure TPluginDialogForm.Resizing(State: TWindowState);
+begin
+  inherited;
+end;
+
 procedure TPluginDialogForm.FocusNextControl;
 var
   c : TWinControl;
@@ -316,6 +327,15 @@ begin
   end;
 end;
 
+
+procedure TPluginDialogForm.AfterConstruction;
+begin
+  inherited;
+
+  assert(self.Scaled = false, 'Dialog form is scaled. (' + self.ClassName + ')' );
+
+  //Self.ScaleBy(Screen.PixelsPerInch, 96);
+end;
 
 procedure TPluginDialogForm.CloseDialog;
 begin

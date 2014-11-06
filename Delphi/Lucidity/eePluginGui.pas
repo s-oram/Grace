@@ -200,7 +200,6 @@ begin
 
   //=== update the font for all controls ===
   MainTitleLabel.Font.Name := 'Liberation Sans';
-  MainTitleLabel.Font.Size := 18;
 
   self.Font.Name := 'Liberation Sans';
   self.Font.Size := 10;
@@ -218,9 +217,8 @@ begin
   self.PixelsPerInch := 96;
   self.Scaled := false;
 
-
-  
-
+  MainTitleLabel.Font.Size := 19;
+  MainTitleLabel.Font.Style := [fsBold];
 end;
 
 procedure TPluginGui.FormDestroy(Sender: TObject);
