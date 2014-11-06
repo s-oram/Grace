@@ -751,7 +751,6 @@ begin
   FFontEngine := TAggFontEngineFreetypeInt32.Create;
 {$ELSE}
   FFontDC := GetDC(0);
-
   FFontEngine := TAggFontEngineWin32TrueTypeInt32.Create(FFontDC);
 {$ENDIF}
 
