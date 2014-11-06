@@ -56,11 +56,13 @@ type
     RedFoxContainer1: TRedFoxContainer;
     VamPanel2: TVamPanel;
     VamTextBox1: TVamTextBox;
+    Button1: TButton;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure VamTextBox1Click(Sender: TObject);
   private
     Updater : TFancyUpdater;
     FileBrowserAddon : TFileBrowserAddon;
@@ -259,9 +261,11 @@ begin
   WindowsEventHook := TWindowsEventHook.Create(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND);
   WindowsEventHook.OnWinEvent := WinEventHandler;
 
-  
+
 
   self.Scaled := false;
+  //Self.ScaleBy(Screen.PixelsPerInch, 96);
+
   VamTextBox1.Font.Size := 8;
 end;
 
@@ -363,6 +367,11 @@ begin
 
 end;
 
+
+procedure TForm1.VamTextBox1Click(Sender: TObject);
+begin
+  InWindow_ShowMessage(self, 'Bang');
+end;
 
 procedure TForm1.MyTestHandler2(Sender: TObject);
 begin

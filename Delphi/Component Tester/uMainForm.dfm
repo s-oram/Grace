@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 291
-  ClientWidth = 438
+  ClientHeight = 395
+  ClientWidth = 574
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,19 +11,20 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 14
   object RedFoxContainer1: TRedFoxContainer
-    Left = 32
-    Top = 40
+    Left = 127
+    Top = 8
     Width = 321
     Height = 209
     Color = '$FFEEEEEE'
     object VamPanel2: TVamPanel
-      Left = 24
-      Top = 26
+      Left = 2
+      Top = 2
       Width = 233
       Height = 143
       Margins.Left = 2
@@ -37,8 +38,8 @@ object Form1: TForm1
       Transparent = False
       Visible = True
       object VamTextBox1: TVamTextBox
-        Left = 35
-        Top = 18
+        Left = 3
+        Top = 3
         Width = 161
         Height = 49
         Opacity = 255
@@ -61,7 +62,16 @@ object Form1: TForm1
         ImageOverlayOffsetX = 0
         ImageOverlayOffsetY = 0
         Visible = True
+        OnClick = VamTextBox1Click
       end
     end
+  end
+  object Button1: TButton
+    Left = 8
+    Top = 8
+    Width = 113
+    Height = 49
+    Caption = 'Button1'
+    TabOrder = 1
   end
 end
