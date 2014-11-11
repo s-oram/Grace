@@ -11,6 +11,9 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 New: 
 - Grace can load program files that use an <AlternateSampleDirectory> node.
 
+Change:
+- Grace is now using Liberation sans font for GUI text. 
+
 Bug Fix:
 - Grace now works correctly when using large fonts in Windows. Previously 
   some text would be mis-sized.
