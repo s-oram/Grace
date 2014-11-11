@@ -56,6 +56,11 @@ bug report
 - text renders too big in tabs and is not accounted for with the pop up message.
 thunderlink://messageid=CAGf6qC5icMhx2wGE4vsh7v5Kkq-3HaRs4BqP7sUnNimA+JM5Fg@mail.gmail.com
 
+bug 
+Mouse wheel doesn't work in all hosts.
+benhehir@optusnet.com.au
+thunderlink://messageid=op.xo3a9cqtjh5xdy@b-aitch
+
 =============================================================================
      TODO HIGH
 =============================================================================

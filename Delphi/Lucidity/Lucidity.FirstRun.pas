@@ -20,14 +20,20 @@ uses
 procedure InstallFont(FontFile : string);
 var
   fn : string absolute FontFile;
+  r : integer;
 begin
   {$IFDEF Logging}Log.TrackMethod('InstallFont()');{$ENDIF}
   {$IFDEF Logging}Log.LogMessage('FontFile = ' + fn);{$ENDIF}
 
   if FileExists(fn) then
   begin
-    AddFontResource(pWideChar(fn)) ;
-    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+    r := AddFontResource(pWideChar(fn)) ;
+    if r <> 0 then SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+    {$IFDEF Logging}
+    if r <> 0
+      then Log.LogMessage('Font successfully added.')
+      else Log.LogMessage('Font install failed.');
+    {$ENDIF}
   end;
 end;
 

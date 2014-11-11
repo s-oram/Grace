@@ -199,9 +199,13 @@ begin
   SendMsg_StartProfiling;
   SetUpLogging;
 
+  {$IFDEF Logging}LogMain.LogMessage('VstMain #1');{$ENDIF}
   try
+
     //check a few things are in place before creating the plugin.
     FirstRunSetup;
+
+    {$IFDEF Logging}LogMain.LogMessage('VstMain #2');{$ENDIF}
 
     // get vst version
     if audioMaster(nil, audioMasterVersion, 0, 0, nil, 0) = 0 then
@@ -210,11 +214,16 @@ begin
       Exit;
     end;
 
+    {$IFDEF Logging}LogMain.LogMessage('VstMain #3');{$ENDIF}
+
     VstPlug := TeeVstAdapter.Create(audioMaster,0,0);
     if assigned(VstPlug)
       then result := VstPlug.Effect
       else result := nil;
+
+    {$IFDEF Logging}LogMain.LogMessage('VstMain #4');{$ENDIF}
   except
+    {$IFDEF Logging}LogMain.LogMessage('VstMain Exception!');{$ENDIF}
     {$IFDEF MadExcept}
     result := nil;
     // TODO:HIGH handleException should be called.
