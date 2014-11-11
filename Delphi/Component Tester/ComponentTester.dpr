@@ -22,7 +22,9 @@ uses
   InWindowDialog.SampleFinderDialog.Form in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
   InWindowDialog.SampleFinderDialog in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.pas',
   InWindowDialog.SampleFinderDialog.Brain in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
-  MyWorker in 'MyWorker.pas';
+  MyWorker in 'MyWorker.pas',
+  fontenumTest in 'fontenumTest.pas',
+  Lucidity.FirstRun in '..\Lucidity\Lucidity.FirstRun.pas';
 
 {$R *.res}
 

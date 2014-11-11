@@ -5,6 +5,8 @@ interface
 
 
 uses
+  Lucidity.FirstRun,
+  fontenumTest,
   VamLib.Threads,
   //OtlParallel,
   MyWorker,
@@ -57,6 +59,9 @@ type
     VamPanel2: TVamPanel;
     VamTextBox1: TVamTextBox;
     Button1: TButton;
+    Button2: TButton;
+    OpenDialog1: TOpenDialog;
+    Memo1: TMemo;
     procedure VamKnob1KnobPosChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -329,21 +334,26 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  MissingSamples, SearchPaths : TStringList;
+  fn : string;
+  FontName : string;
+  fontNames : TStringList;
 begin
-  MissingSamples := TStringList.Create;
-  SearchPaths    := TStringList.Create;
-  try
-    MissingSamples.Add('D:\Audio\Data\Samples\Drum Machines\Casio MT-100\00.wav');
-    MissingSamples.Add('D:\Audio\Data\Samples\Drum Machines\Casio MT-100\01.wav');
-    MissingSamples.Add('02.wav');
-    SearchPaths.Add('D:\Audio\Data\Poise Drum Kits 2');
-    SearchPaths.Add('D:\Audio\Data\Samples (Instruments)');
-    InWindow_SampleFinderDialog(self, MissingSamples, SearchPaths, nil);
-  finally
-    MissingSamples.Free;
-    SearchPaths.Free;
-  end;
+  fn :=  'C:\ProgramData\One Small Clue\Grace\Resources\LiberationSans-Bold.ttf';
+  InstallFont(fn);
+
+  fn :=  'C:\ProgramData\One Small Clue\Grace\Resources\LiberationSans-Regular.ttf';
+  InstallFont(fn);
+
+
+  Memo1.Clear;
+
+  FontNames := TStringList.Create;
+
+  CollectFonts(Fontnames);
+
+  Memo1.Lines.AddStrings(FontNames);
+
+  FontNames.Free;
 end;
 
 procedure TForm1.UpdateLabel;

@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 395
-  ClientWidth = 574
+  ClientHeight = 686
+  ClientWidth = 679
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -73,5 +73,27 @@ object Form1: TForm1
     Height = 49
     Caption = 'Button1'
     TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 11
+    Top = 68
+    Width = 113
+    Height = 49
+    Caption = 'Button1'
+    TabOrder = 2
+    OnClick = Button2Click
+  end
+  object Memo1: TMemo
+    Left = 224
+    Top = 29
+    Width = 401
+    Height = 649
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 3
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 24
+    Top = 152
   end
 end
