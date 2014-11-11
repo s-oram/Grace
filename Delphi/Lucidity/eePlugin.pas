@@ -333,6 +333,8 @@ var
   fnA : string;
   IsDefaultPatchLoaded : boolean;
 begin
+  {$IFDEF Logging}LogMain.TrackMethod('TeePlugin.Create');{$ENDIF}
+
   inherited;
 
   aGlobals.MotherShip.Inject_MsgIdToStr(uConstants.LucidMsgIDToStr);
@@ -1425,6 +1427,8 @@ procedure TeePlugin.GetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeePlugin.GetPreset');{$ENDIF}
+
   assert(ms.Position = 0, 'Memory stream is not zero.');
 
   StateManager := TLucidityStateManager.Create(self);
@@ -1448,6 +1452,8 @@ procedure TeePlugin.SetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeePlugin.SetPreset');{$ENDIF}
+
   assert(ms.Position = 0, 'Memory stream is not zero.');
 
   StateManager := TLucidityStateManager.Create(self);

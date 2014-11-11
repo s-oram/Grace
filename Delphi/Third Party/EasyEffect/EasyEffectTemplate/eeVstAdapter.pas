@@ -104,7 +104,7 @@ implementation
 
 uses
   {$IFDEF MadExcept}MadExcept,{$ENDIF}
-  {$IFDEF Logging} siAuto, {$ENDIF}
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Dialogs, System.SysUtils,
   {$ELSE}
@@ -153,7 +153,7 @@ begin
       Result := obj.dispatcher(opCode, index, value, ptr, opt);
     end else
     begin
-      // TODO:MED Do we need a critical section here? Perhaps a Multireader lock would be better, if a lock is needed at all.
+      // TODO:HIGH Do we need a critical section here? Perhaps a Multireader lock would be better, if a lock is needed at all.
       DispatchEffectLock.Enter;
       try
         obj := e^.vObject;
@@ -192,6 +192,7 @@ constructor TeeVstAdapter.Create(audioMaster: TAudioMasterCallbackFunc; numProgr
 var
   UniqueId:AnsiString;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Create()');{$ENDIF}
   Globals := TGlobals.Create;
 
   // Assign global VST method references so that the GUI can set/get parameter information.
@@ -264,12 +265,14 @@ begin
   ParametersHaveChanged := true;
 
   {$IFDEF Logging}
-  SiMain.LogMessage('Create Finished');
+  Log.LogMessage('Create Finished');
   {$ENDIF}
 end;
 
 destructor TeeVstAdapter.Destroy;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Destroy()');{$ENDIF}
+
   SetLength(MidiEvents,0);
 
   if assigned(Editor) then
@@ -583,6 +586,8 @@ end;
 
 function TeeVstAdapter.GetChunk(var data: pointer; isPreset: Boolean): longint;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.GetChunk()');{$ENDIF}
+
   //Clear the data storage memory stream
   ChunkData.Clear;
   try
@@ -603,6 +608,8 @@ end;
 
 function TeeVstAdapter.SetChunk(data: pointer; byteSize: Integer; isPreset: Boolean): longint;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.SetChunk()');{$ENDIF}
+
   result := byteSize;
 
   ChunkData.Clear;
@@ -624,6 +631,7 @@ end;
 
 procedure TeeVstAdapter.Suspend;
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Suspend()');{$ENDIF}
   inherited;
   Globals.TriggerVstSuspendEvent;
   Plugin.Suspend;
@@ -638,8 +646,8 @@ var
   smps : integer;
   {$ENDIF}
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Resume()');{$ENDIF}
   inherited;
-
   {$IFDEF OverSampleEnabled}
     sr := round(SampleRate) * Plugin.Settings.OverSampleFactor;
     bs := BlockSize         * Plugin.Settings.OverSampleFactor;
@@ -649,8 +657,6 @@ begin
     bs := BlockSize;
     cr := round(sr / Plugin.Settings.ControlRateDivision);
   {$ENDIF}
-
-
 
   if Globals.BlockSize   <> bs then Globals.BlockSize   := bs;
 

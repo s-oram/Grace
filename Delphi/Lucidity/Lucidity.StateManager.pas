@@ -174,7 +174,7 @@ end;
 procedure TLucidityStateManager.SetPreset(var ms: TMemoryStream);
 var
   XML : TNativeXML;
-  //fn : string;
+  fn : string;
 begin
   {$IFDEF Logging}
   LogMain.LogMessage('StateManager.SetPreset (Sanity Check)');
@@ -186,10 +186,10 @@ begin
   try
     XML.LoadFromStream(ms);
 
-    //fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
-    //xml.XmlFormat := TXmlFormatType.xfReadable;
-    //XML.SaveToFile(fn);
-    //{$IFDEF Logging}LogMain.LogMessage('test fn = ' + fn);{$ENDIF}
+    fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
+    xml.XmlFormat := TXmlFormatType.xfReadable;
+    XML.SaveToFile(fn);
+    {$IFDEF Logging}LogMain.LogMessage('test fn = ' + fn);{$ENDIF}
 
     CheckPatchFormatVersion(XML);
     ReadStateFromXML(XML);

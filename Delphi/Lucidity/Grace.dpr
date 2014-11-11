@@ -193,10 +193,10 @@ var
 
 function main(audioMaster: TAudioMasterCallbackFunc): PAEffect; cdecl; export;
 begin
+  {$IFDEF Logging}LogMain.TrackMethod('VstMain');{$ENDIF}
+
   ReportMemoryLeaksOnShutDown := True;
-
   SendMsg_StartProfiling;
-
   SetUpLogging;
 
   try

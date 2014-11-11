@@ -2,11 +2,14 @@ unit Lucidity.FirstRun;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 procedure FirstRunSetup;
 
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   WinApi.Windows,
   WinApi.Messages,
   SysUtils,
@@ -18,6 +21,9 @@ procedure InstallFont(FontFile : string);
 var
   fn : string absolute FontFile;
 begin
+  {$IFDEF Logging}Log.TrackMethod('InstallFont()');{$ENDIF}
+  {$IFDEF Logging}Log.LogMessage('FontFile = ' + fn);{$ENDIF}
+
   if FileExists(fn) then
   begin
     AddFontResource(pWideChar(fn)) ;
@@ -32,6 +38,8 @@ var
   DataDir : string;
   fn : string;
 begin
+  {$IFDEF Logging}Log.TrackMethod('FirstRunSetup');{$ENDIF}
+
   if (PluginDataDir^.Exists) then
   begin
     //=== Check that the 'User\Patches' directory exists ===

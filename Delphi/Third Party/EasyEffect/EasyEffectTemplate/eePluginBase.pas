@@ -131,6 +131,7 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Dialogs,
   {$ELSE}
@@ -145,6 +146,8 @@ uses
 
 constructor TeePluginBase.Create(const aGlobals : TGlobals);
 begin
+  {$IFDEF Logging}Log.TrackMethod('TeePluginBase.Create');{$ENDIF}
+
   fPublishedVstParameters := TPublishedVstParameterController.Create;
 
   fGlobals := aGlobals;
