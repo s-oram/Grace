@@ -115,7 +115,6 @@ uses
   _DirectSound,
   VamGuiControlInterfaces,
   RedFoxColor,
-  VamLib.Throttler,
   Generics.Collections,
   DateUtils,
   InWindowDialog,
