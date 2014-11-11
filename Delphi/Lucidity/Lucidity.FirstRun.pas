@@ -6,6 +6,8 @@ interface
 
 procedure FirstRunSetup;
 
+procedure InstallFont(FontFile : string);
+
 implementation
 
 uses
