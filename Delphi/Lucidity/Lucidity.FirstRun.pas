@@ -39,12 +39,32 @@ begin
   end;
 end;
 
+procedure UninstallFont(FontFile : string);
+var
+  fn : string absolute FontFile;
+  r : boolean;
+begin
+  {$IFDEF Logging}Log.TrackMethod('UninstallFont()');{$ENDIF}
+  {$IFDEF Logging}Log.LogMessage('FontFile = ' + fn);{$ENDIF}
+
+  if FileExists(fn) then
+  begin
+    r := RemoveFontResource(pWideChar(fn)) ;
+    if r = true then SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+    {$IFDEF Logging}
+    if r = true
+      then Log.LogMessage('Font successfully removed.')
+      else Log.LogMessage('Font not removed. (FAIL)');
+    {$ENDIF}
+  end;
+end;
+
+
 procedure FirstRunSetup;
 var
   SampleDirectories: TSampleDirectories;
   DataFileName : string;
   DataDir : string;
-  fn : string;
 begin
   {$IFDEF Logging}Log.TrackMethod('FirstRunSetup');{$ENDIF}
 
@@ -80,12 +100,27 @@ begin
       SampleDirectories.WriteDirectoryInfoToFile(DataFilename);
     end;
 
-    fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Regular.ttf';
-    InstallFont(fn);
 
-    fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Bold.ttf';
-    InstallFont(fn);
   end;
 end;
+
+
+var
+  fn : string;
+
+initialization
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Regular.ttf';
+  InstallFont(fn);
+
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Bold.ttf';
+  InstallFont(fn);
+
+finalization
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Regular.ttf';
+  UninstallFont(fn);
+
+  fn := IncludeTrailingPathDelimiter(PluginDataDir^.Path) + IncludeTrailingPathDelimiter('Resources') + 'LiberationSans-Bold.ttf';
+  UninstallFont(fn);
+
 
 end.
