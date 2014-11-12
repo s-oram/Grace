@@ -61,6 +61,14 @@ Mouse wheel doesn't work in all hosts.
 benhehir@optusnet.com.au
 thunderlink://messageid=op.xo3a9cqtjh5xdy@b-aitch
 
+
+bug
+hotkeys don't work in Traction5.
+
+bug
+preset patches play with very loud crackling in Tracktion5 64bit.
+strangely samples loaded in a new empty program don't crackle. 
+
 =============================================================================
      TODO HIGH
 =============================================================================
