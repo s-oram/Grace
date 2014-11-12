@@ -6,9 +6,22 @@ uses
   Classes;
 
 const
-  // NOTE: End of line definition sourced from http://stackoverflow.com/a/254997/395461
-  EndOfLine = {$IFDEF LINUX} AnsiChar(#10) {$ENDIF}
+    // NOTE: End of line definition sourced from http://stackoverflow.com/a/254997/395461
+    EndOfLine = {$IFDEF LINUX} AnsiChar(#10) {$ENDIF}
               {$IFDEF MSWINDOWS} AnsiString(#13#10) {$ENDIF};
+
+type
+  // kChar wraps some ansi charactor constants.
+  // http://www.alanwood.net/demos/ansi.html
+  kChar = record
+  const
+    Space = ' ';
+    NoBreakSpace = AnsiChar(160);
+    Bullet       = AnsiChar(149);
+    MultiplySign = AnsiChar(215);
+    DivideSign   = AnsiChar(247);
+  end;
+
 
 type
   PObject = ^TObject;
