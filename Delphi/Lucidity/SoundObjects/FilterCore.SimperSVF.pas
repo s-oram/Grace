@@ -196,6 +196,18 @@ end;
 
 class procedure TSimperVCF.StepFilter_asm(var Data: TDualSimperSVFData);
 asm
+  {$IF Defined(Win64)}
+  // Important: Must maintain xmm6 and up when using Windows 64bit.
+  // http://stackoverflow.com/a/10162065/395461
+
+  //Push xmm6-7
+  sub     esp, 16
+  movdqu  dqword [esp], xmm6
+  sub     esp, 16
+  movdqu  dqword [esp], xmm7
+  {$IFEND}
+
+
   //Data.v1z[0] := Data.v1[0];
   movupd xmm0, [Data].TDualSimperSVFData.v1[0]
   movupd [Data].TDualSimperSVFData.v1z[0], xmm0
@@ -262,22 +274,30 @@ asm
 
   //Data.v0z[0] := Data.v0[0];
   movupd [Data].TDualSimperSVFData.v0z[0], xmm2
+
+  {$IF Defined(Win64)}
+  //Pop xmm6-7
+  movdqu  xmm7, dqword [esp]
+  add     esp, 16
+  movdqu  xmm6, dqword [esp]
+  add     esp, 16
+  {$IFEND}
 end;
 
 class procedure TSimperVCF.GetLowpassOutput(var Data: TDualSimperSVFData);
 asm
   //Calc outputs...
   //Data.Ouput[0] := Data.v2[0];
-  movupd xmm7, [Data].TDualSimperSVFData.v2[0]
-  movupd [Data].TDualSimperSVFData.Ouput[0], xmm7
+  movupd xmm0, [Data].TDualSimperSVFData.v2[0]
+  movupd [Data].TDualSimperSVFData.Ouput[0], xmm0
 end;
 
 class procedure TSimperVCF.GetBandpassOutput(var Data: TDualSimperSVFData);
 asm
   //Calc outputs...
   //Data.Ouput[0] := Data.v2[0];
-  movupd xmm7, [Data].TDualSimperSVFData.v1[0]
-  movupd [Data].TDualSimperSVFData.Ouput[0], xmm7
+  movupd xmm0, [Data].TDualSimperSVFData.v1[0]
+  movupd [Data].TDualSimperSVFData.Ouput[0], xmm0
 end;
 
 class procedure TSimperVCF.GetHighpassOutput(var Data: TDualSimperSVFData);
