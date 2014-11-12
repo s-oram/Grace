@@ -122,6 +122,9 @@ Installers
 
 Change "Open with..." command to "Edit with..."
 
+- loop point modulation needs to have some visual clues. Add an extra "boot"
+  when a mod slot is selected.
+
 A way to drag samples from Grace to other apps would be good.
 
 - sample map should have zoom buttons like the sample display.
