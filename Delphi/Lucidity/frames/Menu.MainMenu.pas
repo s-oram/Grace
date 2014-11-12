@@ -320,19 +320,28 @@ end;
 
 procedure TMainMenu.ShowAboutBox(Sender: TObject);
 var
+  TargetPlatform : string;
   s : string;
 begin
   //TODO:MED The about box is a small message box. It would be better to have a nice big window with full credits etc.
 
+  {$IF Defined(WIN32)}
+     TargetPlatform := '32bit';
+  {$ELSEIF Defined(WIN64)}
+     TargetPlatform := '64bit';
+  {$ELSE}
+     TargetPlatform := 'unknown-platform';
+  {$IFEND}
+
   s := kProductName + ' Vst Sampler By One Small Clue' + EndOfLine;
 
-  s := s + EndOfLine;
-
   {$IFDEF ReleaseBuild}
-  s := s + 'Version ' + GetBuildInfoAsString + ' Release Build' + EndOfLine;
+  s := s + 'Version ' + GetBuildInfoAsString + ' Release Build' + kChar.Space + TargetPlatform + EndOfLine;
   {$ELSE}
-  s := s + 'Version ' + GetBuildInfoAsString + ' Debug Build' + EndOfLine;
+  s := s + 'Version ' + GetBuildInfoAsString + ' Debug Build'   + kChar.Space + TargetPlatform + EndOfLine;
   {$ENDIF}
+
+  s := s + EndOfLine;
 
   if Plugin.Globals.CopyProtection.IsRegistered
     then s := s + 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>' + EndOfLine
