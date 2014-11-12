@@ -69,6 +69,10 @@ bug
 preset patches play with very loud crackling in Tracktion5 64bit.
 strangely samples loaded in a new empty program don't crackle. 
 
+bug
+text in some controls is too wide and is being cut off after the font change.
+Update the width of the controls.
+
 =============================================================================
      TODO HIGH
 =============================================================================
