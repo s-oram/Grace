@@ -17,6 +17,8 @@ Change:
 Bug Fix:
 - Grace now works correctly when using large fonts in Windows. Previously 
   some text would be mis-sized.
+- Some assembly code used in the filters was causing problems in the 64bit 
+  build. The problem was very apparent in Tracktion 5.
 
 
 
