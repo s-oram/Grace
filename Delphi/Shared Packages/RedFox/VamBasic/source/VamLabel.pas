@@ -3,7 +3,7 @@ unit VamLabel;
 interface
 
 uses
-  Agg2D,
+  Agg2D, Graphics,
   Classes, RedFox, RedFoxWinControl, VamWinControl;
 
 type
@@ -18,15 +18,12 @@ type
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     procedure SetAutoTrimText(const Value: boolean);
-
   protected
     DisplayText : string;
-
     procedure Paint; override;
-
-    procedure SetAutoSize(Value: boolean); override;
-
     procedure CalculateDisplayText;
+    procedure SetAutoSize(Value: boolean); override;
+    procedure SetFont(const Value: TFont); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -101,6 +98,16 @@ begin
   begin
     fAutoTrimText := Value;
     CalculateDisplayText;
+    Invalidate;
+  end;
+end;
+
+procedure TVamLabel.SetFont(const Value: TFont);
+begin
+  inherited;
+  if AutoSize then
+  begin
+    PerformAutoSize(DisplayText);
     Invalidate;
   end;
 end;

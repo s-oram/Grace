@@ -3,6 +3,7 @@ unit VamCompoundNumericKnob;
 interface
 
 uses
+  WinApi.Messages,
   VamGuiControlInterfaces,
   Types, Controls, Classes, StdCtrls, Graphics,
   RedFox, RedFoxColor,
@@ -75,15 +76,13 @@ type
     function GetKnobSensitivity: single;
     procedure SetKnobSensitivity(const Value: single);
 
-
-
-
+    // NOTE: I think this is the correct way to respond to font changes.
+    // http://stackoverflow.com/a/4998033/395461
+    procedure CMFontChanged(var Message: TMessage); message CM_FONTCHANGED;
   protected
     Arrows       : TVamArrows;
     Knob         : TVamNumericKnob;
     ControlLabel : TVamLabel;
-
-    procedure SetFont(const Value: TFont); override;
 
     procedure MouseEnter; override;
     procedure MouseLeave; override;
@@ -199,6 +198,18 @@ begin
   Knob.Free;
   inherited;
 end;
+
+procedure TVamCompoundNumericKnob.CMFontChanged(var Message: TMessage);
+begin
+  inherited;
+
+  ControlLabel.Font := self.Font;
+  Knob.Font         := self.Font;
+  Knob.Font.Color         := fColor_Numeric;
+  ControlLabel.Font.Color := fColor_Label;
+end;
+
+
 
 function TVamCompoundNumericKnob.KnobControl_GetKnobValue: single;
 var
@@ -336,17 +347,6 @@ end;
 procedure TVamCompoundNumericKnob.SetCustomText(const Value: string);
 begin
   Knob.CustomText := Value;
-end;
-
-procedure TVamCompoundNumericKnob.SetFont(const Value: TFont);
-begin
-  inherited;
-
-  ControlLabel.Font := Value;
-  Knob.Font := Value;
-
-  Knob.Font.Color         := fColor_Numeric;
-  ControlLabel.Font.Color := fColor_Label;
 end;
 
 procedure TVamCompoundNumericKnob.SetKnobDecimalPlaces(const Value: integer);
