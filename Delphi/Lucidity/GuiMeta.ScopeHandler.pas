@@ -67,7 +67,6 @@ implementation
 uses
   {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
   SysUtils,
-  VamLib.Throttler,
   Lucidity.Enums,
   VamQuery,
   VamWinControl,

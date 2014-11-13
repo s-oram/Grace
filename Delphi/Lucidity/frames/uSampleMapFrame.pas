@@ -7,6 +7,7 @@ interface
 uses
   Lucidity.Enums,
   VamLib.UniqueID,
+  VamLib.GuiUtils,
   VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.GroupVisibility,
   Menu.SampleMapContextMenu, Lucidity.GuiStandard,
@@ -92,7 +93,8 @@ type
     SampleMapMenu : TSampleMapContextMenu;
     GroupVisibilityMenu : TGroupVisibilityMenu;
 
-    ThrottleID : TUniqueID;
+    KnobChangedTK : TThrottleToken;
+
     procedure ScrollPosChanged;
 
     procedure UpdateRegionInfoControls(const SampleName, LowNote, HighNote, LowVel, HighVel, RootNote : string); overload;
@@ -127,7 +129,7 @@ uses
   {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
   InWindowDialog,
   Lucidity.GuiUtils,
-  VamLib.Throttler,
+  //VamLib.Throttler,
   VamLib.Animation,
   VamLib.Threads,
   VamLib.Utils,
@@ -146,8 +148,6 @@ uses
 constructor TSampleMapFrame.Create(AOwner: TComponent);
 begin
   inherited;
-
-  ThrottleID.Init;
 
   MessageOverlayAnimateID.Init;
 
@@ -1108,7 +1108,7 @@ begin
   // are only updated to show the correct value after the SampleRegionChanged message
   // has been set. This results in a very slight delay for the final value to show.
   // It's not a showstopper bug but would be great to fix.
-  Throttle(ThrottleID, 25, procedure
+  Throttle(KnobChangedTK, 25, procedure
   begin
     Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
@@ -1143,7 +1143,7 @@ begin
 
 
   //TODO: It would be handy to have a thread safe throttle.
-  Throttle(ThrottleID, 25, procedure
+  Throttle(KnobChangedTK, 25, procedure
   begin
     Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);

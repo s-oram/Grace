@@ -5,15 +5,17 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  Lucidity.CustomControlHandler,
+
   Vcl.Menus,
   Menu.CustomPopupMenu,
   Contnrs,
   Controls,
   Classes,
   eePlugin,
+  VamLib.GuiUtils,
   VamLib.ZeroObject,
   eeMidiAutomationV2,
+  Lucidity.CustomControlHandler,
   Lucidity.PluginParameters;
 
 {+M} // required for the knob handler RTTI.
@@ -65,7 +67,6 @@ uses
   SysUtils,
   eeTypes,
   Effect.MidiAutomation,
-  VamLib.Throttler,
   VamKnob,
   VamGuiControlInterfaces,
   Lucidity.Enums,
@@ -348,11 +349,12 @@ begin
       Plugin.SetPluginParameterModAmount(TParChangeScope.psFocused, ParName, ModIndex, ModAmountValue);
     end;
 
-    Throttle(ThrottleHandle, 25,
+    Throttle(ParChangedTK, 25,
     procedure
     begin
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged, nil, nil);
-    end);
+    end
+    );
   end;
 end;
 

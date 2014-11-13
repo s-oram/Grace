@@ -8,6 +8,7 @@ uses
   eePlugin,
   Classes,
   Contnrs,
+  VamLib.GuiUtils,
   VamLib.UniqueID,
   VamLib.ZeroObject;
 
@@ -20,10 +21,8 @@ type
   protected
     Plugin : TeePlugin;
     ControlList : TObjectList;
-    ThrottleHandle : TUniqueID;
+    ParChangedTK : TThrottleToken;
     procedure UpdateControl(const c : TObject); virtual; abstract;
-
-
 
     procedure PluginParameterBeginEdit(const ParName : string); overload;
     procedure PluginParameterBeginEdit(const ParName1, ParName2: string); overload;
@@ -45,7 +44,6 @@ implementation
 
 uses
   uConstants,
-  VamLib.Throttler,
   eeTypes,
   Lucidity.GuiUtils,
   Lucidity.PluginParameters;
@@ -57,7 +55,6 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
-  ThrottleHandle.Init;
 end;
 
 destructor TCustomControlHandler.Destroy;
@@ -152,7 +149,7 @@ begin
     Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
   end;
 
-  Throttle(ThrottleHandle, 25,
+  Throttle(ParChangedTK, 25,
   procedure
   begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);

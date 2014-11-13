@@ -106,7 +106,6 @@
 			<DCCReference Include="Source\VamLib.PerformanceTuning.pas"/>
 			<DCCReference Include="Source\VamLib.WinUtils.pas"/>
 			<DCCReference Include="Source\VamLib.MultiEvent.pas"/>
-			<DCCReference Include="Source\VamLib.Throttler.pas"/>
 			<DCCReference Include="Source\VamLib.Types.pas"/>
 			<DCCReference Include="Source\VamLib.DebugString.pas"/>
 			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>

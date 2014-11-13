@@ -7,9 +7,11 @@ interface
 {$SCOPEDENUMS ON}
 
 uses
+  Math,
   Lucidity.GuiStandard,
   VamLib.UniqueID,
-  VamLib.ZeroObject, Math,
+  VamLib.GuiUtils,
+  VamLib.ZeroObject,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.Types,
   Lucidity.Interfaces,
@@ -60,7 +62,7 @@ type
     procedure GeneralMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
-    UpdateSampleDisplayThottleToken : TUniqueID;
+    UpdateSampleDisplayTK : TThrottleToken;
 
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
@@ -139,7 +141,7 @@ uses
   VamLib.Utils,
   VamLib.Graphics,
   Lucidity.PluginParameters,
-  VamLib.Throttler,
+  //VamLib.Throttler,
   eeDsp,
   eeVstXml, Lucidity.Enums,
   RedFoxColor, Lucidity.Utils,
@@ -153,8 +155,6 @@ uses
 constructor TMiniSampleDisplayFrame.Create(AOwner: TComponent);
 begin
   inherited;
-
-  UpdateSampleDisplayThottleToken.Init;
 
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
   fSampleOverlay.Parent  := SampleDisplay;
@@ -819,7 +819,7 @@ begin
   end;
 
 
-  Throttle(UpdateSampleDisplayThottleToken, 25, procedure
+  Throttle(UpdateSampleDisplayTK, 25, procedure
   begin
     UpdateSampleDisplay;
   end);
@@ -1159,7 +1159,7 @@ begin
   Offset := (Sender as TVamScrollBar).IndexPos;
   Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
-  Throttle(UpdateSampleDisplayThottleToken, 25, procedure
+  Throttle(UpdateSampleDisplayTK, 25, procedure
   begin
     UpdateSampleDisplay;
   end);
