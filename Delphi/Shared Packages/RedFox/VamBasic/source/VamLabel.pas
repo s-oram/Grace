@@ -3,6 +3,8 @@ unit VamLabel;
 interface
 
 uses
+  Controls,
+  WinApi.Messages,
   Agg2D, Graphics,
   Classes, RedFox, RedFoxWinControl, VamWinControl;
 
@@ -18,12 +20,15 @@ type
     procedure SetTextAlign(const Value: TRedFoxAlign);
     procedure SetTextVAlign(const Value: TRedFoxAlign);
     procedure SetAutoTrimText(const Value: boolean);
+
+    // NOTE: I think this is the correct way to respond to font changes.
+    // http://stackoverflow.com/a/4998033/395461
+    procedure CMFontChanged(var Message: TMessage); message CM_FONTCHANGED;
   protected
     DisplayText : string;
     procedure Paint; override;
     procedure CalculateDisplayText;
     procedure SetAutoSize(Value: boolean); override;
-    procedure SetFont(const Value: TFont); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -52,6 +57,8 @@ uses
 
 { TRedFoxLabel }
 
+
+
 constructor TVamLabel.Create(AOwner: TComponent);
 begin
   inherited;
@@ -67,6 +74,17 @@ destructor TVamLabel.Destroy;
 begin
 
   inherited;
+end;
+
+procedure TVamLabel.CMFontChanged(var Message: TMessage);
+begin
+  inherited;
+
+  if AutoSize then
+  begin
+    PerformAutoSize(DisplayText);
+    Invalidate;
+  end;
 end;
 
 procedure TVamLabel.CalculateDisplayText;
@@ -98,16 +116,6 @@ begin
   begin
     fAutoTrimText := Value;
     CalculateDisplayText;
-    Invalidate;
-  end;
-end;
-
-procedure TVamLabel.SetFont(const Value: TFont);
-begin
-  inherited;
-  if AutoSize then
-  begin
-    PerformAutoSize(DisplayText);
     Invalidate;
   end;
 end;

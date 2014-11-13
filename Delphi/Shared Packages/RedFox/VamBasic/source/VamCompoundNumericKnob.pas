@@ -203,10 +203,13 @@ procedure TVamCompoundNumericKnob.CMFontChanged(var Message: TMessage);
 begin
   inherited;
 
-  ControlLabel.Font := self.Font;
-  Knob.Font         := self.Font;
-  Knob.Font.Color         := fColor_Numeric;
-  ControlLabel.Font.Color := fColor_Label;
+  if (assigned(ControlLabel)) and (assigned(Knob)) then
+  begin
+    ControlLabel.Font := self.Font;
+    Knob.Font         := self.Font;
+    Knob.Font.Color         := fColor_Numeric;
+    ControlLabel.Font.Color := fColor_Label;
+  end;
 end;
 
 

@@ -59,8 +59,6 @@ type
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
-    procedure SetFont(const Value: TFont); override;
-
     procedure EventHandler_KnobChanged(Sender : TObject);
 
     procedure UpdateModAmountText;
@@ -312,15 +310,6 @@ begin
     fElementMouseOver := Value;
     UpdateColors;
   end;
-end;
-
-procedure TVamCompoundModMatrixSection.SetFont(const Value: TFont);
-begin
-  inherited;
-  TextBox1.Font := Value;
-  TextBox2.Font := Value;
-  TextBox3.Font := Value;
-  ModAmountTextBox.Font := Value;
 end;
 
 procedure TVamCompoundModMatrixSection.SetText1(const Value: string);

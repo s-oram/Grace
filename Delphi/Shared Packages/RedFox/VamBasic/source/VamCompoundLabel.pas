@@ -3,6 +3,7 @@ unit VamCompoundLabel;
 interface
 
 uses
+  WinApi.Messages,
   Types, Controls, Classes, StdCtrls, Graphics,
   RedFox, RedFoxColor,
   VamWinControl, VamLabel;
@@ -20,6 +21,10 @@ type
     procedure SetText1(const Value: string);
     procedure SetText2(const Value: string);
     procedure SetText2Align(const Value: TRedFoxAlign);
+
+    // NOTE: I think this is the correct way to respond to font changes.
+    // http://stackoverflow.com/a/4998033/395461
+    procedure CMFontChanged(var Message: TMessage); message CM_FONTCHANGED;
   protected
     Label1, Label2 : TVamLabel;
     procedure SetFont(const Value: TFont); override;
@@ -85,6 +90,22 @@ begin
   inherited;
 end;
 
+procedure TVamCompoundLabel.CMFontChanged(var Message: TMessage);
+begin
+  inherited;
+
+  if (assigned(Label1)) and (assigned(Label2)) then
+  begin
+    Label1.Font := Font;
+    Label2.Font := Font;
+
+    Label1.Font.Color := fColor1;
+    Label2.Font.Color := fColor2;
+  end;
+end;
+
+
+
 
 procedure TVamCompoundLabel.SetColor1(const Value: TColor);
 begin
@@ -101,12 +122,6 @@ end;
 procedure TVamCompoundLabel.SetFont(const Value: TFont);
 begin
   inherited;
-
-  Label1.Font := Value;
-  Label2.Font := Value;
-
-  Label1.Font.Color := fColor1;
-  Label2.Font.Color := fColor2;
 end;
 
 procedure TVamCompoundLabel.SetText1(const Value: string);

@@ -34,8 +34,6 @@ type
     procedure WMHScroll(var Message: TWMHScroll); message WM_HSCROLL;
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
     procedure CMMouseWheel(var Message: TCMMouseWheel); message CM_MOUSEWHEEL;
-
-
   protected
     function GetObject : TObject;
 
@@ -54,6 +52,11 @@ type
     procedure OleDragEnter(Sender: TObject; ShiftState: TShiftState; APoint: TPoint; var Effect: Integer; Data:IVamDragData); virtual;
     procedure OleDragLeave(Sender: TObject); virtual;
 
+    // TODO:MED Originally I redeclared the Font property with new getters and setters
+    // so I could respond to font changes in descendant controls. Now I've found out
+    // this is the wrong approach. I need to phase my code here and respond to
+    // font changes by watch for the CM_FONTCHANGED message.
+    // http://stackoverflow.com/a/4998033/395461
     property Font : TFont read GetFont write SetFont;
 
     //==========================================================================================================================
