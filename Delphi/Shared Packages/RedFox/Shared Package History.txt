@@ -1,0 +1,11 @@
+======================================
+            History
+======================================
+14-Nov-2014 
+- Merge in changes to VamBasic components made in Grace.
+- Merge in changes to RedFox code made in Grace.
+  (Changes avoid text scaling when using different Windows DPI settings.)
+
+14-Nov-2014 
+- Initial shared packaged commit. Taken from Poise.
+

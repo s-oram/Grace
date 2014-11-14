@@ -207,6 +207,7 @@ var
 
 implementation
 
+
 // ------------------------------------------------------------------------------
 //
 // This code implements the AUTODIN II polynomial
