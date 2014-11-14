@@ -6,6 +6,13 @@ uses
   Controls,
   SysUtils;
 
+
+
+// NOTE: Here is a good tutorial explaining the different timer options in Windows.
+// http://www.codeproject.com/Articles/1236/Timers-Tutorial#WaitableTimers
+// This tutorial will be useful if I have to re-implement the debounce and throttle
+// methods again if something doesn't work properly.
+
 procedure Wait(const MilliSeconds : Longint);
 
 // TODO:MED write a GuiDebouce and/or GuiThrottle methods based
@@ -40,7 +47,15 @@ type
     LastCallTime : TDateTime;
     IsTrailingCallRequired : Boolean;
     IsActive : boolean;
+    DoCancel : boolean;
   public
+    // While we have a Cancel method here, I don't
+    // think it's needed to prevent the main GUI thread from
+    // closing mid debounce. That's because the debounce wait()
+    // method executes on the main thread. In effect it is blocking but
+    // process messages is being called so it looks like the form is still
+    // responding.
+    procedure Cancel; //cancel. Not blocking.
   end;
 
   TThrottleToken = record
@@ -50,6 +65,7 @@ type
     IsTrailingCallRequired : Boolean;
     IsActive : boolean;
   public
+    // TODO:HIGH add a cancel method here!
   end;
 
   TDebounceEdge = (deLeading, deTrailing, deBoth);
@@ -107,21 +123,24 @@ procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdg
 var
   IsWaitFinished : boolean;
 begin
+  DebounceToken.DoCancel := false;
+  DebounceToken.CallRef := Proc;
+  DebounceToken.LastCallTime := Now;
+
   if (DebounceToken.IsActive = false) then
   begin
-    DebounceToken.CallRef := Proc;
-
     if (Edge <> TDebounceEdge.deTrailing)
       then DebounceToken.CallRef();
 
     DebounceToken.IsTrailingCallRequired := true;
     DebounceToken.IsActive := true;
-    DebounceToken.LastCallTime := Now;
 
     IsWaitFinished := false;
 
     repeat
       Wait(MilliSeconds);
+
+      if DebounceToken.DoCancel then break;
 
       if not WithinPastMilliSeconds(Now, DebounceToken.LastCallTime, MilliSeconds) then
       begin
@@ -143,8 +162,6 @@ begin
     DebounceToken.IsActive := false;
   end else
   begin
-    DebounceToken.CallRef := Proc;
-    DebounceToken.LastCallTime := Now;
     DebounceToken.IsTrailingCallRequired := true;
   end;
 end;
@@ -218,5 +235,12 @@ begin
 end;
 
 
+
+{ TDebounceToken }
+
+procedure TDebounceToken.Cancel;
+begin
+  DoCancel := true;
+end;
 
 end.

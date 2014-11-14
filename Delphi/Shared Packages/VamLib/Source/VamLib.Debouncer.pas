@@ -10,10 +10,6 @@ uses
   SysUtils,
   Vcl.ExtCtrls;
 
-
-
-
-
 type
   //============================================================================
   //    low level implementation details.
