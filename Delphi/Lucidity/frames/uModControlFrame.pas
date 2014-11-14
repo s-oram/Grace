@@ -508,7 +508,7 @@ begin
   //==== LFO 1 ========================================
   LfoAContainerLabel.Align  := alTop;
   LfoAContainerLabel.Height := TGuiConst.SectionLabelHeight;
-  LfoAContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
+  LfoAContainerLabel.TextAlign := TRedFoxAlign.AlignCenter;
   LfoAContainerLabel.Layout.SetPos(12, 0);
 
   LfoAKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
@@ -534,7 +534,7 @@ begin
   //==== LFO B ========================================
   LfoBContainerLabel.Align  := alTop;
   LfoBContainerLabel.Height := TGuiConst.SectionLabelHeight;
-  LfoBContainerLabel.TextAlign := TRedFoxAlign.AlignNear;
+  LfoBContainerLabel.TextAlign := TRedFoxAlign.AlignCenter;
   LfoBContainerLabel.Layout.SetPos(12, 0);
 
   LfoBKnob1.Layout.SetSize(kw, kh).SetPos(0,TGuiConst.SectionLabelHeight);
