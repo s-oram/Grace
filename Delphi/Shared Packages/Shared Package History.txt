@@ -1,0 +1,19 @@
+======================================
+            History
+======================================
+18 Nov-2014
+- removed example projects from AggPasMod.
+- removed example project resources from AggPasMod.
+- removed unused packages for other Delphi versions from RedFox projects.
+- updated "clean.bat" to remove history and model support files.
+
+14-Nov-2014 
+- Delete unneeded Drag and drop packages.
+
+14-Nov-2014 
+- RedFox package changes now merged in from Grace.
+
+14-Nov-2014 
+- Add VamLib files. Copied from Grace.
+- Add RedFox files. Copied from Poise.
+- Add DragDropv6 files. Copied from Poise.

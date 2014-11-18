@@ -1,0 +1,50 @@
+package DragDropDXE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  DragDropHandler in '..\Source\DragDropHandler.pas',
+  DragDropGraphics in '..\Source\DragDropGraphics.pas',
+  DragDropFormats in '..\Source\DragDropFormats.pas',
+  DragDropFile in '..\Source\DragDropFile.pas',
+  DragDropContext in '..\Source\DragDropContext.pas',
+  DragDropComObj in '..\Source\DragDropComObj.pas',
+  DragDrop in '..\Source\DragDrop.pas',
+  DropTarget in '..\Source\DropTarget.pas',
+  DropSource in '..\Source\DropSource.pas',
+  DropHandler in '..\Source\DropHandler.pas',
+  DropComboTarget in '..\Source\DropComboTarget.pas',
+  DragDropText in '..\Source\DragDropText.pas',
+  DragDropPIDL in '..\Source\DragDropPIDL.pas',
+  DragDropInternet in '..\Source\DragDropInternet.pas';
+
+end.
