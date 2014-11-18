@@ -71,6 +71,8 @@ Update the width of the controls.
 =============================================================================
      TODO HIGH
 =============================================================================
+AudioIO should be made a shared package.
+
 (done) - Make hidden directory names function.
 (done) - Disable current hiding.
 (done) - work out how to delete existing file names.
