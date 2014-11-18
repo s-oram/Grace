@@ -124,6 +124,7 @@
 			<DCCReference Include="MyWorker.pas"/>
 			<DCCReference Include="fontenumTest.pas"/>
 			<DCCReference Include="..\Lucidity\Lucidity.FirstRun.pas"/>
+			<DCCReference Include="Temp_PluginPar.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<None Include="Defines.inc"/>
 			<BuildConfiguration Include="Release">

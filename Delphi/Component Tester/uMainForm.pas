@@ -5,6 +5,7 @@ interface
 
 
 uses
+  Temp_PluginPar,
   Lucidity.FirstRun,
   fontenumTest,
   VamLib.Threads,

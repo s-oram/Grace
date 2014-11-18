@@ -24,7 +24,8 @@ uses
   InWindowDialog.SampleFinderDialog.Brain in '..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
   MyWorker in 'MyWorker.pas',
   fontenumTest in 'fontenumTest.pas',
-  Lucidity.FirstRun in '..\Lucidity\Lucidity.FirstRun.pas';
+  Lucidity.FirstRun in '..\Lucidity\Lucidity.FirstRun.pas',
+  Temp_PluginPar in 'Temp_PluginPar.pas';
 
 {$R *.res}
 
