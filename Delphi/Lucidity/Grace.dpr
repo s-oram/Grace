@@ -184,7 +184,8 @@ uses
   InWindowDialog.SampleFinderDialog in 'Dialogs\InWindowDialog.SampleFinderDialog.pas',
   InWindowDialog.SampleFinderDialog.Form in 'Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
   InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
-  Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas';
+  Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas',
+  eeAddOn.ThreadSyncEnforcer in 'EasyEffectTemplate\eeAddOn.ThreadSyncEnforcer.pas';
 
 {$R *.res}
 
@@ -196,6 +197,7 @@ begin
   {$IFDEF Logging}LogMain.TrackMethod('VstMain');{$ENDIF}
 
   ReportMemoryLeaksOnShutDown := True;
+  ThreadSyncEnforcer.Activate;
   SendMsg_StartProfiling;
   SetUpLogging;
 

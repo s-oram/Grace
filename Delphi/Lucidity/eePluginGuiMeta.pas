@@ -27,17 +27,11 @@ type
     Plugin       : TeePlugin;
     Gui          : TPluginGUI;
     SystemWindow : hwnd;
-    cst          : TTimer;
-
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
-
     procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
-
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
-
     procedure HotkeyEvent(Sender : TObject; const CommandID : string);
-    procedure EventHandle_CSTEvent(Sender : TObject);
   protected
     WindowsEventHook : TWindowsEventHook;
     procedure EventHandle_WindowsEvent(Sender : TObject; Event, hwnd, idObject, idChild, EventThread, EventTime : cardinal);
@@ -74,11 +68,6 @@ uses
 
 constructor TPluginGuiMeta.Create(const aPlugin: TeePlugin; const aSystemWindow: hwnd);
 begin
-  cst := TTimer.Create(nil);
-  cst.OnTimer := EventHandle_CSTEvent;
-  cst.Interval := 50;
-  cst.Enabled := true;
-
   Plugin       := aPlugin;
   SystemWindow := aSystemWindow;
 
@@ -107,8 +96,6 @@ begin
 
   if assigned(fPluginHotkeys) then FreeAndNil(fPluginHotkeys);
   if assigned(fPluginKeyHook) then FreeAndNil(fPluginKeyHook);
-
-  cst.Free;
 
   inherited;
 end;
@@ -167,24 +154,6 @@ begin
   end;
 
 end;
-
-procedure TPluginGuiMeta.EventHandle_CSTEvent(Sender: TObject);
-begin
-  // It's important to call CheckSynchronize for any TThreads that want to
-  // use their Synchroize() or Queue() methods. CheckSynchronize isn't called
-  // in DLLs by default. Perhaps this could be called from the VST GUI idle function.
-  // dunno.
-  // TODO:MED this works for now but seems to be a heavy handed way.
-  Classes.CheckSynchronize(10)
-
-  // TODO:MED look at the comment for Classes.WakeMainThread variable.
-  // this seems to suggest I need to have a global meta GUI class that
-  // is dedicated to calling  Classes.CheckSynchronize(). It would
-  // also assign a method to the Classes.WakeMainThread() variable.
-  // There is also the WaitForMultipleObjects reference that suggests calling
-  // CheckSynchronize() every 50ms is not the most efficient way to all this.
-end;
-
 
 procedure TPluginGuiMeta.EventHandled_MidiNoteTriggered(const MidiData1, MidiData2: byte);
 var
