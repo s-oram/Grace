@@ -2,6 +2,8 @@ unit SmartInspectLogging;
 
 interface
 
+{$INCLUDE Defines.inc}
+
 uses
   VamLib.LoggingProxy,
   SmartInspect;
