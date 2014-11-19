@@ -25,6 +25,7 @@ type
 implementation
 
 uses
+  eePluginDataDir,
   SysUtils;
 
 var
@@ -47,6 +48,11 @@ begin
   VamLibLog.TrackMethod(aMethodName);
 end;
 
+{$IF Defined(LogToFile)}
+var
+  LogFileName : string;
+{$IFEND}
+
 initialization
   Si := TSmartInspect.Create(ExtractFileName(ParamStr(0)));
 
@@ -55,7 +61,24 @@ initialization
   LogSpecial := si.AddSession('LogSpecial', true);
   LogSpecial.Active := false;
 
-  Connections := 'pipe(reconnect=true, reconnect.interval=1s)';
+
+  {$IF Defined(LogToFile)}
+  if PluginDataDir^.Exists then
+  begin
+    LogFileName := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + 'Grace Log.sil';
+  end;
+  {$IFEND}
+
+
+  {$IF Defined(LogToFile) and Defined(LogToConsole)}
+    Connections := 'pipe(reconnect=true, reconnect.interval=1s)';
+    Connections := Connections + ',' + format('file(filename="%s", append=false, rotate=daily, maxparts=5)', [LogFileName]);
+  {$ELSEIF Defined(LogToFile)}
+    Connections := format('file(filename="%s", append=false, rotate=daily, maxparts=5)', [LogFileName]);
+  {$ELSEIF Defined(LogToConsole)}
+    Connections := 'pipe(reconnect=true, reconnect.interval=1s)';
+  {$IFEND}
+
 
   si.Connections := Connections;
   Si.Enabled := true;
