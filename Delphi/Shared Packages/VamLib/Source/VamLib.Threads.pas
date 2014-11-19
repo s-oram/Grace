@@ -23,9 +23,6 @@ procedure DelayedAction(const Delay : integer; Action : TThreadProcedure);
 
 
 type
-  // TODO:MED I wonder if it would be possible to have TCustomMotile descend from
-  // TThread instead of encapsulating the TThread behaviour.
-
   //===== forward declarations ========
   TCustomMotile = class;
   TMotileThread = class;
@@ -108,10 +105,6 @@ type
   public
     destructor Destroy; override;
   end;
-
-
-
-
 
 function Async(Task: TThreadProcedure): IAwait;
 
