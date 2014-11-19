@@ -396,32 +396,36 @@ begin
     raise Exception.Create('unexpected value and not handled.');
   end;
 
-  try
-    ListLock.BeginWrite;
+  if ListLock.TryBeginWrite then
+  begin
+    try
+      case Rank of
+        TZeroObjectRank.Audio:
+        begin
+          if AudioObjects.IndexOf(ptr) = -1
+            then AudioObjects.Add(ptr);
+        end;
 
-    case Rank of
-      TZeroObjectRank.Audio:
-      begin
-        if AudioObjects.IndexOf(ptr) = -1
-          then AudioObjects.Add(ptr);
-      end;
+        TZeroObjectRank.Main:
+        begin
+          if MainObjects.IndexOf(ptr) = -1
+            then MainObjects.Add(ptr);
+        end;
 
-      TZeroObjectRank.Main:
-      begin
-        if MainObjects.IndexOf(ptr) = -1
-          then MainObjects.Add(ptr);
+        TZeroObjectRank.VCL:
+        begin
+          if VclObjects.IndexOf(ptr) = -1
+            then VclObjects.Add(ptr);
+        end;
+      else
+        raise Exception.Create('Rank not supported.');
       end;
-
-      TZeroObjectRank.VCL:
-      begin
-        if VclObjects.IndexOf(ptr) = -1
-          then VclObjects.Add(ptr);
-      end;
-    else
-      raise Exception.Create('Rank not supported.');
+    finally
+      ListLock.EndWrite;
     end;
-  finally
-    ListLock.EndWrite;
+  end else
+  begin
+    VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t add object.');
   end;
 end;
 
@@ -468,32 +472,35 @@ begin
 
   if (IsMainObject) then
   begin
-    MainListLock.BeginWrite;
+    if MainListLock.TryBeginWrite then
     try
       if MainObjects.IndexOf(ptr) <> -1 then MainObjects.Remove(ptr);
     finally
       MainListLock.EndWrite;
-    end;
+    end
+      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
   if (IsVclObject) then
   begin
-    VclListLock.BeginWrite;
+    if VclListLock.TryBeginWrite then
     try
       if VclObjects.IndexOf(ptr) <> -1 then VclObjects.Remove(ptr);
     finally
       VclListLock.EndWrite;
-    end;
+    end
+      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
   if (IsAudioObject) then
   begin
-    AudioListLock.BeginWrite;
+    if AudioListLock.TryBeginWrite then
     try
       if AudioObjects.IndexOf(ptr) <> -1 then AudioObjects.Remove(ptr);
     finally
       AudioListLock.EndWrite;
-    end;
+    end
+      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 end;
 
@@ -682,6 +689,9 @@ begin
     finally
       ListLock.EndRead;
     end;
+  end else
+  begin
+    Log.LogError('LIST LOCKED: Unable to send message.');
   end;
 end;
 
