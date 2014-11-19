@@ -454,8 +454,6 @@ begin
   end;
   //=============================================
 
-
-
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.Audio);
 
