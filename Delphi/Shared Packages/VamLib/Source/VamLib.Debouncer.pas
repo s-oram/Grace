@@ -45,7 +45,6 @@ type
   protected
     Timer : TTimer;
     InfoList : TDebounceInfoList;
-
     procedure ProcessDebounceRequests(Sender : TObject);
   public
     constructor Create;

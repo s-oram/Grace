@@ -18,7 +18,6 @@ uses
 type
   ///  The TPluginGuiMeta class adds some additional functionality
   ///  to the GUI.
-
   TPluginGuiMeta = class(TZeroObject)
   private
     fPluginHotkeys: TPluginHotkeys;
