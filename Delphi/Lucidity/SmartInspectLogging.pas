@@ -25,6 +25,7 @@ type
 implementation
 
 uses
+  Lucidity.Utils,
   eePluginDataDir,
   SysUtils;
 
@@ -69,7 +70,6 @@ initialization
   end;
   {$IFEND}
 
-
   {$IF Defined(LogToFile) and Defined(LogToConsole)}
     Connections := 'pipe(reconnect=true, reconnect.interval=1s)';
     Connections := Connections + ',' + format('file(filename="%s", append=false, rotate=daily, maxparts=5)', [LogFileName]);
@@ -86,7 +86,7 @@ initialization
   LogMain.LogMessage('Logging Initialized.');
   VamLibLog.LogMessage('VamLibLog Created');
 
-
+  LogMain.LogText('Grace Build Info', 'Grace ' + GetPluginBuildInfo);
 
   //LogMain.LogMessage();
 

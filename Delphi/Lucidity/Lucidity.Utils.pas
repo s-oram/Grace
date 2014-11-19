@@ -4,6 +4,11 @@ interface
 
 {$INCLUDE Defines.inc}
 
+uses
+  Classes;
+
+
+
 function IsLucidityProgramFile(const FileName : string): boolean;
 function IsSupportedProgramFormat(const FileName : string): boolean;
 function IsSupportedAudioFormat(const FileName : string): boolean;
@@ -20,10 +25,12 @@ procedure LogStackTrace;
 // using MIDI program change commands.
 function FindLucidityProgramUsingIndex(const Dir : string; const ProgramIndex : integer):string;
 
+function GetPluginBuildInfo:string;
+
 implementation
 
 uses
-  Classes,
+  eeVstExtra,
   {$IFDEF MadExcept}
   MadStackTrace,
   {$ENDIF}
@@ -140,6 +147,28 @@ begin
     }
   end;
 
+end;
+
+function GetPluginBuildInfo:string;
+var
+  TargetPlatform : string;
+  BuildType : string;
+begin
+  {$IF Defined(WIN32)}
+     TargetPlatform := '32bit';
+  {$ELSEIF Defined(WIN64)}
+     TargetPlatform := '64bit';
+  {$ELSE}
+     TargetPlatform := 'unknown-platform';
+  {$IFEND}
+
+  {$IFDEF ReleaseBuild}
+    BuildType := 'Release Build';
+  {$ELSE}
+    BuildType := 'Debug Build';
+  {$ENDIF}
+
+  result := 'Version ' + GetBuildInfoAsString + kChar.Space + BuildType + kChar.Space + TargetPlatform + EndOfLine;
 end;
 
 
