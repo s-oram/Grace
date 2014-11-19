@@ -656,30 +656,32 @@ begin
   {$ENDIF}
   //=================================================================================
 
-  ListLock.BeginRead;
-  try
-    LastIndex := -1;
+  if ListLock.TryBeginRead then
+  begin
     try
-      for c1 := 0 to ObjectList.Count - 1 do
-      begin
-        LastIndex := c1;
-        zo := IZeroObject(ObjectList[c1]);
-        zo.ProcessZeroObjectMessage(MsgID, Data, DataB);
+      LastIndex := -1;
+      try
+        for c1 := 0 to ObjectList.Count - 1 do
+        begin
+          LastIndex := c1;
+          zo := IZeroObject(ObjectList[c1]);
+          zo.ProcessZeroObjectMessage(MsgID, Data, DataB);
+        end;
+      except
+        zo := IZeroObject(ObjectList[LastIndex]);
+        aClass := zo.ClassType;
+        LogMsg := ' ClassName = ' + aClass.ClassName;
+        if assigned(Injected_MsgIdToStr) then
+        begin
+          LogMsg := LogMsg + ' Msg = ' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
+        end;
+        DisableMessageSending := true;
+        Log.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
+        raise;
       end;
-    except
-      zo := IZeroObject(ObjectList[LastIndex]);
-      aClass := zo.ClassType;
-      LogMsg := ' ClassName = ' + aClass.ClassName;
-      if assigned(Injected_MsgIdToStr) then
-      begin
-        LogMsg := LogMsg + ' Msg = ' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
-      end;
-      DisableMessageSending := true;
-      Log.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
-      raise;
+    finally
+      ListLock.EndRead;
     end;
-  finally
-    ListLock.EndRead;
   end;
 end;
 

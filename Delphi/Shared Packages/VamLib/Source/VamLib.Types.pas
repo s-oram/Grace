@@ -53,6 +53,8 @@ type
       public
          constructor Create(forceFallBack : Boolean = False);
          destructor Destroy; override;
+         function TryBeginRead:boolean;
+         function TryBeginWrite:boolean;
          procedure BeginRead;
          procedure EndRead;
          procedure BeginWrite;
@@ -74,6 +76,9 @@ type
 
 
 implementation
+
+uses
+  SysUtils;
 
 { TFakeCriticalSection }
 
@@ -196,75 +201,135 @@ end;
 type
    SRWLOCK = Pointer;
 var vSupportsSRWChecked : Boolean;
-var AcquireSRWLockExclusive : procedure (var SRWLock : SRWLOCK); stdcall;
-var ReleaseSRWLockExclusive : procedure (var SRWLock : SRWLOCK); stdcall;
-var AcquireSRWLockShared : procedure(var SRWLock : SRWLOCK); stdcall;
-var ReleaseSRWLockShared : procedure (var SRWLock : SRWLOCK); stdcall;
+var vSupportsSRWResult  : Boolean;
+var _InitializeSRWLock          : function (out P: Pointer): NativeUInt; stdcall;
+var _AcquireSRWLockExclusive    : procedure (var SRWLock : SRWLOCK); stdcall;
+var _ReleaseSRWLockExclusive    : procedure (var SRWLock : SRWLOCK); stdcall;
+var _AcquireSRWLockShared       : procedure(var SRWLock : SRWLOCK); stdcall;
+var _ReleaseSRWLockShared       : procedure (var SRWLock : SRWLOCK); stdcall;
+var _TryAcquireSRWLockExclusive : function (var SRWLock : SRWLOCK):boolean; stdcall;
+var _TryAcquireSRWLockShared    : function (var SRWLock : SRWLOCK):boolean; stdcall;
+
+// TInitializeSRWLock = function (out P: Pointer): NativeUInt; stdcall;
+// TAcquireSRWLockShared = function (var P: Pointer): NativeUInt; stdcall;
+// TReleaseSRWLockShared = function (var P: Pointer): NativeUInt; stdcall;
+// TAcquireSRWLockExclusive = function (var P: Pointer): NativeUInt; stdcall;
+// TReleaseSRWLockExclusive = function (var P: Pointer): NativeUInt; stdcall;
+// TTryAcquireSRWLockExclusive = function (var P: Pointer): BOOL; stdcall;
+// TTryAcquireSRWLockShared = function (var P: Pointer): BOOL; stdcall;
 
 function SupportsSRW : Boolean;
 var
    h : HMODULE;
 begin
-   if not vSupportsSRWChecked then begin
-      vSupportsSRWChecked:=True;
-      h:=GetModuleHandle('kernel32');
-      AcquireSRWLockExclusive:=GetProcAddress(h, 'AcquireSRWLockExclusive');
-      ReleaseSRWLockExclusive:=GetProcAddress(h, 'ReleaseSRWLockExclusive');
-      AcquireSRWLockShared:=GetProcAddress(h, 'AcquireSRWLockShared');
-      ReleaseSRWLockShared:=GetProcAddress(h, 'ReleaseSRWLockShared');
-   end;
-   Result:=Assigned(AcquireSRWLockExclusive);
+  try
+    if not vSupportsSRWChecked then
+    begin
+      h := GetModuleHandle('kernel32');
+      _InitializeSRWLock          := GetProcAddress(h, 'InitializeSRWLock');
+      _AcquireSRWLockExclusive    := GetProcAddress(h, 'AcquireSRWLockExclusive');
+      _ReleaseSRWLockExclusive    := GetProcAddress(h, 'ReleaseSRWLockExclusive');
+      _AcquireSRWLockShared       := GetProcAddress(h, 'AcquireSRWLockShared');
+      _ReleaseSRWLockShared       := GetProcAddress(h, 'ReleaseSRWLockShared');
+      _TryAcquireSRWLockExclusive := GetProcAddress(h, 'TryAcquireSRWLockExclusive');
+      _TryAcquireSRWLockShared    := GetProcAddress(h, 'TryAcquireSRWLockShared');
+
+      if  (assigned(_InitializeSRWLock))
+      and (assigned(_AcquireSRWLockExclusive))
+      and (assigned(_ReleaseSRWLockExclusive))
+      and (assigned(_AcquireSRWLockShared))
+      and (assigned(_ReleaseSRWLockShared))
+      and (assigned(_TryAcquireSRWLockExclusive))
+      and (assigned(_TryAcquireSRWLockShared)) then
+      begin
+        vSupportsSRWResult := true;
+      end else
+      begin
+        vSupportsSRWResult := false;
+      end;
+      vSupportsSRWChecked := true;
+    end;
+  finally
+    Result := vSupportsSRWResult;
+  end;
 end;
 
 // Create
 //
 constructor TMultiReadSingleWrite.Create(forceFallBack : Boolean = False);
+var
+  r : nativeInt;
 begin
-   if forceFallBack or not SupportsSRW then
-      FCS:=TFixedCriticalSection.Create;
+   if (ForceFallBack) or (not SupportsSRW) then
+   begin
+      FCS := TFixedCriticalSection.Create;
+   end else
+   begin
+     // TODO:HIGH
+     // For some reason FSRWLock is not assigned after calling initalize lock.
+     // But it still works. Even more strangely the lock still works if initialize
+     // **isn't** called. WTF??? I need to investigate this more.
+     _InitializeSRWLock(FSRWLock);
+
+     //FSRWLock := Pointer(InitializeSRWLock(FSRWLock));
+   end;
 end;
 
 // Destroy
 //
 destructor TMultiReadSingleWrite.Destroy;
 begin
-   FCS.Free;
+  if assigned(FCS) then FCS.Free;
 end;
 
 // BeginRead
 //
 procedure TMultiReadSingleWrite.BeginRead;
 begin
-   if Assigned(FCS) then
-      FCS.Enter
-   else AcquireSRWLockShared(FSRWLock);
+   if Assigned(FCS)
+     then FCS.Enter
+     else _AcquireSRWLockShared(FSRWLock);
 end;
 
 // EndRead
 //
 procedure TMultiReadSingleWrite.EndRead;
 begin
-   if Assigned(FCS) then
-      FCS.Leave
-   else ReleaseSRWLockShared(FSRWLock)
+   if Assigned(FCS)
+     then FCS.Leave
+     else _ReleaseSRWLockShared(FSRWLock)
 end;
 
 // BeginWrite
 //
 procedure TMultiReadSingleWrite.BeginWrite;
 begin
-   if Assigned(FCS) then
-      FCS.Enter
-   else AcquireSRWLockExclusive(FSRWLock);
+   if Assigned(FCS)
+     then FCS.Enter
+     else _AcquireSRWLockExclusive(FSRWLock);
 end;
 
 // EndWrite
 //
 procedure TMultiReadSingleWrite.EndWrite;
 begin
-   if Assigned(FCS) then
-      FCS.Leave
-   else ReleaseSRWLockExclusive(FSRWLock)
+   if Assigned(FCS)
+     then FCS.Leave
+     else _ReleaseSRWLockExclusive(FSRWLock)
+end;
+
+function TMultiReadSingleWrite.TryBeginRead: boolean;
+begin
+  if Assigned(FCS)
+    then result := FCS.TryEnter
+    else result := _TryAcquireSRWLockShared(FSRWLock);
+end;
+
+function TMultiReadSingleWrite.TryBeginWrite: boolean;
+begin
+  if Assigned(FCS)
+    then result := FCS.TryEnter
+    else result := _TryAcquireSRWLockExclusive(FSRWLock);
 end;
 
 // ------------------------------------------------------------------
