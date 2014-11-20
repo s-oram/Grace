@@ -1,0 +1,46 @@
+package NativeXmlV4_XE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  ElAES in '..\source\ElAES.pas',
+  NativeXml in '..\source\NativeXml.pas',
+  NativeXmlEx in '..\source\NativeXmlEx.pas',
+  NativeXmlObjectStorage in '..\source\NativeXmlObjectStorage.pas',
+  NativeXmlOld in '..\source\NativeXmlOld.pas',
+  sdDebug in '..\source\sdDebug.pas',
+  sdSortedLists in '..\source\sdSortedLists.pas',
+  sdStreams in '..\source\sdStreams.pas',
+  sdStringTable in '..\source\sdStringTable.pas',
+  uAutoFree in '..\source\uAutoFree.pas';
+
+end.
