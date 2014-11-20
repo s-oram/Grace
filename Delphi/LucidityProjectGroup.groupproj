@@ -9,9 +9,6 @@
 			<Projects Include="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj">
 				<Dependencies>Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj</Dependencies>
 			</Projects>
-			<Projects Include="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="Shared Packages\VamLib\VamLib.dproj">
 				<Dependencies/>
 			</Projects>
@@ -91,15 +88,6 @@
 		</Target>
 		<Target Name="OmniThreadLibraryDesigntimeXE2:Make" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Make">
 			<MSBuild Targets="Make" Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
-		<Target Name="DragDropDXE2">
-			<MSBuild Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
-		</Target>
-		<Target Name="DragDropDXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
-		</Target>
-		<Target Name="DragDropDXE2:Make">
-			<MSBuild Targets="Make" Projects="Third Party\Melanders Drag and Drop v5\Packages\DragDropDXE2.dproj"/>
 		</Target>
 		<Target Name="VamLib">
 			<MSBuild Projects="Shared Packages\VamLib\VamLib.dproj"/>
@@ -264,13 +252,13 @@
 			<MSBuild Targets="Make" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;CodeGen;ComponentTester;AsmTester;ProcessKiller;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;VamLib;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;CodeGen;ComponentTester;AsmTester;ProcessKiller;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ProcessKiller:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;VamLib:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;CodeGen:Clean;ComponentTester:Clean;AsmTester:Clean;ProcessKiller:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ProcessKiller:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;VamLib:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;CodeGen:Make;ComponentTester:Make;AsmTester:Make;ProcessKiller:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
