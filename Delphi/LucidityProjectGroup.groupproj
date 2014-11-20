@@ -5,13 +5,7 @@
 		<ItemGroup>
 			<Projects Include="Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj">
 				<Dependencies/>
-			</Projects>
-			<Projects Include="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj">
-				<Dependencies>Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj</Dependencies>
-			</Projects>
+			</Projects>			
 			<Projects Include="Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj">
 				<Dependencies/>
 			</Projects>
@@ -82,25 +76,7 @@
 		</Target>
 		<Target Name="NativeXmlV4_XE2:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryRuntimeXE2">
-			<MSBuild Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryRuntimeXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryRuntimeXE2:Make">
-			<MSBuild Targets="Make" Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2" DependsOnTargets="OmniThreadLibraryRuntimeXE2">
-			<MSBuild Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2:Clean" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2:Make" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Make">
-			<MSBuild Targets="Make" Projects="Third Party\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
+		</Target>		
 		<Target Name="DragDropDXE2">
 			<MSBuild Projects="Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj"/>
 		</Target>
@@ -264,13 +240,13 @@
 			<MSBuild Targets="Make" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="NativeXmlV4_XE2;OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;DragDropDXE2;dclDragDropDXE2;VamLib;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
+			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;VamLib;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="NativeXmlV4_XE2:Clean;OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;VamLib:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;VamLib:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="NativeXmlV4_XE2:Make;OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;VamLib:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;VamLib:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
