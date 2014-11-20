@@ -89,7 +89,9 @@ destructor TSiMethodTimer.Destroy;
 begin
   EndTicks := GetTickCount;
 
-  FSession.LogMessage('Method Time: ' + FMethodName + kChar.Space + IntToStr(EndTicks-StartTicks) + 'ms');
+  if (EndTicks - StartTicks) > 0
+    then FSession.LogMessage('Method Time: ' + FMethodName + kChar.Space + IntToStr(EndTicks-StartTicks) + 'ms');
+
   inherited;
 end;
 
