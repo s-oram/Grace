@@ -1,5 +1,0 @@
-### Unignore .res files. The JCL needs them. ###
-!*.res
-
-
-
