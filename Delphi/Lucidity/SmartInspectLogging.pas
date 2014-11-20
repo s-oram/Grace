@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Windows,
   VamLib.LoggingProxy,
   SmartInspect;
 
@@ -23,9 +24,28 @@ type
     procedure TrackMethod(const aMethodName : string);
   end;
 
+  ISiMethodTimer = interface
+  end;
+
+  TSiMethodTimer = class(TInterfacedObject, ISiMethodTimer)
+  private
+    FLevel: TSiLevel;
+    FMethodName: UnicodeString;
+    FSession: TSiSession;
+    StartTicks : DWord;
+    EndTicks   : DWord;
+  public
+    constructor Create(const ALevel: TSiLevel; const ASession: TSiSession; const AMethodName: UnicodeString);
+    destructor Destroy; override;
+  end;
+
+
+function TrackMethodTime(const AMethodName: UnicodeString):ISiMethodTimer;
+
 implementation
 
 uses
+  VamLib.Utils,
   Lucidity.Utils,
   eePluginDataDir,
   SysUtils;
@@ -54,6 +74,34 @@ end;
 var
   LogFileName : string;
 {$IFEND}
+
+{ TSiMethodTimer }
+
+constructor TSiMethodTimer.Create(const ALevel: TSiLevel; const ASession: TSiSession; const AMethodName: UnicodeString);
+begin
+  FSession := ASession;
+  FMethodName := AMethodName;
+  FLevel := ALevel;
+  StartTicks := GetTickCount;
+end;
+
+destructor TSiMethodTimer.Destroy;
+begin
+  EndTicks := GetTickCount;
+
+  FSession.LogMessage('Method Time: ' + FMethodName + kChar.Space + IntToStr(EndTicks-StartTicks) + 'ms');
+  inherited;
+end;
+
+
+
+function TrackMethodTime(const AMethodName: UnicodeString):ISiMethodTimer;
+begin
+  if assigned(TimingLog)
+    then result := TSiMethodTimer.Create(TSiLevel.lvDebug, TimingLog, AMethodName)
+    else result := nil;
+end;
+
 
 initialization
   Si := TSmartInspect.Create(ExtractFileName(ParamStr(0)));
