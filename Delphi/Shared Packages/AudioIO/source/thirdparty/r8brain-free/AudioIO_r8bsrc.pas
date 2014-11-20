@@ -3,7 +3,7 @@
 //
 // Please read the "r8bsrc.h" file for function descriptions.
 
-unit r8bsrc;
+unit AudioIO_r8bsrc;
 
 interface
 

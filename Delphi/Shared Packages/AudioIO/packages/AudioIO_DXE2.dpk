@@ -25,10 +25,12 @@ package AudioIO_DXE2;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$IMPLICITBUILD ON}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  VamLib;
 
 contains
   AudioIO_AiffLowLevel in '..\source\AudioIO_AiffLowLevel.pas',
@@ -40,6 +42,13 @@ contains
   AudioIO_Aiff in '..\source\AudioIO_Aiff.pas',
   AudioIO_EndianConversion in '..\source\AudioIO_EndianConversion.pas',
   AudioIO_ExtendedX87 in '..\source\thirdparty\AudioIO_ExtendedX87.pas',
-  AudioIO_WinFile in '..\source\AudioIO_WinFile.pas';
+  AudioIO_WinFile in '..\source\AudioIO_WinFile.pas',
+  AudioIO_Mp3 in '..\source\AudioIO_Mp3.pas',
+  AudioIO_WavPack in '..\source\AudioIO_WavPack.pas',
+  AudioIO_WindowedSincFilter in '..\source\AudioIO_WindowedSincFilter.pas',
+  AudioIO_WindowedSincResampler in '..\source\AudioIO_WindowedSincResampler.pas',
+  AudioIO_DSP in '..\source\AudioIO_DSP.pas',
+  AudioIO_Resampler_r8brain in '..\source\AudioIO_Resampler_r8brain.pas',
+  AudioIO_r8bsrc in '..\source\thirdparty\r8brain-free\AudioIO_r8bsrc.pas';
 
 end.

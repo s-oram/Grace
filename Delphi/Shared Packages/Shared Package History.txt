@@ -1,6 +1,14 @@
 ======================================
             History
 ======================================
+21 Nov 2014
+- Add AudioIO package. Copied from Grace.
+
+21 Nov 2014
+- a few small changes in VamLib. Changes are all in the inner workings. 
+  Changes were made while working on Grace. 
+  Changes were merged into to the root shared packages source.
+
 18 Nov-2014
 - removed example projects from AggPasMod.
 - removed example project resources from AggPasMod.

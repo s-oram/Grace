@@ -3,7 +3,7 @@ unit AudioIO_Resampler_r8brain;
 interface
 
 uses
-  VamLib.MoreTypes, r8bsrc;
+  VamLib.MoreTypes, AudioIO_r8bsrc;
 
 type
   Tr8bResampler = class
