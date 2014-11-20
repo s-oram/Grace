@@ -71,6 +71,10 @@ Update the width of the controls.
 =============================================================================
      TODO HIGH
 =============================================================================
+IMPORTANT:
+Give yann a final chance to OK the preset names before sending out the next update.
+thunderlink://messageid=D7CA51C967B64AD1A24CF7E301F78B8A@YannHP
+
 Look at DSiInterlockedCompareExchange64() in OmniThreadLibrary for 
 creating a lock-free linked list.
 http://omnithreadlibrary.googlecode.com/svn/trunk/src/DSiWin32.pas
