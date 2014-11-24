@@ -35,6 +35,7 @@
   {.$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
   {.$DEFINE AudioInline}
+  {.$DEFINE StorePatchWhenRestoring}
 {$ELSE}
   //== Debug Defines ==
   {$DEFINE madExcept}
@@ -45,8 +46,8 @@
   {$DEFINE LogUserInteractions}
   {.$DEFINE SimpleLog}
   {.$DEFINE AudioInline}
-
   {.$DEFINE StrictDebugChecks}
+  {.$DEFINE StorePatchWhenRestoring}
 
   // Development only features include a few advanced features only intended for
   // use during development.
