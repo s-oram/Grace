@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+24 Nov 2014
+- EasyEffect Vst Template v3 is now a package.
+
 21 Nov 2014
 - Add OmniThreadLibrary 3.03. Copied from Grace.
 
