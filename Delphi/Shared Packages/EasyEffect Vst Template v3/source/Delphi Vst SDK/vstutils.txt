@@ -1,0 +1,50 @@
+DVSTUtils unit: function documentation
+======================================
+
+function FourCharToLong(C1, C2, C3, C4: Char): Longint;
+     This function converts four chars to a longint in the format required
+     by Cubase VST for the identifier of the effect.
+
+function FMod(d1, d2: Double): Double;
+     Gets the remainder after the floating point division of d1 and d2.
+
+procedure dB2string(value: Single; text: PChar);
+     Converts value to a null terminated string representation in decibels.
+
+procedure dB2stringRound(value: Single; text: PChar);
+     Converts value to a null terminated string representation in decibels
+     after having rounded it.
+
+procedure float2string(value: Single; text: PChar);
+     Converts the floating point variable value to a null terminated string
+     representation.
+
+procedure long2string(value: Longint; text: PChar);
+     Converts the integer variable value to a null terminated string
+     representation.
+
+procedure float2stringAsLong(value: Single; text: PChar);
+     Converts the floating point variable value to a null terminated string
+     representation with nothing after the decimal point.
+
+procedure Hz2string(samples, sampleRate: Single; text: pchar);
+     converts samples in combination with sampleRate to Hz (I don't know this unit).
+
+procedure ms2string(samples, sampleRate: Single; text: pchar);
+     converts samples in combination with sampleRate to milliseconds.
+
+function gapSmallValue(value, maxValue: Double): Double;
+     Converts value (between 0 and 1) to an unevenly spread representation
+     between 0 and maxValue. Unevenly spread means lower values take longer
+     to change while higher values change quicker. To see what I mean, you
+     can download my Squarize plugin from the Development section of
+     http://www.axiworld.be. The Steps parameter uses this function.
+
+function invGapSmallValue(value, maxValue: Double): Double;
+     This is the inverse operation of gapSmallValue. When you have altered
+     the value internally with gapSmallValue and Cubase requests this value,
+     use this function to return the representation between 0 and 1 from
+     a range of 0 to maxValue.
+
+function logZ(z, x: Double): Double;
+     This function calculates the logarithm with base z of the value x.

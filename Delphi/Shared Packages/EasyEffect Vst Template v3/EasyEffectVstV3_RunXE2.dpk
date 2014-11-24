@@ -1,0 +1,49 @@
+package EasyEffectVstV3_RunXE2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  VamLib;
+
+contains
+  ee3.CustomPlugin in 'source\ee3.CustomPlugin.pas',
+  ee3.PluginGlobals in 'source\ee3.PluginGlobals.pas',
+  ee3.VstConstants in 'source\ee3.VstConstants.pas',
+  ee3.VstPluginFactory in 'source\ee3.VstPluginFactory.pas',
+  ee3AddOn.ThreadSyncEnforcer in 'source\ee3AddOn\ee3AddOn.ThreadSyncEnforcer.pas',
+  DAudioEffect in 'source\Delphi Vst SDK\DAudioEffect.pas',
+  DAudioEffectX in 'source\Delphi Vst SDK\DAudioEffectX.pas',
+  DVstFxStore in 'source\Delphi Vst SDK\DVstFxStore.pas',
+  DVSTUtils in 'source\Delphi Vst SDK\DVSTUtils.pas',
+  DAEffect in 'source\Delphi Vst SDK\DAEffect.pas',
+  DAEffectX in 'source\Delphi Vst SDK\DAEffectX.pas';
+
+end.
