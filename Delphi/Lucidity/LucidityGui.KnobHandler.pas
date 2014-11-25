@@ -18,7 +18,7 @@ uses
   Lucidity.CustomControlHandler,
   Lucidity.PluginParameters;
 
-{+M} // required for the knob handler RTTI.
+{$M+} // required for the knob handler RTTI.
 
 type
   TKnobContextMenu = class(TCustomPopupMenu)
