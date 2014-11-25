@@ -1,6 +1,12 @@
 ======================================
             History
 ======================================
+25 Nov 2014
+- small VamBasic change.
+
+24 Nov 2014
+- small VamLib change. 
+
 24 Nov 2014
 - EasyEffect Vst Template v3 is now a package.
 

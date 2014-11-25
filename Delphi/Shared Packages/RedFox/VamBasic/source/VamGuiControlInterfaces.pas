@@ -19,8 +19,6 @@ type
     // typically used to store the VST parameter index.
     procedure SetParameterIndex(Index : integer);
     function GetParameterIndex:integer;
-    // TODO:MED maybe parameter index isn't used any more. Maybe it can
-    // be deleted.
 
     // typically used to store the linked parameter name.
     procedure SetParameterName(aName:string);

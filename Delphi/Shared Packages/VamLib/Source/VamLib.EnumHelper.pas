@@ -3,10 +3,13 @@ unit VamLib.EnumHelper;
 interface
 
 type
-  EnumHelper = class
+  TEnumHelper = class
   public
     class function EnumToStr<TEnum>(const Value : TEnum):string;
+    class function GetEnumTypeCount<TEnum>: integer; static;
   end;
+
+  EnumHelper = TEnumHelper;
 
 implementation
 
@@ -16,7 +19,12 @@ uses
 
 { EnumHelper }
 
-class function EnumHelper.EnumToStr<TEnum>(const Value: TEnum): string;
+class function TEnumHelper.GetEnumTypeCount<TEnum>: integer;
+begin
+  result := GetTypeData(TypeInfo(TEnum)).MaxValue + 1;
+end;
+
+class function TEnumHelper.EnumToStr<TEnum>(const Value: TEnum): string;
 var
   AsInt: Int64;
 begin
@@ -39,4 +47,5 @@ begin
   Result := TEnum(PTemp^);
 end;
 }
+
 end.
