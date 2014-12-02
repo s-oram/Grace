@@ -20,7 +20,7 @@ type
   protected
     MenuBuilder  : TGuiMenuBuilder;
     procedure UpdateControl(const c : TObject); override;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
   public
     constructor Create(const aPlugin : TeePlugin); override;
     destructor Destroy; override;
@@ -74,7 +74,7 @@ begin
   end;
 end;
 
-procedure TMenuButtonHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TMenuButtonHandler.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 begin
   inherited;
 end;

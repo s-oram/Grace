@@ -49,7 +49,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
     IsManualScroll : boolean;
     FileBrowserAddon : TFileBrowserAddon;
@@ -130,7 +130,7 @@ begin
   inherited;
 end;
 
-procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TFileBrowserFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   CurrentFocus_ParName : string;
   b : boolean;
@@ -143,7 +143,7 @@ begin
 
   if (MsgID = TLucidMsgID.OnActiveParameterChanged) then
   begin
-    CurrentFocus_ParName := string(Data^);
+    CurrentFocus_ParName := string(DataA^);
     if CurrentFocus_ParName = PluginParToName(TPluginParameter.PreviewVolume)
       then b := true
       else b := false;
@@ -163,7 +163,7 @@ begin
 
   if MsgID = TLucidMsgID.Cmd_HotkeyDown then
   begin
-    KeyCommand := TKeyCommand(Data^);
+    KeyCommand := TKeyCommand(DataA^);
     ProcessKeyCommand(KeyCommand);
   end;
 end;

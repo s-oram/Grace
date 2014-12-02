@@ -147,7 +147,7 @@ type
 
     procedure UpdateOscPitch;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
   public
     constructor Create(aObjectName : string; const aGlobalModPoints : PGlobalModulationPoints; const aGlobals : TGlobals);
     destructor Destroy; override;
@@ -730,7 +730,7 @@ begin
   CleanUp;
 end;
 
-procedure TLucidityVoice.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TLucidityVoice.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 var
   kgID : TKeyGroupID;
 begin
@@ -738,7 +738,7 @@ begin
 
   if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
   begin
-    kgID := TKeyGroupID(Data^);
+    kgID := TKeyGroupID(DataA^);
 
     if self.KeyGroupID = kgID then
     begin

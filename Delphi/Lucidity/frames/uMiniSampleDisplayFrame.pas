@@ -80,7 +80,7 @@ type
     FMotherShip : IMothership;
 
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
 
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
@@ -331,7 +331,7 @@ begin
   UpdateSampleDisplay;
 end;
 
-procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TMiniSampleDisplayFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   SamplePos : integer;
   zx : single;
@@ -381,7 +381,7 @@ begin
       Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
       //Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
 
-      SamplePos := Integer(Data^);
+      SamplePos := Integer(DataA^);
 
       //Zoom In!
       zx := Zoom  + 0.2;
@@ -409,7 +409,7 @@ begin
       Zoom   := Plugin.Globals.GuiState.SampleDisplayZoom;
       //Offset := Plugin.Globals.GuiState.SampleDisplayOffset;
 
-      SamplePos := Integer(Data^);
+      SamplePos := Integer(DataA^);
 
       //Zoom In!
       zx := Zoom  - 0.2;

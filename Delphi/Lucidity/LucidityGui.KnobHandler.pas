@@ -43,7 +43,7 @@ type
   protected
     KnobContextMenu : TKnobContextMenu;
     procedure UpdateControl(const c : TObject); override;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
     procedure UpdateModulation(const c : TObject);
   public
@@ -89,7 +89,7 @@ begin
   inherited;
 end;
 
-procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TKnobHandler.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   c1: Integer;
 begin

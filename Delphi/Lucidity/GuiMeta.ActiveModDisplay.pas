@@ -13,7 +13,7 @@ type
     CurrentFocus_ParName : string; // this is a parameter name.
     Plugin : TeePlugin;
   protected
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
   public
     constructor Create(aPlugin : TeePlugin);
     destructor Destroy; override;
@@ -39,13 +39,13 @@ begin
   inherited;
 end;
 
-procedure TActiveParameterDetector.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TActiveParameterDetector.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   s : string;
 begin
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
-    s := string(Data^);
+    s := string(DataA^);
     if s <> CurrentFocus_ParName then
     begin
       CurrentFocus_ParName := s;
@@ -55,7 +55,7 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlLeave then
   begin
-    s := string(Data^);
+    s := string(DataA^);
     if s = CurrentFocus_ParName then
     begin
       CurrentFocus_ParName := '';

@@ -83,7 +83,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
     procedure UpdateGroupVisibility;
   protected
     MessageOverlay         : TVamShortMessageOverlay;
@@ -591,14 +591,14 @@ begin
   SampleMapKeys.Invalidate;
 end;
 
-procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TSampleMapFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   aniObj : TByteAnimation;
   KeyCommand : TKeyCommand;
 begin
   if MsgID = TLucidMsgID.Msg_XRegionsDuplicated then
   begin
-    MessageOverlay.Text := string(Data^);
+    MessageOverlay.Text := string(DataA^);
     MessageOverlay.Opacity := 255;
     MessageOverlay.Visible := true;
 
@@ -641,7 +641,7 @@ begin
 
   if (MsgID = TLucidMsgID.Cmd_HotkeyDown) and (Plugin.Globals.GuiState.HotkeyContext = THotkeyContext.SampleMap) then
   begin
-    KeyCommand := TKeyCommand(Data^);
+    KeyCommand := TKeyCommand(DataA^);
     ProcessKeyCommand(KeyCommand);
   end;
 

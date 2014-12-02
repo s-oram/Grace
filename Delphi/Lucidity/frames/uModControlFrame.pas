@@ -144,7 +144,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
     AltFilterText : TAltFilterText;
     FilterParameterInfo : TFilterParameterInfo;
@@ -613,7 +613,7 @@ begin
   UpdateLfo;
 end;
 
-procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 begin
   if MsgID = TLucidMsgID.OnPostCreateFinished            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.NewProgramLoaded                then UpdateControlVisibility;

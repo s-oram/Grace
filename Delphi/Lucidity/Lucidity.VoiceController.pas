@@ -36,7 +36,7 @@ type
     TriggeredVoiceStack : TLucidityVoiceList; // Keeps track of last triggerered voice.
 
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
 
     procedure PolyTrigger(const Data1, Data2 : byte);
     procedure PolyRelease(const Data1, Data2 : byte);
@@ -136,7 +136,7 @@ end;
 
 
 
-procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TVoiceController.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   pVoice : PLucidityVoice;
   c1: Integer;
@@ -154,49 +154,49 @@ begin
       Text := Text + 'Inactive Voice Count = ' + IntToStr(InactiveVoices.Count);
       LogMain.LogText('TVoiceController.PolyTrigger', Text);
     {$ENDIF}
-    PolyTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    PolyTrigger(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_PolyNoteRelease then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.PolyRelease');{$ENDIF}
-    PolyRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    PolyRelease(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_MonoNoteTrigger then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.MonoTrigger');{$ENDIF}
-    MonoTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    MonoTrigger(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_MonoNoteRelease then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.MonoRelease');{$ENDIF}
-    MonoRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    MonoRelease(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LegatoNoteTrigger then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LegatoTrigger');{$ENDIF}
-    MonoTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    MonoTrigger(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LegatoNoteRelease then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LegatoRelease');{$ENDIF}
-    MonoRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2);
+    MonoRelease(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2);
   end;
 
   if MsgID = TLucidMsgID.Audio_LatchNoteTrigger then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LatchTrigger');{$ENDIF}
-    LatchTrigger(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
+    LatchTrigger(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2, PMsgData_NoteEvent(DataA)^.NoteStackCount);
   end;
 
   if MsgID = TLucidMsgID.Audio_LatchNoteRelease then
   begin
     {$IFDEF Logging}LogMain.LogMessage('TVoiceController.LatchRelease');{$ENDIF}
-    LatchRelease(PMsgData_NoteEvent(Data)^.Data1, PMsgData_NoteEvent(Data)^.Data2, PMsgData_NoteEvent(Data)^.NoteStackCount);
+    LatchRelease(PMsgData_NoteEvent(DataA)^.Data1, PMsgData_NoteEvent(DataA)^.Data2, PMsgData_NoteEvent(DataA)^.NoteStackCount);
   end;
 
   if MsgID = TLucidMsgID.AudioCommand_QuickReleaseAllNotes then
@@ -223,7 +223,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceFinished then
   begin
-    pVoice := Data;
+    pVoice := DataA;
 
     if ActiveVoices.IndexOf(pVoice^) <> -1
       then ActiveVoices.Remove(pVoice^);

@@ -144,7 +144,7 @@ type
     // out of sync with the audio engine.
     procedure RefreshManagedPluginParameterValues;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
 
 
     procedure LoadMIDIProgram(const ProgramIndex : integer);
@@ -614,7 +614,7 @@ begin
   inherited;
 end;
 
-procedure TeePlugin.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TeePlugin.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 begin
   inherited;
 

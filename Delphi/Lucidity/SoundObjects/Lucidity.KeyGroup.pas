@@ -66,7 +66,7 @@ type
     function GetID:TKeyGroupID;
     procedure SetID(ID:TKeyGroupID);
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
 
     procedure ApplyAllParSmoothingNow;
   protected
@@ -406,7 +406,7 @@ begin
 end;
 
 
-procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TKeyGroup.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   ptr  : pointer;
   kgID : TKeyGroupID;
@@ -416,9 +416,9 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    pVoice := TMsgData_Audio_VoiceTriggered(Data^).Voice;
+    pVoice := TMsgData_Audio_VoiceTriggered(DataA^).Voice;
 
-    ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
+    ptr  := TMsgData_Audio_VoiceTriggered(DataA^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 
     if kgID = KeyGroupID then
@@ -429,7 +429,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceFinished then
   begin
-    pVoice := Data;
+    pVoice := DataA;
     if ActiveVoices.IndexOf(pVoice^) <> -1
       then ActiveVoices.Remove(pVoice^);
     if ActiveVoices.Count = 0

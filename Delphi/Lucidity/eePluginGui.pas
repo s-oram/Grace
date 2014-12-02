@@ -57,7 +57,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
@@ -430,7 +430,7 @@ begin
   Manually := false;
 end;
 
-procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 begin
   if (MsgID = TLucidMsgID.OnPostCreateFinished) and (not PluginDataDir^.Exists) then
   begin

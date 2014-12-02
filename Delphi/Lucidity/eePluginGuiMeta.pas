@@ -28,7 +28,7 @@ type
     SystemWindow : hwnd;
     ScopeHandler : TScopeHandler;
     ActiveModDetector : TActiveParameterDetector;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
     procedure EventHandled_MidiNoteTriggered(const MidiData1, MidiData2 : byte);
     procedure HotkeyEvent(Sender : TObject; const CommandID : string);
   protected
@@ -133,7 +133,7 @@ begin
   end;
 end;
 
-procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TPluginGuiMeta.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 var
   MidiNoteTriggerData : TMsgData_MidiNoteTriggered;
 begin

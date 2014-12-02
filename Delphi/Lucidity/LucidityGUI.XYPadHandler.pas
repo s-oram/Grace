@@ -25,7 +25,7 @@ type
   private
   protected
     PadContextMenu : TXYPadContextMenu;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
     procedure UpdateControl(const c : TObject); override;
   public
     constructor Create(const aPlugin : TeePlugin); override;
@@ -64,7 +64,7 @@ begin
   inherited;
 end;
 
-procedure TXYPadHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TXYPadHandler.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 begin
   inherited;
 

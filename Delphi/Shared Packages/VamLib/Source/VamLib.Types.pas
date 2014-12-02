@@ -257,8 +257,6 @@ end;
 // Create
 //
 constructor TMultiReadSingleWrite.Create(forceFallBack : Boolean = False);
-var
-  r : nativeInt;
 begin
    if (ForceFallBack) or (not SupportsSRW) then
    begin

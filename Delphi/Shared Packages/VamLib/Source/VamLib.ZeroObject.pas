@@ -100,7 +100,7 @@ type
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
     function ClassType: TClass;
   end;
 
@@ -140,7 +140,7 @@ type
     function _AddRef: Integer; virtual; stdcall;
     function _Release: Integer; virtual; stdcall;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); virtual;
   public
     destructor Destroy; override;
   end;
@@ -151,7 +151,7 @@ type
     FMotherShip : IMotherShip;
   protected
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface); virtual;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); virtual;
   public
     destructor Destroy; override;
   end;
@@ -252,7 +252,7 @@ begin
   FMotherShip := aMotherShip;
 end;
 
-procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 begin
 
 end;
@@ -287,7 +287,7 @@ begin
   inherited;
 end;
 
-procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB: IInterface);
+procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 begin
 
 end;

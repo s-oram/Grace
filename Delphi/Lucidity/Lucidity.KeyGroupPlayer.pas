@@ -26,7 +26,7 @@ type
   protected
     Globals : TGlobals;
     KeyGroupManager : TKeyGroupManager;
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
   public
     constructor Create(const aGlobals : TGlobals; const aKeyGroupManager : TKeyGroupManager);
     destructor Destroy; override;
@@ -68,7 +68,7 @@ begin
   ActiveRegions.Clear;
 end;
 
-procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  Data: Pointer; DataB:IInterface);
+procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  DataA: Pointer; DataB:IInterface);
 var
   c1 : integer;
   pKG : pointer;
@@ -80,7 +80,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_VoiceTriggered then
   begin
-    ptr  := TMsgData_Audio_VoiceTriggered(Data^).KeyGroupID;
+    ptr  := TMsgData_Audio_VoiceTriggered(DataA^).KeyGroupID;
     kgID := TKeyGroupID(ptr^);
 
     kg := KeyGroupManager.Request(kgID);
@@ -96,7 +96,7 @@ begin
 
   if MsgID = TLucidMsgID.Audio_KeyGroupInactive then
   begin
-    pKG := Data;
+    pKG := DataA;
     kg := IKeyGroup(pKG);
 
     if ActiveRegions.IndexOf(kg) <> -1 then

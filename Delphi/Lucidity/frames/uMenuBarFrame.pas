@@ -41,7 +41,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
 
     procedure SampleFocusChanged; // Called when the sample focus changes...
 
@@ -317,7 +317,7 @@ begin
   end;
 end;
 
-procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   ParID : TPluginParameterID;
 begin
@@ -334,13 +334,13 @@ begin
 
   if MsgID = TLucidMsgID.Command_ShowParChangeInfo then
   begin
-    ParID := TPluginParameterID(Data^);
+    ParID := TPluginParameterID(DataA^);
     ShowParameterChangeInfo(ParID);
   end;
 
   if MsgID = TLucidMsgID.Command_UpdateParChangeInfo then
   begin
-    ParID := TPluginParameterID(Data^);
+    ParID := TPluginParameterID(DataA^);
     UpdateParameterChangeInfo(ParID);
   end;
 

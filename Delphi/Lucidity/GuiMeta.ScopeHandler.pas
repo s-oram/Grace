@@ -52,7 +52,7 @@ type
     procedure UpdateScope(const ScopeFocus : TScopeFocus); overload;
     procedure UpdateScope(const FocusParName : string); overload;
 
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);  override;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
 
     procedure HandleUpdateTimer(Sender : TObject);
   public
@@ -191,7 +191,7 @@ begin
     then UpdateScope(LastScopeFocus);
 end;
 
-procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TScopeHandler.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 const
   DebounceTime = 200; //milliseconds,
 var
@@ -220,8 +220,8 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlEnter then
   begin
-    s := string(Data^);
-    ParName := string(Data^);
+    s := string(DataA^);
+    ParName := string(DataA^);
 
     if (ParName <> ScopeState.CurrentParFocus) or (ScopeState.IsParFocusActive = false) then
     begin
@@ -239,7 +239,7 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlLeave then
   begin
-    ParName := string(Data^);
+    ParName := string(DataA^);
 
     if (ParName = ScopeState.CurrentParFocus) then
     begin
@@ -257,7 +257,7 @@ begin
 
   if MsgID = TLucidMsgID.OnParControlChanged then
   begin
-    ParName := string(Data^);
+    ParName := string(DataA^);
 
     if ParName = ScopeState.CurrentParFocus then
     begin

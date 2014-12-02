@@ -43,7 +43,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
@@ -198,7 +198,7 @@ begin
   inherited;
 end;
 
-procedure TModSystemFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TModSystemFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   s : string;
 begin
@@ -210,7 +210,7 @@ begin
 
   if MsgID = TLucidMsgID.OnActiveParameterChanged then
   begin
-    s := string(Data^);
+    s := string(DataA^);
     ActiveParameter := s;
     UpdateModSelector_ModulationAmounts;
   end;

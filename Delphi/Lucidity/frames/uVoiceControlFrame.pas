@@ -70,7 +70,7 @@ type
   private
     FMotherShip : IMothership;
     procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; Data:Pointer; DataB:IInterface);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
 
     procedure EventHandle_LoopModeSelected(Sender : TObject);
   protected
@@ -139,7 +139,7 @@ begin
   Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.LoopTypeChanged);
 end;
 
-procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; Data: Pointer; DataB:IInterface);
+procedure TVoiceControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 var
   NameA, NameB : string;
   PMenu : ^TMenu;
@@ -150,8 +150,8 @@ begin
 
   if MsgID = TLucidMsgID.OnShowMenu then
   begin
-    NameA := PMsgData_ShowMenuEvent(Data)^.MenuName;
-    PMenu := PMsgData_ShowMenuEvent(Data)^.Menu;
+    NameA := PMsgData_ShowMenuEvent(DataA)^.MenuName;
+    PMenu := PMsgData_ShowMenuEvent(DataA)^.Menu;
 
     NameB := PluginParToName(TPluginParameter.SamplePlaybackType);
     if NameA = NameB
