@@ -44,6 +44,7 @@ contains
   DVstFxStore in 'source\Delphi Vst SDK\DVstFxStore.pas',
   DVSTUtils in 'source\Delphi Vst SDK\DVSTUtils.pas',
   DAEffect in 'source\Delphi Vst SDK\DAEffect.pas',
-  DAEffectX in 'source\Delphi Vst SDK\DAEffectX.pas';
+  DAEffectX in 'source\Delphi Vst SDK\DAEffectX.pas',
+  ee3.ProcessController in 'source\ee3.ProcessController.pas';
 
 end.

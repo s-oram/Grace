@@ -394,6 +394,7 @@ end;
 
 function AudioEffectX.ProcessEvents(Events: PVstEvents): VstInt32;
 begin
+  // NOTE: return value is ignored according to SDK docs.
   Result := 0;
 end;
 

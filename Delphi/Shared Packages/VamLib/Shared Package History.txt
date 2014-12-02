@@ -1,9 +1,0 @@
-
-======================================
-            History
-======================================
-
-
-14-Nov-2014 
-- Initial shared packaged commit. Taken from Lucidity/Grace. 
-

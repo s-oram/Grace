@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+2 Dec 2014
+- Merge in some changes made in New Vst Template project (part of the Lucidity Project)
+
 25 Nov 2014
 - small VamBasic change.
 

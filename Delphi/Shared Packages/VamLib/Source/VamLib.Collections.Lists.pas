@@ -402,9 +402,6 @@ begin
 end;
 
 
-
-{ TRecordArray<T> }
-
 destructor TSimpleRecordList<T>.Destroy;
 begin
   Clear;
