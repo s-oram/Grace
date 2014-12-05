@@ -64,22 +64,46 @@ thunderlink://messageid=op.xo3a9cqtjh5xdy@b-aitch
 bug
 hotkeys don't work in Traction5.
 
-bug
+bug - i think this is fixed? 
 text in some controls is too wide and is being cut off after the font change.
 Update the width of the controls.
+
+bug:low
+and another issue. when i'm saving the project while the sequencer is playing the sound stutters. this doenst happen with my other samplers / synths.
+thunderlink://messageid=CAPN=qRwu6CN2aduThGPFT+nt438YNNQhR_r83VRuTj8deRYpyw@mail.gmail.com
+
+
+bug:low
+when i'm saving the project while the sequencer is 
+playing the sound stutters. this doenst happen with my other samplers 
+synths.
+-- I'm guessing a lock is preventing the audio thread from completing. 
+---- try silencing the audio engine when saving. 
+thunderlink://messageid=CAPN=qRwu6CN2aduThGPFT+nt438YNNQhR_r83VRuTj8deRYpyw@mail.gmail.com
+
+bug:SERIOUS
+Mod Wheel as a Mod via doesn't seem to be working
+thunderlink://messageid=CAA1QFtP+2RgZ+HByODTDXTCwipUJc1AVK5JrO0Ue2ce04UcAOg@mail.gmail.com
+
+bug:SERIOUS
+xy pads jump around while being moused over. Fix.
+
+bug:SERIOUS - Reaper
+when Grace is run in a seperate process, the save window opens behind the pluging.
+causing the plugin to appear as if hung. 
+thunderlink://messageid=CAA1QFtN9RcsLangLCRpSQKK55FXJb5CFzFvzeeT+sCOHcWBcFA@mail.gmail.com
 
 =============================================================================
      TODO HIGH
 =============================================================================
-IMPORTANT:
-Give yann a final chance to OK the preset names before sending out the next update.
+IMPORTANT: Give yann a final chance to OK the preset names before sending out the next update.
 thunderlink://messageid=D7CA51C967B64AD1A24CF7E301F78B8A@YannHP
 
 Look at DSiInterlockedCompareExchange64() in OmniThreadLibrary for 
 creating a lock-free linked list.
 http://omnithreadlibrary.googlecode.com/svn/trunk/src/DSiWin32.pas
 
-AudioIO should be made a shared package.
+Need to give credit to r8Brain free.
 
 (done) - Make hidden directory names function.
 (done) - Disable current hiding.
@@ -120,7 +144,7 @@ Installers
 (done) -- Breakmixer
 (done) - Send a message out over the Grace mailing list.
 (done) - Create a forum post on KVR announcing Grace
-- Ensure the Grace IPN stuff works. 
+(done) - Ensure the Grace IPN stuff works. 
 -- Need to check the purchase follow up email stuff is working.  
 -- While here check that the Poise purchase emails are going out. I though
    the poise purchase emails had Bcc headers added but I didn't receive anything
