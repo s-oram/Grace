@@ -50,6 +50,9 @@ type
 procedure IncrementVstAudioBufferPointers(BufferPointers : PPSingle; const BufferCount : integer; const SampleFrames : integer); overload; inline;
 procedure IncrementVstAudioBufferPointers(BufferPointers : PPDouble; const BufferCount : integer; const SampleFrames : integer); overload; inline;
 
+procedure CopyVstAudioBuffers(SourceBuffers, DestBuffers : PPSingle; const BufferCount, SampleFrames : integer); inline;
+
+
 implementation
 
 procedure IncrementVstAudioBufferPointers(BufferPointers : PPSingle; const BufferCount : integer; const SampleFrames : integer);
@@ -71,6 +74,29 @@ begin
   begin
     inc(BufferPointers^, SampleFrames);
     inc(BufferPointers);
+  end;
+end;
+
+procedure CopyVstAudioBuffers(SourceBuffers, DestBuffers : PPSingle; const BufferCount, SampleFrames : integer); inline;
+var
+  SourceBP : PSingle;
+  DestBP   : PSingle;
+  c1, c2   : integer;
+begin
+  // TODO:HIGH this could be replaced with one move operation once the method has been confirmed to work.
+  // TODO:HIGH might be worth profiling. the move operation might be able to be cut down.
+  for c1 := 0 to BufferCount-1 do
+  begin
+    SourceBP := SourceBuffers^;
+    DestBP   := DestBuffers^;
+    inc(SourceBuffers);
+    inc(DestBuffers);
+    for c2 := 0 to SampleFrames-1 do
+    begin
+      DestBP^ := SourceBP^;
+      inc(DestBP);
+      inc(SourceBP);
+    end;
   end;
 end;
 

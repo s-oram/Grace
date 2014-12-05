@@ -1,6 +1,10 @@
 ======================================
             History
 ======================================
+5 Dec 2014
+- Add r8Brain shared packages
+- small change to the easy Effect v3 shared package. 
+
 2 Dec 2014
 - Refactor - rename IZeroObject.ProcessZeroObjectMessage() arguments.
 

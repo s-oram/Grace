@@ -74,10 +74,28 @@ type
     procedure Leave; inline;
   end;
 
+  ///  TAutomaticObjectArray<T> is a generic wrapper around an
+  ///  array of objects. It automatically creates new objects
+  ///  when the array length is increased and frees objects
+  ///  when the array length is decreased.
+  ///  This generic would be useful to use when needing
+  ///  a dynamic array of objects for a particular purpose.
+  ///  This object avoids the application developer from
+  ///  having to manage creating/freeing objects as the
+  ///  array is resized.
+  TAutomaticObjectArray<T : class> = record
+  private
+    function CreateInstance: T;
+  public
+    Raw : array of T;
+    procedure SetLength(aCount : integer);
+  end;
+
 
 implementation
 
 uses
+  Rtti,
   SysUtils;
 
 { TFakeCriticalSection }
@@ -331,6 +349,63 @@ begin
 end;
 
 // ------------------------------------------------------------------
+
+
+{ TAutomaticObjectArray<T> }
+
+function TAutomaticObjectArray<T>.CreateInstance: T;
+var
+  AValue: TValue;
+  ctx: TRttiContext;
+  rType: TRttiType;
+  AMethCreate: TRttiMethod;
+  instanceType: TRttiInstanceType;
+begin
+  ctx := TRttiContext.Create;
+  rType := ctx.GetType(TypeInfo(T));
+  for AMethCreate in rType.GetMethods do
+  begin
+    if (AMethCreate.IsConstructor) and (Length(AMethCreate.GetParameters) = 0) then
+    begin
+      instanceType := rType.AsInstance;
+      AValue := AMethCreate.Invoke(instanceType.MetaclassType, []);
+      Result := AValue.AsType<T>;
+      Exit;
+    end;
+  end;
+end;
+
+procedure TAutomaticObjectArray<T>.SetLength(aCount: integer);
+var
+  curLen : integer;
+  NewLen : integer;
+  c1: Integer;
+begin
+  //assert(aCount >= 0);
+
+  curLen := Length(Raw);
+  NewLen := aCount;
+
+  if NewLen = CurLen then
+  begin
+    exit;
+  end else
+  if NewLen > CurLen then
+  begin
+    system.SetLength(Raw, NewLen);
+    for c1 := CurLen to NewLen-1 do
+    begin
+      Raw[c1] := CreateInstance;
+    end;
+  end else
+  begin
+    for c1 := CurLen-1 downto NewLen do
+    begin
+      TObject(Raw[c1]).Free;
+    end;
+    system.SetLength(Raw, NewLen);
+  end;
+end;
 
 
 
