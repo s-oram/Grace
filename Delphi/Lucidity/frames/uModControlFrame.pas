@@ -197,7 +197,7 @@ begin
   AltFilterText.ShowAltText1 := false;
   AltFilterText.ShowAltText2 := false;
 
-  StepSequenceMenu := TStepSequenceMenu.Create;
+  StepSequenceMenu := TStepSequenceMenu.Create(AOwner);
 
   KnobList := TObjectList.Create;
 

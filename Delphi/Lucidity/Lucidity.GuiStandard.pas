@@ -3,6 +3,7 @@ unit Lucidity.GuiStandard;
 interface
 
 uses
+  Classes,
   Contnrs,
   VamLib.ZeroObject,
   eePlugin,
@@ -19,7 +20,7 @@ type
   protected
     Plugin : TeePlugin;
   public
-    constructor Create(const aPlugin : TeePlugin);
+    constructor Create(AGuiOwner: TComponent; const aPlugin : TeePlugin);
     destructor Destroy; override;
 
     procedure UpdateControls;
@@ -36,11 +37,11 @@ uses
 
 { TGuiStandard }
 
-constructor TGuiStandard.Create(const aPlugin : TeePlugin);
+constructor TGuiStandard.Create(AGuiOwner: TComponent; const aPlugin : TeePlugin);
 begin
-  fKnobHandler  := TKnobHandler.Create(aPlugin);
-  fMenuHandler  := TMenuButtonHandler.Create(aPlugin);
-  fXyPadHandler := TXyPadHandler.Create(aPlugin);
+  fKnobHandler  := TKnobHandler.Create(AGuiOwner, aPlugin);
+  fMenuHandler  := TMenuButtonHandler.Create(AGuiOwner, aPlugin);
+  fXyPadHandler := TXyPadHandler.Create(AGuiOwner, aPlugin);
 
   aPlugin.Globals.MotherShip.RegisterZeroObject(fKnobHandler, TZeroObjectRank.VCL);
   aPlugin.Globals.MotherShip.RegisterZeroObject(fMenuHandler, TZeroObjectRank.VCL);

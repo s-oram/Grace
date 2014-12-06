@@ -6,6 +6,7 @@ interface
 
 
 uses
+  Classes,
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
 
@@ -36,7 +37,7 @@ type
     procedure EventHandle_AutoSelectChange(Sender : TObject);
     procedure EventHandle_FindMissingSamples(Sender : TObject);
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -64,7 +65,7 @@ uses
 
 { TMainMenu }
 
-constructor TMainMenu.Create;
+constructor TMainMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;
@@ -92,7 +93,8 @@ begin
 
   if Tag = 3 then
   begin
-    OpenDialog := TxpFileOpenDialog.Create(nil);
+    assert(FOwner <> nil);
+    OpenDialog := TxpFileOpenDialog.Create(FOwner);
     AutoFree(@OpenDialog);
 
     SetupFileOpenDialog_Program(OpenDialog);
@@ -110,7 +112,8 @@ procedure TMainMenu.OpenKeyFile(Sender: TObject);
 var
   FileOpenDialog : TxpFileOpenDialog;
 begin
-  FileOpenDialog := TxpFileOpenDialog.Create(nil);
+  assert(FOwner <> nil);
+  FileOpenDialog := TxpFileOpenDialog.Create(FOwner);
   AutoFree(@FileOpenDialog);
 
   FileOpenDialog.FileName := '';
@@ -352,7 +355,8 @@ procedure TMainMenu.EventHandle_ImportSFZ(Sender: TObject);
 var
   OpenDialog : TxpFileOpenDialog;
 begin
-  OpenDialog := TxpFileOpenDialog.Create(nil);
+  assert(FOwner <> nil);
+  OpenDialog := TxpFileOpenDialog.Create(FOwner);
   AutoFree(@OpenDialog);
 
   SetupFileOpenDialog(Plugin, OpenDialog, TDialogTarget.dtSfzProgram);
@@ -437,7 +441,8 @@ procedure TMainMenu.EventHandle_SaveMidiMapAs(Sender: TObject);
 var
   SaveDialog : TxpFileSaveDialog;
 begin
-  SaveDialog := TxpFileSaveDialog.Create(nil);
+  assert(FOwner <> nil);
+  SaveDialog := TxpFileSaveDialog.Create(FOwner);
   AutoFree(@SaveDialog);
 
   SetupFileSaveDialog(Plugin, SaveDialog, TDialogTarget.dtMidiMap);
@@ -457,7 +462,8 @@ procedure TMainMenu.EventHandle_LoadMidiMap(Sender: TObject);
 var
   OpenDialog : TxpFileOpenDialog;
 begin
-  OpenDialog := TxpFileOpenDialog.Create(nil);
+  assert(FOwner <> nil);
+  OpenDialog := TxpFileOpenDialog.Create(FOwner);
   AutoFree(@OpenDialog);
 
   SetupFileOpenDialog(Plugin, OpenDialog, TDialogTarget.dtMidiMap);
@@ -487,7 +493,8 @@ procedure TMainMenu.EventHandle_SaveProgramAs(Sender: TObject);
 var
   SaveDialog : TxpFileSaveDialog;
 begin
-  SaveDialog := TxpFileSaveDialog.Create(nil);
+  assert(FOwner <> nil);
+  SaveDialog := TxpFileSaveDialog.Create(FOwner);
   AutoFree(@SaveDialog);
 
   SetupFileSaveDialog_Program(Plugin, SaveDialog);
@@ -507,7 +514,8 @@ procedure TMainMenu.EventHandle_SaveProgramAsWithSamples(Sender: TObject);
 var
   SaveDialog : TxpFileSaveDialog;
 begin
-  SaveDialog := TxpFileSaveDialog.Create(nil);
+  assert(FOwner <> nil);
+  SaveDialog := TxpFileSaveDialog.Create(FOwner);
   AutoFree(@SaveDialog);
 
   SetupFileSaveDialog_Program(Plugin, SaveDialog);

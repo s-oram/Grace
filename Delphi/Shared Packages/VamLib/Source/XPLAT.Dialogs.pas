@@ -22,10 +22,10 @@ type
     FFilter: string;
     FInitialDir: string;
   protected
+    FOwner : TComponent;
     xpMode   : TxpMode;
     WinXP    : TSaveDialog;
     WinVista : TFileSaveDialog;
-    Owner : TComponent;
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -54,10 +54,10 @@ type
     FInitialDir: string;
     FTitle: string;
   protected
+    FOwner : TComponent;
     xpMode   : TxpMode;
     WinXP    : TOpenDialog;
     WinVista : TFileOpenDialog;
-    Owner : TComponent;
     procedure EventHandle_WinVistaSelectionChange(Sender : TObject);
   public
     constructor Create(AOwner: TComponent);
@@ -80,7 +80,7 @@ type
 
   TxpDirectorySelectDialog = class
   private
-    Owner : TComponent;
+    FOwner : TComponent;
     xpMode   : TxpMode;
     WinVista : TFileOpenDialog;
     fFileName : string;
@@ -102,6 +102,7 @@ type
     fCaption: string;
     fResultText: string;
   protected
+    FOwner : TComponent;
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -168,7 +169,7 @@ begin
     xpMode := GetxpMode;
   {$ENDIF}
 
-  Owner := AOwner;
+  FOwner := AOwner;
 
   case xpMode of
     TxpMode.WinXP:    WinXP    := TOpenDialog.Create(AOwner);
@@ -307,7 +308,7 @@ begin
     xpMode := GetxpMode;
   {$ENDIF}
 
-  Owner := AOwner;
+  FOwner := AOwner;
   fFileName := '';
 end;
 
@@ -345,7 +346,7 @@ begin
       // Using TFileOpenDialog to select folders:
       // http://stackoverflow.com/a/7422764/395461
       if not assigned(WinVista)
-        then WinVista := TFileOpenDialog.Create(Owner);
+        then WinVista := TFileOpenDialog.Create(FOwner);
       WinVista.Options := [fdoPickFolders];
       if WinVista.Execute then
       begin
@@ -377,7 +378,7 @@ begin
     xpMode := GetxpMode;
   {$ENDIF}
 
-  Owner := AOwner;
+  FOwner := AOwner;
 
   FFileName   := '';
   FDefaultExt := '';
@@ -406,7 +407,7 @@ begin
     TxpMode.WinXP:
     begin
       if not assigned(WinXP)
-        then WinXP := TSaveDialog.Create(Owner);
+        then WinXP := TSaveDialog.Create(FOwner);
 
       //======= Setup File Tpes ========================
       FilterTypesProcessed := '';
@@ -446,7 +447,7 @@ begin
     TxpMode.WinVista:
     begin
       if not assigned(WinVista)
-        then WinVista := TFileSaveDialog.Create(Owner);
+        then WinVista := TFileSaveDialog.Create(FOwner);
 
       //======= Setup File Tpes ========================
       WinVista.FileTypes.Clear;
@@ -489,6 +490,7 @@ end;
 
 constructor TxpInputBox.Create(AOwner: TComponent);
 begin
+  FOwner := AOwner;
   fResultText := '';
 end;
 

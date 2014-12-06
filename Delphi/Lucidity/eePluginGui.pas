@@ -128,17 +128,17 @@ begin
   CurrentGuiState := TGuiState.Create;
 
   //====== Initialize all frames ==============
-  MenuBarFrame := TMenuBarFrame.Create(self.Owner);
+  MenuBarFrame := TMenuBarFrame.Create(self);
   MenuBarFrame.BackgroundPanel.Parent := MainMenuBar;
   MenuBarFrame.BackgroundPanel.Align  := TAlign.alClient;
   MenuBarFrame.BackgroundPanel.Visible  := true;
 
-  SampleMapFrame := TSampleMapFrame.Create(self.Owner);
+  SampleMapFrame := TSampleMapFrame.Create(self);
   SampleMapFrame.BackgroundPanel.Parent := SampleMapDiv;
   SampleMapFrame.BackgroundPanel.Align  := TAlign.alClient;
   SampleMapFrame.BackgroundPanel.Visible  := true;
 
-  MiniSampleDisplayFrame := TMiniSampleDisplayFrame.Create(self.Owner);
+  MiniSampleDisplayFrame := TMiniSampleDisplayFrame.Create(self);
   MiniSampleDisplayFrame.BackgroundPanel.Parent := MainTop;
   MiniSampleDisplayFrame.BackgroundPanel.Align := alClient;
   MiniSampleDisplayFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
@@ -148,7 +148,7 @@ begin
   MiniSampleDisplayFrame.BackgroundPanel.CornerRadius3 := 3;
   MiniSampleDisplayFrame.BackgroundPanel.CornerRadius4 := 3;
 
-  VoiceControlFrame := TVoiceControlFrame.Create(self.Owner);
+  VoiceControlFrame := TVoiceControlFrame.Create(self);
   VoiceControlFrame.BackgroundPanel.Parent := VoiceControlDiv;
   VoiceControlFrame.BackgroundPanel.Align := alClient;
   VoiceControlFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
@@ -158,7 +158,7 @@ begin
   VoiceControlFrame.BackgroundPanel.CornerRadius3 := 3;
   VoiceControlFrame.BackgroundPanel.CornerRadius4 := 3;
 
-  ModControlFrame := TModControlFrame.Create(self.Owner);
+  ModControlFrame := TModControlFrame.Create(self);
   ModControlFrame.BackgroundPanel.Parent := TabPanel;
   ModControlFrame.BackgroundPanel.Align  := alClient;
   ModControlFrame.BackgroundPanel.Padding.SetBounds(0,0,0,0);
@@ -169,21 +169,21 @@ begin
   ModControlFrame.BackgroundPanel.CornerRadius4 := 3;
   ModControlFrame.BackgroundPanel.Visible := false;
 
-  FileBrowserFrame := TFileBrowserFrame.Create(self.Owner);
+  FileBrowserFrame := TFileBrowserFrame.Create(self);
   FileBrowserFrame.BackgroundPanel.Parent := SidePanel;
   FileBrowserFrame.BackgroundPanel.Align  := alClient;
   FileBrowserFrame.BackgroundPanel.Visible := true;
 
-  ModSystem2Frame := TModSystemFrame.Create(self.Owner);
+  ModSystem2Frame := TModSystemFrame.Create(self);
   ModSystem2Frame.BackgroundPanel.Align := alClient;
   ModSystem2Frame.BackgroundPanel.Visible := true;
   ModSystem2Frame.BackgroundPanel.Parent := ModSystem2Div;
 
-  SequencerFrame := TSequencerFrame.Create(self.Owner);
+  SequencerFrame := TSequencerFrame.Create(self);
   SequencerFrame.BackgroundPanel.Visible := true;
   SequencerFrame.BackgroundPanel.Parent := TabPanel;
 
-  VoiceSetupFrame := TXYPadsFrame.Create(self.Owner);
+  VoiceSetupFrame := TXYPadsFrame.Create(self);
   VoiceSetupFrame.BackgroundPanel.Visible := true;
   VoiceSetupFrame.BackgroundPanel.Parent := TabPanel;
 
@@ -257,10 +257,11 @@ var
   bm1 : TBitmap;
   bm2 : TBitmap;
   bm3 : TBitmap;
+  comp : TComponent;
 begin
   assert(assigned(Plugin));
 
-  GuiStandard := TGuiStandard.Create(Plugin);
+  GuiStandard := TGuiStandard.Create(self, Plugin);
 
   // register self to mother ship.
   Plugin.Globals.MotherShip.RegisterZeroObject(self, TZeroObjectRank.VCL);

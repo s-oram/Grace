@@ -3,6 +3,7 @@ unit Menu.AutoSelectMenu;
 interface
 
 uses
+  Classes,
   Menu.CustomPopupMenu;
 
 type
@@ -10,7 +11,7 @@ type
   private
     procedure HandleEvent_AutoOnOff(Sender : TObject);
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -25,7 +26,7 @@ uses
 
 { TAutoSelectMenu }
 
-constructor TAutoSelectMenu.Create;
+constructor TAutoSelectMenu.Create(AOwner: TComponent);
 begin
   inherited;
 

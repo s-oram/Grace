@@ -3,6 +3,7 @@ unit Menu.MissingSampleContextMenu;
 interface
 
 uses
+  Classes,
   Vcl.Menus,
   Menu.CustomPopupMenu;
 
@@ -12,7 +13,7 @@ type
   protected
     procedure HandleEvent_LocateMissingSamples(Sender : TObject);
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -30,7 +31,7 @@ uses
 
 { TMissingSampleContextMenu }
 
-constructor TMissingSampleContextMenu.Create;
+constructor TMissingSampleContextMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;

@@ -3,6 +3,7 @@ unit Menu.StepSequenceMenu;
 interface
 
 uses
+  Classes,
   VamGuiControlInterfaces,
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
@@ -16,7 +17,7 @@ type
     procedure EventHandle_RandomizeSteps(Sender : TObject);
 
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer; const aSequenceIndex : integer);
@@ -37,7 +38,7 @@ uses
 
 { TStepSequenceMenu }
 
-constructor TStepSequenceMenu.Create;
+constructor TStepSequenceMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;

@@ -3,6 +3,7 @@ unit Menu.CustomPopupMenu;
 interface
 
 uses
+  Classes,
   Vcl.Menus,
   VclEx.PopupMenuEx,
   eePlugin;
@@ -13,13 +14,14 @@ type
     fPlugin: TeePlugin;
     fAutoFreeMenu: boolean;
   protected
+    FOwner : TComponent;
     Menu : TPopupMenuEx;
 
     property Plugin : TeePlugin read fPlugin;
 
     procedure EventHandle_MenuClosed(Sender: TObject; Cancelled: Boolean); virtual;
   public
-    constructor Create; virtual;
+    constructor Create(AOwner: TComponent); virtual;
     destructor Destroy; override;
 
     procedure Initialize(aPlugin : TeePlugin);
@@ -44,10 +46,11 @@ uses
 
 { TCustomPopupMenu }
 
-constructor TCustomPopupMenu.Create;
+constructor TCustomPopupMenu.Create(AOwner: TComponent);
 begin
+  FOwner := AOwner;
   AutoFreeMenu := false;
-  Menu := TPopupMenuEx.Create(nil);
+  Menu := TPopupMenuEx.Create(AOwner);
   Menu.OnDismissed := EventHandle_MenuClosed;
 end;
 

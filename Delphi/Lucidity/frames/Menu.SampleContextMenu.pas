@@ -3,6 +3,7 @@ unit Menu.SampleContextMenu;
 interface
 
 uses
+  Classes,
   Lucidity.Interfaces,
   eePlugin, Vcl.Menus;
 
@@ -12,6 +13,7 @@ type
   private
     fLoopPointsVisible: boolean;
   protected
+    FOwner : TComponent;
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
     MouseDownSamplePos : integer;
@@ -31,7 +33,7 @@ type
     procedure EventHandle_ClearAllModulationForAllSamplePoints(Sender : TObject);
     procedure EventHandle_ClearCurrentModulationForAllSamplePoints(Sender : TObject);
   public
-    constructor Create;
+    constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
     procedure Initialize(aPlugin : TeePlugin);
@@ -69,9 +71,10 @@ const
 
 { TSampleDisplayMenu }
 
-constructor TSampleContextMenu.Create;
+constructor TSampleContextMenu.Create(AOwner: TComponent);
 begin
-  Menu := TPopupMenu.Create(nil);
+  FOwner := AOwner;
+  Menu := TPopupMenu.Create(AOwner);
 end;
 
 destructor TSampleContextMenu.Destroy;
@@ -550,7 +553,7 @@ begin
     exit;
   end;
 
-  OD := TxpFileOpenDialog.Create(nil);
+  OD := TxpFileOpenDialog.Create(FOwner);
   AutoFree(@OD);
 
   OD.Filter := 'Executable|*.exe';

@@ -3,6 +3,7 @@ unit Menu.ModSelectorContextMenu;
 interface
 
 uses
+  Classes,
   eeEnumMenu, Lucidity.Enums,
   Menu.CustomPopupMenu, eePlugin, Vcl.Menus;
 
@@ -24,7 +25,7 @@ type
 
     procedure Init;
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const aModSlotIndex : integer; const x, y : integer);
@@ -39,7 +40,7 @@ uses
 
 { TModSelectorContextMenu }
 
-constructor TModSelectorContextMenu.Create;
+constructor TModSelectorContextMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;

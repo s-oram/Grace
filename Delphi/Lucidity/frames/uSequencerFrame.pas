@@ -64,7 +64,7 @@ constructor TSequencerFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
-  StepSequenceMenu := TStepSequenceMenu.Create;
+  StepSequenceMenu := TStepSequenceMenu.Create(AOwner);
 end;
 
 destructor TSequencerFrame.Destroy;

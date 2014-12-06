@@ -156,6 +156,8 @@ constructor TMiniSampleDisplayFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
+  assert(AOwner <> nil);
+
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
   fSampleOverlay.Parent  := SampleDisplay;
   fSampleOverlay.Align := alClient;
@@ -175,12 +177,12 @@ begin
 
   CurrentSample.Info.IsValid := false;
 
-  SampleContextMenu := TSampleContextMenu.Create;
+  SampleContextMenu := TSampleContextMenu.Create(AOwner);
 
   // TODO:MED instead of creating the menu at the start, maybe it would
   // be better to create the menu when needed and free when finish. It
   // would be more dynmaic.
-  MissingSampleContextMenu := TMissingSampleContextMenu.Create;
+  MissingSampleContextMenu := TMissingSampleContextMenu.Create(AOwner);
 
 
   StoredImage := TSampleImageBuffer.Create;

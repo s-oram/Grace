@@ -342,7 +342,7 @@ begin
   begin
     if not assigned(GroupVisibilityMenu) then
     begin
-      GroupVisibilityMenu := TGroupVisibilityMenu.Create;
+      GroupVisibilityMenu := TGroupVisibilityMenu.Create(self.Owner);
       GroupVisibilityMenu.Initialize(Plugin);
     end;
 

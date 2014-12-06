@@ -3,6 +3,7 @@ unit Menu.SamplesMenu;
 interface
 
 uses
+  Classes,
   Menu.CustomPopupMenu,
   eePlugin, Vcl.Menus, Windows, Messages;
 
@@ -34,7 +35,7 @@ type
 
     procedure SampleClicked(Sender : TObject);
   public
-    constructor Create(aAppHandle : HWND); reintroduce;
+    constructor Create(AOwner: TComponent; aAppHandle : HWND); reintroduce;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -43,7 +44,7 @@ type
 implementation
 
 uses
-  SysUtils, Classes,
+  SysUtils,
   Lucidity.KeyGroupManager,
   Lucidity.SampleMap,
   uConstants, Lucidity.Interfaces,
@@ -52,9 +53,9 @@ uses
 { TSamplesMenu }
 
 
-constructor TSamplesMenu.Create(aAppHandle : HWND);
+constructor TSamplesMenu.Create(AOwner: TComponent; aAppHandle : HWND);
 begin
-  inherited Create;
+  inherited Create(AOwner);
 
   AppHandle := aAppHandle;
 

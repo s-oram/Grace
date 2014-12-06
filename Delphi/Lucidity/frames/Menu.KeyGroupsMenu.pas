@@ -3,6 +3,7 @@ unit Menu.KeyGroupsMenu;
 interface
 
 uses
+  Classes,
   Menu.CustomPopupMenu,
   eePlugin, Vcl.Menus;
 
@@ -19,7 +20,7 @@ type
     procedure PasteKeyGroupParameters(Sender : TObject);
     procedure RenameKeyGroup(Sender : TObject);
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -38,7 +39,7 @@ uses
 
 { TGroupsMenu }
 
-constructor TGroupsMenu.Create;
+constructor TGroupsMenu.Create(AOwner: TComponent);
 begin
   inherited;
 

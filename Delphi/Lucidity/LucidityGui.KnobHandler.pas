@@ -5,7 +5,6 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-
   Vcl.Menus,
   Menu.CustomPopupMenu,
   Contnrs,
@@ -32,7 +31,7 @@ type
     procedure Handle_MidiUnlearn(Sender:TObject);
     procedure Handle_SetMidiCC(Sender:TObject);
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Popup(const x, y : integer);
     property TargetParameterName : string read fTargetParameterName write fTargetParameterName;
@@ -47,7 +46,7 @@ type
     procedure ShowControlContextMenu(const X, Y : integer; const ParName : string);
     procedure UpdateModulation(const c : TObject);
   public
-    constructor Create(const aPlugin : TeePlugin); override;
+    constructor Create(AGuiOwner: TComponent; const aPlugin : TeePlugin); override;
     destructor Destroy; override;
 
     procedure RegisterControl(const c : TObject); override;
@@ -76,10 +75,10 @@ uses
 
 { TKnobHandler }
 
-constructor TKnobHandler.Create(const aPlugin : TeePlugin);
+constructor TKnobHandler.Create(AGuiOwner: TComponent; const aPlugin : TeePlugin);
 begin
   inherited;
-  KnobContextMenu := TKnobContextMenu.Create;
+  KnobContextMenu := TKnobContextMenu.Create(AGuiOwner);
   KnobContextMenu.Initialize(aPlugin);
 end;
 
@@ -367,7 +366,7 @@ end;
 
 { TKnobContextMenu }
 
-constructor TKnobContextMenu.Create;
+constructor TKnobContextMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;

@@ -22,7 +22,7 @@ type
     procedure UpdateControl(const c : TObject); override;
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
   public
-    constructor Create(const aPlugin : TeePlugin); override;
+    constructor Create(AGuiOwner: TComponent; const aPlugin : TeePlugin); override;
     destructor Destroy; override;
     procedure RegisterControl(const c : TObject); override;
   published
@@ -47,7 +47,7 @@ uses
 
 { TMenuButtonHandler }
 
-constructor TMenuButtonHandler.Create(const aPlugin: TeePlugin);
+constructor TMenuButtonHandler.Create(AGuiOwner: TComponent; const aPlugin: TeePlugin);
 begin
   inherited;
   MenuBuilder := TGuiMenuBuilder.Create;

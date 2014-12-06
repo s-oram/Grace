@@ -25,7 +25,7 @@ type
 
     function GetPluginParameterName(const PadIndex, Axis : integer):string;
   public
-    constructor Create; override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Popup(const x, y : integer);
@@ -46,7 +46,7 @@ uses
 
 { TXYPadContextMenu }
 
-constructor TXYPadContextMenu.Create;
+constructor TXYPadContextMenu.Create(AOwner: TComponent);
 begin
   inherited;
 end;

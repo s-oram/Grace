@@ -32,7 +32,7 @@ type
     procedure PluginParameterChanged(const ParName : string; ParValue : single);
 
   public
-    constructor Create(const aPlugin : TeePlugin); virtual;
+    constructor Create(AGuiOwner: TComponent; const aPlugin : TeePlugin); virtual;
     destructor Destroy; override;
 
     procedure RegisterControl(const c : TObject); virtual;
@@ -50,7 +50,7 @@ uses
 
 { TCustomControlHandler }
 
-constructor TCustomControlHandler.Create(const aPlugin: TeePlugin);
+constructor TCustomControlHandler.Create(AGuiOwner: TComponent; const aPlugin: TeePlugin);
 begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;

@@ -89,11 +89,9 @@ begin
   ContainerDiv.AlignWithMargins := true;
   ContainerDiv.Margins.SetBounds(4,4,4,4);
 
-  GroupsMenu := TGroupsMenu.Create;
-
-  SamplesMenu := TSamplesMenu.Create(0);
-
-  MainMenu := TMainMenu.Create;
+  GroupsMenu := TGroupsMenu.Create(AOwner);
+  SamplesMenu := TSamplesMenu.Create(AOwner, 0);
+  MainMenu := TMainMenu.Create(AOwner);
 
   AddDisplayClass(MainMenuButton, dcGUIMenuButton);
   AddDisplayClass(MapEditButton, dcGUIMenuButton);
@@ -182,7 +180,7 @@ begin
 
   if Button = mbLeft then
   begin
-    Menu := TAutoSelectMenu.Create;
+    Menu := TAutoSelectMenu.Create(self.Owner);
     Menu.AutoFreeMenu := true;
     Menu.Initialize(self.Plugin);
     Menu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);

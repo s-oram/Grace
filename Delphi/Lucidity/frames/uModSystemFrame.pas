@@ -79,7 +79,7 @@ begin
 
   CurrentMouseOverControl := nil;
 
-  ModContextMenu := TModSelectorContextMenu.Create;
+  ModContextMenu := TModSelectorContextMenu.Create(AOwner);
 
   ActiveParameter := '';
 

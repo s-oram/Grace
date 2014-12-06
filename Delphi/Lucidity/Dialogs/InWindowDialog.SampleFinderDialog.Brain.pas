@@ -28,6 +28,7 @@ type
     function GetCurrentMissingFileName: string;
     function GetCurrentMissingFileCount: integer;
   protected
+    FOwner : TComponent;
     FileSearchMotile : TFileSearchMotile;
 
     PreviousFindLocations : TStringList;
@@ -46,7 +47,7 @@ type
     procedure TriggerEvent_SearchPathChanged(NewPath : string);
     procedure TriggerEvent_SearchFinished_FileNotFound;
   public
-    constructor Create(var MissingFiles, SearchPaths : TStringList);
+    constructor Create(AOwner : TComponent; var MissingFiles, SearchPaths : TStringList);
     destructor Destroy; override;
 
     procedure Skip;
@@ -90,8 +91,9 @@ uses
 
 { TSampleFinderBrain }
 
-constructor TSampleFinderBrain.Create(var MissingFiles, SearchPaths: TStringList);
+constructor TSampleFinderBrain.Create(AOwner : TComponent; var MissingFiles, SearchPaths: TStringList);
 begin
+  FOwner := AOwner;
   fMissingFiles := MissingFiles;
   fSearchPaths  := SearchPaths;
 
@@ -228,7 +230,7 @@ begin
   end;
 
 
-  OpenDialog := TxpFileOpenDialog.Create(nil);
+  OpenDialog := TxpFileOpenDialog.Create(FOwner);
   try
     OpenDialog.Title := 'Open File';
     if DirectoryExists(Dir) then OpenDialog.InitialDir := Dir;

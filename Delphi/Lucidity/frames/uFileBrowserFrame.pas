@@ -110,8 +110,8 @@ begin
   FileBrowserAddOn.OnFilterNodes      := EventHandle_FilterNodes;
   FileBrowserAddOn.OnGetNodeBitmap    := EventHandle_GetNodeBitmap;
 
-  MainContextMenu := TFileTreeViewMainContextMenu.Create;
-  NodeContextMenu := TFileTreeViewNodeContextMenu.Create;
+  MainContextMenu := TFileTreeViewMainContextMenu.Create(AOwner);
+  NodeContextMenu := TFileTreeViewNodeContextMenu.Create(AOwner);
 
   PreviewInfo_ShowVolume := false;
 end;

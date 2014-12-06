@@ -71,7 +71,7 @@ var
 begin
   inherited Create(AOwner);
 
-  Brain := TSampleFinderBrain.Create(MissingFiles, SearchPaths);
+  Brain := TSampleFinderBrain.Create(AOwner, MissingFiles, SearchPaths);
   Brain.OnUpdateMainView := EventHandle_UpdateAllControls;
   Brain.OnFinished := EventHandle_SearchFinished;
   Brain.OnSearchPathChanged := EventHandle_SearchPathChanged;

@@ -6,6 +6,7 @@ interface
 {$WARN SYMBOL_PLATFORM OFF}
 
 uses
+  Classes,
   eeWinEx,
   VamTreeView, eeFileBrowserAddon,
   eePlugin, Vcl.Menus;
@@ -20,7 +21,8 @@ type
     Menu : TPopUpMenu;
     procedure MenuItemClicked(Sender : TObject);
   public
-    constructor Create;
+    FOwner : TComponent;
+    constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
     procedure Initialize(aPlugin : TeePlugin);
@@ -34,6 +36,7 @@ type
     fFocusedNode: TVamTreeViewNode;
     fNodeFileName: string;
   protected
+    FOwner : TComponent;
     Plugin : TeePlugin;
     Menu : TPopUpMenu;
     procedure MenuItemClicked(Sender : TObject);
@@ -42,7 +45,7 @@ type
     procedure EventHandler_RenameRootNode(Sender : TObject);
     procedure EventHandler_RenameProgramFile(Sender : TObject);
   public
-    constructor Create;
+    constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
     property FocusedNode : TVamTreeViewNode read fFocusedNode write fFocusedNode;
@@ -70,9 +73,10 @@ uses
 
 { TFileTreeViewContextMenu }
 
-constructor TFileTreeViewMainContextMenu.Create;
+constructor TFileTreeViewMainContextMenu.Create(AOwner: TComponent);
 begin
-  Menu := TPopupMenu.Create(nil);
+  FOwner := AOwner;
+  Menu := TPopupMenu.Create(FOwner);
 end;
 
 destructor TFileTreeViewMainContextMenu.Destroy;
@@ -98,7 +102,7 @@ begin
 
   if Tag = 1 then
   begin
-    OD := TxpDirectorySelectDialog.Create(nil);
+    OD := TxpDirectorySelectDialog.Create(FOwner);
     AutoFree(@OD);
     if OD.Execute then
     begin
@@ -128,9 +132,10 @@ end;
 
 { TFileTreeViewNodeContextMenu }
 
-constructor TFileTreeViewNodeContextMenu.Create;
+constructor TFileTreeViewNodeContextMenu.Create(AOwner: TComponent);
 begin
-  Menu := TPopupMenu.Create(nil);
+  FOwner := AOwner;
+  Menu := TPopupMenu.Create(FOwner);
 end;
 
 destructor TFileTreeViewNodeContextMenu.Destroy;
@@ -187,7 +192,7 @@ begin
 
   if Tag = 5 then
   begin
-    OD := TxpDirectorySelectDialog.Create(nil);
+    OD := TxpDirectorySelectDialog.Create(FOwner);
     AutoFree(@OD);
 
     // NOTE: Using file open dialog to select folders.
@@ -353,7 +358,7 @@ var
   OD : TxpFileOpenDialog;
   SoundEditorApp : string;
 begin
-  OD := TxpFileOpenDialog.Create(nil);
+  OD := TxpFileOpenDialog.Create(FOwner);
   AutoFree(@OD);
 
   OD.Filter := 'Executable|*.exe';

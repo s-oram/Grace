@@ -28,7 +28,7 @@ type
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  override;
     procedure UpdateControl(const c : TObject); override;
   public
-    constructor Create(const aPlugin : TeePlugin); override;
+    constructor Create(AGuiOwner: TComponent; const aPlugin : TeePlugin); override;
     destructor Destroy; override;
 
     procedure RegisterControl(const c : TObject); override;
@@ -51,10 +51,10 @@ uses
 
 { TXYPadHandler }
 
-constructor TXYPadHandler.Create(const aPlugin: TeePlugin);
+constructor TXYPadHandler.Create(AGuiOwner: TComponent; const aPlugin: TeePlugin);
 begin
   inherited;
-  PadContextMenu := TXYPadContextMenu.Create;
+  PadContextMenu := TXYPadContextMenu.Create(AGuiOwner);
   PadContextMenu.Plugin := aPlugin;
 end;
 
