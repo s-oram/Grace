@@ -384,7 +384,7 @@ begin
   FFilter     := '';
   FInitialDir := '';
   FDefaultExt := '';
-  FTitle      := 'Open File';
+  FTitle      := 'Save';
 end;
 
 destructor TxpFileSaveDialog.Destroy;
