@@ -88,7 +88,7 @@ thunderlink://messageid=CAA1QFtP+2RgZ+HByODTDXTCwipUJc1AVK5JrO0Ue2ce04UcAOg@mail
 bug:SERIOUS
 xy pads jump around while being moused over. Fix.
 
-bug:SERIOUS - Reaper
+bug:SERIOUS - Reaper (Fixed)
 when Grace is run in a seperate process, the save window opens behind the pluging.
 causing the plugin to appear as if hung. 
 thunderlink://messageid=CAA1QFtN9RcsLangLCRpSQKK55FXJb5CFzFvzeeT+sCOHcWBcFA@mail.gmail.com
