@@ -3,6 +3,7 @@ unit XPLAT.Dialogs;
 interface
 
 uses
+  Windows,
   Vcl.Dialogs,
   System.Classes;
 
@@ -30,7 +31,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
-    function Execute : boolean;
+    function Execute(ParentWnd: HWND):boolean;
 
     property Title: string        read FTitle       write FTitle;
     property DefaultExt: string   read FDefaultExt  write FDefaultExt;  //example: 'exe' or 'txt'
@@ -63,7 +64,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
-    function Execute : boolean;
+    function Execute(ParentWnd: HWND):boolean;
 
     property Title: string        read FTitle       write FTitle;
     property DefaultExt: string   read FDefaultExt  write FDefaultExt;  //example: 'exe' or 'txt'
@@ -88,7 +89,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
-    function Execute : boolean;
+    function Execute(ParentWnd: HWND):boolean;
     function FileName : string;
   end;
 
@@ -107,7 +108,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
-    function Execute : boolean;
+    function Execute(ParentWnd: HWND):boolean;
 
     property ResultText : string read fResultText;
 
@@ -210,7 +211,7 @@ begin
   end;
 end;
 
-function TxpFileOpenDialog.Execute: boolean;
+function TxpFileOpenDialog.Execute(ParentWnd: HWND):boolean;
 var
   FileTypesList : TStringList;
   c1: Integer;
@@ -218,6 +219,8 @@ var
   ft : TFileTypeItem;
   FilterTypesProcessed : string;
 begin
+  if ParentWnd = 0 then raise Exception.Create('ParentWnd cannot be 0.');
+
   case xpMode of
     TxpMode.WinXP:
     begin
@@ -246,7 +249,7 @@ begin
       WinXP.Title      := FTitle;
       WinXP.Options    := [TOpenOption.ofFileMustExist];
 
-      if WinXP.Execute then
+      if WinXP.Execute(ParentWnd) then
       begin
         FFileName := WinXP.FileName;
         result := true;
@@ -283,7 +286,7 @@ begin
       WinVista.FileName         := FFileName;
       WinVista.Title            := FTitle;
 
-      if WinVista.Execute then
+      if WinVista.Execute(ParentWnd) then
       begin
         FFileName := WinVista.FileName;
         result := true;
@@ -319,12 +322,14 @@ begin
   inherited;
 end;
 
-function TxpDirectorySelectDialog.Execute: boolean;
+function TxpDirectorySelectDialog.Execute(ParentWnd: HWND):boolean;
 var
   //== WinXP ==
   Root, Directory : string;
   //== WinVista ==
 begin
+  if ParentWnd = 0 then raise Exception.Create('ParentWnd cannot be 0.');
+
   case xpMode of
     TxpMode.WinXP:
     begin
@@ -345,10 +350,11 @@ begin
     begin
       // Using TFileOpenDialog to select folders:
       // http://stackoverflow.com/a/7422764/395461
-      if not assigned(WinVista)
-        then WinVista := TFileOpenDialog.Create(FOwner);
+      if not assigned(WinVista) then WinVista := TFileOpenDialog.Create(FOwner);
+
       WinVista.Options := [fdoPickFolders];
-      if WinVista.Execute then
+
+      if WinVista.Execute(ParentWnd) then
       begin
         fFileName := WinVista.FileName;
         result := true;
@@ -395,7 +401,7 @@ begin
   inherited;
 end;
 
-function TxpFileSaveDialog.Execute: boolean;
+function TxpFileSaveDialog.Execute(ParentWnd: HWND): boolean;
 var
   FileTypesList : TStringList;
   c1: Integer;
@@ -403,6 +409,8 @@ var
   ft : TFileTypeItem;
   FilterTypesProcessed : string;
 begin
+  if ParentWnd = 0 then raise Exception.Create('ParentWnd cannot be 0.');
+
   case xpMode of
     TxpMode.WinXP:
     begin
@@ -433,7 +441,9 @@ begin
       WinXP.DefaultExt := FDefaultExt;
       WinXP.Title      := FTitle;
 
-      if WinXP.Execute then
+      // ParentWnd is ignored here.
+      // http://stackoverflow.com/a/14502932/395461
+      if WinXP.Execute(ParentWnd) then
       begin
         FFileName := WinXP.FileName;
         result := true;
@@ -471,7 +481,7 @@ begin
       WinVista.FileName         := FFileName;
       WinVista.Title            := FTitle;
 
-      if WinVista.Execute then
+      if WinVista.Execute(ParentWnd) then
       begin
         FFileName := WinVista.FileName;
         result := true;
@@ -500,10 +510,12 @@ begin
   inherited;
 end;
 
-function TxpInputBox.Execute: boolean;
+function TxpInputBox.Execute(ParentWnd: HWND):boolean;
 var
   s: string;
 begin
+  if ParentWnd = 0 then raise Exception.Create('ParentWnd cannot be 0.');
+
   s := InitialValue;
   if InputQuery(Caption, Prompt, s) then
   begin

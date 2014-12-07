@@ -46,6 +46,7 @@ type
 implementation
 
 uses
+  Controls,
   Windows,
   ShellApi,
   VamLib.Utils,
@@ -101,7 +102,7 @@ begin
 
     OpenDialog.FileName := ''; //TODO:
 
-    if OpenDialog.Execute then
+    if OpenDialog.Execute(GetComponentHandle(FOwner)) then
     begin
       Plugin.ImportProgram(OpenDialog.FileName);
     end;
@@ -120,7 +121,7 @@ begin
   FileOpenDialog.Title := 'Open Registration Key File...';
   FileOpenDialog.Filter := 'Key Data File|*.dat';
 
-  if FileOpenDialog.Execute then
+  if FileOpenDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     if Command.RegisterPlugin(Plugin, FileOpenDialog.FileName)
       then Plugin.LoadLastProgram;
@@ -363,7 +364,7 @@ begin
 
   OpenDialog.FileName := ''; //TODO:
 
-  if OpenDialog.Execute then
+  if OpenDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     Plugin.ImportProgram(OpenDialog.FileName, TProgramFormat.Sfz);
   end;
@@ -447,7 +448,7 @@ begin
 
   SetupFileSaveDialog(Plugin, SaveDialog, TDialogTarget.dtMidiMap);
 
-  if SaveDialog.Execute then
+  if SaveDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     Plugin.SaveMidiMap(SaveDialog.FileName);
   end;
@@ -470,7 +471,7 @@ begin
 
   OpenDialog.FileName := ''; //TODO:
 
-  if OpenDialog.Execute then
+  if OpenDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     Plugin.LoadMidiMap(OpenDialog.FileName);
   end;
@@ -499,7 +500,7 @@ begin
 
   SetupFileSaveDialog_Program(Plugin, SaveDialog);
 
-  if SaveDialog.Execute then
+  if SaveDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     Plugin.SaveProgramToFileWithoutSamples(SaveDialog.FileName);
   end;
@@ -520,7 +521,7 @@ begin
 
   SetupFileSaveDialog_Program(Plugin, SaveDialog);
 
-  if SaveDialog.Execute then
+  if SaveDialog.Execute(GetComponentHandle(FOwner)) then
   begin
     Plugin.SaveProgramToFileWithSamples(SaveDialog.FileName);
   end;

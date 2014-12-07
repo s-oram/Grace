@@ -84,10 +84,12 @@ type
 implementation
 
 uses
-  VamLib.FindFiles,
+  SysUtils,
   Dialogs,
+  VamLib.FindFiles,
   XPlat.Dialogs,
-  SysUtils;
+  Lucidity.Utils;
+
 
 { TSampleFinderBrain }
 
@@ -235,7 +237,7 @@ begin
     OpenDialog.Title := 'Open File';
     if DirectoryExists(Dir) then OpenDialog.InitialDir := Dir;
     OpenDialog.FileName := fn;
-    if OpenDialog.Execute then TriggerEvent_FileFound(OpenDialog.FileName);
+    if OpenDialog.Execute(GetComponentHandle(FOwner)) then TriggerEvent_FileFound(OpenDialog.FileName);
   finally
     OpenDialog.Free;
   end;
@@ -252,9 +254,9 @@ begin
   fn  := ExtractFileName(CurrentMissingFileFullPath);
   Dir := ExtractFilePath(CurrentMissingFileFullPath);
 
-  DirSelectDialog := TxpDirectorySelectDialog.Create(nil);
+  DirSelectDialog := TxpDirectorySelectDialog.Create(FOwner);
   try
-    if DirSelectDialog.Execute then
+    if DirSelectDialog.Execute(GetComponentHandle(FOwner)) then
     begin
       SearchForMissingFileIn(fn, DirSelectDialog.FileName);
     end;

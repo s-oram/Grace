@@ -54,6 +54,7 @@ uses
   Lucidity.PluginParameters,
   Lucidity.Types,
   Lucidity.GuiUtils,
+  Lucidity.Utils,
   SysUtils,
   eeWinEx,
   Lucidity.SampleMap,
@@ -558,7 +559,7 @@ begin
 
   OD.Filter := 'Executable|*.exe';
 
-  if od.Execute then
+  if od.Execute(GetComponentHandle(FOwner)) then
   begin
     SoundEditorApp := od.FileName;
     Plugin.Globals.Options.AddNewSoundEditor(SoundEditorApp);

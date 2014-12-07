@@ -5,9 +5,9 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  Controls,
+  Windows,
   Classes;
-
-
 
 function IsLucidityProgramFile(const FileName : string): boolean;
 function IsSupportedProgramFormat(const FileName : string): boolean;
@@ -27,6 +27,9 @@ function FindLucidityProgramUsingIndex(const Dir : string; const ProgramIndex : 
 
 function GetPluginBuildInfo:string;
 
+
+function GetComponentHandle(c : TComponent):HWND;
+
 implementation
 
 uses
@@ -38,7 +41,6 @@ uses
   VamLib.LoggingProxy,
   SmartInspectLogging,
   uFindFiles,
-  Windows,
   AudioIO,
   SysUtils;
 
@@ -169,6 +171,13 @@ begin
   {$ENDIF}
 
   result := 'Version ' + GetBuildInfoAsString + kChar.Space + BuildType + kChar.Space + TargetPlatform + EndOfLine;
+end;
+
+function GetComponentHandle(c : TComponent):HWND;
+begin
+  if (c is TWinControl)
+    then result := (c as TWinControl).Handle
+    else result := 0;
 end;
 
 

@@ -104,7 +104,7 @@ begin
   begin
     OD := TxpDirectorySelectDialog.Create(FOwner);
     AutoFree(@OD);
-    if OD.Execute then
+    if OD.Execute(GetComponentHandle(FOwner)) then
     begin
       DirPath := OD.FileName;
       DirName := ExtractFileName(OD.FileName);
@@ -197,7 +197,7 @@ begin
 
     // NOTE: Using file open dialog to select folders.
     // - http://stackoverflow.com/a/7422764/395461
-    if OD.Execute then
+    if OD.Execute(GetComponentHandle(FOwner)) then
     begin
       DirPath := OD.FileName;
       DirName := ExtractFileName(OD.FileName);
@@ -363,7 +363,7 @@ begin
 
   OD.Filter := 'Executable|*.exe';
 
-  if od.Execute then
+  if od.Execute(GetComponentHandle(FOwner)) then
   begin
     SoundEditorApp := od.FileName;
     Plugin.Globals.Options.AddNewSoundEditor(SoundEditorApp);
