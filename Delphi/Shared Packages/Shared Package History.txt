@@ -1,6 +1,15 @@
 ======================================
             History
 ======================================
+8 Dec 2014
+- write new throttle and debounce methods.
+- delete the old throttle and debounce methods.
+
+8 Dec 2014
+- NativeXML is now a runtime only package
+- VamLib in progress chages. (Throttle doesn't work properly and is
+  being worked on right now...)
+
 5 Dec 2014
 - Add r8Brain shared packages
 - small change to the easy Effect v3 shared package. 

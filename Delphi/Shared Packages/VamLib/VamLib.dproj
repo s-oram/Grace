@@ -126,6 +126,8 @@
 			<DCCReference Include="Source\VamLib.FindFiles.pas"/>
 			<DCCReference Include="Source\VamLib.KeyValueStore.pas"/>
 			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
+			<DCCReference Include="Source\VamLib.OneShotTimer.pas"/>
+			<DCCReference Include="Source\VamLib.GuiUtils.ThrottleDebounce.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

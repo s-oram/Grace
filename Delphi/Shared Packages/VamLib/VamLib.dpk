@@ -62,6 +62,8 @@ contains
   XPLAT.Dialogs in 'Source\XPLAT.Dialogs.pas',
   VamLib.FindFiles in 'Source\VamLib.FindFiles.pas',
   VamLib.KeyValueStore in 'Source\VamLib.KeyValueStore.pas',
-  VamLib.Win.DragDrop in 'Source\VamLib.Win.DragDrop.pas';
+  VamLib.Win.DragDrop in 'Source\VamLib.Win.DragDrop.pas',
+  VamLib.OneShotTimer in 'Source\VamLib.OneShotTimer.pas',
+  VamLib.GuiUtils.ThrottleDebounce in 'Source\VamLib.GuiUtils.ThrottleDebounce.pas';
 
 end.

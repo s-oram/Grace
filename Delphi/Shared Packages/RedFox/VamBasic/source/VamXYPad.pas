@@ -55,6 +55,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    function IsUserInteractionActive : boolean;
   published
     property CornerRadius : single read fCornerRadius write SetCornerRadius;
 
@@ -109,6 +111,11 @@ end;
 destructor TVamXYPad.Destroy;
 begin
   inherited;
+end;
+
+function TVamXYPad.IsUserInteractionActive: boolean;
+begin
+  result := IsGrabbed;
 end;
 
 procedure TVamXYPad.Changed;

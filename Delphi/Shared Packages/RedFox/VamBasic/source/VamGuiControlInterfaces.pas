@@ -46,7 +46,7 @@ type
 
   IXYPadControl = interface(IInterface)
     ['{2230D1CD-7C5E-48E4-8BE1-5CD37F5A8431}']
-    //TODO:LOW
+    function IsUserInteractionActive : boolean;
   end;
 
 

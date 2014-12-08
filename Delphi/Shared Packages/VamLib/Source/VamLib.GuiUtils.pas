@@ -14,66 +14,6 @@ uses
 // methods again if something doesn't work properly.
 
 procedure Wait(const MilliSeconds : Longint);
-
-// TODO:MED write a GuiDebouce and/or GuiThrottle methods based
-// on code in wait().
-
-//function GuiDebounce(const MilliSeconds : integer; var ReferenceTime : Int64):boolean;
-
-{
-  TODO:MED i think it should be possible to debounce and throttle functions using
-  the wait method above, and using a technique similar to how Javascript debounce
-  functions work, (in the sense they wrap the function to be debounced and return
-  another function.
-
-  The Debounce() method would return a TDebouncedMethod which would be an anonymous
-  method. It means application developers will need to do some setup. But they
-  have to do that anyway when using VamLib.Debouncer.
-
-  VamLib.Debouncer is somewhat complicated and involves running a timer. This code
-  might be less complicated and resource intensive.
-
-  On the downside these debounce methods could only be used in GUI code because
-  it requires the use of wait.. which uses  Application.ProcessMessages to avoid
-  blocking the main thread.
-
-}
-
-
-type
-  TDebounceToken = record
-  private
-    CallRef : TProc;
-    LastCallTime : TDateTime;
-    IsTrailingCallRequired : Boolean;
-    IsActive : boolean;
-    DoCancel : boolean;
-  public
-    // While we have a Cancel method here, I don't
-    // think it's needed to prevent the main GUI thread from
-    // closing mid debounce. That's because the debounce wait()
-    // method executes on the main thread. In effect it is blocking but
-    // process messages is being called so it looks like the form is still
-    // responding.
-    procedure Cancel; //cancel. Not blocking.
-  end;
-
-  TThrottleToken = record
-  private
-    CallRef : TProc;
-    LastCallTime : TDateTime;
-    IsTrailingCallRequired : Boolean;
-    IsActive : boolean;
-  public
-    // TODO:HIGH add a cancel method here!
-  end;
-
-  TDebounceEdge = (deLeading, deTrailing, deBoth);
-
-procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
-
-procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
-
 function FindFocusedControl(aControl : TWinControl):TWinControl;
 
 implementation
@@ -81,7 +21,8 @@ implementation
 uses
   DateUtils,
   Vcl.Forms,
-  WinApi.Windows;
+  WinApi.Windows,
+  VamLib.Threads;
 
 
 procedure Wait(const MilliSeconds : Longint);
@@ -119,93 +60,6 @@ begin
   CloseHandle(TimerHandle);
 end;
 
-procedure Debounce(var DebounceToken : TDebounceToken; const Edge : TDebounceEdge; const MilliSeconds : integer; Proc : TProc);
-var
-  IsWaitFinished : boolean;
-begin
-  DebounceToken.DoCancel := false;
-  DebounceToken.CallRef := Proc;
-  DebounceToken.LastCallTime := Now;
-
-  if (DebounceToken.IsActive = false) then
-  begin
-    if (Edge <> TDebounceEdge.deTrailing)
-      then DebounceToken.CallRef();
-
-    DebounceToken.IsTrailingCallRequired := true;
-    DebounceToken.IsActive := true;
-
-    IsWaitFinished := false;
-
-    repeat
-      Wait(MilliSeconds);
-
-      if DebounceToken.DoCancel then break;
-
-      if not WithinPastMilliSeconds(Now, DebounceToken.LastCallTime, MilliSeconds) then
-      begin
-        if DebounceToken.IsTrailingCallRequired then
-        begin
-          if (Edge <> TDebounceEdge.deLeading)
-            then DebounceToken.CallRef();
-
-          DebounceToken.IsTrailingCallRequired := false;
-          DebounceToken.LastCallTime := Now;
-        end else
-        begin
-          IsWaitFinished := true;
-        end;
-      end;
-    until
-      IsWaitFinished;
-
-    DebounceToken.IsActive := false;
-  end else
-  begin
-    DebounceToken.IsTrailingCallRequired := true;
-  end;
-end;
-
-procedure Throttle(var ThrottleToken : TThrottleToken; const MilliSeconds : integer; Proc : TProc);
-var
-  IsWaitFinished : boolean;
-begin
-  if (ThrottleToken.IsActive = false) then
-  begin
-    ThrottleToken.CallRef := Proc;
-
-    ThrottleToken.CallRef();
-
-    ThrottleToken.IsTrailingCallRequired := false;
-    ThrottleToken.IsActive := true;
-    ThrottleToken.LastCallTime := Now;
-
-    IsWaitFinished := false;
-
-    repeat
-      Wait(MilliSeconds);
-      if ThrottleToken.IsTrailingCallRequired then
-      begin
-        ThrottleToken.CallRef();
-        ThrottleToken.IsTrailingCallRequired := false;
-        ThrottleToken.LastCallTime := Now;
-      end else
-      begin
-        IsWaitFinished := true;
-      end;
-    until
-      IsWaitFinished;
-
-    ThrottleToken.IsActive := false;
-  end else
-  begin
-    ThrottleToken.CallRef := Proc;
-    ThrottleToken.LastCallTime := Now;
-    ThrottleToken.IsTrailingCallRequired := true;
-  end;
-end;
-
-
 function FindFocusedControl(aControl : TWinControl):TWinControl;
 var
   c1 : integer;
@@ -234,13 +88,5 @@ begin
 
 end;
 
-
-
-{ TDebounceToken }
-
-procedure TDebounceToken.Cancel;
-begin
-  DoCancel := true;
-end;
 
 end.
