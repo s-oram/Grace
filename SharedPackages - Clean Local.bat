@@ -1,0 +1,1 @@
+call "S:\Delphi\Shared Packages\clean.bat"
