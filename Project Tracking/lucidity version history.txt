@@ -22,6 +22,7 @@ Bug Fix:
   build. The problem was very apparent in Tracktion 5.
 - Some dialogs would show behind the GUI window. If not visible at all, the host
   application would appear to be hung. 
+- Mod wheel now works.
 
 
 

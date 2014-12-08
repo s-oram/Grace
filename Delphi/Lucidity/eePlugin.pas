@@ -1918,13 +1918,14 @@ begin
     MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
     Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
   end else
-  if IsControlChange(Event) then
-  begin
-    MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
-  end else
   if IsModWheel(Event) then
   begin
     MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
+    MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
+  end else
+  if IsControlChange(Event) then
+  begin
+    MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
   end else
   if IsPitchBend(Event) then
   begin
@@ -1936,7 +1937,6 @@ begin
   begin
     LoadMidiProgram(Event.Data1);
   end;
-
 end;
 
 procedure TeePlugin.FastControlProcess;
