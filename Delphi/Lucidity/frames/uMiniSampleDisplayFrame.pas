@@ -11,6 +11,7 @@ uses
   Lucidity.GuiStandard,
   VamLib.UniqueID,
   VamLib.GuiUtils,
+  VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject,
   VamVisibleControl, Lucidity.SampleImageRenderer,
   Lucidity.Types,
@@ -156,6 +157,8 @@ constructor TMiniSampleDisplayFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
+  UpdateSampleDisplayTK := TThrottleToken.Create;
+
   assert(AOwner <> nil);
 
   fSampleOverlay := TLuciditySampleOverlay.Create(AOwner);
@@ -217,6 +220,8 @@ begin
   SampleRenderer.Free;
 
   CurrentSample.Region := nil;
+
+  UpdateSampleDisplayTK.Free;
 
   inherited;
 end;
@@ -821,7 +826,7 @@ begin
   end;
 
 
-  Throttle(UpdateSampleDisplayTK, 25, procedure
+  UpdateSampleDisplayTK.Throttle(25, procedure
   begin
     UpdateSampleDisplay;
   end);
@@ -1161,7 +1166,7 @@ begin
   Offset := (Sender as TVamScrollBar).IndexPos;
   Plugin.Globals.GuiState.SampleDisplayOffset := Offset;
 
-  Throttle(UpdateSampleDisplayTK, 25, procedure
+  UpdateSampleDisplayTK.Throttle(25, procedure
   begin
     UpdateSampleDisplay;
   end);

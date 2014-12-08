@@ -348,7 +348,7 @@ begin
       Plugin.SetPluginParameterModAmount(TParChangeScope.psFocused, ParName, ModIndex, ModAmountValue);
     end;
 
-    Throttle(ParChangedTK, 25,
+    ParChangedTK.Throttle(25,
     procedure
     begin
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.ModAmountChanged, nil, nil);

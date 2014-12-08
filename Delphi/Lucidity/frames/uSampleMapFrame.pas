@@ -8,6 +8,7 @@ uses
   Lucidity.Enums,
   VamLib.UniqueID,
   VamLib.GuiUtils,
+  VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject, VamShortMessageOverlay,
   Menu.GroupVisibility,
   Menu.SampleMapContextMenu, Lucidity.GuiStandard,
@@ -149,6 +150,8 @@ constructor TSampleMapFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
+  KnobChangedTK := TThrottleToken.Create;
+
   MessageOverlayAnimateID.Init;
 
   SampleMapMenu := TSampleMapContextMenu.Create;
@@ -195,6 +198,7 @@ begin
 
   if assigned(GroupVisibilityMenu) then GroupVisibilityMenu.Free;
 
+  KnobChangedTK.Free;
 
   inherited;
 end;
@@ -1108,7 +1112,7 @@ begin
   // are only updated to show the correct value after the SampleRegionChanged message
   // has been set. This results in a very slight delay for the final value to show.
   // It's not a showstopper bug but would be great to fix.
-  Throttle(KnobChangedTK, 25, procedure
+  KnobChangedTK.Throttle(25, procedure
   begin
     Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
@@ -1143,7 +1147,7 @@ begin
 
 
   //TODO: It would be handy to have a thread safe throttle.
-  Throttle(KnobChangedTK, 25, procedure
+  KnobChangedTK.Throttle(25, procedure
   begin
     Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);

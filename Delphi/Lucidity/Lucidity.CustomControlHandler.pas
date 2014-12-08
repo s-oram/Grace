@@ -9,6 +9,7 @@ uses
   Classes,
   Contnrs,
   VamLib.GuiUtils,
+  VamLib.GuiUtils.ThrottleDebounce,
   VamLib.UniqueID,
   VamLib.ZeroObject;
 
@@ -55,11 +56,13 @@ begin
   Plugin := aPlugin;
   ControlList := TObjectList.Create;
   ControlList.OwnsObjects := false;
+  ParChangedTK := TThrottleToken.Create;
 end;
 
 destructor TCustomControlHandler.Destroy;
 begin
   ControlList.Free;
+  ParChangedTK.Free;
   inherited;
 end;
 
@@ -149,7 +152,7 @@ begin
     Plugin.SetPluginParameter(ParID, ParValue, TParChangeScope.psFocused);
   end;
 
-  Throttle(ParChangedTK, 25,
+  ParChangedTK.Throttle(25,
   procedure
   begin
     Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_UpdateParChangeInfo, @ParID, nil);
