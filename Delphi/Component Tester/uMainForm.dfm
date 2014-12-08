@@ -62,7 +62,6 @@ object Form1: TForm1
         ImageOverlayOffsetX = 0
         ImageOverlayOffsetY = 0
         Visible = True
-        OnClick = VamTextBox1Click
       end
     end
   end

@@ -9,7 +9,6 @@ uses
   VamLib.WinHook,
   SfzParser,
   VamLib.Utils,
-  VamLib.Debouncer,
   VamLib.GuiUtils,
   RedFoxImageBuffer,
   VamLib.UniqueID,
