@@ -13,6 +13,7 @@ New:
 
 Change:
 - Grace is now using Liberation sans font for GUI text. 
+- using new debounce and throttling GUI code.
 
 Bug Fix:
 - Grace now works correctly when using large fonts in Windows. Previously 
