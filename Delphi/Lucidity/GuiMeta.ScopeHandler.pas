@@ -6,7 +6,7 @@ interface
 
 uses
   ExtCtrls,
-  VamLib.Debouncer,
+  VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject,
   eePlugin,
   Lucidity.PluginParameters,
@@ -43,10 +43,9 @@ type
       CurrentParFocus : string; // this is a parameter name.
     end;
 
-    FocusedControl : TControl;
-    LastScopeFocus : TScopeFocus;
-
-    ScopeFocusDebounceID : TUniqueID;
+    FocusedControl       : TControl;
+    LastScopeFocus       : TScopeFocus;
+    ScopeFocusDebounceTK : TDebounceToken;
 
     procedure UpdateScope; overload;
     procedure UpdateScope(const ScopeFocus : TScopeFocus); overload;
@@ -170,7 +169,7 @@ begin
 
   LastScopeFocus := TScopeFocus.None;
 
-  ScopeFocusDebounceID.Init;
+  ScopeFocusDebounceTK := TDebounceToken.Create;
 
   UpdateTimer := TTimer.Create(nil);
   UpdateTimer.Interval := 50;
@@ -181,7 +180,7 @@ end;
 destructor TScopeHandler.Destroy;
 begin
   UpdateTimer.Free;
-  DebounceCancel(ScopeFocusDebounceID);
+  ScopeFocusDebounceTK.Free;
   inherited;
 end;
 
@@ -234,7 +233,7 @@ begin
       UpdateScope(ScopeState.CurrentParFocus);
     end;
 
-    Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
+    ScopeFocusDebounceTK.Debounce(DebounceTime, deTrailing, dbf);
   end;
 
   if MsgID = TLucidMsgID.OnParControlLeave then
@@ -252,7 +251,7 @@ begin
       UpdateScope(ScopeState.CurrentParFocus);
     end;
 
-    Debounce(ScopeFocusDebounceID, DebounceTime, TDebounceEdge.deTrailing, dbf);
+    ScopeFocusDebounceTK.Debounce(DebounceTime, deTrailing, dbf);
   end;
 
   if MsgID = TLucidMsgID.OnParControlChanged then
