@@ -6,6 +6,22 @@ uses
   SysUtils,
   VamLib.OneShotTimer;
 
+///  Throttle - Debounce
+///
+///  TODO:MED
+///
+///  It would be possible to create a dynamic throttle-debounce system where all
+///  the client code wouldn't need to maintain individual instances of Throttle
+///  and Debounce tokens. Instead, the using code could be passing in
+///  unassigned object tokens as VAR method variables.
+///  The throttle-debounce code would check if the token was assigned, if not
+///  it would assign an unused token to the variable.
+///  Once debouncing was finished the original VAR token would be cleared,
+///  releasing the token instance back into the unused token group.
+///
+///  This dynamic system would allow throttle-debouncing to be used liberally
+///  without too many concerns about creating too many objects that would
+///  only be infrequently used.
 
 type
   TThrottleToken = class
