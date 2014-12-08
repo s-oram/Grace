@@ -103,28 +103,6 @@
 				<Form>Form1</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="..\Third Party\newAC\src\ACS_MemFloat.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.MessageDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.MessageDialog.Form.pas">
-				<Form>MessageDialogForm</Form>
-				<FormType>dfm</FormType>
-			</DCCReference>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.ModalShadow.Form.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.Prototypes.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputDialog.Form.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.InputDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.Form.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.CustomDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Form.pas">
-				<Form>SampleFinderDialogForm</Form>
-			</DCCReference>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
-			<DCCReference Include="..\Lucidity\Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
-			<DCCReference Include="MyWorker.pas"/>
-			<DCCReference Include="fontenumTest.pas"/>
-			<DCCReference Include="..\Lucidity\Lucidity.FirstRun.pas"/>
-			<DCCReference Include="Temp_PluginPar.pas"/>
 			<None Include="ModelSupport_ComponentTester\default.txaPackage"/>
 			<None Include="Defines.inc"/>
 			<BuildConfiguration Include="Release">
