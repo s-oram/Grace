@@ -5,7 +5,7 @@ interface
 uses
   Dialogs, //delete this
   VamLib.UniqueID,
-  VamLib.Debouncer,
+  VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject,
   Lucidity.Enums,
   Lucidity.Interfaces,
@@ -51,14 +51,11 @@ type
     procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
-    IsManualScroll : boolean;
+    MainContextMenu  : TFileTreeViewMainContextMenu;
+    NodeContextMenu  : TFileTreeViewNodeContextMenu;
     FileBrowserAddon : TFileBrowserAddon;
-
-    PreviewDebounceID : TUniqueID;
-
-    MainContextMenu : TFileTreeViewMainContextMenu;
-    NodeContextMenu : TFileTreeViewNodeContextMenu;
-
+    DebounceTK       : TDebounceToken;
+    IsManualScroll   : boolean;
     PreviewInfo_ShowVolume : boolean;
 
     procedure EventHandle_NodeFocusChanged(Sender : TObject);
@@ -103,7 +100,7 @@ constructor TFileBrowserFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
-  PreviewDebounceID.Init;
+  DebounceTK := TDebounceToken.Create;
 
   FileBrowserAddon := TFileBrowserAddon.Create(FileTreeView);
   FileBrowserAddOn.OnNodeFocusChanged := EventHandle_NodeFocusChanged;
@@ -127,6 +124,7 @@ begin
   FileBrowserAddon.Free;
   MainContextMenu.Free;
   NodeContextMenu.Free;
+  DebounceTK.Free;
   inherited;
 end;
 
@@ -402,7 +400,7 @@ begin
     end;
   end;
 
-  Debounce(PreviewDebounceID, 150, TDebounceEdge.deTrailing, Proc);
+  DebounceTK.Debounce(150, deTrailing, Proc);
 end;
 
 procedure TFileBrowserFrame.EventHandle_FilterNodes(Sender: TObject; const RootDir: string; var FolderNodes, FileNodes: TStringList);
