@@ -9,7 +9,7 @@
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
-			<Platform Condition="'$(Platform)'==''">Win64</Platform>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -638,6 +638,7 @@
 			<None Include="Profiling\AQtimeModule1.aqt"/>
 			<None Include="..\Third Party\AudioIO\source\AudioIO.inc"/>
 			<None Include="ModelSupport_Grace\default.txvpck"/>
+			<None Include="ModelSupport_Grace\default.txaPackage"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>
