@@ -101,7 +101,6 @@
 			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.pas"/>
 			<DCCReference Include="Source\VamLib.Graphics.pas"/>
-			<DCCReference Include="Source\VamLib.Debouncer.pas"/>
 			<DCCReference Include="Source\VamLib.Threads.pas"/>
 			<DCCReference Include="Source\VamLib.Collections.Lists.pas"/>
 			<DCCReference Include="Source\VamLib.PerformanceTuning.pas"/>
