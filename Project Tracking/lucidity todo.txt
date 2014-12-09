@@ -81,18 +81,6 @@ synths.
 ---- try silencing the audio engine when saving. 
 thunderlink://messageid=CAPN=qRwu6CN2aduThGPFT+nt438YNNQhR_r83VRuTj8deRYpyw@mail.gmail.com
 
-bug:SERIOUS
-Mod Wheel as a Mod via doesn't seem to be working
-thunderlink://messageid=CAA1QFtP+2RgZ+HByODTDXTCwipUJc1AVK5JrO0Ue2ce04UcAOg@mail.gmail.com
-
-bug:SERIOUS
-xy pads jump around while being moused over. Fix.
-
-bug:SERIOUS - Reaper (Fixed)
-when Grace is run in a seperate process, the save window opens behind the pluging.
-causing the plugin to appear as if hung. 
-thunderlink://messageid=CAA1QFtN9RcsLangLCRpSQKK55FXJb5CFzFvzeeT+sCOHcWBcFA@mail.gmail.com
-
 =============================================================================
      TODO HIGH
 =============================================================================
