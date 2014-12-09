@@ -136,6 +136,10 @@ uses
   AudioIO_WindowedSincResampler,
   AudioIO_Resampler_r8brain;
 
+{$IFNDEF R8Brain}
+  {_$Message ERROR 'text string'}
+{$ENDIF}
+
 
 function IsFileUsingSupportedFileNameExtension(const FileName : string; out ErrorMessage:string):boolean;
 var

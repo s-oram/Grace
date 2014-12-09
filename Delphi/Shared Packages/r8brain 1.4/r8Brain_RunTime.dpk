@@ -1,4 +1,4 @@
-package r8BrainDXE2;
+package r8Brain_RunTime;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,6 +25,8 @@ package r8BrainDXE2;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
+{$LIBSUFFIX 'XE2'}
+{$LIBVERSION '14'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 

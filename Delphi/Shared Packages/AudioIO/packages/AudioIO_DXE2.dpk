@@ -30,7 +30,8 @@ package AudioIO_DXE2;
 
 requires
   rtl,
-  VamLib;
+  VamLib,
+  r8Brain_RunTime;
 
 contains
   AudioIO_AiffLowLevel in '..\source\AudioIO_AiffLowLevel.pas',

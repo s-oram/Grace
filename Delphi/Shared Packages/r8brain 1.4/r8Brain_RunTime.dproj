@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
 			<ProjectGuid>{5DD606F6-A3BD-4AF0-BC82-15B29669155D}</ProjectGuid>
-			<MainSource>r8BrainDXE2.dpk</MainSource>
+			<MainSource>r8Brain_RunTime.dpk</MainSource>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>None</FrameworkType>
 			<Base>True</Base>
@@ -36,6 +36,8 @@
 		</PropertyGroup>
 		<Import Condition="'$(Base)'!='' And Exists('..\SharedPackage.optset')" Project="..\SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DllSuffix>XE2</DllSuffix>
+			<DllVersion>14</DllVersion>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -66,6 +68,8 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -101,7 +105,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">r8BrainDXE2.dpk</Source>
+						<Source Name="MainSource">r8Brain_RunTime.dpk</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -132,6 +136,7 @@
 					</VersionInfoKeys>
 					<Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\VamLib.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\NativeXmlV4_XE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\AudioIO_DXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\ThirdPartyLibs.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl">File S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl not found</Excluded_Packages>

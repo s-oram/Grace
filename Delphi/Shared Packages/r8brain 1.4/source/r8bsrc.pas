@@ -7,9 +7,14 @@ unit r8bsrc;
 
 interface
 
+{$include r8Brain.inc}
+
 type
 	CR8BResampler = Pointer;
 	PR8BDouble = ^Double;
+
+const
+  R8BrainVersion = 1.4;
 
 const
 	r8brr16 = 0; // 16-bit precision resampler.

@@ -79,6 +79,7 @@
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
+			<DCCReference Include="r8Brain_RunTime.dcp"/>
 			<DCCReference Include="..\source\AudioIO_AiffLowLevel.pas"/>
 			<DCCReference Include="..\source\AudioIO_Snd.pas"/>
 			<DCCReference Include="..\source\AudioIO_SndLowLevel.pas"/>
