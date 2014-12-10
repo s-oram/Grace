@@ -130,6 +130,7 @@ function LoadStereo_Int(FileName:string; LeftData,RightData:PSmallInt):boolean;
 implementation
 
 uses
+  r8bsrc,
   AudioIO_Mp3,
   AudioIO_WavPack,
   AudioIO_Wave, AudioIO_Aiff, AudioIO_Snd,
@@ -753,7 +754,8 @@ end;
 
 
 
-
+initialization
+  if r8bsrc.R8BrainVersion <> 1.4 then raise Exception.Create('R8Brain version is not correct.');
 
 end.
 

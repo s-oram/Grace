@@ -49,7 +49,6 @@ contains
   AudioIO_WindowedSincFilter in '..\source\AudioIO_WindowedSincFilter.pas',
   AudioIO_WindowedSincResampler in '..\source\AudioIO_WindowedSincResampler.pas',
   AudioIO_DSP in '..\source\AudioIO_DSP.pas',
-  AudioIO_Resampler_r8brain in '..\source\AudioIO_Resampler_r8brain.pas',
-  AudioIO_r8bsrc in '..\source\thirdparty\r8brain-free\AudioIO_r8bsrc.pas';
+  AudioIO_Resampler_r8brain in '..\source\AudioIO_Resampler_r8brain.pas';
 
 end.
