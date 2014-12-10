@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{F648A616-8E27-4367-B7C9-BA0247C10CE8}</ProjectGuid>
-			<MainSource>VamLib.dpk</MainSource>
+			<ProjectGuid>{15D660B1-6F5D-46D8-BA99-3461C5BCA0B6}</ProjectGuid>
+			<MainSource>SmartInspect_RunTime.dpk</MainSource>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>None</FrameworkType>
 			<Base>True</Base>
@@ -11,11 +11,6 @@
 			<AppType>Package</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
-			<Base_Win64>true</Base_Win64>
-			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
@@ -39,38 +34,31 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('SharedPackage.optset')" Project="SharedPackage.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\SharedPackage.optset')" Project="..\SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
 			<GenPackage>true</GenPackage>
 			<DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<GenDll>true</GenDll>
-			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
 			<DCC_E>false</DCC_E>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>SharedPackage.optset</CfgDependentOn>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<DCC_UsePackage>vcl;vclx;$(DCC_UsePackage)</DCC_UsePackage>
+			<CfgDependentOn>..\SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;vclx;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
@@ -78,65 +66,35 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset')" Project="D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset"/>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vclimg.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
-			<DCCReference Include="vclx.dcp"/>
-			<DCCReference Include="SmartInspect_RunTime.dcp"/>
-			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
-			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.pas"/>
-			<DCCReference Include="Source\VamLib.Graphics.pas"/>
-			<DCCReference Include="Source\VamLib.Threads.pas"/>
-			<DCCReference Include="Source\VamLib.Collections.Lists.pas"/>
-			<DCCReference Include="Source\VamLib.PerformanceTuning.pas"/>
-			<DCCReference Include="Source\VamLib.WinUtils.pas"/>
-			<DCCReference Include="Source\VamLib.MultiEvent.pas"/>
-			<DCCReference Include="Source\VamLib.Types.pas"/>
-			<DCCReference Include="Source\VamLib.DebugString.pas"/>
-			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
-			<DCCReference Include="Source\VamLib.Animation.pas"/>
-			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
-			<DCCReference Include="Source\VamLib.LoggingProxy.pas"/>
-			<DCCReference Include="Source\VamLib.ManagedObject.pas"/>
-			<DCCReference Include="Source\VamLib.CpuOverloadWatcher.pas"/>
-			<DCCReference Include="Source\VamLib.EnumHelper.pas"/>
-			<DCCReference Include="Source\VamLib.GuiUtils.pas"/>
-			<DCCReference Include="Source\VamLib.WinHook.pas"/>
-			<DCCReference Include="Source\VamLib.DuckType.pas"/>
-			<DCCReference Include="Source\VamLib.PatchUtils.pas"/>
-			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
-			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
-			<DCCReference Include="Source\VamLib.FindFiles.pas"/>
-			<DCCReference Include="Source\VamLib.KeyValueStore.pas"/>
-			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
-			<DCCReference Include="Source\VamLib.OneShotTimer.pas"/>
-			<DCCReference Include="Source\VamLib.GuiUtils.ThrottleDebounce.pas"/>
-			<None Include="ModelSupport_VamLib\default.txaPackage"/>
-			<None Include="Source\InterlockedAPIs.inc"/>
+			<DCCReference Include="dbrtl.dcp"/>
+			<DCCReference Include="source\SiEncryption.pas"/>
+			<DCCReference Include="source\SiWinSock2.pas"/>
+			<DCCReference Include="source\SmartInspect.pas"/>
+			<DCCReference Include="source\SiAuto.pas"/>
+			<None Include="source\SiRijndael.inc"/>
+			<None Include="source\SmartInspect.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>SharedPackage.optset</DependentOn>
+				<DependentOn>..\SharedPackage.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
@@ -149,7 +107,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">VamLib.dpk</Source>
+						<Source Name="MainSource">SmartInspect_RunTime.dpk</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -179,6 +137,8 @@
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\VamLib.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\NativeXmlV4_XE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\AudioIO_DXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\ThirdPartyLibs.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl">File S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl not found</Excluded_Packages>
@@ -196,7 +156,6 @@
 					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
-				<ModelSupport>True</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

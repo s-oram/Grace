@@ -31,7 +31,8 @@ package VamLib;
 requires
   rtl,
   vcl,
-  vclx;
+  vclx,
+  SmartInspect_RunTime;
 
 contains
   VamLib.Collections.RecordArray in 'Source\VamLib.Collections.RecordArray.pas',

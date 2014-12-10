@@ -14,7 +14,7 @@ del /q /s *.dsm
 del /q /s *.identcache
 del /q /s *.local
 del /q /s *.map
-del /q /s *.ico
+::del /q /s *.ico
 del /q /s *.otares
 del /q /s *.txvpck
 del /q /s *.txapackage
