@@ -3,7 +3,7 @@ unit InWindowDialog.InputDialog.Form;
 interface
 
 uses
-  InWindowDialog.Prototypes,
+  InWindowDialog.Prototypes, UITypes,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, VamLabel, VamDiv,
   RedFoxWinControl, VamWinControl, VamPanel, RedFoxContainer;
@@ -120,11 +120,8 @@ end;
 procedure TInputDialogForm.ButtonDivResize(Sender: TObject);
 var
   totalWidth : integer;
-  LeftRef    : integer;
 begin
   TotalWidth := OkButton.Width + CancelButton.Width + 8;
-  LeftRef := (ButtonDiv.Width - TotalWidth) div 2;
-
   OkButton.Left     := ButtonDiv.Width - TotalWidth;
   CancelButton.Left := ButtonDiv.Width - CancelButton.Width;
 end;

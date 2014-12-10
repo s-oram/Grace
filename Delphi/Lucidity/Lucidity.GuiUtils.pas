@@ -691,6 +691,9 @@ var
   DestFileName : string;
   KeyData : TLucidityKey;
 begin
+  result := false; //default response.
+
+
   KeyData.Clear;
   KeyData.LoadFromFile(aKeyFileName);
   if (KeyData.IsKeyChecksumValid) then
@@ -713,15 +716,20 @@ begin
           result := true;
         end else
         begin
+          // If we get to this point, lets assume the key file is either corrupt or has been modified by the user.
           InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Please contact support. (ERROR 1053)');
           result := false;
         end;
       end;
+    end else
+    begin
+      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Can not find user configuration directory. Please reinstall.');
+      result := false;
     end;
   end else
   begin
     InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Grace. Key file is invalid.');
-    result := true;
+    result := false;
   end;
 end;
 
@@ -1063,8 +1071,6 @@ var
   c1: Integer;
   fn : string;
   MissingSamples : TStringList;
-  SearchPaths    : TStringList;
-  FileFoundCallback : TFileFoundCallback;
 begin
   MissingSamples := TStringList.Create;
   AutoFree(@MissingSamples);
@@ -1108,7 +1114,7 @@ begin
     ext := ExtractFileExt(FileNodes[c1]);
     if SameText(ext, '.lpg') then
     begin
-      DataFolderName := RemoveFileExt(FileNodes[c1]) + ' Samples';
+      DataFolderName := TrimFileExt(FileNodes[c1]) + ' Samples';
       Index := FolderNodes.IndexOf(DataFoldername);
       if Index <> -1 then FolderNodes.Delete(Index);
     end;

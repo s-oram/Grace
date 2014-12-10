@@ -11,8 +11,6 @@ type
 
   TSampleFinderDialog = class(TPluginDialog)
   private
-    fText: string;
-    fColorBorder: TColor;
     fFileFoundCallback: TFileFoundCallback;
   protected
     fMissingFiles : TStringList;

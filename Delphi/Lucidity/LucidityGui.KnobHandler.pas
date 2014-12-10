@@ -276,8 +276,6 @@ procedure TKnobHandler.Handle_MouseDown(Sender: TObject; Button: TMouseButton; S
 var
   KnobControl : IKnobControl;
   ParName  : string;
-  Par : TPluginParameterClass;
-  ParID    : TPluginParameterID;
 begin
   Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
 
@@ -303,7 +301,6 @@ procedure TKnobHandler.Handle_MouseUp(Sender: TObject; Button: TMouseButton; Shi
 var
   KnobControl : IKnobControl;
   ParName  : string;
-  Par : TPluginParameterClass;
 begin
   if (Button = TMouseButton.mbLeft) and (Supports(Sender, IKnobControl, KnobControl)) then
   begin
