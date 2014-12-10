@@ -69,10 +69,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}
-  SmartInspectLogging,
-  VamLib.LoggingProxy,
-  {$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   VamLib.Utils,
   SysUtils,
   TypInfo;

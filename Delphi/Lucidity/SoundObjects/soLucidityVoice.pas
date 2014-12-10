@@ -219,10 +219,7 @@ implementation
 
 
 uses
-  {$IFDEF Logging}
-  SmartInspectLogging,
-  VamLib.LoggingProxy,
-  {$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   Lucidity.PluginParameters,
   eeCustomGlobals,
   eeProfiler,

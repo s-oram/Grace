@@ -201,7 +201,6 @@ begin
   ReportMemoryLeaksOnShutDown := True;
   ThreadSyncEnforcer.Activate;
   SendMsg_StartProfiling;
-  SetUpLogging;
 
   {$IFDEF Logging}LogMain.LogMessage('VstMain #1');{$ENDIF}
   try

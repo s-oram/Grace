@@ -54,7 +54,7 @@ type
 implementation
 
 uses
-  VamLib.LoggingProxy,
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   VamLib.Utils,
   VamLib.VclLayout,
   RedFoxColor;

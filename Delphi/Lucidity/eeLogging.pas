@@ -15,7 +15,7 @@ implementation
 
 uses
   MadExcept,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   eeTypes;
 
 procedure LogError(const ErrorMessage : string);

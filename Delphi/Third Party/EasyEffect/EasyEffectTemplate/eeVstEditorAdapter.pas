@@ -52,7 +52,7 @@ uses
     {$DEFINE GdipRequired}
   {$ENDIF}
 
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   SysUtils,
   VamLib.ZeroObject,
   uConstants;

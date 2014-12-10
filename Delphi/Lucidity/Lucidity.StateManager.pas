@@ -124,8 +124,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   eePluginDataDir,
   AudioIO,
   NativeXmlEx,

@@ -98,7 +98,7 @@ implementation
 uses
   InWindowDialog,
   VamLayoutWizard,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   eePluginDataDir,
   Lucidity.KeyGroup,
   eeGuiSetup,

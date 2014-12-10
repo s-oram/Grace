@@ -285,8 +285,7 @@ uses
   MadExcept, Windows,
   Dialogs,
   SysUtils,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
-  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   Lucidity.ProgramFileUtils,
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
@@ -1425,7 +1424,7 @@ procedure TeePlugin.GetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeePlugin.GetPreset');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeePlugin.GetPreset');{$ENDIF}
 
   assert(ms.Position = 0, 'Memory stream is not zero.');
 
@@ -1450,7 +1449,7 @@ procedure TeePlugin.SetPreset(var ms: TMemoryStream);
 var
   StateManager : TLucidityStateManager;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeePlugin.SetPreset');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeePlugin.SetPreset');{$ENDIF}
 
   assert(ms.Position = 0, 'Memory stream is not zero.');
 

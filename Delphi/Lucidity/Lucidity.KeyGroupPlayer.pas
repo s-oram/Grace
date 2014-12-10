@@ -43,7 +43,7 @@ implementation
 uses
   VamLib.Utils,
   SysUtils,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   Lucidity.Interfaces,
   uConstants;
 

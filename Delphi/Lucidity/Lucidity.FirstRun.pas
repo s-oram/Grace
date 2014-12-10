@@ -11,7 +11,7 @@ procedure InstallFont(FontFile : string);
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   WinApi.Windows,
   WinApi.Messages,
   SysUtils,
@@ -24,8 +24,8 @@ var
   fn : string absolute FontFile;
   r : integer;
 begin
-  {$IFDEF Logging}Log.TrackMethod('InstallFont()');{$ENDIF}
-  {$IFDEF Logging}Log.LogMessage('FontFile = ' + fn);{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('InstallFont()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.LogMessage('FontFile = ' + fn);{$ENDIF}
 
   if FileExists(fn) then
   begin
@@ -33,8 +33,8 @@ begin
 
     {$IFDEF Logging}
     if r <> 0
-      then Log.LogMessage('Font successfully added.')
-      else Log.LogMessage('Font install failed.');
+      then Log.Main.LogMessage('Font successfully added.')
+      else Log.Main.LogMessage('Font install failed.');
     {$ENDIF}
     //if r <> 0 then SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
   end;
@@ -45,16 +45,16 @@ var
   fn : string absolute FontFile;
   r : boolean;
 begin
-  {$IFDEF Logging}Log.TrackMethod('UninstallFont()');{$ENDIF}
-  {$IFDEF Logging}Log.LogMessage('FontFile = ' + fn);{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('UninstallFont()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.LogMessage('FontFile = ' + fn);{$ENDIF}
 
   if FileExists(fn) then
   begin
     r := RemoveFontResource(pWideChar(fn)) ;
     {$IFDEF Logging}
     if r = true
-      then Log.LogMessage('Font successfully removed.')
-      else Log.LogMessage('Font not removed. (FAIL)');
+      then Log.Main.LogMessage('Font successfully removed.')
+      else Log.Main.LogMessage('Font not removed. (FAIL)');
     {$ENDIF}
     //if r = true then SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
   end;
@@ -68,7 +68,7 @@ var
   DataDir : string;
   fn : string;
 begin
-  {$IFDEF Logging}Log.TrackMethod('FirstRunSetup');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('FirstRunSetup');{$ENDIF}
 
   if (PluginDataDir^.Exists) then
   begin

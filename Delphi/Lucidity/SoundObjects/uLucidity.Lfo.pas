@@ -92,7 +92,7 @@ implementation
 
 uses
   eePitch,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
 

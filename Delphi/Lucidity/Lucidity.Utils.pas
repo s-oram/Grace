@@ -16,7 +16,6 @@ function IsSupportedAudioFormat(const FileName : string): boolean;
 procedure SendMsg_StartProfiling;
 procedure SendMsg_StopProfiling;
 
-procedure SetUpLogging;
 procedure LogMemoryUsage(const LogTag : string = '');
 procedure LogStackTrace;
 
@@ -34,12 +33,9 @@ implementation
 
 uses
   eeVstExtra,
-  {$IFDEF MadExcept}
-  MadStackTrace,
-  {$ENDIF}
+  {$IFDEF MadExcept}MadStackTrace,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   VamLib.Utils,
-  VamLib.LoggingProxy,
-  SmartInspectLogging,
   uFindFiles,
   AudioIO,
   SysUtils;
@@ -84,14 +80,6 @@ function IsSupportedAudioFormat(const FileName : string): boolean;
 begin
   result := IsSupportedAudioFileFormat(Filename, true);
 end;
-
-
-procedure SetUpLogging;
-begin
-  VamLib.LoggingProxy.Log.SetProxy(TSmartInspectProxy.Create);
-  Log.LogMessage('Logging Proxy Initialised');
-end;
-
 
 
 var

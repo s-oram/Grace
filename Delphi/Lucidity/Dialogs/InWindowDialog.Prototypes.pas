@@ -78,7 +78,7 @@ implementation
 uses
   Dialogs,
   SysUtils,
-  VamLib.LoggingProxy,
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   WinApi.Windows;
 
 { TCustomPluginDialogData }
@@ -95,8 +95,6 @@ end;
 
 destructor TPluginDialog.Destroy;
 begin
-  Log.LogMessage('TPluginDialog.Destroy');
-
   inherited;
 end;
 

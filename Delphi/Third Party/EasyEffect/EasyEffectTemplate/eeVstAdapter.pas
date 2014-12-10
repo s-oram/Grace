@@ -104,7 +104,7 @@ implementation
 
 uses
   {$IFDEF MadExcept}MadExcept,{$ENDIF}
-  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Dialogs, System.SysUtils,
   {$ELSE}
@@ -192,7 +192,7 @@ constructor TeeVstAdapter.Create(audioMaster: TAudioMasterCallbackFunc; numProgr
 var
   UniqueId:AnsiString;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Create()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.Create()');{$ENDIF}
   Globals := TGlobals.Create;
 
   // Assign global VST method references so that the GUI can set/get parameter information.
@@ -265,13 +265,13 @@ begin
   ParametersHaveChanged := true;
 
   {$IFDEF Logging}
-  Log.LogMessage('Create Finished');
+  Log.Main.LogMessage('Create Finished');
   {$ENDIF}
 end;
 
 destructor TeeVstAdapter.Destroy;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Destroy()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.Destroy()');{$ENDIF}
 
   SetLength(MidiEvents,0);
 
@@ -586,7 +586,7 @@ end;
 
 function TeeVstAdapter.GetChunk(var data: pointer; isPreset: Boolean): longint;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.GetChunk()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.GetChunk()');{$ENDIF}
 
   //Clear the data storage memory stream
   ChunkData.Clear;
@@ -608,7 +608,7 @@ end;
 
 function TeeVstAdapter.SetChunk(data: pointer; byteSize: Integer; isPreset: Boolean): longint;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.SetChunk()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.SetChunk()');{$ENDIF}
 
   result := byteSize;
 
@@ -631,7 +631,7 @@ end;
 
 procedure TeeVstAdapter.Suspend;
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Suspend()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.Suspend()');{$ENDIF}
   inherited;
   Globals.TriggerVstSuspendEvent;
   Plugin.Suspend;
@@ -646,7 +646,7 @@ var
   smps : integer;
   {$ENDIF}
 begin
-  {$IFDEF Logging}Log.TrackMethod('TeeVstAdapter.Resume()');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeeVstAdapter.Resume()');{$ENDIF}
   inherited;
   {$IFDEF OverSampleEnabled}
     sr := round(SampleRate) * Plugin.Settings.OverSampleFactor;

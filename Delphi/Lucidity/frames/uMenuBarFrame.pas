@@ -66,7 +66,7 @@ implementation
 {$R *.dfm}
 
 uses
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   RedFox,
   RedFoxColor,
   Lucidity.Enums,

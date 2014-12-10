@@ -89,7 +89,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   eeDsp,
   SysUtils,
   LucidityParameterScaling;
