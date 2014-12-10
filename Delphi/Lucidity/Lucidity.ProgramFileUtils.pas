@@ -85,12 +85,9 @@ procedure GetSampleFileNameReferences(const ProgramFileName : string; var Sample
 var
   xml : TNativeXML;
   RootNode : TXMLNode;
-  aNode : TXmlNode;
-  PatchFormatVersion : integer;
   nd : TXmlNode;
   Nodes : TList;
   c1: Integer;
-  p : Pointer;
   fn : string;
 begin
   xml := TNativeXML.Create(nil);
@@ -118,12 +115,9 @@ procedure RenameUsedSampleFile(const ProgramFileName, OldSampleFileName, NewSamp
 var
   xml : TNativeXML;
   RootNode : TXMLNode;
-  aNode : TXmlNode;
-  PatchFormatVersion : integer;
   nd : TXmlNode;
   Nodes : TList;
   c1: Integer;
-  p : Pointer;
   fn : string;
   NewFN : string;
   OldAbsFileName : string;

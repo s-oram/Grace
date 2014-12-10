@@ -211,18 +211,13 @@ end;
 procedure MoveSelectedRegions(const FocusedRegion:TVamSampleRegion; Regions:TVamSampleRegionList; KeyOffset, VelocityOffset:integer; const Snapping:boolean);
 var
   c1: Integer;
-  //LimitedKeyOffset : integer;
-  //LimitedVelocityOffset : integer;
-  //rw, rh : integer;
-  //rwShift, rhShift : integer;
   NewBounds : TRect;
   VertSnapPoints : TIntegerList;
   HorzSnapPoints : TIntegerList;
-  SnapOffsetX, SnapOffsetY : integer;
-  cvVertA, cvHorzA : integer;
-  cvVertB, cvHorzB : integer;
+  SnapOffsetY : integer;
+  cvHorzA : integer;
+  cvHorzB : integer;
   DistA, DistB : integer;
-  //pos, dist : integer;
   MaxKeyOffset : integer;
   MinKeyOffset : integer;
   MaxVelocityOffset : integer;
@@ -260,18 +255,8 @@ begin
     NewBounds.Top    := FocusedRegion.HighVelocity + VelocityOffset;
     NewBounds.Bottom := FocusedRegion.LowVelocity  + VelocityOffset;
 
-    cvVertA := FindClosestValue(NewBounds.Left,    VertSnapPoints);
-    cvVertB := FindClosestValue(NewBounds.Right+1, VertSnapPoints)-1;
-
     cvHorzA := FindClosestValue(NewBounds.Bottom, HorzSnapPoints);
     cvHorzB := FindClosestValue(NewBounds.Top+1,  HorzSnapPoints)-1;
-
-    DistA := abs(cvVertA - NewBounds.Left);
-    DistB := abs(cvVertB - NewBounds.Right);
-
-    if DistA < DistB
-      then SnapOffsetX := cvVertA - NewBounds.Left
-      else SnapOffsetX := cvVertB - NewBounds.Right;
 
     DistA := abs(cvHorzA - NewBounds.Bottom);
     DistB := abs(cvHorzB - NewBounds.Top);
@@ -280,13 +265,10 @@ begin
       then SnapOffsetY := cvHorzA - NewBounds.Bottom
       else SnapOffsetY := cvHorzB - NewBounds.Top;
 
-
-
     FindMinMaxOffsets(Regions, MinKeyOffset, MaxKeyOffset, MinVelocityOffset, MaxVelocityOffset);
 
     //==========================================================================
     // Ignore Horizontal snapping.
-    //ModifiedOffsetX := KeyOffset + SnapOffsetX;
     ModifiedOffsetX := KeyOffset;
     //==========================================================================
     ModifiedOffsetY := VelocityOffset + SnapOffsetY;
@@ -302,8 +284,6 @@ begin
       end;
     end;
   end;
-
-
 end;
 
 
@@ -489,7 +469,7 @@ procedure ResizeSelectedRegions(
 var
   VertSnapPoints : TIntegerList;
   HorzSnapPoints : TIntegerList;
-  TargetKey, TargetVelocity : integer;
+  TargetVelocity : integer;
   ModifiedVelocityOffset : integer;
   ModifiedKeyOffset : integer;
   VertSmartSnapDisable : boolean;

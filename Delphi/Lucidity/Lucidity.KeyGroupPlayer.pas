@@ -70,7 +70,6 @@ end;
 
 procedure TKeyGroupPlayer.ProcessZeroObjectMessage(MsgID: cardinal;  DataA: Pointer; DataB:IInterface);
 var
-  c1 : integer;
   pKG : pointer;
   kg : IKeyGroup;
   ptr  : pointer;
@@ -106,22 +105,6 @@ begin
 
     kg := nil;
   end;
-
-
-  {
-  if MsgID = TLucidMsgID.Command_DisposeKeyGroup then
-  begin
-    kgID := TKeyGroupID(Data^);
-
-    for c1 := ActiveRegions.Count-1 downto 0 do
-    begin
-      if (ActiveRegions[c1] as IKeyGroup).GetID = kgID then
-      begin
-        ActiveRegions.Delete(c1);
-      end;
-    end;
-  end;
-  }
 end;
 
 

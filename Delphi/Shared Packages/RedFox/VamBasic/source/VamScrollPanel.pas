@@ -114,7 +114,6 @@ procedure TVamScrollPanel.UpdateScrollBars;
 var
   sbw : integer;
   ClientRect, ContentRect : TRect;
-  sph, spw : integer;
 begin
   //========= Update Visible Scroll Bars ==============
 
@@ -172,16 +171,9 @@ begin
   ClientRect := GetClientRect;
   ContentRect := GetChildControlsBoundsRect;
 
-  spw := ContentRect.Width  + ContentRect.Left;
-  sph := ContentRect.Height + ContentRect.Top;
-
   if ClientRect.Height > ContentRect.Height
     then VertScrollBar.IndexSize := 1
     else VertScrollBar.IndexSize := ClientRect.Height / ContentRect.Height;
-
-
-
-
   //===============================================
 
   Invalidate;
