@@ -460,7 +460,6 @@
 			<DCCReference Include="SoundObjects\soModMatrix.pas"/>
 			<DCCReference Include="Lucidity.GuiUtils.pas"/>
 			<DCCReference Include="SoundObjects\SoundObjectTypes.pas"/>
-			<DCCReference Include="SmartInspectLogging.pas"/>
 			<DCCReference Include="uGuiFeedbackData.pas"/>
 			<DCCReference Include="SoundObjects\uLucidityStepSequencer.pas"/>
 			<DCCReference Include="SoundObjects\uLucidityClock.pas"/>

@@ -45,7 +45,7 @@ implementation
 
 uses
   SysUtils,
-  {$IFDEF Logging}SmartInspectLogging,{$ENDIF}
+  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   Windows;
 
 { TCpuMonitor }
