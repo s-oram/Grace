@@ -413,6 +413,7 @@
 			<RcCompile Include="VersionInfo.rc">
 				<Form>VersionInfo.res</Form>
 			</RcCompile>
+			<DCCReference Include="Lucidity.GlobalSetup.pas"/>
 			<DCCReference Include="Lucidity.CustomMadExceptSettings.pas"/>
 			<DCCReference Include="eePluginGui.pas">
 				<Form>PluginGui</Form>
@@ -581,7 +582,6 @@
 			<DCCReference Include="Lucidity.VoiceController.pas"/>
 			<DCCReference Include="frames\uXYPadsFrame.pas">
 				<Form>XYPadsFrame</Form>
-				<FormType>dfm</FormType>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="frames\Menu.XYPadContextMenu.pas"/>
@@ -605,11 +605,9 @@
 			<DCCReference Include="frames\Menu.AutoSelectMenu.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.ModalShadow.Form.pas">
 				<Form>ModalShadow</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Dialogs\TestDialog.pas">
 				<Form>TestDialogForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Dialogs\InWindowDialog.Prototypes.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.InputDialog.pas"/>
@@ -625,7 +623,6 @@
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.pas"/>
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Form.pas">
 				<Form>SampleFinderDialogForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
 			<DCCReference Include="Lucidity.ProgramFileUtils.pas"/>

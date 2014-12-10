@@ -11,6 +11,7 @@ library Grace;
 uses
   SysUtils,
   Classes,
+  Lucidity.GlobalSetup in 'Lucidity.GlobalSetup.pas',
   Lucidity.CustomMadExceptSettings in 'Lucidity.CustomMadExceptSettings.pas',
   eePluginGui in 'eePluginGui.pas' {PluginGui},
   uDataFolderUtils in 'uDataFolderUtils.pas',
@@ -186,6 +187,7 @@ uses
   InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
   Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas',
   eeAddOn.ThreadSyncEnforcer in 'EasyEffectTemplate\eeAddOn.ThreadSyncEnforcer.pas';
+
 
 {$R *.res}
 
