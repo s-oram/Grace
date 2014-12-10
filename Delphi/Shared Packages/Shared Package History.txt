@@ -1,6 +1,10 @@
 ======================================
             History
 ======================================
+10 Dec 2014
+- AudioIO is now using R8Brain v1.4 as a shared package instead
+  of using duplicated files within the AudioIO project.
+
 9 Dec 2014
 - remove old VamLib.Debounce.pas.
 
