@@ -131,7 +131,7 @@ end;
 procedure TMainMenu.Popup(const x, y: integer);
 var
   mi     : TMenuItem;
-  miRefA : TMenuItem;
+  //miRefA : TMenuItem;
   MissingSampleCount : integer;
   MissingSampleText  : string;
 begin
@@ -530,7 +530,7 @@ end;
 procedure TMainMenu.ShowLastLoadedProgramFile(Sender: TObject);
 var
   fn : string;
-  ErrMsg : string;
+  //ErrMsg : string;
 begin
   fn := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + RandomString(8) + '.lpg';
   if Plugin.SaveLastPresetToFile(fn) then

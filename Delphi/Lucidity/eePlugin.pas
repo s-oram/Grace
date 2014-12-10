@@ -1816,7 +1816,6 @@ end;
 procedure TeePlugin.VstParameterChanged(Index: integer; Value: single);
 var
   ParID : TPluginParameterID;
-  msg : string;
 begin
   ParID := PublishedVstParameters.FindParameterID(Index);
   if (ParID <> Globals.GuiState.ActivePluginParameterID1) or (ParID <> Globals.GuiState.ActivePluginParameterID2)

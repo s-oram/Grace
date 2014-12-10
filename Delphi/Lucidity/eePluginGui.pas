@@ -257,7 +257,6 @@ var
   bm1 : TBitmap;
   bm2 : TBitmap;
   bm3 : TBitmap;
-  comp : TComponent;
 begin
   assert(assigned(Plugin));
 

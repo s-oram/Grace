@@ -3,6 +3,7 @@ unit Lucidity.ProgramFileUtils;
 interface
 
 uses
+  Windows,
   Types, Classes;
 
 function GetProgramFileFormatVersion(const ProgramFileName : string):integer;
@@ -188,7 +189,7 @@ begin
 
   // check in a child 'samples' directory.
   path := ExtractFilePath(ProgramFileName);
-  path := IncludeTrailingPathDelimiter(path) + RemoveFileExt(ProgramFileName) + ' Samples';
+  path := IncludeTrailingPathDelimiter(path) + TrimFileExt(ProgramFileName) + ' Samples';
   path := IncludeTrailingPathDelimiter(path);
   fn   := ExtractFileName(SampleFileName);
   if FileExists(path + fn) then
@@ -233,7 +234,7 @@ var
   SamplesDir : string;
 begin
   ProgramPath := ExtractFilePath(ProgramFileName);
-  SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + RemoveFileExt(ProgramFileName) + ' Samples';
+  SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + TrimFileExt(ProgramFileName) + ' Samples';
   SamplesDir  := IncludeTrailingPathDelimiter(SamplesDir); // IMPORTANT: include the trailing path delimiter so that it is stripped away from the filename later.
 
   fn := SampleFileName;
@@ -284,7 +285,7 @@ begin
   if NodeWiz(RootNode).Exists('AlternateSampleDirectory') = false then
   begin
     ProgramPath := ExtractFilePath(OldProgramFileName);
-    SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + RemoveFileExt(OldProgramFileName) + ' Samples';
+    SamplesDir  := IncludeTrailingPathDelimiter(ProgramPath) + TrimFileExt(OldProgramFileName) + ' Samples';
 
     if DirectoryExists(SamplesDir) then
     begin
@@ -343,6 +344,9 @@ var
   NewDirName : string;
   r1, r2 : boolean;
 begin
+  r1 := false;
+  r2 := false;
+
   OldDirName := ConvertProgramFileNameToSampleDirName(CurrentProgramFileName);
   NewDirName := ConvertProgramFileNameToSampleDirName(NewProgramFileName);
 

@@ -293,7 +293,6 @@ var
   FullPathResult : string;
   SearchPathChangedCallback : TStringProcReference;
   CancelSearchCallback : TBooleanFuncReference;
-  spcAdapter : TProc;
 begin
   SearchPathChangedCallback := procedure(NewPath : string)
   begin

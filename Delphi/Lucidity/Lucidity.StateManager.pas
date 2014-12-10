@@ -173,7 +173,6 @@ end;
 procedure TLucidityStateManager.SetPreset(var ms: TMemoryStream);
 var
   XML : TNativeXML;
-  fn : string;
   {$IFDEF StorePatchWhenRestoring}fn : string;{$ENDIF}
 begin
   {$IFDEF Logging}
@@ -1026,10 +1025,7 @@ end;
 procedure TLucidityStatemanager.ReadPresetInfoFromXML(var XML: TNativeXML);
 var
   RootNode : TXMLNode;
-  PresetInfoNode : TXmlNode;
   aNode : TXmlNode;
-
-  PresetName : string;
 begin
   RootNode := xml.Root;
   assert(assigned(RootNode));
