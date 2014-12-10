@@ -128,6 +128,9 @@
 			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
 			<DCCReference Include="Source\VamLib.OneShotTimer.pas"/>
 			<DCCReference Include="Source\VamLib.GuiUtils.ThrottleDebounce.pas"/>
+			<DCCReference Include="Source\VamLib.SmartInspect.pas"/>
+			<DCCReference Include="Source\VamLib.SmartInspectEx.pas"/>
+			<DCCReference Include="Source\VamLib.SmartInspect.SectionTimer.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

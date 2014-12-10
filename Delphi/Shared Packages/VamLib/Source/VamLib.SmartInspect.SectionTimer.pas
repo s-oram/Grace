@@ -1,4 +1,4 @@
-unit SmartInspect.SectionTimer;
+unit VamLib.SmartInspect.SectionTimer;
 
 interface
 
@@ -18,7 +18,7 @@ type
 
   TSmartInspectSectionTimer = class(TInterfacedObject, ISmartInspectSectionTimer)
   private
-    FLevel : TSiLevel;
+    //FLevel : TSiLevel;
     FMethodName: UnicodeString;
     FSession: TSiSession;
     StartTicks : DWord;
@@ -85,7 +85,7 @@ begin
     IsSectionTimerActive := false;
     SectionTime := EndTicks - StartTicks;
 
-    FSession.LogMessage('Section Time: ' + SectionName + kChar.Space + IntToStr(EndTicks-StartTicks) + 'ms');
+    FSession.LogMessage('Section Time: ' + SectionName + kChar.Space + IntToStr(SectionTime) + 'ms');
   end;
 end;
 

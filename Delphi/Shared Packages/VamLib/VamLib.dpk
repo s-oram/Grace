@@ -64,6 +64,9 @@ contains
   VamLib.KeyValueStore in 'Source\VamLib.KeyValueStore.pas',
   VamLib.Win.DragDrop in 'Source\VamLib.Win.DragDrop.pas',
   VamLib.OneShotTimer in 'Source\VamLib.OneShotTimer.pas',
-  VamLib.GuiUtils.ThrottleDebounce in 'Source\VamLib.GuiUtils.ThrottleDebounce.pas';
+  VamLib.GuiUtils.ThrottleDebounce in 'Source\VamLib.GuiUtils.ThrottleDebounce.pas',
+  VamLib.SmartInspect in 'Source\VamLib.SmartInspect.pas',
+  VamLib.SmartInspectEx in 'Source\VamLib.SmartInspectEx.pas',
+  VamLib.SmartInspect.SectionTimer in 'Source\VamLib.SmartInspect.SectionTimer.pas';
 
 end.
