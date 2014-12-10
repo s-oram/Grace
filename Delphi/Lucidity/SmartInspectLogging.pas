@@ -104,7 +104,6 @@ begin
     else result := nil;
 end;
 
-
 initialization
   Si := TSmartInspect.Create(ExtractFileName(ParamStr(0)));
 
