@@ -19,6 +19,8 @@ var
     Timing   : TSiSession;
   end;
 
+  LogMain : TSiSession;
+
 
 type
   PSmartInspectConfig = ^TSmartInspectConfig;
@@ -55,6 +57,8 @@ begin
   Log.Lib      := Si.AddSession('Lib', True);
   Log.Debug    := Si.AddSession('Debug', True);
   Log.Timing   := Si.AddSession('Timing', True);
+
+  LogMain := Log.Main;
 
   SI.Enabled := Config^.LoggingEnabled;
 
@@ -106,7 +110,7 @@ finalization
     Log.Main.LogMessage('Logging Finished');
   end;
 
-
+  LogMain      := nil;
   Log.Main     := nil;
   Log.Controls := nil;
   Log.Lib      := nil;

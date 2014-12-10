@@ -20,7 +20,6 @@ type
     FMinTime    : cardinal;
     StartTicks  : DWord;
     EndTicks    : DWord;
-
   public
     constructor Create(const ALevel: TSiLevel; const ASession: TSiSession; const AMethodName: UnicodeString; const AMinTime : cardinal);
     destructor Destroy; override;
