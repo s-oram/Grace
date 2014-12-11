@@ -1,6 +1,17 @@
 ======================================
             History
 ======================================
+11 Dec 2014
+- Completely rewrote the logging system used in VamLib.
+  VamLib.LoggingProxy was removed. It's functionality 
+  was replaced by VamLib.Logging.pas. Both implementations
+  use dependency injection, but the new Logging.pas 
+  implementation is much cleaner. 
+- Removed VamLib's dependency of SmartInspect. Now 
+  the SmartInspect logging service is provided by
+  dependency injection. People can use VamLib with
+  SmartInspect being installed.
+
 10 Dec 2014
 - Fix some hints.
 
