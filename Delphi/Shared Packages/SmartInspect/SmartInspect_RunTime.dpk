@@ -40,6 +40,7 @@ contains
   SiWinSock2 in 'source\SiWinSock2.pas',
   SmartInspect in 'source\SmartInspect.pas',
   SiAuto in 'source\SiAuto.pas',
-  Vam.SmartInspectExt in 'extensions\Vam.SmartInspectExt.pas';
+  Vam.SmartInspectExt in 'extensions\Vam.SmartInspectExt.pas',
+  Vam.SectionTimer in 'extensions\Vam.SectionTimer.pas';
 
 end.

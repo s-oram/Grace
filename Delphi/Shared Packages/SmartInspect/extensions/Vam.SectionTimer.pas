@@ -1,10 +1,13 @@
-unit VamLib.SmartInspect.SectionTimer;
+unit Vam.SectionTimer;
 
 interface
 
 implementation
 
-end.
+///  NOTE: TODO:MED
+///  I wrote this section timer class. It useful for timing parts of larges methods to help
+///  find out where slow code is being executed. This class was pretty useful and seemed
+///  to work well. I will use this as a template for the next implementation when it's needed.
 
 {
 
