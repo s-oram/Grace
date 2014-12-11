@@ -96,9 +96,9 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   InWindowDialog,
   VamLayoutWizard,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   eePluginDataDir,
   Lucidity.KeyGroup,
   eeGuiSetup,

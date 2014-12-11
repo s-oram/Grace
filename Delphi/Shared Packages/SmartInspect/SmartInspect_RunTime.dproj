@@ -87,7 +87,7 @@
 			<DCCReference Include="source\SiWinSock2.pas"/>
 			<DCCReference Include="source\SmartInspect.pas"/>
 			<DCCReference Include="source\SiAuto.pas"/>
-			<DCCReference Include="extensions\Vam.SmartInspect.pas"/>
+			<DCCReference Include="extensions\Vam.SmartInspectExt.pas"/>
 			<None Include="source\SiRijndael.inc"/>
 			<None Include="source\SmartInspect.inc"/>
 			<BuildConfiguration Include="Release">

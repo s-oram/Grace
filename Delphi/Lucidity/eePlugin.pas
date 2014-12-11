@@ -285,7 +285,7 @@ uses
   MadExcept, Windows,
   Dialogs,
   SysUtils,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   Lucidity.ProgramFileUtils,
   VamGuiControlInterfaces,
   VamLib.ZeroObject,
@@ -332,7 +332,7 @@ var
   fnA : string;
   IsDefaultPatchLoaded : boolean;
 begin
-  {$IFDEF Logging}LogMain.TrackMethod('TeePlugin.Create');{$ENDIF}
+  {$IFDEF Logging}Log.Main.TrackMethod('TeePlugin.Create');{$ENDIF}
 
   inherited;
 
@@ -434,8 +434,8 @@ begin
 
   {$IFDEF Logging}
   if (PluginDataDir^.Exists)
-    then LogMain.LogText('Data Directory Found', PluginDataDir^.Path)
-    else LogMain.LogText('Data Directory NOT Found!', '');
+    then Log.Main.LogText('Data Directory Found', PluginDataDir^.Path)
+    else Log.Main.LogText('Data Directory NOT Found!', '');
   {$ENDIF}
 
 

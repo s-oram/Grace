@@ -2,6 +2,8 @@ unit VamLib.LoggingProxy;
 
 interface
 
+
+
 type
   ILoggingProxy = interface
     ['{1751C9A9-DC7E-4BF5-ABDD-66F7876C5163}']

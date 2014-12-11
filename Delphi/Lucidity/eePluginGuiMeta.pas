@@ -49,7 +49,7 @@ implementation
 uses
   SysUtils,
   {$IFDEF Debug}Vcl.Dialogs,{$ENDIF}
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   VamQuery,
   Classes,
   Controls,

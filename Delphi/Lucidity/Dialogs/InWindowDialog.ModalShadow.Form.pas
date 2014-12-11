@@ -31,9 +31,6 @@ type
 
 implementation
 
-uses
-  VamLib.LoggingProxy;
-
 {$R *.dfm}
 
 procedure AdjustAlpha(var source : TBitmap);
@@ -96,7 +93,6 @@ end;
 
 destructor TModalShadow.Destroy;
 begin
-  Log.LogMessage('TModalShadow.Destroy');
   FBmp.Free;
   inherited;
 end;

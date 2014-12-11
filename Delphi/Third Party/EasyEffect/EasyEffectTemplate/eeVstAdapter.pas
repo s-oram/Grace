@@ -104,7 +104,7 @@ implementation
 
 uses
   {$IFDEF MadExcept}MadExcept,{$ENDIF}
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Dialogs, System.SysUtils,
   {$ELSE}

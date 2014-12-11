@@ -2,12 +2,13 @@ unit VamLib.Logging;
 
 interface
 
+{$SCOPEDENUMS ON}
+
 uses
   VamLib.Logging.AbstractLog;
 
 type
-  TLogDiv = (dMain, dControls, dLib, dDebug, dTiming);
-
+  TLogSession = (Main, Controls, Lib, Debug, Timing);
 
   // Log is a global singleton class. All client code can use the "Log" to write out
   // to the global application log.
@@ -42,7 +43,7 @@ type
     class function Debug    : IAbstractLog;
     class function Timing   : IAbstractLog;
 
-    class procedure Inject(const LogDiv : TLogDiv; const LogObject : IAbstractLog);
+    class procedure Inject(const Session : TLogSession; const LogObject : IAbstractLog);
   end;
 
 implementation
@@ -95,14 +96,14 @@ begin
   result := FTiming;
 end;
 
-class procedure Log.Inject(const LogDiv: TLogDiv; const LogObject: IAbstractLog);
+class procedure Log.Inject(const Session: TLogSession; const LogObject: IAbstractLog);
 begin
-  case LogDiv of
-    dMain:     FMain     := LogObject;
-    dControls: FControls := LogObject;
-    dLib:      FLib      := LogObject;
-    dDebug:    FDebug    := LogObject;
-    dTiming:   FTiming   := LogObject;
+  case Session of
+    TLogSession.Main:     FMain     := LogObject;
+    TLogSession.Controls: FControls := LogObject;
+    TLogSession.Lib:      FLib      := LogObject;
+    TLogSession.Debug:    FDebug    := LogObject;
+    TLogSession.Timing:   FTiming   := LogObject;
   else
     raise Exception.Create('Log type not handled.');
   end;

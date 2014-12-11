@@ -124,7 +124,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   eePluginDataDir,
   AudioIO,
   NativeXmlEx,
@@ -176,10 +176,10 @@ var
   {$IFDEF StorePatchWhenRestoring}fn : string;{$ENDIF}
 begin
   {$IFDEF Logging}
-  LogMain.LogMessage('StateManager.SetPreset (Sanity Check)');
+  Log.Main.LogMessage('StateManager.SetPreset (Sanity Check)');
   {$ENDIF}
 
-  {$IFDEF Logging}LogMain.EnterMethod('StateManager.SetPreset');{$ENDIF}
+  {$IFDEF Logging}Log.Main.EnterMethod('StateManager.SetPreset');{$ENDIF}
 
   XML := TNativeXML.Create(nil);
   try
@@ -202,7 +202,7 @@ begin
     XML.Free;
   end;
 
-  {$IFDEF Logging}LogMain.LeaveMethod('StateManager.SetPreset');{$ENDIF}
+  {$IFDEF Logging}Log.Main.LeaveMethod('StateManager.SetPreset');{$ENDIF}
 end;
 
 procedure TLucidityStateManager.GetPreset(var ms: TMemoryStream);

@@ -45,7 +45,7 @@ implementation
 
 uses
   SysUtils,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   Windows;
 
 { TCpuMonitor }
@@ -124,7 +124,7 @@ begin
   if ProcessReplacingData.ProcessLoad >= 100 then
   begin
     s := IntToStr(round(ProcessReplacingData.ProcessLoad));
-    LogMain.LogError('Processing Replacing Load is ' + s + '%');
+    Log.Main.LogError('Processing Replacing Load is ' + s + '%');
   end;
   {$ENDIF}
 end;
@@ -147,7 +147,7 @@ begin
   if VstEventData.ProcessLoad >= 100 then
   begin
     s := IntToStr(round(VstEventData.ProcessLoad));
-    LogMain.LogError('VST Event Load is ' + s + '%');
+    Log.Main.LogError('VST Event Load is ' + s + '%');
   end;
   {$ENDIF}
 end;
@@ -170,7 +170,7 @@ begin
   if (AudioProcess2Data.ProcessLoad >= 100)  then
   begin
     s := IntToStr(round(AudioProcess2Data.ProcessLoad));
-    LogMain.LogError('Audio Process 2 Load is ' + s + '%');
+    Log.Main.LogError('Audio Process 2 Load is ' + s + '%');
   end;
   {$ENDIF}
 end;

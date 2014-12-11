@@ -41,9 +41,9 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   VamLib.Utils,
   SysUtils,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   Lucidity.Interfaces,
   uConstants;
 

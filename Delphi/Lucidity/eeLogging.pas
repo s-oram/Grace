@@ -7,21 +7,22 @@ interface
 uses
   SysUtils;
 
-procedure LogError(const ErrorMessage : string);
-procedure LogException(const E:Exception); overload;
-procedure LogException(const E:Exception; const Title : string); overload;
+// Code using these procedures should call directly in VamLib.Logging.pas.
+procedure LogError(const ErrorMessage : string); deprecated;
+procedure LogException(const E:Exception); overload; deprecated;
+procedure LogException(const E:Exception; const Title : string); overload; deprecated;
 
 implementation
 
 uses
   MadExcept,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   eeTypes;
 
 procedure LogError(const ErrorMessage : string);
 begin
   {$IFDEF Logging}
-  LogMain.LogError(ErrorMessage);
+  Log.Main.LogError(ErrorMessage);
   {$ENDIF}
 end;
 
@@ -29,7 +30,8 @@ end;
 procedure LogException(const E:Exception);
 begin
   {$IFDEF Logging}
-  LogMain.LogException(E);
+  // TODO:HIGH reimplement this
+  //Log.Main.LogException(E);
   {$ENDIF}
 end;
 
@@ -37,7 +39,8 @@ end;
 procedure LogException(const E:Exception; const Title : string);
 begin
   {$IFDEF Logging}
-  LogMain.LogException(E, Title);
+  // TODO:HIGH reimplement this
+  //Log.Main.LogException(E, Title);
   {$ENDIF}
 end;
 

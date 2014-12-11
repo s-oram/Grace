@@ -91,8 +91,8 @@ type
 implementation
 
 uses
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   eePitch,
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
   LucidityParameterScaling,
   SysUtils;
 

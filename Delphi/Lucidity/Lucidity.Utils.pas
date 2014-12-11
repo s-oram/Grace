@@ -34,7 +34,7 @@ implementation
 uses
   eeVstExtra,
   {$IFDEF MadExcept}MadStackTrace,{$ENDIF}
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   VamLib.Utils,
   uFindFiles,
   AudioIO,
@@ -97,14 +97,16 @@ begin
   MemUsage := BytesToMegaBytes(MemoryUsed);
   s := FloatToStr(MemUsage);
 
-  LogMain.LogSingle('Mem Usage MB ' + Tag + ' ' + LogTag, MemUsage);
+  // TODO:HIGH - reimplement this in the logging class.
+  //Log.Main.LogSingle('Mem Usage MB ' + Tag + ' ' + LogTag, MemUsage);
 end;
 
 
 
 procedure LogStackTrace;
 begin
-  LogMain.LogText('Stack Trace', MadStackTrace.StackTrace);
+  // TODO:HIGH - reimplement this in the logging class.
+  //Log.Main.LogText('Stack Trace', MadStackTrace.StackTrace);
 end;
 
 

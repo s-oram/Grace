@@ -64,7 +64,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   SysUtils,
   Lucidity.Enums,
   VamQuery,

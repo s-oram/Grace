@@ -16,6 +16,11 @@ type
     procedure LogTime(const aTitle : string);
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
+    procedure LogText(const aTitle, aText: string);
+
+    procedure EnterMethod(const aMethodName : string);
+    procedure LeaveMethod(const aMethodName : string);
+
     function TrackMethod(const aMethodName : string):ITrackMethod;
     function TrackMethodTime(const aMethodName : string):ITrackMethodTime;
   end;
@@ -26,6 +31,11 @@ type
     procedure LogTime(const aTitle : string);
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
+    procedure LogText(const aTitle, aText: string);
+
+    procedure EnterMethod(const aMethodName : string);
+    procedure LeaveMethod(const aMethodName : string);
+
     function TrackMethod(const aMethodName : string):ITrackMethod;
     function TrackMethodTime(const aMethodName : string):ITrackMethodTime;
   end;
@@ -34,12 +44,27 @@ implementation
 
 { TDoNothingLog }
 
+procedure TDoNothingLog.EnterMethod(const aMethodName: string);
+begin
+
+end;
+
+procedure TDoNothingLog.LeaveMethod(const aMethodName: string);
+begin
+
+end;
+
 procedure TDoNothingLog.LogError(const aTitle: string);
 begin
 
 end;
 
 procedure TDoNothingLog.LogMessage(const aTitle: string);
+begin
+
+end;
+
+procedure TDoNothingLog.LogText(const aTitle, aText: string);
 begin
 
 end;

@@ -52,7 +52,7 @@ uses
     {$DEFINE GdipRequired}
   {$ENDIF}
 
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   SysUtils,
   VamLib.ZeroObject,
   uConstants;
@@ -198,7 +198,7 @@ end;
 function TVstEditor.OnKeyDown(var KeyCode: VstKeyCode): boolean;
 begin
   {$IFDEF Logging}
-  LogMain.LogMessage('Key Down ' + Char(KeyCode.character));
+  Log.Main.LogMessage('Key Down ' + Char(KeyCode.character));
   {$ENDIF}
 
   if assigned(PluginGui) then

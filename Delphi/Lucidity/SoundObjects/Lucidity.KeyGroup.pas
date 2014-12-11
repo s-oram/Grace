@@ -128,9 +128,8 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   Lucidity.Utils,
-  VamLib.LoggingProxy,
   eeAudioBufferUtils,
   SysUtils, eeCustomGlobals;
 
@@ -182,7 +181,7 @@ end;
 destructor TKeyGroup.Destroy;
 begin
   {$IFDEF Logging}
-    LogMain.LogMessage('TKeyGroup.Destroy');
+    Log.Main.LogMessage('TKeyGroup.Destroy');
   {$ENDIF}
 
   Globals.RemoveEventListener(TPluginEvent.SampleRateChanged, SampleRateChanged);

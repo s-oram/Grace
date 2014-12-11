@@ -4,6 +4,8 @@ interface
 
 {$INCLUDE Defines.inc}
 
+// TODO:HIGH this first run setup stuff should be moved to Lucidity.GlobalSetup.pas
+
 procedure FirstRunSetup;
 
 procedure InstallFont(FontFile : string);
@@ -11,7 +13,7 @@ procedure InstallFont(FontFile : string);
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   WinApi.Windows,
   WinApi.Messages,
   SysUtils,

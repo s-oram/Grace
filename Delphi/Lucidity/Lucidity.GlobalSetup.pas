@@ -9,44 +9,42 @@ implementation
 uses
   SysUtils,
   eePluginDataDir,
-  VamLib.SmartInspect;
+  SmartInspect,
+  VamLib.Logging,
+  Vam.SmartInspectExt;
+
 
 procedure SetupLogging;
 var
-  LogFileName : string;
-  LoggingConfig : TSmartInspectConfig;
+  LoggingConfig : TLogServicetConfig;
+  LogService : TLogServiceResult;
 begin
   {$IF Defined(Logging)}
-    LoggingConfig.LoggingEnabled := true;
-  {$ELSE}
-    LoggingConfig.LoggingEnabled := false;
-  {$IFEND}
 
-  {$IF Defined(LogToFile)}
+    {$IF Defined(LogToFile)}
     LoggingConfig.LogToFile := true;
-  {$ELSE}
+    {$ELSE}
     LoggingConfig.LogToFile := false;
-  {$IFEND}
+    {$IFEND}
 
-  {$IF Defined(LogToConsole)}
+    {$IF Defined(LogToConsole)}
     LoggingConfig.LogToConsole := true;
-  {$ELSE}
+    {$ELSE}
     LoggingConfig.LogToConsole := false;
+    {$IFEND}
+
+    if PluginDataDir^.Exists
+      then LoggingConfig.LogFileName := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + 'Grace Log.sil'
+      else LoggingConfig.LogFileName := '';
+
+    LogService := GetLogService(@LoggingConfig);
+
+    Log.Inject(TLogSession.Main,     LogService.LogMain);
+    Log.Inject(TLogSession.Controls, LogService.LogControls);
+    Log.Inject(TLogSession.Lib,      LogService.LogLib);
+    Log.Inject(TLogSession.Debug,    LogService.LogDebug);
+    Log.Inject(TLogSession.Timing,   LogService.LogTiming);
   {$IFEND}
-
-  if PluginDataDir^.Exists
-    then LogFileName := IncludeTrailingPathDelimiter(PluginDataDir.Path) + IncludeTrailingPathDelimiter('Error Reports') + 'Grace Log.sil'
-    else LogFileName := '';
-
-
-
-  {$IF Defined(Logging)}
-  VamLib.SmartInspect.SetupLogging(@LoggingConfig);
-  {$IFEND}
-
-
-
-
 end;
 
 initialization

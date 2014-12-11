@@ -37,9 +37,6 @@ type
 
 implementation
 
-uses
-  VamLib.LoggingProxy;
-
 {$R *.dfm}
 
 { TTestDialog }
@@ -80,7 +77,6 @@ end;
 
 destructor TTestDialogForm.Destroy;
 begin
-  Log.LogMessage('TestDialogForm.Destroy');
   inherited;
 end;
 

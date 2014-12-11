@@ -69,7 +69,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   VamLib.Utils,
   SysUtils,
   TypInfo;
@@ -106,7 +106,7 @@ begin
   if Value <> fHotkeyContext then
   begin
     {$IFDEF Logging}
-    LogMain.LogMessage('Hot Key Context Changed : ' + GetEnumName(TypeInfo(THotKeyContext),Integer(Value)));
+    Log.Main.LogMessage('Hot Key Context Changed : ' + GetEnumName(TypeInfo(THotKeyContext),Integer(Value)));
     {$ENDIF}
     fHotkeyContext := Value;
   end;

@@ -136,8 +136,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}{$ENDIF}
-  {$IFDEF Logging}VamLib.SmartInspect,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   eeTypes,
   VamLib.Utils,
   VamLib.Graphics,
