@@ -77,7 +77,7 @@ implementation
 
 uses
   SysUtils,
-  VamLib.LoggingProxy;
+  VamLib.Logging;
 
 {$I InterlockedAPIs.inc}
 
@@ -92,7 +92,7 @@ destructor TManagedObjectLifeTimeManager.Destroy;
 begin
   if ObjectList.Count > 0 then
   begin
-    Log.LogMessage('Managed Objects still registered (' + IntToStr(ObjectList.Count) + ').');
+    Log.Lib.LogMessage('Managed Objects still registered (' + IntToStr(ObjectList.Count) + ').');
 
     // All managed objects *should* have been returned and free'ed by now.
     // Calling Clear will forcibly destroy any remaining objects regardless of

@@ -48,7 +48,6 @@ contains
   VamLib.ZeroObject in 'Source\VamLib.ZeroObject.pas',
   VamLib.Animation in 'Source\VamLib.Animation.pas',
   VamLib.UniqueID in 'Source\VamLib.UniqueID.pas',
-  VamLib.LoggingProxy in 'Source\VamLib.LoggingProxy.pas',
   VamLib.ManagedObject in 'Source\VamLib.ManagedObject.pas',
   VamLib.CpuOverloadWatcher in 'Source\VamLib.CpuOverloadWatcher.pas',
   VamLib.EnumHelper in 'Source\VamLib.EnumHelper.pas',

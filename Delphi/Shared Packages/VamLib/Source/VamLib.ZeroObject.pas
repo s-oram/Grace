@@ -226,9 +226,9 @@ type
 implementation
 
 uses
+  VamLib.Logging,
   Windows,
-  VamLib.WinUtils,
-  VamLib.LoggingProxy;
+  VamLib.WinUtils;
 
 {$I InterlockedAPIs.inc}
 
@@ -323,10 +323,10 @@ begin
   Injected_MsgIdToStr := nil;
 
   if AudioObjects.Count > 0
-    then Log.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
+    then Log.Lib.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
 
   if MainObjects.Count > 0
-    then Log.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
+    then Log.Lib.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
 
   ClearMotherShipReferences;
 
@@ -425,7 +425,7 @@ begin
     end;
   end else
   begin
-    VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t add object.');
+    Log.Lib.LogError('LIST LOCKED: Couldn''t add object.');
   end;
 end;
 
@@ -478,7 +478,7 @@ begin
     finally
       MainListLock.EndWrite;
     end
-      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
+      else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
   if (IsVclObject) then
@@ -489,7 +489,7 @@ begin
     finally
       VclListLock.EndWrite;
     end
-      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
+      else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
   if (IsAudioObject) then
@@ -500,7 +500,7 @@ begin
     finally
       AudioListLock.EndWrite;
     end
-      else VamLib.LoggingProxy.Log.LogError('LIST LOCKED: Couldn''t remove object.');
+      else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 end;
 
@@ -552,7 +552,7 @@ begin
         if assigned(Injected_MsgIdToStr)
           then LogMsg := 'MsgMain Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
           else LogMsg := 'MsgMain Wrong Thread. ID = ' + IntToStr(MsgID);
-        Log.LogError(LogMsg);
+        Log.Lib.LogError(LogMsg);
       end;
     end;
   finally
@@ -576,7 +576,7 @@ begin
         if assigned(Injected_MsgIdToStr)
           then LogMsg := 'MsgVCL Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
           else LogMsg := 'MsgVCL Wrong Thread. ID = ' + IntToStr(MsgID);
-        Log.LogError(LogMsg);
+        Log.Lib.LogError(LogMsg);
       end;
     end;
   finally
@@ -604,7 +604,7 @@ begin
         if assigned(Injected_MsgIdToStr)
           then LogMsg := 'MsgVCL Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
           else LogMsg := 'MsgVCL Wrong Thread. ID = ' + IntToStr(MsgID);
-        Log.LogError(LogMsg);
+        Log.Lib.LogError(LogMsg);
       end;
     end;
   finally
@@ -683,7 +683,7 @@ begin
           LogMsg := LogMsg + ' Msg = ' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')';
         end;
         DisableMessageSending := true;
-        Log.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
+        Log.Lib.LogError('ERROR TMotherShip.SendMessageToList() ' + LogMsg);
         raise;
       end;
     finally
@@ -691,7 +691,7 @@ begin
     end;
   end else
   begin
-    Log.LogError('LIST LOCKED: Unable to send message.');
+    Log.Lib.LogError('LIST LOCKED: Unable to send message.');
   end;
 end;
 
@@ -704,9 +704,9 @@ var
   ObjectList : TList;
   aClass : TClass;
 begin
-  Log.LogMessage('==========================');
+  Log.Lib.LogMessage('==========================');
   LogMsg := 'Current Audio Objects';
-  Log.LogMessage(LogMsg);
+  Log.Lib.LogMessage(LogMsg);
 
   ObjectList := AudioObjects;
 
@@ -715,9 +715,9 @@ begin
     zo := IZeroObject(ObjectList[c1]);
     aClass := zo.ClassType;
     LogMsg := 'ClassName = ' + aClass.ClassName;
-    Log.LogMessage(LogMsg);
+    Log.Lib.LogMessage(LogMsg);
   end;
-  Log.LogMessage('==========================');
+  Log.Lib.LogMessage('==========================');
 end;
 
 procedure TMotherShip.LogMainObjects;
@@ -728,9 +728,9 @@ var
   ObjectList : TList;
   aClass : TClass;
 begin
-  Log.LogMessage('==========================');
+  Log.Lib.LogMessage('==========================');
   LogMsg := 'Current Main Objects';
-  Log.LogMessage(LogMsg);
+  Log.Lib.LogMessage(LogMsg);
 
   ObjectList := MainObjects;
 
@@ -739,9 +739,9 @@ begin
     zo := IZeroObject(ObjectList[c1]);
     aClass := zo.ClassType;
     LogMsg := 'ClassName = ' + aClass.ClassName;
-    Log.LogMessage(LogMsg);
+    Log.Lib.LogMessage(LogMsg);
   end;
-  Log.LogMessage('==========================');
+  Log.Lib.LogMessage('==========================');
 end;
 
 

@@ -302,7 +302,7 @@ implementation
 
 uses
   SysUtils,
-  VamLib.LoggingProxy,
+  VamLib.Logging,
   VamLib.WinUtils,
   VamLib.Utils,
   VamSampleMap.Sorting,

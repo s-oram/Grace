@@ -131,7 +131,7 @@ type
 implementation
 
 uses
-  VamLib.LoggingProxy,
+  VamLib.Logging,
   DateUtils;
 
 var
@@ -285,7 +285,7 @@ begin
 
   if DoException then
   begin
-    Log.LogError('Exception Error (88412) - There was an animation error.');
+    Log.Lib.LogError('Exception Error (88412) - There was an animation error.');
     {$IFDEF Debug}
     raise EAnimationException.Create('There was an animation error.');
     {$ENDIF}

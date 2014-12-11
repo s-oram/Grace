@@ -106,7 +106,7 @@ type
 implementation
 
 uses
-  VamLib.LoggingProxy,
+  VamLib.Logging,
   AggPixelFormat,
   VamLib.Utils,
   SysUtils, Graphics,

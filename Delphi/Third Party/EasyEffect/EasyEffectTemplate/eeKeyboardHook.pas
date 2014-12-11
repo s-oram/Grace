@@ -36,7 +36,7 @@ type
 implementation
 
 uses
-  {$IFDEF Logging}VamLib.LoggingProxy,{$ENDIF}
+  {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   {$IFDEF VER230}
     Vcl.Controls,
   {$ELSE}

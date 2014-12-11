@@ -3,7 +3,7 @@ unit VamLib.CpuOverloadWatcher;
 interface
 
 uses
-  VamLib.LoggingProxy;
+  VamLib.Logging;
 
 type
   TCpuOverloadWatcher = class
@@ -80,7 +80,7 @@ begin
   if ProcessTime > MaxTime then
   begin
     xLoad := IntToStr(round(ProcessTime / MaxTime * 100)) + '%';
-    VamLib.LoggingProxy.Log.LogError('CPU Overload (' + fWatchName + ') Load = ' + xLoad);
+    Log.Lib.LogError('CPU Overload (' + fWatchName + ') Load = ' + xLoad);
   end;
 
 

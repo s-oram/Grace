@@ -31,7 +31,7 @@ type
 implementation
 
 uses
-  VamLib.LoggingProxy,
+  VamLib.Logging,
   Vcl.Imaging.PngImage, SysUtils, Classes, uAutoFree,
   Dialogs;
 
@@ -174,7 +174,7 @@ begin
       SkinItemList.Add(SkinItem)
     end else
     begin
-      Log.LogError('TSkinImageLoader.LoadImage() - Could not find skin image \"' + ImageFileName + '\".');
+      Log.Main.LogError('TSkinImageLoader.LoadImage() - Could not find skin image \"' + ImageFileName + '\".');
       SkinItem.Free;
     end;
   end;
