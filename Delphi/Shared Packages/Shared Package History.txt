@@ -2,6 +2,9 @@
             History
 ======================================
 10 Dec 2014
+- Fix some hints.
+
+10 Dec 2014
 - VamLib.SmartInspect.pas changes.
 
 10 Dec 2014

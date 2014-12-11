@@ -21,6 +21,10 @@ del /q /s *.txapackage
 del /q /s *.tvsconfig
 del /q /s *.projdata
 
+:: removing res files might be a bad idea for some packages. Lets 
+:: try it for now.
+del /q /s *.res
+
 
 :: Remove all history directories.
 for /D /R %%X in (__history) do RMDIR /S /Q "%%X"
