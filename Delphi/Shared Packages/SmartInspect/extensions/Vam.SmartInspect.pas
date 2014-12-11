@@ -3,6 +3,7 @@ unit Vam.SmartInspect;
 interface
 
 uses
+  Windows,
   SmartInspect,
   VamLib.Logging.AbstractLog;
 
@@ -22,6 +23,27 @@ type
     function GetObject : TObject;
   end;
 
+  TTrackMethodResult = class(TInterfacedObject, ITrackMethod)
+  private
+    FSession : TSiSession;
+    FMethodName : string;
+  public
+    constructor Create(const ASession: TSiSession; const AMethodName: string);
+    destructor Destroy; override;
+  end;
+
+  TTrackMethodTimeResult = class(TInterfacedObject, ITrackMethodTime)
+  private
+    FSession : TSiSession;
+    FMethodName : string;
+    FMinTime    : cardinal;
+    StartTicks  : DWord;
+    EndTicks    : DWord;
+  public
+    constructor Create(const ASession: TSiSession; const AMethodName: string; const AMinTime : cardinal);
+    destructor Destroy; override;
+  end;
+
   TSmartInspectLogService = class(TInterfacedObject, IAbstractLog)
   private
     FSmartInspectObjectWrapper : IAutoFreeObjectWrapper;
@@ -34,10 +56,15 @@ type
     procedure LogMessage(const aTitle : string);
     procedure LogError(const aTitle : string);
     function TrackMethod(const aMethodName : string):ITrackMethod;
-    function TrackMethodTime(const aMethodName : string):ITrackMethodTime;
+    function TrackMethodTime(const aMethodName : string):ITrackMethodTime; overload;
+    function TrackMethodTime(const aMethodName : string; const aMinTime : cardinal):ITrackMethodTime; overload;
   end;
 
 implementation
+
+uses
+  SysUtils,
+  VamLib.Utils;
 
 { TSmartInspectLogService }
 
@@ -65,20 +92,28 @@ begin
 end;
 
 procedure TSmartInspectLogService.LogTime(const aTitle: string);
+var
+  Hour, Min, Sec, MSec : word;
+  s : string;
 begin
-
+  DecodeTime(now, Hour, Min, Sec, MSec);
+  s := IntToStr(Hour) + ':' + IntToStrB(Min, 2) + '.' + IntToStrB(Sec, 2);
+  FSession.LogMessage(ATitle + ' ' + s);
 end;
 
 function TSmartInspectLogService.TrackMethod(const aMethodName: string): ITrackMethod;
 begin
-  // TODO:HIGH
-  result := nil;
+  result := TTrackMethodResult.Create(FSession, AMethodName);
+end;
+
+function TSmartInspectLogService.TrackMethodTime(const aMethodName: string; const AMinTime: cardinal): ITrackMethodTime;
+begin
+  result := TTrackMethodTimeResult.Create(FSession, AMethodName, AMinTime);
 end;
 
 function TSmartInspectLogService.TrackMethodTime(const aMethodName: string): ITrackMethodTime;
 begin
-  // TODO:HIGH
-  result := nil;
+  result := TTrackMethodTimeResult.Create(FSession, AMethodName, 0);
 end;
 
 { TAutoFreeObjectWrapper }
@@ -97,6 +132,41 @@ end;
 function TAutoFreeObjectWrapper.GetObject: TObject;
 begin
   result := FObject;
+end;
+
+{ TTrackMethodResult }
+
+constructor TTrackMethodResult.Create(const ASession: TSiSession; const AMethodName: string);
+begin
+  FSession := ASession;
+  FMethodName := AMethodName;
+  FSession.EnterMethod(FMethodName);
+end;
+
+destructor TTrackMethodResult.Destroy;
+begin
+  FSession.LeaveMethod(FMethodName);
+  inherited;
+end;
+
+{ TTrackMethodTimeResult }
+
+constructor TTrackMethodTimeResult.Create(const ASession: TSiSession; const AMethodName: string; const AMinTime: cardinal);
+begin
+  FMinTime := AMinTime;
+  FSession := ASession;
+  FMethodName := AMethodName;
+  StartTicks := GetTickCount;
+end;
+
+destructor TTrackMethodTimeResult.Destroy;
+begin
+  EndTicks := GetTickCount;
+
+  if (EndTicks - StartTicks) >= FMinTime
+    then FSession.LogMessage('Method Time: ' + FMethodName + kChar.Space + IntToStr(EndTicks-StartTicks) + 'ms');
+
+  inherited;
 end;
 
 end.
