@@ -21,11 +21,11 @@
 			<Projects Include="Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="Shared Packages\VamLib\VamLib.dproj">
 				<Dependencies/>
+			</Projects>
+			<Projects Include="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj">
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj">
 				<Dependencies>Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj</Dependencies>
@@ -134,15 +134,6 @@
 		<Target Name="r8Brain_RunTime:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj"/>
 		</Target>
-		<Target Name="SmartInspect_RunTime">
-			<MSBuild Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
-		</Target>
-		<Target Name="SmartInspect_RunTime:Clean">
-			<MSBuild Targets="Clean" Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
-		</Target>
-		<Target Name="SmartInspect_RunTime:Make">
-			<MSBuild Targets="Make" Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
-		</Target>
 		<Target Name="VamLib">
 			<MSBuild Projects="Shared Packages\VamLib\VamLib.dproj"/>
 		</Target>
@@ -151,6 +142,15 @@
 		</Target>
 		<Target Name="VamLib:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\VamLib\VamLib.dproj"/>
+		</Target>
+		<Target Name="SmartInspect_RunTime" DependsOnTargets="VamLib">
+			<MSBuild Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
+		</Target>
+		<Target Name="SmartInspect_RunTime:Clean" DependsOnTargets="VamLib:Clean">
+			<MSBuild Targets="Clean" Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
+		</Target>
+		<Target Name="SmartInspect_RunTime:Make" DependsOnTargets="VamLib:Make">
+			<MSBuild Targets="Make" Projects="Shared Packages\SmartInspect\SmartInspect_RunTime.dproj"/>
 		</Target>
 		<Target Name="AudioIO_DXE2" DependsOnTargets="r8Brain_RunTime">
 			<MSBuild Projects="Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj"/>
@@ -288,13 +288,13 @@
 			<MSBuild Targets="Make" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;SmartInspect_RunTime;VamLib;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;SmartInspect_RunTime;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;SmartInspect_RunTime:Clean;VamLib:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspect_RunTime:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;SmartInspect_RunTime:Make;VamLib:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
+			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspect_RunTime:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

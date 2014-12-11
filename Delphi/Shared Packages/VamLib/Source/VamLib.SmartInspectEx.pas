@@ -2,6 +2,12 @@ unit VamLib.SmartInspectEx;
 
 interface
 
+implementation
+
+end.
+
+{
+
 uses
   SysUtils,
   Windows,
@@ -27,8 +33,6 @@ type
 
 implementation
 
-{ TSiMethodTimer }
-
 constructor TSiMethodTimer.Create(const ALevel: TSiLevel; const ASession: TSiSession; const AMethodName: UnicodeString; const AMinTime : cardinal);
 begin
   FMinTime := AMinTime;
@@ -49,3 +53,5 @@ begin
 end;
 
 end.
+
+}

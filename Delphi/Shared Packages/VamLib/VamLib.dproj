@@ -97,7 +97,6 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="vclx.dcp"/>
-			<DCCReference Include="SmartInspect_RunTime.dcp"/>
 			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
 			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.pas"/>
@@ -128,9 +127,8 @@
 			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
 			<DCCReference Include="Source\VamLib.OneShotTimer.pas"/>
 			<DCCReference Include="Source\VamLib.GuiUtils.ThrottleDebounce.pas"/>
-			<DCCReference Include="Source\VamLib.SmartInspect.pas"/>
-			<DCCReference Include="Source\VamLib.SmartInspectEx.pas"/>
-			<DCCReference Include="Source\VamLib.SmartInspect.SectionTimer.pas"/>
+			<DCCReference Include="Source\VamLib.Logging.pas"/>
+			<DCCReference Include="Source\VamLib.Logging.AbstractLog.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

@@ -32,12 +32,14 @@ requires
   rtl,
   vclimg,
   vcl,
-  dbrtl;
+  dbrtl,
+  VamLib;
 
 contains
   SiEncryption in 'source\SiEncryption.pas',
   SiWinSock2 in 'source\SiWinSock2.pas',
   SmartInspect in 'source\SmartInspect.pas',
-  SiAuto in 'source\SiAuto.pas';
+  SiAuto in 'source\SiAuto.pas',
+  Vam.SmartInspect in 'extensions\Vam.SmartInspect.pas';
 
 end.

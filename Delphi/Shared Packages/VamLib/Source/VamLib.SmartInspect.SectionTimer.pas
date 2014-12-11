@@ -2,6 +2,12 @@ unit VamLib.SmartInspect.SectionTimer;
 
 interface
 
+implementation
+
+end.
+
+{
+
 uses
   Windows,
   SmartInspect;
@@ -9,7 +15,6 @@ uses
 type
 
   ISmartInspectSectionTimer = interface
-    ['{0E629E5C-F8B8-43BA-9C4E-9434EBB514EA}']
     procedure Start(const aSectionName : string); overload;
     procedure Start(const aSectionTag : integer); overload;
     procedure Stop;
@@ -39,7 +44,7 @@ uses
   SysUtils,
   VamLib.Utils;
 
-{ TSmartInspectSectionTimer }
+
 
 constructor TSmartInspectSectionTimer.Create(const ASession: TSiSession; const AMethodName: UnicodeString);
 begin
@@ -88,5 +93,7 @@ begin
     FSession.LogMessage('Section Time: ' + SectionName + kChar.Space + IntToStr(SectionTime) + 'ms');
   end;
 end;
+
+}
 
 end.

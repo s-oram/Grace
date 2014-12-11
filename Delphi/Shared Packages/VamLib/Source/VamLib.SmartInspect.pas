@@ -2,6 +2,13 @@ unit VamLib.SmartInspect;
 
 interface
 
+implementation
+
+end.
+
+
+{
+
 ///  TODO:HIGH it might make more sense to use dependency inversion. The smart inspect package could
 ///  inject the logging component into VamLib. Much like Logging Proxy is now.
 
@@ -145,3 +152,5 @@ finalization
 
 
 end.
+
+}
