@@ -2,6 +2,9 @@ unit VamLib.SmartInspect;
 
 interface
 
+///  TODO:HIGH it might make more sense to use dependency inversion. The smart inspect package could
+///  inject the logging component into VamLib. Much like Logging Proxy is now.
+
 uses
   SysUtils,
   Windows,
@@ -31,15 +34,19 @@ type
     LogFileName    : string;
   end;
 
-
+// IMPORTANT: Call SetupLogging() once from an initialization section in your application.
 procedure SetupLogging(Config : PSmartInspectConfig);
 
 
 function TrackMethodTime(const AMethodName: UnicodeString):ISiMethodTimer; overload;
 function TrackMethodTime(const AMethodName: UnicodeString; const AMinTime : cardinal):ISiMethodTimer; overload;
 
+procedure LogCurrentTime(const ATitle : UnicodeString);
 
 implementation
+
+uses
+  VamLib.Utils;
 
 var
   HasLoggingBeenSetup : boolean;
@@ -101,10 +108,27 @@ begin
     else result := nil;
 end;
 
+procedure LogCurrentTime(const ATitle : UnicodeString);
+var
+  Hour, Min, Sec, MSec : word;
+  s : string;
+begin
+  if not HasLoggingBeenSetup then exit;
+
+  DecodeTime(now, Hour, Min, Sec, MSec);
+  s := IntToStr(Hour) + ':' + IntToStrB(Min, 2) + '.' + IntToStrB(Sec, 2);
+  Log.Timing.LogMessage(ATitle + ' ' + s);
+end;
+
+const
+  kUnitName = 'VamLib.SmartInspect.pas';
+
 initialization
   HasLoggingBeenSetup := false;
 
 finalization
+  LogCurrentTime(kUnitName + ' Finalization 1');
+
   if (HasLoggingBeenSetup) then
   begin
     Log.Main.LogMessage('Logging Finished');
