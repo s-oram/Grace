@@ -57,7 +57,8 @@ function DistanceBetweenTwoPoints(const x1, y1, x2, y2:single):single;
 //==============================================================
 //    String Handling
 //==============================================================
-function TrimFileExt(FileName:string):string;
+// user IOUtils.pas TPath.GetFileNameWithoutExtension()
+function TrimFileExt(FileName:string):string; deprecated;
 function RemoveFileExt(FileName:string):string; deprecated;
 
 function IntToStrB(Int:integer; MinDigits:integer):string;

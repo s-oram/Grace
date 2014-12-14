@@ -64,6 +64,7 @@ contains
   VamLib.OneShotTimer in 'Source\VamLib.OneShotTimer.pas',
   VamLib.GuiUtils.ThrottleDebounce in 'Source\VamLib.GuiUtils.ThrottleDebounce.pas',
   VamLib.Logging in 'Source\VamLib.Logging.pas',
-  VamLib.Logging.AbstractLog in 'Source\VamLib.Logging.AbstractLog.pas';
+  VamLib.Logging.AbstractLog in 'Source\VamLib.Logging.AbstractLog.pas',
+  VamLib.Win.Links in 'Source\VamLib.Win.Links.pas';
 
 end.

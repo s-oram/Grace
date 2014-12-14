@@ -1,6 +1,15 @@
 ======================================
             History
 ======================================
+14 Dec 2014
+- Changes to EasyEffectTemplate v3
+
+11 Dec 2014
+- Add VamLib.Win.Links.pas
+
+11 Dec 2014
+- Fix a small bug in VamLib.
+
 11 Dec 2014
 - Completely rewrote the logging system used in VamLib.
   VamLib.LoggingProxy was removed. It's functionality 

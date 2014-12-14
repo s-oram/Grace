@@ -31,7 +31,11 @@ package EasyEffectVstV3_RunXE2;
 requires
   rtl,
   vcl,
-  VamLib;
+  VamLib,
+  madBasic_,
+  madDisAsm_,
+  madExcept_,
+  VamBasicRunXE2;
 
 contains
   ee3.CustomPlugin in 'source\ee3.CustomPlugin.pas',
@@ -45,6 +49,17 @@ contains
   DVSTUtils in 'source\Delphi Vst SDK\DVSTUtils.pas',
   DAEffect in 'source\Delphi Vst SDK\DAEffect.pas',
   DAEffectX in 'source\Delphi Vst SDK\DAEffectX.pas',
-  ee3.ProcessController in 'source\ee3.ProcessController.pas';
+  ee3.ProcessController in 'source\ee3.ProcessController.pas',
+  ee3.Utils in 'source\ee3.Utils.pas',
+  ee3AddOn.MadExcept in 'source\ee3AddOn\ee3AddOn.MadExcept.pas',
+  ee3AddOn.MidiAutomation.VstPar in 'source\ee3AddOn\ee3AddOn.MidiAutomation.VstPar.pas',
+  ee3AddOn.ParameterManager.StaticVst in 'source\ee3AddOn\ee3AddOn.ParameterManager.StaticVst.pas',
+  ee3AddOn.PluginPaths in 'source\ee3AddOn\ee3AddOn.PluginPaths.pas',
+  ee3AddOn.ProcessController.Basic in 'source\ee3AddOn\ee3AddOn.ProcessController.Basic.pas',
+  ee3AddOn.ProcessController.MultiChannelResampler.r8brain in 'source\ee3AddOn\ee3AddOn.ProcessController.MultiChannelResampler.r8brain.pas',
+  ee3AddOn.ProcessController.OverSampled2x in 'source\ee3AddOn\ee3AddOn.ProcessController.OverSampled2x.pas',
+  ee3AddOn.VstMidi in 'source\ee3AddOn\ee3AddOn.VstMidi.pas',
+  ee3AddOn.ControlContextMenu.VstPar in 'source\ee3AddOn\ee3AddOn.ControlContextMenu.VstPar.pas',
+  ee3AddOn.ControlHandler.VstPar.Knob in 'source\ee3AddOn\ee3AddOn.ControlHandler.VstPar.Knob.pas';
 
 end.

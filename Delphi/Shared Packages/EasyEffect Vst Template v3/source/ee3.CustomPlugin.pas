@@ -35,6 +35,8 @@ type
 
     procedure SetNumInputs(Inputs: VstInt32); override;   // Set the number of inputs the plug-in will handle. For a plug-in which could change its IO configuration, this number is the maximun available inputs.
     procedure SetNumOutputs(Outputs: VstInt32); override; // Set the number of outputs the plug-in will handle. For a plug-in which could change its IO configuration, this number is the maximun available ouputs.
+
+    procedure ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32); override;
   end;
 
   TCustomVstEditor = class(AEffEditor)
@@ -121,6 +123,11 @@ function TCustomVstPlugin.ProcessEvents(Events: PVstEvents): VstInt32;
 begin
   ProcessController.ProcessVstEvents(Events);
   result := 0;
+end;
+
+procedure TCustomVstPlugin.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32);
+begin
+  inherited;
 end;
 
 procedure TCustomVstPlugin.SetNumInputs(Inputs: VstInt32);
