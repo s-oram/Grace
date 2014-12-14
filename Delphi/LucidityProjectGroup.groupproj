@@ -3,12 +3,6 @@
 			<ProjectGuid>{B045BC23-7472-4814-8AE6-A2BFB6A6D387}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj">
 				<Dependencies/>
 			</Projects>
@@ -36,29 +30,29 @@
 			<Projects Include="Shared Packages\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj">
+			<Projects Include="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj">
+			<Projects Include="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj">
-				<Dependencies/>
+			<Projects Include="Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj">
+				<Dependencies>Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj</Dependencies>
 			</Projects>
-			<Projects Include="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj">
+			<Projects Include="Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj">
-				<Dependencies/>
+				<Dependencies>Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj;Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj">
 				<Dependencies>LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Grace.dproj">
-				<Dependencies>Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj;Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;Shared Packages\SmartInspect\SmartInspect_RunTime.dproj</Dependencies>
+				<Dependencies>Shared Packages\SmartInspect\SmartInspect_RunTime.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
-				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity Key Gen\LucidityKeyGen.dproj">
 				<Dependencies/>
@@ -80,24 +74,6 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="OmniThreadLibraryRuntimeXE2">
-			<MSBuild Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryRuntimeXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryRuntimeXE2:Make">
-			<MSBuild Targets="Make" Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryRuntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2">
-			<MSBuild Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2:Clean">
-			<MSBuild Targets="Clean" Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
-		<Target Name="OmniThreadLibraryDesigntimeXE2:Make">
-			<MSBuild Targets="Make" Projects="Shared Packages\OmniThreadLibrary 3.03\packages\OmniThreadLibraryDesigntimeXE2.dproj"/>
-		</Target>
 		<Target Name="NativeXmlV4_XE2">
 			<MSBuild Projects="Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj"/>
 		</Target>
@@ -180,48 +156,48 @@
 			<MSBuild Targets="Make" Projects="Shared Packages\RedFox\AggPasMod\Packages\AggPasDesXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxRunXE2">
-			<MSBuild Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
+			<MSBuild Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxRunXE2:Clean">
-			<MSBuild Targets="Clean" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
+			<MSBuild Targets="Clean" Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxRunXE2:Make">
-			<MSBuild Targets="Make" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
+			<MSBuild Targets="Make" Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxDesXE2">
-			<MSBuild Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
+			<MSBuild Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxDesXE2:Clean">
-			<MSBuild Targets="Clean" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
+			<MSBuild Targets="Clean" Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
 		<Target Name="RedFoxDesXE2:Make">
-			<MSBuild Targets="Make" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
+			<MSBuild Targets="Make" Projects="Shared Packages\RedFox\RedFox Base Components\packages\RedFoxDesXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2">
-			<MSBuild Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
+		<Target Name="VamBasicRunXE2" DependsOnTargets="AggPasRunXE2;RedFoxRunXE2">
+			<MSBuild Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2:Clean">
-			<MSBuild Targets="Clean" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
+		<Target Name="VamBasicRunXE2:Clean" DependsOnTargets="AggPasRunXE2:Clean;RedFoxRunXE2:Clean">
+			<MSBuild Targets="Clean" Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
-		<Target Name="VamBasicRunXE2:Make">
-			<MSBuild Targets="Make" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
+		<Target Name="VamBasicRunXE2:Make" DependsOnTargets="AggPasRunXE2:Make;RedFoxRunXE2:Make">
+			<MSBuild Targets="Make" Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj"/>
 		</Target>
 		<Target Name="VamBasicDesXE2">
-			<MSBuild Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
+			<MSBuild Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
 		<Target Name="VamBasicDesXE2:Clean">
-			<MSBuild Targets="Clean" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
+			<MSBuild Targets="Clean" Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
 		<Target Name="VamBasicDesXE2:Make">
-			<MSBuild Targets="Make" Projects="D:\Delphi Projects\Lucidity\Delphi\Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
+			<MSBuild Targets="Make" Projects="Shared Packages\RedFox\VamBasic\packages\VamBasicDesXE2.dproj"/>
 		</Target>
-		<Target Name="LucidityGuiComponentsRunXE2">
+		<Target Name="LucidityGuiComponentsRunXE2" DependsOnTargets="RedFoxDesXE2;VamBasicRunXE2">
 			<MSBuild Projects="LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj"/>
 		</Target>
-		<Target Name="LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="LucidityGuiComponentsRunXE2:Clean" DependsOnTargets="RedFoxDesXE2:Clean;VamBasicRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj"/>
 		</Target>
-		<Target Name="LucidityGuiComponentsRunXE2:Make">
+		<Target Name="LucidityGuiComponentsRunXE2:Make" DependsOnTargets="RedFoxDesXE2:Make;VamBasicRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj"/>
 		</Target>
 		<Target Name="LucidityGuiComponentsDesXE2" DependsOnTargets="LucidityGuiComponentsRunXE2">
@@ -233,22 +209,22 @@
 		<Target Name="LucidityGuiComponentsDesXE2:Make" DependsOnTargets="LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj"/>
 		</Target>
-		<Target Name="Grace" DependsOnTargets="OmniThreadLibraryRuntimeXE2;NativeXmlV4_XE2;DragDropDXE2;r8Brain_RunTime;VamLib;AudioIO_DXE2;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2;SmartInspect_RunTime">
+		<Target Name="Grace" DependsOnTargets="SmartInspect_RunTime;LucidityGuiComponentsRunXE2;AggPasRunXE2;AudioIO_DXE2;VamLib;r8Brain_RunTime;DragDropDXE2;NativeXmlV4_XE2">
 			<MSBuild Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Clean" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean;SmartInspect_RunTime:Clean">
+		<Target Name="Grace:Clean" DependsOnTargets="SmartInspect_RunTime:Clean;LucidityGuiComponentsRunXE2:Clean;AggPasRunXE2:Clean;AudioIO_DXE2:Clean;VamLib:Clean;r8Brain_RunTime:Clean;DragDropDXE2:Clean;NativeXmlV4_XE2:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Make" DependsOnTargets="OmniThreadLibraryRuntimeXE2:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make;SmartInspect_RunTime:Make">
+		<Target Name="Grace:Make" DependsOnTargets="SmartInspect_RunTime:Make;LucidityGuiComponentsRunXE2:Make;AggPasRunXE2:Make;AudioIO_DXE2:Make;VamLib:Make;r8Brain_RunTime:Make;DragDropDXE2:Make;NativeXmlV4_XE2:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="ComponentTester" DependsOnTargets="VamLib;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2">
+		<Target Name="ComponentTester" DependsOnTargets="VamLib;AggPasRunXE2;LucidityGuiComponentsRunXE2">
 			<MSBuild Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="ComponentTester:Clean" DependsOnTargets="VamLib:Clean;AggPasRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
-		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make">
+		<Target Name="ComponentTester:Make" DependsOnTargets="VamLib:Make;AggPasRunXE2:Make;LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="Component Tester\ComponentTester.dproj"/>
 		</Target>
 		<Target Name="LucidityKeyGen">
@@ -288,13 +264,13 @@
 			<MSBuild Targets="Make" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2;OmniThreadLibraryDesigntimeXE2;NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;SmartInspect_RunTime;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
+			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;SmartInspect_RunTime;AudioIO_DXE2;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Clean;OmniThreadLibraryDesigntimeXE2:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspect_RunTime:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspect_RunTime:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="OmniThreadLibraryRuntimeXE2:Make;OmniThreadLibraryDesigntimeXE2:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspect_RunTime:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspect_RunTime:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
