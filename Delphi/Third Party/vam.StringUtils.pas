@@ -7,7 +7,7 @@ interface
 // If the output is not the same, an exception is raised
 // Author: nogabel@hotmail.com
 // Source: http://stackoverflow.com/questions/283759/convert-string-to-pansichar-in-delphi-2009
-function StringToPAnsiChar(stringVar : string) : PAnsiChar;
+function StringToPAnsiChar(stringVar : string) : PAnsiChar; deprecated;
 
 implementation
 
