@@ -26,6 +26,7 @@ package AggPasRunXE2;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Anti-Grain Geometry'}
+{$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
