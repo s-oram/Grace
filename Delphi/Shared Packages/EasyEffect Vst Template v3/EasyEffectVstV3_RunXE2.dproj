@@ -84,10 +84,10 @@
 			<DCCReference Include="madDisAsm_.dcp"/>
 			<DCCReference Include="madExcept_.dcp"/>
 			<DCCReference Include="VamBasicRunXE2.dcp"/>
+			<DCCReference Include="R8Brain_RunTime.dcp"/>
 			<DCCReference Include="source\ee3.CustomPlugin.pas"/>
 			<DCCReference Include="source\ee3.PluginGlobals.pas"/>
 			<DCCReference Include="source\ee3.VstConstants.pas"/>
-			<DCCReference Include="source\ee3.VstPluginFactory.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ThreadSyncEnforcer.pas"/>
 			<DCCReference Include="source\Delphi Vst SDK\DAudioEffect.pas"/>
 			<DCCReference Include="source\Delphi Vst SDK\DAudioEffectX.pas"/>

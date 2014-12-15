@@ -41,21 +41,8 @@ type
 
   TCustomVstEditor = class(AEffEditor)
   private
-    r : ERect;
-    UseCount : Longint;
-    GuiForm : TCustomVstGuiForm;
-    GuiMeta : TObject;
   protected
   public
-    constructor Create(aEffect: AudioEffect; aInitialGuiWidth, aInitialGuiHeight : integer); reintroduce;
-    destructor Destroy; override;
-    function GetRect(var rect: PERect): Longint; override;
-    function Open(ptr: Pointer): Longint; override;
-    procedure Close; override;
-    procedure Idle; override;
-
-    function OnKeyDown(var KeyCode: VstKeyCode): boolean; override;
-    function OnKeyUp(var KeyCode: VstKeyCode): boolean; override;
   end;
 
   TCustomVstGuiForm = class(TForm)
@@ -68,7 +55,6 @@ implementation
 
 uses
   SysUtils,
-  ee3.VstPluginFactory,
   DVstUtils;
 
 procedure ProcessClassReplacing(e: PAEffect; Inputs, Outputs: PPSingle; SampleFrames: VstInt32); cdecl;
@@ -151,79 +137,6 @@ begin
   inherited SetUniqueID(FourCharToLong(UniqueID[1],UniqueID[2],UniqueID[3],UniqueID[4]));
 end;
 
-{ TCustomVstPluginEditor }
-
-constructor TCustomVstEditor.Create(aEffect: AudioEffect; aInitialGuiWidth, aInitialGuiHeight: integer);
-begin
-  inherited Create(aEffect);
-
-  r.top    := 0;
-  r.left   := 0;
-  r.right  := aInitialGuiWidth;
-  r.bottom := aInitialGuiHeight;
-
-  UseCount := 0;
-end;
-
-destructor TCustomVstEditor.Destroy;
-begin
-  if assigned(GuiForm) then GuiForm.Free;
-  if assigned(GuiMeta) then GuiMeta.Free;
-
-  inherited;
-end;
-
-function TCustomVstEditor.GetRect(var rect: PERect): Longint;
-begin
-  rect   := @r;
-  Result := 1;
-end;
-
-function TCustomVstEditor.Open(ptr: Pointer): Longint;
-var
-  CreateGuiResult : TCreateVstPluginGuiResult;
-begin
-  if (UseCount = 0) then
-  begin
-    try
-      CreateGuiResult := VstPluginFactory.CreateVstPluginGui(self.Effect, ptr, r.right, r.bottom);
-      GuiForm := CreateGuiResult.GuiForm;
-      GuiMeta := CreateGuiResult.GuiMeta;
-    finally
-      UseCount := 1;
-    end;
-  end;
-  result := 1;
-end;
-
-procedure TCustomVstEditor.Close;
-begin
-  inherited;
-
-  if (UseCount > 0) then
-  begin
-    try
-      FreeAndNil(GuiForm);
-    finally
-      UseCount := 0;
-    end;
-  end;
-end;
-
-procedure TCustomVstEditor.Idle;
-begin
-  inherited;
-end;
-
-function TCustomVstEditor.OnKeyDown(var KeyCode: VstKeyCode): boolean;
-begin
-  result := false;
-end;
-
-function TCustomVstEditor.OnKeyUp(var KeyCode: VstKeyCode): boolean;
-begin
-  result := false;
-end;
 
 
 end.

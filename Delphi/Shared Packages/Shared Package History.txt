@@ -2,6 +2,10 @@
             History
 ======================================
 15 Dec 2014
+- add 'requirement' to easy effect template v3
+- removed factory methods class from EEv3.
+
+15 Dec 2014
 - changes to RedFox GUI component project files.
 
 14 Dec 2014

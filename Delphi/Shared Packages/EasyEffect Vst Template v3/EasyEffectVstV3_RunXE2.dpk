@@ -35,13 +35,13 @@ requires
   madBasic_,
   madDisAsm_,
   madExcept_,
-  VamBasicRunXE2;
+  VamBasicRunXE2,
+  R8Brain_RunTime;
 
 contains
   ee3.CustomPlugin in 'source\ee3.CustomPlugin.pas',
   ee3.PluginGlobals in 'source\ee3.PluginGlobals.pas',
   ee3.VstConstants in 'source\ee3.VstConstants.pas',
-  ee3.VstPluginFactory in 'source\ee3.VstPluginFactory.pas',
   ee3AddOn.ThreadSyncEnforcer in 'source\ee3AddOn\ee3AddOn.ThreadSyncEnforcer.pas',
   DAudioEffect in 'source\Delphi Vst SDK\DAudioEffect.pas',
   DAudioEffectX in 'source\Delphi Vst SDK\DAudioEffectX.pas',
@@ -63,3 +63,4 @@ contains
   ee3AddOn.ControlHandler.VstPar.Knob in 'source\ee3AddOn\ee3AddOn.ControlHandler.VstPar.Knob.pas';
 
 end.
+
