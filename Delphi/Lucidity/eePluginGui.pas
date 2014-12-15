@@ -13,8 +13,8 @@ uses
   VamLib.ZeroObject,
   uXYPadsFrame,
   uSequencerFrame,
-  OtlComm, uModSystemFrame,
-  uAboutFrame, Lucidity.SampleMap,
+  uModSystemFrame,
+  Lucidity.SampleMap,
   eeEnumHelper, Lucidity.Enums,
   DAEffect, DAEffectX, eePluginKeyHook,
   Lucidity.GuiState,
@@ -399,10 +399,6 @@ end;
 
 procedure TPluginGui.BeforeClose;
 begin
-  if assigned(Plugin) then
-  begin
-    Plugin.Globals.RemoveWindowsMessageListener(self.Handle);
-  end;
 end;
 
 

@@ -505,10 +505,6 @@
 			<DCCReference Include="Lucidity.StateManager.pas"/>
 			<DCCReference Include="frames\Menu.MainMenu.pas"/>
 			<DCCReference Include="frames\Menu.FileTreeMenu.pas"/>
-			<DCCReference Include="frames\uAboutFrame.pas">
-				<Form>AboutFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="SoundObjects\Lucidity.Env.ADSR.pas"/>
 			<DCCReference Include="frames\Menu.SampleMapContextMenu.pas"/>
 			<DCCReference Include="frames\Menu.CustomPopupMenu.pas"/>
@@ -573,7 +569,6 @@
 			<DCCReference Include="LucidityGui.MenuButtonHandler.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eePublishedVstParameters.pas"/>
-			<DCCReference Include="EasyEffectTemplate\eeTaskRunner.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeStoredActionList.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeMidiAutomationV2.pas"/>
 			<DCCReference Include="Custom Effect Template Files\Effect.MidiAutomation.pas"/>

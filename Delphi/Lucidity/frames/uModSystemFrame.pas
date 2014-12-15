@@ -57,7 +57,6 @@ type
 implementation
 
 uses
-  OtlParallel,
   Lucidity.PluginParameters,
   LucidityModConnections,
   VamLib.Utils,

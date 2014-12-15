@@ -49,7 +49,7 @@
 				<Dependencies>LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Grace.dproj">
-				<Dependencies>Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\SmartInspect\SmartInspect_RunTime.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
+				<Dependencies>LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\SmartInspect\SmartInspect_RunTime.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
 				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
@@ -209,13 +209,13 @@
 		<Target Name="LucidityGuiComponentsDesXE2:Make" DependsOnTargets="LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj"/>
 		</Target>
-		<Target Name="Grace" DependsOnTargets="NativeXmlV4_XE2;DragDropDXE2;r8Brain_RunTime;VamLib;SmartInspect_RunTime;AudioIO_DXE2;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2">
+		<Target Name="Grace" DependsOnTargets="LucidityGuiComponentsRunXE2;VamBasicRunXE2;RedFoxRunXE2;AggPasRunXE2;AudioIO_DXE2;SmartInspect_RunTime;VamLib;r8Brain_RunTime;DragDropDXE2;NativeXmlV4_XE2">
 			<MSBuild Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Clean" DependsOnTargets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspect_RunTime:Clean;AudioIO_DXE2:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="Grace:Clean" DependsOnTargets="LucidityGuiComponentsRunXE2:Clean;VamBasicRunXE2:Clean;RedFoxRunXE2:Clean;AggPasRunXE2:Clean;AudioIO_DXE2:Clean;SmartInspect_RunTime:Clean;VamLib:Clean;r8Brain_RunTime:Clean;DragDropDXE2:Clean;NativeXmlV4_XE2:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Make" DependsOnTargets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspect_RunTime:Make;AudioIO_DXE2:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make">
+		<Target Name="Grace:Make" DependsOnTargets="LucidityGuiComponentsRunXE2:Make;VamBasicRunXE2:Make;RedFoxRunXE2:Make;AggPasRunXE2:Make;AudioIO_DXE2:Make;SmartInspect_RunTime:Make;VamLib:Make;r8Brain_RunTime:Make;DragDropDXE2:Make;NativeXmlV4_XE2:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Grace.dproj"/>
 		</Target>
 		<Target Name="ComponentTester" DependsOnTargets="VamLib;AggPasRunXE2;LucidityGuiComponentsRunXE2">

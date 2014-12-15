@@ -18,15 +18,12 @@ uses
   VamLib.ZeroObject,
   eeTypes,
   SysUtils,
-  otlContainers, otlComm, otlCommon, otlTaskControl, otlTask,
   eeGuiStandard_Types,
   Windows, Classes, uEventList, eeMidiEvents, DAEffectX;
 
 type
   //=== Forward Declarations ============
-  TWindowsMessageGateKeeper = class;
   TCustomGlobals = class;
-  TMessagePumper = class;
   //=====================================
 
   PHostProperties = ^THostProperties;
@@ -92,8 +89,6 @@ type
     fCpuUsage      : PCpuUsageInfo;
     fVstMethods    : PVstMethodReferences;
 
-    WindowsMessageGateKeeper : TWindowsMessageGateKeeper;
-
     //====================================================================================================
     // Event notification lists. Register an event handler to be notified when something changes.
     property SampleRateList       : TEventList read fSampleRateList       write fSampleRateList;
@@ -112,9 +107,8 @@ type
 
     procedure UpdateSampleRates(const aSampleRate, aFastControlRate, aSlowControlRate : integer);
 
-    procedure SendWindowsMessage(const Msg : cardinal; const wParam:NativeUInt = 0; const lParam:NativeInt = 0);
-    procedure AddWindowsMessageListener(Handle : HWND);
-    procedure RemoveWindowsMessageListener(Handle : HWND);
+
+
 
     procedure AddEventListener(EventType : TPluginEvent; EventHandler : TNotifyEvent);
     procedure RemoveEventListener(EventType : TPluginEvent; EventHandler : TNotifyEvent);
@@ -189,43 +183,6 @@ type
     property MotherShip : IMotherShip read GetMotherShip;
   end;
 
-
-
-
-  TWindowsMessageGateKeeper = class
-  strict private
-    type
-      TMsgData = record
-        Msg    : cardinal;
-        wParam : NativeUInt;
-        lParam : NativeInt;
-      end;
-    var
-    MessageQueue : TOmniQueue;
-    TaskControl : IOmniTaskControl;
-    Pump : TMessagePumper;
-    HandleList : TCardinalList;
-    procedure DoPump;
-  private
-  public
-    constructor Create;
-    destructor Destroy; override;
-
-    procedure SendWindowsMessage(const Msg : cardinal; const wParam:NativeUInt = 0; const lParam:NativeInt = 0);
-    procedure AddWindowsMessageListener(Handle : HWND);
-    procedure RemoveWindowsMessageListener(Handle : HWND);
-  end;
-
-
-  // http://stackoverflow.com/a/8412753/395461
-  TMessagePumper = class(TOmniWorker)
-  private
-  public
-  end;
-
-
-
-
 implementation
 
 uses
@@ -240,8 +197,6 @@ begin
 
   TopLevelWindow := 0;
 
-  WindowsMessageGateKeeper := TWindowsMessageGateKeeper.Create;
-
   SampleRateList       := TEventList.Create;
   BlockSizeList        := TEventList.Create;
   TempoList            := TEventList.Create;
@@ -249,7 +204,6 @@ begin
   PlayStateChangedList := TEventList.Create;
   VstSuspendList       := TEventList.Create;
   VstResumeList        := TEventList.Create;
-
 
   fOverSampleFactor  := 1;
   fSampleRate        := 44100;
@@ -284,24 +238,9 @@ begin
   PlayStateChangedList.Free;
   VstSuspendList.Free;
   VstResumeList.Free;
-  WindowsMessageGateKeeper.Free;
   FMotherShip.Free;
   inherited;
 end;
-
-procedure TCustomGlobals.AddWindowsMessageListener(Handle: HWND);
-begin
-  // TODO: For good form debugging it would be good to check if
-  // - listeners are only added once. (No duplicates)
-  // - all listeners are removed before destruction. (no hanging around after the listener is free'ed)
-  WindowsMessageGateKeeper.AddWindowsMessageListener(Handle);
-end;
-
-procedure TCustomGlobals.RemoveWindowsMessageListener(Handle: HWND);
-begin
-  WindowsMessageGateKeeper.RemoveWindowsMessageListener(Handle);
-end;
-
 
 function TCustomGlobals.GetHostProperties: PHostProperties;
 begin
@@ -311,17 +250,6 @@ end;
 function TCustomGlobals.GetMotherShip: IMotherShip;
 begin
   result := FMotherShip;
-end;
-
-procedure TCustomGlobals.SendWindowsMessage(const Msg: cardinal; const wParam:NativeUInt; const lParam:NativeInt);
-begin
-  // TODO: Post message seems to be pretty slow. My current thinking is
-  // to use a queue from OmniTheadLibrary.
-  // Messages will be added to a queue. A low priority thread will
-  // read the queue and pop off messages every 50-100 ms.
-  //PostMessage(fGUiHandle, Msg, wParam, lParam);
-
-  WindowsMessageGateKeeper.SendWindowsMessage(Msg, wParam, lParam);
 end;
 
 procedure TCustomGlobals.UpdateSampleRates(const aSampleRate, aFastControlRate, aSlowControlRate: integer);
@@ -555,86 +483,6 @@ begin
 
   List.Remove(EventHandler);
 end;
-
-
-
-
-{ TWindowsMessageGateKeeper }
-
-
-
-{ TWindowsMessageGateKeeper }
-
-constructor TWindowsMessageGateKeeper.Create;
-begin
-  MessageQueue := TOmniQueue.Create;
-  Pump := TMessagePumper.Create();
-  TaskControl := CreateTask(pump).Run;
-  HandleList := TCardinalList.Create;
-
-end;
-
-destructor TWindowsMessageGateKeeper.Destroy;
-begin
-  MessageQueue.Free;
-  TaskControl.Terminate;
-  TaskControl := nil;
-  HandleList.Free;
-  //Worker.Free;
-  inherited;
-end;
-
-procedure TWindowsMessageGateKeeper.AddWindowsMessageListener(Handle: HWND);
-begin
-  HandleList.Add(Handle);
-end;
-
-procedure TWindowsMessageGateKeeper.RemoveWindowsMessageListener(Handle: HWND);
-begin
-  HandleList.Remove(Handle);
-end;
-
-procedure TWindowsMessageGateKeeper.DoPump;
-var
-  Data : TOmniValue;
-  Msg: cardinal;
-  wParam :  NativeUInt;
-  lParam: NativeInt;
-  c1: Integer;
-  aHandle : HWND;
-begin
-  while MessageQueue.TryDequeue(Data) do
-  begin
-    msg := Data[0].AsCardinal;
-    wParam := Data[1].AsCardinal;
-    lParam := Data[2].AsInteger;
-
-    for c1 := 0 to HandleList.Count-1 do
-    begin
-      aHandle := HandleList[c1];
-
-      //Important: Use SendMessage(), not PostMessage(). PostMessage() causes audio dropouts in cubase.
-      SendMessage(aHandle, Msg, wParam, lParam);
-    end;
-  end;
-end;
-
-
-procedure TWindowsMessageGateKeeper.SendWindowsMessage(const Msg: cardinal; const wParam: NativeUInt; const lParam: NativeInt);
-var
-  Data : TOmniValue;
-begin
-  //Add message to thread safe queue.
-  Data.Create([Msg, wParam, lParam]);
-  MessageQueue.Enqueue(Data);
-
-  // Call Invoke() to run the code in a seperate thread.
-  TaskControl.Invoke(DoPump);
-end;
-
-
-
-
 
 end.
 

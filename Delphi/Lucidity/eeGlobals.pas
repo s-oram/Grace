@@ -12,7 +12,7 @@ uses
   eeStoredActionList,
   VamLib.ManagedObject,
   Lucidity.GuiState,
-  Lucidity.Options, eeTaskRunner,
+  Lucidity.Options,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
 
 type
@@ -60,16 +60,11 @@ type
     procedure SetLastProgramSaveDir(const Value: string);
   protected
   protected
-    VclTaskRunner : TTaskRunner;
-    VclTaskTimer  : TTimer;
-    procedure OnVclTimer(Sender : TObject);
   public
     constructor Create; override;
 	  destructor Destroy; override;
 
     function FindConfigFile(const ConfigFilename : string; Out FullPathLocation : string):boolean;
-
-    procedure AddVclTask(aTask : TProc);
 
     property CopyProtection : TCopyProtection read fCopyProtection;
 
@@ -142,12 +137,6 @@ begin
   fGuiState := TGuiState.Create;
   fPatchInfo := TPatchInfo.Create;
 
-  VclTaskRunner := TTaskRunner.Create;
-  VclTaskTimer  := TTimer.Create(nil);
-  VclTaskTimer.Enabled := false;
-  VclTaskTimer.Interval := 25;
-  VclTaskTimer.OnTimer := OnVclTimer;
-
   fDefaultConfigDir := '';
   fUserConfigDir    := '';
 
@@ -214,8 +203,6 @@ destructor TGlobals.Destroy;
 begin
   fSkinImageLoader.Free;
   fOptions.Free;
-  VclTaskTimer.Free;
-  VclTaskRunner.Free;
   fGuiState.Free;
   fPatchInfo.Free;
   fAudioActions.Free;
@@ -281,32 +268,12 @@ begin
 
   if fIsGuiOpen = true then
   begin
-    VclTaskTimer.Enabled := true;
-
     MotherShip.SetIsGuiOpen(true);
   end else
   begin
-    VclTaskTimer.Enabled := false;
-    VclTaskRunner.Clear;
-
     MotherShip.SetIsGuiOpen(false);
   end;
 end;
-
-procedure TGlobals.OnVclTimer(Sender: TObject);
-begin
-  VclTaskRunner.RunTasks;
-end;
-
-procedure TGlobals.AddVclTask(aTask: TProc);
-begin
-  if IsGuiOpen
-    then VclTaskRunner.AddTask(aTask)
-    else aTask := nil;
-end;
-
-
-
 
 { TCopyProtection }
 
