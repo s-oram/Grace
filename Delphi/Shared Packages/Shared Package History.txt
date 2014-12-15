@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+15 Dec 2014
+- changes to RedFox GUI component project files.
+
 14 Dec 2014
 - Changes to EasyEffectTemplate v3
 
