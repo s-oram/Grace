@@ -6,6 +6,7 @@ interface
 
 uses
   eeTypes,
+  VamLib.Vcl.ZeroFrame,
   VamLib.ZeroObject,
   Lucidity.GuiStandard, eePlugin, uGuiFeedbackData,  Menu.KeyGroupsMenu, Menu.SamplesMenu,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -14,7 +15,7 @@ uses
   VamGraphicControl, VamTextBox, Vcl.Menus, Menu.MainMenu, VamLabel, VamButton;
 
 type
-  TMenuBarFrame = class(TFrame, IZeroObject)
+  TMenuBarFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ContainerDiv: TVamDiv;
@@ -39,10 +40,6 @@ type
     GroupsMenu : TGroupsMenu;
     SamplesMenu : TSamplesMenu;
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
-
     procedure SampleFocusChanged; // Called when the sample focus changes...
 
     procedure ShowParameterChangeInfo(const ParameterID : TPluginParameterID);
@@ -50,6 +47,8 @@ type
     procedure HideParameterChangeInfo;
 
     procedure RefreshParDisplay;
+  protected
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -103,12 +102,6 @@ end;
 
 destructor TMenuBarFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   GroupsMenu.Free;
   SamplesMenu.Free;
   MainMenu.Free;
@@ -235,11 +228,6 @@ begin
   end;
 end;
 
-procedure TMenuBarFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMothership;
-end;
-
 procedure TMenuBarFrame.GroupMenuButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   Plugin.Globals.GuiState.HotkeyContext := THotKeyContext.None;
@@ -319,6 +307,8 @@ procedure TMenuBarFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer
 var
   ParID : TPluginParameterID;
 begin
+  inherited;
+
   if MsgID = TLucidmsgID.Command_UpdateGUI then
   begin
     SampleFocusChanged;

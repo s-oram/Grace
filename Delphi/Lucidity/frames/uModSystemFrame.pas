@@ -3,6 +3,7 @@ unit uModSystemFrame;
 interface
 
 uses
+  VamLib.Vcl.ZeroFrame,
   Menu.ModSelectorContextMenu,
   VamLib.ZeroObject,
   Lucidity.Enums, Lucidity.Interfaces,
@@ -12,7 +13,7 @@ uses
   VamWinControl, VamPanel, RedFoxContainer, VamModSelector, VamTextBox;
 
 type
-  TModSystemFrame = class(TFrame, IZeroObject)
+  TModSystemFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
   private
@@ -41,12 +42,11 @@ type
 
     procedure Handle_ShowModContextMenu(Sender : TObject);
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
+
   protected
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -184,12 +184,6 @@ end;
 
 destructor TModSystemFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   ModContextMenu.Free;
 
   MenuKeyGroup := nil;
@@ -201,6 +195,8 @@ procedure TModSystemFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Point
 var
   s : string;
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.NewProgramLoaded         then UpdateModulation;
   if MsgID = TLucidMsgID.SampleFocusChanged       then UpdateModulation;
   if MsgID = TLucidMsgID.Command_UpdateGUI        then UpdateModulation;
@@ -220,11 +216,6 @@ begin
   end;
 end;
 
-procedure TModSystemFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMothership;
-end;
-
 procedure TModSystemFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin
   assert(not assigned(fPlugin), 'InitializeFrame() must only be called once.');
@@ -233,8 +224,6 @@ begin
   fGuiStandard := aGuiStandard;
 
   ModContextMenu.Initialize(aPlugin);
-
-
 
   // finally
   UpdateModulation;

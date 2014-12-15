@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Vcl.ZeroFrame,
   Lucidity.PluginParameters,
   Lucidity.GuiStandard,
   VamLib.ZeroObject,
@@ -30,7 +31,7 @@ type
   end;
 
 
-  TModControlFrame = class(TFrame, IZeroObject)
+  TModControlFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     StepSeq1Container: TVamDiv;
@@ -142,9 +143,8 @@ type
     procedure UpdateControlVisibility;
     procedure UpdateLfo; //called when the mod slot changes...
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
+
+
   protected
     AltFilterText : TAltFilterText;
     FilterParameterInfo : TFilterParameterInfo;
@@ -153,6 +153,7 @@ type
     ParIndexFilter2Type : integer;
 
     StepSequenceMenu : TStepSequenceMenu;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -251,12 +252,6 @@ end;
 
 destructor TModControlFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   StepSequenceMenu.Free;
   KnobList.Free;
   inherited;
@@ -614,6 +609,8 @@ end;
 
 procedure TModControlFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.OnPostCreateFinished            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.NewProgramLoaded                then UpdateControlVisibility;
   if MsgID = TLucidMsgID.SampleFocusChanged              then UpdateControlVisibility;
@@ -672,11 +669,6 @@ end;
 procedure TModControlFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);
 begin
   //FilterOneContainerLabel.Text := FloatToStr(Floor(Plugin.Globals.ppqPos));
-end;
-
-procedure TModControlFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
 end;
 
 procedure TModControlFrame.FilterKnobMouseEnter(Sender: TObject);

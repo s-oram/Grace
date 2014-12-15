@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.Vcl.ZeroFrame,
   uGuiFeedbackData,
   VamLib.ZeroObject, eePlugin, Lucidity.GuiStandard,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -12,7 +13,7 @@ uses
   VamWinControl, VamPanel, RedFoxContainer, VamKnob, VamLabel, VamDiv, VamXYPad;
 
 type
-  TXYPadsFrame = class(TFrame, IZeroObject)
+  TXYPadsFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     XYPadsContainer: TVamDiv;
@@ -30,18 +31,14 @@ type
     procedure XYPadMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
   protected
     Plugin : TeePlugin;
     GuiStandard : TGuiStandard;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
     procedure InitializeFrame(aPlugin : TeePlugin; aGuiStandard:TGuiStandard);
-
     procedure UpdateGui(Sender:TObject; FeedBack: PGuiFeedbackData);
   end;
 
@@ -66,17 +63,7 @@ end;
 
 destructor TXYPadsFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
   inherited;
-end;
-
-procedure TXYPadsFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
 end;
 
 procedure TXYPadsFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard:TGuiStandard);
@@ -130,7 +117,7 @@ end;
 
 procedure TXYPadsFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
 begin
-
+  inherited;
 end;
 
 procedure TXYPadsFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);

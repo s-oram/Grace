@@ -130,6 +130,7 @@
 			<DCCReference Include="Source\VamLib.Logging.pas"/>
 			<DCCReference Include="Source\VamLib.Logging.AbstractLog.pas"/>
 			<DCCReference Include="Source\VamLib.Win.Links.pas"/>
+			<DCCReference Include="Source\VamLib.Vcl.ZeroFrame.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

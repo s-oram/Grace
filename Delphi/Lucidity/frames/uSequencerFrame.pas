@@ -3,6 +3,7 @@ unit uSequencerFrame;
 interface
 
 uses
+  VamLib.Vcl.ZeroFrame,
   VamLib.ZeroObject,
   uConstants,
   Menu.StepSequenceMenu,
@@ -13,7 +14,7 @@ uses
   VamLabel, VamDiv, LucidityGui.VectorSequence;
 
 type
-  TSequencerFrame = class(TFrame, IZeroObject)
+  TSequencerFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     SeqBackPanel: TVamPanel;
@@ -26,17 +27,16 @@ type
     procedure SeqBackPanelResize(Sender: TObject);
     procedure StepSeqControlShowContextMenu(Sender: TObject; X, Y: Integer);
   private
-    FMotherShip : IMotherShip;
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
     fSequencerIndex: integer;
     procedure SetSequencerIndex(const Value: integer);
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
+
   protected
     StepSequenceMenu : TStepSequenceMenu;
     property Plugin:TeePlugin read fPlugin;
     property GuiStandard : TGuiStandard read fGuiStandard;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -69,21 +69,9 @@ end;
 
 destructor TSequencerFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   StepSequenceMenu.Free;
   inherited;
 end;
-
-procedure TSequencerFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
-end;
-
 
 procedure TSequencerFrame.InitializeFrame(aPlugin: TeePlugin; aGuiStandard: TGuiStandard);
 begin
@@ -192,6 +180,8 @@ procedure TSequencerFrame.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Point
 var
   kg : IKeyGroup;
 begin
+  inherited;
+
   // TODO:MED There is a bit of code repetition here. It could be consolidated.
   if MsgID = TLucidMsgID.RefreshRequest_StepSeqDisplay then
   begin

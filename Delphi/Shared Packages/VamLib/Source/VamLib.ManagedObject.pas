@@ -62,17 +62,6 @@ type
   end;
 
 
-  TManagedZeroObject = class(TManagedObject, IZeroObject)
-  private
-    FMotherShip : IMotherShip;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-  protected
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);  virtual;
-  public
-    destructor Destroy; override;
-  end;
-
-
 implementation
 
 uses
@@ -266,30 +255,5 @@ begin
   result := InterlockedDecrement(FMangedObjectReferenceCount);
 end;
 
-
-
-{ TManagedZeroObject }
-
-destructor TManagedZeroObject.Destroy;
-begin
-  // Important: Deregister from the mother ship..
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
-  inherited;
-end;
-
-procedure TManagedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
-begin
-
-end;
-
-procedure TManagedZeroObject.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
-end;
 
 end.

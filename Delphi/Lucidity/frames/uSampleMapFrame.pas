@@ -5,11 +5,12 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
-  Lucidity.Enums,
+  VamLib.Vcl.ZeroFrame,
   VamLib.UniqueID,
   VamLib.GuiUtils,
   VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject, VamShortMessageOverlay,
+  Lucidity.Enums,
   Menu.GroupVisibility,
   Menu.SampleMapContextMenu, Lucidity.GuiStandard,
   eePlugin, Lucidity.Interfaces, uKeyStateTrackerOverlay,
@@ -22,7 +23,7 @@ uses
   VamCompoundNumericKnob, VamTextBox;
 
 type
-  TSampleMapFrame = class(TFrame, IZeroObject)
+  TSampleMapFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ScrollBox: TVamScrollBox;
@@ -82,9 +83,6 @@ type
     procedure SetScollPosX(const Value: single);
     procedure SetScollPosY(const Value: single);
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
     procedure UpdateGroupVisibility;
   protected
     MessageOverlay         : TVamShortMessageOverlay;
@@ -105,6 +103,7 @@ type
     procedure Handle_KnobStepDown(Sender : TObject);
 
     procedure ProcessKeyCommand(KeyCommand:TKeyCommand);
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -186,12 +185,6 @@ end;
 
 destructor TSampleMapFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   KeyStateTrackerOverlay.Free;
   SampleMapMenu.Free;
 
@@ -351,11 +344,6 @@ begin
 
     GroupVisibilityMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
   end;
-end;
-
-procedure TSampleMapFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
 end;
 
 procedure TSampleMapFrame.SetScollPosX(const Value: single);
@@ -599,6 +587,8 @@ var
   aniObj : TByteAnimation;
   KeyCommand : TKeyCommand;
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.Msg_XRegionsDuplicated then
   begin
     MessageOverlay.Text := string(DataA^);

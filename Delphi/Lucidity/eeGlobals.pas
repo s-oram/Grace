@@ -10,7 +10,6 @@ uses
   SysUtils,
   ExtCtrls,
   eeStoredActionList,
-  VamLib.ManagedObject,
   Lucidity.GuiState,
   Lucidity.Options,
   eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;

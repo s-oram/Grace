@@ -9,6 +9,7 @@ interface
 uses
   Math,
   Lucidity.GuiStandard,
+  VamLib.Vcl.ZeroFrame,
   VamLib.UniqueID,
   VamLib.GuiUtils,
   VamLib.GuiUtils.ThrottleDebounce,
@@ -35,7 +36,7 @@ type
     Info : TSampleDisplayInfo;
   end;
 
-  TMiniSampleDisplayFrame = class(TFrame, IZeroObject)
+  TMiniSampleDisplayFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     SampleDisplay: TVamSampleDisplay;
@@ -78,14 +79,8 @@ type
     procedure SampleOverlay_MarkerChanged(Sender:TObject; Marker:TSampleMarker; NewPosition : integer);
     procedure SampleOverlay_ZoomChanged(Sender : TObject; Zoom, Offset : single);
   private
-    FMotherShip : IMothership;
-
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
-
     procedure ZoomButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ZoomToSampleMarker(Sender : TObject; Marker:TDialogSampleMarker);
-
   protected
     CurrentSample : TSampleDisplayFrameInfo;
 
@@ -119,6 +114,8 @@ type
 
     procedure UpdateZoomSlider;
     procedure UpdateSampleDisplay;
+
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -208,12 +205,6 @@ end;
 
 destructor TMiniSampleDisplayFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   MissingSampleContextMenu.Free;
   SampleContextMenu.Free;
   SampleRenderer.Free;
@@ -343,6 +334,8 @@ var
   zx : single;
   Zoom, Offset : single;
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.NewProgramLoaded then
   begin
     UpdateControlVisibility;
@@ -459,11 +452,6 @@ end;
 procedure TMiniSampleDisplayFrame.SetGuiStandard(const Value: TGuiStandard);
 begin
   fGuiStandard := Value;
-end;
-
-procedure TMiniSampleDisplayFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
 end;
 
 procedure TMiniSampleDisplayFrame.UpdateGui(Sender: TObject; FeedBack: PGuiFeedbackData);

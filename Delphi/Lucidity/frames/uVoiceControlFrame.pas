@@ -4,6 +4,7 @@ interface
 
 uses
   VamLib.ZeroObject,
+  VamLib.Vcl.ZeroFrame,
   Lucidity.GuiStandard,
   uGuiFeedbackData, eePlugin, Menus, uConstants,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
@@ -13,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TVoiceControlFrame = class(TFrame, IZeroObject)
+  TVoiceControlFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     VoiceControlsContainer: TVamDiv;
@@ -68,13 +69,10 @@ type
     procedure ShowPlayTypeMenuCallBack(aMenu : TMenu);
     procedure ShowSamplResetMenuCallBack(aMenu : TMenu);
   private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
-
     procedure EventHandle_LoopModeSelected(Sender : TObject);
   protected
     procedure UpdateControlVisibility;
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -125,11 +123,6 @@ end;
 
 destructor TVoiceControlFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
 
   inherited;
 end;
@@ -144,6 +137,8 @@ var
   NameA, NameB : string;
   PMenu : ^TMenu;
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.NewProgramLoaded                then UpdateControlVisibility;
   if MsgID = TLucidMsgID.SampleOscTypeChanged            then UpdateControlVisibility;
   if MsgID = TLucidMsgID.Command_UpdateControlVisibility then UpdateControlVisibility;
@@ -318,11 +313,6 @@ end;
 
 
 
-
-procedure TVoiceControlFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
-end;
 
 procedure TVoiceControlFrame.ShowPlayTypeMenuCallBack(aMenu: TMenu);
 var

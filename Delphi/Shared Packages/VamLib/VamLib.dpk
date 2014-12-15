@@ -65,6 +65,7 @@ contains
   VamLib.GuiUtils.ThrottleDebounce in 'Source\VamLib.GuiUtils.ThrottleDebounce.pas',
   VamLib.Logging in 'Source\VamLib.Logging.pas',
   VamLib.Logging.AbstractLog in 'Source\VamLib.Logging.AbstractLog.pas',
-  VamLib.Win.Links in 'Source\VamLib.Win.Links.pas';
+  VamLib.Win.Links in 'Source\VamLib.Win.Links.pas',
+  VamLib.Vcl.ZeroFrame in 'Source\VamLib.Vcl.ZeroFrame.pas';
 
 end.

@@ -3,7 +3,7 @@ unit uFileBrowserFrame;
 interface
 
 uses
-  Dialogs, //delete this
+  VamLib.Vcl.ZeroFrame,
   VamLib.UniqueID,
   VamLib.GuiUtils.ThrottleDebounce,
   VamLib.ZeroObject,
@@ -19,7 +19,7 @@ uses
   VamKnob, VamButton;
 
 type
-  TFileBrowserFrame = class(TFrame, IZeroObject)
+  TFileBrowserFrame = class(TZeroFrame)
     Panel: TRedFoxContainer;
     BackgroundPanel: TVamPanel;
     ScrollBox: TVamScrollBox;
@@ -46,10 +46,8 @@ type
   private
     fGuiStandard: TGuiStandard;
     fPlugin: TeePlugin;
-  private
-    FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
-    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
+  protected
+    procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); override;
   protected
     MainContextMenu  : TFileTreeViewMainContextMenu;
     NodeContextMenu  : TFileTreeViewNodeContextMenu;
@@ -115,12 +113,6 @@ end;
 
 destructor TFileBrowserFrame.Destroy;
 begin
-  if (assigned(FMotherShip)) then
-  begin
-    FMotherShip.DeregisterZeroObject(self);
-    FMotherShip := nil;
-  end;
-
   FileBrowserAddon.Free;
   MainContextMenu.Free;
   NodeContextMenu.Free;
@@ -134,6 +126,8 @@ var
   b : boolean;
   KeyCommand : TKeyCommand;
 begin
+  inherited;
+
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
   if MsgID = TLucidMsgID.Cmd_RefreshBrowser       then RefreshFileBrowser;
   if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
@@ -282,11 +276,6 @@ begin
   finally
     IsManualScroll := false;
   end;
-end;
-
-procedure TFileBrowserFrame.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMothership;
 end;
 
 procedure TFileBrowserFrame.ProcessKeyCommand(KeyCommand: TKeyCommand);
