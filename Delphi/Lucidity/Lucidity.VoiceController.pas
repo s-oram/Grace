@@ -548,7 +548,7 @@ begin
     kgID := kg.GetID;
     TriggerMsg.Voice      := @aVoice;
     TriggerMsg.KeyGroupID := @kgID;
-    Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
+    Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
 
     //==== internal voice list management =====
     if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);
@@ -604,7 +604,7 @@ begin
   kgID := kg.GetID;
   TriggerMsg.Voice      := @aVoice;
   TriggerMsg.KeyGroupID := @kgID;
-  Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
+  Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_VoiceTriggered, @TriggerMsg);
 
   //==== internal voice list management =====
   if TriggeredVoiceStack.IndexOf(aVoice) <> -1 then TriggeredVoiceStack.Extract(aVoice);

@@ -3,6 +3,8 @@
 ======================================
 15 Dec 2014
 - Add TZeroFrame 
+- Removed "Main" ZeroObject support.
+- Rename Refactor: Audio -> Non-Visual
 
 15 Dec 2014
 - add 'requirement' to easy effect template v3

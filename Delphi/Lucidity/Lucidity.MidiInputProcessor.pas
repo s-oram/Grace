@@ -147,7 +147,7 @@ begin
 
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteTrigger, @NoteMsgData);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_PolyNoteTrigger, @NoteMsgData);
     end;
 
     TVoiceMode.Mono:
@@ -159,7 +159,7 @@ begin
 
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
     end;
 
     TVoiceMode.Legato:
@@ -172,7 +172,7 @@ begin
 
         NoteMsgData.Data1 := Data1;
         NoteMsgData.Data2 := Data2;
-        Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteTrigger, @NoteMsgData);
+        Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_LegatoNoteTrigger, @NoteMsgData);
       end else
       begin
         MidiNote_Filter.SetTransitionTime(CalcPitchTransitionTime(VoiceGlide), Globals.FastControlRate);
@@ -188,7 +188,7 @@ begin
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
       NoteMsgData.NoteStackCount := NoteStack.Count;
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LatchNoteTrigger, @NoteMsgData);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_LatchNoteTrigger, @NoteMsgData);
     end;
   else
     raise Exception.Create('Type not handled.');
@@ -206,7 +206,7 @@ begin
     begin
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_PolyNoteRelease, @NoteMsgData);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_PolyNoteRelease, @NoteMsgData);
     end;
 
     TVoiceMode.Mono:
@@ -222,12 +222,12 @@ begin
 
           NoteMsgData.Data1 := NoteStack.LastNote^.Data1;
           NoteMsgData.Data2 := NoteStack.LastNote^.Data2;
-          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
+          Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_MonoNoteTrigger, @NoteMsgData);
         end else
         begin
           NoteMsgData.Data1 := Data1;
           NoteMsgData.Data2 := Data2;
-          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_MonoNoteRelease, @NoteMsgData);
+          Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_MonoNoteRelease, @NoteMsgData);
         end;
       end;
     end;
@@ -246,7 +246,7 @@ begin
         begin
           NoteMsgData.Data1 := Data1;
           NoteMsgData.Data2 := Data2;
-          Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LegatoNoteRelease, @NoteMsgData);
+          Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_LegatoNoteRelease, @NoteMsgData);
         end;
       end;
     end;
@@ -257,7 +257,7 @@ begin
       NoteMsgData.Data1 := Data1;
       NoteMsgData.Data2 := Data2;
       NoteMsgData.NoteStackCount := NoteStack.Count;
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_LatchNoteRelease, @NoteMsgData);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_LatchNoteRelease, @NoteMsgData);
     end;
   else
     raise Exception.Create('Type not handled.');

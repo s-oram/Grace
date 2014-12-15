@@ -581,7 +581,7 @@ begin
     if (dbA < -35) and (dbB < -35) then
     begin
       pKG := Pointer(IKeyGroup(self));
-      Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_KeyGroupInactive, pKG);
+      Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_KeyGroupInactive, pKG);
     end;
   end;
 

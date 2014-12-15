@@ -56,8 +56,9 @@ type
     procedure SetLowerTabState(const Value: TLowerTabOptions);
   private
     FMotherShip : IMothership;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
+    procedure AddMotherShipReference(aMotherShip : IMothership);
+    procedure RemoveMotherShipReference(aMotherShip : IMothership);
   protected
     Manually:boolean;
     GuiStandard : TGuiStandard;
@@ -82,6 +83,8 @@ type
 
     property LowerTabState : TLowerTabOptions read fLowerTabState write SetLowerTabState;
     property CurrentGuiState : TGuiState read fCurrentGuiState write fCurrentGuiState; // TODO:MED: I'm not sure if the GUI needs a copy of the Current GUI state object anymore.
+
+
   public
     procedure PostCreate(const aVstWindow : HWnd);
     procedure BeforeClose;
@@ -248,8 +251,6 @@ begin
   FeedBackData.Free;
 end;
 
-
-
 procedure TPluginGui.PostCreate(const aVstWindow : HWnd);
 var
   VQ : IVamQuery;
@@ -401,6 +402,21 @@ procedure TPluginGui.BeforeClose;
 begin
 end;
 
+procedure TPluginGui.AddMotherShipReference(aMotherShip: IMothership);
+begin
+  if assigned(FMotherShip) then raise Exception.Create('MotherShip reference already set. Cannot assign again.');
+  FMotherShip := aMotherShip;
+end;
+
+procedure TPluginGui.RemoveMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := nil;
+end;
+
+
+
+
+
 
 procedure TPluginGui.UpdateGui(Sender: TObject);
 var
@@ -510,15 +526,6 @@ begin
   else
     raise Exception.Create('Unexpect tab value.');
   end;
-
-
-
-
-end;
-
-procedure TPluginGui.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMothership := aMotherShip;
 end;
 
 procedure TPluginGui.LowerTabsChanged(Sender: TObject);

@@ -441,7 +441,7 @@ begin
   begin
     Voices[c1] := TLucidityVoice.Create('VoiceClass', @GlobalModPoints, Globals);
     Voices[c1].VoiceID := c1;
-    Globals.MotherShip.RegisterZeroObject(Voices[c1], TZeroObjectRank.Audio);
+    Globals.MotherShip.RegisterZeroObject(Voices[c1], TZeroObjectRank.NonVisual);
 
     // TODO: OnFinish handling will need to be
     // replaced with a mother ship message.
@@ -450,18 +450,16 @@ begin
   //=============================================
 
   fSignalRecorder  := TSignalRecorder.Create(Globals);
-  Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.NonVisual);
 
   fFreqAnalyzer := TFrequencyAnalyzer.Create;
-  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.NonVisual);
 
 
   // TODO: Should do some data directory validation here.
   // - check if the data directory exists,
   // - if it does, ensure the User and Factory directories exist.
   fSampleDirectories := TSampleDirectories.Create;
-  Globals.MotherShip.RegisterZeroObject(fSampleDirectories, TZeroObjectRank.Audio); // or this could be TZeroObjectRank.Main? dunno.
-
 
   if (PluginDataDir^.Exists) then
   begin
@@ -502,21 +500,21 @@ begin
 
 
   MidiInputProcessor := TMidiInputProcessor.Create(@GlobalModPoints, Globals);
-  Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(MidiInputProcessor, TZeroObjectRank.NonVisual);
 
   VoiceController := TVoiceController.Create(Globals, @Voices);
-  Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(VoiceController, TZeroObjectRank.NonVisual);
 
   fSampleMap := TSampleMap.Create;
   Globals.SampleMapReference := fSampleMap;
-  Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(fSampleMap, TZeroObjectRank.NonVisual);
 
   fKeyGroups := TKeyGroupManager.Create(@Voices, @GlobalModPoints, Globals);
   Globals.KeyGroupsReference := fKeyGroups;
-  Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(fKeyGroups, TZeroObjectRank.NonVisual);
 
   KeyGroupPlayer  := TKeyGroupPlayer.Create(Globals, fKeyGroups);
-  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(KeyGroupPlayer, TZeroObjectRank.NonVisual);
 
   EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
 

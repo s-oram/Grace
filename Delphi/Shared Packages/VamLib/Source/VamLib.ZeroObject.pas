@@ -35,18 +35,6 @@ type
     the IZeroObject kind of feels wrong. I wonder if the
     the mother ship should have the RegisterZeroObject method....
 
-    I think I want to modify the mother ship so that
-    objects are registered as
-    Audio Objects or Main Objects.
-    - Audio Objects generally process audio on the audio thread
-      and have high priority. Audio Objects should be minimised if
-      possible and only sent messages when necessary.
-    - Main Objects operate on the main or GUI thread. They run at
-      less then real-time priority and can be used more freely.
-
-    Create a ZeroObject implementation that can be added to frames etc
-    that can't descend from the TZeroObject class.
-
     - Zero objects should have a 'Name' parameter so objects can
       be received. Maybe the name parameter should be dynamic so
       objects can match multiple names at different times...
@@ -54,28 +42,22 @@ type
   }
 
 
-  // There are three Zero Object 'Ranks'. Objects are assigned a 'rank'
+  // There are two Zero Object 'Ranks'. Objects are assigned a 'rank'
   // when they are added to the mothership. (Objects can be added multiple
   // times with multiple ranks.) Objects will only receive messages of the
   // same rank that they were assigned with.
-  // - Audio rank messages are generally sent/received in the audio thread.
+  // - NonVisual rank messages are generally sent/received in the audio thread.
   //   Timing is critical for these messages so their usage should be minimised
   //   and messages should be processed quickly.
-  // - Main rank messages are for general purpose usage. While they can be
-  //   sent in the audio thread, perhaps consider not doing so.
   // - VCL rank messages are for GUI objects. VCL rank objects should
   //   be removed from the mothership when the GUI is closed.
   //   VCL rank messages are always sent in the 'Main' GUI thread because
   //   the Delph VCL isn't threadsafe.
   //
-  // - Audio messages are only sent to Audio objects.
-  // - Main messages are sent to Main objects. Main messages will
-  //   also be sent to VCL objects if the GUI is open.
+  // - NonVisual messages are only sent to NonVisual objects.
   // - VCL messages will only be sent to VCL objects, and only if the GUI
   //   is open.
-  //
-  //  I'm not sure if "Main" is actually required.
-  TZeroObjectRank = (Audio, Main, VCL);
+  TZeroObjectRank = (NonVisual, VCL);
 
   //Forward declarations
   IZeroObject = interface;
@@ -99,7 +81,8 @@ type
 
   IZeroObject = interface
     ['{F7C2493B-01CF-4980-A1E0-F6FB862DC576}']
-    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure AddMotherShipReference(aMotherShip : IMothership);
+    procedure RemoveMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface);
     function ClassType: TClass;
   end;
@@ -114,19 +97,15 @@ type
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj:IZeroObject);
 
-    //TODO:HIGH remove msgMain()
-    procedure MsgMain(MsgID : cardinal); overload; //deprecated;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; //deprecated;
-
-    procedure MsgAudio(MsgID : cardinal); overload;
-    procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgNonVisual(MsgID : cardinal); overload;
+    procedure MsgNonVisual(MsgID : cardinal; Data : Pointer); overload;
 
     procedure MsgVcl(MsgID : cardinal); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
     procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
-    procedure LogAudioObjects;
-    procedure LogMainObjects;
+    procedure LogObjects;
   end;
 
 
@@ -134,7 +113,8 @@ type
   TZeroObject = class(TObject, IInterface, IZeroObject)
   private
     FMotherShip : IMotherShip;
-    procedure SetMotherShipReference(aMotherShip : IMothership);
+    procedure AddMotherShipReference(aMotherShip : IMothership);
+    procedure RemoveMotherShipReference(aMotherShip : IMothership);
   protected
     function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
     function _AddRef: Integer; virtual; stdcall;
@@ -149,8 +129,9 @@ type
   TRefCountedZeroObject = class(TInterfacedObject, IZeroObject)
   private
     FMotherShip : IMotherShip;
+    procedure AddMotherShipReference(aMotherShip : IMothership);
+    procedure RemoveMotherShipReference(aMotherShip : IMothership);
   protected
-    procedure SetMotherShipReference(aMotherShip : IMothership);
     procedure ProcessZeroObjectMessage(MsgID:cardinal; DataA:Pointer; DataB:IInterface); virtual;
   public
     destructor Destroy; override;
@@ -177,12 +158,10 @@ type
     // send messages and that can block the audio thread.
     //
 
-    AudioObjects : TList;
-    MainObjects  : TList;
+    NonVisualObjects : TList;
     VclObjects   : TList;
 
-    AudioListLock : TMultiReadSingleWrite;
-    MainListLock  : TMultiReadSingleWrite;
+    NonVisualListLock : TMultiReadSingleWrite;
     VclListLock   : TMultiReadSingleWrite;
 
     Injected_MsgIdToStr : TMsgIdToStrFunction;
@@ -206,19 +185,15 @@ type
     procedure RegisterZeroObject(const obj: IZeroObject; const Rank : TZeroObjectRank);
     procedure DeregisterZeroObject(const obj: IZeroObject);
 
-    //TODO:HIGH remove MsgMain().
-    procedure MsgMain(MsgID : cardinal); overload; //deprecated;
-    procedure MsgMain(MsgID : cardinal; Data : Pointer); overload; //deprecated;
-
-    procedure MsgAudio(MsgID : cardinal); overload;
-    procedure MsgAudio(MsgID : cardinal; Data : Pointer); overload;
+    procedure MsgNonVisual(MsgID : cardinal); overload;
+    procedure MsgNonVisual(MsgID : cardinal; Data : Pointer); overload;
 
     procedure MsgVcl(MsgID : cardinal); overload;
+    procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
     procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
-    procedure LogAudioObjects;
-    procedure LogMainObjects;
+    procedure LogObjects;
   end;
 
 
@@ -246,10 +221,15 @@ begin
   inherited;
 end;
 
-
-procedure TZeroObject.SetMotherShipReference(aMotherShip: IMothership);
+procedure TZeroObject.AddMotherShipReference(aMotherShip: IMothership);
 begin
+  if assigned(FMotherShip) then raise Exception.Create('MotherShip reference already set. Cannot assign again.');
   FMotherShip := aMotherShip;
+end;
+
+procedure TZeroObject.RemoveMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := nil;
 end;
 
 procedure TZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
@@ -287,14 +267,20 @@ begin
   inherited;
 end;
 
+procedure TRefCountedZeroObject.AddMotherShipReference(aMotherShip: IMothership);
+begin
+  if assigned(FMotherShip) then raise Exception.Create('MotherShip reference already set. Cannot assign again.');
+  FMotherShip := aMotherShip;
+end;
+
+procedure TRefCountedZeroObject.RemoveMotherShipReference(aMotherShip: IMothership);
+begin
+  FMotherShip := nil;
+end;
+
 procedure TRefCountedZeroObject.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB: IInterface);
 begin
 
-end;
-
-procedure TRefCountedZeroObject.SetMotherShipReference(aMotherShip: IMothership);
-begin
-  FMotherShip := aMotherShip;
 end;
 
 { TMotherShip }
@@ -309,12 +295,10 @@ begin
 
   DisableMessageSending := false;
 
-  AudioListLock := TMultiReadSingleWrite.Create(false);
-  MainListLock  := TMultiReadSingleWrite.Create(false);
+  NonVisualListLock := TMultiReadSingleWrite.Create(false);
   VclListLock   := TMultiReadSingleWrite.Create(false);
 
-  AudioObjects := TList.Create;
-  MainObjects  := TList.Create;
+  NonVisualObjects := TList.Create;
   VclObjects   := TList.Create;
 end;
 
@@ -322,20 +306,15 @@ destructor TMotherShip.Destroy;
 begin
   Injected_MsgIdToStr := nil;
 
-  if AudioObjects.Count > 0
-    then Log.Lib.LogMessage('Audio Objects still registered (' + IntToStr(AudioObjects.Count) + ').');
-
-  if MainObjects.Count > 0
-    then Log.Lib.LogMessage('Main Objects still registered (' + IntToStr(MainObjects.Count) + ').');
+  if NonVisualObjects.Count > 0
+    then Log.Lib.LogMessage('Non-Visual Objects still registered (' + IntToStr(NonVisualObjects.Count) + ').');
 
   ClearMotherShipReferences;
 
-  AudioObjects.Free;
-  MainObjects.Free;
+  NonVisualObjects.Free;
   VclObjects.Free;
 
-  AudioListLock.Free;
-  MainListLock.Free;
+  NonVisualListLock.Free;
   VclListLock.Free;
 
   IsGuiOpenLock.Free;
@@ -348,16 +327,10 @@ var
   c1: Integer;
   zo : IZeroObject;
 begin
-  for c1 := 0 to MainObjects.Count-1 do
+  for c1 := 0 to NonVisualObjects.Count-1 do
   begin
-    zo := IZeroObject(MainObjects[c1]);
-    zo.SetMotherShipReference(nil);
-  end;
-
-  for c1 := 0 to AudioObjects.Count-1 do
-  begin
-    zo := IZeroObject(AudioObjects[c1]);
-    zo.SetMotherShipReference(nil);
+    zo := IZeroObject(NonVisualObjects[c1]);
+    zo.RemoveMotherShipReference(nil);
   end;
 end;
 
@@ -373,8 +346,7 @@ begin
   {$IFDEF ExtraLogging}
   LogMsg := ' ClassName = ' + obj.ClassType.ClassName;
   case Rank of
-    TZeroObjectRank.Audio: LogMsg := LogMsg + ' (Audio Rank)';
-    TZeroObjectRank.Main:  LogMsg := LogMsg + ' (Main Rank)';
+    TZeroObjectRank.NonVisual: LogMsg := LogMsg + ' (Non Visual Rank)';
     TZeroObjectRank.VCL:   LogMsg := LogMsg + ' (VCL Rank)';
   else
     LogMsg := LogMsg + ' (Unknown Rank)';
@@ -386,12 +358,11 @@ begin
 
 
   ptr := Pointer(obj); //Weak reference to zero object
-  obj.SetMotherShipReference(self);
+  obj.AddMotherShipReference(self);
 
   case Rank of
-    TZeroObjectRank.Audio: ListLock := AudioListLock;
-    TZeroObjectRank.Main:  ListLock := MainListLock;
-    TZeroObjectRank.VCL:   ListLock := VclListLock;
+    TZeroObjectRank.NonVisual: ListLock := NonVisualListLock;
+    TZeroObjectRank.VCL:       ListLock := VclListLock;
   else
     raise Exception.Create('unexpected value and not handled.');
   end;
@@ -400,16 +371,10 @@ begin
   begin
     try
       case Rank of
-        TZeroObjectRank.Audio:
+        TZeroObjectRank.NonVisual:
         begin
-          if AudioObjects.IndexOf(ptr) = -1
-            then AudioObjects.Add(ptr);
-        end;
-
-        TZeroObjectRank.Main:
-        begin
-          if MainObjects.IndexOf(ptr) = -1
-            then MainObjects.Add(ptr);
+          if NonVisualObjects.IndexOf(ptr) = -1
+            then NonVisualObjects.Add(ptr);
         end;
 
         TZeroObjectRank.VCL:
@@ -433,8 +398,7 @@ procedure TMotherShip.DeregisterZeroObject(const obj: IZeroObject);
 var
   ptr : Pointer;
   IsVclObject   : boolean;
-  IsAudioObject : boolean;
-  IsMainObject  : boolean;
+  IsNonVisualObject : boolean;
   {$IFDEF ExtraLogging}LogMsg : string;{$ENDIF}
 begin
   //============================================================================
@@ -445,40 +409,22 @@ begin
   //============================================================================
 
   ptr := Pointer(obj); //Weak reference to zero object
-  obj.SetMotherShipReference(nil);
+  obj.RemoveMotherShipReference(self);
 
   //=== first find which list the object's belong to.
-  AudioListLock.BeginRead;
+  NonVisualListLock.BeginRead;
   VclListLock.BeginRead;
-  MainListLock.BeginRead;
   try
-    if MainObjects.IndexOf(ptr) = -1
-      then IsMainObject := false
-      else IsMainObject := true;
-
-    if AudioObjects.IndexOf(ptr) = -1
-      then IsAudioObject := false
-      else IsAudioObject := true;
+    if NonVisualObjects.IndexOf(ptr) = -1
+      then IsNonVisualObject := false
+      else IsNonVisualObject := true;
 
     if VclObjects.IndexOf(ptr) = -1
       then IsVclObject := false
       else IsVclObject := true;
   finally
-    AudioListLock.EndRead;
+    NonVisualListLock.EndRead;
     VclListLock.EndRead;
-    MainListLock.EndRead;
-  end;
-
-
-  if (IsMainObject) then
-  begin
-    if MainListLock.TryBeginWrite then
-    try
-      if MainObjects.IndexOf(ptr) <> -1 then MainObjects.Remove(ptr);
-    finally
-      MainListLock.EndWrite;
-    end
-      else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
   if (IsVclObject) then
@@ -492,13 +438,13 @@ begin
       else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
 
-  if (IsAudioObject) then
+  if (IsNonVisualObject) then
   begin
-    if AudioListLock.TryBeginWrite then
+    if NonVisualListLock.TryBeginWrite then
     try
-      if AudioObjects.IndexOf(ptr) <> -1 then AudioObjects.Remove(ptr);
+      if NonVisualObjects.IndexOf(ptr) <> -1 then NonVisualObjects.Remove(ptr);
     finally
-      AudioListLock.EndWrite;
+      NonVisualListLock.EndWrite;
     end
       else Log.Lib.LogError('LIST LOCKED: Couldn''t remove object.');
   end;
@@ -517,47 +463,14 @@ begin
   end;
 end;
 
-procedure TMotherShip.MsgAudio(MsgID: cardinal; Data: Pointer);
+procedure TMotherShip.MsgNonVisual(MsgID: cardinal; Data: Pointer);
 begin
-  SendMessageToList(AudioObjects, AudioListLock, MsgID, Data, nil);
+  SendMessageToList(NonVisualObjects, NonVisualListLock, MsgID, Data, nil);
 end;
 
-procedure TMotherShip.MsgAudio(MsgID: cardinal);
+procedure TMotherShip.MsgNonVisual(MsgID: cardinal);
 begin
-  MsgAudio(MsgID, nil);
-end;
-
-procedure TMotherShip.MsgMain(MsgID: cardinal);
-begin
-  MsgMain(MsgID, nil);
-  MsgVclTS(MsgID, nil);
-end;
-
-procedure TMotherShip.MsgMain(MsgID: cardinal; Data: Pointer);
-var
-  LogMsg : string;
-begin
-  SendMessageToList(MainObjects, MainListLock, MsgID, Data, nil);
-
-  IsGuiOpenLock.BeginRead;
-  try
-    if (IsGuiOpen) then
-    begin
-      if (MainThreadID = GetCurrentThreadId) then
-      begin
-        SendMessageToList(VclObjects, VclListLock, MsgID, Data, nil);
-      end else
-      begin
-        // TODO:HIGH - i think this is another reason to remove the MsgMain. Should stuff be sent to the GUI thread.
-        if assigned(Injected_MsgIdToStr)
-          then LogMsg := 'MsgMain Wrong Thread.' + Injected_MsgIdToStr(MsgID) + ' (' + IntToStr(MsgID) + ')'
-          else LogMsg := 'MsgMain Wrong Thread. ID = ' + IntToStr(MsgID);
-        Log.Lib.LogError(LogMsg);
-      end;
-    end;
-  finally
-    IsGuiOpenLock.EndRead;
-  end;
+  MsgNonVisual(MsgID, nil);
 end;
 
 procedure TMotherShip.MsgVcl(MsgID: cardinal);
@@ -612,6 +525,11 @@ begin
   end;
 end;
 
+procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer);
+begin
+  MsgVcl(MsgID, Data, nil);
+end;
+
 procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
 begin
   IsGuiOpenLock.BeginRead;
@@ -651,9 +569,8 @@ begin
 
   //=================================================================================
   {$IFDEF ExtraLogging}
-    if ObjectList = AudioObjects then LogMsg := 'Audio SendMessage ID = '
-    else if ObjectList = VclObjects   then LogMsg := 'Vcl SendMessage ID = '
-    else if ObjectList = MainObjects  then LogMsg := 'Main SendMessage ID = '
+    if ObjectList = NonVisualObjects    then LogMsg := 'Non-Visual SendMessage ID = '
+    else if ObjectList = VclObjects then LogMsg := 'Vcl SendMessage ID = '
     else LogMsg := 'ERROR - No matching list lock. ';
     if assigned(Injected_MsgIdToStr) then
     begin
@@ -696,7 +613,7 @@ begin
 end;
 
 
-procedure TMotherShip.LogAudioObjects;
+procedure TMotherShip.LogObjects;
 var
   c1: Integer;
   zo : IZeroObject;
@@ -708,7 +625,7 @@ begin
   LogMsg := 'Current Audio Objects';
   Log.Lib.LogMessage(LogMsg);
 
-  ObjectList := AudioObjects;
+  ObjectList := NonVisualObjects;
 
   for c1 := 0 to ObjectList.Count - 1 do
   begin
@@ -718,32 +635,9 @@ begin
     Log.Lib.LogMessage(LogMsg);
   end;
   Log.Lib.LogMessage('==========================');
+
+  // TODO:MED should log all objects here.
 end;
-
-procedure TMotherShip.LogMainObjects;
-var
-  c1: Integer;
-  zo : IZeroObject;
-  LogMsg : string;
-  ObjectList : TList;
-  aClass : TClass;
-begin
-  Log.Lib.LogMessage('==========================');
-  LogMsg := 'Current Main Objects';
-  Log.Lib.LogMessage(LogMsg);
-
-  ObjectList := MainObjects;
-
-  for c1 := 0 to ObjectList.Count - 1 do
-  begin
-    zo := IZeroObject(ObjectList[c1]);
-    aClass := zo.ClassType;
-    LogMsg := 'ClassName = ' + aClass.ClassName;
-    Log.Lib.LogMessage(LogMsg);
-  end;
-  Log.Lib.LogMessage('==========================');
-end;
-
 
 
 

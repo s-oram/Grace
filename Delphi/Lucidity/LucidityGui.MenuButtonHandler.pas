@@ -116,7 +116,7 @@ begin
   if Supports(Sender, IMenuControl, mc)  then
   begin
     ParName  := mc.GetParameterName;
-    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlEnter, @ParName);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlEnter, @ParName);
   end;
 end;
 
@@ -128,7 +128,7 @@ begin
   if Supports(Sender, IMenuControl, mc)  then
   begin
     ParName  := mc.GetParameterName;
-    Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnParControlLeave, @ParName);
+    Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnParControlLeave, @ParName);
   end;
 end;
 
@@ -215,7 +215,7 @@ begin
       Data.MenuName := ParName;
       Data.Menu     := @aMenu;
 
-      Plugin.Globals.MotherShip.MsgMain(TLucidMsgID.OnShowMenu, @Data);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.OnShowMenu, @Data);
     end;
 
     if (Button = mbLeft) then

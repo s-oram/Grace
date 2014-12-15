@@ -575,8 +575,8 @@ begin
     TPluginParameter.Lfo2Shape:           Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
     TPluginParameter.Lfo1FreqMode:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
     TPluginParameter.Lfo2FreqMode:        Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.LfoChanged, nil);
-    TPluginParameter.SamplerTriggerMode:  Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
-    TPluginParameter.VoiceMode:           Plugin.Globals.MotherShip.MsgAudio(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
+    TPluginParameter.SamplerTriggerMode:  Plugin.Globals.MotherShip.MsgNonVisual(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
+    TPluginParameter.VoiceMode:           Plugin.Globals.MotherShip.MsgNonVisual(TLucidMsgID.AudioCommand_QuickReleaseAllNotes);
   end;
 end;
 

@@ -259,7 +259,7 @@ begin
 
     if supports(kg, IZeroObject, zo) then
     begin
-      Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.Audio);
+      Globals.MotherShip.RegisterZeroObject(zo, TZeroObjectRank.NonVisual);
     end;
 
     result := kg;
@@ -321,8 +321,7 @@ begin
 
         // Send out the dispose method to give other modules a chance to release
         // there references.
-        Globals.MotherShip.MsgAudio(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
-        Globals.MotherShip.MsgMain(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
+        Globals.MotherShip.MsgNonVisual(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
         Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup, nil);
 
         kg := nil;

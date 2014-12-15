@@ -313,7 +313,7 @@ begin
   OutputMixer.VoiceMixMain := 1;
 
   LevelMonitor := TLevelMonitor.Create;
-  Globals.MotherShip.RegisterZeroObject(LevelMonitor, TZeroObjectRank.Audio);
+  Globals.MotherShip.RegisterZeroObject(LevelMonitor, TZeroObjectRank.NonVisual);
 
   // Finally,
   SampleRateChanged(self);
@@ -750,7 +750,7 @@ var
   vp : PLucidityVoice;
 begin
   vp := @self;
-  Globals.MotherShip.MsgAudio(TLucidMsgID.Audio_VoiceFinished, vp);
+  Globals.MotherShip.MsgNonVisual(TLucidMsgID.Audio_VoiceFinished, vp);
 
   try
     // CleanUp() clears references to other resouces and zeros some internal values.
