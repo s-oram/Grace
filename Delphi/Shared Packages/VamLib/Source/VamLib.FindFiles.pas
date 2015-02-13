@@ -183,6 +183,8 @@ function SearchForPrevFile(FileName:string; LimitType:string = '*.*'):string;
 // FileName must be full path.
 // - Will return the input fileName if no previous file name is found.
 //   That is odd., but maybe too late to change this behaviour.
+// - will return "." filename. I assume that is for current and ".." for parent
+//   directories.
 var
   Path,Fn,LastFile:string;
   c1:integer;

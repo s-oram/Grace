@@ -1,0 +1,74 @@
+package Spring.Base;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE SPRING_NO_WARNING}
+{$ENDIF IMPLICITBUILDING}
+{$LIBSUFFIX '.DelphiXE7'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+{$I Spring.inc}
+
+requires
+{$IFDEF FMX}
+  fmx,
+{$ENDIF}
+  rtl;
+
+contains
+  Spring in '..\..\Source\Base\Spring.pas',
+  Spring.Collections in '..\..\Source\Base\Collections\Spring.Collections.pas',
+  Spring.Collections.Adapters in '..\..\Source\Base\Collections\Spring.Collections.Adapters.pas',
+  Spring.Collections.Base in '..\..\Source\Base\Collections\Spring.Collections.Base.pas',
+  Spring.Collections.Dictionaries in '..\..\Source\Base\Collections\Spring.Collections.Dictionaries.pas',
+  Spring.Collections.Events in '..\..\Source\Base\Collections\Spring.Collections.Events.pas',
+  Spring.Collections.Extensions in '..\..\Source\Base\Collections\Spring.Collections.Extensions.pas',
+  Spring.Collections.Lists in '..\..\Source\Base\Collections\Spring.Collections.Lists.pas',
+  Spring.Collections.LinkedLists in '..\..\Source\Base\Collections\Spring.Collections.LinkedLists.pas',
+  Spring.Collections.MultiMaps in '..\..\Source\Base\Collections\Spring.Collections.MultiMaps.pas',
+  Spring.Collections.Queues in '..\..\Source\Base\Collections\Spring.Collections.Queues.pas',
+  Spring.Collections.Sets in '..\..\Source\Base\Collections\Spring.Collections.Sets.pas',
+  Spring.Collections.Stacks in '..\..\Source\Base\Collections\Spring.Collections.Stacks.pas',
+  Spring.DesignPatterns in '..\..\Source\Base\Spring.DesignPatterns.pas',
+  Spring.Events in '..\..\Source\Base\Spring.Events.pas',
+  Spring.Events.Base in '..\..\Source\Base\Spring.Events.Base.pas',
+  Spring.Helpers in '..\..\Source\Base\Spring.Helpers.pas',
+  Spring.Logging in '..\..\Source\Base\Logging\Spring.Logging.pas',
+  Spring.Logging.Appenders in '..\..\Source\Base\Logging\Spring.Logging.Appenders.pas',
+  Spring.Logging.Appenders.Base in '..\..\Source\Base\Logging\Spring.Logging.Appenders.Base.pas',
+  Spring.Logging.Controller in '..\..\Source\Base\Logging\Spring.Logging.Controller.pas',
+  Spring.Logging.Extensions in '..\..\Source\Base\Logging\Spring.Logging.Extensions.pas',
+  Spring.Logging.Loggers in '..\..\Source\Base\Logging\Spring.Logging.Loggers.pas',
+  Spring.Logging.NullLogger in '..\..\Source\Base\Logging\Spring.Logging.NullLogger.pas',
+  Spring.Logging.ResourceStrings in '..\..\Source\Base\Logging\Spring.Logging.ResourceStrings.pas',
+  Spring.Logging.Serializers in '..\..\Source\Base\Logging\Spring.Logging.Serializers.pas',
+  Spring.Reflection in '..\..\Source\Base\Reflection\Spring.Reflection.pas',
+  Spring.Reflection.ValueConverters in '..\..\Source\Base\Reflection\Spring.Reflection.ValueConverters.pas',
+  Spring.ResourceStrings in '..\..\Source\Base\Spring.ResourceStrings.pas',
+  Spring.SystemUtils in '..\..\Source\Base\Spring.SystemUtils.pas',
+  Spring.Times in '..\..\Source\Base\Spring.Times.pas';
+
+end.

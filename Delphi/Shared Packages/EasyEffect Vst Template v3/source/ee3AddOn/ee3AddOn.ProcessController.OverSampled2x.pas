@@ -65,6 +65,10 @@ type
 
     Config : TProcessControllerConfig;
     procedure ConfigChanged;
+
+    property NumInputs  : integer read FNumInputs;
+    property NumOutputs : integer read FNumOutputs;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -156,14 +160,14 @@ begin
   rc.SourceRate           := 1;
   rc.DestRate             := Config.OverSampleFactor;
   rc.MaxInputBufferFrames := Config.MaxBufferSize;
-  rc.TransitionBand       := 6;
+  rc.TransitionBand       := 16; //with 16 Rolloff starts at 18khz
   rc.Res                  := 0;
   AudioInputResamplers.Init(@rc);
 
   rc.SourceRate           := Config.OverSampleFactor;
   rc.DestRate             := 1;
   rc.MaxInputBufferFrames := OverSampledBufferSize;
-  rc.TransitionBand       := 6;
+  rc.TransitionBand       := 16; //with 16 Rolloff starts at 18khz
   rc.Res                  := 0;
   AudioOutputResamplers.Init(@rc);
 
@@ -271,8 +275,14 @@ begin
   //==================================================================================
 
   // Upsample the input.
-  AudioInputResamplers.ProcessFloat32(Inputs, SampleFrames, UpSampledInputs, UpSampleFrames);
-  assert(UpSampleFrames = SampleFrames * Config.OverSampleFactor);
+  if (NumInputs > 0) then
+  begin
+    AudioInputResamplers.ProcessFloat32(Inputs, SampleFrames, UpSampledInputs, UpSampleFrames);
+    assert(UpSampleFrames = SampleFrames * Config.OverSampleFactor);
+  end else
+  begin
+    UpSampleFrames := SampleFrames * Config.OverSampleFactor;
+  end;
 
   // build the temp output buffers
   for c1 := 0 to fNumOutputs-1 do

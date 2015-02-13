@@ -10,14 +10,18 @@ procedure SendDebugMesssage(const Msg: String);
 
 function ShellExecuteErrorCodeToString(const ErrorCode : integer):string;
 
-function ShowDirectoryInWindowsExplorer(const Dir : string; out ErrMsg : string):boolean;
-
-
 // Execute or open a file according to its extension.
 function ExecuteFile(const FileName : string; out ErrMsg : string):boolean; overload;
 function ExecuteFile(const FileName : string):boolean; overload;
 
 function ShowFileInWindowsExplorer(const FileName: string): boolean;
+function ShowDirectoryInWindowsExplorer(const Dir : string; out ErrMsg : string):boolean;
+
+
+function InstallFont(FontFile : string):boolean;
+function UninstallFont(FontFile : string):boolean;
+
+
 
 
 type
@@ -248,7 +252,33 @@ begin
   end;
 end;
 
+function InstallFont(FontFile : string):boolean;
+var
+  fn : string absolute FontFile;
+  FontCount : integer;
+begin
+  if FileExists(fn) then
+  begin
+    // MSDN AddFontResource()
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183326%28v=vs.85%29.aspx
+    FontCount := AddFontResource(pWideChar(fn));
+    if FontCount > 0
+      then result := true
+      else result := false;
+  end else
+  begin
+    result := false;
+  end;
+end;
 
+function UninstallFont(FontFile : string):boolean;
+var
+  fn : string absolute FontFile;
+begin
+  if FileExists(fn)
+    then result := RemoveFontResource(pWideChar(fn))
+    else result := false;
+end;
 
 
 

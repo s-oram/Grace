@@ -11,6 +11,7 @@ implementation
 uses
   IOUtils,
   SysUtils,
+  VamLib.Logging,
   VamLib.Utils,
   VamLib.Win.Links,
   ee3.Utils;
@@ -20,7 +21,6 @@ var
   s : string;
 begin
   s := ee3.Utils.GetDLLFilename;
-  if not FileExists(s) then raise Exception.Create('Plugin DLL doesn''t exist.'); //This would be a highly unexpected error!!
   result := s;
 end;
 

@@ -2,6 +2,11 @@ unit ee3.Utils;
 
 interface
 
+uses
+  Math;
+
+{$SCOPEDENUMS ON}
+
 procedure GetBuildVersion(var V1, V2, V3, V4: word);
 function GetBuildVersionAsString: string;
 
@@ -11,6 +16,15 @@ function GetDLLDirectory:string;
 function GetHostApplicationFullPath: string;
 function GetHostApplicationFilename: string;
 function GetHostApplicationDirectory: string;
+
+
+// ScaleVstPar...() methods to scale 0..1 ranged VST parameter values to
+// other ranges useful for controlling plugins.
+function ScaleVstParToFloat(const x, Min, Max : single):single; inline; overload;
+function ScaleVstParToFloat(const x : single; const Values : array of single):single; overload;
+
+function ScaleFloatToVstPar(const x, Min, Max : single):single; inline;
+
 
 implementation
 
@@ -137,6 +151,46 @@ begin
   st := StrPas(s);
   st := ExtractFilePath(st);
   result := st;
+end;
+
+function ScaleVstParToFloat(const x : single; const Values : array of single):single; overload;
+var
+  Index : integer;
+  Frac : single;
+  VC : integer;
+  Delta : single;
+begin
+  assert(X >= 0);
+  assert(X <= 1);
+
+  VC := Length(Values);
+
+  Index := floor(x * (VC - 1));
+  if Index = (VC - 1) then
+  begin
+    result := Values[Index];
+  end else
+  begin
+    Frac := (x * (VC-1)) - Index;
+    Delta := Values[Index+1] - Values[Index];
+    result := Values[Index] + Delta * Frac;
+  end;
+end;
+
+function ScaleVstParToFloat(const x, Min, Max : single):single;
+begin
+  assert(X >= 0);
+  assert(X <= 1);
+
+  result := x * (Max - Min) + Min;
+end;
+
+function ScaleFloatToVstPar(const x, Min, Max : single):single;
+begin
+  result := (x - Min) / (Max - Min);
+
+  assert(result >= 0);
+  assert(result <= 1);
 end;
 
 end.

@@ -1,0 +1,58 @@
+package Spring.Core;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Spring4D Core package'}
+{$LIBSUFFIX '.DelphiXE2'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  Spring.Base;
+
+contains
+  Spring.Services in '..\..\Source\Core\Services\Spring.Services.pas',
+  Spring.Container in '..\..\Source\Core\Container\Spring.Container.pas',
+  Spring.Container.ActivatorExtension in '..\..\Source\Core\Container\Spring.Container.ActivatorExtension.pas',
+  Spring.Container.Builder in '..\..\Source\Core\Container\Spring.Container.Builder.pas',
+  Spring.Container.Common in '..\..\Source\Core\Container\Spring.Container.Common.pas',
+  Spring.Container.ComponentActivator in '..\..\Source\Core\Container\Spring.Container.ComponentActivator.pas',
+  Spring.Container.Core in '..\..\Source\Core\Container\Spring.Container.Core.pas',
+  Spring.Container.CreationContext in '..\..\Source\Core\Container\Spring.Container.CreationContext.pas',
+  Spring.Container.DecoratorExtension in '..\..\Source\Core\Container\Spring.Container.DecoratorExtension.pas',
+  Spring.Container.Extensions in '..\..\Source\Core\Container\Spring.Container.Extensions.pas',
+  Spring.Container.Injection in '..\..\Source\Core\Container\Spring.Container.Injection.pas',
+  Spring.Container.LifetimeManager in '..\..\Source\Core\Container\Spring.Container.LifetimeManager.pas',
+  Spring.Container.Pool in '..\..\Source\Core\Container\Spring.Container.Pool.pas',
+  Spring.Container.Registration in '..\..\Source\Core\Container\Spring.Container.Registration.pas',
+  Spring.Container.Resolvers in '..\..\Source\Core\Container\Spring.Container.Resolvers.pas',
+  Spring.Container.ResourceStrings in '..\..\Source\Core\Container\Spring.Container.ResourceStrings.pas',
+  Spring.Logging.Configuration in '..\..\Source\Core\Logging\Spring.Logging.Configuration.pas',
+  Spring.Logging.Configuration.Builder in '..\..\Source\Core\Logging\Spring.Logging.Configuration.Builder.pas',
+  Spring.Logging.Container in '..\..\Source\Core\Logging\Spring.Logging.Container.pas';
+
+end.

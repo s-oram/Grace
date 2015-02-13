@@ -3,6 +3,7 @@ unit VamLib.Utils;
 interface
 
 uses
+  SysUtils,
   Classes;
 
 const
@@ -76,9 +77,17 @@ function DataIO_BoolToStr(Value:boolean):string;
 function DataIO_FloatToStr(Value:single):string;
 function DataIO_IntToStr(Value:integer):string;
 
-function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
-function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
-function DataIO_StrToInt(Value:string; FallbackValue:integer):integer;
+function DataIO_StrToBool(Value:string):boolean; overload;
+function DataIO_StrToFloat(Value:string):single; overload;
+function DataIO_StrToInt(Value:string):integer; overload;
+
+function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean; overload;
+function DataIO_StrToFloat(Value:string; FallbackValue:single):single; overload;
+function DataIO_StrToInt(Value:string; FallbackValue:integer):integer; overload;
+
+function DataIO_StrIsBool(const Value : string):boolean;
+function DataIO_StrIsFloat(const Value : string):boolean;
+function DataIO_StrIsInt(const Value : string):boolean;
 
 procedure Sanitise(var Value : integer; const LowValue, HighValue : integer); overload;
 procedure Sanitise(var Value : single;  const LowValue, HighValue : single); overload;
@@ -101,6 +110,10 @@ function StaggeredExpand(InputValue, x1, x2, x3, x4 : single):single;
 
 // Expands a 0-1 ranged float to an arbitary integer range.
 function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer;
+
+// TODO:MED ValueSplit was copied from eeFunctions.pas. It propbably overlaps with ExpandFloat. Check and convert if it
+// does. Otherwise remove the deprecated tag.
+function ValueSplit(IndexValue:single; SplitCount:integer):integer; deprecated;
 
 
 //==============================================================
@@ -152,6 +165,9 @@ function CopyFile(ExistingFileName, NewFileName:string):boolean;
 //    Enum Helpers
 //==============================================================
 
+type
+  EDataIOError = class(Exception);
+
 implementation
 
 uses
@@ -162,8 +178,8 @@ uses
   {$ENDIF}
   Windows,
   Math,
-  StrUtils,
-  SysUtils;
+  StrUtils;
+
 
 
 //==============================================================================
@@ -322,6 +338,18 @@ begin
     end;
 end;
 
+function ValueSplit(IndexValue:single; SplitCount:integer):integer;
+var
+  x:integer;
+begin
+  assert(IndexValue >= 0);
+  assert(IndexValue <= 1);
+  x := floor(IndexValue * SplitCount);
+  if x = SplitCount then x := x-1;
+  result := x;
+end;
+
+
 function BytesToMegaBytes(const Value : single):single;
 begin
   // http://www.matisse.net/bitcalc/?input_amount=1&input_units=megabytes&notation=legacy
@@ -359,10 +387,6 @@ begin
 end;
 
 
-
-
-
-
 function DataIO_BoolToStr(Value:boolean):string;
 begin
   if Value
@@ -385,8 +409,62 @@ begin
 end;
 
 
+function DataIO_StrIsBool(const Value : string):boolean;
+begin
+  try
+    DataIO_StrToBool(Value);
+    result := true;
+  except
+    on EDataIOError do result := false;
+    else raise;
+  end;
+end;
 
+function DataIO_StrIsFloat(const Value : string):boolean;
+begin
+  try
+    DataIO_StrToFloat(Value);
+    result := true;
+  except
+    on EDataIOError do result := false;
+    else raise;
+  end;
+end;
 
+function DataIO_StrIsInt(const Value : string):boolean;
+begin
+  try
+    DataIO_StrToInt(Value);
+    result := true;
+  except
+    on EDataIOError do result := false;
+    else raise;
+  end;
+end;
+
+function DataIO_StrToBool(Value:string):boolean; overload;
+begin
+  Value := Trim(Value);
+  try
+    if SameText(Value, '1')     then exit(true);
+    if SameText(Value, 'true')  then exit(true);
+    if SameText(Value, 'T')     then exit(true);
+    if SameText(Value, 'Y')     then exit(true);
+    if SameText(Value, 'Yes')   then exit(true);
+
+    if SameText(Value, '0')     then exit(false);
+    if SameText(Value, 'false') then exit(false);
+    if SameText(Value, 'F')     then exit(false);
+    if SameText(Value, 'N')     then exit(false);
+    if SameText(Value, 'No')    then exit(false);
+
+    if Value = '' then exit(false);
+
+    raise EDataIOError.Create('Cannot not convert string to boolean value.');
+  except
+    raise EDataIOError.Create('Cannot not convert string to boolean value.');
+  end;
+end;
 
 function DataIO_StrToBool(Value:string; FallbackValue:boolean):boolean;
 begin
@@ -413,6 +491,19 @@ begin
   end;
 end;
 
+function DataIO_StrToFloat(Value:string):single; overload;
+var
+  fs:TFormatSettings;
+begin
+  fs.ThousandSeparator := ',';
+  fs.DecimalSeparator  := '.';
+  try
+    result := StrToFloat(Value, fs)
+  except
+    raise EDataIOError.Create('Cannot not convert string to float value.');
+  end;
+end;
+
 function DataIO_StrToFloat(Value:string; FallbackValue:single):single;
 var
   fs:TFormatSettings;
@@ -423,6 +514,15 @@ begin
     result := StrToFloat(Value, fs)
   except
     result := FallBackValue;
+  end;
+end;
+
+function DataIO_StrToInt(Value:string):integer; overload;
+begin
+  try
+    result := StrToInt(Value)
+  except
+    raise EDataIOError.Create('Cannot not convert string to integer value.');
   end;
 end;
 

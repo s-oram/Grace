@@ -84,13 +84,15 @@ type
     FOwner : TComponent;
     xpMode   : TxpMode;
     WinVista : TFileOpenDialog;
-    fFileName : string;
+    fDirectoryFilePath : string;
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
 
-    function Execute(ParentWnd: HWND):boolean;
-    function FileName : string;
+    function Execute(const ParentWnd: HWND; const InitialDirectory : string = ''):boolean;
+
+    function FileName : string; deprecated; //use DirectoryFilePath().
+    function DirectoryFilePath : string;
   end;
 
 
@@ -116,6 +118,20 @@ type
     property Prompt  : string read fPrompt  write fPrompt;
     property InitialValue : string read fInitialValue write fInitialValue;
   end;
+
+
+
+// NOTE: All dialogs require ParentWnd to be a non-nil value to open correctly in some
+// VST hosts. If ParentWnd is zero, the dialog can open behind the main host window,
+// effectively giving the appearence of a frozen host.
+// As far as I know, AOwner isn't required and can be nil.
+
+type
+  TDirectorySelectResult = record
+    IsOk : boolean; // returns true if user selected a directory. False if user canceled.
+    Dir  : string;  // directory selected  by user.
+  end;
+function DirectorySelectDialog(const ParentWnd : HWND; const InitialDirectory : string = ''):TDirectorySelectResult;
 
 implementation
 
@@ -312,7 +328,7 @@ begin
   {$ENDIF}
 
   FOwner := AOwner;
-  fFileName := '';
+  fDirectoryFilePath:= '';
 end;
 
 destructor TxpDirectorySelectDialog.Destroy;
@@ -322,28 +338,36 @@ begin
   inherited;
 end;
 
-function TxpDirectorySelectDialog.Execute(ParentWnd: HWND):boolean;
+function TxpDirectorySelectDialog.DirectoryFilePath: string;
+begin
+  result := fDirectoryFilePath;
+end;
+
+function TxpDirectorySelectDialog.Execute(const ParentWnd: HWND; const InitialDirectory : string = ''):boolean;
 var
   //== WinXP ==
   Root, Directory : string;
   //== WinVista ==
 begin
+  fDirectoryFilePath := '';
   if ParentWnd = 0 then raise Exception.Create('ParentWnd cannot be 0.');
 
   case xpMode of
     TxpMode.WinXP:
     begin
-       // Using SelectDirectory()
-       // http://stackoverflow.com/a/7422937/395461
-       if SelectDirectory('Select a directory', Root, Directory, [sdNewUI]) then
-       begin
-         fFileName := Directory;
-         result := true;
-       end else
-       begin
-         fFileName := '';
-         result := false;
-       end;
+      Root := InitialDirectory;
+
+      // Using SelectDirectory()
+      // http://stackoverflow.com/a/7422937/395461
+      if SelectDirectory('Select a directory', Root, Directory, [sdNewUI]) then
+      begin
+        fDirectoryFilePath := Directory;
+        result := true;
+      end else
+      begin
+        fDirectoryFilePath := '';
+        result := false;
+      end;
     end;
 
     TxpMode.WinVista:
@@ -352,15 +376,16 @@ begin
       // http://stackoverflow.com/a/7422764/395461
       if not assigned(WinVista) then WinVista := TFileOpenDialog.Create(FOwner);
 
+      WinVista.DefaultFolder := InitialDirectory;
       WinVista.Options := [fdoPickFolders];
 
       if WinVista.Execute(ParentWnd) then
       begin
-        fFileName := WinVista.FileName;
+        fDirectoryFilePath := WinVista.FileName;
         result := true;
       end else
       begin
-        fFileName := '';
+        fDirectoryFilePath := '';
         result := false;
       end;
     end;
@@ -371,7 +396,7 @@ end;
 
 function TxpDirectorySelectDialog.FileName: string;
 begin
-  result := fFileName;
+  result := fDirectoryFilePath;
 end;
 
 { TxpFileSaveDialog }
@@ -527,6 +552,26 @@ begin
     result := false;
   end;
 
+end;
+
+function DirectorySelectDialog(const ParentWnd : HWND; const InitialDirectory : string = ''):TDirectorySelectResult;
+var
+  Dialog : TxpDirectorySelectDialog;
+begin
+  Dialog := TxpDirectorySelectDialog.Create(nil);
+  try
+    if Dialog.Execute(ParentWnd, InitialDirectory) then
+    begin
+      result.IsOk := true;
+      result.Dir  := Dialog.DirectoryFilePath;
+    end else
+    begin
+      result.IsOk := false;
+      result.Dir  := '';
+    end;
+  finally
+    Dialog.Free;
+  end;
 end;
 
 end.

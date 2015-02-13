@@ -135,7 +135,6 @@ uses
 constructor TStaticVstParameterManager.Create;
 begin
   ParSmoother := TVstParSmoother.Create;
-
   fParSugar := TVstParSugar.Create;
 end;
 
@@ -317,9 +316,15 @@ begin
 end;
 
 procedure TVstParSmoother.ApplySmoothing(var ParData: TVstParData);
-const
-  StepSize : single = 0.004; //this needs to be scaled to samplerate and made optional.
+//const
+  //StepSize : single = 0.00000000001; //this needs to be scaled to samplerate and made optional.
+var
+  StepSize : single;
 begin
+  // TODO:HIGH par smoothing needs to be configurable. Maybe it also needs to be a one pole filter instead
+  // of a linear change.
+  StepSize := 1 / (44100 * 0.05);
+
   if ParData.CurrentValue < ParData.TargetValue - StepSize then
   begin
     ParData.CurrentValue := ParData.CurrentValue + StepSize;

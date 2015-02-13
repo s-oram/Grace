@@ -36,11 +36,13 @@ requires
   madDisAsm_,
   madExcept_,
   VamBasicRunXE2,
-  R8Brain_RunTime;
+  R8Brain_RunTime,
+  SoundElements,
+  NativeXmlV4_XE2;
 
 contains
   ee3.CustomPlugin in 'source\ee3.CustomPlugin.pas',
-  ee3.PluginGlobals in 'source\ee3.PluginGlobals.pas',
+  ee3.VstGlobals in 'source\ee3.VstGlobals.pas',
   ee3.VstConstants in 'source\ee3.VstConstants.pas',
   ee3AddOn.ThreadSyncEnforcer in 'source\ee3AddOn\ee3AddOn.ThreadSyncEnforcer.pas',
   DAudioEffect in 'source\Delphi Vst SDK\DAudioEffect.pas',
@@ -53,14 +55,19 @@ contains
   ee3.Utils in 'source\ee3.Utils.pas',
   ee3AddOn.MadExcept in 'source\ee3AddOn\ee3AddOn.MadExcept.pas',
   ee3AddOn.MidiAutomation.VstPar in 'source\ee3AddOn\ee3AddOn.MidiAutomation.VstPar.pas',
-  ee3AddOn.ParameterManager.StaticVst in 'source\ee3AddOn\ee3AddOn.ParameterManager.StaticVst.pas',
+  ee3AddOn.ParameterManager.StaticVstV3 in 'source\ee3AddOn\ee3AddOn.ParameterManager.StaticVstV3.pas',
   ee3AddOn.PluginPaths in 'source\ee3AddOn\ee3AddOn.PluginPaths.pas',
   ee3AddOn.ProcessController.Basic in 'source\ee3AddOn\ee3AddOn.ProcessController.Basic.pas',
   ee3AddOn.ProcessController.MultiChannelResampler.r8brain in 'source\ee3AddOn\ee3AddOn.ProcessController.MultiChannelResampler.r8brain.pas',
   ee3AddOn.ProcessController.OverSampled2x in 'source\ee3AddOn\ee3AddOn.ProcessController.OverSampled2x.pas',
   ee3AddOn.VstMidi in 'source\ee3AddOn\ee3AddOn.VstMidi.pas',
   ee3AddOn.ControlContextMenu.VstPar in 'source\ee3AddOn\ee3AddOn.ControlContextMenu.VstPar.pas',
-  ee3AddOn.ControlHandler.VstPar.Knob in 'source\ee3AddOn\ee3AddOn.ControlHandler.VstPar.Knob.pas';
+  ee3AddOn.ControlHandler.VstPar.Knob in 'source\ee3AddOn\ee3AddOn.ControlHandler.VstPar.Knob.pas',
+  ee3AddOn.ParameterManager.StaticVst in 'source\ee3AddOn\ee3AddOn.ParameterManager.StaticVst.pas',
+  ee3AddOn.ParameterManager.StaticVstV2 in 'source\ee3AddOn\ee3AddOn.ParameterManager.StaticVstV2.pas',
+  ee3AddOn.PatchFile in 'source\ee3AddOn\ee3AddOn.PatchFile.pas',
+  ee3.CustomPlugin.PublishedVstParInfo in 'source\ee3.CustomPlugin.PublishedVstParInfo.pas';
 
 end.
+
 

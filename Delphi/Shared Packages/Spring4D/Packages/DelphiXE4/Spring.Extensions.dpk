@@ -1,0 +1,49 @@
+package Spring.Extensions;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Spring4D Extensions package'}
+{$LIBSUFFIX '.DelphiXE4'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  Spring.Base;
+
+contains
+  Spring.Cryptography.Base in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.Base.pas',
+  Spring.Cryptography.CRC in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.CRC.pas',
+  Spring.Cryptography.DES in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.DES.pas',
+  Spring.Cryptography.MD5 in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.MD5.pas',
+  Spring.Cryptography in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.pas',
+  Spring.Cryptography.SHA in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.SHA.pas',
+  Spring.Cryptography.Utils in '..\..\Source\Extensions\Cryptography\Spring.Cryptography.Utils.pas',
+  Spring.Utils.IO in '..\..\Source\Extensions\Utils\Spring.Utils.IO.pas',
+  Spring.Utils in '..\..\Source\Extensions\Utils\Spring.Utils.pas',
+  Spring.Utils.WinApi in '..\..\Source\Extensions\Utils\Spring.Utils.WinApi.pas';
+
+end.

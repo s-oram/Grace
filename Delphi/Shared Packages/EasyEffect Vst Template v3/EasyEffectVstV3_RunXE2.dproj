@@ -85,8 +85,10 @@
 			<DCCReference Include="madExcept_.dcp"/>
 			<DCCReference Include="VamBasicRunXE2.dcp"/>
 			<DCCReference Include="R8Brain_RunTime.dcp"/>
+			<DCCReference Include="SoundElements.dcp"/>
+			<DCCReference Include="NativeXmlV4_XE2.dcp"/>
 			<DCCReference Include="source\ee3.CustomPlugin.pas"/>
-			<DCCReference Include="source\ee3.PluginGlobals.pas"/>
+			<DCCReference Include="source\ee3.VstGlobals.pas"/>
 			<DCCReference Include="source\ee3.VstConstants.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ThreadSyncEnforcer.pas"/>
 			<DCCReference Include="source\Delphi Vst SDK\DAudioEffect.pas"/>
@@ -99,7 +101,7 @@
 			<DCCReference Include="source\ee3.Utils.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.MadExcept.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.MidiAutomation.VstPar.pas"/>
-			<DCCReference Include="source\ee3AddOn\ee3AddOn.ParameterManager.StaticVst.pas"/>
+			<DCCReference Include="source\ee3AddOn\ee3AddOn.ParameterManager.StaticVstV3.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.PluginPaths.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ProcessController.Basic.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ProcessController.MultiChannelResampler.r8brain.pas"/>
@@ -107,6 +109,10 @@
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.VstMidi.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ControlContextMenu.VstPar.pas"/>
 			<DCCReference Include="source\ee3AddOn\ee3AddOn.ControlHandler.VstPar.Knob.pas"/>
+			<DCCReference Include="source\ee3AddOn\ee3AddOn.ParameterManager.StaticVst.pas"/>
+			<DCCReference Include="source\ee3AddOn\ee3AddOn.ParameterManager.StaticVstV2.pas"/>
+			<DCCReference Include="source\ee3AddOn\ee3AddOn.PatchFile.pas"/>
+			<DCCReference Include="source\ee3.CustomPlugin.PublishedVstParInfo.pas"/>
 			<None Include="source\ee3AddOn\AddOn ReadMe.txt"/>
 			<None Include="source\Delphi Vst SDK\DVstCommon.inc"/>
 			<None Include="source\Delphi Vst SDK\readme.txt"/>

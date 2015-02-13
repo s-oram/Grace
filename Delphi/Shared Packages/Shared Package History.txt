@@ -1,6 +1,55 @@
 ======================================
             History
 ======================================
+12 Feb 2015
+- More work on SoundElements library.
+- And more work on SoundElements library.
+
+10 Feb 2015
+- More work on SoundElements event pins.
+
+10 Feb 2015
+- remove delphi mocks and DUnitX
+
+10 Feb 2015
+- Add VamLibDsp package.
+- starting work on SoundElements modular processing system.
+
+09 Feb 2015
+- Add Spring4D (Develop Branch)
+
+02 Feb 2015
+- Add input/output information methods.
+- Add a VstParInfo class to handle published VST parameter information 
+  in the VST template. 
+
+02 Feb 2015
+- change to ee3AddOn.PatchFile.pas
+- changes to EasyEffect Vst Template V3 
+
+01 Feb 2015
+- Change to over sampled process controller to allow variable input/output configurations.
+- add ee3AddOn.ParameterManager.StaticVstV3.pas
+- add some more DataIO functions.
+
+27 Jan 2015
+- Changes to XPlat.Dialogs unit.
+
+22 Dec 2014
+- Install/Uninstall font function added.
+
+20 Dec 2014
+- Add SoundElement.RealTime.DcBlocker
+
+16 Dec 2014
+- Add ParameterManager.StaticVSTv2
+
+16 Dec 2014
+- Create SoundElements Package. 
+
+16 Dec 2014
+- EasyEffect Template Changes.
+
 15 Dec 2014
 - Add TZeroFrame 
 - Removed "Main" ZeroObject support.
