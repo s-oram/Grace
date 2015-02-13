@@ -84,11 +84,19 @@ type
 implementation
 
 uses
+  Windows,
+  Controls,
   SysUtils,
   Dialogs,
   VamLib.FindFiles,
-  XPlat.Dialogs,
-  Lucidity.Utils;
+  XPlat.Dialogs;
+
+function GetComponentHandle(c : TComponent):HWND;
+begin
+  if (c is TWinControl)
+    then result := (c as TWinControl).Handle
+    else result := 0;
+end;
 
 
 { TSampleFinderBrain }

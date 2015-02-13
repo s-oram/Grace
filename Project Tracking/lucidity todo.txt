@@ -87,6 +87,9 @@ thunderlink://messageid=CAPN=qRwu6CN2aduThGPFT+nt438YNNQhR_r83VRuTj8deRYpyw@mail
 IMPORTANT: Give yann a final chance to OK the preset names before sending out the next update.
 thunderlink://messageid=D7CA51C967B64AD1A24CF7E301F78B8A@YannHP
 
+Feature Request: Make zoon delete confirmation option.
+thunderlink://messageid=54c2fb8a.87cdb40a.2e2b.68c3@mx.google.com
+
 Look at DSiInterlockedCompareExchange64() in OmniThreadLibrary for 
 creating a lock-free linked list.
 http://omnithreadlibrary.googlecode.com/svn/trunk/src/DSiWin32.pas

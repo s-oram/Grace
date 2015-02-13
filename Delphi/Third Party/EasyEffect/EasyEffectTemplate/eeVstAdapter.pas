@@ -578,7 +578,11 @@ begin
   end;
 end;
 
-
+function TeeVstAdapter.SetBypass(OnOff: boolean): boolean;
+begin
+  result := Plugin.Settings.SoftBypass;
+  if Plugin.Settings.SoftBypass then Plugin.SetBypass(OnOff);
+end;
 
 //------------------------------------------------------------------
 //    Set/Get Chunk methods. (used to save/restore the plugin state)
@@ -598,12 +602,6 @@ begin
     data   := ChunkData.Memory;
     result := 0;
   end;
-end;
-
-function TeeVstAdapter.SetBypass(OnOff: boolean): boolean;
-begin
-  result := Plugin.Settings.SoftBypass;
-  if Plugin.Settings.SoftBypass then Plugin.SetBypass(OnOff);
 end;
 
 function TeeVstAdapter.SetChunk(data: pointer; byteSize: Integer; isPreset: Boolean): longint;
