@@ -154,7 +154,7 @@ begin
     end else
     begin
       // TODO:HIGH Do we need a critical section here? Perhaps a Multireader lock would be better, if a lock is needed at all.
-      DispatchEffectLock.Enter;
+      //DispatchEffectLock.Enter;
       try
         obj := e^.vObject;
         if opCode = effClose then
@@ -167,7 +167,7 @@ begin
           Result := obj.dispatcher(opCode, index, value, ptr, opt);
         end;
       finally
-        DispatchEffectLock.Leave;
+        //DispatchEffectLock.Leave;
       end;
     end;
   except
