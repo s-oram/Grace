@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+15 July 2015
+- Add new SmartInspectExt package.
+
 12 Feb 2015
 - More work on SoundElements library.
 - And more work on SoundElements library.
