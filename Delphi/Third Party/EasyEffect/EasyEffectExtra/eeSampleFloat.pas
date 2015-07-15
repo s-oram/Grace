@@ -13,6 +13,8 @@ type
     fCh1: TArrayOfSingle;
     fCh2: TArrayOfSingle;
     fLastErrorMessage: string;
+    function GetCh1Pointer: PArrayOfSingle;
+    function GetCh2Pointer: PArrayOfSingle;
   protected
     function GetSampleMem(ChannelCount, SampleFrames:integer):boolean; override;
   public
@@ -27,6 +29,8 @@ type
 
     property Ch1:TArrayOfSingle read fCh1 write fCh1;
     property Ch2:TArrayOfSingle read fCh2 write fCh2;
+    property Ch1Pointer : PArrayOfSingle read GetCh1Pointer;
+    property Ch2Pointer : PArrayOfSingle read GetCh2Pointer;
 
     property LastErrorMessage : string read fLastErrorMessage;
 
@@ -50,6 +54,16 @@ begin
   SetLength(fCh1, 0);
   SetLength(fCh2, 0);
   inherited;
+end;
+
+function TSampleFloat.GetCh1Pointer: PArrayOfSingle;
+begin
+  result := @fCh1;
+end;
+
+function TSampleFloat.GetCh2Pointer: PArrayOfSingle;
+begin
+  result := @fCh2;
 end;
 
 function TSampleFloat.GetSampleMem(ChannelCount, SampleFrames: integer): boolean;

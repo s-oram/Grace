@@ -29,6 +29,13 @@ type
     fMaxBlockSize: integer;
     fGain: single;
     fIsActive: boolean;
+    fSampleData : TVoiceSampleData;
+  private
+    ReadPos : single;
+    ReadStepSize : single;
+    Ch1: PArrayOfSingle;
+    Ch2: PArrayOfSingle;
+    SampleLength : integer;
   public
     constructor Create;
     destructor Destroy; override;
@@ -98,12 +105,47 @@ end;
 
 procedure TSamplePreviewVoice.Trigger(SampleData: TVoiceSampleData);
 begin
-  fIsActive := true;
+  //fIsActive := true;
+
+  fSampleData := SampleData;
+  if SampleData.Sample.Properties.IsValid then
+  begin
+    if SampleData.Sample.Properties.ChannelCount = 1 then
+    begin
+      Ch1 := SampleData.Sample.Ch1Pointer;
+      Ch2 := SampleData.Sample.Ch1Pointer;
+    end else
+    if SampleData.Sample.Properties.ChannelCount = 2 then
+    begin
+      Ch1 := SampleData.Sample.Ch1Pointer;
+      Ch2 := SampleData.Sample.Ch2Pointer;
+    end else
+    begin
+      exit; //========================>> exit >>=======================>>
+    end;
+
+    SampleLength := SampleData.Sample.Properties.SampleFrames;
+    ReadStepSize := SampleData.Sample.Properties.SampleRate / self.SampleRate;
+    ReadPos := 0;
+  end;
+
+
+
+
+
+
 end;
 
 procedure TSamplePreviewVoice.Process(In1, In2: PSingle; Sampleframes: integer);
+var
+  c1: Integer;
 begin
+  assert(fIsActive);
 
+  for c1 := 0 to SampleFrames-1 do
+  begin
+    //TODO:HIGH read the sample position here and output the sample preview.
+  end;
 end;
 
 
