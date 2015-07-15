@@ -1,1 +1,13 @@
+15th July  2015
+================
+
+Open Grace project for the first time in a long time. Project was using SmartInspect package.
+Grace couldn't compile using the SmartInspect_RunTime package. 
+The SmartInspect_RunTime appears to be a combination of some original code with units pulled
+from the true smart inspect code base. There was some sort of conflict, the smart inspect code
+was being used by my package and the true SmartInspectDXE package.
+
+I resolved the problem in Grace by removing use of the SmartInspect_RunTime package. It's possible
+Poise doesn't use this package either. Perhaps the package can be deleted.
+
 
