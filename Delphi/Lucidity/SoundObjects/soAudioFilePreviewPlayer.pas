@@ -7,9 +7,9 @@ uses
   eeSampleInt,
   eeSimpleGate,
   VamLib.OneShotTimer,
-  VamLib.MoreTypes, eeAudioFilePreviewPlayerVoice;
-
-
+  VamLib.MoreTypes,
+  soAudioFilePreviewPlayer.Voice,
+  eeAudioFilePreviewPlayerVoice;
 
 const
   kPreviewVoiceCount = 4;
@@ -31,9 +31,14 @@ type
     procedure SetSampleRate(const Value: integer);
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
+    procedure SetMaxBlockSize(const Value: integer);
   protected
+    CurrentSampleID : cardinal;
+    SampleData : TVoiceSampleData;
     TimerID : cardinal;
     NextSampleToLoad : string;
+    IsPreviewTriggerRequired : boolean;
+    Voice : TSamplePreviewVoice;
     Voices:array[0..kPreviewVoiceCount-1] of TAudioFilePreviewPlayerVoice;
     function FindFreeVoice:TAudioFilePreviewPlayerVoice;
   public
@@ -47,6 +52,7 @@ type
     procedure Process(In1,In2:PSingle; Sampleframes:integer); inline;
 
     property SampleRate:integer read fSampleRate write SetSampleRate;
+    property MaxBlockSize : integer write SetMaxBlockSize;
     property Volume    :single  read fVolume     write SetVolume;     //range 0..1
 
     property SampleInfo :PPreviewSampleProperties read GetSampleInfo;
@@ -67,6 +73,11 @@ constructor TAudioFilePreviewPlayer.Create;
 var
   c1: Integer;
 begin
+  Voice := TSamplePreviewVoice.Create;
+  SampleData := TVoiceSampleData.Create;
+  CurrentSampleID := 0;
+  IsPreviewTriggerRequired := false;
+
   TimerID := 0;
 
   for c1 := 0 to kPreviewVoiceCount - 1 do
@@ -93,7 +104,15 @@ begin
     FreeAndNil(Voices[c1]);
   end;
 
+  SampleData.Free;
+  Voice.Free;
+
   inherited;
+end;
+
+procedure TAudioFilePreviewPlayer.SetMaxBlockSize(const Value: integer);
+begin
+  Voice.MaxBlockSize := value;
 end;
 
 procedure TAudioFilePreviewPlayer.SetSampleRate(const Value: integer);
@@ -178,11 +197,18 @@ begin
 
       // self.NextSampleToLoad := aFileName;
       // Load the next sample here.
+      {
       aVoice := FindFreeVoice;
       if aVoice <> nil then
       begin
         aVoice.Trigger(aFileName);
       end;
+      }
+      NextSampleToLoad := aFileName;
+      IsPreviewTriggerRequired := true;
+
+      // TODO:HIGH: Need to protect against overflow actions here.
+      inc(CurrentSampleID);
     end;
   end;
 
@@ -209,6 +235,8 @@ var
   c1:integer;
 begin
   ClearTimeout(TimerID);
+  IsPreviewTriggerRequired := false;
+  Voice.Kill;
 
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
@@ -221,6 +249,8 @@ var
   c1:integer;
 begin
   ClearTimeout(TimerID);
+  IsPreviewTriggerRequired := false;
+  Voice.Kill;
 
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
@@ -232,6 +262,27 @@ procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integ
 var
   c1:integer;
 begin
+  if (IsPreviewTriggerRequired) and (SampleData.IsLoadingSample) then
+  begin
+    if CurrentSampleID <> SampleData.SampleID then
+    begin
+      SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
+    end else
+    begin
+      IsPreviewTriggerRequired := false;
+      Voice.Trigger(SampleData);
+    end;
+  end;
+
+  if Voice.IsActive then
+  begin
+    Voice.Process(In1, In2, SampleFrames);
+  end;
+
+
+
+
+  {
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     if Voices[c1].Active then
@@ -239,6 +290,7 @@ begin
       Voices[c1].Process(In1, In2, SampleFrames);
     end;
   end;
+  }
 end;
 
 end.
