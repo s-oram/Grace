@@ -621,6 +621,7 @@
 			<DCCReference Include="Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas"/>
 			<DCCReference Include="Lucidity.ProgramFileUtils.pas"/>
 			<DCCReference Include="EasyEffectTemplate\eeAddOn.ThreadSyncEnforcer.pas"/>
+			<DCCReference Include="SoundObjects\soAudioFilePreviewPlayer.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>

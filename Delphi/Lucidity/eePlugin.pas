@@ -17,7 +17,7 @@ uses
   eePluginBase ,
   eeMidiEvents,
   eeMidiAutomationV2,
-  eeAudioFilePreviewPlayer,
+  soAudioFilePreviewPlayer,
   eeSimpleGate,
   eeGlobals,
   Lucidity.MidiInputProcessor,

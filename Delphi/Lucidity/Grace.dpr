@@ -183,7 +183,8 @@ uses
   InWindowDialog.SampleFinderDialog.Form in 'Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
   InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
   Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas',
-  eeAddOn.ThreadSyncEnforcer in 'EasyEffectTemplate\eeAddOn.ThreadSyncEnforcer.pas';
+  eeAddOn.ThreadSyncEnforcer in 'EasyEffectTemplate\eeAddOn.ThreadSyncEnforcer.pas',
+  soAudioFilePreviewPlayer in 'SoundObjects\soAudioFilePreviewPlayer.pas';
 
 {$R *.res}
 
