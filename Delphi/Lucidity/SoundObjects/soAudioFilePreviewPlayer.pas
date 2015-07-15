@@ -3,9 +3,6 @@ unit soAudioFilePreviewPlayer;
 interface
 
 uses
-  {$IFNDEF VER230}
-  eeSampleLoader,
-  {$ENDIF}
   eeSampleFloat,
   eeSampleInt,
   eeSimpleGate,
@@ -36,16 +33,7 @@ type
     function GetSampleInfo: PPreviewSampleProperties;
   protected
     Voices:array[0..kPreviewVoiceCount-1] of TAudioFilePreviewPlayerVoice;
-    {$IFNDEF VER230}
-    SampleLoader:TSampleLoader;
-    {$ENDIF}
-
-
     function FindFreeVoice:TAudioFilePreviewPlayerVoice;
-
-    {$IFNDEF VER230}
-    procedure HandleOnLoadSample(Sender:TObject; var Data:TLoadSampleResult);
-    {$ENDIF}
   public
     constructor Create;
 	  destructor Destroy; override;
@@ -77,11 +65,6 @@ constructor TAudioFilePreviewPlayer.Create;
 var
   c1: Integer;
 begin
-  {$IFNDEF VER230}
-  SampleLoader := TSampleLoader.Create;
-  SampleLoader.OnLoadSample := HandleOnLoadSample;
-  {$ENDIF}
-
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     Voices[c1] := TAudioFilePreviewPlayerVoice.Create;
@@ -101,10 +84,6 @@ destructor TAudioFilePreviewPlayer.Destroy;
 var
   c1:integer;
 begin
-  {$IFNDEF VER230}
-  SampleLoader.Free;
-  {$ENDIF}
-
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     FreeAndNil(Voices[c1]);
@@ -165,7 +144,7 @@ end;
 procedure TAudioFilePreviewPlayer.Trigger(aFileName: string; Delay: integer);
 var
   Info:TAudioFileInfo;
-  {$IFDEF VER230}aVoice:TAudioFilePreviewPlayerVoice;{$ENDIF}
+  aVoice:TAudioFilePreviewPlayerVoice;
 begin
   //Get the file info.
   GetAudioFileInfoEx(aFileName, Info);
@@ -189,42 +168,14 @@ begin
   // Load the sample via the sample loader class, which loads the sample in another thread.
   if (Info.IsValid) and (Info.IsSupported) then
   begin
-    {$IFDEF VER230}
-      // non-threaded version
-      aVoice := FindFreeVoice;
-      if aVoice <> nil then
-      begin
-        aVoice.Trigger(aFileName);
-      end;
-    {$ELSE}
-      // threaded version..
-      SampleLoader.LoadSample(aFileName, dfInt, Delay, 0);
-    {$ENDIF}
-  end;
-end;
-
-{$IFNDEF VER230}
-procedure TAudioFilePreviewPlayer.HandleOnLoadSample(Sender: TObject; var Data: TLoadSampleResult);
-var
-  aVoice:TAudioFilePreviewPlayerVoice;
-begin
-  if Data.IsSuccess then
-  begin
+    // non-threaded version
     aVoice := FindFreeVoice;
     if aVoice <> nil then
     begin
-      aVoice.Trigger(Data.Sample as TSampleInt);
-
-      // IMPORTANT: Data.Sample needs to be set to 'nil' because the object has been passed to
-      // the voice class. The voice class will free the sample when it is finished using it.
-      Data.Sample := nil;
+      aVoice.Trigger(aFileName);
     end;
   end;
 end;
-{$ENDIF}
-
-
-
 
 procedure TAudioFilePreviewPlayer.Stop;
 var
