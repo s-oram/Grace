@@ -6,6 +6,7 @@ uses
   eeSampleFloat,
   eeSampleInt,
   eeSimpleGate,
+  VamLib.OneShotTimer,
   VamLib.MoreTypes, eeAudioFilePreviewPlayerVoice;
 
 
@@ -27,11 +28,12 @@ type
     fSampleRate : integer;
     fVolume     : single;
     fSampleInfo : TPreviewSampleProperties;
-
     procedure SetSampleRate(const Value: integer);
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
   protected
+    TimerID : cardinal;
+    NextSampleToLoad : string;
     Voices:array[0..kPreviewVoiceCount-1] of TAudioFilePreviewPlayerVoice;
     function FindFreeVoice:TAudioFilePreviewPlayerVoice;
   public
@@ -65,6 +67,8 @@ constructor TAudioFilePreviewPlayer.Create;
 var
   c1: Integer;
 begin
+  TimerID := 0;
+
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     Voices[c1] := TAudioFilePreviewPlayerVoice.Create;
@@ -145,6 +149,7 @@ procedure TAudioFilePreviewPlayer.Trigger(aFileName: string; Delay: integer);
 var
   Info:TAudioFileInfo;
   aVoice:TAudioFilePreviewPlayerVoice;
+  DoTriggerSamplePreview : TProc;
 begin
   //Get the file info.
   GetAudioFileInfoEx(aFileName, Info);
@@ -155,7 +160,6 @@ begin
     SampleInfo^.SampleFrames   := Info.SampleFrames;
     SampleInfo^.SampleRate     := Info.SampleRate;
     SampleInfo^.SourceBitDepth := Info.BitDepth;
-
   end else
   begin
     SampleInfo^.IsValid        := false;
@@ -165,6 +169,28 @@ begin
     SampleInfo^.SourceBitDepth := 0;
   end;
 
+
+  DoTriggerSamplePreview := procedure begin
+    if (Info.IsValid) and (Info.IsSupported) then
+    begin
+      // NOTE: We are in the GUI thread here. Don't do any slow operations,
+      // otherwise the GUI will be blocked.
+
+      // self.NextSampleToLoad := aFileName;
+      // Load the next sample here.
+      aVoice := FindFreeVoice;
+      if aVoice <> nil then
+      begin
+        aVoice.Trigger(aFileName);
+      end;
+    end;
+  end;
+
+  TimerID := SetTimeout(DoTriggerSamplePreview, TimerID, Delay);
+
+
+
+  {
   // Load the sample via the sample loader class, which loads the sample in another thread.
   if (Info.IsValid) and (Info.IsSupported) then
   begin
@@ -175,12 +201,15 @@ begin
       aVoice.Trigger(aFileName);
     end;
   end;
+  }
 end;
 
 procedure TAudioFilePreviewPlayer.Stop;
 var
   c1:integer;
 begin
+  ClearTimeout(TimerID);
+
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     if Voices[c1].Active then Voices[c1].Stop;
@@ -191,6 +220,8 @@ procedure TAudioFilePreviewPlayer.Kill;
 var
   c1:integer;
 begin
+  ClearTimeout(TimerID);
+
   for c1 := 0 to kPreviewVoiceCount - 1 do
   begin
     Voices[c1].Kill;

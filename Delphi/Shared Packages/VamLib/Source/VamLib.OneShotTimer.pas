@@ -45,7 +45,7 @@ var
 begin
   TimerID := SetTimer(0, 0, ATimeout, @TimerProc);
   if TimerID = 0 then raise Exception.Create('Unable to set timer.');
-  TimerList.Add(TimerID, AProc);
+  TimerList.AddOrSetValue(TimerID, AProc);
   result := TimerID;
 end;
 
