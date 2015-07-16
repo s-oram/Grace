@@ -45,7 +45,7 @@ type
     procedure Trigger(SampleData : TVoiceSampleData);
     procedure Kill;
 
-    property Gain : single read fGain;
+    property Gain : single read fGain write fGain;
     property SampleRate : integer read fSampleRate write fSampleRate;
     property MaxBlockSize : integer read fMaxBlockSize write fMaxBlockSize;
 
@@ -56,6 +56,8 @@ type
 implementation
 
 uses
+  Math,
+  SampleOscUtils,
   AudioIO;
 
 { TVoiceSampleData }
@@ -105,11 +107,13 @@ end;
 
 procedure TSamplePreviewVoice.Trigger(SampleData: TVoiceSampleData);
 begin
-  //fIsActive := true;
+  assert(self.SampleRate > 0);
 
   fSampleData := SampleData;
   if SampleData.Sample.Properties.IsValid then
   begin
+    fIsActive := true;
+
     if SampleData.Sample.Properties.ChannelCount = 1 then
     begin
       Ch1 := SampleData.Sample.Ch1Pointer;
@@ -139,12 +143,35 @@ end;
 procedure TSamplePreviewVoice.Process(In1, In2: PSingle; Sampleframes: integer);
 var
   c1: Integer;
+  ReadIndex : cardinal;
+  ReadFrac : single;
+  sd : TSampleFloat;
+  Out1, Out2 : single;
 begin
   assert(fIsActive);
+
+  sd := self.fSampleData.Sample;
+
 
   for c1 := 0 to SampleFrames-1 do
   begin
     //TODO:HIGH read the sample position here and output the sample preview.
+
+    ReadIndex := floor(ReadPos);
+    ReadFrac := ReadPos - ReadIndex;
+    ReadValuesFromSample_LinearInterpolation(sd, ReadIndex, ReadFrac, Out1, Out2);
+
+    In1^ := In1^ + Out1 * self.fGain;
+    In2^ := In2^ + Out2 * self.fGain;
+    inc(In1);
+    inc(In2);
+
+    ReadPos := ReadPos + ReadStepSize;
+    if ReadPos >= SampleLength then
+    begin
+      fIsActive := false;
+      exit; //==============================================>> exit >>=====================>>
+    end;
   end;
 end;
 

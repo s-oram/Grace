@@ -8,8 +8,7 @@ uses
   eeSimpleGate,
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
-  soAudioFilePreviewPlayer.Voice,
-  eeAudioFilePreviewPlayerVoice;
+  soAudioFilePreviewPlayer.Voice;
 
 const
   kPreviewVoiceCount = 4;
@@ -39,8 +38,6 @@ type
     NextSampleToLoad : string;
     IsPreviewTriggerRequired : boolean;
     Voice : TSamplePreviewVoice;
-    Voices:array[0..kPreviewVoiceCount-1] of TAudioFilePreviewPlayerVoice;
-    function FindFreeVoice:TAudioFilePreviewPlayerVoice;
   public
     constructor Create;
 	  destructor Destroy; override;
@@ -80,11 +77,6 @@ begin
 
   TimerID := 0;
 
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    Voices[c1] := TAudioFilePreviewPlayerVoice.Create;
-  end;
-
   Volume     := 1;
   SampleRate := 44100;
 
@@ -99,11 +91,6 @@ destructor TAudioFilePreviewPlayer.Destroy;
 var
   c1:integer;
 begin
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    FreeAndNil(Voices[c1]);
-  end;
-
   SampleData.Free;
   Voice.Free;
 
@@ -120,12 +107,7 @@ var
   c1:integer;
 begin
   fSampleRate := Value;
-
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    Voices[c1].SampleRate := Value;
-  end;
-
+  Voice.SampleRate := Value;
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
@@ -133,28 +115,7 @@ var
   c1:integer;
 begin
   fVolume := Value;
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    Voices[c1].Volume := Value;
-  end;
-end;
-
-function TAudioFilePreviewPlayer.FindFreeVoice: TAudioFilePreviewPlayerVoice;
-var
-  c1:integer;
-begin
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    if Voices[c1].Active = false then
-    begin
-      result := Voices[c1];
-      exit; //======================>>>
-    end;
-  end;
-
-  //No free voice found so exit.
-  result := nil;
-
+  Voice.Gain := Value;
 end;
 
 function TAudioFilePreviewPlayer.GetSampleInfo: PPreviewSampleProperties;
@@ -167,7 +128,6 @@ end;
 procedure TAudioFilePreviewPlayer.Trigger(aFileName: string; Delay: integer);
 var
   Info:TAudioFileInfo;
-  aVoice:TAudioFilePreviewPlayerVoice;
   DoTriggerSamplePreview : TProc;
 begin
   //Get the file info.
@@ -195,15 +155,6 @@ begin
       // NOTE: We are in the GUI thread here. Don't do any slow operations,
       // otherwise the GUI will be blocked.
 
-      // self.NextSampleToLoad := aFileName;
-      // Load the next sample here.
-      {
-      aVoice := FindFreeVoice;
-      if aVoice <> nil then
-      begin
-        aVoice.Trigger(aFileName);
-      end;
-      }
       NextSampleToLoad := aFileName;
       IsPreviewTriggerRequired := true;
 
@@ -213,21 +164,6 @@ begin
   end;
 
   TimerID := SetTimeout(DoTriggerSamplePreview, TimerID, Delay);
-
-
-
-  {
-  // Load the sample via the sample loader class, which loads the sample in another thread.
-  if (Info.IsValid) and (Info.IsSupported) then
-  begin
-    // non-threaded version
-    aVoice := FindFreeVoice;
-    if aVoice <> nil then
-    begin
-      aVoice.Trigger(aFileName);
-    end;
-  end;
-  }
 end;
 
 procedure TAudioFilePreviewPlayer.Stop;
@@ -237,11 +173,6 @@ begin
   ClearTimeout(TimerID);
   IsPreviewTriggerRequired := false;
   Voice.Kill;
-
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    if Voices[c1].Active then Voices[c1].Stop;
-  end;
 end;
 
 procedure TAudioFilePreviewPlayer.Kill;
@@ -251,21 +182,17 @@ begin
   ClearTimeout(TimerID);
   IsPreviewTriggerRequired := false;
   Voice.Kill;
-
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    Voices[c1].Kill;
-  end;
 end;
 
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
 var
   c1:integer;
 begin
-  if (IsPreviewTriggerRequired) and (SampleData.IsLoadingSample) then
+  if (IsPreviewTriggerRequired) and (SampleData.IsLoadingSample = false) then
   begin
     if CurrentSampleID <> SampleData.SampleID then
     begin
+      //TODO:HIGH sample needs to be loaded in a thread.
       SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
     end else
     begin
@@ -278,19 +205,6 @@ begin
   begin
     Voice.Process(In1, In2, SampleFrames);
   end;
-
-
-
-
-  {
-  for c1 := 0 to kPreviewVoiceCount - 1 do
-  begin
-    if Voices[c1].Active then
-    begin
-      Voices[c1].Process(In1, In2, SampleFrames);
-    end;
-  end;
-  }
 end;
 
 end.
