@@ -23,6 +23,8 @@ Bug Fix:
 - Some dialogs would show behind the GUI window. If not visible at all, the host
   application would appear to be hung. 
 - Mod wheel now works.
+- Browser preview player audio playback code has been rewritten and the playback quality 
+  has been improved.
 
 
 
