@@ -168,6 +168,7 @@ begin
     //Out1 := Linear(ReadFrac, y0, y1);
     //Out1 := CosineInterpolation(ReadFrac, y0, y1);
     Out1 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
+    //Out1 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
 
     y0 := self.Ch2^[ReadIndex];
     y1 := self.Ch2^[ReadIndex + 1];
@@ -176,6 +177,7 @@ begin
     //Out2 := Linear(ReadFrac, y0, y1);
     //Out2 := CosineInterpolation(ReadFrac, y0, y1);
     Out2 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
+    //Out2 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
 
     //====================================================
 

@@ -92,8 +92,8 @@ var
   m0,m1,mu2,mu3 : double;
   a0, a1, a2, a3 : double;
 begin
-  m0 := (y1-y0) * 0.5 + (y2-y1) * 0.5;
-  m1 := (y2-y1) * 0.5 + (y3-y2) * 0.5;
+  m0 := (y2-y0) * 0.5;
+  m1 := (y3-y1) * 0.5;
   mu2 := f * f;
   mu3 := f * f * f;
 
