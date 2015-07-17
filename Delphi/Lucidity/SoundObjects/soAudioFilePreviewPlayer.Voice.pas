@@ -58,7 +58,8 @@ implementation
 uses
   Math,
   SampleOscUtils,
-  AudioIO;
+  AudioIO,
+  eeDsp.Interpolation;
 
 { TVoiceSampleData }
 
@@ -132,12 +133,6 @@ begin
     ReadStepSize := SampleData.Sample.Properties.SampleRate / self.SampleRate;
     ReadPos := 0;
   end;
-
-
-
-
-
-
 end;
 
 procedure TSamplePreviewVoice.Process(In1, In2: PSingle; Sampleframes: integer);
@@ -147,19 +142,34 @@ var
   ReadFrac : single;
   sd : TSampleFloat;
   Out1, Out2 : single;
+  y0, y1 : single;
 begin
   assert(fIsActive);
 
   sd := self.fSampleData.Sample;
 
-
   for c1 := 0 to SampleFrames-1 do
   begin
     //TODO:HIGH read the sample position here and output the sample preview.
 
+
+    // === optimal linear interpolation if the signal is oversampled. We should
+    // try that next. (oversampling, that is.)
     ReadIndex := floor(ReadPos);
     ReadFrac := ReadPos - ReadIndex;
-    ReadValuesFromSample_LinearInterpolation(sd, ReadIndex, ReadFrac, Out1, Out2);
+    //ReadValuesFromSample_LinearInterpolation(sd, ReadIndex, ReadFrac, Out1, Out2);
+
+
+    //=== straight linear interpolation =====
+    y0 := self.Ch1^[ReadIndex];
+    y1 := self.Ch1^[ReadIndex + 1];
+    Out1 := Linear(ReadFrac, y0, y1);
+
+    y0 := self.Ch2^[ReadIndex];
+    y1 := self.Ch2^[ReadIndex + 1];
+    Out2 := Linear(ReadFrac, y0, y1);
+
+    //====================================================
 
     In1^ := In1^ + Out1 * self.fGain;
     In2^ := In2^ + Out2 * self.fGain;
