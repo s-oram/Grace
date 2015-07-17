@@ -85,6 +85,9 @@ begin
   result := (a0*f*mu2 + a1*mu2 + a2*f + a3);
 end;
 
+// NOTE: From limited testing, it appears CatmullRomCubic and Hermite interpolation produce
+// identical results.
+
 // Implemented copied from:
 // http://paulbourke.net/miscellaneous/interpolation/
 function HermiteInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
