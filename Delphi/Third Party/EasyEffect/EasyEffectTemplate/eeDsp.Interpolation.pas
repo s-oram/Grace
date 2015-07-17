@@ -2,7 +2,13 @@ unit eeDsp.Interpolation;
 
 interface
 
-function Linear(f, y0, y1:double):double; inline;
+function Linear(const f, y0, y1:double):double; inline;
+function CosineInterpolation(const f, y0, y1 : double):double; inline;
+function CubicInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
+function CatmullRomCubicInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
+function HermiteInterpolation(const f, y0, y1, y2, y3 : double):double; inline; overload;
+function HermiteInterpolation(const f, y0, y1, y2, y3, bias, tension : double):double; inline; overload;
+
 
 function Optimal2x2Point3rdOrder(f, y0, y1:single):single; inline;
 
@@ -29,10 +35,98 @@ implementation
 uses
   eeDsp.Interpolation.Tests;
 
-  
-function Linear(f, y0, y1:double):double; inline;
+
+function Linear(const f, y0, y1:double):double; inline;
 begin
   result := y0 + f * (y1 - y0);
+end;
+
+
+// Implemented copied from:
+// http://paulbourke.net/miscellaneous/interpolation/
+function CosineInterpolation(const f, y0, y1 : double):double; inline;
+var
+  mu2 : double;
+begin
+  mu2 := (1-cos(f*PI)) / 2;
+  result := (y0 * (1-mu2) + y1 * mu2);
+end;
+
+
+// Implemented copied from:
+// http://paulbourke.net/miscellaneous/interpolation/
+function CubicInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
+var
+  a0, a1, a2, a3 : double;
+  mu2 : double;
+begin
+  mu2 := f * f;
+  a0 := y3 - y2 - y0 + y1;
+  a1 := y0 - y1 - a0;
+  a2 := y2 - y0;
+  a3 := y1;
+
+  result := (a0*f*mu2 + a1*mu2 + a2*f + a3);
+end;
+
+// Implemented copied from:
+// http://paulbourke.net/miscellaneous/interpolation/
+function CatmullRomCubicInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
+var
+  a0, a1, a2, a3 : double;
+  mu2 : double;
+begin
+  mu2 := f * f;
+  a0 := -0.5*y0 + 1.5*y1 - 1.5*y2 + 0.5*y3;
+  a1 := y0 - 2.5*y1 + 2*y2 - 0.5*y3;
+  a2 := -0.5*y0 + 0.5*y2;
+  a3 := y1;
+
+  result := (a0*f*mu2 + a1*mu2 + a2*f + a3);
+end;
+
+// Implemented copied from:
+// http://paulbourke.net/miscellaneous/interpolation/
+function HermiteInterpolation(const f, y0, y1, y2, y3 : double):double; inline;
+var
+  m0,m1,mu2,mu3 : double;
+  a0, a1, a2, a3 : double;
+begin
+  m0 := (y1-y0) * 0.5 + (y2-y1) * 0.5;
+  m1 := (y2-y1) * 0.5 + (y3-y2) * 0.5;
+  mu2 := f * f;
+  mu3 := f * f * f;
+
+  a0 :=  2*mu3 - 3*mu2 + 1;
+  a1 :=    mu3 - 2*mu2 + f;
+  a2 :=    mu3 -   mu2;
+  a3 := -2*mu3 + 3*mu2;
+  result := (a0*y1+a1*m0+a2*m1+a3*y2);
+end;
+
+// Implemented copied from:
+// http://paulbourke.net/miscellaneous/interpolation/
+// Tension: 1 is high, 0 normal, -1 is low
+// Bias: 0 is even,
+//       positive is towards first segment,
+//       negative towards the other
+function HermiteInterpolation(const f, y0, y1, y2, y3, bias, tension : double):double; inline;
+var
+  m0,m1,mu2,mu3 : double;
+  a0, a1, a2, a3 : double;
+begin
+  mu2 := f * f;
+	mu3 := f * f * f;
+  m0 := (y1-y0)*(1+bias)*(1-tension)/2;
+  m0 := m0 + (y2-y1)*(1-bias)*(1-tension)/2;
+  m1 := (y2-y1)*(1+bias)*(1-tension)/2;
+  m1 := m1 + (y3-y2)*(1-bias)*(1-tension)/2;
+  a0 :=  2*mu3 - 3*mu2 + 1;
+  a1 :=    mu3 - 2*mu2 + f;
+  a2 :=    mu3 -   mu2;
+  a3 := -2*mu3 + 3*mu2;
+
+  result := (a0*y1+a1*m0+a2*m1+a3*y2);
 end;
 
 

@@ -142,7 +142,7 @@ var
   ReadFrac : single;
   sd : TSampleFloat;
   Out1, Out2 : single;
-  y0, y1 : single;
+  y0, y1, y2, y3 : single;
 begin
   assert(fIsActive);
 
@@ -163,11 +163,19 @@ begin
     //=== straight linear interpolation =====
     y0 := self.Ch1^[ReadIndex];
     y1 := self.Ch1^[ReadIndex + 1];
-    Out1 := Linear(ReadFrac, y0, y1);
+    y2 := self.Ch1^[ReadIndex + 2];
+    y3 := self.Ch1^[ReadIndex + 3];
+    //Out1 := Linear(ReadFrac, y0, y1);
+    //Out1 := CosineInterpolation(ReadFrac, y0, y1);
+    Out1 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
 
     y0 := self.Ch2^[ReadIndex];
     y1 := self.Ch2^[ReadIndex + 1];
-    Out2 := Linear(ReadFrac, y0, y1);
+    y2 := self.Ch2^[ReadIndex + 2];
+    y3 := self.Ch2^[ReadIndex + 3];
+    //Out2 := Linear(ReadFrac, y0, y1);
+    //Out2 := CosineInterpolation(ReadFrac, y0, y1);
+    Out2 := HermiteInterpolation(ReadFrac, y0, y1, y2, y3);
 
     //====================================================
 
