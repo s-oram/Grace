@@ -7,6 +7,7 @@ uses
   VamLib.MoreTypes, eeSampleFloat;
 
 type
+  // TODO:HIGH this class doesn't need to exist. It could be removed.
   TVoiceSampleData = class
   private
     fSample:TSampleFloat;
