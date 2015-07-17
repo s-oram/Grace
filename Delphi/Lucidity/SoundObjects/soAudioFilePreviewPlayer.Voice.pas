@@ -3,6 +3,7 @@ unit soAudioFilePreviewPlayer.Voice;
 interface
 
 uses
+  eeDsp.Interpolation,
   VamLib.MoreTypes, eeSampleFloat;
 
 type
@@ -58,8 +59,7 @@ implementation
 uses
   Math,
   SampleOscUtils,
-  AudioIO,
-  eeDsp.Interpolation;
+  AudioIO;
 
 { TVoiceSampleData }
 

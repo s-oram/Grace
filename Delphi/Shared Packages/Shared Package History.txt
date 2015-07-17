@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+17 July 2015
+- Add a small bug fix to VamLib.OneShotTimer.pas
+
 15 July 2015
 - Add new SmartInspectExt package.
 

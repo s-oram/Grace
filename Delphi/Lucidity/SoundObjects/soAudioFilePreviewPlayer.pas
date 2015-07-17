@@ -3,6 +3,7 @@ unit soAudioFilePreviewPlayer;
 interface
 
 uses
+  Math,
   eeSampleFloat,
   eeSampleInt,
   eeSimpleGate,
@@ -38,6 +39,7 @@ type
     NextSampleToLoad : string;
     IsPreviewTriggerRequired : boolean;
     Voice : TSamplePreviewVoice;
+    procedure DoSampleLoad;
   public
     constructor Create;
 	  destructor Destroy; override;
@@ -46,7 +48,7 @@ type
     procedure Stop;
     procedure Kill;
 
-    procedure Process(In1,In2:PSingle; Sampleframes:integer); inline;
+    procedure Process(In1,In2:PSingle; Sampleframes:integer); //inline;
 
     property SampleRate:integer read fSampleRate write SetSampleRate;
     property MaxBlockSize : integer write SetMaxBlockSize;
@@ -58,6 +60,7 @@ type
 implementation
 
 uses
+  VamLib.Threads,
   eeCustomSample, AudioIO, SysUtils;
 
 
@@ -67,8 +70,6 @@ uses
 { TAudioFilePreviewPlayer }
 
 constructor TAudioFilePreviewPlayer.Create;
-var
-  c1: Integer;
 begin
   Voice := TSamplePreviewVoice.Create;
   SampleData := TVoiceSampleData.Create;
@@ -88,12 +89,9 @@ begin
 end;
 
 destructor TAudioFilePreviewPlayer.Destroy;
-var
-  c1:integer;
 begin
   SampleData.Free;
   Voice.Free;
-
   inherited;
 end;
 
@@ -103,16 +101,12 @@ begin
 end;
 
 procedure TAudioFilePreviewPlayer.SetSampleRate(const Value: integer);
-var
-  c1:integer;
 begin
   fSampleRate := Value;
   Voice.SampleRate := Value;
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
-var
-  c1:integer;
 begin
   fVolume := Value;
   Voice.Gain := Value;
@@ -167,8 +161,6 @@ begin
 end;
 
 procedure TAudioFilePreviewPlayer.Stop;
-var
-  c1:integer;
 begin
   ClearTimeout(TimerID);
   IsPreviewTriggerRequired := false;
@@ -176,24 +168,27 @@ begin
 end;
 
 procedure TAudioFilePreviewPlayer.Kill;
-var
-  c1:integer;
 begin
   ClearTimeout(TimerID);
   IsPreviewTriggerRequired := false;
   Voice.Kill;
 end;
 
+procedure TAudioFilePreviewPlayer.DoSampleLoad;
+begin
+  RunTask(procedure begin
+    SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
+  end);
+end;
+
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
-var
-  c1:integer;
 begin
   if (IsPreviewTriggerRequired) and (SampleData.IsLoadingSample = false) then
   begin
     if CurrentSampleID <> SampleData.SampleID then
     begin
-      //TODO:HIGH sample needs to be loaded in a thread.
-      SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
+      Voice.Kill;
+      DoSampleLoad;
     end else
     begin
       IsPreviewTriggerRequired := false;

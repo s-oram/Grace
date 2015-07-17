@@ -13,7 +13,8 @@ uses
   SysUtils;
 
 
-procedure RunTask(aTask, FinishedCallback : TThreadProcedure);
+procedure RunTask(aTask : TThreadProcedure); overload;
+procedure RunTask(aTask, FinishedCallback : TThreadProcedure); overload;
 
 // Action's are executed in the main thead (usually GUI afaik).
 // TODO:HIGH there probably needs to be a way to ensure the delayed action always works.
@@ -112,6 +113,11 @@ implementation
 
 uses
   ExtCtrls;
+
+procedure RunTask(aTask : TThreadProcedure);
+begin
+  Async(aTask).Await(nil);
+end;
 
 procedure RunTask(aTask, FinishedCallback : TThreadProcedure);
 begin
