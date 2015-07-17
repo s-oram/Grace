@@ -39,6 +39,7 @@ type
     NextSampleToLoad : string;
     IsPreviewTriggerRequired : boolean;
     Voice : TSamplePreviewVoice;
+    IsLoadingSample : boolean;
     procedure DoSampleLoad;
   public
     constructor Create;
@@ -75,6 +76,7 @@ begin
   SampleData := TVoiceSampleData.Create;
   CurrentSampleID := 0;
   IsPreviewTriggerRequired := false;
+  IsLoadingSample := false;
 
   TimerID := 0;
 
@@ -178,21 +180,24 @@ procedure TAudioFilePreviewPlayer.DoSampleLoad;
 begin
   RunTask(procedure begin
     SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
+  end,
+  procedure begin
+    Voice.Trigger(SampleData);
+    IsLoadingSample := false;
   end);
 end;
 
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
 begin
-  if (IsPreviewTriggerRequired) and (SampleData.IsLoadingSample = false) then
+  if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
   begin
+    IsPreviewTriggerRequired := false;
+
     if CurrentSampleID <> SampleData.SampleID then
     begin
+      IsLoadingSample := true;
       Voice.Kill;
       DoSampleLoad;
-    end else
-    begin
-      IsPreviewTriggerRequired := false;
-      Voice.Trigger(SampleData);
     end;
   end;
 

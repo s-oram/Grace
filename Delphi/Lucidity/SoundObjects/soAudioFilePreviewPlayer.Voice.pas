@@ -11,7 +11,6 @@ type
   private
     fSample:TSampleFloat;
     fSampleID : cardinal;
-    fIsLoadingSample: boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -19,8 +18,6 @@ type
     procedure LoadSampleData(aSampleFileName : string; aSampleID : cardinal);
 
     property Sample : TSampleFloat read fSample;
-
-    property IsLoadingSample : boolean read fIsLoadingSample;
     property SampleID : cardinal read fSampleID;
   end;
 
@@ -67,7 +64,6 @@ constructor TVoiceSampleData.Create;
 begin
   fSampleID := 0;
   fSample := TSampleFloat.Create;
-  fIsLoadingSample := false;
 end;
 
 destructor TVoiceSampleData.Destroy;
@@ -79,13 +75,7 @@ end;
 procedure TVoiceSampleData.LoadSampleData(aSampleFileName: string; aSampleID : cardinal);
 begin
   fSampleID := aSampleID;
-  fIsLoadingSample := true;
-
-  //========================================================================
-  // TODO:HIGH: Sample loading should be completed in a thread.
   Sample.LoadFromFile(aSampleFileName);
-  fIsLoadingSample := false;
-  //========================================================================
 end;
 
 { TSamplePreviewVoice }
