@@ -33,7 +33,6 @@ type
     function GetSampleInfo: PPreviewSampleProperties;
     procedure SetMaxBlockSize(const Value: integer);
   protected
-    CurrentSampleID : cardinal;
     SampleData : TVoiceSampleData;
     TimerID : cardinal;
     NextSampleToLoad : string;
@@ -74,7 +73,6 @@ constructor TAudioFilePreviewPlayer.Create;
 begin
   Voice := TSamplePreviewVoice.Create;
   SampleData := TVoiceSampleData.Create;
-  CurrentSampleID := 0;
   IsPreviewTriggerRequired := false;
   IsLoadingSample := false;
 
@@ -153,9 +151,6 @@ begin
 
       NextSampleToLoad := aFileName;
       IsPreviewTriggerRequired := true;
-
-      // TODO:HIGH: Need to protect against overflow actions here.
-      inc(CurrentSampleID);
     end;
   end;
 
@@ -179,7 +174,7 @@ end;
 procedure TAudioFilePreviewPlayer.DoSampleLoad;
 begin
   RunTask(procedure begin
-    SampleData.LoadSampleData(self.NextSampleToLoad, self.CurrentSampleID);
+    SampleData.LoadSampleData(self.NextSampleToLoad, 0);
   end,
   procedure begin
     Voice.Trigger(SampleData);
@@ -192,13 +187,9 @@ begin
   if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
   begin
     IsPreviewTriggerRequired := false;
-
-    if CurrentSampleID <> SampleData.SampleID then
-    begin
-      IsLoadingSample := true;
-      Voice.Kill;
-      DoSampleLoad;
-    end;
+    IsLoadingSample := true;
+    Voice.Kill;
+    DoSampleLoad;
   end;
 
   if Voice.IsActive then
