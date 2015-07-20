@@ -7,28 +7,13 @@ uses
   VamLib.MoreTypes, eeSampleFloat;
 
 type
-  // TODO:HIGH this class doesn't need to exist. It could be removed.
-  TVoiceSampleData = class
-  private
-    fSample:TSampleFloat;
-    fSampleID : cardinal;
-  public
-    constructor Create;
-    destructor Destroy; override;
-
-    procedure LoadSampleData(aSampleFileName : string; aSampleID : cardinal);
-
-    property Sample : TSampleFloat read fSample;
-    property SampleID : cardinal read fSampleID;
-  end;
-
   TSamplePreviewVoice = class
   private
     fSampleRate: integer;
     fMaxBlockSize: integer;
     fGain: single;
     fIsActive: boolean;
-    fSampleData : TVoiceSampleData;
+    fSampleData : TSampleFloat;
   private
     ReadPos : single;
     ReadStepSize : single;
@@ -41,7 +26,7 @@ type
 
     procedure Process(In1,In2:PSingle; Sampleframes:integer); inline;
 
-    procedure Trigger(SampleData : TVoiceSampleData);
+    procedure Trigger(SampleData : TSampleFloat);
     procedure Kill;
 
     property Gain : single read fGain write fGain;
@@ -58,26 +43,6 @@ uses
   Math,
   SampleOscUtils,
   AudioIO;
-
-{ TVoiceSampleData }
-
-constructor TVoiceSampleData.Create;
-begin
-  fSampleID := 0;
-  fSample := TSampleFloat.Create;
-end;
-
-destructor TVoiceSampleData.Destroy;
-begin
-  fSample.Free;
-  inherited;
-end;
-
-procedure TVoiceSampleData.LoadSampleData(aSampleFileName: string; aSampleID : cardinal);
-begin
-  fSampleID := aSampleID;
-  Sample.LoadFromFile(aSampleFileName);
-end;
 
 { TSamplePreviewVoice }
 
@@ -97,31 +62,31 @@ begin
   fIsActive := false;
 end;
 
-procedure TSamplePreviewVoice.Trigger(SampleData: TVoiceSampleData);
+procedure TSamplePreviewVoice.Trigger(SampleData: TSampleFloat);
 begin
   assert(self.SampleRate > 0);
 
   fSampleData := SampleData;
-  if SampleData.Sample.Properties.IsValid then
+  if fSampleData.Properties.IsValid then
   begin
     fIsActive := true;
 
-    if SampleData.Sample.Properties.ChannelCount = 1 then
+    if SampleData.Properties.ChannelCount = 1 then
     begin
-      Ch1 := SampleData.Sample.Ch1Pointer;
-      Ch2 := SampleData.Sample.Ch1Pointer;
+      Ch1 := SampleData.Ch1Pointer;
+      Ch2 := SampleData.Ch1Pointer;
     end else
-    if SampleData.Sample.Properties.ChannelCount = 2 then
+    if SampleData.Properties.ChannelCount = 2 then
     begin
-      Ch1 := SampleData.Sample.Ch1Pointer;
-      Ch2 := SampleData.Sample.Ch2Pointer;
+      Ch1 := SampleData.Ch1Pointer;
+      Ch2 := SampleData.Ch2Pointer;
     end else
     begin
       exit; //========================>> exit >>=======================>>
     end;
 
-    SampleLength := SampleData.Sample.Properties.SampleFrames;
-    ReadStepSize := SampleData.Sample.Properties.SampleRate / self.SampleRate;
+    SampleLength := SampleData.Properties.SampleFrames;
+    ReadStepSize := SampleData.Properties.SampleRate / self.SampleRate;
     ReadPos := 0;
   end;
 end;
@@ -131,13 +96,10 @@ var
   c1: Integer;
   ReadIndex : cardinal;
   ReadFrac : single;
-  sd : TSampleFloat;
   Out1, Out2 : single;
   y0, y1, y2, y3 : single;
 begin
   assert(fIsActive);
-
-  sd := self.fSampleData.Sample;
 
   for c1 := 0 to SampleFrames-1 do
   begin

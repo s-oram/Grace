@@ -33,7 +33,7 @@ type
     function GetSampleInfo: PPreviewSampleProperties;
     procedure SetMaxBlockSize(const Value: integer);
   protected
-    SampleData : TVoiceSampleData;
+    SampleData : TSampleFloat;
     TimerID : cardinal;
     NextSampleToLoad : string;
     IsPreviewTriggerRequired : boolean;
@@ -72,7 +72,7 @@ uses
 constructor TAudioFilePreviewPlayer.Create;
 begin
   Voice := TSamplePreviewVoice.Create;
-  SampleData := TVoiceSampleData.Create;
+  SampleData := TSampleFloat.Create;
   IsPreviewTriggerRequired := false;
   IsLoadingSample := false;
 
@@ -174,10 +174,10 @@ end;
 procedure TAudioFilePreviewPlayer.DoSampleLoad;
 begin
   RunTask(procedure begin
-    SampleData.LoadSampleData(self.NextSampleToLoad, 0);
+    SampleData.LoadFromFile(self.NextSampleToLoad);
   end,
   procedure begin
-    Voice.Trigger(SampleData);
+    if SampleData.Properties.IsValid then Voice.Trigger(SampleData);
     IsLoadingSample := false;
   end);
 end;
