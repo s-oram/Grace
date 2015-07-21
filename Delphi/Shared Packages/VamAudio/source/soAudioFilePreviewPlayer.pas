@@ -8,6 +8,7 @@ uses
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
   VamDsp.Interpolation,
+  VamAudio.R8BrainWrapper.v2,
   soAudioFilePreviewPlayer.Voice;
 
 const
@@ -32,6 +33,8 @@ type
     function GetSampleInfo: PPreviewSampleProperties;
   protected
     OutBuffer1, OutBuffer2 : array of double;
+    DownSampler1, DownSampler2 : TR8BrainResampler;
+
     SampleData : TSampleFloat;
     TimerID : cardinal;
     NextSampleToLoad : string;
@@ -61,12 +64,13 @@ type
 implementation
 
 uses
+  r8bsrcEx,
   VamLib.Threads,
   eeCustomSample, AudioIO, SysUtils;
 
 
 const
-  OverSampleFactor : integer = 2;
+  OverSampleFactor : integer = 1;
 
 
 { TAudioFilePreviewPlayer }
@@ -89,6 +93,9 @@ begin
   SampleInfo^.SampleFrames   := 0;
   SampleInfo^.SampleRate     := 0;
   SampleInfo^.SourceBitDepth := 0;
+
+  DownSampler1 := TR8BrainResampler.Create;
+  DownSampler2 := TR8BrainResampler.Create;
 end;
 
 destructor TAudioFilePreviewPlayer.Destroy;
@@ -99,19 +106,32 @@ begin
   SetLength(OutBuffer1, 0);
   SetLength(OutBuffer2, 0);
 
+  DownSampler1.Free;
+  DownSampler2.Free;
+
   inherited;
 end;
 
 procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize: integer);
+var
+  DSConfig : TResampleConfig;
 begin
-  Voice.BlockSize := aBlockSize;
-  Voice.SampleRate := aSampleRate;
-
   fSampleRate := aSampleRate;
   fBlockSize := aBlockSize;
 
+  Voice.BlockSize  := aBlockSize  * OverSampleFactor;
+  Voice.SampleRate := aSampleRate * OverSampleFactor;
+
   SetLength(OutBuffer1, aBlockSize * OverSampleFactor);
   SetLength(OutBuffer2, aBlockSize * OverSampleFactor);
+
+  DSConfig.SourceRate := 1 * OverSampleFactor;
+  DSConfig.DestRate := 1;
+  DSConfig.MaxInputBufferFrames := aBlockSize * OverSampleFactor;
+  DSConfig.TransitionBand := 4;
+  DSConfig.Res := TResampleResolution.res16Bit;
+  DownSampler1.Setup(@DSConfig, false);
+  DownSampler2.Setup(@DSConfig, false);
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
@@ -185,6 +205,8 @@ begin
     SampleData.LoadFromFile(self.NextSampleToLoad);
   end,
   procedure begin
+    DownSampler1.Reset;
+    DownSampler2.Reset;
     if SampleData.Properties.IsValid then Voice.Trigger(SampleData);
     IsLoadingSample := false;
   end);
@@ -192,7 +214,12 @@ end;
 
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
 var
+  OverSampleFrames : integer;
   c1: Integer;
+  OutFrames : integer;
+
+  pOut1 : PDouble;
+  pOut2 : PDouble;
 begin
   if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
   begin
@@ -204,9 +231,20 @@ begin
 
   if Voice.IsActive then
   begin
+    pOut1 := @OutBuffer1[0];
+    pOut2 := @OutBuffer2[0];
+
     //Voice.Process(In1, In2, SampleFrames);
 
-    Voice.ProcessReplacing(@OutBuffer1[0], @OutBuffer2[0], SampleFrames);
+    OverSampleFrames :=  SampleFrames * OverSampleFactor;
+
+    Voice.ProcessReplacing(pOut1, pOut2, OverSampleFrames);
+    OutFrames := DownSampler1.ProcessDouble(pOut1, OverSampleFrames, pOut1);
+    assert(OutFrames = SampleFrames);
+
+    OutFrames := DownSampler2.ProcessDouble(pOut2, OverSampleFrames, pOut2);
+    assert(OutFrames = SampleFrames);
+
     for c1 := 0 to SampleFrames-1 do
     begin
       In1^ := In1^ + OutBuffer1[0];
