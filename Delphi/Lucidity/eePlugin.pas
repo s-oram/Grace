@@ -902,7 +902,7 @@ end;
 procedure TeePlugin.Resume;
 begin
   inherited;
-  AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize);
+  AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize, 1);
   Globals.AudioActions.IsProcessingActive := true;
 end;
 
