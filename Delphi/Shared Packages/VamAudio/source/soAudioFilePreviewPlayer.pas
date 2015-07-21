@@ -7,6 +7,7 @@ uses
   eeSampleFloat,
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
+  VamDsp.Interpolation,
   soAudioFilePreviewPlayer.Voice;
 
 const

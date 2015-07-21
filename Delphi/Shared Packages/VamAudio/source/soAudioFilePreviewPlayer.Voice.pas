@@ -41,7 +41,7 @@ implementation
 
 uses
   Math,
-  SampleOscUtils,
+  //SampleOscUtils,
   AudioIO;
 
 { TSamplePreviewVoice }

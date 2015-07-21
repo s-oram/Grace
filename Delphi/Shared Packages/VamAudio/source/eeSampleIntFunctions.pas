@@ -21,6 +21,7 @@ begin
     begin
       NewSample.Free;
       NewSample := nil;
+      result := NewSample;
       exit; //==============>>
     end;
 

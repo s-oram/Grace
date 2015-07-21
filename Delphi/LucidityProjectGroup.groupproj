@@ -28,7 +28,7 @@
 				<Dependencies>Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Shared Packages\VamAudio\VamAudio.dproj">
-				<Dependencies/>
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj">
 				<Dependencies/>
@@ -152,13 +152,13 @@
 		<Target Name="AudioIO_DXE2:Make" DependsOnTargets="r8Brain_RunTime:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj"/>
 		</Target>
-		<Target Name="VamAudio">
+		<Target Name="VamAudio" DependsOnTargets="VamLib;AudioIO_DXE2">
 			<MSBuild Projects="Shared Packages\VamAudio\VamAudio.dproj"/>
 		</Target>
-		<Target Name="VamAudio:Clean">
+		<Target Name="VamAudio:Clean" DependsOnTargets="VamLib:Clean;AudioIO_DXE2:Clean">
 			<MSBuild Targets="Clean" Projects="Shared Packages\VamAudio\VamAudio.dproj"/>
 		</Target>
-		<Target Name="VamAudio:Make">
+		<Target Name="VamAudio:Make" DependsOnTargets="VamLib:Make;AudioIO_DXE2:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\VamAudio\VamAudio.dproj"/>
 		</Target>
 		<Target Name="AggPasRunXE2">

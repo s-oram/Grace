@@ -39,6 +39,9 @@ contains
   eeSampleFloatFunctions in 'source\eeSampleFloatFunctions.pas',
   eeSampleInt in 'source\eeSampleInt.pas',
   eeSampleIntF in 'source\eeSampleIntF.pas',
-  eeSampleIntFunctions in 'source\eeSampleIntFunctions.pas';
+  eeSampleIntFunctions in 'source\eeSampleIntFunctions.pas',
+  soAudioFilePreviewPlayer in 'source\soAudioFilePreviewPlayer.pas',
+  soAudioFilePreviewPlayer.Voice in 'source\soAudioFilePreviewPlayer.Voice.pas';
 
 end.
+
