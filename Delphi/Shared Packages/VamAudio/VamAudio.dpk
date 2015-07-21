@@ -41,7 +41,8 @@ contains
   eeSampleIntF in 'source\eeSampleIntF.pas',
   eeSampleIntFunctions in 'source\eeSampleIntFunctions.pas',
   soAudioFilePreviewPlayer in 'source\soAudioFilePreviewPlayer.pas',
-  soAudioFilePreviewPlayer.Voice in 'source\soAudioFilePreviewPlayer.Voice.pas';
+  soAudioFilePreviewPlayer.Voice in 'source\soAudioFilePreviewPlayer.Voice.pas',
+  VamAudio.R8BrainWrapper in 'source\samplerate conversion\VamAudio.R8BrainWrapper.pas';
 
 end.
 

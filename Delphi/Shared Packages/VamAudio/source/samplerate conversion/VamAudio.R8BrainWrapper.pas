@@ -1,7 +1,6 @@
-unit EasyEffect.R8BrainWrapper;
+unit VamAudio.R8BrainWrapper;
 
 interface
-
 
 // https://code.google.com/p/r8brain-free-src/
 
@@ -139,9 +138,6 @@ begin
   OutputSampleFrames := r8b_process(rsHandle, PR8BDouble(InputBuffer), InputSampleFrames, PR8BDouble(OutputBuffer));
   result := OutputSampleFrames;
 end;
-
-
-
 
 
 end.

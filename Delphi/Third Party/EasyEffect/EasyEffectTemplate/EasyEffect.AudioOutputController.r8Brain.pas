@@ -5,8 +5,8 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamAudio.R8BrainWrapper,
   EasyEffect.AudioOutputController.Custom,
-  EasyEffect.R8BrainWrapper,
   DAEffect, VamLib.MoreTypes;
 
 type
