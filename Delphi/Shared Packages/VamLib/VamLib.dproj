@@ -133,6 +133,8 @@
 			<DCCReference Include="Source\VamLib.Vcl.ZeroFrame.pas"/>
 			<DCCReference Include="Source\VamDSP.Interpolation.pas"/>
 			<DCCReference Include="Source\VamDsp.Utils.pas"/>
+			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.pas"/>
+			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.Singleton.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

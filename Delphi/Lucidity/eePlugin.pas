@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ThreadSyncEnforcer.Singleton,
   VamLib.UniqueID,
   eeTypes,
   eePublishedVstParameters,

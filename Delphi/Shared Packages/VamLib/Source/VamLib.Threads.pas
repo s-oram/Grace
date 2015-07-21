@@ -13,6 +13,11 @@ uses
   SysUtils;
 
 
+// NOTE: WARNING: RunTask() methods require regular CheckSynchronize() calls to be
+// made. VamLib.ThreadSyncEnforcer.Singleton.pas is a unit designed to automatically
+// do so, include it when using RunTask or call CheckSynchronization().
+// "aTask" methods will be executed in the GUI thread context.
+// "FinishedCallback" methods will be executed in the context of the calling thread.
 procedure RunTask(aTask : TThreadProcedure); overload;
 procedure RunTask(aTask, FinishedCallback : TThreadProcedure); overload;
 
