@@ -6,7 +6,7 @@ interface
 
 uses
   EasyEffect.AudioOutputController.Custom,
-  R8BrainWrapper, eeMultiChannelBuffers,
+  VamAudio.R8BrainWrapper, eeMultiChannelBuffers,
   DAEffect, VamLib.MoreTypes;
 
 const
