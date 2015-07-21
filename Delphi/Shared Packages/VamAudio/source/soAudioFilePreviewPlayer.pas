@@ -70,7 +70,7 @@ uses
 
 
 const
-  OverSampleFactor : integer = 1;
+  OverSampleFactor : integer = 2;
 
 
 { TAudioFilePreviewPlayer }
@@ -247,8 +247,8 @@ begin
 
     for c1 := 0 to SampleFrames-1 do
     begin
-      In1^ := In1^ + OutBuffer1[0];
-      In2^ := In2^ + OutBuffer1[0];
+      In1^ := In1^ + OutBuffer1[c1];
+      In2^ := In2^ + OutBuffer1[c1];
       inc(In1);
       inc(In2);
     end;
