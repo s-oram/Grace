@@ -42,10 +42,12 @@ type
 
     procedure Setup(SrcSampleRate: Double; DstSampleRate: Double;	MaxInLen: LongInt; ReqTransBand: Double; Res: TResampleResolution); overload;
 
-    // InputBuffer and OutputBuffer may use the same buffer. IE. The process method can work in-place.
-    function Process_Single(InputBuffer, OutputBuffer : PSingle; const InputSampleFrames : integer):integer;
+    // NOTE: InputBuffer and OutputBuffer may use the same buffer. IE. The process method can work in-place.
+    // NOTE: ProcessDouble is preferred as it avoids copying to and from tempory buffers.
+    function ProcessSingle(InputBuffer, OutputBuffer : PSingle; const InputSampleFrames : integer):integer;
+    function ProcessDouble(InputBuffer : PDouble; const InputSampleFrames : integer; out OutputBuffer:PDouble):integer;
 
-    function Process(InputBuffer : PDouble; const InputSampleFrames : integer; out OutputBuffer:PDouble):integer;
+    procedure Reset;
 
     property Latency : integer read fLatency;
   end;
@@ -220,7 +222,7 @@ begin
 end;
 
 
-function TR8BrainResampler.Process_Single(InputBuffer, OutputBuffer: PSingle; const InputSampleFrames: integer): integer;
+function TR8BrainResampler.ProcessSingle(InputBuffer, OutputBuffer: PSingle; const InputSampleFrames: integer): integer;
 var
   c1: Integer;
   OutputSampleFrames : integer;
@@ -243,7 +245,12 @@ begin
   result := OutputSampleFrames;
 end;
 
-function TR8BrainResampler.Process(InputBuffer: PDouble; const InputSampleFrames: integer; out OutputBuffer: PDouble): integer;
+procedure TR8BrainResampler.Reset;
+begin
+  PrimeResampleObject;
+end;
+
+function TR8BrainResampler.ProcessDouble(InputBuffer: PDouble; const InputSampleFrames: integer; out OutputBuffer: PDouble): integer;
 var
   OutputSampleFrames : integer;
 begin
