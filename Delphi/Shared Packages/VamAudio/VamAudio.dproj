@@ -92,6 +92,12 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
 			<DCCReference Include="AudioIO_DXE2.dcp"/>
+			<DCCReference Include="source\eeCustomSample.pas"/>
+			<DCCReference Include="source\eeSampleFloat.pas"/>
+			<DCCReference Include="source\eeSampleFloatFunctions.pas"/>
+			<DCCReference Include="source\eeSampleInt.pas"/>
+			<DCCReference Include="source\eeSampleIntF.pas"/>
+			<DCCReference Include="source\eeSampleIntFunctions.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

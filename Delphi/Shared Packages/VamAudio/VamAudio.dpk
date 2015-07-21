@@ -33,4 +33,12 @@ requires
   VamLib,
   AudioIO_DXE2;
 
+contains
+  eeCustomSample in 'source\eeCustomSample.pas',
+  eeSampleFloat in 'source\eeSampleFloat.pas',
+  eeSampleFloatFunctions in 'source\eeSampleFloatFunctions.pas',
+  eeSampleInt in 'source\eeSampleInt.pas',
+  eeSampleIntF in 'source\eeSampleIntF.pas',
+  eeSampleIntFunctions in 'source\eeSampleIntFunctions.pas';
+
 end.
