@@ -5,6 +5,7 @@
 - Create VamDsp.Interpoloation unit.
 - Create VamAudio package with Audio file preview playback unit.
 - Add VamLib.ThreadSyncEnforcer.Auto.pas
+- Audio file preview player now works with variable oversampling. 
 
 17 July 2015
 - Add a small bug fix to VamLib.OneShotTimer.pas

@@ -29,6 +29,7 @@ type
     fBlockSize : integer;
     fVolume     : single;
     fSampleInfo : TPreviewSampleProperties;
+    fOverSampleFactor: integer;
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
   protected
@@ -52,8 +53,9 @@ type
 
     procedure Process(In1,In2:PSingle; Sampleframes:integer); //inline;
 
-    procedure UpdateConfig(const aSampleRate, aBlockSize : integer);
+    procedure UpdateConfig(const aSampleRate, aBlockSize, aOverSampleFactor : integer);
 
+    property OverSampleFactor : integer read fOverSampleFactor;
     property SampleRate:integer read fSampleRate;
     property BlockSize : integer read fBlockSize;
     property Volume    :single  read fVolume     write SetVolume;     //range 0..1
@@ -67,11 +69,6 @@ uses
   r8bsrcEx,
   VamLib.Threads,
   eeCustomSample, AudioIO, SysUtils;
-
-
-const
-  OverSampleFactor : integer = 2;
-
 
 { TAudioFilePreviewPlayer }
 
@@ -112,12 +109,13 @@ begin
   inherited;
 end;
 
-procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize: integer);
+procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize, aOverSampleFactor: integer);
 var
   DSConfig : TResampleConfig;
 begin
   fSampleRate := aSampleRate;
   fBlockSize := aBlockSize;
+  fOverSampleFactor := aOverSampleFactor;
 
   Voice.BlockSize  := aBlockSize  * OverSampleFactor;
   Voice.SampleRate := aSampleRate * OverSampleFactor;
