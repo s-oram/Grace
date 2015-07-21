@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  eeFunctions;
+  eeFunctions, r8bsrcEx;
 
 { TVstAudioOutputController }
 

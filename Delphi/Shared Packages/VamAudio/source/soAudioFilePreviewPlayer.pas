@@ -25,12 +25,11 @@ type
   TAudioFilePreviewPlayer = class
   private
     fSampleRate : integer;
+    fBlockSize : integer;
     fVolume     : single;
     fSampleInfo : TPreviewSampleProperties;
-    procedure SetSampleRate(const Value: integer);
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
-    procedure SetBlockSize(const Value: integer);
   protected
     SampleData : TSampleFloat;
     TimerID : cardinal;
@@ -49,8 +48,10 @@ type
 
     procedure Process(In1,In2:PSingle; Sampleframes:integer); //inline;
 
-    property SampleRate:integer read fSampleRate write SetSampleRate;
-    property BlockSize : integer write SetBlockSize;
+    procedure UpdateConfig(const aSampleRate, aBlockSize : integer);
+
+    property SampleRate:integer read fSampleRate;
+    property BlockSize : integer read fBlockSize;
     property Volume    :single  read fVolume     write SetVolume;     //range 0..1
 
     property SampleInfo :PPreviewSampleProperties read GetSampleInfo;
@@ -78,7 +79,8 @@ begin
   TimerID := 0;
 
   Volume     := 1;
-  SampleRate := 44100;
+  fSampleRate := 44100;
+  fBlockSize := 0;
 
   SampleInfo^.IsValid        := false;
   SampleInfo^.ChannelCount   := 0;
@@ -94,15 +96,13 @@ begin
   inherited;
 end;
 
-procedure TAudioFilePreviewPlayer.SetBlockSize(const Value: integer);
+procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize: integer);
 begin
-  Voice.BlockSize := value;
-end;
+  Voice.BlockSize := aBlockSize;
+  Voice.SampleRate := aSampleRate;
 
-procedure TAudioFilePreviewPlayer.SetSampleRate(const Value: integer);
-begin
-  fSampleRate := Value;
-  Voice.SampleRate := Value;
+  fSampleRate := aSampleRate;
+  fBlockSize := aBlockSize;
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
