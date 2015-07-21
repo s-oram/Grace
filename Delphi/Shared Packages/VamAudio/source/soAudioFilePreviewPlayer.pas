@@ -30,7 +30,7 @@ type
     procedure SetSampleRate(const Value: integer);
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
-    procedure SetMaxBlockSize(const Value: integer);
+    procedure SetBlockSize(const Value: integer);
   protected
     SampleData : TSampleFloat;
     TimerID : cardinal;
@@ -50,7 +50,7 @@ type
     procedure Process(In1,In2:PSingle; Sampleframes:integer); //inline;
 
     property SampleRate:integer read fSampleRate write SetSampleRate;
-    property MaxBlockSize : integer write SetMaxBlockSize;
+    property BlockSize : integer write SetBlockSize;
     property Volume    :single  read fVolume     write SetVolume;     //range 0..1
 
     property SampleInfo :PPreviewSampleProperties read GetSampleInfo;
@@ -94,9 +94,9 @@ begin
   inherited;
 end;
 
-procedure TAudioFilePreviewPlayer.SetMaxBlockSize(const Value: integer);
+procedure TAudioFilePreviewPlayer.SetBlockSize(const Value: integer);
 begin
-  Voice.MaxBlockSize := value;
+  Voice.BlockSize := value;
 end;
 
 procedure TAudioFilePreviewPlayer.SetSampleRate(const Value: integer);

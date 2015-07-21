@@ -85,6 +85,7 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="source\r8bsrc.pas"/>
 			<DCCReference Include="source\r8Brain.pas"/>
+			<DCCReference Include="source\r8bsrcEx.pas"/>
 			<None Include="source\r8Brain.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

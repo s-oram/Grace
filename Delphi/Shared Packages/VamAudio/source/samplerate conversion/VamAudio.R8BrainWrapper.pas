@@ -5,11 +5,9 @@ interface
 // https://code.google.com/p/r8brain-free-src/
 
 uses
-  VamLib.MoreTypes, r8bsrc;
+  VamLib.MoreTypes, r8bsrc, r8bsrcEx;
 
 type
-  TResampleResolution = (res16Bit, res16BitIR, res24bit);
-
   TR8BrainResampler = class
   private
     rsHandle : CR8BResampler;

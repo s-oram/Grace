@@ -10,7 +10,7 @@ type
   TSamplePreviewVoice = class
   private
     fSampleRate: integer;
-    fMaxBlockSize: integer;
+    fBlockSize: integer;
     fGain: single;
     fIsActive: boolean;
     fSampleData : TSampleFloat;
@@ -31,7 +31,7 @@ type
 
     property Gain : single read fGain write fGain;
     property SampleRate : integer read fSampleRate write fSampleRate;
-    property MaxBlockSize : integer read fMaxBlockSize write fMaxBlockSize;
+    property BlockSize : integer read fBlockSize write fBlockSize;
 
     property IsActive : boolean read fIsActive;
   end;

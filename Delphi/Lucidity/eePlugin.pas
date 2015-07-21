@@ -903,6 +903,7 @@ procedure TeePlugin.Resume;
 begin
   inherited;
   AudioPreviewPlayer.SampleRate := Globals.SampleRate;
+  AudioPreviewPlayer.BlockSize := Globals.BlockSize;
   Globals.AudioActions.IsProcessingActive := true;
 end;
 

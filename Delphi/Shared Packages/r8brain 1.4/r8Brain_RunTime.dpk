@@ -35,6 +35,7 @@ requires
 
 contains
   r8bsrc in 'source\r8bsrc.pas',
-  r8Brain in 'source\r8Brain.pas';
+  r8Brain in 'source\r8Brain.pas',
+  r8bsrcEx in 'source\r8bsrcEx.pas';
 
 end.
