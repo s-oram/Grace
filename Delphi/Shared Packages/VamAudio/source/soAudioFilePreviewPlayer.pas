@@ -31,6 +31,7 @@ type
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
   protected
+    OutBuffer1, OutBuffer2 : array of double;
     SampleData : TSampleFloat;
     TimerID : cardinal;
     NextSampleToLoad : string;
@@ -64,7 +65,8 @@ uses
   eeCustomSample, AudioIO, SysUtils;
 
 
-
+const
+  OverSampleFactor : integer = 2;
 
 
 { TAudioFilePreviewPlayer }
@@ -93,6 +95,10 @@ destructor TAudioFilePreviewPlayer.Destroy;
 begin
   SampleData.Free;
   Voice.Free;
+
+  SetLength(OutBuffer1, 0);
+  SetLength(OutBuffer2, 0);
+
   inherited;
 end;
 
@@ -103,6 +109,9 @@ begin
 
   fSampleRate := aSampleRate;
   fBlockSize := aBlockSize;
+
+  SetLength(OutBuffer1, aBlockSize * OverSampleFactor);
+  SetLength(OutBuffer2, aBlockSize * OverSampleFactor);
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
@@ -182,6 +191,8 @@ begin
 end;
 
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
+var
+  c1: Integer;
 begin
   if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
   begin
@@ -193,7 +204,16 @@ begin
 
   if Voice.IsActive then
   begin
-    Voice.Process(In1, In2, SampleFrames);
+    //Voice.Process(In1, In2, SampleFrames);
+
+    Voice.ProcessReplacing(@OutBuffer1[0], @OutBuffer2[0], SampleFrames);
+    for c1 := 0 to SampleFrames-1 do
+    begin
+      In1^ := In1^ + OutBuffer1[0];
+      In2^ := In2^ + OutBuffer1[0];
+      inc(In1);
+      inc(In2);
+    end;
   end;
 end;
 

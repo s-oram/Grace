@@ -27,6 +27,9 @@ type
   end;
 
 
+  PPDouble = ^PDouble;
+  PDouble = ^Double;
+
   PPSingle = ^PSingle;
   PSingle  = ^Single;
 
