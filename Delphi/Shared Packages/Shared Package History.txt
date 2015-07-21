@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+21 July 2015
+- Create VamDsp.Interpoloation unit.
+
 17 July 2015
 - Add a small bug fix to VamLib.OneShotTimer.pas
 

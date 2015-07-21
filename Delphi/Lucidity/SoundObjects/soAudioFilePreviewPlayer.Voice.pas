@@ -3,7 +3,7 @@ unit soAudioFilePreviewPlayer.Voice;
 interface
 
 uses
-  eeDsp.Interpolation,
+  VamDsp.Interpolation,
   VamLib.MoreTypes, eeSampleFloat;
 
 type

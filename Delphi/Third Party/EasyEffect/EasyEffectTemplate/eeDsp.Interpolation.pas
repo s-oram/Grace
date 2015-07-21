@@ -9,7 +9,6 @@ function CatmullRomCubicInterpolation(const f, y0, y1, y2, y3 : double):double; 
 function HermiteInterpolation(const f, y0, y1, y2, y3 : double):double; inline; overload;
 function HermiteInterpolation(const f, y0, y1, y2, y3, bias, tension : double):double; inline; overload;
 
-
 function Optimal2x2Point3rdOrder(f, y0, y1:single):single; inline;
 
 function Optimal4x3(const f, y0, y1, y2, y3:single):single; inline;

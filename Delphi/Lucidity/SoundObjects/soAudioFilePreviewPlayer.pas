@@ -5,8 +5,6 @@ interface
 uses
   Math,
   eeSampleFloat,
-  eeSampleInt,
-  eeSimpleGate,
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
   soAudioFilePreviewPlayer.Voice;
