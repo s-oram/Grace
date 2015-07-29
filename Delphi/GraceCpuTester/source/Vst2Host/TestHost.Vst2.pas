@@ -1,4 +1,4 @@
-unit PluginHost.Vst2;
+unit TestHost.Vst2;
 
 interface
 

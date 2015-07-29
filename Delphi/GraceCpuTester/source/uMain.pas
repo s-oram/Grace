@@ -22,10 +22,6 @@ var
   VstDllHandle:THandle;
   AudioMaster:TAudioMasterCallbackFunc;
   VstPlugin:PAEffect;
-
-
-
-
 begin
   WriteLn('== Grace Performance Tester ==');
 
