@@ -30,7 +30,7 @@
 			<Projects Include="Shared Packages\VamAudio\VamAudio.dproj">
 				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj</Dependencies>
 			</Projects>
-			<Projects Include="Shared Packages\VamVstHost\VamVstHost.dproj">
+			<Projects Include="Shared Packages\VamPluginHost\VamPluginHost.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj">
@@ -161,14 +161,14 @@
 		<Target Name="VamAudio:Make" DependsOnTargets="VamLib:Make;AudioIO_DXE2:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\VamAudio\VamAudio.dproj"/>
 		</Target>
-		<Target Name="VamVstHost">
-			<MSBuild Projects="Shared Packages\VamVstHost\VamVstHost.dproj"/>
+		<Target Name="VamPluginHost">
+			<MSBuild Projects="Shared Packages\VamPluginHost\VamPluginHost.dproj"/>
 		</Target>
-		<Target Name="VamVstHost:Clean">
-			<MSBuild Targets="Clean" Projects="Shared Packages\VamVstHost\VamVstHost.dproj"/>
+		<Target Name="VamPluginHost:Clean">
+			<MSBuild Targets="Clean" Projects="Shared Packages\VamPluginHost\VamPluginHost.dproj"/>
 		</Target>
-		<Target Name="VamVstHost:Make">
-			<MSBuild Targets="Make" Projects="Shared Packages\VamVstHost\VamVstHost.dproj"/>
+		<Target Name="VamPluginHost:Make">
+			<MSBuild Targets="Make" Projects="Shared Packages\VamPluginHost\VamPluginHost.dproj"/>
 		</Target>
 		<Target Name="AggPasRunXE2">
 			<MSBuild Projects="Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj"/>
@@ -288,13 +288,13 @@
 			<MSBuild Targets="Make" Projects="GraceCpuTester\GraceCpuTester.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;VamLib_Design;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;VamVstHost;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;GraceCpuTester"/>
+			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;VamLib_Design;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;VamPluginHost;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;GraceCpuTester"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;VamLib_Design:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;VamVstHost:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;GraceCpuTester:Clean"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;VamLib_Design:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;VamPluginHost:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;GraceCpuTester:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;VamLib_Design:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;VamVstHost:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;GraceCpuTester:Make"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;VamLib_Design:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;VamPluginHost:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;GraceCpuTester:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
