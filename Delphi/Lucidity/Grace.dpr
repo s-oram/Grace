@@ -26,7 +26,6 @@ uses
   Lucidity.Osc.OneShotSampler in 'SoundObjects\Lucidity.Osc.OneShotSampler.pas',
   soCustomSynthFilter in 'SoundObjects\soCustomSynthFilter.pas',
   SynthModule_Custom in 'SoundObjects\SynthModule_Custom.pas',
-  SynthModule_LowPass12 in 'SoundObjects\SynthModule_LowPass12.pas',
   uModularConnectionManager in 'SoundObjects\uModularConnectionManager.pas',
   LuciditySampleOverlay in 'GuiComponents\LuciditySampleOverlay.pas',
   soLucidityWaveOsc in 'SoundObjects\soLucidityWaveOsc.pas',

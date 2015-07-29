@@ -441,7 +441,6 @@
 			<DCCReference Include="SoundObjects\Lucidity.Osc.OneShotSampler.pas"/>
 			<DCCReference Include="SoundObjects\soCustomSynthFilter.pas"/>
 			<DCCReference Include="SoundObjects\SynthModule_Custom.pas"/>
-			<DCCReference Include="SoundObjects\SynthModule_LowPass12.pas"/>
 			<DCCReference Include="SoundObjects\uModularConnectionManager.pas"/>
 			<DCCReference Include="GuiComponents\LuciditySampleOverlay.pas"/>
 			<DCCReference Include="SoundObjects\soLucidityWaveOsc.pas"/>
