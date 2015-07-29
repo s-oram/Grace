@@ -630,6 +630,7 @@ end;
 procedure TVstWrapper.TurnOn;
 begin
   assert(IsPluginLoaded);
+  VstDispatch(effMainsChanged,0,0); //Call 'suspend'
   VstDispatch(effMainsChanged,0,1); //Call 'resume'
   fIsPlugOn := true;
 end;

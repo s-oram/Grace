@@ -112,7 +112,6 @@
 			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
 			<DCCReference Include="Source\VamLib.Animation.pas"/>
 			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
-			<DCCReference Include="Source\VamLib.ManagedObject.pas"/>
 			<DCCReference Include="Source\VamLib.CpuOverloadWatcher.pas"/>
 			<DCCReference Include="Source\VamLib.EnumHelper.pas"/>
 			<DCCReference Include="Source\VamLib.GuiUtils.pas"/>

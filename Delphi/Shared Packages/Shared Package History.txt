@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+29 July 2015
+- Delete managed object class, it's not being used.
+
 27 July 2015
 - Changes to soAudioFilePreviewPlayer
 - Add soFadeOutRamp.pas

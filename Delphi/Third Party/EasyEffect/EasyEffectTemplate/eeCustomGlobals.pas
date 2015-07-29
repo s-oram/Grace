@@ -213,8 +213,8 @@ begin
   fOneOverSampleRate := 1 / 44100;
   fBlockSize         := 512;
   fTempo             := 120;
-  fppqPos            := -1;
-  fBarStartPos       := -1;
+  fppqPos            := 0;
+  fBarStartPos       := 0;
 
   TimeSigNumerator   := 4;
   TimeSigDenominator := 4;
