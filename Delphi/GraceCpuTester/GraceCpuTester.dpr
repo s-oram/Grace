@@ -8,7 +8,8 @@ uses
   System.SysUtils,
   uMain in 'source\uMain.pas',
   phCore in 'source\phCore.pas',
-  uAudioMaster in 'source\uAudioMaster.pas';
+  uAudioMaster in 'source\uAudioMaster.pas',
+  PluginHost.Vst2 in 'source\Vst2Host\PluginHost.Vst2.pas';
 
 begin
   try
