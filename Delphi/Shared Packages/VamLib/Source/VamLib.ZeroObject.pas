@@ -205,8 +205,6 @@ uses
   Windows,
   VamLib.WinUtils;
 
-{$I InterlockedAPIs.inc}
-
 { TZeroObject }
 
 destructor TZeroObject.Destroy;
