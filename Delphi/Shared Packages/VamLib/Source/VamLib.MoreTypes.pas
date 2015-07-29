@@ -2,6 +2,10 @@ unit VamLib.MoreTypes;
 
 interface
 
+const
+  // http://stackoverflow.com/q/15993428/395461
+  kMaxArrayOfSingleLength = MaxInt div SizeOf(single);
+
 type
   PObject = ^TObject;
 
@@ -26,7 +30,6 @@ type
     x1,y1,x2,y2,x3,y3:single;
   end;
 
-
   PPDouble = ^PDouble;
   PDouble = ^Double;
 
@@ -42,6 +45,9 @@ type
   TArrayOfSmallInt = array of smallInt;
   TArrayOfString   = array of string;
   TArrayOfBoolean  = array of boolean;
+
+  PStaticArrayOfSingle = ^TStaticArrayOfSingle;
+  TStaticArrayOfSingle = array[0..kMaxArrayOfSingleLength-1] of single;
 
   T2dArrayOfSingle   = array of TArrayOfSingle;
   T2dArrayOfDouble   = array of TArrayOfDouble;

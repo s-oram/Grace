@@ -174,27 +174,13 @@ begin
     begin
       // NOTE: We are in the GUI thread here. Don't do any slow operations,
       // otherwise the GUI will be blocked.
-
+      Voice.FastRelease;
       NextSampleToLoad := aFileName;
       IsPreviewTriggerRequired := true;
     end;
   end;
 
   TimerID := SetTimeout(DoTriggerSamplePreview, TimerID, Delay);
-end;
-
-procedure TAudioFilePreviewPlayer.Stop;
-begin
-  ClearTimeout(TimerID);
-  IsPreviewTriggerRequired := false;
-  Voice.Kill;
-end;
-
-procedure TAudioFilePreviewPlayer.Kill;
-begin
-  ClearTimeout(TimerID);
-  IsPreviewTriggerRequired := false;
-  Voice.Kill;
 end;
 
 procedure TAudioFilePreviewPlayer.DoSampleLoad;
@@ -210,23 +196,28 @@ begin
   end);
 end;
 
+procedure TAudioFilePreviewPlayer.Stop;
+begin
+  ClearTimeout(TimerID);
+  IsPreviewTriggerRequired := false;
+  Voice.FastRelease;
+end;
+
+procedure TAudioFilePreviewPlayer.Kill;
+begin
+  ClearTimeout(TimerID);
+  IsPreviewTriggerRequired := false;
+  Voice.Kill;
+end;
+
 procedure TAudioFilePreviewPlayer.Process(In1, In2: PSingle; Sampleframes: integer);
 var
   OverSampleFrames : integer;
   c1: Integer;
   OutFrames : integer;
-
   pOut1 : PDouble;
   pOut2 : PDouble;
 begin
-  if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
-  begin
-    IsPreviewTriggerRequired := false;
-    IsLoadingSample := true;
-    Voice.Kill;
-    DoSampleLoad;
-  end;
-
   if Voice.IsActive then
   begin
     pOut1 := @OutBuffer1[0];
@@ -249,6 +240,14 @@ begin
       In2^ := In2^ + OutBuffer1[c1];
       inc(In1);
       inc(In2);
+    end;
+  end else
+  begin
+    if (IsPreviewTriggerRequired) and (IsLoadingSample = false) then
+    begin
+      IsPreviewTriggerRequired := false;
+      IsLoadingSample := true;
+      DoSampleLoad;
     end;
   end;
 end;

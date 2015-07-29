@@ -1,6 +1,13 @@
 ======================================
             History
 ======================================
+27 July 2015
+- Changes to soAudioFilePreviewPlayer
+- Add soFadeOutRamp.pas
+
+23 July 2015
+- Add to VamLib.MoreTypes.pas
+
 21 July 2015
 - Create VamDsp.Interpoloation unit.
 - Create VamAudio package with Audio file preview playback unit.

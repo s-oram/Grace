@@ -162,7 +162,6 @@ begin
 
   // return ((c3*z+c2)*z+c1)*z+c0;
   result := ((c3 * z + c2) * z + c1) * z + c0;
-
 end;
 
 
