@@ -14,10 +14,7 @@ type
   protected
     CurPhase : single;
     StepSize : single;
-
-
     procedure FillTableWithSineWave; // Fill the internal WaveData with a sine waveform.
-
     property WaveData  : TWaveData read fWaveData write fWaveData;
   public
     constructor Create;
@@ -27,7 +24,6 @@ type
     property SampleRate : single read fSampleRate write fSampleRate;
 
     function AudioRateStep:single;
-
   end;
 
 implementation
