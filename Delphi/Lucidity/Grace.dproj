@@ -311,7 +311,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_8_Win32)'!=''">
 			<DCC_MapFile>3</DCC_MapFile>
-			<Debugger_HostApplication>D:\Delphi Projects\Lucidity\Delphi\VstPerformanceTestHost\Bin\VstPerformanceHost.exe</Debugger_HostApplication>
+			<Debugger_HostApplication>D:\Delphi Projects\Lucidity\Bin\GraceCpuTester\Win32\GraceCpuTester.exe</Debugger_HostApplication>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_9)'!=''">

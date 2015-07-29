@@ -134,6 +134,7 @@
 			<DCCReference Include="Source\VamDsp.Utils.pas"/>
 			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.pas"/>
 			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.Singleton.pas"/>
+			<DCCReference Include="Source\VamVst.Extra.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<BuildConfiguration Include="Release">

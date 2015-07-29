@@ -6,7 +6,9 @@ program GraceCpuTester;
 
 uses
   System.SysUtils,
-  uMain in 'source\uMain.pas';
+  uMain in 'source\uMain.pas',
+  phCore in 'source\phCore.pas',
+  uAudioMaster in 'source\uAudioMaster.pas';
 
 begin
   try
