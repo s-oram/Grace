@@ -28,6 +28,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
 		<Import Condition="'$(Base)'!='' And Exists('BuildConfig_VstPerformanceTestHost.optset')" Project="BuildConfig_VstPerformanceTestHost.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -56,6 +62,9 @@
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Debugger_HostApplication>D:\Delphi Projects\Lucidity\Delphi\VstPerformanceTestHost\Bin\VstPerformanceHost.exe</Debugger_HostApplication>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
