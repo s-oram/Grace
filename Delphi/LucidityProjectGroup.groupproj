@@ -66,12 +66,6 @@
 			<Projects Include="VstPerformanceTestHost\VstPerformanceHost.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="LucidityPatchUpdater\LucidityPatchUpdater.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="Grace Program Tool\GraceProgramTool.dproj">
-				<Dependencies/>
-			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -269,32 +263,14 @@
 		<Target Name="VstPerformanceHost:Make">
 			<MSBuild Targets="Make" Projects="VstPerformanceTestHost\VstPerformanceHost.dproj"/>
 		</Target>
-		<Target Name="LucidityPatchUpdater">
-			<MSBuild Projects="LucidityPatchUpdater\LucidityPatchUpdater.dproj"/>
-		</Target>
-		<Target Name="LucidityPatchUpdater:Clean">
-			<MSBuild Targets="Clean" Projects="LucidityPatchUpdater\LucidityPatchUpdater.dproj"/>
-		</Target>
-		<Target Name="LucidityPatchUpdater:Make">
-			<MSBuild Targets="Make" Projects="LucidityPatchUpdater\LucidityPatchUpdater.dproj"/>
-		</Target>
-		<Target Name="GraceProgramTool">
-			<MSBuild Projects="Grace Program Tool\GraceProgramTool.dproj"/>
-		</Target>
-		<Target Name="GraceProgramTool:Clean">
-			<MSBuild Targets="Clean" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
-		</Target>
-		<Target Name="GraceProgramTool:Make">
-			<MSBuild Targets="Make" Projects="Grace Program Tool\GraceProgramTool.dproj"/>
-		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;VamLib_Design;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;LucidityPatchUpdater;GraceProgramTool"/>
+			<CallTarget Targets="NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;VamLib_Design;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;VamLib_Design:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean;LucidityPatchUpdater:Clean;GraceProgramTool:Clean"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;dclDragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;VamLib_Design:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;AggPasRunXE2:Clean;AggPasDesXE2:Clean;RedFoxRunXE2:Clean;RedFoxDesXE2:Clean;VamBasicRunXE2:Clean;VamBasicDesXE2:Clean;LucidityGuiComponentsRunXE2:Clean;LucidityGuiComponentsDesXE2:Clean;Grace:Clean;ComponentTester:Clean;LucidityKeyGen:Clean;VstPerformanceHost:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;VamLib_Design:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make;LucidityPatchUpdater:Make;GraceProgramTool:Make"/>
+			<CallTarget Targets="NativeXmlV4_XE2:Make;DragDropDXE2:Make;dclDragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;VamLib_Design:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;AggPasRunXE2:Make;AggPasDesXE2:Make;RedFoxRunXE2:Make;RedFoxDesXE2:Make;VamBasicRunXE2:Make;VamBasicDesXE2:Make;LucidityGuiComponentsRunXE2:Make;LucidityGuiComponentsDesXE2:Make;Grace:Make;ComponentTester:Make;LucidityKeyGen:Make;VstPerformanceHost:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
