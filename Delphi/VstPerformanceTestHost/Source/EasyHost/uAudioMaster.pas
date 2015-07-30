@@ -20,8 +20,7 @@ type
 procedure AddPlugReference(aEffect:PAEffect; aWrapper:Pointer);
 procedure RemovePlugReference(aEffect:PAEffect);
 
-function AudioMasterCallBack(effect: PAEffect; opcode, index, value: longint; ptr: pointer;
-                                        opt: Single): longint; cdecl;
+function AudioMasterCallBack(effect: PAEffect; opcode, index, value: longint; ptr: pointer; opt: Single): longint; cdecl;
 
 var
   LocalSampleRate:single;
@@ -65,8 +64,7 @@ end;
 
 
 
-function AudioMasterCallBack(effect: PAEffect; opcode, index, value: Integer;
-  ptr: pointer; opt: Single): longint; cdecl;
+function AudioMasterCallBack(effect: PAEffect; opcode, index, value: Integer; ptr: pointer; opt: Single): longint; cdecl;
 var
   s:shortstring;
   PlugInfo:TPlugInfo;

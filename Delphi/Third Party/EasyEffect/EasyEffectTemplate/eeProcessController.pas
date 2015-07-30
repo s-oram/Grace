@@ -385,47 +385,50 @@ procedure TProcessController.UpdatePluginTimeInfo(TimeInfo: PVstTimeInfo);
 var
   Playing, CycleActive, Recording:boolean;
 begin
-  if (TimeInfo^.flags and kVstTempoValid) >=1 then
+  if assigned(TimeInfo) then
   begin
-    if TimeInfo^.Tempo <> Plugin.Globals.Tempo then Plugin.Globals.Tempo := TimeInfo^.Tempo;
+    if (TimeInfo^.flags and kVstTempoValid) >=1 then
+    begin
+      if TimeInfo^.Tempo <> Plugin.Globals.Tempo then Plugin.Globals.Tempo := TimeInfo^.Tempo;
+    end;
+
+    if (TimeInfo^.Flags and kVstPpqPosValid) >= 1 then Plugin.Globals.ppqPos             := TimeInfo^.ppqPos;
+    if (TimeInfo^.Flags and kVstBarsValid)   >= 1 then Plugin.Globals.BarStartPos        := TimeInfo^.barStartPos;
+
+    {$IFDEF OverSampleEnabled}
+      if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock * Plugin.Settings.OverSampleFactor;
+    {$ELSE}
+      if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock;
+    {$ENDIF}
+
+    if (TimeInfo^.Flags and kVstTransportChanged) >= 1 then
+    begin
+      // TODO: This is depreciated and should be removed.
+      if (TimeInfo^.Flags and kVstTransportPlaying) >= 1
+        then Plugin.HostPlayState := psHostIsPlaying
+        else Plugin.HostPlayState := psHostIsStopped;
+      //================================================
+
+      if (TimeInfo^.Flags and kVstTransportPlaying) >= 1
+        then Playing := true
+        else Playing := false;
+
+      if (TimeInfo^.Flags and kVstTransportCycleActive) >= 1
+        then CycleActive := true
+        else CycleActive := false;
+
+      if (TimeInfo^.Flags and kVstTransportRecording) >= 1
+        then Recording := true
+        else Recording := false;
+
+      Plugin.Globals.UpdateTransportState(Playing, CycleActive, Recording);
+    end;
+
+    Plugin.Globals.TimeSigNumerator   := TimeInfo^.timeSigNumerator;
+    Plugin.Globals.TimeSigDenominator := TimeInfo^.timeSigDenominator;
+
+    Plugin.Globals.UpdateSyncInfo;
   end;
-
-  if (TimeInfo^.Flags and kVstPpqPosValid) >= 1 then Plugin.Globals.ppqPos             := TimeInfo^.ppqPos;
-  if (TimeInfo^.Flags and kVstBarsValid)   >= 1 then Plugin.Globals.BarStartPos        := TimeInfo^.barStartPos;
-
-  {$IFDEF OverSampleEnabled}
-    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock * Plugin.Settings.OverSampleFactor;
-  {$ELSE}
-    if (TimeInfo^.Flags and kVstClockValid)  >= 1 then Plugin.Globals.SamplesToNextClock := TimeInfo^.samplesToNextClock;
-  {$ENDIF}
-
-  if (TimeInfo^.Flags and kVstTransportChanged) >= 1 then
-  begin
-    // TODO: This is depreciated and should be removed.
-    if (TimeInfo^.Flags and kVstTransportPlaying) >= 1
-      then Plugin.HostPlayState := psHostIsPlaying
-      else Plugin.HostPlayState := psHostIsStopped;
-    //================================================
-
-    if (TimeInfo^.Flags and kVstTransportPlaying) >= 1
-      then Playing := true
-      else Playing := false;
-
-    if (TimeInfo^.Flags and kVstTransportCycleActive) >= 1
-      then CycleActive := true
-      else CycleActive := false;
-
-    if (TimeInfo^.Flags and kVstTransportRecording) >= 1
-      then Recording := true
-      else Recording := false;
-
-    Plugin.Globals.UpdateTransportState(Playing, CycleActive, Recording);
-  end;
-
-  Plugin.Globals.TimeSigNumerator   := TimeInfo^.timeSigNumerator;
-  Plugin.Globals.TimeSigDenominator := TimeInfo^.timeSigDenominator;
-
-  Plugin.Globals.UpdateSyncInfo;
 end;
 
 procedure TProcessController.ProcessAudioBlock(SampleFrames: integer);

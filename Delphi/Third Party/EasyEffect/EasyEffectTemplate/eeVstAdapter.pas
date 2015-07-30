@@ -292,8 +292,18 @@ begin
 end;
 
 function TeeVstAdapter.Dispatcher(opcode, index: VstInt32; value: VstIntPtr; ptr: pointer; opt: single): VstIntPtr;
+const
+  VamCustomEffect_TriggerVoices = 1001;
 begin
-  result := inherited Dispatcher(Opcode, Index, Value, ptr, opt);
+  case Opcode of
+    VamCustomEffect_TriggerVoices:
+    begin
+      Plugin.TriggerVoices;
+      result := 1;
+    end;
+  else
+    result := inherited Dispatcher(Opcode, Index, Value, ptr, opt);
+  end;
 end;
 
 //--------------------------------------------------------------------

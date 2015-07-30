@@ -135,7 +135,7 @@ begin
 
     WriteLn('Processing...');
 
-    {
+
     ProcessPlugin(2);
     SendMidiNoteOnEvents;
     for c1 := 0 to 1000 do
@@ -145,7 +145,7 @@ begin
     end;
     SendMidiNoteOffEvents;
     ProcessPlugin(2);
-    }
+
 
     TotalTime := 0;
     StartTime := CpuCycleTimer.StartTimerMS;

@@ -69,6 +69,7 @@ contains
   VamDSP.Interpolation in 'Source\VamDSP.Interpolation.pas',
   VamDsp.Utils in 'Source\VamDsp.Utils.pas',
   VamLib.ThreadSyncEnforcer in 'Source\VamLib.ThreadSyncEnforcer.pas',
-  VamLib.ThreadSyncEnforcer.Singleton in 'Source\VamLib.ThreadSyncEnforcer.Singleton.pas';
+  VamLib.ThreadSyncEnforcer.Singleton in 'Source\VamLib.ThreadSyncEnforcer.Singleton.pas',
+  VamVst.Extra in 'Source\VamVst.Extra.pas';
 
 end.
