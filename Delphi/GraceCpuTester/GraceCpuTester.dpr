@@ -8,7 +8,6 @@ uses
   System.SysUtils,
   uMain in 'source\uMain.pas',
   phCore in 'source\phCore.pas',
-  uAudioMaster in 'source\uAudioMaster.pas',
   TestHost.Vst2 in 'source\Vst2Host\TestHost.Vst2.pas',
   TestHost.Vst2.DAEffect in 'source\Vst2Host\TestHost.Vst2.DAEffect.pas',
   TestHost.Vst2.DAEffectX in 'source\Vst2Host\TestHost.Vst2.DAEffectX.pas';

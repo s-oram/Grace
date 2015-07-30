@@ -86,7 +86,6 @@
 			</DelphiCompile>
 			<DCCReference Include="source\uMain.pas"/>
 			<DCCReference Include="source\phCore.pas"/>
-			<DCCReference Include="source\uAudioMaster.pas"/>
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.pas"/>
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.DAEffect.pas"/>
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.DAEffectX.pas"/>
