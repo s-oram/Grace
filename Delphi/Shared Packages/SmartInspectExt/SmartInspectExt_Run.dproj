@@ -96,7 +96,6 @@
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="dbrtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
-			<DCCReference Include="SmartInspectDXE2.dcp"/>
 			<DCCReference Include="extensions\Vam.SmartInspectExt.pas"/>
 			<DCCReference Include="extensions\Vam.SectionTimer.pas"/>
 			<BuildConfiguration Include="Debug">
