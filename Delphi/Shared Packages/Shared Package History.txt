@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+30 July 2015
+- Add VST2 SDK files to VamLib.
+
 29 July 2015
 - Delete managed object class, it's not being used.
 
