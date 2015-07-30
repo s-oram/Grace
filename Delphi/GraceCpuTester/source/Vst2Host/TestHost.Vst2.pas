@@ -159,19 +159,12 @@ begin
       Self.Suspend;
       Self.Resume;
 
-
-
-      //==== perform audio processing here ====
-
-      WriteLn('Load complete.');
-      WriteLn('');
+      // The plugin should be ready for audio processing here.
 
       LoadResult := true;
     end;
   end;
-
   result := LoadResult;
-  //WriteLn('VST Plugin has been created.');
 end;
 
 procedure TVst2Plugin.UnloadPlugin;
@@ -192,8 +185,6 @@ begin
     then FreeLibrary(VstDllHandle);
 
   VstDllHandle := 0;
-
-  WriteLn('Unload complete.');
 end;
 
 procedure TVst2Plugin.SetBlockSize(const aBlockSize: integer);

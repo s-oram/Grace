@@ -169,6 +169,8 @@ type
 
     procedure GetModParModMinMax(const ParName : string; out ModMin, ModMax:single);
 
+    procedure TriggerVoices; //added for performance testing.
+
     procedure Suspend; override;
     procedure Resume; override;
 
@@ -1931,6 +1933,54 @@ begin
     LoadMidiProgram(Event.Data1);
   end;
 end;
+
+procedure TeePlugin.TriggerVoices;
+var
+  ev : TeeMidiEvent;
+begin
+  ev := TeeMidiEvent.Create;
+
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 36;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 37;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 38;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 39;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 40;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Status := kNoteOn;
+  ev.Channel := 0;
+  ev.Data1 := 41;
+  ev.Data2 := 100;
+  ProcessMidiEvent(ev);
+
+  ev.Free;
+end;
+
+
 
 procedure TeePlugin.FastControlProcess;
 begin

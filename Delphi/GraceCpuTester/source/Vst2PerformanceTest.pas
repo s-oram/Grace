@@ -125,7 +125,10 @@ var
   c1 : integer;
   Ins, Outs : TestHost.Vst2.DAEffect.PPSingle;
 begin
-  Plugin.Dispatch(VamCustomEffect_TriggerVoices);
+  if Plugin.Dispatch(VamCustomEffect_TriggerVoices) <> 1 then
+  begin
+    WriteLn('VamCustomEffect_TriggerVoices opcode not supported.');
+  end;
 
   Ins := @InputPointers[0];
   Outs := @OutputPointers[0];

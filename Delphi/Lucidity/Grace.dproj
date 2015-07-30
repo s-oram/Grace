@@ -232,8 +232,6 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_DebugInformation>true</DCC_DebugInformation>
-			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
 			<DCC_MapFile>3</DCC_MapFile>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_3)'!=''">
@@ -273,7 +271,7 @@
 			<Manifest_File>None</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_6_Win32)'!=''">
-			<Debugger_HostApplication>D:\Audio\Apps\energyXT\sa 1.4 b16\energyxt.exe</Debugger_HostApplication>
+			<Debugger_HostApplication>D:\Delphi Projects\Lucidity\Bin\GraceCpuTester\Win32\GraceCpuTester.exe</Debugger_HostApplication>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_7_Win64)'!=''">
@@ -381,16 +379,14 @@
 						<Source Name="MainSource">Grace.dpr</Source>
 					</Source>
 					<Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\ThirdPartyLibs.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl">File S:\Bin\Delphi XE2\Bpl\Win32\LucidityBaseClasses.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\AggPasRunXE2.bpl">Anti-Grain Geometry</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\RedFoxRunXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\VamBasicRunXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">OmniThreadLibrary designtime</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\DragDropDXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\DragDropDXE2.bpl not found</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">File S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl not found</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
 				</Delphi.Personality>
 				<Platforms>
