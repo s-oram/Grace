@@ -10,7 +10,9 @@ uses
   phCore in 'source\phCore.pas',
   TestHost.Vst2 in 'source\Vst2Host\TestHost.Vst2.pas',
   TestHost.Vst2.DAEffect in 'source\Vst2Host\TestHost.Vst2.DAEffect.pas',
-  TestHost.Vst2.DAEffectX in 'source\Vst2Host\TestHost.Vst2.DAEffectX.pas';
+  TestHost.Vst2.DAEffectX in 'source\Vst2Host\TestHost.Vst2.DAEffectX.pas',
+  Vst2PerformanceTest in 'source\Vst2PerformanceTest.pas',
+  TestHost.Vst2.DAEffect.CustomEx.Vam in 'source\Vst2Host\TestHost.Vst2.DAEffect.CustomEx.Vam.pas';
 
 begin
   try

@@ -89,6 +89,8 @@
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.pas"/>
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.DAEffect.pas"/>
 			<DCCReference Include="source\Vst2Host\TestHost.Vst2.DAEffectX.pas"/>
+			<DCCReference Include="source\Vst2PerformanceTest.pas"/>
+			<DCCReference Include="source\Vst2Host\TestHost.Vst2.DAEffect.CustomEx.Vam.pas"/>
 			<None Include="source\Vst2Host\DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

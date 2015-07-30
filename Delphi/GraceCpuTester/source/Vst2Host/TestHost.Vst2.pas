@@ -13,8 +13,11 @@ type
     MaxBufferSize : integer;
   end;
 
+  PVst2Plugin = ^TVst2Plugin;
   TVst2Plugin = class
   private
+    MagicTest : integer;
+    fTimeInfoStruct: PVstTimeInfo;
   protected
     fVstEffect : PAEffect;
     HostInfo : PVst2HostInfo;
@@ -29,6 +32,14 @@ type
     function Dispatch(Opcode : integer; index: VstInt32 = 0; value: VstIntPtr = 0; ptr: pointer = nil; opt: single = 0): VstIntPtr;
 
     property VstEffect : PAEffect read fVstEffect;
+
+    //=== VST Methods ====
+    procedure Suspend;
+    procedure Resume;
+    procedure SetSampleRate(const aSampleRate : integer);
+    procedure SetBlockSize(const aBlockSize : integer);
+
+    procedure SetTimeInfoStruct(const Info : PVstTimeInfo);
   end;
 
 function AudioMasterCallBack(effect: PAEffect; opcode, index, value: longint; ptr: pointer; opt: Single): longint; cdecl;
@@ -39,23 +50,50 @@ uses
   VamVst.Extra,
   WinApi.Windows;
 
+const
+  ProductName : ansistring = 'VstTester';
+
 function AudioMasterCallBack(effect: PAEffect; opcode, index, value: longint; ptr: pointer; opt: Single): longint;
 var
   s : string;
+  PluginHost : PVst2Plugin;
+  x : integer;
 begin
   //default result. (Usually means the opcode is not supported.
   case Opcode of
     audioMasterVersion:   result := 2400;
     audioMasterWantMidi:  result := 0; // deprecated. Not sure what the response is supposed to be.
-    audioMasterIOChanged: result := 1;
   else
-    WriteLn('=================================================================');
-    WriteLn('WARNING: Opcode not handled.');
-    s := VstAudioMasterOpcodeToStr(Opcode);
-    WriteLn('Plugin->Host ' + s);
-    WriteLn('=================================================================');
-    result := 0;
-    exit; //=================== exit ========================>>
+    if (assigned(effect)) and (assigned(effect^.reservedForHost)) then
+    begin
+      PluginHost := PVst2Plugin(effect^.reservedForHost);
+      x := PluginHost^.MagicTest;
+      if x <> 2091 then
+      begin
+        PluginHost := nil;
+      end;
+    end else
+    begin
+      PluginHost := nil;
+    end;
+
+    case Opcode of
+      audioMasterGetProductString: result := longint(@ProductName[1]);
+      audioMasterIOChanged: result := 1;
+      audioMasterGetTime:
+        if assigned(PluginHost)
+          then result := longint(PluginHost^.fTimeInfoStruct)
+          else result := 0;
+
+    else
+      WriteLn('=================================================================');
+      WriteLn('WARNING: Opcode not handled.');
+      s := VstAudioMasterOpcodeToStr(Opcode);
+      WriteLn('Plugin->Host ' + s);
+      WriteLn('=================================================================');
+      result := 0;
+      exit; //=================== exit ========================>>
+    end;
   end;
 
   // Opcode has been handled. Log it anyway.
@@ -67,6 +105,7 @@ end;
 
 constructor TVst2Plugin.Create(const aHostInfo : PVst2HostInfo);
 begin
+  MagicTest := 2091;
   fVstEffect := nil;
   HostInfo := aHostInfo;
 end;
@@ -86,9 +125,11 @@ end;
 
 function TVst2Plugin.LoadPlugin(const FileName: string): boolean;
 var
+  LoadResult : boolean;
   Main:TMainProc;
 begin
   WriteLn('Loading plugin...');
+  LoadResult := false;
 
   VstDllHandle := LoadLibrary(@FileName[1]);
   if VstDllHandle <> 0 then
@@ -115,16 +156,21 @@ begin
       //QueryPlugCanDo;
 
       //After all initialisation, calling TurnOn allows the plugin to ready itself for audio processing.
-      Dispatch(effMainsChanged,0,0); //Call 'suspend'
-      Dispatch(effMainsChanged,0,1); //Call 'resume'
+      Self.Suspend;
+      Self.Resume;
+
+
 
       //==== perform audio processing here ====
 
       WriteLn('Load complete.');
       WriteLn('');
+
+      LoadResult := true;
     end;
   end;
 
+  result := LoadResult;
   //WriteLn('VST Plugin has been created.');
 end;
 
@@ -135,7 +181,7 @@ begin
   if assigned(fVstEffect) then
   begin
     // turn plugin off
-    Dispatch(effMainsChanged);  //Call 'suspend'
+    Suspend;
     //=== close the plugin =====
     Dispatch(effClose);
 
@@ -148,6 +194,32 @@ begin
   VstDllHandle := 0;
 
   WriteLn('Unload complete.');
+end;
+
+procedure TVst2Plugin.SetBlockSize(const aBlockSize: integer);
+begin
+  Dispatch(effSetBlockSize, 0, aBlockSize, nil, 0);
+end;
+
+procedure TVst2Plugin.SetSampleRate(const aSampleRate: integer);
+begin
+  Dispatch(effSetSampleRate, 0, 0, nil, aSampleRate);
+end;
+
+procedure TVst2Plugin.SetTimeInfoStruct(const Info: PVstTimeInfo);
+begin
+  assert(Info^.tempo = 126);
+  self.fTimeInfoStruct := Info;
+end;
+
+procedure TVst2Plugin.Suspend;
+begin
+  Dispatch(effMainsChanged,0,0); //Call 'suspend'
+end;
+
+procedure TVst2Plugin.Resume;
+begin
+  Dispatch(effMainsChanged,0,1); //Call 'resume'
 end;
 
 end.
