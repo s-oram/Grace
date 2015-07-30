@@ -3,7 +3,7 @@ unit EasyEffect.AudioOutputController.Custom;
 interface
 
 uses
-  DAEffect, VamLib.MoreTypes;
+  VamVst2.DAEffect, VamLib.MoreTypes;
 
 type
   IVstAudioOutputController = interface
@@ -19,11 +19,11 @@ type
     // This method is run before the plugin does it's processing. It ready's the sample buffers for data.
     // (Zero's the buffers if needed). It then updates the plugin with pointers to the
     // sample data buffers.
-    procedure PreProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
+    procedure PreProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
 
     // This method is run after a plugin does it's processing. It will downsample to
     // the host samplerate if needed, then copy the buffer data to the VST output buffers.
-    procedure PostProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
+    procedure PostProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
   end;
 
   TCustomVstAudioOutputController = class(TInterfacedObject)

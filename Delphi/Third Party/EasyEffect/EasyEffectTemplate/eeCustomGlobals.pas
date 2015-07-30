@@ -19,7 +19,7 @@ uses
   eeTypes,
   SysUtils,
   eeGuiStandard_Types,
-  Windows, Classes, uEventList, eeMidiEvents, DAEffectX;
+  Windows, Classes, uEventList, eeMidiEvents, VamVst2.DAEffectX;
 
 type
   //=== Forward Declarations ============

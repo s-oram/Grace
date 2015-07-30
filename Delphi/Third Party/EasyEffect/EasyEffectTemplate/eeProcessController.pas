@@ -22,7 +22,11 @@ uses
   {$ENDIF}
 
   {$IFDEF HasAudioIns}eeVstAudioInputController,{$ENDIF}
-  DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX;
+  VamVst2.DVstUtils,
+  VamVst2.DAEffect,
+  VamVst2.DAEffectX,
+  VamVst2.DAudioEffect,
+  VamVst2.DAudioEffectX;
 
 type
   TTimeInfoMethod = function(Filter: VstInt32): PVstTimeInfo of object;

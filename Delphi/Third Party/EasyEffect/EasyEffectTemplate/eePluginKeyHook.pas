@@ -6,7 +6,7 @@ uses
   Windows,
   eeKeyboardHook,
   eeKeyboardHookConfig,
-  DAEffect, DAEffectX;
+  VamVst2.DAEffect, VamVst2.DAEffectX;
 
 type
   TVstKeyEvent = function(var KeyCode: VstKeyCode): boolean of object;

@@ -9,7 +9,7 @@
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<Platform Condition="'$(Platform)'==''">Win64</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -513,10 +513,6 @@
 			<DCCReference Include="Lucidity.Options.pas"/>
 			<DCCReference Include="Third Party File Support\Lucidity.Sfz.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstAdapter.pas"/>
-			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAEffectX.pas"/>
-			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffect.pas"/>
-			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAudioEffectX.pas"/>
-			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\DAEffect.pas"/>
 			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeVstEditorAdapter.pas"/>
 			<DCCReference Include="Lucidity.SampleImageRenderer.pas"/>
 			<DCCReference Include="Lucidity.FlexSampleRenderer.pas"/>

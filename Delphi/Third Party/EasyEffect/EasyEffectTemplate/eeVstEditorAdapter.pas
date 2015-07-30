@@ -11,7 +11,11 @@ uses
   Windows,
   {$ENDIF}
   eePluginGui, eePlugin, eePluginGuiMeta,
-  DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX,
+  VamVst2.DVstUtils,
+  VamVst2.DAEffect,
+  VamVst2.DAEffectX,
+  VamVst2.DAudioEffect,
+  VamVst2.DAudioEffectX,
   Messages;
 
 const

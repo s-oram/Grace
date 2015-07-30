@@ -9,9 +9,19 @@ uses
   eeParSmoother,
   VamLib.UniqueID,
   VamLib.MoreTypes,
-  VamLib.Collections.Lists;
+  VamLib.Collections.Lists,
+  VamVst2.DAEffect,
+  VamVst2.DAEffectX;
 
 {$SCOPEDENUMS ON}
+
+
+// Re-declare some types and constants for the benefit of the plugin DLL main function.
+type
+  TAudioMasterCallbackFunc = VamVst2.DAEffect.TAudioMasterCallbackFunc;
+  PAEffect = VamVst2.DAEffect.PAEffect;
+const
+  audioMasterVersion = VamVst2.DAEffect.audioMasterVersion;
 
 
 type
