@@ -135,8 +135,15 @@
 			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.pas"/>
 			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.Singleton.pas"/>
 			<DCCReference Include="Source\VamVst.Extra.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVstFxStore.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVSTUtils.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
+			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

@@ -33,8 +33,7 @@ requires
   vclimg,
   vcl,
   dbrtl,
-  VamLib,
-  SmartInspectDXE2;
+  VamLib;
 
 contains
   Vam.SmartInspectExt in 'extensions\Vam.SmartInspectExt.pas',

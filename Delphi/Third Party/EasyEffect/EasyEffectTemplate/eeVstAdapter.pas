@@ -20,7 +20,11 @@ uses
   eePlugin, // <-- It is important for these file to be project specific.
   eeVstEditorAdapter, eeMidiEvents,
   Classes, VamLib.MoreTypes, uConstants,
-  DVstUtils, DAEffect, DAEffectX, DAudioEffect, DAudioEffectX;
+  VamVst2.DVstUtils,
+  VamVst2.DAEffect,
+  VamVst2.DAEffectX,
+  VamVst2.DAudioEffect,
+  VamVst2.DAudioEffectX;
 
 type
   // NOTE: I'm not sure if any situations require the "packed record" declaration here.

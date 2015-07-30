@@ -7,7 +7,7 @@ interface
 uses
   VamAudio.R8BrainWrapper,
   EasyEffect.AudioOutputController.Custom,
-  DAEffect, VamLib.MoreTypes;
+  VamVst2.DAEffect, VamLib.MoreTypes;
 
 type
   TVstAudioOutputController = class(TCustomVstAudioOutputController, IVstAudioOutputController)
@@ -26,8 +26,8 @@ type
     destructor Destroy; override;
 
     procedure Setup_PluginOutputBuffers(Outputs:PArrayOfPSingle);
-    procedure PreProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
-    procedure PostProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
+    procedure PreProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
+    procedure PostProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
 
     property UseSilentBuffers;
     property OutputChannelCount;
@@ -107,7 +107,7 @@ begin
   end;
 end;
 
-procedure TVstAudioOutputController.PreProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
+procedure TVstAudioOutputController.PreProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
 var
   c1,c2:integer;
 begin
@@ -125,7 +125,7 @@ begin
 end;
 
 
-procedure TVstAudioOutputController.PostProcessVstOutputs(VstOutputs: DAEffect.PPSingle; const SampleFrames:integer);
+procedure TVstAudioOutputController.PostProcessVstOutputs(VstOutputs: VamVst2.DAEffect.PPSingle; const SampleFrames:integer);
 var
   c1, c2: Integer;
   Smps : integer;

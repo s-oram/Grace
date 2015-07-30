@@ -70,6 +70,12 @@ contains
   VamDsp.Utils in 'Source\VamDsp.Utils.pas',
   VamLib.ThreadSyncEnforcer in 'Source\VamLib.ThreadSyncEnforcer.pas',
   VamLib.ThreadSyncEnforcer.Singleton in 'Source\VamLib.ThreadSyncEnforcer.Singleton.pas',
-  VamVst.Extra in 'Source\VamVst.Extra.pas';
+  VamVst.Extra in 'Source\VamVst.Extra.pas',
+  VamVst2.DAEffect in 'Source\Vst2Sdk\VamVst2.DAEffect.pas',
+  VamVst2.DAEffectX in 'Source\Vst2Sdk\VamVst2.DAEffectX.pas',
+  VamVst2.DAudioEffect in 'Source\Vst2Sdk\VamVst2.DAudioEffect.pas',
+  VamVst2.DAudioEffectX in 'Source\Vst2Sdk\VamVst2.DAudioEffectX.pas',
+  VamVst2.DVstFxStore in 'Source\Vst2Sdk\VamVst2.DVstFxStore.pas',
+  VamVst2.DVSTUtils in 'Source\Vst2Sdk\VamVst2.DVSTUtils.pas';
 
 end.

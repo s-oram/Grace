@@ -4,7 +4,7 @@ interface
 
 uses
   eeCustomGlobals,
-  Generics.Collections, DAEffect, DAEffectX;
+  Generics.Collections, VamVst2.DAEffect, VamVst2.DAEffectX;
 
 type
   TCommandEvent = procedure(Sender : TObject; const CommandID : string) of object;
