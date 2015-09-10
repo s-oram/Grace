@@ -12,7 +12,8 @@ uses
   eeStoredActionList,
   Lucidity.GuiState,
   Lucidity.Options,
-  eeCustomGlobals, Lucidity.CopyProtection, eeSkinImageLoader.VCL;
+  eeCustomGlobals,
+  eeSkinImageLoader.VCL;
 
 type
   TPatchInfo = class
@@ -21,20 +22,6 @@ type
   public
     property PatchFileName : string read fPatchFileName write fPatchFileName; //full path patch file name.
   end;
-
-  TCopyProtection = class
-  private
-    fKeyData: TLucidityKey;
-    fIsRegistered: boolean;
-  public
-    constructor Create;
-
-    procedure LoadRegistrationKeyFile(FileName : string);
-    property KeyData : TLucidityKey read fKeyData;
-
-    property IsRegistered : boolean read fIsRegistered;
-  end;
-
 
   TGlobals = class(TCustomGlobals)
   private
@@ -51,7 +38,6 @@ type
     fUserConfigDir: string;
     fDefaultConfigDir: string;
     fPatchInfo: TPatchInfo;
-    fCopyProtection: TCopyProtection;
     procedure SetIsGuiOpen(const Value: boolean);
     function GetLastProgramLoadDir: string;
     function GetLastProgramSaveDir: string;
@@ -64,8 +50,6 @@ type
 	  destructor Destroy; override;
 
     function FindConfigFile(const ConfigFilename : string; Out FullPathLocation : string):boolean;
-
-    property CopyProtection : TCopyProtection read fCopyProtection;
 
     property DefaultConfigDir : string read fDefaultConfigDir;
     property UserConfigDir    : string read fUserConfigDir;
@@ -128,8 +112,6 @@ var
   fn : string;
 begin
   inherited;
-
-  fCopyProtection := TCopyProtection.Create;
 
   fAudioActions := TStoredActions.Create;
 
@@ -205,7 +187,6 @@ begin
   fGuiState.Free;
   fPatchInfo.Free;
   fAudioActions.Free;
-  fCopyProtection.Free;
   inherited;
 end;
 
@@ -273,33 +254,6 @@ begin
     MotherShip.SetIsGuiOpen(false);
   end;
 end;
-
-{ TCopyProtection }
-
-constructor TCopyProtection.Create;
-begin
-  fIsRegistered := false;
-end;
-
-procedure TCopyProtection.LoadRegistrationKeyFile(FileName: string);
-begin
-  fKeyData.Clear;
-
-  if FileExists(FileName) then
-  begin
-    fKeyData.LoadFromFile(FileName);
-    if fKeyData.IsKeyChecksumValid then
-    begin
-      fIsRegistered := true;
-    end else
-    begin
-      fKeyData.Clear;
-      fIsRegistered := false;
-    end;
-  end;
-end;
-
-
 
 initialization
   Global_LastProgramLoadDir := '';

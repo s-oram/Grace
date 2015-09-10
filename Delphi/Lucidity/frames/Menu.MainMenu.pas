@@ -255,16 +255,6 @@ begin
   Menu.Items.Add(mi);
   //=========================
 
-  if Plugin.Globals.CopyProtection.IsRegistered = false then
-  begin
-    // insert the register option...
-    mi := TMenuItem.Create(Menu);
-    mi.Caption := 'Open Registration Key File...';
-    mi.OnClick := OpenKeyFile;
-    Menu.Items.Add(mi);
-  end;
-
-
   mi := TMenuItem.Create(Menu);
   mi.Caption := 'Open Manual...';
   mi.OnClick := EventHandle_OpenManual;
@@ -332,15 +322,7 @@ begin
   s := kProductName + ' Vst Sampler By One Small Clue' + EndOfLine;
   s := s + GetPluginBuildInfo;
   s := s + EndOfLine;
-
-  if Plugin.Globals.CopyProtection.IsRegistered
-    then s := s + 'Registered to ' + Plugin.Globals.CopyProtection.KeyData.UserName + ' <' + Plugin.Globals.CopyProtection.KeyData.UserEmail + '>' + EndOfLine
-    else s := s + 'UNREGISTERED' + EndOfLine;
-
-  s := s + EndOfLine;
-
   s := s + 'VST PlugIn Technology by Steinberg';
-
   s := s + EndOfLine;
 
   InWindow_ShowMessage(Plugin.Globals.TopLevelForm, s);

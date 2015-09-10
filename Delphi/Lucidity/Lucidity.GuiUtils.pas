@@ -80,7 +80,7 @@ type
   //These commands are utilised by the GUI.
   Command = record
   public
-    class function RegisterPlugin(const Plugin : TeePlugin; const aKeyFileName : string):boolean; static;
+    class function RegisterPlugin(const Plugin : TeePlugin; const aKeyFileName : string):boolean; static; // TODO:MED Delete this method.
 
     class procedure ReplaceLoadCurrentRegion(const Plugin : TeePlugin; const AudioFileName : string); static;
     class procedure NormaliseSamples(Plugin : TeePlugin); static;
@@ -687,50 +687,7 @@ end;
 
 
 class function Command.RegisterPlugin(const Plugin: TeePlugin; const aKeyFileName: string):boolean;
-var
-  DestFileName : string;
-  KeyData : TLucidityKey;
 begin
-  result := false; //default response.
-
-
-  KeyData.Clear;
-  KeyData.LoadFromFile(aKeyFileName);
-  if (KeyData.IsKeyChecksumValid) then
-  begin
-    if (Plugin.Globals.UserConfigDir <> '') then
-    begin
-      DestFileName   := IncludeTrailingPathDelimiter(Plugin.Globals.UserConfigDir) + kKeyFileName;
-      if aKeyFileName <> DestFileName then
-      begin
-        if not CopyFile(aKeyFileName, DestFileName) then
-        begin
-          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'ERROR: Unable to copy key file to user config directory.');
-          exit(false); //========================>> exit >>==========>>
-        end;
-
-        Plugin.Globals.CopyProtection.LoadRegistrationKeyFile(DestFileName);
-        if Plugin.Globals.CopyProtection.IsRegistered then
-        begin
-          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Grace is now unlocked. Thank you for your support!');
-          result := true;
-        end else
-        begin
-          // If we get to this point, lets assume the key file is either corrupt or has been modified by the user.
-          InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Please contact support. (ERROR 1053)');
-          result := false;
-        end;
-      end;
-    end else
-    begin
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unlocking failed. Can not find user configuration directory. Please reinstall.');
-      result := false;
-    end;
-  end else
-  begin
-    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Unable to unlock Grace. Key file is invalid.');
-    result := false;
-  end;
 end;
 
 

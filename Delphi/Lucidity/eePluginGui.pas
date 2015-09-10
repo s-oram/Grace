@@ -473,10 +473,7 @@ begin
 
   if (MsgID = TLucidMsgID.OnPostCreateFinished) then
   begin
-    if Plugin.Globals.CopyProtection.IsRegistered = false then
-    begin
-      InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Grace is unregistered. Project loading is disabled.');
-    end;
+    //Do noting... might do something in here later.
   end;
 end;
 
