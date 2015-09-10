@@ -1,6 +1,21 @@
 ======================================
             History
 ======================================
+3 September 2015
+- add WatchTower package.
+- add VamVst2.MidiEventBuffers and related changes.
+
+31 August 2015
+- add double linked data list.
+
+16 August 2015 
+- Changes made while working on Poise. 
+- added VamLib.Console.pas
+
+12 August 2015 (while working on Poise)
+- Create new unit. VamAudio.R8BrainWrapper.v3
+- Several other small changes made while fixing bugs.
+
 30 July 2015
 - Add VST2 SDK files to VamLib.
 

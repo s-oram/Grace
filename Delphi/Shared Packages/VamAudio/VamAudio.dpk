@@ -43,8 +43,10 @@ contains
   soAudioFilePreviewPlayer in 'source\soAudioFilePreviewPlayer.pas',
   soAudioFilePreviewPlayer.Voice in 'source\soAudioFilePreviewPlayer.Voice.pas',
   VamAudio.R8BrainWrapper in 'source\samplerate conversion\VamAudio.R8BrainWrapper.pas',
+  VamAudio.R8BrainWrapper.v3 in 'source\samplerate conversion\VamAudio.R8BrainWrapper.v3.pas',
+  soFadeOutRamp in 'source\sound objects\soFadeOutRamp.pas',
   VamAudio.R8BrainWrapper.v2 in 'source\samplerate conversion\VamAudio.R8BrainWrapper.v2.pas',
-  soFadeOutRamp in 'source\sound objects\soFadeOutRamp.pas';
+  VamAudio.OfflineRateConvert.R8Brain in 'source\samplerate conversion\VamAudio.OfflineRateConvert.R8Brain.pas';
 
 end.
 
