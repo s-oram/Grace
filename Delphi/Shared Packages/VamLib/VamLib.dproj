@@ -98,6 +98,7 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="vclx.dcp"/>
+			<DCCReference Include="WatchTower.dcp"/>
 			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
 			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
 			<DCCReference Include="Source\VamLib.Utils.pas"/>
@@ -141,9 +142,22 @@
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffectX.pas"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVstFxStore.pas"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVSTUtils.pas"/>
+			<DCCReference Include="Source\VamLib.Console.pas"/>
+			<DCCReference Include="Source\VamLib.Collections.DoubleLinkedDataList.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEventBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventInputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEvent.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventOutputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEvent.pas"/>
+			<DCCReference Include="Source\VamLib.CompileNotes.pas"/>
+			<DCCReference Include="UnitTests\VamLib.RegisterTests.pas"/>
+			<DCCReference Include="UnitTests\Test.VamVst2.MidiEventInputBuffer.pas"/>
+			<DCCReference Include="UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
+			<None Include="Source\RangeCheck_ToggleOff.inc"/>
+			<None Include="Source\RangeCheck_ToggleReset.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

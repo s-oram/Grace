@@ -8,7 +8,7 @@ uses
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
   VamDsp.Interpolation,
-  VamAudio.R8BrainWrapper.v2,
+  VamAudio.R8BrainWrapper.v3,
   soAudioFilePreviewPlayer.Voice;
 
 const
@@ -128,8 +128,8 @@ begin
   DSConfig.MaxInputBufferFrames := aBlockSize * OverSampleFactor;
   DSConfig.TransitionBand := 4;
   DSConfig.Res := TResampleResolution.res16Bit;
-  DownSampler1.Setup(@DSConfig, false);
-  DownSampler2.Setup(@DSConfig, false);
+  DownSampler1.Setup(@DSConfig);
+  DownSampler2.Setup(@DSConfig);
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);

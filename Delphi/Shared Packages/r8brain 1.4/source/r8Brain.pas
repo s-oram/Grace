@@ -19,6 +19,9 @@ type
     procedure AssignFrom(Source : PResampleConfig);
   end;
 
+
+  // TODO:LOW This class isn't being used by Poise.
+  // Check if it's being used by Lucidity. If not, delete.
   TR8BrainSingleChannelResampler = class
   private
     ResampleObject : CR8BResampler;

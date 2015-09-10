@@ -21,9 +21,6 @@ function ShowDirectoryInWindowsExplorer(const Dir : string; out ErrMsg : string)
 function InstallFont(FontFile : string):boolean;
 function UninstallFont(FontFile : string):boolean;
 
-
-
-
 type
   // NOTE: TWindowsVersion related code was copied from the JCL library. (JclSysInfo.pas)
   TWindowsVersion =
@@ -32,9 +29,9 @@ type
     wvWin2003, wvWinXP64, wvWin2003R2, wvWinVista, wvWinServer2008,
     wvWin7, wvWinServer2008R2);
 
+  // TODO:HIGH BUG: NOTE: This function is returning the wrong windows version on windows 7. It reports Windows7 as WindowsXP.
+  // This results in Poise and Grace both using the old Windows XP dialogs instead of the nicer Windows 7 dialogs.
   function GetWindowsVersion: TWindowsVersion;
-
-
 
 
 
