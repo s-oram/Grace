@@ -5,11 +5,13 @@ FINISHED
 Plugin Delay compensation
 thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail.gmail.com
 
-
 == Finished for the next release ==
 
+
+=== v1.0.1 (10 Sep 2015) ===  
+
 New: 
-- Grace can load program files that use an <AlternateSampleDirectory> node.
+- Grace is now freeware. 
 
 Change:
 - Grace is now using Liberation sans font for GUI text. 
@@ -25,8 +27,7 @@ Bug Fix:
 - Mod wheel now works.
 - Browser preview player audio playback code has been rewritten and the playback quality 
   has been improved.
-
-
+- Grace can load program files that use an <AlternateSampleDirectory> node.
 
 === v1.0 (26-Oct-2014) Release Candidate 1 ===
 New:

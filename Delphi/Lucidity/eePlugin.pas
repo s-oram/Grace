@@ -521,21 +521,6 @@ begin
 
   EmptyKeyGroup := TKeyGroup.Create(@Voices, @GlobalModPoints, Globals, 'Empty');
 
-  //==== Look for key file ===
-  if Globals.UserConfigDir <> '' then
-  begin
-    fn := IncludeTrailingPathDelimiter(Globals.UserConfigDir) + kKeyFileName;
-    if FileExists(fn) then
-    begin
-      Globals.CopyProtection.LoadRegistrationKeyFile(fn);
-      if Globals.CopyProtection.IsRegistered then
-      begin
-        //TODO:MED send out key data objects using the mother ship.
-      end;
-    end;
-  end;
-  //=====================
-
   //=====================
   LoadDefaultMIDIMap;
   //=====================
@@ -1453,23 +1438,11 @@ begin
   StateManager := TLucidityStateManager.Create(self);
   AutoFree(@StateManager);
 
-  if (Globals.CopyProtection.IsRegistered) then
-  begin
-    if assigned(LastPreset) then LastPreset.Clear;
+  if assigned(LastPreset) then LastPreset.Clear;
 
-    PreLoadProgram;
-    StateManager.SetPreset(ms);
-    PostLoadProgram;
-  end else
-  begin
-    //==== copy preset data =====
-    if not assigned(LastPreset) then LastPreset := TMemoryStream.Create;
-    CloneMemoryStream(LastPreset, ms);
-    //===========================
-
-    // Not registered so initialize back to a blank slate.
-    InitializeState;
-  end;
+  PreLoadProgram;
+  StateManager.SetPreset(ms);
+  PostLoadProgram;
 end;
 
 procedure TeePlugin.SetPreviewVolume(const Value: single);
