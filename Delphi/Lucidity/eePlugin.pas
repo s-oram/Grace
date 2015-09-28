@@ -1477,26 +1477,34 @@ procedure TeePlugin.ImportProgram(const FileName: string; ProgramFormat : TProgr
 var
   StateManager : TLucidityStateManager;
 begin
-  Globals.LastProgramLoadDir := ExtractFileDir(FileName);
-
-  PreLoadProgram;
-
-  StateManager := TLucidityStateManager.Create(self);
   try
-    case ProgramFormat of
-      TProgramFormat.Lucidity: StateManager.LoadPesetFromFile(FileName);
-      TProgramFormat.Sfz:      StateManager.ImportProgram_Sfz(FileName);
-    else
-      raise Exception.Create('unexpected program format');
+    Globals.LastProgramLoadDir := ExtractFileDir(FileName);
+
+    PreLoadProgram;
+
+    StateManager := TLucidityStateManager.Create(self);
+    try
+      case ProgramFormat of
+        TProgramFormat.Lucidity: StateManager.LoadPesetFromFile(FileName);
+        TProgramFormat.Sfz:      StateManager.ImportProgram_Sfz(FileName);
+      else
+        raise Exception.Create('unexpected program format');
+      end;
+    finally
+      StateManager.Free;
     end;
-  finally
-    StateManager.Free;
+
+    PostLoadProgram;
+
+    PresetName := RemoveFileExt(FileName);
+    Globals.PatchInfo.PatchFileName := FileName;
+  except
+    on EOutOfMemory do
+    begin
+      InitializeState;
+    end else
+      raise;
   end;
-
-  PostLoadProgram;
-
-  PresetName := RemoveFileExt(FileName);
-  Globals.PatchInfo.PatchFileName := FileName;
 end;
 
 procedure TeePlugin.PreLoadProgram;
