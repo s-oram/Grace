@@ -121,7 +121,8 @@ function ValueSplit(IndexValue:single; SplitCount:integer):integer; deprecated;
 //==============================================================
 function ObjectArray(const objs : array of TObject):TArray<TObject>;
 
-function AutoFree(const aObject: PObject): IUnknown;
+function AutoFree(const aObject: PObject): IUnknown; overload;
+function AutoFree(const aObject: Pointer): IUnknown; overload;
 
 function MemoryUsed: cardinal;
 function BytesToMegaBytes(const Value : single):single;
@@ -222,6 +223,11 @@ end;
 function AutoFree(const aObject: PObject): IUnknown;
 begin
   result := TAutoFree.Create(aObject);
+end;
+
+function AutoFree(const aObject: Pointer): IUnknown; overload;
+begin
+  result := TAutoFree.Create(PObject(aObject));
 end;
 
 

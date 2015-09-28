@@ -100,7 +100,6 @@
 			<DCCReference Include="..\source\sdSortedLists.pas"/>
 			<DCCReference Include="..\source\sdStreams.pas"/>
 			<DCCReference Include="..\source\sdStringTable.pas"/>
-			<DCCReference Include="..\source\uAutoFree.pas"/>
 			<None Include="..\source\ElAES.txt"/>
 			<None Include="..\source\simdesign.inc"/>
 			<BuildConfiguration Include="Release">

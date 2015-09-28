@@ -89,6 +89,7 @@ contains
   RegisterTests.VamLib in 'UnitTests\RegisterTests.VamLib.pas',
   Test.VamVst2.MidiEventInputBuffer in 'UnitTests\Test.VamVst2.MidiEventInputBuffer.pas',
   Test.VamVst2.MidiEventOutputBuffer in 'UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas',
-  Test.VamLib.Win.Links in 'UnitTests\Test.VamLib.Win.Links.pas';
+  Test.VamLib.Win.Links in 'UnitTests\Test.VamLib.Win.Links.pas',
+  VamLib.Win.Shell in 'Source\VamLib.Win.Shell.pas';
 
 end.

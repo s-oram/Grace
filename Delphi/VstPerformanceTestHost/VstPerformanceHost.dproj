@@ -91,7 +91,6 @@
 			<DCCReference Include="Source\General\uIntegerList.pas"/>
 			<DCCReference Include="Source\General\CpuCycleTimer.pas"/>
 			<DCCReference Include="Source\General\Console.pas"/>
-			<DCCReference Include="Source\General\uAutoFree.pas"/>
 			<DCCReference Include="Source\EasyEffect\eeVSTExtra.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>

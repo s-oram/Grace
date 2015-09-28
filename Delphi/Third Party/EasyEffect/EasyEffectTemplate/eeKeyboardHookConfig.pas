@@ -14,7 +14,7 @@ uses
   SysUtils,
   Classes,
   Contnrs,
-  uGetWindowsInfo,
+  VamLib.Win.Shell,
   NativeXML,
   eeTypes,
   eeFunctions,

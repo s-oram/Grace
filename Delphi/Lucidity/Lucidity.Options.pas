@@ -35,7 +35,7 @@ type
 implementation
 
 uses
-  uAutoFree,
+  VamLib.Utils,
   NativeXml,
   NativeXmlEx,
   eeFunctions;

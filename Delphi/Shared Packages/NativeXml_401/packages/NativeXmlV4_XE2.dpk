@@ -41,7 +41,6 @@ contains
   sdDebug in '..\source\sdDebug.pas',
   sdSortedLists in '..\source\sdSortedLists.pas',
   sdStreams in '..\source\sdStreams.pas',
-  sdStringTable in '..\source\sdStringTable.pas',
-  uAutoFree in '..\source\uAutoFree.pas';
+  sdStringTable in '..\source\sdStringTable.pas';
 
 end.

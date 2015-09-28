@@ -16,7 +16,11 @@ function GetDataDirFromXML(XmlFileName:string):string;
 implementation
 
 uses
-  SysUtils, WinShell, Windows, eeVstExtra, NativeXml, uAutoFree;
+  SysUtils,
+  //WinShell,
+  VamLib.Win.Shell,
+  Windows, eeVstExtra, NativeXml,
+  VamLib.Utils;
 
 
 function LocateDataFolder(CompanyName, ProductName:string):string;

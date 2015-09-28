@@ -42,7 +42,8 @@ uses
   {$ELSE}
     Controls,
   {$ENDIF}
-  uGetWindowsInfo, uGeneralFunctions;
+  VamLib.Win.Shell,
+  uGeneralFunctions;
 
 
 var

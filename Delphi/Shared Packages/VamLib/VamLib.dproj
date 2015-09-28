@@ -154,6 +154,7 @@
 			<DCCReference Include="UnitTests\Test.VamVst2.MidiEventInputBuffer.pas"/>
 			<DCCReference Include="UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas"/>
 			<DCCReference Include="UnitTests\Test.VamLib.Win.Links.pas"/>
+			<DCCReference Include="Source\VamLib.Win.Shell.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
