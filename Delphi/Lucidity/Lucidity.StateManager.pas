@@ -947,7 +947,7 @@ begin
   // - check the RegionLoadInfo is valid and will load a correctly configured region.
   // - the delayed sample loading will also need to handle missing files.
   aRegion := TRegion.Create;
-
+  // TODO:HIGH The region needs to be added to the sample map or freed.
 
 
   // TODO:HIGH I need to re-architecture the sample loading for a region.

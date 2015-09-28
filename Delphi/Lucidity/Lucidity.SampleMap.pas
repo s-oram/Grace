@@ -181,7 +181,7 @@ procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA,
 implementation
 
 uses
-  //eeCustomSample,
+  eeCustomSample,
   VamLib.Utils,
   Math,
   eeFunctions, eeDsp,
@@ -395,13 +395,8 @@ begin
       self.Properties^.ErrorMessage     := Info.ErrorMessage;
     end;
 
-    {
-    if self.Sample.LastError = seOutOfMemory then
-    begin
-
-    end;
-    }
-
+    // IMPORTANT: Raise these errors here because we want to break the loading flow.
+    if self.Sample.LastError = seOutOfMemory then OutOfMemoryError();
   end;
 end;
 
