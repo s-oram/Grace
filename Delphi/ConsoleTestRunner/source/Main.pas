@@ -9,7 +9,8 @@ implementation
 uses
   WatchTower,
   WatchTower.Global,
-  VamLib.Console;
+  VamLib.Console,
+  RegisterTests.Lucidity;
 
 procedure Run;
 var
