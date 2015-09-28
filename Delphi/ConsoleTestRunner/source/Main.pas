@@ -10,7 +10,8 @@ uses
   WatchTower,
   WatchTower.Global,
   VamLib.Console,
-  RegisterTests.Lucidity;
+  RegisterTests.VamLib;
+  //RegisterTests.Lucidity;
 
 procedure Run;
 var

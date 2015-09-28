@@ -7,6 +7,7 @@ function  GetLinkTarget(const LinkFileName : string) : string;
 implementation
 
 uses
+
   SysUtils, Windows, ShlObj, ActiveX;
 
 

@@ -86,8 +86,9 @@ contains
   VamVst2.MidiEventOutputBuffer in 'Source\Vst2Ex\VamVst2.MidiEventOutputBuffer.pas',
   VamVst2.VstEvent in 'Source\Vst2Ex\VamVst2.VstEvent.pas',
   VamLib.CompileNotes in 'Source\VamLib.CompileNotes.pas',
-  VamLib.RegisterTests in 'UnitTests\VamLib.RegisterTests.pas',
+  RegisterTests.VamLib in 'UnitTests\RegisterTests.VamLib.pas',
   Test.VamVst2.MidiEventInputBuffer in 'UnitTests\Test.VamVst2.MidiEventInputBuffer.pas',
-  Test.VamVst2.MidiEventOutputBuffer in 'UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas';
+  Test.VamVst2.MidiEventOutputBuffer in 'UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas',
+  Test.VamLib.Win.Links in 'UnitTests\Test.VamLib.Win.Links.pas';
 
 end.
