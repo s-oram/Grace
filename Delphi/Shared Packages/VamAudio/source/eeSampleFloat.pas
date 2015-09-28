@@ -49,6 +49,8 @@ uses
 constructor TSampleFloat.Create;
 begin
   Clear;
+  fLastError := TSampleError.seNone;
+  fLastErrorMessage := '';
 end;
 
 destructor TSampleFloat.Destroy;
@@ -180,6 +182,10 @@ begin
   fProperties.SourceBitDepth := 0;
   fProperties.Ch1            := nil;
   fProperties.Ch2            := nil;
+
+  // IMPORTANT: Do not reset the last error here. Clear will be called when
+  // exceptions are raised and we need to preserve any error messages so
+  // they can be correctly handled by the calling code.
 end;
 
 
