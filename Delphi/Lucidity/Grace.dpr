@@ -9,6 +9,11 @@ library Grace;
 {$R 'VersionInfo.res' 'VersionInfo.rc'}
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Vst2Ex.MadExcept,
   SysUtils,
   Classes,

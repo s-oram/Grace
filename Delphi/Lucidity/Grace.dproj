@@ -381,8 +381,8 @@
 					<Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\AggPasRunXE2.bpl">Anti-Grain Geometry</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\FarScape_Design.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\LucidityGuiComponentsDesXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamBasicDesXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl not found</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl not found</Excluded_Packages>
