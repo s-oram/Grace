@@ -1039,7 +1039,7 @@ begin
   for c1 := Plugin.SampleMap.RegionCount-1 downto 0 do
   begin
     rx := Plugin.SampleMap.Regions[c1];
-    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TRegionSampleError.FileNotFound) then
     begin
       if rx.GetProperties^.SampleFileFullPath <> ''
         then fn := rx.GetProperties^.SampleFileFullPath
@@ -1130,7 +1130,7 @@ begin
   for c1 := Plugin.SampleMap.RegionCount-1 downto 0 do
   begin
     rx := Plugin.SampleMap.Regions[c1];
-    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    if (rx.GetProperties^.IsSampleError) and (rx.GetProperties^.SampleErrorType = TRegionSampleError.FileNotFound) then
     begin
       if rx.GetProperties^.SampleFileFullPath <> ''
         then fn := rx.GetProperties^.SampleFileFullPath

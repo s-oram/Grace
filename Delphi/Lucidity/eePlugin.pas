@@ -796,7 +796,7 @@ begin
   for c1 := self.SampleMap.RegionCount-1 downto 0 do
   begin
     rg := SampleMap.Regions[c1];
-    if (rg.GetProperties^.IsSampleError) and (rg.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    if (rg.GetProperties^.IsSampleError) and (rg.GetProperties^.SampleErrorType = TRegionSampleError.FileNotFound) then
     begin
       if (rg.GetProperties^.SampleFileName = OldFileName) or (rg.GetProperties^.SampleFileFullPath = OldFileName) then
       begin

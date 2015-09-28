@@ -329,7 +329,7 @@ begin
   begin
     self.Properties^.SampleDataLoaded := false;
     self.Properties^.IsSampleError := true;
-    self.Properties^.SampleErrorType := TSampleError.FileNotFound;
+    self.Properties^.SampleErrorType := TRegionSampleError.FileNotFound;
     self.Properties^.ErrorMessage     := 'Audio file not found.';
   end else
   //if FileExists(SampleFileName) then
@@ -364,20 +364,20 @@ begin
 
           self.Properties^.SampleDataLoaded := true;
           self.Properties^.IsSampleError    := false;
-          self.Properties^.SampleErrorType  := TSampleError.None;
+          self.Properties^.SampleErrorType  := TRegionSampleError.None;
           self.Properties^.ErrorMessage     := '';
         end else
         begin
           self.Properties^.SampleDataLoaded := false;
           self.Properties^.IsSampleError    := true;
-          self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+          self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
           self.Properties^.ErrorMessage     := Sample.LastErrorMessage;
         end;
       end else
       begin
         self.Properties^.SampleDataLoaded := false;
         self.Properties^.IsSampleError    := true;
-        self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+        self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
         self.Properties^.ErrorMessage     := 'Error reserving memory.';
       end;
     end else
@@ -385,13 +385,13 @@ begin
     begin
       self.Properties^.SampleDataLoaded := false;
       self.Properties^.IsSampleError    := true;
-      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+      self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
       self.Properties^.ErrorMessage     := 'Unsupported File Format.';
     end else
     begin
       self.Properties^.SampleDataLoaded := false;
       self.Properties^.IsSampleError    := true;
-      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+      self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
       self.Properties^.ErrorMessage     := Info.ErrorMessage;
     end;
 

@@ -745,7 +745,7 @@ begin
       MouseDownSamplePos := SampleOverlay.PixelPosToSamplePos(x, CurrentSample.Info.SampleFrames);
       SampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y, MouseDownSamplePos, CurRegion);
     end else
-    if (CurrentSample.Region.GetProperties^.IsSampleError) and (CurrentSample.Region.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    if (CurrentSample.Region.GetProperties^.IsSampleError) and (CurrentSample.Region.GetProperties^.SampleErrorType = TRegionSampleError.FileNotFound) then
     begin
       MissingSampleContextMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
     end;
