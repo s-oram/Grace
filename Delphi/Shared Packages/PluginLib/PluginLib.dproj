@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{F648A616-8E27-4367-B7C9-BA0247C10CE8}</ProjectGuid>
-			<MainSource>VamLib.dpk</MainSource>
+			<ProjectGuid>{F8D5D0CF-B189-478A-8B84-630C0CC824C1}</ProjectGuid>
+			<MainSource>PluginLib.dpk</MainSource>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>None</FrameworkType>
 			<Base>True</Base>
@@ -11,11 +11,6 @@
 			<AppType>Package</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
-			<Base_Win64>true</Base_Win64>
-			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
@@ -39,30 +34,23 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('SharedPackage.optset')" Project="SharedPackage.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\SharedPackage.optset')" Project="..\SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<GenPackage>true</GenPackage>
 			<DCC_CBuilderOutput>All</DCC_CBuilderOutput>
 			<GenDll>true</GenDll>
-			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
 			<DCC_E>false</DCC_E>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>SharedPackage.optset</CfgDependentOn>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<DCC_UsePackage>vcl;vclx;$(DCC_UsePackage)</DCC_UsePackage>
+			<CfgDependentOn>..\SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>vcl;OmniThreadLibraryRuntimeXE2;ThirdPartyLibs;vclx;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -71,6 +59,7 @@
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_Description>Support library for plugin development.</DCC_Description>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
@@ -78,81 +67,45 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<DCC_CBuilderOutput>None</DCC_CBuilderOutput>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset')" Project="D:\Delphi Projects\Lucidity\Delphi\Basic Paths.optset"/>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="vcl.dcp"/>
-			<DCCReference Include="vclx.dcp"/>
+			<DCCReference Include="VamLib.dcp"/>
 			<DCCReference Include="WatchTower.dcp"/>
-			<DCCReference Include="Source\VamLib.Collections.RecordArray.pas"/>
-			<DCCReference Include="Source\VamLib.MoreTypes.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.pas"/>
-			<DCCReference Include="Source\VamLib.Graphics.pas"/>
-			<DCCReference Include="Source\VamLib.Threads.pas"/>
-			<DCCReference Include="Source\VamLib.Collections.Lists.pas"/>
-			<DCCReference Include="Source\VamLib.PerformanceTuning.pas"/>
-			<DCCReference Include="Source\VamLib.WinUtils.pas"/>
-			<DCCReference Include="Source\VamLib.MultiEvent.pas"/>
-			<DCCReference Include="Source\VamLib.Types.pas"/>
-			<DCCReference Include="Source\VamLib.DebugString.pas"/>
-			<DCCReference Include="Source\VamLib.ZeroObject.pas"/>
-			<DCCReference Include="Source\VamLib.Animation.pas"/>
-			<DCCReference Include="Source\VamLib.UniqueID.pas"/>
-			<DCCReference Include="Source\VamLib.CpuOverloadWatcher.pas"/>
-			<DCCReference Include="Source\VamLib.EnumHelper.pas"/>
-			<DCCReference Include="Source\VamLib.GuiUtils.pas"/>
-			<DCCReference Include="Source\VamLib.WinHook.pas"/>
-			<DCCReference Include="Source\VamLib.DuckType.pas"/>
-			<DCCReference Include="Source\VamLib.PatchUtils.pas"/>
-			<DCCReference Include="Source\VamLib.VclLayout.pas"/>
-			<DCCReference Include="Source\VamLib.Utils.ObjectEnumerator.pas"/>
-			<DCCReference Include="Source\XPLAT.Dialogs.pas"/>
-			<DCCReference Include="Source\VamLib.FindFiles.pas"/>
-			<DCCReference Include="Source\VamLib.KeyValueStore.pas"/>
-			<DCCReference Include="Source\VamLib.Win.DragDrop.pas"/>
-			<DCCReference Include="Source\VamLib.OneShotTimer.pas"/>
-			<DCCReference Include="Source\VamLib.GuiUtils.ThrottleDebounce.pas"/>
-			<DCCReference Include="Source\VamLib.Logging.pas"/>
-			<DCCReference Include="Source\VamLib.Logging.AbstractLog.pas"/>
-			<DCCReference Include="Source\VamLib.Win.Links.pas"/>
-			<DCCReference Include="Source\VamLib.Vcl.ZeroFrame.pas"/>
-			<DCCReference Include="Source\VamDSP.Interpolation.pas"/>
-			<DCCReference Include="Source\VamDsp.Utils.pas"/>
-			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.pas"/>
-			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.Singleton.pas"/>
-			<DCCReference Include="Source\VamVst.Extra.pas"/>
-			<DCCReference Include="Source\VamLib.Console.pas"/>
-			<DCCReference Include="Source\VamLib.Collections.DoubleLinkedDataList.pas"/>
-			<DCCReference Include="Source\VamLib.CompileNotes.pas"/>
-			<DCCReference Include="UnitTests\RegisterTests.VamLib.pas"/>
-			<DCCReference Include="UnitTests\Test.VamLib.Win.Links.pas"/>
-			<DCCReference Include="Source\VamLib.Win.Shell.pas"/>
-			<None Include="ModelSupport_VamLib\default.txaPackage"/>
-			<None Include="Source\InterlockedAPIs.inc"/>
-			<None Include="Source\RangeCheck_ToggleOff.inc"/>
-			<None Include="Source\RangeCheck_ToggleReset.inc"/>
+			<DCCReference Include="madBasic_.dcp"/>
+			<DCCReference Include="madDisAsm_.dcp"/>
+			<DCCReference Include="madExcept_.dcp"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVstFxStore.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVSTUtils.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEvent.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventInputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventOutputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEvent.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEventBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\Vst2Ex.Utils.pas"/>
+			<DCCReference Include="Source\Vst2Ex\Vst2Ex.MadExcept.pas"/>
+			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>SharedPackage.optset</DependentOn>
+				<DependentOn>..\SharedPackage.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
@@ -165,7 +118,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">VamLib.dpk</Source>
+						<Source Name="MainSource">PluginLib.dpk</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -196,14 +149,11 @@
 					</VersionInfoKeys>
 					<Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\AggPasRunXE2.bpl">Anti-Grain Geometry</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\RedFoxRunXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\VamBasicRunXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\RedFoxDesXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamBasicDesXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\LucidityGuiComponentsDesXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl not found</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
@@ -215,7 +165,6 @@
 					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
-				<ModelSupport>True</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>
