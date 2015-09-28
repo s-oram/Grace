@@ -72,7 +72,7 @@
 			<Projects Include="GraceCpuTester\GraceCpuTester.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="GraceTestRunner\TestRunner.dproj">
+			<Projects Include="ConsoleTestRunner\TestRunner.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -291,13 +291,13 @@
 			<MSBuild Targets="Make" Projects="GraceCpuTester\GraceCpuTester.dproj"/>
 		</Target>
 		<Target Name="TestRunner">
-			<MSBuild Projects="GraceTestRunner\TestRunner.dproj"/>
+			<MSBuild Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
 		<Target Name="TestRunner:Clean">
-			<MSBuild Targets="Clean" Projects="GraceTestRunner\TestRunner.dproj"/>
+			<MSBuild Targets="Clean" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
 		<Target Name="TestRunner:Make">
-			<MSBuild Targets="Make" Projects="GraceTestRunner\TestRunner.dproj"/>
+			<MSBuild Targets="Make" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
 		<Target Name="Build">
 			<CallTarget Targets="WatchTower;NativeXmlV4_XE2;DragDropDXE2;dclDragDropDXE2;r8Brain_RunTime;VamLib;VamLib_Design;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;AggPasRunXE2;AggPasDesXE2;RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;VamBasicDesXE2;LucidityGuiComponentsRunXE2;LucidityGuiComponentsDesXE2;Grace;ComponentTester;LucidityKeyGen;VstPerformanceHost;GraceCpuTester;TestRunner"/>
