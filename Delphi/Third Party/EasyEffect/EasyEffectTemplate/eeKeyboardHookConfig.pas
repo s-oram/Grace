@@ -14,12 +14,12 @@ uses
   SysUtils,
   Classes,
   Contnrs,
-  uGetWindowsInfo,
+  VamLib.Win.Shell,
   NativeXML,
   eeTypes,
   eeFunctions,
   eeDetectHost,
-  uAutoFree;
+  VamLib.Utils;
 
 
 //== forward function declarations ===

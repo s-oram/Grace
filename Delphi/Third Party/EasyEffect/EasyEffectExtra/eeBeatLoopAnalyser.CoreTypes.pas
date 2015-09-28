@@ -43,7 +43,7 @@ type
 implementation
 
 uses
-  Math, uAutoFree, eeFilters.EnvFollowerA, eeDsp,
+  Math, VamLib.Utils, eeFilters.EnvFollowerA, eeDsp,
   MtxVecHelper, SignalUtils;
 
 

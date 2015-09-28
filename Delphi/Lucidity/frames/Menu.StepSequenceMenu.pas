@@ -30,7 +30,7 @@ uses
   Lucidity.Interfaces,
   Lucidity.KeyGroup,
   SysUtils,
-  uAutoFree,
+  VamLib.Utils,
   Lucidity.GuiUtils,
   Dialogs;
 

@@ -82,7 +82,7 @@ implementation
 
 uses
   SysUtils,
-  Windows, uAutoFree;
+  Windows, VamLib.Utils;
 
 { TProfiler }
 

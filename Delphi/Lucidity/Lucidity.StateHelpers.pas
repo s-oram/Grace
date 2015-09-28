@@ -20,7 +20,7 @@ implementation
 
 uses
   Lucidity.ProgramFileUtils,
-  uAutoFree,
+  VamLib.Utils,
   eeFunctions,
   StrUtils,
   SysUtils;

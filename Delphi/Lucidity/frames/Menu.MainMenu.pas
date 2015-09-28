@@ -58,7 +58,6 @@ uses
   eePluginDataDir,
   Lucidity.Enums,
   SysUtils,
-  uAutoFree,
   Lucidity.Utils,
   Lucidity.GuiUtils,
   Dialogs, //delete this

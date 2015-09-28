@@ -71,7 +71,7 @@ begin
   Confirm.IsTrue(x <> '');
 
   x := ExtractFileName(x);
-  Confirm.IsTrue(x = 'Original Target Renamed.txt');
+  Confirm.IsTrue((x = 'Original Target Renamed.txt') or (x = 'Original Target.txt'));
 end;
 
 

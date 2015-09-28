@@ -27,7 +27,6 @@ uses
   uIntegerList in 'Source\General\uIntegerList.pas',
   CpuCycleTimer in 'Source\General\CpuCycleTimer.pas',
   Console in 'Source\General\Console.pas',
-  uAutoFree in 'Source\General\uAutoFree.pas',
   eeVSTExtra in 'Source\EasyEffect\eeVSTExtra.pas';
 
 var

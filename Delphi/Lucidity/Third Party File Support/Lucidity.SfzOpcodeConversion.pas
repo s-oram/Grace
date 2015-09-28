@@ -14,7 +14,7 @@ uses
 // converts a SFZ Opcode to a Lucidity patch value string.
 // This method takes the SFZ value, ensures the source is using a valid range,
 // converts to a correctly scaled Lucidity Patch value.
-function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; const OpcodeValue : string):string;
+function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
 
 
 
@@ -141,12 +141,14 @@ end;
 
 
 
-function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; const OpcodeValue : string):string;
+function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
 var
   xInt : integer;
   xFloat : single;
   TriggerMode : TKeyGroupTriggerMode;
 begin
+  OpcodeValue := Trim(OpcodeValue);
+
   // set Result to a default value.
   result := '';
 

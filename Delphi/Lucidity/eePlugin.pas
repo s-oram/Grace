@@ -293,7 +293,7 @@ uses
   eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
   eeSaveLoadFunctions,
-  NativeXML, uAutoFree, eeFunctions, eeDsp,
+  NativeXML, eeFunctions, eeDsp,
   Lucidity.Utils,
   LucidityParameterScaling,
   Lucidity.StateManager,

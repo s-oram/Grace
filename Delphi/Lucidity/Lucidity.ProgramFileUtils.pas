@@ -4,9 +4,13 @@ interface
 
 uses
   Windows,
-  Types, Classes;
+  Types,
+  Classes,
+  VamLib.MoreTypes;
 
 function GetProgramFileFormatVersion(const ProgramFileName : string):integer;
+
+
 
 
 
@@ -16,6 +20,10 @@ function GetProgramFileFormatVersion(const ProgramFileName : string):integer;
 // depending on how the program file was saved and where the samples files were in relation to
 // the program file.
 function FindAbsoluteSamplePath(const ProgramFileName : string; const SampleFileName : string; out AbsoluteSamplePath : string):boolean;
+
+// Returns a list of possible sample locations for a relative sample file path.
+function FindPossibleSamplePaths(const ProgramFileName : string; RelativeSampleFileName : string):TArrayOfString;
+
 
 // takes a sample file name and makes it relative to the program file.
 function MakeRelativeSamplePath(const ProgramFileName : string; const SampleFileName : string):string;
@@ -169,55 +177,72 @@ end;
 
 function FindAbsoluteSamplePath(const ProgramFileName : string; const SampleFileName : string; out AbsoluteSamplePath : string):boolean;
 var
-  fn : string;
-  path : string;
+  Paths : TArrayOfString;
+  c1: Integer;
 begin
+  Paths := FindPossibleSamplePaths(ProgramFileName, SampleFileName);
 
-  // Check if the sample file name is an absolute file name and exists on disk already.
-  if FileExists(SampleFileName) then
+  for c1 := 0 to Length(Paths)-1 do
   begin
-    AbsoluteSamplePath := SampleFileName;
-    exit(true); //===============================>> exit >>====================>>
+    if FileExists(Paths[c1]) then
+    begin
+      AbsoluteSamplePath := Paths[c1];
+      exit(true);
+    end;
   end;
-
-
-  // check in a child 'samples' directory.
-  path := ExtractFilePath(ProgramFileName);
-  path := IncludeTrailingPathDelimiter(path) + TrimFileExt(ProgramFileName) + ' Samples';
-  path := IncludeTrailingPathDelimiter(path);
-  fn   := ExtractFileName(SampleFileName);
-  if FileExists(path + fn) then
-  begin
-    AbsoluteSamplePath := (path + fn);
-    exit(true); //===============================>> exit >>====================>>
-  end;
-
-
-
-  // check if the sample is relative to the program file.
-  path := ExtractFilePath(ProgramFileName);
-  fn   := IncludeTrailingPathDelimiter(path) + SampleFileName;
-  fn   := ExpandFileName(fn);
-  if FileExists(fn) then
-  begin
-    AbsoluteSamplePath := fn;
-    exit(true); //===============================>> exit >>====================>>
-  end;
-
-
-  // Check if the drum kit is using an alternately named samples directory.
-  Path := GetAlternateSamplesDirectory(ProgramFileName);
-  fn := IncludeTrailingPathDelimiter(path) + SampleFileName;
-  if FileExists(fn) then
-  begin
-    AbsoluteSamplePath := fn;
-    exit(true); //===============================>> exit >>====================>>
-  end;
-
 
   // the file has not been found.
   AbsoluteSamplePath := '';
   exit(false); //===============================>> exit >>====================>>
+end;
+
+function FindPossibleSamplePaths(const ProgramFileName : string; RelativeSampleFileName : string):TArrayOfString;
+const
+  kPathCount : integer = 4;
+var
+  c1: Integer;
+  fn : string;
+  path : string;
+
+begin
+  SetLength(result, kPathCount);
+
+  if (SysUtils.PathDelim = '\') and (Pos('/', ProgramFileName) <> 0) then raise Exception.Create('Path contains invalid path delimiter.');
+  if (SysUtils.PathDelim = '/') and (Pos('\', ProgramFileName) <> 0) then raise Exception.Create('Path contains invalid path delimiter.');
+
+  if (SysUtils.PathDelim = '\')
+    then RelativeSampleFileName := StringReplace(RelativeSampleFileName, '/', SysUtils.PathDelim, [rfReplaceAll])
+    else RelativeSampleFileName := StringReplace(RelativeSampleFileName, '\', SysUtils.PathDelim, [rfReplaceAll]);
+
+  // reset all paths to empty values incase the result is a reused variable.
+  for c1 := 0 to kPathCount-1 do
+  begin
+    result[c1] := '';
+  end;
+
+  // 1) Assume the sample file is absolute.
+  result[0] := RelativeSampleFileName;
+
+  // 2) check in a child 'samples' directory.
+  path := ExtractFilePath(ProgramFileName);
+  path := IncludeTrailingPathDelimiter(path) + TrimFileExt(ProgramFileName) + ' Samples';
+  path := IncludeTrailingPathDelimiter(path);
+  fn   := ExtractFileName(RelativeSampleFileName);
+  result[1] := (path + fn);
+
+  // 3) check if the sample is relative to the program file.
+  path := ExtractFilePath(ProgramFileName);
+  fn   := IncludeTrailingPathDelimiter(path) + RelativeSampleFileName;
+  fn   := ExpandFileName(fn);
+  result[2] := fn;
+
+  // 4) check if there is an alternate sample directory node.
+  if FileExists(ProgramFileName) then
+  begin
+    Path := GetAlternateSamplesDirectory(ProgramFileName);
+    fn := IncludeTrailingPathDelimiter(path) + RelativeSampleFileName;
+    result[3] := fn;
+  end;
 end;
 
 

@@ -73,7 +73,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="ConsoleTestRunner\TestRunner.dproj">
-				<Dependencies>Shared Packages\VamLib\VamLib.dproj</Dependencies>
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Lucidity\Grace.dproj</Dependencies>
 			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
@@ -290,13 +290,13 @@
 		<Target Name="GraceCpuTester:Make">
 			<MSBuild Targets="Make" Projects="GraceCpuTester\GraceCpuTester.dproj"/>
 		</Target>
-		<Target Name="TestRunner" DependsOnTargets="VamLib">
+		<Target Name="TestRunner" DependsOnTargets="VamLib;Grace">
 			<MSBuild Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
-		<Target Name="TestRunner:Clean" DependsOnTargets="VamLib:Clean">
+		<Target Name="TestRunner:Clean" DependsOnTargets="VamLib:Clean;Grace:Clean">
 			<MSBuild Targets="Clean" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
-		<Target Name="TestRunner:Make" DependsOnTargets="VamLib:Make">
+		<Target Name="TestRunner:Make" DependsOnTargets="VamLib:Make;Grace:Make">
 			<MSBuild Targets="Make" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
 		<Target Name="Build">

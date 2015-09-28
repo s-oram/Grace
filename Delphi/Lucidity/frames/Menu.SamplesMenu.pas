@@ -48,7 +48,7 @@ uses
   Lucidity.KeyGroupManager,
   Lucidity.SampleMap,
   uConstants, Lucidity.Interfaces,
-  uAutoFree;
+  VamLib.Utils;
 
 { TSamplesMenu }
 

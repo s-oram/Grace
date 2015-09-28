@@ -97,7 +97,7 @@ implementation
 
 uses
   Dialogs,
-  SysUtils, uAutoFree, uFindFiles;
+  SysUtils, VamLib.Utils, uFindFiles;
 
 { TFileBrowserAddon }
 

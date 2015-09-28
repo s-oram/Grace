@@ -47,7 +47,9 @@ function PluginDataDir : PPluginDataDirInfo;
 implementation
 
 uses
-  SysUtils, eeVstExtra, vam.Win.Links;
+  SysUtils,
+  eeVstExtra,
+  VamLib.Win.Links;
 
 var
   IsDataDirInfoValid : boolean;

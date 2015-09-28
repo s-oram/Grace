@@ -13,7 +13,7 @@ function VstHostToStr(host:TVstHost):string;
 implementation
 
 uses
-  uGetWindowsInfo;
+  VamLib.Win.Shell;
 
 
 // NOTE: Finding out what host is being used from the plugin side is a problematic. There is a call back

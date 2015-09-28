@@ -23,7 +23,7 @@ implementation
 
 uses
   eeLogging,
-  TypInfo, uAutoFree, SysUtils, eeMidiMap, eeFunctions;
+  TypInfo, VamLib.Utils, SysUtils, eeMidiMap, eeFunctions;
 
   {
 procedure SaveMidiMapToXML(const MidiAutomation:TMidiAutomation; var XML:TNativeXML);

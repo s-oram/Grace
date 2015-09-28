@@ -132,7 +132,6 @@ uses
   Lucidity.SequencerDataObject,
   Lucidity.Utils,
   Lucidity.StateHelpers,
-  uAutoFree,
   uConstants,
   eeSaveLoadFunctions,
   eeEnumHelper,

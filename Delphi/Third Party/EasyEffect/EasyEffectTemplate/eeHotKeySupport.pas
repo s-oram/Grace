@@ -134,7 +134,7 @@ implementation
 
 uses
   {$IFDEF Logging} siAuto, {$ENDIF}
-  SysUtils, uAutoFree;
+  SysUtils, VamLib.Utils;
 
 
 function GetParentHandle(aHandle:hwnd; Level:integer):hwnd;

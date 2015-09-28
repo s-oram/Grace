@@ -29,7 +29,7 @@ implementation
 
 uses
   Classes, SysUtils,
-  uAutoFree, NativeXML;
+  VamLib.Utils, NativeXML;
 
 function GetVstXmlRegionCount(Text : string):integer;
 var

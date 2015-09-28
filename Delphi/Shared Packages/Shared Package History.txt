@@ -4,6 +4,7 @@
 28 September 2015
 - WatchTower now expects a data directory when run. Tests will check the data directory for additional data files
   as required.
+- remove uAutoFree from NativeXML.
 
 28 September 2015
 - WatchTower: Create global test runner.

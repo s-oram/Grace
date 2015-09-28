@@ -42,8 +42,10 @@ uses
   {$ELSE}
     Controls,
   {$ENDIF}
-  uGetWindowsInfo, uGeneralFunctions;
+  VamLib.Win.Shell,
+  uGeneralFunctions;
 
+{$TYPEDADDRESS OFF}
 
 var
   HookCount          : integer;

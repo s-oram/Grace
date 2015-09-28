@@ -83,7 +83,7 @@ type
 implementation
 
 uses
-  uGeneralFunctions, SysUtils, AudioIO, uAutoFree, Math,
+  uGeneralFunctions, SysUtils, AudioIO, VamLib.Utils, Math,
   eeDspSampleRateConversion, eeSampleInt, eeSampleIntFunctions;
 
 { TMipMapSampleInt }
