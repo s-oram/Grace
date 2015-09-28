@@ -45,6 +45,7 @@ uses
   VamLib.Win.Shell,
   uGeneralFunctions;
 
+{$TYPEDADDRESS OFF}
 
 var
   HookCount          : integer;

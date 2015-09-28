@@ -37,6 +37,7 @@ implementation
 uses
   eeStringConversion;
 
+{$TYPEDADDRESS OFF}
 
 procedure ShowFolder(const strFolder: string);
 begin

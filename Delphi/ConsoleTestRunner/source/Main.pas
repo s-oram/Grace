@@ -14,6 +14,8 @@ uses
   RegisterTests.VamLib;
   //RegisterTests.Lucidity;
 
+{$TYPEDADDRESS OFF}
+
 procedure Run;
 var
   WriteToLog : TWriteToLogMethod;

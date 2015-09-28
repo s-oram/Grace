@@ -4,6 +4,8 @@ program TestRunner;
 
 {$R *.res}
 
+{-$T}
+
 uses
   System.SysUtils,
   Main in 'source\Main.pas';
