@@ -14,6 +14,9 @@ type
 
     [Test]
     procedure GetLinkTarget_Test;
+
+    [Test]
+    procedure ResolveLinkTarget_Test;
   end;
 
 implementation
@@ -52,6 +55,27 @@ begin
 
   Confirm.IsTrue(SameText(x, TargetFile), 'Target File is not returned correctly.');
 end;
+
+procedure TVamLib_Win_Links_Test.ResolveLinkTarget_Test;
+var
+  LinkFile : string;
+  TargetFile : string;
+  x : string;
+begin
+  LinkFile   := TestDataDirectory + '\VamLib\Test.VamLib.Win.Links.pas\Original Target.lnk';
+  TargetFile := 'Original Target Renamed.txt';
+
+  Confirm.IsTrue(FileExists(LinkFile));
+
+  x := ResolveLinkTarget(LinkFile);
+  Confirm.IsTrue(x <> '');
+
+  x := ExtractFileName(x);
+  Confirm.IsTrue(x = 'Original Target Renamed.txt');
+end;
+
+
+
 
 
 

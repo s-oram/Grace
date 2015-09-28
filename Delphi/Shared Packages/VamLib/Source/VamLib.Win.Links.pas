@@ -67,7 +67,7 @@ begin
     lpMultiByteString := PAnsiChar(AnsiString(LinkFileName));
     MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, lpMultiByteString, -1, @WidePath, MAX_PATH);
     ppf.Load(WidePath, STGM_READ);
-    psl.Resolve(0,SLR_ANY_MATCH); // <-- Resolve the link target!
+    psl.Resolve(0,SLR_NO_UI); // <-- Resolve the link target!
     psl.GetPath(@info, MAX_PATH, wfs, SLGP_UNCPRIORITY);
     Result := info;
   end
