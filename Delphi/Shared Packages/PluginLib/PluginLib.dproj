@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
 			<ProjectGuid>{F8D5D0CF-B189-478A-8B84-630C0CC824C1}</ProjectGuid>
-			<MainSource>Plugins.dpk</MainSource>
+			<MainSource>PluginLib.dpk</MainSource>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>None</FrameworkType>
 			<Base>True</Base>
@@ -99,7 +99,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">Plugins.dpk</Source>
+						<Source Name="MainSource">PluginLib.dpk</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
