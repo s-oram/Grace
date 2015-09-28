@@ -97,7 +97,7 @@ initialization
   //http://help.madshi.net/madExceptUnit.htm#RegisterExceptionHandler
   //RegisterExceptionHandler(ExceptionBlocker, stDontSync);
   RegisterExceptionHandler(CustomExceptionHandler, stDontSync);
-  InstallUnhandledExceptionFilter;
+  //InstallUnhandledExceptionFilter;
 
   // MESettings documentation here:
   // http://help.madshi.net/MESettings.htm#IMESettings

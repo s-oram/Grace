@@ -9,6 +9,7 @@ library Grace;
 {$R 'VersionInfo.res' 'VersionInfo.rc'}
 
 uses
+  Vst2Ex.MadExcept,
   SysUtils,
   Classes,
   Lucidity.GlobalSetup in 'Lucidity.GlobalSetup.pas',
@@ -207,10 +208,9 @@ begin
       then result := VstPlug.Effect
       else result := nil;
   except
-    {$IFDEF MadExcept}
     result := nil;
-    // TODO:HIGH handleException should be called.
-    //HandleException;
+    {$IFDEF MadExcept}
+    HandleException;
     {$ELSE}
     raise;
     {$ENDIF}
