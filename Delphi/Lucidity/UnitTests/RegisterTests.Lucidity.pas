@@ -1,6 +1,7 @@
-unit VamLib.RegisterTests;
+unit RegisterTests.Lucidity;
 
 interface
+
 
 
 implementation

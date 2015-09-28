@@ -2,6 +2,10 @@
             History
 ======================================
 28 September 2015
+- WatchTower now expects a data directory when run. Tests will check the data directory for additional data files
+  as required.
+
+28 September 2015
 - WatchTower: Create global test runner.
 - Shared packages test runner no longer registers tests individually.
 

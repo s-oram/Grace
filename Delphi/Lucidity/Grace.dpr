@@ -177,7 +177,9 @@ uses
   InWindowDialog.SampleFinderDialog in 'Dialogs\InWindowDialog.SampleFinderDialog.pas',
   InWindowDialog.SampleFinderDialog.Form in 'Dialogs\InWindowDialog.SampleFinderDialog.Form.pas' {SampleFinderDialogForm},
   InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
-  Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas';
+  Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas',
+  RegisterTests.Lucidity in 'UnitTests\RegisterTests.Lucidity.pas',
+  Test.Lucidity.ProgramFileUtils in 'UnitTests\Test.Lucidity.ProgramFileUtils.pas';
 
 {$R *.res}
 

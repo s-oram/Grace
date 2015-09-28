@@ -7,25 +7,33 @@ procedure Run;
 implementation
 
 uses
+  ActiveX,
   WatchTower,
   WatchTower.Global,
-  VamLib.Console;
+  VamLib.Console,
+  RegisterTests.VamLib;
+  //RegisterTests.Lucidity;
 
 procedure Run;
 var
   WriteToLog : TWriteToLogMethod;
 
 begin
-  WriteToLog := procedure(Msg : string)
-  begin
-    WriteLn(Msg);
+  CoInitialize(nil);
+  try
+    WriteToLog := procedure(Msg : string)
+    begin
+      WriteLn(Msg);
+    end;
+
+    WatchTower.Global.RunTests(WriteToLog, 'S:\Delphi\Shared Packages\WatchTowerTestData');
+
+    WriteLn(' ');
+
+    WaitAnyKeyPressed('Press any key to continue...');
+  finally
+    CoUninitialize;
   end;
-
-  WatchTower.Global.RunTests(WriteToLog);
-
-  WriteLn(' ');
-
-  WaitAnyKeyPressed('Press any key to continue...');
 end;
 
 end.
