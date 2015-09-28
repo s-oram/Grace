@@ -35,7 +35,7 @@ uses
   eePluginEx,
   Lucidity.KeyGroupManager,
   uConstants, Lucidity.Interfaces,
-  uAutoFree;
+  VamLib.Utils;
 
 { TGroupsMenu }
 

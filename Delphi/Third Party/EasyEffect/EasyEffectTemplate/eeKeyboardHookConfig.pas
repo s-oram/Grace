@@ -19,7 +19,7 @@ uses
   eeTypes,
   eeFunctions,
   eeDetectHost,
-  uAutoFree;
+  VamLib.Utils;
 
 
 //== forward function declarations ===

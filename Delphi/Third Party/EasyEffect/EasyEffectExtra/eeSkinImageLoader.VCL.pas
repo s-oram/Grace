@@ -32,7 +32,7 @@ implementation
 
 uses
   VamLib.Logging,
-  Vcl.Imaging.PngImage, SysUtils, Classes, uAutoFree,
+  Vcl.Imaging.PngImage, SysUtils, Classes, VamLib.Utils,
   Dialogs;
 
 var

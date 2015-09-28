@@ -64,7 +64,7 @@ uses
   InWindowDialog,
   XPLAT.Dialogs,
   SysUtils,
-  uAutoFree,
+  VamLib.Utils,
   Dialogs, // TODO:HIGH delete this
   uConstants,
   Lucidity.ProgramFileUtils;

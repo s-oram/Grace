@@ -58,7 +58,7 @@ uses
   eePluginDataDir,
   Lucidity.Enums,
   SysUtils,
-  uAutoFree,
+  VamLib.Utils,
   Lucidity.Utils,
   Lucidity.GuiUtils,
   Dialogs, //delete this

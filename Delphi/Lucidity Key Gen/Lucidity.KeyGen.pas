@@ -11,7 +11,7 @@ implementation
 uses
   SysUtils,
   Classes,
-  uAutoFree,
+  VamLib.Utils,
   eeHashes,
   EncdDecd,
   Punycode;

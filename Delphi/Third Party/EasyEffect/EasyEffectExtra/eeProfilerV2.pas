@@ -113,7 +113,7 @@ implementation
 
 uses
   SysUtils, Math,
-  Windows, uAutoFree;
+  Windows, VamLib.Utils;
 
 { TProfiler }
 

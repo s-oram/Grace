@@ -16,7 +16,7 @@ function LoadTestInfo:TTestInfo;
 implementation
 
 uses
-  uAutoFree,
+  VamLib.Utils,
   Vcl.Dialogs, SysUtils,
   NativeXML, eeVstExtra;
 

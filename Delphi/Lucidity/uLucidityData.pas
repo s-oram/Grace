@@ -94,7 +94,7 @@ implementation
 
 uses
   uConstants,
-  uAutoFree,
+  VamLib.Utils,
   SysUtils, uDataFolderUtils,
   eeSaveLoadFunctions,
   NativeXML;

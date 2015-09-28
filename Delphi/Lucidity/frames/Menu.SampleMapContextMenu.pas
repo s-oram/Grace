@@ -34,7 +34,7 @@ implementation
 uses
   SysUtils,
   eeWinEx,
-  uAutoFree,
+  VamLib.Utils,
   Lucidity.GuiUtils,
   Dialogs, //delete this
   Lucidity.KeyGroupManager,

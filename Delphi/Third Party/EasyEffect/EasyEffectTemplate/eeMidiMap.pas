@@ -58,7 +58,9 @@ type
 implementation
 
 uses
-  SysUtils, uAutoFree, NativeXML, eeFunctions;
+  SysUtils,
+  VamLib.Utils,
+  NativeXML, eeFunctions;
 
 
 

@@ -35,7 +35,7 @@ type
 implementation
 
 uses
-  Math, uAutoFree, DewResearchSampleRateConversion;
+  Math, VamLib.Utils, DewResearchSampleRateConversion;
 
 { TMipMapTableData }
 

@@ -43,7 +43,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAutoFree,
+  VamLib.Utils,
   eeHashes,
   EncdDecd,
   Punycode;

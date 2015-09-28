@@ -34,7 +34,7 @@ type
 implementation
 
 uses
-  uAutoFree;
+  VamLib.Utils;
 
 procedure LoadSfzAsXML(const SfzFileName : string; XML:TNativeXML);
 var
