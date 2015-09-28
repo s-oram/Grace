@@ -28,7 +28,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="Shared Packages\PluginLib\PluginLib.dproj">
-				<Dependencies/>
+				<Dependencies>Shared Packages\VamLib\VamLib.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj">
 				<Dependencies>Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj</Dependencies>
@@ -61,7 +61,7 @@
 				<Dependencies>LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Lucidity\Grace.dproj">
-				<Dependencies>Shared Packages\WatchTower\WatchTower.dproj;Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\SmartInspectExt\SmartInspectExt_Run.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\VamAudio\VamAudio.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
+				<Dependencies>Shared Packages\WatchTower\WatchTower.dproj;Shared Packages\NativeXml_401\packages\NativeXmlV4_XE2.dproj;Shared Packages\DragDropv6\Packages\DragDropDXE2.dproj;Shared Packages\r8brain 1.4\r8Brain_RunTime.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\SmartInspectExt\SmartInspectExt_Run.dproj;Shared Packages\AudioIO\packages\AudioIO_DXE2.dproj;Shared Packages\VamAudio\VamAudio.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;Shared Packages\RedFox\RedFox Base Components\packages\RedFoxRunXE2.dproj;Shared Packages\RedFox\VamBasic\packages\VamBasicRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj;Shared Packages\PluginLib\PluginLib.dproj</Dependencies>
 			</Projects>
 			<Projects Include="Component Tester\ComponentTester.dproj">
 				<Dependencies>Shared Packages\VamLib\VamLib.dproj;Shared Packages\RedFox\AggPasMod\Packages\AggPasRunXE2.dproj;LucidityGuiComponents\packages\LucidityGuiComponentsRunXE2.dproj</Dependencies>
@@ -158,13 +158,13 @@
 		<Target Name="SmartInspectExt_Run:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\SmartInspectExt\SmartInspectExt_Run.dproj"/>
 		</Target>
-		<Target Name="PluginLib">
+		<Target Name="PluginLib" DependsOnTargets="VamLib">
 			<MSBuild Projects="Shared Packages\PluginLib\PluginLib.dproj"/>
 		</Target>
-		<Target Name="PluginLib:Clean">
+		<Target Name="PluginLib:Clean" DependsOnTargets="VamLib:Clean">
 			<MSBuild Targets="Clean" Projects="Shared Packages\PluginLib\PluginLib.dproj"/>
 		</Target>
-		<Target Name="PluginLib:Make">
+		<Target Name="PluginLib:Make" DependsOnTargets="VamLib:Make">
 			<MSBuild Targets="Make" Projects="Shared Packages\PluginLib\PluginLib.dproj"/>
 		</Target>
 		<Target Name="AudioIO_DXE2" DependsOnTargets="r8Brain_RunTime">
@@ -257,13 +257,13 @@
 		<Target Name="LucidityGuiComponentsDesXE2:Make" DependsOnTargets="LucidityGuiComponentsRunXE2:Make">
 			<MSBuild Targets="Make" Projects="LucidityGuiComponents\packages\LucidityGuiComponentsDesXE2.dproj"/>
 		</Target>
-		<Target Name="Grace" DependsOnTargets="WatchTower;NativeXmlV4_XE2;DragDropDXE2;r8Brain_RunTime;VamLib;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2">
+		<Target Name="Grace" DependsOnTargets="WatchTower;NativeXmlV4_XE2;DragDropDXE2;r8Brain_RunTime;VamLib;SmartInspectExt_Run;AudioIO_DXE2;VamAudio;AggPasRunXE2;RedFoxRunXE2;VamBasicRunXE2;LucidityGuiComponentsRunXE2;PluginLib">
 			<MSBuild Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Clean" DependsOnTargets="WatchTower:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean">
+		<Target Name="Grace:Clean" DependsOnTargets="WatchTower:Clean;NativeXmlV4_XE2:Clean;DragDropDXE2:Clean;r8Brain_RunTime:Clean;VamLib:Clean;SmartInspectExt_Run:Clean;AudioIO_DXE2:Clean;VamAudio:Clean;AggPasRunXE2:Clean;RedFoxRunXE2:Clean;VamBasicRunXE2:Clean;LucidityGuiComponentsRunXE2:Clean;PluginLib:Clean">
 			<MSBuild Targets="Clean" Projects="Lucidity\Grace.dproj"/>
 		</Target>
-		<Target Name="Grace:Make" DependsOnTargets="WatchTower:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make">
+		<Target Name="Grace:Make" DependsOnTargets="WatchTower:Make;NativeXmlV4_XE2:Make;DragDropDXE2:Make;r8Brain_RunTime:Make;VamLib:Make;SmartInspectExt_Run:Make;AudioIO_DXE2:Make;VamAudio:Make;AggPasRunXE2:Make;RedFoxRunXE2:Make;VamBasicRunXE2:Make;LucidityGuiComponentsRunXE2:Make;PluginLib:Make">
 			<MSBuild Targets="Make" Projects="Lucidity\Grace.dproj"/>
 		</Target>
 		<Target Name="ComponentTester" DependsOnTargets="VamLib;AggPasRunXE2;LucidityGuiComponentsRunXE2">

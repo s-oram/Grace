@@ -54,7 +54,7 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
@@ -80,6 +80,21 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="VamLib.dcp"/>
+			<DCCReference Include="WatchTower.dcp"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffect.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffectX.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVstFxStore.pas"/>
+			<DCCReference Include="Source\Vst2Sdk\VamVst2.DVSTUtils.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEvent.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventInputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.MidiEventOutputBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEvent.pas"/>
+			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEventBuffer.pas"/>
+			<DCCReference Include="Source\Vst2Ex\Vst2Ex.Utils.pas"/>
+			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

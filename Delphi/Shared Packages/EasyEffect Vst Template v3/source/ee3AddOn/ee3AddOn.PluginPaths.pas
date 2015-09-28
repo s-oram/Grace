@@ -14,13 +14,13 @@ uses
   VamLib.Logging,
   VamLib.Utils,
   VamLib.Win.Links,
-  ee3.Utils;
+  Vst2Ex.Utils;
 
 function GetPluginDllFileName  : string;
 var
   s : string;
 begin
-  s := ee3.Utils.GetDLLFilename;
+  s := Vst2Ex.Utils.GetDLLFilename;
   result := s;
 end;
 
@@ -28,7 +28,7 @@ function GetPluginDLLDirectory : string;
 var
   s : string;
 begin
-  s := ee3.Utils.GetDLLDirectory;
+  s := Vst2Ex.Utils.GetDLLDirectory;
   if not DirectoryExists(s) then raise Exception.Create('Plugin DLL Directory doesn''t exist.'); //This would be a highly unexpected error!!
   result := s;
 end;

@@ -21,7 +21,7 @@ implementation
 
 uses
   SysUtils,
-  ee3.Utils,
+  Vst2Ex.Utils,
   madTools,
   MadExcept;
 

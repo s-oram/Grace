@@ -26,8 +26,6 @@ type
 
 implementation
 
-
-
 { TVstEventBuffer }
 
 constructor TVstEventBuffer.Create(const aCapacity : integer);

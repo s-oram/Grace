@@ -40,9 +40,6 @@ type
 
 implementation
 
-uses
-  Test.VamVst2.MidiEventOutputBuffer;
-
 // NOTE: Disable range checking for this unit.
 // The VstEvents buffer will trigger range check exceptions otherwise.
 {$R-}
