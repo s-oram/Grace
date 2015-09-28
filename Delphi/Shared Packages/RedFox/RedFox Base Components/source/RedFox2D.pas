@@ -47,7 +47,6 @@ type
     constructor Create;
     destructor Destroy; override;
 
-
     procedure Attach(aBuffer:Pointer; BufferWidth, BufferHeight:cardinal; Stride:integer); overload;
 
     procedure ClearAll(R, G, B: Cardinal; A: Cardinal = 255); overload;
@@ -55,9 +54,7 @@ type
 
     procedure SetImageAlpha(Alpha : cardinal);
 
-
     procedure InvertAlpha;
-
 
     //CopyImage() replaces the destination pixel data with the source pixel data.
     procedure CopyImage(const Source : TPixelMap; SrcX1, SrcY1, SrcX2, SrcY2, DstX1, DstY1 : integer);
@@ -317,11 +314,6 @@ begin
 
   BlitImage(BlitDest, BlitSrc, RedFoxBlend.AlphaBlend);
 end;
-
-
-
-
-
 
 procedure TRedFox2D.ClearAll(R, G, B, A: Cardinal);
 var

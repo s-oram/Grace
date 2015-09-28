@@ -1,6 +1,23 @@
 ======================================
             History
 ======================================
+28 September 2015
+- WatchTower: Create global test runner.
+- Shared packages test runner no longer registers tests individually.
+
+17 September 2015
+- add a new FarScapeCore VCL container.
+
+16 September 2015
+- Add FarScapeVcl packages.
+
+14 September 2015
+- FarScapeCore code added.
+
+13 September 2015
+- Rewrite WatchTower to use classes and attributes. 
+- Add SharedPackageTestRunner console application.
+
 3 September 2015
 - add WatchTower package.
 - add VamVst2.MidiEventBuffers and related changes.

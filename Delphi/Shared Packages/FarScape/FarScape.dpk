@@ -1,0 +1,58 @@
+package FarScape;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  WatchTower,
+  vcl,
+  VamLib;
+
+contains
+  FarScape.CustomControl in 'source\FarScape.CustomControl.pas',
+  Test.FarScape.Parentage in 'UnitTests\Test.FarScape.Parentage.pas',
+  Test.FarScape.Positioning in 'UnitTests\Test.FarScape.Positioning.pas',
+  FarScape.RootControl in 'source\FarScape.RootControl.pas',
+  FarScape.VclContainer in 'source\FarScape.VclContainer.pas',
+  FarScape.BitmapBufferControl in 'source\FarScape.BitmapBufferControl.pas',
+  FarScape.Assistant.Bitmap in 'source\FarScape.Assistant.Bitmap.pas',
+  FarScape.Scene in 'source\FarScape.Scene.pas',
+  Test.FarScape.Scene in 'UnitTests\Test.FarScape.Scene.pas',
+  Test.FarScape.RootControl in 'UnitTests\Test.FarScape.RootControl.pas',
+  Test.FarScape.ControlHelper in 'UnitTests\Test.FarScape.ControlHelper.pas',
+  TestMocks.FarScapeControls in 'UnitTests\TestMocks.FarScapeControls.pas',
+  FarScape.ControlHelper in 'source\FarScape.ControlHelper.pas',
+  FarScape.Assistant.AlignControls in 'source\FarScape.Assistant.AlignControls.pas',
+  Test.FarScape.ControlAlignment in 'UnitTests\Test.FarScape.ControlAlignment.pas',
+  FarScape.UserInteraction in 'source\FarScape.UserInteraction.pas',
+  FarScape.PureInterfacedObject in 'source\FarScape.PureInterfacedObject.pas',
+  FarScape.Assistant.UserInteraction in 'source\FarScape.Assistant.UserInteraction.pas',
+  RegisterTests.FarScape in 'UnitTests\RegisterTests.FarScape.pas';
+
+end.

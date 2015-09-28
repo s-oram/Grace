@@ -2,62 +2,79 @@ unit WatchTower;
 
 interface
 
+// NOTE: Testing terminology.
+// https://www.finalbuilder.com/resources/blogs/postid/697/introducing-dunitx
+
+// Using RTTI in D2010
+// http://robstechcorner.blogspot.com.au/2009/09/using-attributes-and-tcustomattribute.html
+
+uses
+  SysUtils;
+
 type
-  TWriteToLogMethod = reference to procedure(Msg : string);
+  TestAttribute = class(TCustomAttribute)
+  end;
+
+  TWriteToLogMethod  = reference to procedure(Msg : string);
   TReportErrorMethod = reference to procedure(const ErrorMsg : string);
-  TWatchTowerTestMethod = reference to procedure(const ReportError : TReportErrorMethod);
 
-procedure RegisterTest(const PackageName, GroupName, TestName : string; const TestMethod : TWatchTowerTestMethod);
+  TWatchTowerTestCallbacks = record
+    ReportErrorCallback : TReportErrorMethod;
+    LogMessageCallback : TWriteToLogMethod;
+  end;
 
-procedure RunTests(const PackageName, GroupName, TestName : string; const WriteToLog : TWriteToLogMethod; out TestCount, ErrorCount : integer);
+  TWatchTowerTest = class
+  private
+    fTestReporter : TWatchTowerTestCallbacks;
+  public
+    constructor Create(const TestReporter : TWatchTowerTestCallbacks); virtual;
+    procedure Setup; virtual;
+    procedure TearDown; virtual;
+
+    // Call ReportError() from within test methods to report errors.
+    procedure ReportError(const ErrorMsg : string);
+
+    // Write a message to the attached logger output.
+    procedure LogMessage(const Msg : string);
+  end;
+
+  TWatchTowerTestClass = class of TWatchTowerTest;
+
+
+  EWatchTowerTestFail = class(Exception);
 
 implementation
 
-uses
-  SysUtils,
-  Classes,
-  WatchTower.Utils,
-  WatchTower.TestRunner,
-  WatchTower.TestCollection;
 
-var
-  Global_TestCollection : TTestCollection;
+{ TWatchTowerTest }
 
-function TestCollection : TTestCollection;
+constructor TWatchTowerTest.Create(const TestReporter : TWatchTowerTestCallbacks);
 begin
-  if (Global_TestCollection = nil) then CreateSingletonObject(Pointer(Global_TestCollection), TTestCollection.Create);
-  result := Global_TestCollection;
+  fTestReporter := TestReporter;
 end;
 
-procedure RegisterTest(const PackageName, GroupName, TestName : string; const TestMethod : TWatchTowerTestMethod);
+procedure TWatchTowerTest.Setup;
 begin
-  TestCollection.AddTest(PackageName, GroupName, TestName, TestMethod);
+  // Setup() will be called before each test is run. Override and perform
+  // required test preparation.
 end;
 
-procedure RunTests(const PackageName, GroupName, TestName : string; const WriteToLog : TWriteToLogMethod; out TestCount, ErrorCount : integer);
-var
-  TestID : string;
-  SelectedTests : TList;
+procedure TWatchTowerTest.TearDown;
 begin
-  WriteToLog('Running WatchTower tests matching ' + GetTestID(PackageName, GroupName, TestName));
-  WriteToLog(IntToStr(TestCollection.Count) + ' tests registered.');
-
-  SelectedTests := TList.Create;
-  try
-    TestCollection.SelectTests(SelectedTests, PackageName, GroupName, TestName);
-    WriteToLog(IntToStr(SelectedTests.Count) + ' tests selected.');
-    if SelectedTests.Count > 0 then WatchTower.TestRunner.RunTests(SelectedTests, WriteToLog, TestCount, ErrorCount);
-  finally
-    SelectedTests.Free;
-  end;
-
-  WriteToLog(GetTestingFinishedMessage(TestCount, ErrorCount));
+  // TearDown() will be called after each test is finished. Override to perform
+  // clean up tasks.
 end;
 
-initialization
+procedure TWatchTowerTest.LogMessage(const Msg: string);
+begin
+  if assigned(fTestReporter.LogMessageCallback) then fTestReporter.LogMessageCallback(Msg);
+end;
 
-finalization
-  if assigned(Global_TestCollection) then Global_TestCollection.Free;
+procedure TWatchTowerTest.ReportError(const ErrorMsg: string);
+begin
+  if assigned(fTestReporter.ReportErrorCallback) then fTestReporter.ReportErrorCallback(ErrorMsg);
+end;
+
 
 
 end.

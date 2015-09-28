@@ -1,21 +1,16 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{72C512F0-CB0D-49DD-9C97-0580F1FFA3E9}</ProjectGuid>
-			<MainSource>RedFoxRunXE2.dpk</MainSource>
-			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">Release</Config>
-			<TargetedPlatforms>3</TargetedPlatforms>
-			<AppType>Package</AppType>
-			<FrameworkType>VCL</FrameworkType>
+			<ProjectGuid>{382A5B3D-9139-450D-A247-5FA6744850B4}</ProjectGuid>
+			<MainSource>FarScape.dpk</MainSource>
 			<ProjectVersion>13.4</ProjectVersion>
+			<FrameworkType>None</FrameworkType>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Package</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
-			<Base_Win64>true</Base_Win64>
-			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
@@ -23,15 +18,9 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
 			<Cfg_1>true</Cfg_1>
 			<CfgParent>Base</CfgParent>
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
-			<Cfg_1_Win64>true</Cfg_1_Win64>
-			<CfgParent>Cfg_1</CfgParent>
-			<Cfg_1>true</Cfg_1>
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
@@ -40,112 +29,88 @@
 			<Cfg_1>true</Cfg_1>
 			<Base>true</Base>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
 			<Cfg_2>true</Cfg_2>
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
-			<Cfg_2_Win64>true</Cfg_2_Win64>
-			<CfgParent>Cfg_2</CfgParent>
-			<Cfg_2>true</Cfg_2>
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
-			<Cfg_2_Win32>true</Cfg_2_Win32>
-			<CfgParent>Cfg_2</CfgParent>
-			<Cfg_2>true</Cfg_2>
-			<Base>true</Base>
-		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('..\..\SharedPackage.optset')" Project="..\..\SharedPackage.optset"/>
+		<Import Condition="'$(Base)'!='' And Exists('..\SharedPackage.optset')" Project="..\SharedPackage.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
-			<DCC_UsePackage>rtl;dbrtl;$(DCC_UsePackage)</DCC_UsePackage>
+			<GenDll>true</GenDll>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
 			<GenPackage>true</GenPackage>
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_Namespace>Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_E>false</DCC_E>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
-			<GenDll>true</GenDll>
-			<DCC_E>false</DCC_E>
 			<DCC_F>false</DCC_F>
 			<DCC_K>false</DCC_K>
-			<CfgDependentOn>..\..\SharedPackage.optset</CfgDependentOn>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_UsePackage>vclimg;vcl;$(DCC_UsePackage)</DCC_UsePackage>
+			<CfgDependentOn>..\SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_UsePackage>vclimg;vcl;AggPasRunXE2;AggPasDesXE2;VamLib;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
-			<DCC_DebugInformation>false</DCC_DebugInformation>
-			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('S:\Delphi\Shared Packages\RedFox\SharedPackage.optset')" Project="S:\Delphi\Shared Packages\RedFox\SharedPackage.optset"/>
-		<Import Condition="'$(Base)'!='' And Exists('..\..\..\..\Basic Paths.optset')" Project="..\..\..\..\Basic Paths.optset"/>
-		<Import Condition="'$(Base)'!='' And Exists('..\..\RedFox.optset')" Project="..\..\RedFox.optset"/>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="AggPasRunXE2.dcp"/>
+			<DCCReference Include="WatchTower.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
-			<DCCReference Include="vclimg.dcp"/>
-			<DCCReference Include="dbrtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
-			<DCCReference Include="..\source\RedFoxColor.pas"/>
-			<DCCReference Include="..\source\RedFoxContainer.pas"/>
-			<DCCReference Include="..\source\RedFoxGraphicControl.pas"/>
-			<DCCReference Include="..\source\RedFoxImageBuffer.pas"/>
-			<DCCReference Include="..\source\RedFoxWinControl.pas"/>
-			<DCCReference Include="..\source\RedFox.pas"/>
-			<DCCReference Include="..\source\RedFox2D.pas"/>
-			<DCCReference Include="..\source\RedFoxBlend.pas"/>
-			<DCCReference Include="..\source\RedFoxInvalidator.pas"/>
-			<DCCReference Include="..\source\RedFoxLogging.pas"/>
-			<DCCReference Include="..\source\RedFoxAccessible.pas"/>
-			<DCCReference Include="..\source\RedFoxTextBuffer.pas"/>
-			<DCCReference Include="..\source\RedFoxBitmapWrapper.pas"/>
-			<None Include="ModelSupport_RedFoxRunXE2\default.txaPackage"/>
-			<BuildConfiguration Include="Debug">
+			<DCCReference Include="source\FarScape.CustomControl.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Parentage.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Positioning.pas"/>
+			<DCCReference Include="source\FarScape.RootControl.pas"/>
+			<DCCReference Include="source\FarScape.VclContainer.pas"/>
+			<DCCReference Include="source\FarScape.BitmapBufferControl.pas"/>
+			<DCCReference Include="source\FarScape.Assistant.Bitmap.pas"/>
+			<DCCReference Include="source\FarScape.Scene.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Scene.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.RootControl.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.ControlHelper.pas"/>
+			<DCCReference Include="UnitTests\TestMocks.FarScapeControls.pas"/>
+			<DCCReference Include="source\FarScape.ControlHelper.pas"/>
+			<DCCReference Include="source\FarScape.Assistant.AlignControls.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.ControlAlignment.pas"/>
+			<DCCReference Include="source\FarScape.UserInteraction.pas"/>
+			<DCCReference Include="source\FarScape.PureInterfacedObject.pas"/>
+			<DCCReference Include="source\FarScape.Assistant.UserInteraction.pas"/>
+			<DCCReference Include="UnitTests\RegisterTests.FarScape.pas"/>
+			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>..\..\SharedPackage.optset</DependentOn>
+				<DependentOn>..\SharedPackage.optset</DependentOn>
 			</BuildConfiguration>
-			<BuildConfiguration Include="Release">
+			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
@@ -156,7 +121,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">RedFoxRunXE2.dpk</Source>
+						<Source Name="MainSource">FarScape.dpk</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -191,16 +156,18 @@
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\RedFoxRunXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\VamBasicRunXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\FarScapeVcl_Design.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
 					</Excluded_Packages>
 				</Delphi.Personality>
+				<Deployment/>
 				<Platforms>
-					<Platform value="Win64">True</Platform>
+					<Platform value="Win64">False</Platform>
+					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
-				<ModelSupport>True</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

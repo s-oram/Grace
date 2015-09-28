@@ -2,6 +2,8 @@ unit Test.VamVst2.MidiEventInputBuffer;
 
 interface
 
+//TODO:HIGH need to rewrite these tests to use the new WatchTower test framework.
+
 uses
   WatchTower;
 

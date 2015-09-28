@@ -1,4 +1,4 @@
-package WatchTower;
+package FarScape_Design;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,18 +25,14 @@ package WatchTower;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'WatchTower is a small unit testing framework.'}
-{$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  DesignIDE,
+  FarScape;
 
 contains
-  WatchTower in 'source\WatchTower.pas',
-  WatchTower.TestCollection in 'source\WatchTower.TestCollection.pas',
-  WatchTower.TestRunner in 'source\WatchTower.TestRunner.pas',
-  WatchTower.Confirm in 'source\WatchTower.Confirm.pas',
-  WatchTower.Global in 'source\WatchTower.Global.pas';
+  DesignTimeRegistration in 'source\DesignTimeRegistration.pas';
 
 end.

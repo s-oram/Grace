@@ -3,59 +3,166 @@ unit WatchTower.TestRunner;
 interface
 
 uses
-  Classes,
   WatchTower,
   WatchTower.TestCollection;
 
+type
+  TTestRunner = class
+  private
+    TestCollection : TTestCollection;
+  public
+    constructor Create;
+    destructor Destroy; override;
 
-procedure RunTests(const SelectedTests : TList; const WriteToLog : TWriteToLogMethod; out TestCount, ErrorCount : integer);
+    procedure AddTest(const aTestClass : TWatchTowerTestClass);
+    procedure RunTests(const LogCallback : TWriteToLogMethod);
+  end;
 
 implementation
 
 uses
+  WatchTower.Confirm,
   SysUtils,
-  WatchTower.Utils;
+  Rtti;
 
-
-
-procedure RunTests(const SelectedTests : TList; const WriteToLog : TWriteToLogMethod; out TestCount, ErrorCount : integer);
-var
-  TestIndex, NumberOfErrors : integer;
-  CurrentTest : PTestCase;
-  TestID : string;
-  ReportError : TReportErrorMethod;
-  TestResult : string;
-begin
-  TestIndex := 0;
-  NumberOfErrors := 0;
-
-  ReportError := procedure(const ErrorMsg : string)
-  begin
-    inc(NumberOfErrors);
-    WriteToLog('Error: ' + ErrorMsg);
+type
+  TTestInfo = record
+    TestClassName : string;
+    TestMethodName : string;
   end;
 
-  while TestIndex <= SelectedTests.Count-1 do
-  begin
-    CurrentTest := SelectedTests[TestIndex];
-    inc(TestIndex);
+procedure PerformTest(const aTestClass : TWatchTowerTestClass; const TestReporter : TWatchTowerTestCallbacks; const MethodName : string);
+var
+  c : TRttiContext;
+  t : TRttiType;
+  m : TRttiMethod;
+  ActiveTest : TWatchTowerTest;
+begin
+  c := TRttiContext.Create;
+  try
+    t := c.GetType(aTestClass);
 
-    TestID := GetTestID(CurrentTest.PackageName, CurrentTest.GroupName, CurrentTest.TestName);
-    WriteToLog(TestID);
-
+    ActiveTest := aTestClass.Create(TestReporter);
     try
-      CurrentTest.TestMethod(ReportError);
-    except
-      on e : exception do
+      try
+        m := t.GetMethod('Setup');
+        if assigned(m) then m.Invoke(ActiveTest, []);
+      except
+        on E: Exception do TestReporter.ReportErrorCallback('Exception during test setup! ' + E.Message + ' (' + E.ClassName + ')');
+      end;
+
+      try
+        m := t.GetMethod(MethodName);
+        m.Invoke(ActiveTest, []);
+      except
+        on E: Exception do TestReporter.ReportErrorCallback('Exception: ' + E.Message + ' (' + E.ClassName + ')');
+      end;
+
+      try
+        m := t.GetMethod('TearDown');
+        if assigned(m) then m.Invoke(ActiveTest, []);
+      except
+        on E: Exception do TestReporter.ReportErrorCallback('Exception during test teardown! ' + E.Message + ' (' + E.ClassName + ')');
+      end;
+    finally
+      ActiveTest.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+
+{ TTestRunner }
+
+constructor TTestRunner.Create;
+begin
+  TestCollection := TTestCollection.Create;
+end;
+
+destructor TTestRunner.Destroy;
+begin
+  TestCollection.Free;
+  inherited;
+end;
+
+procedure TTestRunner.AddTest(const aTestClass: TWatchTowerTestClass);
+begin
+  TestCollection.AddTest(aTestClass);
+end;
+
+procedure TTestRunner.RunTests(const LogCallback: TWriteToLogMethod);
+var
+  c1: Integer;
+  TestClass : TWatchTowerTestClass;
+  TestReporter : TWatchTowerTestCallbacks;
+  TestCount : integer;
+  ErrorCount : integer;
+  c : TRttiContext;
+  t : TRttiType;
+  a : TCustomAttribute;
+  m : TRttiMethod;
+  ActiveTestInfo : TTestInfo;
+begin
+  WatchTower.Confirm.Confirm.TestFailure := WatchTower.EWatchTowerTestFail;
+
+
+  ActiveTestInfo.TestClassName := '';
+  ActiveTestInfo.TestMethodName := '';
+
+  LogCallback('## WatchTower ##');
+
+  LogCallback(' ');
+
+  TestCount := 0;
+  ErrorCount := 0;
+
+  TestReporter.ReportErrorCallback := procedure(const ErrorMsg : string)
+  begin
+    inc(ErrorCount);
+    LogCallback('  ERROR: ' + ErrorMsg);
+  end;
+
+  TestReporter.LogMessageCallback := LogCallback;
+
+  c := TRttiContext.Create;
+  try
+    for c1 := 0 to TestCollection.Count-1 do
+    begin
+      TestClass := TestCollection.GetTest(c1);
+
+      ActiveTestInfo.TestClassName := TestClass.ClassName;
+
+      t := c.GetType(TestClass);
+
+      for m in t.GetMethods do
       begin
-        inc(NumberOfErrors);
-        WriteToLog('Exception Error: ' + e.ClassName + ' ' + e.Message);
+        for a in m.GetAttributes do
+        begin
+          if a.ClassType = TestAttribute then
+          begin
+            inc(TestCount);
+            ActiveTestInfo.TestMethodName := m.Name;
+            LogCallback('(' + a.UnitName + '.pas) ' + ActiveTestInfo.TestClassName + '.' + ActiveTestInfo.TestMethodName);
+            PerformTest(TestClass, TestReporter, ActiveTestInfo.TestMethodName);
+            LogCallback(' ');
+          end;
+        end;
       end;
     end;
+  finally
+    c.Free;
   end;
 
-  TestCount  := TestIndex;
-  ErrorCount := NumberOfErrors;
+  LogCallback(' ');
+
+  LogCallback('## WatchTower Testing Finished ##');
+
+  LogCallback('  Test Count: ' + IntToStr(TestCount));
+  LogCallback('  Error Count: ' + IntToStr(ErrorCount));
 end;
+
+
+
 
 end.

@@ -7,12 +7,9 @@ uses
   Classes;
 
 type
-  PTestCase = ^TTestCase;
-  TTestCase = record
-    PackageName : string;
-    GroupName   : string;
-    TestName    : string;
-    TestMethod  : TWatchTowerTestMethod;
+  PTestInfo = ^TTestInfo;
+  TTestInfo = record
+    TestClass   : TWatchTowerTestClass;
   end;
 
   PTestCollection = ^TTestCollection;
@@ -20,14 +17,14 @@ type
   private
     function GetCount: integer;
   protected
-    fTests : TList;
+    fTestList : TList;
     procedure Clear;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure AddTest(const PackageName, GroupName, TestName : string; const TestMethod : TWatchTowerTestMethod);
-    procedure SelectTests(var Dest: TList; const PackageName, GroupName, TestName : string);
+    procedure AddTest(const TestClass : TWatchTowerTestClass);
+    function GetTest(Index : integer):TWatchTowerTestClass;
 
     property Count : integer read GetCount;
   end;
@@ -41,82 +38,50 @@ uses
 
 constructor TTestCollection.Create;
 begin
-  fTests := TList.Create;
+  fTestList := TList.Create;
 end;
 
 destructor TTestCollection.Destroy;
 begin
   Clear; //IMPORTANT: Call clear before freeing the tests list.
-  fTests.Free;
+  fTestList.Free;
   inherited;
 end;
 
 procedure TTestCollection.Clear;
 var
   c1 : integer;
-  aTest : PTestCase;
+  Info : PTestInfo;
 begin
-  for c1 := fTests.Count-1 downto 0 do
+  for c1 := fTestList.Count-1 downto 0 do
   begin
-    aTest := fTests[c1];
-    Dispose(aTest);
-    fTests.Delete(c1);
+    Info := fTestList[c1];
+    Dispose(Info);
+    fTestList.Delete(c1);
   end;
 end;
 
 function TTestCollection.GetCount: integer;
 begin
-  result := fTests.Count;
+  result := fTestList.Count;
 end;
 
-procedure TTestCollection.AddTest(const PackageName, GroupName, TestName: string; const TestMethod: TWatchTowerTestMethod);
+function TTestCollection.GetTest(Index: integer): TWatchTowerTestClass;
 var
-  aTest : PTestCase;
+  TestInfo : PTestInfo;
 begin
-  assert(PackageName <> '');
-  assert(GroupName <> '');
-  assert(TestName <> '');
-  assert(assigned(TestMethod));
-
-  New(aTest);
-  aTest.PackageName := PackageName;
-  aTest.GroupName := GroupName;
-  aTest.TestName := TestName;
-  aTest.TestMethod := TestMethod;
-
-  fTests.Add(aTest);
+  TestInfo := fTestList[Index];
+  result := TestInfo^.TestClass;
 end;
 
-procedure TTestCollection.SelectTests(var Dest: TList; const PackageName, GroupName, TestName: string);
+procedure TTestCollection.AddTest(const TestClass : TWatchTowerTestClass);
 var
-  c1: Integer;
-  aTest : PTestCase;
-  MatchPackage, MatchGroup, MatchTestName : boolean;
+  TestInfo : PTestInfo;
 begin
-  assert(assigned(Dest));
-  for c1 := 0 to fTests.Count-1 do
-  begin
-    aTest := fTests[c1];
-
-    if (PackageName = '*') or (PackageName = aTest.PackageName)
-      then MatchPackage := true
-      else MatchPackage := false;
-
-    if (GroupName = '*') or (GroupName = aTest.GroupName)
-      then MatchGroup := true
-      else MatchGroup := false;
-
-    if (TestName = '*') or (TestName = aTest.TestName)
-      then MatchTestName := true
-      else MatchTestName := false;
-
-    if (MatchPackage) and (MatchGroup) and (MatchTestName)
-      then Dest.Add(aTest);
-  end;
+  New(TestInfo);
+  TestInfo.TestClass   := TestClass;
+  fTestList.Add(TestInfo);
 end;
-
-
-
 
 
 end.
