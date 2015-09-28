@@ -10,8 +10,9 @@ type
   TTestRunner = class
   private
     TestCollection : TTestCollection;
+    fTestDataDirectory : string;
   public
-    constructor Create;
+    constructor Create(const aTestDataDirectory : string);
     destructor Destroy; override;
 
     procedure AddTest(const aTestClass : TWatchTowerTestClass);
@@ -31,7 +32,7 @@ type
     TestMethodName : string;
   end;
 
-procedure PerformTest(const aTestClass : TWatchTowerTestClass; const TestReporter : TWatchTowerTestCallbacks; const MethodName : string);
+procedure PerformTest(const aTestClass : TWatchTowerTestClass; const TestReporter : TWatchTowerTestCallbacks; const MethodName : string; const aTestDataDirectory:string);
 var
   c : TRttiContext;
   t : TRttiType;
@@ -42,7 +43,7 @@ begin
   try
     t := c.GetType(aTestClass);
 
-    ActiveTest := aTestClass.Create(TestReporter);
+    ActiveTest := aTestClass.Create(TestReporter, aTestDataDirectory);
     try
       try
         m := t.GetMethod('Setup');
@@ -75,9 +76,10 @@ end;
 
 { TTestRunner }
 
-constructor TTestRunner.Create;
+constructor TTestRunner.Create(const aTestDataDirectory : string);
 begin
   TestCollection := TTestCollection.Create;
+  fTestDataDirectory := aTestDataDirectory;
 end;
 
 destructor TTestRunner.Destroy;
@@ -144,7 +146,7 @@ begin
             inc(TestCount);
             ActiveTestInfo.TestMethodName := m.Name;
             LogCallback('(' + a.UnitName + '.pas) ' + ActiveTestInfo.TestClassName + '.' + ActiveTestInfo.TestMethodName);
-            PerformTest(TestClass, TestReporter, ActiveTestInfo.TestMethodName);
+            PerformTest(TestClass, TestReporter, ActiveTestInfo.TestMethodName, fTestDataDirectory);
             LogCallback(' ');
           end;
         end;

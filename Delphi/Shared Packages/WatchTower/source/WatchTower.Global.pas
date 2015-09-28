@@ -8,7 +8,7 @@ uses
   WatchTower.TestCollection;
 
 procedure RegisterTest(const TestClass : TWatchTowerTestClass);
-procedure RunTests(const LogCallback : TWriteToLogMethod);
+procedure RunTests(const LogCallback : TWriteToLogMethod; const TestDataDirectory:string);
 
 function GlobalTestCollection:TTestCollection;
 
@@ -48,12 +48,12 @@ begin
   GlobalTestCollection.AddTest(TestClass);
 end;
 
-procedure RunTests(const LogCallback : TWriteToLogMethod);
+procedure RunTests(const LogCallback : TWriteToLogMethod; const TestDataDirectory:string);
 var
   Runner : TTestRunner;
   c1: Integer;
 begin
-  Runner := TTestRunner.Create;
+  Runner := TTestRunner.Create(TestDataDirectory);
   try
     for c1 := 0 to GlobalTestCollection.Count-1 do
     begin

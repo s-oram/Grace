@@ -28,7 +28,7 @@ uses
 procedure TVamLib_Win_Links_Test.Setup;
 begin
   inherited;
-
+  Confirm.IsTrue(DirectoryExists(TestDataDirectory), 'Test data directory not found.');
 end;
 
 procedure TVamLib_Win_Links_Test.TearDown;
@@ -43,11 +43,10 @@ var
   TargetFile : string;
   x : string;
 begin
-  LinkFile   := 'S:\Delphi\Shared Packages\VamLib\UnitTests\Test.VamLib.Win.Links\Link To Target File.lnk';
-  TargetFile := 'S:\Delphi\Shared Packages\VamLib\UnitTests\Test.VamLib.Win.Links\Target File.txt';
+  LinkFile   := TestDataDirectory + '\VamLib\Test.VamLib.Win.Links.pas\Link To Target File.lnk';
+  TargetFile := 'S:\Delphi\Shared Packages\WatchTowerTestData' + '\VamLib\Test.VamLib.Win.Links.pas\Target File.txt';
 
   Confirm.IsTrue(FileExists(LinkFile));
-  Confirm.IsTrue(FileExists(TargetFile));
 
   x := GetLinkTarget(LinkFile);
 

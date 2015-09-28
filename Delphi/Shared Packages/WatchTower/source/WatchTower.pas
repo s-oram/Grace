@@ -26,8 +26,11 @@ type
   TWatchTowerTest = class
   private
     fTestReporter : TWatchTowerTestCallbacks;
+    fTestDataDirectory : string;
+  protected
+    property TestDataDirectory : string read fTestDataDirectory;
   public
-    constructor Create(const TestReporter : TWatchTowerTestCallbacks); virtual;
+    constructor Create(const TestReporter : TWatchTowerTestCallbacks; const aTestDataDirectory : string); virtual;
     procedure Setup; virtual;
     procedure TearDown; virtual;
 
@@ -48,9 +51,10 @@ implementation
 
 { TWatchTowerTest }
 
-constructor TWatchTowerTest.Create(const TestReporter : TWatchTowerTestCallbacks);
+constructor TWatchTowerTest.Create(const TestReporter : TWatchTowerTestCallbacks; const aTestDataDirectory : string);
 begin
   fTestReporter := TestReporter;
+  fTestDataDirectory := aTestDataDirectory;
 end;
 
 procedure TWatchTowerTest.Setup;
