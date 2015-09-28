@@ -11,8 +11,8 @@ uses
   WatchTower,
   WatchTower.Global,
   VamLib.Console,
-  RegisterTests.VamLib;
-  //RegisterTests.Lucidity;
+  RegisterTests.VamLib,
+  RegisterTests.Lucidity;
 
 {$TYPEDADDRESS OFF}
 
