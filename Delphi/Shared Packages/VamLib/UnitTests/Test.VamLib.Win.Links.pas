@@ -51,7 +51,7 @@ begin
 
   x := GetLinkTarget(LinkFile);
 
-
+  Confirm.IsTrue(SameText(x, TargetFile), 'Target File is not returned correctly.');
 end;
 
 
