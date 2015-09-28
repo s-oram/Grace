@@ -3,10 +3,13 @@ unit VamLib.Types;
 interface
 
 uses
+  SysUtils,
   WinApi.Windows,
   SyncObjs;
 
 type
+  EVamLibException = class(Exception);
+
   TVamInterfacedObject = class(TInterfacedObject)
   public
     procedure AfterConstruction; override;
@@ -95,8 +98,7 @@ type
 implementation
 
 uses
-  Rtti,
-  SysUtils;
+  Rtti;
 
 { TFakeCriticalSection }
 
