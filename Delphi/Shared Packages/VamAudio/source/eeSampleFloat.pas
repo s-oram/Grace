@@ -13,6 +13,7 @@ type
     fCh1: TArrayOfSingle;
     fCh2: TArrayOfSingle;
     fLastErrorMessage: string;
+    fLastError: TSampleError;
     function GetCh1Pointer: PArrayOfSingle;
     function GetCh2Pointer: PArrayOfSingle;
   protected
@@ -32,9 +33,10 @@ type
     property Ch1Pointer : PArrayOfSingle read GetCh1Pointer;
     property Ch2Pointer : PArrayOfSingle read GetCh2Pointer;
 
-    property LastErrorMessage : string read fLastErrorMessage;
-
     property Properties;
+
+    property LastError : TSampleError read fLastError;
+    property LastErrorMessage : string read fLastErrorMessage;
   end;
 
 implementation
@@ -71,6 +73,8 @@ begin
   assert((ChannelCount = 1) or (ChannelCount = 2), 'Invalid channel count.');
   assert(SampleFrames >= 0);
 
+  result := false;
+
   try
     if ChannelCount = 1 then
     begin
@@ -91,7 +95,6 @@ begin
     //If we've made it thus far with no expceptions, assume memory has been initialised correctly.
     result := true;
   except
-
     //SetLength will raise an EOutOfMemory exception if memory could not be assigned.
     on  EOutOfMemory do
     begin
@@ -99,8 +102,10 @@ begin
       SetLength(fCh2, 0);
       fProperties.Ch1 := nil;
       fProperties.Ch2 := nil;
+
       result := false;
-      exit; //===================================>>
+      fLastError := TSampleError.seOutOfMemory;
+      fLastErrorMessage := 'Out of memory.';
     end;
 
     on  ERangeError do
@@ -109,38 +114,58 @@ begin
       SetLength(fCh2, 0);
       fProperties.Ch1 := nil;
       fProperties.Ch2 := nil;
+
       result := false;
-      exit; //===================================>>
+      fLastError := TSampleError.seOutOfRange;
+      fLastErrorMessage := 'Out of range.';
     end;
 
     // HACK: This routine has raised access violations, but AFAICT it shouldn't... grrr :/
     // response, so handle anyway.
     on EAccessViolation do
     begin
+      SetLength(fCh1, 0);
+      SetLength(fCh2, 0);
       fProperties.Ch1 := nil;
       fProperties.Ch2 := nil;
+
       result := false;
-      exit; //===================================>>
+      fLastError := TSampleError.seUnknownError;
+      fLastErrorMessage := 'AV error during GetSampleMem().';
     end;
+
+    else raise;
   end;
 end;
 
 function TSampleFloat.Init(Channels, SampleFrames, SampleRate, SourceBitDepth:integer):boolean;
 begin
-  if GetSampleMem(Channels, SampleFrames) = false then
-  begin
-    Clear;
-    result := false;
-  end else
-  begin
-    fProperties.IsValid        := true;
-    fProperties.ChannelCount   := Channels;
-    fProperties.SampleFrames   := SampleFrames;
-    fProperties.SampleRate     := SampleRate;
-    fProperties.SourceBitDepth := SourceBitDepth;
-    result := true;
-  end;
+  fLastError := TSampleError.seNone;
+  fLastErrorMessage := '';
 
+  try
+    if GetSampleMem(Channels, SampleFrames) = false then
+    begin
+      Clear;
+      result := false;
+    end else
+    begin
+      fProperties.IsValid        := true;
+      fProperties.ChannelCount   := Channels;
+      fProperties.SampleFrames   := SampleFrames;
+      fProperties.SampleRate     := SampleRate;
+      fProperties.SourceBitDepth := SourceBitDepth;
+      result := true;
+    end;
+  except
+    on E:Exception do
+    begin
+      Clear;
+      result := false;
+      fLastError := TSampleError.seUnknownError;
+      fLastErrorMessage := 'Unexpected error while initialising sample memory. ' + E.Message + ' (' + E.ClassName + ')';
+    end;
+  end;
 end;
 
 procedure TSampleFloat.Clear;
@@ -164,6 +189,7 @@ var
   Info:TAudioFileInfo;
   LoadResult:boolean;
 begin
+  fLastError := TSampleError.seNone;
   fLastErrorMessage := '';
 
   try
@@ -184,7 +210,6 @@ begin
       begin
         Clear;
         result := false;
-        fLastErrorMessage := 'Out of memory.';
         exit; //=============>>===================>>=================>>
       end;
 
@@ -221,6 +246,7 @@ begin
   except
     on E: EAudioIOException do
     begin
+      fLastError := TSampleError.seLoadError;
       fLastErrorMessage := E.Message;
     end;
     else raise;
@@ -235,18 +261,21 @@ function TSampleFloat.SaveToFile(FileName: string): boolean;
 var
   SaveInfo : TAudioFileSaveInfo;
 begin
-   SaveInfo.SrcChannelCount := Properties.ChannelCount;
-   SaveInfo.SrcSampleRate   := Properties.SampleRate;
-   SaveInfo.SrcSampleFrames := Properties.SampleFrames;
-   SaveInfo.SrcDataType     := sdFloat;
-   SaveInfo.SrcCh1          := Properties.Ch1;
-   SaveInfo.SrcCh2          := Properties.Ch2;
+  fLastError := TSampleError.seNone;
+  fLastErrorMessage := '';
 
-   SaveInfo.DstFileFormat := afWave;
-   SaveInfo.DstBitDepth   := 16;
-   SaveInfo.DstSampleRate := 44100;
+  SaveInfo.SrcChannelCount := Properties.ChannelCount;
+  SaveInfo.SrcSampleRate   := Properties.SampleRate;
+  SaveInfo.SrcSampleFrames := Properties.SampleFrames;
+  SaveInfo.SrcDataType     := sdFloat;
+  SaveInfo.SrcCh1          := Properties.Ch1;
+  SaveInfo.SrcCh2          := Properties.Ch2;
 
-   result := SaveAudioToFile(FileName, SaveInfo);
+  SaveInfo.DstFileFormat := afWave;
+  SaveInfo.DstBitDepth   := 16;
+  SaveInfo.DstSampleRate := 44100;
+
+  result := SaveAudioToFile(FileName, SaveInfo);
 end;
 
 

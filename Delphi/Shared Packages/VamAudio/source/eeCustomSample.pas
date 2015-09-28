@@ -38,6 +38,8 @@ type
     property Properties:TSampleProperties read fProperties write fProperties;
   end;
 
+  TSampleError = (seNone, seOutOfMemory, seOutOfRange, seLoadError, seSaveError, seUnknownError);
+
 implementation
 
 { TCustomSample }
