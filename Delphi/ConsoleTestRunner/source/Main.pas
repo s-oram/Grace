@@ -12,7 +12,7 @@ uses
   WatchTower.Global,
   RegisterTests.WatchTower,
   RegisterTests.VamLib,
-  //RegisterTests.Lucidity,
+  RegisterTests.Lucidity,
   VamLib.Console;
 
 {$TYPEDADDRESS OFF}

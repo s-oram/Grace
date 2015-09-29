@@ -36,7 +36,8 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  WatchTower.Utils;
 
 { TCaptain }
 
@@ -86,6 +87,8 @@ procedure TDataDirCollection.AddDataDir(const aDataDir: string);
 var
   Info : PDataDirInfo;
 begin
+  if not DoesPathUseCorrectSeperators(aDataDir) then raise Exception.Create('DataDir contains invalid path delimiters for this platform.');
+
   if IndexOf(aDataDir) = -1 then
   begin
     New(Info);
@@ -107,6 +110,8 @@ var
   DirName : string;
   c1: Integer;
 begin
+  if not DoesPathUseCorrectSeperators(aTestUnitName) then raise Exception.Create('TestUnitName contains invalid path delimiters for this platform.');
+
   for c1 := 0 to Count-1 do
   begin
     DirName := IncludeTrailingPathDelimiter(DataDir[c1]) + aTestUnitName;

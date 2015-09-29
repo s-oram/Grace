@@ -84,6 +84,7 @@
 			<DCCReference Include="source\WatchTower.DataDirCollection.pas"/>
 			<DCCReference Include="UnitTests\RegisterTests.WatchTower.pas"/>
 			<DCCReference Include="UnitTests\Test.WatchTower.DataDirCollection.pas"/>
+			<DCCReference Include="source\WatchTower.Utils.pas"/>
 			<None Include="source\WatchTower.Confirm.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

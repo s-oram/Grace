@@ -76,7 +76,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="ConsoleTestRunner\TestRunner.dproj">
-				<Dependencies>Shared Packages\WatchTower\WatchTower.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\PluginLib\PluginLib.dproj</Dependencies>
+				<Dependencies>Shared Packages\WatchTower\WatchTower.dproj;Shared Packages\VamLib\VamLib.dproj;Shared Packages\PluginLib\PluginLib.dproj;Lucidity\Grace.dproj</Dependencies>
 			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
@@ -302,13 +302,13 @@
 		<Target Name="GraceCpuTester:Make">
 			<MSBuild Targets="Make" Projects="GraceCpuTester\GraceCpuTester.dproj"/>
 		</Target>
-		<Target Name="TestRunner" DependsOnTargets="WatchTower;VamLib;PluginLib">
+		<Target Name="TestRunner" DependsOnTargets="WatchTower;VamLib;PluginLib;Grace">
 			<MSBuild Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
-		<Target Name="TestRunner:Clean" DependsOnTargets="WatchTower:Clean;VamLib:Clean;PluginLib:Clean">
+		<Target Name="TestRunner:Clean" DependsOnTargets="WatchTower:Clean;VamLib:Clean;PluginLib:Clean;Grace:Clean">
 			<MSBuild Targets="Clean" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
-		<Target Name="TestRunner:Make" DependsOnTargets="WatchTower:Make;VamLib:Make;PluginLib:Make">
+		<Target Name="TestRunner:Make" DependsOnTargets="WatchTower:Make;VamLib:Make;PluginLib:Make;Grace:Make">
 			<MSBuild Targets="Make" Projects="ConsoleTestRunner\TestRunner.dproj"/>
 		</Target>
 		<Target Name="Build">
