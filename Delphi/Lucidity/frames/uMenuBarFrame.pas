@@ -335,7 +335,7 @@ begin
   if MsgID = TLucidMsgID.Command_HideParChangeInfo
     then HideParameterChangeInfo;
 
-  if MsgID = TLucidMsgID.Cmd_RefreshParDisplay then RefreshParDisplay;
+  if MsgID = TLucidMsgID.Command_RefreshParDisplay then RefreshParDisplay;
 
 end;
 

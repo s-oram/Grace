@@ -149,6 +149,8 @@ type
     constructor Create(const aGlobals : TGlobals); override;
 	  destructor Destroy; override;
 
+    procedure ShowMessageInGui(const msg : string);
+
     // SetPluginParameter() receives a parameter change notification. It stores the new parameter value and
     // calls ApplyPluginParameterValue() change the audio engine state.
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
@@ -1460,6 +1462,15 @@ begin
   MidiInputProcessor.VoiceMode := Value;
 end;
 
+procedure TeePlugin.ShowMessageInGui(const msg: string);
+var
+  MsgData : TCustomLucidityMessage;
+begin
+  MsgData := TCustomLucidityMessage.Create;
+  MsgData.Msg := msg;
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_ShowMessage, MsgData);
+end;
+
 procedure TeePlugin.ImportProgram(const FileName: string);
 var
   Ext : string;
@@ -1502,8 +1513,14 @@ begin
     on EOutOfMemory do
     begin
       InitializeState;
-    end else
-      raise;
+      ShowMessageInGui('Unable to load program. (Out of memory.)');
+    end;
+
+    on E:Exception do
+    begin
+      InitializeState;
+      ShowMessageInGui('Error: ' +  E.ClassName + ' ' + E.Message);
+    end;
   end;
 end;
 

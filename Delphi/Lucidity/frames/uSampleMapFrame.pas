@@ -632,7 +632,7 @@ begin
   if MsgID = TLucidMsgID.GroupVisibilityChanged then UpdateGroupVisibility;
 
 
-  if (MsgID = TLucidMsgID.Cmd_HotkeyDown) and (Plugin.Globals.GuiState.HotkeyContext = THotkeyContext.SampleMap) then
+  if (MsgID = TLucidMsgID.Command_HotkeyDown) and (Plugin.Globals.GuiState.HotkeyContext = THotkeyContext.SampleMap) then
   begin
     KeyCommand := TKeyCommand(DataA^);
     ProcessKeyCommand(KeyCommand);

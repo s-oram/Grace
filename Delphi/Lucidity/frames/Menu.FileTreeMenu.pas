@@ -412,7 +412,7 @@ begin
     NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
 
     if RenameProgramFile(NodeData^.FileName, NewFileName)
-      then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
+      then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_RefreshBrowser)
       else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
   end;
 

@@ -191,7 +191,7 @@ var
   KeyCommand : TKeyCommand;
 begin
   KeyCommand := TKeyCommandHelper.ToEnum(CommandID);
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.cmd_HotKeyDown, @KeyCommand, nil);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_HotKeyDown, @KeyCommand, nil);
 end;
 
 end.

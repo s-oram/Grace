@@ -656,7 +656,7 @@ begin
 
       Plugin.RenameInUseSample(NewFileName, OldFileName);
       Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.SampleFocusChanged);
-      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser);
+      Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_RefreshBrowser);
     end;
   end;
 

@@ -406,7 +406,7 @@ begin
     raise Exception.Create('Unexpected tag value.');
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshParDisplay);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_RefreshParDisplay);
 end;
 
 procedure TMainMenu.EventHandle_ClearMidiMap(Sender: TObject);
