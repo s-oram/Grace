@@ -10,9 +10,10 @@ uses
   ActiveX,
   WatchTower,
   WatchTower.Global,
-  VamLib.Console,
+  RegisterTests.WatchTower,
   RegisterTests.VamLib,
-  RegisterTests.Lucidity;
+  RegisterTests.Lucidity,
+  VamLib.Console;
 
 {$TYPEDADDRESS OFF}
 
@@ -28,7 +29,8 @@ begin
       WriteLn(Msg);
     end;
 
-    WatchTower.Global.RunTests(WriteToLog, 'S:\Delphi\Shared Packages\WatchTowerTestData');
+    //WatchTower.Global.RunTests(WriteToLog, 'S:\Delphi\Shared Packages\WatchTowerTestData');
+    WatchTower.Global.RunTests(WriteToLog, ['S:\Delphi\Shared Packages\WatchTowerTestData']);
 
     WriteLn(' ');
 

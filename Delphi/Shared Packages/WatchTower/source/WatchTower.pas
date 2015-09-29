@@ -17,20 +17,20 @@ type
 
   TWriteToLogMethod  = reference to procedure(Msg : string);
   TReportErrorMethod = reference to procedure(const ErrorMsg : string);
+  TFindTestDataDir   = reference to function(const TestUnitName : string):string;
 
   TWatchTowerTestCallbacks = record
-    ReportErrorCallback : TReportErrorMethod;
-    LogMessageCallback : TWriteToLogMethod;
+    ReportErrorCallback     : TReportErrorMethod;
+    LogMessageCallback      : TWriteToLogMethod;
+    FindTestDataDirCallback : TFindTestDataDir;
   end;
 
   TWatchTowerTest = class
   private
-    fTestReporter : TWatchTowerTestCallbacks;
-    fTestDataDirectory : string;
-  protected
-    property TestDataDirectory : string read fTestDataDirectory;
+    fTestCallbacks : TWatchTowerTestCallbacks;
   public
-    constructor Create(const TestReporter : TWatchTowerTestCallbacks; const aTestDataDirectory : string); virtual;
+    constructor Create(const aTestCallbacks : TWatchTowerTestCallbacks); virtual;
+
     procedure Setup; virtual;
     procedure TearDown; virtual;
 
@@ -39,6 +39,8 @@ type
 
     // Write a message to the attached logger output.
     procedure LogMessage(const Msg : string);
+
+    function FindTestDataDir(const TestUnitName : string):string;
   end;
 
   TWatchTowerTestClass = class of TWatchTowerTest;
@@ -51,10 +53,9 @@ implementation
 
 { TWatchTowerTest }
 
-constructor TWatchTowerTest.Create(const TestReporter : TWatchTowerTestCallbacks; const aTestDataDirectory : string);
+constructor TWatchTowerTest.Create(const aTestCallbacks : TWatchTowerTestCallbacks);
 begin
-  fTestReporter := TestReporter;
-  fTestDataDirectory := aTestDataDirectory;
+  fTestCallbacks := aTestCallbacks;
 end;
 
 procedure TWatchTowerTest.Setup;
@@ -69,14 +70,21 @@ begin
   // clean up tasks.
 end;
 
+function TWatchTowerTest.FindTestDataDir(const TestUnitName: string): string;
+begin
+  if assigned(fTestCallbacks.FindTestDataDirCallback)
+    then result := fTestCallbacks.FindTestDataDirCallback(TestUnitName)
+    else result := '';
+end;
+
 procedure TWatchTowerTest.LogMessage(const Msg: string);
 begin
-  if assigned(fTestReporter.LogMessageCallback) then fTestReporter.LogMessageCallback(Msg);
+  if assigned(fTestCallbacks.LogMessageCallback) then fTestCallbacks.LogMessageCallback(Msg);
 end;
 
 procedure TWatchTowerTest.ReportError(const ErrorMsg: string);
 begin
-  if assigned(fTestReporter.ReportErrorCallback) then fTestReporter.ReportErrorCallback(ErrorMsg);
+  if assigned(fTestCallbacks.ReportErrorCallback) then fTestCallbacks.ReportErrorCallback(ErrorMsg);
 end;
 
 

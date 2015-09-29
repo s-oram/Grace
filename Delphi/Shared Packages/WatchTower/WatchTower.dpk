@@ -37,6 +37,10 @@ contains
   WatchTower.TestCollection in 'source\WatchTower.TestCollection.pas',
   WatchTower.TestRunner in 'source\WatchTower.TestRunner.pas',
   WatchTower.Confirm in 'source\WatchTower.Confirm.pas',
-  WatchTower.Global in 'source\WatchTower.Global.pas';
+  WatchTower.Global in 'source\WatchTower.Global.pas',
+  WatchTower.DataDirCollection in 'source\WatchTower.DataDirCollection.pas',
+  RegisterTests.WatchTower in 'UnitTests\RegisterTests.WatchTower.pas',
+  Test.WatchTower.DataDirCollection in 'UnitTests\Test.WatchTower.DataDirCollection.pas',
+  WatchTower.Utils in 'source\WatchTower.Utils.pas';
 
 end.
