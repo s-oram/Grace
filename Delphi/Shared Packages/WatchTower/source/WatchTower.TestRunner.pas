@@ -109,7 +109,7 @@ procedure TTestRunner.RunTests(const LogCallback: TWriteToLogMethod);
 var
   c1: Integer;
   TestClass : TWatchTowerTestClass;
-  TestReporter : TWatchTowerTestCallbacks;
+  TestCallbacks : TWatchTowerTestCallbacks;
   TestCount : integer;
   ErrorCount : integer;
   c : TRttiContext;
@@ -131,13 +131,13 @@ begin
   TestCount := 0;
   ErrorCount := 0;
 
-  TestReporter.ReportErrorCallback := procedure(const ErrorMsg : string)
+  TestCallbacks.LogMessageCallback := LogCallback;
+
+  TestCallbacks.ReportErrorCallback := procedure(const ErrorMsg : string)
   begin
     inc(ErrorCount);
     LogCallback('  ERROR: ' + ErrorMsg);
   end;
-
-  TestReporter.LogMessageCallback := LogCallback;
 
   c := TRttiContext.Create;
   try
@@ -158,7 +158,7 @@ begin
             inc(TestCount);
             ActiveTestInfo.TestMethodName := m.Name;
             LogCallback('(' + a.UnitName + '.pas) ' + ActiveTestInfo.TestClassName + '.' + ActiveTestInfo.TestMethodName);
-            PerformTest(TestClass, TestReporter, ActiveTestInfo.TestMethodName, fTestDataDirectory);
+            PerformTest(TestClass, TestCallbacks, ActiveTestInfo.TestMethodName, fTestDataDirectory);
             LogCallback(' ');
           end;
         end;
