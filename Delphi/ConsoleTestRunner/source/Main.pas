@@ -29,7 +29,8 @@ begin
       WriteLn(Msg);
     end;
 
-    WatchTower.Global.RunTests(WriteToLog, 'S:\Delphi\Shared Packages\WatchTowerTestData');
+    //WatchTower.Global.RunTests(WriteToLog, 'S:\Delphi\Shared Packages\WatchTowerTestData');
+    WatchTower.Global.RunTests(WriteToLog, ['S:\Delphi\Shared Packages\WatchTowerTestData']);
 
     WriteLn(' ');
 
