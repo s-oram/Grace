@@ -4,16 +4,20 @@ interface
 
 uses
   WatchTower,
-  WatchTower.TestCollection;
+  WatchTower.TestCollection,
+  WatchTower.DataDirCollection;
 
 type
   TTestRunner = class
   private
     TestCollection : TTestCollection;
+    DataDirCollection : TDataDirCollection;
     fTestDataDirectory : string;
   public
     constructor Create(const aTestDataDirectory : string);
     destructor Destroy; override;
+
+    procedure AddDataDir(const aDataDir : string);
 
     procedure AddTest(const aTestClass : TWatchTowerTestClass);
     procedure RunTests(const LogCallback : TWriteToLogMethod);
@@ -79,13 +83,21 @@ end;
 constructor TTestRunner.Create(const aTestDataDirectory : string);
 begin
   TestCollection := TTestCollection.Create;
+  DataDirCollection := TDataDirCollection.Create;
+
   fTestDataDirectory := aTestDataDirectory;
 end;
 
 destructor TTestRunner.Destroy;
 begin
   TestCollection.Free;
+  DataDirCollection.Free;
   inherited;
+end;
+
+procedure TTestRunner.AddDataDir(const aDataDir: string);
+begin
+  DataDirCollection.AddDataDir(aDataDir);
 end;
 
 procedure TTestRunner.AddTest(const aTestClass: TWatchTowerTestClass);
