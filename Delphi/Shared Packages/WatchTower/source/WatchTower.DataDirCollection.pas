@@ -110,6 +110,7 @@ begin
   for c1 := 0 to Count-1 do
   begin
     DirName := IncludeTrailingPathDelimiter(DataDir[c1]) + aTestUnitName;
+    DirName := ExpandFileName(DirName);
     if DirectoryExists(DirName) then exit(DirName);
   end;
 

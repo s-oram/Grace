@@ -8,6 +8,7 @@ uses
 type
   TVamLib_Win_Links_Test = class(TWatchTowerTest)
   private
+    TestDataDirectory : string;
   public
     procedure Setup; override;
     procedure TearDown; override;
@@ -29,15 +30,16 @@ uses
 { TVamLib_Win_Links_Test }
 
 procedure TVamLib_Win_Links_Test.Setup;
+
 begin
   inherited;
-  Confirm.IsTrue(DirectoryExists(TestDataDirectory), 'Test data directory not found.');
+  TestDataDirectory := self.FindTestDataDir('\VamLib\Test.VamLib.Win.Links.pas\');
+  Confirm.IsTrue(DirectoryExists(TestDataDirectory),  'Cannot locate test data directory.');
 end;
 
 procedure TVamLib_Win_Links_Test.TearDown;
 begin
   inherited;
-
 end;
 
 procedure TVamLib_Win_Links_Test.GetLinkTarget_Test;
@@ -46,14 +48,14 @@ var
   TargetFile : string;
   x : string;
 begin
-  LinkFile   := TestDataDirectory + '\VamLib\Test.VamLib.Win.Links.pas\Link To Target File.lnk';
-  TargetFile := 'S:\Delphi\Shared Packages\WatchTowerTestData' + '\VamLib\Test.VamLib.Win.Links.pas\Target File.txt';
+  LinkFile   := TestDataDirectory + '\Link To Target File.lnk';
+  TargetFile := 'Target File.txt';
 
   Confirm.IsTrue(FileExists(LinkFile));
 
   x := GetLinkTarget(LinkFile);
 
-  Confirm.IsTrue(SameText(x, TargetFile), 'Target File is not returned correctly.');
+  Confirm.EndsWith(TargetFile, x, true, 'Target File is not returned correctly.');
 end;
 
 procedure TVamLib_Win_Links_Test.ResolveLinkTarget_Test;
@@ -62,7 +64,7 @@ var
   TargetFile : string;
   x : string;
 begin
-  LinkFile   := TestDataDirectory + '\VamLib\Test.VamLib.Win.Links.pas\Original Target.lnk';
+  LinkFile   := TestDataDirectory + '\Original Target.lnk';
   TargetFile := 'Original Target Renamed.txt';
 
   Confirm.IsTrue(FileExists(LinkFile));
