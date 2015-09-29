@@ -444,6 +444,8 @@ begin
 end;
 
 procedure TPluginGui.ProcessZeroObjectMessage(MsgID: cardinal; DataA: Pointer; DataB:IInterface);
+var
+  MsgText : string;
 begin
   if (MsgID = TLucidMsgID.OnPostCreateFinished) and (not PluginDataDir^.Exists) then
   begin
@@ -474,6 +476,12 @@ begin
   if (MsgID = TLucidMsgID.OnPostCreateFinished) then
   begin
     //Do noting... might do something in here later.
+  end;
+
+  if (MsgID = TLucidMsgID.Command_ShowMessage) then
+  begin
+    MsgText := (DataB as ICustomLucidityMessage).GetMsg();
+    InWindow_ShowMessage(Plugin.Globals.TopLevelForm, MsgText );
   end;
 end;
 

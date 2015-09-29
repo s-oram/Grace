@@ -75,7 +75,7 @@ begin
     raise Exception.Create('Unexpected tag value.');
   end;
 
-  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshParDisplay);
+  Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_RefreshParDisplay);
 
   // IMPORTANT - check auto free status.
   if (AutoFreeMenu) then self.Free;

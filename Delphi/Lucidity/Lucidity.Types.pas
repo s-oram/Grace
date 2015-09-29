@@ -91,7 +91,7 @@ type
   // stored in the voice class. (If these comments are up to date!)
   PSynthPar = PSingle;
 
-  TSampleError = (None, FileNotFound, ErrorLoadingData);
+  TRegionSampleError = (None, FileNotFound, ErrorLoadingData);
 
   PRegionProperties = ^TRegionProperties;
   TRegionProperties = record
@@ -100,7 +100,7 @@ type
     SampleFileFullPath : string; //TODO:HIGH this should be the last known full path.
     SampleDataLoaded   : boolean;
     IsSampleError      : boolean;
-    SampleErrorType    : TSampleError;
+    SampleErrorType    : TRegionSampleError;
     ErrorMessage       : string;
 
     IsSelected     : boolean; //Multiple regions can be selected.

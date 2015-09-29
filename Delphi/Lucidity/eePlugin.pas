@@ -149,6 +149,8 @@ type
     constructor Create(const aGlobals : TGlobals); override;
 	  destructor Destroy; override;
 
+    procedure ShowMessageInGui(const msg : string);
+
     // SetPluginParameter() receives a parameter change notification. It stores the new parameter value and
     // calls ApplyPluginParameterValue() change the audio engine state.
     procedure SetPluginParameter(const ParID : TPluginParameterID; const ParValue : single; const Scope:TParChangeScope); override;
@@ -796,7 +798,7 @@ begin
   for c1 := self.SampleMap.RegionCount-1 downto 0 do
   begin
     rg := SampleMap.Regions[c1];
-    if (rg.GetProperties^.IsSampleError) and (rg.GetProperties^.SampleErrorType = TSampleError.FileNotFound) then
+    if (rg.GetProperties^.IsSampleError) and (rg.GetProperties^.SampleErrorType = TRegionSampleError.FileNotFound) then
     begin
       if (rg.GetProperties^.SampleFileName = OldFileName) or (rg.GetProperties^.SampleFileFullPath = OldFileName) then
       begin
@@ -1460,6 +1462,15 @@ begin
   MidiInputProcessor.VoiceMode := Value;
 end;
 
+procedure TeePlugin.ShowMessageInGui(const msg: string);
+var
+  MsgData : TCustomLucidityMessage;
+begin
+  MsgData := TCustomLucidityMessage.Create;
+  MsgData.Msg := msg;
+  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_ShowMessage, MsgData);
+end;
+
 procedure TeePlugin.ImportProgram(const FileName: string);
 var
   Ext : string;
@@ -1477,26 +1488,40 @@ procedure TeePlugin.ImportProgram(const FileName: string; ProgramFormat : TProgr
 var
   StateManager : TLucidityStateManager;
 begin
-  Globals.LastProgramLoadDir := ExtractFileDir(FileName);
-
-  PreLoadProgram;
-
-  StateManager := TLucidityStateManager.Create(self);
   try
-    case ProgramFormat of
-      TProgramFormat.Lucidity: StateManager.LoadPesetFromFile(FileName);
-      TProgramFormat.Sfz:      StateManager.ImportProgram_Sfz(FileName);
-    else
-      raise Exception.Create('unexpected program format');
+    Globals.LastProgramLoadDir := ExtractFileDir(FileName);
+
+    PreLoadProgram;
+
+    StateManager := TLucidityStateManager.Create(self);
+    try
+      case ProgramFormat of
+        TProgramFormat.Lucidity: StateManager.LoadPesetFromFile(FileName);
+        TProgramFormat.Sfz:      StateManager.ImportProgram_Sfz(FileName);
+      else
+        raise Exception.Create('unexpected program format');
+      end;
+    finally
+      StateManager.Free;
     end;
-  finally
-    StateManager.Free;
+
+    PostLoadProgram;
+
+    PresetName := RemoveFileExt(FileName);
+    Globals.PatchInfo.PatchFileName := FileName;
+  except
+    on EOutOfMemory do
+    begin
+      InitializeState;
+      ShowMessageInGui('Unable to load program. (Out of memory.)');
+    end;
+
+    on E:Exception do
+    begin
+      InitializeState;
+      ShowMessageInGui('Error: ' +  E.ClassName + ' ' + E.Message);
+    end;
   end;
-
-  PostLoadProgram;
-
-  PresetName := RemoveFileExt(FileName);
-  Globals.PatchInfo.PatchFileName := FileName;
 end;
 
 procedure TeePlugin.PreLoadProgram;

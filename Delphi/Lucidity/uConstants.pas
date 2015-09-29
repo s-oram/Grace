@@ -80,10 +80,11 @@ type
     Command_ShowParChangeInfo        = Command + 24;
     Command_UpdateParChangeInfo      = Command + 25;
     Command_HideParChangeInfo        = Command + 26;
-    Cmd_RefreshParDisplay            = Command + 27;
-    Cmd_RefreshBrowser               = Command + 28;
-    Cmd_HotkeyDown                   = Command + 29;
-    Actions                          = Cmd_HotkeyDown + 1;
+    Command_RefreshParDisplay        = Command + 27;
+    Command_RefreshBrowser           = Command + 28;
+    Command_HotkeyDown               = Command + 29;
+    Command_ShowMessage              = Command + 30;
+    Actions                          = Command_ShowMessage + 1;
     ProgramSavedToDisk               = Actions + 1;
     ProgramLoaded                    = Actions + 2;
     RefreshRequest_StepSeqDisplay    = Actions + 3;
@@ -136,6 +137,36 @@ type
   public
     Data1 : byte;
     Data2 : byte;
+  end;
+
+  ICustomLucidityMessage = interface(IZeroMessageData)
+    ['{6D56002A-8952-42CF-BDF1-02CF5037C1C6}']
+    function GetID: integer;
+    function GetMsg: string;
+    function GetValueA: integer;
+    function GetValueB: single;
+    function GetData: pointer;
+  end;
+
+  TCustomLucidityMessage = class(TInterfacedObject, IZeroMessageData, ICustomLucidityMessage)
+  private
+    fMsg: string;
+    fID: integer;
+    fValueA: integer;
+    fValueB: single;
+    fData: pointer;
+    function GetObject : TObject;
+    function GetMsg: string;
+    function GetID: integer;
+    function GetValueA: integer;
+    function GetData: pointer;
+    function GetValueB: single;
+  public
+    property ID     : integer read GetID     write fID;
+    property Msg    : string  read GetMsg    write fMsg;
+    property ValueA : integer read GetValueA write fValueA;
+    property ValueB : single  read GetValueB write fValueB;
+    property Data   : pointer read GetData   write fData;
   end;
 
 
@@ -483,9 +514,9 @@ begin
   if ID = TLucidMsgID.Command_ShowParChangeInfo          then exit('Command_ShowParChangeInfo');
   if ID = TLucidMsgID.Command_UpdateParChangeInfo        then exit('Command_UpdateParChangeInfo');
   if ID = TLucidMsgID.Command_HideParChangeInfo          then exit('Command_HideParChangeInfo');
-  if ID = TLucidMsgID.Cmd_RefreshParDisplay              then exit('Cmd_RefreshParDisplay');
-  if ID = TLucidMsgID.Cmd_RefreshBrowser                 then exit('Cmd_RefreshBrowser');
-  if ID = TLucidMsgID.Cmd_HotkeyDown                     then exit('Cmd_HotkeyDown');
+  if ID = TLucidMsgID.Command_RefreshParDisplay              then exit('Cmd_RefreshParDisplay');
+  if ID = TLucidMsgID.Command_RefreshBrowser                 then exit('Cmd_RefreshBrowser');
+  if ID = TLucidMsgID.Command_HotkeyDown                     then exit('Cmd_HotkeyDown');
   if ID = TLucidMsgID.Actions                            then exit('Actions');
   if ID = TLucidMsgID.ProgramSavedToDisk                 then exit('ProgramSavedToDisk');
   if ID = TLucidMsgID.ProgramLoaded                      then exit('ProgramLoaded');
@@ -562,6 +593,38 @@ begin
   self.Source_PadX4_Bipolar := 0;
   self.Source_PadY4_Bipolar := 0;
   }
+end;
+
+{ TCustomLucidityMessage }
+
+function TCustomLucidityMessage.GetData: pointer;
+begin
+  Result := fData;
+end;
+
+function TCustomLucidityMessage.GetID: integer;
+begin
+  Result := fID;
+end;
+
+function TCustomLucidityMessage.GetMsg: string;
+begin
+  Result := fMsg;
+end;
+
+function TCustomLucidityMessage.GetObject: TObject;
+begin
+
+end;
+
+function TCustomLucidityMessage.GetValueA: integer;
+begin
+  Result := fValueA;
+end;
+
+function TCustomLucidityMessage.GetValueB: single;
+begin
+  Result := fValueB;
 end;
 
 initialization

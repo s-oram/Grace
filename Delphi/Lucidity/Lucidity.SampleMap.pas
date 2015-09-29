@@ -45,10 +45,13 @@ type
     constructor Create;
     destructor Destroy; override;
 
+
+    // NOTE: This method will raise an EOutOfMemory error in some conditions.
     function LoadSample(const SampleFileName : string):boolean;
 
     // TODO:HIGH i think this ReplaceSample() method needs to be removed. The whole entire region
     // should be replaced. Not just replacing the sample.
+    // NOTE: This method will raise an EOutOfMemory error in some conditions.
     function ReplaceSample(const SampleFileName : string):boolean;
 
     function GetDbLevelAt(SamplePoint:integer):single;
@@ -181,6 +184,7 @@ procedure GenerateRegionPeaks(const aSampleRegion : IRegion; const SampleIndexA,
 implementation
 
 uses
+  eeCustomSample,
   VamLib.Utils,
   Math,
   eeFunctions, eeDsp,
@@ -328,7 +332,7 @@ begin
   begin
     self.Properties^.SampleDataLoaded := false;
     self.Properties^.IsSampleError := true;
-    self.Properties^.SampleErrorType := TSampleError.FileNotFound;
+    self.Properties^.SampleErrorType := TRegionSampleError.FileNotFound;
     self.Properties^.ErrorMessage     := 'Audio file not found.';
   end else
   //if FileExists(SampleFileName) then
@@ -363,20 +367,20 @@ begin
 
           self.Properties^.SampleDataLoaded := true;
           self.Properties^.IsSampleError    := false;
-          self.Properties^.SampleErrorType  := TSampleError.None;
+          self.Properties^.SampleErrorType  := TRegionSampleError.None;
           self.Properties^.ErrorMessage     := '';
         end else
         begin
           self.Properties^.SampleDataLoaded := false;
           self.Properties^.IsSampleError    := true;
-          self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+          self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
           self.Properties^.ErrorMessage     := Sample.LastErrorMessage;
         end;
       end else
       begin
         self.Properties^.SampleDataLoaded := false;
         self.Properties^.IsSampleError    := true;
-        self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+        self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
         self.Properties^.ErrorMessage     := 'Error reserving memory.';
       end;
     end else
@@ -384,15 +388,18 @@ begin
     begin
       self.Properties^.SampleDataLoaded := false;
       self.Properties^.IsSampleError    := true;
-      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+      self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
       self.Properties^.ErrorMessage     := 'Unsupported File Format.';
     end else
     begin
       self.Properties^.SampleDataLoaded := false;
       self.Properties^.IsSampleError    := true;
-      self.Properties^.SampleErrorType  := TSampleError.ErrorLoadingData;
+      self.Properties^.SampleErrorType  := TRegionSampleError.ErrorLoadingData;
       self.Properties^.ErrorMessage     := Info.ErrorMessage;
     end;
+
+    // IMPORTANT: Raise these errors here because we want to break the loading flow.
+    if self.Sample.LastError = seOutOfMemory then OutOfMemoryError();
   end;
 end;
 

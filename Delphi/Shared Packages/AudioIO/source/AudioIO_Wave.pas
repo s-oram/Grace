@@ -689,17 +689,7 @@ begin
   // Multichannel audio also needs to be interleaved.
   //-----------------------------------------------------------------------------------------------
   DataSize := SampleInfo.BlockAlign * SampleInfo.SampleFrames;
-
-  try
-    GetMem(SampleData,DataSize);
-  except
-    on EOutOfMemory do
-    begin
-      result := false;
-      exit; //================================================================================>
-    end;
-  end;
-
+  GetMem(SampleData,DataSize);
   try
     ChannelPointers.Ch1 := Left;
     ChannelPointers.Ch2 := Right;
@@ -753,17 +743,7 @@ begin
   // Multichannel audio also needs to be interleaved.
   //-----------------------------------------------------------------------------------------------
   DataSize := SampleInfo.BlockAlign * SampleInfo.SampleFrames;
-
-  try
-    GetMem(SampleData,DataSize);
-  except
-    on EOutOfMemory do
-    begin
-      result := false;
-      exit; //================================================================================>
-    end;
-  end;
-
+  GetMem(SampleData,DataSize);
   try
     ChannelPointers.Ch1 := Left;
     InterleaveAndScaleData(SampleInfo,ChannelPointers,SampleData);
@@ -805,17 +785,7 @@ begin
 
   try
     ChunkSize := LocateDataChunk(WaveFile);
-
-    try
-      GetMem(SampleData,ChunkSize);
-    except
-      on EOutOfMemory do
-      begin
-        result := false;
-        exit; //================================================================================>
-      end;
-    end;
-
+    GetMem(SampleData,ChunkSize);
     try
       WaveFile.Read(SampleData^,ChunkSize);
 
@@ -864,7 +834,6 @@ begin
     finally
       FreeMem(SampleData,ChunkSize);;
     end;
-
   finally
     WaveFile.Free;
   end;
@@ -895,15 +864,7 @@ begin
   try
     ChunkSize := LocateDataChunk(WaveFile);
 
-    try
-      GetMem(SampleData,ChunkSize);
-    except
-      on EOutOfMemory do
-      begin
-        result := false;
-        exit; //================================================================================>
-      end;
-    end;
+    GetMem(SampleData,ChunkSize);
 
     try
       WaveFile.Read(SampleData^,ChunkSize);
@@ -976,17 +937,7 @@ begin
 
   try
     ChunkSize := LocateDataChunk(WaveFile);
-
-
-    try
-      GetMem(SampleData,ChunkSize);
-    except
-      on EOutOfMemory do
-      begin
-        result := false;
-        exit; //================================================================================>
-      end;
-    end;
+    GetMem(SampleData,ChunkSize);
 
     try
       WaveFile.Read(SampleData^,ChunkSize);
@@ -1053,16 +1004,7 @@ begin
 
   try
     ChunkSize := LocateDataChunk(WaveFile);
-
-    try
-      GetMem(SampleData,ChunkSize);
-    except
-      on EOutOfMemory do
-      begin
-        result := false;
-        exit; //================================================================================>
-      end;
-    end;
+    GetMem(SampleData,ChunkSize);
 
     try
       WaveFile.Read(SampleData^,ChunkSize);

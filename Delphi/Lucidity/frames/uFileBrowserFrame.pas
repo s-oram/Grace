@@ -129,7 +129,7 @@ begin
   inherited;
 
   if MsgID = TLucidMsgID.ProgramSavedToDisk       then RefreshFileBrowser;
-  if MsgID = TLucidMsgID.Cmd_RefreshBrowser       then RefreshFileBrowser;
+  if MsgID = TLucidMsgID.Command_RefreshBrowser   then RefreshFileBrowser;
   if MsgID = TLucidMsgID.SampleDirectoriesChanged then SampleDirectoriesChanged;
   if MsgID = TLucidMsgID.PreviewInfoChanged       then PreviewInfoChanged;
 
@@ -153,7 +153,7 @@ begin
     PreviewInfoChanged;
   end;
 
-  if MsgID = TLucidMsgID.Cmd_HotkeyDown then
+  if MsgID = TLucidMsgID.Command_HotkeyDown then
   begin
     KeyCommand := TKeyCommand(DataA^);
     ProcessKeyCommand(KeyCommand);
@@ -554,7 +554,7 @@ begin
       NewFileName := IncludeTrailingPathDelimiter(Dir) + ResultText + '.lpg';
 
       if RenameProgramFile(NodeData^.FileName, NewFileName)
-        then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Cmd_RefreshBrowser)
+        then Plugin.Globals.MotherShip.MsgVcl(TLucidMsgID.Command_RefreshBrowser)
         else InWindow_ShowMessage(Plugin.Globals.TopLevelForm, 'Error renaming program file.');
     end;
 

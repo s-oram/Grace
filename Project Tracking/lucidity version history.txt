@@ -10,6 +10,9 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 Bug Fix: SFZ import didn't find samples.
 http://www.forum.onesmallclue.com/viewtopic.php?id=15
 
+Bug Fix: Out of memory error fixed.
+- Grace now shows an error message when unable to load program.
+
 
 === v1.0.1 (10 Sep 2015) ===  
 
