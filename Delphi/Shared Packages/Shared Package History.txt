@@ -1,6 +1,10 @@
 ======================================
             History
 ======================================
+29 September 2015
+- AudioIO_Wav now raises out of memory exceptions.
+- Changed the excpetion handling in TSampleFloat.
+
 28 September 2015
 - Create PluginLib package.
 
