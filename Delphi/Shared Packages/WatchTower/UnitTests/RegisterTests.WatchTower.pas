@@ -10,7 +10,7 @@ uses
 
 procedure RegisterTests;
 begin
-  WatchTower.Global.RegisterTest(TDataDirCollectionTest);
+  WatchTower.Global.RegisterTest(TDataDirCollection_BasicTest);
 end;
 
 initialization

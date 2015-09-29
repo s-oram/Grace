@@ -18,6 +18,7 @@ type
   protected
     fList : TList;
     procedure Clear;
+    function IndexOf(const aDataDir : string):integer;
   public
     constructor Create;
     destructor Destroy; override;
@@ -26,6 +27,8 @@ type
     function GetDataDir(Index : integer):string;
 
     property Count : integer read GetCount;
+
+    property DataDir[Index : integer]:string read GetDataDir;
   end;
 
 implementation
@@ -65,6 +68,30 @@ begin
   result := fList.Count;
 end;
 
+function TDataDirCollection.IndexOf(const aDataDir: string): integer;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to GetCount-1 do
+  begin
+    if DataDir[c1] = aDataDir then exit(c1);
+  end;
+  // if we make it this far, no match has been found.
+  result := -1;
+end;
+
+procedure TDataDirCollection.AddDataDir(const aDataDir: string);
+var
+  Info : PDataDirInfo;
+begin
+  if IndexOf(aDataDir) = -1 then
+  begin
+    New(Info);
+    Info^.DataDir := aDataDir;
+    fList.Add(Info);
+  end;
+end;
+
 function TDataDirCollection.GetDataDir(Index: integer): string;
 var
   Info : PDataDirInfo;
@@ -73,13 +100,6 @@ begin
   result := Info^.DataDir;
 end;
 
-procedure TDataDirCollection.AddDataDir(const aDataDir: string);
-var
-  Info : PDataDirInfo;
-begin
-  New(Info);
-  Info^.DataDir := aDataDir;
-  fList.Add(Info);
-end;
+
 
 end.
