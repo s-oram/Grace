@@ -17,7 +17,7 @@ type
 
   TWriteToLogMethod  = reference to procedure(Msg : string);
   TReportErrorMethod = reference to procedure(const ErrorMsg : string);
-  TFindTestDataDir   = reference to function(const TestName : string):string;
+  TFindTestDataDir   = reference to function(const TestUnitName : string):string;
 
   TWatchTowerTestCallbacks = record
     ReportErrorCallback     : TReportErrorMethod;
@@ -43,7 +43,7 @@ type
     // Write a message to the attached logger output.
     procedure LogMessage(const Msg : string);
 
-    function FindTestDataDir(const TestName : string):string;
+    function FindTestDataDir(const TestUnitName : string):string;
   end;
 
   TWatchTowerTestClass = class of TWatchTowerTest;
@@ -74,10 +74,10 @@ begin
   // clean up tasks.
 end;
 
-function TWatchTowerTest.FindTestDataDir(const TestName: string): string;
+function TWatchTowerTest.FindTestDataDir(const TestUnitName: string): string;
 begin
   if assigned(fTestCallbacks.FindTestDataDirCallback)
-    then result := fTestCallbacks.FindTestDataDirCallback(Testname)
+    then result := fTestCallbacks.FindTestDataDirCallback(TestUnitName)
     else result := '';
 end;
 

@@ -23,6 +23,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
+    function FindTestDataDirectory(const aTestUnitName : string):string;
+
     procedure AddDataDir(const aDataDir : string);
     function GetDataDir(Index : integer):string;
 
@@ -98,6 +100,21 @@ var
 begin
   Info := fList[Index];
   result := Info^.DataDir;
+end;
+
+function TDataDirCollection.FindTestDataDirectory(const aTestUnitName: string): string;
+var
+  DirName : string;
+  c1: Integer;
+begin
+  for c1 := 0 to Count-1 do
+  begin
+    DirName := IncludeTrailingPathDelimiter(DataDir[c1]) + aTestUnitName;
+    if DirectoryExists(DirName) then exit(DirName);
+  end;
+
+  // if we make it this far, the data directory isn't found.
+  result := '';
 end;
 
 

@@ -131,7 +131,8 @@ begin
   TestCount := 0;
   ErrorCount := 0;
 
-  TestCallbacks.LogMessageCallback := LogCallback;
+  TestCallbacks.LogMessageCallback      := LogCallback;
+  TestCallbacks.FindTestDataDirCallback := DataDirCollection.FindTestDataDirectory;
 
   TestCallbacks.ReportErrorCallback := procedure(const ErrorMsg : string)
   begin
