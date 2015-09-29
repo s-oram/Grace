@@ -10,10 +10,10 @@ uses
   ActiveX,
   WatchTower,
   WatchTower.Global,
-  VamLib.Console,
   RegisterTests.WatchTower,
-  RegisterTests.VamLib,
-  RegisterTests.Lucidity;
+  //RegisterTests.VamLib,
+  //RegisterTests.Lucidity,
+  VamLib.Console;
 
 {$TYPEDADDRESS OFF}
 
