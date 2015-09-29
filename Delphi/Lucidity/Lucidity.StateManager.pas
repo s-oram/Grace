@@ -940,83 +940,87 @@ var
   SourceSampleLoopStart, SourceSampleLoopEnd : integer;
 begin
   if not assigned(SampleGroup) then raise Exception.Create('SG (sample group interface variable not assigned.');
+  try
+    // TODO:MED There's a few things needing to be done here.
+    // - delayed sample loading. (don't load the sample immediately.)
+    // - check the RegionLoadInfo is valid and will load a correctly configured region.
+    // - the delayed sample loading will also need to handle missing files.
+    aRegion := TRegion.Create;
 
 
-  // TODO:MED There's a few things needing to be done here.
-  // - delayed sample loading. (don't load the sample immediately.)
-  // - check the RegionLoadInfo is valid and will load a correctly configured region.
-  // - the delayed sample loading will also need to handle missing files.
-  aRegion := TRegion.Create;
-  // TODO:HIGH The region needs to be added to the sample map or freed.
 
+    // TODO:HIGH I need to re-architecture the sample loading for a region.
+    // The sample loading *should* happen once all the region properties have
+    // been set. The sample loading shouldn't overwrite any region properties
+    // that have previously been set. LoadSample() initialises some values to
+    // default states, so right now it would overright things.
+    // One of the reasons for this change would be to have delayed sample loading.
+    // -- load a patch and load all samples in a background thread. This
+    //    will allow a project to load quickly and not be bogged down by sample
+    //    loading. Perhaps make this option. (Maybe a pop-up notification in
+    //    the windows notification area show sample loading progress.
+    // -- This will also be important when loading missing samples. Currently
+    //    loading a missing sample will cause properties be to over-written.
+    // TODO:HIGH IMPORTANT: Don't forget to move the sample loading sanitisation
+    // code below when making the above changes.
+    aRegion.LoadSample(RegionLoadInfo.SampleFileName);
 
-  // TODO:HIGH I need to re-architecture the sample loading for a region.
-  // The sample loading *should* happen once all the region properties have
-  // been set. The sample loading shouldn't overwrite any region properties
-  // that have previously been set. LoadSample() initialises some values to
-  // default states, so right now it would overright things.
-  // One of the reasons for this change would be to have delayed sample loading.
-  // -- load a patch and load all samples in a background thread. This
-  //    will allow a project to load quickly and not be bogged down by sample
-  //    loading. Perhaps make this option. (Maybe a pop-up notification in
-  //    the windows notification area show sample loading progress.
-  // -- This will also be important when loading missing samples. Currently
-  //    loading a missing sample will cause properties be to over-written.
-  // TODO:HIGH IMPORTANT: Don't forget to move the sample loading sanitisation
-  // code below when making the above changes.
-  aRegion.LoadSample(RegionLoadInfo.SampleFileName);
+    aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
+    aRegion.KeyGroup := SampleGroup;
 
-  aRegion.ZeroCrossings.CalcZeroCrossingData(aRegion.Sample);
-  aRegion.KeyGroup := SampleGroup;
+    // TODO:HIGH In the case of a missing sample being loaded after these properties
+    // have been assigned. Check that these property values persist and aren't
+    // over-written.
+    aRegion.Properties^.SampleFileName := RegionLoadInfo.SampleFileName;
+    aRegion.Properties^.LowNote        := RegionLoadInfo.LowNote;
+    aRegion.Properties^.HighNote       := RegionLoadInfo.HighNote;
+    aRegion.Properties^.LowVelocity    := RegionLoadInfo.LowVelocity;
+    aRegion.Properties^.HighVelocity   := RegionLoadInfo.HighVelocity;
+    aRegion.Properties^.RootNote       := RegionLoadInfo.RootNote;
+    aRegion.Properties^.SampleStart    := RegionLoadInfo.SampleStart;
+    aRegion.Properties^.SampleEnd      := RegionLoadInfo.SampleEnd;
+    aRegion.Properties^.UserLoopStart  := RegionLoadInfo.LoopStart;
+    aRegion.Properties^.UserLoopEnd    := RegionLoadInfo.LoopEnd;
+    aRegion.Properties^.SampleVolume   := RegionLoadInfo.SampleVolume;
+    aRegion.Properties^.SampleTune     := RegionLoadInfo.SampleTune;
+    aRegion.Properties^.SampleFine     := RegionLoadInfo.SampleFine;
+    aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
+    aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
 
-  // TODO:HIGH In the case of a missing sample being loaded after these properties
-  // have been assigned. Check that these property values persist and aren't
-  // over-written.
-  aRegion.Properties^.SampleFileName := RegionLoadInfo.SampleFileName;
-  aRegion.Properties^.LowNote        := RegionLoadInfo.LowNote;
-  aRegion.Properties^.HighNote       := RegionLoadInfo.HighNote;
-  aRegion.Properties^.LowVelocity    := RegionLoadInfo.LowVelocity;
-  aRegion.Properties^.HighVelocity   := RegionLoadInfo.HighVelocity;
-  aRegion.Properties^.RootNote       := RegionLoadInfo.RootNote;
-  aRegion.Properties^.SampleStart    := RegionLoadInfo.SampleStart;
-  aRegion.Properties^.SampleEnd      := RegionLoadInfo.SampleEnd;
-  aRegion.Properties^.UserLoopStart  := RegionLoadInfo.LoopStart;
-  aRegion.Properties^.UserLoopEnd    := RegionLoadInfo.LoopEnd;
-  aRegion.Properties^.SampleVolume   := RegionLoadInfo.SampleVolume;
-  aRegion.Properties^.SampleTune     := RegionLoadInfo.SampleTune;
-  aRegion.Properties^.SampleFine     := RegionLoadInfo.SampleFine;
-  aRegion.Properties^.SamplePan      := RegionLoadInfo.SamplePan;
-  aRegion.Properties^.SampleBeats    := RegionLoadInfo.SampleBeats;
+    fn := RegionLoadInfo.SampleFileName;
+    if (FileExists(fn)) and (ReadLoopPoints(fn, SourceSampleLoopStart, SourceSampleLoopEnd)) then
+    begin
+      aRegion.Properties^.RefLoopStart := SourceSampleLoopStart;
+      aRegion.Properties^.RefLoopEnd   := SourceSampleLoopEnd;
+    end else
+    begin
+      aRegion.Properties^.RefLoopStart := -1;
+      aRegion.Properties^.RefLoopEnd   := -1;
+    end;
 
-  fn := RegionLoadInfo.SampleFileName;
-  if (FileExists(fn)) and (ReadLoopPoints(fn, SourceSampleLoopStart, SourceSampleLoopEnd)) then
-  begin
-    aRegion.Properties^.RefLoopStart := SourceSampleLoopStart;
-    aRegion.Properties^.RefLoopEnd   := SourceSampleLoopEnd;
-  end else
-  begin
-    aRegion.Properties^.RefLoopStart := -1;
-    aRegion.Properties^.RefLoopEnd   := -1;
+    //============================================================================
+    // Perform some sanitisation after the sample has been loaded.
+    if (aRegion.Sample.Properties.IsValid) then
+    begin
+      SampleFrames := aRegion.Sample.Properties.SampleFrames;
+
+      // NOTE: Check for negative values because the default 'unassigned' values will be -1.
+      // As set in TRegionLoadInfo.ResetToDefaultValues().
+      if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
+      if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
+
+      // Clamp start/end points to fit inside sample boundaries.
+      aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
+      aRegion.Properties^.SampleEnd   := Clamp(aRegion.Properties^.SampleEnd, 0, SampleFrames-1);
+    end;
+    //============================================================================
+
+    Plugin.SampleMap.AddRegion(aRegion);
+    aRegion := nil;
+  finally
+    if assigned(aRegion)
+      then aRegion.Free;
   end;
-
-  //============================================================================
-  // Perform some sanitisation after the sample has been loaded.
-  if (aRegion.Sample.Properties.IsValid) then
-  begin
-    SampleFrames := aRegion.Sample.Properties.SampleFrames;
-
-    // NOTE: Check for negative values because the default 'unassigned' values will be -1.
-    // As set in TRegionLoadInfo.ResetToDefaultValues().
-    if aRegion.Properties^.SampleStart < 0 then aRegion.Properties^.SampleStart := 0;
-    if aRegion.Properties^.SampleEnd < 0   then aRegion.Properties^.SampleEnd   := SampleFrames-1;
-
-    // Clamp start/end points to fit inside sample boundaries.
-    aRegion.Properties^.SampleStart := Clamp(aRegion.Properties^.SampleStart, 0, SampleFrames-1);
-    aRegion.Properties^.SampleEnd   := Clamp(aRegion.Properties^.SampleEnd, 0, SampleFrames-1);
-  end;
-  //============================================================================
-
-  Plugin.SampleMap.AddRegion(aRegion);
 end;
 
 

@@ -45,10 +45,13 @@ type
     constructor Create;
     destructor Destroy; override;
 
+
+    // NOTE: This method will raise an EOutOfMemory error in some conditions.
     function LoadSample(const SampleFileName : string):boolean;
 
     // TODO:HIGH i think this ReplaceSample() method needs to be removed. The whole entire region
     // should be replaced. Not just replacing the sample.
+    // NOTE: This method will raise an EOutOfMemory error in some conditions.
     function ReplaceSample(const SampleFileName : string):boolean;
 
     function GetDbLevelAt(SamplePoint:integer):single;
