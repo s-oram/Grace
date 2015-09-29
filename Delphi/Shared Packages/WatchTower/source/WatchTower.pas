@@ -31,6 +31,7 @@ type
     property TestDataDirectory : string read fTestDataDirectory;
   public
     constructor Create(const TestReporter : TWatchTowerTestCallbacks; const aTestDataDirectory : string); virtual;
+
     procedure Setup; virtual;
     procedure TearDown; virtual;
 

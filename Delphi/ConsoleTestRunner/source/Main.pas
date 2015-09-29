@@ -11,6 +11,7 @@ uses
   WatchTower,
   WatchTower.Global,
   VamLib.Console,
+  RegisterTests.WatchTower,
   RegisterTests.VamLib,
   RegisterTests.Lucidity;
 
