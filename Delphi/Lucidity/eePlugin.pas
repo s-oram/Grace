@@ -292,7 +292,6 @@ uses
   VamLib.ZeroObject,
   eeCustomGlobals,
   AudioIO,
-  eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
   eeSaveLoadFunctions,
   NativeXML, eeFunctions, eeDsp,
@@ -431,7 +430,7 @@ begin
   GlobalModPoints.Source_PadY4_Unipolar := @XYPads.fPadY4;
   //============================================================================
 
-  TProfiler.Open;
+
 
   {$IFDEF Logging}
   if (PluginDataDir^.Exists)
@@ -581,7 +580,6 @@ begin
   fSampleDirectories.Free;
   fSignalRecorder.Free;
   fFreqAnalyzer.Free;
-  TProfiler.Close;
 
 
   //===== free all the voices ===================
