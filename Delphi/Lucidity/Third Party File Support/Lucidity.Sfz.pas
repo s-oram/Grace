@@ -38,7 +38,7 @@ type
     GroupCount : integer;
     SupportedOpcodeList : TObjectList;
     GroupLoadData : TSfzGroupLoadData;
-    GlobalGroupValues : TKeyValueStore;
+    GroupOpcodes : TKeyValueStore;
     procedure Event_OnGroupStart(Sender : TObject);
     procedure Event_OnGroupEnd(Sender : TObject);
     procedure Event_OnGroupOpcode(Sender : TObject; Opcode : TSfzOpcode; OpcodeValue : string);
@@ -80,14 +80,14 @@ begin
   Parser.OnRegionEnd    := Event_OnRegionEnd;
   Parser.OnRegionOpcode := Event_OnRegionOpcode;
 
-  GlobalGroupValues := TKeyValueStore.Create;
+  GroupOpcodes := TKeyValueStore.Create;
 end;
 
 destructor TSfzImporter.Destroy;
 begin
   SupportedOpcodeList.Free;
   Parser.Free;
-  GlobalGroupValues.Free;
+  GroupOpcodes.Free;
   inherited;
 end;
 
@@ -128,7 +128,7 @@ begin
 
   if not assigned(CurrentGroup) then
   begin
-    GlobalGroupValues.Clear;
+    GroupOpcodes.Clear;
     GroupLoadData.Reset;
     CurrentGroup := NodeWiz(RootNode).CreateNode('SampleGroup');
     CurrentGroup.NodeNew('Name').ValueUnicode := 'Group ' + IntToStr(GroupCount + 1);
@@ -228,11 +228,11 @@ begin
   TargetNode := CurrentGroup;
 
   case Opcode of
-    TSfzOpcode.lokey: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
-    TSfzOpcode.hikey: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
-    TSfzOpcode.key:   GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
-    TSfzOpcode.lovel: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
-    TSfzOpcode.hivel: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.lokey: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.hikey: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.key:   GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.lovel: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.hivel: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
     TSfzOpcode.lobend: ;
     TSfzOpcode.hibend: ;
     TSfzOpcode.lochanaft: ;
@@ -277,7 +277,7 @@ begin
     TSfzOpcode.sync_offset: ;
     TSfzOpcode.transpose: ; //TODO:HIGH
     TSfzOpcode.tune: ; //TODO:HIGH
-    TSfzOpcode.pitch_keycenter: GlobalGroupValues.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
+    TSfzOpcode.pitch_keycenter: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
     TSfzOpcode.pitch_keytrack: ;
     TSfzOpcode.pitch_veltrack: ;
     TSfzOpcode.pitch_random: ;
@@ -348,8 +348,8 @@ begin
     TSfzOpcode.fillfo_freqccN: ;
     TSfzOpcode.fillfo_freqchanaft: ;
     TSfzOpcode.fillfo_freqpolyaft: ;
-    TSfzOpcode.volume: ; //TODO:HIGH
-    TSfzOpcode.pan: ;    //TODO:HIGH
+    TSfzOpcode.volume:   NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/OutputGain').ValueUnicode := ConvertOpcodeToVoiceParameterValue(Opcode, OpcodeValue);
+    TSfzOpcode.pan:      NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/OutputPan').ValueUnicode := ConvertOpcodeToVoiceParameterValue(Opcode, OpcodeValue);
     TSfzOpcode.width: ;
     TSfzOpcode.position: ;
     TSfzOpcode.amp_keytrack: ;
@@ -453,9 +453,9 @@ begin
 
   //****************************************************************************
   // apply global group values
-  for c1 := 0 to GlobalGroupValues.KeyCount-1 do
+  for c1 := 0 to GroupOpcodes.KeyCount-1 do
   begin
-    GlobalGroupValues.KeyByIndex(c1, KeyName, KeyValue);
+    GroupOpcodes.KeyByIndex(c1, KeyName, KeyValue);
     self.Event_OnRegionOpcode(self, StrToSfzOpcode(KeyName), KeyValue);
     //LogMain.LogMessage('-- Global Key Value = ' + KeyName + ' ' + KeyValue);
   end;

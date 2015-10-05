@@ -16,6 +16,11 @@ uses
 // converts to a correctly scaled Lucidity Patch value.
 function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
 
+// Converts a SFZ opcode to a lucidity patch value string.
+// This method is similar to the above but should be used when the "Voice parameter" value uses
+// a different scaling than the "sample region" value.
+function ConvertOpcodeToVoiceParameterValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
+
 
 
 //================================================================================
@@ -41,6 +46,7 @@ uses
   LucidityParameterScaling,
   Math,
   VamLib.Utils,
+  VamDsp.Utils,
   SysUtils;
 
 function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
@@ -139,6 +145,50 @@ begin
   end;
 end;
 
+
+function ConvertOpcodeToVoiceParameterValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
+var
+  xInt : integer;
+  xFloat : single;
+begin
+  // TODO:MED Memory leaks if this method raises an exception while loading a SFZ patch.
+  try
+    OpcodeValue := Trim(OpcodeValue);
+
+    // set Result to a default value.
+    result := '';
+
+    // do the conversion.
+    case Opcode of
+      TSfzOpcode.transpose: ;
+      TSfzOpcode.tune: ;
+      TSfzOpcode.volume:
+      begin
+        // === SFZ Import Notes ===
+        // The volume for the region, in decibels. -144 to 6 dB
+        // == Lucidity Import Notes ==
+        // Lucidty format units are *decibels*.
+        xFloat := OpcodeToFloat(OpcodeValue, -144, 6);
+        xFloat := DecibelsToLinear(xFloat);
+        xFloat := Clamp(xFloat, 0, 4);
+        xFloat := xFloat / 4;
+        if xFloat > 0 then xFloat := sqrt(xFloat);
+        result := DataIO_FloatToStr(xFloat);
+      end;
+    else
+      // Fallback to the standard scaling if a custom "voice parameter" only version isn't applied.
+      result := ConvertOpcodeToPatchValue(Opcode, OpcodeValue);
+    end;
+  except
+    on E:EConvertError do
+    begin
+      raise EConvertError.Create('Can not convert SFZ opcode. [ ' + SfzOpcodeToStr(Opcode) + '=' + OpcodeValue + ' ]');
+    end else
+    begin
+      raise;
+    end;
+  end;
+end;
 
 
 function ConvertOpcodeToPatchValue(const Opcode : TSfzOpcode; OpcodeValue : string):string;
