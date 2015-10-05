@@ -224,6 +224,8 @@ type
   function ReturnAddress: Pointer; assembler;
 {$ENDIF}
 
+
+
 implementation
 
 uses

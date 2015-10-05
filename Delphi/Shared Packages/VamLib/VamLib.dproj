@@ -142,6 +142,11 @@
 			<DCCReference Include="UnitTests\RegisterTests.VamLib.pas"/>
 			<DCCReference Include="UnitTests\Test.VamLib.Win.Links.pas"/>
 			<DCCReference Include="Source\VamLib.Win.Shell.pas"/>
+			<DCCReference Include="Source\ThirdParty\DeCAL.pas"/>
+			<DCCReference Include="Source\ThirdParty\DeCAL_FixedRecSort.pas"/>
+			<DCCReference Include="UnitTests\Test.Decal.pas"/>
+			<DCCReference Include="Source\VamLib.FlexValue.pas"/>
+			<DCCReference Include="UnitTests\Test.VamLib.FlexValue.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<None Include="Source\RangeCheck_ToggleOff.inc"/>

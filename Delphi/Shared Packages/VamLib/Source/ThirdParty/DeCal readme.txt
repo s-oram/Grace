@@ -1,0 +1,1 @@
+NOTE: I've not used DeCal yet but it looks interesting. Might be good for a map implementation.

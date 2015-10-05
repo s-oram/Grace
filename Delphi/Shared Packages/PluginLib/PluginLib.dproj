@@ -98,6 +98,14 @@
 			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEventBuffer.pas"/>
 			<DCCReference Include="Source\Vst2Ex\Vst2Ex.Utils.pas"/>
 			<DCCReference Include="Source\Vst2Ex\Vst2Ex.MadExcept.pas"/>
+			<DCCReference Include="UnitTests\RegisterTests.PluginLib.pas"/>
+			<DCCReference Include="Source\AudioPlugin\AudioPlugin.pas"/>
+			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Vst2Wrapper.pas"/>
+			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Vst2PluginInfo.pas"/>
+			<DCCReference Include="Source\AudioPlugin\AudioPlugin.ProcessController.pas"/>
+			<DCCReference Include="UnitTests\Test.AudioPlugin.pas"/>
+			<DCCReference Include="UnitTests\Test.AudioPlugin.ProcessController.pas"/>
+			<DCCReference Include="UnitTests\Mocks.AudioPlugin.pas"/>
 			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

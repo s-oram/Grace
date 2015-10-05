@@ -50,6 +50,14 @@ contains
   VamVst2.VstEvent in 'Source\Vst2Ex\VamVst2.VstEvent.pas',
   VamVst2.VstEventBuffer in 'Source\Vst2Ex\VamVst2.VstEventBuffer.pas',
   Vst2Ex.Utils in 'Source\Vst2Ex\Vst2Ex.Utils.pas',
-  Vst2Ex.MadExcept in 'Source\Vst2Ex\Vst2Ex.MadExcept.pas';
+  Vst2Ex.MadExcept in 'Source\Vst2Ex\Vst2Ex.MadExcept.pas',
+  RegisterTests.PluginLib in 'UnitTests\RegisterTests.PluginLib.pas',
+  AudioPlugin in 'Source\AudioPlugin\AudioPlugin.pas',
+  AudioPlugin.Vst2Wrapper in 'Source\AudioPlugin\AudioPlugin.Vst2Wrapper.pas',
+  AudioPlugin.Vst2PluginInfo in 'Source\AudioPlugin\AudioPlugin.Vst2PluginInfo.pas',
+  AudioPlugin.ProcessController in 'Source\AudioPlugin\AudioPlugin.ProcessController.pas',
+  Test.AudioPlugin in 'UnitTests\Test.AudioPlugin.pas',
+  Test.AudioPlugin.ProcessController in 'UnitTests\Test.AudioPlugin.ProcessController.pas',
+  Mocks.AudioPlugin in 'UnitTests\Mocks.AudioPlugin.pas';
 
 end.

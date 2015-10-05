@@ -12,6 +12,7 @@ type
   end;
 
 type
+  PMidiEvent = ^TMidiEvent;
   TMidiEvent = record
     Status, Channel, Data1, Data2, Deltaframes: integer;
   end;

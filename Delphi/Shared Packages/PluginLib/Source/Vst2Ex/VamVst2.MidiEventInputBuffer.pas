@@ -17,13 +17,16 @@ type
   TMidiEventInputBuffer = class
   private
     fVstEventArray : array of VstEvent;
-    fBuffer : PVstEvents;
+    fBuffer : PVstEvents;  //FBuffer will be assigned when the capacity is set.
     fBufferSize : integer;
     fCapacity: integer;
+    FEventCount: integer;
     procedure SetCapacity(const Value: integer);
   public
     constructor Create(const aCapacity : integer);
     destructor Destroy; override;
+
+    procedure Clear;
 
     function ReadMidiEvent(const Index : integer):TMidiEvent;
 
@@ -32,6 +35,8 @@ type
 
     property Buffer : PVstEvents read fBuffer;
     property Capacity : integer read fCapacity write SetCapacity;
+
+    property EventCount : integer read FEventCount;
   end;
 
 implementation
@@ -45,15 +50,26 @@ implementation
 
 constructor TMidiEventInputBuffer.Create(const aCapacity : integer);
 begin
+  // Capacity must be bigger than 0 while the event list in use.
+  assert(aCapacity > 0);
+
   fBuffer := nil;
   fBufferSize := 0;
   SetCapacity(aCapacity);
+
+  FEventCount := 0;
 end;
 
 destructor TMidiEventInputBuffer.Destroy;
 begin
   SetCapacity(0);
   inherited;
+end;
+
+procedure TMidiEventInputBuffer.Clear;
+begin
+  fBuffer.numEvents := 0;
+  FEventCount := 0;
 end;
 
 procedure TMidiEventInputBuffer.AssignFrom(const ev: PVstEvents);
@@ -80,6 +96,7 @@ begin
   end;
 
   fBuffer^.numEvents := WriteIndex;
+  FEventCount := WriteIndex;
 end;
 
 procedure TMidiEventInputBuffer.AssignFrom(const ev: TArrayOfMidiEvent);
@@ -98,6 +115,7 @@ begin
   end;
 
   fBuffer.numEvents := NumberOfEvents;
+  FEventCount := NumberOfEvents;
 end;
 
 function TMidiEventInputBuffer.ReadMidiEvent(const Index: integer): TMidiEvent;

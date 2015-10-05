@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+05 October 2015
+- Creating a FlexValue class
+
 29 September 2015
 - WatchTower: 
   - Modify how test data directories as passed to WatchTower tests. 

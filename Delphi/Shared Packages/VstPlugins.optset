@@ -1,0 +1,16 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
+			<DCC_UnitSearchPath>$(DelphiCompiledLib)\bpl\$(PLATFORM);$(DelphiCompiledLib)\dcu\$(PLATFORM);$(DelphiCompiledLib)\dcp\$(PLATFORM);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_BplOutput>$(DelphiCompiledLib)\bpl\$(PLATFORM)</DCC_BplOutput>
+			<DCC_DcpOutput>$(DelphiCompiledLib)\dcp\$(PLATFORM)</DCC_DcpOutput>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>OptionSet</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality/>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>
