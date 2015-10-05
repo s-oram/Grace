@@ -15,6 +15,8 @@ Bug Fix: SFZ import now ignores comments.
 Bug Fix: Out of memory error fixed.
 - Grace now shows an error message when unable to load program.
 
+Bug Fix: Parameter changes are applied to all voice groups.
+
 === v1.0.1 (10 Sep 2015) ===  
 
 New: 
