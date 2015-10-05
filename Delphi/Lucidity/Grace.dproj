@@ -614,6 +614,8 @@
 			<DCCReference Include="Lucidity.ProgramFileUtils.pas"/>
 			<DCCReference Include="UnitTests\RegisterTests.Lucidity.pas"/>
 			<DCCReference Include="UnitTests\Test.Lucidity.ProgramFileUtils.pas"/>
+			<DCCReference Include="UnitTests\Test.LucidityBug.SetGuiParameter.pas"/>
+			<DCCReference Include="UnitTests\Mock.Lucidity.VstGlobals.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
