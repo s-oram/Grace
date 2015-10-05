@@ -2,6 +2,9 @@ unit Lucidity.Sfz;
 
 //   SFZ Opcode documentation
 //   http://www.cakewalk.com/DevXchange/article.aspx?aid=108
+//
+//   SFZ format wiki
+//   http://www.sfzformat.com/index.php?title=Main_Page
 
 interface
 
