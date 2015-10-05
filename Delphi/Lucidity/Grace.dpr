@@ -187,7 +187,8 @@ uses
   RegisterTests.Lucidity in 'UnitTests\RegisterTests.Lucidity.pas',
   Test.Lucidity.ProgramFileUtils in 'UnitTests\Test.Lucidity.ProgramFileUtils.pas',
   Test.LucidityBug.SetGuiParameter in 'UnitTests\Test.LucidityBug.SetGuiParameter.pas',
-  Mock.Lucidity.VstGlobals in 'UnitTests\Mock.Lucidity.VstGlobals.pas';
+  Mock.Lucidity.VstGlobals in 'UnitTests\Mock.Lucidity.VstGlobals.pas',
+  Test.Lucidity.SfzOpcodeConversion in 'UnitTests\Test.Lucidity.SfzOpcodeConversion.pas';
 
 {$R *.res}
 
