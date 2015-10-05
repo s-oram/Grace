@@ -160,8 +160,25 @@ begin
 
     // do the conversion.
     case Opcode of
-      TSfzOpcode.transpose: ;
-      TSfzOpcode.tune: ;
+      TSfzOpcode.transpose:
+      begin
+        // SFZ: The transposition value for this region which will be applied to the sample.
+        // Lucidity. Max transposition is -24 to 24 semitones, normalised to 0..1 range.
+        xInt := OpcodeToInteger(OpcodeValue, -127, 127);
+        xFloat := Clamp(xInt, -24, 24);
+        xFloat := (xFloat + 24) / 48;
+        xFloat := Clamp(xInt, 0, 1);
+        result := DataIO_FloatToStr(xFloat);
+      end;
+      TSfzOpcode.tune:
+      begin
+        // SFZ: Sample fine tune. -100..100 cents
+        // Lucidity. Fine tune range is -100..100 cents (1 Semitone) normalised to 0..1 range.
+        xInt := OpcodeToInteger(OpcodeValue, -100, 100);
+        xFloat := (xInt + 100) / 200;
+        xFloat := Clamp(xFloat, 0, 1);
+        result := DataIO_FloatToStr(xFloat);
+      end;
       TSfzOpcode.volume:
       begin
         // === SFZ Import Notes ===

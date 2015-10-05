@@ -275,8 +275,8 @@ begin
     TSfzOpcode.loop_end: ;
     TSfzOpcode.sync_beats: ;
     TSfzOpcode.sync_offset: ;
-    TSfzOpcode.transpose: ; //TODO:HIGH
-    TSfzOpcode.tune: ; //TODO:HIGH
+    TSfzOpcode.transpose:  NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/VoicePitchOne').ValueUnicode := ConvertOpcodeToVoiceParameterValue(Opcode, OpcodeValue);
+    TSfzOpcode.tune:       NodeWiz(TargetNode).FindOrCreateNode('VoiceParameters/VoicePitchTwo').ValueUnicode := ConvertOpcodeToVoiceParameterValue(Opcode, OpcodeValue);
     TSfzOpcode.pitch_keycenter: GroupOpcodes.AddKey(SfzOpcodeToStr(Opcode), OpcodeValue);
     TSfzOpcode.pitch_keytrack: ;
     TSfzOpcode.pitch_veltrack: ;
