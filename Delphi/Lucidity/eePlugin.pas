@@ -292,7 +292,6 @@ uses
   VamLib.ZeroObject,
   eeCustomGlobals,
   AudioIO,
-  eeProfilerV2,
   eePluginDataDir, eePatchObject_XmlWrapper,
   eeSaveLoadFunctions,
   NativeXML, eeFunctions, eeDsp,
@@ -431,7 +430,7 @@ begin
   GlobalModPoints.Source_PadY4_Unipolar := @XYPads.fPadY4;
   //============================================================================
 
-  TProfiler.Open;
+
 
   {$IFDEF Logging}
   if (PluginDataDir^.Exists)
@@ -581,7 +580,6 @@ begin
   fSampleDirectories.Free;
   fSignalRecorder.Free;
   fFreqAnalyzer.Free;
-  TProfiler.Close;
 
 
   //===== free all the voices ===================
@@ -1813,7 +1811,7 @@ var
   ParID : TPluginParameterID;
 begin
   ParID := PublishedVstParameters.FindParameterID(Index);
-  if (ParID <> Globals.GuiState.ActivePluginParameterID1) or (ParID <> Globals.GuiState.ActivePluginParameterID2)
+  if (ParID <> Globals.GuiState.ActivePluginParameterID1) and (ParID <> Globals.GuiState.ActivePluginParameterID2)
     then SetPluginParameter(ParID, Value, TParChangeScope.psGlobal)
 end;
 

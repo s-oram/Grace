@@ -105,7 +105,12 @@ var
 constructor TGlobals.Create;
   procedure LoadSkinImage(const SkinImageName : string);
   begin
-    if fSkinImageLoader.LoadImage(SkinImageName) = false then raise Exception.Create('Skin image not found. (' + SkinImageName + ')');
+    // TODO:MED Don't raise an exception if a skin image can't be found. Just ignore the error for now.
+    // I want to be able to create a TGlobals object for unit testing.
+    // Instead of raising an exception, perhaps the GUI needs to check for skin images when it's opening.
+    //
+    //if fSkinImageLoader.LoadImage(SkinImageName) = false then raise Exception.Create('Skin image not found. (' + SkinImageName + ')');
+    fSkinImageLoader.LoadImage(SkinImageName);
   end;
 var
   DataDir : string;

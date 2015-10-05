@@ -185,7 +185,9 @@ uses
   InWindowDialog.SampleFinderDialog.Brain in 'Dialogs\InWindowDialog.SampleFinderDialog.Brain.pas',
   Lucidity.ProgramFileUtils in 'Lucidity.ProgramFileUtils.pas',
   RegisterTests.Lucidity in 'UnitTests\RegisterTests.Lucidity.pas',
-  Test.Lucidity.ProgramFileUtils in 'UnitTests\Test.Lucidity.ProgramFileUtils.pas';
+  Test.Lucidity.ProgramFileUtils in 'UnitTests\Test.Lucidity.ProgramFileUtils.pas',
+  Test.LucidityBug.SetGuiParameter in 'UnitTests\Test.LucidityBug.SetGuiParameter.pas',
+  Mock.Lucidity.VstGlobals in 'UnitTests\Mock.Lucidity.VstGlobals.pas';
 
 {$R *.res}
 
