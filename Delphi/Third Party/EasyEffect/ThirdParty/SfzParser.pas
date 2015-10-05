@@ -53,6 +53,7 @@ type
   end;
 
 procedure ExplodeSfzString(s : string; var Results : TStringList);
+function TrimTrailingComment(const s : string):string; // removes a double slash "//" and trailing text from a string.
 
 implementation
 
@@ -83,6 +84,21 @@ begin
       Results[c1-1] := TestString;
       Results.Delete(c1);
     end;
+  end;
+end;
+
+function TrimTrailingComment(const s : string):string; // removes a double slash "//" and trailing text from a string.
+var
+  Index : integer;
+begin
+  Index := Pos('//', s);
+
+  if Index > 0 then
+  begin
+    result := Trim(LeftStr(s, Index-1));
+  end else
+  begin
+    result := s;
   end;
 end;
 
@@ -155,6 +171,7 @@ begin
     for c1 := 0 to StringList.Count-1 do
     begin
       s := StringList[c1];
+      s := TrimTrailingComment(s);
 
       TokenType := FindTokenType(s);
 
@@ -294,10 +311,5 @@ procedure TSfzParser.ProcessUnknown(s: string);
 begin
 
 end;
-
-
-
-
-
 
 end.
