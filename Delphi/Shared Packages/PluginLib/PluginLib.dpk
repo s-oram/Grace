@@ -36,7 +36,6 @@ requires
   madBasic_,
   madDisAsm_,
   madExcept_,
-  DesignIDE,
   FarScape;
 
 contains

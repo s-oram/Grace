@@ -8,8 +8,8 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<Config Condition="'$(Config)'==''">ReleaseAsFull</Config>
+			<Platform Condition="'$(Platform)'==''">Win64</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
 		</PropertyGroup>
@@ -254,12 +254,16 @@
 			<DCC_ExeOutput>$(LucidityProjectDir)\Bin\Lucidity_$(PLATFORM)_Full\</DCC_ExeOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_4_Win64)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
 			<DCC_DebugInformation>true</DCC_DebugInformation>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_MapFile>3</DCC_MapFile>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_4_Win32)'!=''">
+			<DCC_DebugInformation>true</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_6_Win64)'!=''">
