@@ -46,7 +46,7 @@ type
     procedure SetAsSingle(const Value: single);
     procedure SetAsString(const Value: string);
 
-    function GetValueType : TFlexValueType;
+    function GetValueType : TFlexValueType; //TODO:MED rename to ValueType
 
     procedure CopyFrom(const Source : IFlexValue);
 
@@ -63,6 +63,8 @@ type
     property AsBoolean : boolean   read GetAsBoolean    write SetAsBoolean;
     property AsPointer : pointer   read GetAsPointer    write SetAsPointer;
     property AsString  : string    read GetAsString     write SetAsString;
+
+    procedure Clear;
   end;
 
   TFlexValue = class(TInterfacedObject, IFlexValue)
@@ -85,8 +87,6 @@ type
     procedure Clear;
 
     procedure CopyFrom(const Source : IFlexValue);
-
-    property ValueType : TFlexValueType read FValueType;
 
     function IsInteger : boolean;
     function IsSingle  : boolean;
@@ -131,13 +131,12 @@ type
   public
     constructor Create; override;
 
-    property Count : integer read FCount;
+    procedure Add(const Value : IFlexValue);
+    procedure Clear;
 
     property AutoGrowCapaicity : boolean read FAutoGrowCapacity write FAutoGrowCapacity;
-
     property Items[Index : integer] : IFlexValue read GetItem; default;
-
-    procedure Add(const Value : IFlexValue);
+    property Count : integer read FCount;
   end;
 
 
@@ -214,7 +213,7 @@ begin
     end;
   end;
   FValueType := fvtEmpty;
-  FValueData.VInteger := 0;
+  FValueData.VPointer := nil;
 end;
 
 procedure TFlexValue.SetAsInteger(const Value: integer);
@@ -378,9 +377,21 @@ begin
     end;
   end;
 
+  FCapacity := Value;
 end;
 
 { TFlexList }
+
+procedure TFlexList.Clear;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to FCount-1 do
+  begin
+    FData[c1].Clear;
+  end;
+  FCount := 0;
+end;
 
 constructor TFlexList.Create;
 begin
@@ -391,6 +402,7 @@ end;
 
 function TFlexList.GetItem(Index: integer): IFlexValue;
 begin
+  assert(Index < FCount);
   result := FData[Index];
 end;
 

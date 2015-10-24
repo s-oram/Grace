@@ -82,7 +82,8 @@ contains
   DeCAL_FixedRecSort in 'Source\ThirdParty\DeCAL_FixedRecSort.pas',
   Test.Decal in 'UnitTests\Test.Decal.pas',
   VamLib.FlexValue in 'Source\VamLib.FlexValue.pas',
-  Test.VamLib.FlexValue in 'UnitTests\Test.VamLib.FlexValue.pas';
+  Test.VamLib.FlexValue in 'UnitTests\Test.VamLib.FlexValue.pas',
+  VamLib.Wine in 'Source\VamLib.Wine.pas';
 
 end.
 

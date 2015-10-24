@@ -215,7 +215,7 @@ Set the default options for FastMM here.
    report memory leaks. This option has no effect if the option
    "EnableMemoryLeakReporting" is not also set. Note that this option does not
    work with libraries, only EXE projects.}
-  {$define RequireDebuggerPresenceForLeakReporting}
+  {.$define RequireDebuggerPresenceForLeakReporting}
 
   {Set this option to require the presence of debug info ($D+ option) in the
    compiled unit to perform memory leak checking. This option has no effect if
@@ -241,13 +241,13 @@ Set the default options for FastMM here.
  AMD K5, Pentium I and earlier CPUs. MMX is currently only used in the variable
  size move routines, so if UseCustomVariableSizeMoveRoutines is not set then
  this option has no effect.}
-{.$define EnableMMX}
+{$define EnableMMX}
 
   {Set this option to force the use of MMX instructions without checking
    whether the CPU supports it. If this option is disabled then the CPU will be
    checked for compatibility first, and if MMX is not supported it will fall
    back to the FPU move code. Has no effect unless EnableMMX is also set.}
-  {$define ForceMMX}
+  {.$define ForceMMX}
 
 {-----------------------Memory Manager Sharing Options------------------------}
 
@@ -323,9 +323,9 @@ Set the default options for FastMM here.
 {Group the options you use for release and debug versions below}
 {$ifdef Release}
   {Specify the options you use for release versions below}
-  {.$undef FullDebugMode}
-  {.$undef CheckHeapForCorruption}
-  {.$define ASMVersion}
+  {$undef FullDebugMode}
+  {$undef CheckHeapForCorruption}
+  {$define ASMVersion}
   {.$undef EnableMemoryLeakReporting}
   {.$undef UseOutputDebugString}
 {$else}

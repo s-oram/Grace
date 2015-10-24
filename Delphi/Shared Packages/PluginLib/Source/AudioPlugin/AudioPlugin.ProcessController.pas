@@ -7,6 +7,7 @@ uses
   VamVst2.DAEffectX,
   VamLib.MoreTypes,
   AudioPlugin,
+  AudioPlugin.RunTimeInfo,
   VamVst2.MidiEventInputBuffer;
 
 type
@@ -27,15 +28,16 @@ type
     SlowControlRateStepCount : integer;
     BufferedInputs  : PPSingle;
     BufferedOutputs : PPSingle;
+    FRunTimeInfo : TRunTimeInfo;
   public
     constructor Create(const aPlug : TAudioPlugin); virtual;
     destructor Destroy; override;
 
     procedure Suspend; virtual;
-    procedure Resume(const aInputCount, aOutputCount, aFastUpdateBufferSize, aSlowUpdateBufferSize : integer); virtual;
+    procedure Resume(const RunTimeInfo : TRunTimeInfo); virtual;
 
-    procedure ProcessEvents(ev: PVstEvents);
-    procedure ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: integer); virtual;
+    procedure ProcessVstEvents(ev: PVstEvents);
+    procedure ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: integer); virtual;
   end;
 
 implementation
@@ -48,6 +50,8 @@ uses
 
 constructor TProcessController.Create(const aPlug: TAudioPlugin);
 begin
+  FRunTimeInfo.Init();
+
   Plug := aPlug;
   MidiInput := TMidiEventInputBuffer.Create(32);
   InputCount := 0;
@@ -64,24 +68,25 @@ end;
 
 procedure TProcessController.Suspend;
 begin
-
+  Plug.Suspend;
 end;
 
-procedure TProcessController.Resume(const aInputCount, aOutputCount, aFastUpdateBufferSize, aSlowUpdateBufferSize: integer);
+procedure TProcessController.Resume(const RunTimeInfo : TRunTimeInfo);
 begin
-  if aSlowUpdateBufferSize < aFastUpdateBufferSize then raise Exception.Create('Slow update buffer size must be larger than the fast update buffersize.');
+  if RunTimeInfo.SlowControlBufferSize < RunTimeInfo.FastControlBufferSize then raise Exception.Create('Slow update buffer size must be larger than the fast update buffersize.');
 
-  if (aSlowUpdateBufferSize mod aFastUpdateBufferSize <> 0)
-    then raise Exception.Create('Slow and Fast control rates are evenly divisable.');
+  if (RunTimeInfo.SlowControlBufferSize mod RunTimeInfo.FastControlBufferSize <> 0) then raise Exception.Create('Slow and Fast control rates are evenly divisable.');
 
-  SetLength(InputPointers, aInputCount);
-  SetLength(OutputPointers, aOutputCount);
+  FRunTimeInfo := RunTimeInfo;
 
-  InputCount := aInputCount;
-  OutputCount := aOutputCount;
+  SetLength(InputPointers, RunTimeInfo.InputCount);
+  SetLength(OutputPointers, RunTimeInfo.OutputCount);
 
-  FastUpdateBufferSize := aFastUpdateBufferSize;
-  SlowUpdateBufferSize := aSlowUpdateBufferSize;
+  InputCount  := RunTimeInfo.InputCount;
+  OutputCount := RunTimeInfo.OutputCount;
+
+  FastUpdateBufferSize := RunTimeInfo.FastControlBufferSize;
+  SlowUpdateBufferSize := RunTimeInfo.SlowControlBufferSize;
 
   SlowControlRateStepMax   := SlowUpdateBufferSize div FastUpdateBufferSize;
   SlowControlRateStepCount := 0;
@@ -95,14 +100,20 @@ begin
   if OutputCount > 0
     then BufferedOutputs := @OutputPointers[0]
     else BufferedOutputs := nil;
+
+  Plug.Resume(RunTimeInfo);
 end;
 
-procedure TProcessController.ProcessEvents(ev: PVstEvents);
+procedure TProcessController.ProcessVstEvents(ev: PVstEvents);
 begin
+  if ev^.numEvents > MidiInput.Capacity then MidiInput.Capacity := ev^.numEvents;
   MidiInput.AssignFrom(ev);
+
+  // NOTE: MIDI events with delta frames greater than the next processing block size will
+  // be dropped silently. Perhaps it would be better to raise an exception in debug mode.
 end;
 
-procedure TProcessController.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: integer);
+procedure TProcessController.ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: integer);
 var
   c1: Integer;
   NumEv, CurEv:integer;
@@ -113,6 +124,8 @@ var
   SamplesProcessed      : integer;
   SamplesToProcess      :integer;
 begin
+  assert(FRunTimeInfo.MaxSampleFrames >= SampleFrames);
+
   for c1 := 0 to InputCount-1 do
   begin
     InputPointers[c1] := Inputs^;
@@ -125,12 +138,11 @@ begin
     inc(Outputs);
   end;
 
-
-  NumEv := MidiInput.EventCount;
+  NumEv := MidiInput.Count;
   CurEv := 0;
   SamplesProcessed := 0;
 
-  if MidiInput.EventCount > 0 then NextMidiEvent := MidiInput.ReadMidiEvent(0);
+  if MidiInput.Count > 0 then NextMidiEvent := MidiInput.ReadMidiEvent(0);
 
   while SampleFrames > 0 do
   begin
@@ -157,7 +169,7 @@ begin
     begin
       //Process those samples..
       //Plugin.AudioProcess(SamplesToProcess);
-      Plug.ProcessReplacing(BufferedInputs, BufferedOutputs, SamplesToProcess);
+      Plug.ProcessAudio(BufferedInputs, BufferedOutputs, SamplesToProcess);
       for c1 := 0 to InputCount-1 do
       begin
         inc(InputPointers[c1], SamplesToProcess);
@@ -195,6 +207,9 @@ begin
       end;
     end;
   end;
+
+  if MidiInput.Count > 0
+    then MidiInput.Clear;
 end;
 
 

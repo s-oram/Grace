@@ -70,6 +70,8 @@ function RandomString(const CharacterCount : integer):string;
 function Occurrences(const Substring, Text: string): integer;
 procedure ExplodeString(Delimiter: Char; Str: string; ListOfStrings: TStrings);
 
+procedure LoadTextFromFile(var Text : string; const FileName : string);
+
 // Use the DataIO functions to convert values to and from strings for
 // storing into save files. The DataIO functions ensure values are valid
 // when converting back from strings.
@@ -698,6 +700,21 @@ begin
     end;
   finally
     ListOfStrings.EndUpdate;
+  end;
+end;
+
+procedure LoadTextFromFile(var Text : string; const FileName : string);
+var
+  Strings : TStringList;
+begin
+  if not FileExists(FileName) then exit;
+  Text := '';
+  Strings := TStringList.Create;
+  try
+    Strings.LoadFromFile(FileName);
+    Text := Strings.Text;
+  finally
+    Strings.Free;
   end;
 end;
 

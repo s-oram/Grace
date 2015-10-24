@@ -35,7 +35,9 @@ requires
   WatchTower,
   madBasic_,
   madDisAsm_,
-  madExcept_;
+  madExcept_,
+  DesignIDE,
+  FarScape;
 
 contains
   VamVst2.DAEffect in 'Source\Vst2Sdk\VamVst2.DAEffect.pas',
@@ -58,6 +60,20 @@ contains
   AudioPlugin.ProcessController in 'Source\AudioPlugin\AudioPlugin.ProcessController.pas',
   Test.AudioPlugin in 'UnitTests\Test.AudioPlugin.pas',
   Test.AudioPlugin.ProcessController in 'UnitTests\Test.AudioPlugin.ProcessController.pas',
-  Mocks.AudioPlugin in 'UnitTests\Mocks.AudioPlugin.pas';
+  Mocks.AudioPlugin in 'UnitTests\Mocks.AudioPlugin.pas',
+  AudioPlugin.RunTimeInfo in 'Source\AudioPlugin\AudioPlugin.RunTimeInfo.pas',
+  PlugHost.MultiChannelAudioBuffer in 'Source\AudioHost\PlugHost.MultiChannelAudioBuffer.pas',
+  Test.VamVst2.VstEventBuffer in 'UnitTests\Test.VamVst2.VstEventBuffer.pas',
+  AudioPlugin.Vst2Editor in 'Source\AudioPlugin\AudioPlugin.Vst2Editor.pas',
+  AudioPlugin.EditorForm in 'Source\AudioPlugin\WinEditorForm\AudioPlugin.EditorForm.pas',
+  AudioPlugin.Editor in 'Source\AudioPlugin\AudioPlugin.Editor.pas',
+  AudioPlugin.Globals in 'Source\AudioPlugin\AudioPlugin.Globals.pas',
+  AudioPlugin.Vst2Methods in 'Source\AudioPlugin\AudioPlugin.Vst2Methods.pas',
+  AudioPlugin.Globals.Vst2Editor in 'Source\AudioPlugin\AudioPlugin.Globals.Vst2Editor.pas',
+  Helm.AnyValue in 'Source\Helm\Helm.AnyValue.pas',
+  Test.Helm.AnyValue in 'UnitTests\Test.Helm.AnyValue.pas',
+  AudioPlugin.Functions in 'Source\AudioPlugin\AudioPlugin.Functions.pas',
+  Test.AudioPlugin.Functions in 'UnitTests\Test.AudioPlugin.Functions.pas',
+  PlugLib.FarScapeSceneBuilder in 'Source\PlugLib\PlugLib.FarScapeSceneBuilder.pas';
 
 end.

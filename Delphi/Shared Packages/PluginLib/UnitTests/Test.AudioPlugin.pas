@@ -28,7 +28,8 @@ uses
 procedure TAudioPluginTest.Setup;
 begin
   inherited;
-  Plug := TMockAudioPlugin.Create;
+  // TODO:MED probably should add a mock globals plugin here.
+  Plug := TMockAudioPlugin.Create(nil);
 end;
 
 procedure TAudioPluginTest.TearDown;

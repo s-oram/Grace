@@ -45,6 +45,7 @@ end;
 
 procedure RegisterTest(const TestClass : TWatchTowerTestClass);
 begin
+  // TODO:MED Should check if test has already been registered.
   GlobalTestCollection.AddTest(TestClass);
 end;
 

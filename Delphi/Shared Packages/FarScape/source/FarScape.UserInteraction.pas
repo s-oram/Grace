@@ -14,7 +14,11 @@ uses
   FarScape.Scene;
 
 type
+  TFarScapeControlEvent = procedure(Sender : TObject; const Control : TFarScapeControl) of object;
+
   TUserInteraction = class(TPureInterfacedObject, IFarScapeUserInteraction)
+  private
+    FOnHoverChanged: TFarScapeControlEvent;
   protected
     Scene : TScene;
     MouseHover : TSceneElement;
@@ -29,6 +33,8 @@ type
     procedure MouseDown(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
     procedure MouseMove(const Shift: TShiftState; const X, Y: Integer);
     procedure MouseUp(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
+
+    property OnHoverChanged : TFarScapeControlEvent read FOnHoverChanged write FOnHoverChanged;
   end;
 
 
@@ -158,6 +164,15 @@ begin
     then TProtectedControlHack(NewTarget.Control).MouseEnter;
 
   MouseHover := NewTarget;
+
+  if assigned(OnHoverChanged) then
+  begin
+    if assigned(MouseHover)
+      then OnHoverChanged(self, MouseHover.Control)
+      else OnHoverChanged(self, nil);
+  end;
+
+
 end;
 
 

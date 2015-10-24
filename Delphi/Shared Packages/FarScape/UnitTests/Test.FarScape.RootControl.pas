@@ -54,6 +54,11 @@ begin
   fsc1 := TMockControl.Create;
   fsc2 := TMockControl.Create;
   fsc3 := TMockControl.Create;
+
+  RootControl.IsOwnedByParent := false;
+  fsc1.IsOwnedByParent := false;
+  fsc2.IsOwnedByParent := false;
+  fsc3.IsOwnedByParent := false;
 end;
 
 procedure TRootControlTest.TearDown;

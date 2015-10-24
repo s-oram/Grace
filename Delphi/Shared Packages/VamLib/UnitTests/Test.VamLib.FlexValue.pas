@@ -295,6 +295,16 @@ begin
   List.Add(Flex('TomJones'));
   Confirm.IsTrue( List.Count = 1 );
   Confirm.IsTrue( List[0].AsString = 'TomJones' );
+
+  List.Add(Flex('PizzaFace'));
+  List.Add(Flex('StringBean'));
+  List.Add(Flex('JamesBrown'));
+  List.Add(Flex('Faker'));
+
+  Confirm.IsTrue( List.Count = 5 );
+  Confirm.IsTrue( List[4].AsString = 'Faker' );
+
+
 end;
 
 

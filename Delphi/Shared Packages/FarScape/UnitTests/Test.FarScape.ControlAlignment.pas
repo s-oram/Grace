@@ -78,6 +78,10 @@ begin
   fsc1 := TMockControl.Create;
   fsc2 := TMockControl.Create;
   fsc3 := TMockControl.Create;
+
+  fsc1.IsOwnedByParent := false;
+  fsc2.IsOwnedByParent := false;
+  fsc3.IsOwnedByParent := false;
 end;
 
 procedure TControlAlignmentTest.TearDown;
@@ -506,7 +510,7 @@ var
   Bounds : TRect;
 begin
   RootControl.SetBounds(0, 0, 100, 100);
-  RootControl.SetAlignmentGridSize(24,24);
+  fsc1.SetGridDivisions(24, 24);
 
   fsc1.Align := TControlAlignment.caGrid;
   fsc1.Parent := RootControl;
@@ -535,7 +539,8 @@ var
   Bounds : TRect;
 begin
   RootControl.SetBounds(0, 0, 200, 200);
-  RootControl.SetAlignmentGridSize(24,24);
+  fsc1.SetGridDivisions(24, 24);
+  fsc2.SetGridDivisions(24, 24);
 
   fsc1.Align := TControlAlignment.caGrid;
   fsc1.Parent := RootControl;

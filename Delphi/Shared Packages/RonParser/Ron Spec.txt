@@ -1,0 +1,35 @@
+# = Ron =
+# Ron is a data format to describe GUIs.
+# 
+# Comments begin with a hash.
+
+Panel : TVstPanel {
+	Selector : TSelector { 		
+		PizzaToppings = [Bacon, Cheese, Ham]; # arrays are delimited with square brackets. 
+	}	
+}
+Panel.Knob:TVstKnob {
+	sex = male;
+	name = "James Bond";
+	age = 29;
+	height = 182.4;
+
+	Label : TVstLabel {
+		text = "Big Knob";
+		parID = 24;
+	}
+}
+
+# Key/value pairs can be applied to multiple objects at once.
+# It's a great labour saving device when confguiring mutliple 
+# similar controls.
+
+Panel.Knob1:TVstKnob,
+Panel.Knob2:TVstKnob,
+Panel.Knob3:TVstKnob {
+	sex = male;
+	name = "James Bond";
+	age = 29;
+	height = 182.4;
+}
+	

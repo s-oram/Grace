@@ -8,7 +8,9 @@ uses
   Controls,
   Messages,
   FarScape.CustomControl,
-  FarScape.RootControl;
+  FarScape.RootControl,
+  FarScape.Scene,
+  FarScape.UserInteraction;
 
 type
   //TFarScapeContainerVCL = class(TCustomControl)
@@ -19,10 +21,15 @@ type
     procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
     procedure WMEraseBkgnd(var Message: TWmEraseBkgnd); message WM_ERASEBKGND;
     function GetFarScapeRoot: TFarScapeAbstractRoot;
+    function GetScene: TScene;
   protected
+    IsBeingDestroyed : boolean;
     LastMousePoint : TPoint;
     FarScapeRoot : TFarScapeRootControl;
+    FarScapeUserInteraction : TUserInteraction;
+
     procedure HandleInvalidateRootRegion(Region : TRect);
+    procedure HandleHoverChanged(Sender : TObject; const Control : TFarScapeControl);
 
     procedure MouseEnter; virtual;
     procedure MouseLeave; virtual;
@@ -44,6 +51,7 @@ type
     procedure RemoveControl(const aControl : TFarScapeControl); // Removes the child but doesn't free it.
 
     property Root : TFarScapeAbstractRoot read GetFarScapeRoot;
+    property Scene : TScene read GetScene;
   published
     //=== TControl Properties ===
     property Align;
@@ -90,14 +98,20 @@ uses
 constructor TFarScapeContainerVCL.Create(AOwner: TComponent);
 begin
   inherited;
+  IsBeingDestroyed := false;
   ControlStyle := ControlStyle + [csOpaque];
   FarScapeRoot := TFarScapeRootControl.Create;
   FarScapeRoot.OnInvalidateRootRegion := self.HandleInvalidateRootRegion;
+
+  FarScapeUserInteraction := TUserInteraction.Create(FarScapeRoot.Scene);
+  FarScapeUserInteraction.OnHoverChanged := self.HandleHoverChanged;
 end;
 
 destructor TFarScapeContainerVCL.Destroy;
 begin
+  IsBeingDestroyed := true;
   FarScapeRoot.Free;
+  FarScapeuserInteraction.Free;
   inherited;
 end;
 
@@ -106,9 +120,26 @@ begin
   result := FarScapeRoot as TFarScapeAbstractRoot;
 end;
 
+function TFarScapeContainerVCL.GetScene: TScene;
+begin
+  result := FarScapeRoot.Scene;
+end;
+
+procedure TFarScapeContainerVCL.HandleHoverChanged(Sender: TObject; const Control: TFarScapeControl);
+begin
+  if assigned(Control) then
+  begin
+    Cursor := Control.Cursor;
+  end else
+  begin
+    Cursor := crDefault;
+  end;
+end;
+
 procedure TFarScapeContainerVCL.HandleInvalidateRootRegion(Region: TRect);
 begin
-  InvalidateRect(self.Handle, @Region, false);
+  if not IsBeingDestroyed
+    then InvalidateRect(self.Handle, @Region, false);
 end;
 
 procedure TFarScapeContainerVCL.AddControl(const aControl: TFarScapeControl);
@@ -141,18 +172,18 @@ end;
 
 procedure TFarScapeContainerVCL.MouseEnter;
 begin
-  FarScapeRoot.UserInteraction.MouseEnter;
+  FarScapeUserInteraction.MouseEnter;
 end;
 
 procedure TFarScapeContainerVCL.MouseLeave;
 begin
-  FarScapeRoot.UserInteraction.MouseLeave;
+  FarScapeUserInteraction.MouseLeave;
 end;
 
 procedure TFarScapeContainerVCL.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
-  FarScapeRoot.UserInteraction.MouseDown(Button, Shift, X, Y);
+  FarScapeUserInteraction.MouseDown(Button, Shift, X, Y);
 end;
 
 procedure TFarScapeContainerVCL.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -162,14 +193,14 @@ begin
   begin
     LastMousePoint.X := X;
     LastMousePoint.Y := Y;
-    FarScapeRoot.UserInteraction.MouseMove(Shift, X, Y);
+    FarScapeUserInteraction.MouseMove(Shift, X, Y);
   end;
 end;
 
 procedure TFarScapeContainerVCL.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
-  FarScapeRoot.UserInteraction.MouseUp(Button, Shift, X, Y);
+  FarScapeUserInteraction.MouseUp(Button, Shift, X, Y);
 end;
 
 procedure TFarScapeContainerVCL.PaintWindow(DC: HDC);

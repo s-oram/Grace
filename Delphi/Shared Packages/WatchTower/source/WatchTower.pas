@@ -45,7 +45,6 @@ type
 
   TWatchTowerTestClass = class of TWatchTowerTest;
 
-
   EWatchTowerTestFail = class(Exception);
 
 implementation

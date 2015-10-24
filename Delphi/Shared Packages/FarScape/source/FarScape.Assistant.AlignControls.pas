@@ -271,22 +271,22 @@ var
   AreaWidth, AreaHeight : integer;
   OffsetX, OffsetY : integer;
 begin
-  assert(ContainerControl.AlignmentGridRowCount >= 1);
-  assert(ContainerControl.AlignmentGridColumnCount >= 1);
+  assert(TargetControl.GridXDivisions >= 1);
+  assert(TargetControl.GridYDivisions >= 1);
 
   AreaWidth := ContainerControl.Width - ContainerControl.Padding.Left - ContainerControl.Padding.Right;
   AreaHeight := ContainerControl.Height - ContainerControl.Padding.Top - ContainerControl.Padding.Bottom;
   OffsetX := ContainerControl.Padding.Left;
   OffsetY := ContainerControl.Padding.Top;
 
-  x1 := AreaWidth / ContainerControl.AlignmentGridColumnCount * TargetControl.GridLeft;
-  x2 := AreaWidth / ContainerControl.AlignmentGridColumnCount * (TargetControl.GridLeft + TargetControl.GridWidth);
+  x1 := AreaWidth / TargetControl.GridXDivisions * TargetControl.GridLeft;
+  x2 := AreaWidth / TargetControl.GridXDivisions * (TargetControl.GridLeft + TargetControl.GridWidth);
 
   x1 := x1 + OffsetX;
   x2 := x2 + OffsetX;
 
-  y1 := AreaHeight / ContainerControl.AlignmentGridRowCount * TargetControl.GridTop;
-  y2 := AreaHeight / ContainerControl.AlignmentGridRowCount * (TargetControl.GridTop + TargetControl.GridHeight);
+  y1 := AreaHeight / TargetControl.GridYDivisions * TargetControl.GridTop;
+  y2 := AreaHeight / TargetControl.GridYDivisions * (TargetControl.GridTop + TargetControl.GridHeight);
 
   y1 := y1 + OffsetY;
   y2 := y2 + OffsetY;

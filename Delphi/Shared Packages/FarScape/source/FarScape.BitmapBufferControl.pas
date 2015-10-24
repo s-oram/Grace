@@ -88,7 +88,11 @@ procedure TFarScapeBitmapBufferControl.ControlBoundsChanged(const aLeft, aTop, a
 begin
   inherited;
   fBackBuffer.PixelFormat := pf32Bit;
-  fBackBuffer.SetSize(aWidth, aHeight);
+
+  if (aWidth > 0) and (aHeight > 0)
+    then fBackBuffer.SetSize(aWidth, aHeight)
+    else fBackBuffer.SetSize(1,1);
+
   //Important: Set afPreMultiplied after setting pixel data.
   fBackBuffer.AlphaFormat := afPreMultiplied;
 end;

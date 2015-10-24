@@ -11,7 +11,8 @@ uses
   Test.FarScape.Scene,
   Test.FarScape.RootControl,
   Test.FarScape.ControlHelper,
-  Test.FarScape.ControlAlignment;
+  Test.FarScape.ControlAlignment,
+  Test.FarScape.Assistant.ControlNamePath;
 
 procedure RegisterTests;
 begin
@@ -21,6 +22,9 @@ begin
   WatchTower.Global.RegisterTest(TRootControlTest);
   WatchTower.Global.RegisterTest(TControlHelperTest);
   WatchTower.Global.RegisterTest(TControlAlignmentTest);
+  WatchTower.Global.RegisterTest(TControlNamePathTest);
+
+
 end;
 
 initialization

@@ -36,7 +36,7 @@ type
     property Buffer : PVstEvents read fBuffer;
     property Capacity : integer read fCapacity write SetCapacity;
 
-    property EventCount : integer read FEventCount;
+    property Count : integer read FEventCount;
   end;
 
 implementation

@@ -9,12 +9,16 @@ uses
   VamVst2.DAudioEffect,
   VamVst2.DAudioEffectX,
   AudioPlugin,
+  AudioPlugin.Globals,
+  AudioPlugin.Editor,
+  AudioPlugin.Vst2Editor,
   AudioPlugin.Vst2PluginInfo,
   AudioPlugin.ProcessController;
 
 type
   TVst2WrapperCreateInfo = record
     PlugClass         : TAudioPluginClass;
+    EditorClass       : TAudioPluginEditorClass;
     PlugInfo          : TVst2PluginInfoClass;
     ProcessController : TProcessControllerClass;
   end;
@@ -22,6 +26,7 @@ type
   TVst2Wrapper = class(AudioEffectX)
   private
   protected
+    Globals : TGlobals;
     Plug : TAudioPlugin;
     PlugInfo : TVst2PluginInfo;
     ProcessController : TProcessController;
@@ -52,21 +57,37 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  AudioPlugin.Vst2Methods,
+  AudioPlugin.RunTimeInfo;
+
+const
+  kUsingGui = true;
 
 { TVst2Wrapper }
 
 constructor TVst2Wrapper.Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2WrapperCreateInfo);
+var
+  Vst2Methods : TVst2Methods;
 begin
-  Plug := CreateInfo.PlugClass.Create;
+  Vst2Methods := TVst2Methods.Create;
+
+  Globals := TGlobals.Create;
+  Globals.ObjectStore.Add('Vst2Methods', Vst2Methods);
+  //(Globals.ObjectStore['Vst2Methods'] as TVst2Methods);
+
+  Plug := CreateInfo.PlugClass.Create(nil);
   PlugInfo := CreateInfo.PlugInfo.Create(Plug);
   ProcessController := CreateInfo.ProcessController.Create(Plug);
 
   inherited Create(anAudioMaster, PlugInfo.GetNumberOfPrograms, Plug.VstParameterCount);
 
+  if kUsingGui
+    then self.Editor := TVstEditor.Create(self, Plug, CreateInfo.EditorClass, Globals)
+    else self.Editor := nil;
+
   setNumInputs(PlugInfo.GetNumberOfAudioInputs);
   setNumOutputs(PlugInfo.GetNumberOfAudioOutputs);
-
 
   // finally..
   Plug.LoadDefaultPatch;
@@ -74,9 +95,16 @@ end;
 
 destructor TVst2Wrapper.Destroy;
 begin
+  if assigned(self.Editor) then
+  begin
+    Editor.Free;
+    Editor := nil;
+  end;
+
   Plug.Free;
   PlugInfo.Free;
   ProcessController.Free;
+  Globals.Free;
   inherited;
 end;
 
@@ -95,15 +123,24 @@ end;
 procedure TVst2Wrapper.Suspend;
 begin
   inherited;
-  Plug.Suspend;
   ProcessController.Suspend;
 end;
 
 procedure TVst2Wrapper.Resume;
+var
+  rtInfo : TRunTimeInfo;
 begin
   inherited;
-  Plug.Resume;
-  ProcessController.Resume(PlugInfo.GetNumberOfAudioInputs, PlugInfo.GetNumberOfAudioOutputs, 4410, 44100);
+
+  rtInfo.InputCount      := PlugInfo.GetNumberOfAudioInputs;
+  rtInfo.OutputCount     := PlugInfo.GetNumberOfAudioOutputs;
+  rtInfo.SampleRate      := round(self.SampleRate);
+  rtInfo.MaxSampleFrames := self.BlockSize;
+  rtInfo.FastControlBufferSize := 4410;
+  rtInfo.SlowControlBufferSize := 44100;
+
+
+  ProcessController.Resume(rtInfo);
 end;
 
 procedure TVst2Wrapper.SetParameter(index: Integer; value: Single);
@@ -133,13 +170,13 @@ end;
 
 function TVst2Wrapper.ProcessEvents(ev: PVstEvents): longint;
 begin
-  ProcessController.ProcessEvents(ev);
+  ProcessController.ProcessVstEvents(ev);
   //TODO:HIGH what should the return value be?
 end;
 
 procedure TVst2Wrapper.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32);
 begin
-  ProcessController.ProcessReplacing(VamLib.MoreTypes.PPSingle(Inputs), VamLib.MoreTypes.PPSingle(Outputs), SampleFrames);
+  ProcessController.ProcessAudio(VamLib.MoreTypes.PPSingle(Inputs), VamLib.MoreTypes.PPSingle(Outputs), SampleFrames);
 end;
 
 

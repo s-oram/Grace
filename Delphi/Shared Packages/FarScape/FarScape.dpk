@@ -53,6 +53,9 @@ contains
   FarScape.UserInteraction in 'source\FarScape.UserInteraction.pas',
   FarScape.PureInterfacedObject in 'source\FarScape.PureInterfacedObject.pas',
   FarScape.Assistant.UserInteraction in 'source\FarScape.Assistant.UserInteraction.pas',
-  RegisterTests.FarScape in 'UnitTests\RegisterTests.FarScape.pas';
+  RegisterTests.FarScape in 'UnitTests\RegisterTests.FarScape.pas',
+  FarScape.Assistant.ControlNamePath in 'source\FarScape.Assistant.ControlNamePath.pas',
+  Test.FarScape.Assistant.ControlNamePath in 'UnitTests\Test.FarScape.Assistant.ControlNamePath.pas',
+  FarScape.SupportFunctions in 'source\FarScape.SupportFunctions.pas';
 
 end.

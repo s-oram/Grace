@@ -69,6 +69,13 @@ begin
   fsc3.Name := 'FSC3';
   fsc4.Name := 'FSC4';
   fsc5.Name := 'FSC5';
+
+  Root.IsOwnedByParent := false;
+  fsc1.IsOwnedByParent := false;
+  fsc2.IsOwnedByParent := false;
+  fsc3.IsOwnedByParent := false;
+  fsc4.IsOwnedByParent := false;
+  fsc5.IsOwnedByParent := false;
 end;
 
 procedure TFarScapeSceneTest.TearDown;

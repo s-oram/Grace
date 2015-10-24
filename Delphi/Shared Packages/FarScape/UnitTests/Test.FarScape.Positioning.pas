@@ -34,6 +34,11 @@ begin
   ControlA := TSimpleControl.Create;
   ControlB := TSimpleControl.Create;
   ControlC := TSimpleControl.Create;
+
+  ControlA.IsOwnedByParent := false;
+  ControlB.IsOwnedByParent := false;
+  ControlC.IsOwnedByParent := false;
+
   try
     ControlA.SetBounds(10,20,100,150);
     r := ControlA.GetAbsoluteRect;

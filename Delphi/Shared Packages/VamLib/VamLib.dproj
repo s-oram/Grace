@@ -147,6 +147,7 @@
 			<DCCReference Include="UnitTests\Test.Decal.pas"/>
 			<DCCReference Include="Source\VamLib.FlexValue.pas"/>
 			<DCCReference Include="UnitTests\Test.VamLib.FlexValue.pas"/>
+			<DCCReference Include="Source\VamLib.Wine.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<None Include="Source\RangeCheck_ToggleOff.inc"/>

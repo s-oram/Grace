@@ -16,12 +16,10 @@ type
   private
     fBackBuffer: TBitmap;
     fScene : TScene;
-    fUserInteraction: TUserInteraction;
   protected
     procedure ControlBoundsChanged(const aLeft, aTop, aWidth, aHeight : integer); override;
 
     function GetSceneInterface : IFarScapeScene; override;
-    function GetUserInteractionInterface : IFarScapeUserInteraction; override;
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -31,7 +29,6 @@ type
     procedure PaintRegion(const ClipBox : TRect);
 
     property Scene : TScene read fScene;
-    property UserInteraction : TUserInteraction read fUserInteraction;
   end;
 
 implementation
@@ -49,7 +46,6 @@ begin
   fBackBuffer := TBitmap.Create;
 
   fScene := TScene.Create(self);
-  fUserInteraction := TUserInteraction.Create(fScene);
 end;
 
 destructor TFarScapeRootControl.Destroy;
@@ -57,7 +53,6 @@ begin
   inherited;
   fBackBuffer.Free;
   fScene.Free;
-  fUserInteraction.Free;
 end;
 
 function TFarScapeRootControl.GetSceneInterface: IFarScapeScene;
@@ -65,16 +60,16 @@ begin
   result := fScene;
 end;
 
-function TFarScapeRootControl.GetUserInteractionInterface: IFarScapeUserInteraction;
-begin
-  result := fUserInteraction;
-end;
 
 procedure TFarScapeRootControl.ControlBoundsChanged(const aLeft, aTop, aWidth, aHeight: integer);
 begin
   inherited;
   fBackBuffer.PixelFormat := pf32Bit;
-  fBackBuffer.SetSize(aWidth, aHeight);
+
+  if (aWidth > 0) and (aHeight > 0)
+    then fBackBuffer.SetSize(aWidth, aHeight)
+    else fBackBuffer.SetSize(1,1);
+
   //Important: Set afPreMultiplied after setting pixel data.
   fBackBuffer.AlphaFormat := afPreMultiplied;
 end;

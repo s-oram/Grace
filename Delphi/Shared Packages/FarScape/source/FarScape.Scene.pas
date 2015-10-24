@@ -39,6 +39,7 @@ type
     property Element[Index : integer] : TSceneElement read GetElementInfo;
 
     function GetElementAt(const X, Y : integer):TSceneElement;
+
   end;
 
 implementation

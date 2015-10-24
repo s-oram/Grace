@@ -41,6 +41,7 @@ contains
   WatchTower.DataDirCollection in 'source\WatchTower.DataDirCollection.pas',
   RegisterTests.WatchTower in 'UnitTests\RegisterTests.WatchTower.pas',
   Test.WatchTower.DataDirCollection in 'UnitTests\Test.WatchTower.DataDirCollection.pas',
-  WatchTower.Utils in 'source\WatchTower.Utils.pas';
+  WatchTower.Utils in 'source\WatchTower.Utils.pas',
+  WatchTower.MemLogger in 'source\WatchTower.MemLogger.pas';
 
 end.

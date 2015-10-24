@@ -102,6 +102,9 @@
 			<DCCReference Include="source\FarScape.PureInterfacedObject.pas"/>
 			<DCCReference Include="source\FarScape.Assistant.UserInteraction.pas"/>
 			<DCCReference Include="UnitTests\RegisterTests.FarScape.pas"/>
+			<DCCReference Include="source\FarScape.Assistant.ControlNamePath.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Assistant.ControlNamePath.pas"/>
+			<DCCReference Include="source\FarScape.SupportFunctions.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

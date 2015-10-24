@@ -1,6 +1,30 @@
 ======================================
             History
 ======================================
+24 October 2015
+- Adding lots of changes made while developing Extinction.
+-- FarScape
+-- RonParser
+-- PluginLib
+-- VamLib
+-- WatchTower
+
+19 October 2015
+- Add Wine detection to VamLib.
+
+16 October 2015
+- Finish Ron parser (Ron is a GUI configuration file format.)
+
+07 October 2015
+- add WatchTower.MemLogger.pas
+- Create ThirdParty package.
+
+06 October 2015
+- bug fix in FlexValue annd several other small changes.
+
+05 October 2015
+- Update FastMM4 compile time options.
+
 05 October 2015
 - Creating a FlexValue class
 
