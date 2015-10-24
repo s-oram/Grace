@@ -46,7 +46,7 @@ uses
   LucidityParameterScaling,
   Math,
   VamLib.Utils,
-  VamDsp.Utils,
+  VamLibDsp.Utils,
   SysUtils;
 
 function OpcodeToTriggerMode(const Value : string): TKeyGroupTriggerMode;
