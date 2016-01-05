@@ -1884,6 +1884,22 @@ var
 begin
   inherited;
 
+  if Event.Status = kControlChange then
+  begin
+    if IsModWheel(Event) then
+    begin
+      MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
+      MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
+    end else
+    if IsSustainPedal(Event) then
+    begin
+      // TODO:HIGH Do sustain pedal handling here.
+    end else
+    if IsControlChange(Event) then
+    begin
+      MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
+    end;
+  end else
   if IsNoteOn(Event) then
   begin
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
@@ -1908,15 +1924,6 @@ begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
     Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
-  end else
-  if IsModWheel(Event) then
-  begin
-    MidiInputProcessor.Modwheel(Event.Data2 * OneOver127);
-    MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
-  end else
-  if IsControlChange(Event) then
-  begin
-    MidiAutomation.ProcessMidiCC(Event.Data1, Event.Data2);
   end else
   if IsPitchBend(Event) then
   begin
