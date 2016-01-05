@@ -18,8 +18,10 @@ type
   private
     fVoiceGlide: single;
     fVoiceMode: TVoiceMode;
+    FIsSustainPedal: boolean;
     procedure SetVoiceGlide(const Value: single);
     procedure SetVoiceMode(const Value: TVoiceMode);
+    procedure SetIsSustainPedal(const Value: boolean);
   protected
     Globals             : TGlobals;
     NoteStack           : TNoteStack;
@@ -51,6 +53,8 @@ type
 
     property VoiceMode    : TVoiceMode read fVoiceMode   write SetVoiceMode;
     property VoiceGlide   : single     read fVoiceGlide  write SetVoiceGlide; //range 0..1
+
+    property IsSustainPedal : boolean read FIsSustainPedal write SetIsSustainPedal; // Set to true if sustain pedal is pressed.
   end;
 
 implementation
@@ -104,6 +108,11 @@ begin
   PitchBend_Filter.Free;
   ModWheel_Filter.Free;
   inherited;
+end;
+
+procedure TMidiInputProcessor.SetIsSustainPedal(const Value: boolean);
+begin
+  FIsSustainPedal := Value;
 end;
 
 procedure TMidiInputProcessor.SetVoiceGlide(const Value: single);
