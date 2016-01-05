@@ -4,7 +4,7 @@ unit AggPlatformSupport;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -754,7 +754,7 @@ begin
   XSetWMIconName(FDisplay, FWindow, @Tp);
 end;
 
-procedure TPlatformSpecific.PuTAggImage;
+procedure TPlatformSpecific.Put_Image;
 var
   RowLength: Integer;
   TempBuffer: Pointer;
@@ -767,8 +767,8 @@ begin
   FXImageWindow.Data := FBufferWindow;
 
   if FPixelFormat = FSystemFormat then
-    XPuTAggImage(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, Src.GetWidth,
-      Src.GetHeight)
+    XPut_Image(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, 
+      Src.GetWidth, Src.GetHeight)
   else
   begin
     RowLength := Src.GetWidth * FSystemBitsPerPixel div 8;
@@ -882,8 +882,8 @@ begin
 
     FXImageWindow.Data := TempBuffer;
 
-    XPuTAggImage(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, Src.GetWidth,
-      Src.GetHeight);
+    XPut_Image(FDisplay, FWindow, FGraphicContext, FXImageWindow, 0, 0, 0, 0, 
+      Src.GetWidth, Src.GetHeight);
 
     AggFreeMem(TempBuffer, RowLength * Src.GetHeight);
 

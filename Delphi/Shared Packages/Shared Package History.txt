@@ -1,6 +1,20 @@
 ======================================
             History
 ======================================
+08 December 2015
+- Change PluginLib package so that it compiles without
+  using implicit imports.
+
+07 December 2015
+- Lots of changes made while developing Extinction.
+- Updated AggPasMod files in RedFox package.
+
+09 November 2015
+- Lots of changes made while developing Extinction.
+
+29 October 2015
+- Working on Helm.
+
 24 October 
 - remove FarScapeSceneBuilder.
 

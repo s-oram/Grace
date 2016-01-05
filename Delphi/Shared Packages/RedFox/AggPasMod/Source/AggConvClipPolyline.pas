@@ -4,7 +4,7 @@ unit AggConvClipPolyline;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -83,22 +83,22 @@ begin
   inherited;
 end;
 
-function TAggConvClipPolyline.GetX1;
+function TAggConvClipPolyline.GetX1: Double;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).X1;
 end;
 
-function TAggConvClipPolyline.GetY1;
+function TAggConvClipPolyline.GetY1: Double;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).Y1;
 end;
 
-function TAggConvClipPolyline.GetX2;
+function TAggConvClipPolyline.GetX2: Double;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).X2;
 end;
 
-function TAggConvClipPolyline.GetY2;
+function TAggConvClipPolyline.GetY2: Double;
 begin
   Result := TAggVpgenClipPolyline(FVpgen).Y2;
 end;

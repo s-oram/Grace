@@ -4,7 +4,7 @@ unit AggDesignTimeColor;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -346,7 +346,7 @@ begin
     GetCustomColors;
     ColorDialog.Options := [cdShowHelp];
 {$ENDIF}
-    ColorDialog.Color := WinColor(Rgb8Packed(GetOrdValue));
+    ColorDialog.Color := WinColor(Rgb8Packed(Cardinal(GetOrdValue)));
     ColorDialog.HelpContext := 25010;
     if ColorDialog.Execute then
       SetOrdValue(ColorToAggRgba8(ColorDialog.Color).ABGR);
@@ -379,7 +379,7 @@ var
   ColorRgba8: TAggRgba8;
 begin
   try
-    ColorRgba8.ABGR := GetOrdValue;
+    ColorRgba8.ABGR := Cardinal(GetOrdValue);
     Result := AggColorManager.GetColorName(ColorRgba8);
   except
     on E: Exception do ShowMessage(E.Message);

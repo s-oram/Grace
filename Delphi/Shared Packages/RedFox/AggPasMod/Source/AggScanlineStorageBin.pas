@@ -4,7 +4,7 @@ unit AggScanLineStorageBin;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -361,7 +361,6 @@ begin
     SpanData := ScanLine.GetBegin;
 
     Ss := ScanLine.SizeOfSpan;
-
   end
   else
     Span := ScanLine.GetBegin;
@@ -371,7 +370,6 @@ begin
     begin
       Sp.X := SpanData.X;
       Sp.Len := SpanData.Len;
-
     end
     else
     begin
@@ -399,7 +397,6 @@ begin
       Inc(PtrComp(SpanData), Ss)
     else
       Span.IncOperator;
-
   until False;
 
   FScanLines.Add(@ScanLineData);
@@ -645,16 +642,16 @@ begin
   FNumSpans := 0;
 end;
 
-procedure TAggEmbeddedScanLineA.Reset;
+procedure TAggEmbeddedScanLineA.Reset(MinX, MaxX: Integer);
 begin
 end;
 
-function TAggEmbeddedScanLineA.GetY;
+function TAggEmbeddedScanLineA.GetY: Integer;
 begin
   Result := FY;
 end;
 
-function TAggEmbeddedScanLineA.GetNumSpans;
+function TAggEmbeddedScanLineA.GetNumSpans: Cardinal;
 begin
   Result := FNumSpans;
 end;
@@ -666,22 +663,22 @@ begin
   Result := FResult;
 end;
 
-function TAggEmbeddedScanLineA.GetSizeOfSpan;
+function TAggEmbeddedScanLineA.GetSizeOfSpan: Cardinal;
 begin
   Result := SizeOf(TAggSpanData);
 end;
 
-function TAggEmbeddedScanLineA.GetIsPlainSpan;
+function TAggEmbeddedScanLineA.GetIsPlainSpan: Boolean;
 begin
   Result := False;
 end;
 
-function TAggEmbeddedScanLineA.GetIsEmbedded;
+function TAggEmbeddedScanLineA.GetIsEmbedded: Boolean;
 begin
   Result := True;
 end;
 
-function TAggEmbeddedScanLineA.ReadInt32;
+function TAggEmbeddedScanLineA.ReadInt32: Integer;
 begin
   TInt32Int8uAccess(Result).Values[0] := FInternalData^;
   Inc(PtrComp(FInternalData), SizeOf(Int8u));
@@ -693,7 +690,7 @@ begin
   Inc(PtrComp(FInternalData), SizeOf(Int8u));
 end;
 
-procedure TAggEmbeddedScanLineA.Init;
+procedure TAggEmbeddedScanLineA.Init(Ptr: PInt8u; Dx, Dy: Integer);
 begin
   FInternalData := Ptr;
   FY := ReadInt32 + Dy;
@@ -775,7 +772,6 @@ begin
     FMax.Y := ReadInt32 + FDelta.Y;
 
     Result := True;
-
   end
   else
     Result := False;
@@ -839,16 +835,14 @@ begin
 
       Break;
     end;
-
   until False;
 
   Result := True;
 end;
 
-function TAggSerializedScanLinesAdaptorBin.SweepScanLineEm;
+function TAggSerializedScanLinesAdaptorBin.SweepScanLineEm(ScanLine: TAggCustomScanLine): Boolean;
 var
   NumSpans: Integer;
-
 begin
   repeat
     if PtrComp(FInternalData) >= PtrComp(FEnd) then
@@ -866,7 +860,6 @@ begin
     NumSpans := ReadInt32; // NumSpans
 
     Inc(PtrComp(FInternalData), NumSpans * SizeOf(Int32) * 2);
-
   until ScanLine.NumSpans <> 0;
 
   Result := True;

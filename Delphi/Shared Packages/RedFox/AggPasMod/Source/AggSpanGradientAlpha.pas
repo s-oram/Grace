@@ -4,7 +4,7 @@ unit AggSpanGradientAlpha;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -50,14 +50,8 @@ type
     FD1, FD2: Integer;
     function GetD1: Double;
     function GetD2: Double;
-    function GetInterpolator: TAggSpanInterpolator;
-    function GetGradientFunction: TAggCustomGradient;
-    function GetAlphaFunction: TAggGradientAlpha;
-    procedure SetInterpolator(I: TAggSpanInterpolator);
-    procedure SetGradientFunction(Gf: TAggCustomGradient);
-    procedure SetAlphaFunction(Af: TAggGradientAlpha);
-    procedure SetD1(V: Double);
-    procedure SetD2(V: Double);
+    procedure SetD1(Value: Double);
+    procedure SetD2(Value: Double);
   public
     constructor Create; overload;
     constructor Create(Inter: TAggSpanInterpolator;
@@ -69,12 +63,12 @@ type
     property D1: Double read GetD1 write SetD1;
     property D2: Double read GetD2 write SetD2;
 
-    property Interpolator: TAggSpanInterpolator read GetInterpolator write
-      SetInterpolator;
-    property GradientFunction: TAggCustomGradient read GetGradientFunction
-      write SetGradientFunction;
-    property AlphaFunction: TAggGradientAlpha read GetAlphaFunction write
-      SetAlphaFunction;
+    property Interpolator: TAggSpanInterpolator read FInterpolator write
+      FInterpolator;
+    property GradientFunction: TAggCustomGradient read FGradientFunction
+      write FGradientFunction;
+    property AlphaFunction: TAggGradientAlpha read FAlphaFunction write
+      FAlphaFunction;
   end;
 
   TAggGradientAlphaX = class
@@ -122,21 +116,6 @@ begin
   FD2 := Trunc(D2 * CAggGradientSubpixelSize);
 end;
 
-function TAggSpanGradientAlpha.GetInterpolator;
-begin
-  Result := FInterpolator;
-end;
-
-function TAggSpanGradientAlpha.GetGradientFunction;
-begin
-  Result := FGradientFunction;
-end;
-
-function TAggSpanGradientAlpha.GetAlphaFunction;
-begin
-  Result := FAlphaFunction;
-end;
-
 function TAggSpanGradientAlpha.GetD1;
 begin
   Result := FD1 / CAggGradientSubpixelSize;
@@ -147,35 +126,20 @@ begin
   Result := FD2 / CAggGradientSubpixelSize;
 end;
 
-procedure TAggSpanGradientAlpha.SetInterpolator;
+procedure TAggSpanGradientAlpha.SetD1(Value: Double);
 begin
-  FInterpolator := I;
+  FD1 := Trunc(Value * CAggGradientSubpixelSize);
 end;
 
-procedure TAggSpanGradientAlpha.SetGradientFunction;
+procedure TAggSpanGradientAlpha.SetD2(Value: Double);
 begin
-  FGradientFunction := Gf;
+  FD2 := Trunc(Value * CAggGradientSubpixelSize);
 end;
 
-procedure TAggSpanGradientAlpha.SetAlphaFunction;
-begin
-  FAlphaFunction := Af;
-end;
-
-procedure TAggSpanGradientAlpha.SetD1;
-begin
-  FD1 := Trunc(V * CAggGradientSubpixelSize);
-end;
-
-procedure TAggSpanGradientAlpha.SetD2;
-begin
-  FD2 := Trunc(V * CAggGradientSubpixelSize);
-end;
-
-procedure TAggSpanGradientAlpha.Convert;
+procedure TAggSpanGradientAlpha.Convert(Span: PAggColor; X, Y: Integer;
+  Len: Cardinal);
 var
   Dd, D: Integer;
-
 begin
   Dd := FD2 - FD1;
 
@@ -211,7 +175,7 @@ end;
 
 { TAggGradientAlphaX }
 
-function TAggGradientAlphaX.ArrayOperator;
+function TAggGradientAlphaX.ArrayOperator(X: TAggColor): TAggColor;
 begin
   Result := X;
 end;
@@ -219,7 +183,7 @@ end;
 
 { TAggGradientAlphaXU8 }
 
-function TAggGradientAlphaXU8.ArrayOperator;
+function TAggGradientAlphaXU8.ArrayOperator(X: Integer): Int8u;
 begin
   Result := Int8u(X);
 end;
@@ -227,7 +191,7 @@ end;
 
 { TAggGradientAlphaOneMinusXU8 }
 
-function TAggGradientAlphaOneMinusXU8.ArrayOperator;
+function TAggGradientAlphaOneMinusXU8.ArrayOperator(X: Integer): Int8u;
 begin
   Result := Int8u(255 - X);
 end;

@@ -4,7 +4,7 @@ unit AggBoundingRect;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -187,9 +187,7 @@ function BoundingRectInteger(Vs: TAggVertexSource; Ul: TCardinalList;
   Start, Num: Cardinal; X1, Y1, X2, Y2: PDouble): Boolean;
 var
   I, Cmd: Cardinal;
-
   X, Y: Double;
-
   First: Boolean;
 begin
   First := True;
@@ -203,7 +201,7 @@ begin
 
   while I < Num do
   begin
-    Vs.Rewind(Ul.ArrayOperator(Start + I));
+    Vs.Rewind(Ul[Start + I]);
 
     Cmd := Vs.Vertex(@X, @Y);
 

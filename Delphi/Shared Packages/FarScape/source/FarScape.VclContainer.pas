@@ -3,6 +3,7 @@ unit FarScape.VclContainer;
 interface
 
 uses
+  Graphics,
   Windows,
   Classes,
   Controls,
@@ -10,10 +11,10 @@ uses
   FarScape.CustomControl,
   FarScape.RootControl,
   FarScape.Scene,
+  FarScape.InvalidateBuffer,
   FarScape.UserInteraction;
 
 type
-  //TFarScapeContainerVCL = class(TCustomControl)
   TFarScapeContainerVCL = class(TWinControl)
   private
     procedure CMMouseEnter(var Message: TMessage); message CM_MOUSEENTER;
@@ -22,11 +23,13 @@ type
     procedure WMEraseBkgnd(var Message: TWmEraseBkgnd); message WM_ERASEBKGND;
     function GetFarScapeRoot: TFarScapeAbstractRoot;
     function GetScene: TScene;
+
   protected
     IsBeingDestroyed : boolean;
     LastMousePoint : TPoint;
     FarScapeRoot : TFarScapeRootControl;
     FarScapeUserInteraction : TUserInteraction;
+    InvalidateBuffer : TInvalidateBuffer;
 
     procedure HandleInvalidateRootRegion(Region : TRect);
     procedure HandleHoverChanged(Sender : TObject; const Control : TFarScapeControl);
@@ -39,6 +42,7 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
 
     procedure PaintWindow(DC: HDC); override;
+    procedure CreateParams(var Params: TCreateParams); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -98,20 +102,36 @@ uses
 constructor TFarScapeContainerVCL.Create(AOwner: TComponent);
 begin
   inherited;
+
   IsBeingDestroyed := false;
   ControlStyle := ControlStyle + [csOpaque];
+
+  InvalidateBuffer := TInvalidateBuffer.Create(60);
+  InvalidateBuffer.OnInvalidateRegion := self.HandleInvalidateRootRegion;
+
   FarScapeRoot := TFarScapeRootControl.Create;
-  FarScapeRoot.OnInvalidateRootRegion := self.HandleInvalidateRootRegion;
+  FarScapeRoot.OnInvalidateRootRegion := InvalidateBuffer.QueueInvalidate;
 
   FarScapeUserInteraction := TUserInteraction.Create(FarScapeRoot.Scene);
   FarScapeUserInteraction.OnHoverChanged := self.HandleHoverChanged;
 end;
 
+procedure TFarScapeContainerVCL.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+
+  //Params.ExStyle := Params.ExStyle or WS_CLIPCHILDREN;
+  with Params.WindowClass do
+    style := style or (CS_HREDRAW or CS_VREDRAW);
+
+end;
+
 destructor TFarScapeContainerVCL.Destroy;
 begin
   IsBeingDestroyed := true;
-  FarScapeRoot.Free;
   FarScapeuserInteraction.Free;
+  FarScapeRoot.Free;
+  InvalidateBuffer.Free;
   inherited;
 end;
 
@@ -207,7 +227,7 @@ procedure TFarScapeContainerVCL.PaintWindow(DC: HDC);
 var
   ClipBox : TRect;
 begin
-  inherited;
+  //inherited;
 
   if (assigned(FarScapeRoot)) and (FarScapeRoot.Width > 0) and (FarScapeRoot.Height > 0) then
   begin
@@ -239,11 +259,20 @@ begin
 end;
 
 procedure TFarScapeContainerVCL.WMPaint(var Message: TWMPaint);
+var
+  PS: PAINTSTRUCT;
+  DC : HWND;
 begin
   ControlState := ControlState + [csCustomPaint];
-  inherited;
-  ControlState := ControlState - [csCustomPaint];
+  DC := BeginPaint(Handle, PS);
+  try
+    PaintWindow(DC);
+  finally
+    EndPaint(Handle, PS);
+    ControlState := ControlState - [csCustomPaint];
+  end;
 end;
+
 
 
 end.

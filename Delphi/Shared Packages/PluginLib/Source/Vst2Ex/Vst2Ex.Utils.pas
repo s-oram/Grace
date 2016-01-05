@@ -26,6 +26,9 @@ function ScaleVstParToFloat(const x : single; const Values : array of single):si
 function ScaleFloatToVstPar(const x, Min, Max : single):single; inline;
 
 
+function SamplesToNextBeat(const SampleRate, Tempo, PPQPos, LastBarStartPos, {TimeSigNumerator,} TimeSigDenominator : double):integer;
+
+
 implementation
 
 uses
@@ -191,6 +194,23 @@ begin
 
   assert(result >= 0);
   assert(result <= 1);
+end;
+
+function SamplesToNextBeat(const SampleRate, Tempo, PPQPos, LastBarStartPos, {TimeSigNumerator,} TimeSigDenominator : double):integer;
+var
+  SamplesPerBeat : double;
+  PPQOffset : double;
+  PPQPerBeat : double;
+  PPQToNextBeat : double;
+begin
+  // Get samples per beat taking the time signature into account.
+  PPQPerBeat := 4 / TimeSigDenominator;
+  SamplesPerBeat := (SampleRate * 60) / Tempo * PPQPerBeat;
+
+  PPQOffset := PPQPos - LastBarStartPos;
+  PPQToNextBeat := 1 - Frac(PPQOffset / PPQPerBeat);
+  if PPQToNextBeat >= 1 then PPQToNextBeat := PPQToNextBeat-1;
+  result := round(PPQToNextBeat * SamplesPerBeat);
 end;
 
 end.

@@ -4,7 +4,7 @@ unit AggConvMarker;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -58,7 +58,7 @@ implementation
 
 { TAggConvMarker }
 
-constructor TAggConvMarker.Create;
+constructor TAggConvMarker.Create(MarkerLocator, MarkerShapes: TAggVertexSource);
 begin
   FTransform := TAggTransAffine.Create;
   FMatrix := TAggTransAffine.Create;
@@ -91,16 +91,14 @@ end;
 function TAggConvMarker.Vertex(X, Y: PDouble): Cardinal;
 var
   Cmd: Cardinal;
-
   X1, Y1, X2, Y2: Double;
 
 label
-  _next, _markers, _polygon, _stop;
+  _markers, _polygon, _stop;
 
 begin
   Cmd := CAggPathCmdMoveTo;
 
-_next:
   while not IsStop(Cmd) do
     case FStatus of
       siInitial:
@@ -108,8 +106,7 @@ _next:
           if FNumMarkers = 0 then
           begin
             Cmd := CAggPathCmdStop;
-
-            goto _next;
+            Continue;
           end;
 
           FMarkerLocator.Rewind(FMarker);
@@ -125,24 +122,16 @@ _next:
       siMarkers:
       _markers:
         begin
-          if IsStop(FMarkerLocator.Vertex(@X1, @Y1)) then
+          if IsStop(FMarkerLocator.Vertex(@X1, @Y1)) or
+            IsStop(FMarkerLocator.Vertex(@X2, @Y2)) then
           begin
             FStatus := siInitial;
-
-            goto _next;
-          end;
-
-          if IsStop(FMarkerLocator.Vertex(@X2, @Y2)) then
-          begin
-            FStatus := siInitial;
-
-            goto _next;
+            Continue;
           end;
 
           Inc(FNumMarkers);
 
           FMatrix.Assign(FTransform);
-
           FMatrix.Rotate(ArcTan2(Y2 - Y1, X2 - X1));
           FMatrix.Translate(X1, Y1);
 
@@ -162,22 +151,18 @@ _next:
           begin
             Cmd := CAggPathCmdMoveTo;
             FStatus := siMarkers;
-
-            goto _next;
+            Continue;
           end;
 
           FMatrix.Transform(FMatrix, X, Y);
 
-          Result := Cmd;
-
-          Exit;
+          Break;
         end;
 
       siStop:
         begin
           Cmd := CAggPathCmdStop;
-
-          goto _next;
+          Continue;
         end;
     end;
 

@@ -83,6 +83,7 @@
 			<DCCReference Include="WatchTower.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
+			<DCCReference Include="AggPasRunXE2.dcp"/>
 			<DCCReference Include="source\FarScape.CustomControl.pas"/>
 			<DCCReference Include="UnitTests\Test.FarScape.Parentage.pas"/>
 			<DCCReference Include="UnitTests\Test.FarScape.Positioning.pas"/>
@@ -105,6 +106,15 @@
 			<DCCReference Include="source\FarScape.Assistant.ControlNamePath.pas"/>
 			<DCCReference Include="UnitTests\Test.FarScape.Assistant.ControlNamePath.pas"/>
 			<DCCReference Include="source\FarScape.SupportFunctions.pas"/>
+			<DCCReference Include="source\FarScape.InvalidateBuffer.pas"/>
+			<DCCReference Include="source\FarScape.Event.pas"/>
+			<DCCReference Include="source\FarScape.EventStack.pas"/>
+			<DCCReference Include="source\FarScape.EventDispatcher.pas"/>
+			<DCCReference Include="source\FarScape.Events.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.SupportFunctions.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Events.pas"/>
+			<DCCReference Include="source\FarScape.Color.pas"/>
+			<DCCReference Include="UnitTests\Test.FarScape.Color.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

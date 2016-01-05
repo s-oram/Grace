@@ -4,7 +4,7 @@ unit AggPathStorage;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -112,9 +112,9 @@ type
     procedure VerticalLineRelative(Dy: Double);
 
     procedure ArcTo(Rx, Ry, Angle: Double; LargeArcFlag, SweepFlag: Boolean;
-      X, Y: Double);
+      X, Y: Double); overload;
     procedure ArcRelative(Rx, Ry, Angle: Double;
-      LargeArcFlag, SweepFlag: Boolean; Dx, Dy: Double);
+      LargeArcFlag, SweepFlag: Boolean; Dx, Dy: Double); overload;
 
     procedure Curve3(ControlX, ControlY, ToX, ToY: Double); overload;
     procedure Curve3Relative(DeltaControlX, DeltaControlY, DeltaToX, DeltaToY: Double); overload;
@@ -394,7 +394,8 @@ begin
   AddVertex(Dx, Dy, CAggPathCmdLineTo);
 end;
 
-procedure TAggPathStorage.ArcTo;
+procedure TAggPathStorage.ArcTo(Rx, Ry, Angle: Double; LargeArcFlag,
+  SweepFlag: Boolean; X, Y: Double);
 var
   A: TAggBezierArcSvg;
   X0, Y0, Epsilon: Double;

@@ -4,7 +4,7 @@ unit AggPixelFormatRgba;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -118,6 +118,7 @@ begin
 end;
 
 procedure Order32GammaDirApply(This: TAggPixelFormatProcessor; P: PInt8u);
+  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 begin
   PInt8u(PtrComp(P) + This.Order.R)^ :=
     Int8u(This.Apply.Dir[PInt8u(PtrComp(P) + This.Order.R)^]);
@@ -128,6 +129,7 @@ begin
 end;
 
 procedure Order32GammaInvApply(This: TAggPixelFormatProcessor; P: PInt8u);
+  {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
 begin
   PInt8u(PtrComp(P) + This.Order.R)^ :=
     Int8u(This.Apply.Inv[PInt8u(PtrComp(P) + This.Order.R)^]);

@@ -4,7 +4,7 @@ unit AggCurves;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -1094,7 +1094,7 @@ begin
   FCount := 0;
 end;
 
-procedure TAggCurve4Div.Init;
+procedure TAggCurve4Div.Init(CurvePoints: PAggCurve4Points);
 begin
   Init4(CurvePoints^.Point[0], CurvePoints^.Point[1], CurvePoints^.Point[2],
     CurvePoints^.Point[3]);

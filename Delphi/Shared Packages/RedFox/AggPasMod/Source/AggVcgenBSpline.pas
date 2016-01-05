@@ -4,7 +4,7 @@ unit AggVcgenBSpline;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -50,8 +50,7 @@ type
 
     FCurrentAbscissa, FMaxAbscissa: Double;
 
-    function GetInterpolationStep: Double;
-    procedure SetInterpolationStep(V: Double);
+    procedure SetInterpolationStep(Value: Double);
   public
     constructor Create;
     destructor Destroy; override;
@@ -64,7 +63,7 @@ type
     procedure Rewind(PathID: Cardinal); override;
     function Vertex(X, Y: PDouble): Cardinal; override;
 
-    property InterpolationStep: Double read GetInterpolationStep write
+    property InterpolationStep: Double read FInterpolationStep write
       SetInterpolationStep;
   end;
 
@@ -98,14 +97,9 @@ begin
   inherited;
 end;
 
-procedure TAggVcgenBSpline.SetInterpolationStep;
+procedure TAggVcgenBSpline.SetInterpolationStep(Value: Double);
 begin
-  FInterpolationStep := V;
-end;
-
-function TAggVcgenBSpline.GetInterpolationStep;
-begin
-  Result := FInterpolationStep;
+  FInterpolationStep := Value;
 end;
 
 procedure TAggVcgenBSpline.RemoveAll;
@@ -118,7 +112,7 @@ begin
   FSourceVertex := 0;
 end;
 
-procedure TAggVcgenBSpline.AddVertex;
+procedure TAggVcgenBSpline.AddVertex(X, Y: Double; Cmd: Cardinal);
 var
   Pt: TPointDouble;
 begin
@@ -130,7 +124,6 @@ begin
     Pt.Y := Y;
 
     FSourceVertices.ModifyLast(@Pt);
-
   end
   else if IsVertex(Cmd) then
   begin
@@ -138,7 +131,6 @@ begin
     Pt.Y := Y;
 
     FSourceVertices.Add(@Pt);
-
   end
   else
     FClosed := GetCloseFlag(Cmd);
@@ -177,7 +169,6 @@ begin
         PPointDouble(FSourceVertices[FSourceVertices.Size - 1])^.X);
       FSplineY.AddPoint(3.0,
         PPointDouble(FSourceVertices[FSourceVertices.Size - 1])^.Y);
-
     end
     else
     begin
@@ -314,7 +305,6 @@ _next:
               FStatus := siEndPoly;
 
               goto _next;
-
             end
             else
             begin
@@ -340,7 +330,6 @@ _next:
             Result := CAggPathCmdMoveTo
           else
             Result := CAggPathCmdLineTo;
-
           Exit;
         end;
 
@@ -348,14 +337,12 @@ _next:
         begin
           FStatus := siStop;
           Result := CAggPathCmdEndPoly or FClosed;
-
           Exit;
         end;
 
       siStop:
         begin
           Result := CAggPathCmdStop;
-
           Exit;
         end;
     end;

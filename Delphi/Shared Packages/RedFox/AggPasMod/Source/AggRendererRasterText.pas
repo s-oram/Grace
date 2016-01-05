@@ -4,7 +4,7 @@ unit AggRendererRasterText;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -253,22 +253,22 @@ begin
   FSpan.Initialize(X, Len, Covers);
 end;
 
-function TAggScanLineSingleSpan.GetY;
+function TAggScanLineSingleSpan.GetY: Integer;
 begin
   Result := FY;
 end;
 
-function TAggScanLineSingleSpan.GetNumSpans;
+function TAggScanLineSingleSpan.GetNumSpans: Cardinal;
 begin
   Result := 1;
 end;
 
-function TAggScanLineSingleSpan.GetBegin;
+function TAggScanLineSingleSpan.GetBegin: Pointer;
 begin
   Result := @FSpan;
 end;
 
-function TAggScanLineSingleSpan.GetSizeOfSpan;
+function TAggScanLineSingleSpan.GetSizeOfSpan: Cardinal;
 begin
   Result := SizeOf(TAggConstSpan);
 end;
@@ -282,7 +282,8 @@ begin
   FGlyph := Glyph;
 end;
 
-procedure TAggRendererRasterHorizontalText.RenderText;
+procedure TAggRendererRasterHorizontalText.RenderText(FX, Y: Double;
+  Str: PAnsiChar; Flip: Boolean = False);
 var
   R: TAggGlyphRect;
   I: Integer;

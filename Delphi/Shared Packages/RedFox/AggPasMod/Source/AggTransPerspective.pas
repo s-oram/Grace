@@ -4,7 +4,7 @@ unit AggTransPerspective;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -155,6 +155,8 @@ type
     function QuadToRect(Q: PAggQuadrilateral; X1, Y1, X2, Y2: Double): Boolean;
       overload;
     function QuadToRect(Q: PAggQuadrilateral; Rect: TRectDouble): Boolean;
+      overload;
+    function QuadToRect(var Q: TAggQuadrilateral; Rect: TRectDouble): Boolean;
       overload;
 
     // Map square (0,0,1,1) to the quadrilateral and vice versa
@@ -684,6 +686,15 @@ var
 begin
   Dst := QuadDouble(RectDouble(X1, Y1, X2, Y2));
   Result := QuadToQuad(Q, @Dst);
+end;
+
+function TAggTransPerspective.QuadToRect(var Q: TAggQuadrilateral;
+  Rect: TRectDouble): Boolean;
+var
+  Dst: TQuadDouble;
+begin
+  Dst := QuadDouble(Rect);
+  Result := QuadToQuad(@Q, @Dst);
 end;
 
 function TAggTransPerspective.QuadToRect(Q: PAggQuadrilateral;

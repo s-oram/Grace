@@ -4,7 +4,7 @@ unit AggConvSmoothPoly;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -79,12 +79,12 @@ begin
   inherited;
 end;
 
-procedure TAggConvSmoothPoly.SetSmoothValue;
+procedure TAggConvSmoothPoly.SetSmoothValue(Value: Double);
 begin
   FGenerator.SmoothValue := Value;
 end;
 
-function TAggConvSmoothPoly.GetSmoothValue;
+function TAggConvSmoothPoly.GetSmoothValue: Double;
 begin
   Result := FGenerator.SmoothValue;
 end;
@@ -106,12 +106,12 @@ begin
   inherited;
 end;
 
-procedure TAggConvSmoothPolyCurve.SetSmoothValue;
+procedure TAggConvSmoothPolyCurve.SetSmoothValue(Value: Double);
 begin
   TAggVcgenSmoothPoly1(FSmooth.Generator).SmoothValue := Value;
 end;
 
-function TAggConvSmoothPolyCurve.GetSmoothValue;
+function TAggConvSmoothPolyCurve.GetSmoothValue: Double;
 begin
   Result := TAggVcgenSmoothPoly1(FSmooth.Generator).SmoothValue;
 end;

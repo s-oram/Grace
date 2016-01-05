@@ -28,6 +28,8 @@ type
     function GetParameterLabel(const Index : integer):string; virtual; abstract;
     function GetParameterDisplay(const Index : integer):string; virtual; abstract;
     function GetParameterName(const Index : integer):string; virtual; abstract;
+
+    function GetIsSynth : boolean; virtual; abstract;
   end;
 
 implementation

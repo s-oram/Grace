@@ -4,7 +4,7 @@ unit AggSpanGradient;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -342,7 +342,7 @@ end;
 
 { TAggGradientRadialDouble }
 
-function TAggGradientRadialDouble.Calculate;
+function TAggGradientRadialDouble.Calculate(X, Y, D: Integer): Integer;
 begin
   Result := Trunc(Hypot(X, Y));
 end;
@@ -353,8 +353,7 @@ end;
 constructor TAggGradientRadialFocus.Create;
 begin
   FRadius := 100 * CAggGradientSubpixelSize;
-  FFocus.X := 0;
-  FFocus.Y := 0;
+  FFocus := PointInteger(0);
 
   UpdateValues;
 end;
@@ -392,7 +391,7 @@ begin
   Result := FFocus.Y / CAggGradientSubpixelSize;
 end;
 
-function TAggGradientRadialFocus.Calculate;
+function TAggGradientRadialFocus.Calculate(X, Y, D: Integer): Integer;
 var
   Solution: TPointDouble;
   Slope, Yint, A, B, C, Det, IntToFocus, CurToFocus: Double;
@@ -400,8 +399,7 @@ begin
   // Special case to avoid divide by zero or very near zero
   if X = FFocus.X then
   begin
-    Solution.X := FFocus.X;
-    Solution.Y := 0.0;
+    Solution := PointDouble(FFocus.X, 0.0);
 
     if Y > FFocus.Y then
       Solution.Y := Solution.Y + FTrivial
@@ -418,11 +416,11 @@ begin
 
     // Use the classical quadratic formula to calculate
     // the intersection point
-    A := (Slope * Slope) + 1;
+    A := Sqr(Slope) + 1;
     B := 2 * Slope * Yint;
-    C := Yint * Yint - FRadius2;
+    C := Sqr(Yint) - FRadius2;
 
-    Det := Sqrt((B * B) - (4.0 * A * C));
+    Det := Sqrt(Sqr(B) - (4 * A * C));
 
     Solution.X := -B;
 
@@ -433,7 +431,7 @@ begin
     else
       Solution.X := Solution.X + Det;
 
-    Solution.X := Solution.X / (2.0 * A);
+    Solution.X := Solution.X / (2 * A);
 
     // Calculating of Y is trivial
     Solution.Y := (Slope * Solution.X) + Yint;
@@ -456,9 +454,9 @@ var
   Sn, Cn: Double;
 begin
   // For use in the quadratic equation
-  FRadius2 := FRadius * FRadius;
+  FRadius2 := Sqr(FRadius);
 
-  Dist := Sqrt(FFocus.X * FFocus.X + FFocus.Y * FFocus.Y);
+  Dist := Hypot(FFocus.X, FFocus.Y);
 
   // Test if distance from focus to center is greater than the radius
   // For the sake of assurance factor restrict the point to be
@@ -469,13 +467,13 @@ begin
   begin
     // clamp focus to radius
     // x = r cos theta, y = r sin theta
-    SinCosScale(ArcTan2(FFocus.Y, FFocus.X), Sn, Cn, R);
-    FFocus.X := Trunc(Cn);
-    FFocus.Y := Trunc(Sn);
+    SinCos(ArcTan2(FFocus.Y, FFocus.X), Sn, Cn);
+    FFocus.X := Trunc(R * Cn);
+    FFocus.Y := Trunc(R * Sn);
   end;
 
   // Calculate the solution to be used in the case where x == GetFocusX
-  FTrivial := Sqrt(FRadius2 - (FFocus.X * FFocus.X));
+  FTrivial := Sqrt(FRadius2 - Sqr(FFocus.X));
 end;
 
 
@@ -484,8 +482,7 @@ end;
 constructor TAggGradientRadialFocusExtended.Create;
 begin
   FRadius := 100 * CAggGradientSubpixelSize;
-  FFocus.X := 0;
-  FFocus.Y := 0;
+  FFocus := PointInteger(0);
 
   UpdateValues;
 end;
@@ -531,7 +528,7 @@ begin
   Dx := X - FFocus.X;
   Dy := Y - FFocus.Y;
   D2 := Dx * FFocus.Y - Dy * FFocus.X;
-  D3 := FRadius2 * (Dx * Dx + Dy * Dy) - D2 * D2;
+  D3 := FRadius2 * (Sqr(Dx) + Sqr(Dy)) - Sqr(D2);
 
   Result := IntegerRound((Dx * FFocus.X + Dy * FFocus.Y + Sqrt(Abs(D3))) * FMul);
 end;
@@ -545,9 +542,8 @@ procedure TAggGradientRadialFocusExtended.UpdateValues;
 var
   D: Double;
 begin
-  FRadius2 := FRadius * FRadius;
-  FFocusSquared.X := Sqr(FFocus.X);
-  FFocusSquared.Y := Sqr(FFocus.Y);
+  FRadius2 := Sqr(FRadius);
+  FFocusSquared := PointDouble(Sqr(FFocus.X), Sqr(FFocus.Y));
 
   D := (FRadius2 - (FFocusSquared.X + FFocusSquared.Y));
 
@@ -565,8 +561,7 @@ begin
       else
         Dec(FFocus.Y);
 
-    FFocusSquared.X := Sqr(FFocus.X);
-    FFocusSquared.Y := Sqr(FFocus.Y);
+    FFocusSquared := PointDouble(Sqr(FFocus.X), Sqr(FFocus.Y));
 
     D := (FRadius2 - (FFocusSquared.X + FFocusSquared.Y));
   end;
@@ -577,7 +572,7 @@ end;
 
 { TAggGradientX }
 
-function TAggGradientX.Calculate;
+function TAggGradientX.Calculate(X, Y, D: Integer): Integer;
 begin
   Result := X;
 end;
@@ -585,7 +580,7 @@ end;
 
 { TAggGradientY }
 
-function TAggGradientY.Calculate;
+function TAggGradientY.Calculate(X, Y, D: Integer): Integer;
 begin
   Result := Y;
 end;
@@ -593,7 +588,7 @@ end;
 
 { TAggGradientDiamond }
 
-function TAggGradientDiamond.Calculate;
+function TAggGradientDiamond.Calculate(X, Y, D: Integer): Integer;
 var
   Ax, Ay: Integer;
 begin
@@ -609,7 +604,7 @@ end;
 
 { TAggGradientXY }
 
-function TAggGradientXY.Calculate;
+function TAggGradientXY.Calculate(X, Y, D: Integer): Integer;
 begin
   if D = 0 then
     Result := 0
@@ -620,7 +615,7 @@ end;
 
 { TAggGradientSqrtXY }
 
-function TAggGradientSqrtXY.Calculate;
+function TAggGradientSqrtXY.Calculate(X, Y, D: Integer): Integer;
 begin
   Result := FastSqrt(Abs(X) * Abs(Y));
 end;
@@ -628,7 +623,7 @@ end;
 
 { TAggGradientConic }
 
-function TAggGradientConic.Calculate;
+function TAggGradientConic.Calculate(X, Y, D: Integer): Integer;
 begin
   Result := Trunc(Abs(ArcTan2(Y, X)) * D / Pi);
 end;
@@ -642,7 +637,7 @@ begin
   FGradient := Gradient;
 end;
 
-function TAggGradientRepeatAdaptor.Calculate;
+function TAggGradientRepeatAdaptor.Calculate(X, Y, D: Integer): Integer;
 begin
   if D = 0 then
     Result := 0
@@ -662,7 +657,7 @@ begin
   FGradient := Gradient;
 end;
 
-function TAggGradientReflectAdaptor.Calculate;
+function TAggGradientReflectAdaptor.Calculate(X, Y, D: Integer): Integer;
 var
   D2: Integer;
 begin

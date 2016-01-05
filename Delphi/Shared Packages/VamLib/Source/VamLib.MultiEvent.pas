@@ -2,6 +2,10 @@ unit VamLib.MultiEvent;
 
 interface
 
+
+// NOTE: This unit is deprecated. It should be replaced by VamLib.MultiCastEvents.pas
+
+
 uses
   System.Classes,
   Vcl.Controls,

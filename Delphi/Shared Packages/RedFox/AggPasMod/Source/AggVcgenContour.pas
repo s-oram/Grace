@@ -4,7 +4,7 @@ unit AggVcgenContour;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -182,7 +182,7 @@ begin
   FStatus := siInitial;
 end;
 
-procedure TAggVcgenContour.AddVertex;
+procedure TAggVcgenContour.AddVertex(X, Y: Double; Cmd: Cardinal);
 var
   Vd: TAggVertexDistance;
 begin
@@ -232,17 +232,15 @@ end;
 
 function TAggVcgenContour.Vertex(X, Y: PDouble): Cardinal;
 var
-  Cmd: Cardinal;
   C: PPointDouble;
 
 label
-  _next, _ready, _Outline, _Out_vertices;
+  _ready, _Outline, _Out_vertices;
 
 begin
-  Cmd := CAggPathCmdLineTo;
+  Result := CAggPathCmdLineTo;
 
-_next:
-  while not IsStop(Cmd) do
+  while not IsStop(Result) do
     case FStatus of
       siInitial:
         begin
@@ -256,14 +254,13 @@ _next:
         begin
           if FSourceVertices.Size < 2 + Cardinal(FClosed <> 0) then
           begin
-            Cmd := CAggPathCmdStop;
-
-            goto _next;
+            Result := CAggPathCmdStop;
+            Continue;
           end;
 
           FStatus := siOutline;
 
-          Cmd := CAggPathCmdMoveTo;
+          Result := CAggPathCmdMoveTo;
 
           FSourceVertex := 0;
           FOutVertex := 0;
@@ -277,8 +274,7 @@ _next:
           if FSourceVertex >= FSourceVertices.Size then
           begin
             FStatus := siEndPoly;
-
-            goto _next;
+            Continue;
           end;
 
           StrokeCalcJoin(FOutVertices, FSourceVertices.Prev(FSourceVertex),
@@ -310,8 +306,6 @@ _next:
           X^ := C.X;
           Y^ := C.Y;
 
-          Result := Cmd;
-
           Exit;
         end;
 
@@ -337,8 +331,6 @@ _next:
           Exit;
         end;
     end;
-
-  Result := Cmd;
 end;
 
 end.

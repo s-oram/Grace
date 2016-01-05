@@ -6,21 +6,18 @@ uses
   Vcl.Controls,
   Classes,
   Windows,
+  Graphics,
   Types,
   SysUtils,
-  Contnrs;
+  Contnrs,
+  Agg2d,
+  FarScape.PureInterfacedObject,
+  FarScape.Event,
+  FarScape.Events,
+  FarScape.EventDispatcher;
 
 type
   EFarScapeException = class(Exception);
-
-  IFarScapeScene = interface
-    // RebuildScene must be called after adding or removing an element from the scene root.
-    procedure RebuildScene;
-
-    // Call when:
-    // - a control changes position.
-    procedure UpdateScene;
-  end;
 
   IFarScapeUserInteraction = interface
   end;
@@ -38,6 +35,12 @@ type
     Left, Top, Right, Bottom : integer;
   end;
 
+  PRootDrawInfo = ^TRootDrawInfo;
+  TRootDrawInfo = record
+    BackBuffer : TBitmap;
+    Agg2d : TAgg2d;
+  end;
+
   TOnInvalidateRootRegion = procedure(Region : TRect) of object;
 
   THitTest = (
@@ -45,7 +48,6 @@ type
     htPartial, // Hit checking will succeed for some parts of the control.
     htAlways   // Hit checking always passes.
   );
-
 
   TControlAlignment = (
     caNone,   // No alignment. (duh!)
@@ -55,16 +57,34 @@ type
     caRight,
     caClient, // Control is sized to fill the parent bounds with respect to padding and margins.
     caCenter, // Control is placed in the center of the parent.
-    caGrid,   // Control is aligned to a grid.
-    caCustom  // The control implements a custom alignment method to align itself.
+    caGrid    // Control is aligned to a grid. //TODO:HIGH IMPORTANT: When using caGrid alignment, the TControlPosition units must puGrid.
   );
 
-  TFarScapeCustomControl = class
+  TControlPositionUnits = (
+    puPixels,
+    puPercentage,
+    puGrid
+  );
+
+  TControlPosition = record
+    Alignment  : TControlAlignment;
+    Units      : TControlPositionUnits;
+    Left       : integer;
+    Top        : integer;
+    Width      : integer;
+    Height     : integer;
+    GridWidth  : integer;
+    GridHeight : integer;
+    procedure Zero;
+    procedure AssignFrom(const Source : TControlPosition);
+  end;
+
+  TControlState = set of (csIsDestroying);
+
+  TFarScapeDrawMethod = (dmOldSchool, dmNewSchool);
+
+  TFarScapeCustomControl = class(TPureInterfacedObject)
   strict private
-    FNaturalLeft   : integer;
-    FNaturalTop    : integer;
-    FNaturalWidth  : integer;
-    FNaturalHeight : integer;
     FComputedLeft   : integer;
     FComputedTop    : integer;
     FComputedWidth  : integer;
@@ -78,19 +98,31 @@ type
     procedure SetParent(const c : TFarScapeControl);
     procedure SetName(const Value: string);
   private
-    fParent : TFarScapeControl;
-    fRoot   : TFarScapeAbstractRoot;
-    fVisible: boolean;
-    fGridTop: integer;
-    fGridHeight: integer;
-    fGridLeft: integer;
-    fGridWidth: integer;
+    FParent : TFarScapeControl;
+    FRoot   : TFarScapeAbstractRoot;
+    FVisible: boolean;
+    FGridTop: integer;
+    FGridHeight: integer;
+    FGridLeft: integer;
+    FGridWidth: integer;
     FCursor: TCursor;
     FHitTest: THitTest;
     FGridXDivisions: integer;
     FGridYDivisions: integer;
+
+    FEventDispatcher : TEventDispatcher;
+    FControlState: TControlState;
+    FDrawMethod: TFarScapeDrawMethod;
+    FPosition: TControlPosition;
     procedure SetVisible(const Value: boolean);
     procedure SetCursor(const Value: TCursor);
+    procedure SetControlPosition(const Value: TControlPosition);
+
+    procedure ControlPositionChanged;
+    function GetNaturalHeight: integer;
+    function GetNaturalLeft: integer;
+    function GetNaturalTop: integer;
+    function GetNaturalWidth: integer;
   strict protected
     function FindTopMostControl : TFarScapeControl;
   protected
@@ -99,6 +131,11 @@ type
     // Descendent components can override ControlBoundsChanged() to react to control size changes.
     // It's a good place to resize buffers or other dependent components.
     procedure ControlBoundsChanged(const aLeft, aTop, aWidth, aHeight : integer); virtual;
+
+    procedure FarScapeEvent(const ev : TEventData; const ReleaseEvent : boolean = true); virtual;
+
+    property ControlState : TControlState read FControlState write FControlState;
+    function FindRoot : TFarScapeAbstractRoot;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -106,7 +143,11 @@ type
     property Name : string read FName write SetName;
 
     // Trigger a control repaint.
-    procedure Invalidate;
+    procedure Invalidate; virtual;
+
+    procedure AddEventListener(const EventTypes : array of TEventClass; const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll);
+    procedure RemoveEventListener(const Handler    : TEventHandler);
+
 
     property HitTest : THitTest read FHitTest write FHitTest;
     function IsHit(const HitPointX, HitPointY : integer):boolean; virtual;
@@ -116,14 +157,19 @@ type
 
     // GetAbsoluteRect() returns the control bounds with respect to top most parent control.
     function GetAbsoluteRect:TRect;
+    function GetNamePath : string;
 
     property Parent : TFarScapeControl read FParent write SetParent; // The parent control.
     property Root   : TFarScapeAbstractRoot read FRoot;              // The top-most root control.
 
+    property Position : TControlPosition read FPosition write SetControlPosition;
+
+    //====== TODO:HIGH remove these methods ===================
     procedure SetSize(const aWidth, aHeight : integer);
     procedure SetPosition(const aLeft, aTop : integer); //TODO:MED Maybe delete this method?
     procedure SetBounds(const aLeft, aTop, aWidth, aHeight : integer);
     procedure SetGridBounds(const aLeft, aTop, aWidth, aHeight : integer);
+    //=========================================================
 
     property Left   : integer read FComputedLeft;
     property Top    : integer read FComputedTop;
@@ -131,10 +177,10 @@ type
     property Height : integer read FComputedHeight;
 
     // Natural dimensions are the baseline dimensions before alignment calculations are applied.
-    property NaturalLeft   : integer read FNaturalLeft;
-    property NaturalTop    : integer read FNaturalTop;
-    property NaturalWidth  : integer read FNaturalWidth;
-    property NaturalHeight : integer read FNaturalHeight;
+    property NaturalLeft   : integer read GetNaturalLeft;
+    property NaturalTop    : integer read GetNaturalTop;
+    property NaturalWidth  : integer read GetNaturalWidth;
+    property NaturalHeight : integer read GetNaturalHeight;
 
     // Use the grid properties in conjunction with the Grid alignment mode to create resizable GUI layouts.
     property GridLeft   : integer read FGridLeft;
@@ -160,12 +206,13 @@ type
     property IsOwnedByParent : boolean read FIsOwnedByParent write FIsOwnedByParent;
 
     property Cursor: TCursor read FCursor write SetCursor default crDefault;
+
+    property DrawMethod : TFarScapeDrawMethod read FDrawMethod write FDrawMethod;
   end;
 
   TFarScapeContainer = class(TFarScapeCustomControl)
   strict private
     FControlList : TObjectList;
-
   private
     procedure InsertControl(const aControl : TFarScapeControl);
     procedure RemoveControl(const aControl : TFarScapeControl);
@@ -205,7 +252,12 @@ type
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); virtual;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); virtual;
   public
+    destructor Destroy; override;
+
+    procedure PaintToBackBuffer(const DrawInfo : PRootDrawInfo); virtual;
     procedure PaintToDc(DC: HDC); virtual;
+
+    procedure RemoveAllEventListeners(const RemoveForChildren : boolean);
 
     function SetPropertyValue(const PropertyName : string; const StrArr : array of string; const IntArr : array of integer; const FloatArr : array of single; const BoolArr : array of boolean):boolean; virtual;
   end;
@@ -214,14 +266,7 @@ type
   private
     fOnInvalidateRootRegion: TOnInvalidateRootRegion;
   protected
-    // ObjectHierarachChanged() must be called when a control is added, removed or child ordering changed.
-    procedure ObjectHierarchyChanged; virtual;
-
-    // ObjectLayoutChanged() must be called when a control position is changed.
-    procedure ObjectLayoutChanged; virtual;
-
-    // IMPORTANT: Descendent classes must implement SceneInterface().
-    function GetSceneInterface : IFarScapeScene; virtual; abstract;
+    procedure FarScapeEvent(const ev : TEventData; const ReleaseEvent : boolean = true); override;
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -231,9 +276,7 @@ type
     property OnInvalidateRootRegion : TOnInvalidateRootRegion read fOnInvalidateRootRegion write fOnInvalidateRootRegion;
   end;
 
-
-
-
+  TFarScapeControlProc = reference to procedure(const c : TFarScapeControl);
 
 implementation
 
@@ -243,17 +286,37 @@ uses
   FarScape.ControlHelper,
   FarScape.SupportFunctions;
 
-
-procedure UpdateRootForAllControls(const Control : TFarScapeControl; const Root : TFarScapeAbstractRoot);
+// ForAllChildControls() is a way to apply changes to all child controls. It's an alternative
+// to having a 'propagate down' event system. Currently Events propagate up.
+procedure ForAllChildControls(const Control : TFarScapeControl; const Proc : TFarScapeControlProc);
 var
   c1: Integer;
 begin
-  Control.fRoot := Root;
-  for c1 := 0 to Control.ControlCount-1 do
+  // Apply the procedure. Proc().
+  for c1 := Control.ControlCount-1 downto 0 do
   begin
-    UpdateRootForAllControls(Control.Control[c1], Root);
+    Proc(Control.Control[c1]);
+  end;
+
+  // recursivly call function for all child controls.
+  for c1 := Control.ControlCount-1 downto 0 do
+  begin
+    ForAllChildControls(Control.Control[c1], Proc);
   end;
 end;
+
+
+procedure SetRoot(const Control : TFarScapeControl; const aRoot : TFarScapeAbstractRoot);
+var
+  c1: Integer;
+begin
+  Control.FRoot := aRoot;
+  for c1 := 0 to Control.ControlCount-1 do
+  begin
+    SetRoot(Control.Control[c1], aRoot);
+  end;
+end;
+
 
 { TFarScapeCustomControl }
 
@@ -265,6 +328,7 @@ begin
   FVisible := true;
   FParent := nil;
   FRoot := nil;
+  FName := '';
   FAlign := TControlAlignment.caNone;
 
   FComputedLeft   := 0;
@@ -293,7 +357,46 @@ end;
 destructor TFarScapeCustomControl.Destroy;
 begin
   if assigned(fParent) then fParent.RemoveControl((self as TFarScapeControl));
+  if assigned(FEventDispatcher) then FreeAndNil(FEventDispatcher);
   inherited;
+end;
+
+procedure TFarScapeCustomControl.AddEventListener(const EventTypes: array of TEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
+begin
+  if not assigned(FEventDispatcher) then FEventDispatcher := TEventDispatcher.Create;
+  FEventDispatcher.AddListener(EventTypes, Handler, Duration);
+end;
+
+procedure TFarScapeCustomControl.RemoveEventListener(const Handler: TEventHandler);
+begin
+  if assigned(FEventDispatcher) then FEventDispatcher.RemoveListener(Handler);
+end;
+
+procedure TFarScapeCustomControl.FarScapeEvent(const ev: TEventData; const ReleaseEvent : boolean);
+begin
+  if assigned(FEventDispatcher) then FEventDispatcher.Broadcast(ev, false);
+
+  if (ev.Propagate) and (assigned(Parent))
+    then Parent.FarScapeEvent(ev, false);
+
+  if ReleaseEvent then ev.Release;
+end;
+
+
+
+function TFarScapeCustomControl.FindRoot: TFarScapeAbstractRoot;
+var
+  fsc : TFarScapeControl;
+begin
+  fsc := self as TFarScapeControl;
+  while assigned(fsc.Parent) do
+  begin
+    fsc := fsc.Parent;
+  end;
+
+  if fsc is TFarScapeAbstractRoot
+    then result := fsc as TFarScapeAbstractRoot
+    else result := nil;
 end;
 
 function TFarScapeCustomControl.FindTopMostControl: TFarScapeControl;
@@ -345,8 +448,7 @@ begin
     if (Visible) and (fsc.ControlCount > 0) then fsc.AlignChildControls;
 
     // 3) Notify the root...
-    //if assigned(Root) then Root.ObjectHierarchyChanged;
-    // TODO:HIGH instead of ObjectHierarchyChange(). Might need to add a new method. ObjectVisibilityChanged(). Or ObjectLayoutChanged().
+    // TODO:HIGH might need to notify the root that a control has change visibility here.
   end;
 end;
 
@@ -361,46 +463,29 @@ end;
 
 procedure TFarScapeCustomControl.SetBounds(const aLeft, aTop, aWidth, aHeight: integer);
 begin
-  fNaturalLeft   := aLeft;
-  fNaturalTop    := aTop;
-
-  if aWidth > 0
-    then fNaturalWidth := aWidth
-    else fNaturalWidth := 0;
-
-  if aHeight > 0
-    then fNaturalHeight := aHeight
-    else fNaturalHeight := 0;
-
-  if (Align = TControlAlignment.caNone) or (not assigned(self.Parent)) then
-  begin
-    SetComputedBounds(aLeft, aTop, aWidth, aHeight);
-  end else
-  begin
-    self.Parent.RequestControlAlignment;
-  end;
+  FPosition.Left := aLeft;
+  FPosition.Top  := aTop;
+  FPosition.Width := aWidth;
+  FPosition.Height := aHeight;
+  FPosition.Units := puPixels;
+  ControlPositionChanged;
 end;
 
 procedure TFarScapeCustomControl.SetGridBounds(const aLeft, aTop, aWidth, aHeight: integer);
 begin
-  fGridLeft   := aLeft;
-  fGridTop    := aTop;
-  fGridWidth  := aWidth;
-  fGridHeight := aHeight;
-
-  if (Align = TControlAlignment.caGrid) and (assigned(self.Parent))
-    then self.Parent.RequestControlAlignment;
+  FPosition.Left := aLeft;
+  FPosition.Top  := aTop;
+  FPosition.Width := aWidth;
+  FPosition.Height := aHeight;
+  FPosition.Units := puGrid;
+  ControlPositionChanged;
 end;
 
 procedure TFarScapeCustomControl.SetGridDivisions(const XDiv, YDiv: integer);
 begin
-  assert(XDiv >= 1);
-  assert(YDiv >= 1);
-  FGridXDivisions := XDiv;
-  FGridYDivisions := YDiv;
-
-  if (Align = TControlAlignment.caGrid) and (assigned(self.Parent))
-    then self.Parent.RequestControlAlignment;
+  FPosition.GridWidth := XDiv;
+  FPosition.GridHeight := YDiv;
+  ControlPositionChanged;
 end;
 
 procedure TFarScapeCustomControl.SetComputedBounds(const aLeft, aTop, aWidth, aHeight: integer);
@@ -411,7 +496,7 @@ begin
   if assigned(Root) then
   begin
     // 1) Get current client rect.
-    OriginalBounds := (self as TFarScapeControl).GetBoundsWithChildren;
+    OriginalBounds := (self as TFarScapeControl).GetBounds;
     OriginalBounds.Offset( (self as TFarScapeControl).GetAbsoluteOffset );
   end else
   begin
@@ -432,19 +517,32 @@ begin
   // 3) Provide chance for descendcent controls to respond to changes.
   ControlBoundsChanged(aLeft, aTop, aWidth, aHeight);
 
+  // 4) Important: The root needs to know that a child control has changed location.
+  FarScapeEvent(  TControlBoundsChangedEvent.Create(self)  );
+
   if assigned(Root) then
   begin
-    // 3) Important: The root needs to know that a child control has changed location.
-    Root.ObjectLayoutChanged;
-
-    // 4) Get new client rect.
-    NewBounds := (self as TFarScapeControl).GetBoundsWithChildren;
+    // 5) Get new client rect.
+    NewBounds := (self as TFarScapeControl).GetBounds;
     NewBounds.Offset( (self as TFarScapeControl).GetAbsoluteOffset );
 
-    // 5) Invalidate both client rect regions.
+    // 6) Invalidate both client rect regions.
     Root.InvalidateRootRegion(OriginalBounds);
     Root.InvalidateRootRegion(NewBounds);
   end;
+end;
+
+procedure TFarScapeCustomControl.SetControlPosition(const Value: TControlPosition);
+begin
+  FPosition := Value;
+  ControlPositionChanged;
+end;
+
+procedure TFarScapeCustomControl.ControlPositionChanged;
+begin
+  if assigned(Parent)
+    then Parent.RequestControlAlignment
+    else self.SetComputedBounds(0,0, Position.Width, Position.Height);
 end;
 
 procedure TFarScapeCustomControl.SetCursor(const Value: TCursor);
@@ -503,9 +601,15 @@ begin
 end;
 
 procedure TFarScapeCustomControl.SetName(const Value: string);
+var
+  OldName : string;
 begin
   if (Pos('.', Value) > 0) then raise EFarScapeException.Create('FarScapeControl name must not contain period characters. (.)');
-  fName := Value;
+
+  OldName := fName;
+  fName := Value; //TODO:MED Trim white space from name.
+
+  FarScapeEvent( TControlNameChangedEvent.Create(self, @OldName, @FName)  );
 end;
 
 procedure TFarScapeCustomControl.Invalidate;
@@ -522,6 +626,100 @@ begin
     htPartial: raise EFarScapeException.Create('Not implemented.');
   else
     raise EFarScapeException.Create('Unexpected type.');
+  end;
+end;
+
+
+function TFarScapeCustomControl.GetNamePath: string;
+var
+  fsc : TFarScapeControl;
+  NamePath : string;
+begin
+  if self.Name = '' then
+  begin
+    result := ''
+  end else
+  begin
+    NamePath := self.Name;
+    fsc := self as TFarScapeControl;
+    while assigned(fsc.Parent) do
+    begin
+      fsc := fsc.Parent;
+      if fsc.Name <> '' then NamePath := fsc.Name + '.' + NamePath;
+    end;
+    result := NamePath;
+  end;
+end;
+
+function TFarScapeCustomControl.GetNaturalHeight: integer;
+begin
+  if assigned(Parent) then
+  begin
+    case Position.Units of
+      puGrid:       result := Position.Height;
+      puPixels:     result := Position.Height;
+      puPercentage: result := round(Parent.Height * Position.Height / 100);
+    else
+      assert(false, 'Unexpected units value.');
+      result := 0;
+    end;
+  end else
+  begin
+    result := Position.Height;
+  end;
+end;
+
+function TFarScapeCustomControl.GetNaturalTop: integer;
+begin
+  if assigned(Parent) then
+  begin
+    case Position.Units of
+      puGrid:       result := Position.Top;
+      puPixels:     result := Position.Top;
+      puPercentage: result := round(Parent.Height * Position.Top / 100);
+    else
+      assert(false, 'Unexpected units value.');
+      result := 0;
+    end;
+  end else
+  begin
+    result := Position.Top;
+  end;
+end;
+
+function TFarScapeCustomControl.GetNaturalLeft: integer;
+begin
+  if assigned(Parent) then
+  begin
+    case Position.Units of
+      puGrid:       result := Position.Left;
+      puPixels:     result := Position.Left;
+      puPercentage: result := round(Parent.Width * Position.Left / 100);
+    else
+      assert(false, 'Unexpected units value.');
+      result := 0;
+    end;
+  end else
+  begin
+    result := Position.Left;
+  end;
+end;
+
+function TFarScapeCustomControl.GetNaturalWidth: integer;
+begin
+    if assigned(Parent) then
+  begin
+    case Position.Units of
+      puGrid:       result := Position.Width;
+      puPixels:     result := Position.Width;
+      puPercentage: result := round(Parent.Width * Position.Width / 100);
+    else
+      assert(false, 'Unexpected units value.');
+      result := 0;
+    end;
+  end else
+  begin
+    result := Position.Width;
   end;
 end;
 
@@ -589,6 +787,7 @@ var
 begin
   // TODO:MED need to write a unit test for this method.
 
+
   // TODO:LOW this method could be much more efficient.
   NameParts := TStringList.Create;
   AutoFree(@NameParts);
@@ -624,8 +823,18 @@ begin
 end;
 
 function TFarScapeContainer.GetControl(Index: integer): TFarScapeControl;
+var
+  obj : TObject;
 begin
-  result := ControlList[Index] as TFarScapeControl;
+  assert(assigned(self.ControlList));
+  assert(Index < ControlList.Count);
+  obj := ControlList[Index];
+  assert(assigned(obj));
+  if not(obj is TFarScapeControl)
+    then result := nil
+    else result := obj as TFarScapeControl;
+
+  //result := ControlList[Index] as TFarScapeControl;
 end;
 
 function TFarScapeContainer.GetControlCount: integer;
@@ -642,16 +851,19 @@ begin
   // If it's owned, it gets deleted, if not, the control is removed.
   for c1 := ControlList.Count-1 downto 0 do
   begin
-    c := ControlList[c1] as TFarScapeControl;
-    RemoveControl(c);
-    if c.IsOwnedByParent then c.Free;
+    if assigned(ControlList[c1]) and (ControlList[c1] is TFarScapeControl) then
+    begin
+      c := ControlList[c1] as TFarScapeControl;
+      RemoveControl(c);
+      if c.IsOwnedByParent then c.Free;
+    end;
   end;
 end;
 
 procedure TFarScapeContainer.InsertControl(const aControl: TFarScapeControl);
+var
+  rc : TFarScapeAbstractRoot;
 begin
-  // IMPORTANT: Ordering is important!
-
   // 1) Add the control.
   if assigned(aControl.Parent) then raise EFarScapeException.Create('Control already has a parent.');
   ControlList.Add(aControl);
@@ -660,27 +872,36 @@ begin
   // 2) align new siblings...
   if aControl.Align <> TControlAlignment.caNone then self.RequestControlAlignment;
 
-  // 3) Notify the root...
-  if assigned(Root) then Root.ObjectHierarchyChanged;
+  // 3) Update root control for all controls.
+  rc := FindRoot;
+  SetRoot(aControl, rc);
+
+  // 4) Generate a ChildAddedEvent.
+  FarScapeEvent(  TChildAddedEvent.Create(aControl)  );
 end;
 
 procedure TFarScapeContainer.RemoveControl(const aControl: TFarScapeControl);
 begin
-  // IMPORTANT: Ordering is important!
+  if aControl.Parent <> self then raise EFarScapeException.Create('Control is not a child of this container control.');
+
+  FarScapeEvent(  TChildRemovingEvent.Create(aControl)  );
 
   // 1) Remove the control.
-  if aControl.Parent <> self then raise EFarScapeException.Create('Control is not a child of this container control.');
   ControlList.Remove(aControl);
-  aControl.fParent := nil;
+  aControl.FParent := nil;
+
 
   // 2) Align old siblings...
-  if aControl.Align <> TControlAlignment.caNone then self.RequestControlAlignment;
+  if (not (csIsDestroying in ControlState)) and (aControl.Align <> TControlAlignment.caNone)
+    then self.RequestControlAlignment;
 
   // 3) Remove the root for all children..
-  UpdateRootForAllControls(aControl, nil);
+  assert(aControl is TFarScapeControl);
+  SetRoot(aControl, nil);
 
-  // 4) Notify the root...
-  if assigned(Root) then Root.ObjectHierarchyChanged;
+  // Finally, trigger a child removed event.
+  FarScapeEvent(  TChildRemovedEvent.Create(aControl)  );
+
 end;
 
 procedure TFarScapeContainer.RequestControlAlignment;
@@ -690,32 +911,45 @@ end;
 
 procedure TFarScapeContainer.AlignChildControls;
 begin
-  ControlAlignmentAssistant.AlignChildControls(self as TFarScapeControl);
+  if ControlCount > 0 then ControlAlignmentAssistant.AlignChildControls(self as TFarScapeControl);
 end;
+
+
 
 { TFarScapeControl }
 
-procedure TFarScapeControl.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-
-end;
-
 procedure TFarScapeControl.MouseEnter;
 begin
-
+  FarScapeEvent(  TMouseEnterEvent.Create(self)  );
 end;
 
 procedure TFarScapeControl.MouseLeave;
 begin
+  FarScapeEvent(  TMouseLeaveEvent.Create(self)  );
+end;
 
+destructor TFarScapeControl.Destroy;
+begin
+  ControlState := ControlState + [csIsDestroying];
+  inherited;
+end;
+
+procedure TFarScapeControl.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FarScapeEvent(  TMouseDownEvent.Create(self, Button, Shift, X, Y)  );
 end;
 
 procedure TFarScapeControl.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
-
+  // Don't generate mouse move events by default. That will be a lot of events.
 end;
 
 procedure TFarScapeControl.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FarScapeEvent(  TMouseUpEvent.Create(self, Button, Shift, X, Y)  );
+end;
+
+procedure TFarScapeControl.PaintToBackBuffer(const DrawInfo: PRootDrawInfo);
 begin
 
 end;
@@ -723,6 +957,22 @@ end;
 procedure TFarScapeControl.PaintToDc(DC: HDC);
 begin
 
+end;
+
+procedure TFarScapeControl.RemoveAllEventListeners(const RemoveForChildren: boolean);
+var
+  c1: Integer;
+begin
+  if assigned(FEventDispatcher)
+    then FEventDispatcher.RemoveAllListeners;
+
+  if RemoveForChildren then
+  begin
+    for c1 := self.ControlCount-1 downto 0 do
+    begin
+      self.Control[c1].RemoveAllEventListeners(true);
+    end;
+  end;
 end;
 
 function TFarScapeControl.SetPropertyValue(const PropertyName: string; const StrArr: array of string; const IntArr: array of integer; const FloatArr: array of single; const BoolArr: array of boolean): boolean;
@@ -760,15 +1010,9 @@ begin
   inherited;
 end;
 
-procedure TFarScapeAbstractRoot.ObjectHierarchyChanged;
+procedure TFarScapeAbstractRoot.FarScapeEvent(const ev: TEventData; const ReleaseEvent: boolean);
 begin
-  UpdateRootForAllControls(self, self);
-  GetSceneInterface.RebuildScene;
-end;
-
-procedure TFarScapeAbstractRoot.ObjectLayoutChanged;
-begin
-  GetSceneInterface.UpdateScene;
+  inherited;
 end;
 
 procedure TFarScapeAbstractRoot.InvalidateRootRegion(r: TRect);
@@ -780,5 +1024,33 @@ begin
 end;
 
 
+
+
+
+{ TControlPosition }
+
+procedure TControlPosition.AssignFrom(const Source: TControlPosition);
+begin
+  self.Alignment  := source.Alignment;
+  self.Units      := source.Units;
+  self.Left       := source.Left;
+  self.Top        := source.Top;
+  self.Width      := source.Width;
+  self.Height     := source.Height;
+  self.GridWidth  := source.GridWidth;
+  self.GridHeight := source.GridHeight;
+end;
+
+procedure TControlPosition.Zero;
+begin
+  self.Alignment  := TControlAlignment.caNone;
+  self.Units      := puPixels;
+  self.Left       := 0;
+  self.Top        := 0;
+  self.Width      := 0;
+  self.Height     := 0;
+  self.GridWidth  := 100;
+  self.GridHeight := 100;
+end;
 
 end.

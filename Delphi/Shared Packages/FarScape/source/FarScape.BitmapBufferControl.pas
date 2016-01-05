@@ -11,6 +11,9 @@ uses
 type
   TFarScapeBitmapBufferControl = class(TFarScapeControl)
   private
+    // TODO:MED instead of giving each control a backbuffer. Make it possible to used
+    // a shared backbuffer that controls can request on each drawing update. That
+    // will reduce memory usage.
     fBackBuffer: TBitmap;
     fIsTransparent: boolean;
   protected

@@ -19,6 +19,20 @@ type
 
   TArrayOfMidiEvent = array of TMidiEvent;
 
+
+function IsMidiNoteOn(const ev : TMidiEvent):boolean;
+function IsMidiNoteOff(const ev : TMidiEvent):boolean;
+
 implementation
+
+function IsMidiNoteOn(const ev : TMidiEvent):boolean;
+begin
+  result := ((ev.Status = kMidiEventStatus.NoteOn) and (ev.Data2 > 0));
+end;
+
+function IsMidiNoteOff(const ev : TMidiEvent):boolean;
+begin
+  result :=  ((ev.Status = kMidiEventStatus.NoteOn) and (ev.Data2 = 0)) or (ev.Status = kMidiEventStatus.NoteOff);
+end;
 
 end.

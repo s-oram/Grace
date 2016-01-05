@@ -83,7 +83,10 @@ contains
   Test.Decal in 'UnitTests\Test.Decal.pas',
   VamLib.FlexValue in 'Source\VamLib.FlexValue.pas',
   Test.VamLib.FlexValue in 'UnitTests\Test.VamLib.FlexValue.pas',
-  VamLib.Wine in 'Source\VamLib.Wine.pas';
+  VamLib.Wine in 'Source\VamLib.Wine.pas',
+  Test.VamLib.Utils in 'UnitTests\Test.VamLib.Utils.pas',
+  VamLib.MultiCastEvents in 'Source\VamLib.MultiCastEvents.pas',
+  Test.VamLib.MultiCastEvents in 'UnitTests\Test.VamLib.MultiCastEvents.pas';
 
 end.
 

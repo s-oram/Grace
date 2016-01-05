@@ -4,7 +4,7 @@ unit AggConvGPC;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -83,14 +83,13 @@ type
     constructor Create(A, B: TAggVertexSource; Op: TAggGpcOp = goOr);
     destructor Destroy; override;
 
-    procedure SetSource1(Source: TAggVertexSource);
-    procedure SetSource2(Source: TAggVertexSource);
-
-    procedure Operation(V: TAggGpcOp);
-
     // Vertex Source Interface
     procedure Rewind(PathID: Cardinal); override;
     function Vertex(X, Y: PDouble): Cardinal; override;
+
+    property Operation: TAggGpcOp read FOperation write FOperation;
+    property SourceA: TAggVertexSource read FSourceA write FSourceA;
+    property SourceB: TAggVertexSource read FSourceB write FSourceB;
   end;
 
 implementation
@@ -98,7 +97,7 @@ implementation
 
 { TAggConvGpc }
 
-constructor TAggConvGpc.Create;
+constructor TAggConvGpc.Create(A, B: TAggVertexSource; Op: TAggGpcOp = goOr);
 begin
   FVertexAccumulator := TAggPodDeque.Create(SizeOf(TGpcVertex), 8);
   FContourAccumulator := TAggPodDeque.Create(SizeOf(TAggContourHeader), 6);
@@ -124,21 +123,6 @@ begin
   FContourAccumulator.Free;
 
   inherited;
-end;
-
-procedure TAggConvGpc.SetSource1;
-begin
-  FSourceA := Source;
-end;
-
-procedure TAggConvGpc.SetSource2;
-begin
-  FSourceB := Source;
-end;
-
-procedure TAggConvGpc.Operation;
-begin
-  FOperation := V;
 end;
 
 procedure TAggConvGpc.Rewind(PathID: Cardinal);
@@ -211,10 +195,9 @@ begin
   Result := CAggPathCmdStop;
 end;
 
-procedure TAggConvGpc.FreePolygon;
+procedure TAggConvGpc.FreePolygon(P: PGpcPolygon);
 var
   I: Integer;
-
 begin
   I := 0;
 
@@ -256,7 +239,7 @@ begin
   FVertexAccumulator.RemoveAll;
 end;
 
-procedure TAggConvGpc.SetAddVertex;
+procedure TAggConvGpc.SetAddVertex(X, Y: Double);
 var
   V: TGpcVertex;
 begin
@@ -266,12 +249,11 @@ begin
   FVertexAccumulator.Add(@V);
 end;
 
-procedure TAggConvGpc.EndContour;
+procedure TAggConvGpc.EndContour(Orientation: Cardinal);
 var
-  H   : PAggContourHeader;
+  H: PAggContourHeader;
   D, S: PAggGpcVertex;
-  I   : Integer;
-
+  I: Integer;
 begin
   if FContourAccumulator.Size <> 0 then
     if FVertexAccumulator.Size > 2 then
@@ -303,7 +285,7 @@ begin
       FVertexAccumulator.RemoveLast;
 end;
 
-procedure TAggConvGpc.MakePolygon;
+procedure TAggConvGpc.MakePolygon(P: PGpcPolygon);
 var
   I: Integer;
   H: PAggContourHeader;
@@ -363,7 +345,7 @@ begin
     Result := False;
 end;
 
-function TAggConvGpc.NextVertex;
+function TAggConvGpc.NextVertex(X, Y: PDouble): Boolean;
 var
   Vlist: PGpcVertexList;
   V: PAggGpcVertex;
@@ -386,7 +368,7 @@ begin
     Result := False;
 end;
 
-procedure TAggConvGpc.Add;
+procedure TAggConvGpc.Add(Src: TAggVertexSource; P: PGpcPolygon);
 var
   Cmd, Orientation: Cardinal;
   X, Y, StartX, StartY: Double;

@@ -98,6 +98,7 @@ function IsIntegerString(const Value : string):boolean;
 function IsMidiKeyNameString(Value : string):boolean; overload;
 function IsMidiKeyNameString(Value : string; out MidiNoteNumber : integer):boolean; overload;
 function MidiKeyNameToNoteNumber(Value : string):integer;
+function MidiNoteToText(const Note : integer):string;
 
 
 
@@ -116,6 +117,13 @@ function ExpandFloat(const Value : single; MinValue, MaxValue : integer):integer
 // TODO:MED ValueSplit was copied from eeFunctions.pas. It propbably overlaps with ExpandFloat. Check and convert if it
 // does. Otherwise remove the deprecated tag.
 function ValueSplit(IndexValue:single; SplitCount:integer):integer; deprecated;
+
+// TODO:HIGH these functions need to be tested.
+function VstFloatToBool(const InputValue : single):boolean;
+function VstFloatToInt(const InputValue : single; const MinValue, MaxValue : integer):integer;
+function IntToVstFloat(const InputValue, MinValue, MaxValue : integer):single;
+
+
 
 
 //==============================================================
@@ -356,6 +364,44 @@ begin
   if x = SplitCount then x := x-1;
   result := x;
 end;
+
+function VstFloatToBool(const InputValue : single):boolean;
+begin
+  // IMPORANT: VstFloatToBool() should round to values identically to VstFloatToInt()/
+  result := (InputValue >= 0.5);
+end;
+
+function VstFloatToInt(const InputValue : single; const MinValue, MaxValue : integer):integer;
+var
+  x:integer;
+  OutRange : integer;
+begin
+  assert(InputValue >= 0);
+  assert(InputValue <= 1);
+  assert(MaxValue > MinValue);
+
+  OutRange := MaxValue - MinValue + 1;
+
+  x := floor(InputValue * OutRange);
+  if x = OutRange then x := x-1;
+  result := x + MinValue;
+end;
+
+function IntToVstFloat(const InputValue, MinValue, MaxValue : integer):single;
+var
+  OutRange : integer;
+begin
+  assert(InputValue >= MinValue);
+  assert(InputValue <= MaxValue);
+  assert(MaxValue > MinValue);
+
+  OutRange := MaxValue - MinValue;
+
+  if OutRange > 0
+    then result := (InputValue - MinValue) / OutRange
+    else result := 0;
+end;
+
 
 
 function BytesToMegaBytes(const Value : single):single;
@@ -776,8 +822,36 @@ begin
   result := TryStrToInt(Value, x);
 end;
 
+function MidiNoteToText(const Note : integer):string;
+var
+  NoteLabel : string;
+  Octave : integer;
+begin
+  assert( (Note >= 0) and (Note <= 127) );
 
-function MidiKeyNameToNoteNumber(Value : string):integer; 
+  Octave := floor(Note / 12) - 2;
+
+  case Note mod 12 of
+  0:  NoteLabel := 'C'  + IntToStr(Octave);
+  1:  NoteLabel := 'C#' + IntToStr(Octave);
+  2:  NoteLabel := 'D'  + IntToStr(Octave);
+  3:  NoteLabel := 'D#' + IntToStr(Octave);
+  4:  NoteLabel := 'E'  + IntToStr(Octave);
+  5:  NoteLabel := 'F'  + IntToStr(Octave);
+  6:  NoteLabel := 'F#' + IntToStr(Octave);
+  7:  NoteLabel := 'G'  + IntToStr(Octave);
+  8:  NoteLabel := 'G#' + IntToStr(Octave);
+  9:  NoteLabel := 'A'  + IntToStr(Octave);
+  10: NoteLabel := 'A#' + IntToStr(Octave);
+  11: NoteLabel := 'B'  + IntToStr(Octave);
+  else
+    NoteLabel := 'x';
+  end;
+
+  result := NoteLabel;
+end;
+
+function MidiKeyNameToNoteNumber(Value : string):integer;
 var
   x : integer;
 begin

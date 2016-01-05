@@ -4,7 +4,7 @@ unit AggSvgParser;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -24,12 +24,12 @@ unit AggSvgParser;
 
 interface
 
-{$DEFINE EXPAT_WRAPPER}
+{-$DEFINE EXPAT_WRAPPER}
 {$I AggCompiler.inc}
 
 uses
   SysUtils,
-  AnsiStrings,
+  Expat,
   AggBasics,
   AggColor,
   AggSvgPathTokenizer,
@@ -37,7 +37,6 @@ uses
   AggSvgException,
   AggTransAffine,
   AggMathStroke,
-  Expat,
   AggFileUtils;
 
 const
@@ -60,13 +59,13 @@ type
     constructor Create(Path: TPathRenderer);
     destructor Destroy; override;
 
-    procedure Parse(Fname: ShortString);
+    procedure Parse(FileName: ShortString);
     function Title: PAnsiChar;
 
     // XML event handlers
     procedure ParseAttr(Attr: PPAnsiChar); overload;
     procedure ParsePath(Attr: PPAnsiChar);
-    procedure ParsePoly(Attr: PPAnsiChar; Close_flag: Boolean);
+    procedure ParsePoly(Attr: PPAnsiChar; CloseFlag: Boolean);
     procedure ParseRect(Attr: PPAnsiChar);
     procedure ParseLine(Attr: PPAnsiChar);
     procedure ParseStyle(Str: PAnsiChar);
@@ -80,10 +79,10 @@ type
     function ParseSkewY(Str: PAnsiChar): Cardinal;
 
     function ParseAttr(Name, Value: PAnsiChar): Boolean; overload;
-    function ParseNameValue(Nv_start, Nv_end: PAnsiChar): Boolean;
+    function ParseNameValue(NameValueStart, NameValueStop: PAnsiChar): Boolean;
 
-    procedure CopyName(Start, End_: PAnsiChar);
-    procedure CopyValue(Start, End_: PAnsiChar);
+    procedure CopyName(Start, Stop: PAnsiChar);
+    procedure CopyValue(Start, Stop: PAnsiChar);
   end;
 
 procedure StartElement(Data: Pointer; El: PAnsiChar; Attr: PPAnsiChar);
@@ -94,6 +93,22 @@ procedure Content(Data: Pointer; S: PAnsiChar; Len: Integer);
 {$IFDEF EXPAT_WRAPPER}cdecl; {$ENDIF}
 
 implementation
+
+resourcestring
+  RCStrInvalidCharacter = 'Invalid character (%d)';
+  RCStrStartElementNestedPath = 'StartElement: Nested path';
+  RCStrParseTransformArgs = 'ParseTransformArgs: Invalid syntax';
+  RCStrParseTransformTooManyArgs = 'ParseTransformArgs: Too many arguments';
+  RCStrCouldntAllocateMemory = 'Couldn''t allocate memory for parser';
+  RCStrCouldntOpenFile = 'Couldn''t open file %s';
+  RCStrSAtLineD = '%s at line %d'#13;
+  RCStrParsePolyTooFewCoords = 'ParsePoly: Too few coordinates';
+  RCStrParsePolyOddNumber = 'ParsePoly: Odd number of coordinates';
+  RCStrParseRectInvalidWidth = 'ParseRect: Invalid width: %d';
+  RCStrParseRectInvalidHeight = 'ParseRect: Invalid height: %d';
+  RCStrParseMatrixInvalid = 'ParseMatrix: Invalid number of arguments';
+  RCStrParseRotateInvalid = 'ParseRotate: Invalid number of arguments';
+  RCStrParseColorInvalidColorName = 'ParseColor: Invalid color name %s'#0;
 
 type
   PNamedColor = ^TNamedColor;
@@ -122,7 +137,7 @@ const
     (name: 'chartreuse'; R: 127; G: 255; B: 0; A: 255),
     (name: 'chocolate'; R: 210; G: 105; B: 30; A: 255),
     (name: 'coral'; R: 255; G: 127; B: 80; A: 255),
-    (name: 'cornfLowerblue'; R: 100; G: 149; B: 237; A: 255),
+    (name: 'cornflowerblue'; R: 100; G: 149; B: 237; A: 255),
     (name: 'cornsilk'; R: 255; G: 248; B: 220; A: 255),
     (name: 'crimson'; R: 220; G: 20; B: 60; A: 255),
     (name: 'cyan'; R: 0; G: 255; B: 255; A: 255),
@@ -160,7 +175,7 @@ const
     (name: 'goldenrod'; R: 218; G: 165; B: 32; A: 255),
     (name: 'gray'; R: 128; G: 128; B: 128; A: 255),
     (name: 'green'; R: 0; G: 128; B: 0; A: 255),
-    (name: 'greenyelLow'; R: 173; G: 255; B: 47; A: 255),
+    (name: 'greenyellow'; R: 173; G: 255; B: 47; A: 255),
     (name: 'grey'; R: 128; G: 128; B: 128; A: 255),
     (name: 'honeydew'; R: 240; G: 255; B: 240; A: 255),
     (name: 'hotpink'; R: 255; G: 105; B: 180; A: 255),
@@ -175,7 +190,7 @@ const
     (name: 'lightblue'; R: 173; G: 216; B: 230; A: 255),
     (name: 'lightcoral'; R: 240; G: 128; B: 128; A: 255),
     (name: 'lightcyan'; R: 224; G: 255; B: 255; A: 255),
-    (name: 'lightgoldenrodyelLow'; R: 250; G: 250; B: 210; A: 255),
+    (name: 'lightgoldenrodyellow'; R: 250; G: 250; B: 210; A: 255),
     (name: 'lightgray'; R: 211; G: 211; B: 211; A: 255),
     (name: 'lightgreen'; R: 144; G: 238; B: 144; A: 255),
     (name: 'lightgrey'; R: 211; G: 211; B: 211; A: 255),
@@ -186,7 +201,7 @@ const
     (name: 'lightslategray'; R: 119; G: 136; B: 153; A: 255),
     (name: 'lightslategrey'; R: 119; G: 136; B: 153; A: 255),
     (name: 'lightsteelblue'; R: 176; G: 196; B: 222; A: 255),
-    (name: 'lightyelLow'; R: 255; G: 255; B: 224; A: 255),
+    (name: 'lightyellow'; R: 255; G: 255; B: 224; A: 255),
     (name: 'lime'; R: 0; G: 255; B: 0; A: 255),
     (name: 'limegreen'; R: 50; G: 205; B: 50; A: 255),
     (name: 'linen'; R: 250; G: 240; B: 230; A: 255),
@@ -250,32 +265,29 @@ const
     (name: 'wheat'; R: 245; G: 222; B: 179; A: 255),
     (name: 'white'; R: 255; G: 255; B: 255; A: 255),
     (name: 'whitesmoke'; R: 245; G: 245; B: 245; A: 255),
-    (name: 'yelLow'; R: 255; G: 255; B: 0; A: 255),
-    (name: 'yelLowgreen'; R: 154; G: 205; B: 50; A: 255),
+    (name: 'yellow'; R: 255; G: 255; B: 0; A: 255),
+    (name: 'yellowgreen'; R: 154; G: 205; B: 50; A: 255),
     (name: 'zzzzzzzzzzz'; R: 0; G: 0; B: 0; A: 0));
 
-  PageEqHigh: ShortString = #1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16 +
-    #17#18#19#20#21#22#23#24#25#26#27#28#29#30#31#32 +
-    #33#34#35#36#37#38#39#40#41#42#43#44#45#46#47#48 +
-    #49#50#51#52#53#54#55#56#57#58#59#60#61#62#63#64 +
-    #65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80 +
-    #81#82#83#84#85#86#87#88#89#90#91#92#93#94#95#96 +
-    #65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80 +
-    #81#82#83#84#85#86#87#88#89#90#123#124#125#126#127#128 +
-    #129#130#131#132#133#134#135#136#137#138#139#140#141#142#143#144 +
-    #145#146#147#148#149#150#151#152#153#154#155#156#157#158#159#160 +
-    #161#162#163#164#165#166#167#168#169#170#171#172#173#174#175#176 +
-    #177#178#179#180#181#182#183#184#185#186#187#188#189#190#191#192 +
-    #193#194#195#196#197#198#199#200#201#202#203#204#205#206#207#208 +
-    #209#210#211#212#213#214#215#216#217#218#219#220#221#222#223#224 +
-    #225#226#227#228#229#230#231#232#233#234#235#236#237#238#239#240 +
-    #241#242#243#244#245#246#247#248#249#250#251#252#253#254#255;
+  PageEqHigh: ShortString = #1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19 +
+    #20#21#22#23#24#25#26#27#28#29#30#31#32#33#34#35#36#37#38#39#40#41#42#43 +
+    #44#45#46#47#48#49#50#51#52#53#54#55#56#57#58#59#60#61#62#63#64#65#66#67 +
+    #68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#84#85#86#87#88#89#90#91 +
+    #92#93#94#95#96#65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83 +
+    #84#85#86#87#88#89#90#123#124#125#126#127#128#129#130#131#132#133#134 +
+    #135#136#137#138#139#140#141#142#143#144#145#146#147#148#149#150#151#152 +
+    #153#154#155#156#157#158#159#160#161#162#163#164#165#166#167#168#169#170 +
+    #171#172#173#174#175#176#177#178#179#180#181#182#183#184#185#186#187#188 +
+    #189#190#191#192#193#194#195#196#197#198#199#200#201#202#203#204#205#206 +
+    #207#208#209#210#211#212#213#214#215#216#217#218#219#220#221#222#223#224 +
+    #225#226#227#228#229#230#231#232#233#234#235#236#237#238#239#240#241#242 +
+    #243#244#245#246#247#248#249#250#251#252#253#254#255;
 
 procedure StartElement(Data: Pointer; El: PAnsiChar; Attr: PPAnsiChar);
 var
   This: TParser;
 begin
-  This := TParser(Data);
+  This := TParser(Data^);
 
   if CompareStr(AnsiString(El), 'title') = 0 then
     This.FTitleFlag := True
@@ -287,7 +299,7 @@ begin
   else if CompareStr(AnsiString(El), 'path') = 0 then
   begin
     if This.FPathFlag then
-      raise TSvgException.Create('start_element: Nested path');
+      raise TSvgException.Create(RCStrStartElementNestedPath);
 
     This.FPath.BeginPath;
     This.ParsePath(Attr);
@@ -305,7 +317,7 @@ begin
     This.ParsePoly(Attr, True);
 
   // else
-  // if StrComp(PAnsiChar(el ) ,'<OTHER_ELEMENTS>' ) = 0 then
+  // if StrComp(PAnsiChar(El), '<OTHER_ELEMENTS>') = 0 then
   // begin
   // end
   // ...
@@ -315,7 +327,7 @@ procedure EndElement(Data: Pointer; El: PAnsiChar);
 var
   This: TParser;
 begin
-  This := TParser(Data);
+  This := TParser(Data^);
 
   if CompareStr(AnsiString(El), 'title') = 0 then
     This.FTitleFlag := False
@@ -325,7 +337,7 @@ begin
     This.FPathFlag := False;
 
   // else
-  // if CompareStr(AnsiString(el ) ,'<OTHER_ELEMENTS>' ) = 0 then
+  // if CompareStr(AnsiString(El), '<OTHER_ELEMENTS>') = 0 then
   // begin
   // end
   // ...
@@ -335,7 +347,7 @@ procedure Content(Data: Pointer; S: PAnsiChar; Len: Integer);
 var
   This: TParser;
 begin
-  This := TParser(Data);
+  This := TParser(Data^);
 
   // FTitleFlag signals that the <title> tag is being parsed now.
   // The following code concatenates the pieces of content of the <title> tag.
@@ -382,16 +394,12 @@ function HexCardinal(Hexstr: PAnsiChar): Cardinal;
   end;
 
 var
-  H            : ShortString;
-  Fcb          : Byte;
-  Yps, Mul, Num: Cardinal;
-
-label
-  Err, Esc;
+  H: ShortString;
+  Fcb: Byte;
+  Yps, Mul: Cardinal;
 
 const
   Hex: string[16] = '0123456789ABCDEF';
-
 begin
   H := '';
 
@@ -404,47 +412,33 @@ begin
 
   if Length(H) > 0 then
   begin
-    case H[Length(H)] of
-      '0'..'9', 'A'..'F':
-      else
-        goto Err;
-    end;
+    if not CharInSet(H[Length(H)], ['0'..'9', 'A'..'F']) then
+      raise TSvgException.CreateFmt(RCStrInvalidCharacter, [H[Length(H)]]);
 
-    Num := Pos(H[Length(H)], Hex) - 1;
+    Result := Pos(H[Length(H)], Hex) - 1;
     Yps := 2;
     Mul := Xyint(4, Yps);
 
     if Length(H) > 1 then
       for Fcb := Length(H) - 1 downto 1 do
       begin
-        case H[Fcb] of
-          '0'..'9', 'A'..'F':
-          else
-            goto Err;
-        end;
+        if not CharInSet(H[Fcb], ['0'..'9', 'A'..'F']) then
+          raise TSvgException.CreateFmt(RCStrInvalidCharacter, [H[Fcb]]);
 
-        Inc(Num, (Pos(H[Fcb], Hex) - 1) * Mul);
+        Inc(Result, (Pos(H[Fcb], Hex) - 1) * Mul);
         Inc(Yps, 2);
 
         Mul := Xyint(4, Yps);
       end;
 
-    goto Esc;
+    Exit;
   end;
-
-Err:
-  Num := 0;
-
-Esc:
-  Result := Num;
 end;
 
 function ParseColor(Str: PAnsiChar): TAggColor;
 var
   U: Cardinal;
   P: PNamedColor;
-  M: ShortString;
-
 begin
   while Str^ = ' ' do
     Inc(PtrComp(Str));
@@ -456,7 +450,6 @@ begin
     U := HexCardinal(Str);
 
     Result.Rgba8 := Rgb8Packed(U);
-
   end
   else
   begin
@@ -471,11 +464,7 @@ begin
       end;
 
     if P = nil then
-    begin
-      M := 'parseColor: Invalid color name ' + AnsiString(Str) + #0;
-
-      raise TSvgException.Create(M);
-    end;
+      raise TSvgException.CreateFmt(RCStrParseColorInvalidColorName, [Str]);
 
     Result.FromRgbaInteger(P.R, P.G, P.B, P.A);
   end;
@@ -491,13 +480,7 @@ end;
 
 function IsLower(Ch: AnsiChar): Boolean;
 begin
-  case Ch of
-    #97..#122:
-      Result := True;
-
-  else
-    Result := False;
-  end;
+  Result := CharInSet(Ch, [#97..#122]);
 end;
 
 function IsNumeric(Ch: AnsiChar): Boolean;
@@ -508,7 +491,7 @@ end;
 function ParseTransformArgs(Str: PAnsiChar; Args: PDouble;
   Max_na: Cardinal; Na: PCardinal): Cardinal;
 var
-  Ptr, End_: PAnsiChar;
+  Ptr, Stop: PAnsiChar;
   PtrDouble : PDouble;
   Value: Double;
 begin
@@ -519,21 +502,21 @@ begin
     Inc(PtrComp(Ptr));
 
   if Ptr^ = #0 then
-    raise TSvgException.Create('ParseTransformArgs: Invalid syntax');
+    raise TSvgException.Create(RCStrParseTransformArgs);
 
-  End_ := Ptr;
+  Stop := Ptr;
 
-  while (End_^ <> #0) and (End_^ <> ')') do
-    Inc(PtrComp(End_));
+  while (Stop^ <> #0) and (Stop^ <> ')') do
+    Inc(PtrComp(Stop));
 
-  if End_^ = #0 then
-    raise TSvgException.Create('ParseTransformArgs: Invalid syntax');
+  if Stop^ = #0 then
+    raise TSvgException.Create(RCStrParseTransformArgs);
 
-  while PtrComp(Ptr) < PtrComp(End_) do
+  while PtrComp(Ptr) < PtrComp(Stop) do
     if IsNumeric(Ptr^) then
     begin
       if Na^ >= Max_na then
-        raise TSvgException.Create('ParseTransformArgs: Too many arguments');
+        raise TSvgException.Create(RCStrParseTransformTooManyArgs);
 
       Value := GetDouble(Ptr);
       PtrDouble := PDouble(PtrComp(Args) + Na^ * SizeOf(Double));
@@ -541,19 +524,19 @@ begin
 
       Inc(Na^);
 
-      while (PtrComp(Ptr) < PtrComp(End_)) and IsNumeric(Ptr^) do
+      while (PtrComp(Ptr) < PtrComp(Stop)) and IsNumeric(Ptr^) do
         Inc(PtrComp(Ptr));
     end
     else
       Inc(PtrComp(Ptr));
 
-  Result := Cardinal(PtrComp(End_) - PtrComp(Str));
+  Result := Cardinal(PtrComp(Stop) - PtrComp(Str));
 end;
 
 
 { TParser }
 
-constructor TParser.Create;
+constructor TParser.Create(Path: TPathRenderer);
 begin
   FPath := Path;
 
@@ -588,31 +571,31 @@ begin
   inherited;
 end;
 
-procedure TParser.Parse(Fname: ShortString);
+procedure TParser.Parse(FileName: ShortString);
 var
-  P : TXMLParser;
+  P : TXmlParser;
   Af: TApiFile;
   Ts: PAnsiChar;
   Done: Boolean;
   Len : Integer;
 begin
-  P := XMLParserCreate(nil);
+  P := XmlParserCreate(nil);
 
   if P = nil then
-    raise TSvgException.Create('Couldn''t allocate memory for parser');
+    raise TSvgException.Create(RCStrCouldntAllocateMemory);
 
-  XMLSetUserData(P, @Self);
-  XMLSetElementHandler(P, @StartElement, @EndElement);
-  XMLSetCharacterDataHandler(P, @Content);
+  XmlSetUserData(P, @Self);
+  XmlSetElementHandler(P, @StartElement, @EndElement);
+  XmlSetCharacterDataHandler(P, @Content);
 
-  Fname := Fname + #0;
+  FileName := FileName + #0;
 
-  Dec(Byte(Fname[0]));
+  Dec(Byte(FileName[0]));
 
-  if not ApiOpenFile(Af, Fname) then
+  if not ApiOpenFile(Af, FileName) then
   begin
-    XMLParserFree(P);
-    raise TSvgException.Create(Format('Couldn''t open file %s', [Fname[1]]));
+    XmlParserFree(P);
+    raise TSvgException.CreateFmt(RCStrCouldntOpenFile, [FileName[1]]);
   end;
 
   Done := False;
@@ -622,20 +605,19 @@ begin
 
     Done := Len < CAggBufferSize;
 
-    if XMLParse(P, Pointer(FBuffer), Len, Integer(Done)) = TXmlStatus.xsError then
+    if XmlParse(P, Pointer(FBuffer), Len, Integer(Done)) = xsError then
     begin
       ApiCloseFile(Af);
-      XMLParserFree(P);
+      XmlParserFree(P);
 
-      raise TSvgException.Create(Format('%s at line %d'#13, [Cardinal(
-        XMLErrorString(TXMLError(XMLGetErrorCode(P)))),
-        XMLGetCurrentLineNumber(P)]));
+      raise TSvgException.CreateFmt(RCStrSAtLineD, [Cardinal(
+        XmlErrorString(TXmlError(XmlGetErrorCode(P)))),
+        XmlGetCurrentLineNumber(P)]);
     end;
-
   until Done;
 
   ApiCloseFile(Af);
-  XMLParserFree(P);
+  XmlParserFree(P);
 
   Ts := FTitle;
 
@@ -648,7 +630,7 @@ begin
   end;
 end;
 
-function TParser.Title;
+function TParser.Title: PAnsiChar;
 begin
   Result := FTitle;
 end;
@@ -656,7 +638,6 @@ end;
 procedure TParser.ParseAttr(Attr: PPAnsiChar);
 var
   I: Integer;
-
 begin
   I := 0;
 
@@ -674,12 +655,10 @@ begin
   end;
 end;
 
-procedure TParser.ParsePath;
+procedure TParser.ParsePath(Attr: PPAnsiChar);
 var
   I: Integer;
-
   Tmp: array [0..3] of PAnsiChar;
-
 begin
   I := 0;
 
@@ -696,7 +675,6 @@ begin
         SizeOf(PAnsiChar))^);
 
       FPath.ParsePath(FTokenizer);
-
     end
     else
     begin
@@ -715,7 +693,7 @@ begin
   end;
 end;
 
-procedure TParser.ParsePoly;
+procedure TParser.ParsePoly(Attr: PPAnsiChar; CloseFlag: Boolean);
 var
   I: Integer;
   X, Y: Double;
@@ -739,12 +717,12 @@ begin
           * SizeOf(PAnsiChar))^);
 
         if not FTokenizer.Next then
-          raise TSvgException.Create('parse_poly: Too few coordinates');
+          raise TSvgException.Create(RCStrParsePolyTooFewCoords);
 
         X := FTokenizer.LastNumber;
 
         if not FTokenizer.Next then
-          raise TSvgException.Create('parse_poly: Too few coordinates');
+          raise TSvgException.Create(RCStrParsePolyTooFewCoords);
 
         Y := FTokenizer.LastNumber;
 
@@ -755,7 +733,7 @@ begin
           X := FTokenizer.LastNumber;
 
           if not FTokenizer.Next then
-            raise TSvgException.Create('parse_poly: Odd number of coordinates');
+            raise TSvgException.Create(RCStrParsePolyOddNumber);
 
           Y := FTokenizer.LastNumber;
 
@@ -769,7 +747,7 @@ begin
   FPath.EndPath;
 end;
 
-procedure TParser.ParseRect;
+procedure TParser.ParseRect(Attr: PPAnsiChar);
 var
   I: Integer;
   X, Y, W, H: Double;
@@ -819,10 +797,10 @@ begin
   if (W <> 0.0) and (H <> 0.0) then
   begin
     if W < 0.0 then
-      raise TSvgException.Create('parse_rect: Invalid width: ');
+      raise TSvgException.CreateFmt(RCStrParseRectInvalidWidth, [W]);
 
     if H < 0.0 then
-      raise TSvgException.Create('parse_rect: Invalid height: ');
+      raise TSvgException.CreateFmt(RCStrParseRectInvalidHeight, [H]);
 
     FPath.MoveTo(X, Y);
     FPath.LineTo(X + W, Y);
@@ -834,7 +812,7 @@ begin
   FPath.EndPath;
 end;
 
-procedure TParser.ParseLine;
+procedure TParser.ParseLine(Attr: PPAnsiChar);
 var
   I: Integer;
   X1, Y1, X2, Y2: Double;
@@ -883,9 +861,9 @@ begin
   FPath.EndPath;
 end;
 
-procedure TParser.ParseStyle;
+procedure TParser.ParseStyle(Str: PAnsiChar);
 var
-  Nv_start, Nv_end: PAnsiChar;
+  NameValueStart, NameValueStop: PAnsiChar;
 begin
   while Str^ <> #0 do
   begin
@@ -893,53 +871,55 @@ begin
     while (Str^ <> #0) and (Str^ = ' ') do
       Inc(PtrComp(Str));
 
-    Nv_start := Str;
+    NameValueStart := Str;
 
     while (Str^ <> #0) and (Str^ <> ';') do
       Inc(PtrComp(Str));
 
-    Nv_end := Str;
+    NameValueStop := Str;
 
     // Right Trim
-    while (PtrComp(Nv_end) > PtrComp(Nv_start)) and
-      ((Nv_end^ = ';') or (Nv_end^ = ' ')) do
-      Dec(PtrComp(Nv_end));
+    while (PtrComp(NameValueStop) > PtrComp(NameValueStart)) and
+      ((NameValueStop^ = ';') or (NameValueStop^ = ' ')) do
+      Dec(PtrComp(NameValueStop));
 
-    Inc(PtrComp(Nv_end));
+    Inc(PtrComp(NameValueStop));
 
-    ParseNameValue(Nv_start, Nv_end);
+    ParseNameValue(NameValueStart, NameValueStop);
 
     if Str^ <> #0 then
       Inc(PtrComp(Str));
   end;
 end;
 
-procedure TParser.ParseTransform;
+procedure TParser.ParseTransform(Str: PAnsiChar);
 begin
   while Str^ <> #0 do
   begin
-    if IsLower(Str^) then
-      if StrLComp(PAnsiChar(Str), 'matrix', 6) = 0 then
-        Inc(PtrComp(Str), ParseMatrix(Str))
-      else if StrLComp(PAnsiChar(Str), 'translate', 9) = 0 then
-        Inc(PtrComp(Str), ParseTranslate(Str))
-      else if StrLComp(PAnsiChar(Str), 'rotate', 6) = 0 then
-        Inc(PtrComp(Str), ParseRotate(Str))
-      else if StrLComp(PAnsiChar(Str), 'scale', 5) = 0 then
-        Inc(PtrComp(Str), ParseScale(Str))
-      else if StrLComp(PAnsiChar(Str), 'skewX', 5) = 0 then
-        Inc(PtrComp(Str), ParseSkewX(Str))
-      else if StrLComp(PAnsiChar(Str), 'skewY', 5) = 0 then
-        Inc(PtrComp(Str), ParseSkewY(Str))
+    case Str^ of
+      'm':
+        if StrLComp(PAnsiChar(Str), 'matrix', 6) = 0 then
+          Inc(PtrComp(Str), ParseMatrix(Str));
+      't':
+        if StrLComp(PAnsiChar(Str), 'translate', 9) = 0 then
+          Inc(PtrComp(Str), ParseTranslate(Str));
+      'r':
+        if StrLComp(PAnsiChar(Str), 'rotate', 6) = 0 then
+          Inc(PtrComp(Str), ParseRotate(Str));
+      's':
+        if StrLComp(PAnsiChar(Str), 'scale', 5) = 0 then
+          Inc(PtrComp(Str), ParseScale(Str))
+        else if StrLComp(PAnsiChar(Str), 'skewX', 5) = 0 then
+          Inc(PtrComp(Str), ParseSkewX(Str))
+        else if StrLComp(PAnsiChar(Str), 'skewY', 5) = 0 then
+          Inc(PtrComp(Str), ParseSkewY(Str));
       else
-        Inc(PtrComp(Str))
-
-    else
-      Inc(PtrComp(Str));
+        Inc(PtrComp(Str));
+    end;
   end;
 end;
 
-function TParser.ParseMatrix;
+function TParser.ParseMatrix(Str: PAnsiChar): Cardinal;
 var
   Args: TAggParallelogram;
   Na, Len: Cardinal;
@@ -949,7 +929,7 @@ begin
   Len := ParseTransformArgs(Str, @Args, 6, @Na);
 
   if Na <> 6 then
-    raise TSvgException.Create('parse_matrix: Invalid number of arguments');
+    raise TSvgException.Create(RCStrParseMatrixInvalid);
 
   Ta := TAggTransAffine.Create(Args[0], Args[1], Args[2], Args[3], Args[4],
     Args[5]);
@@ -962,7 +942,7 @@ begin
   Result := Len;
 end;
 
-function TParser.ParseTranslate;
+function TParser.ParseTranslate(Str: PAnsiChar): Cardinal;
 var
   Args: array [0..1] of Double;
   Na, Len: Cardinal;
@@ -974,17 +954,13 @@ begin
   if Na = 1 then
     Args[1] := 0.0;
 
-  Tat := TAggTransAffineTranslation.Create(Args[0], Args[1]);
-  try
-    FPath.Transform.PreMultiply(Tat);
-  finally
-    Tat.Free;
-  end;
+  FPath.Transform.InitializeTransforms;
+  FPath.Transform.Translate(Args[0], Args[1]);
 
   Result := Len;
 end;
 
-function TParser.ParseRotate;
+function TParser.ParseRotate(Str: PAnsiChar): Cardinal;
 var
   Args: array [0..2] of Double;
   Na, Len: Cardinal;
@@ -1007,31 +983,20 @@ begin
   begin
     T := TAggTransAffineTranslation.Create(-Args[1], -Args[2]);
     try
-      Tar := TAggTransAffineRotation.Create(Deg2Rad(Args[0]));
-      try
-        T.Multiply(Tar);
-      finally
-        Tar.Free;
-      end;
-
-      Tat := TAggTransAffineTranslation.Create(Args[1], Args[2]);
-      try
-        T.Multiply(Tat);
-      finally
-        Tat.Free;
-      end;
+      T.Rotate(Deg2Rad(Args[0]));
+      T.Translate(Args[1], Args[2]);
       FPath.Transform.PreMultiply(T);
     finally
       T.Free;
     end;
   end
   else
-    raise TSvgException.Create('parse_rotate: Invalid number of arguments');
+    raise TSvgException.Create(RCStrParseRotateInvalid);
 
   Result := Len;
 end;
 
-function TParser.ParseScale;
+function TParser.ParseScale(Str: PAnsiChar): Cardinal;
 var
   Args: array [0..1] of Double;
   Na, Len: Cardinal;
@@ -1053,7 +1018,7 @@ begin
   Result := Len;
 end;
 
-function TParser.ParseSkewX;
+function TParser.ParseSkewX(Str: PAnsiChar): Cardinal;
 var
   Arg: Double;
   Na, Len: Cardinal;
@@ -1072,7 +1037,7 @@ begin
   Result := Len;
 end;
 
-function TParser.ParseSkewY;
+function TParser.ParseSkewY(Str: PAnsiChar): Cardinal;
 var
   Arg: Double;
   Na, Len: Cardinal;
@@ -1109,7 +1074,7 @@ begin
       FPath.SetFillColor(@Clr);
     end
   else if CompareStr(AnsiString(name), 'fill-opacity') = 0 then
-    FPath.SetFillOpacity(ParseDouble(Value))
+    FPath.FillOpacity := ParseDouble(Value)
   else if CompareStr(AnsiString(name), 'stroke') = 0 then
     if CompareStr(AnsiString(Value), 'none') = 0 then
       FPath.StrokeNone
@@ -1120,29 +1085,29 @@ begin
       FPath.SetStrokeColor(@Clr);
     end
   else if CompareStr(AnsiString(name), 'stroke-width') = 0 then
-    FPath.SetStrokeWidth(ParseDouble(Value))
+    FPath.StrokeWidth := ParseDouble(Value)
   else if CompareStr(AnsiString(name), 'stroke-linecap') = 0 then
   begin
     if CompareStr(AnsiString(Value), 'butt') = 0 then
-      FPath.SetLineCap(lcButt)
+      FPath.LineCap := lcButt
     else if CompareStr(AnsiString(Value), 'round') = 0 then
-      FPath.SetLineCap(lcRound)
+      FPath.LineCap := lcRound
     else if CompareStr(AnsiString(Value), 'square') = 0 then
-      FPath.SetLineCap(lcSquare);
+      FPath.LineCap := lcSquare;
   end
   else if CompareStr(AnsiString(name), 'stroke-linejoin') = 0 then
   begin
     if CompareStr(AnsiString(Value), 'miter') = 0 then
-      FPath.SetLineJoin(ljMiter)
+      FPath.LineJoin := ljMiter
     else if CompareStr(AnsiString(Value), 'round') = 0 then
-      FPath.SetLineJoin(ljRound)
+      FPath.LineJoin := ljRound
     else if CompareStr(AnsiString(Value), 'bevel') = 0 then
-      FPath.SetLineJoin(ljBevel);
+      FPath.LineJoin := ljBevel;
   end
   else if CompareStr(AnsiString(name), 'stroke-miterlimit') = 0 then
-    FPath.SetMiterLimit(ParseDouble(Value))
+    FPath.MiterLimit := ParseDouble(Value)
   else if CompareStr(AnsiString(name), 'stroke-opacity') = 0 then
-    FPath.SetStrokeOpacity(ParseDouble(Value))
+    FPath.StrokeOpacity := ParseDouble(Value)
   else if CompareStr(AnsiString(name), 'transform') = 0 then
     ParseTransform(Value)
 
@@ -1156,39 +1121,39 @@ begin
     Result := False;
 end;
 
-function TParser.ParseNameValue;
+function TParser.ParseNameValue(NameValueStart, NameValueStop: PAnsiChar): Boolean;
 var
   Str, Val: PAnsiChar;
 begin
-  Str := Nv_start;
+  Str := NameValueStart;
 
-  while (PtrComp(Str) < PtrComp(Nv_end)) and (Str^ <> ':') do
+  while (PtrComp(Str) < PtrComp(NameValueStop)) and (Str^ <> ':') do
     Inc(PtrComp(Str));
 
   Val := Str;
 
   // Right Trim
-  while (PtrComp(Str) > PtrComp(Nv_start)) and ((Str^ = ':') or (Str^ = ' ')) do
+  while (PtrComp(Str) > PtrComp(NameValueStart)) and ((Str^ = ':') or (Str^ = ' ')) do
     Dec(PtrComp(Str));
 
   Inc(PtrComp(Str));
 
-  CopyName(Nv_start, Str);
+  CopyName(NameValueStart, Str);
 
-  while (PtrComp(Val) < PtrComp(Nv_end)) and ((Val^ = ':') or (Val^ = ' ')) do
+  while (PtrComp(Val) < PtrComp(NameValueStop)) and ((Val^ = ':') or (Val^ = ' ')) do
     Inc(PtrComp(Val));
 
-  CopyValue(Val, Nv_end);
+  CopyValue(Val, NameValueStop);
 
   Result := ParseAttr(PAnsiChar(FAttrName),
     PAnsiChar(FAttrValue));
 end;
 
-procedure TParser.CopyName;
+procedure TParser.CopyName(Start, Stop: PAnsiChar);
 var
   Len: Cardinal;
 begin
-  Len := PtrComp(End_) - PtrComp(Start);
+  Len := PtrComp(Stop) - PtrComp(Start);
 
   if (FAttrNameLen = 0) or (Len > FAttrNameLen) then
   begin
@@ -1207,11 +1172,11 @@ begin
   PAnsiChar(PtrComp(FAttrName) + Len)^ := #0;
 end;
 
-procedure TParser.CopyValue;
+procedure TParser.CopyValue(Start, Stop: PAnsiChar);
 var
   Len: Cardinal;
 begin
-  Len := PtrComp(End_) - PtrComp(Start);
+  Len := PtrComp(Stop) - PtrComp(Start);
 
   if (FAttrValueLen = 0) or (Len > FAttrValueLen) then
   begin

@@ -10,7 +10,7 @@ type
   TFarScapeControlHelper = class helper for TFarScapeControl
   public
     function IsChildOf(const PossibleParent : TFarScapeControl):boolean;
-    function GetBoundsWithChildren : TRect;
+    function GetBounds : TRect;
     function GetBoundsInReferenceTo(const Target : TFarScapeControl):TRect;
     function GetAbsoluteOffset:TPoint; overload;
     function GetAbsoluteOffset(const aParent : TFarScapeControl):TPoint; overload;
@@ -21,33 +21,8 @@ type
 
 implementation
 
-procedure GetControlBoundsWithChildren(const Reference : TFarScapeControl; const c : TFarScapeControl; var Bounds : TRect); overload;
-var
-  c1 : integer;
-  AbsoluteBounds : TRect;
-begin
-  AbsoluteBounds := c.GetBoundsInReferenceTo(Reference);
-  Bounds.Union(AbsoluteBounds);
-  for c1 := 0 to c.ControlCount-1 do
-  begin
-    GetControlBoundsWithChildren(Reference, c.Control[c1], Bounds);
-  end;
-end;
-
 { TFarScapeControlHelper }
 
-function TFarScapeControlHelper.GetBoundsWithChildren: TRect;
-var
-  Bounds : TRect;
-  c1: Integer;
-begin
-  Bounds := Rect(0, 0, Self.Width, Self.Height);
-  for c1 := 0 to Self.ControlCount-1 do
-  begin
-    GetControlBoundsWithChildren(Self, Self.Control[c1], Bounds);
-  end;
-  result := Bounds;
-end;
 
 function TFarScapeControlHelper.IsChildOf(const PossibleParent: TFarScapeControl): boolean;
 var
@@ -112,6 +87,11 @@ begin
 
   result.X := OffsetX;
   result.Y := OffsetY;
+end;
+
+function TFarScapeControlHelper.GetBounds: TRect;
+begin
+  result := Rect(0,0, self.Width, self.Height);
 end;
 
 function TFarScapeControlHelper.GetBoundsInReferenceTo(const Target: TFarScapeControl): TRect;

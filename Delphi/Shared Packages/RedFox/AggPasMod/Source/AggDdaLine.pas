@@ -4,7 +4,7 @@ unit AggDdaLine;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -40,7 +40,7 @@ type
   TAggDdaLineInterpolator = record
   private
     FY, FInc, FDeltaY, FFractionShift, YShift: Integer;
-    function GetY: Integer;
+    function GetY: Integer; {$IFDEF SUPPORTS_INLINE} inline; {$ENDIF}
   public
     procedure Initialize(FS: Integer; YS: Integer = 0); overload;
     procedure Initialize(Y1, Y2: Integer; Count: Cardinal; FS: Integer;
@@ -140,12 +140,12 @@ begin
   Dec(FDeltaY, FInc);
 end;
 
-procedure TAggDdaLineInterpolator.IncOperator;
+procedure TAggDdaLineInterpolator.IncOperator(N: Integer);
 begin
   Inc(FDeltaY, FInc * N);
 end;
 
-procedure TAggDdaLineInterpolator.DecOperator;
+procedure TAggDdaLineInterpolator.DecOperator(N: Integer);
 begin
   Dec(FDeltaY, FInc * N);
 end;
@@ -297,7 +297,7 @@ begin
     FInterpolator.Initialize(Y1, Y2, FLength);
 end;
 
-function TAggLineBresenhamInterpolator.LineLowResolution;
+function TAggLineBresenhamInterpolator.LineLowResolution(V: Integer): Integer;
 begin
   Result := ShrInt32(V, CAggSubpixelShift);
 end;
@@ -321,22 +321,22 @@ begin
   FLowResolution.Y1 := FLowResolution.Y1 + FInc;
 end;
 
-function TAggLineBresenhamInterpolator.GetX2;
+function TAggLineBresenhamInterpolator.GetX2: Integer;
 begin
   Result := LineLowResolution(FInterpolator.Y);
 end;
 
-function TAggLineBresenhamInterpolator.GetY2;
+function TAggLineBresenhamInterpolator.GetY2: Integer;
 begin
   Result := LineLowResolution(FInterpolator.Y);
 end;
 
-function TAggLineBresenhamInterpolator.GetX2HighResolution;
+function TAggLineBresenhamInterpolator.GetX2HighResolution: Integer;
 begin
   Result := FInterpolator.Y;
 end;
 
-function TAggLineBresenhamInterpolator.GetY2HighResolution;
+function TAggLineBresenhamInterpolator.GetY2HighResolution: Integer;
 begin
   Result := FInterpolator.Y;
 end;

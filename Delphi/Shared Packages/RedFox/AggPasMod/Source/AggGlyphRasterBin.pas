@@ -4,7 +4,7 @@ unit AggGlyphRasterBin;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -107,7 +107,7 @@ begin
   Result := PInt8u(PtrComp(FFont) + SizeOf(Int8u))^;
 end;
 
-function TAggGlyphRasterBin.Width;
+function TAggGlyphRasterBin.Width(Str: PAnsiChar): Double;
 var
   StartChar, NumChars, W, Glyph: Cardinal;
   Bits: PInt8u;
@@ -131,7 +131,8 @@ begin
   Result := W;
 end;
 
-procedure TAggGlyphRasterBin.Prepare;
+procedure TAggGlyphRasterBin.Prepare(R: PAggGlyphRect; X, Y: Double;
+  Glyph: Cardinal; Flip: Boolean);
 var
   StartChar, NumChars: Cardinal;
 begin
