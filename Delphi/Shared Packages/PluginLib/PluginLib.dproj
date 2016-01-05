@@ -85,7 +85,6 @@
 			<DCCReference Include="madBasic_.dcp"/>
 			<DCCReference Include="madDisAsm_.dcp"/>
 			<DCCReference Include="madExcept_.dcp"/>
-			<DCCReference Include="FarScape.dcp"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffect.pas"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffectX.pas"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAudioEffect.pas"/>
@@ -120,7 +119,6 @@
 			<DCCReference Include="UnitTests\Test.Helm.AnyValue.pas"/>
 			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Functions.pas"/>
 			<DCCReference Include="UnitTests\Test.AudioPlugin.Functions.pas"/>
-			<DCCReference Include="Source\PlugLib\PlugLib.FarScapeSceneBuilder.pas"/>
 			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

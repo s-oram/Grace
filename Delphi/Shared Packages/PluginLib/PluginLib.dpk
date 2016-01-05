@@ -35,8 +35,7 @@ requires
   WatchTower,
   madBasic_,
   madDisAsm_,
-  madExcept_,
-  FarScape;
+  madExcept_;
 
 contains
   VamVst2.DAEffect in 'Source\Vst2Sdk\VamVst2.DAEffect.pas',
@@ -72,7 +71,6 @@ contains
   Helm.AnyValue in 'Source\Helm\Helm.AnyValue.pas',
   Test.Helm.AnyValue in 'UnitTests\Test.Helm.AnyValue.pas',
   AudioPlugin.Functions in 'Source\AudioPlugin\AudioPlugin.Functions.pas',
-  Test.AudioPlugin.Functions in 'UnitTests\Test.AudioPlugin.Functions.pas',
-  PlugLib.FarScapeSceneBuilder in 'Source\PlugLib\PlugLib.FarScapeSceneBuilder.pas';
+  Test.AudioPlugin.Functions in 'UnitTests\Test.AudioPlugin.Functions.pas';
 
 end.
