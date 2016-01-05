@@ -1893,7 +1893,7 @@ begin
     end else
     if IsSustainPedal(Event) then
     begin
-      // TODO:HIGH Do sustain pedal handling here.
+      VoiceController.IsSustainPedal := boolean(Event.Data2 >= 64);
     end else
     if IsControlChange(Event) then
     begin

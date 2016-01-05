@@ -18,6 +18,8 @@ uses
 type
   TVoiceController = class(TZeroObject)
   private
+    FIsSustainPedal: boolean;
+    procedure SetIsSustainPedal(const Value: boolean);
   protected
     Globals : TGlobals;
     Voices  : PArrayOfLucidityVoice;
@@ -57,6 +59,8 @@ type
 
     function GetActiveVoiceCount : integer;
     function GetLastTriggeredVoice : TLucidityVoice;
+
+    property IsSustainPedal : boolean read FIsSustainPedal write SetIsSustainPedal;
   end;
 
 
@@ -250,6 +254,11 @@ begin
   end;
 end;
 
+
+procedure TVoiceController.SetIsSustainPedal(const Value: boolean);
+begin
+  FIsSustainPedal := Value;
+end;
 
 procedure TVoiceController.LatchTrigger(const Data1, Data2: byte; const NoteStackCount : integer);
 var
