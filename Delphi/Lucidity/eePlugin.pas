@@ -1893,7 +1893,7 @@ begin
     end else
     if IsSustainPedal(Event) then
     begin
-      VoiceController.IsSustainPedal := boolean(Event.Data2 >= 64);
+      MidiInputProcessor.IsSustainPedal := boolean(Event.Data2 >= 64);
     end else
     if IsControlChange(Event) then
     begin
