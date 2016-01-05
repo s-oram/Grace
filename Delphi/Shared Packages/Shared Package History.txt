@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+24 October 
+- remove FarScapeSceneBuilder.
+
 24 October 2015
 - Adding lots of changes made while developing Extinction.
 -- FarScape
