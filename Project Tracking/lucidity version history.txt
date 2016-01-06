@@ -7,6 +7,8 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
+New: Sustain pedal support added.
+
 Improve SFZ import: Now applies group volume, pan, tune and transpose opcodes.
 
 Bug Fix: SFZ import didn't find samples.

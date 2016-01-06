@@ -138,8 +138,7 @@ begin
   if (FIsSustainPedal <> false) and (Value = false) then
   begin
     case VoiceMode of
-      TVoiceMode.Poly,
-      TVoiceMode.Latch:
+      TVoiceMode.Poly:
       begin
         for c1 := (kMidiNoteCount-1) downto 0 do
         begin
@@ -161,6 +160,11 @@ begin
         end;
         if DoReleaseCurrentMono
           then ProcessNoteOff(MidiNote_Target, kSuspendedNoteOffVelocity);
+      end;
+
+      TVoiceMode.Latch:
+      begin
+        // Do nothing for latch mode. The suspend pedal isn't supported in latch mode.
       end;
 
     else
@@ -264,7 +268,7 @@ end;
 
 procedure TMidiInputProcessor.NoteOff(const Data1, Data2: byte);
 begin
-  if IsSustainPedal then
+  if (IsSustainPedal) and (VoiceMode <> TVoiceMode.Latch) then
   begin
     assert( (Data1 >= 0) and (Data1 <= 127) );
     SuspendedNoteData.IsNoteOffSuspended[Data1] := true;
