@@ -1,7 +1,3 @@
-Have implemented the sustain pedal but something
-is wrong when releasing mutliple mono sustained notes at once. Grace plays a 
-releasing note.
-
 The latching implementation is straight up weird.
 
 
