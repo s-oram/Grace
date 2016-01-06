@@ -38,7 +38,7 @@ type
 
     MidiNote_Filter : TCriticallyDampedLowpass;
     MidiNote_Current : double;
-    MidiNote_Target  : double;
+    MidiNote_Target  : integer;
 
     PitchBend_Filter : TCriticallyDampedLowpass;
     PitchBend_Current : double;
@@ -130,23 +130,45 @@ const
   kSuspendedNoteOffVelocity = 64;
 var
   c1: Integer;
+  DoReleaseCurrentMono : boolean;
 begin
   // NOTE: Ordering is important here.
 
-  // 1)
+  // 1) Release notes.
   if (FIsSustainPedal <> false) and (Value = false) then
   begin
-    for c1 := (kMidiNoteCount-1) downto 0 do
-    begin
-      if SuspendedNoteData.IsNoteOffSuspended[c1] then
+    case VoiceMode of
+      TVoiceMode.Poly,
+      TVoiceMode.Latch:
       begin
-        SuspendedNoteData.IsNoteOffSuspended[c1] := false;
-        ProcessNoteOff(c1, kSuspendedNoteOffVelocity);
+        for c1 := (kMidiNoteCount-1) downto 0 do
+        begin
+          if SuspendedNoteData.IsNoteOffSuspended[c1] then
+          begin
+            SuspendedNoteData.IsNoteOffSuspended[c1] := false;
+            ProcessNoteOff(c1, kSuspendedNoteOffVelocity);
+          end;
+        end;
       end;
+
+      TVoiceMode.Mono,
+      TVoiceMode.Legato:
+      begin
+        DoReleaseCurrentMono := SuspendedNoteData.IsNoteOffSuspended[MidiNote_Target];
+        for c1 := (kMidiNoteCount-1) downto 0 do
+        begin
+          if (SuspendedNoteData.IsNoteOffSuspended[c1]) and (c1 <> MidiNote_Target) then NoteStack.RemoveNote(c1);
+        end;
+        if DoReleaseCurrentMono
+          then ProcessNoteOff(MidiNote_Target, kSuspendedNoteOffVelocity);
+      end;
+
+    else
+      raise Exception.Create('Type not handled.');
     end;
   end;
 
-  // 2)
+  // 2) Set sustain pedal state after releasing notes.
   FIsSustainPedal := Value;
 end;
 
