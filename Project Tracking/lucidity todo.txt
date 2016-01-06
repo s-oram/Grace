@@ -1,3 +1,10 @@
+Have implemented the sustain pedal but something
+is wrong when releasing mutliple mono sustained notes at once. Grace plays a 
+releasing note.
+
+The latching implementation is straight up weird.
+
+
 Grace Threads
 
 http://www.kvraudio.com/forum/viewtopic.php?f=1&t=423453&start=15

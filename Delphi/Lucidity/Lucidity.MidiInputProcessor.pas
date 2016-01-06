@@ -13,7 +13,16 @@ uses
   Lucidity.Types,
   Lucidity.Enums;
 
+const
+  kMidiNoteCount = 128;
+
 type
+  TSuspendedNoteData = record
+  public
+    IsNoteOffSuspended : array[0..kMidiNoteCount-1] of boolean;
+    procedure Reset;
+  end;
+
   TMidiInputProcessor = class(TZeroObject)
   private
     fVoiceGlide: single;
@@ -25,6 +34,7 @@ type
   protected
     Globals             : TGlobals;
     NoteStack           : TNoteStack;
+    SuspendedNoteData   : TSuspendedNoteData;
 
     MidiNote_Filter : TCriticallyDampedLowpass;
     MidiNote_Current : double;
@@ -39,6 +49,9 @@ type
     ModWheel_Target  : double;
 
     GlobalModPoints : PGlobalModulationPoints;
+
+
+    procedure ProcessNoteOff(const Data1, Data2 : byte);
   public
     constructor Create(const aGlobalModPoints : PGlobalModulationPoints; const aGlobals: TGlobals);
     destructor Destroy; override;
@@ -82,6 +95,8 @@ begin
 
   NoteStack := TNoteStack.Create;
 
+  SuspendedNoteData.Reset;
+
   MidiNote_Filter := TCriticallyDampedLowpass.Create;
   MidiNote_Filter.SetTransitionTime(kMinGlideTime, Globals.FastControlRate);
 
@@ -111,7 +126,27 @@ begin
 end;
 
 procedure TMidiInputProcessor.SetIsSustainPedal(const Value: boolean);
+const
+  kSuspendedNoteOffVelocity = 64;
+var
+  c1: Integer;
 begin
+  // NOTE: Ordering is important here.
+
+  // 1)
+  if (FIsSustainPedal <> false) and (Value = false) then
+  begin
+    for c1 := (kMidiNoteCount-1) downto 0 do
+    begin
+      if SuspendedNoteData.IsNoteOffSuspended[c1] then
+      begin
+        SuspendedNoteData.IsNoteOffSuspended[c1] := false;
+        ProcessNoteOff(c1, kSuspendedNoteOffVelocity);
+      end;
+    end;
+  end;
+
+  // 2)
   FIsSustainPedal := Value;
 end;
 
@@ -206,6 +241,18 @@ begin
 end;
 
 procedure TMidiInputProcessor.NoteOff(const Data1, Data2: byte);
+begin
+  if IsSustainPedal then
+  begin
+    assert( (Data1 >= 0) and (Data1 <= 127) );
+    SuspendedNoteData.IsNoteOffSuspended[Data1] := true;
+  end else
+  begin
+    ProcessNoteOff(Data1, Data2);
+  end;
+end;
+
+procedure TMidiInputProcessor.ProcessNoteOff(const Data1, Data2: byte);
 var
   ActiveNoteChanged : boolean;
   NoteMsgData : TMsgData_NoteEvent;
@@ -273,6 +320,8 @@ begin
   end;
 end;
 
+
+
 procedure TMidiInputProcessor.FastControlProcess;
 begin
   if MidiNote_Current <> MidiNote_Target then
@@ -298,6 +347,18 @@ end;
 procedure TMidiInputProcessor.SlowControlProcess;
 begin
 
+end;
+
+{ TSuspendedNoteData }
+
+procedure TSuspendedNoteData.Reset;
+var
+  c1: Integer;
+begin
+  for c1 := 0 to kMidiNoteCount-1 do
+  begin
+    self.IsNoteOffSuspended[c1] := false;
+  end;
 end;
 
 end.
