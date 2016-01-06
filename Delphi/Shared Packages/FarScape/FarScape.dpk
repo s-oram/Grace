@@ -32,7 +32,8 @@ requires
   rtl,
   WatchTower,
   vcl,
-  VamLib;
+  VamLib,
+  AggPasRunXE2;
 
 contains
   FarScape.CustomControl in 'source\FarScape.CustomControl.pas',
@@ -56,6 +57,15 @@ contains
   RegisterTests.FarScape in 'UnitTests\RegisterTests.FarScape.pas',
   FarScape.Assistant.ControlNamePath in 'source\FarScape.Assistant.ControlNamePath.pas',
   Test.FarScape.Assistant.ControlNamePath in 'UnitTests\Test.FarScape.Assistant.ControlNamePath.pas',
-  FarScape.SupportFunctions in 'source\FarScape.SupportFunctions.pas';
+  FarScape.SupportFunctions in 'source\FarScape.SupportFunctions.pas',
+  FarScape.InvalidateBuffer in 'source\FarScape.InvalidateBuffer.pas',
+  FarScape.Event in 'source\FarScape.Event.pas',
+  FarScape.EventStack in 'source\FarScape.EventStack.pas',
+  FarScape.EventDispatcher in 'source\FarScape.EventDispatcher.pas',
+  FarScape.Events in 'source\FarScape.Events.pas',
+  Test.FarScape.SupportFunctions in 'UnitTests\Test.FarScape.SupportFunctions.pas',
+  Test.FarScape.Events in 'UnitTests\Test.FarScape.Events.pas',
+  FarScape.Color in 'source\FarScape.Color.pas',
+  Test.FarScape.Color in 'UnitTests\Test.FarScape.Color.pas';
 
 end.

@@ -4,7 +4,7 @@ unit AggRendererBase;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -365,16 +365,15 @@ begin
     FPixelFormatProcessor.BlendPixel(FPixelFormatProcessor, X, Y, C, Cover);
 end;
 
-function TAggRendererBase.Pixel;
+function TAggRendererBase.Pixel(X, Y: Integer): TAggColor;
 begin
   if Inbox(X, Y) then
     Result := FPixelFormatProcessor.Pixel(FPixelFormatProcessor, X, Y);
 end;
 
-procedure TAggRendererBase.CopyHorizontalLine;
+procedure TAggRendererBase.CopyHorizontalLine(X1, Y, X2: Integer; C: PAggColor);
 var
   T: Integer;
-
 begin
   if X1 > X2 then
   begin
@@ -405,10 +404,9 @@ begin
     X2 - X1 + 1, C);
 end;
 
-procedure TAggRendererBase.CopyVerticalLine;
+procedure TAggRendererBase.CopyVerticalLine(X, Y1, Y2: Integer; C: PAggColor);
 var
   T: Integer;
-
 begin
   if Y1 > Y2 then
   begin
@@ -439,10 +437,10 @@ begin
     Y2 - Y1 + 1, C);
 end;
 
-procedure TAggRendererBase.BlendHorizontalLine;
+procedure TAggRendererBase.BlendHorizontalLine(X1, Y, X2: Integer; C: PAggColor;
+  Cover: Int8u);
 var
   T: Integer;
-
 begin
   if X1 > X2 then
   begin
@@ -473,10 +471,10 @@ begin
     X2 - X1 + 1, C, Cover);
 end;
 
-procedure TAggRendererBase.BlendVerticalLine;
+procedure TAggRendererBase.BlendVerticalLine(X, Y1, Y2: Integer; C: PAggColor;
+  Cover: Int8u);
 var
   T: Integer;
-
 begin
   if Y1 > Y2 then
   begin
@@ -507,7 +505,7 @@ begin
     Y2 - Y1 + 1, C, Cover);
 end;
 
-procedure TAggRendererBase.CopyBar;
+procedure TAggRendererBase.CopyBar(X1, Y1, X2, Y2: Integer; C: PAggColor);
 var
   Y : Integer;
   RectClip: TRectInteger;
@@ -529,7 +527,8 @@ begin
   end;
 end;
 
-procedure TAggRendererBase.BlendBar;
+procedure TAggRendererBase.BlendBar(X1, Y1, X2, Y2: Integer; C: PAggColor;
+  Cover: Int8u);
 var
   RectClip: TRectInteger;
   Y : Integer;
@@ -551,11 +550,12 @@ begin
   end;
 end;
 
-function TAggRendererBase.Span;
+function TAggRendererBase.Span(X, Y: Integer; Len: Cardinal): Pointer;
 begin
 end;
 
-procedure TAggRendererBase.BlendSolidHSpan;
+procedure TAggRendererBase.BlendSolidHSpan(X, Y, Len: Integer; C: PAggColor;
+  Covers: PInt8u);
 begin
   if Y > GetYMax then
     Exit;
@@ -587,7 +587,8 @@ begin
     Covers);
 end;
 
-procedure TAggRendererBase.BlendSolidVSpan;
+procedure TAggRendererBase.BlendSolidVSpan(X, Y, Len: Integer; C: PAggColor;
+  Covers: PInt8u);
 begin
   if X > GetXMax then
     Exit;
@@ -619,10 +620,10 @@ begin
     Covers);
 end;
 
-procedure TAggRendererBase.CopyColorHSpan;
+procedure TAggRendererBase.CopyColorHSpan(X, Y, Len: Integer;
+  Colors: PAggColor);
 var
   D: Integer;
-
 begin
   if Y > GetYMax then
     Exit;
@@ -656,10 +657,10 @@ begin
     Colors);
 end;
 
-procedure TAggRendererBase.BlendColorHSpan;
+procedure TAggRendererBase.BlendColorHSpan(X, Y, Len: Integer;
+  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
 var
   D: Integer;
-
 begin
   if Y > GetYMax then
     Exit;
@@ -696,10 +697,10 @@ begin
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.BlendColorVSpan;
+procedure TAggRendererBase.BlendColorVSpan(X, Y, Len: Integer;
+  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
 var
   D: Integer;
-
 begin
   if X > GetXMax then
     Exit;
@@ -736,24 +737,27 @@ begin
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.CopyColorHSpanNoClip;
+procedure TAggRendererBase.CopyColorHSpanNoClip(X, Y, Len: Integer; Colors: PAggColor);
 begin
   // not implemented
 end;
 
-procedure TAggRendererBase.BlendColorHSpanNoClip;
+procedure TAggRendererBase.BlendColorHSpanNoClip(X, Y, Len: Integer;
+  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
 begin
   FPixelFormatProcessor.BlendColorHSpan(FPixelFormatProcessor, X, Y, Len,
     Colors, Covers, Cover);
 end;
 
-procedure TAggRendererBase.BlendColorVSpanNoClip;
+procedure TAggRendererBase.BlendColorVSpanNoClip(X, Y, Len: Integer;
+  Colors: PAggColor; Covers: PInt8u; Cover: Int8u = CAggCoverFull);
 begin
   FPixelFormatProcessor.BlendColorVSpan(FPixelFormatProcessor, X, Y, Len,
     Colors, Covers, Cover);
 end;
 
-function TAggRendererBase.ClipRectArea;
+function TAggRendererBase.ClipRectArea(var Dst, Src: TRectInteger; Wsrc,
+  Hsrc: Integer): TRectInteger;
 var
   RectClip, Cb: TRectInteger;
 begin

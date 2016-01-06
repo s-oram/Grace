@@ -122,6 +122,7 @@ type
 function IsNoteOn(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsNoteOff(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsControlChange(MidiEvent:TeeMidiEvent):boolean; inline;
+function IsSustainPedal(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsMidiPanic(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsPitchBend(MidiEvent:TeeMidiEvent):boolean; inline;
 function IsModWheel(MidiEvent:TeeMidiEvent):boolean; inline;
@@ -151,6 +152,13 @@ begin
   // CC-120: All Sounds Off
   // CC-123: All Notes Off
   if (MidiEvent.Status = kControlChange) and (MidiEvent.Data1 <> 120) and (MidiEvent.Data1 <> 123)
+    then result := true
+    else result := false;
+end;
+
+function IsSustainPedal(MidiEvent:TeeMidiEvent):boolean; inline;
+begin
+  if (MidiEvent.Status = kControlChange) and (MidiEvent.Data1 = 64)
     then result := true
     else result := false;
 end;

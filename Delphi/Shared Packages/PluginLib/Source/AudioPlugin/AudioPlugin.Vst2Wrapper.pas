@@ -8,6 +8,7 @@ uses
   VamVst2.DAEffectX,
   VamVst2.DAudioEffect,
   VamVst2.DAudioEffectX,
+  VamVst2.MidiEventOutputBuffer,
   AudioPlugin,
   AudioPlugin.Globals,
   AudioPlugin.Editor,
@@ -30,16 +31,18 @@ type
     Plug : TAudioPlugin;
     PlugInfo : TVst2PluginInfo;
     ProcessController : TProcessController;
+    MidiOutputBuffer : TMidiEventOutputBuffer;
   public
     constructor Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2WrapperCreateInfo); reintroduce;
     destructor Destroy; override;
+
+    function CanDo(Text: PAnsiChar): VstInt32; override;
 
     // State Transitions
     procedure Open; override;      // Called when plug-in is initialized
     procedure Close; override;     // Called when plug-in will be released
     procedure Suspend; override;   // Called when plug-in is switched to off
     procedure Resume; override;    // Called when plug-in is switched to on
-
 
     // Parameters
     procedure SetParameter(index: Longint; value: Single); override;
@@ -49,7 +52,6 @@ type
     procedure GetParameterDisplay(index: Longint; text: PAnsiChar); override;
     procedure GetParameterName(index: Longint; text: PAnsiChar); override;
 
-
     function  ProcessEvents(ev: PVstEvents): longint; override;
     procedure ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32); override;
   end;
@@ -58,7 +60,7 @@ implementation
 
 uses
   SysUtils,
-  AudioPlugin.Vst2Methods,
+  AudioPlugin.Events,
   AudioPlugin.RunTimeInfo;
 
 const
@@ -67,16 +69,22 @@ const
 { TVst2Wrapper }
 
 constructor TVst2Wrapper.Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2WrapperCreateInfo);
-var
-  Vst2Methods : TVst2Methods;
 begin
-  Vst2Methods := TVst2Methods.Create;
+  MidiOutputBuffer := TMidiEventOutputBuffer.Create(8);
 
   Globals := TGlobals.Create;
-  Globals.ObjectStore.Add('Vst2Methods', Vst2Methods);
-  //(Globals.ObjectStore['Vst2Methods'] as TVst2Methods);
 
-  Plug := CreateInfo.PlugClass.Create(nil);
+  //== Vst2 Methods ==
+  Globals.Vst2.GetParameter := self.GetParameter;
+  Globals.Vst2.SetParameter := self.SetParameter;
+  Globals.Vst2.SetParameterAutomated := self.SetParameterAutomated;
+  Globals.Vst2.BeginEdit := self.BeginEdit;
+  Globals.Vst2.EndEdit := self.EndEdit;
+  Globals.Vst2.IncrementMidiEventDelta := MidiOutputBuffer.IncrementGlobalDelta;
+  Globals.Vst2.SendMidiEvent := MidiOutputBuffer.AddMidiEvent;
+  Globals.Vst2.SendMidiEventWithDeltaOffset := MidiOutputBuffer.AddMidiEvent;
+
+  Plug := CreateInfo.PlugClass.Create(Globals);
   PlugInfo := CreateInfo.PlugInfo.Create(Plug);
   ProcessController := CreateInfo.ProcessController.Create(Plug);
 
@@ -88,6 +96,11 @@ begin
 
   setNumInputs(PlugInfo.GetNumberOfAudioInputs);
   setNumOutputs(PlugInfo.GetNumberOfAudioOutputs);
+
+  IsSynth(PlugInfo.GetIsSynth);
+
+  self.SetInitialDelay(0);
+
 
   // finally..
   Plug.LoadDefaultPatch;
@@ -105,6 +118,9 @@ begin
   PlugInfo.Free;
   ProcessController.Free;
   Globals.Free;
+
+  MidiOutputBuffer.Free;
+
   inherited;
 end;
 
@@ -112,6 +128,20 @@ procedure TVst2Wrapper.Open;
 begin
   inherited;
   Plug.Open;
+end;
+
+function TVst2Wrapper.CanDo(Text: PAnsiChar): VstInt32;
+begin
+  if SameText(Text, canDoReceiveVstEvents)    then exit(1);
+  if SameText(Text, canDoReceiveVstMidiEvent) then exit(1);
+
+  if SameText(Text, canDoSendVstEvents)    then exit(1);
+  if SameText(Text, canDoSendVstMidiEvent) then exit(1);
+
+  if SameText(Text, canDoReceiveVstTimeInfo) then exit(1);
+  if SameText(Text, canDoOffline) then exit(1);
+
+  result := inherited;
 end;
 
 procedure TVst2Wrapper.Close;
@@ -129,8 +159,12 @@ end;
 procedure TVst2Wrapper.Resume;
 var
   rtInfo : TRunTimeInfo;
+  InputLat, OutputLat : integer;
 begin
   inherited;
+
+  InputLat := GetInputLatency;
+  OutputLat := GetOutputLatency;
 
   rtInfo.InputCount      := PlugInfo.GetNumberOfAudioInputs;
   rtInfo.OutputCount     := PlugInfo.GetNumberOfAudioOutputs;
@@ -146,6 +180,8 @@ end;
 procedure TVst2Wrapper.SetParameter(index: Integer; value: Single);
 begin
   Plug.VstParameter[Index] := Value;
+
+  Globals.EventDispatcher.Broadcast(  TVstParameterChanged.Create(Index, Value)  );
 end;
 
 function TVst2Wrapper.GetParameter(index: Integer): Single;
@@ -175,9 +211,23 @@ begin
 end;
 
 procedure TVst2Wrapper.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32);
+var
+  vevs : PVstEvents;
 begin
+  MidiOutputBuffer.ResetGlobalDelta;
+
+  Plug.ProcessVstTimeInfo(GetTimeInfo(32767));
+
   ProcessController.ProcessAudio(VamLib.MoreTypes.PPSingle(Inputs), VamLib.MoreTypes.PPSingle(Outputs), SampleFrames);
+
+  vevs := MidiOutputBuffer.PrepareOutputBuffer(SampleFrames);
+  if vevs.numEvents > 0
+    then SendVstEventsToHost(vevs);
+  MidiOutputBuffer.RemoveStaleEvents(SampleFrames);
+
+
 end;
+
 
 
 

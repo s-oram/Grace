@@ -53,7 +53,6 @@ begin
   AlignChildControls(ContainerControl, TControlAlignment.caCenter);
 
   // 3) The remaining alignment modes can be completed in any order.
-  AlignChildControls(ContainerControl, TControlAlignment.caCustom);
   AlignChildControls(ContainerControl, TControlAlignment.caGrid);
   AlignChildControls(ContainerControl, TControlAlignment.caNone);
 end;
@@ -78,7 +77,6 @@ begin
       caRight:  AlignToRight(ContainerControl, PrevControl, CurrentControl);
       caClient: AlignToClient(ContainerControl, PrevControl, CurrentControl);
       caCenter: AlignToCenter(ContainerControl, PrevControl, CurrentControl);
-      caCustom: AlignToCustom(ContainerControl, PrevControl, CurrentControl);
       caGrid: AlignToGrid(ContainerControl, CurrentControl);
     else
       raise Exception.Create('Unexpected Align mode.');

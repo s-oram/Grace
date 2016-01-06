@@ -4,7 +4,7 @@ unit AggVcgenDash;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -117,7 +117,7 @@ begin
   FCurrentDash := 0;
 end;
 
-procedure TAggVcgenDash.AddDash;
+procedure TAggVcgenDash.AddDash(DashLength, GapLength: Double);
 begin
   if FNumDashes < CMaxDashes then
   begin
@@ -159,7 +159,7 @@ begin
   FClosed := 0;
 end;
 
-procedure TAggVcgenDash.AddVertex;
+procedure TAggVcgenDash.AddVertex(X, Y: Double; Cmd: Cardinal);
 var
   Vd: TAggVertexDistance;
 begin
@@ -192,15 +192,13 @@ end;
 function TAggVcgenDash.Vertex(X, Y: PDouble): Cardinal;
 var
   DashRest, Temp: Double;
-  Cmd: Cardinal;
 label
-  _next, _ready;
+  _ready;
 
 begin
-  Cmd := CAggPathCmdMoveTo;
+  Result := CAggPathCmdMoveTo;
 
-_next:
-  while not IsStop(Cmd) do
+  while not IsStop(Result) do
     case FStatus of
       siInitial:
         begin
@@ -214,9 +212,8 @@ _next:
         begin
           if (FNumDashes < 2) or (FSourceVertices.Size < 2) then
           begin
-            Cmd := CAggPathCmdStop;
-
-            goto _next;
+            Result := CAggPathCmdStop;
+            Continue;
           end;
 
           FStatus := siPolyline;
@@ -243,9 +240,9 @@ _next:
           DashRest := FDashes[FCurrentDash] - FCurrDashStart;
 
           if FCurrentDash and 1 <> 0 then
-            Cmd := CAggPathCmdMoveTo
+            Result := CAggPathCmdMoveTo
           else
-            Cmd := CAggPathCmdLineTo;
+            Result := CAggPathCmdLineTo;
 
           if FCurrentRest > DashRest then
           begin
@@ -288,16 +285,12 @@ _next:
               FVertex2 := FSourceVertices[FSourceVertex];
           end;
 
-          Result := Cmd;
-
           Exit;
         end;
 
       siStop:
-        Cmd := CAggPathCmdStop;
+        Result := CAggPathCmdStop;
     end;
-
-  Result := CAggPathCmdStop;
 end;
 
 procedure TAggVcgenDash.CalculateDashStart;

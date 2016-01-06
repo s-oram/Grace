@@ -3,6 +3,8 @@ unit AudioPlugin;
 interface
 
 uses
+  VamVst2.DAEffect,
+  VamVst2.DAEffectX,
   VamLib.MoreTypes,
   VamVst2.MidiEvent, //TODO:MED <- Maybe this unit shoud be pulled into the AudioPlugin section.
   AudioPlugin.Globals,
@@ -28,6 +30,9 @@ type
     constructor Create(const aGlobals : TGlobals); virtual;
     destructor Destroy; override;
 
+    procedure GetPrivateParameter(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer); virtual;
+    procedure SetPrivateParameter(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer); virtual;
+
     // LoadDefaultPatch() is called once after a plugin is newly created.
     // Initialise the plugin to the "default" initial state here.
     procedure LoadDefaultPatch; virtual;
@@ -49,17 +54,29 @@ type
     procedure ProcessControlStepSlow(const SampleFrames : integer); virtual;
     procedure ProcessControlStepFast(const SampleFrames : integer); virtual;
     procedure ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: integer); virtual;
+
+    procedure ProcessVstTimeInfo(const TimeInfo : PVstTimeInfo); virtual;
   end;
 
 implementation
 
+uses
+  Helm.Message,
+  AudioPlugin.Types,
+  AudioPlugin.Events;
+
 { TAudioPlugin }
 
 constructor TAudioPlugin.Create(const aGlobals : TGlobals);
+var
+  msg : THelmMessage;
 begin
   FGlobals := aGlobals;
   SetLength(FVstPar, 0);
   FVstParameterCount := 0;
+
+  Globals.AudioPlugMethods.GetPrivateParameter := self.GetPrivateParameter;
+  Globals.AudioPlugMethods.SetPrivateParameter := self.SetPrivateParameter;
 end;
 
 destructor TAudioPlugin.Destroy;
@@ -108,7 +125,22 @@ begin
   assert(Value >= 0);
   assert(Value <= 1);
   FVstPar[Index] := Value;
+
+  // TODO:HIGH. Globals isn't assigned here in the test runner.
+  //Globals.EventDispatcher.Broadcast(TVstParameterChanged.Create(Index, Value));
 end;
+
+procedure TAudioPlugin.GetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
+begin
+  // do nothing.
+end;
+
+procedure TAudioPlugin.SetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
+begin
+  // do nothing.
+end;
+
+
 
 function TAudioPlugin.GetVstParameter(Index: integer): single;
 begin
@@ -151,6 +183,13 @@ procedure TAudioPlugin.ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: int
 begin
 
 end;
+
+procedure TAudioPlugin.ProcessVstTimeInfo(const TimeInfo: PVstTimeInfo);
+begin
+
+end;
+
+
 
 
 

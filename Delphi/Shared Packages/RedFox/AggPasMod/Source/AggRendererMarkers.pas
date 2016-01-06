@@ -4,7 +4,7 @@ unit AggRendererMarkers;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -93,7 +93,7 @@ begin
   inherited Create(Rbuf);
 end;
 
-function TAggRendererMarkers.Visible;
+function TAggRendererMarkers.Visible(X, Y, R: Integer): Boolean;
 var
   Rc: TRectInteger;
 begin
@@ -102,7 +102,7 @@ begin
   Result := Rc.Clip(RenderBase.BoundingClipBox^);
 end;
 
-procedure TAggRendererMarkers.Square;
+procedure TAggRendererMarkers.Square(X, Y, R: Integer);
 begin
   if Visible(X, Y, R) then
     if R <> 0 then

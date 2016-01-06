@@ -4,7 +4,7 @@ unit AggArc;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -94,7 +94,7 @@ begin
   Normalize(A1, A2, Ccw);
 end;
 
-procedure TAggArc.Init;
+procedure TAggArc.Init(X, Y, Rx, Ry, A1, A2: Double; Ccw: Boolean = True);
 begin
   FX := X;
   FY := Y;
@@ -151,7 +151,7 @@ begin
   end;
 end;
 
-procedure TAggArc.Normalize;
+procedure TAggArc.Normalize(A1, A2: Double; Ccw: Boolean);
 var
   Ra: Double;
 begin

@@ -14,7 +14,7 @@ type
     procedure Setup; override;
     procedure TearDown; override;
 
-    [Test]
+    [_Test]
     procedure ParameterSetGet;
   end;
 

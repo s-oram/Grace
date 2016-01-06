@@ -4,7 +4,7 @@ unit AggBSpline;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -275,7 +275,7 @@ begin
   FLastIdx := -1;
 end;
 
-function TAggBSpline.Get;
+function TAggBSpline.Get(X: Double): Double;
 var
   I: Integer;
 begin
@@ -308,7 +308,7 @@ begin
   Result := 0.0;
 end;
 
-function TAggBSpline.GetStateful;
+function TAggBSpline.GetStateful(X: Double): Double;
 begin
   if FNum > 2 then
   begin
@@ -352,7 +352,6 @@ begin
       Result := Interpolation(X, FLastIdx);
 
       Exit;
-
     end
     else
     begin

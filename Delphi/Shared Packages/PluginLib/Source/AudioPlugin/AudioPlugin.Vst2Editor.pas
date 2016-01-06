@@ -38,6 +38,7 @@ type
     procedure ResizeGui(const OffsetX, OffsetY : integer);
   public
     constructor Create(aEffect: AudioEffect; const aPlug : TAudioPlugin; const aEditorClass : TAudioPluginEditorClass; const aGlobals : TGlobals); reintroduce;
+    destructor Destroy; override;
 
     function GetRect(var rect: PERect): longint; override;
     function Open(ptr: pointer): longint; override;
@@ -55,23 +56,21 @@ implementation
 
 uses
   SysUtils,
-  AudioPlugin.Functions,
-  AudioPlugin.Globals.Vst2Editor;
+  AudioPlugin.Functions;
 
 { TVstEditor }
 
 constructor TVstEditor.Create(aEffect: AudioEffect; const aPlug: TAudioPlugin; const aEditorClass : TAudioPluginEditorClass; const aGlobals : TGlobals);
 var
-  EditorGlobals : TVst2EditorGlobals;
   r : TRect;
 begin
-  Effect := aEffect;
-
-  EditorGlobals := TVst2EditorGlobals.Create;
-  EditorGlobals.ResizeGui := self.ResizeGui;
-  aGlobals.ObjectStore.Add(kVst2EditorGlobalsTag, EditorGlobals );
+  inherited Create(aEffect);
 
   FGlobals := aGlobals;
+  Globals.Vst2.ResizeGui := self.ResizeGui;
+
+  Effect := aEffect;
+
   UseCount := 0;
   EditorClass := aEditorClass;
 
@@ -79,6 +78,12 @@ begin
   CurrentGuiSize.Width  := r.Width;
   CurrentGuiSize.Height := r.Height;
   CurrentGuiSize.OriginalRatio := r.Width / r.Height;
+end;
+
+destructor TVstEditor.Destroy;
+begin
+  Globals.Vst2.ResizeGui := nil;
+  inherited;
 end;
 
 function TVstEditor.GetRect(var rect: PERect): longint;
@@ -162,8 +167,8 @@ begin
   dec(UseCount);
   if UseCount = 0 then
   begin
-    if assigned(Form)   then FreeAndNil(Form);
     if assigned(Editor) then FreeAndNil(Editor);
+    if assigned(Form)   then FreeAndNil(Form);
   end;
 end;
 

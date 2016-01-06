@@ -19,9 +19,10 @@ type
     MidiEventIndex : integer;
     MidiEvents : array of VstEvent;
     InUse : array of boolean;
-    fBuffer : PVstEvents;
-    fBufferSize : integer;
-    fCapacity: integer;
+    FVstEventsData : PVstEvents;
+    FVstEventMemCount : integer;
+    FCapacity: integer;
+    FGlobalDelta: integer; // GlobalMidiEventDelta.
   protected
     procedure SetCapacity(const Value: integer);
     function FindFreeEventIndex:integer;
@@ -29,16 +30,31 @@ type
     constructor Create(const aCapacity : integer);
     destructor Destroy; override;
 
-    procedure AddEvents(const ev : PVstEvents; const DeltaOffset : integer);
+    procedure Reset;
+
+    procedure IncrementGlobalDelta(const SampleFrames : integer);
+    procedure ResetGlobalDelta;
+
+    // Add a collection of events.
+    procedure AddEvents(const ev : PVstEvents);
+    procedure AddMidiEvent(const Status, Channel, Data1, Data2: integer); overload;
+    procedure AddMidiEvent(const Status, Channel, Data1, Data2, DeltaOffset: integer); overload;
 
     function PrepareOutputBuffer(const SampleFrames : integer):PVstEvents;
     procedure RemoveStaleEvents(const SampleFrames : integer);
 
-    property Capacity : integer read fCapacity;
+    property Capacity : integer read FCapacity;
     property Count : integer read MidiEventCount;
+
+    property GlobalDelta : integer read FGlobalDelta;
   end;
 
+function VerifyEventSort(const ev : PVstEvents):boolean;
+
 implementation
+
+uses
+  VamVst2.VstEvent;
 
 // NOTE: Disable range checking for this unit.
 // The VstEvents buffer will trigger range check exceptions otherwise.
@@ -109,9 +125,10 @@ constructor TMidiEventOutputBuffer.Create(const aCapacity : integer);
 begin
   MidiEventCount := 0;
   MidiEventIndex := 0;
-  fBuffer := nil;
-  fBufferSize := 0;
+  FVstEventsData := nil;
+  FVstEventMemCount := 0;
   SetCapacity(aCapacity);
+  FGlobalDelta := 0;
 end;
 
 destructor TMidiEventOutputBuffer.Destroy;
@@ -120,18 +137,17 @@ begin
   inherited;
 end;
 
-
 procedure TMidiEventOutputBuffer.SetCapacity(const Value: integer);
 begin
-  fCapacity := Value;
+  FCapacity := Value;
 
   if (Value = 0) then
   begin
-    if (fBuffer <> nil) then
+    if (FVstEventsData <> nil) then
     begin
-      FreeMem(fBuffer, fBufferSize);
-      fBuffer := nil;
-      fBufferSize := 0;
+      FreeMem(FVstEventsData, FVstEventMemCount);
+      FVstEventsData := nil;
+      FVstEventMemCount := 0;
     end;
     SetLength(MidiEvents, 0);
     SetLength(InUse, 0);
@@ -139,21 +155,35 @@ begin
 
   if (Value > 0) then
   begin
-    if (fBuffer <> nil) then
+    if (FVstEventsData <> nil) then
     begin
-      FreeMem(fBuffer, fBufferSize);
-      fBuffer := nil;
-      fBufferSize := 0;
+      FreeMem(FVstEventsData, FVstEventMemCount);
+      FVstEventsData := nil;
+      FVstEventMemCount := 0;
     end;
 
-    fBufferSize := SizeOf(VstEvents) + SizeOf(PVstEvent) * fCapacity;
-    GetMem(fBuffer, fBufferSize);
+    FVstEventMemCount := SizeOf(VstEvents) + SizeOf(PVstEvent) * FCapacity;
+    GetMem(FVstEventsData, FVstEventMemCount);
 
-    SetLength(MidiEvents, fCapacity);
-    SetLength(InUse, fCapacity);
+    SetLength(MidiEvents, FCapacity);
+    SetLength(InUse, FCapacity);
   end;
 
   if MidiEventIndex >= Value then MidiEventIndex := 0;
+end;
+
+procedure TMidiEventOutputBuffer.Reset;
+var
+  c1: Integer;
+begin
+  FGlobalDelta := 0;
+  MidiEventIndex := 0;
+
+  for c1 := 0 to Capacity-1 do
+  begin
+    InUse[c1] := false;
+    MidiEventCount := 0;
+  end;
 end;
 
 function TMidiEventOutputBuffer.FindFreeEventIndex: integer;
@@ -174,7 +204,47 @@ begin
       else MidiEventIndex := 0;
 end;
 
-procedure TMidiEventOutputBuffer.AddEvents(const ev: PVstEvents; const DeltaOffset: integer);
+procedure TMidiEventOutputBuffer.IncrementGlobalDelta(const SampleFrames: integer);
+begin
+  inc(FGlobalDelta, SampleFrames);
+end;
+
+procedure TMidiEventOutputBuffer.AddMidiEvent(const Status, Channel, Data1, Data2: integer);
+var
+  WriteIndex : integer;
+  DestEv : PVstEvent;
+begin
+  inc(MidiEventCount);
+  if MidiEventCount >= Capacity then SetCapacity(Capacity + 16);
+
+  WriteIndex := FindFreeEventIndex;
+  DestEv := @MidiEvents[WriteIndex];
+
+  WriteMidiEventToVstEvent(DestEv, Status, Channel, Data1, Data2, GlobalDelta);
+end;
+
+procedure TMidiEventOutputBuffer.AddMidiEvent(const Status, Channel, Data1, Data2, DeltaOffset: integer);
+var
+  WriteIndex : integer;
+  DestEv : PVstEvent;
+  x : integer;
+begin
+  inc(MidiEventCount);
+  if MidiEventCount >= Capacity then SetCapacity(Capacity + 16);
+
+  WriteIndex := FindFreeEventIndex;
+  DestEv := @MidiEvents[WriteIndex];
+
+  x := GlobalDelta + DeltaOffset;
+  if x < 0 then x := 0;
+  WriteMidiEventToVstEvent(DestEv, Status, Channel, Data1, Data2, x);
+end;
+
+
+
+
+
+procedure TMidiEventOutputBuffer.AddEvents(const ev: PVstEvents);
 const
   kSizeOfVstEvent = SizeOf(VstEvent);
 var
@@ -194,7 +264,6 @@ begin
       SourceEv := ev^.events[c1];
       DestEv := @MidiEvents[WriteIndex];
       Move(SourceEv^, DestEv^, kSizeOfVstEvent);
-      inc(DestEv^.deltaFrames, DeltaOffset);
     end;
   end;
 end;
@@ -209,15 +278,15 @@ begin
   begin
     if (InUse[c1]) and (MidiEvents[c1].deltaFrames < SampleFrames) then
     begin
-      fBuffer^.events[NumberOfEvents] := @MidiEvents[c1];
+      FVstEventsData^.events[NumberOfEvents] := @MidiEvents[c1];
       inc(NumberOfEvents);
     end;
   end;
-  fBuffer^.numEvents := NumberOfEvents;
+  FVstEventsData^.numEvents := NumberOfEvents;
 
-  SortEventsByDeltaFrames(fBuffer);
+  SortEventsByDeltaFrames(FVstEventsData);
 
-  result := fBuffer;
+  result := FVstEventsData;
 end;
 
 procedure TMidiEventOutputBuffer.RemoveStaleEvents(const SampleFrames: integer);
@@ -239,6 +308,11 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TMidiEventOutputBuffer.ResetGlobalDelta;
+begin
+  FGlobalDelta := 0;
 end;
 
 end.

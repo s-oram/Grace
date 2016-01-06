@@ -4,7 +4,7 @@ unit AggVcgenStroke;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -284,9 +284,8 @@ function TAggVcgenStroke.Vertex(X, Y: PDouble): Cardinal;
 var
   C: PPointDouble;
   Cmd: Cardinal;
-
 label
-  _rdy, Out2, _end;
+  Rdy, Out2;
 begin
   Cmd := CAggPathCmdLineTo;
 
@@ -296,17 +295,16 @@ begin
       seInitial:
         begin
           Rewind(0);
-
-          goto _rdy;
+          goto Rdy;
         end;
 
       seReady:
         begin
-        _rdy:
+        Rdy:
           if FSourceVertices.Size < 2 + Cardinal(FClosed <> 0) then
           begin
             Cmd := CAggPathCmdStop;
-            goto _end;
+            Continue;
           end;
 
           if (FClosed <> 0) then
@@ -353,14 +351,13 @@ begin
             begin
               FPrevStatus := seCloseFirst;
               FStatus := seEndPoly1;
-              goto _end;
-
+              Continue;
             end
             else
           else if FSourceVertex >= FSourceVertices.Size - 1 then
           begin
             FStatus := seCap2;
-            goto _end;
+            Continue;
           end;
 
           StrokeCalcJoin(FOutVertices, FSourceVertices.Prev(FSourceVertex),
@@ -394,7 +391,7 @@ begin
           begin
             FStatus := seEndPoly2;
             FPrevStatus := seStop;
-            goto _end;
+            Continue;
           end;
 
           Dec(FSourceVertex);
@@ -451,8 +448,6 @@ begin
       seStop:
         Cmd := CAggPathCmdStop;
     end;
-
-  _end:
   end;
 
   Result := Cmd;

@@ -4,7 +4,7 @@ unit AggSpanPatternResampleRgb;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -118,7 +118,8 @@ begin
   FWrapModeY.Init(Src.Height);
 end;
 
-procedure TAggSpanPatternResampleRgbAffine.SetSourceImage;
+procedure TAggSpanPatternResampleRgbAffine.SetSourceImage(
+  Src: TAggRenderingBuffer);
 begin
   inherited SetSourceImage(Src);
 
@@ -149,9 +150,7 @@ begin
   Radius.X := ShrInt32(Diameter * FRadiusX, 1);
   Radius.Y := ShrInt32(Diameter * FRadiusY, 1);
 
-  Max.X := SourceImage.Width - 1;
-  Max.Y := SourceImage.Height - 1;
-
+  Max := PointInteger(SourceImage.Width - 1, SourceImage.Height - 1);
   WeightArray := Filter.WeightArray;
 
   repeat
@@ -204,27 +203,9 @@ begin
       LoRes.Y := FWrapModeY.IncOperator;
     until HiRes.Y >= FilterSize;
 
-    Fg[0] := Fg[0] div TotalWeight;
-    Fg[1] := Fg[0] div TotalWeight;
-    Fg[2] := Fg[0] div TotalWeight;
-
-    if Fg[0] < 0 then
-      Fg[0] := 0;
-
-    if Fg[1] < 0 then
-      Fg[1] := 0;
-
-    if Fg[2] < 0 then
-      Fg[2] := 0;
-
-    if Fg[0] > CAggBaseMask then
-      Fg[0] := CAggBaseMask;
-
-    if Fg[1] > CAggBaseMask then
-      Fg[1] := CAggBaseMask;
-
-    if Fg[2] > CAggBaseMask then
-      Fg[2] := CAggBaseMask;
+    Fg[0] := EnsureRange(Fg[0] div TotalWeight, 0, CAggBaseMask);
+    Fg[1] := EnsureRange(Fg[1] div TotalWeight, 0, CAggBaseMask);
+    Fg[2] := EnsureRange(Fg[2] div TotalWeight, 0, CAggBaseMask);
 
     Span.Rgba8.R := Int8u(Fg[FOrder.R]);
     Span.Rgba8.G := Int8u(Fg[FOrder.G]);
@@ -300,7 +281,6 @@ var
   RowPointer, ForeGroundPointer: PInt8u;
 
   WeightArray: PInt16;
-
 begin
   Span := Allocator.Span;
   Intr := Interpolator;
@@ -344,8 +324,7 @@ begin
     Radius.X := ShrInt32(Diameter * Rx, 1);
     Radius.Y := ShrInt32(Diameter * Ry, 1);
 
-    Max.X := SourceImage.Width - 1;
-    Max.Y := SourceImage.Height - 1;
+    Max := PointInteger(SourceImage.Width - 1, SourceImage.Height - 1);
 
     Inc(X, FilterDeltaXInteger - Radius.X);
     Inc(Y, FilterDeltaYInteger - Radius.Y);
@@ -394,27 +373,9 @@ begin
       LoRes.Y := FWrapModeY.IncOperator;
     until HiRes.Y >= FilterSize;
 
-    Fg[0] := Fg[0] div TotalWeight;
-    Fg[1] := Fg[1] div TotalWeight;
-    Fg[2] := Fg[2] div TotalWeight;
-
-    if Fg[0] < 0 then
-      Fg[0] := 0;
-
-    if Fg[1] < 0 then
-      Fg[1] := 0;
-
-    if Fg[2] < 0 then
-      Fg[2] := 0;
-
-    if Fg[0] > CAggBaseMask then
-      Fg[0] := CAggBaseMask;
-
-    if Fg[1] > CAggBaseMask then
-      Fg[1] := CAggBaseMask;
-
-    if Fg[2] > CAggBaseMask then
-      Fg[2] := CAggBaseMask;
+    Fg[0] := EnsureRange(Fg[0] div TotalWeight, 0, CAggBaseMask);
+    Fg[1] := EnsureRange(Fg[1] div TotalWeight, 0, CAggBaseMask);
+    Fg[2] := EnsureRange(Fg[2] div TotalWeight, 0, CAggBaseMask);
 
     Span.Rgba8.R := Int8u(Fg[FOrder.R]);
     Span.Rgba8.G := Int8u(Fg[FOrder.G]);

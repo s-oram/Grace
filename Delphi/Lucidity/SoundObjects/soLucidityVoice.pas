@@ -122,6 +122,7 @@ type
     fSampleRegion : IRegion;
 
     fIsActive, fHasBeenReleased, fHasBeenQuickReleased : boolean;
+    FIsActiveProcessing : boolean;
     AmpLevel : single;
 
     FRInput     : single;
@@ -530,6 +531,8 @@ var
   CV : TModularVoltage;
   NoteOffset : single;
 begin
+  FIsActiveProcessing := false;
+
   //assert(aSampleGroup <> nil, 'Sample region can not be nil.');
   assert(aSampleRegion <> nil, 'Sample region can not be nil.');
   //assert(MidiNote >= 0);
@@ -691,6 +694,12 @@ end;
 
 procedure TLucidityVoice.Release;
 begin
+  if FIsActiveProcessing = false then
+  begin
+    Kill;
+    exit;
+  end;
+
   if fHasBeenReleased = false then
   begin
     fHasBeenReleased := true;
@@ -705,6 +714,12 @@ end;
 
 procedure TLucidityVoice.QuickRelease;
 begin
+  if FIsActiveProcessing = false then
+  begin
+    Kill;
+    exit;
+  end;
+
   if fHasBeenQuickReleased = false then
   begin
     AmpEnv.QuickRelease(135);
@@ -889,6 +904,8 @@ var
   pOutA, pOutB : PSingle;
 begin
   assert(IsActive);
+
+  FIsActiveProcessing := true;
 
   pxA := @BufferA[0];
   pxB := @BufferB[0];

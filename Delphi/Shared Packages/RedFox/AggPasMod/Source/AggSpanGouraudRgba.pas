@@ -4,7 +4,7 @@ unit AggSpanGouraudRgba;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -44,10 +44,10 @@ type
   private
     F1, FDelta: TPointDouble;
 
-    FRed1, FGreen1, FBlue1, FAlpha1, FDeltaRed, FDeltaGreen, FDeltaBlue,
-    FDeltaAlpha, FRed, FGreen, FBlue, FAlpha, FX: Integer;
+    FRed1, FGreen1, FBlue1, FAlpha1: Integer;
+    FDeltaRed, FDeltaGreen, FDeltaBlue, FDeltaAlpha: Integer;
+    FRed, FGreen, FBlue, FAlpha, FX: Integer;
   public
-    function Round(V: Double): Integer;
     procedure Init(C1, C2: PAggCoordType);
     procedure Calc(Y: Double);
   end;
@@ -56,7 +56,6 @@ type
   private
     FSwap: Boolean;
     FY2: Integer;
-    FMagic: Integer;
 
     FRgba1, FRgba2, FRgba3: TAggRgbaCalc;
   public
@@ -77,28 +76,20 @@ implementation
 
 { TAggRgbaCalc }
 
-function TAggRgbaCalc.Round;
-begin
-  if V < 0.0 then
-    Result := Trunc(V - 0.5)
-  else
-    Result := Trunc(V + 0.5);
-end;
-
-procedure TAggRgbaCalc.Init;
+procedure TAggRgbaCalc.Init(C1, C2: PAggCoordType);
 var
-  Dy: Double;
+  DeltaY: Double;
 begin
   F1.X := C1.X - 0.5;
   F1.Y := C1.Y - 0.5;
   FDelta.X := C2.X - C1.X;
 
-  Dy := C2.Y - C1.Y;
+  DeltaY := C2.Y - C1.Y;
 
-  if Dy < 1E-5 then
+  if DeltaY < 1E-5 then
     FDelta.Y := 1E5
   else
-    FDelta.Y := 1.0 / Dy;
+    FDelta.Y := 1.0 / DeltaY;
 
   FRed1 := C1.Color.Rgba8.R;
   FGreen1 := C1.Color.Rgba8.G;
@@ -110,23 +101,30 @@ begin
   FDeltaAlpha := C2.Color.Rgba8.A - FAlpha1;
 end;
 
-procedure TAggRgbaCalc.Calc;
+procedure TAggRgbaCalc.Calc(Y: Double);
 var
   K: Double;
 begin
   K := (Y - F1.Y) * FDelta.Y;
 
   if K < 0.0 then
-    K := 0.0;
+  begin
+    FRed := FRed1;
+    FGreen := FGreen1;
+    FBlue := FBlue1;
+    FAlpha := FAlpha1;
+    FX := IntegerRound(F1.X * CAggSubpixelSize);
+    Exit;
+  end;
 
   if K > 1.0 then
     K := 1.0;
 
-  FRed := FRed1 + Self.Round(FDeltaRed * K);
-  FGreen := FGreen1 + Self.Round(FDeltaGreen * K);
-  FBlue := FBlue1 + Self.Round(FDeltaBlue * K);
-  FAlpha := FAlpha1 + Self.Round(FDeltaAlpha * K);
-  FX := Self.Round((F1.X + FDelta.X * K) * CAggSubpixelSize);
+  FRed := FRed1 + IntegerRound(FDeltaRed * K);
+  FGreen := FGreen1 + IntegerRound(FDeltaGreen * K);
+  FBlue := FBlue1 + IntegerRound(FDeltaBlue * K);
+  FAlpha := FAlpha1 + IntegerRound(FDeltaAlpha * K);
+  FX := IntegerRound((F1.X + FDelta.X * K) * CAggSubpixelSize);
 end;
 
 
@@ -135,21 +133,18 @@ end;
 constructor TAggSpanGouraudRgba.Create(Alloc: TAggSpanAllocator);
 begin
   inherited Create(Alloc);
-  FMagic := 12345;
 end;
 
 constructor TAggSpanGouraudRgba.Create(Alloc: TAggSpanAllocator;
   C1, C2, C3: PAggColor; X1, Y1, X2, Y2, X3, Y3, D: Double);
 begin
   inherited Create(Alloc, C1, C2, C3, X1, Y1, X2, Y2, X3, Y3, D);
-  FMagic := 12345;
 end;
 
 constructor TAggSpanGouraudRgba.Create(C1, C2, C3: PAggColor;
   X1, Y1, X2, Y2, X3, Y3: Double; D: Double = 0);
 begin
   inherited Create(nil, C1, C2, C3, X1, Y1, X2, Y2, X3, Y3, D);
-  FMagic := 12345;
 end;
 
 procedure TAggSpanGouraudRgba.Prepare(MaxSpanLength: Cardinal);
@@ -162,8 +157,8 @@ begin
 
   FY2 := Trunc(Coord[1].Y);
 
-  FSwap := CalculatePointLocation(Coord[0].X, Coord[0].Y, Coord[2].X, Coord[2].Y,
-    Coord[1].X, Coord[1].Y) < 0.0;
+  FSwap := CalculatePointLocation(Coord[0].X, Coord[0].Y,
+    Coord[2].X, Coord[2].Y, Coord[1].X, Coord[1].Y) < 0.0;
 
   FRgba1.Init(@Coord[0], @Coord[2]);
   FRgba2.Init(@Coord[0], @Coord[1]);
@@ -195,7 +190,6 @@ var
   R, G, B, A: TAggDdaLineInterpolator;
   Span: PAggColor;
 begin
-  Assert(FMagic = 12345);
   FRgba1.Calc(Y); // (FRgba1.FDelta.Y > 2) ? FRgba1.F1.Y : y);
 
   Pc1 := @FRgba1;
@@ -249,45 +243,16 @@ begin
   Span := Allocator.Span;
 
   // Beginning part of the Span. Since we rolled back the
-  // interpolators, the color values may have overfLow.
+  // interpolators, the color values may have overflow.
   // So that, we render the beginning part with checking
-  // for overfLow. It lasts until "start" is positive;
+  // for overflow. It lasts until "start" is positive;
   // typically it's 1-2 pixels, but may be more in some cases.
   while (Len <> 0) and (Start > 0) do
   begin
-    Vr := R.Y;
-    Vg := G.Y;
-    Vb := B.Y;
-    Va := A.Y;
-
-    if Vr < 0 then
-      Vr := 0;
-
-    if Vr > Lim then
-      Vr := Lim;
-
-    if Vg < 0 then
-      Vg := 0;
-
-    if Vg > Lim then
-      Vg := Lim;
-
-    if Vb < 0 then
-      Vb := 0;
-
-    if Vb > Lim then
-      Vb := Lim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > Lim then
-      Va := Lim;
-
-    Span.Rgba8.R := Int8u(Vr);
-    Span.Rgba8.G := Int8u(Vg);
-    Span.Rgba8.B := Int8u(Vb);
-    Span.Rgba8.A := Int8u(Va);
+    Span.Rgba8.R := Int8u(EnsureRange(R.Y, 0, Lim));
+    Span.Rgba8.G := Int8u(EnsureRange(G.Y, 0, Lim));
+    Span.Rgba8.B := Int8u(EnsureRange(B.Y, 0, Lim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, Lim));
 
     R.IncOperator(CAggSubpixelSize);
     G.IncOperator(CAggSubpixelSize);
@@ -300,10 +265,10 @@ begin
     Dec(Len);
   end;
 
-  // Middle part, no checking for overfLow.
+  // Middle part, no checking for overflow.
   // Actual Spans can be longer than the calculated length
   // because of anti-aliasing, thus, the interpolators can
-  // overfLow. But while "nlen" is positive we are safe.
+  // overflow. But while "nlen" is positive we are safe.
   while (Len <> 0) and (Nlen > 0) do
   begin
     Span.Rgba8.R := Int8u(R.Y);
@@ -321,43 +286,14 @@ begin
     Dec(Len);
   end;
 
-  // Ending part; checking for overfLow.
+  // Ending part; checking for overflow.
   // Typically it's 1-2 pixels, but may be more in some cases.
   while Len <> 0 do
   begin
-    Vr := R.Y;
-    Vg := G.Y;
-    Vb := B.Y;
-    Va := A.Y;
-
-    if Vr < 0 then
-      Vr := 0;
-
-    if Vr > Lim then
-      Vr := Lim;
-
-    if Vg < 0 then
-      Vg := 0;
-
-    if Vg > Lim then
-      Vg := Lim;
-
-    if Vb < 0 then
-      Vb := 0;
-
-    if Vb > Lim then
-      Vb := Lim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > Lim then
-      Va := Lim;
-
-    Span.Rgba8.R := Int8u(Vr);
-    Span.Rgba8.G := Int8u(Vg);
-    Span.Rgba8.B := Int8u(Vb);
-    Span.Rgba8.A := Int8u(Va);
+    Span.Rgba8.R := Int8u(EnsureRange(R.Y, 0, Lim));
+    Span.Rgba8.G := Int8u(EnsureRange(G.Y, 0, Lim));
+    Span.Rgba8.B := Int8u(EnsureRange(B.Y, 0, Lim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, Lim));
 
     R.IncOperator(CAggSubpixelSize);
     G.IncOperator(CAggSubpixelSize);
@@ -419,7 +355,7 @@ begin
 
   // Calculate the starting point of the Gradient with subpixel
   // accuracy and correct (roll back) the interpolators.
-  // This operation will also clip the beginning of the Span
+  // This operation will also clip the beginning of the span
   // if necessary.
   Start := Pc1.FX - (X shl CAggSubpixelShift);
 
@@ -430,46 +366,17 @@ begin
 
   Inc(Nlen, Start);
 
-  // Beginning part of the Span. Since we rolled back the
-  // interpolators, the color values may have overfLow.
+  // Beginning part of the span. Since we rolled back the
+  // interpolators, the color values may have overflow.
   // So that, we render the beginning part with checking
-  // for overfLow. It lasts until "start" is positive;
+  // for overflow. It lasts until "start" is positive;
   // typically it's 1-2 pixels, but may be more in some cases.
   while (Len <> 0) and (Start > 0) do
   begin
-    Vr := R.Y;
-    Vg := G.Y;
-    Vb := B.Y;
-    Va := A.Y;
-
-    if Vr < 0 then
-      Vr := 0;
-
-    if Vr > Lim then
-      Vr := Lim;
-
-    if Vg < 0 then
-      Vg := 0;
-
-    if Vg > Lim then
-      Vg := Lim;
-
-    if Vb < 0 then
-      Vb := 0;
-
-    if Vb > Lim then
-      Vb := Lim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > Lim then
-      Va := Lim;
-
-    Span.Rgba8.R := Int8u(Vr);
-    Span.Rgba8.G := Int8u(Vg);
-    Span.Rgba8.B := Int8u(Vb);
-    Span.Rgba8.A := Int8u(Va);
+    Span.Rgba8.R := Int8u(EnsureRange(R.Y, 0, Lim));
+    Span.Rgba8.G := Int8u(EnsureRange(G.Y, 0, Lim));
+    Span.Rgba8.B := Int8u(EnsureRange(B.Y, 0, Lim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, Lim));
 
     R.IncOperator(CAggSubpixelSize);
     G.IncOperator(CAggSubpixelSize);
@@ -482,10 +389,10 @@ begin
     Dec(Len);
   end;
 
-  // Middle part, no checking for overfLow.
-  // Actual Spans can be longer than the calculated length
+  // Middle part, no checking for overflow.
+  // Actual spans can be longer than the calculated length
   // because of anti-aliasing, thus, the interpolators can
-  // overfLow. But while "nlen" is positive we are safe.
+  // overflow. But while "nlen" is positive we are safe.
   while (Len <> 0) and (Nlen > 0) do
   begin
     Span.Rgba8.R := Int8u(R.Y);
@@ -503,43 +410,14 @@ begin
     Dec(Len);
   end;
 
-  // Ending part; checking for overfLow.
+  // Ending part; checking for overflow.
   // Typically it's 1-2 pixels, but may be more in some cases.
   while Len <> 0 do
   begin
-    Vr := R.Y;
-    Vg := G.Y;
-    Vb := B.Y;
-    Va := A.Y;
-
-    if Vr < 0 then
-      Vr := 0;
-
-    if Vr > Lim then
-      Vr := Lim;
-
-    if Vg < 0 then
-      Vg := 0;
-
-    if Vg > Lim then
-      Vg := Lim;
-
-    if Vb < 0 then
-      Vb := 0;
-
-    if Vb > Lim then
-      Vb := Lim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > Lim then
-      Va := Lim;
-
-    Span.Rgba8.R := Int8u(Vr);
-    Span.Rgba8.G := Int8u(Vg);
-    Span.Rgba8.B := Int8u(Vb);
-    Span.Rgba8.A := Int8u(Va);
+    Span.Rgba8.R := Int8u(EnsureRange(R.Y, 0, Lim));
+    Span.Rgba8.G := Int8u(EnsureRange(G.Y, 0, Lim));
+    Span.Rgba8.B := Int8u(EnsureRange(B.Y, 0, Lim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, Lim));
 
     R.IncOperator(CAggSubpixelSize);
     G.IncOperator(CAggSubpixelSize);

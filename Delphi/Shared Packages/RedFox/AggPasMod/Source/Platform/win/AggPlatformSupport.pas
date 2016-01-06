@@ -4,7 +4,7 @@ unit AggPlatformSupport;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -342,12 +342,14 @@ type
     FRenderingBufferImages: array [0..MaxImages - 1] of TAggRenderingBuffer;
 
     FWindowFlags: TWindowFlags;
-    FWaitMode, FFlipY: Boolean;
-    // FlipY - true if you want to have the Y-axis flipped vertically
+    FWaitMode: Boolean;
+    FFlipY: Boolean; // FlipY - true if you want to have the Y-axis flipped vertically
     FCaption: string;
     FResizeMatrix: TAggTransAffine;
 
     FCtrls: TControlContainer;
+
+    FInitialWidth, FInitialHeight: Integer;
 
     // The following provides a very simple mechanism of doing someting
     // in background. It's not multitheading. When whait_mode is true
@@ -374,10 +376,29 @@ type
     // system.
     function GetImageExtension: ShortString;
     function GetWindowHandle: HWND;
-  protected
-    FInitialWidth, FInitialHeight: Integer;
+
     function GetWidth: Double;
     function GetHeight: Double;
+  protected
+    // Event handlers. They are not pure functions, so you don't have
+    // to override them all.
+    // In my demo applications these functions are defined inside
+    // the TAggApplication class
+    procedure OnInit; virtual;
+    procedure OnResize(Width, Height: Integer); virtual;
+    procedure OnIdle; virtual;
+
+    procedure OnMouseMove(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
+
+    procedure OnMouseButtonDown(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
+    procedure OnMouseButtonUp(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
+
+    procedure OnKey(X, Y: Integer; Key: Cardinal; Flags: TMouseKeyboardFlags); virtual;
+    procedure OnControlChange; virtual;
+    procedure OnDraw; virtual;
+    procedure OnPostDraw(RawHandler: Pointer); virtual;
+    procedure OnTimer; virtual;
+
     property Specific: TPlatformSpecific read FSpecific;
     property WindowHandle: HWND read GetWindowHandle;
   public
@@ -420,27 +441,11 @@ type
     procedure ForceRedraw;
     procedure UpdateWindow;
 
+    function SetRedrawTimer(Interval: Integer; Enabled: Boolean = True): Boolean;
+
     procedure CopyImageToWindow(Index: Cardinal);
     procedure CopyWindowToImage(Index: Cardinal);
     procedure CopyImageToImage(IndexTo, IndexFrom: Cardinal);
-
-    // Event handlers. They are not pure functions, so you don't have
-    // to override them all.
-    // In my demo applications these functions are defined inside
-    // the TAggApplication class
-    procedure OnInit; virtual;
-    procedure OnResize(Width, Height: Integer); virtual;
-    procedure OnIdle; virtual;
-
-    procedure OnMouseMove(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
-
-    procedure OnMouseButtonDown(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
-    procedure OnMouseButtonUp(X, Y: Integer; Flags: TMouseKeyboardFlags); virtual;
-
-    procedure OnKey(X, Y: Integer; Key: Cardinal; Flags: TMouseKeyboardFlags); virtual;
-    procedure OnControlChange; virtual;
-    procedure OnDraw; virtual;
-    procedure OnPostDraw(RawHandler: Pointer); virtual;
 
     // Adding control elements. A control element once added will be
     // working and reacting to the mouse and keyboard events. Still, you
@@ -689,7 +694,7 @@ begin
 
   FillChar(FKeymap[0], SizeOf(FKeymap), 0);
 
-  FKeymap[VK_PAUSE] := kcPause;
+//  FKeymap[VK_PAUSE] := kcPause;
   FKeymap[VK_CLEAR] := kcClear;
 
   FKeymap[VK_NUMPAD0] := kcPad0;
@@ -1234,6 +1239,14 @@ begin
 {$ENDIF}
 end;
 
+function TPlatformSupport.SetRedrawTimer(Interval: Integer; Enabled: Boolean): Boolean;
+begin
+  KillTimer(FSpecific.WindowHandle, 1);
+
+  if Enabled and (Interval > 0) then
+    Result := SetTimer(FSpecific.WindowHandle, 1, Interval, nil) = 0
+end;
+
 function TPlatformSupport.LoadImage(Index: Cardinal; File_: ShortString): Boolean;
 var
   F: file;
@@ -1390,7 +1403,6 @@ begin
           begin
             App.OnControlChange;
             App.ForceRedraw;
-
           end
           else
         else
@@ -1475,13 +1487,13 @@ begin
         begin
           App.OnControlChange;
           App.ForceRedraw;
-
         end
         else if not App.FCtrls.InRect(App.Specific.FCurX,
           App.Specific.FCurY) then
           App.OnMouseMove(App.Specific.FCurX, App.Specific.FCurY,
             App.Specific.FInputFlags);
       end;
+
     WM_SYSKEYDOWN, WM_KEYDOWN:
       begin
         App.Specific.FLastTranslatedKey := kcNone;
@@ -1565,6 +1577,9 @@ begin
         App.OnKey(App.Specific.FCurX, App.Specific.FCurY, WPar,
           App.Specific.FInputFlags);
 
+    WM_TIMER:
+      App.OnTimer;
+
     WM_PAINT:
       begin
         PaintDC := BeginPaint(Wnd, Ps);
@@ -1608,7 +1623,7 @@ function TPlatformSupport.Init(AWidth, AHeight: Cardinal;
 var
   Wc : WNDCLASS;
   Rct: TRect;
-  Wflags: Integer;
+  WFlags: Integer;
 begin
   Result := False;
 
@@ -1617,11 +1632,11 @@ begin
 
   FWindowFlags := Flags;
 
-  Wflags := CS_OWNDC or CS_VREDRAW or CS_HREDRAW;
+  WFlags := CS_OWNDC or CS_VREDRAW or CS_HREDRAW;
 
   Wc.LpszClassName := 'AGGAppClass';
   Wc.LpfnWndProc := @Window_proc;
-  Wc.Style := Wflags;
+  Wc.Style := WFlags;
   Wc.HInstance := HInstance;
   Wc.HIcon := LoadIcon(0, IDI_APPLICATION);
   Wc.HCursor := LoadCursor(0, IDC_ARROW);
@@ -1632,12 +1647,12 @@ begin
 
   RegisterClass(Wc);
 
-  Wflags := WS_OVERLAPPED or WS_CAPTION or WS_SYSMENU or WS_MINIMIZEBOX;
+  WFlags := WS_OVERLAPPED or WS_CAPTION or WS_SYSMENU or WS_MINIMIZEBOX;
 
   if wfResize in FWindowFlags then
-    Wflags := Wflags or WS_THICKFRAME or WS_MAXIMIZEBOX;
+    WFlags := WFlags or WS_THICKFRAME or WS_MAXIMIZEBOX;
 
-  FSpecific.FHwnd := CreateWindow('AGGAppClass', @FCaption[1], Wflags, 10,
+  FSpecific.FHwnd := CreateWindow('AGGAppClass', @FCaption[1], WFlags, 10,
     10, AWidth, AHeight, 0, 0, HInstance, 0);
 
   if FSpecific.FHwnd = 0 then
@@ -1776,6 +1791,11 @@ end;
 
 procedure TPlatformSupport.OnResize(Width, Height: Integer);
 begin
+end;
+
+procedure TPlatformSupport.OnTimer;
+begin
+  ForceRedraw;
 end;
 
 procedure TPlatformSupport.OnIdle;
@@ -1920,21 +1940,16 @@ end;
 function TPlatformSupport.FileSource(Path, FileName: ShortString): ShortString;
 var
   F: file;
-  E: Integer;
 begin
   Result := FileName;
-
-  E := Ioresult;
 
   AssignFile(F, Result);
   Reset(F, 1);
 
-  if Ioresult <> 0 then
+  if IOResult <> 0 then
     Result := Path + '\' + FileName;
 
   Close(F);
-
-  E := Ioresult;
 end;
 
 end.

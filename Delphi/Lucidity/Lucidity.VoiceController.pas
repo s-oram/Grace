@@ -1,5 +1,4 @@
 unit Lucidity.VoiceController;
-
 interface
 
 {$INCLUDE Defines.inc}
@@ -17,7 +16,6 @@ uses
 
 type
   TVoiceController = class(TZeroObject)
-  private
   protected
     Globals : TGlobals;
     Voices  : PArrayOfLucidityVoice;
@@ -249,7 +247,6 @@ begin
     {$ENDIF}
   end;
 end;
-
 
 procedure TVoiceController.LatchTrigger(const Data1, Data2: byte; const NoteStackCount : integer);
 var

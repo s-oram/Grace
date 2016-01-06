@@ -4,7 +4,7 @@ unit AggVcgenSmoothPoly1;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -140,15 +140,12 @@ begin
 end;
 
 function TAggVcgenSmoothPoly1.Vertex(X, Y: PDouble): Cardinal;
-var
-  Cmd: Cardinal;
 label
-  _next, _ready, _polygon;
+  _ready, _polygon;
 begin
-  Cmd := CAggPathCmdLineTo;
+  Result := CAggPathCmdLineTo;
 
-_next:
-  while not IsStop(Cmd) do
+  while not IsStop(Result) do
     case FStatus of
       seInitial:
         begin
@@ -162,9 +159,8 @@ _next:
         begin
           if FSourceVertices.Size < 2 then
           begin
-            Cmd := CAggPathCmdStop;
-
-            goto _next;
+            Result := CAggPathCmdStop;
+            Continue;
           end;
 
           if FSourceVertices.Size = 2 then
@@ -190,12 +186,11 @@ _next:
               Exit;
             end;
 
-            Cmd := CAggPathCmdStop;
-
-            goto _next;
+            Result := CAggPathCmdStop;
+            Continue;
           end;
 
-          Cmd := CAggPathCmdMoveTo;
+          Result := CAggPathCmdMoveTo;
 
           FStatus := sePolygon;
 
@@ -217,7 +212,6 @@ _next:
               Result := CAggPathCmdCurve4;
 
               Exit;
-
             end
             else
           else if FSourceVertex >= FSourceVertices.Size - 1 then
@@ -251,7 +245,6 @@ _next:
               Result := CAggPathCmdMoveTo
             else
               Result := CAggPathCmdCurve4;
-
             Exit;
           end
           else
@@ -260,7 +253,6 @@ _next:
             begin
               FStatus := seCtrlB;
               Result := CAggPathCmdMoveTo;
-
               Exit;
             end;
 
@@ -268,13 +260,11 @@ _next:
             begin
               FStatus := seCtrlE;
               Result := CAggPathCmdCurve3;
-
               Exit;
             end;
 
             FStatus := seCtrl1;
             Result := CAggPathCmdCurve4;
-
             Exit;
           end;
         end;
@@ -286,7 +276,6 @@ _next:
 
           FStatus := sePolygon;
           Result := CAggPathCmdCurve3;
-
           Exit;
         end;
 
@@ -297,7 +286,6 @@ _next:
 
           FStatus := sePolygon;
           Result := CAggPathCmdCurve3;
-
           Exit;
         end;
 
@@ -308,7 +296,6 @@ _next:
 
           FStatus := seCtrl2;
           Result := CAggPathCmdCurve4;
-
           Exit;
         end;
 
@@ -319,7 +306,6 @@ _next:
 
           FStatus := sePolygon;
           Result := CAggPathCmdCurve4;
-
           Exit;
         end;
 
@@ -327,19 +313,15 @@ _next:
         begin
           FStatus := seStop;
           Result := CAggPathCmdEndPoly or FClosed;
-
           Exit;
         end;
 
       seStop:
         begin
           Result := CAggPathCmdStop;
-
           Exit;
         end;
     end;
-
-  Result := Cmd;
 end;
 
 procedure TAggVcgenSmoothPoly1.Calculate;

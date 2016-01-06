@@ -4,7 +4,7 @@ unit AggFontCacheManager;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -169,7 +169,9 @@ begin
     Result := nil;
 end;
 
-function TAggFontCache.CacheGlyph;
+function TAggFontCache.CacheGlyph(GlyphCode, GlyphIndex, DataSize: Cardinal;
+  DataType: TAggGlyphData; var Bounds: TRectInteger; AdvanceX, AdvanceY: Double)
+  : PAggGlyphCache;
 var
   Msb, Lsb: Cardinal;
   Glyph: PAggGlyphCache;
@@ -214,7 +216,7 @@ end;
 
 { TAggFontCachePool }
 
-constructor TAggFontCachePool.Create;
+constructor TAggFontCachePool.Create(MaxFonts: Cardinal = 32);
 begin
   AggGetMem(Pointer(FFonts), MaxFonts * SizeOf(TAggFontCache));
 
@@ -284,12 +286,12 @@ begin
   end;
 end;
 
-function TAggFontCachePool.GetFont;
+function TAggFontCachePool.GetFont: TAggFontCache;
 begin
   Result := FCurrentFont;
 end;
 
-function TAggFontCachePool.FindGlyph;
+function TAggFontCachePool.FindGlyph(GlyphCode: Cardinal): PAggGlyphCache;
 begin
   if FCurrentFont <> nil then
     Result := FCurrentFont.FindGlyph(GlyphCode)
@@ -297,7 +299,9 @@ begin
     Result := nil;
 end;
 
-function TAggFontCachePool.CacheGlyph;
+function TAggFontCachePool.CacheGlyph(GlyphCode, GlyphIndex, DataSize: Cardinal;
+  DataType: TAggGlyphData; var Bounds: TRectInteger; AdvanceX, AdvanceY: Double)
+  : PAggGlyphCache;
 begin
   if FCurrentFont <> nil then
     Result := FCurrentFont.CacheGlyph(GlyphCode, GlyphIndex, DataSize,

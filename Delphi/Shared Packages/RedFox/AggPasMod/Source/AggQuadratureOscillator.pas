@@ -4,7 +4,7 @@ unit AggQuadratureOscillator;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -35,10 +35,10 @@ type
     procedure SetFrequency(const Value: Double);
     procedure SetAmplitude(const Value: Double);
   protected
-    FAmplitude     : Double;
-    FFrequency     : Double;
-    FAngle         : TPointDouble;
-    FPosition      : TPointDouble;
+    FAmplitude: Double;
+    FFrequency: Double;
+    FAngle: TPointDouble;
+    FPosition: TPointDouble;
     procedure FrequencyChanged; virtual;
   public
     constructor Create(Frequency: Double; Amplitude: Double = 1); virtual;

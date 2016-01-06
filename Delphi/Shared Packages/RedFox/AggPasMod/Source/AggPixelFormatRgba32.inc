@@ -300,25 +300,27 @@ procedure Rgba32BlendSolidHorizontalSpan(This: TAggPixelFormatProcessor;
   X, Y: Integer; Len: Cardinal; C: PAggColor; Covers: PInt8u);
 var
   P: PAggOrderRgba;
+  PClr: PAggRgba8;
   Alpha: Cardinal;
 begin
-  if C^.Rgba8.A <> 0 then
+  PClr := @C^.Rgba8;
+  if PClr^.A <> 0 then
   begin
     P := PAggOrderRgba(This.RenderingBuffer.Row(Y));
     Inc(P, X);
 
     repeat
-      Alpha := (C^.Rgba8.A * (Covers^ + 1)) shr 8;
+      Alpha := (PClr^.A * (Covers^ + 1)) shr 8;
 
       if Alpha = CAggBaseMask then
       begin
-        P^.R := C.Rgba8.R;
-        P^.G := C.Rgba8.G;
-        P^.B := C.Rgba8.B;
+        P^.R := PClr^.R;
+        P^.G := PClr^.G;
+        P^.B := PClr^.B;
         P^.A := CAggBaseMask;
       end
       else
-        BlendPixRgba(P, C^.Rgba8.R, C^.Rgba8.G, C^.Rgba8.B, Alpha, Covers^);
+        BlendPixRgba(P, PClr^.R, PClr^.G, PClr^.B, Alpha, Covers^);
 
       Inc(P);
       Inc(Covers);

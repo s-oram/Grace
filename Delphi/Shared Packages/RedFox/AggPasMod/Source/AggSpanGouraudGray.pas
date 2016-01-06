@@ -4,7 +4,7 @@ unit AggSpanGouraudGray;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -46,7 +46,6 @@ type
     FColorC1V, FColorC1A, FColorDeltaV, FColorDeltaA,
     FColorV, FColorA, FX: Integer;
   public
-    function Round(V: Double): Integer;
     procedure Init(C1, C2: PAggCoordType);
     procedure Calculate(Y: Double);
   end;
@@ -70,20 +69,11 @@ implementation
 
 { TAggGrayCalc }
 
-function TAggGrayCalc.Round;
-begin
-  if V < 0.0 then
-    Result := Trunc(V - 0.5)
-  else
-    Result := Trunc(V + 0.5);
-end;
-
 procedure TAggGrayCalc.Init;
 var
   Dy: Double;
 begin
-  F1.X := C1.X - 0.5;
-  F1.Y := C1.Y - 0.5;
+  F1 := PointDouble(C1.X - 0.5, C1.Y - 0.5);
   FDelta.X := C2.X - C1.X;
 
   Dy := C2.Y - C1.Y;
@@ -103,17 +93,11 @@ procedure TAggGrayCalc.Calculate;
 var
   K: Double;
 begin
-  K := (Y - F1.Y) * FDelta.Y;
+  K := EnsureRange((Y - F1.Y) * FDelta.Y, 0, 1);
 
-  if K < 0.0 then
-    K := 0.0;
-
-  if K > 1.0 then
-    K := 1.0;
-
-  FColorV := FColorC1V + Self.Round(FColorDeltaV * K);
-  FColorA := FColorC1A + Self.Round(FColorDeltaA * K);
-  FX := Self.Round((F1.X + FDelta.X * K) * CAggSubpixelSize);
+  FColorV := FColorC1V + IntegerRound(FColorDeltaV * K);
+  FColorA := FColorC1A + IntegerRound(FColorDeltaA * K);
+  FX := IntegerRound((F1.X + FDelta.X * K) * CAggSubpixelSize);
 end;
 
 
@@ -154,7 +138,7 @@ const
 var
   Pc1, Pc2, T: PAggGrayCalc;
 
-  Nlen, Start, Vv, Va: Integer;
+  Nlen, Start: Integer;
 
   V, A: TAggDdaLineInterpolator;
   Span: PAggColor;
@@ -214,23 +198,8 @@ begin
   // typically it's 1-2 pixels, but may be more in some cases.
   while (Len <> 0) and (Start > 0) do
   begin
-    Vv := V.Y;
-    Va := A.Y;
-
-    if Vv < 0 then
-      Vv := 0;
-
-    if Vv > CLim then
-      Vv := CLim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > CLim then
-      Va := CLim;
-
-    Span.V := Int8u(Vv);
-    Span.Rgba8.A := Int8u(Va);
+    Span.V := Int8u(EnsureRange(V.Y, 0, CLim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, CLim));
 
     V.IncOperator(CAggSubpixelSize);
     A.IncOperator(CAggSubpixelSize);
@@ -262,23 +231,8 @@ begin
   // Typically it's 1-2 pixels, but may be more in some cases.
   while Len <> 0 do
   begin
-    Vv := V.Y;
-    Va := A.Y;
-
-    if Vv < 0 then
-      Vv := 0;
-
-    if Vv > CLim then
-      Vv := CLim;
-
-    if Va < 0 then
-      Va := 0;
-
-    if Va > CLim then
-      Va := CLim;
-
-    Span.V := Int8u(Vv);
-    Span.Rgba8.A := Int8u(Va);
+    Span.V := Int8u(EnsureRange(V.Y, 0, CLim));
+    Span.Rgba8.A := Int8u(EnsureRange(A.Y, 0, CLim));
 
     V.IncOperator(CAggSubpixelSize);
     A.IncOperator(CAggSubpixelSize);

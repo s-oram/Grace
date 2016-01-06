@@ -4,7 +4,7 @@ unit AggRendererOutlineAA;
 //                                                                            //
 //  Anti-Grain Geometry (modernized Pascal fork, aka 'AggPasMod')             //
 //    Maintained by Christian-W. Budde (Christian@savioursofsoul.de)          //
-//    Copyright (c) 2012                                                      //
+//    Copyright (c) 2012-2015                                                      //
 //                                                                            //
 //  Based on:                                                                 //
 //    Pascal port by Milan Marusinec alias Milano (milan@marusinec.sk)        //
@@ -289,8 +289,8 @@ type
     FSubpixelWidth: Integer;
     FMinWidth, FSmootherWidth: Double;
 
-    procedure SetMinWidth(W: Double);
-    procedure SetSmootherWidth(W: Double);
+    procedure SetMinWidth(Value: Double);
+    procedure SetSmootherWidth(Value: Double);
   public
     constructor Create; overload;
     constructor Create(Width: Double; GammaFunction: TAggCustomVertexSource); overload;
@@ -302,7 +302,7 @@ type
 
     function GetValue(GetDist: Integer): Int8u;
 
-    function Profile(W: Double): PInt8u;
+    function Profile(Value: Double): PInt8u;
 
     property ProfileSize: Cardinal read FSize;
     property SubpixelWidth: Integer read FSubpixelWidth;
@@ -374,8 +374,10 @@ begin
   FDelta.X := LineMedResolution(X2) - LineMedResolution(X1);
   FDelta.Y := LineMedResolution(Y2) - LineMedResolution(Y1);
 
-  FDist := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(X2)) * FDelta.Y -
-    (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Y2)) * FDelta.X;
+  FDist := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
+    LineMedResolution(X2)) * FDelta.Y -
+    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Y2)) * FDelta.X;
 
   FDelta.X := FDelta.X shl CAggLineMrSubpixelShift;
   FDelta.Y := FDelta.Y shl CAggLineMrSubpixelShift;
@@ -557,10 +559,10 @@ end;
 
 { TAggDistanceInterpolator2 }
 
-constructor TAggDistanceInterpolator2.Create(X1, Y1, X2, Y2, Sx, Sy, X, Y: Integer);
+constructor TAggDistanceInterpolator2.Create(X1, Y1, X2, Y2, Sx, Sy,
+  X, Y: Integer);
 begin
-  FDelta.X := X2 - X1;
-  FDelta.Y := Y2 - Y1;
+  FDelta := PointInteger(X2 - X1, Y2 - Y1);
 
   FDeltaStart.X := LineMedResolution(Sx) - LineMedResolution(X1);
   FDeltaStart.Y := LineMedResolution(Sy) - LineMedResolution(Y1);
@@ -568,9 +570,10 @@ begin
   FDist := Trunc((X + CAggLineSubpixelSize * 0.5 - X2) * FDelta.Y -
     (Y + CAggLineSubpixelSize * 0.5 - Y2) * FDelta.X);
 
-  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Sx)) *
-    FDeltaStart.Y - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Sy)) *
-    FDeltaStart.X;
+  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Sx)) * FDeltaStart.Y -
+    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Sy)) * FDeltaStart.X;
 
   FDelta.X := FDelta.X shl CAggLineSubpixelShift;
   FDelta.Y := FDelta.Y shl CAggLineSubpixelShift;
@@ -582,8 +585,7 @@ end;
 constructor TAggDistanceInterpolator2.Create(X1, Y1, X2, Y2, Ex, Ey, X,
   Y, Z: Integer);
 begin
-  FDelta.X := X2 - X1;
-  FDelta.Y := Y2 - Y1;
+  FDelta := PointInteger(X2 - X1, Y2 - Y1);
 
   FDeltaStart.X := LineMedResolution(Ex) - LineMedResolution(X2);
   FDeltaStart.Y := LineMedResolution(Ey) - LineMedResolution(Y2);
@@ -591,9 +593,10 @@ begin
   FDist := Trunc((X + CAggLineSubpixelSize * 0.5 - X2) * FDelta.Y -
     (Y + CAggLineSubpixelSize * 0.5 - Y2) * FDelta.X);
 
-  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Ex)) *
-    FDeltaStart.Y - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Ey)) *
-    FDeltaStart.X;
+  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Ex)) * FDeltaStart.Y -
+    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Ey)) * FDeltaStart.X;
 
   FDelta.X := FDelta.X shl CAggLineSubpixelShift;
   FDelta.Y := FDelta.Y shl CAggLineSubpixelShift;
@@ -698,47 +701,47 @@ begin
   end;
 end;
 
-function TAggDistanceInterpolator2.GetDistance;
+function TAggDistanceInterpolator2.GetDistance: Integer;
 begin
   Result := FDist;
 end;
 
-function TAggDistanceInterpolator2.GetDistanceStart;
+function TAggDistanceInterpolator2.GetDistanceStart: Integer;
 begin
   Result := FDistStart;
 end;
 
-function TAggDistanceInterpolator2.GetDistanceEnd;
+function TAggDistanceInterpolator2.GetDistanceEnd: Integer;
 begin
   Result := FDistStart;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaX;
+function TAggDistanceInterpolator2.GetDeltaX: Integer;
 begin
   Result := FDelta.X;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaY;
+function TAggDistanceInterpolator2.GetDeltaY: Integer;
 begin
   Result := FDelta.Y;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaXStart;
+function TAggDistanceInterpolator2.GetDeltaXStart: Integer;
 begin
   Result := FDeltaStart.X;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaYStart;
+function TAggDistanceInterpolator2.GetDeltaYStart: Integer;
 begin
   Result := FDeltaStart.Y;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaXEnd;
+function TAggDistanceInterpolator2.GetDeltaXEnd: Integer;
 begin
   Result := FDeltaStart.X;
 end;
 
-function TAggDistanceInterpolator2.GetDeltaYEnd;
+function TAggDistanceInterpolator2.GetDeltaYEnd: Integer;
 begin
   Result := FDeltaStart.Y;
 end;
@@ -749,8 +752,7 @@ end;
 constructor TAggDistanceInterpolator3.Create(X1, Y1, X2, Y2, Sx, Sy, Ex, Ey,
   X, Y: Integer);
 begin
-  FDelta.X := X2 - X1;
-  FDelta.Y := Y2 - Y1;
+  FDelta := PointInteger(X2 - X1, Y2 - Y1);
 
   FDeltaStart.X := LineMedResolution(Sx) - LineMedResolution(X1);
   FDeltaStart.Y := LineMedResolution(Sy) - LineMedResolution(Y1);
@@ -761,12 +763,15 @@ begin
   FDist := Trunc((X + CAggLineSubpixelSize * 0.5 - X2) * FDelta.Y -
     (Y + CAggLineSubpixelSize * 0.5 - Y2) * FDelta.X);
 
-  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Sx)) *
-    FDeltaStart.Y - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Sy)) *
-    FDeltaStart.X;
+  FDistStart := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Sx)) * FDeltaStart.Y -
+    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Sy)) * FDeltaStart.X;
 
-  FDistEnd := (LineMedResolution(X + CAggLineSubpixelSize div 2) - LineMedResolution(Ex)) * FDeltaEnd.Y
-    - (LineMedResolution(Y + CAggLineSubpixelSize div 2) - LineMedResolution(Ey)) * FDeltaEnd.X;
+  FDistEnd := (LineMedResolution(X + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Ex)) * FDeltaEnd.Y -
+    (LineMedResolution(Y + CAggLineSubpixelSize div 2) -
+    LineMedResolution(Ey)) * FDeltaEnd.X;
 
   FDelta.X := FDelta.X shl CAggLineSubpixelShift;
   FDelta.Y := FDelta.Y shl CAggLineSubpixelShift;
@@ -948,9 +953,11 @@ begin
   FLineParameters := Lp;
 
   if Lp.Vertical then
-    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.X2 - Lp.X1), Abs(Lp.Y2 - Lp.Y1))
+    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.X2 - Lp.X1),
+      Abs(Lp.Y2 - Lp.Y1))
   else
-    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.Y2 - Lp.Y1), Abs(Lp.X2 - Lp.X1) + 1);
+    FLineInterpolator.Initialize(LineDoubleHighResolution(Lp.Y2 - Lp.Y1),
+      Abs(Lp.X2 - Lp.X1) + 1);
 
   FRendererBase := Ren;
 
@@ -1068,7 +1075,7 @@ begin
   inherited;
 end;
 
-function TAggLineInterpolatorAA0.StepHorizontal;
+function TAggLineInterpolatorAA0.StepHorizontal: Boolean;
 var
   Dist, Dy, S1: Integer;
   P0, P1: PInt8u;
@@ -1116,7 +1123,7 @@ begin
   Result := FStep < FCount;
 end;
 
-function TAggLineInterpolatorAA0.StepVertical;
+function TAggLineInterpolatorAA0.StepVertical: Boolean;
 var
   Dist, Dx, S1: Integer;
   P0, P1: PInt8u;
@@ -1280,7 +1287,7 @@ begin
   inherited;
 end;
 
-function TAggLineInterpolatorAA1.StepHorizontal;
+function TAggLineInterpolatorAA1.StepHorizontal: Boolean;
 var
   DistStart, Dist, Dy, S1: Integer;
   P0, P1: PInt8u;
@@ -1344,7 +1351,7 @@ begin
   Result := FStep < FCount;
 end;
 
-function TAggLineInterpolatorAA1.StepVertical;
+function TAggLineInterpolatorAA1.StepVertical: Boolean;
 var
   DistStart, Dist, Dx, S1: Integer;
   P0, P1: PInt8u;
@@ -1429,7 +1436,7 @@ begin
   inherited
 end;
 
-function TAggLineInterpolatorAA2.StepHorizontal;
+function TAggLineInterpolatorAA2.StepHorizontal: Boolean;
 var
   DistEnd, Dist, Dy, S1, Npix: Integer;
   P0, P1: PInt8u;
@@ -1505,7 +1512,7 @@ begin
   Result := (Npix <> 0) and (FStep < FCount);
 end;
 
-function TAggLineInterpolatorAA2.StepVertical;
+function TAggLineInterpolatorAA2.StepVertical: Boolean;
 var
   DistEnd, Dist, Dx, S1, Npix: Integer;
   P0, P1: PInt8u;
@@ -1631,7 +1638,6 @@ begin
           Inc(Npix);
 
         Inc(Dx);
-
       until FDist[Dx] > FWidth;
 
       if Npix = 0 then
@@ -1640,7 +1646,6 @@ begin
       Npix := 0;
 
       Dec(FStep);
-
     until FStep < -FMaxExtent
   else
     repeat
@@ -1676,7 +1681,6 @@ begin
           Inc(Npix);
 
         Inc(Dy);
-
       until FDist[Dy] > FWidth;
 
       if Npix = 0 then
@@ -1685,7 +1689,6 @@ begin
       Npix := 0;
 
       Dec(FStep);
-
     until FStep < -FMaxExtent;
 
   FLineInterpolator.AdjustForward;
@@ -1699,7 +1702,7 @@ begin
   inherited;
 end;
 
-function TAggLineInterpolatorAA3.StepHorizontal;
+function TAggLineInterpolatorAA3.StepHorizontal: Boolean;
 var
   DistStart, DistEnd, GetDist, Dy, S1, Npix: Integer;
   P0, P1: PInt8u;
@@ -1780,7 +1783,7 @@ begin
   Result := (Npix <> 0) and (FStep < FCount);
 end;
 
-function TAggLineInterpolatorAA3.StepVertical;
+function TAggLineInterpolatorAA3.StepVertical: Boolean;
 var
   DistStart, DistEnd, GetDist, Dx, S1, Npix: Integer;
   P0, P1: PInt8u;
@@ -1899,14 +1902,14 @@ begin
   inherited;
 end;
 
-procedure TAggLineProfileAA.SetMinWidth;
+procedure TAggLineProfileAA.SetMinWidth(Value: Double);
 begin
-  FMinWidth := W;
+  FMinWidth := Value;
 end;
 
-procedure TAggLineProfileAA.SetSmootherWidth;
+procedure TAggLineProfileAA.SetSmootherWidth(Value: Double);
 begin
-  FSmootherWidth := W;
+  FSmootherWidth := Value;
 end;
 
 procedure TAggLineProfileAA.SetGamma(Value: TAggCustomVertexSource);
@@ -1930,8 +1933,7 @@ begin
   else
     Value := Value + FSmootherWidth;
 
-  Value := Value * 0.5;
-  Value := Value - FSmootherWidth;
+  Value := 0.5 * Value - FSmootherWidth;
   SmootherWidth := FSmootherWidth;
 
   if Value < 0.0 then
@@ -1943,17 +1945,17 @@ begin
   SetWidth(Value, SmootherWidth);
 end;
 
-function TAggLineProfileAA.GetValue;
+function TAggLineProfileAA.GetValue(GetDist: Integer): Int8u;
 begin
   Result := PInt8u(PtrComp(FProfile) + (GetDist + CAggSubpixelSize * 2) *
     SizeOf(Int8u))^;
 end;
 
-function TAggLineProfileAA.Profile(W: Double): PInt8u;
+function TAggLineProfileAA.Profile(Value: Double): PInt8u;
 var
   Size: Cardinal;
 begin
-  FSubpixelWidth := Trunc(W * CAggSubpixelSize);
+  FSubpixelWidth := Trunc(Value * CAggSubpixelSize);
 
   Size := FSubpixelWidth + CAggSubpixelSize * 6;
 
@@ -1971,7 +1973,7 @@ end;
 procedure TAggLineProfileAA.SetWidth(CenterWidth, SmootherWidth: Double);
 var
   BaseVal, Width, K: Double;
-  SubpixelCenterWidth, SubpixelSmootherWidth, I, Val, N_smoother: Cardinal;
+  SubpixelCenterWidth, SubpixelSmootherWidth, I, Val, SmootherCount: Cardinal;
   Ch, ChCenter, ChCmoother: PInt8u;
 begin
   BaseVal := 1.0;
@@ -1989,8 +1991,9 @@ begin
     K := Width / FMinWidth;
 
     BaseVal := BaseVal * K;
-    CenterWidth := CenterWidth / K;
-    SmootherWidth := SmootherWidth / K;
+    K := 1 / K;
+    CenterWidth := CenterWidth * K;
+    SmootherWidth := SmootherWidth * K;
   end;
 
   Ch := Profile(CenterWidth + SmootherWidth);
@@ -2027,12 +2030,12 @@ begin
     Inc(I);
   end;
 
-  N_smoother := ProfileSize - SubpixelSmootherWidth - SubpixelCenterWidth
+  SmootherCount := ProfileSize - SubpixelSmootherWidth - SubpixelCenterWidth
     - CAggSubpixelSize * 2;
 
   Val := FGamma[0];
 
-  for I := 0 to N_smoother - 1 do
+  for I := 0 to SmootherCount - 1 do
   begin
     ChCmoother^ := Int8u(Val);
 
@@ -2061,47 +2064,48 @@ begin
   FProfile := Prof;
 end;
 
-procedure TAggRendererOutlineAA.SetColor;
+procedure TAggRendererOutlineAA.SetColor(C: PAggColor);
 begin
   FColor := C^;
 end;
 
-function TAggRendererOutlineAA.GetColor;
+function TAggRendererOutlineAA.GetColor: PAggColor;
 begin
   Result := @FColor;
 end;
 
-procedure TAggRendererOutlineAA.SetProfile;
+procedure TAggRendererOutlineAA.SetProfile(Prof: TAggLineProfileAA);
 begin
   FProfile := Prof;
 end;
 
-function TAggRendererOutlineAA.GetSubpixelWidth;
+function TAggRendererOutlineAA.GetSubpixelWidth: Integer;
 begin
   Result := FProfile.SubpixelWidth;
 end;
 
-function TAggRendererOutlineAA.Cover;
+function TAggRendererOutlineAA.Cover(D: Integer): Int8u;
 begin
   Result := Int8u(FProfile.GetValue(D));
 end;
 
-procedure TAggRendererOutlineAA.BlendSolidHSpan;
+procedure TAggRendererOutlineAA.BlendSolidHSpan(X, Y: Integer; Len: Cardinal; Covers: PInt8u);
 begin
   FRendererBase.BlendSolidHSpan(X, Y, Len, @FColor, Covers);
 end;
 
-procedure TAggRendererOutlineAA.BlendSolidVSpan;
+procedure TAggRendererOutlineAA.BlendSolidVSpan(X, Y: Integer; Len: Cardinal; Covers: PInt8u);
 begin
   FRendererBase.BlendSolidVSpan(X, Y, Len, @FColor, Covers);
 end;
 
-function TAggRendererOutlineAA.GetAccurateJoinOnly;
+function TAggRendererOutlineAA.GetAccurateJoinOnly: Boolean;
 begin
   Result := False;
 end;
 
-procedure TAggRendererOutlineAA.SemidotHorizontalLine;
+procedure TAggRendererOutlineAA.SemidotHorizontalLine(Cmp: TCompareFunction;
+  Xc1, Yc1, Xc2, Yc2, X1, Y1, X2: Integer);
 var
   Covers: array [0..CMaxHalfWidth * 2 + 4 - 1] of Int8u;
   P0, P1: PInt8u;
@@ -2150,9 +2154,11 @@ begin
     Cardinal((PtrComp(P1) - PtrComp(P0)) div SizeOf(Int8u)), GetColor, P0);
 end;
 
-procedure TAggRendererOutlineAA.Semidot;
+procedure TAggRendererOutlineAA.Semidot(Cmp: TCompareFunction; Xc1, Yc1,
+  Xc2, Yc2: Integer);
 var
-  R, Dx, Dy, Dy0, Dx0, X, Y: Integer;
+  Delta: array [0..1] of TPointInteger;
+  R, X, Y: Integer;
   Ei: TAggEllipseBresenhamInterpolator;
 begin
   R := ShrInt32(GetSubpixelWidth + CAggLineSubpixelMask, CAggLineSubpixelShift);
@@ -2162,31 +2168,30 @@ begin
 
   Ei.Initialize(R);
 
-  Dx := 0;
-  Dy := -R;
-  Dy0 := Dy;
-  Dx0 := Dx;
+  Delta[0] := PointInteger(0, -R);
+  Delta[1] := Delta[0];
   X := ShrInt32(Xc1, CAggLineSubpixelShift);
   Y := ShrInt32(Yc1, CAggLineSubpixelShift);
 
   repeat
-    Inc(Dx, Ei.DeltaX);
-    Inc(Dy, Ei.DeltaY);
+    Inc(Delta[0].X, Ei.DeltaX);
+    Inc(Delta[0].y, Ei.DeltaY);
 
-    if Dy <> Dy0 then
+    if Delta[0].y <> Delta[1].y then
     begin
-      SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Dx0, Y + Dy0, X + Dx0);
-      SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Dx0, Y - Dy0, X + Dx0);
+      SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Delta[1].X,
+        Y + Delta[1].Y, X + Delta[1].X);
+      SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Delta[1].X,
+        Y - Delta[1].Y, X + Delta[1].X);
     end;
 
-    Dx0 := Dx;
-    Dy0 := Dy;
+    Delta[1] := Delta[0];
 
     Ei.IncOperator;
+  until Delta[0].Y >= 0;
 
-  until Dy >= 0;
-
-  SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Dx0, Y + Dy0, X + Dx0);
+  SemidotHorizontalLine(Cmp, Xc1, Yc1, Xc2, Yc2, X - Delta[1].X, Y + Delta[1].Y,
+    X + Delta[1].X);
 end;
 
 procedure TAggRendererOutlineAA.Line0(Lp: PAggLineParameters);
