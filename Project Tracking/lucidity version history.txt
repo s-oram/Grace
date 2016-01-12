@@ -7,6 +7,10 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
+=== v1.0.3 (12 January 2015) ===  
+
+Bug Fix: Sustain pedal didn't work correctly when retrigging notes in polyphonic mode.
+
 
 === v1.0.2 (6 January 2015) ===  
 
