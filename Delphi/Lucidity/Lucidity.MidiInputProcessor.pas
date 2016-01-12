@@ -79,6 +79,7 @@ uses
 
 const
   kMinGlideTime = 5; //milliseconds.
+  kSuspendedNoteOffVelocity = 64;
 
 function CalcPitchTransitionTime(const GlideTime : single): single;
 begin
@@ -126,8 +127,6 @@ begin
 end;
 
 procedure TMidiInputProcessor.SetIsSustainPedal(const Value: boolean);
-const
-  kSuspendedNoteOffVelocity = 64;
 var
   c1: Integer;
   DoReleaseCurrentMono : boolean;
@@ -209,6 +208,10 @@ var
 begin
   if (IsSustainPedal) then
   begin
+    // Need to release poly-notes if they are already suspended before triggering again...
+    if (VoiceMode = TVoiceMode.Poly) and (SuspendedNoteData.IsNoteOffSuspended[Data1])
+      then ProcessNoteOff(Data1, kSuspendedNoteOffVelocity);
+
     SuspendedNoteData.IsNoteOffSuspended[Data1] := false;
   end;
 
