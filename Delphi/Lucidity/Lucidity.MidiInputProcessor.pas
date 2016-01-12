@@ -207,6 +207,12 @@ const
 var
   NoteMsgData : TMsgData_NoteEvent;
 begin
+  if (IsSustainPedal) then
+  begin
+    SuspendedNoteData.IsNoteOffSuspended[Data1] := false;
+  end;
+
+
   case VoiceMode of
     TVoiceMode.Poly:
     begin
