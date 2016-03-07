@@ -51,7 +51,6 @@ uses
   Lucidity.Osc.OneShotSampler,
   Lucidity.Osc.OneShotSampler.SubOsc,
   soADSR,
-  soFreqAnalyzer,
   soSignalRecorder,
   soFilter.BlueFilter,
   soSawSquareOsc,
@@ -85,7 +84,6 @@ type
     fFocusedKeyGroup: IKeyGroup;
     fIsPreviewEnabled: boolean;
     fSignalRecorder  : TSignalRecorder;
-    fFreqAnalyzer: TFrequencyAnalyzer;
     fPluginParameters: TPluginParameterManager;
     function GetFocusedRegion: IRegion;
     function GetFilePreviewInfo: PFilePreviewInfo;
@@ -267,7 +265,6 @@ type
 
     property SampleDirectories : TSampleDirectories read fSampleDirectories;
     property SignalRecorder    : TSignalRecorder    read fSignalRecorder write fSignalRecorder;
-    property FreqAnalyzer      : TFrequencyAnalyzer read fFreqAnalyzer;
 
     property PluginParameters : TPluginParameterManager read fPluginParameters;
 
@@ -456,8 +453,6 @@ begin
   fSignalRecorder  := TSignalRecorder.Create(Globals);
   Globals.MotherShip.RegisterZeroObject(fSignalRecorder, TZeroObjectRank.NonVisual);
 
-  fFreqAnalyzer := TFrequencyAnalyzer.Create;
-  Globals.MotherShip.RegisterZeroObject(fFreqAnalyzer, TZeroObjectRank.NonVisual);
 
 
   // TODO: Should do some data directory validation here.
@@ -579,7 +574,6 @@ begin
   AudioPreviewPlayer.Free;
   fSampleDirectories.Free;
   fSignalRecorder.Free;
-  fFreqAnalyzer.Free;
 
 
   //===== free all the voices ===================
@@ -889,7 +883,7 @@ end;
 procedure TeePlugin.Resume;
 begin
   inherited;
-  AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize, 1);
+  AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize, 2);
   Globals.AudioActions.IsProcessingActive := true;
 end;
 
@@ -2013,7 +2007,6 @@ begin
   AudioPreviewPlayer.Process(Outputs[0], Outputs[1], SampleFrames);
   KeyGroupPlayer.AudioProcess(Outputs, SampleFrames);
   SignalRecorder.Process(Outputs[0], Outputs[1], SampleFrames);
-  FreqAnalyzer.Process(Outputs[0], Outputs[1], SampleFrames);
 
   //Don't forget to increment inputs and outputs.
   for c1 := 0 to self.InputCount-1 do

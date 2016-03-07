@@ -342,32 +342,6 @@ begin
       ScopeControl.LfoValues.Par3  := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Lfo2Par3));
     end;
 
-    TScopeFocus.Filter1:
-    begin
-      ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
-
-      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Type));
-      ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
-
-      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par1));
-      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par2));
-      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par3));
-      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter1Par4));
-    end;
-
-    TScopeFocus.Filter2:
-    begin
-      ScopeControl.ScopeMode := TScopeDisplayMode.Filter;
-
-      ParValue := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Type));
-      ScopeControl.FilterValues.FilterType := TFilterTypeHelper.ToEnum(ParValue);
-
-      ScopeControl.FilterValues.Par1 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par1));
-      ScopeControl.FilterValues.Par2 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par2));
-      ScopeControl.FilterValues.Par3 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par3));
-      ScopeControl.FilterValues.Par4 := Plugin.GetPluginParameter(PluginParToID(TPluginparameter.Filter2Par4));
-    end;
-
     TScopeFocus.FilterBlend:
     begin
       ScopeControl.ScopeMode := TScopeDisplayMode.FilterBlend;

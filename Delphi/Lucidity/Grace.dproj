@@ -546,7 +546,6 @@
 			<DCCReference Include="frames\Menu.ModSelectorContextMenu.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.MoogLadder.pas"/>
 			<DCCReference Include="SoundObjects\FilterCore.MoogLadder.pas"/>
-			<DCCReference Include="SoundObjects\soFreqAnalyzer.pas"/>
 			<DCCReference Include="Lucidity.SequencerDataObject.pas"/>
 			<DCCReference Include="uConstants.pas"/>
 			<DCCReference Include="SoundObjects\soFilter.OptimisedFilter.pas"/>

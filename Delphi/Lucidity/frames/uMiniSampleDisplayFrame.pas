@@ -233,7 +233,7 @@ begin
   //TODO: This should be tied to the active voice group, or the active voice.
   // not the global scope.
   Scope.SignalRecorder  := Plugin.SignalRecorder;
-  Scope.FreqAnalyzer    := Plugin.FreqAnalyzer;
+  Scope.FreqAnalyzer    := nil; // Freq analyzer removed.
   Scope.Font.Color      := GetRedFoxColor(kColor_LcdDark5);
   Scope.ColorBackground := kColor_LcdDark1;
   Scope.ColorForeground := GetRedFoxColor(kColor_LcdDark5);
