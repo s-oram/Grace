@@ -53,7 +53,7 @@ type
 
     procedure Process(In1,In2:PSingle; Sampleframes:integer); //inline;
 
-    procedure UpdateConfig(const aSampleRate, aBlockSize, aOverSampleFactor : integer);
+    procedure UpdateConfig(const aSampleRate, aBlockSize : integer);
 
     property OverSampleFactor : integer read fOverSampleFactor;
     property SampleRate:integer read fSampleRate;
@@ -109,11 +109,13 @@ begin
   inherited;
 end;
 
-procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize, aOverSampleFactor: integer);
+procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize : integer);
 begin
+  // Oversample factor is locked to 2.
+  fOverSampleFactor := 2;
+
   fSampleRate := aSampleRate;
   fBlockSize := aBlockSize;
-  fOverSampleFactor := aOverSampleFactor;
 
   Voice.BlockSize  := aBlockSize  * OverSampleFactor;
   Voice.SampleRate := aSampleRate * OverSampleFactor;
