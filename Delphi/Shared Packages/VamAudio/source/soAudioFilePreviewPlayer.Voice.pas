@@ -12,7 +12,6 @@ type
   private
     fSampleRate: integer;
     fBlockSize: integer;
-    fGain: single;
     fIsActive: boolean;
     fSampleData : TSampleFloat;
   private
@@ -35,7 +34,6 @@ type
     procedure FastRelease;
     procedure Kill;
 
-    property Gain : single read fGain write fGain;
     property SampleRate : integer read fSampleRate write SetSampleRate;
     property BlockSize : integer read fBlockSize write SetBlockSize;
 
@@ -155,8 +153,8 @@ begin
 
     //FadeOutGain := FadeOutRamp.Buffer[c1];
 
-    OutBuffer1^ := Out1 * self.fGain * FadeOutGain^;
-    OutBuffer2^ := Out2 * self.fGain * FadeOutGain^;
+    OutBuffer1^ := Out1 * FadeOutGain^;
+    OutBuffer2^ := Out2 * FadeOutGain^;
     inc(FadeOutGain);
     //OutBuffer2^ := Out2 * FadeOutRampR.PBuffer[0];
 

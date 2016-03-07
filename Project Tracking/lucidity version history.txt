@@ -7,7 +7,6 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
-
 Change: Reduced latency to 2 samples.
 Change: Removed frequency display filter visulations.
 
