@@ -225,6 +225,9 @@ begin
 
     for c1 := 0 to SampleFrames-1 do
     begin
+      // TODO:HIGH preview player volume adjustment should
+      // be carried out after the preview sample buffer is clipped.
+
       // NOTE: Clip the preview buffer.
       // One user is finding a bug somwhere which causes a
       // momentary volume spike in MuLab. I'm not sure if
