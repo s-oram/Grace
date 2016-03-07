@@ -59,6 +59,11 @@ var
   dx1, dx2, dy1, dy2 : single;
   Path: TAggPathStorage;
 begin
+  // TODO:HIGH we're exiting here, but instead, this method shouldn't be getting
+  // called if the source isn't available.
+  if not assigned(Source) then exit;
+
+
   Path := TAggPathStorage.Create;
   AutoFree(@Path);
 
