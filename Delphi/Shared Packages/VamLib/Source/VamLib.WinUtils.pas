@@ -11,6 +11,7 @@ procedure SendDebugMesssage(const Msg: String);
 function ShellExecuteErrorCodeToString(const ErrorCode : integer):string;
 
 // Execute or open a file according to its extension.
+function ExecuteFile(const FileName, Parameters : string; out ErrMsg : string):boolean; overload;
 function ExecuteFile(const FileName : string; out ErrMsg : string):boolean; overload;
 function ExecuteFile(const FileName : string):boolean; overload;
 
@@ -114,6 +115,23 @@ begin
     result := true;  // ShellExecute() ran without errors.
   end;
 end;
+
+function ExecuteFile(const FileName, Parameters : string; out ErrMsg : string):boolean; overload;
+var
+  seResult : integer;
+begin
+  seResult := ShellExecute(0, PChar('open'), PChar(FileName), PChar(Parameters), nil, SW_SHOWNORMAL);
+  if seResult <= 32 then
+  begin
+    ErrMsg := ShellExecuteErrorCodeToString(seResult);
+    result := false; // ShellExecute() ran with errors.
+  end else
+  begin
+    ErrMsg := '';
+    result := true;  // ShellExecute() ran without errors.
+  end;
+end;
+
 
 function ExecuteFile(const FileName : string; out ErrMsg : string):boolean;
 var

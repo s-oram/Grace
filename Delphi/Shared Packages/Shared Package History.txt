@@ -1,6 +1,39 @@
 ======================================
             History
 ======================================
+7 March 2016
+- Clip preview player output.
+
+3 March 2016
+- Add delete directory procedure.
+
+2 March 2016
+- Audio preview player now using VamAudio.RealTimeDecimationFilter instead of 
+the R8Brain decimation filter.
+- more work on AudioToolbox.
+
+1 March 2016
+- Add VamLib.StrUtils.pas
+- Create AudioSampleToolbox
+- Add AudioToolbox.SampleData.pas
+
+19 Feb 2016
+- Add TStringListRecord 
+
+18 Feb 2016
+- rewrite the decimation filter.
+- remove polyphase filter designer class.
+- add interpolation filter.
+
+16 Feb 2016
+- Add decimation filter.
+
+12 Feb 2016
+- Add another execute method.
+
+Unknown.
+-- Add a couple small bug fixes.
+
 08 December 2015
 - Change PluginLib package so that it compiles without
   using implicit imports.

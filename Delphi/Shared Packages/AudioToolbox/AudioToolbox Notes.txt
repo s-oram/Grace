@@ -1,0 +1,4 @@
+## Audio Toolbox ##
+
+Audio Toolbox should only contain utility classes and functions. It shouldn't 
+include real-time processing modules.

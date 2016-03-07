@@ -8,7 +8,7 @@ uses
   VamLib.OneShotTimer,
   VamLib.MoreTypes,
   VamDsp.Interpolation,
-  VamAudio.R8BrainWrapper.v3,
+  VamAudio.RealTimeDecimationFilter,
   soAudioFilePreviewPlayer.Voice;
 
 const
@@ -34,7 +34,7 @@ type
     function GetSampleInfo: PPreviewSampleProperties;
   protected
     OutBuffer1, OutBuffer2 : array of double;
-    DownSampler1, DownSampler2 : TR8BrainResampler;
+    DownSampler1, DownSampler2 : TDecimationFilter2x6thOrder;
 
     SampleData : TSampleFloat;
     TimerID : cardinal;
@@ -91,8 +91,8 @@ begin
   SampleInfo^.SampleRate     := 0;
   SampleInfo^.SourceBitDepth := 0;
 
-  DownSampler1 := TR8BrainResampler.Create;
-  DownSampler2 := TR8BrainResampler.Create;
+  DownSampler1 := TDecimationFilter2x6thOrder.Create;
+  DownSampler2 := TDecimationFilter2x6thOrder.Create;
 end;
 
 destructor TAudioFilePreviewPlayer.Destroy;
@@ -110,8 +110,6 @@ begin
 end;
 
 procedure TAudioFilePreviewPlayer.UpdateConfig(const aSampleRate, aBlockSize, aOverSampleFactor: integer);
-var
-  DSConfig : TResampleConfig;
 begin
   fSampleRate := aSampleRate;
   fBlockSize := aBlockSize;
@@ -122,14 +120,6 @@ begin
 
   SetLength(OutBuffer1, aBlockSize * OverSampleFactor);
   SetLength(OutBuffer2, aBlockSize * OverSampleFactor);
-
-  DSConfig.SourceRate := 1 * OverSampleFactor;
-  DSConfig.DestRate := 1;
-  DSConfig.MaxInputBufferFrames := aBlockSize * OverSampleFactor;
-  DSConfig.TransitionBand := 4;
-  DSConfig.Res := TResampleResolution.res16Bit;
-  DownSampler1.Setup(@DSConfig);
-  DownSampler2.Setup(@DSConfig);
 end;
 
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
@@ -223,21 +213,31 @@ begin
     pOut1 := @OutBuffer1[0];
     pOut2 := @OutBuffer2[0];
 
-    //Voice.Process(In1, In2, SampleFrames);
-
     OverSampleFrames :=  SampleFrames * OverSampleFactor;
 
     Voice.ProcessReplacing(pOut1, pOut2, OverSampleFrames);
-    OutFrames := DownSampler1.ProcessDouble(pOut1, OverSampleFrames, pOut1);
+
+    DownSampler1.ProcessDouble(pOut1, pOut1, OverSampleFrames, OutFrames);
     assert(OutFrames = SampleFrames);
 
-    OutFrames := DownSampler2.ProcessDouble(pOut2, OverSampleFrames, pOut2);
+    DownSampler2.ProcessDouble(pOut2, pOut2, OverSampleFrames, OutFrames);
     assert(OutFrames = SampleFrames);
 
     for c1 := 0 to SampleFrames-1 do
     begin
+      // NOTE: Clip the preview buffer.
+      // One user is finding a bug somwhere which causes a
+      // momentary volume spike in MuLab. I'm not sure if
+      // this will fix it.
+      if OutBuffer1[c1] > 2  then OutBuffer1[c1] := 2;
+      if OutBuffer1[c1] < -2 then OutBuffer1[c1] := -2;
+
+      if OutBuffer2[c1] > 2  then OutBuffer2[c1] := 2;
+      if OutBuffer2[c1] < -2 then OutBuffer2[c1] := -2;
+
       In1^ := In1^ + OutBuffer1[c1];
-      In2^ := In2^ + OutBuffer1[c1];
+      In2^ := In2^ + OutBuffer2[c1];
+
       inc(In1);
       inc(In2);
     end;

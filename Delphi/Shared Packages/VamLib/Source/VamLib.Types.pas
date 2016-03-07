@@ -94,6 +94,25 @@ type
     procedure SetLength(aCount : integer);
   end;
 
+  TStringListRecord = record
+  private
+    FItems: array of string;
+    function  GetCount: integer; inline;
+    function  GetItem(index: integer): string;
+    procedure SetItem(index: integer; const Value: string);
+  public
+    procedure AssignFrom(const Source : TStringListRecord);
+
+    function  Add(const Str : string): integer; overload;
+    procedure Add(const Text : array of string); overload;
+    procedure Delete(const Index: Integer);
+    procedure Clear;
+    function  IndexOf(const s: string): integer;
+    property  Count: integer read GetCount;
+    property  Items[index: integer]: string read GetItem write SetItem; default;
+  end;
+
+  EStringListError = Exception;
 
 implementation
 
@@ -406,6 +425,81 @@ begin
       TObject(Raw[c1]).Free;
     end;
     system.SetLength(Raw, NewLen);
+  end;
+end;
+
+
+procedure TStringListRecord.AssignFrom(const Source: TStringListRecord);
+var
+  c1: Integer;
+begin
+  SetLength(FItems, Source.Count);
+  for c1 := 0 to Source.Count-1 do
+  begin
+    FItems[c1] := Source[c1];
+  end;
+end;
+
+function TStringListRecord.Add(const Str: string): integer;
+begin
+  SetLength(FItems,Count+1);
+  FItems[Count-1] := Str;
+  result := Count - 1;
+end;
+
+procedure TStringListRecord.Add(const Text: array of string);
+var
+  c1 : integer;
+begin
+  for c1 := 0 to Length(Text)-1 do
+  begin
+    Add(Text[c1]);
+  end;
+end;
+
+procedure TStringListRecord.Clear;
+begin
+  SetLength( FItems, 0 );
+end;
+
+procedure TStringListRecord.Delete(const Index: Integer);
+var
+  k: integer;
+begin
+  if (Index < 0) or (Index >= Count) then raise EStringListError.Create('List index out of bounds');
+
+  for k := Index to Count - 2 {2nd last element} do begin
+    FItems[k] := FItems[k+1];
+  end;
+
+  SetLength( FItems, Count - 1 );
+end;
+
+function TStringListRecord.GetCount: integer;
+begin
+  result := length(FItems);
+end;
+
+function TStringListRecord.GetItem(index: integer): string;
+begin
+  result := FItems[index];
+end;
+
+procedure TStringListRecord.SetItem(index: integer; const Value: string);
+begin
+  FItems[index] := Value;
+end;
+
+function TStringListRecord.IndexOf(const s: string): integer;
+var
+  k: integer;
+begin
+  result := -1;
+  for k := 0 to Count - 1 do begin
+    if FItems[k] = s then begin
+      result := k;
+      break;
+    end;
   end;
 end;
 

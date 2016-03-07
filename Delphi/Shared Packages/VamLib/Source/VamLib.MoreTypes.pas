@@ -36,6 +36,9 @@ type
   PPSingle = ^PSingle;
   PSingle  = ^Single;
 
+  // TODO:MED Instead of using custom definitions, I should
+  // use the dynamic array types in System.Types.
+  // These declarations should alias the System.Types.
   PArrayOfPSingle  = ^TArrayOfPSingle;
   TArrayOfPSingle  = array of PSingle;
   PArrayOfSingle   = ^TArrayOfSingle;

@@ -2,6 +2,8 @@ unit VamDsp.Utils;
 
 interface
 
+// TODO:MED Maybe deprecate this unit and move it to AudioToolbox.Utils.pas
+
 // Look at eeDsp for additional functions.
 
 // TODO:HIGH Need to add testing and documentation for these methods.

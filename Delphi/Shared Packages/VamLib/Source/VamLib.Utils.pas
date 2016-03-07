@@ -171,6 +171,9 @@ function MethodToProcedure (method: TMethod; maxParamCount: integer = 32) : poin
 function MoveFile(ExistingFileName, NewFileName:string):boolean;
 function CopyFile(ExistingFileName, NewFileName:string):boolean;
 
+// WARNING: Will delete directory and all contents!!
+procedure DeleteDirectory(const DirName : string);
+
 
 //==============================================================
 //    Enum Helpers
@@ -188,6 +191,7 @@ uses
   PerlRegEx,
   {$ENDIF}
   Windows,
+  ShellAPI,
   Math,
   StrUtils;
 
@@ -1122,6 +1126,20 @@ begin
   end;
 
   result := Windows.CopyFile(@(ExistingFileName[1]), @(NewFileName[1]), false);
+end;
+
+
+// procedure DeleteDirectory()
+// Source: http://stackoverflow.com/a/11798900/395461
+procedure DeleteDirectory(const DirName : string);
+var
+  FileOp: TSHFileOpStruct;
+begin
+  FillChar(FileOp, SizeOf(FileOp), 0);
+  FileOp.wFunc := FO_DELETE;
+  FileOp.pFrom := PChar(DirName+#0);//double zero-terminated
+  FileOp.fFlags := FOF_SILENT or FOF_NOERRORUI or FOF_NOCONFIRMATION;
+  SHFileOperation(FileOp);
 end;
 
 end.

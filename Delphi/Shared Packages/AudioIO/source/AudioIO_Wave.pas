@@ -462,12 +462,14 @@ begin
   FillChar(result,SizeOf(result),0);
   result.ErrorMessage := '';
 
+
+
   try
     WaveFile := TWinFile.Create(FileName, kGenericRead, kFileShareRead, kOpenExisting);
   except
     result.IsValid     := false;
     result.IsSupported := false;
-    result.ErrorMessage := 'could not open wave file.';
+    result.ErrorMessage := 'Could not open wave file.';
     exit; //================================================================>
   end;
 
@@ -475,7 +477,18 @@ begin
     if BasicWaveFileValidation(WaveFile) = false then
     begin
       result.IsValid := false;
-      result.ErrorMessage := 'File appears to be corrupt or not a wave format file.';
+
+      // TODO:LOW There is a small bug here.
+      // Poise is unable to open a locked file. The file is locked by Ableton Live 9.5 when
+      // creating a "flattened" audio file in the session view.
+      // I think the TWinFile.Create() method should be able to detect the file is locked
+      // but it's not for some reason. Instead the code goes on to run the BasicWaveFileValidation()
+      // method, which fails.
+      // It would be better to know the file is locked in the first step, and correctly be able
+      // to report it.
+
+      //result.ErrorMessage := 'File appears to be corrupt or not a wave format file.';
+      result.ErrorMessage := 'Unable to read file. File may be corrupt or not a wave format file.';
       exit; //=======================================================>
     end else
     begin

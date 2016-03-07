@@ -46,7 +46,10 @@ contains
   VamAudio.R8BrainWrapper.v3 in 'source\samplerate conversion\VamAudio.R8BrainWrapper.v3.pas',
   soFadeOutRamp in 'source\sound objects\soFadeOutRamp.pas',
   VamAudio.R8BrainWrapper.v2 in 'source\samplerate conversion\VamAudio.R8BrainWrapper.v2.pas',
-  VamAudio.OfflineRateConvert.R8Brain in 'source\samplerate conversion\VamAudio.OfflineRateConvert.R8Brain.pas';
+  VamAudio.OfflineRateConvert.R8Brain in 'source\samplerate conversion\VamAudio.OfflineRateConvert.R8Brain.pas',
+  VamAudio.RealTimeDecimationFilter in 'source\samplerate conversion\VamAudio.RealTimeDecimationFilter.pas',
+  VamAudio.HalfBandAllPassCoefficients in 'source\samplerate conversion\VamAudio.HalfBandAllPassCoefficients.pas',
+  VamAudio.RealTimeInterpolationFilter in 'source\samplerate conversion\VamAudio.RealTimeInterpolationFilter.pas';
 
 end.
 

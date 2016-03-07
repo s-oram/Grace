@@ -105,6 +105,9 @@
 			<DCCReference Include="source\sound objects\soFadeOutRamp.pas"/>
 			<DCCReference Include="source\samplerate conversion\VamAudio.R8BrainWrapper.v2.pas"/>
 			<DCCReference Include="source\samplerate conversion\VamAudio.OfflineRateConvert.R8Brain.pas"/>
+			<DCCReference Include="source\samplerate conversion\VamAudio.RealTimeDecimationFilter.pas"/>
+			<DCCReference Include="source\samplerate conversion\VamAudio.HalfBandAllPassCoefficients.pas"/>
+			<DCCReference Include="source\samplerate conversion\VamAudio.RealTimeInterpolationFilter.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

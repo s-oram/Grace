@@ -86,7 +86,8 @@ contains
   VamLib.Wine in 'Source\VamLib.Wine.pas',
   Test.VamLib.Utils in 'UnitTests\Test.VamLib.Utils.pas',
   VamLib.MultiCastEvents in 'Source\VamLib.MultiCastEvents.pas',
-  Test.VamLib.MultiCastEvents in 'UnitTests\Test.VamLib.MultiCastEvents.pas';
+  Test.VamLib.MultiCastEvents in 'UnitTests\Test.VamLib.MultiCastEvents.pas',
+  VamLib.StrUtils in 'Source\VamLib.StrUtils.pas';
 
 end.
 
