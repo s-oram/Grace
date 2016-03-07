@@ -33,6 +33,11 @@ type
     procedure SetVolume(const Value: single);
     function GetSampleInfo: PPreviewSampleProperties;
   protected
+    // TODO:MED At the moment we are only using one voice to preview samples. The preview player clicks
+    // if samples are triggered quickly in succession. It would be better to use multiple voices to
+    // allow samples a small amount of time to fade out.
+    Voice : TSamplePreviewVoice;
+
     OutBuffer1, OutBuffer2 : array of double;
     DownSampler1, DownSampler2 : TDecimationFilter2x6thOrder;
 
@@ -40,7 +45,7 @@ type
     TimerID : cardinal;
     NextSampleToLoad : string;
     IsPreviewTriggerRequired : boolean;
-    Voice : TSamplePreviewVoice;
+
     IsLoadingSample : boolean;
     procedure DoSampleLoad;
   public
@@ -56,9 +61,9 @@ type
     procedure UpdateConfig(const aSampleRate, aBlockSize : integer);
 
     property OverSampleFactor : integer read fOverSampleFactor;
-    property SampleRate:integer read fSampleRate;
-    property BlockSize : integer read fBlockSize;
-    property Volume    :single  read fVolume     write SetVolume;     //range 0..1
+    property SampleRate : integer read fSampleRate;
+    property BlockSize  : integer read fBlockSize;
+    property Volume     : single  read fVolume  write SetVolume;     //range 0..1
 
     property SampleInfo :PPreviewSampleProperties read GetSampleInfo;
   end;
@@ -127,7 +132,6 @@ end;
 procedure TAudioFilePreviewPlayer.SetVolume(const Value: single);
 begin
   fVolume := Value;
-  Voice.Gain := Value;
 end;
 
 function TAudioFilePreviewPlayer.GetSampleInfo: PPreviewSampleProperties;
@@ -227,21 +231,18 @@ begin
 
     for c1 := 0 to SampleFrames-1 do
     begin
-      // TODO:HIGH preview player volume adjustment should
-      // be carried out after the preview sample buffer is clipped.
-
       // NOTE: Clip the preview buffer.
       // One user is finding a bug somwhere which causes a
       // momentary volume spike in MuLab. I'm not sure if
       // this will fix it.
-      if OutBuffer1[c1] > 2  then OutBuffer1[c1] := 2;
-      if OutBuffer1[c1] < -2 then OutBuffer1[c1] := -2;
+      if OutBuffer1[c1] > 1  then OutBuffer1[c1] := 1;
+      if OutBuffer1[c1] < -1 then OutBuffer1[c1] := -1;
 
-      if OutBuffer2[c1] > 2  then OutBuffer2[c1] := 2;
-      if OutBuffer2[c1] < -2 then OutBuffer2[c1] := -2;
+      if OutBuffer2[c1] > 1  then OutBuffer2[c1] := 1;
+      if OutBuffer2[c1] < -1 then OutBuffer2[c1] := -1;
 
-      In1^ := In1^ + OutBuffer1[c1];
-      In2^ := In2^ + OutBuffer2[c1];
+      In1^ := In1^ + OutBuffer1[c1] * Volume;
+      In2^ := In2^ + OutBuffer2[c1] * Volume;
 
       inc(In1);
       inc(In2);

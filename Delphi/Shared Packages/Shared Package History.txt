@@ -3,6 +3,7 @@
 ======================================
 7 March 2016
 - Clip preview player output.
+- Changed the preview player gain staging and clipping.
 
 3 March 2016
 - Add delete directory procedure.
