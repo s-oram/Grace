@@ -21,6 +21,9 @@ type
 
     procedure UpdateInternalBuffers; override;
     function GetLatency: integer; override;
+
+    // Hide the OverSampleFactor property. It should always be 2.
+    property OverSampleFactor;
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -32,7 +35,6 @@ type
     property UseSilentBuffers;
     property OutputChannelCount;
     property BlockSize;
-    property OverSampleFactor;
     property Latency;
   end;
 
@@ -43,7 +45,7 @@ implementation
 constructor TVstAudioOutputController.Create;
 begin
   inherited;
-
+  OverSampleFactor := 2;
 end;
 
 destructor TVstAudioOutputController.Destroy;
@@ -65,9 +67,7 @@ end;
 
 function TVstAudioOutputController.GetLatency: integer;
 begin
-  if Length(Resamplers) > 0
-    then result := Resamplers[0].Latency
-    else result := 0;
+  result := 2;
 end;
 
 procedure TVstAudioOutputController.Setup_PluginOutputBuffers(Outputs: PArrayOfPSingle);
@@ -87,8 +87,8 @@ begin
   SetLength(Resamplers, OutputChannelCount);
   for c1 := 0 to Length(Resamplers)-1 do
   begin
-    Resamplers[c1] := TR8BrainResampler.Create;
-    Resamplers[c1].Setup(OverSampleFactor, 1, OverSampleFactor * BlockSize, 5, res24bit);
+    Resamplers[c1] := TResampleDecimateFilter.Create;
+    Resamplers[c1].Reset;
   end;
 
   for c1 := 0 to Length(Buffers)-1 do
@@ -126,16 +126,19 @@ var
   Smps : integer;
   OutputBuffer : PSingle;
 begin
+  assert(OverSampleFactor = 2);
+
   for c1 := 0 to OutputChannelCount-1 do
   begin
     OutputBuffer := PSingle(VstOutputs^);
     inc(VstOutputs);
 
-    Smps := Resamplers[c1].Process_Single(@Buffers[c1,0], @Buffers[c1,0], SampleFrames * OverSampleFactor);
+    //Smps := Resamplers[c1].Process_Single(@Buffers[c1,0], @Buffers[c1,0], SampleFrames * OverSampleFactor);
+    Resamplers[c1].Process(@Buffers[c1,0], @Buffers[c1,0], SampleFrames * OverSampleFactor, Smps);
 
-    // TODO log exception here:
-    //assert(Smps = SampleFrames);
+    assert(Smps = SampleFrames);
 
+    // TODO:HIGH can probably remove this copy operation. The decimation filter can probably copy it directly accress.
     for c2 := 0 to Smps-1 do
     begin
       OutputBuffer^ := Buffers[c1,c2];
