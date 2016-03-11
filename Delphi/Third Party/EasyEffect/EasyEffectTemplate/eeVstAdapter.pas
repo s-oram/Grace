@@ -135,11 +135,7 @@ begin
       TeeVstAdapter(e^.vObject).ProcessControllerV2.ProcessReplacing(Inputs, Outputs, SampleFrames);
     end;
   except
-    {$IFDEF MadExcept}
     HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
   end;
 end;
 
@@ -176,11 +172,7 @@ begin
     end;
   except
     result := 0;
-    {$IFDEF MadExcept}
     HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
   end;
 end;
 
@@ -299,14 +291,18 @@ function TeeVstAdapter.Dispatcher(opcode, index: VstInt32; value: VstIntPtr; ptr
 const
   VamCustomEffect_TriggerVoices = 1001;
 begin
-  case Opcode of
-    VamCustomEffect_TriggerVoices:
-    begin
-      Plugin.TriggerVoices;
-      result := 1;
+  try
+    case Opcode of
+      VamCustomEffect_TriggerVoices:
+      begin
+        Plugin.TriggerVoices;
+        result := 1;
+      end;
+    else
+      result := inherited Dispatcher(Opcode, Index, Value, ptr, opt);
     end;
-  else
-    result := inherited Dispatcher(Opcode, Index, Value, ptr, opt);
+  except
+    HandleException;
   end;
 end;
 
@@ -569,11 +565,7 @@ begin
   try
     Plugin.VstParameterChanged(Index, Value);
   except
-    {$IFDEF MadExcept}
     HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
   end;
 end;
 
@@ -583,12 +575,8 @@ begin
   try
     result := Plugin.GetParameter(Index);
   except
-    {$IFDEF MadExcept}
     result := 0;
     HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
   end;
 end;
 
