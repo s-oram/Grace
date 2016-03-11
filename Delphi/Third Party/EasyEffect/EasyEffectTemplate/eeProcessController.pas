@@ -18,7 +18,8 @@ uses
   //EasyEffect.AudioOutputController.Standard,
   //EasyEffect.AudioOutputController.DspMaster,
   //EasyEffect.AudioOutputController.BufferedR8Brain,
-  EasyEffect.AudioOutputController.r8Brain,
+  //EasyEffect.AudioOutputController.r8Brain,
+  EasyEffect.AudioOutputController.RealtimeDecimate2x,
   {$ENDIF}
 
   {$IFDEF HasAudioIns}eeVstAudioInputController,{$ENDIF}

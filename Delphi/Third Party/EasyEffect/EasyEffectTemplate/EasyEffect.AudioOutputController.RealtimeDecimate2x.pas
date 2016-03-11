@@ -40,6 +40,9 @@ type
 
 implementation
 
+uses
+  VamAudio.Constants;
+
 { TVstAudioOutputController }
 
 constructor TVstAudioOutputController.Create;
