@@ -216,11 +216,7 @@ begin
       else result := nil;
   except
     result := nil;
-    {$IFDEF MadExcept}
     HandleException;
-    {$ELSE}
-    raise;
-    {$ENDIF}
   end;
 end;
 
