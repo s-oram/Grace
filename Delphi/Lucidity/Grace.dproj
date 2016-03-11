@@ -620,6 +620,9 @@
 			<DCCReference Include="UnitTests\Test.LucidityBug.SetGuiParameter.pas"/>
 			<DCCReference Include="UnitTests\Mock.Lucidity.VstGlobals.pas"/>
 			<DCCReference Include="UnitTests\Test.Lucidity.SfzOpcodeConversion.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\eeProcessController.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.Custom.pas"/>
+			<DCCReference Include="..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.r8Brain.pas"/>
 			<None Include="Thank You Texts.txt"/>
 			<None Include="ModelSupport_Lucidity\default.txaPackage"/>
 			<None Include="ModelSupport_Lucidity\default.txvpck"/>
