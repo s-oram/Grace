@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+11 March 2016
+- add denormal preventive to decimation filter.
+
 8 March 2016
 - Create NativeXML v3 shared package.
 - Use custom exception class types.
