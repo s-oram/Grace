@@ -8,6 +8,10 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 == Finished for the next release ==
 
 
+=== v1.0.4.01 (11 March 2016) ===  
+Bug Fix: Now reports correct latency
+Bug Fix: Now using new decimation filters. 
+
 === v1.0.4 (10 March 2016) ===  
 
 Change: Reduced latency to 2 samples.
