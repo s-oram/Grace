@@ -281,9 +281,6 @@ begin
 
 
   {$IFDEF HasAudioOuts}
-  // IMPORTANT: NOTE: TODO: The INput output controller doesn't need to be resized when using the r8brain based controllers.
-  // They do need to be resized when using the DSP master controllers.
-  //if VstOutputsController.BlockSize <> SampleFrames then VstOutputsController.BlockSize := SampleFrames;
   VstOutputsController.PreProcessVstOutputs(Outputs, SampleFrames);
   {$ENDIF}
 
