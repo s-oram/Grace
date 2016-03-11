@@ -9,14 +9,14 @@ uses
   EasyEffect.AudioOutputController.Custom;
 
 type
-  TResampleDecimateFilter = TDecimationFilter2x8thOrder;
+  TDownSampleFilter = TDecimationFilter2x8thOrder;
 
   TVstAudioOutputController = class(TCustomVstAudioOutputController, IVstAudioOutputController)
   private
   protected
     PluginOutputBufferPointers : PArrayOfPSingle;
 
-    Resamplers : array of TResampleDecimateFilter;
+    Resamplers : array of TDownSampleFilter;
     Buffers : array of array of Single;
 
     procedure UpdateInternalBuffers; override;
@@ -87,7 +87,7 @@ begin
   SetLength(Resamplers, OutputChannelCount);
   for c1 := 0 to Length(Resamplers)-1 do
   begin
-    Resamplers[c1] := TResampleDecimateFilter.Create;
+    Resamplers[c1] := TDownSampleFilter.Create;
     Resamplers[c1].Reset;
   end;
 
