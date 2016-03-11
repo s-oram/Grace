@@ -81,6 +81,9 @@ type
 
 implementation
 
+uses
+  VamAudio.Constants;
+
 { TAllpassFilterStage }
 
 function TAllpassFilterStage.Process(const Input: double): double;
@@ -149,7 +152,7 @@ begin
   begin
     // cascade A
     c1f1.x2 := c1f1.x0;
-    c1f1.x0 := Input^; //<-- filter input
+    c1f1.x0 := Input^ + kDenormal; //<-- filter input
     c1f1.y2 := c1f1.y0;
     c1f1.y0 := c1f1.x2 + ((c1f1.x0 - c1f1.y2) * c1f1.a);
 
@@ -184,7 +187,7 @@ begin
     y := c2f3.y0;
 
     inc(Input);
-    Input_Delay  := Input^;
+    Input_Delay  := Input^ + kDenormal;
     inc(Input);
 
     Output^ := (x + y) * 0.5;
@@ -207,7 +210,7 @@ begin
   begin
     // cascade A
     c1f1.x2 := c1f1.x0;
-    c1f1.x0 := Input^; //<-- filter input
+    c1f1.x0 := Input^ + kDenormal; //<-- filter input
     c1f1.y2 := c1f1.y0;
     c1f1.y0 := c1f1.x2 + ((c1f1.x0 - c1f1.y2) * c1f1.a);
 
@@ -242,7 +245,7 @@ begin
     y := c2f3.y0;
 
     inc(Input);
-    Input_Delay  := Input^;
+    Input_Delay  := Input^ + kDenormal;
     inc(Input);
 
     Output^ := (x + y) * 0.5;
@@ -304,7 +307,7 @@ begin
   begin
     // cascade A
     c1f1.x2 := c1f1.x0;
-    c1f1.x0 := Input^; //<-- filter input
+    c1f1.x0 := Input^ + kDenormal; //<-- filter input
     c1f1.y2 := c1f1.y0;
     c1f1.y0 := c1f1.x2 + ((c1f1.x0 - c1f1.y2) * c1f1.a);
 
@@ -349,7 +352,7 @@ begin
     y := c2f4.y0;
 
     inc(Input);
-    Input_Delay  := Input^;
+    Input_Delay  := Input^ + kDenormal;
     inc(Input);
 
     Output^ := (x + y) * 0.5;
@@ -372,7 +375,7 @@ begin
   begin
     // cascade A
     c1f1.x2 := c1f1.x0;
-    c1f1.x0 := Input^; //<-- filter input
+    c1f1.x0 := Input^ + kDenormal; //<-- filter input
     c1f1.y2 := c1f1.y0;
     c1f1.y0 := c1f1.x2 + ((c1f1.x0 - c1f1.y2) * c1f1.a);
 
@@ -417,7 +420,7 @@ begin
     y := c2f4.y0;
 
     inc(Input);
-    Input_Delay  := Input^;
+    Input_Delay  := Input^ + kDenormal;
     inc(Input);
 
     Output^ := (x + y) * 0.5;

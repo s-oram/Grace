@@ -190,7 +190,8 @@ uses
   Test.Lucidity.SfzOpcodeConversion in 'UnitTests\Test.Lucidity.SfzOpcodeConversion.pas',
   eeProcessController in '..\Third Party\EasyEffect\EasyEffectTemplate\eeProcessController.pas',
   EasyEffect.AudioOutputController.Custom in '..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.Custom.pas',
-  EasyEffect.AudioOutputController.r8Brain in '..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.r8Brain.pas';
+  EasyEffect.AudioOutputController.r8Brain in '..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.r8Brain.pas',
+  EasyEffect.AudioOutputController.RealtimeDecimate2x in '..\Third Party\EasyEffect\EasyEffectTemplate\EasyEffect.AudioOutputController.RealtimeDecimate2x.pas';
 
 {$R *.res}
 
