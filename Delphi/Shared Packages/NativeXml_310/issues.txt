@@ -1,0 +1,41 @@
+21sep2010
+No info stored in stream in procedure ObjectSaveToXmlXXXX
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1265&p=6394#p6394
+status: fixed in 3.10
+
+24aug2010
+XML without encoding should be UTF-8
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1255
+status: fixed in 3.10
+
+04aug2010
+bug in Local bias (daylightsaving) and time zone designator in date/time conversion 
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1177
+status: fixed in 3.10
+
+24jul2010
+change behaviour of all default values (exit instead of exceptions)
+http://www.simdesign.nl/forum/viewtopic.php?f=12&t=1174
+status: fixed in 3.10
+
+08jul2010
+Allow multiple defined properties
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1163&p=6338#p6338
+status: fixed in 3.10
+
+07jul2010
+ValueAsString delivers format chars
+http://www.simdesign.nl/forum/viewtopic.php?f=12&t=1160
+status: requires feedback
+
+11may2010
+Bug in varCurrency values when reading variants
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1137
+status: fixed in 3.10
+
+01may2010
+Bug in variant type when component loading
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1131
+http://www.simdesign.nl/forum/viewtopic.php?f=2&t=1132
+status: fixed in 3.10
+

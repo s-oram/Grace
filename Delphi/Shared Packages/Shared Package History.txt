@@ -1,6 +1,10 @@
 ======================================
             History
 ======================================
+8 March 2016
+- Create NativeXML v3 shared package.
+- Use custom exception class types.
+
 7 March 2016
 - Clip preview player output.
 - Changed the preview player gain staging and clipping.
