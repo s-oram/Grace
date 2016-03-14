@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+14 March 2016
+- Don't reset the downsampler in the preview voice.
+
 11 March 2016
 - add denormal preventive to decimation filter.
 

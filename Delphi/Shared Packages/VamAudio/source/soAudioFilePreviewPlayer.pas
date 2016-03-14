@@ -185,8 +185,6 @@ begin
     SampleData.LoadFromFile(self.NextSampleToLoad);
   end,
   procedure begin
-    DownSampler1.Reset;
-    DownSampler2.Reset;
     if SampleData.Properties.IsValid then Voice.Trigger(SampleData);
     IsLoadingSample := false;
   end);
