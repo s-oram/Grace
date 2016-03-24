@@ -1,6 +1,33 @@
 ======================================
             History
 ======================================
+24 March 2016
+- Background worker now renamed to AirControl. (It's duties will expand sligthly.)
+  It's also been moved to PlugLib. It's not generic enough to be included in 
+  VamLib. 
+- Add TRecList to VamLib.
+- more work on TAirControl.
+- TUniqueID - parts are now private.
+
+22 March 2016
+- working on background task worker.
+- lots of rename refactor.
+
+21 March 2016
+- Add ArrayUtils.pas
+- starting work on a new background task worker.
+- created a collections directory.
+- deleted an old collections unit.
+
+18 March 2016
+- FarScape changes. 
+
+17 March 2016
+- Changes to PluginLib.
+
+16 March 2016
+- Changes to new VST plugin template.
+
 14 March 2016
 - Don't reset the downsampler in the preview voice.
 

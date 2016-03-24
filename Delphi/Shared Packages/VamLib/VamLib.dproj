@@ -59,6 +59,9 @@
 			<CfgDependentOn>SharedPackage.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<DCC_UsePackage>vcl;vclx;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
@@ -137,7 +140,6 @@
 			<DCCReference Include="Source\VamLib.ThreadSyncEnforcer.Singleton.pas"/>
 			<DCCReference Include="Source\VamVst.Extra.pas"/>
 			<DCCReference Include="Source\VamLib.Console.pas"/>
-			<DCCReference Include="Source\VamLib.Collections.DoubleLinkedDataList.pas"/>
 			<DCCReference Include="Source\VamLib.CompileNotes.pas"/>
 			<DCCReference Include="UnitTests\RegisterTests.VamLib.pas"/>
 			<DCCReference Include="UnitTests\Test.VamLib.Win.Links.pas"/>
@@ -152,6 +154,12 @@
 			<DCCReference Include="Source\VamLib.MultiCastEvents.pas"/>
 			<DCCReference Include="UnitTests\Test.VamLib.MultiCastEvents.pas"/>
 			<DCCReference Include="Source\VamLib.StrUtils.pas"/>
+			<DCCReference Include="Source\VamLib.ArrayUtils.pas"/>
+			<DCCReference Include="UnitTests\Test.VamLib.ArrayUtils.pas"/>
+			<DCCReference Include="Source\Collections\VamLib.Collection.DoubleLinkedList.pas"/>
+			<DCCReference Include="UnitTests\Test.VamLib.Collection.DoubleLinkedList.pas"/>
+			<DCCReference Include="Source\Collections\VamLib.Collection.List.pas"/>
+			<DCCReference Include="UnitTests\Test.VamLib.Collection.List.pas"/>
 			<None Include="ModelSupport_VamLib\default.txaPackage"/>
 			<None Include="Source\InterlockedAPIs.inc"/>
 			<None Include="Source\RangeCheck_ToggleOff.inc"/>

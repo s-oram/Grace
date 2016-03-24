@@ -9,6 +9,8 @@ function StrToAlign(const Value : string):TControlAlignment;
 function StrToHitTest(const Value : string):THitTest;
 
 
+
+
 type
   TBitAccess = record
   private
@@ -18,9 +20,32 @@ type
     procedure SetBit(const Index : integer; const Value : boolean);
   end;
 
+
+// ====== Section Position ========
+
+// When creating GUI controls, control elements often need
+// to be positioned at regular locations. This code helps
+// calculate the exact position of a section.
+
+type
+  TSectionPos = record
+    PointA : integer; // First pixel index in the section.
+    PointB : integer; // Last pixel index in the section.
+    Size   : integer; // Total pixel size in section.
+  end;
+
+// GetSectionPos()
+// - TotalSize: (pixels) Total size of the section.
+// - SectionIndex: Which section are we interested in. Range 0..SectionCount-1
+// - SectionCount: How many sections are there? It's assumed each section will be equal in size.
+// - SectionMargin: (pixels) Spacing between sections. This function doesn't create spacing between the sections
+//     and the edges.
+function GetSectionPos(const TotalSize : integer; const SectionIndex, SectionCount, SectionMargin : integer):TSectionPos;
+
 implementation
 
 uses
+  Math,
   SysUtils;
 
 function StrToAlign(const Value : string):TControlAlignment;
@@ -64,6 +89,32 @@ begin
   if Value
     then Data := Data or (1 shl Index)
     else Data := Data and not (1 shl Index);
+end;
+
+function GetSectionPos(const TotalSize : integer; const SectionIndex, SectionCount, SectionMargin : integer):TSectionPos;
+var
+  ptA, ptB : integer;
+begin
+  assert(TotalSize > 0);
+  assert(SectionCount > 0);
+  assert(SectionIndex >= 0);
+  assert(SectionIndex < SectionCount);
+  assert(SectionMargin * (SectionCount-1) < TotalSize);
+
+  //GutterPixels := SectionMargin * (SectionCount-1);
+  //SectSize := floor((TotalSize - GutterPixels) / SectionCount);
+
+
+  ptA := floor(    ( SectionIndex    / SectionCount) * ((TotalSize) + SectionMargin)  );
+  ptB := floor(    ((SectionIndex+1) / SectionCount) * ((TotalSize) + SectionMargin) - SectionMargin );
+
+  assert(ptA >= 0);
+  assert(ptA < TotalSize);
+  assert(ptB >= 0);
+
+  result.PointA := ptA;
+  result.PointB := ptB;
+  result.Size := ptB - ptA + 1;
 end;
 
 end.

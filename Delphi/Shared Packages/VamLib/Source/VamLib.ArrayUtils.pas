@@ -1,9 +1,8 @@
-unit AudioPlugin.Vst2TimeInfo;
+unit VamLib.ArrayUtils;
 
 interface
 
-
-
 implementation
+
 
 end.

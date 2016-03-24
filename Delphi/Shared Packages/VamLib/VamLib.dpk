@@ -73,7 +73,6 @@ contains
   VamLib.ThreadSyncEnforcer.Singleton in 'Source\VamLib.ThreadSyncEnforcer.Singleton.pas',
   VamVst.Extra in 'Source\VamVst.Extra.pas',
   VamLib.Console in 'Source\VamLib.Console.pas',
-  VamLib.Collections.DoubleLinkedDataList in 'Source\VamLib.Collections.DoubleLinkedDataList.pas',
   VamLib.CompileNotes in 'Source\VamLib.CompileNotes.pas',
   RegisterTests.VamLib in 'UnitTests\RegisterTests.VamLib.pas',
   Test.VamLib.Win.Links in 'UnitTests\Test.VamLib.Win.Links.pas',
@@ -87,7 +86,13 @@ contains
   Test.VamLib.Utils in 'UnitTests\Test.VamLib.Utils.pas',
   VamLib.MultiCastEvents in 'Source\VamLib.MultiCastEvents.pas',
   Test.VamLib.MultiCastEvents in 'UnitTests\Test.VamLib.MultiCastEvents.pas',
-  VamLib.StrUtils in 'Source\VamLib.StrUtils.pas';
+  VamLib.StrUtils in 'Source\VamLib.StrUtils.pas',
+  VamLib.ArrayUtils in 'Source\VamLib.ArrayUtils.pas',
+  Test.VamLib.ArrayUtils in 'UnitTests\Test.VamLib.ArrayUtils.pas',
+  VamLib.Collection.DoubleLinkedList in 'Source\Collections\VamLib.Collection.DoubleLinkedList.pas',
+  Test.VamLib.Collection.DoubleLinkedList in 'UnitTests\Test.VamLib.Collection.DoubleLinkedList.pas',
+  VamLib.Collection.List in 'Source\Collections\VamLib.Collection.List.pas',
+  Test.VamLib.Collection.List in 'UnitTests\Test.VamLib.Collection.List.pas';
 
 end.
 

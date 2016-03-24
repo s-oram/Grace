@@ -4,7 +4,7 @@ interface
 
 uses
   VamLib.MoreTypes,
-  AudioPlugin;
+  AudioPlugin.PlugMain;
 
 type
   TVst2PluginInfo = class;
@@ -12,18 +12,17 @@ type
 
   TVst2PluginInfo = class
   private
-    FPlug: TAudioPlugin;
+    FPlug: TAudioPlug;
   protected
-    property Plug : TAudioPlugin read FPlug;
+    property Plug : TAudioPlug read FPlug;
   public
-    constructor Create(const aPlug : TAudioPlugin); virtual;
+    constructor Create(const aPlug : TAudioPlug); virtual;
     destructor Destroy; override;
 
     function GetNumberOfPrograms:integer; virtual; abstract;
 
     function GetNumberOfAudioInputs : integer; virtual; abstract;
     function GetNumberOfAudioOutputs : integer; virtual; abstract;
-
 
     function GetParameterLabel(const Index : integer):string; virtual; abstract;
     function GetParameterDisplay(const Index : integer):string; virtual; abstract;
@@ -36,7 +35,7 @@ implementation
 
 { TVst2PluginInfo }
 
-constructor TVst2PluginInfo.Create(const aPlug : TAudioPlugin);
+constructor TVst2PluginInfo.Create(const aPlug : TAudioPlug);
 begin
   FPlug := aPlug;
 end;

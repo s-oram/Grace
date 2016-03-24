@@ -115,6 +115,7 @@
 			<DCCReference Include="UnitTests\Test.FarScape.Events.pas"/>
 			<DCCReference Include="source\FarScape.Color.pas"/>
 			<DCCReference Include="UnitTests\Test.FarScape.Color.pas"/>
+			<DCCReference Include="source\FarScape.Types.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

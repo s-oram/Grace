@@ -3,14 +3,14 @@ unit Mocks.AudioPlugin;
 interface
 
 uses
-  AudioPlugin,
+  AudioPlugin.PlugMain,
   VamLib.MoreTypes,
   VamLib.FlexValue,
   AudioPlugin.Globals,
   AudioPlugin.RunTimeInfo;
 
 type
-  TMockAudioPlugin = class(TAudioPlugin)
+  TMockAudioPlugin = class(TAudioPlug)
   private
   public
     AudioProcessHistory : TFlexList;

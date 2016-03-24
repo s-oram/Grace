@@ -13,7 +13,9 @@ uses
   Test.VamVst2.VstEventBuffer,
   Test.AudioPlugin.ProcessController,
   Test.AudioPlugin.Functions,
-  Test.VamVst2.MidiEventOutputBuffer;
+  Test.VamVst2.MidiEventOutputBuffer,
+  Test.PlugLib.AirControl,
+  Test.PlugLib.AirControl.TaskQueue;
 
 procedure RegisterTests;
 begin
@@ -29,6 +31,11 @@ begin
   WatchTower.Global.RegisterTest(TAnyValueTests);
   WatchTower.Global.RegisterTest(THelmMessageTests);
   WatchTower.Global.RegisterTest(TEventDispatcherTests);
+
+  // AirControl Tests
+  WatchTower.Global.RegisterTest(TAirControlTest);
+  WatchTower.Global.RegisterTest(TTaskQueueTest);
+
 
 end;
 

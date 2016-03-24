@@ -66,6 +66,7 @@ contains
   Test.FarScape.SupportFunctions in 'UnitTests\Test.FarScape.SupportFunctions.pas',
   Test.FarScape.Events in 'UnitTests\Test.FarScape.Events.pas',
   FarScape.Color in 'source\FarScape.Color.pas',
-  Test.FarScape.Color in 'UnitTests\Test.FarScape.Color.pas';
+  Test.FarScape.Color in 'UnitTests\Test.FarScape.Color.pas',
+  FarScape.Types in 'source\FarScape.Types.pas';
 
 end.

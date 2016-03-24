@@ -30,15 +30,14 @@ type
 
   TUniqueID = record
   private
-  public
     Part1 : integer;
     Part2 : TDateTime;
-
+  public
     class operator Equal(a: TUniqueID; b : TUniqueID):boolean;
     class operator NotEqual(a: TUniqueID; b : TUniqueID):boolean;
 
-    procedure Init;
-    procedure Clear;
+    procedure Init;  // Init() generates a unique ID.
+    procedure Clear; // Clear() resets the unique ID to zero.
 
     function AsString : string;
   end;

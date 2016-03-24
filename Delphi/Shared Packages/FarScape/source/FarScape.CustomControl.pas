@@ -14,7 +14,8 @@ uses
   FarScape.PureInterfacedObject,
   FarScape.Event,
   FarScape.Events,
-  FarScape.EventDispatcher;
+  FarScape.EventDispatcher,
+  FarScape.Color;
 
 type
   EFarScapeException = class(Exception);
@@ -126,6 +127,8 @@ type
   strict protected
     function FindTopMostControl : TFarScapeControl;
   protected
+
+
     procedure SetComputedBounds(const aLeft, aTop, aWidth, aHeight : integer);
 
     // Descendent components can override ControlBoundsChanged() to react to control size changes.
@@ -136,6 +139,8 @@ type
 
     property ControlState : TControlState read FControlState write FControlState;
     function FindRoot : TFarScapeAbstractRoot;
+
+
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -167,7 +172,8 @@ type
     //====== TODO:HIGH remove these methods ===================
     procedure SetSize(const aWidth, aHeight : integer);
     procedure SetPosition(const aLeft, aTop : integer); //TODO:MED Maybe delete this method?
-    procedure SetBounds(const aLeft, aTop, aWidth, aHeight : integer);
+    procedure SetBounds(const aLeft, aTop, aWidth, aHeight : integer); overload;
+    procedure SetBounds(const aBounds : TRect); overload;
     procedure SetGridBounds(const aLeft, aTop, aWidth, aHeight : integer);
     //=========================================================
 
@@ -182,6 +188,7 @@ type
     property NaturalWidth  : integer read GetNaturalWidth;
     property NaturalHeight : integer read GetNaturalHeight;
 
+    // TODO:HIGH - remove the grid alignment mode. Let the user perform independent grid alignment.
     // Use the grid properties in conjunction with the Grid alignment mode to create resizable GUI layouts.
     property GridLeft   : integer read FGridLeft;
     property GridTop    : integer read FGridTop;
@@ -237,9 +244,13 @@ type
     // == child controls ==
     function ContainsControl(const aControl : TFarScapeControl):boolean;
 
+    // TODO:MED Should this be rename to ChildControl[]?
     property Control[Index : integer] : TFarScapeControl read GetControl;
     property ControlCount : integer read GetControlCount;
 
+    // TODO:HIGH NOTE: Currently, FarScape allows multple controls to share the same name.
+    // This should be changed. Additionally, I'm thinking about storing a list of all
+    // controls in the root control.
     function FindControlByNamePath(const NamePath : string):TFarScapeControl;
   end;
 
@@ -253,6 +264,9 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); virtual;
   public
     destructor Destroy; override;
+
+    function FindControlAndConfirmClassType(const Name : string; const ClassType : TClass):TFarScapeControl;
+    function FindControlByName(const Name : string):TFarScapeControl;
 
     procedure PaintToBackBuffer(const DrawInfo : PRootDrawInfo); virtual;
     procedure PaintToDc(DC: HDC); virtual;
@@ -276,7 +290,11 @@ type
     property OnInvalidateRootRegion : TOnInvalidateRootRegion read fOnInvalidateRootRegion write fOnInvalidateRootRegion;
   end;
 
+  PFarScapeControl = ^TFarScapeControl;
+  TFarScapeControlClass = class of TFarScapeControl;
   TFarScapeControlProc = reference to procedure(const c : TFarScapeControl);
+
+function FindOrCreateControl(const Root : TFarScapeAbstractRoot; const ControlClass : TFarScapeControlClass; const Name : string):TFarScapeControl; overload;
 
 implementation
 
@@ -315,6 +333,42 @@ begin
   begin
     SetRoot(Control.Control[c1], aRoot);
   end;
+end;
+
+function Recursive_FindControlByName(const Control : TFarScapeControl; const Name : string):TFarScapeControl;
+var
+  c1: Integer;
+  c : TFarScapeControl;
+begin
+  assert(assigned(Control));
+  if SameText(Control.Name, Name) then exit(Control);
+
+  for c1 := 0 to Control.ControlCount-1 do
+  begin
+    c := Recursive_FindControlByName(Control.Control[c1], Name);
+    if assigned(c) then exit(c);
+  end;
+
+  // if we make it this far, the control hasn't been found.
+  result := nil;
+end;
+
+function FindOrCreateControl(const Root : TFarScapeAbstractRoot; const ControlClass : TFarScapeControlClass; const Name : string):TFarScapeControl; overload;
+var
+  fsc : TFarScapeControl;
+begin
+  fsc := Root.FindControlByName(Name);
+  if assigned(fsc) then
+  begin
+    if fsc.ClassType <> ControlClass then raise EFarScapeException.Create('Object exists but isn''t of same type.');
+    result := fsc;
+    exit; //============>> exit >>=========>>
+  end;
+
+  fsc := TFarScapeControlClass.Create;
+  fsc.Name := Name;
+  fsc.Visible := true;
+  result := fsc;
 end;
 
 
@@ -459,6 +513,11 @@ begin
     fAlign := Value;
     if assigned(Parent) then Parent.RequestControlAlignment;
   end;
+end;
+
+procedure TFarScapeCustomControl.SetBounds(const aBounds: TRect);
+begin
+  SetBounds(aBounds.Left, aBounds.Top, aBounds.Width, aBounds.Height);
 end;
 
 procedure TFarScapeCustomControl.SetBounds(const aLeft, aTop, aWidth, aHeight: integer);
@@ -932,6 +991,21 @@ destructor TFarScapeControl.Destroy;
 begin
   ControlState := ControlState + [csIsDestroying];
   inherited;
+end;
+
+function TFarScapeControl.FindControlAndConfirmClassType(const Name: string; const ClassType: TClass): TFarScapeControl;
+var
+  c : TFarScapeControl;
+begin
+  c := Recursive_FindControlByName(self, Name);
+  if (assigned(c)) and (not(c is ClassType))
+    then raise EFarScapeException.Create('Object exists but fails type check.');
+  result := c;
+end;
+
+function TFarScapeControl.FindControlByName(const Name: string): TFarScapeControl;
+begin
+  result := Recursive_FindControlByName(self, Name);
 end;
 
 procedure TFarScapeControl.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

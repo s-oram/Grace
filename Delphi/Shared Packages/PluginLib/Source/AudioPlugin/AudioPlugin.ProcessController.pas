@@ -6,7 +6,7 @@ uses
   VamVst2.DAEffect,
   VamVst2.DAEffectX,
   VamLib.MoreTypes,
-  AudioPlugin,
+  AudioPlugin.PlugMain,
   AudioPlugin.RunTimeInfo,
   VamVst2.MidiEventInputBuffer;
 
@@ -16,7 +16,7 @@ type
 
   TProcessController = class
   private
-    Plug : TAudioPlugin;
+    Plug : TAudioPlug;
     InputPointers  : array of PSingle;
     OutputPointers : array of PSingle;
     MidiInput : TMidiEventInputBuffer;
@@ -30,7 +30,7 @@ type
     BufferedOutputs : PPSingle;
     FRunTimeInfo : TRunTimeInfo;
   public
-    constructor Create(const aPlug : TAudioPlugin); virtual;
+    constructor Create(const aPlug : TAudioPlug); virtual;
     destructor Destroy; override;
 
     procedure Suspend; virtual;
@@ -48,7 +48,7 @@ uses
 
 { TProcessController }
 
-constructor TProcessController.Create(const aPlug: TAudioPlugin);
+constructor TProcessController.Create(const aPlug: TAudioPlug);
 begin
   FRunTimeInfo.Init();
 

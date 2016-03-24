@@ -9,6 +9,7 @@ uses
 
 type
   EVamLibException = class(Exception);
+  EStringListError = class(Exception);
 
   TVamInterfacedObject = class(TInterfacedObject)
   public
@@ -34,17 +35,17 @@ type
    {$HINTS OFF}
    // NOTE: TFixedCriticalSection has been copied from Delphi Web Script.
    TFixedCriticalSection = class
-      private
-         FDummy : array [0..95-SizeOf(TRTLCRiticalSection)-2*SizeOf(Pointer)] of Byte;
-         FCS : TRTLCriticalSection;
-      public
-         constructor Create;
-         destructor Destroy; override;
-         procedure Enter;
-         procedure Leave;
-         procedure Acquire; deprecated;
-         procedure Release; deprecated;
-         function TryEnter : Boolean;
+   private
+     FDummy : array [0..95-SizeOf(TRTLCRiticalSection)-2*SizeOf(Pointer)] of Byte;
+     FCS : TRTLCriticalSection;
+   public
+     constructor Create;
+     destructor Destroy; override;
+     procedure Enter;
+     procedure Leave;
+     procedure Acquire; deprecated;
+     procedure Release; deprecated;
+     function TryEnter : Boolean;
    end;
 
    // NOTE: TMultiReadSingleWrite has been copied from Delphi Web Script.
@@ -112,7 +113,8 @@ type
     property  Items[index: integer]: string read GetItem write SetItem; default;
   end;
 
-  EStringListError = Exception;
+
+
 
 implementation
 

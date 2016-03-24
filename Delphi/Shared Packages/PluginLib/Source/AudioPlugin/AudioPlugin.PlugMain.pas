@@ -1,4 +1,4 @@
-unit AudioPlugin;
+unit AudioPlugin.PlugMain;
 
 interface
 
@@ -11,10 +11,10 @@ uses
   AudioPlugin.RunTimeInfo;
 
 type
-  TAudioPlugin = class;
-  TAudioPluginClass = class of TAudioPlugin;
+  TAudioPlug = class;
+  TAudioPlugClass = class of TAudioPlug;
 
-  TAudioPlugin = class
+  TAudioPlug = class
   private
     FVstParameterCount: integer;
     FGlobals: TGlobals;
@@ -67,7 +67,7 @@ uses
 
 { TAudioPlugin }
 
-constructor TAudioPlugin.Create(const aGlobals : TGlobals);
+constructor TAudioPlug.Create(const aGlobals : TGlobals);
 var
   msg : THelmMessage;
 begin
@@ -79,28 +79,28 @@ begin
   Globals.AudioPlugMethods.SetPrivateParameter := self.SetPrivateParameter;
 end;
 
-destructor TAudioPlugin.Destroy;
+destructor TAudioPlug.Destroy;
 begin
   SetLength(FVstPar, 0);
   inherited;
 end;
 
-procedure TAudioPlugin.Open;
+procedure TAudioPlug.Open;
 begin
 
 end;
 
-procedure TAudioPlugin.Close;
+procedure TAudioPlug.Close;
 begin
 
 end;
 
-procedure TAudioPlugin.Suspend;
+procedure TAudioPlug.Suspend;
 begin
 
 end;
 
-procedure TAudioPlugin.Resume(const RunTimeInfo : TRunTimeInfo);
+procedure TAudioPlug.Resume(const RunTimeInfo : TRunTimeInfo);
 begin
   // NOTE: RE: RunTimeInfo.InputCount & RunTimeInfo.OutputCount.
   //
@@ -113,14 +113,14 @@ begin
   // config changes.
 end;
 
-procedure TAudioPlugin.SetVstParameterCount(Value: integer);
+procedure TAudioPlug.SetVstParameterCount(Value: integer);
 begin
   assert(Value >= 0);
   FVstParameterCount := Value;
   SetLength(FVstPar, Value);
 end;
 
-procedure TAudioPlugin.SetVstParameter(Index: integer; Value: single);
+procedure TAudioPlug.SetVstParameter(Index: integer; Value: single);
 begin
   assert(Value >= 0);
   assert(Value <= 1);
@@ -130,31 +130,31 @@ begin
   //Globals.EventDispatcher.Broadcast(TVstParameterChanged.Create(Index, Value));
 end;
 
-procedure TAudioPlugin.GetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
+procedure TAudioPlug.GetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
 begin
   // do nothing.
 end;
 
-procedure TAudioPlugin.SetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
+procedure TAudioPlug.SetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
 begin
   // do nothing.
 end;
 
 
 
-function TAudioPlugin.GetVstParameter(Index: integer): single;
+function TAudioPlug.GetVstParameter(Index: integer): single;
 begin
   result := FVstPar[Index];
   assert(result >= 0);
   assert(result <= 1);
 end;
 
-procedure TAudioPlugin.LoadDefaultPatch;
+procedure TAudioPlug.LoadDefaultPatch;
 begin
   ResetPlugState;
 end;
 
-procedure TAudioPlugin.ResetPlugState;
+procedure TAudioPlug.ResetPlugState;
 var
   c1: Integer;
 begin
@@ -164,27 +164,27 @@ begin
   end;
 end;
 
-procedure TAudioPlugin.ProcessMidiEvent(ev: PMidiEvent);
+procedure TAudioPlug.ProcessMidiEvent(ev: PMidiEvent);
 begin
 
 end;
 
-procedure TAudioPlugin.ProcessControlStepSlow(const SampleFrames: integer);
+procedure TAudioPlug.ProcessControlStepSlow(const SampleFrames: integer);
 begin
 
 end;
 
-procedure TAudioPlugin.ProcessControlStepFast(const SampleFrames: integer);
+procedure TAudioPlug.ProcessControlStepFast(const SampleFrames: integer);
 begin
 
 end;
 
-procedure TAudioPlugin.ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: integer);
+procedure TAudioPlug.ProcessAudio(Inputs, Outputs: PPSingle; SampleFrames: integer);
 begin
 
 end;
 
-procedure TAudioPlugin.ProcessVstTimeInfo(const TimeInfo: PVstTimeInfo);
+procedure TAudioPlug.ProcessVstTimeInfo(const TimeInfo: PVstTimeInfo);
 begin
 
 end;
