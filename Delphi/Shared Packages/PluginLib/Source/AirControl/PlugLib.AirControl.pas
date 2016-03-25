@@ -25,6 +25,10 @@ type
   // It provides a method to pass tasks off to a background worker thread. It
   // also provides methods to execute code in the GUI and Audio threads. Which
   // helps with synchronisation.
+  //
+  // IMPORTANT: Background tasks will always be executed. Outstanding Audio and GUI sync
+  // tasks will be dropped if the plugin or GUI closes. Delayed tasks will also be
+  // dropped.
 
   TAirControl = class
   private
@@ -39,12 +43,30 @@ type
     FCapacity: integer;
     FMaxCapacity: integer;
     FGrowBy: integer;
+    FIsGuiSyncActive: boolean;
+    FIsAudioSyncActive: boolean;
+    FIsTerminated: boolean;
+  protected
+    property IsTerminated : boolean read FIsTerminated;
   public
     constructor Create(const Capacity, GrowBy, MaxCapacity : integer);
     destructor Destroy; override;
 
+    procedure TerminateProcessingAndPrepareForShutDown;
+
+    // Plugins should set the processing state. Otherwise AirControl will
+    // assume processing is always active.
+    procedure SetProcessingState(const IsActive : boolean);
+
+    procedure UnlockGuiSyncQueue;       // Plugins must unlock the GUI sync queue when opening the GUI.
+    procedure LockAndClearGuiSyncQueue; // Plugins must lock the GUI sync queue when closing the GUI.
+
     function AddDelayedTask(const Task, OnAudioSync, OnGuiSync : TThreadProcedure; const ExecuteDelay : cardinal):TUniqueID;
     function AddTask(const Task, OnAudioSync, OnGuiSync : TThreadProcedure):TUniqueID;
+    procedure CancelTask(const TaskID : TUniqueID); // NOTE: will not cancel task if it's already started.
+
+    procedure GuiSync(const proc : TThreadProcedure);
+    procedure AudioSync(const proc : TThreadProcedure);
 
     property Capacity    : integer read FCapacity;
     property GrowBy      : integer read FGrowBy;
@@ -52,6 +74,9 @@ type
 
     procedure ProcessAudioSync; //The ProcessAudioSync() method needs to be reguarlly called from the audio thread.
     procedure ProcessGuiSync;   //The ProcessGuiSync() method needs to be reguarlly called from the GUI thread.
+
+    property IsGuiSyncActive : boolean read FIsGuiSyncActive;
+    property IsAudioSyncActive : boolean read FIsAudioSyncActive;
   end;
 
   TBackgroundWorker = class(TThread)
@@ -84,6 +109,8 @@ uses
 
 constructor TAirControl.Create(const Capacity, GrowBy, MaxCapacity : integer);
 begin
+  FIsTerminated := false;
+
   FCapacity := Capacity;
   FGrowBy := GrowBy;
   FMaxCapacity := MaxCapacity;
@@ -98,6 +125,8 @@ begin
   BgEventToken := TEvent.Create(nil, true, false, '', false);
   BgEventToken.ResetEvent;
 
+  // == Ordering is important! ==
+  // 1) Create the background worker, and configure shared variables.
   BackgroundWorker := TBackgroundWorker.Create(true);
   BackgroundWorker.FreeOnTerminate  := false;
   BackgroundWorker.TaskSyncQueue    := @self.TaskSyncQueue;
@@ -106,17 +135,17 @@ begin
   BackgroundWorker.DelayedTaskList  := @self.DelayedTaskQueue;
   BackgroundWorker.SharedEventToken := self.BgEventToken;
 
+  // 2) Start the worker...
   BackgroundWorker.Start;
+
+  // Finally, it is assumed the GUI is closed at this stage so lock the GUI sync Queue.
+  LockAndClearGuiSyncQueue;
 end;
 
 destructor TAirControl.Destroy;
 begin
-  //== shut down sequence ==
-  BackgroundWorker.Terminate;
-  BgEventToken.SetEvent;
-  BackgroundWorker.WaitFor;
-  FreeAndNil(BackgroundWorker);
-  //=======================
+  if assigned(BackgroundWorker)
+    then TerminateProcessingAndPrepareForShutDown;
 
   cs.Enter;
   try
@@ -138,10 +167,77 @@ begin
   inherited;
 end;
 
+procedure TAirControl.TerminateProcessingAndPrepareForShutDown;
+var
+  Task, OnAudioSync, OnGuiSync : TThreadProcedure;
+begin
+  cs.Enter;
+  try
+    FIsTerminated := true;
+
+    // shut down the background worker.
+    BackgroundWorker.Terminate;
+    BgEventToken.SetEvent;
+    BackgroundWorker.WaitFor;
+    FreeAndNil(BackgroundWorker);
+    //=======================
+
+    // complete all outstanding background tasks.
+    while TaskSyncQueue.Pop(Task, OnAudioSync, OnGuiSync) do
+    begin
+      // 1) Complete the task...
+      if assigned(Task)
+        then Task();
+    end;
+  finally
+    cs.Leave;
+  end;
+end;
+
+
+
+
+
+procedure TAirControl.LockAndClearGuiSyncQueue;
+var
+  Task : TThreadProcedure;
+begin
+  FIsGuiSyncActive := false;
+
+  while GuiSyncQueue.Pop(Task) do
+  begin
+    // do nothing. We're clearing all
+    // tasks from the GUI sync queue.
+  end;
+end;
+
+procedure TAirControl.AudioSync(const proc: TThreadProcedure);
+begin
+  cs.Enter;
+  try
+    if IsTerminated then raise EVamLibException.Create('AirControl processing has already been terminated.');
+    AudioSyncQueue.Push(proc);
+  finally
+    cs.Leave;
+  end;
+end;
+
+procedure TAirControl.GuiSync(const proc: TThreadProcedure);
+begin
+  cs.Enter;
+  try
+    if IsTerminated then raise EVamLibException.Create('AirControl processing has already been terminated.');
+    GuiSyncQueue.Push(proc);
+  finally
+    cs.Leave;
+  end;
+end;
+
 function TAirControl.AddDelayedTask(const Task, OnAudioSync, OnGuiSync: TThreadProcedure; const ExecuteDelay: cardinal): TUniqueID;
 begin
   cs.Enter;
   try
+    if IsTerminated then raise EVamLibException.Create('AirControl processing has already been terminated.');
     result := DelayedTaskQueue.Push(Task, OnAudioSync, OnGuiSync, ExecuteDelay);
   finally
     cs.Leave;
@@ -153,12 +249,25 @@ function TAirControl.AddTask(const Task, OnAudioSync, OnGuiSync: TThreadProcedur
 begin
   cs.Enter;
   try
+    if IsTerminated then raise EVamLibException.Create('AirControl processing has already been terminated.');
     result := TaskSyncQueue.Push(Task, OnAudioSync, OnGuiSync);
   finally
     cs.Leave;
   end;
   BgEventToken.SetEvent; // Set the event so the background thread will start processing.
 end;
+
+procedure TAirControl.CancelTask(const TaskID: TUniqueID);
+begin
+  cs.Enter;
+  try
+    DelayedTaskQueue.CancelTask(TaskID);
+  finally
+    cs.Leave;
+  end;
+end;
+
+
 
 procedure TAirControl.ProcessAudioSync;
 var
@@ -174,10 +283,23 @@ procedure TAirControl.ProcessGuiSync;
 var
   Task : TThreadProcedure;
 begin
-  while GuiSyncQueue.Pop(Task) do
+  if IsGuiSyncActive then
   begin
-    Task();
+    while GuiSyncQueue.Pop(Task) do
+    begin
+      Task();
+    end;
   end;
+end;
+
+procedure TAirControl.SetProcessingState(const IsActive: boolean);
+begin
+  FIsAudioSyncActive := IsActive;
+end;
+
+procedure TAirControl.UnlockGuiSyncQueue;
+begin
+  FIsGuiSyncActive := true;
 end;
 
 { TBackgroundThread }
@@ -189,30 +311,42 @@ begin
   assert(assigned(SharedEventToken));
   while not Terminated do
   begin
-    if Terminated then exit;
+    try
+      if Terminated then exit;
 
-    case WaitResult of
-      wrSignaled, wrTimeout:
-      begin
-        ProcessTasks;
+      case WaitResult of
+        wrSignaled, wrTimeout:
+        begin
+          ProcessTasks;
+        end;
+        wrAbandoned,
+        wrError,
+        wrIOCompletion:
+        begin
+          // TODO:MED what should happen here? For now just raise an exception and see if
+          // it occurs in practice.
+          raise EVamLibException.Create('BackgroundWorker has terminated unexpectedly. (error 11033)');
+        end
+      else
+        raise EVamLibException.Create('Unexpected wait result.');
       end;
-      wrAbandoned,
-      wrError,
-      wrIOCompletion:
+
+      if DelayedTaskList^.Count > 0
+        then WaitResult := SharedEventToken.WaitFor(100)   //Wait for 100 milliseconds.
+        else WaitResult := SharedEventToken.WaitFor(2000); //wait for 2 seconds.
+    except
+      on E: Exception do
       begin
-        // TODO:MED what should happen here? For now just raise an exception and see if
-        // it occurs in practice.
-        raise EVamLibException.Create('BackgroundWorker has terminated unexpectedly. (error 11033)');
-      end
-    else
-      raise EVamLibException.Create('Unexpected wait result.');
+        // Raise the exception in the main thread so that it get's seen.
+        Synchronize(
+        procedure
+        begin
+          raise E;
+        end
+        );
+      end;
     end;
-
-    if DelayedTaskList^.Count > 0
-      then WaitResult := SharedEventToken.WaitFor(100)   //Wait for 100 milliseconds.
-      else WaitResult := SharedEventToken.WaitFor(2000); //wait for 2 seconds.
   end;
-
 end;
 
 procedure TBackgroundWorker.ProcessTasks;

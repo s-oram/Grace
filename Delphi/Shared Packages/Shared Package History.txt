@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+25 March 2016
+- Raise AirControl exceptions in the main thread so they are seen.
+
 24 March 2016
 - Background worker now renamed to AirControl. (It's duties will expand sligthly.)
   It's also been moved to PlugLib. It's not generic enough to be included in 
@@ -8,6 +11,8 @@
 - Add TRecList to VamLib.
 - more work on TAirControl.
 - TUniqueID - parts are now private.
+- changed unique ID initialisation code.
+
 
 22 March 2016
 - working on background task worker.

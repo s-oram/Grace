@@ -40,7 +40,7 @@ contains
   eeSampleInt in 'source\eeSampleInt.pas',
   eeSampleIntF in 'source\eeSampleIntF.pas',
   eeSampleIntFunctions in 'source\eeSampleIntFunctions.pas',
-  soAudioFilePreviewPlayer in 'source\soAudioFilePreviewPlayer.pas',
+  soAudioFilePreviewPlayerV2 in 'source\soAudioFilePreviewPlayerV2.pas',
   soAudioFilePreviewPlayer.Voice in 'source\soAudioFilePreviewPlayer.Voice.pas',
   VamAudio.R8BrainWrapper in 'source\samplerate conversion\VamAudio.R8BrainWrapper.pas',
   VamAudio.R8BrainWrapper.v3 in 'source\samplerate conversion\VamAudio.R8BrainWrapper.v3.pas',
@@ -50,7 +50,8 @@ contains
   VamAudio.RealTimeDecimationFilter in 'source\samplerate conversion\VamAudio.RealTimeDecimationFilter.pas',
   VamAudio.HalfBandAllPassCoefficients in 'source\samplerate conversion\VamAudio.HalfBandAllPassCoefficients.pas',
   VamAudio.RealTimeInterpolationFilter in 'source\samplerate conversion\VamAudio.RealTimeInterpolationFilter.pas',
-  VamAudio.Constants in 'source\VamAudio.Constants.pas';
+  VamAudio.Constants in 'source\VamAudio.Constants.pas',
+  soAudioFilePreviewPlayer in 'source\soAudioFilePreviewPlayer.pas';
 
 end.
 

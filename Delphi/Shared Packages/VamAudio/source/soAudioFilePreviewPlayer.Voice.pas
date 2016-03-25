@@ -162,12 +162,9 @@ begin
     inc(OutBuffer1);
     inc(OutBuffer2);
 
-    ReadPos := ReadPos + ReadStepSize;
-    if ReadPos >= SampleLength then
-    begin
-      fIsActive := false;
-      exit; //==============================================>> exit >>=====================>>
-    end;
+    if ReadPos + ReadStepSize <= SampleLength-4
+      then ReadPos := ReadPos + ReadStepSize
+      else fIsActive := false;
   end;
 
   if not FadeOutRamp.IsActive then

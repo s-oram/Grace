@@ -15,6 +15,7 @@ type
     Task, OnAudioSync, OnGuiSync : TThreadProcedure;
     StartTimeRef : cardinal;
     ExecuteDelay : cardinal;
+    procedure Clear;
   end;
 
   PDelayedTaskList = ^TDelayedTaskList;
@@ -34,6 +35,8 @@ type
 
     function Push(const Task, OnAudioSync, OnGuiSync : TThreadProcedure; const ExecuteDelay : cardinal):TUniqueID;
     function Pop(out Task, OnAudioSync, OnGuiSync :TThreadProcedure):boolean; // Pop oldest task on queue, only if the execution delay has passed.
+
+    procedure CancelTask(const TaskID : TUniqueID);
 
     property Count : integer read GetCount;
 
@@ -154,7 +157,7 @@ begin
       // IMPORTANT:  Always use Current – Start (comparison) Interval when checking elapsed time with GetTickCount()
       //   - CapnBry Development Blog - Proper Timing with GetTickCount()
       //     http://capnbry.net/blog/?p=44
-      if (CurrentTC - TaskData^.StartTimeRef) > TaskData^.ExecuteDelay then
+      if (assigned(TaskData)) and ((CurrentTC - TaskData^.StartTimeRef) > TaskData^.ExecuteDelay) then
       begin
         Task        := TaskData^.Task;
         OnAudioSync := TaskData^.OnAudioSync;
@@ -182,6 +185,30 @@ begin
   end;
 end;
 
+procedure TDelayedTaskList.CancelTask(const TaskID: TUniqueID);
+var
+  c1 : integer;
+  TaskData : PDelayedTaskData;
+begin
+  assert(TaskID.IsSet);
+
+  cs.Enter;
+  try
+    for c1 := 0 to ItemsInUse.Count-1 do
+    begin
+      TaskData := ItemsInUse[c1];
+      if (assigned(TaskData)) and (TaskData^.ID = TaskID) then
+      begin
+        TaskData^.Clear;
+        ItemsInUse.Remove(TaskData);
+        ItemsInReserve.Push(TaskData);
+      end;
+    end;
+  finally
+    cs.Leave;
+  end;
+end;
+
 function TDelayedTaskList.GetCount: integer;
 begin
   cs.Enter;
@@ -192,7 +219,16 @@ begin
   end;
 end;
 
+{ TDelayedTaskData }
 
-
+procedure TDelayedTaskData.Clear;
+begin
+  self.ID.Clear;
+  self.Task         := nil;
+  self.OnAudioSync  := nil;
+  self.OnGuiSync    := nil;
+  self.StartTimeRef := 0;
+  self.ExecuteDelay := 0;
+end;
 
 end.

@@ -98,7 +98,7 @@
 			<DCCReference Include="source\eeSampleInt.pas"/>
 			<DCCReference Include="source\eeSampleIntF.pas"/>
 			<DCCReference Include="source\eeSampleIntFunctions.pas"/>
-			<DCCReference Include="source\soAudioFilePreviewPlayer.pas"/>
+			<DCCReference Include="source\soAudioFilePreviewPlayerV2.pas"/>
 			<DCCReference Include="source\soAudioFilePreviewPlayer.Voice.pas"/>
 			<DCCReference Include="source\samplerate conversion\VamAudio.R8BrainWrapper.pas"/>
 			<DCCReference Include="source\samplerate conversion\VamAudio.R8BrainWrapper.v3.pas"/>
@@ -109,6 +109,7 @@
 			<DCCReference Include="source\samplerate conversion\VamAudio.HalfBandAllPassCoefficients.pas"/>
 			<DCCReference Include="source\samplerate conversion\VamAudio.RealTimeInterpolationFilter.pas"/>
 			<DCCReference Include="source\VamAudio.Constants.pas"/>
+			<DCCReference Include="source\soAudioFilePreviewPlayer.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
