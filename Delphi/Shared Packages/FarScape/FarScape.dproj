@@ -108,7 +108,6 @@
 			<DCCReference Include="source\FarScape.SupportFunctions.pas"/>
 			<DCCReference Include="source\FarScape.InvalidateBuffer.pas"/>
 			<DCCReference Include="source\FarScape.Event.pas"/>
-			<DCCReference Include="source\FarScape.EventStack.pas"/>
 			<DCCReference Include="source\FarScape.EventDispatcher.pas"/>
 			<DCCReference Include="source\FarScape.Events.pas"/>
 			<DCCReference Include="UnitTests\Test.FarScape.SupportFunctions.pas"/>

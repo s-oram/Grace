@@ -135,10 +135,9 @@ type
     // It's a good place to resize buffers or other dependent components.
     procedure ControlBoundsChanged(const aLeft, aTop, aWidth, aHeight : integer); virtual;
 
-    procedure FarScapeEvent(const ev : TEventData; const ReleaseEvent : boolean = true); virtual;
-
     property ControlState : TControlState read FControlState write FControlState;
     function FindRoot : TFarScapeAbstractRoot;
+
 
 
   public
@@ -150,8 +149,10 @@ type
     // Trigger a control repaint.
     procedure Invalidate; virtual;
 
-    procedure AddEventListener(const EventTypes : array of TEventClass; const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll);
-    procedure RemoveEventListener(const Handler    : TEventHandler);
+    // Events....
+    procedure TriggerEvent(const Event : TFarScapeEvent);
+    procedure AddEventListener(const EventTypes : array of TFarScapeEventClass; const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll);
+    procedure RemoveEventListener(const Handler : TEventHandler);
 
 
     property HitTest : THitTest read FHitTest write FHitTest;
@@ -280,7 +281,6 @@ type
   private
     fOnInvalidateRootRegion: TOnInvalidateRootRegion;
   protected
-    procedure FarScapeEvent(const ev : TEventData; const ReleaseEvent : boolean = true); override;
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -415,7 +415,7 @@ begin
   inherited;
 end;
 
-procedure TFarScapeCustomControl.AddEventListener(const EventTypes: array of TEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
+procedure TFarScapeCustomControl.AddEventListener(const EventTypes: array of TFarScapeEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
 begin
   if not assigned(FEventDispatcher) then FEventDispatcher := TEventDispatcher.Create;
   FEventDispatcher.AddListener(EventTypes, Handler, Duration);
@@ -425,18 +425,6 @@ procedure TFarScapeCustomControl.RemoveEventListener(const Handler: TEventHandle
 begin
   if assigned(FEventDispatcher) then FEventDispatcher.RemoveListener(Handler);
 end;
-
-procedure TFarScapeCustomControl.FarScapeEvent(const ev: TEventData; const ReleaseEvent : boolean);
-begin
-  if assigned(FEventDispatcher) then FEventDispatcher.Broadcast(ev, false);
-
-  if (ev.Propagate) and (assigned(Parent))
-    then Parent.FarScapeEvent(ev, false);
-
-  if ReleaseEvent then ev.Release;
-end;
-
-
 
 function TFarScapeCustomControl.FindRoot: TFarScapeAbstractRoot;
 var
@@ -503,6 +491,21 @@ begin
 
     // 3) Notify the root...
     // TODO:HIGH might need to notify the root that a control has change visibility here.
+  end;
+end;
+
+procedure TFarScapeCustomControl.TriggerEvent(const Event: TFarScapeEvent);
+begin
+  assert(assigned(Event));
+
+  if assigned(FEventDispatcher) then
+  begin
+    FEventDispatcher.Broadcast(Event);
+  end;
+
+  if (Event.Propagate) and (assigned(self.Parent)) then
+  begin
+    Parent.TriggerEvent(Event);
   end;
 end;
 
@@ -577,7 +580,7 @@ begin
   ControlBoundsChanged(aLeft, aTop, aWidth, aHeight);
 
   // 4) Important: The root needs to know that a child control has changed location.
-  FarScapeEvent(  TControlBoundsChangedEvent.Create(self)  );
+  //FarScapeEvent(  TControlBoundsChangedEvent.Create(self)  );
 
   if assigned(Root) then
   begin
@@ -668,7 +671,7 @@ begin
   OldName := fName;
   fName := Value; //TODO:MED Trim white space from name.
 
-  FarScapeEvent( TControlNameChangedEvent.Create(self, @OldName, @FName)  );
+  //FarScapeEvent( TControlNameChangedEvent.Create(self, @OldName, @FName)  );
 end;
 
 procedure TFarScapeCustomControl.Invalidate;
@@ -936,14 +939,14 @@ begin
   SetRoot(aControl, rc);
 
   // 4) Generate a ChildAddedEvent.
-  FarScapeEvent(  TChildAddedEvent.Create(aControl)  );
+  //FarScapeEvent(  TChildAddedEvent.Create(aControl)  );
 end;
 
 procedure TFarScapeContainer.RemoveControl(const aControl: TFarScapeControl);
 begin
   if aControl.Parent <> self then raise EFarScapeException.Create('Control is not a child of this container control.');
 
-  FarScapeEvent(  TChildRemovingEvent.Create(aControl)  );
+  //FarScapeEvent(  TChildRemovingEvent.Create(aControl)  );
 
   // 1) Remove the control.
   ControlList.Remove(aControl);
@@ -959,7 +962,7 @@ begin
   SetRoot(aControl, nil);
 
   // Finally, trigger a child removed event.
-  FarScapeEvent(  TChildRemovedEvent.Create(aControl)  );
+  //FarScapeEvent(  TChildRemovedEvent.Create(aControl)  );
 
 end;
 
@@ -979,12 +982,12 @@ end;
 
 procedure TFarScapeControl.MouseEnter;
 begin
-  FarScapeEvent(  TMouseEnterEvent.Create(self)  );
+  //FarScapeEvent(  TMouseEnterEvent.Create(self)  );
 end;
 
 procedure TFarScapeControl.MouseLeave;
 begin
-  FarScapeEvent(  TMouseLeaveEvent.Create(self)  );
+  //FarScapeEvent(  TMouseLeaveEvent.Create(self)  );
 end;
 
 destructor TFarScapeControl.Destroy;
@@ -1010,7 +1013,7 @@ end;
 
 procedure TFarScapeControl.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  FarScapeEvent(  TMouseDownEvent.Create(self, Button, Shift, X, Y)  );
+  //FarScapeEvent(  TMouseDownEvent.Create(self, Button, Shift, X, Y)  );
 end;
 
 procedure TFarScapeControl.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -1020,7 +1023,7 @@ end;
 
 procedure TFarScapeControl.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  FarScapeEvent(  TMouseUpEvent.Create(self, Button, Shift, X, Y)  );
+  //FarScapeEvent(  TMouseUpEvent.Create(self, Button, Shift, X, Y)  );
 end;
 
 procedure TFarScapeControl.PaintToBackBuffer(const DrawInfo: PRootDrawInfo);
@@ -1080,11 +1083,6 @@ begin
 end;
 
 destructor TFarScapeAbstractRoot.Destroy;
-begin
-  inherited;
-end;
-
-procedure TFarScapeAbstractRoot.FarScapeEvent(const ev: TEventData; const ReleaseEvent: boolean);
 begin
   inherited;
 end;

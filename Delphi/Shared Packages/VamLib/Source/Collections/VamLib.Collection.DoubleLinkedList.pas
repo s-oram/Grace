@@ -7,8 +7,9 @@ type
   TDoubleLinkedListItem = record
     InUse    : boolean;
     Data     : Pointer;
-    PrevItem : Pointer;
-    NextItem : Pointer;
+    CurItemIndex  : integer;
+    PrevItemIndex : integer;
+    NextItemIndex : integer;
   end;
 
   // TRecDoubleLinkedList is a list type with static memory requirements.
@@ -20,9 +21,10 @@ type
     FCapacity: integer;
     FCount: integer;
     FGrowBy: integer;
-    FFirstItem: PDoubleLinkedListItem;
-    FLastItem: PDoubleLinkedListItem;
     FMaxCapacity: integer;
+    FirstItemIndex : integer;
+    LastItemIndex  : integer;
+
     procedure SetCapacity(const Value: integer);
     function GetFirst: Pointer;
     function GetLast: Pointer;
@@ -61,29 +63,37 @@ begin
   FMaxCapacity := MaxCapacity;
   SetCapacity(Capacity);
 
-  FFirstItem := nil;
-  FLastItem  := nil;
+  FirstItemIndex := -1;
+  LastItemIndex  := -1;
 end;
 
 function TRecDoubleLinkedList.GetFirst: Pointer;
 begin
-  if assigned(FFirstItem)
-    then result := FFirstItem^.Data
+  if FirstItemIndex <> -1
+    then result := ListData[FirstItemIndex].Data
     else result := nil;
 end;
 
 function TRecDoubleLinkedList.GetLast: Pointer;
 begin
-  if assigned(FLastItem)
-    then result := FLastItem^.Data
+  if LastItemIndex <> -1
+    then result := ListData[LastItemIndex].Data
     else result := nil;
 end;
 
 procedure TRecDoubleLinkedList.SetCapacity(const Value: integer);
+var
+  c1: Integer;
 begin
   assert(Value >= 0);
   FCapacity := Value;
   SetLength(ListData, Value);
+
+  // TODO:MED only need to set the index of new items.
+  for c1 := 0 to Value-1 do
+  begin
+    ListData[c1].CurItemIndex := c1;
+  end;
 end;
 
 procedure TRecDoubleLinkedList.AppendItem(const Data: Pointer);
@@ -91,6 +101,8 @@ var
   c1 : integer;
   WriteIndex : integer;
   CurLast : PDoubleLinkedListItem;
+  FFirstItem : PDoubleLinkedListItem;
+  FLastItem  : PDoubleLinkedListItem;
 begin
   //=== Grow the list if needed ===
   if (Count >= Capacity) then
@@ -100,8 +112,6 @@ begin
       then EVamLibException.Create('Cannot grow list. Max capacity reached.');
     SetCapacity(Capacity+GrowBy);
   end;
-
-
 
   //=== Find an unused data location ====
   WriteIndex := -1;
@@ -116,6 +126,14 @@ begin
   if WriteIndex = -1 then raise EVamLibException.Create('Couldn''t find a data location to write to. This is very unexpected and indicates a bug!');
   //=====================================
 
+  if FirstItemIndex <> -1
+    then FFirstItem := @ListData[FirstItemIndex]
+    else FFirstItem := nil;
+
+  if LastItemIndex <> -1
+    then FLastItem := @ListData[LastItemIndex]
+    else FLastItem := nil;
+
   if (assigned(FFirstItem) <> assigned(FLastItem))
     then raise EVamLibException.Create('Something has gone wrong. First & Last items assignment state must match.');
 
@@ -125,25 +143,25 @@ begin
 
     ListData[WriteIndex].InUse := true;
     ListData[WriteIndex].Data := Data;
-    ListData[WriteIndex].PrevItem := nil;
-    ListData[WriteIndex].NextItem := nil;
-    FFirstItem := @ListData[WriteIndex];
-    FLastItem  := @ListData[WriteIndex];
+    ListData[WriteIndex].PrevItemIndex := -1;
+    ListData[WriteIndex].NextItemIndex := -1;
+    FirstItemIndex := WriteIndex;
+    LastItemIndex  := WriteIndex;
   end else
   begin
     assert(assigned(FLastItem));
 
     // Update the current last item
-    FLastItem^.NextItem := @ListData[WriteIndex];
+    FLastItem^.NextItemIndex := WriteIndex;
 
     // Add values for the new last item.
     ListData[WriteIndex].InUse := true;
     ListData[WriteIndex].Data := Data;
-    ListData[WriteIndex].PrevItem := FLastItem;
-    ListData[WriteIndex].NextItem := nil;
+    ListData[WriteIndex].PrevItemIndex := FLastItem^.CurItemIndex;
+    ListData[WriteIndex].NextItemIndex := -1;
 
     // Update the last item pointer to point to the new item.
-    FLastItem  := @ListData[WriteIndex];
+    LastItemIndex := WriteIndex;
   end;
 
   inc(FCount);
@@ -152,8 +170,18 @@ end;
 function TRecDoubleLinkedList.PopFirst:Pointer;
 var
   Data : Pointer;
-  NextItem : PDoubleLinkedListItem;
+  NextItemIndex : integer;
+  FFirstItem : PDoubleLinkedListItem;
+  FLastItem  : PDoubleLinkedListItem;
 begin
+  if FirstItemIndex <> -1
+    then FFirstItem := @ListData[FirstItemIndex]
+    else FFirstItem := nil;
+
+  if LastItemIndex <> -1
+    then FLastItem := @ListData[LastItemIndex]
+    else FLastItem := nil;
+
   if not assigned(FFirstItem) then exit(nil);
 
   dec(FCount);
@@ -164,31 +192,32 @@ begin
 
     FFirstItem^.InUse    := false;
     FFirstItem^.Data     := nil;
-    FFirstItem^.PrevItem := nil;
-    FFirstItem^.NextItem := nil;
+    FFirstItem^.PrevItemIndex := -1;
+    FFirstItem^.NextItemIndex := -1;
 
     FLastItem^.InUse    := false;
     FLastItem^.Data     := nil;
-    FLastItem^.PrevItem := nil;
-    FLastItem^.NextItem := nil;
+    FLastItem^.PrevItemIndex := -1;
+    FLastItem^.NextItemIndex := -1;
 
-    FFirstItem := nil;
-    FLastItem := nil;
+    FirstItemIndex := -1;
+    LastItemIndex  := -1;
   end else
   begin
-    if not assigned(FFirstItem^.NextItem) then raise EVamLibException.Create('Next item must be assigned.');
+    if FFirstItem^.NextItemIndex = -1 then raise EVamLibException.Create('Next item must be assigned.');
 
-    Data     := FFirstItem^.Data;
-    NextItem := FFirstItem^.NextItem;
+
+    Data          := FFirstItem^.Data;
+    NextItemIndex := FFirstItem^.NextItemIndex;
 
     // reset the current first item.
     FFirstItem^.InUse    := false;
     FFirstItem^.Data     := nil;
-    FFirstItem^.PrevItem := nil;
-    FFirstItem^.NextItem := nil;
+    FFirstItem^.PrevItemIndex := -1;
+    FFirstItem^.NextItemIndex := -1;
 
-    NextItem^.PrevItem := nil;
-    FFirstItem := NextItem;
+    ListData[NextItemIndex].PrevItemIndex := -1;
+    FirstItemIndex := NextItemIndex;
   end;
 
   // If we make it this far, we've returned some data.
@@ -198,8 +227,18 @@ end;
 function TRecDoubleLinkedList.PopLast:Pointer;
 var
   Data : Pointer;
-  PrevItem : PDoubleLinkedListItem;
+  PrevItemIndex : integer;
+  FFirstItem : PDoubleLinkedListItem;
+  FLastItem  : PDoubleLinkedListItem;
 begin
+  if FirstItemIndex <> -1
+    then FFirstItem := @ListData[FirstItemIndex]
+    else FFirstItem := nil;
+
+  if LastItemIndex <> -1
+    then FLastItem := @ListData[LastItemIndex]
+    else FLastItem := nil;
+
   if not assigned(FFirstItem) then exit(nil);
 
   dec(FCount);
@@ -210,31 +249,31 @@ begin
 
     FFirstItem^.InUse    := false;
     FFirstItem^.Data     := nil;
-    FFirstItem^.PrevItem := nil;
-    FFirstItem^.NextItem := nil;
+    FFirstItem^.PrevItemIndex := -1;
+    FFirstItem^.NextItemIndex := -1;
 
     FLastItem^.InUse    := false;
     FLastItem^.Data     := nil;
-    FLastItem^.PrevItem := nil;
-    FLastItem^.NextItem := nil;
+    FLastItem^.PrevItemIndex := -1;
+    FLastItem^.NextItemIndex := -1;
 
-    FFirstItem := nil;
-    FLastItem := nil;
+    FirstItemIndex := -1;
+    LastItemIndex  := -1;
   end else
   begin
-    if not assigned(FLastItem^.PrevItem) then raise EVamLibException.Create('Previous item must be assigned.');
+    if FLastItem^.PrevItemIndex = -1 then raise EVamLibException.Create('Next item must be assigned.');
 
     Data     := FLastItem^.Data;
-    PrevItem := FLastItem^.PrevItem;
+    PrevItemIndex := FLastItem^.PrevItemIndex;
 
     // reset the current last item.
     FLastItem^.InUse    := false;
     FLastItem^.Data     := nil;
-    FLastItem^.PrevItem := nil;
-    FLastItem^.NextItem := nil;
+    FLastItem^.PrevItemIndex := -1;
+    FLastItem^.NextItemIndex := -1;
 
-    PrevItem^.NextItem := nil;
-    FLastItem := PrevItem;
+    ListData[PrevItemIndex].NextItemIndex := -1;
+    LastItemIndex := PrevItemIndex;
   end;
 
   // If we make it this far, we've returned some data.

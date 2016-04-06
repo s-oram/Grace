@@ -6,6 +6,7 @@ interface
 uses
   Classes,
   VamLib.Collection.DoubleLinkedList,
+  VamLib.Collection.List,
   VamLib.UniqueID,
   VamLib.Types;
 
@@ -22,14 +23,13 @@ type
   PTaskSyncQueue = ^TTaskSyncQueue;
   TTaskSyncQueue = class
   private
-    List : TRecDoubleLinkedList;
+    ItemsInUse     : TRecDoubleLinkedList;
+    ItemsInReserve : TRecList;
     CS : TFixedCriticalSection;
-    FTaskData : array of TTaskSyncData;
-    FCapacity: integer;
     FGrowBy: integer;
     FMaxCapacity: integer;
-    procedure SetCapacity(const Value: integer);
     function GetCount: integer;
+    function GetCapacity: integer;
   public
     constructor Create(const Capacity, GrowBy, MaxCapacity : integer);
     destructor Destroy; override;
@@ -39,7 +39,7 @@ type
 
     function IsEmpty : boolean;
 
-    property Capacity    : integer read FCapacity;
+    property Capacity    : integer read GetCapacity;
     property GrowBy      : integer read FGrowBy write FGrowBy;
     property MaxCapacity : integer read FMaxCapacity;
     property Count       : integer read GetCount;
@@ -53,73 +53,91 @@ uses
 { TTaskQueue }
 
 constructor TTaskSyncQueue.Create(const Capacity, GrowBy, MaxCapacity : integer);
+var
+  c1: Integer;
+  TaskData : PTaskSyncData;
 begin
   cs := TFixedCriticalSection.Create;
-  List := TRecDoubleLinkedList.Create(Capacity, GrowBy, MaxCapacity);
+
+  ItemsInUse     := TRecDoubleLinkedList.Create(Capacity, GrowBy, MaxCapacity);
+  ItemsInReserve := TRecList.Create(Capacity, GrowBy, MaxCapacity);
+
   FGrowBy := GrowBy;
   FMaxCapacity := MaxCapacity;
-  SetCapacity(Capacity);
+
+  // Create the initial capacity.
+  for c1 := 0 to Capacity-1 do
+  begin
+    New(TaskData);
+    ItemsInReserve.Push(TaskData);
+  end;
 end;
 
 destructor TTaskSyncQueue.Destroy;
+var
+  TaskData : PTaskSyncData;
 begin
-  SetLength(FTaskData, 0);
+  while true do
+  begin
+     TaskData := ItemsInReserve.Pop;
+     if assigned(TaskData)
+       then Dispose(TaskData)
+       else break;
+  end;
+
+  while true do
+  begin
+     TaskData := ItemsInUse.PopLast;
+     if assigned(TaskData)
+       then Dispose(TaskData)
+       else break;
+  end;
+
   cs.Free;
   inherited;
 end;
 
-function TTaskSyncQueue.GetCount: integer;
+function TTaskSyncQueue.GetCapacity: integer;
 begin
-  result := List.Count;
+  result := ItemsInUse.Count + ItemsInReserve.Count;
 end;
 
-procedure TTaskSyncQueue.SetCapacity(const Value: integer);
+function TTaskSyncQueue.GetCount: integer;
 begin
-  FCapacity := Value;
-  SetLength(FTaskData, Value);
+  result := ItemsInUse.Count;
 end;
 
 function TTaskSyncQueue.IsEmpty: boolean;
 begin
-  if List.Count = 0
+  if ItemsInUse.Count = 0
     then result := true
     else result := false;
 end;
 
 function TTaskSyncQueue.Push(const Task, OnAudioSync, OnGuiSync  : TThreadProcedure): TUniqueID;
 var
-  WriteIndex : integer;
-  c1: Integer;
+  TaskData : PTaskSyncData;
 begin
   cs.Enter;
   try
-    //=== Grow the list if needed ===
-    if (Count >= Capacity) then
+    TaskData := ItemsInReserve.Pop;
+    if not assigned(TaskData) then
     begin
-      if Capacity + GrowBy > MaxCapacity
-        then EVamLibException.Create('Cannot grow list. Max capacity reached.');
-      SetCapacity(Capacity+GrowBy);
+      ItemsInReserve.Compress;
+      if (ItemsInReserve.Count + ItemsInUse.Count) >= MaxCapacity
+        then raise EVamLibException.Create('TTaskQueue at max capacity.')
+        else New(TaskData);
     end;
 
-    WriteIndex := -1;
-    for c1 := 0 to Capacity-1 do
-    begin
-      if FTaskData[c1].InUse = false then
-      begin
-        WriteIndex := c1;
-        break;
-      end;
-    end;
-    if WriteIndex = -1 then raise EVamLibException.Create('Unexpected error. Cannot find data location.');
+    TaskData^.InUse := true;
+    TaskData^.ID.Init;
+    TaskData^.Task := Task;
+    TaskData^.OnAudioSync := OnAudioSync;
+    TaskData^.OnGuiSync   := OnGuiSync;
 
-    FTaskData[c1].InUse := true;
-    FTaskData[c1].ID.Init;
-    FTaskData[c1].Task := Task;
-    FTaskData[c1].OnAudioSync := OnAudioSync;
-    FTaskData[c1].OnGuiSync   := OnGuiSync;
-    result := FTaskData[c1].ID;
+    ItemsInUse.AppendItem(TaskData);
 
-    List.AppendItem(@FTaskData[c1]);
+    result := TaskData^.ID;
   finally
     cs.Leave;
   end;
@@ -132,18 +150,27 @@ var
 begin
   cs.Enter;
   try
-    TD := List.PopFirst;
+    TD := ItemsInUse.PopFirst;
     if assigned(TD) then
     begin
       if not TD^.InUse then raise EVamLibException.Create('The data record isn''t in use. This is very unexpected and is an error!');
-      TD^.InUse := false;
-      TD^.ID.Clear;
 
-      Task          := TD^.Task;
+      // return the results...
+      Task        := TD^.Task;
       OnAudioSync := TD^.OnAudioSync;
       OnGuiSync   := TD^.OnGuiSync;
-
       result := true;
+
+
+      // return the task to the reserved pool...
+      TD^.InUse := false;
+      TD^.ID.Clear;
+      TD^.Task := nil;
+      TD^.OnAudioSync := nil;
+      TD^.OnGuiSync := nil;
+
+      ItemsInReserve.Push(TD);
+
     end else
     begin
       Task := nil;

@@ -102,15 +102,8 @@
 			<DCCReference Include="Source\Vst2Ex\VamVst2.VstEventBuffer.pas"/>
 			<DCCReference Include="Source\Vst2Ex\Vst2Ex.MadExcept.pas"/>
 			<DCCReference Include="Source\Vst2Ex\Vst2Ex.Utils.pas"/>
-			<DCCReference Include="Source\Helm\Helm.AnyValue.pas"/>
-			<DCCReference Include="Source\Helm\Helm.Dispatcher.pas"/>
-			<DCCReference Include="Source\Helm\Helm.GenericMessages.pas"/>
-			<DCCReference Include="Source\Helm\Helm.GlobalMessageStack.pas"/>
-			<DCCReference Include="Source\Helm\Helm.Message.pas"/>
-			<DCCReference Include="Source\Helm\Helm.Sync.pas"/>
 			<DCCReference Include="Source\PlugLib\PlugLib.ResourceLoader.pas"/>
 			<DCCReference Include="Source\AudioPlugin\AudioPlugin.PlugEdit.pas"/>
-			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Events.pas"/>
 			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Functions.pas"/>
 			<DCCReference Include="Source\AudioPlugin\AudioPlugin.Globals.pas"/>
 			<DCCReference Include="Source\AudioPlugin\AudioPlugin.PlugMain.pas"/>
@@ -125,12 +118,8 @@
 			<DCCReference Include="UnitTests\Test.AudioPlugin.Functions.pas"/>
 			<DCCReference Include="UnitTests\Test.AudioPlugin.pas"/>
 			<DCCReference Include="UnitTests\Test.AudioPlugin.ProcessController.pas"/>
-			<DCCReference Include="UnitTests\Test.Helm.AnyValue.pas"/>
-			<DCCReference Include="UnitTests\Test.Helm.Dispatcher.pas"/>
-			<DCCReference Include="UnitTests\Test.Helm.Message.pas"/>
 			<DCCReference Include="UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas"/>
 			<DCCReference Include="UnitTests\Test.VamVst2.VstEventBuffer.pas"/>
-			<DCCReference Include="UnitTests\TestMocks.Helm.pas"/>
 			<DCCReference Include="Source\AirControl\PlugLib.AirControl.pas"/>
 			<DCCReference Include="Source\AirControl\PlugLib.AirControl.TaskQueue.pas"/>
 			<DCCReference Include="Source\AirControl\PlugLib.AirControl.TaskSyncQueue.pas"/>
@@ -138,7 +127,6 @@
 			<DCCReference Include="UnitTests\Test.PlugLib.AirControl.TaskQueue.pas"/>
 			<DCCReference Include="Source\AirControl\PlugLib.AirControl.DelayedTaskList.pas"/>
 			<None Include="Source\Vst2Sdk\VamVst2.DVstCommon.inc"/>
-			<None Include="Source\Helm\Helm.Sync"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

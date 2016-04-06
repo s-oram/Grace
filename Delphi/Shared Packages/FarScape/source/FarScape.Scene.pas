@@ -35,7 +35,7 @@ type
     ElementList : TObjectList;
     SceneRoot : TFarScapeControl;
 
-    procedure HandleSceneRootEvents(const ev : TEventData);
+    procedure HandleSceneRootEvents(const ev : TFarScapeEvent);
   public
     constructor Create(const aSceneRoot : TFarScapeControl);
     destructor Destroy; override;
@@ -146,8 +146,9 @@ begin
   result := ElementList[Index] as TSceneElement;
 end;
 
-procedure TScene.HandleSceneRootEvents(const ev: TEventData);
+procedure TScene.HandleSceneRootEvents(const ev: TFarScapeEvent);
 begin
+  {
   if ev.EventClass = TChildAddedEvent then
   begin
     self.RebuildScene;
@@ -167,7 +168,7 @@ begin
   begin
     self.UpdateScene;
   end;
-
+  }
 end;
 
 procedure TScene.RebuildScene;

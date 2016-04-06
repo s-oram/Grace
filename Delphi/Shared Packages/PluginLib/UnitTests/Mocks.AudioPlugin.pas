@@ -15,7 +15,7 @@ type
   public
     AudioProcessHistory : TFlexList;
 
-    constructor Create(const aGlobals : TGlobals); override;
+    constructor Create(const GlobalsPtr : Pointer); override;
     destructor Destroy; override;
 
     procedure Resume(const RunTimeInfo : TRunTimeInfo); override;
@@ -27,11 +27,9 @@ implementation
 
 { TMockAudioPlugin }
 
-constructor TMockAudioPlugin.Create(const aGlobals : TGlobals);
+constructor TMockAudioPlugin.Create(const GlobalsPtr : Pointer);
 begin
   inherited;
-  self.SetVstParameterCount(10);
-
   AudioProcessHistory := TFlexList.Create;
 end;
 

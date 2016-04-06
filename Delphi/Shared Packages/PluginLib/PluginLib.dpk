@@ -53,15 +53,8 @@ contains
   VamVst2.VstEventBuffer in 'Source\Vst2Ex\VamVst2.VstEventBuffer.pas',
   Vst2Ex.MadExcept in 'Source\Vst2Ex\Vst2Ex.MadExcept.pas',
   Vst2Ex.Utils in 'Source\Vst2Ex\Vst2Ex.Utils.pas',
-  Helm.AnyValue in 'Source\Helm\Helm.AnyValue.pas',
-  Helm.Dispatcher in 'Source\Helm\Helm.Dispatcher.pas',
-  Helm.GenericMessages in 'Source\Helm\Helm.GenericMessages.pas',
-  Helm.GlobalMessageStack in 'Source\Helm\Helm.GlobalMessageStack.pas',
-  Helm.Message in 'Source\Helm\Helm.Message.pas',
-  Helm.Sync in 'Source\Helm\Helm.Sync.pas',
   PlugLib.ResourceLoader in 'Source\PlugLib\PlugLib.ResourceLoader.pas',
   AudioPlugin.PlugEdit in 'Source\AudioPlugin\AudioPlugin.PlugEdit.pas',
-  AudioPlugin.Events in 'Source\AudioPlugin\AudioPlugin.Events.pas',
   AudioPlugin.Functions in 'Source\AudioPlugin\AudioPlugin.Functions.pas',
   AudioPlugin.Globals in 'Source\AudioPlugin\AudioPlugin.Globals.pas',
   AudioPlugin.PlugMain in 'Source\AudioPlugin\AudioPlugin.PlugMain.pas',
@@ -76,12 +69,8 @@ contains
   Test.AudioPlugin.Functions in 'UnitTests\Test.AudioPlugin.Functions.pas',
   Test.AudioPlugin in 'UnitTests\Test.AudioPlugin.pas',
   Test.AudioPlugin.ProcessController in 'UnitTests\Test.AudioPlugin.ProcessController.pas',
-  Test.Helm.AnyValue in 'UnitTests\Test.Helm.AnyValue.pas',
-  Test.Helm.Dispatcher in 'UnitTests\Test.Helm.Dispatcher.pas',
-  Test.Helm.Message in 'UnitTests\Test.Helm.Message.pas',
   Test.VamVst2.MidiEventOutputBuffer in 'UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas',
   Test.VamVst2.VstEventBuffer in 'UnitTests\Test.VamVst2.VstEventBuffer.pas',
-  TestMocks.Helm in 'UnitTests\TestMocks.Helm.pas',
   PlugLib.AirControl in 'Source\AirControl\PlugLib.AirControl.pas',
   PlugLib.AirControl.TaskQueue in 'Source\AirControl\PlugLib.AirControl.TaskQueue.pas',
   PlugLib.AirControl.TaskSyncQueue in 'Source\AirControl\PlugLib.AirControl.TaskSyncQueue.pas',
@@ -90,5 +79,6 @@ contains
   PlugLib.AirControl.DelayedTaskList in 'Source\AirControl\PlugLib.AirControl.DelayedTaskList.pas';
 
 end.
+
 
 

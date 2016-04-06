@@ -11,6 +11,42 @@ type
   //========================================
   //       Forward declarations
   //========================================
+  TMouseEnterEvent = class;
+  TMouseLeaveEvent = class;
+  //TMouseDownEvent = class;
+  //TMouseUpEvent = class;
+
+  //========================================
+  //    Finish declarations
+  //========================================
+  TMouseEvent = class(TFarScapeEvent)
+  protected
+    // These methods need tests written to see if they actually work.
+    function GetDataAsTMouseButton(const Index: Integer): TMouseButton;
+    procedure SetDataAsTMouseButton(const Index : integer; const Value : TMouseButton);
+
+    function GetDataAsTShiftState(const Index: Integer): TShiftState;
+    procedure SetDataAsTShiftState(const Index : integer; const Value : TShiftState);
+  end;
+
+
+  TMouseEnterEvent = class(TMouseEvent)
+  public
+    constructor Create(const Target : TObject); override;
+  end;
+
+  TMouseLeaveEvent = class(TMouseEvent)
+  public
+    constructor Create(const Target : TObject); override;
+  end;
+
+
+{
+type
+
+  //========================================
+  //       Forward declarations
+  //========================================
   TChildRemovingEvent = class;
   TChildRemovedEvent = class;
   TChildAddedEvent = class;
@@ -39,7 +75,7 @@ type
   // The target is about to be removed.
   TChildRemovingEvent = class(TCustomEvent)
   public
-    class function Create(const Target : TObject):TEventData;
+    constructor Create(const Target : TObject);
   end;
 
   // The target control has been removed from the object hierarchy.
@@ -126,204 +162,60 @@ type
     class function Create(const Target : TObject):TEventData;
   end;
 
-
+}
 implementation
 
-uses
-  Rtti,
-  FarScape.SupportFunctions;
-
-type
-  TProtectedEventHack = class(TCustomEvent);
-
-type
-  TShiftStateValues = (ssvShift, ssvAlt, ssvCtrl, ssvLeft, ssvRight, ssvMiddle, ssvDouble, ssvTouch, ssvPen, ssvCommand);
-
-{ TControlNameChangedEvent }
-
-class function TControlNameChangedEvent.Create(const Target: TObject; const OldName, NewName: PString): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TControlNameChangedEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  TProtectedEventHack(ev).SetDataAsPString(0,OldName);
-  TProtectedEventHack(ev).SetDataAsPString(1,NewName);
-  result := ev;
-end;
 
 { TMouseEvent }
-
-function TMouseEvent.GetDataAsTShiftState(const Index: Integer): TShiftState;
-var
-  wx : word;
-begin
-  // casting from an integer to a set.
-  //http://stackoverflow.com/a/9554208/395461
-  wx := self.GetDataAsInteger(Index);
-  word(result) := wx;
-end;
-
-procedure TMouseEvent.SetDataAsTShiftState(const Index: integer; const Value: TShiftState);
-var
-  wx : word;
-begin
-  wx := word(Value);
-  self.SetDataAsInteger(Index, wx);
-end;
-
-
-procedure TMouseEvent.SetDataAsTMouseButton(const Index: integer; const Value: TMouseButton);
-begin
-  FData[Index].VInteger := Integer(Value);
-end;
 
 function TMouseEvent.GetDataAsTMouseButton(const Index: Integer): TMouseButton;
 begin
   result := TMouseButton(FData[Index].VInteger);
 end;
 
-
-{ TMouseDownEvent }
-
-class function TMouseDownEvent.Create(const Target: TObject; const Button: TMouseButton; const Shift: TShiftState; const X, Y: integer): TEventData;
+function TMouseEvent.GetDataAsTShiftState(const Index: Integer): TShiftState;
 var
-  ev : TEventData;
+  wx : word;
 begin
-  ev := TEventData.Create(TMouseDownEvent);
-  TMouseEvent(ev).FTarget := Target;
-  TMouseEvent(ev).SetDataAsTMouseButton(0, Button);
-  TMouseEvent(ev).SetDataAsTShiftState(1, Shift);
-  TMouseEvent(ev).SetDataAsInteger(2, X);
-  TMouseEvent(ev).SetDataAsInteger(3, Y);
-  result := ev;
+  // casting from an integer to a set.
+  // http://stackoverflow.com/a/9554208/395461
+  assert(SizeOf(wx) = SizeOf(result));
+  wx := self.GetDataAsInteger(Index);
+  word(result) := wx;
 end;
 
-{ TMouseUpEvent }
-
-class function TMouseUpEvent.Create(const Target: TObject; const Button: TMouseButton; const Shift: TShiftState; const X, Y: integer): TEventData;
-var
-  ev : TEventData;
+procedure TMouseEvent.SetDataAsTMouseButton(const Index: integer; const Value: TMouseButton);
 begin
-  ev := TEventData.Create(TMouseUpEvent);
-  TMouseEvent(ev).FTarget := Target;
-  TMouseEvent(ev).SetDataAsTMouseButton(0, Button);
-  TMouseEvent(ev).SetDataAsTShiftState(1, Shift);
-  TMouseEvent(ev).SetDataAsInteger(2, X);
-  TMouseEvent(ev).SetDataAsInteger(3, Y);
-  result := ev;
+  FData[Index].VInteger := Ord(Value);
 end;
 
-{ TRemovingChildEvent }
-
-class function TChildRemovingEvent.Create(const Target: TObject): TEventData;
+procedure TMouseEvent.SetDataAsTShiftState(const Index: integer; const Value: TShiftState);
 var
-  ev : TEventData;
+  wx : word;
 begin
-  ev := TEventData.Create(TChildRemovingEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-{ TChildRemovedEvent }
-
-class function TChildRemovedEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TChildRemovedEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-
-{ TNewChildEvent }
-
-class function TChildAddedEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TChildAddedEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-{ TMouseEnterEvent }
-
-class function TMouseEnterEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TMouseEnterEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
+  // casting from an integer to a set.
+  // http://stackoverflow.com/a/9554208/395461
+  assert(SizeOf(wx) = SizeOf(Value));
+  wx := Word(Value);
+  FData[Index].VInteger := wx;
 end;
 
 { TMouseLeaveEvent }
 
-class function TMouseLeaveEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
+constructor TMouseLeaveEvent.Create(const Target: TObject);
 begin
-  ev := TEventData.Create(TMouseLeaveEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
+  inherited;
+  self.FTarget := Target;
+  self.FEventClass := TMouseLeaveEvent;
 end;
 
-{ TValueChangedEvent }
+{ TMouseEnterEvent }
 
-class function TValueChangedEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
+constructor TMouseEnterEvent.Create(const Target: TObject);
 begin
-  ev := TEventData.Create(TValueChangedEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-
-{ TControlBoundsChangedEvent }
-
-class function TControlBoundsChangedEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TControlBoundsChangedEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-{ TBeginEditEvent }
-
-class function TBeginEditEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TBeginEditEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-{ TEndEditEvent }
-
-class function TEndEditEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TEndEditEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
-end;
-
-{ TContextClickEvent }
-
-class function TContextClickEvent.Create(const Target: TObject): TEventData;
-var
-  ev : TEventData;
-begin
-  ev := TEventData.Create(TContextClickEvent);
-  TProtectedEventHack(ev).FTarget := Target;
-  result := ev;
+  inherited;
+  self.FTarget := self;
+  self.FEventClass := TMouseEnterEvent;
 end;
 
 end.

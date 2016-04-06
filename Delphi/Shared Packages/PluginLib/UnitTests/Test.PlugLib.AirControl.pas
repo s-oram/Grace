@@ -111,6 +111,7 @@ var
   Worker : TAirControl;
 begin
   Worker := TAirControl.Create(10,10,100);
+
   try
     Worker.AddTask(BackgroundTask, nil, nil);
     Sleep(100);

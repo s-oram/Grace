@@ -7,7 +7,7 @@ uses
   FarScape.Event;
 
 type
-  TEventHandler = procedure(const ev : TEventData) of object;
+  TEventHandler = procedure(const ev : TFarScapeEvent) of object;
 
   TListenerDuration = (
     ldOnce, // respond to the first event only.
@@ -16,7 +16,7 @@ type
 
   PListenerInfo = ^TListenerInfo;
   TListenerInfo = record
-    EventTypes : array of TEventClass;
+    EventTypes : array of TFarScapeEventClass;
     Handler    : TEventHandler;
     Duration   : TListenerDuration;
   end;
@@ -25,18 +25,18 @@ type
   private
     List : TList;
   protected
-    function IsEventForListener(const Event : TEventData; const Listener : PListenerInfo):boolean;
+    function IsEventForListener(const Event : TFarScapeEvent; const Listener : PListenerInfo):boolean;
     procedure DeleteListenerInfo(const Index : integer);
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure AddListener(const EventTypes : array of TEventClass; const Handler : TEventHandler; const Duration : TListenerDuration);
+    procedure AddListener(const EventTypes : array of TFarScapeEventClass; const Handler : TEventHandler; const Duration : TListenerDuration);
     procedure RemoveListener(const Handler : TEventHandler);
     procedure RemoveAllListeners;
 
     // Sends an event to all subscribed listeners.
-    procedure Broadcast(const EventMsg : TEventData; const ReleaseEvent : boolean = true);
+    procedure Broadcast(const EventMsg : TFarScapeEvent);
   end;
 
 implementation
@@ -65,7 +65,7 @@ begin
   List[Index] := nil;
 end;
 
-procedure TEventDispatcher.AddListener(const EventTypes: array of TEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
+procedure TEventDispatcher.AddListener(const EventTypes: array of TFarScapeEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
 var
   Info : PListenerInfo;
   c1: Integer;
@@ -121,25 +121,7 @@ begin
   end;
 end;
 
-procedure TEventDispatcher.Broadcast(const EventMsg: TEventData; const ReleaseEvent : boolean);
-var
-  Info : PListenerInfo;
-  c1: Integer;
-begin
-  for c1 := 0 to List.Count-1 do
-  begin
-    Info := List[c1];
-    if (assigned(Info)) and (IsEventForListener(EventMsg, Info)) then
-    begin
-      Info.Handler(EventMsg);
-      if Info.Duration = TListenerDuration.ldOnce then DeleteListenerInfo(c1);
-    end;
-  end;
-
-  if ReleaseEvent then EventMsg.Release;
-end;
-
-function TEventDispatcher.IsEventForListener(const Event: TEventData; const Listener: PListenerInfo): boolean;
+function TEventDispatcher.IsEventForListener(const Event: TFarScapeEvent; const Listener: PListenerInfo): boolean;
 var
   evCount : integer;
   c1: Integer;
@@ -156,6 +138,25 @@ begin
   // if we make it this far, the event type hasn't been matched.
   result := false;
 end;
+
+procedure TEventDispatcher.Broadcast(const EventMsg: TFarScapeEvent);
+var
+  Info : PListenerInfo;
+  c1: Integer;
+begin
+  for c1 := 0 to List.Count-1 do
+  begin
+    Info := List[c1];
+    if (assigned(Info)) and (IsEventForListener(EventMsg, Info)) then
+    begin
+      Info^.Handler(EventMsg);
+      if Info^.Duration = TListenerDuration.ldOnce
+        then RemoveListener(Info^.Handler);
+    end;
+  end;
+end;
+
+
 
 
 end.

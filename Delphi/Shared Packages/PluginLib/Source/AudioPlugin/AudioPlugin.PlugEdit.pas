@@ -14,16 +14,14 @@ type
 
   TAudioPlugEditor = class
   private
-    FGlobals: TGlobals;
     FIsOpen: boolean;
   protected
-    property Globals : TGlobals read FGlobals;
     property IsOpen : boolean read FIsOpen;
   public
     class function GetInitialGuiSize:TRect; virtual; abstract;
     class function GetMinGuiSize : TSize; virtual; abstract;
   public
-    constructor Create(const aGlobals : TGlobals); virtual;
+    constructor Create(const GlobalsPtr : Pointer); virtual;
     destructor Destroy; override;
 
     procedure Open(const WindowHandle : HWND; const InitialWidth, InitialHeight : integer); virtual;
@@ -35,9 +33,8 @@ implementation
 
 { TAudioPluginEditor }
 
-constructor TAudioPlugEditor.Create(const aGlobals : TGlobals);
+constructor TAudioPlugEditor.Create(const GlobalsPtr : Pointer);
 begin
-  FGlobals := aGlobals;
   FIsOpen := false;
 end;
 

@@ -7,31 +7,29 @@ uses
   VamVst2.DAEffectX,
   VamLib.MoreTypes,
   VamVst2.MidiEvent, //TODO:MED <- Maybe this unit shoud be pulled into the AudioPlugin section.
-  AudioPlugin.Globals,
   AudioPlugin.RunTimeInfo;
 
 type
   TAudioPlug = class;
   TAudioPlugClass = class of TAudioPlug;
 
+  TPrivateParResult = record
+  public
+    ValueA : integer;
+    ValueB : single;
+    Data   : array of pointer;
+  end;
+
   TAudioPlug = class
   private
-    FVstParameterCount: integer;
-    FGlobals: TGlobals;
   protected
-    FVstPar : TArrayOfSingle;
-    procedure SetVstParameterCount(Value : integer);
-
-    procedure SetVstParameter(Index : integer; Value: single); virtual;
-    function GetVstParameter(Index: integer): single; virtual;
-
-    property Globals : TGlobals read FGlobals;
   public
-    constructor Create(const aGlobals : TGlobals); virtual;
+    constructor Create(const GlobalsPtr : Pointer); virtual;
     destructor Destroy; override;
 
-    procedure GetPrivateParameter(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer); virtual;
-    procedure SetPrivateParameter(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer); virtual;
+    procedure SetPrivateParameter(const ParIndex : integer; const ParName : string; const ValueA : integer; const ValueB : single); overload;
+    procedure SetPrivateParameter(const ParIndex : integer; const ParName : string; const ValueA : integer; const ValueB : single; const Data : array of pointer); overload; virtual; abstract;
+    function GetPrivateParameter(const ParIndex : integer; const ParName : string):TPrivateParResult; virtual; abstract;
 
     // LoadDefaultPatch() is called once after a plugin is newly created.
     // Initialise the plugin to the "default" initial state here.
@@ -40,9 +38,6 @@ type
     // ResetPlugState().
     // Initialise the plugin to the "zero" or "empty" state here.
     procedure ResetPlugState; virtual;
-
-    property VstParameter[Index : integer] : single read GetVstParameter write SetVstParameter;
-    property VstParameterCount : integer read FVstParameterCount;
 
     // State Transitions
     procedure Open; virtual;      // Called when plug-in is initialized
@@ -61,27 +56,16 @@ type
 implementation
 
 uses
-  Helm.Message,
-  AudioPlugin.Types,
-  AudioPlugin.Events;
+  AudioPlugin.Types;
 
 { TAudioPlugin }
 
-constructor TAudioPlug.Create(const aGlobals : TGlobals);
-var
-  msg : THelmMessage;
+constructor TAudioPlug.Create(const GlobalsPtr : Pointer);
 begin
-  FGlobals := aGlobals;
-  SetLength(FVstPar, 0);
-  FVstParameterCount := 0;
-
-  Globals.AudioPlugMethods.GetPrivateParameter := self.GetPrivateParameter;
-  Globals.AudioPlugMethods.SetPrivateParameter := self.SetPrivateParameter;
 end;
 
 destructor TAudioPlug.Destroy;
 begin
-  SetLength(FVstPar, 0);
   inherited;
 end;
 
@@ -113,40 +97,9 @@ begin
   // config changes.
 end;
 
-procedure TAudioPlug.SetVstParameterCount(Value: integer);
+procedure TAudioPlug.SetPrivateParameter(const ParIndex: integer; const ParName: string; const ValueA: integer; const ValueB: single);
 begin
-  assert(Value >= 0);
-  FVstParameterCount := Value;
-  SetLength(FVstPar, Value);
-end;
-
-procedure TAudioPlug.SetVstParameter(Index: integer; Value: single);
-begin
-  assert(Value >= 0);
-  assert(Value <= 1);
-  FVstPar[Index] := Value;
-
-  // TODO:HIGH. Globals isn't assigned here in the test runner.
-  //Globals.EventDispatcher.Broadcast(TVstParameterChanged.Create(Index, Value));
-end;
-
-procedure TAudioPlug.GetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
-begin
-  // do nothing.
-end;
-
-procedure TAudioPlug.SetPrivateParameter(const ParIndex: integer; const ParValue: Pointer; const DataSize: integer);
-begin
-  // do nothing.
-end;
-
-
-
-function TAudioPlug.GetVstParameter(Index: integer): single;
-begin
-  result := FVstPar[Index];
-  assert(result >= 0);
-  assert(result <= 1);
+  SetPrivateParameter(ParIndex, ParName, ValueA, ValueB, []);
 end;
 
 procedure TAudioPlug.LoadDefaultPatch;
@@ -155,13 +108,7 @@ begin
 end;
 
 procedure TAudioPlug.ResetPlugState;
-var
-  c1: Integer;
 begin
-  for c1 := 0 to VstParameterCount-1 do
-  begin
-    VstParameter[c1] := 0.5;
-  end;
 end;
 
 procedure TAudioPlug.ProcessMidiEvent(ev: PMidiEvent);

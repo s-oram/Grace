@@ -6,9 +6,6 @@ implementation
 
 uses
   WatchTower.Global,
-  Test.Helm.AnyValue,
-  Test.Helm.Message,
-  Test.Helm.Dispatcher,
   Test.AudioPlugin,
   Test.VamVst2.VstEventBuffer,
   Test.AudioPlugin.ProcessController,
@@ -25,12 +22,6 @@ begin
   WatchTower.Global.RegisterTest(TVstEventBufferTest);
   WatchTower.Global.RegisterTest(TProcessControllerTest);
   WatchTower.Global.RegisterTest(TMidiEventOutputBufferTest);
-
-
-  // Helm Tests.
-  WatchTower.Global.RegisterTest(TAnyValueTests);
-  WatchTower.Global.RegisterTest(THelmMessageTests);
-  WatchTower.Global.RegisterTest(TEventDispatcherTests);
 
   // AirControl Tests
   WatchTower.Global.RegisterTest(TAirControlTest);

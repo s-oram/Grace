@@ -3,8 +3,9 @@ unit AudioPlugin.Globals;
 interface
 
 uses
+  PlugLib.AirControl,
+  AudioPlugin.PlugMain,
   Classes,
-  Helm.Dispatcher,
   VamVst2.DAEffect,
   VamVst2.DAEffectX;
 
@@ -48,124 +49,162 @@ type
     TimeInfoEx : TVstTimeInfoEx;
   end;
 
-  //===============================================
-  //    Audio Plug Methods
-  //===============================================
-  TGetPrivateParameter = procedure(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer) of object;
-  TSetPrivateParameter = procedure(const ParIndex : integer; const ParValue : Pointer; const DataSize : integer) of object;
+  //=============================================================================
+  // Anything above of this should eventually be deleted. Leaving it here
+  // now for reference while reducing the globals implementation down to
+  // it's minimal parts.
+  //=============================================================================
 
-  PAudioPlugMethods = ^TAudioPlugMethods;
-  TAudioPlugMethods = record
-    GetPrivateParameter : TGetPrivateParameter;
-    SetPrivateParameter : TSetPrivateParameter;
-  end;
-
-
-
-  TObjectStore = class
+  TVst2Proxy = record
   private
-    FObjectList: TStringList;
-    function GetObj(Key: string): TObject;
+    VstPtr : Pointer; // This pointer must be set to the TVst2Adapter instance.
+    function GetIsValid: boolean;
   public
-    constructor Create;
-    destructor Destroy; override;
-
-    function Exists(const Key : string):boolean;
-    procedure Add(const Key : string; const Obj : TObject);
-    procedure Delete(const Key : string);
-    property Obj[Key : string]:TObject read GetObj; default;
+    property IsValid : boolean read GetIsValid;
+    function GetParameter(Index: integer): single;
+    procedure SetParameter(Index: VstInt32; Value: single);
+    procedure SetParameterAutomated(Index: VstInt32; Value: single);
+    function BeginEdit(Index: VstInt32): boolean;
+    function EndEdit(Index: VstInt32): boolean;
   end;
+
+  TGlobals = class;
+  TGlobalsClass = class of TGlobals;
 
   TGlobals = class
   private
-    FObjectStore: TObjectStore;
-    FEventDispatcher: THelmDispatcher;
-    FAudioPlugMethods: PAudioPlugMethods;
-    FVst2: PVst2Methods;
+    FVst2Proxy: TVst2Proxy;
+    FAirControl: TAirControl;
+  protected
+    PlugMain : TAudioPlug;
+
   public
     constructor Create;
     destructor Destroy; override;
 
-    property EventDispatcher : THelmDispatcher read FEventDispatcher;
+    // Link & Unlink methods : Rather than allow different classes to call directly into other classes,
+    // the globals object provides some standard channels of communication. Where possible plugins should
+    // use these channels. This will hopefully help reduce coupling between the different base classes.
+    procedure LinkPlugMain(const Source : TAudioPlug);
+    procedure UnlinkPlugMain;
 
-    property ObjectStore : TObjectStore read FObjectStore;
+    procedure LinkVst2Adapter(const Source : Pointer);
+    procedure UnlinkVst2Adapter;
 
-    property AudioPlugMethods : PAudioPlugMethods  read FAudioPlugMethods;
-    property Vst2 : PVst2Methods read FVst2;
+    // Get/Set Private Parameter methods call into the main plugin class.
+    function GetPrivateParameter(const ParIndex : integer; const ParName : string):TPrivateParResult;
+    procedure SetPrivateParameter(const ParIndex : integer; const ParName : string; const ValueA : integer; const ValueB : single); overload;
+    procedure SetPrivateParameter(const ParIndex : integer; const ParName : string; const ValueA : integer; const ValueB : single; const Data : array of pointer); overload;
+
+    property Vst2 : TVst2Proxy read FVst2Proxy;
+
+    property AirControl : TAirControl read FAirControl;
   end;
 
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  AudioPlugin.Vst2Adapter;
 
 { TGlobals }
 
 constructor TGlobals.Create;
 begin
-  New(FAudioPlugMethods);
-  New(FVst2);
-
-  FObjectStore := TObjectStore.Create;
-  FEventDispatcher := THelmDispatcher.Create;
+  PlugMain := nil;
+  FVst2Proxy.VstPtr:= nil;
+  FAirControl := TAirControl.Create(10,10,100);
 end;
 
 destructor TGlobals.Destroy;
 begin
-  FObjectStore.Free;
-  FEventDispatcher.Free;
+  FAirControl.TerminateProcessingAndPrepareForShutDown;
+  FAirControl.Free;
 
-  Dispose(FAudioPlugMethods);
-  Dispose(FVst2);
+  PlugMain := nil;
+  FVst2Proxy.VstPtr:= nil;
   inherited;
 end;
 
-{ TGlobalObjectStore }
-
-constructor TObjectStore.Create;
+procedure TGlobals.LinkPlugMain(const Source: TAudioPlug);
 begin
-  FObjectList := TStringList.Create;
-  FObjectList.OwnsObjects := true;
-  FObjectList.Duplicates := dupError;
+  assert(assigned(Source));
+  PlugMain := Source;
 end;
 
-destructor TObjectStore.Destroy;
+procedure TGlobals.UnlinkPlugMain;
 begin
-  FObjectList.Free;
-  inherited;
+  PlugMain := nil;
 end;
 
-function TObjectStore.Exists(const Key: string): boolean;
+procedure TGlobals.LinkVst2Adapter(const Source: Pointer);
 begin
-  if FObjectList.IndexOf(Key) <> -1
-    then result := true
-    else result := false;
+  assert(assigned(Source));
+  assert(TObject(Source) is TVst2Adapter);
+  FVst2Proxy.VstPtr:= Source;
 end;
 
-procedure TObjectStore.Add(const Key: string; const Obj: TObject);
+procedure TGlobals.UnlinkVst2Adapter;
 begin
-  FObjectList.AddObject(Key, Obj);
+  FVst2Proxy.VstPtr:= nil;
 end;
 
-function TObjectStore.GetObj(Key: string): TObject;
-var
-  Index : integer;
+procedure TGlobals.SetPrivateParameter(const ParIndex: integer; const ParName: string; const ValueA: integer; const ValueB: single);
 begin
-  Index := FObjectList.IndexOf(Key);
-  if Index <> -1
-    then result := FObjectList.Objects[Index]
-    else result := nil;
+  assert(assigned(PlugMain));
+  PlugMain.SetPrivateParameter(ParIndex, ParName, ValueA, ValueB, []);
 end;
 
-procedure TObjectStore.Delete(const Key: string);
-var
-  Index : integer;
+procedure TGlobals.SetPrivateParameter(const ParIndex: integer; const ParName: string; const ValueA: integer; const ValueB: single; const Data: array of pointer);
 begin
-  Index := FObjectList.IndexOf(Key);
-  if Index <> -1
-    then FObjectList.Delete(Index)
-    else raise Exception.Create('Object could not be found.');
+  assert(assigned(PlugMain));
+  PlugMain.SetPrivateParameter(ParIndex, ParName, ValueA, ValueB, Data);
 end;
 
+function TGlobals.GetPrivateParameter(const ParIndex: integer; const ParName: string): TPrivateParResult;
+begin
+  assert(assigned(PlugMain));
+  result := PlugMain.GetPrivateParameter(ParIndex, ParName);
+end;
+
+
+
+
+{ TVst2Proxy }
+
+function TVst2Proxy.GetIsValid: boolean;
+begin
+  result := Assigned(VstPtr);
+end;
+
+function TVst2Proxy.BeginEdit(Index: VstInt32): boolean;
+begin
+  assert(IsValid);
+  result := TVst2Adapter(VstPtr).BeginEdit(Index);
+end;
+
+function TVst2Proxy.EndEdit(Index: VstInt32): boolean;
+begin
+  assert(IsValid);
+  result := TVst2Adapter(VstPtr).EndEdit(Index);
+end;
+
+function TVst2Proxy.GetParameter(Index: integer): single;
+begin
+  assert(IsValid);
+  result := TVst2Adapter(VstPtr).GetParameter(Index);
+end;
+
+procedure TVst2Proxy.SetParameter(Index: VstInt32; Value: single);
+begin
+  assert(IsValid);
+  TVst2Adapter(VstPtr).SetParameter(Index, Value);
+end;
+
+procedure TVst2Proxy.SetParameterAutomated(Index: VstInt32; Value: single);
+begin
+  assert(IsValid);
+  TVst2Adapter(VstPtr).SetParameterAutomated(Index, Value);
+end;
 
 end.

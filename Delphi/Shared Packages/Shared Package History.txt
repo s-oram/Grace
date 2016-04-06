@@ -1,6 +1,15 @@
 ======================================
             History
 ======================================
+29 March 2016
+- Fix serious bug in TRecDoubleLinkedList.
+  Pointers to list items were wrong after the internal list
+  was grown.
+
+28 March 2016
+- Remove Helm. It's too complicated.
+- Rewriting the VST plugin template.
+
 25 March 2016
 - Raise AirControl exceptions in the main thread so they are seen.
 

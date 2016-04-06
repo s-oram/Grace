@@ -4,6 +4,7 @@ interface
 
 uses
   Windows,
+  ExtCtrls,
   VamLib.MoreTypes,
   VamVst2.DAEffect,
   VamVst2.DAEffectX,
@@ -20,23 +21,28 @@ type
   TVst2AdapterCreateInfo = record
     PlugClass         : TAudioPlugClass;
     EditorClass       : TAudioPlugEditorClass;
-    PlugInfo          : TVst2PluginInfoClass;
+    GlobalsClass      : TGlobalsClass;
     ProcessController : TProcessControllerClass;
   end;
 
   //==== The VST Audio Plugin ====
 
-  TVst2PlugAdapter = class(AudioEffectX)
+  TVst2Adapter = class(AudioEffectX)
   private
   protected
     Globals : TGlobals;
     Plug : TAudioPlug;
-    PlugInfo : TVst2PluginInfo;
     ProcessController : TProcessController;
     MidiOutputBuffer : TMidiEventOutputBuffer;
+
+    // These are setup methods and should only be called from the constructor.
+    procedure SetNumPrograms(const Value : integer);
+    procedure SetNumParameters(const Value : integer);
   public
-    constructor Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2AdapterCreateInfo); reintroduce;
+    constructor Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2AdapterCreateInfo); reintroduce; virtual;
     destructor Destroy; override;
+
+    function Dispatcher(opcode, index: VstInt32; value: VstIntPtr; ptr: pointer; opt: single): VstIntPtr; override;
 
     function CanDo(Text: PAnsiChar): VstInt32; override;
 
@@ -77,10 +83,13 @@ type
     UseCount : integer;
     GuiRect : ERect;
     WindowHandle : HWND;
+    AirControlTimer : TTimer;
 
     property Globals : TGlobals read FGlobals;
 
     procedure ResizeGui(const OffsetX, OffsetY : integer);
+
+    procedure HandleAirControlTimerEvent(Sender : TObject);
   public
     constructor Create(aEffect: AudioEffect; const aPlug : TAudioPlug; const aEditorClass : TAudioPlugEditorClass; const aGlobals : TGlobals); reintroduce;
     destructor Destroy; override;
@@ -100,9 +109,9 @@ type
 implementation
 
 uses
+  MadExcept,
   SysUtils,
   AudioPlugin.Functions,
-  AudioPlugin.Events,
   AudioPlugin.RunTimeInfo;
 
 
@@ -112,69 +121,80 @@ const
 
 { TVst2PlugAdapter }
 
-constructor TVst2PlugAdapter.Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2AdapterCreateInfo);
+constructor TVst2Adapter.Create(anAudioMaster: TAudioMasterCallbackFunc; const CreateInfo : TVst2AdapterCreateInfo);
 begin
+  inherited Create(anAudioMaster, 0, 0);
+
   MidiOutputBuffer := TMidiEventOutputBuffer.Create(8);
 
-  Globals := TGlobals.Create;
+  Globals := CreateInfo.GlobalsClass.Create;
 
   //== Vst2 Methods ==
-  Globals.Vst2.GetParameter := self.GetParameter;
-  Globals.Vst2.SetParameter := self.SetParameter;
-  Globals.Vst2.SetParameterAutomated := self.SetParameterAutomated;
-  Globals.Vst2.BeginEdit := self.BeginEdit;
-  Globals.Vst2.EndEdit := self.EndEdit;
-  Globals.Vst2.IncrementMidiEventDelta := MidiOutputBuffer.IncrementGlobalDelta;
-  Globals.Vst2.SendMidiEvent := MidiOutputBuffer.AddMidiEvent;
-  Globals.Vst2.SendMidiEventWithDeltaOffset := MidiOutputBuffer.AddMidiEvent;
+  //Globals.Vst2.GetParameter := self.GetParameter;
+  //Globals.Vst2.SetParameter := self.SetParameter;
+  //Globals.Vst2.SetParameterAutomated := self.SetParameterAutomated;
+  //Globals.Vst2.BeginEdit := self.BeginEdit;
+  //Globals.Vst2.EndEdit := self.EndEdit;
+  //Globals.Vst2.IncrementMidiEventDelta := MidiOutputBuffer.IncrementGlobalDelta;
+  //Globals.Vst2.SendMidiEvent := MidiOutputBuffer.AddMidiEvent;
+  //Globals.Vst2.SendMidiEventWithDeltaOffset := MidiOutputBuffer.AddMidiEvent;
 
   Plug := CreateInfo.PlugClass.Create(Globals);
-  PlugInfo := CreateInfo.PlugInfo.Create(Plug);
-  ProcessController := CreateInfo.ProcessController.Create(Plug);
 
-  inherited Create(anAudioMaster, PlugInfo.GetNumberOfPrograms, Plug.VstParameterCount);
+
+
+  ProcessController := CreateInfo.ProcessController.Create(Plug);
 
   if kUsingGui
     then self.Editor := TVst2EditAdapter.Create(self, Plug, CreateInfo.EditorClass, Globals)
     else self.Editor := nil;
 
-  setNumInputs(PlugInfo.GetNumberOfAudioInputs);
-  setNumOutputs(PlugInfo.GetNumberOfAudioOutputs);
 
-  IsSynth(PlugInfo.GetIsSynth);
+  Globals.LinkPlugMain(Plug);
+  Globals.LinkVst2Adapter(self);
 
-  self.SetInitialDelay(0);
-
-
-  // finally..
-  Plug.LoadDefaultPatch;
 end;
 
-destructor TVst2PlugAdapter.Destroy;
+destructor TVst2Adapter.Destroy;
 begin
+  // Ordering is important.
+
+  // 1)
+  Globals.UnlinkPlugMain;
+  Globals.UnlinkVst2Adapter;
+
+  // 2)
   if assigned(self.Editor) then
   begin
     Editor.Free;
     Editor := nil;
   end;
 
+  // 3)
   Plug.Free;
-  PlugInfo.Free;
   ProcessController.Free;
   Globals.Free;
-
   MidiOutputBuffer.Free;
 
   inherited;
 end;
 
-procedure TVst2PlugAdapter.Open;
+function TVst2Adapter.Dispatcher(opcode, index: VstInt32; value: VstIntPtr; ptr: pointer; opt: single): VstIntPtr;
+begin
+  try
+    inherited;
+  except
+    HandleException;
+  end;
+end;
+
+procedure TVst2Adapter.Open;
 begin
   inherited;
   Plug.Open;
 end;
 
-function TVst2PlugAdapter.CanDo(Text: PAnsiChar): VstInt32;
+function TVst2Adapter.CanDo(Text: PAnsiChar): VstInt32;
 begin
   if SameText(Text, canDoReceiveVstEvents)    then exit(1);
   if SameText(Text, canDoReceiveVstMidiEvent) then exit(1);
@@ -188,19 +208,19 @@ begin
   result := inherited;
 end;
 
-procedure TVst2PlugAdapter.Close;
+procedure TVst2Adapter.Close;
 begin
   inherited;
   Plug.Close;
 end;
 
-procedure TVst2PlugAdapter.Suspend;
+procedure TVst2Adapter.Suspend;
 begin
   inherited;
   ProcessController.Suspend;
 end;
 
-procedure TVst2PlugAdapter.Resume;
+procedure TVst2Adapter.Resume;
 var
   rtInfo : TRunTimeInfo;
   InputLat, OutputLat : integer;
@@ -210,8 +230,8 @@ begin
   InputLat := GetInputLatency;
   OutputLat := GetOutputLatency;
 
-  rtInfo.InputCount      := PlugInfo.GetNumberOfAudioInputs;
-  rtInfo.OutputCount     := PlugInfo.GetNumberOfAudioOutputs;
+  rtInfo.InputCount      := 2;
+  rtInfo.OutputCount     := 2;
   rtInfo.SampleRate      := round(self.SampleRate);
   rtInfo.MaxSampleFrames := self.BlockSize;
   rtInfo.FastControlBufferSize := 4410;
@@ -221,46 +241,59 @@ begin
   ProcessController.Resume(rtInfo);
 end;
 
-procedure TVst2PlugAdapter.SetParameter(index: Integer; value: Single);
+procedure TVst2Adapter.SetNumParameters(const Value: integer);
 begin
-  Plug.VstParameter[Index] := Value;
-
-  Globals.EventDispatcher.Broadcast(  TVstParameterChanged.Create(Index, Value)  );
+  NumParams := Value;
+  FEffect.numParams := Value;
 end;
 
-function TVst2PlugAdapter.GetParameter(index: Integer): Single;
+procedure TVst2Adapter.SetNumPrograms(const Value: integer);
 begin
-  result := Plug.VstParameter[Index];
+  NumPrograms := Value;
+  FEffect.numParams := Value;
 end;
 
-procedure TVst2PlugAdapter.GetParameterDisplay(index: Integer; text: PAnsiChar);
+procedure TVst2Adapter.SetParameter(index: Integer; value: Single);
 begin
-  StrPCopy(text, AnsiString(PlugInfo.GetParameterDisplay(Index)));
+  // TODO:HIGH
 end;
 
-procedure TVst2PlugAdapter.GetParameterLabel(index: Integer; aLabel: PAnsiChar);
+function TVst2Adapter.GetParameter(index: Integer): Single;
 begin
-  StrPCopy(aLabel, AnsiString(PlugInfo.GetParameterLabel(Index)));
+  // TODO:HIGH
+  result := 0;
 end;
 
-procedure TVst2PlugAdapter.GetParameterName(index: Integer; text: PAnsiChar);
+procedure TVst2Adapter.GetParameterDisplay(index: Integer; text: PAnsiChar);
 begin
-  StrPCopy(text, AnsiString(PlugInfo.GetParameterName(Index)));
+  //StrPCopy(text, AnsiString(PlugInfo.GetParameterDisplay(Index)));
 end;
 
-function TVst2PlugAdapter.ProcessEvents(ev: PVstEvents): longint;
+procedure TVst2Adapter.GetParameterLabel(index: Integer; aLabel: PAnsiChar);
+begin
+  //StrPCopy(aLabel, AnsiString(PlugInfo.GetParameterLabel(Index)));
+end;
+
+procedure TVst2Adapter.GetParameterName(index: Integer; text: PAnsiChar);
+begin
+  //StrPCopy(text, AnsiString(PlugInfo.GetParameterName(Index)));
+end;
+
+function TVst2Adapter.ProcessEvents(ev: PVstEvents): longint;
 begin
   ProcessController.ProcessVstEvents(ev);
   //TODO:HIGH what should the return value be?
 end;
 
-procedure TVst2PlugAdapter.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32);
+procedure TVst2Adapter.ProcessReplacing(Inputs, Outputs: PPSingle; SampleFrames: VstInt32);
 var
   vevs : PVstEvents;
 begin
   MidiOutputBuffer.ResetGlobalDelta;
 
   Plug.ProcessVstTimeInfo(GetTimeInfo(32767));
+
+  Globals.AirControl.ProcessAudioSync;
 
   ProcessController.ProcessAudio(VamLib.MoreTypes.PPSingle(Inputs), VamLib.MoreTypes.PPSingle(Outputs), SampleFrames);
 
@@ -282,8 +315,12 @@ var
 begin
   inherited Create(aEffect);
 
+  AirControlTimer := TTimer.Create(nil);
+  AirControlTimer.Enabled := false;
+  AirControlTimer.Interval := 20;
+  AirControlTimer.OnTimer := self.HandleAirControlTimerEvent;
+
   FGlobals := aGlobals;
-  Globals.Vst2.ResizeGui := self.ResizeGui;
 
   Effect := aEffect;
 
@@ -298,7 +335,8 @@ end;
 
 destructor TVst2EditAdapter.Destroy;
 begin
-  Globals.Vst2.ResizeGui := nil;
+  //Globals.Vst2.ResizeGui := nil;
+  AirControlTimer.Free;
   inherited;
 end;
 
@@ -311,6 +349,12 @@ begin
 
   rect := @GuiRect;
   result := 1;
+end;
+
+procedure TVst2EditAdapter.HandleAirControlTimerEvent(Sender: TObject);
+begin
+  assert(assigned(Globals));
+  Globals.AirControl.ProcessGuiSync;
 end;
 
 procedure TVst2EditAdapter.ResizeGui(const OffsetX, OffsetY: integer);
@@ -363,8 +407,14 @@ begin
   begin
     WindowHandle := hwnd(ptr);
 
+    // IMPORTANT: Start the timer before opening the GUI.
+
+    // 1)
     Editor := EditorClass.Create(Globals);
     Editor.Open(WindowHandle, CurrentGuiSize.Width, CurrentGuiSize.Height);
+
+    // 2)
+    AirControlTimer.Enabled := true;
   end;
   result := 1;
 end;
@@ -378,6 +428,12 @@ begin
   begin
     if assigned(Editor) then
     begin
+      // IMPORTANT: Stop the timer before closing the GUI.
+
+      // 1)
+      AirControlTimer.Enabled := false;
+
+      // 2)
       Editor.Close;
       FreeAndNil(Editor);
     end;

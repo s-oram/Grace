@@ -60,7 +60,6 @@ contains
   FarScape.SupportFunctions in 'source\FarScape.SupportFunctions.pas',
   FarScape.InvalidateBuffer in 'source\FarScape.InvalidateBuffer.pas',
   FarScape.Event in 'source\FarScape.Event.pas',
-  FarScape.EventStack in 'source\FarScape.EventStack.pas',
   FarScape.EventDispatcher in 'source\FarScape.EventDispatcher.pas',
   FarScape.Events in 'source\FarScape.Events.pas',
   Test.FarScape.SupportFunctions in 'UnitTests\Test.FarScape.SupportFunctions.pas',

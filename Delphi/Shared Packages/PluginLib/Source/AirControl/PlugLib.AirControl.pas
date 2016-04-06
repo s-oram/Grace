@@ -43,8 +43,6 @@ type
     FCapacity: integer;
     FMaxCapacity: integer;
     FGrowBy: integer;
-    FIsGuiSyncActive: boolean;
-    FIsAudioSyncActive: boolean;
     FIsTerminated: boolean;
   protected
     property IsTerminated : boolean read FIsTerminated;
@@ -54,12 +52,9 @@ type
 
     procedure TerminateProcessingAndPrepareForShutDown;
 
-    // Plugins should set the processing state. Otherwise AirControl will
-    // assume processing is always active.
-    procedure SetProcessingState(const IsActive : boolean);
-
-    procedure UnlockGuiSyncQueue;       // Plugins must unlock the GUI sync queue when opening the GUI.
-    procedure LockAndClearGuiSyncQueue; // Plugins must lock the GUI sync queue when closing the GUI.
+    procedure ClearTaskQueue;
+    procedure ClearGuiSyncQueue;
+    procedure ClearAudioSyncQueue;
 
     function AddDelayedTask(const Task, OnAudioSync, OnGuiSync : TThreadProcedure; const ExecuteDelay : cardinal):TUniqueID;
     function AddTask(const Task, OnAudioSync, OnGuiSync : TThreadProcedure):TUniqueID;
@@ -74,9 +69,6 @@ type
 
     procedure ProcessAudioSync; //The ProcessAudioSync() method needs to be reguarlly called from the audio thread.
     procedure ProcessGuiSync;   //The ProcessGuiSync() method needs to be reguarlly called from the GUI thread.
-
-    property IsGuiSyncActive : boolean read FIsGuiSyncActive;
-    property IsAudioSyncActive : boolean read FIsAudioSyncActive;
   end;
 
   TBackgroundWorker = class(TThread)
@@ -137,9 +129,6 @@ begin
 
   // 2) Start the worker...
   BackgroundWorker.Start;
-
-  // Finally, it is assumed the GUI is closed at this stage so lock the GUI sync Queue.
-  LockAndClearGuiSyncQueue;
 end;
 
 destructor TAirControl.Destroy;
@@ -181,35 +170,16 @@ begin
     BackgroundWorker.WaitFor;
     FreeAndNil(BackgroundWorker);
     //=======================
-
-    // complete all outstanding background tasks.
-    while TaskSyncQueue.Pop(Task, OnAudioSync, OnGuiSync) do
-    begin
-      // 1) Complete the task...
-      if assigned(Task)
-        then Task();
-    end;
   finally
     cs.Leave;
   end;
+
+  // clear all outstanding background tasks.
+  ClearTaskQueue;
+  ClearGuiSyncQueue;
+  ClearAudioSyncQueue;
 end;
 
-
-
-
-
-procedure TAirControl.LockAndClearGuiSyncQueue;
-var
-  Task : TThreadProcedure;
-begin
-  FIsGuiSyncActive := false;
-
-  while GuiSyncQueue.Pop(Task) do
-  begin
-    // do nothing. We're clearing all
-    // tasks from the GUI sync queue.
-  end;
-end;
 
 procedure TAirControl.AudioSync(const proc: TThreadProcedure);
 begin
@@ -267,7 +237,50 @@ begin
   end;
 end;
 
+procedure TAirControl.ClearAudioSyncQueue;
+var
+  Task : TThreadProcedure;
+begin
+  cs.Enter;
+  try
+    while AudioSyncQueue.Pop(Task) do
+    begin
+      // do nothing.
+    end;
+  finally
+    cs.Leave;
+  end;
+end;
 
+procedure TAirControl.ClearGuiSyncQueue;
+var
+  Task : TThreadProcedure;
+begin
+  cs.Enter;
+  try
+    while GuiSyncQueue.Pop(Task) do
+    begin
+      // do nothing.
+    end;
+  finally
+    cs.Leave;
+  end;
+end;
+
+procedure TAirControl.ClearTaskQueue;
+var
+  Task, OnAudioSync, OnGuiSync : TThreadProcedure;
+begin
+  cs.Enter;
+  try
+    while TaskSyncQueue.Pop(Task, OnAudioSync, OnGuiSync) do
+    begin
+      // do nothing.
+    end;
+  finally
+    cs.Leave;
+  end;
+end;
 
 procedure TAirControl.ProcessAudioSync;
 var
@@ -283,23 +296,10 @@ procedure TAirControl.ProcessGuiSync;
 var
   Task : TThreadProcedure;
 begin
-  if IsGuiSyncActive then
+  while GuiSyncQueue.Pop(Task) do
   begin
-    while GuiSyncQueue.Pop(Task) do
-    begin
-      Task();
-    end;
+    Task();
   end;
-end;
-
-procedure TAirControl.SetProcessingState(const IsActive: boolean);
-begin
-  FIsAudioSyncActive := IsActive;
-end;
-
-procedure TAirControl.UnlockGuiSyncQueue;
-begin
-  FIsGuiSyncActive := true;
 end;
 
 { TBackgroundThread }
@@ -325,7 +325,8 @@ begin
         begin
           // TODO:MED what should happen here? For now just raise an exception and see if
           // it occurs in practice.
-          raise EVamLibException.Create('BackgroundWorker has terminated unexpectedly. (error 11033)');
+          //raise EVamLibException.Create('BackgroundWorker has terminated unexpectedly. (error 11033)');
+          //Break;
         end
       else
         raise EVamLibException.Create('Unexpected wait result.');

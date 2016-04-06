@@ -42,17 +42,7 @@ procedure TAudioPluginTest.ParameterSetGet;
 var
   c1: Integer;
 begin
-  Confirm.IsTrue(Plug.VstParameterCount > 0);
 
-  for c1 := 0 to Plug.VstParameterCount-1 do
-  begin
-    Plug.VstParameter[c1] := 0.5;
-  end;
-
-  for c1 := 0 to Plug.VstParameterCount-1 do
-  begin
-    Confirm.IsTrue(Plug.VstParameter[c1] = 0.5);
-  end;
 end;
 
 end.
