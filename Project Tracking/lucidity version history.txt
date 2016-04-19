@@ -7,6 +7,13 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
+
+=== v1.0.4.04 (19 April 2016) ===  
+Bug Fix: Attempting to resolve the occasional crashes and memory leaks on shut down.
+(removed the background thread from ZeroObject. Using AirControl for thread aware
+message passing.)
+
+
 === v1.0.4.03 (19 April 2016) ===  
 Bug Fix: Now passes Orion 8 VST startup scan.
 
