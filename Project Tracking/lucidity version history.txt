@@ -7,6 +7,9 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
+=== v1.0.4.03 (19 April 2016) ===  
+Bug Fix: Now passes Orion 8 VST startup scan.
+
 === v1.0.4.02 (15 March 2016) ===  
 Bug Fix: Small bug in the audio preview code could cause clicks. 
 

@@ -302,6 +302,7 @@ begin
       result := inherited Dispatcher(Opcode, Index, Value, ptr, opt);
     end;
   except
+    result := 0;
     HandleException;
   end;
 end;
