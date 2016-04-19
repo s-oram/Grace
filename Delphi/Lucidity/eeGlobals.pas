@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  PlugLib.AirControl,
   Lucidity.Interfaces,
   eeCpuMonitor,
   SysUtils,
@@ -36,6 +37,7 @@ type
     fUserConfigDir: string;
     fDefaultConfigDir: string;
     fPatchInfo: TPatchInfo;
+    FAirControl: TAirControl;
     procedure SetIsGuiOpen(const Value: boolean);
     function GetLastProgramLoadDir: string;
     function GetLastProgramSaveDir: string;
@@ -74,6 +76,8 @@ type
 
     property LastProgramLoadDir : string read GetLastProgramLoadDir write SetLastProgramLoadDir;
     property LastProgramSaveDir : string read GetLastProgramSaveDir write SetLastProgramSaveDir;
+
+    property AirControl : TAirControl read FAirControl;
   end;
 
 
@@ -109,6 +113,8 @@ var
   fn : string;
 begin
   inherited;
+
+  fAirControl := TAirControl.Create(32, 32, 100);
 
   fGuiState := TGuiState.Create;
   fPatchInfo := TPatchInfo.Create;
@@ -181,6 +187,7 @@ begin
   fOptions.Free;
   fGuiState.Free;
   fPatchInfo.Free;
+  fAirControl.Free;
   inherited;
 end;
 

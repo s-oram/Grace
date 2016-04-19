@@ -2019,7 +2019,7 @@ end;
 
 procedure TeePlugin.ProcessEnd;
 begin
-  //
+  Globals.AirControl.ProcessAudioSync;
 end;
 
 

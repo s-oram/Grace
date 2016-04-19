@@ -213,7 +213,7 @@ begin
   inherited Create(audioMaster, Plugin.Settings.NumberOfPrograms, Plugin.PublishedVstParameters.Count);
 
   if Plugin.Settings.UseHostGui <> true
-    then self.Editor := TVstEditor.Create(self, Plugin)
+    then self.Editor := TVstEditor.Create(self, Plugin, Globals)
     else self.Editor := nil;
 
   //Set some Plugin function pointers.
