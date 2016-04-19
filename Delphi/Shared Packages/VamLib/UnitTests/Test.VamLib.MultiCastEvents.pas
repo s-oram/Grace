@@ -66,8 +66,6 @@ begin
 end;
 
 procedure TMultiCastEventTest.AddMethods;
-var
-  x : integer;
 begin
   mc.AddWatcher(EventHandlerA);
   Confirm.IsTrue(  mc.WatcherCount = 1  );
@@ -106,8 +104,6 @@ begin
   mc.RemoveWatcher(EventHandlerC);
 
   Confirm.IsTrue(  mc.WatcherCount = 0  );
-
-  x := SizeOf(mc);
 end;
 
 end.

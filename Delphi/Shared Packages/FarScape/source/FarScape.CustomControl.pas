@@ -126,6 +126,7 @@ type
     function GetNaturalWidth: integer;
   strict protected
     function FindTopMostControl : TFarScapeControl;
+
   protected
 
 
@@ -139,7 +140,7 @@ type
     function FindRoot : TFarScapeAbstractRoot;
 
 
-
+    procedure ProcessEvent(const Event : TFarScapeEvent); virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -149,10 +150,14 @@ type
     // Trigger a control repaint.
     procedure Invalidate; virtual;
 
-    // Events....
-    procedure TriggerEvent(const Event : TFarScapeEvent);
-    procedure AddEventListener(const EventTypes : array of TFarScapeEventClass; const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll);
+    //==== Events ====
+    // TriggerEvent() will free the passed in Event object.
+    procedure TriggerEvent(const Event : TFarScapeEvent); overload;
+    procedure TriggerEvent(const EventType : TFarScapeEventClass); overload;
+    procedure AddEventListener(const EventType : TFarScapeEventClass;           const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll); overload;
+    procedure AddEventListener(const EventTypes : array of TFarScapeEventClass; const Handler : TEventHandler; const Duration   : TListenerDuration = ldAll); overload;
     procedure RemoveEventListener(const Handler : TEventHandler);
+    //===============
 
 
     property HitTest : THitTest read FHitTest write FHitTest;
@@ -304,6 +309,9 @@ uses
   FarScape.ControlHelper,
   FarScape.SupportFunctions;
 
+type
+  TEventCracker = class(TFarScapeEvent);
+
 // ForAllChildControls() is a way to apply changes to all child controls. It's an alternative
 // to having a 'propagate down' event system. Currently Events propagate up.
 procedure ForAllChildControls(const Control : TFarScapeControl; const Proc : TFarScapeControlProc);
@@ -421,6 +429,11 @@ begin
   FEventDispatcher.AddListener(EventTypes, Handler, Duration);
 end;
 
+procedure TFarScapeCustomControl.AddEventListener(const EventType: TFarScapeEventClass; const Handler: TEventHandler; const Duration: TListenerDuration);
+begin
+  AddEventListener([EventType], Handler, Duration);
+end;
+
 procedure TFarScapeCustomControl.RemoveEventListener(const Handler: TEventHandler);
 begin
   if assigned(FEventDispatcher) then FEventDispatcher.RemoveListener(Handler);
@@ -494,10 +507,32 @@ begin
   end;
 end;
 
+procedure TFarScapeCustomControl.TriggerEvent(const EventType: TFarScapeEventClass);
+begin
+  TriggerEvent(EventType.Create);
+end;
+
 procedure TFarScapeCustomControl.TriggerEvent(const Event: TFarScapeEvent);
 begin
   assert(assigned(Event));
+  try
+    TEventCracker(Event).FTarget := self;
+    TEventCracker(Event).FEventType := Event.ClassName;
 
+    //Event.Target := self;
+    ProcessEvent(Event);
+  finally
+    // WARNING: Event objects will be free'd here. This is very non-standard
+    // for delphi IMHO and is generally a big no-no (IMHO). I've decided to
+    // free the object here as it will make the calling code much cleaner.
+    // Otherwise, the calling code would need to have Try..finally blocks around
+    // all TriggerEvent() method calls.
+    Event.Free;
+  end;
+end;
+
+procedure TFarScapeCustomControl.ProcessEvent(const Event: TFarScapeEvent);
+begin
   if assigned(FEventDispatcher) then
   begin
     FEventDispatcher.Broadcast(Event);
@@ -505,9 +540,11 @@ begin
 
   if (Event.Propagate) and (assigned(self.Parent)) then
   begin
-    Parent.TriggerEvent(Event);
+    Parent.ProcessEvent(Event);
   end;
 end;
+
+
 
 procedure TFarScapeCustomControl.SetAlign(const Value: TControlAlignment);
 begin
@@ -1013,7 +1050,7 @@ end;
 
 procedure TFarScapeControl.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  //FarScapeEvent(  TMouseDownEvent.Create(self, Button, Shift, X, Y)  );
+  TriggerEvent( TMouseDownEvent.Create(Button, Shift, X, Y) );
 end;
 
 procedure TFarScapeControl.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -1023,7 +1060,7 @@ end;
 
 procedure TFarScapeControl.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  //FarScapeEvent(  TMouseUpEvent.Create(self, Button, Shift, X, Y)  );
+  TriggerEvent( TMouseUpEvent.Create(Button, Shift, X, Y) );
 end;
 
 procedure TFarScapeControl.PaintToBackBuffer(const DrawInfo: PRootDrawInfo);

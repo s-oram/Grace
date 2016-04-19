@@ -19,12 +19,15 @@ type
   TUserInteraction = class(TPureInterfacedObject, IFarScapeUserInteraction)
   private
     FOnHoverChanged: TFarScapeControlEvent;
+    FMouseHover: TFarScapeControl;
+    FMouseFocus: TFarScapeControl;
+    procedure SetMouseFocus(const NewTarget: TFarScapeControl);
+    procedure SetMouseHover(const NewTarget: TFarScapeControl);
   protected
     Scene : TScene;
-    MouseHover : TSceneElement;
-    MouseFocus : TSceneElement;
     MouseButtonCount : integer;
-    procedure UpdateMouseHover(const NewTarget : TSceneElement);
+    property MouseFocus : TFarScapeControl read FMouseFocus write SetMouseFocus;
+    property MouseHover : TFarScapeControl read FMouseHover write SetMouseHover;
   public
     constructor Create(const aScene : TScene);
 
@@ -42,6 +45,7 @@ type
 implementation
 
 uses
+  Types,
   FarScape.Assistant.UserInteraction;
 
 type
@@ -53,69 +57,138 @@ constructor TUserInteraction.Create(const aScene: TScene);
 begin
   assert(assigned(aScene));
   Scene := aScene;
-  MouseFocus := nil;
   MouseButtonCount := 0;
-  MouseHover := nil;
+  FMouseFocus := nil;
+  FMouseHover := nil;
 end;
 
 procedure TUserInteraction.MouseEnter;
 begin
   MouseFocus := nil;
+  MouseHover := nil;
   MouseButtonCount := 0;
-  if MouseHover <> nil then UpdateMouseHover(nil);
 end;
 
 procedure TUserInteraction.MouseLeave;
 begin
   MouseFocus := nil;
+  MouseHover := nil;
   MouseButtonCount := 0;
-  if MouseHover <> nil then UpdateMouseHover(nil);
 end;
 
 procedure TUserInteraction.MouseDown(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
 var
   cX, cY : integer;
+  el : TSceneElement;
+  abr : TRect;
 begin
-  // 1) Update MouseFocus if needed.
-  if (MouseButtonCount = 0)
-    then MouseFocus := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
-  inc(MouseButtonCount);
-
-  // 2) Update Mouse hover if needed.
-  if MouseFocus <> MouseHover then UpdateMouseHover(MouseFocus);
-
-  // 3) Trigger the mouse event
-  if assigned(MouseFocus) then
+  // 1) Update mouse hover
+  if (MouseButtonCount = 0) then
   begin
-    cX := X - MouseFocus.AbsoluteBoundsRect.Left;
-    cY := Y - MouseFocus.AbsoluteBoundsRect.Top;
-    TProtectedControlHack(MouseFocus.Control).MouseDown(Button, Shift, cX, cY);
+    el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
+    assert( (not assigned(el)) or ((assigned(el)) and (assigned(el.Control))) );
+    if assigned(el)
+      then MouseHover := el.Control
+      else MouseHover := nil;
   end;
 
+  // 2) Update Mouse focus
+  if (MouseButtonCount = 0) then
+  begin
+    el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
+    assert( (not assigned(el)) or ((assigned(el)) and (assigned(el.Control))) );
+    if assigned(el)
+      then MouseFocus := el.Control
+      else MouseFocus := nil;
+  end;
+
+  // 3) Fire the event
+  if assigned(MouseFocus) then
+  begin
+    abr := MouseFocus.GetAbsoluteRect;
+    cX := X - abr.Left;
+    cY := Y - abr.Top;
+    TProtectedControlHack(MouseFocus).MouseDown(Button, Shift, cX, cY);
+  end;
+
+  // 4) finally, update the button count
+  inc(MouseButtonCount);
+end;
+
+procedure TUserInteraction.MouseMove(const Shift: TShiftState; const X, Y: Integer);
+var
+  TargetControl : TFarScapeControl;
+  abr : TRect;
+  el : TSceneElement;
+  cX, cY : integer;
+begin
+
+  // 1) Find where the mouse event should be directed.
+  if assigned(MouseFocus) then
+  begin
+    TargetControl := MouseFocus;
+  end else
+  begin
+    el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
+    if assigned(el) then
+    begin
+      assert(assigned(el.Control));
+      TargetControl := el.Control;
+    end else
+    begin
+      TargetControl := nil;
+    end;
+  end;
+
+  // 2) Update Mouse hover..
+  if MouseHover <> TargetControl then MouseHover := TargetControl;
+
+
+  // 3) Fire the mouse move event.
+  if assigned(TargetControl) then
+  begin
+    abr := TargetControl.GetAbsoluteRect;
+    cX := X - abr.Left;
+    cY := Y - abr.Top;
+    TProtectedControlHack(TargetControl).MouseMove(Shift, cX, cY);
+  end;
 end;
 
 procedure TUserInteraction.MouseUp(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
 var
+  TargetControl : TFarScapeControl;
+  abr : TRect;
   el : TSceneElement;
   cX, cY : integer;
 begin
+
   // 1) Find where the mouse event should be directed.
-  if assigned(MouseFocus)
-    then el := MouseFocus
-    else el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
-
-  // 2) Update Mouse hover if needed.
-  if el <> MouseHover then UpdateMouseHover(el);
-
-  // 3) Trigger the mouse move event.
-  if assigned(el) then
+  if assigned(MouseFocus) then
   begin
-    cX := X - el.AbsoluteBoundsRect.Left;
-    cY := Y - el.AbsoluteBoundsRect.Top;
-    TProtectedControlHack(el.Control).MouseUp(Button, Shift, cX, cY);
+    TargetControl := MouseFocus;
+  end else
+  begin
+    el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
+    if assigned(el) then
+    begin
+      assert(assigned(el.Control));
+      TargetControl := el.Control;
+    end else
+    begin
+      TargetControl := nil;
+    end;
   end;
 
-  // 4) Mouse button up processing...
+  // 2) Fire the event
+  if assigned(TargetControl) then
+  begin
+    abr := TargetControl.GetAbsoluteRect;
+    cX := X - abr.Left;
+    cY := Y - abr.Top;
+    TProtectedControlHack(TargetControl).MouseUp(Button, Shift, cX, cY);
+  end;
+
+  // 3) Button count processing
   if MouseButtonCount > 1 then
   begin
     dec(MouseButtonCount);
@@ -123,59 +196,39 @@ begin
   begin
     MouseButtonCount := 0;
     MouseFocus := nil;
+  end;
+
+  // 4) Update Mouse Hover
+  if (MouseButtonCount = 0) then
+  begin
     el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
-    if el <> MouseHover then UpdateMouseHover(el);
+    assert( (not assigned(el)) or ((assigned(el)) and (assigned(el.Control))) );
+    if assigned(el)
+      then MouseHover := el.Control
+      else MouseHover := nil;
   end;
-
 end;
 
-procedure TUserInteraction.MouseMove(const Shift: TShiftState; const X, Y: Integer);
-var
-  el : TSceneElement;
-  cX, cY : integer;
+procedure TUserInteraction.SetMouseFocus(const NewTarget: TFarScapeControl);
 begin
-  // 1) Find where the mouse event should be directed.
-  if assigned(MouseFocus)
-    then el := MouseFocus
-    else el := UserInteractionAssistant.GetInteractionTargetAt(Scene, X, Y);
-
-  // 2) Update Mouse hover if needed.
-  if el <> MouseHover
-    then UpdateMouseHover(el);
-
-  // 3) Trigger the mouse move event.
-  if assigned(el) then
-  begin
-    cX := X - el.AbsoluteBoundsRect.Left;
-    cY := Y - el.AbsoluteBoundsRect.Top;
-    TProtectedControlHack(el.Control).MouseMove(Shift, cX, cY);
-  end;
+  FMouseFocus := NewTarget;
 end;
 
-
-procedure TUserInteraction.UpdateMouseHover(const NewTarget: TSceneElement);
+procedure TUserInteraction.SetMouseHover(const NewTarget: TFarScapeControl);
 begin
-  assert(NewTarget <> MouseHover);
-
-  if assigned(MouseHover)
-    then TProtectedControlHack(MouseHover.Control).MouseLeave;
-
-  if assigned(NewTarget)
-    then TProtectedControlHack(NewTarget.Control).MouseEnter;
-
-  MouseHover := NewTarget;
-
-  if assigned(OnHoverChanged) then
+  if NewTarget <> FMouseHover then
   begin
-    if assigned(MouseHover)
-      then OnHoverChanged(self, MouseHover.Control)
-      else OnHoverChanged(self, nil);
+    if assigned(FMouseHover)
+      then TProtectedControlHack(FMouseHover).MouseLeave;
+
+    if assigned(NewTarget)
+      then TProtectedControlHack(NewTarget).MouseEnter;
+
+    FMouseHover := NewTarget;
+
+    if assigned(OnHoverChanged) then OnHoverChanged(self, FMouseHover);
   end;
-
-
 end;
-
-
 
 
 

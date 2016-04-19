@@ -134,7 +134,6 @@ begin
 
   Confirm.IsTrue(  List.Count = 1 );
 
-  px := nil;
   px := List.Pop;
 
   Confirm.IsTrue(  List.Count = 0 );

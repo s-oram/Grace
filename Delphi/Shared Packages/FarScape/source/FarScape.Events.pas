@@ -13,8 +13,12 @@ type
   //========================================
   TMouseEnterEvent = class;
   TMouseLeaveEvent = class;
-  //TMouseDownEvent = class;
-  //TMouseUpEvent = class;
+  TMouseDownEvent = class;
+  TMouseUpEvent = class;
+
+  TBeginEditEvent = class; // Fire the BeginEdit event when a control is grabbed for editing. Use with knobs, buttons, etc.
+  TEndEditEvent   = class; // EndEdit is the counterpart to BeginEdit. Fire when a control is released and editing stops.
+
 
   //========================================
   //    Finish declarations
@@ -30,15 +34,31 @@ type
   end;
 
 
-  TMouseEnterEvent = class(TMouseEvent)
+  TMouseEnterEvent = class(TMouseEvent);
+  TMouseLeaveEvent = class(TMouseEvent);
+
+  TMouseDownEvent = class(TMouseEvent)
   public
-    constructor Create(const Target : TObject); override;
+     constructor Create(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer); reintroduce;
+
+     property Button  : TMouseButton index 0 read GetDataAsTMouseButton write SetDataAsTMouseButton;
+     property Shift   : TShiftState  index 1 read GetDataAsTShiftState  write SetDataAsTShiftState;
+     property X       : integer      index 2 read GetDataAsInteger      write SetDataAsInteger;
+     property Y       : integer      index 3 read GetDataAsInteger      write SetDataAsInteger;
   end;
 
-  TMouseLeaveEvent = class(TMouseEvent)
+  TMouseUpEvent = class(TMouseEvent)
   public
-    constructor Create(const Target : TObject); override;
+     constructor Create(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer); reintroduce;
+
+     property Button : TMouseButton index 0 read GetDataAsTMouseButton write SetDataAsTMouseButton;
+     property Shift  : TShiftState  index 1 read GetDataAsTShiftState  write SetDataAsTShiftState;
+     property X      : integer      index 2 read GetDataAsInteger      write SetDataAsInteger;
+     property Y      : integer      index 3 read GetDataAsInteger      write SetDataAsInteger;
   end;
+
+  TBeginEditEvent = class(TFarScapeEvent);
+  TEndEditEvent = class(TFarScapeEvent);
 
 
 {
@@ -200,22 +220,27 @@ begin
   FData[Index].VInteger := wx;
 end;
 
-{ TMouseLeaveEvent }
+{ TMouseDownEvent }
 
-constructor TMouseLeaveEvent.Create(const Target: TObject);
+constructor TMouseDownEvent.Create(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
 begin
-  inherited;
-  self.FTarget := Target;
-  self.FEventClass := TMouseLeaveEvent;
+  inherited Create;
+  SetDataAsTMouseButton(0, Button);
+  SetDataAsTShiftState(1, Shift);
+  SetDataAsInteger(2, X);
+  SetDataAsInteger(3, Y);
 end;
 
-{ TMouseEnterEvent }
+{ TMouseUpEvent }
 
-constructor TMouseEnterEvent.Create(const Target: TObject);
+constructor TMouseUpEvent.Create(const Button: TMouseButton; const Shift: TShiftState; const X, Y: Integer);
 begin
-  inherited;
-  self.FTarget := self;
-  self.FEventClass := TMouseEnterEvent;
+  inherited Create;
+  SetDataAsTMouseButton(0, Button);
+  SetDataAsTShiftState(1, Shift);
+  SetDataAsInteger(2, X);
+  SetDataAsInteger(3, Y);
 end;
+
 
 end.

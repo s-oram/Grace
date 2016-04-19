@@ -104,7 +104,7 @@ begin
   inherited;
 
   IsBeingDestroyed := false;
-  ControlStyle := ControlStyle + [csOpaque];
+  ControlStyle := ControlStyle + [csOpaque] + [csCaptureMouse];
 
   InvalidateBuffer := TInvalidateBuffer.Create(60);
   InvalidateBuffer.OnInvalidateRegion := self.HandleInvalidateRootRegion;

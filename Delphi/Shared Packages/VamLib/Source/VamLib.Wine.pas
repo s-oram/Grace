@@ -19,7 +19,7 @@ begin
 
   try
     H := SysUtils.SafeLoadLibrary('ntdll.dll')
-  finally
+  except
     H := 0;
   end;
 

@@ -36,6 +36,7 @@ type
 
 implementation
 
+
 uses
   VamLib.Types;
 
@@ -80,8 +81,6 @@ begin
 end;
 
 function TRecList.Pop: Pointer;
-var
-  data : Pointer;
 begin
   while Count > 0 do
   begin

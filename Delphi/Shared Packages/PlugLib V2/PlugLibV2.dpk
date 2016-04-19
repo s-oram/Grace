@@ -1,0 +1,81 @@
+package PlugLibV2;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Support library for plugin development.'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  VamLib,
+  WatchTower,
+  vclimg,
+  dbrtl;
+
+contains
+  VamVst2.DAEffect in 'Source\Vst2Sdk\VamVst2.DAEffect.pas',
+  VamVst2.DAEffectX in 'Source\Vst2Sdk\VamVst2.DAEffectX.pas',
+  VamVst2.DAudioEffect in 'Source\Vst2Sdk\VamVst2.DAudioEffect.pas',
+  VamVst2.DAudioEffectX in 'Source\Vst2Sdk\VamVst2.DAudioEffectX.pas',
+  VamVst2.DVstFxStore in 'Source\Vst2Sdk\VamVst2.DVstFxStore.pas',
+  VamVst2.DVSTUtils in 'Source\Vst2Sdk\VamVst2.DVSTUtils.pas',
+  VamVst2.MidiEvent in 'Source\Vst2Ex\VamVst2.MidiEvent.pas',
+  VamVst2.MidiEventInputBuffer in 'Source\Vst2Ex\VamVst2.MidiEventInputBuffer.pas',
+  VamVst2.MidiEventOutputBuffer in 'Source\Vst2Ex\VamVst2.MidiEventOutputBuffer.pas',
+  PlugLib.Utils in 'Source\PlugLib\PlugLib.Utils.pas',
+  PlugLib.ResourceLoader in 'Source\PlugLib\PlugLib.ResourceLoader.pas',
+  AudioPlugin.PlugEdit in 'Source\AudioPlugin\AudioPlugin.PlugEdit.pas',
+  AudioPlugin.Functions in 'Source\AudioPlugin\AudioPlugin.Functions.pas',
+  AudioPlugin.Globals in 'Source\AudioPlugin\AudioPlugin.Globals.pas',
+  AudioPlugin.PlugMain in 'Source\AudioPlugin\AudioPlugin.PlugMain.pas',
+  AudioPlugin.Types in 'Source\AudioPlugin\AudioPlugin.Types.pas',
+  AudioPlugin.Vst2Adapter in 'Source\AudioPlugin\AudioPlugin.Vst2Adapter.pas',
+  Mocks.AudioPlugin in 'UnitTests\Mocks.AudioPlugin.pas',
+  RegisterTests.PluginLib in 'UnitTests\RegisterTests.PluginLib.pas',
+  Test.AudioPlugin.Functions in 'UnitTests\Test.AudioPlugin.Functions.pas',
+  Test.AudioPlugin in 'UnitTests\Test.AudioPlugin.pas',
+  Test.VamVst2.MidiEventOutputBuffer in 'UnitTests\Test.VamVst2.MidiEventOutputBuffer.pas',
+  Test.VamVst2.VstEventBuffer in 'UnitTests\Test.VamVst2.VstEventBuffer.pas',
+  PlugLib.AirControl in 'Source\AirControl\PlugLib.AirControl.pas',
+  PlugLib.AirControl.TaskQueue in 'Source\AirControl\PlugLib.AirControl.TaskQueue.pas',
+  PlugLib.AirControl.TaskSyncQueue in 'Source\AirControl\PlugLib.AirControl.TaskSyncQueue.pas',
+  Test.PlugLib.AirControl in 'UnitTests\Test.PlugLib.AirControl.pas',
+  Test.PlugLib.AirControl.TaskQueue in 'UnitTests\Test.PlugLib.AirControl.TaskQueue.pas',
+  PlugLib.AirControl.DelayedTaskList in 'Source\AirControl\PlugLib.AirControl.DelayedTaskList.pas',
+  AudioPlugin.Interfaces in 'Source\AudioPlugin\AudioPlugin.Interfaces.pas',
+  AudioPlugin.Defaults in 'Source\AudioPlugin\AudioPlugin.Defaults.pas',
+  VamVst2.VstEvent in 'Source\Vst2Sdk\VamVst2.VstEvent.pas',
+  VamVst2.VstEventBuffer in 'Source\Vst2Sdk\VamVst2.VstEventBuffer.pas',
+  PlugLib.Types in 'Source\PlugLib\PlugLib.Types.pas',
+  AudioPlugin.EventScheduler in 'Source\AudioPlugin\AudioPlugin.EventScheduler.pas',
+  AudioPlugin.ProcessController in 'Source\AudioPlugin\AudioPlugin.ProcessController.pas';
+
+end.
+
+
+
+

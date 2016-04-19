@@ -15,17 +15,18 @@ type
   end;
 
   TEventBase = class(TObject)
+  private
   protected
-    FEventClass : TFarScapeEventClass;
+    FEventType  : string;
     FTarget     : TObject;
     FIsHandled  : boolean;
     FPropagate  : boolean;
     FData       : array[0..3] of TDataByte;
   public
-    property EventClass : TFarScapeEventClass read FEventClass; // The type of event. Important for reading the data value.
-    property Target     : TObject     read FTarget;
-    property IsHandled  : boolean     read FIsHandled write FIsHandled;
-    property Propagate  : boolean     read FPropagate write FPropagate;
+    property EventType  : string      read FEventType; // The event class name as a string. Mostly redundant. It's been included as a sanity check.
+    property Target     : TObject     read FTarget;    // Target is the focus of the event.
+    property IsHandled  : boolean     read FIsHandled write FIsHandled; // Set to true to notify subsequent event handlers the event has been "handled".
+    property Propagate  : boolean     read FPropagate write FPropagate; // When true, the event will be passed to parent controls. Set to false to stop propagation.
   end;
 
   // All Farscape events descend from TCustomEvent.
@@ -51,10 +52,9 @@ type
     procedure SetDataAsPString(const Index : integer; const Value: PString);
   protected
   public
-    constructor Create(const Target : TObject); virtual;
+    constructor Create; overload;
+    constructor Create(const Target : TObject); overload; virtual;
   end;
-
-
 
 implementation
 
@@ -63,6 +63,11 @@ uses
   System.SyncObjs;
 
 { TFarScapeEvent }
+
+constructor TFarScapeEvent.Create;
+begin
+  Create(nil);
+end;
 
 constructor TFarScapeEvent.Create(const Target: TObject);
 begin
@@ -130,6 +135,8 @@ procedure TFarScapeEvent.SetDataAsSingle(const Index : integer; const Value: sin
 begin
   FData[Index].VSingle := Value;
 end;
+
+
 
 
 

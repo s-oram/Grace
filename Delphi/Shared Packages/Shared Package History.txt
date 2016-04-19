@@ -1,6 +1,13 @@
 ======================================
             History
 ======================================
+7 April 2016
+- Working on PlugLib V2.
+
+6 April 2016
+- Create PlugLib V2. This is the next generation of PluginLib.
+- FarScape changes.
+
 29 March 2016
 - Fix serious bug in TRecDoubleLinkedList.
   Pointers to list items were wrong after the internal list

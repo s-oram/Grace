@@ -131,7 +131,9 @@ begin
   evCount := Length(Listener.EventTypes);
   for c1 := 0 to evCount-1 do
   begin
-    if Listener.EventTypes[c1] = Event.EventClass
+    //if Listener.EventTypes[c1] = Event.EventClass
+    //  then exit(true);
+    if Listener.EventTypes[c1] = Event.ClassType
       then exit(true);
   end;
 

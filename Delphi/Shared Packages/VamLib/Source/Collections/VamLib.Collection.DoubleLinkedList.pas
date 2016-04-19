@@ -100,7 +100,6 @@ procedure TRecDoubleLinkedList.AppendItem(const Data: Pointer);
 var
   c1 : integer;
   WriteIndex : integer;
-  CurLast : PDoubleLinkedListItem;
   FFirstItem : PDoubleLinkedListItem;
   FLastItem  : PDoubleLinkedListItem;
 begin
