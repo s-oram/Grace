@@ -884,16 +884,12 @@ procedure TeePlugin.Resume;
 begin
   inherited;
   AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize);
-  Globals.AudioActions.IsProcessingActive := true;
 end;
 
 procedure TeePlugin.Suspend;
 begin
   inherited;
   AudioPreviewPlayer.Kill;
-  Globals.AudioActions.IsProcessingActive := false;
-  // run audio actions after stopping to catch any late additions.
-  Globals.AudioActions.Run;
 end;
 
 procedure TeePlugin.InitializeState;
@@ -1460,7 +1456,7 @@ var
 begin
   MsgData := TCustomLucidityMessage.Create;
   MsgData.Msg := msg;
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_ShowMessage, MsgData);
+  Globals.MsgVclTS(TLucidMsgID.Command_ShowMessage, MsgData);
 end;
 
 procedure TeePlugin.ImportProgram(const FileName: string);
@@ -1550,16 +1546,16 @@ begin
 
   // TODO:HIGH Try to have these messages removed. The gui should send these where possible
   // at the calling site.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleMarkersChanged, nil);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleOscTypeChanged, nil);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix, nil);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.FilterChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.SampleMarkersChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.SampleOscTypeChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.Command_UpdateControlVisibility, nil);
+  Globals.MsgVclTS(TLucidMsgID.Command_UpdateModMatrix, nil);
+  Globals.MsgVclTS(TLucidMsgID.FilterChanged, nil);
   // this one call here perhaps...
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramLoaded, nil);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_UpdateGUI, nil);
+  Globals.MsgVclTS(TLucidMsgID.ProgramLoaded, nil);
+  Globals.MsgVclTS(TLucidMsgID.Command_UpdateGUI, nil);
   // ... this might be the one consolidated call.
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.NewProgramLoaded, nil);
+  Globals.MsgVclTS(TLucidMsgID.NewProgramLoaded, nil);
 end;
 
 procedure TeePlugin.SaveMidiMap(const FileName: string);
@@ -1648,7 +1644,7 @@ begin
     StateManager.Free;
   end;
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
+  Globals.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
 end;
 
 procedure TeePlugin.SaveProgramToFileWithoutSamples(const FileName: string);
@@ -1669,7 +1665,7 @@ begin
     StateManager.Free;
   end;
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
+  Globals.MsgVclTS(TLucidMsgID.ProgramSavedToDisk, nil);
 end;
 
 
@@ -1772,7 +1768,7 @@ begin
     end;
   end;
 
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
 end;
 
 procedure TeePlugin.UpdateMidiBindingIDs;
@@ -1817,7 +1813,7 @@ end;
 procedure TeePlugin.ClearPreviewInfo;
 begin
   PreviewInfo^.Clear;
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.PreviewInfoChanged, nil);
 end;
 
 procedure TeePlugin.TriggerNoteOn(const MidiNote, MidiVelocity: integer);
@@ -1827,7 +1823,7 @@ begin
 
   KeyStateTracker.NoteOn(MidiNote, MidiVelocity);
   MidiInputProcessor.NoteOn(MidiNote, MidiVelocity);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
 end;
 
 procedure TeePlugin.TriggerNoteOff(const MidiNote, MidiVelocity: integer);
@@ -1837,7 +1833,7 @@ begin
 
   KeyStateTracker.NoteOff(MidiNote, MidiVelocity);
   MidiInputProcessor.NoteOff(MidiNote, MidiVelocity);
-  Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
+  Globals.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
 end;
 
 procedure TeePlugin.Event_MidiAutomation_Message(Sender: TObject; const MidiData1, MidiData2: integer; const Binding: ICustomMidiBinding);
@@ -1898,7 +1894,7 @@ begin
   begin
     KeyStateTracker.NoteOn(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOn(Event.Data1, Event.Data2);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
+    Globals.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
     inc(GlobalModPoints.Source_TriggeredNoteCount);
 
     //================================================================================
@@ -1909,7 +1905,7 @@ begin
       NoteTriggerData := TMsgData_MidiNoteTriggered.Create;
       NoteTriggerData.Data1 := Event.Data1;
       NoteTriggerData.Data2 := Event.Data2;
-      Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiNoteTriggered, NoteTriggerData);
+      Globals.MsgVclTS(TLucidMsgID.MidiNoteTriggered, NoteTriggerData);
     end;
     //================================================================================
   end else
@@ -1917,7 +1913,7 @@ begin
   begin
     KeyStateTracker.NoteOff(Event.Data1, Event.Data2);
     MidiInputProcessor.NoteOff(Event.Data1, Event.Data2);
-    Globals.MotherShip.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
+    Globals.MsgVclTS(TLucidMsgID.MidiKeyChanged, nil);
   end else
   if IsPitchBend(Event) then
   begin
@@ -2023,9 +2019,7 @@ end;
 
 procedure TeePlugin.ProcessEnd;
 begin
-  //TODO:MED Currently AudioActions isn't being used, so comment it out
-  // so the code doesn't get called.
-  //Globals.AudioActions.Run;
+  Globals.AirControl.ProcessAudioSync;
 end;
 
 

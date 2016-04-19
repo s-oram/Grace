@@ -23,25 +23,25 @@ type
 
     // TODO:LOW There tests aren't working.
 
-    [_Test]
+    [DisabledTest]
     procedure BasicProcessingTest;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithEvents_Test1;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithEvents_Test2;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithEvents_Test3;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithControlRateSteps;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithControlRateStepsAndEvents_Test1;
 
-    [_Test]
+    [DisabledTest]
     procedure ProcessWithControlRateStepsAndEvents_Test2;
 
   end;

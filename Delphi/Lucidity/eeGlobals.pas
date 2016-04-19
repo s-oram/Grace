@@ -5,11 +5,12 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
+  PlugLib.AirControl,
   Lucidity.Interfaces,
   eeCpuMonitor,
   SysUtils,
   ExtCtrls,
-  eeStoredActionList,
   Lucidity.GuiState,
   Lucidity.Options,
   eeCustomGlobals,
@@ -29,7 +30,6 @@ type
     fOptions: TOptions;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
-    fAudioActions: TStoredActions;
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
     fCpuMonitor: TCpuMonitor;
@@ -38,6 +38,7 @@ type
     fUserConfigDir: string;
     fDefaultConfigDir: string;
     fPatchInfo: TPatchInfo;
+    FAirControl: TAirControl;
     procedure SetIsGuiOpen(const Value: boolean);
     function GetLastProgramLoadDir: string;
     function GetLastProgramSaveDir: string;
@@ -63,12 +64,6 @@ type
     property GuiState : TGuiState read fGuiState;
     property PatchInfo : TPatchInfo read fPatchInfo;
 
-
-    // TODO:MED AudioActions isn't being used at all. The role of audio actions,
-    // being able to pass events to be processed at the end of the audio processing
-    // block does seem useful however. I won't delete it right away.
-    property AudioActions : TStoredActions read fAudioActions;
-
     //=== some object references =====
     property SampleMapReference : TObject read fSampleMapReference write fSampleMapReference;
     property KeyGroupsReference : TObject read fKeyGroupsReference write fKeyGroupsReference;
@@ -82,6 +77,11 @@ type
 
     property LastProgramLoadDir : string read GetLastProgramLoadDir write SetLastProgramLoadDir;
     property LastProgramSaveDir : string read GetLastProgramSaveDir write SetLastProgramSaveDir;
+
+    property AirControl : TAirControl read FAirControl;
+
+    // Redirects to MotherShip.MsgVclTS()
+    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
   end;
 
 
@@ -90,7 +90,6 @@ type
 implementation
 
 uses
-  VamLib.ZeroObject,
   uConstants,
   eePluginDataDir;
 
@@ -118,7 +117,7 @@ var
 begin
   inherited;
 
-  fAudioActions := TStoredActions.Create;
+  fAirControl := TAirControl.Create(32, 32, 100);
 
   fGuiState := TGuiState.Create;
   fPatchInfo := TPatchInfo.Create;
@@ -191,7 +190,7 @@ begin
   fOptions.Free;
   fGuiState.Free;
   fPatchInfo.Free;
-  fAudioActions.Free;
+  fAirControl.Free;
   inherited;
 end;
 
@@ -235,6 +234,16 @@ end;
 function TGlobals.GetLastProgramSaveDir: string;
 begin
   result := Global_LastProgramSaveDir;
+end;
+
+procedure TGlobals.MsgVclTS(MsgID: cardinal; DataB: IZeroMessageData);
+begin
+  AirControl.GuiSync(
+    procedure
+    begin
+      Self.MotherShip.MsgVcl(MsgID, nil, DataB);
+    end
+  );
 end;
 
 procedure TGlobals.SetLastProgramLoadDir(const Value: string);

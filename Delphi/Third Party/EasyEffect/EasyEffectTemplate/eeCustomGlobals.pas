@@ -42,17 +42,17 @@ type
 
   TCustomGlobals = class
   private
-    fSampleRate        : integer;
-    fBlockSize         : integer;
-    fTempo             : single;
-    fSampleRateList    : TEventList;
-    fBlockSizeList     : TEventList;
-    fTempoList         : TEventList;
-    fOneOverSampleRate : double;
-    fDeltaOffset       : integer;
-    fMidiOutput        : TeeMidiEventList;
-    fTimeInfo          : PVstTimeInfo;
-    fMidiInput         : TeeMidiEventList;
+    fSampleRate           : integer;
+    fBlockSize            : integer;
+    fTempo                : single;
+    fSampleRateList       : TEventList;
+    fBlockSizeList        : TEventList;
+    fTempoList            : TEventList;
+    fOneOverSampleRate    : double;
+    fDeltaOffset          : integer;
+    fMidiOutput           : TeeMidiEventList;
+    fTimeInfo             : PVstTimeInfo;
+    fMidiInput            : TeeMidiEventList;
     fTransportChangedList : TEventList;
     fTransportPlaying     : boolean;
     fTransportCycleActive : boolean;
@@ -67,15 +67,15 @@ type
     fBarPosNormalised     : double;
     fSamplesToBarEnd      : double;
     fPlayStateChangedList : TEventList;
-    fVstSuspendList: TEventList;
-    fVstResumeList: TEventList;
-    fSyncKeeper: Pointer;
-    fOverSampleFactor: integer;
-    fFastControlRate: integer;
-    fSlowControlRate: integer;
-    FMotherShip: TMotherShip;
-    fVstSystemWindow: Hwnd;
-    fTopGuiWindow: TForm;
+    fVstSuspendList       : TEventList;
+    fVstResumeList        : TEventList;
+    fSyncKeeper           : Pointer;
+    fOverSampleFactor     : integer;
+    fFastControlRate      : integer;
+    fSlowControlRate      : integer;
+    FMotherShip           : TMotherShip;
+    fVstSystemWindow      : Hwnd;
+    fTopGuiWindow         : TForm;
     procedure SetBlockSize(const Value: integer);
     procedure SetTempo(const Value: single);
     procedure SetTransportPlaying(const Value: boolean);

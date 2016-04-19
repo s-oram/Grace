@@ -10,12 +10,14 @@ uses
   {$ELSE}
   Windows,
   {$ENDIF}
+  ExtCtrls,
   eePluginGui, eePlugin, eePluginGuiMeta,
   VamVst2.DVstUtils,
   VamVst2.DAEffect,
   VamVst2.DAEffectX,
   VamVst2.DAudioEffect,
   VamVst2.DAudioEffectX,
+  eeGlobals,
   Messages;
 
 const
@@ -29,9 +31,14 @@ type
     Plugin        : TeePlugin;
     PluginGUI     : TPluginGui;
     PluginGuiMeta : TPluginGuiMeta;
-    systemWindow : HWnd;
+    systemWindow  : HWnd;
+    AirControlTimer : TTimer;
+    FGlobals: TGlobals;
+  protected
+    property Globals : TGlobals read FGlobals;
+    procedure HandleAirControlTimerEvent(Sender : TObject);
   public
-    constructor Create(effect: AudioEffect; aPlugin:TeePlugin); reintroduce;
+    constructor Create(const effect: AudioEffect; const aPlugin:TeePlugin; const Globals : TGlobals); reintroduce;
     destructor Destroy; override;
     function GetRect(var rect: PERect): Longint; override;
     function Open(ptr: Pointer): Longint; override;
@@ -67,9 +74,17 @@ var
 
 { AEditor }
 
-constructor TVstEditor.Create(effect: AudioEffect; aPlugin:TeePlugin);
+constructor TVstEditor.Create(const effect: AudioEffect; const aPlugin:TeePlugin; const Globals : TGlobals);
 begin
   inherited Create(effect);
+
+  FGlobals := Globals;
+
+  AirControlTimer := TTimer.Create(nil);
+  AirControlTimer.Enabled := false;
+  AirControlTimer.Interval := 20;
+  AirControlTimer.OnTimer := self.HandleAirControlTimerEvent;
+
   Plugin := aPlugin;
   PluginGUI    := nil;
   useCount := 0;
@@ -102,6 +117,8 @@ begin
   end;
   //==================================
 
+  AirControlTimer.Free;
+
   inherited;
 end;
 
@@ -124,6 +141,12 @@ begin
 
   rect   := @r;
   Result := 1;
+end;
+
+procedure TVstEditor.HandleAirControlTimerEvent(Sender: TObject);
+begin
+  assert(assigned(Globals));
+  Globals.AirControl.ProcessGuiSync;
 end;
 
 procedure TVstEditor.Idle;
@@ -174,6 +197,9 @@ begin
 
       // finally...
       Plugin.Globals.IsGuiOpen := true;
+
+      // 2)
+      AirControlTimer.Enabled := true;
     finally
       UseCount := 1;
     end;
@@ -187,6 +213,9 @@ begin
   // been opened/is still opened etc.
   if (UseCount > 0) then
   begin
+    // 1)
+    AirControlTimer.Enabled := false;
+
     Plugin.Globals.IsGuiOpen := false;
     systemWindow := 0;
     UseCount := 0;

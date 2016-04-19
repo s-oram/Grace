@@ -15,6 +15,8 @@ type
   TestAttribute = class(TCustomAttribute)
   end;
 
+  DisabledTestAttribute = class(TCustomAttribute);
+
   TWriteToLogMethod  = reference to procedure(Msg : string);
   TReportErrorMethod = reference to procedure(const ErrorMsg : string);
   TFindTestDataDir   = reference to function(const TestUnitName : string):string;
