@@ -32,7 +32,7 @@ uses
 
 procedure TSFZOpcodeConversion.BasicTests;
 var
-  OpcodeValue, ConvertResult : string;
+  ConvertResult : string;
   x : single;
 begin
   ConvertResult := ConvertOpcodeToVoiceParameterValue(TSfzOpcode.volume, '0');
