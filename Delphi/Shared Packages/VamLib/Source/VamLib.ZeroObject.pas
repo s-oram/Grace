@@ -103,7 +103,6 @@ type
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
-    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     procedure LogObjects;
   end;
@@ -191,7 +190,6 @@ type
     procedure MsgVcl(MsgID : cardinal); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer); overload;
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
-    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
 
     procedure LogObjects;
   end;
@@ -526,28 +524,6 @@ end;
 procedure TMotherShip.MsgVcl(MsgID: cardinal; Data: Pointer);
 begin
   MsgVcl(MsgID, Data, nil);
-end;
-
-procedure TMotherShip.MsgVclTS(MsgID: cardinal; DataB:IZeroMessageData);
-begin
-  IsGuiOpenLock.BeginRead;
-  try
-    if IsGuiOpen then
-    begin
-      if (MainThreadID = GetCurrentThreadId) then
-      begin
-        SendMessageToList(VclObjects, VclListLock, MsgID, nil, DataB);
-      end else
-      begin
-        TThread.Queue(nil, procedure
-        begin
-          SendMessageToList(VclObjects, VclListLock, MsgID, nil, DataB);
-        end);
-      end;
-    end;
-  finally
-    IsGuiOpenLock.EndRead;
-  end;
 end;
 
 procedure TMotherShip.Inject_MsgIdToStr(const f: TMsgIdToStrFunction);

@@ -1103,7 +1103,7 @@ begin
   // It's not a showstopper bug but would be great to fix.
   KnobChangedTK.Throttle(25, procedure
   begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
+    Plugin.Globals.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
 
 end;
@@ -1138,7 +1138,7 @@ begin
   //TODO: It would be handy to have a thread safe throttle.
   KnobChangedTK.Throttle(25, procedure
   begin
-    Plugin.Globals.MotherShip.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
+    Plugin.Globals.MsgVclTS(TLucidMsgID.SampleRegionChanged, nil);
   end);
 end;
 

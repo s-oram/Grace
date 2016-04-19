@@ -322,7 +322,7 @@ begin
         // Send out the dispose method to give other modules a chance to release
         // there references.
         Globals.MotherShip.MsgNonVisual(TLucidMsgID.Command_DisposeKeyGroup, @kgID);
-        Globals.MotherShip.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup, nil);
+        Globals.MsgVclTS(TLucidMsgID.Command_DisposeKeyGroup, nil);
 
         kg := nil;
       end;
