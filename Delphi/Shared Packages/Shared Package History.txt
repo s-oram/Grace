@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+19 April 2016 
+- small change in VamLib. (Get link target now catches expection)
+
 7 April 2016
 - Working on PlugLib V2.
 

@@ -31,7 +31,15 @@ begin
 
   // CoCreateInstance() docs.
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms686615%28v=vs.85%29.aspx
-  OleCheck( CoCreateInstance(CLSID_ShellLink, nil, CLSCTX_INPROC_SERVER, IShellLink, psl) );
+  try
+    OleCheck( CoCreateInstance(CLSID_ShellLink, nil, CLSCTX_INPROC_SERVER, IShellLink, psl) );
+  except
+    on EOleSysError
+      do exit(''); // ====>> exit - return an empty string >>=====>>
+    else
+      raise;
+  end;
+
   if psl.QueryInterface(IPersistFile, ppf) = 0 then
   begin
     lpMultiByteString := PAnsiChar(AnsiString(LinkFileName));
@@ -42,6 +50,7 @@ begin
   end
   else
     Result := '';
+
 end;
 
 function  ResolveLinkTarget(const LinkFileName : string) : string;
