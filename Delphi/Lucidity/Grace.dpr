@@ -141,7 +141,6 @@ uses
   LucidityGui.MenuButtonHandler in 'LucidityGui.MenuButtonHandler.pas',
   eeGuiStandardv2_MenuBuilder in 'EasyEffectTemplate\eeGuiStandardv2_MenuBuilder.pas',
   eePublishedVstParameters in 'EasyEffectTemplate\eePublishedVstParameters.pas',
-  eeStoredActionList in 'EasyEffectTemplate\eeStoredActionList.pas',
   eeMidiAutomationV2 in 'EasyEffectTemplate\eeMidiAutomationV2.pas',
   Effect.MidiAutomation in 'Custom Effect Template Files\Effect.MidiAutomation.pas',
   Lucidity.MidiInputProcessor in 'Lucidity.MidiInputProcessor.pas',

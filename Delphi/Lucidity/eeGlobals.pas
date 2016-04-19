@@ -9,7 +9,6 @@ uses
   eeCpuMonitor,
   SysUtils,
   ExtCtrls,
-  eeStoredActionList,
   Lucidity.GuiState,
   Lucidity.Options,
   eeCustomGlobals,
@@ -29,7 +28,6 @@ type
     fOptions: TOptions;
     fIsGuiOpen: boolean;
     fGuiState: TGuiState;
-    fAudioActions: TStoredActions;
     fSampleMapReference: TObject;
     fKeyGroupsReference: TObject;
     fCpuMonitor: TCpuMonitor;
@@ -62,12 +60,6 @@ type
 
     property GuiState : TGuiState read fGuiState;
     property PatchInfo : TPatchInfo read fPatchInfo;
-
-
-    // TODO:MED AudioActions isn't being used at all. The role of audio actions,
-    // being able to pass events to be processed at the end of the audio processing
-    // block does seem useful however. I won't delete it right away.
-    property AudioActions : TStoredActions read fAudioActions;
 
     //=== some object references =====
     property SampleMapReference : TObject read fSampleMapReference write fSampleMapReference;
@@ -117,8 +109,6 @@ var
   fn : string;
 begin
   inherited;
-
-  fAudioActions := TStoredActions.Create;
 
   fGuiState := TGuiState.Create;
   fPatchInfo := TPatchInfo.Create;
@@ -191,7 +181,6 @@ begin
   fOptions.Free;
   fGuiState.Free;
   fPatchInfo.Free;
-  fAudioActions.Free;
   inherited;
 end;
 

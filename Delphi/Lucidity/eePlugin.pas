@@ -884,16 +884,12 @@ procedure TeePlugin.Resume;
 begin
   inherited;
   AudioPreviewPlayer.UpdateConfig(Globals.SampleRate, Globals.BlockSize);
-  Globals.AudioActions.IsProcessingActive := true;
 end;
 
 procedure TeePlugin.Suspend;
 begin
   inherited;
   AudioPreviewPlayer.Kill;
-  Globals.AudioActions.IsProcessingActive := false;
-  // run audio actions after stopping to catch any late additions.
-  Globals.AudioActions.Run;
 end;
 
 procedure TeePlugin.InitializeState;
@@ -2023,9 +2019,7 @@ end;
 
 procedure TeePlugin.ProcessEnd;
 begin
-  //TODO:MED Currently AudioActions isn't being used, so comment it out
-  // so the code doesn't get called.
-  //Globals.AudioActions.Run;
+  //
 end;
 
 
