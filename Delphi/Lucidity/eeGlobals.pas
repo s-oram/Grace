@@ -5,6 +5,7 @@ interface
 {$INCLUDE Defines.inc}
 
 uses
+  VamLib.ZeroObject,
   PlugLib.AirControl,
   Lucidity.Interfaces,
   eeCpuMonitor,
@@ -78,6 +79,9 @@ type
     property LastProgramSaveDir : string read GetLastProgramSaveDir write SetLastProgramSaveDir;
 
     property AirControl : TAirControl read FAirControl;
+
+    // Redirects to MotherShip.MsgVclTS()
+    procedure MsgVclTS(MsgID : cardinal; DataB:IZeroMessageData);
   end;
 
 
@@ -86,7 +90,6 @@ type
 implementation
 
 uses
-  VamLib.ZeroObject,
   uConstants,
   eePluginDataDir;
 
@@ -231,6 +234,16 @@ end;
 function TGlobals.GetLastProgramSaveDir: string;
 begin
   result := Global_LastProgramSaveDir;
+end;
+
+procedure TGlobals.MsgVclTS(MsgID: cardinal; DataB: IZeroMessageData);
+begin
+  AirControl.GuiSync(
+    procedure
+    begin
+      Self.MotherShip.MsgVcl(MsgID, nil, DataB);
+    end
+  );
 end;
 
 procedure TGlobals.SetLastProgramLoadDir(const Value: string);
