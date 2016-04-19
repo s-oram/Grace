@@ -238,12 +238,15 @@ end;
 
 procedure TGlobals.MsgVclTS(MsgID: cardinal; DataB: IZeroMessageData);
 begin
-  AirControl.GuiSync(
-    procedure
-    begin
-      Self.MotherShip.MsgVcl(MsgID, nil, DataB);
-    end
-  );
+  if IsGuiOpen then
+  begin
+    AirControl.GuiSync(
+      procedure
+      begin
+        Self.MotherShip.MsgVcl(MsgID, nil, DataB);
+      end
+    );
+  end;
 end;
 
 procedure TGlobals.SetLastProgramLoadDir(const Value: string);
@@ -266,6 +269,7 @@ begin
   end else
   begin
     MotherShip.SetIsGuiOpen(false);
+    AirControl.ClearGuiSyncQueue;
   end;
 end;
 
