@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+26 April 2016
+- Avoid a memory leak in the drag and drop component.
+
 19 April 2016 
 - small change in VamLib. (Get link target now catches expection)
 
