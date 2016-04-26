@@ -1277,8 +1277,16 @@ begin
       **
       **   Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
       *)
-      OleStream := TOLEStream.Create(Stream);
-      Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
+
+      // NOTE: TODO:MED the code below is causing memory leaks. I believe it is because a interface
+      // reference is being assigned to a pointer. The interface reference count isn't reduced when the
+      // AMedium falls out of scope.
+
+      //OleStream := TOLEStream.Create(Stream);
+      //Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
+
+      Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
+      //====================================================
 
       IStream(AMedium.stm) := Stream;
     except
