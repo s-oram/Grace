@@ -91,7 +91,8 @@ implementation
 
 uses
   uConstants,
-  eePluginDataDir;
+  eePluginDataDir,
+  Windows;
 
 var
   Global_LastProgramLoadDir : string;
@@ -238,14 +239,20 @@ end;
 
 procedure TGlobals.MsgVclTS(MsgID: cardinal; DataB: IZeroMessageData);
 begin
-  if IsGuiOpen then
+  if (IsGuiOpen) then
   begin
-    AirControl.GuiSync(
-      procedure
-      begin
-        Self.MotherShip.MsgVcl(MsgID, nil, DataB);
-      end
-    );
+    if (MotherShip.GetMainThreadID = GetCurrentThreadId) then
+    begin
+      MotherShip.MsgVcl(MsgID, nil, DataB);
+    end else
+    begin
+      AirControl.GuiSync(
+        procedure
+        begin
+          MotherShip.MsgVcl(MsgID, nil, DataB);
+        end
+      );
+    end;
   end;
 end;
 

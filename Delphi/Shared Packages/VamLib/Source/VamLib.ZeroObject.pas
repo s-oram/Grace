@@ -90,6 +90,8 @@ type
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
 
+    function GetMainThreadID : cardinal;
+
     procedure Inject_MsgIdToStr(const f : TMsgIdToStrFunction);
 
     procedure SetIsGuiOpen(const Value: boolean);
@@ -167,7 +169,7 @@ type
 
     DisableMessageSending : boolean;
 
-    MainThreadID : cardinal;
+    FMainThreadID : cardinal;
 
     IsGuiOpen: boolean;
     IsGuiOpenLock : TMultiReadSingleWrite;
@@ -175,6 +177,8 @@ type
     procedure SendMessageToList(const ObjectList : TList; const ListLock : TMultiReadSingleWrite; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
     procedure SetIsGuiOpen(const Value: boolean);
+
+    function GetMainThreadID : cardinal;
   public
     constructor Create;
     destructor Destroy; override;
@@ -192,6 +196,8 @@ type
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
 
     procedure LogObjects;
+
+    property MainThreadID : cardinal read FMainThreadID;
   end;
 
 
@@ -287,7 +293,7 @@ begin
 
   IsGuiOpenLock := TMultiReadSingleWrite.Create;
 
-  MainThreadID := 0;
+  FMainThreadID := 0;
 
   DisableMessageSending := false;
 
@@ -316,6 +322,11 @@ begin
   IsGuiOpenLock.Free;
 
   inherited;
+end;
+
+function TMotherShip.GetMainThreadID: cardinal;
+begin
+  result := FMainThreadID;
 end;
 
 procedure TMotherShip.ClearMotherShipReferences;
@@ -452,8 +463,8 @@ begin
   try
     IsGuiOpen := Value;
     if IsGuiOpen = true
-      then MainThreadID := GetCurrentThreadId
-      else MainThreadID := 0;
+      then FMainThreadID := GetCurrentThreadId
+      else FMainThreadID := 0;
   finally
     IsGuiOpenLock.EndWrite;
   end;
