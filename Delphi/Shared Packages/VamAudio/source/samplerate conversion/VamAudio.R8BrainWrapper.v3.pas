@@ -30,7 +30,6 @@ type
     MaxInputFrames : integer;
     MaxOutputFrames : integer;
     rsHandle : CR8BResampler;
-    PTempBuffer : PR8BDouble;
     fOutputLatency: integer;
     fInputLatency: integer;
   protected

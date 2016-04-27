@@ -166,7 +166,6 @@ var
   Outptr : PDouble;
   c1: Integer;
   TempBuffer : array of double;
-  ExtraSamples : integer;
 begin
   SetLength(TempBuffer, MaxInputBufferSize);
 
@@ -189,9 +188,6 @@ begin
     inc(FrameCount, SamplesToProcess);
   end;
 
-
-  //ExtraSamples := floor(rs.Latency * Config.SourceRate / Config.DestRate
-  ExtraSamples := rs.InputLatency;
   FrameCount := 0;
   while FrameCount < rs.InputLatency do
   begin

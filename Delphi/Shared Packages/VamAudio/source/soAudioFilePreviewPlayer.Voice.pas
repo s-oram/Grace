@@ -15,7 +15,6 @@ type
     fIsActive: boolean;
     fSampleData : TSampleFloat;
   private
-    GainBuffer : array[0..256] of single;
     FadeOutRamp : TFadeOutRamp;
     ReadPos : single;
     ReadStepSize : single;
