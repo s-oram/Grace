@@ -167,7 +167,7 @@ type
 
     DisableMessageSending : boolean;
 
-    MainThreadID : cardinal;
+    FMainThreadID : cardinal;
 
     IsGuiOpen: boolean;
     IsGuiOpenLock : TMultiReadSingleWrite;
@@ -192,6 +192,8 @@ type
     procedure MsgVcl(MsgID : cardinal; Data : Pointer; DataB:IZeroMessageData); overload;
 
     procedure LogObjects;
+
+    property MainThreadID : cardinal read FMainThreadID;
   end;
 
 
@@ -287,7 +289,7 @@ begin
 
   IsGuiOpenLock := TMultiReadSingleWrite.Create;
 
-  MainThreadID := 0;
+  FMainThreadID := 0;
 
   DisableMessageSending := false;
 
@@ -452,8 +454,8 @@ begin
   try
     IsGuiOpen := Value;
     if IsGuiOpen = true
-      then MainThreadID := GetCurrentThreadId
-      else MainThreadID := 0;
+      then FMainThreadID := GetCurrentThreadId
+      else FMainThreadID := 0;
   finally
     IsGuiOpenLock.EndWrite;
   end;
