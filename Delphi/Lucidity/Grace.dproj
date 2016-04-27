@@ -308,7 +308,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_8_Win64)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<Debugger_HostApplication>C:\Program Files\Steinberg\Cubase 5\Cubase5.exe</Debugger_HostApplication>
+			<Debugger_HostApplication>C:\Program Files\REAPER (x64)\reaper.exe</Debugger_HostApplication>
 			<DCC_MapFile>3</DCC_MapFile>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_8_Win32)'!=''">
