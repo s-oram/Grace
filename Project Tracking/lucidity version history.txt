@@ -7,6 +7,9 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
 
 == Finished for the next release ==
 
+
+
+=== v1.0.4.06 (27 April 2016) ===  
 * Bug Fix (introduced in the last update) Loading a patch from the browser would
   trigger a hidden AV exception. The exception was hidden by the drag and drop
   handler. The exception was only raised in the 64bit build for some reason. 
@@ -15,7 +18,6 @@ thunderlink://messageid=CAPN=qRzzQFzfVG33mjxDncicuJmunZcTJQ6PKeU+R+mknUAZxA@mail
   windows explorer would result in a small memory leak. The memory leak was
   in the drag and drop library. It was fixed by disabling the "paste from clipboard"
   functionality. 
-
 
 === v1.0.4.04 (19 April 2016) ===  
 Bug Fix: Attempting to resolve the occasional crashes and memory leaks on shut down.
