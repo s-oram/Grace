@@ -90,6 +90,8 @@ type
   IMotherShip = interface
     ['{3668F765-A3E2-4CDC-8B3A-BDCE6C430172}']
 
+    function GetMainThreadID : cardinal;
+
     procedure Inject_MsgIdToStr(const f : TMsgIdToStrFunction);
 
     procedure SetIsGuiOpen(const Value: boolean);
@@ -175,6 +177,8 @@ type
     procedure SendMessageToList(const ObjectList : TList; const ListLock : TMultiReadSingleWrite; const MsgID : cardinal; const Data : Pointer; DataB:IZeroMessageData);
     procedure ClearMotherShipReferences;
     procedure SetIsGuiOpen(const Value: boolean);
+
+    function GetMainThreadID : cardinal;
   public
     constructor Create;
     destructor Destroy; override;
@@ -318,6 +322,11 @@ begin
   IsGuiOpenLock.Free;
 
   inherited;
+end;
+
+function TMotherShip.GetMainThreadID: cardinal;
+begin
+  result := FMainThreadID;
 end;
 
 procedure TMotherShip.ClearMotherShipReferences;
