@@ -1,5 +1,7 @@
 # About Grace
 
+![Grace Screenshot](/readme/grace_full_size.png?raw=true)
+
 Grace is a sampler. It is available as a 2.4 VST plugin for Windows. More info here: http://onesmallclue.com/plugin/grace/
 
 # Features
