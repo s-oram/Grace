@@ -24,9 +24,8 @@ Bedroom Producers Blog [reviewed Grace](http://bedroomproducersblog.com/2015/09/
 
 # Project Notes
 
-Grace was originally a closed source, commercial project. In early 2016 Grace was re-released as freeware and I started working towards open sourcing it. Due to it's heritage as a closed-source project, the code and project is organised to fit within my development workflow. I'm planning a few more changes to make the project more approachable for others. 
-
-* Grace was originally named *Lucidity* but someone used the name a few months before my first public release. Many of the files still reference *Lucidity*.
+* Grace was originally a closed source, commercial project. In early 2016 Grace was re-released as freeware and I started working towards open sourcing it. Due to it's heritage as a closed-source project, the code and project is organised to fit within my development workflow. I'm planning a few more changes to make the project more approachable for others. 
+* Grace was originally named *Lucidity* but someone used the name a few months before it was due to be released. There are still some references to the old name in some filenames and code. 
 * The bulk of the project code is found in `Delphi\Lucidity` and `Delphi\Shared Packages`.
 * The BAT files in the project directory root automate a couple basic development tasks. 
 * When working on Grace, the project directory is mapped to `s:\`. This provides helps to create consistent working environment and allows absolute paths to be used in Delphi. ` 	01 Lucidity Project Setup.bat` and `04 Lucidity Project Teardown.bat` automate mapping the project directory to `s:\` and cleaning up afterwards. 
