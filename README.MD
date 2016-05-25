@@ -1,8 +1,30 @@
+# About Grace
+
+Grace is a sampler. It is available as a 2.4 VST plugin for Windows. More info here: http://onesmallclue.com/plugin/grace/
+
+# Features
+
+* 2 filters per voice (LP, BP, HP, comb, lofi & ring modulation)
+* 2 x AHDSR envelopes
+* 2 x LFOs
+* 2 x step sequencers
+* 4 x XY control pads
+* WAV, AIF and SND formats support
+* SFZ patch import
+
+# Press
+
+Grace has been reviewed by Bedroom Producers Blog. They say:
+
+> There’s little doubt that Grace is the best freeware sampler on today’s VST plugin market. [...] It is a stable and compact sampler with a great streamlined workflow and a strong feature set.  It’s the sampler that you’ll think of first when you need to import some of your samples into a project. Some users will be turned off by the lack of round robin support, however Grace will be more than capable of completing the majority of common sampling tasks. This virtual instrument is a wonderful gift for the freeware community and we can’t thank One Small Clue enough for it!
+
+http://bedroomproducersblog.com/2015/09/14/grace-sampler-free/
+
+
+
 # Grace Project Notes
 
-Grace was originally a closed source, commercial project. In early 2016 I re-released Grace as freeware and started working towards open sourcing it. As such the code and project is organised to fit within my development workflow. I'm planning a few changes to make the project more approachable. 
-
-# Project Organisation
+Grace was originally a closed source, commercial project. In early 2016 Grace was re-released as freeware and I started working towards open sourcing it. Due to it's heritage as a closed-source project, the code and project is organised to fit within my development workflow. I'm planning a few more changes to make the project more approachable for others. 
 
 * Grace was originally named *Lucidity* but someone used the name a few months before my first public release. Many of the files still reference *Lucidity*.
 * The bulk of the project code is found in `Delphi\Lucidity` and `Delphi\Shared Packages`.
