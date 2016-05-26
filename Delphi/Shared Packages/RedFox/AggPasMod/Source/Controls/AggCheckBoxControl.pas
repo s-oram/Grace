@@ -24,7 +24,7 @@ unit AggCheckBoxControl;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   SysUtils,

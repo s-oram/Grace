@@ -24,7 +24,7 @@ unit AggControlVCL;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   {$IFDEF FPC} LCLIntf, LMessages, {$IFDEF MSWindows} Windows, {$ENDIF} {$ELSE}

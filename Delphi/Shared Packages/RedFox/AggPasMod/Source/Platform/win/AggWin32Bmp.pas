@@ -24,7 +24,7 @@ unit AggWin32Bmp;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../../AggCompiler.inc}
 
 uses
   Windows,

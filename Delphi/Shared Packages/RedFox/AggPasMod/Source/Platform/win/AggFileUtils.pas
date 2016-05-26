@@ -7,7 +7,7 @@ unit AggFileUtils;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../../AggCompiler.inc}
 {$I- }
 
 uses

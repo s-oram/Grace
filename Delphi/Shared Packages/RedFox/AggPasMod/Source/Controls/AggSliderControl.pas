@@ -24,7 +24,7 @@
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   SysUtils,

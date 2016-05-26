@@ -24,7 +24,7 @@ unit AggGammaSpline;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   AggBasics,

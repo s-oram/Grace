@@ -48,7 +48,7 @@ unit AggPlatformSupport;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../../AggCompiler.inc}
 {$I- }
 
 uses

@@ -24,7 +24,7 @@ unit AggPolygonControl;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   Math,

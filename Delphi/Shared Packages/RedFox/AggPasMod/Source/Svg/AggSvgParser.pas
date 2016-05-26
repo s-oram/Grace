@@ -25,7 +25,7 @@ unit AggSvgParser;
 interface
 
 {-$DEFINE EXPAT_WRAPPER}
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   SysUtils,

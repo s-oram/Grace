@@ -24,7 +24,7 @@ unit AggBezierControl;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   AggBasics,
