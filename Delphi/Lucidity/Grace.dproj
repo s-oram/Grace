@@ -194,7 +194,6 @@
 			<Cfg_2>true</Cfg_2>
 			<Base>true</Base>
 		</PropertyGroup>
-		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\BuildCommands.optset')" Project="BuildOptionSets\BuildCommands.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\Basic Paths.optset')" Project="..\Basic Paths.optset"/>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
@@ -206,7 +205,7 @@
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<GenDll>true</GenDll>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<CfgDependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</CfgDependentOn>
+			<CfgDependentOn>..\Basic Paths.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -340,6 +339,7 @@
 			<DCC_MapFile>3</DCC_MapFile>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
+		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\BuildCommands.optset')" Project="BuildOptionSets\BuildCommands.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('BuildOptionSets\Paths.optset')" Project="BuildOptionSets\Paths.optset"/>
 		<Import Condition="'$(Base)'!='' And Exists('..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset')" Project="..\..\Library\EasyEffect\CompilerOptionSets\BaseBuildConfig.optset"/>
 		<ProjectExtensions>
@@ -632,6 +632,7 @@
 			<None Include="..\Third Party\AudioIO\source\AudioIO.inc"/>
 			<None Include="ModelSupport_Grace\default.txvpck"/>
 			<None Include="ModelSupport_Grace\default.txaPackage"/>
+			<None Include="GuiComponents\TControlProperties.inc"/>
 			<BuildConfiguration Include="ReleaseAsFull">
 				<Key>Cfg_4</Key>
 				<CfgParent>Cfg_1</CfgParent>
@@ -650,7 +651,7 @@
 			</BuildConfiguration>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
-				<DependentOn>BuildOptionSets\BuildCommands.optset;..\Basic Paths.optset</DependentOn>
+				<DependentOn>..\Basic Paths.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="DebugForHostSystem">
 				<Key>Cfg_9</Key>
