@@ -23,8 +23,7 @@ Thumbs.db
 ### MadExcept settings
 *.mes
 
-
-### the top most binary directory.
+### the top most binary directory 
 bin/*
 *Project Resources*
 
@@ -34,27 +33,14 @@ Installer/Data Dir/User/Patches/*
 
 ### Machine specific environment settings.
 Config/*
-Lucidity Project Setup.bat
-Lucidity Project Teardown.bat
-Lucidity Create Installers.bat
 
-### ignore media files because they are too big and will bloat the repos.
+### ignore media files because they are too big and will bloat the repository.
 *.aif
 *.aiff
 *.flac
 *.mp3
 *.wav
 
-
 ### ignore any generated DLLs.
 Lucidity.dll
-
-
-### Un-ignore MtxVec DLLs. ###
-### I'm not sure why these are being igored in the first place however.
-!/MtxVec Dlls/Single/*
-!/MtxVec Dlls/Single64/*
-!/MtxVec Dlls/Double/*
-!/MtxVec Dlls/Double64/*
-
 
