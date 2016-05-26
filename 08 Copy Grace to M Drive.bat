@@ -1,2 +1,0 @@
-xcopy /y "D:\Audio\Apps\VST Plugins x86\Grace.dll"  "M:\Audio\Apps\Vst Plugins x86\Instruments\"
-xcopy /y "D:\Audio\Apps\VST Plugins x64\Grace.dll"  "M:\Audio\Apps\Vst Plugins x64\Instruments\Samplers"
