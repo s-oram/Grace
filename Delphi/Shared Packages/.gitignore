@@ -1,0 +1,26 @@
+### Misc Ignores ###
+Thumbs.db
+
+### Delphi Files ###
+*__history*
+*.res
+*.dcu
+*.cbk
+*.~pas
+*.identcache
+*.local
+*.*.local
+*.exe
+*.tvsconfig
+*.dsk
+*.~dsk
+*.projdata
+
+### Model Maker files
+*.txvpck
+*.txapackage
+
+### MadExcept settings
+*.mes
+
+
