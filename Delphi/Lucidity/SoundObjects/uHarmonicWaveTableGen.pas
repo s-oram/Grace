@@ -34,9 +34,15 @@ type
 
 implementation
 
+// TODO:HIGH When moving this project to my new machine on 26th May 2016, I gutted the functionality
+// to remove the dependence on MtxVec.
+// Right now this unit is "broken". Which is OK because I don't believe it's actually being used.
+// I need to follow the usage and remove the unit from the project properly.
+
+{
 uses
   MtxVec, Math387;
-
+}
 { THarmonicMap }
 
 constructor THarmonicMap.Create;
@@ -51,46 +57,8 @@ begin
 end;
 
 procedure THarmonicMap.GenerateWaveTable(Output: PSingle; OutputSampleFrames, MaxHarmonics: integer);
-var
-  Data1, Data2 : TVec;
-  c1: Integer;
 begin
-  Data1 := TVec.Create;
-  Data1.Size(OutputSampleFrames, true);
 
-  Data2 := TVec.Create;
-  Data2.Size(OutputSampleFrames, false);
-
-
-  //Zero the outputs
-  for c1 := 0 to OutputSampleFrames-1 do
-  begin
-    Data1[c1 * 2]     := 0;
-    Data1[c1 * 2 + 1] := 0;
-  end;
-
-  if MaxHarmonics >= OutputSampleFrames div 4 then MaxHarmonics := OutputSampleFrames div 4;
-  if MaxHarmonics >  self.Count then MaxHarmonics := self.Count;
-
-  //Calc inverse harmonics...
-  for c1 := 0 to MaxHarmonics-1 do
-  begin
-    Data1[c1 * 2]     := cos(2 * pi * (Harmonics[c1].Phase - 0.25)) * Harmonics[c1].Magnitude;
-    Data1[c1 * 2 + 1] := sin(2 * pi * (Harmonics[c1].Phase - 0.25)) * Harmonics[c1].Magnitude;
-  end;
-
-  Data1.IFFT(true);
-  Data2.RealPart(Data1);
-
-
-  for c1 := 0 to OutputSampleFrames-1 do
-  begin
-    Output^ := Data2[c1];
-    inc(Output);
-  end;
-
-  Data1.Free;
-  Data2.Free;
 end;
 
 procedure THarmonicMap.SetCount(const Value: integer);
