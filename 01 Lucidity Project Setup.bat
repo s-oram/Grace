@@ -5,8 +5,7 @@ subst s: "D:\Delphi Projects\Lucidity"
 ::regedit.exe /s "s:\Config\LucidityStandard.reg" 
 
 :: install custom registery enteries.
-regedit.exe /s "s:\Config\LucidityCustom.reg" 
-
+::regedit.exe /s "s:\Config\LucidityCustom.reg" 
 
 
 ::PAUSE
