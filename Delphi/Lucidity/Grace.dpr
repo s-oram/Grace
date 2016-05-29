@@ -200,6 +200,7 @@ begin
   SendMsg_StartProfiling;
 
   try
+    raise Exception.Create('Test Exception');
     //check a few things are in place before creating the plugin.
     FirstRunSetup;
 

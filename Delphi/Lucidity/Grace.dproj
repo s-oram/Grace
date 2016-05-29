@@ -8,7 +8,7 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">DebugForLocal</Config>
+			<Config Condition="'$(Config)'==''">ForLocal</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Library</AppType>
@@ -216,7 +216,6 @@
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_UsePackage>RedFoxRunXE2;RedFoxDesXE2;VamBasicRunXE2;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_DcuOutput>$(DelphiCompiledLib)\dcu\$(PLATFORM)</DCC_DcuOutput>
-			<DCC_ExeOutput>D:\Audio\Apps\VST Plugins x86</DCC_ExeOutput>
 			<DCC_UnitSearchPath>C:\Program Files (x86)\Dew Research\Compiled\DSPMaster\Delphi2012\Win32\Lib;C:\Program Files (x86)\Dew Research\Compiled\MtxVec\Delphi2012\Win32\Lib;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -265,6 +264,9 @@
 			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_6)'!=''">
+			<DCC_ExeOutput>C:\Audio\VstPlugs x86</DCC_ExeOutput>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_6_Win64)'!=''">
 			<DCC_DebugInformation>true</DCC_DebugInformation>
 			<DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
@@ -274,6 +276,7 @@
 			<Manifest_File>None</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_6_Win32)'!=''">
+			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<Debugger_HostApplication>D:\Delphi Projects\Lucidity\Bin\GraceCpuTester\Win32\GraceCpuTester.exe</Debugger_HostApplication>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
@@ -304,6 +307,9 @@
 			<DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
 			<DCC_TypedAtParameter>true</DCC_TypedAtParameter>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_8)'!=''">
+			<DCC_ExeOutput>C:\Audio\VstPlugs x86</DCC_ExeOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_8_Win64)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -383,16 +389,8 @@
 						<Source Name="MainSource">Grace.dpr</Source>
 					</Source>
 					<Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\AggPasRunXE2.bpl">Anti-Grain Geometry</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\LucidityGuiComponentsRunXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamBasicDesXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\VamLib_Design.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\dclDragDropDXE2.bpl not found</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\Bpl\Win32\DragDropDXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl">File S:\Bin\Delphi XE2\bpl\Win32\OmniThreadLibraryDesigntimeXE2.bpl not found</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\DclMtxCore416.bpl">Dew MtxVec v4</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\DclMtxDB416.bpl">Dew MtxVec v4 DB</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\DclSignalTool416.bpl">Dew DSP Master v4</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
 				</Delphi.Personality>
 				<Platforms>
