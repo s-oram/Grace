@@ -20,9 +20,6 @@ Thumbs.db
 *.txvpck
 *.txapackage
 
-### MadExcept settings
-*.mes
-
 ### the top most binary directory 
 bin/*
 *Project Resources*

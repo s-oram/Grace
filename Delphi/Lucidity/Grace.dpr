@@ -11,10 +11,6 @@ library Grace;
 
 uses
   madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Vst2Ex.MadExcept,
   SysUtils,
   Classes,
