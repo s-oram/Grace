@@ -1,6 +1,9 @@
 ======================================
             History
 ======================================
+2 June 2016
+- Remove MadExcept references. 
+
 26 May 2016
 - Changes to AggPasMod to fix compilation paths.
 

@@ -4,16 +4,13 @@ unit Vst2Ex.MadExcept;
 
 interface
 
-uses
-  madExcept;
-
 procedure HandleException;
 
 implementation
 
 procedure HandleException;
 begin
-  madExcept.HandleException;
+  // do nothing. MadExcept is not being used anymore.
 end;
 
 

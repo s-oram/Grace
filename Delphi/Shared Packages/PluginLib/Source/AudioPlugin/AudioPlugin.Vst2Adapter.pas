@@ -109,7 +109,6 @@ type
 implementation
 
 uses
-  MadExcept,
   SysUtils,
   AudioPlugin.Functions,
   AudioPlugin.RunTimeInfo;
@@ -184,7 +183,7 @@ begin
   try
     inherited;
   except
-    HandleException;
+    raise;
   end;
 end;
 

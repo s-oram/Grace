@@ -1282,9 +1282,11 @@ begin
       // reference is being assigned to a pointer. The interface reference count isn't reduced when the
       // AMedium falls out of scope.
 
+      // ## Alternate 1 - Has Memory Leak ##
       //OleStream := TOLEStream.Create(Stream);
       //Stream := TFixedStreamAdapter.Create(OleStream, soOwned) as IStream;
 
+      // ## Alternate 2 - No Memory Leak but less functionality ##		
       Stream.Seek(0, STREAM_SEEK_SET, LargeInt(nil^));
       //====================================================
 

@@ -33,9 +33,6 @@ requires
   rtl,
   VamLib,
   WatchTower,
-  madBasic_,
-  madDisAsm_,
-  madExcept_,
   vclimg,
   dbrtl;
 

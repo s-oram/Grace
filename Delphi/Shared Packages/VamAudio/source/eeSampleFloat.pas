@@ -75,6 +75,8 @@ begin
   assert((ChannelCount = 1) or (ChannelCount = 2), 'Invalid channel count.');
   assert(SampleFrames >= 0);
 
+  result := false;
+
   try
     if ChannelCount = 1 then
     begin

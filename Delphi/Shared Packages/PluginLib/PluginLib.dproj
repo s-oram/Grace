@@ -84,9 +84,6 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="VamLib.dcp"/>
 			<DCCReference Include="WatchTower.dcp"/>
-			<DCCReference Include="madBasic_.dcp"/>
-			<DCCReference Include="madDisAsm_.dcp"/>
-			<DCCReference Include="madExcept_.dcp"/>
 			<DCCReference Include="vclimg.dcp"/>
 			<DCCReference Include="dbrtl.dcp"/>
 			<DCCReference Include="Source\Vst2Sdk\VamVst2.DAEffect.pas"/>
