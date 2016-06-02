@@ -280,7 +280,7 @@ type
 implementation
 
 uses
-  MadExcept, Windows,
+  Windows,
   Dialogs,
   SysUtils,
   {$IFDEF Logging}VamLib.Logging,{$ENDIF}

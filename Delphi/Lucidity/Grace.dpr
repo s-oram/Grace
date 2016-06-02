@@ -10,7 +10,6 @@ library Grace;
 
 
 uses
-  madExcept,
   Vst2Ex.MadExcept,
   SysUtils,
   Classes,

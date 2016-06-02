@@ -15,7 +15,6 @@ procedure LogException(const E:Exception; const Title : string); overload; depre
 implementation
 
 uses
-  MadExcept,
   {$IFDEF Logging}VamLib.Logging,{$ENDIF}
   eeTypes;
 

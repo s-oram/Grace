@@ -27,7 +27,7 @@
 
 {$IFDEF ReleaseBuild}
   //== Release Defines ==
-  {$DEFINE madExcept}
+  {.$DEFINE madExcept} // Do not use MadExcept.
   {.$DEFINE Logging}
   {.$DEFINE LogToFile}
   {.$DEFINE LogToConsole}
@@ -38,7 +38,7 @@
   {.$DEFINE StorePatchWhenRestoring}
 {$ELSE}
   //== Debug Defines ==
-  {$DEFINE madExcept}
+  {.$DEFINE madExcept} // Do not use MadExcept.
   {$DEFINE Logging}
   {$DEFINE LogToFile}
   {$DEFINE LogToConsole}
