@@ -173,7 +173,6 @@ uses
   eeTypes,
   VamQuery,
   RedFox,
-  MadExcept,
   VamLayoutWizard,
   RedFoxColor, Lucidity.Enums,
   uConstants, Lucidity.GuiUtils,
