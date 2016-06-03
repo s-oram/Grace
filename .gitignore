@@ -40,4 +40,5 @@ Config/*
 
 ### ignore any generated DLLs.
 Lucidity.dll
+Grace.dll
 
