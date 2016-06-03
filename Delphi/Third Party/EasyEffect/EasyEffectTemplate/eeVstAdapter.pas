@@ -135,7 +135,8 @@ begin
       TeeVstAdapter(e^.vObject).ProcessControllerV2.ProcessReplacing(Inputs, Outputs, SampleFrames);
     end;
   except
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    raise;
   end;
 end;
 
@@ -172,7 +173,8 @@ begin
     end;
   except
     result := 0;
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    raise;
   end;
 end;
 
@@ -303,7 +305,9 @@ begin
     end;
   except
     result := 0;
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    // Just re-raise the exception for now.
+    raise;
   end;
 end;
 
@@ -566,7 +570,9 @@ begin
   try
     Plugin.VstParameterChanged(Index, Value);
   except
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    // Just re-raise the exception for now.
+    raise;
   end;
 end;
 
@@ -577,7 +583,9 @@ begin
     result := Plugin.GetParameter(Index);
   except
     result := 0;
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    // Just re-raise the exception for now.
+    raise;
   end;
 end;
 
@@ -620,7 +628,10 @@ begin
   try
     Plugin.SetPreset(ChunkData);
   except
-    //TODO:MED should log exceptions here.
+    // TODO:MED should log exceptions here.
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    // Just re-raise the exception for now.
+    raise;
   end;
 
   ChunkData.Clear;

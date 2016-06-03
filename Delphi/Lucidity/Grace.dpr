@@ -10,7 +10,6 @@ library Grace;
 
 
 uses
-  Vst2Ex.MadExcept,
   SysUtils,
   Classes,
   Lucidity.GlobalSetup in 'Lucidity.GlobalSetup.pas',
@@ -216,7 +215,9 @@ begin
       else result := nil;
   except
     result := nil;
-    HandleException;
+    // TODO:MED Insert exception handling here! (replaces MadExcept!)
+    // Just re-raise the exception for now.
+    raise;
   end;
 end;
 

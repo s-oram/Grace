@@ -24,7 +24,7 @@ unit AggDesignTimeColor;
 
 interface
 
-{$I AggCompiler.inc}
+{$I ../AggCompiler.inc}
 
 uses
   Classes, SysUtils,
