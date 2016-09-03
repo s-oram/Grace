@@ -44,7 +44,7 @@ If you'd like to hack on Grace or build it from source:
 3. Run `01 Lucidity Project Setup.bat`. This creates a new virtual drive at `S:\` containing the contents of the Grace repository.
 4. Edit `02 Launch Delphi with Lucidity Project.bat`. Update `Delphi` to match the full path of your Delphi executable.
 5. Run `02 Launch Delphi with Lucidity Project.bat`.
-6. `Delphi -> Tools -> Options -> Enviroment Variables` <br>
+6. `Delphi -> Tools -> Options -> Environment Variables` <br>
   * Add a new environment variable named `DelphiCompiledLib` and set to `S:\Bin\Delphi XE2`
   * Add a new environment variable named `VstPluginsX86` and set to your 32bit VST 2.4 plugin directory. Building the Grace project will output
   the Grace.dll here.
@@ -57,21 +57,21 @@ If you'd like to hack on Grace or build it from source:
   * RedFoxDesXE2.bpl
   * VamBasicDesXE2.bpl
   * LucidityGuiComponentsDesXE2.bpl
-9. Finally build the `Grace.dll` project! Check the "build confiurations" for release and debug builds. The configurations named "ForLocal" will output the `Grace.dll` right into your VST plugin folder. Useful when developing and testing changes. The `ReleaseAsFull` configuration will output the `Grace.dll` to the repository `bin` directory. Do this when running the install maker script (Inno Setup).
-10. Run `04 Lucidity Project Teardown.bat` when finished to unmount the virtual drive at `S:\`.
+9. Finally build the `Grace.dll` project! Check the "build configurations" for release and debug builds. The configurations named "ForLocal" will output the `Grace.dll` right into your VST plugin folder. Useful when developing and testing changes. The `ReleaseAsFull` configuration will output the `Grace.dll` to the repository `bin` directory. Do this when running the install maker script (Inno Setup).
+10. Run `04 Lucidity Project Teardown.bat` when finished to un-mount the virtual drive at `S:\`.
 
 NOTE: All of the above instructions are for Delphi XE2.
 
 # Project Notes
 
-* Grace was orginally named *Lucidity* however someone else used the name before it could be released. The project was renamed to Grace but references to the old name still remain in places.
+* Grace was originally named *Lucidity* however someone else used the name before it could be released. The project was renamed to Grace but references to the old name still remain in places.
 * Grace was originally a closed source commercial project. In early 2016 Grace was released as freeware and made open source. The project was organised to fit within my personal development workflow. I've since reduced dependencies and made several changes to make the project more approachable. Ideally a few more changes are yet due. For now you'll just need to work around them.
 * The bulk of the interesting code for Grace is found in `Delphi\Lucidity`.
 * `Delphi\Shared Packages` contains library  code that is shared between all my projects. Not all packages are used in Grace. Removing the unused code here is on the TODO list.
 
 # License
 
-Grace and all orignal code is released under the MIT License.
+Grace and all original code is released under the MIT License.
 
 Copyright for all third party code included in this repository remains with it's
 original owners and is subject to it's original license.
