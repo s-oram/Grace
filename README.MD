@@ -41,7 +41,7 @@ If you'd like to hack on Grace or build it from source:
 
 1. Clone this repository.
 2. Edit `01 Lucidity Project Setup.bat`. Update `ProjectPath` to match the Grace repository location on your system.
-3. Run `01 Lucidity Project Setup.bat`. This create a new virtual drive at `S:\` containing the contents of the Grace repository.
+3. Run `01 Lucidity Project Setup.bat`. This creates a new virtual drive at `S:\` containing the contents of the Grace repository.
 4. Edit `02 Launch Delphi with Lucidity Project.bat`. Update `Delphi` to match the full path of your Delphi executable.
 5. Run `02 Launch Delphi with Lucidity Project.bat`.
 6. `Delphi -> Tools -> Options -> Enviroment Variables` <br>
