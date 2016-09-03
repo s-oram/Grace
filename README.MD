@@ -45,11 +45,11 @@ If you'd like to hack on Grace or build it from source:
 4. Edit `02 Launch Delphi with Lucidity Project.bat`. Update `Delphi` to match the full path of your Delphi executable.
 5. Run `02 Launch Delphi with Lucidity Project.bat`.
 6. `Delphi -> Tools -> Options -> Enviroment Variables` <br>
-  * Add a new environment variable named `DelphiCompiledLib` set to to `S:\Bin\Delphi XE2`
-  * Add a new environment variable named `VstPluginsX86` set to your 32bit VST 2.4 plugin directory. Building the Grace project will output
+  * Add a new environment variable named `DelphiCompiledLib` and set to `S:\Bin\Delphi XE2`
+  * Add a new environment variable named `VstPluginsX86` and set to your 32bit VST 2.4 plugin directory. Building the Grace project will output
   the Grace.dll here.
-  * Add a new environment variable named `VSTPluginsX64` set to your 64bit VST 2.4 plugin directory.
-7. In the project manager you'll see a list of Delphi projects. Build all projects starting from the top.
+  * Add a new environment variable named `VSTPluginsX64` and set to your 64bit VST 2.4 plugin directory.
+7. In the Delphi project manager you'll see a list of Delphi projects. Build all projects starting from the top.
 8. Install:
   * dclDradDropXE2.bpl
   * VamLib_Design.bpl
@@ -59,6 +59,8 @@ If you'd like to hack on Grace or build it from source:
   * LucidityGuiComponentsDesXE2.bpl
 9. Finally build the `Grace.dll` project! Check the "build confiurations" for release and debug builds. The configurations named "ForLocal" will output the `Grace.dll` right into your VST plugin folder. Useful when developing and testing changes. The `ReleaseAsFull` configuration will output the `Grace.dll` to the repository `bin` directory. Do this when running the install maker script (Inno Setup).
 10. Run `04 Lucidity Project Teardown.bat` when finished to unmount the virtual drive at `S:\`.
+
+NOTE: All of the above instructions are for Delphi XE2.
 
 # Project Notes
 
