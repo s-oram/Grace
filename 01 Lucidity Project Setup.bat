@@ -1,11 +1,15 @@
-:: mount the project directory as a virtual drive. 
-subst s: "D:\Delphi Projects\Lucidity"
+:: This script maps the source directory to a virtual drive
+:: located at S:\
+::
+:: IMPORTANT: Update the ProjectPath variable to match the
+:: project path location on your system.
 
-:: install baseline registery enteries.
-::regedit.exe /s "s:\Config\LucidityStandard.reg" 
+SETLOCAL
 
-:: install custom registery enteries.
-::regedit.exe /s "s:\Config\LucidityCustom.reg" 
+SET ProjectPath="D:\Delphi Projects\Lucidity"
 
+:: SUBST reference
+:: http://www.computerhope.com/substhlp.htm
+SUBST s: %ProjectPath%
 
-::PAUSE
+ENDLOCAL
