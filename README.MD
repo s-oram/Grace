@@ -71,4 +71,7 @@ NOTE: All of the above instructions are for Delphi XE2.
 
 # License
 
-Grace and all orignal code is released under the MIT License. All third party code included in this repository remains under it's original license.
+Grace and all orignal code is released under the MIT License.
+
+Copyright for all third party code included in this repository remains with it's
+original owners and is subject to it's original license.
