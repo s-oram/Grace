@@ -68,3 +68,7 @@ NOTE: All of the above instructions are for Delphi XE2.
 * Grace was originally a closed source commercial project. In early 2016 Grace was released as freeware and made open source. The project was organised to fit within my personal development workflow. I've since reduced dependencies and made several changes to make the project more approachable. Ideally a few more changes are yet due. For now you'll just need to work around them.
 * The bulk of the interesting code for Grace is found in `Delphi\Lucidity`.
 * `Delphi\Shared Packages` contains library  code that is shared between all my projects. Not all packages are used in Grace. Removing the unused code here is on the TODO list.
+
+# License
+
+Grace and all orignal code is released under the MIT License. All third party code included in this repository remains under it's original license.
