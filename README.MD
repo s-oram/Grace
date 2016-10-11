@@ -23,13 +23,13 @@ Grace is available as a VST 2.4 format plugin for Windows.
 * VST 2.4 plugin host such as Cubase, Ableton Live or Reaper.
 * Grace is a VST 2.4 plugin (32 and 64bit available).
 
-# Build
-
-See the [project notes](https://github.com/s-oram/Grace/wiki) if building from the source. 
-
 # Download Binaries
 
 Grace binaries can be downloaded from http://onesmallclue.com/plugin/grace/
+
+# Build
+
+See the [project notes](https://github.com/s-oram/Grace/wiki) if building from the source. 
 
 # Press
 
